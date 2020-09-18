@@ -1,0 +1,32 @@
+{
+  "name": "sfdx-project-template",
+  "author": "GitLab",
+  "scripts": {
+    "postinstall": "sfdx update && sfdx plugins:install sfpowerkit",
+    "install:extensions": "type config/vscode-extensions.list | code --install-extension -",
+    "test:lwc": "lwc-jest",
+    "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 10",
+    "push:source": "sfdx force:source:push",
+    "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
+    "pull:source": "sfdx force:source:pull",
+    "retrieve:source": "sfdx force:source:retrieve --sourcepath=force-app",
+    "pull:profiles": "sfdx force:source:pull -f && sfdx sfpowerkit:source:profile:reconcile -s",
+    "retrieve:profiles:all": "sfdx sfpowerkit:source:profile:retrieve",
+    "retrieve:email-templates": "node scripts/source/retrieve-templates.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && node scripts/source/apex-formatter.js"
+    }
+  },
+  "devDependencies": {
+    "@salesforce/eslint-config-lwc": "latest",
+    "@salesforce/lwc-jest": "latest",
+    "eslint": "latest",
+    "husky": "^4.3.0",
+    "prettier": "^2.1.2",
+    "prettier-plugin-apex": "^1.7.0",
+    "pretty-quick": "^3.0.2",
+    "sfpowerkit": "latest"
+  }
+}

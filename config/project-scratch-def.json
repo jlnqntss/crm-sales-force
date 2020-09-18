@@ -1,0 +1,36 @@
+{
+  "orgName": "Maraven",
+  "edition": "Enterprise",
+  "features": [
+    "ForceComPlatform",
+    "ServiceUser",
+    "SalesUser",
+    "ServiceCloud",
+    "LightningSalesConsole",
+    "LightningServiceConsole",
+    "EinsteinBuilderFree",
+    "SocialCustomerService",
+    "EINSTEINASSISTANT",
+    "CASECLASSIFICATION"
+  ],
+  "settings": {
+    "communitiesSettings": {
+      "enableNetworksEnabled": false
+    },
+    "mobileSettings": {
+      "enableS1EncryptedStoragePref2": true
+    },
+    "omniChannelSettings": {
+      "enableOmniChannel": false
+    },
+    "quoteSettings": {
+      "enableQuote": true
+    },
+    "territory2Settings": {
+      "enableTerritoryManagement2": true
+    },
+    "socialCustomerServiceSettings": {
+      "enableSocialCustomerService": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "Core",
+      "versionName": "Version 0.1.0",
+      "versionNumber": "0.0.1"
+    }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "47.0",
+  "packageAliases": {
+    "Core": "0Ho3X0000008OOISA2"
+  }
+}
