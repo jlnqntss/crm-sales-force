@@ -55,6 +55,9 @@ stages:
  - qa
  - production
 
+before_script:
+  - npm config set proxy "$HTTP_PROXY"
+  - npm config set https-proxy "$HTTPS_PROXY"
 
 ####################################################
 # Ejecuta los tests LWC sobre el runner, sin org.
@@ -70,6 +73,9 @@ test-lwc:
     - install_jq
     - install_lwc_jest
     - test_lwc_jest
+  tags:
+    - zurich-ci
+
 
 ####################################################
 # Despliega el proyecto a Staging
