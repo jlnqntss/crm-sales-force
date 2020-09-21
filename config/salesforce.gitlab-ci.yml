@@ -29,7 +29,7 @@
 # Imagen Docker para los jobs. Puesto que el 
 # pipeline es JS, se utiliza node.
 ####################################################
-image: "node:latest"
+image: 807625060872.dkr.ecr.eu-west-1.amazonaws.com/capside/node/12
 
 
 ####################################################
@@ -78,7 +78,7 @@ deploy-staging-metadata:
   stage: staging
   only:
     refs:
-      - deve
+      - dev
   allow_failure: false
   environment:
     name: staging
@@ -100,7 +100,7 @@ test-org:
   stage: test-apex
   only:
     refs: 
-      - deve
+      - dev
   allow_failure: false
   dependencies:
     - deploy-staging-metadata
@@ -160,7 +160,7 @@ deploy-production-metadata:
   function install_salesforce_cli() {
 
     # Salesforce CLI Environment Variables
-    # https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_cli_env_variables.htm
+    # https://devloper.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_cli_env_variables.htm
 
     # By default, the CLI periodically checks for and installs updates.
     # Disable (false) this auto-update check to improve performance of CLI commands.
@@ -182,7 +182,7 @@ deploy-production-metadata:
 
     # Install Salesforce CLI
     mkdir sfdx
-    CLIURL=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+    CLIURL=https://devloper.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
     wget --no-check-certificate -qO- $CLIURL | tar xJ -C sfdx --strip-components 1
     "./sfdx/install"
     export PATH=./sfdx/$(pwd):$PATH
@@ -276,7 +276,7 @@ deploy-production-metadata:
 
 
   # Function to test the scratch org, such as run Apex tests and/or load data.
-  # We leverage the script property `test:scratch` in package.json to provide developers a "hook"
+  # We leverage the script property `test:scratch` in package.json to provide devlopers a "hook"
   # to control exactly how they want their apex test to be executed.
   # Arguments:
   #     $1 = username or alias of org to test
@@ -314,7 +314,7 @@ deploy-production-metadata:
     fi
 
     # Set the default username so any CLI commands
-    # the developer has set in their "test:scratch" script in package.json
+    # the devloper has set in their "test:scratch" script in package.json
     # will operate on the correct environment.
     # Afterwards, restore the original default username, just in case it was different.
     local old_org_username=$(jq -r '.result[].value' <<< $(sfdx force:config:get defaultusername --json))
