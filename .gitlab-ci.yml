@@ -1,6 +1,6 @@
 include:
+  - template: Security/SAST.gitlab-ci.yml
   - local: "config/salesforce.gitlab-ci.yml"
-  - template: SAST.gitlab-ci.yml
 
 sast:
   # Run Security scanning job 'SAST' within the 'preliminary-testing' stage

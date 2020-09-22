@@ -113,7 +113,7 @@ test-org:
   script:
     - install_salesforce_cli
     - install_jq
-    - authenticate STAGING $STAGING_AUTH_URL
+    - authenticate STAGING $STAGING_SANDBOX_AUTH_URL
     - test_org STAGING
   artifacts:
     reports:
@@ -138,7 +138,7 @@ deploy-qa-metadata:
     - install_salesforce_cli
     - install_jq
     - authenticate QA $QA_SANDBOX_AUTH_URL
-    - deploy_metadata QA_SANDBOX
+    - deploy_metadata QA
 
 ####################################################
 # Deploy metadata into the production org.
