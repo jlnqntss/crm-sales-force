@@ -1,0 +1,23 @@
+<template>
+  <lightning-layout vertical-align="start" onchange={dispatchChanges}>
+    <lightning-input
+      label="Name"
+      name="name"
+      variant="label-hidden"
+      placeholder="Name"
+      value={name}
+      required
+    ></lightning-input>
+    <lightning-input
+      label="Value"
+      name="value"
+      variant="label-hidden"
+      placeholder="Value"
+      value={value}
+    ></lightning-input>
+    <lightning-button-icon
+      icon-name="utility:delete"
+      onclick={dispatchDeleteEvent}
+    ></lightning-button-icon>
+  </lightning-layout>
+</template>

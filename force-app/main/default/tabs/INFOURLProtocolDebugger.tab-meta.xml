@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Lightning App for INFO URL Protocol testing</description>
+    <label>INFO URL Protocol Debugger</label>
+    <lwcComponent>infoAppOpenerForm</lwcComponent>
+    <motif>Custom67: Gears</motif>
+</CustomTab>
