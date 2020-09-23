@@ -176,6 +176,9 @@ deploy-production-metadata:
 
   function install_salesforce_cli() {
 
+    # Se asegura que wget esté disponible
+    apt update && apt -y install wget
+    
     # Salesforce CLI Environment Variables
     # https://devloper.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_cli_env_variables.htm
 
