@@ -1,10 +1,12 @@
 {
-  "name": "sfdx-project-template",
-  "author": "GitLab",
+  "name": "zurich-salesforce",
+  "author": "NTS",
   "scripts": {
+    "lint": "npm run lint:lwc",
+    "lint:lwc": "eslint force-app/main/default/lwc",
     "postinstall": "sfdx update && sfdx plugins:install sfpowerkit",
     "install:extensions": "type config/vscode-extensions.list | code --install-extension -",
-    "test:lwc": "lwc-jest",
+    "test:lwc": "lwc-jest -- --passWithNoTests",
     "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 10",
     "push:source": "sfdx force:source:push",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
@@ -21,7 +23,7 @@
   },
   "devDependencies": {
     "@salesforce/eslint-config-lwc": "latest",
-    "@salesforce/lwc-jest": "latest",
+    "@salesforce/sfdx-lwc-jest": "latest",
     "eslint": "latest",
     "husky": "^4.3.0",
     "prettier": "^2.1.2",
