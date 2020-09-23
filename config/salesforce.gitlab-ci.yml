@@ -176,9 +176,7 @@ deploy-production-metadata:
 
   function install_salesforce_cli() {
 
-    # Se asegura que wget esté disponible
-    apt update && apt -y install wget
-    
+
     # Salesforce CLI Environment Variables
     # https://devloper.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_cli_env_variables.htm
 
@@ -200,12 +198,15 @@ deploy-production-metadata:
     # For force:package:version:create, disables automatic updates to the sfdx-project.json file.
     export SFDX_PROJECT_AUTOUPDATE_DISABLE_FOR_PACKAGE_VERSION_CREATE=true
 
-    # Install Salesforce CLI
-    mkdir sfdx
-    CLIURL=https://devloper.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-    wget --no-check-certificate -qO- $CLIURL | tar xJ -C sfdx --strip-components 1
-    "./sfdx/install"
-    export PATH=./sfdx/$(pwd):$PATH
+    # Instalación Salesforce CLI
+    #mkdir sfdx
+    #CLIURL=https://devloper.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+    #wget --no-check-certificate -qO- $CLIURL | tar xJ -C sfdx --strip-components 1
+    #"./sfdx/install"
+    #export PATH=./sfdx/$(pwd):$PATH
+
+    # Se usa npm para evitar problemas con wget
+    npm install --global sfdx-cli
   }
 
 
