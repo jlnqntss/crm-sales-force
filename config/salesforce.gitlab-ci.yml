@@ -70,9 +70,9 @@ test-lwc:
       - $TEST_DISABLED
   allow_failure: false
   script:
-    - install_jq
-    - install_lwc_jest
+    - install_toolchain
     - test_lwc_jest
+    - lint
   tags:
     - zurich-ci
 
@@ -90,8 +90,7 @@ deploy-staging-metadata:
     name: staging
     url: https://test.salesforce.com
   script:
-    - install_salesforce_cli
-    - install_jq
+    - install_toolchain
     - authenticate STAGING $STAGING_SANDBOX_AUTH_URL
     - deploy_metadata STAGING
 
@@ -111,8 +110,7 @@ test-org:
   dependencies:
     - deploy-staging-metadata
   script:
-    - install_salesforce_cli
-    - install_jq
+    - install_toolchain
     - authenticate STAGING $STAGING_SANDBOX_AUTH_URL
     - test_org STAGING
   artifacts:
@@ -135,8 +133,7 @@ deploy-qa-metadata:
     name: qa
     url: https://test.salesforce.com
   script:
-    - install_salesforce_cli
-    - install_jq
+    - install_toolchain
     - authenticate QA $QA_SANDBOX_AUTH_URL
     - deploy_metadata QA
 
@@ -153,12 +150,26 @@ deploy-production-metadata:
     name: production
     url: https://login.salesforce.com
   script:
-    - install_salesforce_cli
-    - install_jq
+    - install_toolchain
     - authenticate PRODUCTION $PRODUCTION_AUTH_URL $DEVHUB_AUTH_URL
     - deploy_metadata PRODUCTION
 
 .sfdx_helpers: &sfdx_helpers |
+
+
+  # Instala las herramientas base y dependencias npm
+  # No arguments.
+  function install_toolchain() {
+    install_salesforce_cli
+    install_jq
+
+    echo 'Installing dependencies'
+    npm install
+
+    ## Versiones
+    sfdx --version
+    sfdx plugins --core
+  }
 
   # Function to install the Salesforce CLI.
   # No arguments.
@@ -192,12 +203,6 @@ deploy-production-metadata:
     wget --no-check-certificate -qO- $CLIURL | tar xJ -C sfdx --strip-components 1
     "./sfdx/install"
     export PATH=./sfdx/$(pwd):$PATH
-
-    # Output CLI version and plug-in information
-    sfdx update
-    sfdx --version
-    sfdx plugins --core
-
   }
 
 
@@ -208,38 +213,6 @@ deploy-production-metadata:
       # NTS  - SSL Check
     npm config set registry="http://registry.npmjs.org/"
     apt update && apt -y install jq
-  }
-
-
-  # Function to install LWC Jest dependencies.
-  # Will create or update the package.json with { "test:lwc" : "lwc-jest" } to the scripts property.
-  # No arguments.
-
-  function install_lwc_jest() {
-      # NTS  - SSL Check
-    npm config set registry="http://registry.npmjs.org/"
-
-    # Create a default package.json if file doesn't exist
-    if [ ! -f "package.json" ]; then
-      npm init -y
-    fi
-
-    # Check if the scripts property in package.json contains key for "test:lwc"
-    local scriptValue=$(jq -r '.scripts["test:lwc"]' < package.json)
-
-    # If no "test:lwc" script property, then add one
-    if [[ -z "$scriptValue" || $scriptValue == null ]]; then
-      local tmp=$(mktemp)
-      jq '.scripts["test:lwc"]="lwc-jest"' package.json > $tmp
-      mv $tmp package.json
-      echo "added test:lwc script property to package.json" >&2
-      cat package.json >&2
-    fi
-
-    # Now that we have package.json to store dependency references to
-    # and to run our lwc jest test scripts, run npm installer
-    npm install
-    npm install @salesforce/lwc-jest --save-dev
   }
 
 
@@ -262,6 +235,41 @@ deploy-production-metadata:
     echo $hasJestTests
   }
 
+  # Comprueba si hay componentes LWC en el proyecto
+  # No arguments.
+  # Returns `true` or `false`
+
+  function checkHasLWC() {
+    local hasLWC=false
+    for pkgDir in $(jq -r '.packageDirectories[].path' < sfdx-project.json)
+    do
+      if [ -f $pkgDir ]; then
+        local fileCnt=$(find $pkgDir -type f -path "**/lwc" | wc -l);
+        if [ $fileCnt -gt 0 ]; then
+          hasLWC=true
+        fi
+      fi
+    done
+    echo $hasLWC
+  }
+
+
+  # Lanza `npm run lint` para ejecutar el linting
+  # Function takes no arguments.
+  # Should be called after `setup_lwc`.
+  # Uses `check_has_jest_tests` to know if there are actually any tests to run.
+  # If there aren't any jest tests then npm would throw an error and fail the job,
+  # so we skip running npm if there are no tests, essentially skipping them to avoid error.
+
+  function lint() {
+
+    local checkHasLWC=$(checkHasLWC)
+    if [ $checkHasLWC ]; then
+      npm run lint
+    else
+      echo 'Skipping linting, found no components on any package directories' >&2
+    fi
+  }
 
   # Runs `npm run test:lwc` to execute LWC Jest tests.
   # Function takes no arguments.
