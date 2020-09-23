@@ -121,6 +121,8 @@ test-org:
     paths:
       - tests/
   coverage: '/name="testRunCoverage" value="([\d]+%)"/'
+  tags:
+  - zurich-ci
 
 ####################################################
 # Deploy metadata into the sandbox org.
@@ -138,6 +140,8 @@ deploy-qa-metadata:
     - install_toolchain
     - authenticate QA $QA_SANDBOX_AUTH_URL
     - deploy_metadata QA
+  tags:
+    - zurich-ci
 
 ####################################################
 # Deploy metadata into the production org.
@@ -155,7 +159,9 @@ deploy-production-metadata:
     - install_toolchain
     - authenticate PRODUCTION $PRODUCTION_AUTH_URL $DEVHUB_AUTH_URL
     - deploy_metadata PRODUCTION
-
+  tags:
+    - zurich-ci
+    
 .sfdx_helpers: &sfdx_helpers |
 
 
