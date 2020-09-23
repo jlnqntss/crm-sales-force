@@ -294,7 +294,7 @@ deploy-production-metadata:
 
 
   # Function to test the scratch org, such as run Apex tests and/or load data.
-  # We leverage the script property `test:scratch` in package.json to provide devlopers a "hook"
+  # We leverage the script property `test:org` in package.json to provide devlopers a "hook"
   # to control exactly how they want their apex test to be executed.
   # Arguments:
   #     $1 = username or alias of org to test
@@ -319,10 +319,10 @@ deploy-production-metadata:
     # https://gitlab.com/help/ci/yaml/README.md#artifactsreports
     mkdir -p ./tests/apex
 
-    # Check if the scripts property in package.json contains key for "test:scratch"
+    # Check if the scripts property in package.json contains key for "test:org"
     local scriptValue=$(jq -r '.scripts["test:org"]' < package.json)
 
-    # If no "test:scratch" script property, then add one
+    # If no "test:org" script property, then add one
     if [[ -z "$scriptValue" || $scriptValue == null ]]; then
       local tmp=$(mktemp)
       jq '.scripts["test:org"]="sfdx force:apex:test:run --codecoverage --resultformat junit --wait 10 --outputdir ./tests/apex"' package.json > $tmp
@@ -332,12 +332,12 @@ deploy-production-metadata:
     fi
 
     # Set the default username so any CLI commands
-    # the devloper has set in their "test:scratch" script in package.json
+    # the devloper has set in their "test:org" script in package.json
     # will operate on the correct environment.
     # Afterwards, restore the original default username, just in case it was different.
     local old_org_username=$(jq -r '.result[].value' <<< $(sfdx force:config:get defaultusername --json))
     sfdx force:config:set defaultusername=$org_username
-    npm run test:scratch
+    npm run test:org
     sfdx force:config:set defaultusername=$old_org_username
 
   }
