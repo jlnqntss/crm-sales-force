@@ -93,6 +93,8 @@ deploy-staging-metadata:
     - install_toolchain
     - authenticate STAGING $STAGING_SANDBOX_AUTH_URL
     - deploy_metadata STAGING
+  tags:
+    - zurich-ci
 
 
 ####################################################
