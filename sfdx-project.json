@@ -11,6 +11,10 @@
     {
       "path": "force-app/zurich-ocs-app",
       "default": false
+    },
+    {
+      "path": "force-app/zurich-base-iam",
+      "default": false
     }
   ],
   "namespace": "",
