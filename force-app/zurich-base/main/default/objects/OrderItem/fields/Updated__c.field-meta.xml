@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Updated__c</fullName>
+    <description>Field to determine if the object is updated. In case processing time is different from Order, it will be deleted</description>
+    <externalId>false</externalId>
+    <formula>(Processing_Timestamp__c ==  Order.Processing_Timestamp__c)  ||  (Processing_Timestamp__c !=  Order.Processing_Timestamp__c &amp;&amp;  Active__c== false) || ( ISBLANK(Processing_Timestamp__c) &amp;&amp;  ISBLANK(Order.Processing_Timestamp__c))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Updated</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

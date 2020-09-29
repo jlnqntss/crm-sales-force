@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContactoLead</fullName>
+    <fields>RecordTypeId</fields>
+    <fields>Email</fields>
+    <fields>DNI__c</fields>
+    <fields>CustomerID__c</fields>
+    <fields>SourceCountry__c</fields>
+    <label>Contacto y lead</label>
+</CompactLayout>

@@ -1,0 +1,101 @@
+<!--
+  @description       : 
+  @author            : Enara Etxaniz
+  @group             : 
+  @last modified on  : 08-17-2020
+  @last modified by  : Enara Etxaniz
+  Modifications Log 
+  Ver   Date         Author          Modification
+  1.0   08-17-2020   Enara Etxaniz   Initial Version
+-->
+<template>
+  <lightning-card>
+    <div class="container-body">
+      <div class="container-general">
+        <div class="slds-is-relative slds-scope" id="preferences">
+          <div
+            class="slds-box communication-box cZ_EA_CommunityEditCommunications"
+            style="overflow: auto"
+          >
+            <div class="logo-header">
+              <img
+                src="https://klinc.com/-/media/Project/Zurich/Klinc/en/zurich-klinc-logo.svg"
+                alt="Klinc"
+              />
+            </div>
+            <h3 lang={language} class="communication-title">
+              {label.PreferenceCentreTitleLabel}
+            </h3>
+            <h6 class="communication-title">
+              {label.PreferenceCentreSubtitleLabel}
+            </h6>
+            <div class="news-container">
+              <!-- campaigns -->
+              <template for:each={sObjData} for:item="sobKey">
+                <div key={sobKey.idCampaign} class="box-container">
+                  <div class="container">
+                    <img
+                      src={sobKey.campaignPictureURL}
+                      alt="Lorem Ipsum"
+                      class="image"
+                      style="width: 100%"
+                    />
+                    <div class="middle">
+                      <div class="text">
+                        <h4>{sobKey.campaignName}</h4>
+                        <p>{sobKey.campaignDesc}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-form-element__control slds-grow">
+                    <input
+                      class="inp-cbx"
+                      id={sobKey.idCampaign}
+                      name={sobKey.idCampaign}
+                      type="checkbox"
+                      onchange={handleCheckboxChange}
+                      checked={sobKey.contactSubscribed}
+                      style="display: none"
+                    />
+                    <label class="cbx" for={sobKey.idCampaign}>
+                      <span>
+                        <svg width="33px" height="30px" viewBox="0 0 12 9">
+                          <polyline points="1 5 4 8 11 1"></polyline>
+                        </svg>
+                      </span>
+                      <div class="name">{label.CampaignCheckboxLabel}</div>
+                    </label>
+                  </div>
+                </div>
+              </template>
+            </div>
+            <!-- hasOptedOutOfEmail-->
+            <div class="baja-news">
+              <h4 class="communication-title slds-size_1-of-1">
+                {label.EmailOptOutCheckboxLabel}
+              </h4>
+              <p class="slds-p-vertical_small slds-p-right_small">
+                {label.EmailOptOutTextLabel}
+              </p>
+              <!-- Botón baja-->
+              <div class="slds-button cancel">
+                <label>
+                  <input
+                    id="contact"
+                    type="checkbox"
+                    onchange={handleChange}
+                  /><span>{label.EmailOptOutButtonLabel}</span>
+                </label>
+              </div>
+            </div>
+            <div class="component-content enviar">
+              <button class="slds-button" type="button" onclick={handleClick}>
+                {label.PreferenceCentreSaveLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </lightning-card>
+</template>

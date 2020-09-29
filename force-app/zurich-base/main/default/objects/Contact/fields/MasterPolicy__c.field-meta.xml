@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MasterPolicy__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Specifies if the contact comes from a partner. Linked to the partner acccount.</description>
+    <externalId>false</externalId>
+    <label>Masterpolicy</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Contacts</relationshipLabel>
+    <relationshipName>Clientes</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

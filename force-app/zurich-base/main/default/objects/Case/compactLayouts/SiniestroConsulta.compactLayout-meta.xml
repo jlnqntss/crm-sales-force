@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SiniestroConsulta</fullName>
+    <fields>RecordTypeId</fields>
+    <fields>CreatedDate</fields>
+    <fields>ClosedDate</fields>
+    <fields>ContactId</fields>
+    <fields>SourceCountry__c</fields>
+    <label>Siniestro y consulta</label>
+</CompactLayout>

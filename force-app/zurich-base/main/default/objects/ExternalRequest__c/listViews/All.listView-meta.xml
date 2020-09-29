@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Origin__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Entity__c</columns>
+    <columns>Processed__c</columns>
+    <columns>ProcessResult__c</columns>
+    <columns>ProcessedDate__c</columns>
+    <columns>Sent__c</columns>
+    <columns>Retry__c</columns>
+    <columns>Error_Log__c</columns>
+    <columns>Json__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Entity__c</field>
+        <operation>equals</operation>
+        <value>QuoteEntry,Customer,Claim,Policy</value>
+    </filters>
+    <label>Todos</label>
+</ListView>

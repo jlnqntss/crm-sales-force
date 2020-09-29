@@ -1,8 +1,16 @@
 {
   "packageDirectories": [
     {
-      "path": "force-app",
+      "path": "force-app/zurich-base",
       "default": true
+    },
+    {
+      "path": "force-app/zurich-klinc-app",
+      "default": false
+    },
+    {
+      "path": "force-app/zurich-ocs-app",
+      "default": false
     }
   ],
   "namespace": "",

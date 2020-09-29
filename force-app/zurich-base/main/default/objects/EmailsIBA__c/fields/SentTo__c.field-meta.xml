@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SentTo__c</fullName>
+    <description>Email recipient</description>
+    <externalId>false</externalId>
+    <label>Enviado a</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Emails IBA</relationshipLabel>
+    <relationshipName>EmailsIBA</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>true</writeRequiresMasterRead>
+</CustomField>

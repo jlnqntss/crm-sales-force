@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>FR- Incidencias 2 - When customer confirms technical issue details</name>
+    <style>none</style>
+    <subject>Nous avons reçu votre demande - Zurich Klinc</subject>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

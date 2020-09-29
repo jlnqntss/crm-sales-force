@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MasterPolicyDesc__c</fullName>
+    <description>Not visible field in the page layout and used to copy its value to account Name field after parsing it in the parser.</description>
+    <externalId>false</externalId>
+    <label>Masterpolicy description</label>
+    <length>200</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Set_sender_and_recipient</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(Send_Email__c == true,OR(ISBLANK(Notify_To__c),ISBLANK(Notify_From__c)) )</errorConditionFormula>
+    <errorMessage>The notify from and recipient(s) email address(es) must be set</errorMessage>
+</ValidationRule>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoanProvider__c</fullName>
+    <externalId>false</externalId>
+    <label>Entidad emisora del préstamo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>TBD</fullName>
+                <default>false</default>
+                <label>TBD</label>
+            </value>
+            <value>
+                <fullName>CAJAMAR CAJA RURAL, SOCIEDAD COOPERATIVA DE CRÉDITO</fullName>
+                <default>false</default>
+                <label>CAJAMAR CAJA RURAL, SOCIEDAD COOPERATIVA DE CRÉDITO</label>
+            </value>
+            <value>
+                <fullName>BANCA MARCH, S.A.</fullName>
+                <default>false</default>
+                <label>BANCA MARCH, S.A.</label>
+            </value>
+            <value>
+                <fullName>BANCO SANTANDER, S.A.</fullName>
+                <default>false</default>
+                <label>BANCO SANTANDER, S.A.</label>
+            </value>
+            <value>
+                <fullName>BANKINTER, S.A.</fullName>
+                <default>false</default>
+                <label>BANKINTER, S.A.</label>
+            </value>
+            <value>
+                <fullName>BANCA PUEYO, S.A</fullName>
+                <default>false</default>
+                <label>BANCA PUEYO, S.A</label>
+            </value>
+            <value>
+                <fullName>UNICAJA BANCO, S.A.</fullName>
+                <default>false</default>
+                <label>UNICAJA BANCO, S.A.</label>
+            </value>
+            <value>
+                <fullName>CAIXABANK, S.A.</fullName>
+                <default>false</default>
+                <label>CAIXABANK, S.A.</label>
+            </value>
+            <value>
+                <fullName>ANDBANK ESPAÑA S.A.U.</fullName>
+                <default>false</default>
+                <label>ANDBANK ESPAÑA S.A.U.</label>
+            </value>
+            <value>
+                <fullName>LIBERBANK, S.A</fullName>
+                <default>false</default>
+                <label>LIBERBANK, S.A</label>
+            </value>
+            <value>
+                <fullName>CAJA LABORAL POPULAR COOP. DE CRÉDITO</fullName>
+                <default>false</default>
+                <label>CAJA LABORAL POPULAR COOP. DE CRÉDITO</label>
+            </value>
+            <value>
+                <fullName>CAJA RURAL GRANADA, Sociedad Cooperativa de Crédito</fullName>
+                <default>false</default>
+                <label>CAJA RURAL GRANADA, Sociedad Cooperativa de Crédito</label>
+            </value>
+            <value>
+                <fullName>OPEN BANK, S.A.</fullName>
+                <default>false</default>
+                <label>OPEN BANK, S.A.</label>
+            </value>
+            <value>
+                <fullName>KUTXABANK, S.A.</fullName>
+                <default>false</default>
+                <label>KUTXABANK, S.A.</label>
+            </value>
+            <value>
+                <fullName>DEUTSCHE BANK, SOCIEDAD ANÓNIMA ESPAÑOLA</fullName>
+                <default>false</default>
+                <label>DEUTSCHE BANK, SOCIEDAD ANÓNIMA ESPAÑOLA</label>
+            </value>
+            <value>
+                <fullName>BBVA, S.A.</fullName>
+                <default>false</default>
+                <label>BBVA, S.A.</label>
+            </value>
+            <value>
+                <fullName>BANCO DE SABADELL, S.A.</fullName>
+                <default>false</default>
+                <label>BANCO DE SABADELL, S.A.</label>
+            </value>
+            <value>
+                <fullName>ABANCA Corporación Bancaria, S.A.</fullName>
+                <default>false</default>
+                <label>ABANCA Corporación Bancaria, S.A.</label>
+            </value>
+            <value>
+                <fullName>BANKIA, S.A.</fullName>
+                <default>false</default>
+                <label>BANKIA, S.A.</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

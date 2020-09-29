@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enquiry</fullName>
+    <active>true</active>
+    <businessProcess>Consulta</businessProcess>
+    <compactLayoutAssignment>SiniestroConsulta</compactLayoutAssignment>
+    <label>Consulta</label>
+    <picklistValues>
+        <picklist>CauseOfLoss__c</picklist>
+        <values>
+            <fullName>TBD</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ClaimStatusTPA__c</picklist>
+        <values>
+            <fullName>2%2E5 Fraud</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LegalEntity__c</picklist>
+        <values>
+            <fullName>General Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Life Insurance</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Origin</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>High</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Low</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medium</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason</picklist>
+        <values>
+            <fullName>Complex functionality</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Existing problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instructions not clear</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>User didn%27t attend training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Sub_status__c</picklist>
+        <values>
+            <fullName>BIT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestros</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Subtype__c</picklist>
+        <values>
+            <fullName>Activación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Apertura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>App</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bloqueo de IMEI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio de condiciones de mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio de datos de contacto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio de objeto asegurado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Catálogo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coberturas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contraseña</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contratar seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegación de cobertura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desactivar FMI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación incorrecta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estado de mi caso</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Franquicia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencia contratación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pago de franquicia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partnership</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Precio de mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Problema con la reparación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recogida%2FEntrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitud factura</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>%C2%BFTienes una incidencia%3F</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contratar seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dudas sobre el siniestro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dudas sobre la contratación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pago de mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Validar mi seguro</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

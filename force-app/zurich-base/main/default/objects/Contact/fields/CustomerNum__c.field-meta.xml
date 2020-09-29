@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CustomerNum__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Code that IBA generates to identify a customer. As for life and non-life is the same number, for life record type, it will have prefix LIFE-XXX and for non-life GI-XXX</description>
+    <externalId>true</externalId>
+    <label>Customer Num</label>
+    <length>80</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>
