@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subtype__c</fullName>
+    <externalId>false</externalId>
+    <label>Subtipo</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Catálogo</fullName>
+                <default>false</default>
+                <label>Catálogo</label>
+            </value>
+            <value>
+                <fullName>Contratar seguro</fullName>
+                <default>false</default>
+                <label>Contratar seguro</label>
+            </value>
+            <value>
+                <fullName>Partnership</fullName>
+                <default>false</default>
+                <label>Partnership</label>
+            </value>
+            <value>
+                <fullName>Coberturas</fullName>
+                <default>false</default>
+                <label>Coberturas</label>
+            </value>
+            <value>
+                <fullName>Franquicia</fullName>
+                <default>false</default>
+                <label>Franquicia</label>
+            </value>
+            <value>
+                <fullName>Incidencia contratación</fullName>
+                <default>false</default>
+                <label>Incidencia contratación</label>
+            </value>
+            <value>
+                <fullName>Precio de mi seguro</fullName>
+                <default>false</default>
+                <label>Precio de mi seguro</label>
+            </value>
+            <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <label>Otros</label>
+            </value>
+            <value>
+                <fullName>Desactivar FMI</fullName>
+                <default>false</default>
+                <label>Desactivar FMI</label>
+            </value>
+            <value>
+                <fullName>Documentación incorrecta</fullName>
+                <default>false</default>
+                <label>Documentación incorrecta</label>
+            </value>
+            <value>
+                <fullName>Bloqueo de IMEI</fullName>
+                <default>false</default>
+                <label>Bloqueo de IMEI</label>
+            </value>
+            <value>
+                <fullName>Pago de franquicia</fullName>
+                <default>false</default>
+                <label>Pago de franquicia</label>
+            </value>
+            <value>
+                <fullName>Recogida/Entrega</fullName>
+                <default>false</default>
+                <label>Recogida/Entrega</label>
+            </value>
+            <value>
+                <fullName>Denegación de cobertura</fullName>
+                <default>false</default>
+                <label>Denegación de cobertura</label>
+            </value>
+            <value>
+                <fullName>Apertura</fullName>
+                <default>false</default>
+                <label>Apertura</label>
+            </value>
+            <value>
+                <fullName>Estado de mi caso</fullName>
+                <default>false</default>
+                <label>Estado de mi caso</label>
+            </value>
+            <value>
+                <fullName>Incidencias</fullName>
+                <default>false</default>
+                <label>Incidencias</label>
+            </value>
+            <value>
+                <fullName>Problema con la reparación</fullName>
+                <default>false</default>
+                <label>Problema con la reparación</label>
+            </value>
+            <value>
+                <fullName>Activación</fullName>
+                <default>false</default>
+                <label>Activación</label>
+            </value>
+            <value>
+                <fullName>App</fullName>
+                <default>false</default>
+                <label>App</label>
+            </value>
+            <value>
+                <fullName>Contraseña</fullName>
+                <default>false</default>
+                <label>Contraseña</label>
+            </value>
+            <value>
+                <fullName>Renovación</fullName>
+                <default>false</default>
+                <label>Renovación</label>
+            </value>
+            <value>
+                <fullName>Solicitud factura</fullName>
+                <default>false</default>
+                <label>Solicitud factura</label>
+            </value>
+            <value>
+                <fullName>Cambio de objeto asegurado</fullName>
+                <default>false</default>
+                <label>Cambio de objeto asegurado</label>
+            </value>
+            <value>
+                <fullName>Cambio de datos de contacto</fullName>
+                <default>false</default>
+                <label>Cambio de datos de contacto</label>
+            </value>
+            <value>
+                <fullName>Cambio de condiciones de mi seguro</fullName>
+                <default>false</default>
+                <label>Cambio de condiciones de mi seguro</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

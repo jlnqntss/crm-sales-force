@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quote</fullName>
+    <fields>RecordTypeId</fields>
+    <fields>QuoteEntry__c</fields>
+    <fields>TotalPremium__c</fields>
+    <fields>QuoteStatus__c</fields>
+    <fields>AbandonedCart__c</fields>
+    <fields>SourceCountry__c</fields>
+    <label>Quote</label>
+</CompactLayout>

@@ -1,0 +1,29 @@
+<apex:page>
+  <apex:includeLightning />
+  <div id="lightningvf" />
+  <script
+    src="http://klinc.secure.force.com/unsubscribe/lightning/lightning.out.js"
+  ></script>
+  <script>
+    var hashId = "{!$CurrentPage.parameters.Hash}";
+    var language = "{!$CurrentPage.parameters.Language}";
+    $Lightning.use(
+      "c:PreferenceCentreApp",
+      function () {
+        $Lightning.createComponent(
+          "c:PreferenceCentre",
+          {
+            hash: hashId,
+            language: language
+          },
+          "lightningvf",
+          function (cmp) {
+            console.log("LWC component was created");
+            // do some stuff
+          }
+        );
+      },
+      "http://klinc.secure.force.com/unsubscribe"
+    );
+  </script>
+</apex:page>

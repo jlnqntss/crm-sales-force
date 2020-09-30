@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ArchivoNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ArchivoNoValido</shortDescription>
+        <value>ArchivoNoVálido</value>
+    </labels>
+    <labels>
+        <fullName>AtributoDuplicado</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AtributoDuplicado</shortDescription>
+        <value>Atributo Duplicado</value>
+    </labels>
+    <labels>
+        <fullName>AtributoListaNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AtributoListaNoValido</shortDescription>
+        <value>Atributo de la lista de selección no válido</value>
+    </labels>
+    <labels>
+        <fullName>AtributoNoAnulable</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AtributoNoAnulable</shortDescription>
+        <value>Atributo no anulable</value>
+    </labels>
+    <labels>
+        <fullName>AtributoRequerido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AtributoRequerido</shortDescription>
+        <value>Atributo Requerido</value>
+    </labels>
+    <labels>
+        <fullName>BooleanoNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BooleanoNoValido</shortDescription>
+        <value>Booleano no válido</value>
+    </labels>
+    <labels>
+        <fullName>CampaignCheckbox</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>CampaignCheckbox</shortDescription>
+        <value>Quiero recibir comunicaciones</value>
+    </labels>
+    <labels>
+        <fullName>Claim</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Claim</shortDescription>
+        <value>Claim</value>
+    </labels>
+    <labels>
+        <fullName>ClaimError</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ClaimError</shortDescription>
+        <value>Error inserting claim</value>
+    </labels>
+    <labels>
+        <fullName>Converted</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Converted</shortDescription>
+        <value>Converted</value>
+    </labels>
+    <labels>
+        <fullName>Customer</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Customer</shortDescription>
+        <value>Activo</value>
+    </labels>
+    <labels>
+        <fullName>CustomerCareProfile</fullName>
+        <categories>Apex Development</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CustomerCareProfile</shortDescription>
+        <value>Customer Care</value>
+    </labels>
+    <labels>
+        <fullName>CustomerError</fullName>
+        <categories>Error Management</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>CustomerError</shortDescription>
+        <value>Customer number does not exist</value>
+    </labels>
+    <labels>
+        <fullName>CustomerGI</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CustomerGI</shortDescription>
+        <value>CustomerGI</value>
+    </labels>
+    <labels>
+        <fullName>CustomerLife</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CustomerLife</shortDescription>
+        <value>CustomerLife</value>
+    </labels>
+    <labels>
+        <fullName>EmailIBAError</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EmailIBAError</shortDescription>
+        <value>Error inserting Email IBA with subject:</value>
+    </labels>
+    <labels>
+        <fullName>EmailNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>EmailNoValido</shortDescription>
+        <value>Email no válido</value>
+    </labels>
+    <labels>
+        <fullName>EmailOptOutButton</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>EmailOptOutButton</shortDescription>
+        <value>Darse de baja</value>
+    </labels>
+    <labels>
+        <fullName>EmailOptOutCheckbox</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>EmailOptOutCheckbox</shortDescription>
+        <value>Darse de baja de Klinc</value>
+    </labels>
+    <labels>
+        <fullName>EmailOptOutText</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>EmailOptOutText</shortDescription>
+        <value>Esto cancelará cualquier suscripción a las comunicaciones de Klinc. Ten en cuenta que ello no afectará las comunicaciones transaccionales (por ejemplo, e-mails relacionados con la contratación de un seguro o la gestión de un siniestro).</value>
+    </labels>
+    <labels>
+        <fullName>EmptyJsonObject</fullName>
+        <categories>WebServicesParser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>EmptyJsonObject</shortDescription>
+        <value>The JSON object is empty</value>
+    </labels>
+    <labels>
+        <fullName>EmptyParameters</fullName>
+        <categories>WebServicesParser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>EmptyParameters</shortDescription>
+        <value>Received parameters are empty</value>
+    </labels>
+    <labels>
+        <fullName>EnteroNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>EnteroNoValido</shortDescription>
+        <value>Entero no válido</value>
+    </labels>
+    <labels>
+        <fullName>EntityCustomer</fullName>
+        <categories>Values</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>EntityCustomer</shortDescription>
+        <value>Customer</value>
+    </labels>
+    <labels>
+        <fullName>Error</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>ErrorCodeFail</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ErrorCodeFail</shortDescription>
+        <value>400</value>
+    </labels>
+    <labels>
+        <fullName>ErrorCodeSuccess</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ErrorCodeSuccess</shortDescription>
+        <value>0</value>
+    </labels>
+    <labels>
+        <fullName>ErrorDeParseo</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ErrorDeParseo</shortDescription>
+        <value>Error de parseo</value>
+    </labels>
+    <labels>
+        <fullName>ErrorIBADocument</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ErrorIBADocument</shortDescription>
+        <value>Error inserting Document:</value>
+    </labels>
+    <labels>
+        <fullName>ErrorJSON</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ErrorJSON</shortDescription>
+        <value>Error creating JSON</value>
+    </labels>
+    <labels>
+        <fullName>ErrorMetadata</fullName>
+        <categories>Apex Development</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ErrorMetadata</shortDescription>
+        <value>Klinc errores</value>
+    </labels>
+    <labels>
+        <fullName>ErrorQuote</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ErrorQuote</shortDescription>
+        <value>Error inserting quote from the app</value>
+    </labels>
+    <labels>
+        <fullName>EscalaNumeroNoValida</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>EscalaNumeroNoValida</shortDescription>
+        <value>Escala del número no válida</value>
+    </labels>
+    <labels>
+        <fullName>FechaHoraNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FechaHoraNoValido</shortDescription>
+        <value>Fecha y hora no válida</value>
+    </labels>
+    <labels>
+        <fullName>FechaNovalida</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FechaNovalida</shortDescription>
+        <value>Fecha no válida</value>
+    </labels>
+    <labels>
+        <fullName>GeneralInsurance</fullName>
+        <categories>Values</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>GeneralInsurance</shortDescription>
+        <value>General Insurance</value>
+    </labels>
+    <labels>
+        <fullName>IBA_Response_Body</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>IBA_Response_Body</shortDescription>
+        <value>{
+    &quot;returnCode&quot;: &quot;0&quot;,
+    &quot;response&quot;: &quot;SalesForce record with ID a085E00000ARPh3QAH updated&quot;,
+    &quot;returnType&quot;: &quot;SUCCESS&quot;,
+    &quot;httpStatusCode&quot;: &quot;200&quot;
+}</value>
+    </labels>
+    <labels>
+        <fullName>IBAresponseOK</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>IBAresponseOK</shortDescription>
+        <value>200</value>
+    </labels>
+    <labels>
+        <fullName>IdNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>IdNoValido</shortDescription>
+        <value>Indentificador no válido</value>
+    </labels>
+    <labels>
+        <fullName>JsonIncorrecto</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>JsonIncorrecto</shortDescription>
+        <value>JSON incorrecto</value>
+    </labels>
+    <labels>
+        <fullName>Lead</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lead</shortDescription>
+        <value>Lead</value>
+    </labels>
+    <labels>
+        <fullName>LeadGI</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LeadGI</shortDescription>
+        <value>LeadGI</value>
+    </labels>
+    <labels>
+        <fullName>LeadLastName</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LeadLastName</shortDescription>
+        <value>Unknown</value>
+    </labels>
+    <labels>
+        <fullName>LeadLife</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LeadLife</shortDescription>
+        <value>LeadLife</value>
+    </labels>
+    <labels>
+        <fullName>LegalEntityError</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LegalEntityError</shortDescription>
+        <value>Wrong name of legal entity</value>
+    </labels>
+    <labels>
+        <fullName>LifeInsurance</fullName>
+        <categories>Values</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>LifeInsurance</shortDescription>
+        <value>Life Insurance</value>
+    </labels>
+    <labels>
+        <fullName>LifeObjectIdNull</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LifeObjectIdNull</shortDescription>
+        <value>Se ha detectado quote de vida con más de un objectId nulo</value>
+    </labels>
+    <labels>
+        <fullName>LongitudTextoNoValida</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>LongitudTextoNoValida</shortDescription>
+        <value>Longitud del texto no válida</value>
+    </labels>
+    <labels>
+        <fullName>Master</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Master</shortDescription>
+        <value>Master</value>
+    </labels>
+    <labels>
+        <fullName>NombreAtributoVacio</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>NombreAtributoVacio</shortDescription>
+        <value>Nombre del atributo vacío</value>
+    </labels>
+    <labels>
+        <fullName>NumeroNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>NumeroNoValido</shortDescription>
+        <value>Número no válido</value>
+    </labels>
+    <labels>
+        <fullName>ObjetoVacio</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ObjetoVacio</shortDescription>
+        <value>Objeto vacío</value>
+    </labels>
+    <labels>
+        <fullName>Order_Sync</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Order_Sync</shortDescription>
+        <value>Sync</value>
+    </labels>
+    <labels>
+        <fullName>P_AdjustmentReason_1</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>P_AdjustmentReason_1</shortDescription>
+        <value>Change of insured object</value>
+    </labels>
+    <labels>
+        <fullName>P_AdjustmentReason_2</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>P_AdjustmentReason_2</shortDescription>
+        <value>Removal of insured object</value>
+    </labels>
+    <labels>
+        <fullName>P_AdjustmentReason_3</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>P_AdjustmentReason_3</shortDescription>
+        <value>Replacement of insured object by ICP</value>
+    </labels>
+    <labels>
+        <fullName>ParseError</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ParseError</shortDescription>
+        <value>Error parsing json</value>
+    </labels>
+    <labels>
+        <fullName>Partner</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner</shortDescription>
+        <value>Partner</value>
+    </labels>
+    <labels>
+        <fullName>PolicyError</fullName>
+        <categories>Error Management</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>PolicyError</shortDescription>
+        <value>Error inserting policy:</value>
+    </labels>
+    <labels>
+        <fullName>PolicyGI</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PolicyGI</shortDescription>
+        <value>PolicyGI</value>
+    </labels>
+    <labels>
+        <fullName>PolicyLife</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PolicyLife</shortDescription>
+        <value>PolicyLife</value>
+    </labels>
+    <labels>
+        <fullName>PolicyNotExisting</fullName>
+        <categories>Error Management</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PolicyNotExisting</shortDescription>
+        <value>Policy number does not exist</value>
+    </labels>
+    <labels>
+        <fullName>PolicyStatusActive</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PolicyStatusActive</shortDescription>
+        <value>Activo</value>
+    </labels>
+    <labels>
+        <fullName>PrecisionDobleNoValida</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>PrecisionDobleNoValida</shortDescription>
+        <value>Precisión doble no válida</value>
+    </labels>
+    <labels>
+        <fullName>PrecisionNumeroNoValida</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>PrecisionNumeroNoValida</shortDescription>
+        <value>Precisión del número no válida</value>
+    </labels>
+    <labels>
+        <fullName>PreferenceCentreSave</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>PreferenceCentreSave</shortDescription>
+        <value>Guardar los cambios</value>
+    </labels>
+    <labels>
+        <fullName>PreferenceCentreSubtitle</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>PreferenceCentreSubtitle</shortDescription>
+        <value>Tú eliges qué comunicaciones quieres recibir</value>
+    </labels>
+    <labels>
+        <fullName>PreferenceCentreTitle</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>PreferenceCentreTitle</shortDescription>
+        <value>Centro de preferencias</value>
+    </labels>
+    <labels>
+        <fullName>PriceBook</fullName>
+        <categories>Apex Development</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PriceBook</shortDescription>
+        <value>Standard Price Book</value>
+    </labels>
+    <labels>
+        <fullName>PruebaLabel</fullName>
+        <categories>Gestion de errores</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PruebaLabel</shortDescription>
+        <value>Error inserting policy number</value>
+    </labels>
+    <labels>
+        <fullName>Q_LastStep_v1</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Q_LastStep_v1</shortDescription>
+        <value>Pagar</value>
+    </labels>
+    <labels>
+        <fullName>Q_LastStep_v2</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Q_LastStep_v2</shortDescription>
+        <value>quote confirmation</value>
+    </labels>
+    <labels>
+        <fullName>Q_LastStep_v3</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Q_LastStep_v3</shortDescription>
+        <value>confirmacion</value>
+    </labels>
+    <labels>
+        <fullName>Q_StepLogin_v1</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Q_StepLogin_v1</shortDescription>
+        <value>Cuenta Klinc</value>
+    </labels>
+    <labels>
+        <fullName>Q_StepLogin_v2</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Q_StepLogin_v2</shortDescription>
+        <value>quote klinc account</value>
+    </labels>
+    <labels>
+        <fullName>Quote</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Quote</shortDescription>
+        <value>Quote</value>
+    </labels>
+    <labels>
+        <fullName>QuoteGI</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QuoteGI</shortDescription>
+        <value>QuoteGI</value>
+    </labels>
+    <labels>
+        <fullName>QuoteLife</fullName>
+        <categories>Record Type</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>QuoteLife</shortDescription>
+        <value>QuoteLife</value>
+    </labels>
+    <labels>
+        <fullName>RecordOwner</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RecordOwner</shortDescription>
+        <value>Integrator</value>
+    </labels>
+    <labels>
+        <fullName>TelefonoNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TelefonoNoValido</shortDescription>
+        <value>Teléfono no válido</value>
+    </labels>
+    <labels>
+        <fullName>URLNoValida</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>URLNoValida</shortDescription>
+        <value>URL no válida</value>
+    </labels>
+    <labels>
+        <fullName>ValorListaNoValido</fullName>
+        <categories>WebService Parser</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ValorListaNoValido</shortDescription>
+        <value>Valor de lista de selección no válido</value>
+    </labels>
+</CustomLabels>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SameMasterPolicy__c</fullName>
+    <defaultValue>true</defaultValue>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>If true, indicates that materpolicy is at master entity. That is, if a life customer belongs to a partner, the non-life customer also belongs to the same masterpolicy</inlineHelpText>
+    <label>Same Master Policy</label>
+    <type>Checkbox</type>
+</CustomField>

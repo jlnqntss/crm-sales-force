@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UpdateReason__c</fullName>
+    <externalId>false</externalId>
+    <label>Motivo de actualización</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>tbd</fullName>
+                <default>false</default>
+                <label>tbd</label>
+            </value>
+            <value>
+                <fullName>Policy cancelation (including lapse and regret)</fullName>
+                <default>false</default>
+                <label>Policy cancelation (including lapse and regret)</label>
+            </value>
+            <value>
+                <fullName>Policy activation</fullName>
+                <default>false</default>
+                <label>Policy activation</label>
+            </value>
+            <value>
+                <fullName>Policy MTA</fullName>
+                <default>false</default>
+                <label>Policy MTA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

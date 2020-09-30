@@ -26,3 +26,33 @@ Las siguientes variables CI/CD permiten modificar el comportamiento de los pipel
 | ------------- | ------------------------------------------- | :--------------: |
 | TEST_DISABLED | Deshabilita tests preliminares/post-staging |       0/1        |
 | ALLOW_FAILURE | Permite que las etapas de testing fallen    |       0/1        |
+
+## Organización proyecto
+
+El código del proyecto se distribuye por las siguientes carpetas
+
+| Nombre           | Descripción                                                                                                                                             |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| zurich-base      | Paquete base de la instancia de Zurich. Contiene el código base del proyecto incluyendo el modelo de datos y código compartido por el resto de paquetes |
+| zurich-base-iam  | Paquete que contiene la integración con el IAM de Zurich                                                                                                |
+| zurich-klinc-app | Paquete que contiene las apps de Klinc y su configuración                                                                                               |
+| zurich-ocs-app   | Paquete que contiene las apps de uso general de Zurich One Customer Service y su configuración                                                          |
+
+Se valorará en futuros sprints realizar una de las acciones siguientes:
+
+- División adicional del core en cuatro paquetes:
+
+| Nombre                 | Descripción                                                                                                |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------- |
+| zurich-base-objects    | Modelo de datos compartido por todas las aplicaciones                                                      |
+| zurich-base-code       | Desarrollos y arquitectura compartida por todas las aplicaciones, como el Logger o la factoría de triggers |
+| zurich-base-ui         | Estilos, páginas y aplicaciones compartidas por todos los paquetes                                         |
+| zurich-base-unpackaged | Metadatos sin consolidar en paquete y que requieren de despliegue manual                                   |
+| zurich-base-settings   | Datos, como registros y usuarios, que serán tratados a través de automatización CI                         |
+
+- Estructuración de paquetes en carpetas
+
+| Nombre | Descripción                     |
+| ------ | ------------------------------- |
+| main   | Metadatos generales del paquete |
+| test   | Tests Apex y LWC                |

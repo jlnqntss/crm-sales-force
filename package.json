@@ -3,7 +3,7 @@
   "author": "NTS",
   "scripts": {
     "lint": "npm run lint:lwc",
-    "lint:lwc": "eslint force-app/main/default/lwc",
+    "lint:lwc": "eslint --no-error-on-unmatched-pattern force-app/**/main/default/lwc",
     "postinstall": "sfdx update && sfdx plugins:install sfpowerkit",
     "install:extensions": "type config/vscode-extensions.list | code --install-extension -",
     "test:lwc": "lwc-jest -- --passWithNoTests",

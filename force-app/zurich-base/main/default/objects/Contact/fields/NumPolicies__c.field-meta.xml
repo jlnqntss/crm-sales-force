@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NumPolicies__c</fullName>
+    <defaultValue>0</defaultValue>
+    <description>Number of active policies for that customer</description>
+    <externalId>false</externalId>
+    <label>Número de pólizas</label>
+    <precision>16</precision>
+    <required>true</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Category__c</fullName>
+    <externalId>false</externalId>
+    <label>Categoría</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Laptop</fullName>
+                <default>false</default>
+                <label>Laptop</label>
+            </value>
+            <value>
+                <fullName>Tablet</fullName>
+                <default>false</default>
+                <label>Tablet</label>
+            </value>
+            <value>
+                <fullName>Game Console</fullName>
+                <default>false</default>
+                <label>Game Console</label>
+            </value>
+            <value>
+                <fullName>Smartphone</fullName>
+                <default>false</default>
+                <label>Smartphone</label>
+            </value>
+            <value>
+                <fullName>GoPro</fullName>
+                <default>false</default>
+                <label>GoPro</label>
+            </value>
+            <value>
+                <fullName>ELECTRIC BIKE</fullName>
+                <default>false</default>
+                <label>ELECTRIC BIKE</label>
+            </value>
+            <value>
+                <fullName>Electric Scooter</fullName>
+                <default>false</default>
+                <label>Electric Scooter</label>
+            </value>
+            <value>
+                <fullName>Smartwatch</fullName>
+                <default>false</default>
+                <label>Smartwatch</label>
+            </value>
+            <value>
+                <fullName>Insured Person</fullName>
+                <default>false</default>
+                <label>Insured Person</label>
+            </value>
+            <value>
+                <fullName>Airpods</fullName>
+                <default>false</default>
+                <label>Airpods</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

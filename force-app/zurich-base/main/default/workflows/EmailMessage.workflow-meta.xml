@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Case_status_Waiting</fullName>
+        <field>Status</field>
+        <literalValue>En espera</literalValue>
+        <name>Case status Waiting</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Set_GI_Email_to_case</fullName>
+        <field>LegalEntity__c</field>
+        <literalValue>General Insurance</literalValue>
+        <name>Set GI Email-to-case</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Set_Life_Email_to_case</fullName>
+        <field>LegalEntity__c</field>
+        <literalValue>Life Insurance</literalValue>
+        <name>Set Life Email-to-case</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Source_Country_to_France</fullName>
+        <field>SourceCountry__c</field>
+        <formula>&quot;France&quot;</formula>
+        <name>Source Country to France</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Source_Country_to_Spain</fullName>
+        <field>SourceCountry__c</field>
+        <formula>&quot;Spain&quot;</formula>
+        <name>Source Country to Spain</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_status_reopened</fullName>
+        <field>Status</field>
+        <literalValue>Reabierto</literalValue>
+        <name>Update status reopened</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_status_responded</fullName>
+        <field>Status</field>
+        <literalValue>Respuesta recibida</literalValue>
+        <name>Update status responded</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <rules>
+        <fullName>Email message received</fullName>
+        <actions>
+            <name>Update_status_responded</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5</booleanFilter>
+        <criteriaItems>
+            <field>EmailMessage.Incoming</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>EmailMessage.Status</field>
+            <operation>equals</operation>
+            <value>Nuevo</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.Status</field>
+            <operation>notEqual</operation>
+            <value>Cerrado</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.Status</field>
+            <operation>notEqual</operation>
+            <value>Nuevo</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.Status</field>
+            <operation>notEqual</operation>
+            <value>Resuelto</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Email message received when case closed</fullName>
+        <actions>
+            <name>Update_status_reopened</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 AND 2 AND (3 OR 4)</booleanFilter>
+        <criteriaItems>
+            <field>EmailMessage.Incoming</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>EmailMessage.Status</field>
+            <operation>equals</operation>
+            <value>Nuevo</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.Status</field>
+            <operation>equals</operation>
+            <value>Cerrado</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.Status</field>
+            <operation>equals</operation>
+            <value>Resuelto</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Email message sent from CC</fullName>
+        <actions>
+            <name>Case_status_Waiting</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>EmailMessage.Status</field>
+            <operation>equals</operation>
+            <value>Enviado</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.Status</field>
+            <operation>notEqual</operation>
+            <value>Nuevo</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Set France GI Email-to-case</fullName>
+        <actions>
+            <name>Set_GI_Email_to_case</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Source_Country_to_France</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>EmailMessage.ToAddress</field>
+            <operation>contains</operation>
+            <value>contact.klinc@zurich.com</value>
+        </criteriaItems>
+        <description>Updates Source Country and Legal Entity fields on email to case reception to France and General Insurance repectively, based on the email address.</description>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Set Spain GI Email-to-case</fullName>
+        <actions>
+            <name>Set_GI_Email_to_case</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Source_Country_to_Spain</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>EmailMessage.ToAddress</field>
+            <operation>contains</operation>
+            <value>ayuda.klinc@zurich.com</value>
+        </criteriaItems>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Set Spain Life Email-to-case</fullName>
+        <actions>
+            <name>Set_Life_Email_to_case</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Source_Country_to_Spain</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>EmailMessage.ToAddress</field>
+            <operation>contains</operation>
+            <value>ayudaklincvida@zurich.com</value>
+        </criteriaItems>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+</Workflow>

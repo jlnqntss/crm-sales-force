@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Spain</fullName>
+        <default>false</default>
+        <label>Spain</label>
+    </customValue>
+    <customValue>
+        <fullName>France</fullName>
+        <default>false</default>
+        <label>France</label>
+    </customValue>
+    <description>Lists the available language country and iso codes</description>
+    <masterLabel>Available countries</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

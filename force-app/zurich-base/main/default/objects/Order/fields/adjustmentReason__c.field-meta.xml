@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>adjustmentReason__c</fullName>
+    <externalId>false</externalId>
+    <label>Motivo de ajuste</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>TBD</fullName>
+                <default>false</default>
+                <label>TBD</label>
+            </value>
+            <value>
+                <fullName>Switching object ON</fullName>
+                <default>false</default>
+                <label>Switching object ON</label>
+            </value>
+            <value>
+                <fullName>Beneficiary change</fullName>
+                <default>false</default>
+                <label>Beneficiary change</label>
+            </value>
+            <value>
+                <fullName>Change of postal address</fullName>
+                <default>false</default>
+                <label>Change of postal address</label>
+            </value>
+            <value>
+                <fullName>Ajuste</fullName>
+                <default>false</default>
+                <label>Ajuste</label>
+            </value>
+            <value>
+                <fullName>Replacement of insured object by ICP</fullName>
+                <default>false</default>
+                <label>Replacement of insured object by ICP</label>
+            </value>
+            <value>
+                <fullName>Desactivación</fullName>
+                <default>false</default>
+                <label>Desactivación</label>
+            </value>
+            <value>
+                <fullName>Switching object OFF</fullName>
+                <default>false</default>
+                <label>Switching object OFF</label>
+            </value>
+            <value>
+                <fullName>Change of insured object</fullName>
+                <default>false</default>
+                <label>Change of insured object</label>
+            </value>
+            <value>
+                <fullName>Rescisión</fullName>
+                <default>false</default>
+                <label>Rescisión</label>
+            </value>
+            <value>
+                <fullName>Turning ON/OFF</fullName>
+                <default>false</default>
+                <label>Turning ON/OFF</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
