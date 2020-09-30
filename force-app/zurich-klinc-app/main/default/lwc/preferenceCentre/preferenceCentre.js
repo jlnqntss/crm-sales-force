@@ -91,9 +91,10 @@ export default class preferenceCentre extends LightningElement {
   handleCheckboxChange(event) {
     this._isCheckedCampaign = event.target.checked;
 
-    var campaign = event.target.name;
+    let campaign = event.target.name;
     let str = JSON.stringify(this.sObjData);
     let copy = JSON.parse(str);
+
     for (let i = 0; i < copy.length; i++) {
       if (copy[i].idCampaign === campaign) {
         console.log(copy[i].idCampaign);
