@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ScopeDefault</fullName>
+    <fields>Name</fields>
+    <fields>AccountId__c</fields>
+    <fields>ContactPointAddressId__c</fields>
+    <fields>ContactPointEmailId__c</fields>
+    <fields>ContactPointPhone__c</fields>
+    <label>Scope Default</label>
+</CompactLayout>

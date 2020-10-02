@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PaymentChannelSucc__c</fullName>
+    <description>(ZE) Tipo de canal de pago sucesivo en la emisión online.</description>
+    <externalId>false</externalId>
+    <label>Payment Channel Succ</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>BC</fullName>
+                <default>false</default>
+                <label>BC</label>
+            </value>
+            <value>
+                <fullName>CC</fullName>
+                <default>false</default>
+                <label>CC</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

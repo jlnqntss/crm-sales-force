@@ -11,39 +11,39 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Top</fullName>
+                <fullName>1</fullName>
                 <default>false</default>
-                <label>Top</label>
+                <label>1 - Top value</label>
             </value>
             <value>
-                <fullName>Alto</fullName>
+                <fullName>2</fullName>
                 <default>false</default>
-                <label>Alto</label>
+                <label>2 - High value</label>
             </value>
             <value>
-                <fullName>Medio</fullName>
+                <fullName>3</fullName>
                 <default>false</default>
-                <label>Medio</label>
+                <label>3 - Middle value</label>
             </value>
             <value>
-                <fullName>Bajo</fullName>
+                <fullName>4</fullName>
                 <default>false</default>
-                <label>Bajo</label>
+                <label>4 - Low value</label>
             </value>
             <value>
-                <fullName>Negativo</fullName>
+                <fullName>5</fullName>
                 <default>false</default>
-                <label>Negativo</label>
+                <label>5 - Negative or Zero value</label>
             </value>
             <value>
-                <fullName>Exclusivo Vida</fullName>
+                <fullName>6</fullName>
                 <default>false</default>
-                <label>Exclusivo Vida</label>
+                <label>6 - Life exclusive</label>
             </value>
             <value>
-                <fullName>No Valor</fullName>
+                <fullName>7</fullName>
                 <default>false</default>
-                <label>No Valor</label>
+                <label>7 - Not applicable</label>
             </value>
         </valueSetDefinition>
     </valueSet>

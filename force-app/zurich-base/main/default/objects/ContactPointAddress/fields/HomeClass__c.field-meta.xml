@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HomeClass__c</fullName>
+    <description>(ZE/OCS) Identifica la clase de domicilio de la vía de contacto.</description>
+    <externalId>false</externalId>
+    <label>Home Class</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>F</fullName>
+                <default>false</default>
+                <label>Fiscal</label>
+            </value>
+            <value>
+                <fullName>H</fullName>
+                <default>false</default>
+                <label>Personal</label>
+            </value>
+            <value>
+                <fullName>R</fullName>
+                <default>false</default>
+                <label>Registro web</label>
+            </value>
+            <value>
+                <fullName>T</fullName>
+                <default>false</default>
+                <label>Profesional</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

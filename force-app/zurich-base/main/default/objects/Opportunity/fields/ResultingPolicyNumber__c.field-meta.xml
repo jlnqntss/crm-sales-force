@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ResultingPolicyNumber__c</fullName>
+    <description>(ZE) Permite al advisor indicar el número de póliza generado a través de la oferta para que posteriormente, a través de la integración, se haga match entre la oferta y la póliza.</description>
+    <externalId>false</externalId>
+    <label>Resulting Policy Number</label>
+    <length>80</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

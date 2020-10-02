@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LegalEntity__c</fullName>
+    <description>(ZE/OCS) Identifica la entidad legal a la que pertenece la oferta.</description>
+    <externalId>false</externalId>
+    <label>Legal Entity</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Vida</fullName>
+                <default>false</default>
+                <label>Vida</label>
+            </value>
+            <value>
+                <fullName>NoVida</fullName>
+                <default>false</default>
+                <label>No Vida</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

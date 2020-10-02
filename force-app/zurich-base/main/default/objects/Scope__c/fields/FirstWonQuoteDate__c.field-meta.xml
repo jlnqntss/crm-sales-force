@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FirstWonQuoteDate__c</fullName>
+    <description>(ZE) Fecha de la primera oferta ganada de Zurich Empresas.</description>
+    <externalId>false</externalId>
+    <label>First Won Quote Date</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>
