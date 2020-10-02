@@ -4,11 +4,11 @@
     <name>MovementReason__c</name>
     <picklistValues>
         <masterLabel>1114</masterLabel>
-        <translation>Reemplazo p�liza</translation>
+        <translation>Reemplazo póliza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>1115</masterLabel>
-        <translation>Petici�n del cliente</translation>
+        <translation>Petición del cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>1116</masterLabel>
@@ -20,27 +20,27 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>1120</masterLabel>
-        <translation>Reinversi�n vencimiento vida</translation>
+        <translation>Reinversión vencimiento vida</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>1125</masterLabel>
-        <translation>Reinversi�n siniestro fallecimiento</translation>
+        <translation>Reinversión siniestro fallecimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>1130</masterLabel>
-        <translation>Reinversi�n siniestro invalidez</translation>
+        <translation>Reinversión siniestro invalidez</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>1134</masterLabel>
-        <translation>Reinversi�n p�liza PIAS</translation>
+        <translation>Reinversión póliza PIAS</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>115</masterLabel>
-        <translation>Petici�n delcliente</translation>
+        <translation>Petición delcliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>1198</masterLabel>
-        <translation>Conversi�n</translation>
+        <translation>Conversión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>1999</masterLabel>
@@ -56,39 +56,39 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2118</masterLabel>
-        <translation>Recuperaci�n Suplemento No Econ�mico</translation>
+        <translation>Recuperación Suplemento No Económico</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2119</masterLabel>
-        <translation>Modificaci�n datos generales</translation>
+        <translation>Modificación datos generales</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2121</masterLabel>
-        <translation>Recuperaci�n de Suplemento Econ�mico</translation>
+        <translation>Recuperación de Suplemento Económico</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2123</masterLabel>
-        <translation>Modificaci�n comisiones</translation>
+        <translation>Modificación comisiones</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2124</masterLabel>
-        <translation>Anulaci�n Siniestros</translation>
+        <translation>Anulación Siniestros</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2125</masterLabel>
-        <translation>Modificaci�n indicador aviso de vencimiento</translation>
+        <translation>Modificación indicador aviso de vencimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2133</masterLabel>
-        <translation>Modificaci�n de objeto(s)</translation>
+        <translation>Modificación de objeto(s)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2138</masterLabel>
-        <translation>Modificaci�n datos del Tomador/Asegurado</translation>
+        <translation>Modificación datos del Tomador/Asegurado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2139</masterLabel>
-        <translation>Modificaci�n datos de la oficina</translation>
+        <translation>Modificación datos de la oficina</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2180</masterLabel>
@@ -96,11 +96,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2185</masterLabel>
-        <translation>Cambio de profesi�n</translation>
+        <translation>Cambio de profesión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2198</masterLabel>
-        <translation>Conversi�n</translation>
+        <translation>Conversión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2200</masterLabel>
@@ -116,23 +116,23 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2221</masterLabel>
-        <translation>Anulaci�n de objeto(s)</translation>
+        <translation>Anulación de objeto(s)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2222</masterLabel>
-        <translation>Inclusi�n/exclusi�n situaci�n de riesgo</translation>
+        <translation>Inclusión/exclusión situación de riesgo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2223</masterLabel>
-        <translation>Modificaci�n de asegurados</translation>
+        <translation>Modificación de asegurados</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2259</masterLabel>
-        <translation>Modificaci�n de objeto(s) / garant�as</translation>
+        <translation>Modificación de objeto(s) / garantías</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2260</masterLabel>
-        <translation>Cambio de C�digo de Negocio</translation>
+        <translation>Cambio de Código de Negocio</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2281</masterLabel>
@@ -164,19 +164,19 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2290</masterLabel>
-        <translation>Modificaci�n de matr�cula</translation>
+        <translation>Modificación de matrícula</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2291</masterLabel>
-        <translation>Inclusi�n/exclusi�n accesorios</translation>
+        <translation>Inclusión/exclusión accesorios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2292</masterLabel>
-        <translation>Inclusi�n/exclusi�n equipo musical</translation>
+        <translation>Inclusión/exclusión equipo musical</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2293</masterLabel>
-        <translation>Inclusi�n/exclusi�n bonificaci�n</translation>
+        <translation>Inclusión/exclusión bonificación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2310</masterLabel>
@@ -184,27 +184,27 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2320</masterLabel>
-        <translation>Modificaci�n de garant�as</translation>
+        <translation>Modificación de garantías</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2324</masterLabel>
-        <translation>Modificaci�n de capitales asegurados</translation>
+        <translation>Modificación de capitales asegurados</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2325</masterLabel>
-        <translation>Modificaci�n datos del pr�stamo</translation>
+        <translation>Modificación datos del préstamo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2330</masterLabel>
-        <translation>Exclusi�n e. musical indemnizaci�n siniestro</translation>
+        <translation>Exclusión e. musical indemnización siniestro</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2339</masterLabel>
-        <translation>Modificaci�n datos t�cnicos</translation>
+        <translation>Modificación datos técnicos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2350</masterLabel>
-        <translation>Modificaci�n de TIER</translation>
+        <translation>Modificación de TIER</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2351</masterLabel>
@@ -212,15 +212,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2411</masterLabel>
-        <translation>Inclusi�n clausulado especial</translation>
+        <translation>Inclusión clausulado especial</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2413</masterLabel>
-        <translation>Modificaci�n clausulado</translation>
+        <translation>Modificación clausulado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2426</masterLabel>
-        <translation>Modificaci�n de beneficiario</translation>
+        <translation>Modificación de beneficiario</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2507</masterLabel>
@@ -228,7 +228,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2516</masterLabel>
-        <translation>Sustituci�n intermediarios</translation>
+        <translation>Sustitución intermediarios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2527</masterLabel>
@@ -236,7 +236,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2605</masterLabel>
-        <translation>Alta prima �nica suces. Cap.</translation>
+        <translation>Alta prima única suces. Cap.</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2606</masterLabel>
@@ -244,23 +244,23 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2607</masterLabel>
-        <translation>Alta prima �nica suces. Pri.</translation>
+        <translation>Alta prima única suces. Pri.</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2608</masterLabel>
-        <translation>Anulaci�n cambio estrategia inversi�n</translation>
+        <translation>Anulación cambio estrategia inversión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2609</masterLabel>
-        <translation>Cambio estrategia inversi�n</translation>
+        <translation>Cambio estrategia inversión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2612</masterLabel>
-        <translation>Cambio de veh�culo</translation>
+        <translation>Cambio de vehículo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2613</masterLabel>
-        <translation>Modificaci�n forma pago aportaci�n</translation>
+        <translation>Modificación forma pago aportación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2649</masterLabel>
@@ -268,19 +268,19 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2650</masterLabel>
-        <translation>Modificaci�n importe prima</translation>
+        <translation>Modificación importe prima</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2651</masterLabel>
-        <translation>Modificaci�n datos bancarios</translation>
+        <translation>Modificación datos bancarios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2652</masterLabel>
-        <translation>Modificaci�n domicilio</translation>
+        <translation>Modificación domicilio</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2653</masterLabel>
-        <translation>Modificaci�n sexo asegurado</translation>
+        <translation>Modificación sexo asegurado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2654</masterLabel>
@@ -288,75 +288,75 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2655</masterLabel>
-        <translation>Modificaci�n tipo / porcentaje revalorizaci�n</translation>
+        <translation>Modificación tipo / porcentaje revalorización</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2656</masterLabel>
-        <translation>Sustituci�n intermediarios / modificaci�n tipo comisi�n</translation>
+        <translation>Sustitución intermediarios / Modificación tipo comisión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2657</masterLabel>
-        <translation>Modificaci�n duraci�n</translation>
+        <translation>Modificación duración</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2658</masterLabel>
-        <translation>Modificaci�n fecha nacimiento</translation>
+        <translation>Modificación fecha nacimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2659</masterLabel>
-        <translation>Modificaci�n sobreprimas</translation>
+        <translation>Modificación sobreprimas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2660</masterLabel>
-        <translation>Modificaci�n opci�n comisi�n</translation>
+        <translation>Modificación opción comisión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2661</masterLabel>
-        <translation>Modificaci�n nombre y apellidos</translation>
+        <translation>Modificación nombre y apellidos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2662</masterLabel>
-        <translation>Modificaci�n NIF</translation>
+        <translation>Modificación NIF</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2663</masterLabel>
-        <translation>Paralizaci�n pago prima</translation>
+        <translation>Paralización pago prima</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2664</masterLabel>
-        <translation>Reactivaci�n pago prima</translation>
+        <translation>Reactivación pago prima</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2665</masterLabel>
-        <translation>Modificaci�n forma pago</translation>
+        <translation>Modificación forma pago</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2666</masterLabel>
-        <translation>Modificaci�n fecha efecto natural</translation>
+        <translation>Modificación fecha efecto natural</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2667</masterLabel>
-        <translation>Modificaci�n indicador pr�rroga autom�tica</translation>
+        <translation>Modificación indicador prórroga automática</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2669</masterLabel>
-        <translation>Aumento o disminuci�n capital / modificaci�n modalidad capital</translation>
+        <translation>Aumento o disminución capital / Modificación modalidad capital</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2670</masterLabel>
-        <translation>Inclusi�n / exclusi�n segunda cabeza asegurada</translation>
+        <translation>Inclusión / exclusión segunda cabeza asegurada</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2671</masterLabel>
-        <translation>Devoluci�n recibo</translation>
+        <translation>Devolución recibo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2672</masterLabel>
-        <translation>Anulaci�n recibo</translation>
+        <translation>Anulación recibo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2673</masterLabel>
-        <translation>Liquidaci�n recibo</translation>
+        <translation>Liquidación recibo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2674</masterLabel>
@@ -368,7 +368,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2679</masterLabel>
-        <translation>Reducci�n capital enfermedades graves</translation>
+        <translation>Reducción capital enfermedades graves</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2681</masterLabel>
@@ -376,7 +376,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2682</masterLabel>
-        <translation>Invalidez por acc. circulaci�n</translation>
+        <translation>Invalidez por acc. circulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2684</masterLabel>
@@ -384,7 +384,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2689</masterLabel>
-        <translation>Fin per�odo diferimiento</translation>
+        <translation>Fin periodo diferimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2690</masterLabel>
@@ -396,15 +396,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2692</masterLabel>
-        <translation>Fallecimiento conjunta por accidente de circulaci�n</translation>
+        <translation>Fallecimiento conjunta por accidente de circulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2693</masterLabel>
-        <translation>Continuidad Plan Previsi�n Post Jubilaci�n</translation>
+        <translation>Continuidad Plan Previsión Post Jubilación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2695</masterLabel>
-        <translation>Inclusi�n plan de aportaciones peri�dicas</translation>
+        <translation>Inclusión plan de aportaciones periódicas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2700</masterLabel>
@@ -412,15 +412,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2712</masterLabel>
-        <translation>Jubilaci�n parcial anterior</translation>
+        <translation>Jubilación parcial anterior</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2713</masterLabel>
-        <translation>Jubilaci�n parcial posterior</translation>
+        <translation>Jubilación parcial posterior</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2714</masterLabel>
-        <translation>Jubilaci�n parcial proporcional</translation>
+        <translation>Jubilación parcial proporcional</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2715</masterLabel>
@@ -460,11 +460,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2770</masterLabel>
-        <translation>Modificaci�n indicador comisi�n de saldo</translation>
+        <translation>Modificación indicador comisión de saldo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2771</masterLabel>
-        <translation>Modificaci�n designaci�n irrevocable beneficiarios</translation>
+        <translation>Modificación designación irrevocable beneficiarios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2772</masterLabel>
@@ -476,15 +476,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2774</masterLabel>
-        <translation>Modificaci�n Asignaci�n y Reparto</translation>
+        <translation>Modificación Asignación y Reparto</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2775</masterLabel>
-        <translation>Liberaci�n pago primas por fallecimiento</translation>
+        <translation>Liberación pago primas por fallecimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2777</masterLabel>
-        <translation>Modificaci�n porcentaje descuento</translation>
+        <translation>Modificación porcentaje descuento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2778</masterLabel>
@@ -492,23 +492,23 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2780</masterLabel>
-        <translation>Modificaci�n colectivo / subcolectivo de certificado</translation>
+        <translation>Modificación colectivo / subcolectivo de certificado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2781</masterLabel>
-        <translation>Modificaci�n datos b�sicos de certificado</translation>
+        <translation>Modificación datos básicos de certificado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2782</masterLabel>
-        <translation>Modificaci�n datos de riesgo del certificado</translation>
+        <translation>Modificación datos de riesgo del certificado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2783</masterLabel>
-        <translation>Modificaci�n datos asegurado sin tarificaci�n</translation>
+        <translation>Modificación datos asegurado sin tarificación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2784</masterLabel>
-        <translation>Modificaci�n de garant�as y capital del certificado</translation>
+        <translation>Modificación de garantías y capital del certificado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2785</masterLabel>
@@ -516,11 +516,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2786</masterLabel>
-        <translation>Modificaci�n Check-list</translation>
+        <translation>Modificación Check-list</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2787</masterLabel>
-        <translation>Baja solicitud modificaci�n</translation>
+        <translation>Baja solicitud Modificación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2788</masterLabel>
@@ -528,11 +528,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2789</masterLabel>
-        <translation>Modif. Datos de comercializaci�n</translation>
+        <translation>Modif. Datos de comercialización</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2790</masterLabel>
-        <translation>Modif. Datos b�sicos Subcolectivo</translation>
+        <translation>Modif. Datos básicos Subcolectivo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2791</masterLabel>
@@ -540,11 +540,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2792</masterLabel>
-        <translation>Modif. Datos b�sicos de Colectivo</translation>
+        <translation>Modif. Datos básicos de Colectivo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2793</masterLabel>
-        <translation>Modif. Datos b�sicos de P�liza</translation>
+        <translation>Modif. Datos básicos de Póliza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2794</masterLabel>
@@ -552,15 +552,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2795</masterLabel>
-        <translation>Modif. Garant�as y Capitales del colectivo</translation>
+        <translation>Modif. Garantías y Capitales del colectivo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2796</masterLabel>
-        <translation>Modif. Datos Regularizaci�n</translation>
+        <translation>Modif. Datos Regularización</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2797</masterLabel>
-        <translation>Modif. Participaci�n en Beneficios</translation>
+        <translation>Modif. Participación en Beneficios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2798</masterLabel>
@@ -568,7 +568,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2799</masterLabel>
-        <translation>Modif. Datos de riesgo desde simulaci�n</translation>
+        <translation>Modif. Datos de riesgo desde simulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2800</masterLabel>
@@ -576,11 +576,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2801</masterLabel>
-        <translation>Modif. Datos T�cnicos desde simulaci�n</translation>
+        <translation>Modif. Datos técnicos desde simulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2802</masterLabel>
-        <translation>Modif. Datos Garant�as colectivos</translation>
+        <translation>Modif. Datos Garantías colectivos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2803</masterLabel>
@@ -588,23 +588,23 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2806</masterLabel>
-        <translation>Modificaci�n Idioma</translation>
+        <translation>Modificación Idioma</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2807</masterLabel>
-        <translation>Modificaci�n datos del riesgo (Direcci�n, R�gimen ocupaci�n, Tipo residencia, Tipo vivienda)</translation>
+        <translation>Modificación datos del riesgo (Dirección, Régimen ocupación, Tipo residencia, Tipo vivienda)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2808</masterLabel>
-        <translation>Inclusi�n/Exclusi�n de garant�as</translation>
+        <translation>Inclusión/Exclusión de garantías</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2809</masterLabel>
-        <translation>Modificaci�n modalidad</translation>
+        <translation>Modificación modalidad</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2810</masterLabel>
-        <translation>Modificaci�n agrupada</translation>
+        <translation>Modificación agrupada</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2811</masterLabel>
@@ -612,7 +612,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>2812</masterLabel>
-        <translation>Inclusi�n/exclusi�n Extras</translation>
+        <translation>Inclusión/exclusión Extras</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2999</masterLabel>
@@ -624,7 +624,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3102</masterLabel>
-        <translation>Petici�n del tomador</translation>
+        <translation>Petición del tomador</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3103</masterLabel>
@@ -636,11 +636,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3105</masterLabel>
-        <translation>Anulaci�n sin efecto</translation>
+        <translation>Anulación sin efecto</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3106</masterLabel>
-        <translation>Sustituci�n p�liza</translation>
+        <translation>Sustitución póliza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3109</masterLabel>
@@ -652,23 +652,23 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3114</masterLabel>
-        <translation>Reemplazo p�liza</translation>
+        <translation>Reemplazo póliza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3115</masterLabel>
-        <translation>Petici�n del cliente</translation>
+        <translation>Petición del cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3117</masterLabel>
-        <translation>Reserva o inexactitud en la declaraci�n del tomador (fraude)</translation>
+        <translation>Reserva o inexactitud en la declaración del tomador (fraude)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3129</masterLabel>
-        <translation>Petici�n recibos</translation>
+        <translation>Petición recibos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3133</masterLabel>
-        <translation>P�liza en suspenso</translation>
+        <translation>Póliza en suspenso</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3165</masterLabel>
@@ -676,11 +676,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3203</masterLabel>
-        <translation>Desaparici�n del riesgo</translation>
+        <translation>Desaparición del riesgo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3218</masterLabel>
-        <translation>Agravaci�n del riesgo</translation>
+        <translation>Agravación del riesgo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3370</masterLabel>
@@ -692,7 +692,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3372</masterLabel>
-        <translation>Tiene oferta con otra compa��a</translation>
+        <translation>Tiene oferta con otra compañía</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3375</masterLabel>
@@ -700,7 +700,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3376</masterLabel>
-        <translation>Seg�n resoluci�n U.Calidad/SAC</translation>
+        <translation>Según resolución U.Calidad/SAC</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3378</masterLabel>
@@ -712,7 +712,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3528</masterLabel>
-        <translation>Anulaci�n por anulaci�n de contrato</translation>
+        <translation>Anulación por anulación de contrato</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3650</masterLabel>
@@ -724,39 +724,39 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3674</masterLabel>
-        <translation>Anulaci�n por fallecimiento</translation>
+        <translation>Anulación por fallecimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3675</masterLabel>
-        <translation>Anulaci�n por fallecimiento por accidente</translation>
+        <translation>Anulación por fallecimiento por accidente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3676</masterLabel>
-        <translation>Anulaci�n por fall. por acc. circulaci�n</translation>
+        <translation>Anulación por fall. por acc. circulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3677</masterLabel>
-        <translation>Anulaci�n por invalidez</translation>
+        <translation>Anulación por invalidez</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3678</masterLabel>
-        <translation>Anulaci�n por agotamiento de fondo</translation>
+        <translation>Anulación por agotamiento de fondo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3680</masterLabel>
-        <translation>Anulaci�n por llegada a t�rmino</translation>
+        <translation>Anulación por llegada a término</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3681</masterLabel>
-        <translation>Anulaci�n por invalidez por accidente</translation>
+        <translation>Anulación por invalidez por accidente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3682</masterLabel>
-        <translation>Anulaci�n por invalidez por acc. circulaci�n</translation>
+        <translation>Anulación por invalidez por acc. circulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3683</masterLabel>
-        <translation>Anulaci�n por enfermedad grave</translation>
+        <translation>Anulación por enfermedad grave</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3685</masterLabel>
@@ -764,11 +764,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3687</masterLabel>
-        <translation>Anulaci�n por incapacidad profesional</translation>
+        <translation>Anulación por incapacidad profesional</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3688</masterLabel>
-        <translation>Cancelaci�n pr�stamo</translation>
+        <translation>Cancelación préstamo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3690</masterLabel>
@@ -776,11 +776,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3691</masterLabel>
-        <translation>Anulaci�n por adelanto de capital por enfermedad terminal</translation>
+        <translation>Anulación por adelanto de capital por enfermedad terminal</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3692</masterLabel>
-        <translation>Anulaci�n por fallecimiento conjunta por accidente de circulaci�n</translation>
+        <translation>Anulación por fallecimiento conjunta por accidente de circulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3694</masterLabel>
@@ -796,23 +796,23 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3697</masterLabel>
-        <translation>Anulaci�n Gran Invalidez</translation>
+        <translation>Anulación Gran Invalidez</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3698</masterLabel>
-        <translation>Anulaci�n Invalidez Total por accidente</translation>
+        <translation>Anulación Invalidez Total por accidente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3699</masterLabel>
-        <translation>Anulaci�n Invalidez Total por accidente circulaci�n</translation>
+        <translation>Anulación Invalidez Total por accidente circulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3702</masterLabel>
-        <translation>Insatisfacci�n cliente</translation>
+        <translation>Insatisfacción cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3703</masterLabel>
-        <translation>Petici�n mediador</translation>
+        <translation>Petición mediador</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3706</masterLabel>
@@ -824,19 +824,19 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>3710</masterLabel>
-        <translation>Jubilaci�n</translation>
+        <translation>Jubilación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3711</masterLabel>
-        <translation>Anulaci�n solicitud contrato colectivo</translation>
+        <translation>Anulación solicitud contrato colectivo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3712</masterLabel>
-        <translation>Cancelaci�n p�liza colectiva</translation>
+        <translation>Cancelación póliza colectiva</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3776</masterLabel>
-        <translation>Liberaci�n fallec. pago capital</translation>
+        <translation>Liberación fallec. pago capital</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3804</masterLabel>
@@ -852,11 +852,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>4198</masterLabel>
-        <translation>Conversi�n</translation>
+        <translation>Conversión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>4581</masterLabel>
-        <translation>Renovaci�n cartera</translation>
+        <translation>Renovación cartera</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>4999</masterLabel>
@@ -868,15 +868,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>5115</masterLabel>
-        <translation>Petici�n del cliente</translation>
+        <translation>Petición del cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>5131</masterLabel>
-        <translation>Error anulaci�n</translation>
+        <translation>Error anulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>5376</masterLabel>
-        <translation>Seg�n resoluci�n U.Calidad/SAC</translation>
+        <translation>Según resolución U.Calidad/SAC</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>5999</masterLabel>
@@ -896,7 +896,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>6391</masterLabel>
-        <translation>Transportes - facturaci�n</translation>
+        <translation>Transportes - facturación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>6393</masterLabel>
@@ -912,11 +912,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>6396</masterLabel>
-        <translation>Margen de da�os</translation>
+        <translation>Margen de daños</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>6397</masterLabel>
-        <translation>Margen de p�rdida de beneficios</translation>
+        <translation>Margen de pérdida de beneficios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>6398</masterLabel>
@@ -932,7 +932,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>7120</masterLabel>
-        <translation>Regularizaci�n de asegurados</translation>
+        <translation>Regularización de asegurados</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>7308</masterLabel>
@@ -940,7 +940,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>7312</masterLabel>
-        <translation>Mercancias en c�mara</translation>
+        <translation>Mercancias en cámara</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>7999</masterLabel>
@@ -948,7 +948,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>8581</masterLabel>
-        <translation>Renovaci�n p�liza</translation>
+        <translation>Renovación póliza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>8700</masterLabel>
@@ -960,11 +960,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>9115</masterLabel>
-        <translation>Petici�n del cliente</translation>
+        <translation>Petición del cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>9116</masterLabel>
-        <translation>Gesti�n Autom�tica</translation>
+        <translation>Gestión Automática</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>9117</masterLabel>
@@ -972,15 +972,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>9120</masterLabel>
-        <translation>Reinversi�n vencimiento vida</translation>
+        <translation>Reinversión vencimiento vida</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>9125</masterLabel>
-        <translation>Reinversi�n siniestro fallecimiento</translation>
+        <translation>Reinversión siniestro fallecimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>9130</masterLabel>
-        <translation>Reinversi�n siniestro invalidez</translation>
+        <translation>Reinversión siniestro invalidez</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>9132</masterLabel>
@@ -988,7 +988,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>9134</masterLabel>
-        <translation>Reinversi�n p�liza PIAS</translation>
+        <translation>Reinversión póliza PIAS</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>999</masterLabel>
@@ -1004,7 +1004,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>A102</masterLabel>
-        <translation>Petici�n del tomador</translation>
+        <translation>Petición del tomador</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A104</masterLabel>
@@ -1012,11 +1012,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>A105</masterLabel>
-        <translation>Anulaci�n sin efecto</translation>
+        <translation>Anulación sin efecto</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A106</masterLabel>
-        <translation>Sustituci�n p�liza</translation>
+        <translation>Sustitución póliza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A109</masterLabel>
@@ -1024,11 +1024,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>A114</masterLabel>
-        <translation>Reemplazo p�liza</translation>
+        <translation>Reemplazo póliza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A115</masterLabel>
-        <translation>Petici�n del cliente</translation>
+        <translation>Petición del cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A165</masterLabel>
@@ -1040,15 +1040,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>A203</masterLabel>
-        <translation>Desaparici�n del riesgo</translation>
+        <translation>Desaparición del riesgo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A204</masterLabel>
-        <translation>Desaparici�n del riesgo</translation>
+        <translation>Desaparición del riesgo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A218</masterLabel>
-        <translation>Agravaci�n del riesgo</translation>
+        <translation>Agravación del riesgo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A370</masterLabel>
@@ -1060,7 +1060,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>A372</masterLabel>
-        <translation>Tiene oferta con otra compa��a</translation>
+        <translation>Tiene oferta con otra compañía</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A375</masterLabel>
@@ -1068,7 +1068,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>A376</masterLabel>
-        <translation>Seg�n resoluci�n U.Calidad/SAC</translation>
+        <translation>Según resolución U.Calidad/SAC</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A378</masterLabel>
@@ -1080,15 +1080,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>A688</masterLabel>
-        <translation>Cancelaci�n pr�stamo</translation>
+        <translation>Cancelación préstamo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A702</masterLabel>
-        <translation>Insatisfacci�n cliente</translation>
+        <translation>Insatisfacción cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A703</masterLabel>
-        <translation>Petici�n mediador</translation>
+        <translation>Petición mediador</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>A705</masterLabel>
@@ -1120,15 +1120,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>D115</masterLabel>
-        <translation>Petici�n del Cliente</translation>
+        <translation>Petición del Cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>E601</masterLabel>
-        <translation>Alta aportaci�n extraordinaria</translation>
+        <translation>Alta aportación extraordinaria</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>E602</masterLabel>
-        <translation>Baja aportaci�n extraordinaria</translation>
+        <translation>Baja aportación extraordinaria</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>E686</masterLabel>
@@ -1140,11 +1140,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>F113</masterLabel>
-        <translation>Error Reducci�n</translation>
+        <translation>Error Reducción</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>F115</masterLabel>
-        <translation>Petici�n del Cliente</translation>
+        <translation>Petición del Cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>F999</masterLabel>
@@ -1152,7 +1152,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>H667</masterLabel>
-        <translation>Pr�rroga autom�tica</translation>
+        <translation>Prórroga automática</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>H999</masterLabel>
@@ -1160,7 +1160,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>I701</masterLabel>
-        <translation>Cierre t�cnico</translation>
+        <translation>Cierre técnico</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>J999</masterLabel>
@@ -1168,19 +1168,19 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>K754</masterLabel>
-        <translation>C�lculo rescate parcial</translation>
+        <translation>Cálculo rescate parcial</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>K755</masterLabel>
-        <translation>C�lculo rescate total</translation>
+        <translation>Cálculo rescate total</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>K765</masterLabel>
-        <translation>C�lculo trasp salida total</translation>
+        <translation>Cálculo trasp salida total</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>K766</masterLabel>
-        <translation>C�lculo trasp salida parcial</translation>
+        <translation>Cálculo trasp salida parcial</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L104</masterLabel>
@@ -1192,23 +1192,23 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>L118</masterLabel>
-        <translation>Recuperaci�n versi�n no econ�mica</translation>
+        <translation>Recuperación versión no económica</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L119</masterLabel>
-        <translation>Modificaci�n datos generales</translation>
+        <translation>Modificación datos generales</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L121</masterLabel>
-        <translation>Recuperaci�n versi�n econ�mica</translation>
+        <translation>Recuperación versión económica</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L123</masterLabel>
-        <translation>Modificaci�n comisiones</translation>
+        <translation>Modificación comisiones</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L125</masterLabel>
-        <translation>Modificaci�n indicador aviso de vencimiento</translation>
+        <translation>Modificación indicador aviso de vencimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L180</masterLabel>
@@ -1216,31 +1216,31 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>L198</masterLabel>
-        <translation>Conversi�n</translation>
+        <translation>Conversión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L221</masterLabel>
-        <translation>Anulaci�n de objeto (s)</translation>
+        <translation>Anulación de objeto (s)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L222</masterLabel>
-        <translation>Inclusi�n de objeto (s)</translation>
+        <translation>Inclusión de objeto (s)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L223</masterLabel>
-        <translation>Modificaci�n de asegurados</translation>
+        <translation>Modificación de asegurados</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L259</masterLabel>
-        <translation>Modificaci�n de objeto (s) / garant�as</translation>
+        <translation>Modificación de objeto (s) / garantías</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L281</masterLabel>
-        <translation>Creaci�n recibos para anualidad</translation>
+        <translation>Creación recibos para anualidad</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L282</masterLabel>
-        <translation>Cambio situaci�n riesgo/ actividad</translation>
+        <translation>Cambio situación riesgo/ actividad</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L283</masterLabel>
@@ -1248,7 +1248,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>L284</masterLabel>
-        <translation>Rendimiento p�liza</translation>
+        <translation>Rendimiento póliza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L287</masterLabel>
@@ -1264,51 +1264,51 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>L290</masterLabel>
-        <translation>Modificaci�n de matr�cula</translation>
+        <translation>Modificación de matrícula</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L291</masterLabel>
-        <translation>Inclusi�n/ exclusi�n accesorios</translation>
+        <translation>Inclusión/ exclusión accesorios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L292</masterLabel>
-        <translation>Inclusi�n/ exclusi�n equipo musical</translation>
+        <translation>Inclusión/ exclusión equipo musical</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L293</masterLabel>
-        <translation>Inclusi�n/ exclusi�n bonificaci�n</translation>
+        <translation>Inclusión/ exclusión bonificación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L320</masterLabel>
-        <translation>Modificaci�n de garant�as</translation>
+        <translation>Modificación de garantías</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L324</masterLabel>
-        <translation>Modificaci�n de capitales asegurados</translation>
+        <translation>Modificación de capitales asegurados</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L325</masterLabel>
-        <translation>Modificaci�n datos del pr�stamo</translation>
+        <translation>Modificación datos del préstamo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L330</masterLabel>
-        <translation>Exclusi�n e.musical indemnizaci�n siniestro</translation>
+        <translation>Exclusión e.musical indemnización siniestro</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L339</masterLabel>
-        <translation>Modificaci�n datos t�cnicos</translation>
+        <translation>Modificación datos técnicos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L411</masterLabel>
-        <translation>Inclusi�n clausulado especial</translation>
+        <translation>Inclusión clausulado especial</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L413</masterLabel>
-        <translation>Modificaci�n clausulado</translation>
+        <translation>Modificación clausulado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L426</masterLabel>
-        <translation>Modificaci�n de beneficiario</translation>
+        <translation>Modificación de beneficiario</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L507</masterLabel>
@@ -1316,7 +1316,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>L516</masterLabel>
-        <translation>Sustituci�n intermediarios</translation>
+        <translation>Sustitución intermediarios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L527</masterLabel>
@@ -1324,35 +1324,35 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>L581</masterLabel>
-        <translation>Renovaci�n Cartera</translation>
+        <translation>Renovación Cartera</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L608</masterLabel>
-        <translation>Anulaci�n cambio estrategia inversi�n</translation>
+        <translation>Anulación cambio estrategia inversión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L609</masterLabel>
-        <translation>Cambio estrategia inversi�n</translation>
+        <translation>Cambio estrategia inversión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L612</masterLabel>
-        <translation>Cambio de veh�culo</translation>
+        <translation>Cambio de vehículo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L650</masterLabel>
-        <translation>Modificaci�n importe prima</translation>
+        <translation>Modificación importe prima</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L651</masterLabel>
-        <translation>Modificaci�n datos bancarios</translation>
+        <translation>Modificación datos bancarios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L652</masterLabel>
-        <translation>Modificaci�n domicilio</translation>
+        <translation>Modificación domicilio</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L653</masterLabel>
-        <translation>Modificaci�n sexo asegurado</translation>
+        <translation>Modificación sexo asegurado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L654</masterLabel>
@@ -1360,79 +1360,79 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>L655</masterLabel>
-        <translation>Modificaci�n tipo / porcentaje revalorizaci�n</translation>
+        <translation>Modificación tipo / porcentaje revalorización</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L656</masterLabel>
-        <translation>Sustituci�n intermediarios / modificaci�n tipo comisi�n</translation>
+        <translation>Sustitución intermediarios / Modificación tipo comisión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L657</masterLabel>
-        <translation>Modificaci�n duraci�n</translation>
+        <translation>Modificación duración</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L658</masterLabel>
-        <translation>Modificaci�n fecha nacimiento</translation>
+        <translation>Modificación fecha nacimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L659</masterLabel>
-        <translation>Modificaci�n sobreprimas</translation>
+        <translation>Modificación sobreprimas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L660</masterLabel>
-        <translation>Modificaci�n opci�n comisi�n</translation>
+        <translation>Modificación opción comisión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L661</masterLabel>
-        <translation>Modificaci�n nombre y apellidos</translation>
+        <translation>Modificación nombre y apellidos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L662</masterLabel>
-        <translation>Modificaci�n NIF</translation>
+        <translation>Modificación NIF</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L663</masterLabel>
-        <translation>Paralizaci�n pago prima</translation>
+        <translation>Paralización pago prima</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L664</masterLabel>
-        <translation>Reactivaci�n pago prima</translation>
+        <translation>Reactivación pago prima</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L665</masterLabel>
-        <translation>Modificaci�n forma pago</translation>
+        <translation>Modificación forma pago</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L666</masterLabel>
-        <translation>Modificaci�n fecha efecto natural</translation>
+        <translation>Modificación fecha efecto natural</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L667</masterLabel>
-        <translation>Pr�rroga autom�tica</translation>
+        <translation>Prórroga automática</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L669</masterLabel>
-        <translation>Aumento o disminuci�n capital / modificaci�n modalidad capital</translation>
+        <translation>Aumento o disminución capital / Modificación modalidad capital</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L670</masterLabel>
-        <translation>Inclusi�n / exclusi�n segunda cabeza asegurada</translation>
+        <translation>Inclusión / exclusión segunda cabeza asegurada</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L671</masterLabel>
-        <translation>Devoluci�n recibo</translation>
+        <translation>Devolución recibo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L672</masterLabel>
-        <translation>Anulaci�n recibo</translation>
+        <translation>Anulación recibo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L673</masterLabel>
-        <translation>Liquidaci�n recibo</translation>
+        <translation>Liquidación recibo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L679</masterLabel>
-        <translation>Reducci�n capital enfermedades graves</translation>
+        <translation>Reducción capital enfermedades graves</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L684</masterLabel>
@@ -1444,11 +1444,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>L692</masterLabel>
-        <translation>Fallecimiento conjunta por accidente de circulaci�n</translation>
+        <translation>Fallecimiento conjunta por accidente de circulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L693</masterLabel>
-        <translation>Continuidad Plan Previsi�n Post Jubilaci�n</translation>
+        <translation>Continuidad Plan Previsión Post Jubilación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L694</masterLabel>
@@ -1468,15 +1468,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>L701</masterLabel>
-        <translation>Eliminaci�n comisi�n referencia</translation>
+        <translation>Eliminación comisión referencia</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L704</masterLabel>
-        <translation>Modificaci�n indicador pr�rroga autom�tica</translation>
+        <translation>Modificación indicador prórroga automática</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L777</masterLabel>
-        <translation>Modificaci�n porcentaje descuento</translation>
+        <translation>Modificación porcentaje descuento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>L999</masterLabel>
@@ -1496,15 +1496,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>N752</masterLabel>
-        <translation>Devoluci�n parcial anticipo</translation>
+        <translation>Devolución parcial anticipo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>N753</masterLabel>
-        <translation>Devoluci�n total anticipo</translation>
+        <translation>Devolución total anticipo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>N756</masterLabel>
-        <translation>Anulaci�n de anticipo</translation>
+        <translation>Anulación de anticipo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>P581</masterLabel>
@@ -1536,7 +1536,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Q680</masterLabel>
-        <translation>Llegada a t�rmino</translation>
+        <translation>Llegada a término</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Q681</masterLabel>
@@ -1556,7 +1556,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Q692</masterLabel>
-        <translation>Fallecimiento conjunta por accidente de circulaci�n</translation>
+        <translation>Fallecimiento conjunta por accidente de circulación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R110</masterLabel>
@@ -1564,43 +1564,43 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>R388</masterLabel>
-        <translation>Regularizaci�n de R.C. mutibase</translation>
+        <translation>Regularización de R.C. mutibase</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R389</masterLabel>
-        <translation>Regularizaci�n de T.R.C.</translation>
+        <translation>Regularización de T.R.C.</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R390</masterLabel>
-        <translation>Regularizaci�n de T.R.M.</translation>
+        <translation>Regularización de T.R.M.</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R391</masterLabel>
-        <translation>Regularizaci�n de Transportes-Facturaci�n</translation>
+        <translation>Regularización de Transportes-Facturación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R392</masterLabel>
-        <translation>Regularizaci�n mercancias promedio anual</translation>
+        <translation>Regularización mercancias promedio anual</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R393</masterLabel>
-        <translation>Regularizaci�n de mercancias flotantes</translation>
+        <translation>Regularización de mercancias flotantes</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R394</masterLabel>
-        <translation>Regularizaci�n de mercancias flotantes refrigeradas</translation>
+        <translation>Regularización de mercancias flotantes refrigeradas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R395</masterLabel>
-        <translation>Regularizaci�n de responsabilidad civil</translation>
+        <translation>Regularización de responsabilidad civil</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R396</masterLabel>
-        <translation>Regularizaci�n margen de da�os</translation>
+        <translation>Regularización margen de daños</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R397</masterLabel>
-        <translation>Regularizaci�n margen perdida de beneficios</translation>
+        <translation>Regularización margen perdida de beneficios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R999</masterLabel>
@@ -1616,27 +1616,27 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>S119</masterLabel>
-        <translation>Modificaci�n datos generales</translation>
+        <translation>Modificación datos generales</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S123</masterLabel>
-        <translation>Modificaci�n comisiones</translation>
+        <translation>Modificación comisiones</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S125</masterLabel>
-        <translation>Modificaci�n indicador aviso de vencimiento</translation>
+        <translation>Modificación indicador aviso de vencimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S133</masterLabel>
-        <translation>Modificaci�n de objeto(s)</translation>
+        <translation>Modificación de objeto(s)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S138</masterLabel>
-        <translation>Modificaci�n datos del Tomador/Asegurado</translation>
+        <translation>Modificación datos del Tomador/Asegurado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S139</masterLabel>
-        <translation>Modificaci�n datos de la oficina</translation>
+        <translation>Modificación datos de la oficina</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S180</masterLabel>
@@ -1644,27 +1644,27 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>S185</masterLabel>
-        <translation>Cambio de profesi�n</translation>
+        <translation>Cambio de profesión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S198</masterLabel>
-        <translation>Conversi�n</translation>
+        <translation>Conversión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S221</masterLabel>
-        <translation>Anulaci�n de objeto(s)</translation>
+        <translation>Anulación de objeto(s)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S222</masterLabel>
-        <translation>Inclusi�n de objeto(s)</translation>
+        <translation>Inclusión de objeto(s)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S223</masterLabel>
-        <translation>Modificaci�n deasegurados</translation>
+        <translation>Modificación deasegurados</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S259</masterLabel>
-        <translation>Modificaci�n de objeto(s) / garant�as</translation>
+        <translation>Modificación de objeto(s) / garantías</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S281</masterLabel>
@@ -1696,19 +1696,19 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>S290</masterLabel>
-        <translation>Modificaci�n de matr�cula</translation>
+        <translation>Modificación de matrícula</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S291</masterLabel>
-        <translation>Inclusi�n/exclusi�n accesorios</translation>
+        <translation>Inclusión/exclusión accesorios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S292</masterLabel>
-        <translation>Inclusi�n/exclusi�n equipo musical</translation>
+        <translation>Inclusión/exclusión equipo musical</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S293</masterLabel>
-        <translation>Inclusi�n/exclusi�n bonificaci�n</translation>
+        <translation>Inclusión/exclusión bonificación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S310</masterLabel>
@@ -1716,23 +1716,23 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>S320</masterLabel>
-        <translation>Modificaci�n de garant�as</translation>
+        <translation>Modificación de garantías</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S324</masterLabel>
-        <translation>Modificaci�n de capitales asegurados</translation>
+        <translation>Modificación de capitales asegurados</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S325</masterLabel>
-        <translation>Modificaci�n datos del pr�stamo</translation>
+        <translation>Modificación datos del préstamo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S330</masterLabel>
-        <translation>Exclusi�n e. musical indemnizaci�n siniestro</translation>
+        <translation>Exclusión e. musical indemnización siniestro</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S339</masterLabel>
-        <translation>Modificaci�n datos t�cnicos</translation>
+        <translation>Modificación datos técnicos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S351</masterLabel>
@@ -1740,43 +1740,43 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>S411</masterLabel>
-        <translation>Inclusi�n clausulado especial</translation>
+        <translation>Inclusión clausulado especial</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S413</masterLabel>
-        <translation>Modificaci�n clausulado</translation>
+        <translation>Modificación clausulado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S426</masterLabel>
-        <translation>Modificaci�n de beneficiarios</translation>
+        <translation>Modificación de beneficiarios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S516</masterLabel>
-        <translation>Sustituci�n intermediarios</translation>
+        <translation>Sustitución intermediarios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S612</masterLabel>
-        <translation>Cambio de veh�culo</translation>
+        <translation>Cambio de vehículo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S613</masterLabel>
-        <translation>Modificaci�n forma pago aportaci�n</translation>
+        <translation>Modificación forma pago aportación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S650</masterLabel>
-        <translation>Modificaci�n importe prima</translation>
+        <translation>Modificación importe prima</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S651</masterLabel>
-        <translation>Modificaci�n datos bancarios</translation>
+        <translation>Modificación datos bancarios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S652</masterLabel>
-        <translation>Modificaci�n domicilio</translation>
+        <translation>Modificación domicilio</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S653</masterLabel>
-        <translation>Modificaci�n sexo asegurado</translation>
+        <translation>Modificación sexo asegurado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S654</masterLabel>
@@ -1784,87 +1784,87 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>S655</masterLabel>
-        <translation>Modificaci�n tipo/porcentaje revalorizaci�n</translation>
+        <translation>Modificación tipo/porcentaje revalorización</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S656</masterLabel>
-        <translation>Sustituci�n intermediarios/modificaci�n tipo comisi�n</translation>
+        <translation>Sustitución intermediarios/Modificación tipo comisión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S657</masterLabel>
-        <translation>Modificaci�n duraci�n</translation>
+        <translation>Modificación duración</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S658</masterLabel>
-        <translation>Modificaci�n fecha nacimiento</translation>
+        <translation>Modificación fecha nacimiento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S659</masterLabel>
-        <translation>Modificaci�n sobreprimas</translation>
+        <translation>Modificación sobreprimas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S660</masterLabel>
-        <translation>Modificaci�n opci�n comisi�n</translation>
+        <translation>Modificación opción comisión</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S661</masterLabel>
-        <translation>Modificaci�n nombre y apellidos</translation>
+        <translation>Modificación nombre y apellidos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S662</masterLabel>
-        <translation>Modificaci�n NIF</translation>
+        <translation>Modificación NIF</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S663</masterLabel>
-        <translation>Paralizaci�n pago prima</translation>
+        <translation>Paralización pago prima</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S664</masterLabel>
-        <translation>Reactivaci�n pago prima</translation>
+        <translation>Reactivación pago prima</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S665</masterLabel>
-        <translation>Modificaci�n forma pago</translation>
+        <translation>Modificación forma pago</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S666</masterLabel>
-        <translation>Modificaci�n fecha efecto natural</translation>
+        <translation>Modificación fecha efecto natural</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S667</masterLabel>
-        <translation>Modificaci�n indicador pr�rroga autom�tica</translation>
+        <translation>Modificación indicador prórroga automática</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S669</masterLabel>
-        <translation>Aumento o disminuci�n capital/ Modificaci�n modalidad capital</translation>
+        <translation>Aumento o disminución capital/ Modificación modalidad capital</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S670</masterLabel>
-        <translation>Inclusi�n/exclusi�n segunda cabeza asegurada</translation>
+        <translation>Inclusión/exclusión segunda cabeza asegurada</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S671</masterLabel>
-        <translation>Devoluci�n recibo</translation>
+        <translation>Devolución recibo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S672</masterLabel>
-        <translation>Anulaci�n recibo</translation>
+        <translation>Anulación recibo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S673</masterLabel>
-        <translation>Liquidaci�n recibo</translation>
+        <translation>Liquidación recibo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S679</masterLabel>
-        <translation>Reducci�n capital enfermedades graves</translation>
+        <translation>Reducción capital enfermedades graves</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S693</masterLabel>
-        <translation>Continuidad Plan Previsi�n Post Jubilaci�n</translation>
+        <translation>Continuidad Plan Previsión Post Jubilación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S695</masterLabel>
-        <translation>Inclusi�n plan de aportaciones peri�dicas</translation>
+        <translation>Inclusión plan de aportaciones periódicas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S700</masterLabel>
@@ -1872,43 +1872,43 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>S701</masterLabel>
-        <translation>Eliminaci�n comisi�n referencia</translation>
+        <translation>Eliminación comisión referencia</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S771</masterLabel>
-        <translation>Modificaci�n designaci�n irrevocable beneficiarios</translation>
+        <translation>Modificación designación irrevocable beneficiarios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S773</masterLabel>
-        <translation>Modificaci�n Prima/Capital/Revalorizaci�n</translation>
+        <translation>Modificación Prima/Capital/Revalorización</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S774</masterLabel>
-        <translation>Modificaci�n Asignaci�n y Reparto</translation>
+        <translation>Modificación Asignación y Reparto</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S777</masterLabel>
-        <translation>Modificaci�n porcentaje descuento</translation>
+        <translation>Modificación porcentaje descuento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S806</masterLabel>
-        <translation>Modificaci�n Idioma</translation>
+        <translation>Modificación Idioma</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S807</masterLabel>
-        <translation>Modificaci�n datos del riesgo (Direcci�n, R�gimen ocupaci�n, Tipo residencia, Tipo vivienda)</translation>
+        <translation>Modificación datos del riesgo (Dirección, Régimen ocupación, Tipo residencia, Tipo vivienda)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S808</masterLabel>
-        <translation>Inclusi�n/Exclusi�n de garant�as</translation>
+        <translation>Inclusión/Exclusión de garantías</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S809</masterLabel>
-        <translation>Modificaci�n modalidad</translation>
+        <translation>Modificación modalidad</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S810</masterLabel>
-        <translation>Modificaci�n agrupada</translation>
+        <translation>Modificación agrupada</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S811</masterLabel>
@@ -1916,7 +1916,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>S812</masterLabel>
-        <translation>Inclusi�n/exclusi�n Extras</translation>
+        <translation>Inclusión/exclusión Extras</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S999</masterLabel>
@@ -1940,7 +1940,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>X605</masterLabel>
-        <translation>Emisi�n masiva p�lizas</translation>
+        <translation>Emisión masiva pólizas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>X606</masterLabel>
@@ -1952,11 +1952,11 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>X608</masterLabel>
-        <translation>Emisi�n de Carta T.I.R.</translation>
+        <translation>Emisión de Carta T.I.R.</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>X609</masterLabel>
-        <translation>Certificado Informaci�n Asegurado.</translation>
+        <translation>Certificado Información Asegurado.</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>X610</masterLabel>
@@ -1964,15 +1964,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>X611</masterLabel>
-        <translation>Documento de Informaci�n PP y EPSV</translation>
+        <translation>Documento de Información PP y EPSV</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>X612</masterLabel>
-        <translation>Condiciones Particulares Zurich Inversi�n.</translation>
+        <translation>Condiciones Particulares Zurich Inversión.</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>X614</masterLabel>
-        <translation>Informaci�n spread de cr�dito</translation>
+        <translation>Información spread de crédito</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>X685</masterLabel>
@@ -1980,6 +1980,6 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Z599</masterLabel>
-        <translation>Detecci�n p�lizas a regularizar</translation>
+        <translation>Detección pólizas a regularizar</translation>
     </picklistValues>
 </CustomFieldTranslation>
