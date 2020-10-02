@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help><!-- Code that IBA generated to identify a customer --></help>
+    <label><!-- Customer Num --></label>
+    <name>CustomerNum__c</name>
+</CustomFieldTranslation>

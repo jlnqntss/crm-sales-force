@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsBounced__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>(ZE/OCS) Identifica si la dirección ha dado un rebote. Actualizado desde MC.</description>
+    <externalId>false</externalId>
+    <label>Is Bounced</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

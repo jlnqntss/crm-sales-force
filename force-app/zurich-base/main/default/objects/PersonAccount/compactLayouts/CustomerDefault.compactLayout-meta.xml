@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CustomerDefault</fullName>
+    <fields>Name</fields>
+    <fields>INFOCustomerNumber__c</fields>
+    <fields>NationalIdType__c</fields>
+    <fields>NationalId__c</fields>
+    <fields>BusinessName__c</fields>
+    <fields>Intermediary_Name__c</fields>
+    <label>Customer Default</label>
+</CompactLayout>

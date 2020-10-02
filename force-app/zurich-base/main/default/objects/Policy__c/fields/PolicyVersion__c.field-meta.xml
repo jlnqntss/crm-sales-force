@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PolicyVersion__c</fullName>
+    <description>(OCS). Campo oculto usado en la integración para parsear el valor y copiarlo al campo Nombre del objeto Versión de Póliza</description>
+    <externalId>false</externalId>
+    <label>Policy Version</label>
+    <length>5</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

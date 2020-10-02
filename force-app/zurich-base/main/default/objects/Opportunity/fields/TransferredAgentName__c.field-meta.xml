@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TransferredAgentName__c</fullName>
+    <description>(ZE) Agente a quien se transfiere la oferta si no se puede llevar a cabo la gestión desde Zurich Empresas. Es informado manualmente.</description>
+    <externalId>false</externalId>
+    <label>Transferred Agent Name</label>
+    <length>80</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
