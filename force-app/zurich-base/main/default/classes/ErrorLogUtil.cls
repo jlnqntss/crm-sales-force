@@ -226,6 +226,68 @@ public without sharing class ErrorLogUtil {
   }
 
   /**
+   * Método registra en Salesforce el log de los errores de integración
+   **
+   * @param List<ExternalRequestErrorEvent__e> eventos de tipo error específicos de integración
+   *
+   * @author xsobera
+   * @date 06/10/2020
+   */
+  public static void handleExternalRequestErrors(
+    List<ExternalRequestErrorEvent__e> evs
+  ) {
+    List<ExternalRequestError__c> errors = new List<ExternalRequestError__c>();
+    for (ExternalRequestErrorEvent__e e : evs) {
+      errors.add(
+        new ExternalRequestError__c(
+          Action__c = e.Action__c,
+          ContentFormat__c = e.ContentFormat__c,
+          Entity__c = e.Entity__c,
+          ExternalRequestCreatedDate__c = e.ExternalRequestCreatedDate__c,
+          JobId__c = e.JobId__c,
+          Message__c = e.Message__c,
+          Origin__c = e.Origin__c,
+          Payload__c = e.Payload__c,
+          RecordId__c = e.RecordId__c,
+          StackTrace__c = e.StackTrace__c,
+          ThrowingTime__c = e.ThrowingTime__c
+        )
+      );
+    }
+
+    if (!errors.isEmpty()) {
+      Database.DMLOptions dmo = new Database.DMLOptions();
+      dmo.AllowFieldTruncation = true;
+      dmo.OptAllOrNone = false;
+
+      Database.SaveResult[] srResults = Database.insert(errors, dmo);
+
+      /* DEBUG */
+      for (Database.SaveResult sr : srResults) {
+        if (!sr.isSuccess()) {
+          System.debug(
+            LoggingLevel.ERROR,
+            '[ERROR LOG] Excepción insertando registros de log:'
+          );
+          for (Database.Error err : sr.getErrors()) {
+            System.debug(
+              LoggingLevel.ERROR,
+              err.getStatusCode() +
+              ': ' +
+              err.getMessage()
+            );
+            System.debug(
+              LoggingLevel.ERROR,
+              'ErrorLog fields that affected this error: ' + err.getFields()
+            );
+          }
+        }
+      }
+      /* END DEBUG */
+    }
+  }
+
+  /**
    * Método envía el log de los errores
    **
    * @param List<Error_Log__c> registros de error
