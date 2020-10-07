@@ -1,6 +1,7 @@
 {
   "name": "zurich-salesforce",
   "author": "NTS",
+  "version": "1.0.0",
   "scripts": {
     "lint": "npm run lint:lwc",
     "lint:lwc": "eslint --no-error-on-unmatched-pattern force-app/**/main/default/lwc",
@@ -14,12 +15,20 @@
     "retrieve:source": "sfdx force:source:retrieve --sourcepath=force-app",
     "pull:profiles": "sfdx force:source:pull -f && sfdx sfpowerkit:source:profile:reconcile -s",
     "retrieve:profiles:all": "sfdx sfpowerkit:source:profile:retrieve",
-    "retrieve:email-templates": "node scripts/source/retrieve-templates.js"
+    "release": "standard-version"
   },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged && node scripts/source/apex-formatter.js"
     }
+  },
+  "standard-version": {
+    "packageFiles": [
+      "package.json"
+    ],
+    "bumpFiles": [
+      "package-lock.json"
+    ]
   },
   "devDependencies": {
     "@salesforce/eslint-config-lwc": "^0.7.0",
@@ -28,6 +37,7 @@
     "husky": "^4.3.0",
     "prettier": "^2.1.2",
     "prettier-plugin-apex": "^1.7.0",
-    "pretty-quick": "^3.0.2"
+    "pretty-quick": "^3.0.2",
+    "standard-version": "^9.0.0"
   }
 }
