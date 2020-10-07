@@ -1416,6 +1416,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>OpenCTIMock</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>PreferenceCentre</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
