@@ -91,7 +91,7 @@ changelog-prerelease:
   stage: release
   only:
     refs:
-      - release/*-QA$
+      - /^release/.*$/
   allow_failure: false
   script:
     - install_toolchain
@@ -119,7 +119,7 @@ docs:
   only:
     refs:
       - master
-      - release/*
+      - /^release/.*$/
   allow_failure: true
   script:
     - install_toolchain
@@ -183,7 +183,7 @@ deploy-qa-metadata:
   stage: qa
   only:
     refs: 
-      - release/*-QA$
+      - /^release/.*$/
   allow_failure: false
   environment:
     name: qa
