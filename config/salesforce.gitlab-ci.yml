@@ -23,6 +23,10 @@
 #
 # ALLOW_FAILURE
 # Permite que las etapas de testing fallen
+#
+# SFDX_NTS1_GIT_URI
+# URI donde se aloja el plugin SFDX NTS1 
+# proporcionado por NTS
 ####################################################
 
 ####################################################
@@ -49,11 +53,13 @@ cache:
 ####################################################
 stages:
  - preliminary-testing
- - doc-generation
  - staging
  - test-apex
+ - docs
+ - release
  - qa
  - production
+
 
 before_script:
   - npm config set proxy "$HTTP_PROXY"
@@ -73,6 +79,52 @@ test-lwc:
     - install_toolchain
     - test_lwc_jest
     - lint
+  tags:
+    - zurich-ci
+
+
+########################################################
+# Ejecuta standard-version para realizar el un prerelease
+# y lanzar la generación de documentación
+########################################################
+changelog-prerelease:
+  stage: release
+  only:
+    refs:
+      - /^release/.*$/
+  allow_failure: false
+  script:
+    - install_toolchain
+    - changelog_QA
+  tags:
+    - zurich-ci
+
+changelog:
+  stage: release
+  only:
+    refs:
+      - master
+  except:
+    variables:
+      - $TEST_DISABLED
+  allow_failure: false
+  script:
+    - install_toolchain
+    - changelog
+  tags:
+    - zurich-ci
+
+docs:
+  stage: release
+  only:
+    refs:
+      - master
+      - /^release/.*$/
+  allow_failure: true
+  script:
+    - install_toolchain
+    - install_nts1 $SFDX_NTS1_GIT_URI
+    - create_docs
   tags:
     - zurich-ci
 
@@ -131,13 +183,14 @@ deploy-qa-metadata:
   stage: qa
   only:
     refs: 
-      - release/*-QA$
+      - /^release/.*$/
   allow_failure: false
   environment:
     name: qa
     url: https://test.salesforce.com
   script:
     - install_toolchain
+    - install_nts1 $SFDX_NTS1_GIT_URI
     - authenticate QA $QA_SANDBOX_AUTH_URL
     - deploy_metadata QA
   tags:
@@ -157,6 +210,7 @@ deploy-production-metadata:
     url: https://login.salesforce.com
   script:
     - install_toolchain
+    - install_nts1 $SFDX_NTS1_GIT_URI
     - authenticate PRODUCTION $PRODUCTION_AUTH_URL $DEVHUB_AUTH_URL
     - deploy_metadata PRODUCTION
   tags:
@@ -225,6 +279,16 @@ deploy-production-metadata:
       # NTS  - SSL Check
     npm config set registry="http://registry.npmjs.org/"
     apt update && apt -y install jq
+  }
+
+  # Instala el plugin SFDX nts1
+  # Arguments
+  #     $1 = URI para instalar NTS1
+  function install_nts1() {
+    if test -z "$1"
+    then
+      sfdx plugins:install "$1"
+    fi
   }
 
 
@@ -479,8 +543,16 @@ deploy-production-metadata:
   # Function to run doc generation
   # No arguments.
 
-  function run_doc() {
-    npm run doc:apex
+  function create_docs() {
+    npm run docs:update
+  }
+
+  function changelog() {
+    npm run release
+  }
+
+  function changelog_QA() {
+    npm run release -- --prerelease QA
   }
 
 before_script:
