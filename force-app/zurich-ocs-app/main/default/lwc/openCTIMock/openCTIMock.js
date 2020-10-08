@@ -32,7 +32,7 @@ export default class OpenCTIMock extends LightningElement {
    * @author nescudero
    * @date 07/10/2020
    */
-  handleCall(numero) {
+  handleCall(number) {
     var chosenValue = Math.random() <= 0.5 ? true : false;
     var thisInPromise = this;
 
@@ -54,7 +54,7 @@ export default class OpenCTIMock extends LightningElement {
       });
     }
 
-    this.doScreenPop(numero).then(function (resul) {
+    this.doScreenPop(number).then(function (resul) {
       thisInPromise.doCreateTask(Object.keys(resul)[0]);
     });
   }
