@@ -15,7 +15,7 @@ export default class OpenCTIMock extends LightningElement {
       return {
         index: interaction.id,
         cssClass: interaction.isActive
-          ? "slds-item slds-is-active"
+          ? "slds-is-active slds-item"
           : "slds-item",
         number: interaction.from,
         type: translations[interaction.type]
@@ -32,8 +32,9 @@ export default class OpenCTIMock extends LightningElement {
    * @author nescudero
    * @date 07/10/2020
    */
-  handleCall() {
+  handleCall(numero) {
     var chosenValue = Math.random() <= 0.5 ? true : false;
+    var thisInPromise = this;
 
     if (chosenValue) {
       this.interactions.push({
@@ -52,9 +53,10 @@ export default class OpenCTIMock extends LightningElement {
         to: "916484394"
       });
     }
-    console.log("handleCall hola");
-    this.doCreateTask();
-    this.doScreenPop();
+
+    this.doScreenPop(numero).then(function (resul) {
+      thisInPromise.doCreateTask(Object.keys(resul)[0]);
+    });
   }
 
   /**
@@ -68,12 +70,12 @@ export default class OpenCTIMock extends LightningElement {
     if (this.eventTwice === 0) return;
 
     if ("Digit1" === code) {
-      this.handleCall();
+      this.handleCall("916484394");
     }
   }
 
   @api handleClickToDial(event) {
-    this.handleCall();
+    this.handleCall(event);
   }
 
   connectedCallback() {

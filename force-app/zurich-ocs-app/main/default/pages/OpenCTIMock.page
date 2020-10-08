@@ -1,62 +1,80 @@
 <apex:page>
-  <apex:includeLightning />
-  <script
-    src="/support/api/50.0/lightning/opencti_min.js"
-    type="text/javascript"
-  ></script>
-  <!--<apex:includeScript value="/support/api/50.0/lightning/opencti_min.js"/>-->
+  <head>
+    <apex:includeLightning />
+    <script
+      src="/support/api/49.0/lightning/opencti_min.js"
+      type="text/javascript"
+    ></script>
+    <apex:includeScript value="/support/api/49.0/lightning/opencti_min.js" />
 
-  <div id="lightningvf" />
+    <div id="lightningvf" />
 
-  <script>
-    $Lightning.use("c:OpenCTIMockLightningOutApp", function () {
-      $Lightning.createComponent(
-        "c:openCTIMock",
-        {
-          doScreenPop: doScreenPop,
-          doCreateTask: doCreateTask
-        },
-        "lightningvf",
-        function (component) {
-          // Add Click To Dial Listener
-          openCtiMock.onClickToDial(function (event) {
-            // Se invoca el método de API del componente
-            component.handleClickToDial(event);
+    <script>
+      var componentLWC;
+
+      $Lightning.use("c:OpenCTIMockLightningOutApp", function () {
+        $Lightning.createComponent(
+          "c:openCTIMock",
+          {
+            doScreenPop: doSearchAndScreenPop,
+            doCreateTask: doCreateTask
+          },
+          "lightningvf",
+          function (component) {
+            componentLWC = component;
+          }
+        );
+      });
+
+      //Llamada al LWC
+      var listener = function (payload) {
+        componentLWC.handleClickToDial(payload.number);
+      };
+      //Enable Click to dial
+      sforce.opencti.enableClickToDial();
+      // Register the listener.
+      window.addEventListener("load", function () {
+        sforce.opencti.onClickToDial({ listener: listener });
+      });
+
+      function doSearchAndScreenPop(search) {
+        return new Promise((resolve, reject) => {
+          sforce.opencti.searchAndScreenPop({
+            searchParams: search,
+            callType: sforce.opencti.CALL_TYPE.INBOUND,
+            callback: function (response) {
+              if (response.success) {
+                resolve(response.returnValue);
+              } else {
+                reject(response.errors);
+              }
+            }
           });
-        }
-      );
-    });
-    function doScreenPop() {
-      console.log("screenPop hola");
-      sforce.opencti.searchAndScreenPop({
-        type: window.sforce.opencti.SCREENPOP_TYPE.SOBJECT,
-        params: { recordId: "00T0E00000DucagUAB" }
-      });
-    }
-    function doCreateTask() {
-      console.log("saveLog hola");
-      sforce.opencti.saveLog({
-        value: {
-          entityApiName: "Task",
-          Id: "00T0E00000DucagUAB"
-        }
-      });
-    }
-  </script>
-
-  <script>
-    window.opencti = {
-      /*screenPop: function() {
-                return sforce.opencti.searchAndScreenPop.call (this, arguments);
-            },
-            createTask: function() {
-                return sforce.opencti.saveLog.call (this, arguments);
-            },*/
-      onClickToDial(callback: Function) {
-        return sforce.opencti.onClickToDial({
-          callback: callback
         });
       }
-    };
-  </script>
+
+      function doCreateTask(recordId) {
+        return new Promise((resolve, reject) => {
+          sforce.opencti.saveLog({
+            value: {
+              entityApiName: "Task",
+              CallObjectIdentifier: Math.random(),
+              Type: "Llamada",
+              Subject: "Llamada " + Date.now(),
+              DueDate: Date.now(),
+              WhoId: recordId,
+              Subtype: "Call"
+            },
+            callback: function (response) {
+              if (response.success) {
+                resolve(response.returnValue);
+              } else {
+                reject(response.errors);
+              }
+            }
+          });
+        });
+      }
+    </script>
+  </head>
 </apex:page>
