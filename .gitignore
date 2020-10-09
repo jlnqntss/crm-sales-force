@@ -4,6 +4,9 @@
 # Salesforce cache
 .sfdx/
 
+# Temp files
+.tmp/
+
 # Logs
 logs
 *.log

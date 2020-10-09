@@ -1,0 +1,80 @@
+<apex:page>
+  <head>
+    <apex:includeLightning />
+    <script
+      src="/support/api/49.0/lightning/opencti_min.js"
+      type="text/javascript"
+    ></script>
+    <apex:includeScript value="/support/api/49.0/lightning/opencti_min.js" />
+
+    <div id="lightningvf" />
+
+    <script>
+      var componentLWC;
+
+      $Lightning.use("c:OpenCTIMockLightningOutApp", function () {
+        $Lightning.createComponent(
+          "c:openCTIMock",
+          {
+            doScreenPop: doSearchAndScreenPop,
+            doCreateTask: doCreateTask
+          },
+          "lightningvf",
+          function (component) {
+            componentLWC = component;
+          }
+        );
+      });
+
+      //Llamada al LWC
+      var listener = function (payload) {
+        componentLWC.handleClickToDial(payload.number);
+      };
+      //Enable Click to dial
+      sforce.opencti.enableClickToDial();
+      // Register the listener.
+      window.addEventListener("load", function () {
+        sforce.opencti.onClickToDial({ listener: listener });
+      });
+
+      function doSearchAndScreenPop(search) {
+        return new Promise((resolve, reject) => {
+          sforce.opencti.searchAndScreenPop({
+            searchParams: search,
+            callType: sforce.opencti.CALL_TYPE.INBOUND,
+            callback: function (response) {
+              if (response.success) {
+                resolve(response.returnValue);
+              } else {
+                reject(response.errors);
+              }
+            }
+          });
+        });
+      }
+
+      function doCreateTask(recordId) {
+        return new Promise((resolve, reject) => {
+          sforce.opencti.saveLog({
+            value: {
+              entityApiName: "Task",
+              CallObjectIdentifier: Math.random(),
+              Type: "Llamada",
+              Subject: "Llamada " + Date.now(),
+              DueDate: Date.now(),
+              WhoId: recordId,
+              Subtype: "Call"
+            },
+            callback: function (response) {
+              if (response.success) {
+                resolve(response.returnValue);
+              } else {
+                reject(response.errors);
+              }
+            }
+          });
+        });
+      }
+    </script>
+  </head>
+</apex:page>
