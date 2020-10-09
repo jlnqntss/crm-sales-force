@@ -82,6 +82,29 @@ test-lwc:
   tags:
     - zurich-ci
 
+veracode:
+  image: node:12.17-slim
+  stage: preliminary-testing
+  allow_failure: true
+  script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - apt-get update
+    - apt-get -y install git
+    - apt-get -y install curl
+    - rm -rf node_modules
+    - npm install --production
+    - PROJECT_URL="https://gitlab.com/zurich-es/${CI_PROJECT_NAME}"
+    - export SRCCLR_scope=production
+    - export SRCCLR_SCM_URI=${PROJECT_URL}
+    - export SRCCLR_SCM_REF="master"
+    - export SRCCLR_SCM_REF_TYPE="branch"
+    - export SRCCLR_SCM_REV=${CI_COMMIT_REF_NAME}
+    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty 
+    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty | if grep -q "Issue ID"; then exit 1; fi
+  except:
+    - tags
+  tags:
+    - gitlab-org
 
 ########################################################
 # Ejecuta standard-version para realizar el un prerelease
