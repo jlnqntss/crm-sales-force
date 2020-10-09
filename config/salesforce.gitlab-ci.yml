@@ -209,7 +209,6 @@ test-org:
 # el código para un scan estatico de seguridad
 ########################################################
 upload-static-veracode:dev:
-  image: node:12.17-slim
   stage: post-deploy
   allow_failure: true
   before_script:
