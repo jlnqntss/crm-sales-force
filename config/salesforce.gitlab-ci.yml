@@ -232,8 +232,9 @@ upload-static-veracode:dev:
     - unzip awscliv2.zip
     - ./aws/install
     - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
-    - install_toolchain
+
   script:
+    - install_toolchain
     - VERSION=${CI_COMMIT_REF_NAME}
     - rm -rf node_modules
     - npm install --production
