@@ -13,6 +13,7 @@
     <navType>Standard</navType>
     <tabs>ExternalRequest__c</tabs>
     <tabs>Error_Log__c</tabs>
+    <tabs>ExternalRequestError__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>System_Administrator_UtilityBar</utilityBar>
 </CustomApplication>
