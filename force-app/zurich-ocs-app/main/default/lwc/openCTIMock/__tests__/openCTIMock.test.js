@@ -15,8 +15,25 @@ describe("c-open-c-t-i-mock", () => {
     });
     document.body.appendChild(element);
 
+    element.doScreenPop = () => {
+      return Promise.resolve();
+    };
+
+    element.doCreateCall = () => {
+      return Promise.resolve();
+    };
+
+    element.shadowRoot.querySelector("div div").firstChild.dispatchEvent(
+      new KeyboardEvent("keyup", {
+        code: "Digit1",
+        bubbles: true
+      })
+    );
+
     return Promise.resolve().then(() => {
-      expect(element.lines.length).toBeGreaterThan(0);
+      expect(
+        element.shadowRoot.querySelectorAll("ul li").length
+      ).toBeGreaterThan(0);
     });
   });
 });
