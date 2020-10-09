@@ -55,6 +55,7 @@ stages:
  - preliminary-testing
  - staging
  - test-apex
+ - post-deploy
  - docs
  - release
  - qa
@@ -82,10 +83,14 @@ test-lwc:
   tags:
     - zurich-ci
 
+########################################################
+# Descarga la versión de producción y ejecuta un test 
+# de seguridad con Veracode para verificar dependencias
+########################################################
 veracode:
   image: node:12.17-slim
   stage: preliminary-testing
-  allow_failure: true
+  allow_failure: false
   script:
     - '[ "${VERACODE_APP_ID}" ] || exit 0'
     - apt-get update
@@ -198,6 +203,55 @@ test-org:
   coverage: '/name="testRunCoverage" value="([\d]+%)"/'
   tags:
   - zurich-ci
+
+########################################################
+# Genera el paquete de despliegue y sube a Veracode
+# el código para un scan estatico de seguridad
+########################################################
+upload-static-veracode:dev:
+  image: node:12.17-slim
+  stage: post-deploy
+  allow_failure: true
+  before_script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - mkdir -p /usr/share/man/man1
+    - apt-get update
+    - apt-get install -y default-jre
+    - apt-get install -y wget
+    - apt-get install -y unzip
+    - apt-get install -y nodejs
+    - apt-get install -y zip
+    - apt-get install -y curl
+    - apt-get install -y build-essential
+    - echo -e "@zurich-es:registry=https://gitlab.com/api/v4/packages/npm/" > ~/.npmrc
+    - echo -e "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_GITLAB_TOKEN}" >> ~/.npmrc
+    - npm config set proxy "$HTTP_PROXY"
+    - npm config set https-proxy "$HTTPS_PROXY"
+    - npm config set //registry.npmjs.org/:_authToken ${CI_NPM_TOKEN}
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - ./aws/install
+    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+  script:
+    - VERSION=$(ls temp | rev | cut -d '-' -f 1 | rev)
+    - VERSION=${VERSION%.*}
+    - rm -rf node_modules
+    - npm install --production
+    - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip src resources node_modules package.json package-lock.json config
+    - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - SANDBOX_ID=$(java -jar VeracodeJavaAPI.jar -action getsandboxlist -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep -w "sandbox_name=\"DEV\"" | grep -o "sandbox_id=\".*\"" | cut -d "\"" -f2 || :)
+    - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID| grep 'results_ready="true"' || :)
+    - echo "SANDBOX_ID=${SANDBOX_ID}"
+    - echo "IS_SCAN_READY:${IS_SCAN_READY}"
+    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID||'
+    - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule* -createsandbox true -sandboxname DEV
+  only:
+    refs:
+      - dev
+  tags:
+    - gitlab-org
+
 
 ####################################################
 # Deploy metadata into the sandbox org.
