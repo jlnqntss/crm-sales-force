@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CallCenter xmlns="http://soap.sforce.com/2006/04/metadata">
-    <adapterUrl>http://localhost:11000</adapterUrl>
+    <adapterUrl>/apex/OpenCTIMock</adapterUrl>
+    <customSettings>{&quot;reqSoftphoneHeight&quot;:&quot;400&quot;,&quot;reqUseApi&quot;:&quot;true&quot;,&quot;reqSalesforceCompatibilityMode&quot;:&quot;Lightning&quot;,&quot;reqSoftphoneWidth&quot;:&quot;400&quot;}</customSettings>
     <displayName>CTI Mock Call Center</displayName>
     <displayNameLabel>Display Name</displayNameLabel>
     <internalNameLabel>Internal Name</internalNameLabel>
@@ -23,7 +24,27 @@
         <items>
             <label>CTI Adapter URL</label>
             <name>reqAdapterUrl</name>
-            <value>http://localhost:11000</value>
+            <value>/apex/OpenCTIMock</value>
+        </items>
+        <items>
+            <label>Use API</label>
+            <name>reqUseApi</name>
+            <value>true</value>
+        </items>
+        <items>
+            <label>Mode</label>
+            <name>reqSalesforceCompatibilityMode</name>
+            <value>Lightning</value>
+        </items>
+        <items>
+            <label>Width</label>
+            <name>reqSoftphoneWidth</name>
+            <value>400</value>
+        </items>
+        <items>
+            <label>Height</label>
+            <name>reqSoftphoneHeight</name>
+            <value>400</value>
         </items>
         <label>General Info</label>
         <name>reqGeneralInfo</name>
