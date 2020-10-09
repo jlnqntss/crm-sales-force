@@ -234,8 +234,7 @@ upload-static-veracode:dev:
     - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
     - install_toolchain
   script:
-    - VERSION=$(ls temp | rev | cut -d '-' -f 1 | rev)
-    - VERSION=${VERSION%.*}
+    - VERSION=${CI_COMMIT_REF_NAME}
     - rm -rf node_modules
     - npm install --production
     - convert_sfdx_project
