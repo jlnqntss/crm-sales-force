@@ -232,12 +232,15 @@ upload-static-veracode:dev:
     - unzip awscliv2.zip
     - ./aws/install
     - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+    - install_toolchain
   script:
     - VERSION=$(ls temp | rev | cut -d '-' -f 1 | rev)
     - VERSION=${VERSION%.*}
     - rm -rf node_modules
     - npm install --production
-    - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip src resources node_modules package.json package-lock.json config
+    - convert_sfdx_project
+    - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
+    - sfdx 
     - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
     - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
     - SANDBOX_ID=$(java -jar VeracodeJavaAPI.jar -action getsandboxlist -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep -w "sandbox_name=\"DEV\"" | grep -o "sandbox_id=\".*\"" | cut -d "\"" -f2 || :)
@@ -630,6 +633,18 @@ deploy-production-metadata:
 
   function changelog_QA() {
     npm run release -- --prerelease QA
+  }
+
+  # Function to extract and convert all code from packages inside a SFDX project 
+  # into a single temp folder
+  # No arguments.
+  function convert_sfdx_project() {
+    for packageDir in $(jq -r '.packageDirectories[].path' < sfdx-project.json)
+    do
+      if [ -f $pkgDir ]; then
+        sfdx force:source:convert -r $packageDir -d .tmp/veracode  -m ApexClass,ApexTrigger,ApexPage,ApexComponent,AuraDefinitionBundle,LightningComponentBundle
+      fi
+    done
   }
 
 before_script:
