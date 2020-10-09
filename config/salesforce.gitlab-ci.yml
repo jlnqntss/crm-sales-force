@@ -55,7 +55,7 @@ stages:
  - preliminary-testing
  - staging
  - test-apex
- - post-validation
+ - post-deploy
  - docs
  - release
  - qa
