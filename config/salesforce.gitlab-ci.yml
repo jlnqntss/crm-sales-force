@@ -106,7 +106,6 @@ veracode:
     - export SRCCLR_SCM_REV=${CI_COMMIT_REF_NAME}
     - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty 
     - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty | if grep -q "Issue ID"; then exit 1; fi
-    - sfdx_helpers
   except:
     - tags
   tags:
@@ -213,6 +212,7 @@ upload-static-veracode:dev:
   stage: post-deploy
   allow_failure: true
   before_script:
+    - *sfdx_helpers
     - '[ "${VERACODE_APP_ID}" ] || exit 0'
     - mkdir -p /usr/share/man/man1
     - apt-get update
