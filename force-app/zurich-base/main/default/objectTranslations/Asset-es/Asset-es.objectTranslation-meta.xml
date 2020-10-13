@@ -1,47 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <layouts>
-        <layout>Address</layout>
-        <sections>
-            <label><!-- OCS --></label>
-            <section>OCS</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Boat</layout>
-        <sections>
-            <label><!-- OCS --></label>
-            <section>OCS</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Electronic Device</layout>
-        <sections>
-            <label><!-- OCS --></label>
-            <section>OCS</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Mobile</layout>
-        <sections>
-            <label><!-- OCS --></label>
-            <section>OCS</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Motor</layout>
-        <sections>
-            <label><!-- OCS --></label>
-            <section>OCS</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Person</layout>
-        <sections>
-            <label><!-- OCS --></label>
-            <section>OCS</section>
-        </sections>
-    </layouts>
     <recordTypes>
         <description><!-- Zurich OCS Address Record Type --></description>
         <label>Dirección</label>
