@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Rol</label>
+    <name>Role__c</name>
+    <picklistValues>
+        <masterLabel>ABG</masterLabel>
+        <translation>Abogado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ABU</masterLabel>
+        <translation>Ascendiente Abuelos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ALL</masterLabel>
+        <translation>Allegado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ASC</masterLabel>
+        <translation>Ascendiente Padres</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ASE</masterLabel>
+        <translation>Asesor Jurídico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ASG</masterLabel>
+        <translation>Asegurado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ASR</masterLabel>
+        <translation>Asegurador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>BEN</masterLabel>
+        <translation>Beneficiario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>BER</masterLabel>
+        <translation>Beneficiario Recazado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>BRK</masterLabel>
+        <translation>Broker</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CAI</masterLabel>
+        <translation>Compañía asistencia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CAS</masterLabel>
+        <translation>Compañía Aseguradora</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CAV</masterLabel>
+        <translation>Comisario de averias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CCN</masterLabel>
+        <translation>Compañía contraria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CCO</masterLabel>
+        <translation>Compañía Coaseguradora</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CCR</masterLabel>
+        <translation>Compañía concurrente</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CID</masterLabel>
+        <translation>CIDE / ASCIDE CICOS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CLG</masterLabel>
+        <translation>Colegiado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CLI</masterLabel>
+        <translation>Cliente</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CLN</masterLabel>
+        <translation>Clínica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CLP</masterLabel>
+        <translation>Cliente potencial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CNC</masterLabel>
+        <translation>Conductor contrario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CNS</masterLabel>
+        <translation>Conductor siniestro</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CNT</masterLabel>
+        <translation>Consultor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>COH</masterLabel>
+        <translation>Conductor Habitual</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CON</masterLabel>
+        <translation>Contrario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>COP</masterLabel>
+        <translation>Pers. contacto int. pot.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>COR</masterLabel>
+        <translation>Corresponsable</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>COS</masterLabel>
+        <translation>Contrario sin reservas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>COT</masterLabel>
+        <translation>Persona de contacto</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>COY</masterLabel>
+        <translation>Conyuge / viudo/a</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CRA</masterLabel>
+        <translation>Compañía reaseguradora</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CRE</masterLabel>
+        <translation>Compañía Reaseguradora</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CUL</masterLabel>
+        <translation>Culpable</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>DEM</masterLabel>
+        <translation>Demandante</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>DES</masterLabel>
+        <translation>Descendiente Hijos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>DET</masterLabel>
+        <translation>Detective</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>EJE</masterLabel>
+        <translation>Ejecutivo de cuentas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>FDI</masterLabel>
+        <translation>Filiación de la División</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>FID</masterLabel>
+        <translation>Fecha Activación Intermediario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>FIP</masterLabel>
+        <translation>Firmante principal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>FOR</masterLabel>
+        <translation>Formador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>FUN</masterLabel>
+        <translation>Funeraria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>HER</masterLabel>
+        <translation>Hermano/a</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>HOS</masterLabel>
+        <translation>Hospital</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>IMP</masterLabel>
+        <translation>Imputado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>INC</masterLabel>
+        <translation>Inspector Corporal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>INP</masterLabel>
+        <translation>Intermediario potencial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>INS</masterLabel>
+        <translation>Inspector</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>INT</masterLabel>
+        <translation>Intermediario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>JET</masterLabel>
+        <translation>Jefatura de tráfico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>JUZ</masterLabel>
+        <translation>Juzgado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>LAB</masterLabel>
+        <translation>Laboralista</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>MDC</masterLabel>
+        <translation>Médico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>MFO</masterLabel>
+        <translation>Médico forense</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>NIT</masterLabel>
+        <translation>Descendiente Nietos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>NOT</masterLabel>
+        <translation>Notario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>OCO</masterLabel>
+        <translation>Contrario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>OTR</masterLabel>
+        <translation>Otros perceptores-deudores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PAG</masterLabel>
+        <translation>Pagador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PAR</masterLabel>
+        <translation>Partícipe</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PER</masterLabel>
+        <translation>Perceptor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PPC</masterLabel>
+        <translation>Propietario contrario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PRC</masterLabel>
+        <translation>Procurador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PRF</masterLabel>
+        <translation>Profesional</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PRJ</masterLabel>
+        <translation>Perjudicado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PRO</masterLabel>
+        <translation>Propietario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PRT</masterLabel>
+        <translation>Perito</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REC</masterLabel>
+        <translation>Reconstructor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REL</masterLabel>
+        <translation>Representante legal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REM</masterLabel>
+        <translation>Remolque</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>REN</masterLabel>
+        <translation>Rentista</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RES</masterLabel>
+        <translation>Responsable</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SCO</masterLabel>
+        <translation>Segundo conductor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SEX</masterLabel>
+        <translation>Sucursal extranjera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SOC</masterLabel>
+        <translation>Socio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SOL</masterLabel>
+        <translation>Solicitante</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TAL</masterLabel>
+        <translation>Taller</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TES</masterLabel>
+        <translation>Testigo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TIP</masterLabel>
+        <translation>Titular int. pot.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TIR</masterLabel>
+        <translation>Titular del recibo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TIT</masterLabel>
+        <translation>Titular</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TOC</masterLabel>
+        <translation>Tomador contrario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TOD</masterLabel>
+        <translation>Todos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TOM</masterLabel>
+        <translation>Tomador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TOR</masterLabel>
+        <translation>Tomador Rechazado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TRA</masterLabel>
+        <translation>Transportista</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VER</masterLabel>
+        <translation>Verificador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VIC</masterLabel>
+        <translation>Víctima</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VIS</masterLabel>
+        <translation>Víctima sn reserva</translation>
+    </picklistValues>
+</CustomFieldTranslation>
