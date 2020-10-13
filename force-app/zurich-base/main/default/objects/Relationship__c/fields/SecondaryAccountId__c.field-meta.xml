@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>PrimaryAccountId__c</fullName>
+    <fullName>SecondaryAccountId__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
-    <description>(OCS) Identifica la cuenta principal en todas la relaciones</description>
+    <description>(OCS) Identifica la segunda cuenta para las relaciones familiares / Household</description>
     <externalId>false</externalId>
-    <label>Primary Account</label>
+    <label>Secondary Account</label>
     <referenceTo>Account</referenceTo>
-    <relationshipLabel>Relationships</relationshipLabel>
-    <relationshipName>Relationships</relationshipName>
+    <relationshipLabel>Relationships (SecondaryAccount)</relationshipLabel>
+    <relationshipName>HouseholdRelationships</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Lookup</type>
