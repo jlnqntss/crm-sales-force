@@ -212,7 +212,6 @@ upload-static-veracode:dev:
   stage: post-deploy
   allow_failure: true
   before_script:
-    - *sfdx_helpers
     - '[ "${VERACODE_APP_ID}" ] || exit 0'
     - mkdir -p /usr/share/man/man1
     - apt-get update
@@ -234,6 +233,7 @@ upload-static-veracode:dev:
     - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
 
   script:
+    - *sfdx_helpers
     - install_toolchain
     - VERSION=${CI_COMMIT_REF_NAME}
     - rm -rf node_modules
