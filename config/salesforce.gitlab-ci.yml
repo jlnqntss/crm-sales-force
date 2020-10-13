@@ -106,7 +106,7 @@ veracode:
     - export SRCCLR_SCM_REV=${CI_COMMIT_REF_NAME}
     - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty 
     - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty | if grep -q "Issue ID"; then exit 1; fi
-    - *sfdx_helpers
+    - sfdx_helpers
   except:
     - tags
   tags:
