@@ -66,237 +66,11 @@ before_script:
   - npm config set proxy "$HTTP_PROXY"
   - npm config set https-proxy "$HTTPS_PROXY"
 
-####################################################
-# Ejecuta los tests LWC sobre el runner, sin org.
-# Previene el esfuerzo de realizar un deploy.
-####################################################
-test-lwc:
-  stage: preliminary-testing
-  except:
-    variables:
-      - $TEST_DISABLED
-  allow_failure: false
-  script:
-    - install_toolchain
-    - test_lwc_jest
-    - lint
-  tags:
-    - zurich-ci
+################################
+## Helpers - Comandos de apoyo
+################################
 
-########################################################
-# Descarga la versión de producción y ejecuta un test 
-# de seguridad con Veracode para verificar dependencias
-########################################################
-veracode:
-  image: node:12.17-slim
-  stage: preliminary-testing
-  allow_failure: false
-  script:
-    - '[ "${VERACODE_APP_ID}" ] || exit 0'
-    - apt-get update
-    - apt-get -y install git
-    - apt-get -y install curl
-    - rm -rf node_modules
-    - npm install --production
-    - PROJECT_URL="https://gitlab.com/zurich-es/${CI_PROJECT_NAME}"
-    - export SRCCLR_scope=production
-    - export SRCCLR_SCM_URI=${PROJECT_URL}
-    - export SRCCLR_SCM_REF="master"
-    - export SRCCLR_SCM_REF_TYPE="branch"
-    - export SRCCLR_SCM_REV=${CI_COMMIT_REF_NAME}
-    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty 
-    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty | if grep -q "Issue ID"; then exit 1; fi
-  except:
-    - tags
-  tags:
-    - gitlab-org
-
-########################################################
-# Ejecuta standard-version para realizar el un prerelease
-# y lanzar la generación de documentación
-########################################################
-changelog-prerelease:
-  stage: release
-  only:
-    refs:
-      - /^release/.*$/
-  allow_failure: false
-  script:
-    - install_toolchain
-    - changelog_QA
-  tags:
-    - zurich-ci
-
-changelog:
-  stage: release
-  only:
-    refs:
-      - master
-  except:
-    variables:
-      - $TEST_DISABLED
-  allow_failure: false
-  script:
-    - install_toolchain
-    - changelog
-  tags:
-    - zurich-ci
-
-docs:
-  stage: release
-  only:
-    refs:
-      - master
-      - /^release/.*$/
-  allow_failure: true
-  script:
-    - install_toolchain
-    - install_nts1 $SFDX_NTS1_GIT_URI
-    - create_docs
-  tags:
-    - zurich-ci
-
-
-####################################################
-# Despliega el proyecto a Staging
-####################################################
-deploy-staging-metadata:
-  stage: staging
-  only:
-    refs:
-      - dev
-  allow_failure: false
-  environment:
-    name: staging
-    url: https://test.salesforce.com
-  script:
-    - install_toolchain
-    - authenticate STAGING $STAGING_SANDBOX_AUTH_URL
-    - deploy_metadata STAGING
-  tags:
-    - zurich-ci
-
-
-####################################################
-# Lanza los tests unitarios en el entorno de staging
-#
-# Modificar el script "test:org" del package.json
-# para personalizaciones
-####################################################
-test-org:
-  stage: test-apex
-  only:
-    refs: 
-      - dev
-  allow_failure: false
-  dependencies:
-    - deploy-staging-metadata
-  script:
-    - install_toolchain
-    - authenticate STAGING $STAGING_SANDBOX_AUTH_URL
-    - test_org STAGING
-  artifacts:
-    reports:
-      junit: tests/apex/*-junit.xml
-    paths:
-      - tests/
-  coverage: '/name="testRunCoverage" value="([\d]+%)"/'
-  tags:
-  - zurich-ci
-
-########################################################
-# Genera el paquete de despliegue y sube a Veracode
-# el código para un scan estatico de seguridad
-########################################################
-upload-static-veracode:dev:
-  stage: post-deploy
-  allow_failure: true
-  before_script:
-    - '[ "${VERACODE_APP_ID}" ] || exit 0'
-    - mkdir -p /usr/share/man/man1
-    - apt-get update
-    - apt-get install -y default-jre
-    - apt-get install -y wget
-    - apt-get install -y unzip
-    - apt-get install -y nodejs
-    - apt-get install -y zip
-    - apt-get install -y curl
-    - apt-get install -y build-essential
-    - echo -e "@zurich-es:registry=https://gitlab.com/api/v4/packages/npm/" > ~/.npmrc
-    - echo -e "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_GITLAB_TOKEN}" >> ~/.npmrc
-    - npm config set proxy "$HTTP_PROXY"
-    - npm config set https-proxy "$HTTPS_PROXY"
-    - npm config set //registry.npmjs.org/:_authToken ${CI_NPM_TOKEN}
-    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    - unzip awscliv2.zip
-    - ./aws/install
-    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
-
-  script:
-    - install_toolchain
-    - VERSION=${CI_COMMIT_REF_NAME}
-    - rm -rf node_modules
-    - npm install --production
-    - convert_sfdx_project
-    - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
-    - sfdx 
-    - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
-    - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
-    - SANDBOX_ID=$(java -jar VeracodeJavaAPI.jar -action getsandboxlist -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep -w "sandbox_name=\"DEV\"" | grep -o "sandbox_id=\".*\"" | cut -d "\"" -f2 || :)
-    - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID| grep 'results_ready="true"' || :)
-    - echo "SANDBOX_ID=${SANDBOX_ID}"
-    - echo "IS_SCAN_READY:${IS_SCAN_READY}"
-    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID||'
-    - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule* -createsandbox true -sandboxname DEV
-  only:
-    refs:
-      - dev
-  tags:
-    - zurich-ci
-
-
-####################################################
-# Deploy metadata into the sandbox org.
-####################################################
-deploy-qa-metadata:
-  stage: qa
-  only:
-    refs: 
-      - /^release/.*$/
-  allow_failure: false
-  environment:
-    name: qa
-    url: https://test.salesforce.com
-  script:
-    - install_toolchain
-    - install_nts1 $SFDX_NTS1_GIT_URI
-    - authenticate QA $QA_SANDBOX_AUTH_URL
-    - deploy_metadata QA
-  tags:
-    - zurich-ci
-
-####################################################
-# Deploy metadata into the production org.
-####################################################
-deploy-production-metadata:
-  stage: production
-  only:
-    refs: 
-      - master
-  allow_failure: false
-  environment:
-    name: production
-    url: https://login.salesforce.com
-  script:
-    - install_toolchain
-    - install_nts1 $SFDX_NTS1_GIT_URI
-    - authenticate PRODUCTION $PRODUCTION_AUTH_URL $DEVHUB_AUTH_URL
-    - deploy_metadata PRODUCTION
-  tags:
-    - zurich-ci
-    
 .sfdx_helpers: &sfdx_helpers |
-
 
   # Instala las herramientas base y dependencias npm
   # No arguments.
@@ -490,7 +264,6 @@ deploy-production-metadata:
     sfdx force:config:set defaultusername=$org_username
     npm run test:org
     sfdx force:config:set defaultusername=$old_org_username
-
   }
 
 
@@ -647,4 +420,234 @@ deploy-production-metadata:
   }
 
 before_script:
-  - *sfdx_helpers
+  - *sfdx_helpers  
+
+####################################################
+# Ejecuta los tests LWC sobre el runner, sin org.
+# Previene el esfuerzo de realizar un deploy.
+####################################################
+test-lwc:
+  stage: preliminary-testing
+  except:
+    variables:
+      - $TEST_DISABLED
+  allow_failure: false
+  script:
+    - install_toolchain
+    - test_lwc_jest
+    - lint
+  tags:
+    - zurich-ci
+
+########################################################
+# Descarga la versión de producción y ejecuta un test 
+# de seguridad con Veracode para verificar dependencias
+########################################################
+veracode:
+  image: node:12.17-slim
+  stage: preliminary-testing
+  allow_failure: false
+  script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - apt-get update
+    - apt-get -y install git
+    - apt-get -y install curl
+    - rm -rf node_modules
+    - npm install --production
+    - PROJECT_URL="https://gitlab.com/zurich-es/${CI_PROJECT_NAME}"
+    - export SRCCLR_scope=production
+    - export SRCCLR_SCM_URI=${PROJECT_URL}
+    - export SRCCLR_SCM_REF="master"
+    - export SRCCLR_SCM_REF_TYPE="branch"
+    - export SRCCLR_SCM_REV=${CI_COMMIT_REF_NAME}
+    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty 
+    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty | if grep -q "Issue ID"; then exit 1; fi
+  except:
+    - tags
+  tags:
+    - gitlab-org
+
+########################################################
+# Ejecuta standard-version para realizar el un prerelease
+# y lanzar la generación de documentación
+########################################################
+changelog-prerelease:
+  stage: release
+  only:
+    refs:
+      - /^release/.*$/
+  allow_failure: false
+  script:
+    - install_toolchain
+    - changelog_QA
+  tags:
+    - zurich-ci
+
+changelog:
+  stage: release
+  only:
+    refs:
+      - master
+  except:
+    variables:
+      - $TEST_DISABLED
+  allow_failure: false
+  script:
+    - install_toolchain
+    - changelog
+  tags:
+    - zurich-ci
+
+docs:
+  stage: release
+  only:
+    refs:
+      - master
+      - /^release/.*$/
+  allow_failure: true
+  script:
+    - install_toolchain
+    - install_nts1 $SFDX_NTS1_GIT_URI
+    - create_docs
+  tags:
+    - zurich-ci
+
+
+####################################################
+# Despliega el proyecto a Staging
+####################################################
+deploy-staging-metadata:
+  stage: staging
+  only:
+    refs:
+      - dev
+  allow_failure: false
+  environment:
+    name: staging
+    url: https://test.salesforce.com
+  script:
+    - install_toolchain
+    - authenticate STAGING $STAGING_SANDBOX_AUTH_URL
+    - deploy_metadata STAGING
+  tags:
+    - zurich-ci
+
+
+####################################################
+# Lanza los tests unitarios en el entorno de staging
+#
+# Modificar el script "test:org" del package.json
+# para personalizaciones
+####################################################
+test-org:
+  stage: test-apex
+  only:
+    refs: 
+      - dev
+  allow_failure: false
+  dependencies:
+    - deploy-staging-metadata
+  script:
+    - install_toolchain
+    - authenticate STAGING $STAGING_SANDBOX_AUTH_URL
+    - test_org STAGING
+  artifacts:
+    reports:
+      junit: tests/apex/*-junit.xml
+    paths:
+      - tests/
+  coverage: '/name="testRunCoverage" value="([\d]+%)"/'
+  tags:
+  - zurich-ci
+
+########################################################
+# Genera el paquete de despliegue y sube a Veracode
+# el código para un scan estatico de seguridad
+########################################################
+upload-static-veracode:dev:
+  stage: post-deploy
+  allow_failure: true
+  before_script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - mkdir -p /usr/share/man/man1
+    - apt-get update
+    - apt-get install -y default-jre
+    - apt-get install -y wget
+    - apt-get install -y unzip
+    - apt-get install -y nodejs
+    - apt-get install -y zip
+    - apt-get install -y curl
+    - apt-get install -y build-essential
+    - echo -e "@zurich-es:registry=https://gitlab.com/api/v4/packages/npm/" > ~/.npmrc
+    - echo -e "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_GITLAB_TOKEN}" >> ~/.npmrc
+    - npm config set proxy "$HTTP_PROXY"
+    - npm config set https-proxy "$HTTPS_PROXY"
+    - npm config set //registry.npmjs.org/:_authToken ${CI_NPM_TOKEN}
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - ./aws/install
+    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+
+  script:
+    - *sfdx_helpers
+    - install_toolchain
+    - VERSION=${CI_COMMIT_REF_NAME}
+    - rm -rf node_modules
+    - npm install --production
+    - convert_sfdx_project
+    - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
+    - sfdx 
+    - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - SANDBOX_ID=$(java -jar VeracodeJavaAPI.jar -action getsandboxlist -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep -w "sandbox_name=\"DEV\"" | grep -o "sandbox_id=\".*\"" | cut -d "\"" -f2 || :)
+    - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID| grep 'results_ready="true"' || :)
+    - echo "SANDBOX_ID=${SANDBOX_ID}"
+    - echo "IS_SCAN_READY:${IS_SCAN_READY}"
+    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID||'
+    - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule* -createsandbox true -sandboxname DEV
+  only:
+    refs:
+      - dev
+  tags:
+    - zurich-ci
+
+
+####################################################
+# Deploy metadata into the sandbox org.
+####################################################
+deploy-qa-metadata:
+  stage: qa
+  only:
+    refs: 
+      - /^release/.*$/
+  allow_failure: false
+  environment:
+    name: qa
+    url: https://test.salesforce.com
+  script:
+    - install_toolchain
+    - install_nts1 $SFDX_NTS1_GIT_URI
+    - authenticate QA $QA_SANDBOX_AUTH_URL
+    - deploy_metadata QA
+  tags:
+    - zurich-ci
+
+####################################################
+# Deploy metadata into the production org.
+####################################################
+deploy-production-metadata:
+  stage: production
+  only:
+    refs: 
+      - master
+  allow_failure: false
+  environment:
+    name: production
+    url: https://login.salesforce.com
+  script:
+    - install_toolchain
+    - install_nts1 $SFDX_NTS1_GIT_URI
+    - authenticate PRODUCTION $PRODUCTION_AUTH_URL $DEVHUB_AUTH_URL
+    - deploy_metadata PRODUCTION
+  tags:
+    - zurich-ci
