@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tipo de objeto</label>
+    <name>ObjectType__c</name>
+    <picklistValues>
+        <masterLabel>Address</masterLabel>
+        <translation>Dirección</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Boat</masterLabel>
+        <translation>Embarcación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Electronic Device</masterLabel>
+        <translation>Dispositivo Electrónico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Mobile</masterLabel>
+        <translation>Móvil</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Motor</masterLabel>
+        <translation>Motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Person</masterLabel>
+        <translation>Persona</translation>
+    </picklistValues>
+</CustomFieldTranslation>

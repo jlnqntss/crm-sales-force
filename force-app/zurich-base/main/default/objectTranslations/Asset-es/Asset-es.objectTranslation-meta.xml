@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <recordTypes>
+        <description><!-- Zurich OCS Address Record Type --></description>
+        <label>Dirección</label>
+        <name>Address</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Boat Record Type --></description>
+        <label>Embarcación</label>
+        <name>Boat</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Electronic Device Record Type --></description>
+        <label>Dispositivo Electrónico</label>
+        <name>ElectronicDevice</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Mobile Record Type --></description>
+        <label>Móvil</label>
+        <name>Mobile</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Motor Record Type --></description>
+        <label>Motor</label>
+        <name>Motor</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Person Record Type --></description>
+        <label>Persona</label>
+        <name>Person</name>
+    </recordTypes>
+</CustomObjectTranslation>
