@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PolicyHolder__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>(OCS). Puntero al tomador de la póliza vinculada</description>
+    <externalId>false</externalId>
+    <label>Policy holder</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Claims</relationshipLabel>
+    <relationshipName>Claims</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
