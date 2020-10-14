@@ -1,35 +1,64 @@
 <template>
-    <div class="slds-box slds-theme_shade" onkeyup={handleKeyPress}>
-        <div class="slds-text-align_center slds-m-bottom_medium">
-            <lightning-button-group class="slds-text-align_center">
-                <lightning-button-icon class="slds-col" icon-name="utility:call" variant="brand"></lightning-button-icon>
-                <lightning-button-icon class="slds-col" icon-name="utility:end_call" variant="brand" disabled></lightning-button-icon>
-                <lightning-button-icon class="slds-col" icon-name="utility:play" variant="brand" disabled></lightning-button-icon>
-                <lightning-button-icon class="slds-col" icon-name="utility:pause" variant="brand" disabled></lightning-button-icon>
-            </lightning-button-group>
-        </div>
-
-        <div class="slds-m-bottom_medium slds-theme_default">
-            <ul class="slds-has-dividers_bottom-space">
-                <template for:each={lines} for:item="line">
-                <li key={line.index} class={line.cssClass}>
-                    <lightning-tile label={line.type}>
-                        {line.number}
-                    </lightning-tile>
-                </li>
-                </template>
-                <template if:false={lines.length}>
-                    <div class="slds-text-align_center">Sin interacciones asignadas</div>
-                </template>
-            </ul>
-        </div>
-
-        <lightning-card class="slds-m-top_medium" icon-name="standard:call" title="Call Log" variant="base">
-            <div class="slds-p-around_small">
-                <lightning-combobox name="progress" label="Name" placeholder="None"></lightning-combobox>
-                <lightning-combobox name="progress" label="Related to" placeholder="None"></lightning-combobox>
-            </div>
-
-        </lightning-card>
+  <div class="slds-box slds-theme_shade" onkeyup={handleKeyPress}>
+    <div class="slds-text-align_center slds-m-bottom_medium">
+      <lightning-button-group class="slds-text-align_center">
+        <lightning-button-icon
+          class="slds-col"
+          icon-name="utility:call"
+          variant="brand"
+        ></lightning-button-icon>
+        <lightning-button-icon
+          class="slds-col"
+          icon-name="utility:end_call"
+          variant="brand"
+          disabled
+        ></lightning-button-icon>
+        <lightning-button-icon
+          class="slds-col"
+          icon-name="utility:play"
+          variant="brand"
+          disabled
+        ></lightning-button-icon>
+        <lightning-button-icon
+          class="slds-col"
+          icon-name="utility:pause"
+          variant="brand"
+          disabled
+        ></lightning-button-icon>
+      </lightning-button-group>
     </div>
+
+    <div class="slds-m-bottom_medium slds-theme_default">
+      <ul class="slds-has-dividers_bottom-space">
+        <template for:each={lines} for:item="line">
+          <li key={line.index} class={line.cssClass}>
+            <lightning-tile label={line.type}> {line.number} </lightning-tile>
+          </li>
+        </template>
+        <template if:false={lines.length}>
+          <div class="slds-text-align_center">Sin interacciones asignadas</div>
+        </template>
+      </ul>
+    </div>
+
+    <lightning-card
+      class="slds-m-top_medium"
+      icon-name="standard:call"
+      title="Call Log"
+      variant="base"
+    >
+      <div class="slds-p-around_small">
+        <lightning-combobox
+          name="progress"
+          label="Name"
+          placeholder="None"
+        ></lightning-combobox>
+        <lightning-combobox
+          name="progress"
+          label="Related to"
+          placeholder="None"
+        ></lightning-combobox>
+      </div>
+    </lightning-card>
+  </div>
 </template>
