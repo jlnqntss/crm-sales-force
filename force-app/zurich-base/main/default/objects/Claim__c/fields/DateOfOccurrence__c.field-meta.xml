@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DateOfOccurrence__c</fullName>
+    <description>(OCS). Fecha del momento del suceso</description>
+    <externalId>false</externalId>
+    <label>Date of occurrence</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>
