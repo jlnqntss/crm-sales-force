@@ -630,7 +630,59 @@ deploy-qa-metadata:
     - authenticate QA $QA_SANDBOX_AUTH_URL
     - deploy_metadata QA
   tags:
-    - zurich-ci
+    - zurich-ci-uat
+
+########################################################
+# Genera el paquete de despliegue y sube a Veracode
+# el código para un scan estatico de seguridad
+########################################################
+upload-static-veracode:uat:
+  stage: post-deploy
+  allow_failure: true
+  before_script:
+    - '[ "${VERACODE_APP_ID}" ] || exit 0'
+    - mkdir -p /usr/share/man/man1
+    - apt-get update
+    - apt-get install -y default-jre
+    - apt-get install -y wget
+    - apt-get install -y unzip
+    - apt-get install -y nodejs
+    - apt-get install -y zip
+    - apt-get install -y curl
+    - apt-get install -y build-essential
+    - echo -e "@zurich-es:registry=https://gitlab.com/api/v4/packages/npm/" > ~/.npmrc
+    - echo -e "//gitlab.com/api/v4/packages/npm/:_authToken=${CI_GITLAB_TOKEN}" >> ~/.npmrc
+    - npm config set proxy "$HTTP_PROXY"
+    - npm config set https-proxy "$HTTPS_PROXY"
+    - npm config set //registry.npmjs.org/:_authToken ${CI_NPM_TOKEN}
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - ./aws/install
+    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+
+  script:
+    - *sfdx_helpers
+    - install_toolchain
+    - VERSION=${CI_COMMIT_REF_NAME}
+    - rm -rf node_modules
+    - npm install --production
+    - convert_sfdx_project
+    - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
+    - sfdx 
+    - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
+    - SANDBOX_ID=$(java -jar VeracodeJavaAPI.jar -action getsandboxlist -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep -w "sandbox_name=\"DEV\"" | grep -o "sandbox_id=\".*\"" | cut -d "\"" -f2 || :)
+    - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID| grep 'results_ready="true"' || :)
+    - echo "SANDBOX_ID=${SANDBOX_ID}"
+    - echo "IS_SCAN_READY:${IS_SCAN_READY}"
+    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID||'
+    - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule*
+  only:
+    refs:
+      - /^release/.*$/
+  tags:
+    - zurich-ci-uat
+
 
 ####################################################
 # Deploy metadata into the production org.
@@ -650,4 +702,4 @@ deploy-production-metadata:
     - authenticate PRODUCTION $PRODUCTION_AUTH_URL $DEVHUB_AUTH_URL
     - deploy_metadata PRODUCTION
   tags:
-    - zurich-ci
+    - zurich-ci-prd
