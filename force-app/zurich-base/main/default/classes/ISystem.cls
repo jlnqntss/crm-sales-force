@@ -3,7 +3,7 @@ global interface ISystem {
 
   void process(List<ExternalRequest__c> externalRequestList);
 
-  void persists();
+  void persists(List<ExternalRequest__c> externalRequestList);
 
-  void setResult();
+  void manageResult(Id jobId, List<ExternalRequest__c> externalRequestList);
 }
