@@ -65,22 +65,22 @@ public with sharing class TransformerTest
         {
             accountRecord = (Account) myTransformer.transform(Transformer.OBJECT_NAME_ACCOUNT, customersJsonItems[i]);
             customersAccounts.add(accountRecord);
+            System.assertEquals(customersJsonItems[i].get('cdfiliac'), accountRecord.INFOCustomerNumber__c, '[PersonAccount-' + String.valueOf(i).leftPad(2, '0') + '] No se ha mapeado el External ID correctamente');
         }
 
         for (Integer i = 0; i < companiesJsonItems.size(); i++)
         {
             accountRecord = (Account) myTransformer.transform(Transformer.OBJECT_NAME_ACCOUNT, companiesJsonItems[i]);
             companiesAccounts.add(accountRecord);
+            System.assertEquals(companiesJsonItems[i].get('cdfiliac'), accountRecord.INFOCustomerNumber__c, '[Account-' + String.valueOf(i).leftPad(2, '0') + '] No se ha mapeado el External ID correctamente');
 
             contactRecord = (Contact) myTransformer.transform(Transformer.OBJECT_NAME_CONTACT, companiesJsonItems[i]);
             companiesContacts.add(contactRecord);
+            System.assertEquals(companiesJsonItems[i].get('cdfiliac'), contactRecord.InfoCustomerContactNumber__c, '[Contact-' + String.valueOf(i).leftPad(2, '0') + '] No se ha mapeado el External ID correctamente');
         }
 
-        // System.assertEquals(expected, actual, '[0] No se ha obtenido el número de Cuentas esperado');
-        // System.assertEquals(expected, actual, '[1] No se ha obtenido el número de Cuentas esperado');
-        // System.assertEquals(expected, actual, '[2] No se ha obtenido el número de Contactos esperado');
-
-        // loop?
-        // System.assertEquals(expected, actual, '[3] Los datos de la estructura no coinciden con la información del objeto');
+        System.assertEquals(customersJsonItems.size(), customersAccounts.size(), '[0] No se ha obtenido el número de Cuentas Personales esperado');
+        System.assertEquals(companiesJsonItems.size(), companiesAccounts.size(), '[1] No se ha obtenido el número de Cuentas esperado');
+        System.assertEquals(companiesJsonItems.size(), companiesContacts.size(), '[2] No se ha obtenido el número de Contactos esperado');
     }
 }
