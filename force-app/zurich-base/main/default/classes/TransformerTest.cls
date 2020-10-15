@@ -65,18 +65,15 @@ public with sharing class TransformerTest
         {
             accountRecord = (Account) myTransformer.transform(Transformer.OBJECT_NAME_ACCOUNT, customersJsonItems[i]);
             customersAccounts.add(accountRecord);
-            // Account accountRecord = new Account(LastName = 'Prueba Física', INFOCustomerNumber__c = '12345677');
         }
 
         for (Integer i = 0; i < companiesJsonItems.size(); i++)
         {
             accountRecord = (Account) myTransformer.transform(Transformer.OBJECT_NAME_ACCOUNT, companiesJsonItems[i]);
             companiesAccounts.add(accountRecord);
-            // Account accountRecord = new Account(Name = 'Prueba Jurídica', INFOCustomerNumber__c = '1234568');
 
             contactRecord = (Contact) myTransformer.transform(Transformer.OBJECT_NAME_CONTACT, companiesJsonItems[i]);
             companiesContacts.add(contactRecord);
-            // Contact contactRecord = new Contact(LastName = 'Prueba Jurídica', INFOCustomerNumber__c = '1234568', LegalEntity__c = 'General Insurance');
         }
 
         // System.assertEquals(expected, actual, '[0] No se ha obtenido el número de Cuentas esperado');
