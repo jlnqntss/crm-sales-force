@@ -10,6 +10,56 @@
         <default>false</default>
         <label>General Insurance</label>
     </customValue>
+    <customValue>
+        <fullName>000</fullName>
+        <default>false</default>
+        <label>000</label>
+    </customValue>
+    <customValue>
+        <fullName>001</fullName>
+        <default>false</default>
+        <label>001</label>
+    </customValue>
+    <customValue>
+        <fullName>002</fullName>
+        <default>false</default>
+        <label>002</label>
+    </customValue>
+    <customValue>
+        <fullName>003</fullName>
+        <default>false</default>
+        <label>003</label>
+    </customValue>
+    <customValue>
+        <fullName>004</fullName>
+        <default>false</default>
+        <label>004</label>
+    </customValue>
+    <customValue>
+        <fullName>005</fullName>
+        <default>false</default>
+        <label>005</label>
+    </customValue>
+    <customValue>
+        <fullName>006</fullName>
+        <default>false</default>
+        <label>006</label>
+    </customValue>
+    <customValue>
+        <fullName>007</fullName>
+        <default>false</default>
+        <label>007</label>
+    </customValue>
+    <customValue>
+        <fullName>008</fullName>
+        <default>false</default>
+        <label>008</label>
+    </customValue>
+    <customValue>
+        <fullName>999</fullName>
+        <default>false</default>
+        <label>999</label>
+    </customValue>
     <description>Indicates the legal entity which belongs to</description>
     <masterLabel>Entidad legal</masterLabel>
     <sorted>false</sorted>
