@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tipo de Siniestro</label>
+    <name>ClaimType__c</name>
+    <picklistValues>
+        <masterLabel>definidos</masterLabel>
+        <translation><!-- definidos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>no</masterLabel>
+        <translation><!-- no --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>valores</masterLabel>
+        <translation><!-- valores --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

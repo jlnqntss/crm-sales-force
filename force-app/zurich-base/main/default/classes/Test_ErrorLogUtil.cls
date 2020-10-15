@@ -99,4 +99,70 @@ public class Test_ErrorLogUtil {
 
     Test.stopTest();
   }
+
+  @isTest
+  static void testHandleExternalRequestErrors() {
+    List<ExternalRequestErrorEvent__e> errorEvents = new List<ExternalRequestErrorEvent__e>{
+      new ExternalRequestErrorEvent__e(
+        Action__c = 'Upsert',
+        ContentFormat__c = 'JSON',
+        Entity__c = 'Customer',
+        ExternalRequestCreatedDate__c = System.now(),
+        JobId__c = '9062I000000Xjj0QAC',
+        Message__c = 'Test Message',
+        Origin__c = 'INFO',
+        Payload__c = '{"campo1": "valor1", "campo2": "valor2"}',
+        RecordId__c = '9062I000000Xjj0QEM',
+        StackTrace__c = 'Test Stack Trace',
+        ThrowingTime__c = System.now()
+      )
+    };
+    Test.startTest();
+    ErrorLogUtil.handleExternalRequestErrors(errorEvents);
+    Test.stopTest();
+    List<ExternalRequestError__c> errorRecords = [
+      SELECT Id
+      FROM ExternalRequestError__c
+    ];
+    System.assertEquals(
+      1,
+      errorRecords.size(),
+      '[0] No se han recuperado los registros esperados'
+    );
+  }
+
+  @isTest
+  static void testCommitExternalRequestErrors() {
+    // Insertar un external request
+    ExternalRequest__c request = new ExternalRequest__c(
+      Origin__c = 'INFO',
+      Entity__c = 'Customer',
+      Action__c = 'Upsert',
+      ContentFormat__c = 'JSON',
+      Payload__c = '{"campo1": "valor1", "campo2": "valor2"}'
+    );
+    insert request;
+
+    Test.startTest();
+    try {
+      List<String> vals;
+      String err = vals[0];
+    } catch (Exception ex) {
+      /* Test 1 */
+      ErrorLogUtil.commitError(request, 'Test Message', '9062I000000Xjj0QAC');
+      /* Test 2 */
+      ErrorLogUtil.commitError(request, ex, '9062I000000Xjj0QAD');
+    }
+    Test.stopTest();
+
+    List<ExternalRequestError__c> errorRecords = [
+      SELECT Id
+      FROM ExternalRequestError__c
+    ];
+    System.assertEquals(
+      2,
+      errorRecords.size(),
+      '[0] No se han recuperado los registros esperados'
+    );
+  }
 }

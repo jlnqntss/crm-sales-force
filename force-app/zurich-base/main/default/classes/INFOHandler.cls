@@ -1,0 +1,394 @@
+/**
+ * Clase handler de INFO
+ * Procesa las external request cuyo origen sea INFO con la ayuda de la clase Transformer
+ **
+ * @author adelgado
+ * @date 13/10/2020
+ */
+public class INFOHandler implements ISystem {
+  @testVisible
+  private static Map<String, Map<sObject, ExternalRequest__c>> recordsToUpsertByObject = new Map<String, Map<sObject, ExternalRequest__c>>();
+  @testVisible
+  private static List<ExternalRequest__c> externalRequestResultList = new List<ExternalRequest__c>();
+
+  // CUSTOM METATDATA
+  @testVisible
+  private static Transformer tf = new Transformer(Transformer.ORIGIN_NAME_INFO);
+  @testVisible
+  private static Map<String, String> externalIdByObject = new Map<String, String>();
+  @testVisible
+  private static Integer maxRetries;
+
+  /**
+   * Obtiene la información necesaria para poder procesar las external request pendientes
+   **
+   * @author adelgado
+   * @date 13/10/2020
+   * @param externalRequestList Lista de external request que deben ser procesadas
+   * @return void
+   * @throws
+   * @where ExternalJobQueueBatch
+   */
+  public static void prepare(List<ExternalRequest__c> externalRequestList) {
+    // 1 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
+    recordsToUpsertByObject = tf.initRequestsMapBySettings();
+
+    // 2 - Obtener identificadores externos por cada entidad
+    for (ExternalIdField__mdt externalId : [
+      SELECT SalesforceEntity__c, ExternalId__c
+      FROM ExternalIdField__mdt
+      WHERE Origin__c = 'INFO'
+    ]) {
+      externalIdByObject.put(
+        externalId.SalesforceEntity__c,
+        externalId.ExternalId__c
+      );
+    }
+
+    // 3 - Obtener el número máximo de reintentos
+    maxRetries = (Integer) [
+      SELECT Retries__c
+      FROM ExternalJobQueueBatch__mdt
+      WHERE Origin__c = 'INFO'
+    ]
+    .Retries__c;
+  }
+
+  /**
+   * Realiza las transformaciones necesarias para procesar las external request recibidas y convertirlas en objetos de Salesforce
+   **
+   * @author adelgado
+   * @date 13/10/2020
+   * @param externalRequestList Lista de external request que deben ser procesadas
+   * @return void
+   * @throws
+   * @where ExternalJobQueueBatch
+   */
+  public static void process(List<ExternalRequest__c> externalRequestList) {
+    // 1 - Recorrer todas las external request recibidas
+    for (ExternalRequest__c externalRequest : externalRequestList) {
+      try {
+        // 1.1 - Comprobar si el contenido de la solicitud está en formato JSON
+        if (
+          externalRequest.ContentFormat__c == 'JSON' &&
+          String.isNotBlank(externalRequest.Payload__c)
+        ) {
+          // 1.1.1 - Transformar el contenido del JSON a una estructura Map
+          Map<String, Object> recordValuesMap = (Map<String, Object>) JSON.deserializeUntyped(
+            externalRequest.Payload__c
+          );
+
+          // 1.1.2 - Convertir a mayúsculas todas las claves del mapa de campos de INFO
+          for (string field : recordValuesMap.keySet()) {
+            recordValuesMap.put(
+              field.toUpperCase(),
+              recordValuesMap.get(field)
+            );
+          }
+
+          // 1.1.3 - Realizar las transformaciones necesarias en base a la entidad de INFO
+          switch on externalRequest.Entity__c.toUpperCase() {
+            // Persona
+            when 'CUSTOMER' {
+              if (recordValuesMap.containsKey('TCPEFIJU')) {
+                // Personas físicas
+                if (
+                  ((String) recordValuesMap.get('TCPEFIJU'))
+                    .equalsIgnoreCase('F')
+                ) {
+                  Account accountRecord = (Account) tf.transform(
+                    'Account',
+                    recordValuesMap
+                  );
+
+                  accountRecord.FirstName = recordValuesMap.containsKey(
+                      'DNNOMRZM'
+                    )
+                    ? (String) recordValuesMap.get('DNNOMRZM')
+                    : null;
+                  accountRecord.LastName =
+                    (recordValuesMap.containsKey('DNAP1RZM')
+                      ? (String) recordValuesMap.get('DNAP1RZM')
+                      : null) +
+                    ' ' +
+                    (recordValuesMap.containsKey('DNAP2RZM')
+                      ? (String) recordValuesMap.get('DNAP2RZM')
+                      : null);
+                  accountRecord.LegalEntity__pc = recordValuesMap.containsKey(
+                      'TCCDEXCO'
+                    )
+                    ? (String) recordValuesMap.get('TCCDEXCO')
+                    : null;
+                  accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
+                    .get('Customer')
+                    .getRecordTypeId();
+
+                  recordsToUpsertByObject.get('Account')
+                    .put(accountRecord, externalRequest);
+                } else if (
+                  ((String) recordValuesMap.get('TCPEFIJU'))
+                    .equalsIgnoreCase('J')
+                ) {
+                  // Personas jurídicas
+                  Account accountRecord = (Account) tf.transform(
+                    'Account',
+                    recordValuesMap
+                  );
+
+                  accountRecord.Name =
+                    (recordValuesMap.containsKey('DNAP1RZM')
+                      ? (String) recordValuesMap.get('DNAP1RZM')
+                      : null) +
+                    ' ' +
+                    (recordValuesMap.containsKey('DNAP2RZM')
+                      ? (String) recordValuesMap.get('DNAP2RZM')
+                      : null) +
+                    ' ' +
+                    (recordValuesMap.containsKey('DNNOMRZM')
+                      ? (String) recordValuesMap.get('DNNOMRZM')
+                      : null);
+                  accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
+                    .get('BusinessCustomer')
+                    .getRecordTypeId();
+
+                  recordsToUpsertByObject.get('Account')
+                    .put(accountRecord, externalRequest);
+
+                  Contact contactRecord = (Contact) tf.transform(
+                    'Contact',
+                    recordValuesMap
+                  );
+
+                  contactRecord.FirstName = recordValuesMap.containsKey(
+                      'DNNOMRZM'
+                    )
+                    ? (String) recordValuesMap.get('DNNOMRZM')
+                    : null;
+                  contactRecord.LastName =
+                    (recordValuesMap.containsKey('DNAP1RZM')
+                      ? (String) recordValuesMap.get('DNAP1RZM')
+                      : null) +
+                    ' ' +
+                    (recordValuesMap.containsKey('DNAP2RZM')
+                      ? (String) recordValuesMap.get('DNAP2RZM')
+                      : null);
+                  contactRecord.Account = new Account(
+                    INFOCustomerNumber__c = accountRecord.INFOCustomerNumber__c
+                  );
+                  contactRecord.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName()
+                    .get('CustomerGI')
+                    .getRecordTypeId();
+
+                  recordsToUpsertByObject.get('Contact')
+                    .put(contactRecord, null);
+                }
+              }
+            }
+            // Vías de contacto
+            /*when 'CONTACT_POINT'
+                        {
+                            if(recordValuesMap.containsKey('TCTIPDOM'))
+                            {
+                                // Vía de contacto postal (A, B, P)
+                                if(((String) recordValuesMap.get('TCTIPDOM')).equalsIgnoreCase('A') || ((String) recordValuesMap.get('TCTIPDOM')).equalsIgnoreCase('B') || ((String) recordValuesMap.get('TCTIPDOM')).equalsIgnoreCase('P'))
+                                {
+                                    ContactPointAddress cpaRecord = (ContactPointAddress) tf.transform('ContactPointAddress', recordValuesMap);
+                                    recordsToUpsertByObject.get('ContactPointAddress').put(cpaRecord, externalRequest);
+                                }
+                                //  Vía de contacto telefónico (T)
+                                else if(((String) recordValuesMap.get('TCTIPDOM')).equalsIgnoreCase('T'))
+                                {
+                                    ContactPointPhone cppRecord = (ContactPointPhone) tf.transform('ContactPointPhone', recordValuesMap);
+                                    recordsToUpsertByObject.get('ContactPointPhone').put(cppRecord, externalRequest);
+                                }
+                                // Vía de contacto email (E)
+                                else if(((String) recordValuesMap.get('TCTIPDOM')).equalsIgnoreCase('E'))
+                                {
+                                    ContactPointEmail cpeRecord = (ContactPointEmail) tf.transform('ContactPointEmail', recordValuesMap);
+                                    recordsToUpsertByObject.get('ContactPointEmail').put(cpeRecord, externalRequest);
+                                }
+                            }
+                        }*/
+          }
+        } else {
+          externalRequest.ProcessResult__c = 'KO';
+          externalRequest.Error_Log__c = 'No se ha recibido información';
+          externalRequest.Processed__c = true;
+
+          externalRequestResultList.add(externalRequest);
+        }
+      } catch (Exception e) {
+        // Informar la external request con el error que ha provocado
+        externalRequest.ProcessResult__c = 'KO';
+        externalRequest.Error_Log__c = e.getMessage();
+        externalRequest.NumRetry__c = externalRequest.NumRetry__c == null
+          ? 1
+          : externalRequest.NumRetry__c + 1;
+
+        if (externalRequest.NumRetry__c >= maxRetries) {
+          externalRequest.Processed__c = true;
+        }
+
+        externalRequestResultList.add(externalRequest);
+
+        ErrorLogUtil.commitError(e, 'INFOHandler', 'process');
+      }
+    }
+  }
+
+  /**
+   * Realiza las operaciones DML sobre la BBDD y actualiza la información de las external request procesadas
+   **
+   * @author adelgado
+   * @date 13/10/2020
+   * @param Lista de external request que deben ser procesadas
+   * @return void
+   * @throws
+   * @where ExternalJobQueueBatch
+   */
+  public static void persists(List<ExternalRequest__c> externalRequestList) {
+    Map<String, List<ExternalRequest__c>> externalRequestByObject = new Map<String, List<ExternalRequest__c>>();
+    Map<String, List<sObject>> recordListByObject = new Map<String, List<ExternalRequest__c>>();
+
+    try {
+      if (
+        recordsToUpsertByObject != null && !recordsToUpsertByObject.isEmpty()
+      ) {
+        // 1 - Recorrer todos los registros generados
+        for (String objectName : recordsToUpsertByObject.keySet()) {
+          if (!recordsToUpsertByObject.get(objectName).isEmpty()) {
+            if (!externalRequestByObject.containsKey(objectName)) {
+              externalRequestByObject.put(
+                objectName,
+                new List<ExternalRequest__c>()
+              );
+              recordListByObject.put(objectName, new List<sObject>());
+            }
+
+            for (
+              sObject record : recordsToUpsertByObject.get(objectName).keySet()
+            ) {
+              if (recordsToUpsertByObject.get(objectName).get(record) != null) {
+                externalRequestByObject.get(objectName)
+                  .add(recordsToUpsertByObject.get(objectName).get(record));
+              }
+
+              recordListByObject.get(objectName).add(record);
+            }
+          }
+        }
+
+        // 2 - Realizar las operaciones DML sobre los registros generados y actualizar external request con resultado
+        for (String objectName : recordListByObject.keySet()) {
+          Schema.SObjectField externalId = Schema.getGlobalDescribe()
+            .get(objectName)
+            .getDescribe()
+            .fields.getMap()
+            .get(externalIdByObject.get(objectName));
+          Database.UpsertResult[] resultList = Database.upsert(
+            recordListByObject.get(objectName),
+            externalId,
+            false
+          );
+
+          for (
+            Integer i = 0;
+            i < externalRequestByObject.get(objectName).size();
+            i++
+          ) {
+            ExternalRequest__c extReq = externalRequestByObject.get(objectName)
+              .get(i);
+
+            if (resultList.get(i).isSuccess()) {
+              extReq.ProcessResult__c = 'OK';
+              extReq.Processed__c = true;
+              extReq.Error_Log__c = null;
+            } else {
+              extReq.ProcessResult__c = 'KO';
+              extReq.Error_Log__c = string.join(
+                resultList.get(i).getErrors(),
+                '\n'
+              );
+              extReq.NumRetry__c = extReq.NumRetry__c == null
+                ? 1
+                : extReq.NumRetry__c + 1;
+
+              if (extReq.NumRetry__c >= maxRetries) {
+                extReq.Processed__c = true;
+              }
+            }
+
+            externalRequestResultList.add(extReq);
+          }
+        }
+      }
+    } catch (Exception e) {
+      ErrorLogUtil.commitError(e, 'INFOHandler', 'persists');
+    }
+  }
+
+  /**
+   * Actualiza las external request procesadas con el resultado obtenido en las operaciones DML
+   **
+   * @author adelgado
+   * @date 13/10/2020
+   * @param Id del job que se está ejecutando
+   * @param Lista de external request que deben ser procesadas
+   * @return void
+   * @throws
+   * @where ExternalJobQueueBatch
+   */
+  public static void manageResult(
+    Id jobId,
+    List<ExternalRequest__c> externalRequestList
+  ) {
+    List<ExternalRequestErrorEvent__e> erErrorEventList = new List<ExternalRequestErrorEvent__e>();
+
+    try {
+      if (
+        externalRequestResultList != null &&
+        !externalRequestResultList.isEmpty()
+      ) {
+        // 1 - Actualizar las external request con el resultado
+        Database.SaveResult[] resultList = Database.update(
+          externalRequestResultList,
+          false
+        );
+
+        // 2 - Publicar las external request que no se hayan procesado correctamente
+        for (ExternalRequest__c externalRequest : externalRequestResultList) {
+          // 2.1 - Solo publicar evento de error si el resultado es 'KO' y se ha superado el número máximo de reintentos
+          if (
+            externalRequest.Processed__c &&
+            externalRequest.ProcessResult__c == 'KO'
+          ) {
+            erErrorEventList.add(
+              new ExternalRequestErrorEvent__e(
+                JobId__c = jobId,
+                RecordId__c = externalRequest.Id,
+                Origin__c = externalRequest.Origin__c,
+                Entity__c = externalRequest.Entity__c,
+                Action__c = externalRequest.Action__c,
+                ContentFormat__c = externalRequest.ContentFormat__c,
+                Payload__c = externalRequest.Payload__c,
+                Message__c = externalRequest.Error_Log__c,
+                StackTrace__c = externalRequest.Error_Log__c,
+                ThrowingTime__c = Datetime.now(),
+                ExternalRequestCreatedDate__c = externalRequest.CreatedDate
+              )
+            );
+          }
+        }
+
+        // 3 - Publicar external request erróneas
+        if (!erErrorEventList.isEmpty()) {
+          List<Database.SaveResult> results = EventBus.publish(
+            erErrorEventList
+          );
+        }
+      }
+    } catch (Exception e) {
+      ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
+    }
+  }
+}

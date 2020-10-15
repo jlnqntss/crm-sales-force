@@ -170,6 +170,189 @@ public without sharing class ErrorLogUtil {
   }
 
   /**
+   * Método para registrar un error de integración personalizado
+   **
+   * @param ExternalRequest__c External Request
+   * @param String message
+   * @param Id jobId
+   *
+   * @author xsobera
+   * @date 07/10/2020
+   */
+  public static void commitError(
+    ExternalRequest__c request,
+    String message,
+    Id jobId
+  ) {
+    /* Evitar mensajes mayores de la longitud de campo */
+    Schema.DescribeFieldResult fieldInfo = ExternalRequestError__c.Message__c.getDescribe();
+    if (
+      String.isNotBlank(message) && message.length() > fieldInfo.getLength()
+    ) {
+      message = message.substring(0, fieldInfo.getLength() - 1);
+    }
+
+    publishIntegrationError(
+      message, // message
+      null, // stackTrace
+      jobId != null
+        ? String.valueOf(jobId)
+        : null, // jobId
+      request != null
+        ? request.Origin__c
+        : null, // origin
+      request != null
+        ? request.Entity__c
+        : null, // entity
+      request != null
+        ? request.Action__c
+        : null, // action
+      request != null
+        ? request.ContentFormat__c
+        : null, // contentFormat
+      request != null
+        ? request.Payload__c
+        : null, // payload
+      request != null
+        ? String.valueOf(request.Id)
+        : null, // requestId
+      request != null
+        ? request.CreatedDate
+        : null // requestCreatedDate
+    );
+  }
+
+  /**
+   * Método para registrar un error de integración asociado a una excepción
+   **
+   * @param ExternalRequest__c External Request
+   * @param Exception excepción
+   * @param Id jobId
+   *
+   * @author xsobera
+   * @date 07/10/2020
+   */
+  public static void commitError(
+    ExternalRequest__c request,
+    Exception ex,
+    Id jobId
+  ) {
+    publishIntegrationError(
+      ex != null
+        ? ex.getMessage()
+        : null, // message
+      ex != null
+        ? ex.getStackTraceString()
+        : null, // stackTrace
+      jobId != null
+        ? String.valueOf(jobId)
+        : null, // jobId
+      request != null
+        ? request.Origin__c
+        : null, // origin
+      request != null
+        ? request.Entity__c
+        : null, // entity
+      request != null
+        ? request.Action__c
+        : null, // action
+      request != null
+        ? request.ContentFormat__c
+        : null, // contentFormat
+      request != null
+        ? request.Payload__c
+        : null, // payload
+      request != null
+        ? String.valueOf(request.Id)
+        : null, // requestId
+      request != null
+        ? request.CreatedDate
+        : null // requestCreatedDate
+    );
+  }
+
+  /**
+   * Método que publica el evento de tipo ExternalRequestError específico de integración
+   **
+   * @param String mensaje
+   * @param String clase/trigger apex origen
+   * @param String método origen
+   * @param Integer linea
+   * @param String nivel de error
+   * @param String traza
+   * @param String id del proceso (batch/job)
+   * @param String id/external_id del registro
+   * @param String nombre del objeto
+   * @param String tipo de error
+   *
+   * @return Boolean isSuccess
+   *
+   * @author xsobera
+   * @date 07/10/2020
+   */
+  private static Boolean publishIntegrationError(
+    String message,
+    String stackTrace,
+    String jobId,
+    String origin,
+    String entity,
+    String action,
+    String contentFormat,
+    String payload,
+    String requestId,
+    Datetime requestCreatedDate
+  ) {
+    // Lanzar el evento
+    Database.SaveResult sr = Eventbus.publish(
+      new ExternalRequestErrorEvent__e(
+        Message__c = message,
+        StackTrace__c = stackTrace,
+        JobId__c = jobId,
+        Origin__c = origin,
+        Entity__c = entity,
+        Action__c = action,
+        ContentFormat__c = contentFormat,
+        Payload__c = payload,
+        RecordId__c = requestId,
+        ExternalRequestCreatedDate__c = requestCreatedDate,
+        ThrowingTime__c = System.now()
+      )
+    );
+
+    return sr.isSuccess();
+  }
+
+  /**
+   * Método que publica un listado de eventos de tipo ExternalRequestError específicos de integración
+   **
+   * @param List<ExternalRequestErrorEvent__e> Listado de eventos a publicar
+   * @return Boolean isSuccess
+   *
+   * @author xsobera
+   * @date 07/10/2020
+   */
+  private static Boolean publishIntegrationError(
+    List<ExternalRequestErrorEvent__e> evs
+  ) {
+    // Call method to publish events
+    List<Database.SaveResult> results = EventBus.publish(evs);
+
+    // Inspect publishing result for each event
+    Boolean isSuccess = true;
+    for (Database.SaveResult sr : results) {
+      if (!sr.isSuccess()) {
+        isSuccess = sr.isSuccess();
+        // for(Database.Error err : sr.getErrors())
+        // {
+        //     System.debug('Error returned: ' + err.getStatusCode() + ' - ' + err.getMessage());
+        // }
+      }
+    }
+
+    return isSuccess;
+  }
+
+  /**
    * Método registra en Salesforce el log de los errores
    **
    * @param List<Error_Event__e> eventos de tipo error
@@ -199,6 +382,68 @@ public without sharing class ErrorLogUtil {
 
     if (!errors.isEmpty()) {
       Database.SaveResult[] srResults = Database.insert(errors, false);
+
+      /* DEBUG */
+      for (Database.SaveResult sr : srResults) {
+        if (!sr.isSuccess()) {
+          System.debug(
+            LoggingLevel.ERROR,
+            '[ERROR LOG] Excepción insertando registros de log:'
+          );
+          for (Database.Error err : sr.getErrors()) {
+            System.debug(
+              LoggingLevel.ERROR,
+              err.getStatusCode() +
+              ': ' +
+              err.getMessage()
+            );
+            System.debug(
+              LoggingLevel.ERROR,
+              'ErrorLog fields that affected this error: ' + err.getFields()
+            );
+          }
+        }
+      }
+      /* END DEBUG */
+    }
+  }
+
+  /**
+   * Método registra en Salesforce el log de los errores de integración
+   **
+   * @param List<ExternalRequestErrorEvent__e> eventos de tipo error específicos de integración
+   *
+   * @author xsobera
+   * @date 06/10/2020
+   */
+  public static void handleExternalRequestErrors(
+    List<ExternalRequestErrorEvent__e> evs
+  ) {
+    List<ExternalRequestError__c> errors = new List<ExternalRequestError__c>();
+    for (ExternalRequestErrorEvent__e e : evs) {
+      errors.add(
+        new ExternalRequestError__c(
+          Action__c = e.Action__c,
+          ContentFormat__c = e.ContentFormat__c,
+          Entity__c = e.Entity__c,
+          ExternalRequestCreatedDate__c = e.ExternalRequestCreatedDate__c,
+          JobId__c = e.JobId__c,
+          Message__c = e.Message__c,
+          Origin__c = e.Origin__c,
+          Payload__c = e.Payload__c,
+          RecordId__c = e.RecordId__c,
+          StackTrace__c = e.StackTrace__c,
+          ThrowingTime__c = e.ThrowingTime__c
+        )
+      );
+    }
+
+    if (!errors.isEmpty()) {
+      Database.DMLOptions dmo = new Database.DMLOptions();
+      dmo.AllowFieldTruncation = true;
+      dmo.OptAllOrNone = false;
+
+      Database.SaveResult[] srResults = Database.insert(errors, dmo);
 
       /* DEBUG */
       for (Database.SaveResult sr : srResults) {
