@@ -46,6 +46,19 @@ public class Transformer
     public List<Transformer__mdt> getSettings() { return this.settings; }
     private String origin;
     public String getOrigin() { return this.origin; }
+    private Map<String, Object> unmappedValues
+    {
+        get {
+            if(unmappedValues == null)
+            {
+                // Inicializar mapa para devolver los campos no mapeados
+                unmappedValues = new Map<String, Object>();
+            }
+            return unmappedValues;
+        }
+        set;
+    }
+    public Map<String, Object> getUnmappedValues() { return unmappedValues; }
 
     public Map<String, Map<sObject, ExternalRequest__c>> initRequestsMapBySettings()
     {
@@ -178,6 +191,9 @@ public class Transformer
                     // Sí hay configuración para el campo origen pero no se ha definido un campo sf de destino en el metadato (vacío o nulo)
                     System.debug(LoggingLevel.WARN, '[Transformer] No se ha indicado ningún campo Salesforce destino en la configuración.\nOrigin: ' + origin + ' \nField: ' + originRecordField);
                     //throw new TransformerException('There are not salesforce field in metadata configuration to these values.\nOrigin: ' + origin + ' \nField: ' + originRecordField);
+
+                    // Guardar en unmappedValues
+                    unmappedValues.put(originRecordField, originRecordMap.get(originRecordField));
                 }
             }
             else
@@ -185,6 +201,9 @@ public class Transformer
                 // No se ha especificado ninguna configuración para el campo origen xxx
                 System.debug(LoggingLevel.WARN, '[Transformer] No hay configuración para los valores solicitados.\n Origen: ' + origin + ' \nsObject: ' + objectName + ' \nField: ' + originRecordField);
                 //throw new TransformerException('There are not metadata configuration to these values. \n Origin: ' + origin + ' \nsObject: ' + objectName + ' \nField: ' + originRecordField);
+
+                // Guardar en unmappedValues
+                unmappedValues.put(originRecordField, originRecordMap.get(originRecordField));
             }
         }
 
