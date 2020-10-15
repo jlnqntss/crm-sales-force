@@ -104,7 +104,7 @@ public class Transformer
     public sObject transform(String objectName, Map<String, Object> originRecordMap)
     {
         // Obtenemos la información de los campos del objeto Salesforce destino
-        Set<String> objectFields = new Set<String>();
+        Map<String, Schema.SObjectField> objectFields;
         Schema.DescribeSObjectResult descResult;
         System.debug(LoggingLevel.DEBUG, '[Tramsformer] objectName: ' + objectName);
         if(!descResultMap.containsKey(objectName))
@@ -116,8 +116,8 @@ public class Transformer
         {
             descResult = descResultMap.get(objectName);
         }
-        objectFields = descResult.fields.getMap().keySet();
-        System.debug(LoggingLevel.DEBUG, '[Transformer] objectFields: ' + JSON.serialize(objectFields));
+        objectFields = descResult.fields.getMap();
+        System.debug(LoggingLevel.DEBUG, '[Transformer] objectFields: ' + JSON.serialize(objectFields.keySet()));
 
         Map<String, String> mappingByOriginField = mappingsByObject.get(objectName);
         SObject record = Schema.getGlobalDescribe().get(objectName).newSObject();
@@ -130,49 +130,61 @@ public class Transformer
             if(mappingByOriginField.containsKey(originRecordField.toUpperCase()))
             {
                 sfFieldName = mappingByOriginField.get(originRecordField.toUpperCase());
-                if(objectFields.contains(sfFieldName.toLowerCase())) // Validar que el campo indicado en metadata existe en el objeto de salesforce
+                if(String.isNotBlank(sfFieldName)) // comprobar que hay un campo sf definido en el metadato
                 {
-                    originFieldValue = String.valueOf(originRecordMap.get(originRecordField)).trim();
-                    if(String.isNotBlank(originFieldValue))
+                    if(objectFields.keySet().contains(sfFieldName.toLowerCase())) // Validar que el campo indicado en metadata existe en el objeto de salesforce
                     {
-                        sfFieldObj = (Schema.sObjectField) record.get(sfFieldName);
-                        fieldDisplayType = sfFieldObj.getDescribe().getType();
-                        switch on fieldDisplayType.name()
+                        originFieldValue = String.valueOf(originRecordMap.get(originRecordField)).trim();
+                        if(String.isNotBlank(originFieldValue))
                         {
-                            when 'Boolean'
+                            System.debug(LoggingLevel.DEBUG, '[Transformer] Obteniendo detalles del campo: ' + sfFieldName);
+                            sfFieldObj = objectFields.get(sfFieldName.toLowerCase());
+                            fieldDisplayType = sfFieldObj.getDescribe().getType();
+                            System.debug(LoggingLevel.DEBUG, '[Transformer] Tipo del campo: ' + fieldDisplayType.name());
+                            switch on fieldDisplayType.name().toUpperCase()
                             {
-                                record.put(sfFieldName, parseBooleanField(originFieldValue));
+                                when 'BOOLEAN'
+                                {
+                                    record.put(sfFieldName, parseBooleanField(originFieldValue));
+                                }
+                                when 'DATE'
+                                {
+                                    record.put(sfFieldName, Date.valueOf(originFieldValue));
+                                }
+                                when 'DATETIME'
+                                {
+                                    record.put(sfFieldName, Datetime.valueOf(originFieldValue));
+                                }
+                                when else // se considera texto el resto de campos
+                                {
+                                    record.put(sfFieldName, originRecordMap.get(originRecordField));
+                                }
                             }
-                            when 'Date'
-                            {
-                                record.put(sfFieldName, Date.parse(originFieldValue));
-                            }
-                            when 'DateTime'
-                            {
-                                record.put(sfFieldName, Datetime.parse(originFieldValue));
-                            }
-                            when else // se considera texto el resto de campos
-                            {
-                                record.put(sfFieldName, originRecordMap.get(originRecordField));
-                            }
+                        }
+                        else
+                        {
+                            record.put(sfFieldName, null);
                         }
                     }
                     else
                     {
-                        record.put(sfFieldName, null);
+                        // Sí hay configuración para el campo origen y sí se ha definido un campo sf pero el objeto salefsorce destino no contiene un campo con el nombre indicado
+                        System.debug(LoggingLevel.ERROR, '[Transformer] No hay ningún campo en el objeto Salesforce con el nombre indicado.\nsObject: ' + objectName + ' \nField: ' + sfFieldName);
+                        throw new TransformerException('There are not any field with these name in the salesforce object. \nsObject: ' + objectName + ' \nField: ' + sfFieldName);
                     }
                 }
                 else
                 {
-                    // El objeto salefsorce xxx no contiene un campo llamado xxxx
-                    System.debug(LoggingLevel.ERROR, '[Transformer] No hay ningún campo en el objeto Salesforce con el nombre indicado.\nsObject: ' + objectName + ' \nField: ' + sfFieldName);
-                    throw new TransformerException('There are not any field with these name in the salesforce object. \nsObject: ' + objectName + ' \nField: ' + sfFieldName);
+                    // Sí hay configuración para el campo origen pero no se ha definido un campo sf de destino en el metadato (vacío o nulo)
+                    System.debug(LoggingLevel.WARN, '[Transformer] No se ha indicado ningún campo Salesforce destino en la configuración.\nOrigin: ' + origin + ' \nField: ' + originRecordField);
+                    //throw new TransformerException('There are not salesforce field in metadata configuration to these values.\nOrigin: ' + origin + ' \nField: ' + originRecordField);
                 }
             }
             else
             {
-                System.debug(LoggingLevel.ERROR, '[Transformer] No hay configuración para los valores solicitados.\n Origen: ' + origin + ' \nsObject: ' + objectName + ' \nField: ' + originRecordField);
-                throw new TransformerException('There are not metadata configuration to these values. \n Origin: ' + origin + ' \nsObject: ' + objectName + ' \nField: ' + originRecordField);
+                // No se ha especificado ninguna configuración para el campo origen xxx
+                System.debug(LoggingLevel.WARN, '[Transformer] No hay configuración para los valores solicitados.\n Origen: ' + origin + ' \nsObject: ' + objectName + ' \nField: ' + originRecordField);
+                //throw new TransformerException('There are not metadata configuration to these values. \n Origin: ' + origin + ' \nsObject: ' + objectName + ' \nField: ' + originRecordField);
             }
         }
 
