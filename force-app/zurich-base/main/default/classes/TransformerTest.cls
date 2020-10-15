@@ -83,4 +83,19 @@ public with sharing class TransformerTest
         System.assertEquals(companiesJsonItems.size(), companiesAccounts.size(), '[1] No se ha obtenido el número de Cuentas esperado');
         System.assertEquals(companiesJsonItems.size(), companiesContacts.size(), '[2] No se ha obtenido el número de Contactos esperado');
     }
+
+    @IsTest
+    static void test_getUnmappedValues()
+    {
+        // Test para comprobar que obtenemos un mapa con los valores que no están configurados en la metadata
+        List<Map<String, Object>> customersJsonItems = TestDataFactory.getINFOCustomerJson(1, 'J');
+        customersJsonItems[0].put('unmapped', 'test');
+
+        // Instanciar el transformer con la configuración de INFO
+        Transformer myTransformer = new Transformer(Transformer.ORIGIN_NAME_INFO);
+        myTransformer.transform(Transformer.OBJECT_NAME_ACCOUNT, customersJsonItems[0]);
+        Map<String, Object> unmappedValues = myTransformer.getUnmappedValues();
+
+        System.assertEquals('test', (String) unmappedValues.get('unmapped'), '[0] No se ha obtenido el mapa con los campos no mapeados');
+    }
 }
