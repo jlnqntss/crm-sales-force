@@ -2,15 +2,33 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>false</sorted>
     <standardValue>
-        <fullName>Open</fullName>
+        <fullName>Nueva</fullName>
         <default>true</default>
-        <label>Open</label>
+        <label>Nueva</label>
         <closed>false</closed>
     </standardValue>
     <standardValue>
-        <fullName>Completed</fullName>
+        <fullName>Asignada</fullName>
         <default>false</default>
-        <label>Completed</label>
+        <label>Asignada</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Pendiente</fullName>
+        <default>false</default>
+        <label>Pendiente</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Planificada</fullName>
+        <default>false</default>
+        <label>Planificada</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Cerrada</fullName>
+        <default>false</default>
+        <label>Cerrada</label>
         <closed>true</closed>
     </standardValue>
 </StandardValueSet>
