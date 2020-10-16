@@ -8,7 +8,6 @@
         <plural>true</plural>
         <value>Claims</value>
     </caseValues>
-    <gender>Masculine</gender>
     <layouts>
         <layout>Claim Layout</layout>
         <sections>
@@ -16,5 +15,6 @@
             <section>Custom Links</section>
         </sections>
     </layouts>
-    <nameFieldLabel>Número del Siniestro</nameFieldLabel>
+    <nameFieldLabel><!-- Claim Number --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>
