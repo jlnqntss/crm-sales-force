@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SourceArea__c</fullName>
+    <description>OCS</description>
+    <externalId>false</externalId>
+    <label>Source Area</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Generic end customer</fullName>
+                <default>false</default>
+                <label>Generic end customer</label>
+            </value>
+            <value>
+                <fullName>End customer partner</fullName>
+                <default>false</default>
+                <label>End customer partner</label>
+            </value>
+            <value>
+                <fullName>Partner</fullName>
+                <default>false</default>
+                <label>Partner</label>
+            </value>
+            <value>
+                <fullName>Partner dome</fullName>
+                <default>false</default>
+                <label>Partner dome</label>
+            </value>
+            <value>
+                <fullName>Mediator</fullName>
+                <default>false</default>
+                <label>Mediator</label>
+            </value>
+            <value>
+                <fullName>Zurich Business Client</fullName>
+                <default>false</default>
+                <label>Zurich Business Client</label>
+            </value>
+            <value>
+                <fullName>Generic Internal</fullName>
+                <default>false</default>
+                <label>Generic Internal</label>
+            </value>
+            <value>
+                <fullName>SDC (Customer Defense Service)</fullName>
+                <default>false</default>
+                <label>SDC (Customer Defense Service)</label>
+            </value>
+            <value>
+                <fullName>INFO note</fullName>
+                <default>false</default>
+                <label>INFO note</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
