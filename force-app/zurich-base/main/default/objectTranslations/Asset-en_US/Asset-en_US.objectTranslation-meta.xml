@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Insured Object</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Insured Objects</value>
+    </caseValues>
+    <recordTypes>
+        <description><!-- Zurich OCS Address Record Type --></description>
+        <label><!-- Address --></label>
+        <name>Address</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Boat Record Type --></description>
+        <label><!-- Boat --></label>
+        <name>Boat</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Electronic Device Record Type --></description>
+        <label><!-- Electronic Device --></label>
+        <name>ElectronicDevice</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Mobile Record Type --></description>
+        <label><!-- Mobile --></label>
+        <name>Mobile</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Motor Record Type --></description>
+        <label><!-- Motor --></label>
+        <name>Motor</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Person Record Type --></description>
+        <label><!-- Person --></label>
+        <name>Person</name>
+    </recordTypes>
+    <startsWith>Vowel</startsWith>
+</CustomObjectTranslation>
