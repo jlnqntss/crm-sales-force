@@ -43,4 +43,16 @@
         <label>Respuesta recibida</label>
         <closed>false</closed>
     </standardValue>
+    <standardValue>
+        <fullName>Pendiente</fullName>
+        <default>false</default>
+        <label>Pendiente</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Respondido</fullName>
+        <default>false</default>
+        <label>Respondido</label>
+        <closed>false</closed>
+    </standardValue>
 </StandardValueSet>
