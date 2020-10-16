@@ -141,7 +141,7 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>ClaimDefault</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>OCS</description>
     <enableActivities>true</enableActivities>
@@ -157,7 +157,7 @@
     <gender>Masculine</gender>
     <label>Claim</label>
     <nameField>
-        <label>Claim Name</label>
+        <label>Claim Number</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Claims</pluralLabel>
