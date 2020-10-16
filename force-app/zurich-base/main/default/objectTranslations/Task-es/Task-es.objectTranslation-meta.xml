@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <layouts>
+        <layout>Activity</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Interaction</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Task Layout</layout>
+        <sections>
+            <label><!-- Related To --></label>
+            <section>Related To</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Defer --></label>
+        <name>Defer</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_0 --></label>
+        <name>Defer_0</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_1 --></label>
+        <name>Defer_1</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_2 --></label>
+        <name>Defer_2</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_3 --></label>
+        <name>Defer_3</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_4 --></label>
+        <name>Defer_4</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_5 --></label>
+        <name>Defer_5</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_6 --></label>
+        <name>Defer_6</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_7 --></label>
+        <name>Defer_7</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_8 --></label>
+        <name>Defer_8</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_9 --></label>
+        <name>Defer_9</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription --></label>
+        <name>EditDescription</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_0 --></label>
+        <name>EditDescription_0</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_1 --></label>
+        <name>EditDescription_1</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_2 --></label>
+        <name>EditDescription_2</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_3 --></label>
+        <name>EditDescription_3</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_4 --></label>
+        <name>EditDescription_4</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_5 --></label>
+        <name>EditDescription_5</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_6 --></label>
+        <name>EditDescription_6</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_7 --></label>
+        <name>EditDescription_7</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_8 --></label>
+        <name>EditDescription_8</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_9 --></label>
+        <name>EditDescription_9</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority --></label>
+        <name>UpdatePriority</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_0 --></label>
+        <name>UpdatePriority_0</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_1 --></label>
+        <name>UpdatePriority_1</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_2 --></label>
+        <name>UpdatePriority_2</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_3 --></label>
+        <name>UpdatePriority_3</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_4 --></label>
+        <name>UpdatePriority_4</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_5 --></label>
+        <name>UpdatePriority_5</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_6 --></label>
+        <name>UpdatePriority_6</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_7 --></label>
+        <name>UpdatePriority_7</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_8 --></label>
+        <name>UpdatePriority_8</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_9 --></label>
+        <name>UpdatePriority_9</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus --></label>
+        <name>UpdateStatus</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_0 --></label>
+        <name>UpdateStatus_0</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_1 --></label>
+        <name>UpdateStatus_1</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_2 --></label>
+        <name>UpdateStatus_2</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_3 --></label>
+        <name>UpdateStatus_3</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_4 --></label>
+        <name>UpdateStatus_4</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_5 --></label>
+        <name>UpdateStatus_5</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_6 --></label>
+        <name>UpdateStatus_6</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_7 --></label>
+        <name>UpdateStatus_7</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_8 --></label>
+        <name>UpdateStatus_8</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_9 --></label>
+        <name>UpdateStatus_9</name>
+    </quickActions>
+    <recordTypes>
+        <label>Actividad</label>
+        <name>Activity</name>
+    </recordTypes>
+    <recordTypes>
+        <label>Interacción</label>
+        <name>Interaction</name>
+    </recordTypes>
+    <validationRules>
+        <errorMessage><!-- [VR Tarea] Una actividad o interacción en estado CERRADA no puede pasar a ningún otro estado --></errorMessage>
+        <name>StatusRuleCantGoFromClosed</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Tarea] Una interacción en estado NUEVA no puede pasar a CERRADA --></errorMessage>
+        <name>StatusRuleCantGoFromNewToClosed</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Tarea] Una actividad en estado PLANIFICADA no puede pasar a CERRADA --></errorMessage>
+        <name>StatusRuleCantGoFromPlannedToClosed</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Tarea] Una actividad en estado PLANIFICADA no puede pasar a PENDIENTE --></errorMessage>
+        <name>StatusRuleCantGoFromPlannedToPending</name>
+    </validationRules>
+</CustomObjectTranslation>
