@@ -256,7 +256,7 @@ public class TestDataFactory {
       /* REGISTRO PERSONA */
       jsonElementsList.add(
         new Map<String, Object>{
-          'cdfiliac' => String.valueOf(i + 1).leftPad(10, '0'), // string
+          'cdfiliac' => customerType + String.valueOf(i + 1).leftPad(9, '0'), // string
           'dnnomrzm' => 'Name_' + String.valueOf(i + 1), // string
           'dnap1rzm' => 'Surname_1_' + String.valueOf(i + 1), // string
           'dnap2rzm' => 'Surname_2_' + String.valueOf(i + 1), // string
@@ -302,6 +302,296 @@ public class TestDataFactory {
           ]
         }
       );
+    }
+
+    return jsonElementsList;
+  }
+
+  /**
+   * Obtener estructura json del sistema de origen INFO para registros
+   * de entidad Vía de contacto del tipo indicado
+   **
+   * @param Integer numero de elementos a generar
+   * @param String tipo elemento a generar
+   * @return List<Map<String, Object>> listado de elementos simulando json
+   * @author adelgado
+   * @date 15/10/2020
+   */
+  public static List<Map<String, Object>> getINFOContactPointJson(
+    Integer totalItems,
+    String contactPointType
+  ) {
+    if (
+      String.isBlank(contactPointType) ||
+      (!contactPointType.equalsIgnoreCase('A') &&
+      !contactPointType.equalsIgnoreCase('B') &&
+      !contactPointType.equalsIgnoreCase('E') &&
+      !contactPointType.equalsIgnoreCase('P') &&
+      !contactPointType.equalsIgnoreCase('T'))
+    ) {
+      throw new TestException('incorrect value for contactPointType parameter');
+    }
+    return buildINFOCustomerJson(totalItems, contactPointType);
+  }
+
+  private static List<Map<String, Object>> buildINFOContactPointJson(
+    Integer totalItems,
+    String contactPointType
+  ) {
+    if (totalItems == null || totalItems < 1) {
+      throw new TestException('totalItems must be equal or greater than 1');
+    }
+
+    List<Map<String, Object>> jsonElementsList = new List<Map<String, Object>>();
+
+    List<String> homeType = new List<String>{ 'F', 'H', 'R', 'T' };
+
+    List<String> streetType = new List<String>{
+      'CL',
+      'CM',
+      'CO',
+      'CR',
+      'CS',
+      'CT',
+      'CU',
+      'DS',
+      'ED'
+    };
+
+    List<String> flagType = new List<String>{ 'S', 'N', null };
+
+    List<String> phoneType = new List<String>{ 'FA', 'MO', 'TL' };
+
+    List<Integer> years = new List<Integer>{
+      1980,
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      1993,
+      1994,
+      1995,
+      1996,
+      1997,
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2003
+    };
+    List<Integer> months = new List<Integer>{
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    };
+    List<Integer> days = new List<Integer>{
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    };
+
+    Map<String, Object> jsonMap = new Map<String, Object>();
+    Date auxDate;
+
+    if (
+      contactPointType.equalsIgnoreCase('A') ||
+      !contactPointType.equalsIgnoreCase('B') ||
+      !contactPointType.equalsIgnoreCase('P')
+    ) {
+      for (Integer i = 0; i < totalItems; i++) {
+        auxDate = Date.newInstance(
+          years[Integer.valueof((Math.random() * years.size() - 1))],
+          months[Integer.valueof((Math.random() * months.size() - 1))],
+          days[Integer.valueof((Math.random() * days.size() - 1))]
+        );
+
+        /* REGISTRO VIA DE CONTACTO POSTAL*/
+        jsonElementsList.add(
+          new Map<String, Object>{
+            'cdfiliac' => String.valueOf(i + 1).leftPad(10, '0'), // string
+            'cdsecdom' => String.valueOf(i + 1),
+            'tctipdom' => contactPointType,
+            'tccldomi' => homeType[
+              Integer.valueof((Math.random() * homeType.size() - 1)) // clase domicilio,
+            ],
+            'tctipvia' => streetType[
+              Integer.valueof((Math.random() * streetType.size() - 1)) // clase domicilio,,
+            ],
+            'novidici' => 'Street_' + String.valueOf(i + 1), // dirección
+            'nuvia' => String.valueOf(Integer.valueof((Math.random() * 6)) + 1), // número vía
+            'txinfadi' => String.valueOf(
+              Integer.valueof((Math.random() * 6)) + 1
+            ),
+            'nopobl' => 'City_' + String.valueOf(i + 1), // población
+            'tccopine' => String.valueOf(
+              Math.round((Math.random() * (900000000) + 100000000))
+            ),
+            'noprovin' => 'State_' + String.valueOf(i + 1), // provincia
+            'tccopost' => String.valueOf(
+              Math.round((Math.random() * (90000) + 10000))
+            ),
+            'tccopais' => 'ESP', // país
+            'indopral' => flagType[
+              Integer.valueof((Math.random() * flagType.size() - 1)) // checkbox -> 'S': true, sino false,
+            ],
+            'tcticom1' => '',
+            'tcprepa1' => '',
+            'nutelf1' => '',
+            'nuextel1' => '',
+            'nutelf2' => '',
+            'tcprepa2' => '',
+            'nuextel2' => '',
+            'tcticom3' => '',
+            'tcprepa3' => '',
+            'nutelf3' => '',
+            'nuextel3' => '',
+            'fealreg' => String.valueOf(auxDate.year()) +
+            '-' +
+            String.valueOf(auxDate.month()).leftPad(2, '0') +
+            '-' +
+            String.valueOf(auxDate.day()).leftPad(2, '0') // Fecha alta registro -> 'YYYY-MM-DD'
+          }
+        );
+      }
+    } else if (contactPointType.equalsIgnoreCase('T')) {
+      for (Integer i = 0; i < totalItems; i++) {
+        auxDate = Date.newInstance(
+          years[Integer.valueof((Math.random() * years.size() - 1))],
+          months[Integer.valueof((Math.random() * months.size() - 1))],
+          days[Integer.valueof((Math.random() * days.size() - 1))]
+        );
+
+        /* REGISTRO VIA DE CONTACTO TELEFÓNICO */
+        jsonElementsList.add(
+          new Map<String, Object>{
+            'cdfiliac' => String.valueOf(i + 1).leftPad(10, '0'), // string
+            'cdsecdom' => String.valueOf(i + 1),
+            'tctipdom' => contactPointType,
+            'tccldomi' => '',
+            'tctipvia' => '',
+            'novidici' => '',
+            'nuvia' => '',
+            'txinfadi' => '',
+            'nopobl' => '',
+            'tccopine' => '',
+            'noprovin' => '',
+            'tccopost' => '',
+            'tccopais' => '',
+            'indopral' => '',
+            'tcticom1' => phoneType[
+              Integer.valueof((Math.random() * phoneType.size() - 1)) // checkbox -> 'S': true, sino false,,
+            ],
+            'tcprepa1' => String.valueOf(
+              Math.round((Math.random() * (90) + 10))
+            ),
+            'nutelf1' => String.valueOf(
+              Math.round((Math.random() * (900000000) + 100000000))
+            ),
+            'nuextel1' => '',
+            'nutelf2' => '',
+            'tcprepa2' => '',
+            'nuextel2' => '',
+            'tcticom3' => '',
+            'tcprepa3' => '',
+            'nutelf3' => '',
+            'nuextel3' => '',
+            'fealreg' => String.valueOf(auxDate.year()) +
+            '-' +
+            String.valueOf(auxDate.month()).leftPad(2, '0') +
+            '-' +
+            String.valueOf(auxDate.day()).leftPad(2, '0') // Fecha alta registro -> 'YYYY-MM-DD'
+          }
+        );
+      }
+    } else if (contactPointType.equalsIgnoreCase('E')) {
+      for (Integer i = 0; i < totalItems; i++) {
+        auxDate = Date.newInstance(
+          years[Integer.valueof((Math.random() * years.size() - 1))],
+          months[Integer.valueof((Math.random() * months.size() - 1))],
+          days[Integer.valueof((Math.random() * days.size() - 1))]
+        );
+
+        /* REGISTRO VIA DE CONTACTO */
+        jsonElementsList.add(
+          new Map<String, Object>{
+            'cdfiliac' => String.valueOf(i + 1).leftPad(10, '0'), // string
+            'cdsecdom' => String.valueOf(i + 1),
+            'tctipdom' => contactPointType,
+            'tccldomi' => '',
+            'tctipvia' => '',
+            'novidici' => 'email' +
+            String.valueOf(i + 1) +
+            '@fake.com', // dirección email
+            'nuvia' => '',
+            'txinfadi' => '',
+            'nopobl' => '',
+            'tccopine' => '',
+            'noprovin' => '',
+            'tccopost' => '',
+            'tccopais' => '',
+            'indopral' => '',
+            'tcticom1' => '',
+            'tcprepa1' => '',
+            'nutelf1' => '',
+            'nuextel1' => '',
+            'nutelf2' => '',
+            'tcprepa2' => '',
+            'nuextel2' => '',
+            'tcticom3' => '',
+            'tcprepa3' => '',
+            'nutelf3' => '',
+            'nuextel3' => '',
+            'fealreg' => String.valueOf(auxDate.year()) +
+            '-' +
+            String.valueOf(auxDate.month()).leftPad(2, '0') +
+            '-' +
+            String.valueOf(auxDate.day()).leftPad(2, '0') // Fecha alta registro -> 'YYYY-MM-DD'
+          }
+        );
+      }
     }
 
     return jsonElementsList;

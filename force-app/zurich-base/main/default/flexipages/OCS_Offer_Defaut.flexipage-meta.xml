@@ -22,26 +22,7 @@
                 <componentName>force:highlightsPanel</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
         <name>header</name>
-        <type>Region</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>hideUpdateButton</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>variant</name>
-                    <value>linear</value>
-                </componentInstanceProperties>
-                <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
-            </componentInstance>
-        </itemInstances>
-        <mode>Replace</mode>
-        <name>subheader</name>
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -50,7 +31,6 @@
                 <componentName>force:detailPanel</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
         <name>detailTabContent</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -60,7 +40,6 @@
                 <componentName>runtime_sales_activities:activityPanel</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
         <name>activityTabContent</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -70,7 +49,6 @@
                 <componentName>forceChatter:recordFeedContainer</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
         <name>feedTabContent</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -122,7 +100,6 @@
                 <componentName>flexipage:tab</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
         <name>tabs</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -136,8 +113,7 @@
                 <componentName>flexipage:tabset</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
-        <name>main</name>
+        <name>leftcol</name>
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -145,20 +121,11 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>relatedListComponentOverride</name>
-                    <value>NONE</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>showActionBar</name>
-                    <value>true</value>
+                    <value>CARD</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListContainer</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
         <name>relatedListTabContent</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -180,7 +147,6 @@
                 <componentName>flexipage:tab</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
         <name>sidebartabs</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -194,15 +160,13 @@
                 <componentName>flexipage:tabset</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
-        <name>sidebar</name>
+        <name>rightcol</name>
         <type>Region</type>
     </flexiPageRegions>
     <masterLabel>OCS Offer Defaut</masterLabel>
-    <parentFlexiPage>sfa__Opportunity_rec_L</parentFlexiPage>
     <sobjectType>Opportunity</sobjectType>
     <template>
-        <name>flexipage:recordHomeWithSubheaderTemplateDesktop</name>
+        <name>flexipage:recordHomeTwoColEqualHeaderTemplateDesktop</name>
     </template>
     <type>RecordPage</type>
 </FlexiPage>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PendingBy__c</fullName>
+    <description>Especificación del motivo de estado &quot;Pendiente&quot;</description>
+    <externalId>false</externalId>
+    <label>Pending by</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Client</fullName>
+                <default>false</default>
+                <label>Client</label>
+            </value>
+            <value>
+                <fullName>Competency Management</fullName>
+                <default>false</default>
+                <label>Competency Management</label>
+            </value>
+            <value>
+                <fullName>Systems Incidence</fullName>
+                <default>false</default>
+                <label>Systems Incidence</label>
+            </value>
+            <value>
+                <fullName>Supervisor</fullName>
+                <default>false</default>
+                <label>Supervisor</label>
+            </value>
+            <value>
+                <fullName>Other areas Zurich</fullName>
+                <default>false</default>
+                <label>Other areas Zurich</label>
+            </value>
+            <value>
+                <fullName>Other areas Third parties</fullName>
+                <default>false</default>
+                <label>Other areas Third parties</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
