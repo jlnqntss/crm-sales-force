@@ -24,6 +24,33 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>ObjectType__c</picklist>
+        <values>
+            <fullName>Address</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Boat</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Electronic Device</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mobile</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Motor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Person</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Status</picklist>
         <values>
             <fullName>Installed</fullName>
