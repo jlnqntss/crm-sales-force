@@ -21,4 +21,29 @@
         <default>false</default>
         <label>Other</label>
     </standardValue>
+    <standardValue>
+        <fullName>Call me now</fullName>
+        <default>false</default>
+        <label>Call me now</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Buzón de saturación</fullName>
+        <default>false</default>
+        <label>Buzón de saturación</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Buzón fuera de horario</fullName>
+        <default>false</default>
+        <label>Buzón fuera de horario</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Interacción programada</fullName>
+        <default>false</default>
+        <label>Interacción programada</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Abandono</fullName>
+        <default>false</default>
+        <label>Abandono</label>
+    </standardValue>
 </StandardValueSet>

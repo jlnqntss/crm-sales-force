@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusRuleCantGoToNew</fullName>
+    <active>true</active>
+    <description>[VR Caso] Desde ningún otro estado de caso se podrá pasar a NUEVO</description>
+    <errorConditionFormula>ISCHANGED(Status) &amp;&amp; NOT(ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;)) &amp;&amp; ISPICKVAL(Status,&quot;Nuevo&quot;)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>[VR Caso] Desde ningún otro estado de caso se podrá pasar a NUEVO</errorMessage>
+</ValidationRule>

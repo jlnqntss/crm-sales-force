@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusRuleNewOnlyGoToAssigned</fullName>
+    <active>true</active>
+    <description>[VR Caso] Caso en estado NUEVO sólo puede pasar a ASIGNADO</description>
+    <errorConditionFormula>ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Asignado&quot;))</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>[VR Caso] Caso en estado NUEVO sólo puede pasar a ASIGNADO</errorMessage>
+</ValidationRule>
