@@ -84,6 +84,56 @@ public with sharing class TransformerTest
         System.assertEquals(companiesJsonItems.size(), companiesContacts.size(), '[2] No se ha obtenido el número de Contactos esperado');
     }
 
+    /**
+     * Método test que válida la transformación de los registros INFO de vias de contacto en
+     * ContactPointAddress, ContactPointEmail y ContactPointPhone de Salesforce
+     **
+     * @author xsobera
+     * @date 14/10/2020
+     */
+    @isTest
+    static void test_infoContactPointTransform()
+    {
+        List<Map<String, Object>> emailsJsonItems = TestDataFactory.getINFOContactPointJson(10, 'E');
+        List<Map<String, Object>> phonesJsonItems = TestDataFactory.getINFOContactPointJson(10, 'T');
+        List<Map<String, Object>> addressesJsonItems = TestDataFactory.getINFOContactPointJson(10, 'P');
+
+        List<ContactPointEmail> emails = new List<ContactPointEmail>();
+        List<ContactPointPhone> phones = new List<ContactPointPhone>();
+        List<ContactPointAddress> addresses = new List<ContactPointAddress>();
+
+        ContactPointEmail emailRecord;
+        ContactPointPhone phoneRecord;
+        ContactPointAddress addressRecord;
+
+        // Instanciar el transformer con la configuración de INFO
+        Transformer myTransformer = new Transformer(Transformer.ORIGIN_NAME_INFO);
+        for (Integer i = 0; i < emailsJsonItems.size(); i++)
+        {
+            emailRecord = (ContactPointEmail) myTransformer.transform(Transformer.OBJECT_NAME_CONTACT_POINT_EMAIL, emailsJsonItems[i]);
+            emails.add(emailRecord);
+            System.assertEquals(emailsJsonItems[i].get('novidici'), emailRecord.EmailAddress, '[ContactPointEmail-' + String.valueOf(i).leftPad(2, '0') + '] No se ha mapeado el email correctamente');
+        }
+
+        for (Integer i = 0; i < phonesJsonItems.size(); i++)
+        {
+            phoneRecord = (ContactPointPhone) myTransformer.transform(Transformer.OBJECT_NAME_CONTACT_POINT_PHONE, phonesJsonItems[i]);
+            phones.add(phoneRecord);
+            System.assertEquals(phonesJsonItems[i].get('nutelf1'), phoneRecord.TelephoneNumber, '[ContactPointPhone-' + String.valueOf(i).leftPad(2, '0') + '] No se ha mapeado el teléfono correctamente');
+        }
+
+        for (Integer i = 0; i < addressesJsonItems.size(); i++)
+        {
+            addressRecord = (ContactPointAddress) myTransformer.transform(Transformer.OBJECT_NAME_CONTACT_POINT_ADDRESS, phonesJsonItems[i]);
+            addresses.add(addressRecord);
+            System.assertEquals(addressesJsonItems[i].get('novidici'), addressRecord.Street, '[ContactPointAddress-' + String.valueOf(i).leftPad(2, '0') + '] No se ha mapeado la dirección correctamente');
+        }
+
+        System.assertEquals(emailsJsonItems.size(), emails.size(), '[0] No se ha obtenido el número de emails esperado');
+        System.assertEquals(phonesJsonItems.size(), phones.size(), '[1] No se ha obtenido el número de teléfonos esperado');
+        System.assertEquals(addressesJsonItems.size(), addresses.size(), '[2] No se ha obtenido el número de direcciones postales esperado');
+    }
+
     @IsTest
     static void test_getUnmappedValues()
     {
