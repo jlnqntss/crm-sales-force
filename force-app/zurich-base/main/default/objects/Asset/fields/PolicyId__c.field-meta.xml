@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>PolicyNumber__c</fullName>
+    <fullName>PolicyId__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <description>(OCS): Relación con la póliza</description>
     <externalId>false</externalId>
     <label>Policy Number</label>
     <referenceTo>Policy__c</referenceTo>
-    <relationshipLabel>Assets</relationshipLabel>
+    <relationshipLabel>Insured Objects</relationshipLabel>
     <relationshipName>PolicyNumbers</relationshipName>
     <required>false</required>
     <trackHistory>false</trackHistory>
