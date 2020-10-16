@@ -49,17 +49,19 @@ cache:
 
 ####################################################
 # Etapas del pipeline
-# https://docs.gitlab.com/ee/ci/yaml/README.html#stages
+#
+# Workflow Feature: validate
+# Promoción Feature a Dev (MR feat a dev): validate - promotion
+# Promoción Dev a QA (release): validate - promotion
+# Promoción QA a Prod (tag x.x.x): validate - promotion
 ####################################################
+
 stages:
- - preliminary-testing
- - staging
- - test-apex
+ - validate
+ - promotion
+ - deploy
  - post-deploy
- - docs
  - release
- - qa
- - production
 
 
 before_script:
@@ -387,7 +389,7 @@ before_script:
       exit 1
     fi
 
-    local cmd="sfdx force:source:deploy --targetusername $org_username --sourcepath $source_folder --wait 10 --json" && (echo $cmd >&2)
+    local cmd="sfdx force:source:deploy --targetusername $org_username --sourcepath force-app --wait 10 --json" && (echo $cmd >&2)
     local output=$($cmd) && (echo $output | jq '.' >&2)
 
   }
@@ -422,12 +424,17 @@ before_script:
 before_script:
   - *sfdx_helpers  
 
+
+####################################################
+# SHARED JOBS
+####################################################
+
 ####################################################
 # Ejecuta los tests LWC sobre el runner, sin org.
 # Previene el esfuerzo de realizar un deploy.
 ####################################################
 test-lwc:
-  stage: preliminary-testing
+  stage: validate
   except:
     variables:
       - $TEST_DISABLED
@@ -445,7 +452,7 @@ test-lwc:
 ########################################################
 veracode:
   image: node:12.17-slim
-  stage: preliminary-testing
+  stage: validate
   allow_failure: false
   script:
     - '[ "${VERACODE_APP_ID}" ] || exit 0'
@@ -468,33 +475,50 @@ veracode:
     - gitlab-org
 
 ########################################################
-# Ejecuta standard-version para realizar el un prerelease
-# y lanzar la generación de documentación
+# Realiza el bump de versiones y etiqueta el merge de dev
+# con la versión candidata a release
 ########################################################
-changelog-prerelease:
+release-candidate-build:
   stage: release
-  only:
-    refs:
-      - /^release/.*$/
-  allow_failure: false
   script:
-    - install_toolchain
-    - changelog_QA
+    - npm run release:create-candidate
+  only:
+    - dev
+  except:
+    - tags
   tags:
     - zurich-ci
 
+release-build:
+  stage: release
+  script:
+    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+    - NEWVERSION=$(npx get-last-tag)
+    - NEWVERSION=$(echo $NEWVERSION | npx increment-release)
+    - npx create-tag $NEWVERSION $CI_COMMIT_SHA
+  only:
+    - /^release/.*$/
+  except:
+    - tags
+  tags:
+    - zurich-ci
+
+########################################################
+# Generación de ChangeLog y documentación
+########################################################
 changelog:
   stage: release
   only:
     refs:
       - master
+      - /^release/.*$/
   except:
     variables:
       - $TEST_DISABLED
   allow_failure: false
   script:
     - install_toolchain
-    - changelog
+    - npm run release:changelog
   tags:
     - zurich-ci
 
@@ -512,15 +536,15 @@ docs:
   tags:
     - zurich-ci
 
-
 ####################################################
 # Despliega el proyecto a Staging
 ####################################################
-deploy-staging-metadata:
-  stage: staging
+deploy:staging:
+  stage: deploy
   only:
-    refs:
-      - dev
+    - /^\d*\.\d*\.0-rc$/
+  except: 
+    - branches
   allow_failure: false
   environment:
     name: staging
@@ -532,7 +556,6 @@ deploy-staging-metadata:
   tags:
     - zurich-ci
 
-
 ####################################################
 # Lanza los tests unitarios en el entorno de staging
 #
@@ -540,13 +563,14 @@ deploy-staging-metadata:
 # para personalizaciones
 ####################################################
 test-org:
-  stage: test-apex
+  stage: post-deploy
   only:
-    refs: 
-      - dev
+    - /^\d*\.\d*\.0-rc$/
+  except: 
+    - branches
   allow_failure: false
   dependencies:
-    - deploy-staging-metadata
+    - deploy:staging
   script:
     - install_toolchain
     - authenticate STAGING $STAGING_SANDBOX_AUTH_URL
@@ -606,17 +630,32 @@ upload-static-veracode:dev:
     - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID||'
     - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule* -createsandbox true -sandboxname DEV
   only:
-    refs:
-      - dev
+    - /^\d*\.\d*\.0-rc$/
+  except: 
+    - branches
   tags:
     - zurich-ci
 
+####################################################
+# Promociona la Release Candidate a UAT
+####################################################
+promotion:uat:
+  stage: promotion
+  script:
+    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+    - npx create-release
+  only:
+    - /^\d*\.\d*\.\d*-UAT$/
+  except:
+    - branches
+  tags:
+    - zurich-ci
 
 ####################################################
-# Deploy metadata into the sandbox org.
+# Despliega el proyecto completo al entorno QA/UAT
 ####################################################
-deploy-qa-metadata:
-  stage: qa
+deploy:uat:
+  stage: deploy
   only:
     refs: 
       - /^release/.*$/
@@ -634,7 +673,7 @@ deploy-qa-metadata:
 
 ########################################################
 # Genera el paquete de despliegue y sube a Veracode
-# el código para un scan estatico de seguridad
+# el código para un scan estático de seguridad
 ########################################################
 upload-static-veracode:uat:
   stage: post-deploy
@@ -683,16 +722,19 @@ upload-static-veracode:uat:
   tags:
     - zurich-ci-uat
 
-
+####################################################
+# PRODUCTION JOBS
+####################################################
+    
 ####################################################
 # Deploy metadata into the production org.
 ####################################################
-deploy-production-metadata:
-  stage: production
+deploy:production:
+  stage: deploy
   only:
-    refs: 
-      - master
+    - /^\d*\.\d*\.\d*$/
   allow_failure: false
+  when: manual
   environment:
     name: production
     url: https://login.salesforce.com
@@ -701,5 +743,17 @@ deploy-production-metadata:
     - install_nts1 $SFDX_NTS1_GIT_URI
     - authenticate PRODUCTION $PRODUCTION_AUTH_URL $DEVHUB_AUTH_URL
     - deploy_metadata PRODUCTION
+  tags:
+    - zurich-ci-prd
+
+promotion:prd:
+  stage: promotion
+  script:
+    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
+    - npx finish-release
+  only:
+    - /^\d*\.\d*\.\d*$/
+  except:
+    - branches
   tags:
     - zurich-ci-prd

@@ -1,7 +1,7 @@
 {
   "name": "zurich-salesforce",
   "author": "NTS",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "lint": "npm run lint:lwc",
     "lint:lwc": "eslint --no-error-on-unmatched-pattern force-app/**/main/default/lwc",
@@ -17,7 +17,9 @@
     "retrieve:profiles:all": "sfdx sfpowerkit:source:profile:retrieve",
     "retrieve:email-templates": "node scripts/source/retrieve-templates.js",
     "docs:update": "node scripts/source/update-docs.js",
-    "release": "node scripts/source/release-versioning.js"
+    "release": "node scripts/source/release-versioning.js",
+    "release:create": "node scripts/source/create-release-candidate.js",
+    "release:changelog": "node scripts/source/changelog.js"
   },
   "husky": {
     "hooks": {

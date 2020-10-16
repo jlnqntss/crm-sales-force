@@ -3,11 +3,21 @@
  *
  * @author jmartinezpisson
  */
+const standardVersion = require("standard-version");
 
-const { execSync } = require("child_process");
-
-// 1 - Se lanza Standard-Version
-execSync("npx standard-version");
-
-// 2 - Se realiza el push al repo
-execSync("git push -o ci.skip");
+return standardVersion({
+  noVerify: true,
+  silent: false,
+  skip: {
+    changelog: true,
+    bump: false,
+    commit: true,
+    tag: true
+  }
+})
+  .then(() => {
+    // standard-version is done
+  })
+  .catch((err) => {
+    console.error(`standard-version failed with message: ${err.message}`);
+  });
