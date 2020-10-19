@@ -287,6 +287,8 @@ before_script:
     local cmd="sfdx force:auth:sfdxurl:store --sfdxurlfile $file --setalias $alias_to_set --json" && (echo $cmd >&2)
     local output=$($cmd)
 
+    echo $output
+
     sfdx force:config:set defaultusername=$alias_to_set
     sfdx force:config:set defaultdevhubusername=$alias_to_set
 
