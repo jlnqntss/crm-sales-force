@@ -44,7 +44,10 @@ global with sharing class WS_BusinessServiceQuoting {
   }
 
   /**
+   * Clase interna que representa una solicitud recibida desde el formulario web de Zurich Empresas
    *
+   * @author rlopez
+   * @date 15/10/2020
    */
   global class Request {
     public String TimeStamp { get; set; }
@@ -61,7 +64,10 @@ global with sharing class WS_BusinessServiceQuoting {
   }
 
   /**
+   * Clase interna que representa la información de una cuenta, recibida en la solicitud inicial del formulario web de Zurich Empresas
    *
+   * @author rlopez
+   * @date 15/10/2020
    */
   global class AccountInformation {
     public String FirstName { get; set; }
@@ -76,7 +82,10 @@ global with sharing class WS_BusinessServiceQuoting {
   }
 
   /**
+   * Clase interna que representa la información de las ofertas, recibidas en la solicitud inicial del formulario web de Zurich Empresas
    *
+   * @author rlopez
+   * @date 15/10/2020
    */
   global class Offer {
     public String QuoteNumberINFO { get; set; }
@@ -101,7 +110,10 @@ global with sharing class WS_BusinessServiceQuoting {
   }
 
   /**
+   * Clase interna que representa la información del riesgo de una oferta, recibida en la solicitud inicial del formulario web de Zurich Empresas
    *
+   * @author rlopez
+   * @date 15/10/2020
    */
   global class OfferRiskInformation {
     public String PropertyStreetType { get; set; }
@@ -141,7 +153,11 @@ global with sharing class WS_BusinessServiceQuoting {
   }
 
   /**
+   * Clase interna que representa la respuesta enviada desde el web service a Zurich,
+   * indicando si el procesamiento de la información ha sido satisfactorio o no
    *
+   * @author rlopez
+   * @date 15/10/2020
    */
   global class Response {
     public String status;
@@ -163,7 +179,11 @@ global with sharing class WS_BusinessServiceQuoting {
   }
 
   /**
+   * Clase interna que representa un error en caso de que se hayan encontrado problemas procesando la información recibida,
+   * y que se incluirá en la respuesta enviada desde el web service a Zurich
    *
+   * @author rlopez
+   * @date 15/10/2020
    */
   global class ResponseError {
     public String errorMessage;
@@ -175,9 +195,6 @@ global with sharing class WS_BusinessServiceQuoting {
     }
   }
 
-  /**
-   *
-   */
   class WS_BusinessServiceQuotingException extends Exception {
   }
 }
