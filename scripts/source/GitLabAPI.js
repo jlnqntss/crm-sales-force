@@ -69,6 +69,54 @@ class GitlabAPIService {
 
   /**
    *
+   * @param {string} commit_tag Referencia del tag
+   */
+  getTag(commit_tag) {
+    return fetch(
+      `${this.baseUrl}/projects/${this.projectId}/repository/tags/${commit_tag}`,
+      {
+        method: "GET",
+        headers: {
+          "User-Agent": "request",
+          Authorization: `Bearer ${this.token}`,
+          "Content-Type": "application/json"
+        }
+      }
+    ).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.statusText}`;
+      }
+
+      return response.json();
+    });
+  }
+
+  /**
+   *
+   * @param {string} commit_tag Referencia del tag
+   */
+  getTagBranchRefs(commitId) {
+    return fetch(
+      `${this.baseUrl}/projects/${this.projectId}/repository/commits/${commitId}/refs?type=branch`,
+      {
+        method: "GET",
+        headers: {
+          "User-Agent": "request",
+          Authorization: `Bearer ${this.token}`,
+          "Content-Type": "application/json"
+        }
+      }
+    ).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.statusText}`;
+      }
+
+      return response.json();
+    });
+  }
+
+  /**
+   *
    * @param {TagRequest} tag
    * @param {string} tag,tagName Etiqueta a generar
    * @parma {string} ref Referencia GIT a atiquetar
@@ -91,6 +139,33 @@ class GitlabAPIService {
     });
   }
 
+  /**
+   *
+   * @param {BranchRequest} branch
+   * @param {string} branch.branch Etiqueta a generar
+   * @parma {string} branch.ref Referencia GIT sobre la que generar rama
+   */
+  createBranch(branch) {
+    return fetch(
+      `${this.baseUrl}/projects/${this.projectId}/repository/branches`,
+      {
+        method: "POST",
+        headers: {
+          "User-Agent": "request",
+          Authorization: `Bearer ${this.token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(branch)
+      }
+    ).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.statusText}`;
+      }
+
+      return response.json();
+    });
+  }
+
   createCommit(commit) {
     return fetch(
       `${this.baseUrl}/projects/${this.projectId}/repository/commits`,
@@ -102,6 +177,58 @@ class GitlabAPIService {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(commit)
+      }
+    ).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.statusText}`;
+      }
+
+      return response.json();
+    });
+  }
+
+  /**
+   *
+   * @param {MRRequest} mergeRequest
+   * @param {string} mergeRequest.title Nombre del R
+   * @param {string} mergeRequest.source_branch Rama origen
+   * @param {string} mergeRequest.target_branch  Rama destino
+   */
+  createMergeRequest(mergeRequest) {
+    return fetch(`${this.baseUrl}/projects/${this.projectId}/merge_requests`, {
+      method: "POST",
+      headers: {
+        "User-Agent": "request",
+        Authorization: `Bearer ${this.token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(mergeRequest)
+    }).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.statusText}`;
+      }
+
+      return response.json();
+    });
+  }
+
+  /**
+   *
+   * @param {MROptionsRequest} options
+   * @param {Boolean} mergeRequest.squash
+   * @param {Boolean} mergeRequest.should_remove_source_branch
+   */
+  acceptMergeRequest(iid, options) {
+    return fetch(
+      `${this.baseUrl}/projects/${this.projectId}/merge_requests/${iid}/merge`,
+      {
+        method: "PUT",
+        headers: {
+          "User-Agent": "request",
+          Authorization: `Bearer ${this.token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(options)
       }
     ).then((response) => {
       if (!response.ok) {

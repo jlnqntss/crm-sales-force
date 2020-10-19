@@ -12,13 +12,14 @@
     "push:source": "sfdx force:source:push",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
     "pull:source": "sfdx force:source:pull",
-    "retrieve:source": "sfdx force:source:retrieve --sourcepath=force-app",
+    "retrieve:": "sfdx force:source:retrieve --sourcepath=force-app",
     "pull:profiles": "sfdx force:source:pull -f && sfdx sfpowerkit:source:profile:reconcile -s",
     "retrieve:profiles:all": "sfdx sfpowerkit:source:profile:retrieve",
     "retrieve:email-templates": "node scripts/source/retrieve-templates.js",
     "docs:update": "node scripts/source/update-docs.js",
-    "release": "node scripts/source/release-versioning.js",
-    "release:create-candidate": "node scripts/source/create-release-candidate.js",
+    "release:create": "node scripts/source/create-release.js",
+    "release:candidate": "node scripts/source/increment-release.js",
+    "release:finish": "node scripts/source/create-finish.js",
     "release:changelog": "node scripts/source/changelog.js"
   },
   "husky": {
