@@ -476,7 +476,7 @@ veracode:
 release-candidate-build:
   stage: release
   script:
-    - install_toolchain
+    - npm install
     - apt-get update
     - apt-get install -y git
     - npm run release:candidate
@@ -621,6 +621,7 @@ upload-static-veracode:dev:
 promotion:uat:
   stage: promotion
   script:
+    - npm install
     - npm run release:create
   only:
     - /^\d*\.\d*\.\d*-UAT$/
@@ -727,7 +728,7 @@ deploy:production:
 promotion:prd:
   stage: promotion
   script:
-    - install_toolchain
+    - npm install
     - npm run release:finish
   only:
     - /^\d*\.\d*\.\d*$/
