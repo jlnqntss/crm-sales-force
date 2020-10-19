@@ -18,7 +18,7 @@
     "retrieve:email-templates": "node scripts/source/retrieve-templates.js",
     "docs:update": "node scripts/source/update-docs.js",
     "release": "node scripts/source/release-versioning.js",
-    "release:create": "node scripts/source/create-release-candidate.js",
+    "release:create-candidate": "node scripts/source/create-release-candidate.js",
     "release:changelog": "node scripts/source/changelog.js"
   },
   "husky": {
