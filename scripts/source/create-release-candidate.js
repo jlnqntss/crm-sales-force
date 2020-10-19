@@ -26,11 +26,27 @@ return standardVersion({
       token: process.env["CI_GITLAB_TOKEN"]
     });
 
-    return gitLabService.createTag({
-      tag_name: `${JSON.parse(packageJson).version}-rc`,
-      ref: process.env["CI_COMMIT_REF_NAME"]
-    });
+    return gitLabService
+      .createCommit({
+        branch: process.env["CI_BRANCH_NAME"],
+        commit_message: "chore: bump package version [skip ci]",
+        actions: [
+          {
+            action: "update",
+            file_path: "package.json",
+            content: packageJson
+          }
+        ]
+      })
+      .then((commitDetail) => {
+        return gitLabService.createTag({
+          tag_name: `${JSON.parse(packageJson).version}-rc`,
+          ref: commitDetail.id
+        });
+      });
   })
   .catch((err) => {
     console.error(`Error: Creating Release Candidate: ${err.message || err}`);
+
+    throw err;
   });
