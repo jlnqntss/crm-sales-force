@@ -479,23 +479,10 @@ release-candidate-build:
     - install_toolchain
     - apt-get update
     - apt-get install -y git
-    - npm run release:create-candidate
-  only:
-    - dev
-  except:
-    - tags
-  tags:
-    - zurich-ci
-
-release-build:
-  stage: release
-  script:
-    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
-    - NEWVERSION=$(npx get-last-tag)
-    - NEWVERSION=$(echo $NEWVERSION | npx increment-release)
-    - npx create-tag $NEWVERSION $CI_COMMIT_SHA
+    - npm run release:candidate
   only:
     - /^release/.*$/
+    - dev
   except:
     - tags
   tags:
@@ -634,8 +621,7 @@ upload-static-veracode:dev:
 promotion:uat:
   stage: promotion
   script:
-    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
-    - npx create-release
+    - npm run release:create
   only:
     - /^\d*\.\d*\.\d*-UAT$/
   except:
@@ -741,8 +727,8 @@ deploy:production:
 promotion:prd:
   stage: promotion
   script:
-    - npm i --no-save @zurich-es-npm/ea-pipeline-scripts
-    - npx finish-release
+    - install_toolchain
+    - npm run release:finish
   only:
     - /^\d*\.\d*\.\d*$/
   except:

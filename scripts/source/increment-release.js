@@ -40,13 +40,13 @@ return standardVersion({
       })
       .then((commitDetail) => {
         return gitLabService.createTag({
-          tag_name: `${JSON.parse(packageJson).version}-rc`,
+          tag_name: `${JSON.parse(packageJson).version}-UAT`,
           ref: commitDetail.id
         });
       });
   })
   .catch((err) => {
-    console.error(`Error: Creating Release Candidate: ${err.message || err}`);
+    console.error(`Error: Creating UAT Release: ${err.message || err}`);
 
     throw err;
   });
