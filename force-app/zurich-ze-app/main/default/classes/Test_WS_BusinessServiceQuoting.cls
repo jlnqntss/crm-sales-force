@@ -30,8 +30,6 @@ public with sharing class Test_WS_BusinessServiceQuoting {
       JSON_INFORMATION,
       WS_BusinessServiceQuoting.Request.class
     );
-    System.debug('MY REQ');
-    System.debug(myReq);
 
     Test.startTest();
     WS_BusinessServiceQuoting.Response doPostResponse = WS_BusinessServiceQuoting.doPost();
