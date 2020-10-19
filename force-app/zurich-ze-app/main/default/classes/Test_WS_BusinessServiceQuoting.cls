@@ -72,7 +72,8 @@ public with sharing class Test_WS_BusinessServiceQuoting {
     );
     System.assertEquals(
       true,
-      doPostResponse.errors.get(0).contains('Invalid URI versioning'),
+      doPostResponse.errors.get(0)
+        .errorMessage.contains('Invalid URI versioning'),
       'Debería retornar un error que contenga \'Invalid URI versioning\''
     );
   }
