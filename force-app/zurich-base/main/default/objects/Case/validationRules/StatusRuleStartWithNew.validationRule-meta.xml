@@ -3,7 +3,8 @@
     <fullName>StatusRuleStartWithNew</fullName>
     <active>true</active>
     <description>[VR Caso] Caso no se puede crear en ningún estado diferente de NUEVO</description>
-    <errorConditionFormula>ISNEW() &amp;&amp; NOT(ISPICKVAL(Status, &quot;Nuevo&quot;))</errorConditionFormula>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp; 
+ISNEW() &amp;&amp; NOT(ISPICKVAL(Status, &quot;Nuevo&quot;))</errorConditionFormula>
     <errorDisplayField>Status</errorDisplayField>
     <errorMessage>[VR Caso] Caso no se puede crear en ningún estado diferente de NUEVO</errorMessage>
 </ValidationRule>
