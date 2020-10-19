@@ -540,9 +540,7 @@ docs:
 deploy:staging:
   stage: deploy
   only:
-    - /^\d*\.\d*\.0-rc$/
-  except: 
-    - branches
+    - dev
   allow_failure: false
   environment:
     name: staging
@@ -563,9 +561,7 @@ deploy:staging:
 test-org:
   stage: post-deploy
   only:
-    - /^\d*\.\d*\.0-rc$/
-  except: 
-    - branches
+    - dev
   allow_failure: false
   dependencies:
     - deploy:staging
@@ -628,9 +624,7 @@ upload-static-veracode:dev:
     - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID||'
     - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule* -createsandbox true -sandboxname DEV
   only:
-    - /^\d*\.\d*\.0-rc$/
-  except: 
-    - branches
+    - dev
   tags:
     - zurich-ci
 
