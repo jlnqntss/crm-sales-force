@@ -32,3 +32,6 @@ Standard.profile-meta.xml
 
 # Ignore ProfileSession Settings
 profileSessionSettings*
+
+# Ignore AppSwitcher
+*.appMenu-meta.xml
