@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusRuleStartWithNew</fullName>
+    <active>true</active>
+    <description>[VR Caso] Caso no se puede crear en ningún estado diferente de NUEVO</description>
+    <errorConditionFormula>ISNEW() &amp;&amp; NOT(ISPICKVAL(Status, &quot;Nuevo&quot;))</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>[VR Caso] Caso no se puede crear en ningún estado diferente de NUEVO</errorMessage>
+</ValidationRule>
