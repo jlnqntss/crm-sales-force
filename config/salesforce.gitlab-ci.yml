@@ -401,13 +401,6 @@ before_script:
     npm run docs:update
   }
 
-  function changelog() {
-    npm run release
-  }
-
-  function changelog_QA() {
-    npm run release -- --prerelease QA
-  }
 
   # Function to extract and convert all code from packages inside a SFDX project 
   # into a single temp folder
@@ -481,6 +474,9 @@ veracode:
 release-candidate-build:
   stage: release
   script:
+    - install_toolchain
+    - apt-get update
+    - apt-get install -y git
     - npm run release:create-candidate
   only:
     - dev
