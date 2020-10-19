@@ -3,47 +3,34 @@
  *
  * @author jmartinezpisson
  */
-const GitlabAPIController = require("./GitLabAPI");
+const GitlabAPIService = require("./GitLabAPI").default;
 const standardVersion = require("standard-version");
+const fs = require("fs");
 
 return standardVersion({
   noVerify: true,
   silent: false,
   skip: {
-    changelog: false,
-    bump: true,
-    commit: false,
-    tag: false
+    changelog: true,
+    bump: false,
+    commit: true,
+    tag: true
   }
 })
   .then(() => {
     const packageJson = fs.readFileSync("package.json", { encoding: "utf-8" });
 
-    const gitLabService = new GitlabAPIController({
+    const gitLabService = new GitlabAPIService({
       baseUrl: process.env["CI_API_V4_URL"],
       projectId: process.env["CI_PROJECT_ID"],
       token: process.env["CI_GITLAB_TOKEN"]
     });
 
-    return gitLabService
-      .createCommit({
-        branch: process.env["CI_BRANCH_NAME"],
-        commit_message: "chore: bump version [skip ci]",
-        actions: [
-          {
-            action: "update",
-            file_path: "package.json",
-            content: packageJson
-          }
-        ]
-      })
-      .then((commitDetail) => {
-        return gitLabService.createTag({
-          tag_name: `${JSON.parse(packageJson).version}-rc`,
-          ref: commitDetail.id
-        });
-      });
+    return gitLabService.createTag({
+      tag_name: `${JSON.parse(packageJson).version}-rc`,
+      ref: process.env["CI_COMMIT_REF_NAME"]
+    });
   })
   .catch((err) => {
-    console.error(`standard-version failed with message: ${err.message}`);
+    console.error(`Error: Creating Release Candidate: ${err.message || err}`);
   });

@@ -1,14 +1,15 @@
-const GitlabAPIController = require("./GitLabAPI");
+const GitlabAPIService = require("./GitLabAPI");
 const standardVersion = require("standard-version");
+const fs = require("fs");
 
 return standardVersion({
   noVerify: true,
   silent: false,
   skip: {
-    changelog: true,
-    bump: false,
-    commit: false,
-    tag: false
+    changelog: false,
+    bump: true,
+    commit: true,
+    tag: true
   }
 })
   .then(() => {

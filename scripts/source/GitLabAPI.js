@@ -1,7 +1,9 @@
-export default class GitlabAPIController {
+const fetch = require("node-fetch");
+
+class GitlabAPIService {
   constructor(args) {
-    (this.baseUrl = args.baseUrl || process.env["CI_API_V4_URL"]),
-      (this.projectId = args.projectId || process.env["CI_PROJECT_ID"]);
+    this.baseUrl = args.baseUrl || process.env["CI_API_V4_URL"];
+    this.projectId = args.projectId || process.env["CI_PROJECT_ID"];
     this.token = args.token || process.env["CI_GITLAB_TOKEN"];
   }
 
@@ -13,6 +15,12 @@ export default class GitlabAPIController {
         Authorization: `Bearer ${this.token}`,
         "Content-Type": "application/json"
       }
+    }).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.status}: ${response.statusText}`;
+      }
+
+      return response.json();
     });
   }
 
@@ -29,6 +37,12 @@ export default class GitlabAPIController {
         content,
         format: "markdown"
       })
+    }).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.status}: ${response.statusText}`;
+      }
+
+      return response.json();
     });
   }
 
@@ -44,25 +58,12 @@ export default class GitlabAPIController {
         title: "CHANGELOG",
         content
       })
-    });
-  }
+    }).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.status}: ${response.statusText}`;
+      }
 
-  getMergeRequestCommits(mergeRequestIid) {
-    return new Promise((resolve, reject) => {
-      const requestOptions = {
-        url: `${this.baseUrl}/projects/${this.projectId}/merge_requests/${mergeRequestIid}/commits`,
-        headers: {
-          "User-Agent": "request",
-          Authorization: `Bearer ${this.token}`
-        }
-      };
-      request(requestOptions, (err, response, body) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(JSON.parse(body));
-        }
-      });
+      return response.json();
     });
   }
 
@@ -81,6 +82,12 @@ export default class GitlabAPIController {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(tag)
+    }).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.statusText}`;
+      }
+
+      return response.json();
     });
   }
 
@@ -96,6 +103,14 @@ export default class GitlabAPIController {
         },
         body: JSON.stringify(commit)
       }
-    );
+    ).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.statusText}`;
+      }
+
+      return response.json();
+    });
   }
 }
+
+module.exports.default = GitlabAPIService;

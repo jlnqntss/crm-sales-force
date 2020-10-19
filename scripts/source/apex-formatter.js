@@ -19,9 +19,12 @@ let files = execSync("git diff --cached --name-only --diff-filter=ACM", {
 // 2 - Se lanza la ejecución de uncrustify
 files.forEach((filepath) => {
   try {
-    execSync(`uncrustify -c "config/apex-uncrustify.cfg" -f ${filepath}`, {
-      encoding: "utf-8"
-    });
+    execSync(
+      `uncrustify -l JAVA -c "config/apex-uncrustify.cfg" --replace --no-backup ${filepath}`,
+      {
+        encoding: "utf-8"
+      }
+    );
   } catch (error) {
     console.error(error);
   }
