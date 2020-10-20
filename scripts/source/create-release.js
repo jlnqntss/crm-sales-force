@@ -22,7 +22,7 @@ async function main() {
       if (ref.name === "dev") {
         isDev = true;
       }
-      if (ref.includes("release")) {
+      if (ref.name.includes("release")) {
         isRelease = true;
       }
     });
