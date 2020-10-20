@@ -18,6 +18,8 @@ public class INFOHandler implements ISystem {
   private static Map<String, String> externalIdByObject = new Map<String, String>();
   @testVisible
   private static Integer maxRetries;
+  
+  private static List<String> entityOrder = new List<String>{'Account', 'Contact'};
 
   /**
    * Obtiene la información necesaria para poder procesar las external request pendientes
@@ -279,7 +281,7 @@ public class INFOHandler implements ISystem {
         }
 
         // 2 - Realizar las operaciones DML sobre los registros generados y actualizar external request con resultado
-        for (String objectName : recordListByObject.keySet()) {
+        for (String objectName : entityOrder) {
           Schema.SObjectField externalId = Schema.getGlobalDescribe()
             .get(objectName)
             .getDescribe()
