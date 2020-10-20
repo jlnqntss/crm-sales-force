@@ -5,6 +5,10 @@
       "default": true
     },
     {
+      "path": "force-app/zurich-base-iam",
+      "default": false
+    },
+    {
       "path": "force-app/zurich-klinc-app",
       "default": false
     },
@@ -13,11 +17,11 @@
       "default": false
     },
     {
-      "path": "force-app/zurich-base-iam",
+      "path": "force-app/zurich-base-security",
       "default": false
     }
   ],
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "49.0"
+  "sourceApiVersion": "50.0"
 }
