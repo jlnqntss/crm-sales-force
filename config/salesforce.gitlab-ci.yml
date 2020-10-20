@@ -508,7 +508,7 @@ changelog:
     - zurich-ci
 
 changelog-new-version:
-  stage: changelog
+  stage: release
   allow_failure: true
   script:
     - VERSION=$(echo $CI_COMMIT_REF_NAME | cut -d '-' -f 1)
