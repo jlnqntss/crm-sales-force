@@ -11,27 +11,35 @@ async function main() {
     projectId: process.env["CI_PROJECT_ID"],
     token: process.env["CI_GITLAB_TOKEN"]
   });
-  let isRelease = false,
-    isDev = false;
-  let tag = await gitLabService.getTag(process.env["CI_COMMIT_TAG"]);
 
-  await gitLabService.getTagBranchRefs(tag.target).forEach((ref) => {
-    if (ref.name === "dev") {
-      isDev = true;
-    }
-    if (ref.includes("release")) {
-      isRelease = true;
-    }
-  });
+  try {
+    let isRelease = false,
+      isDev = false;
+    let tag = await gitLabService.getTag(process.env["CI_COMMIT_TAG"]);
+    let refs = await gitLabService.getTagBranchRefs(tag.target);
 
-  if (!isRelease && isDev) {
-    console.log("Commit is in dev branch");
-    await gitLabService.createBranch({
-      ref: tag.target,
-      branch: `release/${tag.split("-")[0]}`
+    refs.forEach((ref) => {
+      if (ref.name === "dev") {
+        isDev = true;
+      }
+      if (ref.includes("release")) {
+        isRelease = true;
+      }
     });
-  } else {
-    console.log('Commit is not in branch "dev". Aborting...');
+
+    if (!isRelease && isDev) {
+      console.log("Commit is in dev branch");
+      await gitLabService.createBranch({
+        ref: tag.target,
+        branch: `release/${tag.split("-")[0]}`
+      });
+    } else {
+      console.log('Commit is not in branch "dev". Aborting...');
+    }
+  } catch (error) {
+    console.error("Error creating release");
+    console.error(error.message || error);
+    process.exit(1);
   }
 }
 

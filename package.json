@@ -1,7 +1,7 @@
 {
   "name": "zurich-salesforce",
   "author": "NTS",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "lint": "npm run lint:lwc",
     "lint:lwc": "eslint --no-error-on-unmatched-pattern force-app/**/main/default/lwc",

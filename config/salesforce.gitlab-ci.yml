@@ -622,7 +622,7 @@ promotion:uat:
   stage: promotion
   script:
     - npm install
-    - npm run release:create
+    - npm run release:create 
   only:
     - /^\d*\.\d*\.\d*-UAT$/
   except:
@@ -729,7 +729,7 @@ promotion:prd:
   stage: promotion
   script:
     - npm install
-    - npm run release:finish
+    - npm run release:finish 
   only:
     - /^\d*\.\d*\.\d*$/
   except:

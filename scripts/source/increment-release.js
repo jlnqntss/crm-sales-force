@@ -19,7 +19,6 @@ return standardVersion({
 })
   .then(() => {
     const packageJson = fs.readFileSync("package.json", { encoding: "utf-8" });
-
     const gitLabService = new GitlabAPIService({
       baseUrl: process.env["CI_API_V4_URL"],
       projectId: process.env["CI_PROJECT_ID"],
@@ -28,7 +27,7 @@ return standardVersion({
 
     return gitLabService
       .createCommit({
-        branch: process.env["CI_BRANCH_NAME"],
+        branch: process.env["CI_COMMIT_REF_NAME"],
         commit_message: "chore: bump package version [skip ci]",
         actions: [
           {
@@ -47,6 +46,5 @@ return standardVersion({
   })
   .catch((err) => {
     console.error(`Error: Creating UAT Release: ${err.message || err}`);
-
-    throw err;
+    process.exit(1);
   });
