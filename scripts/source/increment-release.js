@@ -4,47 +4,35 @@
  * @author jmartinezpisson
  */
 const GitlabAPIService = require("./GitLabAPI").default;
-const standardVersion = require("standard-version");
-const fs = require("fs");
+const { getLastSemanticTag, SemanticTag } = require("./SemanticTag");
 
-return standardVersion({
-  noVerify: true,
-  silent: false,
-  skip: {
-    changelog: true,
-    bump: false,
-    commit: true,
-    tag: true
-  }
-})
-  .then(() => {
-    const packageJson = fs.readFileSync("package.json", { encoding: "utf-8" });
+async function main() {
+  try {
     const gitLabService = new GitlabAPIService({
       baseUrl: process.env["CI_API_V4_URL"],
       projectId: process.env["CI_PROJECT_ID"],
       token: process.env["CI_GITLAB_TOKEN"]
     });
 
-    return gitLabService
-      .createCommit({
-        branch: process.env["CI_COMMIT_REF_NAME"],
-        commit_message: "chore: bump package version [skip ci]",
-        actions: [
-          {
-            action: "update",
-            file_path: "package.json",
-            content: packageJson
-          }
-        ]
-      })
-      .then((commitDetail) => {
-        return gitLabService.createTag({
-          tag_name: `${JSON.parse(packageJson).version}-UAT`,
-          ref: commitDetail.id
-        });
-      });
-  })
-  .catch((err) => {
-    console.error(`Error: Creating UAT Release: ${err.message || err}`);
+    let lastTag = getLastSemanticTag(
+      await gitLabService.getTags(),
+      process.env["CI_COMMIT_REF_NAME"] === "dev"
+        ? /^\d*\.\d*\.\d*-rc$/
+        : /^\d*\.\d*\.\d*-UAT$/
+    );
+    let { commits } = await gitLabService.compare({
+      from: lastTag.target,
+      to: process.env["CI_COMMIT_REF_NAME"]
+    });
+
+    await gitLabService.createTag({
+      tag_name: new SemanticTag(lastTag).bump(commits).toString(),
+      ref: process.env["CI_COMMIT_REF_NAME"]
+    });
+  } catch (error) {
+    console.error(error);
     process.exit(1);
-  });
+  }
+}
+
+return main();

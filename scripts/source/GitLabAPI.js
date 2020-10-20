@@ -92,6 +92,25 @@ class GitlabAPIService {
   }
 
   /**
+   */
+  getTags() {
+    return fetch(`${this.baseUrl}/projects/${this.projectId}/repository/tags`, {
+      method: "GET",
+      headers: {
+        "User-Agent": "request",
+        Authorization: `Bearer ${this.token}`,
+        "Content-Type": "application/json"
+      }
+    }).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.statusText}`;
+      }
+
+      return response.json();
+    });
+  }
+
+  /**
    *
    * @param {string} commit_tag Referencia del tag
    */
@@ -156,6 +175,32 @@ class GitlabAPIService {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(branch)
+      }
+    ).then((response) => {
+      if (!response.ok) {
+        throw `The server responded with ${response.statusText}`;
+      }
+
+      return response.json();
+    });
+  }
+
+  /**
+   *
+   * @param {CompareRequest} request
+   * @param {string} request.from Etiqueta a generar
+   * @parma {string} request.to Referencia GIT sobre la que generar rama
+   */
+  compare(request) {
+    return fetch(
+      `${this.baseUrl}/projects/${this.projectId}/repository/compare?from=${request.from}&to=${request.to}`,
+      {
+        method: "GET",
+        headers: {
+          "User-Agent": "request",
+          Authorization: `Bearer ${this.token}`,
+          "Content-Type": "application/json"
+        }
       }
     ).then((response) => {
       if (!response.ok) {
