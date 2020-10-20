@@ -1,0 +1,48 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+{{#commits.unreleased.commitSize}}## Unreleased{{/commits.unreleased.commitSize}}
+{{#commits.unreleased.added.commitSize}}### Added{{/commits.unreleased.added.commitSize}}{{#commits.unreleased.added.commitList}}
+- {{body}}{{/commits.unreleased.added.commitList}}
+{{#commits.unreleased.changed.commitSize}}### Changed{{/commits.unreleased.changed.commitSize}}{{#commits.unreleased.changed.commitList}}
+- {{body}}{{/commits.unreleased.changed.commitList}}
+{{#commits.unreleased.deprecated.commitSize}}### Deprecated{{/commits.unreleased.deprecated.commitSize}}{{#commits.unreleased.deprecated.commitList}}
+- {{body}}{{/commits.unreleased.deprecated.commitList}}
+{{#commits.unreleased.removed.commitSize}}### Removed{{/commits.unreleased.removed.commitSize}}{{#commits.unreleased.removed.commitList}}
+- {{body}}{{/commits.unreleased.removed.commitList}}
+{{#commits.unreleased.fixed.commitSize}}### Fixed{{/commits.unreleased.fixed.commitSize}}{{#commits.unreleased.fixed.commitList}}
+- {{body}}{{/commits.unreleased.fixed.commitList}}
+{{#commits.unreleased.security.commitSize}}### Security{{/commits.unreleased.security.commitSize}}{{#commits.unreleased.security.commitList}}
+- {{body}}{{/commits.unreleased.security.commitList}}
+{{#commits.versions}}
+## {{version}} - {{date}}
+{{#added.commitSize}}### Added{{/added.commitSize}}
+{{#added.commitList}}
+- {{body}}
+{{/added.commitList}}
+{{#changed.commitSize}}### Changed{{/changed.commitSize}}
+{{#changed.commitList}}
+- {{body}}
+{{/changed.commitList}}
+{{#deprecated.commitSize}}### Deprecated{{/deprecated.commitSize}}
+{{#deprecated.commitList}}
+- {{body}}
+{{/deprecated.commitList}}
+{{#removed.commitSize}}### Removed{{/removed.commitSize}}
+{{#removed.commitList}}
+- {{body}}
+{{/removed.commitList}}
+{{#fixed.commitSize}}### Fixed{{/fixed.commitSize}}
+{{#fixed.commitList}}
+- {{body}}
+{{/fixed.commitList}}
+{{#security.commitSize}}### Security{{/security.commitSize}}
+{{#security.commitList}}
+- {{body}}
+{{/security.commitList}}
+{{/commits.versions}}

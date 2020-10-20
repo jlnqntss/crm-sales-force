@@ -495,15 +495,28 @@ changelog:
   stage: release
   only:
     refs:
-      - master
+      - dev
       - /^release/.*$/
   except:
     variables:
       - $TEST_DISABLED
-  allow_failure: false
+  allow_failure: true
   script:
     - install_toolchain
     - npm run release:changelog
+  tags:
+    - zurich-ci
+
+changelog-new-version:
+  stage: changelog
+  allow_failure: true
+  script:
+    - VERSION=$(echo $CI_COMMIT_REF_NAME | cut -d '-' -f 1)
+    - npm run release:changelog -- $VERSION
+  only:
+    - /^\d*\.\d*\.0-UAT$/
+  except:
+    - branches
   tags:
     - zurich-ci
 
