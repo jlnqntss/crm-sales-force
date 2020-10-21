@@ -218,4 +218,24 @@ public with sharing class TransformerTest
       '[0] No se ha obtenido el mapa con los campos no mapeados'
     );
   }
+
+  @IsTest
+  static void test_isConcatenation()
+  {
+    String inputOK = 'Test1.Test2';
+    String inputKO = 'Test1Test2';
+
+    System.assertEquals(true, Transformer.isConcatenation(inputOK), '[0] No se ha obtenido true');
+    System.assertEquals(false, Transformer.isConcatenation(inputKO), '[1] No se ha obtenido false');
+  }
+
+  @IsTest
+  static void test_isLookupRelationship()
+  {
+    String inputOK = 'Test1->Test2';
+    String inputKO = 'Test1Test2';
+
+    System.assertEquals(true, Transformer.isLookupRelationship(inputOK), '[0] No se ha obtenido true');
+    System.assertEquals(false, Transformer.isLookupRelationship(inputKO), '[1] No se ha obtenido false');
+  }
 }
