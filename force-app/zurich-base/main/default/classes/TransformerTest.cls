@@ -218,4 +218,52 @@ public with sharing class TransformerTest
       '[0] No se ha obtenido el mapa con los campos no mapeados'
     );
   }
+
+  @IsTest
+  static void test_lookupRelationship()
+  {
+    String inputOK = 'Test0:Test1->Test2';
+    String inputKO = 'Test0Test1Test2';
+
+    System.assertEquals(true, Transformer.isLookupRelationship(inputOK), '[0] No se ha obtenido true');
+    System.assertEquals(false, Transformer.isLookupRelationship(inputKO), '[1] No se ha obtenido false');
+
+    SObject record = Schema.getGlobalDescribe().get('Contact').newSObject();
+    record.put('Lastname', 'test');
+    Transformer.buildParentRelationship(record, 'AccountId:Account->INFOCustomerNumber__c', '000000001');
+    System.assertEquals('000000001', ((Contact) record).Account.INFOCustomerNumber__c, '[2] No se ha obtenido el valor del externalId del padre esperado');
+
+    Boolean hasError = false;
+    try
+    {
+      Transformer.buildParentRelationship(record, 'CampoInventado:Account->INFOCustomerNumber__c', '000000001');
+    }
+    catch(Transformer.TransformerException ex)
+    {
+      hasError = true;
+    }
+    System.assertEquals(true, hasError, '[3] No se ha obtenido el error esperado');
+
+    hasError = false;
+    try
+    {
+      Transformer.buildParentRelationship(record, 'AccountId:ObjetoInventado__c->INFOCustomerNumber__c', '000000001');
+    }
+    catch(Transformer.TransformerException ex)
+    {
+      hasError = true;
+    }
+    System.assertEquals(true, hasError, '[4] No se ha obtenido el error esperado');
+
+    hasError = false;
+    try
+    {
+      Transformer.buildParentRelationship(record, 'AccountId:Account->CampoInventado__c', '000000001');
+    }
+    catch(Transformer.TransformerException ex)
+    {
+      hasError = true;
+    }
+    System.assertEquals(true, hasError, '[5] No se ha obtenido el error esperado');
+  }
 }
