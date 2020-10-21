@@ -27,10 +27,6 @@
       "pre-commit": "pretty-quick --staged && node scripts/source/apex-formatter.js"
     }
   },
-  "standard-version": {
-    "packageFiles": [],
-    "bumpFiles": []
-  },
   "devDependencies": {
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^11.0.0",
@@ -42,10 +38,6 @@
     "node-fetch": "^2.6.1",
     "prettier": "^2.1.2",
     "prettier-plugin-apex": "^1.7.0",
-    "pretty-quick": "^3.0.2",
-    "standard-version": "^9.0.0"
-  },
-  "dependencies": {
-    "semantic-release": "^17.2.1"
+    "pretty-quick": "^3.0.2"
   }
 }

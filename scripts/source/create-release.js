@@ -31,7 +31,7 @@ async function main() {
       console.log("Commit is in dev branch");
       await gitLabService.createBranch({
         ref: tag.target,
-        branch: `release/${tag.split("-")[0]}`
+        branch: `release/${tag.name.split("-")[0]}`
       });
     } else {
       console.log('Commit is not in branch "dev". Aborting...');

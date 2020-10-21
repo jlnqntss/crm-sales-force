@@ -20,6 +20,13 @@ async function main() {
         ? /^\d*\.\d*\.\d*-rc$/
         : /^\d*\.\d*\.\d*-UAT$/
     );
+
+    if (process.env["CI_COMMIT_REF_NAME"].includes(lastTag.name)) {
+      console.log(`Already in version ${lastTag.name} commit. Exit`);
+
+      process.exit(0);
+    }
+
     let { commits } = await gitLabService.compare({
       from: lastTag.target,
       to: process.env["CI_COMMIT_REF_NAME"]
