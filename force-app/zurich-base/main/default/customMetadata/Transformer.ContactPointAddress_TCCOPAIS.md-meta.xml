@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>OriginField__c</field>
-        <value xsi:type="xsd:string">TCCOPAIS</value>
+        <value xsi:type="xsd:string">PAIS_CODIGO</value>
     </values>
     <values>
         <field>Origin__c</field>
