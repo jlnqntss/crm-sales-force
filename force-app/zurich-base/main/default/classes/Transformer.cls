@@ -144,36 +144,30 @@ public class Transformer
             // Validar que el campo indicado en metadata existe en el objeto de salesforce
             if (objectFields.keySet().contains(sfFieldName.toLowerCase()))
             {
-              originFieldValue = String.valueOf(originRecordMap.get(originRecordField)).trim();
-              if (String.isNotBlank(originFieldValue))
+              originFieldValue = String.valueOf(originRecordMap.get(originRecordField));
+              System.debug(LoggingLevel.DEBUG, '[Transformer] Obteniendo detalles del campo: ' + sfFieldName);
+              sfFieldObj = objectFields.get(sfFieldName.toLowerCase());
+              fieldDisplayType = sfFieldObj.getDescribe().getType();
+              System.debug(LoggingLevel.DEBUG, '[Transformer] Tipo del campo: ' + fieldDisplayType.name());
+              switch on fieldDisplayType.name().toUpperCase()
               {
-                System.debug(LoggingLevel.DEBUG, '[Transformer] Obteniendo detalles del campo: ' + sfFieldName);
-                sfFieldObj = objectFields.get(sfFieldName.toLowerCase());
-                fieldDisplayType = sfFieldObj.getDescribe().getType();
-                System.debug(LoggingLevel.DEBUG, '[Transformer] Tipo del campo: ' + fieldDisplayType.name());
-                switch on fieldDisplayType.name().toUpperCase()
+                when 'BOOLEAN'
                 {
-                  when 'BOOLEAN'
-                  {
-                    record.put(sfFieldName, parseBooleanField(originFieldValue, this.origin));
-                  }
-                  when 'DATE'
-                  {
-                    record.put(sfFieldName, parseDateField(originFieldValue, this.origin));
-                  }
-                  when 'DATETIME'
-                  {
-                    record.put(sfFieldName, parseDatetimeField(originFieldValue, this.origin));
-                  } // se considera texto el resto de campos
-                  when else
-                  {
-                    record.put(sfFieldName, originRecordMap.get(originRecordField));
-                  }
+                  record.put(sfFieldName, parseBooleanField(originFieldValue, this.origin));
                 }
-              }
-              else
-              {
-                record.put(sfFieldName, null);
+                when 'DATE'
+                {
+                  record.put(sfFieldName, parseDateField(originFieldValue, this.origin));
+                }
+                when 'DATETIME'
+                {
+                  record.put(sfFieldName, parseDatetimeField(originFieldValue, this.origin));
+                }
+                when else
+                {
+                  // se considera texto el resto de campos
+                  record.put(sfFieldName, parseStringField(originFieldValue, this.origin));
+                }
               }
             }
             else
@@ -272,7 +266,7 @@ public class Transformer
       when 'INFO'
       {
         Boolean booleanValue = false;
-        if (String.isNotBlank(strValue) && strValue.equalsIgnoreCase('S'))
+        if (String.isNotBlank(strValue) && strValue.trim().equalsIgnoreCase('S'))
         {
           booleanValue = true;
         }
@@ -308,7 +302,7 @@ public class Transformer
       {
         if (String.isNotBlank(strValue))
         {
-          return Date.valueOf(strValue);
+          return Date.valueOf(strValue.trim());
         }
       }
       when else
@@ -341,13 +335,46 @@ public class Transformer
       {
         if (String.isNotBlank(strValue))
         {
-          return Datetime.valueOf(strValue);
+          return Datetime.valueOf(strValue.trim());
         }
       }
       when else
       {
         // Agregar otros origenens o transformaciones por defecto
         System.debug(LoggingLevel.WARN, '[Transformer] parseDatetimeField() transformación no específicada para origen: ' + origin);
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Método que parsea un string en texto de acuerdo con las indicaciones
+   * de formato del sistema origen
+   **
+   * @param String valor a transformar en String , por ejemplo: 'hola'
+   * @param String origen configurado en el Transformer
+   * @return String
+   *
+   * @author xsobera
+   * @date 21/10/2020
+   */
+  @TestVisible
+  private static String parseStringField(String strValue, String origin)
+  {
+    switch on origin
+    {
+      when 'INFO'
+      {
+        if (String.isNotBlank(strValue))
+        {
+          return strValue.trim();
+        }
+      }
+      when else
+      {
+        // Agregar otros origenens o transformaciones por defecto
+        System.debug(LoggingLevel.WARN, '[Transformer] parseStringField() transformación no específicada para origen: ' + origin);
       }
     }
 
