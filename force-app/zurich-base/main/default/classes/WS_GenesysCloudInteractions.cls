@@ -14,8 +14,8 @@ global without sharing class WS_GenesysCloudInteractions {
     //1º Comprobación de campos obligatorios
     if (
       ReqBody.interactionType == null ||
-      ReqBody.iFrom == null ||
-      ReqBody.iTo == null
+      ReqBody.fromId == null ||
+      ReqBody.toId == null
     ) {
       badResponse = new WrapperBadResponse(
         'BAD_REQUEST',
@@ -91,8 +91,8 @@ global without sharing class WS_GenesysCloudInteractions {
   global class WrapperReq {
     public String interaction { get; set; }
     public String interactionType { get; set; }
-    public String iFrom { get; set; }
-    public String iTo { get; set; }
+    public String fromId { get; set; }
+    public String toId { get; set; }
     public String queueId { get; set; }
     public String lookFor { get; set; }
   }
