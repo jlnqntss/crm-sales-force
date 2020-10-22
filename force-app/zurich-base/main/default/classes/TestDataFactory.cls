@@ -451,7 +451,7 @@ public class TestDataFactory {
         /* REGISTRO VIA DE CONTACTO POSTAL*/
         jsonElementsList.add(
           new Map<String, Object>{
-            'id_unico_via_contacto' => String.valueOf(i + 1).leftPad(10, '0'),  
+            'id_unico_via_contacto' => contactPointType + String.valueOf(i + 1).leftPad(10, '0'),  
             'cliente_cod_filiacion' => String.valueOf(i + 1).leftPad(10, '0'), // string
             'cod_secuencial_domicilio' => String.valueOf(i + 1),
             'tipo_domicilio' => contactPointType,
@@ -501,7 +501,7 @@ public class TestDataFactory {
         /* REGISTRO VIA DE CONTACTO TELEFÓNICO */
         jsonElementsList.add(
           new Map<String, Object>{
-            'id_unico_via_contacto' => String.valueOf(i + 1).leftPad(10, '0'),
+            'id_unico_via_contacto' => contactPointType + String.valueOf(i + 1).leftPad(10, '0'),
             'cliente_cod_filiacion' => String.valueOf(i + 1).leftPad(10, '0'), // string
             'cod_secuencial_domicilio' => String.valueOf(i + 1),
             'tipo_domicilio' => contactPointType,
@@ -545,7 +545,7 @@ public class TestDataFactory {
         /* REGISTRO VIA DE CONTACTO EMAIL*/
         jsonElementsList.add(
           new Map<String, Object>{
-            'id_unico_via_contacto' => String.valueOf(i + 1).leftPad(10, '0'),
+            'id_unico_via_contacto' => contactPointType + String.valueOf(i + 1).leftPad(10, '0'),
             'cliente_cod_filiacion' => String.valueOf(i + 1).leftPad(10, '0'), // string
             'cod_secuencial_domicilio' => String.valueOf(i + 1),
             'tipo_domicilio' => contactPointType,
