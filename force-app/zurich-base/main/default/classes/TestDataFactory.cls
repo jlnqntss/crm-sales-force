@@ -482,7 +482,7 @@ public class TestDataFactory {
             'numero_prefijo_pais' => '',
             'numero_tel' => '',
             'numero_extension_tel' => '',
-            'fealreg' => String.valueOf(auxDate.year()) +
+            'fecha_alta' => String.valueOf(auxDate.year()) +
             '-' +
             String.valueOf(auxDate.month()).leftPad(2, '0') +
             '-' +
@@ -526,7 +526,7 @@ public class TestDataFactory {
               Math.round((Math.random() * (900000000) + 100000000))
             ),
             'numero_extension_tel' => '',
-            'fealreg' => String.valueOf(auxDate.year()) +
+            'fecha_alta' => String.valueOf(auxDate.year()) +
             '-' +
             String.valueOf(auxDate.month()).leftPad(2, '0') +
             '-' +
@@ -567,7 +567,7 @@ public class TestDataFactory {
             'numero_prefijo_pais' => '',
             'numero_tel' => '',
             'numero_extension_tel' => '',
-            'fealreg' => String.valueOf(auxDate.year()) +
+            'fecha_alta' => String.valueOf(auxDate.year()) +
             '-' +
             String.valueOf(auxDate.month()).leftPad(2, '0') +
             '-' +
