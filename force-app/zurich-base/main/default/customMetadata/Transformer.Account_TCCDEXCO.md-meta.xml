@@ -20,6 +20,6 @@
     </values>
     <values>
         <field>SalesforceField__c</field>
-        <value xsi:type="xsd:string">LegalEntity__c</value>
+        <value xsi:nil="true"/>
     </values>
 </CustomMetadata>
