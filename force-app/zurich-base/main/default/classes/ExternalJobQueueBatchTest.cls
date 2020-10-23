@@ -1,25 +1,12 @@
 @isTest
 private class ExternalJobQueueBatchTest {
   @TestSetup
-  static void makeData() {
+  static void makeData() 
+  {
     List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
-    for (
-      Map<String, Object> custJson : TestDataFactory.getINFOCustomerJson(
-        200,
-        'F'
-      )
-    ) {
-      externalRequestList.add(
-        new ExternalRequest__c(
-          Origin__c = 'INFO',
-          Entity__c = 'CUSTOMER',
-          Action__c = 'UPSERT',
-          Payload__c = JSON.serialize(custJson),
-          ContentFormat__c = 'JSON'
-        )
-      );
-    }
+    //Personas físicas
+    externalRequestList.addAll(TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 200));
 
     insert externalRequestList;
   }
@@ -32,7 +19,8 @@ private class ExternalJobQueueBatchTest {
    * @date 15/10/2020
    */
   @isTest
-  static void test_execute_INFO() {
+  static void test_execute_INFO() 
+  {
     Test.startTest();
     ExternalJobQueueBatch ejqb = new ExternalJobQueueBatch('INFO');
     Id batchId = Database.executeBatch(ejqb);
