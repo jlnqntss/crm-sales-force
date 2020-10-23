@@ -17,6 +17,7 @@ public without sharing class GenesysInteractionsService {
     String screenPopRecordId;
     String callLogId;
     String bestAgentId;
+    BestAgent ba = new BestAgent(screenPopRecordId, callLogId, bestAgentId); //Se devolverá todo a null si no entra en el flujo
 
     //Ahora mismo solo hay una versión del servicio
     if (version != 1) {
@@ -36,23 +37,26 @@ public without sharing class GenesysInteractionsService {
       }
 
       //Si el servicio no recibe ucid, no generará tarea y por tanto no devolverá callLogId
-      if (request.queueId != null) {
+      if (request.interaction != null) {
         //1º Dejar un registro de la interacción entrante en Salesforce por si el usuario abandona
-        callLogId = createOnqueueInteraction();
+        callLogId = createOnqueueInteraction(request.interaction);
       }
 
-      //2º Identificar al cliente y el último registro de interés abierto (Oportunidad/Caso). Admite como parámetro de entrada si
-      screenPopRecordId = findCustomerInterest();
-
-      //Si el servicio no recibe lookFor, no buscará el bestAgentId
+      //Si el servicio no recibe lookFor, no buscará el bestAgentId ni screenPopRecordId
       if (request.lookFor != null) {
+        //2º Identificar al cliente y el último registro de interés abierto (Oportunidad/Caso).
         //3º Identificar al gestor preferente (usuario) de la interacción
-        bestAgentId = findBestAgentFor();
+        ba = findBestAgentFor(
+          callLogId,
+          request.interactionType,
+          request.fromId,
+          request.toId,
+          request.lookFor
+        );
       }
     }
 
     //Devolver BestAgent
-    BestAgent ba = new BestAgent(screenPopRecordId, callLogId, bestAgentId);
     return ba;
   }
 
@@ -61,7 +65,7 @@ public without sharing class GenesysInteractionsService {
    * @author nescudero
    * @date 22/10/2020
    */
-  private static String createOnqueueInteraction() {
+  private static String createOnqueueInteraction(String ucid) {
     Id rtId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
       .get('Interaction')
       .getRecordTypeId();
@@ -70,6 +74,8 @@ public without sharing class GenesysInteractionsService {
     Task interaction = new Task();
     interaction.Status = 'Nueva';
     interaction.Priority = 'Normal';
+    interaction.CallObject = ucid;
+    interaction.RecordTypeId = rtId;
     insert interaction;
 
     String taskId = String.valueOf(interaction.Id);
@@ -78,31 +84,120 @@ public without sharing class GenesysInteractionsService {
   }
 
   /**
-   * WIP: Falta definir
+   * 1. Si hay múltiples clientes => Tenemos que decidirlo. De momento, recordId=null y bestAgentId=null
+    2. Si hay múltiples casos de un mismo cliente =>  RecordId=ID_CLIENTE y *bestAgentId="Case/opportutiny.Owner.Email" del último caso abierto => Si OWner es una cola null
+    3. Si hay solo hay una coincidencia => RecordId=ID_CLIENTE y *bestAgentId="Case/opportutiny.Owner.Email"   => Si Owner es una cola null
    * @author nescudero
-   * @date 22/10/2020
+   * @date 23/10/2020
    */
-  private static String findCustomerInterest() {
+  private static BestAgent findBestAgentFor(
+    String callLogId,
+    String interactionType,
+    String fromId,
+    String toId,
+    String lookFor
+  ) {
+    String contactPoint;
+    Boolean isContactPointPhone;
+    String screenPopRecordId;
+    String bestAgentId;
+    Set<Id> userIds = new Set<Id>();
+
+    //buscar en fromId o toId depende de interactionType
+    switch on interactionType {
+      when 'Inbound' {
+        contactPoint = fromId;
+      }
+      when 'Outbound' {
+        contactPoint = toId;
+      }
+    }
+
     //Ver si hay que buscar en ContactPointPhone o ContactPointEmail
+    if (contactPoint.isNumeric()) {
+      isContactPointPhone = true;
+    } else {
+      isContactPointPhone = false;
+    }
 
     //Buscar el contacto
+    if (isContactPointPhone) {
+      List<ContactPointPhone> contactPointPhones = new List<ContactPointPhone>();
+      contactPointPhones = [
+        SELECT Id, TelephoneNumber, ContactId__c
+        FROM ContactPointPhone
+        WHERE TelephoneNumber = :contactPoint
+      ];
 
-    //si no existe contacto --> Error
+      //1. Si hay múltiples clientes => Tenemos que decidirlo. De momento, recordId=null y bestAgentId=null
+      for (ContactPointPhone contactPointPhone : contactPointPhones) {
+        userIds.add(contactPointPhone.ContactId__c);
+      }
+      if (!userIds.isEmpty() && userIds.size() > 1) {
+        //recordId=null y bestAgentId=null
+        return new BestAgent(screenPopRecordId, callLogId, bestAgentId);
+      }
+    } else {
+      List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
+      contactPointEmails = [
+        SELECT Id, EmailAddress, ContactId__c
+        FROM ContactPointEmail
+        WHERE EmailAddress = :contactPoint
+      ];
 
-    //Buscar el registro Case u Opportunity más reciente creado para dicho cliente
+      //1. Si hay múltiples clientes => Tenemos que decidirlo. De momento, recordId=null y bestAgentId=null
+      for (ContactPointEmail contactPointEmail : contactPointEmails) {
+        userIds.add(contactPointEmail.ContactId__c);
+      }
+      if (!userIds.isEmpty() && userIds.size() > 1) {
+        //recordId=null y bestAgentId=null
+        return new BestAgent(screenPopRecordId, callLogId, bestAgentId);
+      }
+    }
 
-    return 'caseOppId';
-  }
+    //una vez se tiene el contacto elegido se busca su Case/Opp
+    if (!userIds.isEmpty()) {
+      //ya se sabe qué ficha abrir
+      List<Id> userIdsList = new List<Id>(userIds);
+      screenPopRecordId = userIdsList[0];
 
-  /**
-   * WIP: Falta definir
-   * @author nescudero
-   * @date 22/10/2020
-   */
-  private static String findBestAgentFor() {
-    //¿Recibe como parámetro screenPopRecordId o solo lookFor?
-    //Devuelve el OwnerId del registro Case u Opportunity más reciente creado para dicho cliente (Depende de LookFor)
-    return 'ownerId';
+      //Dependiendo de lookFor
+      switch on lookFor {
+        when 'Opportunity' {
+          List<Opportunity> opps = new List<Opportunity>(); //TODO: se usa ContactId o ContctId__c?
+          opps = [
+            SELECT isClosed, CreatedDate, Owner.Email
+            FROM Opportunity
+            WHERE isClosed = FALSE AND ContactId__c = :screenPopRecordId
+            ORDER BY CreatedDate DESC
+          ];
+          if (!opps.isEmpty()) {
+            bestAgentId = opps[0].Owner.Email;
+          }
+        }
+        when 'Case' {
+          List<Case> cases = new List<Case>();
+          cases = [
+            SELECT
+              isClosed,
+              CreatedDate,
+              TYPEOF Owner
+                WHEN User THEN Email
+              END
+            FROM Case
+            WHERE isClosed = FALSE AND ContactId = :screenPopRecordId
+            ORDER BY CreatedDate DESC
+          ];
+          if (!cases.isEmpty()) {
+            bestAgentId = cases[0].Owner.Email;
+          }
+        }
+      }
+    }
+
+    //Si todo ha ido bien, screenPopRecordId y bestAgentId estarán rellenos, sino se envían a null
+    BestAgent ba = new BestAgent(screenPopRecordId, callLogId, bestAgentId);
+    return ba;
   }
 
   //Entrada
