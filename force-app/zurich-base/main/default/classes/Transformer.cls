@@ -126,63 +126,66 @@ public class Transformer
     Map<String, Schema.SObjectField> objectFields = getObjectFields(objectName);
     Map<String, String> mappingByOriginField = mappingsByObject.get(objectName);
     SObject record = Schema.getGlobalDescribe().get(objectName).newSObject();
-    String sfFieldName;
+    String sfFieldNameConfig;
     String originFieldValue;
     Schema.SObjectField sfFieldObj;
     Schema.DisplayType fieldDisplayType;
     for (String originRecordField : originRecordMap.keySet())
     {
-      if (mappingByOriginField.containsKey(originRecordField.toUpperCase()))
+      if (mappingByOriginField.containsKey(originRecordField.toUpperCase())) //origen1
       {
-        sfFieldName = mappingByOriginField.get(originRecordField.toUpperCase());
+        sfFieldNameConfig = mappingByOriginField.get(originRecordField.toUpperCase());
         // comprobar que hay un campo sf definido en el metadato
-        if (String.isNotBlank(sfFieldName))
+        if (String.isNotBlank(sfFieldNameConfig))
         {
-          // comprobar que si es lookup
-          if(!isLookupRelationship(sfFieldName))
+          for (String sfFieldName : getTargetFields(sfFieldNameConfig))
           {
-            // Validar que el campo indicado en metadata existe en el objeto de salesforce
-            if (objectFields.keySet().contains(sfFieldName.toLowerCase()))
+            sfFieldName = sfFieldName.trim();
+            // comprobar que si es lookup
+            if(!isLookupRelationship(sfFieldName))
             {
-              originFieldValue = String.valueOf(originRecordMap.get(originRecordField));
-              System.debug(LoggingLevel.DEBUG, '[Transformer] Obteniendo detalles del campo: ' + sfFieldName);
-              sfFieldObj = objectFields.get(sfFieldName.toLowerCase());
-              fieldDisplayType = sfFieldObj.getDescribe().getType();
-              System.debug(LoggingLevel.DEBUG, '[Transformer] Tipo del campo: ' + fieldDisplayType.name());
-              switch on fieldDisplayType.name().toUpperCase()
+              // Validar que el campo indicado en metadata existe en el objeto de salesforce
+              if (objectFields.keySet().contains(sfFieldName.toLowerCase()))
               {
-                when 'BOOLEAN'
+                originFieldValue = String.valueOf(originRecordMap.get(originRecordField));
+                System.debug(LoggingLevel.DEBUG, '[Transformer] Obteniendo detalles del campo: ' + sfFieldName);
+                sfFieldObj = objectFields.get(sfFieldName.toLowerCase());
+                fieldDisplayType = sfFieldObj.getDescribe().getType();
+                System.debug(LoggingLevel.DEBUG, '[Transformer] Tipo del campo: ' + fieldDisplayType.name());
+                switch on fieldDisplayType.name().toUpperCase()
                 {
-                  record.put(sfFieldName, parseBooleanField(originFieldValue, this.origin));
+                  when 'BOOLEAN'
+                  {
+                    record.put(sfFieldName, parseBooleanField(originFieldValue, this.origin));
+                  }
+                  when 'DATE'
+                  {
+                    record.put(sfFieldName, parseDateField(originFieldValue, this.origin));
+                  }
+                  when 'DATETIME'
+                  {
+                    record.put(sfFieldName, parseDatetimeField(originFieldValue, this.origin));
+                  }
+                  when else
+                  {
+                    // se considera texto el resto de campos
+                    record.put(sfFieldName, parseStringField(originFieldValue, this.origin));
+                  }
                 }
-                when 'DATE'
-                {
-                  record.put(sfFieldName, parseDateField(originFieldValue, this.origin));
-                }
-                when 'DATETIME'
-                {
-                  record.put(sfFieldName, parseDatetimeField(originFieldValue, this.origin));
-                }
-                when else
-                {
-                  // se considera texto el resto de campos
-                  record.put(sfFieldName, parseStringField(originFieldValue, this.origin));
-                }
+              }
+              else
+              {
+                // Sí hay configuración para el campo origen y sí se ha definido un campo sf pero el objeto salefsorce destino no contiene un campo con el nombre indicado
+                System.debug(LoggingLevel.ERROR, '[Transformer] No hay ningún campo en el objeto Salesforce con el nombre indicado.\nsObject: ' + objectName + ' \nField: ' + sfFieldName);
+                throw new TransformerException('There are not any field with these name in the salesforce object. \nsObject: ' + objectName + ' \nField: ' + sfFieldName);
               }
             }
             else
             {
-              // Sí hay configuración para el campo origen y sí se ha definido un campo sf pero el objeto salefsorce destino no contiene un campo con el nombre indicado
-              System.debug(LoggingLevel.ERROR, '[Transformer] No hay ningún campo en el objeto Salesforce con el nombre indicado.\nsObject: ' + objectName + ' \nField: ' + sfFieldName);
-              throw new TransformerException('There are not any field with these name in the salesforce object. \nsObject: ' + objectName + ' \nField: ' + sfFieldName);
+              // Insert lookup
+              buildParentRelationship(record, sfFieldName, (String) originRecordMap.get(originRecordField));
             }
-          }
-          else
-          {
-            // Insert lookup
-            buildParentRelationship(record, sfFieldName, (String) originRecordMap.get(originRecordField));
-          }
-
+          } // fin loop getTargetFields()
         }
         else
         {
@@ -452,6 +455,30 @@ public class Transformer
         throw new TransformerException('There are not any field with these name in the salesforce parent object. \nsObject: ' + parentObjectName + ' \nField: ' + parentExternalFieldName);
       }
     }
+  }
+
+  /**
+   * Método que las configuraciones para cada uno de los campos destino
+   * Formato entrada targetField1,targetField2
+   **
+   * @param String configValue
+   * @return List<String> configuraciones para cada campo destino
+   *
+   * @author xsobera
+   * @date 23/10/2020
+   */
+  @TestVisible
+  private static List<String> getTargetFields(String configValue)
+  {
+    List<String> configValues = new List<String>(); // siempre tiene que devolver una lista instanciada
+    if(String.isNotBlank(configValue))
+    {
+      Set<String> aux = new Set<String>(configValue.split(','));
+      aux.removeAll(new Set<String>{null, '', ' '});
+      configValues.addAll(aux);
+    }
+
+    return configValues;
   }
 
   public class TransformerException extends Exception {}

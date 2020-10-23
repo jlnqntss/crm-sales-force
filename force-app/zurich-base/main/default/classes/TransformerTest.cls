@@ -148,7 +148,7 @@ public with sharing class TransformerTest
 
         for (Integer i = 0; i < addressesJsonItems.size(); i++)
         {
-            addressRecord = (ContactPointAddress) myTransformer.transform(Transformer.OBJECT_NAME_CONTACT_POINT_ADDRESS, phonesJsonItems[i]);
+            addressRecord = (ContactPointAddress) myTransformer.transform(Transformer.OBJECT_NAME_CONTACT_POINT_ADDRESS, addressesJsonItems[i]);
             addresses.add(addressRecord);
             System.assertEquals(addressesJsonItems[i].get('descripcion_dom'), addressRecord.Street, '[ContactPointAddress-' + String.valueOf(i).leftPad(2, '0') + '] No se ha mapeado la dirección correctamente');
         }
@@ -218,5 +218,36 @@ public with sharing class TransformerTest
       hasError = true;
     }
     System.assertEquals(true, hasError, '[5] No se ha obtenido el error esperado');
+
+    // Test lookup cuenta jurídica (Cuenta y Contacto)
+    Transformer myTransformer = new Transformer(Transformer.ORIGIN_NAME_INFO);
+    Map<String, Object> companyJson = TestDataFactory.getINFOCustomerJson(1, 'J')[0];
+    Account accountRecord = (Account) myTransformer.transform('Account', companyJson);
+    accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
+    Contact contactRecord = (Contact) myTransformer.transform('Contact', companyJson);
+    contactRecord.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('CustomerGI').getRecordTypeId();
+
+    System.assertEquals(true, accountRecord.INFOCustomerNumber__c == contactRecord.Account.INFOCustomerNumber__c, '[6] No se ha relacionado cuenta y contacto correctamente');
+    System.assertEquals(true, accountRecord.INFOCustomerNumber__c == contactRecord.InfoCustomerContactNumber__c, '[7] No se ha establecido correctamente el externalID de contacto fake');
+  }
+
+  @IsTest
+  static void test_getTargetFields()
+  {
+    String configValue = 'field1field2'; // esperado [0]field1field2
+    List<String> returnedValues = Transformer.getTargetFields(configValue);
+    System.assertEquals(true, returnedValues[0] == 'field1field2', '[0] No se ha obtenido el valor de configuración esperado');
+
+    configValue = 'field1,field2'; // esperado [0]field1 [1]field2
+    returnedValues = Transformer.getTargetFields(configValue);
+    System.assertEquals(true, returnedValues[0] == 'field1' && returnedValues[1] == 'field2', '[1] No se ha obtenido el valor de configuración esperado');
+
+    configValue = 'field1,field2,field3:ParentObject->ParentExternalID'; // esperado [0]field1 [1]field2 [2]field3:ParentObject->ParentExternalID
+    returnedValues = Transformer.getTargetFields(configValue);
+    System.assertEquals(true, returnedValues[0] == 'field1' && returnedValues[1] == 'field2' && returnedValues[2] == 'field3:ParentObject->ParentExternalID', '[2] No se ha obtenido el valor de configuración esperado');
+
+    configValue = 'field1,,field2,,,'; // esperado [0]field1 [1]field2
+    returnedValues = Transformer.getTargetFields(configValue);
+    System.assertEquals(true, returnedValues[0] == 'field1' && returnedValues[1] == 'field2', '[3] No se ha obtenido el valor de configuración esperado');
   }
 }
