@@ -1,0 +1,131 @@
+@isTest(SeeAllData=false)
+public without sharing class GenesysInteractionsServiceTest {
+  public static Contact c;
+  /**
+   * creación de reistros necesarios
+   **
+   * @author nescudero
+   * @date 23/10/2020
+   */
+  public static void setUp() {
+    c = new Contact();
+    c.LastName = 'nescudero';
+    c.LegalEntity__c = Label.GeneralInsurance;
+    insert c;
+
+    ContactPointPhone cpp = new ContactPointPhone();
+    cpp.ContactId__c = c.Id;
+    cpp.TelephoneNumber = '123456789';
+    insert cpp;
+
+    ContactPointEmail cpe = new ContactPointEmail();
+    cpe.ContactId__c = c.Id;
+    cpe.EmailAddress = 'nescudero@nts-solutions.com';
+    insert cpe;
+
+    Case caso = new Case();
+    caso.ContactId = c.Id;
+    insert caso;
+
+    Opportunity opp = new Opportunity();
+    opp.ContactId__c = c.Id;
+    opp.Name = 'opp';
+    opp.StageName = 'New';
+    opp.CloseDate = System.today().addDays(10);
+    insert opp;
+  }
+
+  /**
+   * válida la devolución de un BestAgent y creación de una task
+   **
+   * @author nescudero
+   * @date 23/10/2020
+   */
+  @IsTest
+  static void test_initInteraction() {
+    Test.startTest();
+
+    Test.stopTest();
+  }
+
+  /**
+   * válida la creación de una Task
+   **
+   * @author nescudero
+   * @date 23/10/2020
+   */
+  @IsTest
+  static void test_createOnqueueInteraction() {
+    String ucid = '1234';
+
+    Test.startTest();
+    GenesysInteractionsService.createOnqueueInteraction(ucid);
+    Test.stopTest();
+
+    List<Task> tasks = [SELECT Id FROM Task];
+
+    System.assertEquals(1, tasks.size(), 'Se debió crear 1 task');
+  }
+
+  /**
+   * válida la devolución de un BestAgent
+   **
+   * @author nescudero
+   * @date 23/10/2020
+   */
+  @IsTest
+  static void test_findBestAgentFor() {
+    setUp(); //Se insertan Opp y Case así que ya tendrán Owner
+    String callLogId = 'taskId';
+    String screenPopRecordId = c.Id;
+    Case caso = [
+      SELECT
+        TYPEOF Owner
+          WHEN User THEN Email
+        END
+      FROM Case
+    ][0];
+    String bestAgentCase = caso.Owner.Email;
+    Opportunity opp = [SELECT Owner.Email FROM Opportunity][0];
+    String bestAgentOpp = opp.Owner.Email;
+
+    GenesysInteractionsService.BestAgent expectedBaCaseOut = new GenesysInteractionsService.BestAgent(
+      screenPopRecordId,
+      callLogId,
+      bestAgentCase
+    );
+    GenesysInteractionsService.BestAgent expectedBaOppIn = new GenesysInteractionsService.BestAgent(
+      screenPopRecordId,
+      callLogId,
+      bestAgentOpp
+    );
+
+    Test.startTest();
+    GenesysInteractionsService.BestAgent baCaseOut = GenesysInteractionsService.findBestAgentFor(
+      callLogId,
+      'Outbound',
+      '123456789',
+      '123456789',
+      'Case'
+    );
+    GenesysInteractionsService.BestAgent baOppIn = GenesysInteractionsService.findBestAgentFor(
+      callLogId,
+      'Inbound',
+      'nescudero@nts-solutions.com',
+      'nescudero@nts-solutions.com',
+      'Opportunity'
+    );
+    Test.stopTest();
+
+    System.assertEquals(
+      expectedBaCaseOut,
+      baCaseOut,
+      'La devolución no es la esperada'
+    );
+    System.assertEquals(
+      expectedBaOppIn,
+      baOppIn,
+      'La devolución no es la esperada'
+    );
+  }
+}

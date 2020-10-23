@@ -65,6 +65,7 @@ public without sharing class GenesysInteractionsService {
    * @author nescudero
    * @date 22/10/2020
    */
+  @TestVisible
   private static String createOnqueueInteraction(String ucid) {
     Id rtId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
       .get('Interaction')
@@ -90,6 +91,7 @@ public without sharing class GenesysInteractionsService {
    * @author nescudero
    * @date 23/10/2020
    */
+  @TestVisible
   private static BestAgent findBestAgentFor(
     String callLogId,
     String interactionType,
