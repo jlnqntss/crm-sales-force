@@ -20,6 +20,6 @@
     </values>
     <values>
         <field>SalesforceField__c</field>
-        <value xsi:type="xsd:string">InfoCustomerContactNumber__c</value>
+        <value xsi:type="xsd:string">InfoCustomerContactNumber__c,	AccountId:Account-&gt;InfoCustomerNumber__c</value>
     </values>
 </CustomMetadata>

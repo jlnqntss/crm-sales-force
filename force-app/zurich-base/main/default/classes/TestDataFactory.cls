@@ -266,7 +266,7 @@ public class TestDataFactory {
           'cliente_id_fiscal_codigo' => String.valueOf(
             Integer.valueof((Math.random() * 99999999))
           ) + letters[Integer.valueof((Math.random() * letters.size() - 1))], // String -> de 9 a 12 digitos
-          'cliente_clase_persona' => String.isNotBlank(customerType)
+          'cliente_tipo_persona' => String.isNotBlank(customerType)
             ? customerType
             : personType[
                 Integer.valueof((Math.random() * personType.size() - 1)) // String -> 'F' o 'J'
@@ -331,7 +331,7 @@ public class TestDataFactory {
     ) {
       throw new TestException('incorrect value for contactPointType parameter');
     }
-    return buildINFOCustomerJson(totalItems, contactPointType);
+    return buildINFOContactPointJson(totalItems, contactPointType);
   }
 
   private static List<Map<String, Object>> buildINFOContactPointJson(
@@ -359,8 +359,6 @@ public class TestDataFactory {
     };
 
     List<String> flagType = new List<String>{ 'S', 'N', null };
-
-    List<String> phoneType = new List<String>{ 'FA', 'MO', 'TL' };
 
     List<Integer> years = new List<Integer>{
       1980,
@@ -433,13 +431,12 @@ public class TestDataFactory {
       28
     };
 
-    Map<String, Object> jsonMap = new Map<String, Object>();
     Date auxDate;
 
     if (
       contactPointType.equalsIgnoreCase('A') ||
-      !contactPointType.equalsIgnoreCase('B') ||
-      !contactPointType.equalsIgnoreCase('P')
+      contactPointType.equalsIgnoreCase('B') ||
+      contactPointType.equalsIgnoreCase('P')
     ) {
       for (Integer i = 0; i < totalItems; i++) {
         auxDate = Date.newInstance(
@@ -452,7 +449,7 @@ public class TestDataFactory {
         jsonElementsList.add(
           new Map<String, Object>{
             'id_unico_via_contacto' => contactPointType + String.valueOf(i + 1).leftPad(10, '0'),  
-            'cliente_cod_filiacion' => String.valueOf(i + 1).leftPad(10, '0'), // string
+            'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0'), // string
             'cod_secuencial_domicilio' => String.valueOf(i + 1),
             'tipo_domicilio' => contactPointType,
             'clase_domicilio' => homeType[
@@ -478,7 +475,6 @@ public class TestDataFactory {
             'indicador_domicilio_principal' => flagType[
               Integer.valueof((Math.random() * flagType.size() - 1)) // checkbox -> 'S': true, sino false,
             ],
-            'tipo_comunicacion' => '',
             'numero_prefijo_pais' => '',
             'numero_tel' => '',
             'numero_extension_tel' => '',
@@ -502,7 +498,7 @@ public class TestDataFactory {
         jsonElementsList.add(
           new Map<String, Object>{
             'id_unico_via_contacto' => contactPointType + String.valueOf(i + 1).leftPad(10, '0'),
-            'cliente_cod_filiacion' => String.valueOf(i + 1).leftPad(10, '0'), // string
+            'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0'), // string
             'cod_secuencial_domicilio' => String.valueOf(i + 1),
             'tipo_domicilio' => contactPointType,
             'clase_domicilio' => '',
@@ -516,9 +512,6 @@ public class TestDataFactory {
             'codigo_postal' => '',
             'pais_codigo' => '',
             'indicador_domicilio_principal' => '',
-            'tipo_comunicacion' => phoneType[
-              Integer.valueof((Math.random() * phoneType.size() - 1)) // checkbox -> 'S': true, sino false,,
-            ],
             'numero_prefijo_pais' => String.valueOf(
               Math.round((Math.random() * (90) + 10))
             ),
@@ -546,7 +539,7 @@ public class TestDataFactory {
         jsonElementsList.add(
           new Map<String, Object>{
             'id_unico_via_contacto' => contactPointType + String.valueOf(i + 1).leftPad(10, '0'),
-            'cliente_cod_filiacion' => String.valueOf(i + 1).leftPad(10, '0'), // string
+            'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0'), // string
             'cod_secuencial_domicilio' => String.valueOf(i + 1),
             'tipo_domicilio' => contactPointType,
             'clase_domicilio' => '',
@@ -563,7 +556,6 @@ public class TestDataFactory {
             'pais_codigo' => '',
             'pais_desc' => '',
             'indicador_domicilio_principal' => '',
-            'tipo_comunicacion' => '',
             'numero_prefijo_pais' => '',
             'numero_tel' => '',
             'numero_extension_tel' => '',
@@ -580,6 +572,59 @@ public class TestDataFactory {
     return jsonElementsList;
   }
 
+  /**
+   * Obtener estructura json del sistema de origen INFO para registros
+   * de entidad Producto
+   **
+   * @param Integer numero de elementos a generar
+   * @return List<Map<String, Object>> listado de elementos simulando json
+   * @author adelgado
+   * @date 23/10/2020
+   */
+  public static List<Map<String, Object>> getINFOProductJson(Integer totalItems) 
+  {
+    return buildINFOProductJson(totalItems);
+  }
+
+  private static List<Map<String, Object>> buildINFOProductJson(Integer totalItems) 
+  {
+    if (totalItems == null || totalItems < 1) 
+    {
+      throw new TestException('totalItems must be equal or greater than 1');
+    }
+
+    List<Map<String, Object>> jsonElementsList = new List<Map<String, Object>>();
+    
+    for (Integer i = 0; i < totalItems; i++) 
+    {
+      /* REGISTRO PRODUCTO*/
+      jsonElementsList.add
+      (
+        new Map<String, Object>
+        {
+          'producto' => String.valueOf(i + 1).leftPad(9, '0'),
+          'producto_tecnico' => String.valueOf(i + 1).leftPad(9, '0'),
+          'producto_comercial' => String.valueOf(i + 1).leftPad(9, '0'),
+          'producto_nombre' => 'Product' + i,
+          'producto_descripción' => 'Product' + i,
+          'producto_estado' => True
+        }
+      );
+    } 
+
+    return jsonElementsList;
+  }
+
+   /**
+   * Generar registros de ExternalRequest__c a partir de los JSON de prueba
+   **
+   * @param String Origen
+   * @param String Tipo de registro
+   * @param Integer numero de elementos a generar
+   * @return List<Map<String, Object>> listado de elementos simulando json
+   * @author adelgado
+   * @date 23/10/2020
+   */
   public static List<ExternalRequest__c> generateExternalRequest(String origin, String type, Integer numRecords)
   {
     List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
@@ -669,6 +714,24 @@ public class TestDataFactory {
             (
               Origin__c = origin,
               Entity__c = 'CONTACT_POINT',
+              Action__c = 'UPSERT',
+              Payload__c = JSON.serialize(payload),
+              ContentFormat__c = 'JSON'
+            )
+          );
+        }
+      }
+      // Producto
+      when 'PRODUCT'
+      {
+        for(Map<String, Object> payload : getINFOProductJson(numRecords))
+        {
+          externalRequestList.add
+          (
+            new ExternalRequest__c
+            (
+              Origin__c = origin,
+              Entity__c = 'PRODUCT',
               Action__c = 'UPSERT',
               Payload__c = JSON.serialize(payload),
               ContentFormat__c = 'JSON'
