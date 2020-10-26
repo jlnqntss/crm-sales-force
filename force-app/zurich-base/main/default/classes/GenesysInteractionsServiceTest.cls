@@ -39,13 +39,76 @@ public without sharing class GenesysInteractionsServiceTest {
    * válida la devolución de un BestAgent y creación de una task
    **
    * @author nescudero
-   * @date 23/10/2020
+   * @date 26/10/2020
    */
   @IsTest
   static void test_initInteraction() {
-    Test.startTest();
+    setUp(); //Se insertan Opp y Case así que ya tendrán Owner
+    String ucid = '1234';
+    String callLogId = 'taskId';
+    String screenPopRecordId = c.Id;
+    Case caso = [
+      SELECT
+        TYPEOF Owner
+          WHEN User THEN Email
+        END
+      FROM Case
+    ][0];
+    String bestAgentCase = caso.Owner.Email;
+    Opportunity opp = [SELECT Owner.Email FROM Opportunity][0];
+    String bestAgentOpp = opp.Owner.Email;
 
+    GenesysInteractionsService.BestAgent expectedBaCaseOut = new GenesysInteractionsService.BestAgent(
+      screenPopRecordId,
+      callLogId,
+      bestAgentCase
+    );
+    GenesysInteractionsService.BestAgent expectedBaOppIn = new GenesysInteractionsService.BestAgent(
+      screenPopRecordId,
+      callLogId,
+      bestAgentOpp
+    );
+
+    GenesysInteractionsService.InteractionRequest requestBaCaseOut = new GenesysInteractionsService.InteractionRequest();
+    requestBaCaseOut.interaction = ucid;
+    requestBaCaseOut.interactionType = 'Outbound';
+    requestBaCaseOut.fromId = '123456789';
+    requestBaCaseOut.toId = '123456789';
+    requestBaCaseOut.queueId = '0001';
+    requestBaCaseOut.lookFor = 'Case';
+    GenesysInteractionsService.InteractionRequest requestBaOppIn = new GenesysInteractionsService.InteractionRequest();
+    requestBaOppIn.interaction = ucid;
+    requestBaOppIn.interactionType = 'Inbound';
+    requestBaOppIn.fromId = 'nescudero@nts-solutions.com';
+    requestBaOppIn.toId = 'nescudero@nts-solutions.com';
+    requestBaOppIn.queueId = '0002';
+    requestBaOppIn.lookFor = 'Opportunity';
+
+    Test.startTest();
+    GenesysInteractionsService.BestAgent baCaseOut = GenesysInteractionsService.initInteraction(
+      requestBaCaseOut
+    );
+    GenesysInteractionsService.BestAgent baOppIn = GenesysInteractionsService.initInteraction(
+      requestBaOppIn
+    );
     Test.stopTest();
+
+    List<Task> tasks = [SELECT Id FROM Task];
+    System.assertEquals(
+      2,
+      tasks.size(),
+      'Se debió crear 2 tasks, una por cada initInteraction'
+    );
+    System.assertEquals(
+      expectedBaCaseOut.bestAgentId,
+      baCaseOut.bestAgentId,
+      'El mejor agente debería haber coincidido'
+    );
+    System.assertEquals(
+      expectedBaOppIn.bestAgentId,
+      baOppIn.bestAgentId,
+      'El mejor agente debería haber coincidido'
+    );
   }
 
   /**
@@ -118,14 +181,14 @@ public without sharing class GenesysInteractionsServiceTest {
     Test.stopTest();
 
     System.assertEquals(
-      expectedBaCaseOut,
-      baCaseOut,
-      'La devolución no es la esperada'
+      expectedBaCaseOut.bestAgentId,
+      baCaseOut.bestAgentId,
+      'El mejor agente debería haber coincidido'
     );
     System.assertEquals(
-      expectedBaOppIn,
-      baOppIn,
-      'La devolución no es la esperada'
+      expectedBaOppIn.bestAgentId,
+      baOppIn.bestAgentId,
+      'El mejor agente debería haber coincidido'
     );
   }
 }

@@ -13,6 +13,7 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService {
   global static void doPost() {
     RestRequest request = RestContext.request;
     RestResponse response = RestContext.response;
+    response.addHeader('Content-Type', 'application/json');
 
     String resource = WS_BaseAPIService.resource;
     Integer version = WS_BaseAPIService.version;
