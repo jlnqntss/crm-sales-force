@@ -131,13 +131,9 @@ public without sharing class GenesysInteractionsService {
         WHERE TelephoneNumber = :contactPoint
       ];
 
-      //1. Si hay múltiples clientes => Tenemos que decidirlo. De momento, recordId=null y bestAgentId=null
+      //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
       for (ContactPointPhone contactPointPhone : contactPointPhones) {
         userIds.add(contactPointPhone.ContactId__c);
-      }
-      if (!userIds.isEmpty() && userIds.size() > 1) {
-        //recordId=null y bestAgentId=null
-        return new BestAgent(screenPopRecordId, callLogId, bestAgentId);
       }
     } else {
       List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
@@ -147,51 +143,46 @@ public without sharing class GenesysInteractionsService {
         WHERE EmailAddress = :contactPoint
       ];
 
-      //1. Si hay múltiples clientes => Tenemos que decidirlo. De momento, recordId=null y bestAgentId=null
+      //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
       for (ContactPointEmail contactPointEmail : contactPointEmails) {
         userIds.add(contactPointEmail.ContactId__c);
-      }
-      if (!userIds.isEmpty() && userIds.size() > 1) {
-        //recordId=null y bestAgentId=null
-        return new BestAgent(screenPopRecordId, callLogId, bestAgentId);
       }
     }
 
     //una vez se tiene el contacto elegido se busca su Case/Opp
     if (!userIds.isEmpty()) {
-      //ya se sabe qué ficha abrir
-      List<Id> userIdsList = new List<Id>(userIds);
-      screenPopRecordId = userIdsList[0];
-
       //Dependiendo de lookFor
       switch on lookFor {
         when 'Opportunity' {
-          List<Opportunity> opps = new List<Opportunity>(); //TODO: se usa ContactId o ContctId__c?
+          List<Opportunity> opps = new List<Opportunity>();
           opps = [
-            SELECT isClosed, CreatedDate, Owner.Email
+            SELECT ContactId__c, isClosed, CreatedDate, Owner.Email
             FROM Opportunity
-            WHERE isClosed = FALSE AND ContactId__c = :screenPopRecordId
+            WHERE isClosed = FALSE AND ContactId__c IN :userIds
             ORDER BY CreatedDate DESC
           ];
           if (!opps.isEmpty()) {
             bestAgentId = opps[0].Owner.Email;
+            screenPopRecordId = opps[0].ContactId__c;
           }
         }
         when 'Case' {
           List<Case> cases = new List<Case>();
           cases = [
             SELECT
+              ContactId,
               isClosed,
               CreatedDate,
               TYPEOF Owner
                 WHEN User THEN Email
               END
             FROM Case
-            WHERE isClosed = FALSE AND ContactId = :screenPopRecordId
+            WHERE isClosed = FALSE AND ContactId IN :userIds
             ORDER BY CreatedDate DESC
           ];
           if (!cases.isEmpty()) {
             bestAgentId = cases[0].Owner.Email;
+            screenPopRecordId = cases[0].ContactId;
           }
         }
       }
