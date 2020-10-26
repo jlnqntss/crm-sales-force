@@ -85,35 +85,35 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>, Sched
 
   global void finish(Database.BatchableContext bc) {
     /*if(!onlyThisOrigin)
-    {
-      List<String> originCondition = new List<String>();
-      String query = 'SELECT Id FROM ExternalRequest__c WHERE Processed__c = false AND (';
+           {
+           List<String> originCondition = new List<String>();
+           String query = 'SELECT Id FROM ExternalRequest__c WHERE Processed__c = false AND (';
 
-      for(String origin : settingsByOrigin.KeySet())
-      {
-        if(settingsByOrigin.get(origin).Active__c)
-        {
-          originCondition.add('(Origin__c = \'' + origin + '\' AND NumRetry__c < ' + settingsByOrigin.get(origin).Retries__c + ')');
-          activeOrigin = true;
-        }
-      }
+           for(String origin : settingsByOrigin.KeySet())
+           {
+            if(settingsByOrigin.get(origin).Active__c)
+            {
+              originCondition.add('(Origin__c = \'' + origin + '\' AND NumRetry__c < ' + settingsByOrigin.get(origin).Retries__c + ')');
+              activeOrigin = true;
+            }
+           }
 
-      if(activeOrigin)
-      {
-        List<sObject> pendingExternalRequest = Database.query(query + String.join(originCondition, ' OR ') + ') LIMIT 1');
+           if(activeOrigin)
+           {
+            List<sObject> pendingExternalRequest = Database.query(query + String.join(originCondition, ' OR ') + ') LIMIT 1');
 
-        if(!pendingExternalRequest.isEmpty())
-        {
-          Id classId = [SELECT Id FROM ApexCLass WHERE Name = 'ExternalJobQueueBatch'].Id;
+            if(!pendingExternalRequest.isEmpty())
+            {
+              Id classId = [SELECT Id FROM ApexCLass WHERE Name = 'ExternalJobQueueBatch'].Id;
 
-          List<AsyncApexJob> jobs = [SELECT Id FROM AsyncApexJob WHERE Id != :jobId AND Status NOT IN ('Completed', 'Aborted', 'Failed') AND ApexClassId = :classId AND JobType = 'BatchApex'];
+              List<AsyncApexJob> jobs = [SELECT Id FROM AsyncApexJob WHERE Id != :jobId AND Status NOT IN ('Completed', 'Aborted', 'Failed') AND ApexClassId = :classId AND JobType = 'BatchApex'];
 
-          if (jobs.isEmpty()) 
-          {
-            database.executeBatch(new ExternalJobQueueBatch(), 200);
-          }
-        }
-      }
-    }*/
+              if (jobs.isEmpty())
+              {
+                database.executeBatch(new ExternalJobQueueBatch(), 200);
+              }
+            }
+           }
+           }*/
   }
 }
