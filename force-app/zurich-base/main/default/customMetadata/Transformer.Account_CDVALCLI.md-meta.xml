@@ -4,11 +4,11 @@
     <protected>false</protected>
     <values>
         <field>OriginEntity__c</field>
-        <value xsi:type="xsd:string">CUSTOMER</value>
+        <value xsi:type="xsd:string">ACCOUNT</value>
     </values>
     <values>
         <field>OriginField__c</field>
-        <value xsi:type="xsd:string">CDVALCLI</value>
+        <value xsi:type="xsd:string">CLIENTE_VALOR</value>
     </values>
     <values>
         <field>Origin__c</field>

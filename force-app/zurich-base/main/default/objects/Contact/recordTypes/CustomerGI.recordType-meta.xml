@@ -48,6 +48,57 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>LegalEntity__c</picklist>
+        <values>
+            <fullName>000</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>001</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>002</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>003</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>004</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>005</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>006</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>007</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>008</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>999</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>General Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Life Insurance</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Name</picklist>
         <values>
             <fullName>Dr%2E</fullName>

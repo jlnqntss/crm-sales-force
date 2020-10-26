@@ -12,34 +12,32 @@
     "push:source": "sfdx force:source:push",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
     "pull:source": "sfdx force:source:pull",
-    "retrieve:source": "sfdx force:source:retrieve --sourcepath=force-app",
+    "retrieve:": "sfdx force:source:retrieve --sourcepath=force-app",
     "pull:profiles": "sfdx force:source:pull -f && sfdx sfpowerkit:source:profile:reconcile -s",
     "retrieve:profiles:all": "sfdx sfpowerkit:source:profile:retrieve",
     "retrieve:email-templates": "node scripts/source/retrieve-templates.js",
     "docs:update": "node scripts/source/update-docs.js",
-    "release": "node scripts/source/release-versioning.js"
+    "release:create": "node scripts/source/create-release.js",
+    "release:candidate": "node scripts/source/increment-release.js",
+    "release:finish": "node scripts/source/create-finish.js",
+    "release:changelog": "node scripts/source/changelog.js"
   },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged && node scripts/source/apex-formatter.js"
     }
   },
-  "standard-version": {
-    "packageFiles": [
-      "package.json"
-    ],
-    "bumpFiles": [
-      "package-lock.json"
-    ]
-  },
   "devDependencies": {
+    "@commitlint/config-conventional": "^11.0.0",
+    "@commitlint/lint": "^11.0.0",
     "@salesforce/eslint-config-lwc": "^0.7.0",
     "@salesforce/sfdx-lwc-jest": "^0.9.2",
     "eslint": "^7.10.0",
     "husky": "^4.3.0",
+    "mustache": "^4.0.1",
+    "node-fetch": "^2.6.1",
     "prettier": "^2.1.2",
     "prettier-plugin-apex": "^1.7.0",
-    "pretty-quick": "^3.0.2",
-    "standard-version": "^9.0.0"
+    "pretty-quick": "^3.0.2"
   }
 }

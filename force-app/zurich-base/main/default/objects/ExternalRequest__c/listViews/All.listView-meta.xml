@@ -12,11 +12,7 @@
     <columns>Retry__c</columns>
     <columns>Error_Log__c</columns>
     <columns>Json__c</columns>
+    <columns>LAST_UPDATE</columns>
     <filterScope>Everything</filterScope>
-    <filters>
-        <field>Entity__c</field>
-        <operation>equals</operation>
-        <value>QuoteEntry,Customer,Claim,Policy</value>
-    </filters>
     <label>Todos</label>
 </ListView>

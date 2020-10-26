@@ -11,94 +11,33 @@ private class INFOHandlerTest {
     List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
     //Personas físicas
-    for (
-      Map<String, Object> custJson : TestDataFactory.getINFOCustomerJson(
-        10,
-        'F'
-      )
-    ) {
-      externalRequestList.add(
-        new ExternalRequest__c(
-          Origin__c = 'INFO',
-          Entity__c = 'CUSTOMER',
-          Action__c = 'UPSERT',
-          Payload__c = JSON.serialize(custJson),
-          ContentFormat__c = 'JSON'
-        )
-      );
-    }
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 10)
+    );
 
     //Personas jurídicas
-    for (
-      Map<String, Object> custJson : TestDataFactory.getINFOCustomerJson(
-        10,
-        'J'
-      )
-    ) {
-      externalRequestList.add(
-        new ExternalRequest__c(
-          Origin__c = 'INFO',
-          Entity__c = 'CUSTOMER',
-          Action__c = 'UPSERT',
-          Payload__c = JSON.serialize(custJson),
-          ContentFormat__c = 'JSON'
-        )
-      );
-    }
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'LEGAL_ACCOUNT', 10)
+    );
 
     //Vías de contacto postal
-    for (
-      Map<String, Object> custJson : TestDataFactory.getINFOContactPointJson(
-        10,
-        'P'
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest(
+        'INFO',
+        'CONTACT_POINT_ADDRESS',
+        10
       )
-    ) {
-      externalRequestList.add(
-        new ExternalRequest__c(
-          Origin__c = 'INFO',
-          Entity__c = 'CONTACT_POINT',
-          Action__c = 'UPSERT',
-          Payload__c = JSON.serialize(custJson),
-          ContentFormat__c = 'JSON'
-        )
-      );
-    }
+    );
 
     //Vías de contacto telefónico
-    for (
-      Map<String, Object> custJson : TestDataFactory.getINFOContactPointJson(
-        10,
-        'T'
-      )
-    ) {
-      externalRequestList.add(
-        new ExternalRequest__c(
-          Origin__c = 'INFO',
-          Entity__c = 'CONTACT_POINT',
-          Action__c = 'UPSERT',
-          Payload__c = JSON.serialize(custJson),
-          ContentFormat__c = 'JSON'
-        )
-      );
-    }
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'CONTACT_POINT_PHONE', 10)
+    );
 
     //Vías de contacto email
-    for (
-      Map<String, Object> custJson : TestDataFactory.getINFOContactPointJson(
-        10,
-        'E'
-      )
-    ) {
-      externalRequestList.add(
-        new ExternalRequest__c(
-          Origin__c = 'INFO',
-          Entity__c = 'CONTACT_POINT',
-          Action__c = 'UPSERT',
-          Payload__c = JSON.serialize(custJson),
-          ContentFormat__c = 'JSON'
-        )
-      );
-    }
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'CONTACT_POINT_EMAIL', 10)
+    );
 
     insert externalRequestList;
   }
@@ -143,7 +82,7 @@ private class INFOHandlerTest {
   }
 
   @isTest
-  static void test_process() {
+  static void test_process_OK() {
     List<ExternalRequest__c> externalRequestList = [
       SELECT
         Entity__c,
@@ -171,9 +110,81 @@ private class INFOHandlerTest {
       INFOHandler.recordsToUpsertByObject.get('Contact').size(),
       'No se ha generado correctamente el mapa de registros de contact'
     );
-    //System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('ContactPointAddress').size(), 'No se ha generado correctamente el mapa de registros de contactPointAddress');
-    //System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('ContactPointPhone').size(), 'No se ha generado correctamente el mapa de registros de contactPointPhone');
-    //System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('ContactPointEmail').size(), 'No se ha generado correctamente el mapa de registros de contactPointEmail');
+    System.assertEquals(
+      10,
+      INFOHandler.recordsToUpsertByObject.get('ContactPointAddress').size(),
+      'No se ha generado correctamente el mapa de registros de contactPointAddress'
+    );
+    System.assertEquals(
+      10,
+      INFOHandler.recordsToUpsertByObject.get('ContactPointPhone').size(),
+      'No se ha generado correctamente el mapa de registros de contactPointPhone'
+    );
+    System.assertEquals(
+      10,
+      INFOHandler.recordsToUpsertByObject.get('ContactPointEmail').size(),
+      'No se ha generado correctamente el mapa de registros de contactPointEmail'
+    );
+  }
+
+  @isTest
+  static void test_process_ERROR_NoEntity() {
+    List<ExternalRequest__c> externalRequestList = [
+      SELECT
+        Entity__c,
+        Action__c,
+        Payload__c,
+        ContentFormat__c,
+        NumRetry__c,
+        Origin__c
+      FROM ExternalRequest__c
+      WHERE Origin__c = 'INFO'
+    ];
+
+    for (ExternalRequest__c externalRequest : externalRequestList) {
+      externalRequest.Entity__c = 'TTTTTTTTTTTTTT';
+    }
+
+    Test.startTest();
+    INFOHandler.prepare(externalRequestList);
+    INFOHandler.process(externalRequestList);
+    Test.stopTest();
+
+    System.assertEquals(
+      50,
+      INFOHandler.externalRequestResultList.size(),
+      'No se han marcado como erroneas todas las external request'
+    );
+  }
+
+  @isTest
+  static void test_process_ERROR_NoPayload() {
+    List<ExternalRequest__c> externalRequestList = [
+      SELECT
+        Entity__c,
+        Action__c,
+        Payload__c,
+        ContentFormat__c,
+        NumRetry__c,
+        Origin__c
+      FROM ExternalRequest__c
+      WHERE Origin__c = 'INFO'
+    ];
+
+    for (ExternalRequest__c externalRequest : externalRequestList) {
+      externalRequest.Payload__c = null;
+    }
+
+    Test.startTest();
+    INFOHandler.prepare(externalRequestList);
+    INFOHandler.process(externalRequestList);
+    Test.stopTest();
+
+    System.assertEquals(
+      50,
+      INFOHandler.externalRequestResultList.size(),
+      'No se han marcado como erroneas todas las external request'
+    );
   }
 
   @isTest
@@ -198,9 +209,9 @@ private class INFOHandlerTest {
 
     List<Account> accountList = [SELECT Id FROM Account];
     List<Contact> contactList = [SELECT Id FROM Contact];
-    //List<ContactPointAddress> cpaList = [SELECT Id FROM ContactPointAddress];
-    //List<ContactPointPhone> cppList = [SELECT Id FROM ContactPointPhone];
-    //List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
+    List<ContactPointAddress> cpaList = [SELECT Id FROM ContactPointAddress];
+    List<ContactPointPhone> cppList = [SELECT Id FROM ContactPointPhone];
+    List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
 
     System.assertEquals(
       20,
@@ -212,9 +223,21 @@ private class INFOHandlerTest {
       contactList.size(),
       'No se han insertado todos los registros de contacto'
     );
-    //System.assertEquals(1, cpaList.size(), 'No se han insertado todos los registros de contactPointAddress');
-    //System.assertEquals(1, cppList.size(), 'No se han insertado todos los registros de contactPointPhone');
-    //System.assertEquals(1, cpeList.size(), 'No se han insertado todos los registros de contactPointEmail');
+    System.assertEquals(
+      10,
+      cpaList.size(),
+      'No se han insertado todos los registros de contactPointAddress'
+    );
+    System.assertEquals(
+      10,
+      cppList.size(),
+      'No se han insertado todos los registros de contactPointPhone'
+    );
+    System.assertEquals(
+      10,
+      cpeList.size(),
+      'No se han insertado todos los registros de contactPointEmail'
+    );
   }
 
   @isTest
@@ -241,9 +264,9 @@ private class INFOHandlerTest {
 
     List<Account> accountList = [SELECT Id FROM Account];
     List<Contact> contactList = [SELECT Id FROM Contact];
-    //List<ContactPointAddress> cpaList = [SELECT Id FROM ContactPointAddress];
-    //List<ContactPointPhone> cppList = [SELECT Id FROM ContactPointPhone];
-    //List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
+    List<ContactPointAddress> cpaList = [SELECT Id FROM ContactPointAddress];
+    List<ContactPointPhone> cppList = [SELECT Id FROM ContactPointPhone];
+    List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
 
     System.assertEquals(
       19,
@@ -255,9 +278,6 @@ private class INFOHandlerTest {
       contactList.size(),
       'No se han insertado todos los registros de contacto'
     );
-    //System.assertEquals(1, cpaList.size(), 'No se han insertado todos los registros de contactPointAddress');
-    //System.assertEquals(1, cppList.size(), 'No se han insertado todos los registros de contactPointPhone');
-    //System.assertEquals(1, cpeList.size(), 'No se han insertado todos los registros de contactPointEmail');
   }
 
   @isTest
@@ -292,11 +312,21 @@ private class INFOHandlerTest {
       FROM ExternalRequest__c
       WHERE Origin__c = 'INFO' AND ProcessResult__c != NULL
     ];
+    List<ExternalRequestError__c> externalRequestErrors = [
+      SELECT Id
+      FROM ExternalRequestError__c
+      WHERE Origin__c = 'INFO'
+    ];
 
     System.assertEquals(
-      20,
+      50,
       externalRequestListUpdated.size(),
       'No se han procesado todas las external request'
+    );
+    System.assertEquals(
+      0,
+      externalRequestErrors.size(),
+      'Se han insertado external request erróneas en la entidad External Request Error'
     );
   }
 
@@ -336,7 +366,7 @@ private class INFOHandlerTest {
     ];
 
     System.assertEquals(
-      20,
+      50,
       externalRequestListUpdated.size(),
       'No se han procesado todas las external request'
     );
