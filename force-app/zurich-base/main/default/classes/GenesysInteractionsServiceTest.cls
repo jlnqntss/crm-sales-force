@@ -32,6 +32,7 @@ public without sharing class GenesysInteractionsServiceTest {
     opp.Name = 'opp';
     opp.StageName = 'New';
     opp.CloseDate = System.today().addDays(10);
+    opp.Scope__c = 'General';
     insert opp;
   }
 
@@ -83,6 +84,7 @@ public without sharing class GenesysInteractionsServiceTest {
     requestBaOppIn.toId = 'nescudero@nts-solutions.com';
     requestBaOppIn.queueId = '0002';
     requestBaOppIn.lookFor = 'Opportunity';
+    requestBaOppIn.scope = 'General';
 
     Test.startTest();
     GenesysInteractionsService.BestAgent baCaseOut = GenesysInteractionsService.initInteraction(
@@ -169,14 +171,16 @@ public without sharing class GenesysInteractionsServiceTest {
       'Outbound',
       '123456789',
       '123456789',
-      'Case'
+      'Case',
+      'General'
     );
     GenesysInteractionsService.BestAgent baOppIn = GenesysInteractionsService.findBestAgentFor(
       callLogId,
       'Inbound',
       'nescudero@nts-solutions.com',
       'nescudero@nts-solutions.com',
-      'Opportunity'
+      'Opportunity',
+      'General'
     );
     Test.stopTest();
 

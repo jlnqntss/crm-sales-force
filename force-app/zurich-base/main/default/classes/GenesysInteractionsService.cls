@@ -51,7 +51,8 @@ public without sharing class GenesysInteractionsService {
           request.interactionType,
           request.fromId,
           request.toId,
-          request.lookFor
+          request.lookFor,
+          request.scope
         );
       }
     }
@@ -97,7 +98,8 @@ public without sharing class GenesysInteractionsService {
     String interactionType,
     String fromId,
     String toId,
-    String lookFor
+    String lookFor,
+    String scope
   ) {
     String contactPoint;
     Boolean isContactPointPhone;
@@ -151,16 +153,29 @@ public without sharing class GenesysInteractionsService {
 
     //una vez se tiene el contacto elegido se busca su Case/Opp
     if (!userIds.isEmpty()) {
+      //Dependiendo de scope
+      String scopeFilter = '';
+      switch on scope {
+        when 'all' {
+          scopeFilter = 'AND Scope__c = \'General\''; //TODO: cuando esté definido esto pasar a label?
+        }
+        when 'ze' {
+          scopeFilter = 'AND Scope__c = \'Zurich Empresas\''; //TODO: cuando esté definido esto pasar a label?
+        }
+        when 'klinc' {
+          scopeFilter = 'AND Scope__c = \'Klinc\''; //TODO: cuando esté definido esto pasar a label?
+        }
+      }
+
       //Dependiendo de lookFor
       switch on lookFor {
         when 'Opportunity' {
           List<Opportunity> opps = new List<Opportunity>();
-          opps = [
-            SELECT ContactId__c, isClosed, CreatedDate, Owner.Email
-            FROM Opportunity
-            WHERE isClosed = FALSE AND ContactId__c IN :userIds
-            ORDER BY CreatedDate DESC
-          ];
+          String query =
+            'SELECT ContactId__c, isClosed, CreatedDate, Owner.Email FROM Opportunity WHERE isClosed = FALSE AND ContactId__c IN :userIds ' +
+            scopeFilter +
+            ' ORDER BY CreatedDate DESC';
+          opps = Database.query(query);
           if (!opps.isEmpty()) {
             bestAgentId = opps[0].Owner.Email;
             screenPopRecordId = opps[0].ContactId__c;
@@ -201,6 +216,7 @@ public without sharing class GenesysInteractionsService {
     public String toId { get; set; }
     public String queueId { get; set; }
     public String lookFor { get; set; }
+    public String scope { get; set; }
   }
 
   //Salida
