@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>OriginField__c</field>
-        <value xsi:type="xsd:string">NUEXTEL1</value>
+        <value xsi:type="xsd:string">NUMERO_EXTENSION_TEL</value>
     </values>
     <values>
         <field>Origin__c</field>
