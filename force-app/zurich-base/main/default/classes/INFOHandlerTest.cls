@@ -64,6 +64,11 @@ private class INFOHandlerTest {
       TestDataFactory.generateExternalRequest('INFO', 'POLICY_RELATIONSHIP', 10)
     );
 
+    //Roles oferta
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'QUOTE_RELATIONSHIP', 10)
+    );
+
     insert externalRequestList;
   }
 
@@ -171,7 +176,7 @@ private class INFOHandlerTest {
       'No se ha generado correctamente el mapa de registros de asset'
     );
     System.assertEquals(
-      10,
+      20,
       INFOHandler.recordsToUpsertByObject.get('Relationship__c').size(),
       'No se ha generado correctamente el mapa de registros de relationship'
     );
@@ -201,7 +206,7 @@ private class INFOHandlerTest {
     Test.stopTest();
 
     System.assertEquals(
-      100,
+      110,
       INFOHandler.externalRequestResultList.size(),
       'No se han marcado como erroneas todas las external request'
     );
@@ -231,7 +236,7 @@ private class INFOHandlerTest {
     Test.stopTest();
 
     System.assertEquals(
-      100,
+      110,
       INFOHandler.externalRequestResultList.size(),
       'No se han marcado como erroneas todas las external request'
     );
@@ -314,7 +319,7 @@ private class INFOHandlerTest {
       'No se han insertado todos los registros de objeto asegurado'
     );
     System.assertEquals(
-      10,
+      20,
       relaList.size(),
       'No se han insertado todos los registros de relaciones'
     );
@@ -399,7 +404,7 @@ private class INFOHandlerTest {
     ];
 
     System.assertEquals(
-      100,
+      110,
       externalRequestListUpdated.size(),
       'No se han procesado todas las external request'
     );
@@ -446,7 +451,7 @@ private class INFOHandlerTest {
     ];
 
     System.assertEquals(
-      100,
+      110,
       externalRequestListUpdated.size(),
       'No se han procesado todas las external request'
     );
