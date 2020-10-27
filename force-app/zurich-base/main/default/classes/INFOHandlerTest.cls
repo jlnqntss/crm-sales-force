@@ -39,6 +39,26 @@ private class INFOHandlerTest {
       TestDataFactory.generateExternalRequest('INFO', 'CONTACT_POINT_EMAIL', 10)
     );
 
+    //Productos
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'PRODUCT', 10)
+    );
+
+    //Pólizas
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'POLICY', 10)
+    );
+
+    //Objetos asegurados
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'INSURED_OBJECT', 10)
+    );
+
+    //Roles póliza
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'POLICY_RELATIONSHIP', 10)
+    );
+
     insert externalRequestList;
   }
 
@@ -103,7 +123,7 @@ private class INFOHandlerTest {
     System.assertEquals(
       20,
       INFOHandler.recordsToUpsertByObject.get('Account').size(),
-      'No se ha generado correctamente el mapa de registros de cuenta'
+      'No se ha generado correctamente el mapa de registros de account'
     ); // 10 cuentas de personas físicas y 10 de personas jurídicas
     System.assertEquals(
       10,
@@ -124,6 +144,26 @@ private class INFOHandlerTest {
       10,
       INFOHandler.recordsToUpsertByObject.get('ContactPointEmail').size(),
       'No se ha generado correctamente el mapa de registros de contactPointEmail'
+    );
+    System.assertEquals(
+      10,
+      INFOHandler.recordsToUpsertByObject.get('Product2').size(),
+      'No se ha generado correctamente el mapa de registros de product'
+    );
+    System.assertEquals(
+      10,
+      INFOHandler.recordsToUpsertByObject.get('Policy__c').size(),
+      'No se ha generado correctamente el mapa de registros de policy'
+    );
+    System.assertEquals(
+      10,
+      INFOHandler.recordsToUpsertByObject.get('Asset').size(),
+      'No se ha generado correctamente el mapa de registros de asset'
+    );
+    System.assertEquals(
+      10,
+      INFOHandler.recordsToUpsertByObject.get('Relationship__c').size(),
+      'No se ha generado correctamente el mapa de registros de relationship'
     );
   }
 
@@ -151,7 +191,7 @@ private class INFOHandlerTest {
     Test.stopTest();
 
     System.assertEquals(
-      50,
+      90,
       INFOHandler.externalRequestResultList.size(),
       'No se han marcado como erroneas todas las external request'
     );
@@ -181,7 +221,7 @@ private class INFOHandlerTest {
     Test.stopTest();
 
     System.assertEquals(
-      50,
+      90,
       INFOHandler.externalRequestResultList.size(),
       'No se han marcado como erroneas todas las external request'
     );
@@ -212,6 +252,10 @@ private class INFOHandlerTest {
     List<ContactPointAddress> cpaList = [SELECT Id FROM ContactPointAddress];
     List<ContactPointPhone> cppList = [SELECT Id FROM ContactPointPhone];
     List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
+    List<Product2> prodList = [SELECT Id FROM Product2];
+    List<Policy__c> policyList = [SELECT Id FROM Policy__c];
+    List<Asset> insObjList = [SELECT Id FROM Asset];
+    List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
 
     System.assertEquals(
       20,
@@ -237,6 +281,26 @@ private class INFOHandlerTest {
       10,
       cpeList.size(),
       'No se han insertado todos los registros de contactPointEmail'
+    );
+    System.assertEquals(
+      10,
+      prodList.size(),
+      'No se han insertado todos los registros de producto'
+    );
+    System.assertEquals(
+      10,
+      policyList.size(),
+      'No se han insertado todos los registros de póliza'
+    );
+    System.assertEquals(
+      10,
+      insObjList.size(),
+      'No se han insertado todos los registros de objeto asegurado'
+    );
+    System.assertEquals(
+      10,
+      relaList.size(),
+      'No se han insertado todos los registros de relaciones'
     );
   }
 
@@ -319,7 +383,7 @@ private class INFOHandlerTest {
     ];
 
     System.assertEquals(
-      50,
+      90,
       externalRequestListUpdated.size(),
       'No se han procesado todas las external request'
     );
@@ -366,7 +430,7 @@ private class INFOHandlerTest {
     ];
 
     System.assertEquals(
-      50,
+      90,
       externalRequestListUpdated.size(),
       'No se han procesado todas las external request'
     );

@@ -27,11 +27,12 @@ public class INFOHandler implements ISystem {
     'ContactPointPhone', // 4
     'ContactPointEmail', // 5
     'Product2', // 6
-    'Policy__c', // 7
-    'PolicyVersion__c', // 8
-    'InsuredObject', // 9
-    'Opportunity', // 10
-    'Relationship__c' // 11
+    'Opportunity', // 7
+    'Policy__c', // 8
+    'PolicyVersion__c', // 9
+    'Asset', // 10
+    'Opportunity', // 11
+    'Relationship__c' // 12
   };
 
   /**
@@ -159,6 +160,11 @@ public class INFOHandler implements ISystem {
                     (recordValuesMap.containsKey('CLIENTE_APELLIDO2')
                       ? (String) recordValuesMap.get('CLIENTE_APELLIDO2')
                       : null);
+                  accountRecord.LegalEntity__c = recordValuesMap.containsKey(
+                      'CLIENTE_ENTIDAD_LEGAL'
+                    )
+                    ? (String) recordValuesMap.get('CLIENTE_ENTIDAD_LEGAL')
+                    : null;
                   accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
                     .get('BusinessCustomer')
                     .getRecordTypeId();
@@ -243,6 +249,64 @@ public class INFOHandler implements ISystem {
                 }
               }
             }
+            //Producto
+            when 'PRODUCT' {
+              Product2 prodRecord = (Product2) tf.transform(
+                'Product2',
+                recordValuesMap
+              );
+              recordsToUpsertByObject.get('Product2')
+                .put(prodRecord, externalRequest);
+            }
+            // Póliza
+            when 'POLICY' {
+              Policy__c policyRecord = (Policy__c) tf.transform(
+                'Policy__c',
+                recordValuesMap
+              );
+              recordsToUpsertByObject.get('Policy__c')
+                .put(policyRecord, externalRequest);
+            }
+            // Objeto asegurado
+            when 'INSURED_OBJECT' {
+              Asset insObjRecord = (Asset) tf.transform(
+                'Asset',
+                recordValuesMap
+              );
+              insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName()
+                .get(insObjRecord.ObjectType__c.trim())
+                .getRecordTypeId();
+              recordsToUpsertByObject.get('Asset')
+                .put(insObjRecord, externalRequest);
+            }
+            // Rol póliza
+            when 'POLICY_RELATIONSHIP' {
+              Relationship__c polRelRecord = (Relationship__c) tf.transform(
+                'Relationship__c',
+                recordValuesMap
+              );
+
+              if (polRelRecord.OpportunityId__c != null) {
+                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
+                  .get('Offer')
+                  .getRecordTypeId();
+              } else if (polRelRecord.ClaimId__c != null) {
+                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
+                  .get('Claim')
+                  .getRecordTypeId();
+              } else if (polRelRecord.PolicyId__c != null) {
+                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
+                  .get('Policy')
+                  .getRecordTypeId();
+              } else if (polRelRecord.SecondaryAccountId__c != null) {
+                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
+                  .get('Household')
+                  .getRecordTypeId();
+              }
+
+              recordsToUpsertByObject.get('Relationship__c')
+                .put(polRelRecord, externalRequest);
+            }
             when else {
               externalRequest.ProcessResult__c = 'KO';
               externalRequest.Error_Log__c = 'No se ha encontrado la entidad indicada';
@@ -325,6 +389,7 @@ public class INFOHandler implements ISystem {
             recordsByObject.containsKey(objectName) &&
             !recordsByObject.get(objectName).isEmpty()
           ) {
+            System.debug('Entra' + objectName);
             Schema.SObjectField externalId = Schema.getGlobalDescribe()
               .get(objectName)
               .getDescribe()
