@@ -74,10 +74,22 @@
                 <behavior>Edit</behavior>
                 <field>IntermediaryName__c</field>
             </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CommercialStructureCode__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CommercialStructureName__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <emptySpace>true</emptySpace>
+                <behavior>Edit</behavior>
+                <field>Partner__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -210,7 +222,7 @@
     </relatedLists>
     <relatedLists>
         <fields>ASSET.NAME</fields>
-        <fields>ObjectSequential__c</fields>
+        <fields>Identifier__c</fields>
         <fields>ObjectType__c</fields>
         <relatedList>Asset.PolicyId__c</relatedList>
     </relatedLists>

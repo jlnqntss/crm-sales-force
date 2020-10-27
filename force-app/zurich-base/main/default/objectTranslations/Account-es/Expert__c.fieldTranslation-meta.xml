@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Expert</label>
+    <name>Expert__c</name>
+    <picklistValues>
+        <masterLabel>Advanced</masterLabel>
+        <translation><!-- Advanced --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Basic</masterLabel>
+        <translation><!-- Basic --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No</masterLabel>
+        <translation><!-- No --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Specialist</masterLabel>
+        <translation><!-- Specialist --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

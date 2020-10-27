@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Estado</label>
+    <name>Status__c</name>
+    <picklistValues>
+        <masterLabel>001</masterLabel>
+        <translation><!-- 001 --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>002</masterLabel>
+        <translation><!-- 002 --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>003</masterLabel>
+        <translation><!-- 003 --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>004</masterLabel>
+        <translation><!-- 004 --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>005</masterLabel>
+        <translation><!-- 005 --></translation>
+    </picklistValues>
+</CustomFieldTranslation>
