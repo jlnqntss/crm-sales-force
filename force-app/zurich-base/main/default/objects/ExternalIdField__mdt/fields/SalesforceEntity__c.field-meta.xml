@@ -40,6 +40,11 @@
                 <default>false</default>
                 <label>Product</label>
             </value>
+            <value>
+                <fullName>Relationship__c</fullName>
+                <default>false</default>
+                <label>Relationship</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
