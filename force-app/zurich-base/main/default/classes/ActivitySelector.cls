@@ -5,14 +5,13 @@
  * Salvo referencia explícita, los resultados de la consulta deben ordenarse por SystemModstamp de forma descendente.
  */
 public without sharing class ActivitySelector {
-  public static String getFieldListString() {
+  private static String getFieldListString() {
     return ' Id, Status, OwnerId, CallObject ';
   }
-
-  public static String getSObjectName() {
+  private static String getSObjectName() {
     return ' Task ';
   }
-  public static String getOrderBy() {
+  private static String getOrderBy() {
     return ' SystemModstamp DESC ';
   }
 
@@ -32,9 +31,7 @@ public without sharing class ActivitySelector {
     }
 
     String query = String.format(
-      'SELECT {0} FROM {1} ' +
-      ' WHERE CallObject IN :interactionIds ' +
-      ' ORDER BY {2}',
+      'SELECT {0} FROM {1} WHERE CallObject IN :interactionIds ORDER BY {2}',
       new List<String>{ getFieldListString(), getSObjectName(), getOrderBy() }
     );
     return (List<Task>) Database.query(query);
@@ -56,9 +53,7 @@ public without sharing class ActivitySelector {
     }
 
     String query = String.format(
-      'SELECT {0} FROM {1} ' +
-      ' WHERE CallObject = :interactionId ' +
-      ' ORDER BY {2}',
+      'SELECT {0} FROM {1} WHERE CallObject = :interactionId ORDER BY {2}',
       new List<String>{ getFieldListString(), getSObjectName(), getOrderBy() }
     );
     return (List<Task>) Database.query(query);

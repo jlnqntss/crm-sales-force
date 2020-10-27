@@ -1,5 +1,7 @@
 /**
  * Clase Apex que personaliza el guardado de interacciones de Genesys Cloud para adaptar los procesos de guardado del conector.
+ * Para pruebas unitarias, ejecutar el método a través de un Execute Anoyimous serializando un Mapa de mapas a JSON.
+ * '{ "interaction" : { "id": "test1"} } '
  */
 global without sharing class ReassignInteractionCTIExtension implements purecloud.CTIExtension.SaveLog {
   /**
@@ -14,24 +16,45 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
    * @consideraciones El parámetro data llega como un JSON que debe ser deserializado mediante JSON.deserialize
    * Enlace a documentación de la interfaz: https://help.mypurecloud.com/articles/use-the-extension-points-to-customize-saving-interaction-logs/
    */
-  public String onSaveLog(String data) {
-    // Example: Save interaction log as Task record after interaction is disconnected.
-    Map<String, Object> saveLogData = (Map<String, Object>) JSON.deserializeUntyped(
-      data
-    );
-    Map<String, Object> interaction = (Map<String, Object>) saveLogData.get(
-      'interaction'
-    );
-    Map<String, Object> callLog = (Map<String, Object>) saveLogData.get(
-      'callLog'
-    );
-    Boolean isDisconnected = (Boolean) interaction.get('isDisconnected');
-    String callLogId = '';
-    if (isDisconnected) {
-      Task t = (Task) JSON.deserialize(JSON.serialize(callLog), Task.class);
-      upsert t;
-      callLogId = t.Id;
+  public static String onSaveLog(String data) {
+    Savepoint sp = Database.setSavepoint();
+
+    try {
+      Map<String, Object> deserializedData = (Map<String, Object>) JSON.deserializeUntyped(
+        data
+      );
+      Map<String, Object> dataInteraction = (Map<String, Object>) deserializedData.get(
+        'interaction'
+      );
+      String dataInteractionId = (String) dataInteraction.get('id');
+
+      //Buscar la task que tenga el mismo ucid
+      List<Task> taskToUpdate = ActivitySelector.selectTasksByCallObjectIdentifier(
+        dataInteractionId
+      );
+      if (!taskToUpdate.isEmpty()) {
+        //Actualizar la task con el usuario logado y devolver el ID
+        taskToUpdate[0].OwnerId = UserInfo.getUserId();
+        taskToUpdate[0].Status = 'Asignada';
+        update taskToUpdate;
+        return String.valueOf(taskToUpdate[0].Id);
+      } else {
+        //Si no coincide ninguna tarea, entonces hay que crearla
+        Task interaction = new Task();
+        interaction.Status = 'Asignada';
+        interaction.OwnerId = UserInfo.getUserId();
+        interaction.CallObject = dataInteractionId;
+        interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
+          .get('Interaction')
+          .getRecordTypeId();
+        insert interaction;
+        return String.valueOf(interaction.Id);
+      }
+    } catch (Exception e) {
+      Database.rollback(sp);
+      ErrorLogUtil.commitError(e);
     }
-    return callLogId;
+
+    return '';
   }
 }
