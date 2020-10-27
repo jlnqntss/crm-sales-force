@@ -31,8 +31,7 @@ public class INFOHandler implements ISystem {
     'Policy__c', // 8
     'PolicyVersion__c', // 9
     'Asset', // 10
-    'Opportunity', // 11
-    'Relationship__c' // 12
+    'Relationship__c' // 11
   };
 
   /**
@@ -259,6 +258,15 @@ public class INFOHandler implements ISystem {
                 .put(prodRecord, externalRequest);
             }
             // Póliza
+            when 'QUOTE' {
+              Opportunity quoteRecord = (Opportunity) tf.transform(
+                'Opportunity',
+                recordValuesMap
+              );
+              recordsToUpsertByObject.get('Opportunity')
+                .put(quoteRecord, externalRequest);
+            }
+            // Póliza
             when 'POLICY' {
               Policy__c policyRecord = (Policy__c) tf.transform(
                 'Policy__c',
@@ -285,25 +293,9 @@ public class INFOHandler implements ISystem {
                 'Relationship__c',
                 recordValuesMap
               );
-
-              if (polRelRecord.OpportunityId__c != null) {
-                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
-                  .get('Offer')
-                  .getRecordTypeId();
-              } else if (polRelRecord.ClaimId__c != null) {
-                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
-                  .get('Claim')
-                  .getRecordTypeId();
-              } else if (polRelRecord.PolicyId__c != null) {
-                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
-                  .get('Policy')
-                  .getRecordTypeId();
-              } else if (polRelRecord.SecondaryAccountId__c != null) {
-                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
-                  .get('Household')
-                  .getRecordTypeId();
-              }
-
+              polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
+                .get('Policy')
+                .getRecordTypeId();
               recordsToUpsertByObject.get('Relationship__c')
                 .put(polRelRecord, externalRequest);
             }
@@ -411,6 +403,8 @@ public class INFOHandler implements ISystem {
                 )
                 .get(i);
 
+              System.debug('Entra' + objectName);
+
               //Procesamiento correcto
               if (resultList.get(i).isSuccess()) {
                 extReq.ProcessResult__c = 'OK';
@@ -418,6 +412,7 @@ public class INFOHandler implements ISystem {
                 extReq.Error_Log__c = null;
               } else {
                 //Procesamiento incorrecto
+                System.debug('Entra' + resultList.get(i).getErrors());
                 extReq.ProcessResult__c = 'KO';
                 extReq.Error_Log__c = string.join(
                   resultList.get(i).getErrors(),
