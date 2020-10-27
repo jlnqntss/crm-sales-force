@@ -35,6 +35,11 @@
                 <default>false</default>
                 <label>ContactPointEmail</label>
             </value>
+            <value>
+                <fullName>Product2</fullName>
+                <default>false</default>
+                <label>Product</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
