@@ -183,13 +183,13 @@ public class INFOHandler implements ISystem
               Policy__c policyRecord = (Policy__c) tf.transform('Policy__c', recordValuesMap);
               recordsToUpsertByObject.get('Policy__c').put(policyRecord, externalRequest);
             }
-            // // Objeto asegurado
-            // when 'INSURED_OBJECT'
-            // {
-            //     Asset insObjRecord = (Asset) tf.transform('Asset', recordValuesMap);
-            //     insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(insObjRecord.ObjectType__c.trim()).getRecordTypeId();
-            //     recordsToUpsertByObject.get('Asset').put(insObjRecord, externalRequest);
-            // }
+            // Objeto asegurado
+            when 'INSURED_OBJECT'
+            {
+                Asset insObjRecord = (Asset) tf.transform('Asset', recordValuesMap);
+                insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(insObjRecord.ObjectType__c.trim()).getRecordTypeId();
+                recordsToUpsertByObject.get('Asset').put(insObjRecord, externalRequest);
+            }
             // // Rol póliza
             // when 'POLICY_RELATIONSHIP'
             // {

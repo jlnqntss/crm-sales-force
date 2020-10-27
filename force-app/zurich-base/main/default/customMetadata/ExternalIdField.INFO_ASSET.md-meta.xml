@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>ExternalId__c</field>
-        <value xsi:type="xsd:string">Identifier__c</value>
+        <value xsi:type="xsd:string">InfoInsuredObjectCode__c</value>
     </values>
     <values>
         <field>Origin__c</field>
