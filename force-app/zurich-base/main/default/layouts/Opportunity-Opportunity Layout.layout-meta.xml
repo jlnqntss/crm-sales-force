@@ -41,6 +41,17 @@
                 <behavior>Edit</behavior>
                 <field>TransferredAgentName__c</field>
             </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CommercialStructureCode__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CommercialStructureName__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -75,6 +86,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Partner__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>BusinessCode__c</field>
             </layoutItems>
             <layoutItems>
@@ -90,6 +105,19 @@
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>false</detailHeading>
+        <editHeading>false</editHeading>
+        <label>Description</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Description</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>OneColumn</style>
     </layoutSections>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -126,26 +154,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>BuildingCapital__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ContentCapital__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>GeneralLiabilityLimit__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>PaymentChannelSucc__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>PaymentChannel__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>PaymentType__c</field>
             </layoutItems>
             <layoutItems>
@@ -156,23 +164,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>NetPremium__c</field>
+                <field>PaymentChannel__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>SurchargeDiscount__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Bonus__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Taxes__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>TotalPremium__c</field>
+                <field>PaymentChannelSucc__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -186,6 +182,18 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ProductId__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>GeneralLiabilityLimit__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>BuildingCapital__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ContentCapital__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -388,12 +396,11 @@
     </relatedLists>
     <relatedLists>
         <fields>ASSET.NAME</fields>
-        <fields>ASSET.SERIAL_NUMBER</fields>
-        <fields>ASSET.INSTALL_DATE</fields>
-        <fields>ACCOUNT.NAME</fields>
-        <fields>CONTACT.NAME</fields>
-        <fields>PRODUCT2.NAME</fields>
+        <fields>Identifier__c</fields>
+        <fields>ObjectType__c</fields>
         <relatedList>Asset.OfferId__c</relatedList>
+        <sortField>ASSET.NAME</sortField>
+        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
