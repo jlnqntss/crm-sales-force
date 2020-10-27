@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>OriginField__c</field>
-        <value xsi:type="xsd:string">NUVIA</value>
+        <value xsi:type="xsd:string">NUM_VIA</value>
     </values>
     <values>
         <field>Origin__c</field>

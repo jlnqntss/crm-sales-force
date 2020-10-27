@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>ContactPointPhone - TCTICOM1</label>
+    <label>Asset - NUMATVCO</label>
     <protected>false</protected>
     <values>
         <field>OriginEntity__c</field>
-        <value xsi:type="xsd:string">CONTACT_POINT</value>
+        <value xsi:type="xsd:string">INSURED_OBJECT</value>
     </values>
     <values>
         <field>OriginField__c</field>
-        <value xsi:type="xsd:string">TCTICOM1</value>
+        <value xsi:type="xsd:string">VEHICULO_MATRICULA</value>
     </values>
     <values>
         <field>Origin__c</field>
@@ -16,10 +16,10 @@
     </values>
     <values>
         <field>SalesforceEntity__c</field>
-        <value xsi:type="xsd:string">ContactPointPhone</value>
+        <value xsi:type="xsd:string">Asset</value>
     </values>
     <values>
         <field>SalesforceField__c</field>
-        <value xsi:type="xsd:string">PhoneType</value>
+        <value xsi:type="xsd:string">RegistrationNumber__c</value>
     </values>
 </CustomMetadata>

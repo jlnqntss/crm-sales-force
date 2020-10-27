@@ -4,22 +4,10 @@ private class ExternalJobQueueBatchTest {
   static void makeData() {
     List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
-    for (
-      Map<String, Object> custJson : TestDataFactory.getINFOCustomerJson(
-        200,
-        'F'
-      )
-    ) {
-      externalRequestList.add(
-        new ExternalRequest__c(
-          Origin__c = 'INFO',
-          Entity__c = 'CUSTOMER',
-          Action__c = 'UPSERT',
-          Payload__c = JSON.serialize(custJson),
-          ContentFormat__c = 'JSON'
-        )
-      );
-    }
+    //Personas físicas
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 200)
+    );
 
     insert externalRequestList;
   }
