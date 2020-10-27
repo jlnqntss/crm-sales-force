@@ -615,6 +615,299 @@ public class TestDataFactory {
     return jsonElementsList;
   }
 
+  /**
+   * Obtener estructura json del sistema de origen INFO para registros
+   * de entidad Póliza
+   **
+   * @param Integer numero de elementos a generar
+   * @return List<Map<String, Object>> listado de elementos simulando json
+   * @author adelgado
+   * @date 23/10/2020
+   */
+  public static List<Map<String, Object>> getINFOPolicyJson(Integer totalItems) 
+  {
+    return buildINFOPolicyJson(totalItems);
+  }
+
+  private static List<Map<String, Object>> buildINFOPolicyJson(Integer totalItems) 
+  {
+    if (totalItems == null || totalItems < 1) 
+    {
+      throw new TestException('totalItems must be equal or greater than 1');
+    }
+
+    List<String> movementTypes = new List<String>
+    {
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'K',
+      'L',
+      'M',
+      'N',
+      'P',
+      'Q',
+      'R',
+      'S',
+      'T',
+      'V',
+      'W',
+      'X',
+      'Y',
+      'Z',
+      '0',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9'
+    };
+
+    List<String> movementReasons = new List<String>
+    {
+      'A101',
+      'A102',
+      'A104',
+      'A105',
+      'A106',
+      'A109',
+      'A114',
+      'A115',
+      'A165',
+      'A166',
+      'A203',
+      'A204'
+    };
+
+    List<String> paymentTypes = new List<String>
+    {
+      'A',
+      'B',
+      'C',
+      'E',
+      'F',
+      'M',
+      'P',
+      'S',
+      'T',
+      'U',
+      'Z'
+    };
+
+    List<String> businessUnits = new List<String>{
+      '000',
+      '001',
+      '002',
+      '003',
+      '004',
+      '005',
+      '006',
+      '007',
+      '008',
+      '999'
+    };
+
+    List<String> status = new List<String>{
+      'A',
+      'P',
+      'S',
+      'V',
+      '0',
+      '1',
+      '2',
+      '3',
+      '4'
+    };
+
+    List<Map<String, Object>> jsonElementsList = new List<Map<String, Object>>();
+    
+    for (Integer i = 0; i < totalItems; i++) 
+    {
+      /* REGISTRO PÓLIZA*/
+      jsonElementsList.add
+      (
+        new Map<String, Object>
+        {
+          'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
+          'poliza_version' => '01',
+          'poliza_movimiento' => movementTypes[Integer.valueof((Math.random() * movementTypes.size() - 1))],
+          'poliza_movimiento_desc' => 'Test',
+          'poliza_motivo_movimiento' => movementReasons[Integer.valueof((Math.random() * movementReasons.size() - 1))],
+          'poliza_motivo_movimiento_desc' => 'Test',
+          'poliza_fecha_inicio' => '',
+          'poliza_entidad_legal' => businessUnits[Integer.valueof((Math.random() * businessUnits.size() - 1))],
+          'poliza_entidad_legal_desc' => 'Test',
+          'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0'),
+          'poliza_producto' => String.valueOf(i + 1).leftPad(9, '0'),
+          'poliza_producto_tecnico' => String.valueOf(i + 1).leftPad(9, '0'),
+          'poliza_producto_comercial' => String.valueOf(i + 1).leftPad(9, '0'),
+          'poliza_estado' => status[Integer.valueof((Math.random() * status.size() - 1))],
+          'poliza_estado_desc' => 'Test',
+          'poliza_estructura' => 'Test',
+          'poliza_negocio' => 'Test',
+          'poliza_negocio_desc' => 'Test',
+          'poliza_mediador' => '',
+          'poliza_fecha_vencimiento' => '',
+          'poliza_procedencia_oferta' => '',
+          'poliza_forma_pago' => paymentTypes[Integer.valueof((Math.random() * paymentTypes.size() - 1))],
+          'poliza_forma_pago_desc' => 'Test'
+          /*'prima_tecnica' => String.valueOf(Integer.valueof((Math.random() * 6))),
+          'prima_suma_recargos_descuentos' => String.valueOf(Integer.valueof((Math.random() * 6))),
+          'prima_suma_bonus_malus' => String.valueOf(Integer.valueof((Math.random() * 6))),
+          'prima_suma_impuestos' => String.valueOf(Integer.valueof((Math.random() * 6))),
+          'prima_total' => String.valueOf(Integer.valueof((Math.random() * 6)))*/
+        }
+      );
+    } 
+
+    return jsonElementsList;
+  }
+
+  /**
+   * Obtener estructura json del sistema de origen INFO para registros
+   * de entidad Objeto Asegurado
+   **
+   * @param Integer numero de elementos a generar
+   * @return List<Map<String, Object>> listado de elementos simulando json
+   * @author adelgado
+   * @date 23/10/2020
+   */
+  public static List<Map<String, Object>> getINFOInsuredObjectJson(Integer totalItems) 
+  {
+    return buildINFOInsuredObjecttJson(totalItems);
+  }
+
+  private static List<Map<String, Object>> buildINFOInsuredObjecttJson(Integer totalItems) 
+  {
+    if (totalItems == null || totalItems < 1) 
+    {
+      throw new TestException('totalItems must be equal or greater than 1');
+    }
+
+    List<String> objectTypes = new List<String>
+    {
+      'Address',
+      'Motor',
+      'Person',
+      'Mobile',
+      'Boat',
+      'Electronic Device'
+    };
+
+    List<Map<String, Object>> jsonElementsList = new List<Map<String, Object>>();
+    
+    for (Integer i = 0; i < totalItems; i++) 
+    {
+      /* REGISTRO OBJETO ASEGURADO*/
+      jsonElementsList.add
+      (
+        new Map<String, Object>
+        {
+          'id_unico_riesgo_asegurado' => String.valueOf(i + 1).leftPad(9, '0'),
+          'oferta_id' => '',
+          'poliza_id' => '',
+          'objeto_tipo' => objectTypes[Integer.valueof((Math.random() * objectTypes.size() - 1))],
+          'objeto_secuencia' => '',
+          'vehiculo_marca' => 'Test',
+          'vehiculo_modelo' => 'Test',
+          'vehiculo_matricula' => 'Test',
+          'tipo_via' => 'Test',
+          'tipo_via_desc' => 'Test',
+          'descripcion_dom' => 'Test',
+          'num_via' => 'Test',
+          'via_info_adicional' => 'Test',
+          'poblacion' => 'Test',
+          'asegurado_nombre' => 'Test',
+          'asegurado_apellido_1' => 'Test',
+          'asegurado_apellido_2' => 'Test',
+          'asegurado_fecha_nacimiento' => '',
+          'embarcacion_nombre' => 'Test',
+          'embarcacion_matricula' => 'Test',
+          'movil_marca' => 'Test',
+          'movil_modelo' => 'Test',
+          'equipo_electronico_actividad' => 'Test',
+          'equipo_electronico_actividad_desc' => 'Test'
+        }
+      );
+    } 
+
+    return jsonElementsList;
+  }
+
+  /**
+   * Obtener estructura json del sistema de origen INFO para registros
+   * de entidad Relación Póliza
+   **
+   * @param Integer numero de elementos a generar
+   * @return List<Map<String, Object>> listado de elementos simulando json
+   * @author adelgado
+   * @date 23/10/2020
+   */
+  public static List<Map<String, Object>> getINFOPolicyRelationshipJson(Integer totalItems) 
+  {
+    return buildINFOPolicyRelationshipJson(totalItems);
+  }
+
+  private static List<Map<String, Object>> buildINFOPolicyRelationshipJson(Integer totalItems) 
+  {
+    if (totalItems == null || totalItems < 1) 
+    {
+      throw new TestException('totalItems must be equal or greater than 1');
+    }
+
+    List<String> roles = new List<String>
+    {
+      'ABG',
+      'ABU',
+      'ALL',
+      'ASC',
+      'ASE',
+      'ASG',
+      'ASR',
+      'BEN',
+      'BER',
+      'BRK',
+      'CAI',
+      'CAS',
+      'CAV',
+      'CCN',
+      'CCO',
+      'CCR',
+      'CID',
+      'CLG'
+    };
+
+    List<Map<String, Object>> jsonElementsList = new List<Map<String, Object>>();
+    
+    for (Integer i = 0; i < totalItems; i++) 
+    {
+      /* REGISTRO RELACIÓN PÓLIZA*/
+      jsonElementsList.add
+      (
+        new Map<String, Object>
+        {
+          'id_unico_rol_poliza' => String.valueOf(i + 1).leftPad(9, '0'),
+          'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
+          'poliza_rol' => roles[Integer.valueof((Math.random() * roles.size() - 1))],
+          'poliza_rol_desc' => 'Test',
+          'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
+        }
+      );
+    } 
+
+    return jsonElementsList;
+  }
+
    /**
    * Generar registros de ExternalRequest__c a partir de los JSON de prueba
    **
@@ -739,9 +1032,63 @@ public class TestDataFactory {
           );
         }
       }
+      // Póliza
+      when 'POLICY'
+      {
+        for(Map<String, Object> payload : getINFOPolicyJson(numRecords))
+        {
+          externalRequestList.add
+          (
+            new ExternalRequest__c
+            (
+              Origin__c = origin,
+              Entity__c = 'POLICY',
+              Action__c = 'UPSERT',
+              Payload__c = JSON.serialize(payload),
+              ContentFormat__c = 'JSON'
+            )
+          );
+        }
+      }
+      // Objeto asegurado
+      when 'INSURED_OBJECT'
+      {
+        for(Map<String, Object> payload : getINFOInsuredObjectJson(numRecords))
+        {
+          externalRequestList.add
+          (
+            new ExternalRequest__c
+            (
+              Origin__c = origin,
+              Entity__c = 'INSURED_OBJECT',
+              Action__c = 'UPSERT',
+              Payload__c = JSON.serialize(payload),
+              ContentFormat__c = 'JSON'
+            )
+          );
+        }
+      }
+      // Rol póliza
+      when 'POLICY_RELATIONSHIP'
+      {
+        for(Map<String, Object> payload : getINFOPolicyRelationshipJson(numRecords))
+        {
+          externalRequestList.add
+          (
+            new ExternalRequest__c
+            (
+              Origin__c = origin,
+              Entity__c = 'POLICY_RELATIONSHIP',
+              Action__c = 'UPSERT',
+              Payload__c = JSON.serialize(payload),
+              ContentFormat__c = 'JSON'
+            )
+          );
+        }
+      }
     }
 
-      return externalRequestList;
+    return externalRequestList;
 
   }
 
