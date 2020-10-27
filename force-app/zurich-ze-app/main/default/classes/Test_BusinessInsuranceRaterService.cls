@@ -192,8 +192,13 @@ public with sharing class Test_BusinessInsuranceRaterService {
 
     System.assertEquals(
       false,
-      BusinessInsuranceRaterService.requiredFieldsMetadataSet.isEmpty(),
+      BusinessInsuranceRaterService.stepMetadataList.isEmpty(),
       'The list shouldnt be empty'
+    );
+    System.assertEquals(
+      false,
+      BusinessInsuranceRaterService.requiredFieldsMetadataSet.isEmpty(),
+      'The set shouldnt be empty'
     );
   }
 
@@ -209,9 +214,14 @@ public with sharing class Test_BusinessInsuranceRaterService {
     Test.stopTest();
 
     System.assertEquals(
+      false,
+      BusinessInsuranceRaterService.stepMetadataList.isEmpty(),
+      'The list shouldnt be empty'
+    );
+    System.assertEquals(
       true,
       BusinessInsuranceRaterService.requiredFieldsMetadataSet.isEmpty(),
-      'The list should be empty'
+      'The set should be empty'
     );
   }
 }

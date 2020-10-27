@@ -2,8 +2,9 @@ public without sharing class BusinessInsuranceRaterService {
   public class BusinessInsuranceRaterServiceException extends Exception {
   }
 
+  public static List<Business_Quotes_Field__mdt> stepMetadataList = new List<Business_Quotes_Field__mdt>();
   public static Set<String> requiredFieldsMetadataSet = new Set<String>();
-  public static Set<String> requiredFieldsSet = new Set<String>();
+  public static Set<String> currentRequiredFieldsSet = new Set<String>();
 
   public static Integer version { get; set; }
 
@@ -67,7 +68,7 @@ public without sharing class BusinessInsuranceRaterService {
   public static void getRequiredFieldsFromMetadata(String step) {
     String stepToSearch = '%' + step + '%';
     //Map<String, Set<String>> requiredFieldsPerEntity = new Map<String, Set<String>>();
-    List<Business_Quotes_Field__mdt> requiredFieldsMetadata = [
+    stepMetadataList = [
       SELECT
         OriginEntity__c,
         OriginField__c,
@@ -78,13 +79,15 @@ public without sharing class BusinessInsuranceRaterService {
       FROM Business_Quotes_Field__mdt
       WHERE
         FormSteps__c LIKE :stepToSearch
-        AND Required__c = TRUE
+        //AND Required__c = TRUE
         AND IsActive__c = TRUE
     ];
 
-    if (!requiredFieldsMetadata.isEmpty()) {
-      for (Business_Quotes_Field__mdt metadata : requiredFieldsMetadata) {
-        requiredFieldsMetadataSet.add(metadata.OriginField__c);
+    if (!stepMetadataList.isEmpty()) {
+      for (Business_Quotes_Field__mdt metadata : stepMetadataList) {
+        if (metadata.Required__c != null && metadata.Required__c == true) {
+          requiredFieldsMetadataSet.add(metadata.OriginField__c);
+        }
       }
     }
   }
@@ -101,7 +104,7 @@ public without sharing class BusinessInsuranceRaterService {
 
     //TODO: Mejorar esto para que puedas especificar el field name y su entity
     for (String field : requiredFieldsMetadataSet) {
-      if (!requiredFieldsSet.contains(field)) {
+      if (!currentRequiredFieldsSet.contains(field)) {
         fieldsNotFound.add(field);
       }
     }
@@ -111,7 +114,7 @@ public without sharing class BusinessInsuranceRaterService {
 
   private static void setRequiredFields(String field) {
     if (requiredFieldsMetadataSet.contains(field)) {
-      requiredFieldsSet.add(field);
+      currentRequiredFieldsSet.add(field);
     }
   }
   /**
