@@ -1,6 +1,7 @@
 @isTest(SeeAllData=false)
 public without sharing class GenesysInteractionsServiceTest {
   public static Contact c;
+  public static Task interaction;
   /**
    * creación de reistros necesarios
    **
@@ -34,6 +35,15 @@ public without sharing class GenesysInteractionsServiceTest {
     opp.CloseDate = System.today().addDays(10);
     opp.Scope__c = 'General';
     insert opp;
+
+    interaction = new Task();
+    interaction.Status = 'Nueva';
+    interaction.Priority = 'Normal';
+    interaction.CallObject = 'ucid';
+    interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
+      .get('Interaction')
+      .getRecordTypeId();
+    insert interaction;
   }
 
   /**
@@ -46,7 +56,7 @@ public without sharing class GenesysInteractionsServiceTest {
   static void test_initInteraction() {
     setUp(); //Se insertan Opp y Case así que ya tendrán Owner
     String ucid = '1234';
-    String callLogId = 'taskId';
+    String callLogId = String.valueOf(interaction.Id);
     String screenPopRecordId = c.Id;
     Case caso = [
       SELECT
@@ -97,9 +107,9 @@ public without sharing class GenesysInteractionsServiceTest {
 
     List<Task> tasks = [SELECT Id FROM Task];
     System.assertEquals(
-      2,
+      3,
       tasks.size(),
-      'Se debió crear 2 tasks, una por cada initInteraction'
+      'Se debió crear 2 tasks, una por cada initInteraction + 1 existente en el setUp()'
     );
     System.assertEquals(
       expectedBaCaseOut.bestAgentId,
@@ -141,7 +151,7 @@ public without sharing class GenesysInteractionsServiceTest {
   @IsTest
   static void test_findBestAgentFor() {
     setUp(); //Se insertan Opp y Case así que ya tendrán Owner
-    String callLogId = 'taskId';
+    String callLogId = String.valueOf(interaction.Id);
     String screenPopRecordId = c.Id;
     Case caso = [
       SELECT

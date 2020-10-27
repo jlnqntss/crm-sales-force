@@ -101,6 +101,7 @@ public without sharing class GenesysInteractionsService {
     String lookFor,
     String scope
   ) {
+    Id ownerId;
     String contactPoint;
     Boolean isContactPointPhone;
     String screenPopRecordId;
@@ -172,19 +173,21 @@ public without sharing class GenesysInteractionsService {
         when 'Opportunity' {
           List<Opportunity> opps = new List<Opportunity>();
           String query =
-            'SELECT ContactId__c, isClosed, CreatedDate, Owner.Email FROM Opportunity WHERE isClosed = FALSE AND ContactId__c IN :userIds ' +
+            'SELECT OwnerId, ContactId__c, isClosed, CreatedDate, Owner.Email FROM Opportunity WHERE isClosed = FALSE AND ContactId__c IN :userIds ' +
             scopeFilter +
             ' ORDER BY CreatedDate DESC';
           opps = Database.query(query);
           if (!opps.isEmpty()) {
             bestAgentId = opps[0].Owner.Email;
             screenPopRecordId = opps[0].ContactId__c;
+            ownerId = opps[0].OwnerId;
           }
         }
         when 'Case' {
           List<Case> cases = new List<Case>();
           cases = [
             SELECT
+              OwnerId,
               ContactId,
               isClosed,
               CreatedDate,
@@ -198,9 +201,18 @@ public without sharing class GenesysInteractionsService {
           if (!cases.isEmpty()) {
             bestAgentId = cases[0].Owner.Email;
             screenPopRecordId = cases[0].ContactId;
+            ownerId = cases[0].OwnerId;
           }
         }
       }
+    }
+
+    //Actualizar la tarea si se ha conseguido el bestagent
+    if (bestAgentId != null && callLogId != null) {
+      Task interaction = new Task();
+      interaction.Id = Id.valueOf(callLogId);
+      interaction.BestAgent__c = ownerId;
+      update interaction;
     }
 
     //Si todo ha ido bien, screenPopRecordId y bestAgentId estarán rellenos, sino se envían a null
