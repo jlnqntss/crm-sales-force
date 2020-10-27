@@ -190,30 +190,30 @@ public class INFOHandler implements ISystem
                 insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(insObjRecord.ObjectType__c.trim()).getRecordTypeId();
                 recordsToUpsertByObject.get('Asset').put(insObjRecord, externalRequest);
             }
-            // // Rol póliza
-            // when 'POLICY_RELATIONSHIP'
-            // {
-            //   Relationship__c polRelRecord = (Relationship__c) tf.transform('Relationship__c', recordValuesMap);
+            // Rol póliza
+            when 'POLICY_RELATIONSHIP'
+            {
+              Relationship__c polRelRecord = (Relationship__c) tf.transform('Relationship__c', recordValuesMap);
 
-            //   if(polRelRecord.OpportunityId__c != null)
-            //   {
-            //     polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Offer').getRecordTypeId();
-            //   }
-            //   else if(polRelRecord.ClaimId__c != null)
-            //   {
-            //     polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Claim').getRecordTypeId();
-            //   }
-            //   else if(polRelRecord.PolicyId__c != null)
-            //   {
-            //     polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Policy').getRecordTypeId();
-            //   }
-            //   else if(polRelRecord.SecondaryAccountId__c != null)
-            //   {
-            //     polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Household').getRecordTypeId();
-            //   }
+              if(polRelRecord.OpportunityId__c != null)
+              {
+                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Offer').getRecordTypeId();
+              }
+              else if(polRelRecord.ClaimId__c != null)
+              {
+                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Claim').getRecordTypeId();
+              }
+              else if(polRelRecord.PolicyId__c != null)
+              {
+                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Policy').getRecordTypeId();
+              }
+              else if(polRelRecord.SecondaryAccountId__c != null)
+              {
+                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Household').getRecordTypeId();
+              }
 
-            //   recordsToUpsertByObject.get('Relationship__c').put(polRelRecord, externalRequest);
-            // }
+              recordsToUpsertByObject.get('Relationship__c').put(polRelRecord, externalRequest);
+            }
             when else
             {
               externalRequest.ProcessResult__c = 'KO';

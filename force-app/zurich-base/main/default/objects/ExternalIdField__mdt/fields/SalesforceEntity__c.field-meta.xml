@@ -45,6 +45,16 @@
                 <default>false</default>
                 <label>Relationship</label>
             </value>
+            <value>
+                <fullName>Policy__c</fullName>
+                <default>false</default>
+                <label>Policy</label>
+            </value>
+            <value>
+                <fullName>Asset</fullName>
+                <default>false</default>
+                <label>Asset</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
