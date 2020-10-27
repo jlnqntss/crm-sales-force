@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IntermediaryDefault</fullName>
+    <fields>Name</fields>
+    <fields>INFOIntermediaryCode__c</fields>
+    <fields>Type</fields>
+    <fields>MainEmail__c</fields>
+    <fields>MiAgencia__c</fields>
+    <fields>TerritorialDirection__c</fields>
+    <fields>TDChannel__c</fields>
+    <label>Intermediary Default</label>
+</CompactLayout>
