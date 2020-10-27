@@ -36,9 +36,9 @@
                 <label>Policy Version</label>
             </value>
             <value>
-                <fullName>Relation__c</fullName>
+                <fullName>Relationship__c</fullName>
                 <default>false</default>
-                <label>Relation</label>
+                <label>Relationship</label>
             </value>
             <value>
                 <fullName>ContactPointAddress</fullName>
@@ -54,6 +54,16 @@
                 <fullName>ContactPointEmail</fullName>
                 <default>false</default>
                 <label>Contact Point Email</label>
+            </value>
+            <value>
+                <fullName>Product2</fullName>
+                <default>false</default>
+                <label>Product</label>
+            </value>
+            <value>
+                <fullName>Asset</fullName>
+                <default>false</default>
+                <label>Asset</label>
             </value>
         </valueSetDefinition>
     </valueSet>
