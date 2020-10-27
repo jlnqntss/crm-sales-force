@@ -177,12 +177,12 @@ public class INFOHandler implements ISystem
               Product2 prodRecord = (Product2) tf.transform('Product2', recordValuesMap);
               recordsToUpsertByObject.get('Product2').put(prodRecord, externalRequest);
             }
-            // // Póliza
-            // when 'POLICY'
-            // {
-            //   Policy__c policyRecord = (Policy__c) tf.transform('Policy__c', recordValuesMap);
-            //   recordsToUpsertByObject.get('Policy__c').put(policyRecord, externalRequest);
-            // }
+            // Póliza
+            when 'POLICY'
+            {
+              Policy__c policyRecord = (Policy__c) tf.transform('Policy__c', recordValuesMap);
+              recordsToUpsertByObject.get('Policy__c').put(policyRecord, externalRequest);
+            }
             // // Objeto asegurado
             // when 'INSURED_OBJECT'
             // {
