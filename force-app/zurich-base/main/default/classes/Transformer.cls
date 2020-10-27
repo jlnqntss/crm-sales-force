@@ -4,8 +4,7 @@
  * @author xsobera
  * @date 13/10/2020
  */
-public class Transformer
-{
+public class Transformer {
   public static final String ORIGIN_NAME_INFO = 'INFO';
   private static Set<String> validOrigins = new Set<String>{ ORIGIN_NAME_INFO };
 
@@ -15,11 +14,9 @@ public class Transformer
   public static final String OBJECT_NAME_CONTACT_POINT_PHONE = 'ContactPointPhone';
   public static final String OBJECT_NAME_CONTACT_POINT_EMAIL = 'ContactPointEmail';
 
-  private Map<String, Map<String, String>> mappingsByObject
-  {
+  private Map<String, Map<String, String>> mappingsByObject {
     get {
-      if (mappingsByObject == null)
-      {
+      if (mappingsByObject == null) {
         // Inicializar mapeo objeto Salesforce => campo origen -> campo destino
         mappingsByObject = new Map<String, Map<String, String>>();
       }
@@ -30,20 +27,16 @@ public class Transformer
   private static Map<String, Schema.DescribeSObjectResult> descResultMap;
 
   private List<Transformer__mdt> settings;
-  public List<Transformer__mdt> getSettings()
-  {
+  public List<Transformer__mdt> getSettings() {
     return this.settings;
   }
   private String origin;
-  public String getOrigin()
-  {
+  public String getOrigin() {
     return this.origin;
   }
-  private Map<String, Object> unmappedValues
-  {
+  private Map<String, Object> unmappedValues {
     get {
-      if (unmappedValues == null)
-      {
+      if (unmappedValues == null) {
         // Inicializar mapa para devolver los campos no mapeados
         unmappedValues = new Map<String, Object>();
       }
@@ -51,32 +44,31 @@ public class Transformer
     }
     set;
   }
-  public Map<String, Object> getUnmappedValues()
-  {
+  public Map<String, Object> getUnmappedValues() {
     return unmappedValues;
   }
 
-  public Map<String, Map<sObject, ExternalRequest__c>> initRequestsMapBySettings()
-  {
+  public Map<String, Map<sObject, ExternalRequest__c>> initRequestsMapBySettings() {
     Map<String, Map<sObject, ExternalRequest__c>> recordsToUpsertByObject = new Map<String, Map<sObject, ExternalRequest__c>>();
 
     // 2 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
-    for (Transformer__mdt setting : this.settings)
-    {
-      if (!recordsToUpsertByObject.containsKey(setting.SalesforceEntity__c))
-      {
-        recordsToUpsertByObject.put(setting.SalesforceEntity__c, new Map<sObject, ExternalRequest__c>());
+    for (Transformer__mdt setting : this.settings) {
+      if (!recordsToUpsertByObject.containsKey(setting.SalesforceEntity__c)) {
+        recordsToUpsertByObject.put(
+          setting.SalesforceEntity__c,
+          new Map<sObject, ExternalRequest__c>()
+        );
       }
     }
 
     return recordsToUpsertByObject;
   }
 
-  public Transformer(String originSystem)
-  {
-    if (String.isBlank(originSystem) || !validOrigins.contains(originSystem))
-    {
-      throw new TransformerException('There are not established a valid origin system for the Transformer');
+  public Transformer(String originSystem) {
+    if (String.isBlank(originSystem) || !validOrigins.contains(originSystem)) {
+      throw new TransformerException(
+        'There are not established a valid origin system for the Transformer'
+      );
     }
     this.origin = originSystem;
     this.settings = new List<Transformer__mdt>(
@@ -91,21 +83,26 @@ public class Transformer
       ]
     );
 
-    if (settings == null || settings.isEmpty())
-    {
-      throw new TransformerException('There are not metadata configuration for selected origin: ' + this.origin);
+    if (settings == null || settings.isEmpty()) {
+      throw new TransformerException(
+        'There are not metadata configuration for selected origin: ' +
+        this.origin
+      );
     }
 
     // Inicializar mapeo campos según metadatos
-    for (Transformer__mdt setting : this.settings)
-    {
-      if (!mappingsByObject.containsKey(setting.SalesforceEntity__c))
-      {
-        mappingsByObject.put(setting.SalesforceEntity__c, new Map<String, String>());
+    for (Transformer__mdt setting : this.settings) {
+      if (!mappingsByObject.containsKey(setting.SalesforceEntity__c)) {
+        mappingsByObject.put(
+          setting.SalesforceEntity__c,
+          new Map<String, String>()
+        );
       }
 
-      mappingsByObject.get(setting.SalesforceEntity__c).put(setting.OriginField__c.toLowerCase(), setting.SalesforceField__c);
-      mappingsByObject.get(setting.SalesforceEntity__c).put(setting.OriginField__c.toUpperCase(), setting.SalesforceField__c);
+      mappingsByObject.get(setting.SalesforceEntity__c)
+        .put(setting.OriginField__c.toLowerCase(), setting.SalesforceField__c);
+      mappingsByObject.get(setting.SalesforceEntity__c)
+        .put(setting.OriginField__c.toUpperCase(), setting.SalesforceField__c);
     }
   }
 
@@ -120,8 +117,10 @@ public class Transformer
    * @author xsobera
    * @date 13/10/2020
    */
-  public sObject transform(String objectName, Map<String, Object> originRecordMap)
-  {
+  public sObject transform(
+    String objectName,
+    Map<String, Object> originRecordMap
+  ) {
     // Obtenemos la información de los campos del objeto Salesforce destino
     Map<String, Schema.SObjectField> objectFields = getObjectFields(objectName);
     Map<String, String> mappingByOriginField = mappingsByObject.get(objectName);
@@ -130,81 +129,133 @@ public class Transformer
     String originFieldValue;
     Schema.SObjectField sfFieldObj;
     Schema.DisplayType fieldDisplayType;
-    for (String originRecordField : originRecordMap.keySet())
-    {
-      if (mappingByOriginField.containsKey(originRecordField.toUpperCase())) //origen1
-      {
-        sfFieldNameConfig = mappingByOriginField.get(originRecordField.toUpperCase());
+    for (String originRecordField : originRecordMap.keySet()) {
+      if (
+        mappingByOriginField.containsKey(originRecordField.toUpperCase()) //origen1
+      ) {
+        sfFieldNameConfig = mappingByOriginField.get(
+          originRecordField.toUpperCase()
+        );
         // comprobar que hay un campo sf definido en el metadato
-        if (String.isNotBlank(sfFieldNameConfig))
-        {
-          for (String sfFieldName : getTargetFields(sfFieldNameConfig))
-          {
+        if (String.isNotBlank(sfFieldNameConfig)) {
+          for (String sfFieldName : getTargetFields(sfFieldNameConfig)) {
             sfFieldName = sfFieldName.trim();
             // comprobar que si es lookup
-            if(!isLookupRelationship(sfFieldName))
-            {
+            if (!isLookupRelationship(sfFieldName)) {
               // Validar que el campo indicado en metadata existe en el objeto de salesforce
-              if (objectFields.keySet().contains(sfFieldName.toLowerCase()))
-              {
-                originFieldValue = String.valueOf(originRecordMap.get(originRecordField));
-                System.debug(LoggingLevel.DEBUG, '[Transformer] Obteniendo detalles del campo: ' + sfFieldName);
+              if (objectFields.keySet().contains(sfFieldName.toLowerCase())) {
+                originFieldValue = String.valueOf(
+                  originRecordMap.get(originRecordField)
+                );
+                System.debug(
+                  LoggingLevel.DEBUG,
+                  '[Transformer] Obteniendo detalles del campo: ' + sfFieldName
+                );
                 sfFieldObj = objectFields.get(sfFieldName.toLowerCase());
                 fieldDisplayType = sfFieldObj.getDescribe().getType();
-                System.debug(LoggingLevel.DEBUG, '[Transformer] Tipo del campo: ' + fieldDisplayType.name());
-                switch on fieldDisplayType.name().toUpperCase()
-                {
-                  when 'BOOLEAN'
-                  {
-                    record.put(sfFieldName, parseBooleanField(originFieldValue, this.origin));
+                System.debug(
+                  LoggingLevel.DEBUG,
+                  '[Transformer] Tipo del campo: ' + fieldDisplayType.name()
+                );
+                switch on fieldDisplayType.name().toUpperCase() {
+                  when 'BOOLEAN' {
+                    record.put(
+                      sfFieldName,
+                      parseBooleanField(originFieldValue, this.origin)
+                    );
                   }
-                  when 'DATE'
-                  {
-                    record.put(sfFieldName, parseDateField(originFieldValue, this.origin));
+                  when 'DATE' {
+                    record.put(
+                      sfFieldName,
+                      parseDateField(originFieldValue, this.origin)
+                    );
                   }
-                  when 'DATETIME'
-                  {
-                    record.put(sfFieldName, parseDatetimeField(originFieldValue, this.origin));
+                  when 'DATETIME' {
+                    record.put(
+                      sfFieldName,
+                      parseDatetimeField(originFieldValue, this.origin)
+                    );
                   }
-                  when else
-                  {
+                  when 'CURRENCY', 'DOUBLE' {
+                    record.put(
+                      sfFieldName,
+                      parseDoubleField(originFieldValue, this.origin)
+                    );
+                  }
+                  when 'INTEGER' {
+                    record.put(
+                      sfFieldName,
+                      parseIntegerField(originFieldValue, this.origin)
+                    );
+                  }
+                  when else {
                     // se considera texto el resto de campos
-                    record.put(sfFieldName, parseStringField(originFieldValue, this.origin));
+                    record.put(
+                      sfFieldName,
+                      parseStringField(originFieldValue, this.origin)
+                    );
                   }
                 }
-              }
-              else
-              {
+              } else {
                 // Sí hay configuración para el campo origen y sí se ha definido un campo sf pero el objeto salefsorce destino no contiene un campo con el nombre indicado
-                System.debug(LoggingLevel.ERROR, '[Transformer] No hay ningún campo en el objeto Salesforce con el nombre indicado.\nsObject: ' + objectName + ' \nField: ' + sfFieldName);
-                throw new TransformerException('There are not any field with these name in the salesforce object. \nsObject: ' + objectName + ' \nField: ' + sfFieldName);
+                System.debug(
+                  LoggingLevel.ERROR,
+                  '[Transformer] No hay ningún campo en el objeto Salesforce con el nombre indicado. sObject: ' +
+                  objectName +
+                  ' Field: ' +
+                  sfFieldName
+                );
+                throw new TransformerException(
+                  'There are not any field with these name in the salesforce object. sObject: ' +
+                  objectName +
+                  ' Field: ' +
+                  sfFieldName
+                );
               }
-            }
-            else
-            {
+            } else {
               // Insert lookup
-              buildParentRelationship(record, sfFieldName, (String) originRecordMap.get(originRecordField));
+              buildParentRelationship(
+                record,
+                sfFieldName,
+                (String) originRecordMap.get(originRecordField)
+              );
             }
           } // fin loop getTargetFields()
-        }
-        else
-        {
+        } else {
           // Sí hay configuración para el campo origen pero no se ha definido un campo sf de destino en el metadato (vacío o nulo)
-          System.debug(LoggingLevel.WARN, '[Transformer] No se ha indicado ningún campo Salesforce destino en la configuración.\nOrigin: ' + origin + ' \nField: ' + originRecordField);
-          //throw new TransformerException('There are not salesforce field in metadata configuration to these values.\nOrigin: ' + origin + ' \nField: ' + originRecordField);
+          System.debug(
+            LoggingLevel.WARN,
+            '[Transformer] No se ha indicado ningún campo Salesforce destino en la configuración.Origin: ' +
+            origin +
+            ' Field: ' +
+            originRecordField
+          );
+          //throw new TransformerException('There are not salesforce field in metadata configuration to these values.Origin: ' + origin + ' Field: ' + originRecordField);
 
           // Guardar en unmappedValues
-          unmappedValues.put(originRecordField, originRecordMap.get(originRecordField));
+          unmappedValues.put(
+            originRecordField,
+            originRecordMap.get(originRecordField)
+          );
         }
-      }
-      else
-      {
+      } else {
         // No se ha especificado ninguna configuración para el campo origen xxx
-        System.debug(LoggingLevel.WARN, '[Transformer] No hay configuración para los valores solicitados.\n Origen: ' + origin + ' \nsObject: ' + objectName + ' \nField: ' + originRecordField);
-        //throw new TransformerException('There are not metadata configuration to these values. \n Origin: ' + origin + ' \nsObject: ' + objectName + ' \nField: ' + originRecordField);
+        System.debug(
+          LoggingLevel.WARN,
+          '[Transformer] No hay configuración para los valores solicitados. Origen: ' +
+          origin +
+          ' sObject: ' +
+          objectName +
+          ' Field: ' +
+          originRecordField
+        );
+        //throw new TransformerException('There are not metadata configuration to these values.  Origin: ' + origin + ' sObject: ' + objectName + ' Field: ' + originRecordField);
 
         // Guardar en unmappedValues
-        unmappedValues.put(originRecordField, originRecordMap.get(originRecordField));
+        unmappedValues.put(
+          originRecordField,
+          originRecordMap.get(originRecordField)
+        );
       }
     }
 
@@ -216,37 +267,43 @@ public class Transformer
    **
    */
   @TestVisible
-  private static Map<String, Schema.SObjectField> getObjectFields(String objectName)
-  {
+  private static Map<String, Schema.SObjectField> getObjectFields(
+    String objectName
+  ) {
     // Obtenemos la información de los campos del objeto Salesforce destino
     System.debug(LoggingLevel.DEBUG, '[Tramsformer] objectName: ' + objectName);
 
-    if(descResultMap == null)
-    {
+    if (descResultMap == null) {
       descResultMap = new Map<String, Schema.DescribeSObjectResult>();
     }
 
     Map<String, Schema.SObjectField> objectFields;
     Schema.DescribeSObjectResult descResult;
-    if (!descResultMap.containsKey(objectName))
-    {
-      if(Schema.getGlobalDescribe().keySet().contains(objectName.toLowerCase()))
-      {
+    if (!descResultMap.containsKey(objectName)) {
+      if (
+        Schema.getGlobalDescribe().keySet().contains(objectName.toLowerCase())
+      ) {
         descResult = Schema.describeSObjects(new List<String>{ objectName })[0];
         descResultMap.put(objectName, descResult);
+      } else {
+        System.debug(
+          LoggingLevel.ERROR,
+          '[Transformer] No hay ningún objecto en Salesforce con el nombre indicado. sObject: ' +
+          objectName
+        );
+        throw new TransformerException(
+          'There are not any object in Salesforce with these name. sObject: ' +
+          objectName
+        );
       }
-      else
-      {
-        System.debug(LoggingLevel.ERROR, '[Transformer] No hay ningún objecto en Salesforce con el nombre indicado.\nsObject: ' + objectName);
-        throw new TransformerException('There are not any object in Salesforce with these name. \nsObject: ' + objectName);
-      }
-    }
-    else
-    {
+    } else {
       descResult = descResultMap.get(objectName);
     }
     objectFields = descResult.fields.getMap();
-    System.debug(LoggingLevel.DEBUG, '[Transformer] objectFields: ' + JSON.serialize(objectFields.keySet()));
+    System.debug(
+      LoggingLevel.DEBUG,
+      '[Transformer] objectFields: ' + JSON.serialize(objectFields.keySet())
+    );
     return objectFields;
   }
 
@@ -262,23 +319,24 @@ public class Transformer
    * @date 13/10/2020
    */
   @TestVisible
-  private static Boolean parseBooleanField(String strValue, string origin)
-  {
-    switch on origin
-    {
-      when 'INFO'
-      {
+  private static Boolean parseBooleanField(String strValue, string origin) {
+    switch on origin {
+      when 'INFO' {
         Boolean booleanValue = false;
-        if (String.isNotBlank(strValue) && strValue.trim().equalsIgnoreCase('S'))
-        {
+        if (
+          String.isNotBlank(strValue) && strValue.trim().equalsIgnoreCase('S')
+        ) {
           booleanValue = true;
         }
         return booleanValue;
       }
-      when else
-      {
+      when else {
         // Agregar otros origenens o transformaciones por defecto
-        System.debug(LoggingLevel.WARN, '[Transformer] parseBooleanField() transformación no específicada para origen: ' + origin);
+        System.debug(
+          LoggingLevel.WARN,
+          '[Transformer] parseBooleanField() transformación no específicada para origen: ' +
+          origin
+        );
       }
     }
 
@@ -297,21 +355,20 @@ public class Transformer
    * @date 20/10/2020
    */
   @TestVisible
-  private static Date parseDateField(String strValue, String origin)
-  {
-    switch on origin
-    {
-      when 'INFO'
-      {
-        if (String.isNotBlank(strValue))
-        {
+  private static Date parseDateField(String strValue, String origin) {
+    switch on origin {
+      when 'INFO' {
+        if (String.isNotBlank(strValue)) {
           return Date.valueOf(strValue.trim());
         }
       }
-      when else
-      {
+      when else {
         // Agregar otros origenens o transformaciones por defecto
-        System.debug(LoggingLevel.WARN, '[Transformer] parseDateField() transformación no específicada para origen: ' + origin);
+        System.debug(
+          LoggingLevel.WARN,
+          '[Transformer] parseDateField() transformación no específicada para origen: ' +
+          origin
+        );
       }
     }
 
@@ -330,21 +387,20 @@ public class Transformer
    * @date 20/10/2020
    */
   @TestVisible
-  private static Datetime parseDatetimeField(String strValue, String origin)
-  {
-    switch on origin
-    {
-      when 'INFO'
-      {
-        if (String.isNotBlank(strValue))
-        {
+  private static Datetime parseDatetimeField(String strValue, String origin) {
+    switch on origin {
+      when 'INFO' {
+        if (String.isNotBlank(strValue)) {
           return Datetime.valueOf(strValue.trim());
         }
       }
-      when else
-      {
+      when else {
         // Agregar otros origenens o transformaciones por defecto
-        System.debug(LoggingLevel.WARN, '[Transformer] parseDatetimeField() transformación no específicada para origen: ' + origin);
+        System.debug(
+          LoggingLevel.WARN,
+          '[Transformer] parseDatetimeField() transformación no específicada para origen: ' +
+          origin
+        );
       }
     }
 
@@ -363,21 +419,84 @@ public class Transformer
    * @date 21/10/2020
    */
   @TestVisible
-  private static String parseStringField(String strValue, String origin)
-  {
-    switch on origin
-    {
-      when 'INFO'
-      {
-        if (String.isNotBlank(strValue))
-        {
+  private static String parseStringField(String strValue, String origin) {
+    switch on origin {
+      when 'INFO' {
+        if (String.isNotBlank(strValue)) {
           return strValue.trim();
         }
       }
-      when else
-      {
+      when else {
         // Agregar otros origenens o transformaciones por defecto
-        System.debug(LoggingLevel.WARN, '[Transformer] parseStringField() transformación no específicada para origen: ' + origin);
+        System.debug(
+          LoggingLevel.WARN,
+          '[Transformer] parseStringField() transformación no específicada para origen: ' +
+          origin
+        );
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Método que parsea un string en Double de acuerdo con las indicaciones
+   * de formato del sistema origen
+   **
+   * @param String valor a transformar en Double, por ejemplo: '0000.00' ...
+   * @param String origen configurado en el Transformer
+   * @return Double
+   *
+   * @author xsobera
+   * @date 26/10/2020
+   */
+  @TestVisible
+  private static Double parseDoubleField(String strValue, String origin) {
+    switch on origin {
+      when 'INFO' {
+        if (String.isNotBlank(strValue)) {
+          return Double.valueOf(strValue.trim());
+        }
+      }
+      when else {
+        // Agregar otros origenens o transformaciones por defecto
+        System.debug(
+          LoggingLevel.WARN,
+          '[Transformer] parseDoubleField() transformación no específicada para origen: ' +
+          origin
+        );
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Método que parsea un string en Integer de acuerdo con las indicaciones
+   * de formato del sistema origen
+   **
+   * @param String valor a transformar en Integer, por ejemplo: '0000' ...
+   * @param String origen configurado en el Transformer
+   * @return Integer
+   *
+   * @author xsobera
+   * @date 26/10/2020
+   */
+  @TestVisible
+  private static Integer parseIntegerField(String strValue, String origin) {
+    switch on origin {
+      when 'INFO' {
+        if (String.isNotBlank(strValue) && strValue.isNumeric()) {
+          return Integer.valueOf(strValue.trim());
+        }
+      }
+      when else {
+        // Agregar otros origenens o transformaciones por defecto
+        System.debug(
+          LoggingLevel.WARN,
+          '[Transformer] parseIntegerField() transformación no específicada para origen: ' +
+          origin
+        );
       }
     }
 
@@ -395,9 +514,10 @@ public class Transformer
    * @date 21/10/2020
    */
   @TestVisible
-  private static Boolean isLookupRelationship(String configValue)
-  {
-    return (String.isNotBlank(configValue) && configValue.countMatches(':') == 1 && configValue.countMatches('->') == 1);
+  private static Boolean isLookupRelationship(String configValue) {
+    return (String.isNotBlank(configValue) &&
+    configValue.countMatches(':') == 1 &&
+    configValue.countMatches('->') == 1);
   }
 
   /**
@@ -412,47 +532,92 @@ public class Transformer
    * @date 21/10/2020
    */
   @TestVisible
-  private static void buildParentRelationship(sObject record, String configValue, String fieldValue)
-  {
+  private static void buildParentRelationship(
+    sObject record,
+    String configValue,
+    String fieldValue
+  ) {
     String childFieldName;
     String parentObjectName;
     String parentExternalFieldName;
 
     List<String> aux;
-    if(isLookupRelationship(configValue))
-    {
+    if (isLookupRelationship(configValue)) {
       aux = new List<String>(configValue.split(':'));
       childFieldName = aux[0];
-      aux = new List<String> (aux[1].split('->'));
+      aux = new List<String>(aux[1].split('->'));
       parentObjectName = aux[0];
       parentExternalFieldName = aux[1];
 
       // Comprobar que existen los campos en hijo y el objeto padre y su campo
-      Map<String, Schema.SObjectField> parentObjectFields = getObjectFields(parentObjectName);
-      if (parentObjectFields.keySet().contains(parentExternalFieldName.toLowerCase()))
-      {
-        Map<String, Schema.SObjectField> childObjectFields = getObjectFields(String.valueOf(record.getSObjectType()));
-        if(childObjectFields.keySet().contains(childFieldName.toLowerCase()))
-        {
-          SObject parentObject = Schema.getGlobalDescribe().get(parentObjectName).newSObject();
-          parentObject.put(parentExternalFieldName, fieldValue);
+      Map<String, Schema.SObjectField> parentObjectFields = getObjectFields(
+        parentObjectName
+      );
+      if (
+        parentObjectFields.keySet()
+          .contains(parentExternalFieldName.toLowerCase())
+      ) {
+        Map<String, Schema.SObjectField> childObjectFields = getObjectFields(
+          String.valueOf(record.getSObjectType())
+        );
+        if (childObjectFields.keySet().contains(childFieldName.toLowerCase())) {
+          if (string.isNotBlank(fieldValue)) {
+            SObject parentObject = Schema.getGlobalDescribe()
+              .get(parentObjectName)
+              .newSObject();
+            parentObject.put(parentExternalFieldName, fieldValue);
 
-          String relationName = childObjectFields.get(childFieldName.toLowerCase()).getDescribe().getRelationshipName();
-          System.debug(LoggingLevel.DEBUG, '[Transformer] Nombre de la relación: ' + relationName);
-          record.putSObject(relationName, parentObject);
-        }
-        else
-        {
+            String relationName = childObjectFields.get(
+                childFieldName.toLowerCase()
+              )
+              .getDescribe()
+              .getRelationshipName();
+            System.debug(
+              LoggingLevel.DEBUG,
+              '[Transformer] Nombre de la relación: ' + relationName
+            );
+            record.putSObject(relationName, parentObject);
+          } else {
+            System.debug(
+              LoggingLevel.WARN,
+              '[Transformer] El valor indicado para el lookup es nulo o vacío. sObject: ' +
+              String.valueOf(record.getSObjectType()) +
+              ' Field: ' +
+              childFieldName
+            );
+            record.put(childFieldName, null);
+          }
+        } else {
           // El hijo no contienen un campo con ese nombre
-          System.debug(LoggingLevel.ERROR, '[Transformer] No hay ningún campo en el objeto hijo de Salesforce con el nombre indicado.\nsObject: ' + String.valueOf(record.getSObjectType()) + ' \nField: ' + childFieldName);
-        throw new TransformerException('There are not any field with these name in the salesforce child object. \nsObject: ' + String.valueOf(record.getSObjectType()) + ' \nField: ' + childFieldName);
+          System.debug(
+            LoggingLevel.ERROR,
+            '[Transformer] No hay ningún campo en el objeto hijo de Salesforce con el nombre indicado. sObject: ' +
+            String.valueOf(record.getSObjectType()) +
+            ' Field: ' +
+            childFieldName
+          );
+          throw new TransformerException(
+            'There are not any field with these name in the salesforce child object. sObject: ' +
+            String.valueOf(record.getSObjectType()) +
+            ' Field: ' +
+            childFieldName
+          );
         }
-      }
-      else
-      {
+      } else {
         // El padre no contiene un campo con ese nombre
-        System.debug(LoggingLevel.ERROR, '[Transformer] No hay ningún campo en el objeto padre de Salesforce con el nombre indicado.\nsObject: ' + parentObjectName + ' \nField: ' + parentExternalFieldName);
-        throw new TransformerException('There are not any field with these name in the salesforce parent object. \nsObject: ' + parentObjectName + ' \nField: ' + parentExternalFieldName);
+        System.debug(
+          LoggingLevel.ERROR,
+          '[Transformer] No hay ningún campo en el objeto padre de Salesforce con el nombre indicado. sObject: ' +
+          parentObjectName +
+          ' Field: ' +
+          parentExternalFieldName
+        );
+        throw new TransformerException(
+          'There are not any field with these name in the salesforce parent object. sObject: ' +
+          parentObjectName +
+          ' Field: ' +
+          parentExternalFieldName
+        );
       }
     }
   }
@@ -468,18 +633,17 @@ public class Transformer
    * @date 23/10/2020
    */
   @TestVisible
-  private static List<String> getTargetFields(String configValue)
-  {
+  private static List<String> getTargetFields(String configValue) {
     List<String> configValues = new List<String>(); // siempre tiene que devolver una lista instanciada
-    if(String.isNotBlank(configValue))
-    {
+    if (String.isNotBlank(configValue)) {
       Set<String> aux = new Set<String>(configValue.split(','));
-      aux.removeAll(new Set<String>{null, '', ' '});
+      aux.removeAll(new Set<String>{ null, '', ' ' });
       configValues.addAll(aux);
     }
 
     return configValues;
   }
 
-  public class TransformerException extends Exception {}
+  public class TransformerException extends Exception {
+  }
 }
