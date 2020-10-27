@@ -920,6 +920,74 @@ public class TestDataFactory {
   }
 
   /**
+   * Obtener estructura json del sistema de origen INFO para registros
+   * de entidad Oferta
+   **
+   * @param Integer numero de elementos a generar
+   * @return List<Map<String, Object>> listado de elementos simulando json
+   * @author adelgado
+   * @date 23/10/2020
+   */
+  public static List<Map<String, Object>> getINFOQuoteJson(Integer totalItems) {
+    return buildINFOQuoteJson(totalItems);
+  }
+
+  private static List<Map<String, Object>> buildINFOQuoteJson(
+    Integer totalItems
+  ) {
+    if (totalItems == null || totalItems < 1) {
+      throw new TestException('totalItems must be equal or greater than 1');
+    }
+
+    List<String> businessUnits = new List<String>{
+      '000',
+      '001',
+      '002',
+      '003',
+      '004',
+      '005',
+      '006',
+      '007',
+      '008',
+      '999'
+    };
+
+    List<Map<String, Object>> jsonElementsList = new List<Map<String, Object>>();
+
+    for (Integer i = 0; i < totalItems; i++) {
+      /* REGISTRO OFERTA*/
+      jsonElementsList.add(
+        new Map<String, Object>{
+          'oferta_id' => String.valueOf(i + 1).leftPad(9, '0'),
+          'oferta_fecha_creacion' => Date.today(),
+          'oferta_fecha_validez' => Date.today(),
+          'oferta_fecha_efecto' => Date.today(),
+          'oferta_entidad_legal' => businessUnits[
+            Integer.valueof((Math.random() * businessUnits.size() - 1))
+          ],
+          'oferta_entidad_legal_desc' => 'Test',
+          'cliente_cod_filiacion' => 'F' +
+          String.valueOf(i + 1).leftPad(9, '0'),
+          'oferta_producto' => String.valueOf(i + 1).leftPad(9, '0'),
+          'oferta_producto_tecnico' => 'Test',
+          'oferta_producto_comercial' => 'Test',
+          'oferta_estado' => 'Test',
+          'oferta_estado_desc' => 'Test',
+          'oferta_estructura' => 'Test',
+          'oferta_negocio' => 'Test',
+          'oferta_negocio_desc' => 'Test',
+          'oferta_mediador' => '',
+          'oferta_fecha_vencimiento' => '',
+          'oferta_forma_pago' => '',
+          'oferta_forma_pago_desc' => ''
+        }
+      );
+    }
+
+    return jsonElementsList;
+  }
+
+  /**
    * Generar registros de ExternalRequest__c a partir de los JSON de prueba
    **
    * @param String Origen
@@ -1024,6 +1092,20 @@ public class TestDataFactory {
             new ExternalRequest__c(
               Origin__c = origin,
               Entity__c = 'PRODUCT',
+              Action__c = 'UPSERT',
+              Payload__c = JSON.serialize(payload),
+              ContentFormat__c = 'JSON'
+            )
+          );
+        }
+      }
+      // Oferta
+      when 'QUOTE' {
+        for (Map<String, Object> payload : getINFOQuoteJson(numRecords)) {
+          externalRequestList.add(
+            new ExternalRequest__c(
+              Origin__c = origin,
+              Entity__c = 'QUOTE',
               Action__c = 'UPSERT',
               Payload__c = JSON.serialize(payload),
               ContentFormat__c = 'JSON'
