@@ -20,13 +20,23 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     Savepoint sp = Database.setSavepoint();
 
     try {
+      String dataInteractionId = null;
       Map<String, Object> deserializedData = (Map<String, Object>) JSON.deserializeUntyped(
         data
       );
-      Map<String, Object> dataInteraction = (Map<String, Object>) deserializedData.get(
-        'interaction'
-      );
-      String dataInteractionId = (String) dataInteraction.get('id');
+      if (deserializedData.containsKey('interaction')) {
+        Map<String, Object> dataInteraction = (Map<String, Object>) deserializedData.get(
+          'interaction'
+        );
+        if (dataInteraction.containsKey('id')) {
+          dataInteractionId = (String) dataInteraction.get('id');
+        }
+      }
+
+      //Si no se ha recibido el id universal de Genesys, no hacer nada
+      if (dataInteractionId == null) {
+        return null;
+      }
 
       //Buscar la task que tenga el mismo ucid
       List<Task> taskToUpdate = ActivitySelector.selectTasksByCallObjectIdentifier(
@@ -55,6 +65,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
       ErrorLogUtil.commitError(e);
     }
 
-    return '';
+    return null;
   }
 }
