@@ -1,7 +1,7 @@
+# .forceignore v2
 # List files or directories below to ignore them when running force:source:push, force:source:pull, and force:source:status
 # More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
 #
-
 
 # LWC configuration files
 **/jsconfig.json
@@ -34,4 +34,7 @@ Standard.profile-meta.xml
 profileSessionSettings*
 
 # Ignore AppSwitcher
-*.appMenu-meta.xml
+#*.appMenu-meta.xml #Fix: .forceignore warnings
+
+# Ignore ConnectedApps
+force-app/zurich-base/main/default/connectedApps/GenesysCloudInteractions.connectedApp-meta.xml
