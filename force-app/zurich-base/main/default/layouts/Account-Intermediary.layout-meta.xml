@@ -162,10 +162,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>AdminitrationEmail__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>ClaimsEmail__c</field>
             </layoutItems>
             <layoutItems>
