@@ -20,7 +20,7 @@ let files = execSync("git diff --cached --name-only --diff-filter=ACM", {
 files.forEach((filepath) => {
   try {
     execSync(
-      `uncrustify -l JAVA -c "config/apex-uncrustify.cfg" --replace --no-backup ${filepath}`,
+      `uncrustify -l JAVA -c "config/apex-uncrustify.cfg" --replace --no-backup ${filepath} && git add ${filepath}`,
       {
         encoding: "utf-8"
       }

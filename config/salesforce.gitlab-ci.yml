@@ -124,6 +124,8 @@ before_script:
 
     # Se usa npm para evitar problemas con wget
     npm install --global sfdx-cli
+
+    sfdx plugins:install sfpowerkit
   }
 
 
@@ -363,29 +365,33 @@ before_script:
   # Arguments
   #   $1 = Org Username
   #   $2 = Run tests
-
   function deploy_metadata() {
-
     local org_username=$1
     local run_tests=$2
 
-    if [ ! $org_username ]; then
+    if [ ! "$org_username" ]; then
       echo "ERROR No org username provided to 'deploy_metadata' function" >&2
       exit 1;
     fi
 
     echo "Cleaning profiles"
-    sfdx sfpowerkit:source:profile:reconcile -u $org_username
+    sfdx sfpowerkit:source:profile:reconcile -u "$org_username"
     
-    if [ $run_tests ]; then
+    if [ "$run_tests" ]; then
       echo "Partial deploying..."
-      local cmd="sfdx force:source:deploy --targetusername $org_username --sourcepath force-app --wait 10 --json" && (echo $cmd >&2)
+      local cmd="sfdx force:source:deploy --verbose --targetusername "$org_username" --sourcepath force-app --wait 10 --json" && (echo $cmd >&2)
     else
       echo "Full Deploying"
-      local cmd="sfdx force:source:deploy --testlevel RunLocalTests --targetusername $org_username --sourcepath force-app --wait 10 --json" && (echo $cmd >&2)
+      sfdx_source_convert deploy
+      local cmd="sfdx force:mdapi:deploy --deploydir deploy --testlevel RunLocalTests --targetusername qa --verbose --wait 10 --json" && (echo $cmd >&2)
     fi
 
+    local hasError=$cmd |  jq '.status'
     local output=$($cmd) && (echo $output | jq '.' >&2)
+
+    if [ "$hasError" -eq "1" ]; then
+      exit 1
+    fi
   }
 
   # Function to run doc generation
@@ -397,12 +403,18 @@ before_script:
 
   # Función que extrae y convierte el código de todos los paquetes dentro de un proyecto SFDX
   # en una única carpeta temporal
-  # No arguments.
+  # Arguments
+  #  $1 directory - Directorio de exportación
+  #  $1 codeOnly - Convierte solo código
   function convert_sfdx_project() {
     for packageDir in $(jq -r '.packageDirectories[].path' < sfdx-project.json)
     do
       if [ -f $pkgDir ]; then
-        sfdx force:source:convert -r $packageDir -d .tmp/veracode  -m ApexClass,ApexTrigger,ApexPage,ApexComponent,AuraDefinitionBundle,LightningComponentBundle
+        if [ -f "$2" ]; then
+          sfdx force:source:convert -r $packageDir -d "$1" -m ApexClass,ApexTrigger,ApexPage,ApexComponent,AuraDefinitionBundle,LightningComponentBundle
+        else
+          sfdx force:source:convert -r $packageDir -d "$1"
+        fi
       fi
     done
   }
@@ -650,7 +662,7 @@ deploy:uat:
     - install_toolchain
     - install_nts1 $SFDX_NTS1_GIT_URI
     - authenticate QA $QA_SANDBOX_AUTH_URL
-    - deploy_metadata QA true
+    - deploy_metadata QA
   tags:
     - zurich-ci-uat
 
@@ -688,7 +700,7 @@ upload-static-veracode:uat:
     - VERSION=${CI_COMMIT_REF_NAME}
     - rm -rf node_modules
     - npm install --production
-    - convert_sfdx_project
+    - convert_sfdx_project .tmp/veracode true
     - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
     - sfdx 
     - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
