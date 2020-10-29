@@ -389,7 +389,7 @@ before_script:
     local hasError=$cmd |  jq '.status'
     local output=$($cmd) && (echo $output | jq '.' >&2)
 
-    exit $$hasError
+    exit $hasError
   }
 
   # Function to run doc generation
