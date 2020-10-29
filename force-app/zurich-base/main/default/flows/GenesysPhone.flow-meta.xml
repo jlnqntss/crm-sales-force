@@ -140,7 +140,7 @@
             <targetReference>GenesysPhoneSearch</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>phone</name>
         <dataType>String</dataType>
