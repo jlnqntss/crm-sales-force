@@ -905,13 +905,144 @@ public class TestDataFactory {
       /* REGISTRO RELACIÓN PÓLIZA*/
       jsonElementsList.add(
         new Map<String, Object>{
-          'id_unico_rol_poliza' => String.valueOf(i + 1).leftPad(9, '0'),
+          'id_unico_rol_poliza' => 'P' + String.valueOf(i + 1).leftPad(9, '0'),
           'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
           'poliza_rol' => roles[
             Integer.valueof((Math.random() * roles.size() - 1))
           ],
           'poliza_rol_desc' => 'Test',
           'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
+        }
+      );
+    }
+
+    return jsonElementsList;
+  }
+
+  /**
+   * Obtener estructura json del sistema de origen INFO para registros
+   * de entidad Relación Oferta
+   **
+   * @param Integer numero de elementos a generar
+   * @return List<Map<String, Object>> listado de elementos simulando json
+   * @author adelgado
+   * @date 23/10/2020
+   */
+  public static List<Map<String, Object>> getINFOQuoteRelationshipJson(
+    Integer totalItems
+  ) {
+    return buildINFOQuoteRelationshipJson(totalItems);
+  }
+
+  private static List<Map<String, Object>> buildINFOQuoteRelationshipJson(
+    Integer totalItems
+  ) {
+    if (totalItems == null || totalItems < 1) {
+      throw new TestException('totalItems must be equal or greater than 1');
+    }
+
+    List<String> roles = new List<String>{
+      'ABG',
+      'ABU',
+      'ALL',
+      'ASC',
+      'ASE',
+      'ASG',
+      'ASR',
+      'BEN',
+      'BER',
+      'BRK',
+      'CAI',
+      'CAS',
+      'CAV',
+      'CCN',
+      'CCO',
+      'CCR',
+      'CID',
+      'CLG'
+    };
+
+    List<Map<String, Object>> jsonElementsList = new List<Map<String, Object>>();
+
+    for (Integer i = 0; i < totalItems; i++) {
+      /* REGISTRO RELACIÓN PÓLIZA*/
+      jsonElementsList.add(
+        new Map<String, Object>{
+          'id_unico_rol_oferta' => 'O' + String.valueOf(i + 1).leftPad(9, '0'),
+          'oferta_id' => String.valueOf(i + 1).leftPad(9, '0'),
+          'oferta_rol' => roles[
+            Integer.valueof((Math.random() * roles.size() - 1))
+          ],
+          'oferta_rol_desc' => 'Test',
+          'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
+        }
+      );
+    }
+
+    return jsonElementsList;
+  }
+
+  /**
+   * Obtener estructura json del sistema de origen INFO para registros
+   * de entidad Oferta
+   **
+   * @param Integer numero de elementos a generar
+   * @return List<Map<String, Object>> listado de elementos simulando json
+   * @author adelgado
+   * @date 23/10/2020
+   */
+  public static List<Map<String, Object>> getINFOQuoteJson(Integer totalItems) {
+    return buildINFOQuoteJson(totalItems);
+  }
+
+  private static List<Map<String, Object>> buildINFOQuoteJson(
+    Integer totalItems
+  ) {
+    if (totalItems == null || totalItems < 1) {
+      throw new TestException('totalItems must be equal or greater than 1');
+    }
+
+    List<String> businessUnits = new List<String>{
+      '000',
+      '001',
+      '002',
+      '003',
+      '004',
+      '005',
+      '006',
+      '007',
+      '008',
+      '999'
+    };
+
+    List<Map<String, Object>> jsonElementsList = new List<Map<String, Object>>();
+
+    for (Integer i = 0; i < totalItems; i++) {
+      /* REGISTRO OFERTA*/
+      jsonElementsList.add(
+        new Map<String, Object>{
+          'oferta_id' => String.valueOf(i + 1).leftPad(9, '0'),
+          'oferta_fecha_creacion' => Date.today(),
+          'oferta_fecha_validez' => Date.today(),
+          'oferta_fecha_efecto' => Date.today(),
+          'oferta_entidad_legal' => businessUnits[
+            Integer.valueof((Math.random() * businessUnits.size() - 1))
+          ],
+          'oferta_entidad_legal_desc' => 'Test',
+          'cliente_cod_filiacion' => 'F' +
+          String.valueOf(i + 1).leftPad(9, '0'),
+          'oferta_producto' => String.valueOf(i + 1).leftPad(9, '0'),
+          'oferta_producto_tecnico' => 'Test',
+          'oferta_producto_comercial' => 'Test',
+          'oferta_estado' => 'Test',
+          'oferta_estado_desc' => 'Test',
+          'oferta_estructura' => 'Test',
+          'oferta_negocio' => 'Test',
+          'oferta_negocio_desc' => 'Test',
+          'oferta_mediador' => '',
+          'oferta_fecha_vencimiento' => '',
+          'oferta_forma_pago' => '',
+          'oferta_forma_pago_desc' => ''
         }
       );
     }
@@ -1031,6 +1162,20 @@ public class TestDataFactory {
           );
         }
       }
+      // Oferta
+      when 'QUOTE' {
+        for (Map<String, Object> payload : getINFOQuoteJson(numRecords)) {
+          externalRequestList.add(
+            new ExternalRequest__c(
+              Origin__c = origin,
+              Entity__c = 'QUOTE',
+              Action__c = 'UPSERT',
+              Payload__c = JSON.serialize(payload),
+              ContentFormat__c = 'JSON'
+            )
+          );
+        }
+      }
       // Póliza
       when 'POLICY' {
         for (Map<String, Object> payload : getINFOPolicyJson(numRecords)) {
@@ -1072,6 +1217,22 @@ public class TestDataFactory {
             new ExternalRequest__c(
               Origin__c = origin,
               Entity__c = 'POLICY_RELATIONSHIP',
+              Action__c = 'UPSERT',
+              Payload__c = JSON.serialize(payload),
+              ContentFormat__c = 'JSON'
+            )
+          );
+        }
+      }
+      // Rol oferta
+      when 'QUOTE_RELATIONSHIP' {
+        for (
+          Map<String, Object> payload : getINFOQuoteRelationshipJson(numRecords)
+        ) {
+          externalRequestList.add(
+            new ExternalRequest__c(
+              Origin__c = origin,
+              Entity__c = 'QUOTE_RELATIONSHIP',
               Action__c = 'UPSERT',
               Payload__c = JSON.serialize(payload),
               ContentFormat__c = 'JSON'

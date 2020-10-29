@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Special Condition</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Specials Conditions</value>
+    </caseValues>
+    <layouts>
+        <layout>Special Condition Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Condition Type</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

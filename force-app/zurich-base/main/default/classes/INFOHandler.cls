@@ -31,8 +31,7 @@ public class INFOHandler implements ISystem {
     'Policy__c', // 8
     'PolicyVersion__c', // 9
     'Asset', // 10
-    'Opportunity', // 11
-    'Relationship__c' // 12
+    'Relationship__c' // 11
   };
 
   /**
@@ -195,6 +194,7 @@ public class INFOHandler implements ISystem {
                     .put(contactRecord, null);
                 } else {
                   externalRequest.ProcessResult__c = 'KO';
+                  externalRequest.processedDate__c = Datetime.now();
                   externalRequest.Error_Log__c = 'No se ha podido identificar el tipo de cliente';
                   externalRequest.Processed__c = true;
                   externalRequestResultList.add(externalRequest);
@@ -243,6 +243,7 @@ public class INFOHandler implements ISystem {
                     .put(cpeRecord, externalRequest);
                 } else {
                   externalRequest.ProcessResult__c = 'KO';
+                  externalRequest.processedDate__c = Datetime.now();
                   externalRequest.Error_Log__c = 'No se ha podido identificar el tipo de vía de contacto';
                   externalRequest.Processed__c = true;
                   externalRequestResultList.add(externalRequest);
@@ -257,6 +258,15 @@ public class INFOHandler implements ISystem {
               );
               recordsToUpsertByObject.get('Product2')
                 .put(prodRecord, externalRequest);
+            }
+            // Póliza
+            when 'QUOTE' {
+              Opportunity quoteRecord = (Opportunity) tf.transform(
+                'Opportunity',
+                recordValuesMap
+              );
+              recordsToUpsertByObject.get('Opportunity')
+                .put(quoteRecord, externalRequest);
             }
             // Póliza
             when 'POLICY' {
@@ -285,30 +295,27 @@ public class INFOHandler implements ISystem {
                 'Relationship__c',
                 recordValuesMap
               );
-
-              if (polRelRecord.OpportunityId__c != null) {
-                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
-                  .get('Offer')
-                  .getRecordTypeId();
-              } else if (polRelRecord.ClaimId__c != null) {
-                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
-                  .get('Claim')
-                  .getRecordTypeId();
-              } else if (polRelRecord.PolicyId__c != null) {
-                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
-                  .get('Policy')
-                  .getRecordTypeId();
-              } else if (polRelRecord.SecondaryAccountId__c != null) {
-                polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
-                  .get('Household')
-                  .getRecordTypeId();
-              }
-
+              polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
+                .get('Policy')
+                .getRecordTypeId();
               recordsToUpsertByObject.get('Relationship__c')
                 .put(polRelRecord, externalRequest);
             }
+            // Rol oferta
+            when 'QUOTE_RELATIONSHIP' {
+              Relationship__c quoRelRecord = (Relationship__c) tf.transform(
+                'Relationship__c',
+                recordValuesMap
+              );
+              quoRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName()
+                .get('Offer')
+                .getRecordTypeId();
+              recordsToUpsertByObject.get('Relationship__c')
+                .put(quoRelRecord, externalRequest);
+            }
             when else {
               externalRequest.ProcessResult__c = 'KO';
+              externalRequest.processedDate__c = Datetime.now();
               externalRequest.Error_Log__c = 'No se ha encontrado la entidad indicada';
               externalRequest.NumRetry__c = externalRequest.NumRetry__c == null
                 ? 1
@@ -319,6 +326,7 @@ public class INFOHandler implements ISystem {
           }
         } else {
           externalRequest.ProcessResult__c = 'KO';
+          externalRequest.processedDate__c = Datetime.now();
           externalRequest.Error_Log__c = 'No se ha recibido información del registro en INFO';
           externalRequest.NumRetry__c = externalRequest.NumRetry__c == null
             ? 1
@@ -329,14 +337,18 @@ public class INFOHandler implements ISystem {
       } catch (Exception e) {
         // Informar la external request con el error que ha provocado
         externalRequest.ProcessResult__c = 'KO';
-        externalRequest.Error_Log__c = e.getMessage();
+        externalRequest.processedDate__c = Datetime.now();
+        externalRequest.Error_Log__c =
+          e.getMessage() +
+          '\n' +
+          e.getStackTraceString();
         externalRequest.NumRetry__c = externalRequest.NumRetry__c == null
           ? 1
           : externalRequest.NumRetry__c + 1;
         externalRequest.Processed__c = true;
         externalRequestResultList.add(externalRequest);
 
-        ErrorLogUtil.commitError(e, 'INFOHandler', 'process');
+        //ErrorLogUtil.commitError(e, 'INFOHandler', 'process');
       }
     }
   }
@@ -389,7 +401,6 @@ public class INFOHandler implements ISystem {
             recordsByObject.containsKey(objectName) &&
             !recordsByObject.get(objectName).isEmpty()
           ) {
-            System.debug('Entra' + objectName);
             Schema.SObjectField externalId = Schema.getGlobalDescribe()
               .get(objectName)
               .getDescribe()
@@ -414,6 +425,7 @@ public class INFOHandler implements ISystem {
               //Procesamiento correcto
               if (resultList.get(i).isSuccess()) {
                 extReq.ProcessResult__c = 'OK';
+                extReq.processedDate__c = Datetime.now();
                 extReq.Processed__c = true;
                 extReq.Error_Log__c = null;
               } else {
@@ -429,6 +441,7 @@ public class INFOHandler implements ISystem {
 
                 if (extReq.NumRetry__c >= maxRetries) {
                   extReq.Processed__c = true;
+                  extReq.processedDate__c = Datetime.now();
                 }
               }
 

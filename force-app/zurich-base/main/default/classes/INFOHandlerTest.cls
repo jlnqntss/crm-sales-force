@@ -44,6 +44,11 @@ private class INFOHandlerTest {
       TestDataFactory.generateExternalRequest('INFO', 'PRODUCT', 10)
     );
 
+    //Ofertas
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'QUOTE', 10)
+    );
+
     //Pólizas
     externalRequestList.addAll(
       TestDataFactory.generateExternalRequest('INFO', 'POLICY', 10)
@@ -57,6 +62,11 @@ private class INFOHandlerTest {
     //Roles póliza
     externalRequestList.addAll(
       TestDataFactory.generateExternalRequest('INFO', 'POLICY_RELATIONSHIP', 10)
+    );
+
+    //Roles oferta
+    externalRequestList.addAll(
+      TestDataFactory.generateExternalRequest('INFO', 'QUOTE_RELATIONSHIP', 10)
     );
 
     insert externalRequestList;
@@ -152,6 +162,11 @@ private class INFOHandlerTest {
     );
     System.assertEquals(
       10,
+      INFOHandler.recordsToUpsertByObject.get('Opportunity').size(),
+      'No se ha generado correctamente el mapa de registros de opportunity'
+    );
+    System.assertEquals(
+      10,
       INFOHandler.recordsToUpsertByObject.get('Policy__c').size(),
       'No se ha generado correctamente el mapa de registros de policy'
     );
@@ -161,7 +176,7 @@ private class INFOHandlerTest {
       'No se ha generado correctamente el mapa de registros de asset'
     );
     System.assertEquals(
-      10,
+      20,
       INFOHandler.recordsToUpsertByObject.get('Relationship__c').size(),
       'No se ha generado correctamente el mapa de registros de relationship'
     );
@@ -191,7 +206,7 @@ private class INFOHandlerTest {
     Test.stopTest();
 
     System.assertEquals(
-      90,
+      110,
       INFOHandler.externalRequestResultList.size(),
       'No se han marcado como erroneas todas las external request'
     );
@@ -221,7 +236,7 @@ private class INFOHandlerTest {
     Test.stopTest();
 
     System.assertEquals(
-      90,
+      110,
       INFOHandler.externalRequestResultList.size(),
       'No se han marcado como erroneas todas las external request'
     );
@@ -253,6 +268,7 @@ private class INFOHandlerTest {
     List<ContactPointPhone> cppList = [SELECT Id FROM ContactPointPhone];
     List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
     List<Product2> prodList = [SELECT Id FROM Product2];
+    List<Opportunity> oppList = [SELECT Id FROM Opportunity];
     List<Policy__c> policyList = [SELECT Id FROM Policy__c];
     List<Asset> insObjList = [SELECT Id FROM Asset];
     List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
@@ -289,6 +305,11 @@ private class INFOHandlerTest {
     );
     System.assertEquals(
       10,
+      oppList.size(),
+      'No se han insertado todos los registros de oferta'
+    );
+    System.assertEquals(
+      10,
       policyList.size(),
       'No se han insertado todos los registros de póliza'
     );
@@ -298,7 +319,7 @@ private class INFOHandlerTest {
       'No se han insertado todos los registros de objeto asegurado'
     );
     System.assertEquals(
-      10,
+      20,
       relaList.size(),
       'No se han insertado todos los registros de relaciones'
     );
@@ -383,7 +404,7 @@ private class INFOHandlerTest {
     ];
 
     System.assertEquals(
-      90,
+      110,
       externalRequestListUpdated.size(),
       'No se han procesado todas las external request'
     );
@@ -430,7 +451,7 @@ private class INFOHandlerTest {
     ];
 
     System.assertEquals(
-      90,
+      110,
       externalRequestListUpdated.size(),
       'No se han procesado todas las external request'
     );

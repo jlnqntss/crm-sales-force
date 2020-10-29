@@ -9,9 +9,9 @@
     "install:extensions": "type config/vscode-extensions.list | code --install-extension -",
     "test:lwc": "lwc-jest -- --passWithNoTests",
     "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 10",
-    "push:source": "sfdx force:source:push",
+    "push:source": "sfdx force:source:push -f",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
-    "pull:source": "sfdx force:source:pull",
+    "pull:source": "sfdx force:source:pull -f",
     "retrieve:": "sfdx force:source:retrieve --sourcepath=force-app",
     "pull:profiles": "sfdx force:source:pull -f && sfdx sfpowerkit:source:profile:reconcile -s",
     "retrieve:profiles:all": "sfdx sfpowerkit:source:profile:retrieve",
@@ -37,7 +37,6 @@
     "mustache": "^4.0.1",
     "node-fetch": "^2.6.1",
     "prettier": "^2.1.2",
-    "prettier-plugin-apex": "^1.7.0",
     "pretty-quick": "^3.0.2"
   }
 }
