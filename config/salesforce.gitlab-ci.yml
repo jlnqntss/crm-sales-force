@@ -377,21 +377,19 @@ before_script:
     echo "Cleaning profiles"
     sfdx sfpowerkit:source:profile:reconcile -u "$org_username"
     
-    if [ "$run_tests" ]; then
-      echo "Partial deploying..."
-      local cmd="sfdx force:source:deploy --verbose --targetusername "$org_username" --sourcepath force-app --wait 10 --json" && (echo $cmd >&2)
-    else
+    if [ -f "$run_tests" ]; then
       echo "Full Deploying"
       convert_sfdx_project deploy
-      local cmd="sfdx force:mdapi:deploy --deploydir deploy --testlevel RunLocalTests --targetusername qa --verbose --wait 10 --json" && (echo $cmd >&2)
+      local cmd="sfdx force:mdapi:deploy --deploydir deploy --testlevel RunLocalTests --targetusername "$org_username" --verbose --wait 10 --json" && (echo $cmd >&2)
+    else
+      echo "Partial deploying..."
+      local cmd="sfdx force:source:deploy --verbose --targetusername "$org_username" --sourcepath force-app --wait 10 --json" && (echo $cmd >&2)
     fi
 
     local hasError=$cmd |  jq '.status'
     local output=$($cmd) && (echo $output | jq '.' >&2)
 
-    if [ "$hasError" -eq "1" ]; then
-      exit 1
-    fi
+    exit $$hasError
   }
 
   # Function to run doc generation
