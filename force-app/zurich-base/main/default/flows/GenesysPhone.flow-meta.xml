@@ -4,19 +4,89 @@
         <description>Utiliza un Aura para ir al contacto</description>
         <name>RedirectToRecord</name>
         <label>RedirectToRecord</label>
-        <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationX>50</locationX>
+        <locationY>518</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <inputParameters>
             <name>recordId</name>
             <value>
-                <elementReference>GenesysPhoneSearch.ContactId__c</elementReference>
+                <stringValue>{!GenesysPhoneSearch[0].ParentId}</stringValue>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>49.0</apiVersion>
+    <actionCalls>
+        <description>Redirige a la página de búsqueda estándar</description>
+        <name>RedirectToSearch</name>
+        <label>RedirectToSearch</label>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
+        <actionName>c:RedirectToSearchAction</actionName>
+        <actionType>component</actionType>
+        <inputParameters>
+            <name>searchFor</name>
+            <value>
+                <elementReference>phone</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <assignments>
+        <description>Cuenta los registros devueltos por la colección</description>
+        <name>CountNRecords</name>
+        <label>CountNRecords</label>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>VarNCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>GenesysPhoneSearch</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>NRecordsDecision</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Decide entre si hay 1, o distinto de 1 registros devueltos en la colección.</description>
+        <name>NRecordsDecision</name>
+        <label>NRecordsDecision</label>
+        <locationX>314</locationX>
+        <locationY>398</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>OneRecord</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VarNCount</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RedirectToRecord</targetReference>
+            </connector>
+            <label>OneRecord</label>
+        </rules>
+        <rules>
+            <name>DifferentFromOne</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VarNCount</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RedirectToSearch</targetReference>
+            </connector>
+            <label>DifferentFromOne</label>
+        </rules>
+    </decisions>
     <description>Uso del Pop to Flow en el softphone layout que utiliza Genesys</description>
     <interviewLabel>GenesysPhone {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Genesys Phone</label>
@@ -43,11 +113,11 @@
         <description>Busca ContactPointPhone donde coincida el Teléfono recibido por parámetro. Se buscará a través de Se guardará ContactId__c</description>
         <name>GenesysPhoneSearch</name>
         <label>Genesys Phone Search</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>RedirectToRecord</targetReference>
+            <targetReference>CountNRecords</targetReference>
         </connector>
         <filters>
             <field>TelephoneNumber</field>
@@ -56,26 +126,38 @@
                 <elementReference>phone</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>ContactPointPhone</object>
         <queriedFields>Id</queriedFields>
-        <queriedFields>ContactId__c</queriedFields>
+        <queriedFields>ParentId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>50</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GenesysPhoneSearch</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>phone</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Cuenta cuantos registros devuelve la colección</description>
+        <name>VarNCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
     </variables>
 </Flow>
