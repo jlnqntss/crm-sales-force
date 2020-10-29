@@ -33,11 +33,18 @@ public with sharing class Test_WS_BusinessInsuranceRater {
     WS_BusinessInsuranceRater.doPost();
     Test.stopTest();
 
-    /*System.assertEquals(
-      'success',
-      doPostResponse.status,
-      'El status debería ser success'
-    );*/
+    System.assertEquals(
+      200,
+      response.statusCode,
+      'Response statusCode should be 200'
+    );
+
+    List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
+    System.assertEquals(
+      true,
+      errors.isEmpty(),
+      'List of errors should be empty'
+    );
   }
 
   /**

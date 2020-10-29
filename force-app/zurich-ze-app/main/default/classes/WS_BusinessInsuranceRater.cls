@@ -81,8 +81,6 @@ global with sharing class WS_BusinessInsuranceRater extends WS_BaseAPIService {
 
               response.statusCode = 200;
             } catch (Exception ex) {
-              System.debug('Error deserializing JSON: ' + ex.getMessage());
-
               response.statusCode = 400;
               throw new WS_BaseAPIService.ApiException(
                 'JSON_PARSER_ERROR',
@@ -100,11 +98,8 @@ global with sharing class WS_BusinessInsuranceRater extends WS_BaseAPIService {
         }
       }
     } catch (WS_BaseAPIService.ApiException exAPI) {
-      System.debug('WS_BaseAPIService.ApiException: ' + exAPI.getMessage());
       response.responseBody = Blob.valueOf(JSON.serialize(exAPI));
     } catch (Exception ex) {
-      System.debug('Exception: ' + ex.getMessage());
-
       if (response.statusCode == null) {
         response.statusCode = 500;
       }
