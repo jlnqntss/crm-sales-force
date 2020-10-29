@@ -83,7 +83,7 @@ before_script:
     echo 'Installing dependencies'
     npm install
 
-    sfdx plugins:install sfpowerkit
+    sfdx plugins:install sfpowerkit -f
     
     ## Versiones
     sfdx --version
