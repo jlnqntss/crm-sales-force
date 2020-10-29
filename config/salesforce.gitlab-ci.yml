@@ -82,8 +82,6 @@ before_script:
 
     echo 'Installing dependencies'
     npm install
-
-    sfdx plugins:install sfpowerkit -f
     
     ## Versiones
     sfdx --version
@@ -126,6 +124,8 @@ before_script:
 
     # Se usa npm para evitar problemas con wget
     npm install --global sfdx-cli
+
+    echo y | sfdx plugins:install sfpowerkit -f
   }
 
 
