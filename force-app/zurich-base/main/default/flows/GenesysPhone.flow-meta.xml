@@ -16,6 +16,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <description>Uso del Pop to Flow en el softphone layout que utiliza Genesys</description>
     <interviewLabel>GenesysPhone {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Genesys Phone</label>
