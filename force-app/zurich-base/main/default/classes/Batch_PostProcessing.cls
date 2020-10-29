@@ -10,18 +10,17 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
   global String query;
 
   global Batch_PostProcessing() {
+    query = SystemUtil.getOutdatedOrderInfo();
   }
 
   global Batch_PostProcessing(String q) {
+    this();
     if (!String.isBlank(q)) {
       query = q;
     }
   }
 
   global Database.QueryLocator start(Database.BatchableContext BC) {
-    if (query == null || query == '') {
-      query = SystemUtil.getOutdatedOrderInfo();
-    }
     return Database.getQueryLocator(query);
   }
 

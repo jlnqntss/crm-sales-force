@@ -8,18 +8,17 @@ global class Batch_DeleteMasters implements Database.Batchable<sObject>, Databas
   global String query;
 
   global Batch_DeleteMasters() {
+    query = SystemUtil.getMastersToDelete();
   }
 
   global Batch_DeleteMasters(String q) {
+    this();
     if (!String.isBlank(q)) {
       query = q;
     }
   }
 
   global Database.QueryLocator start(Database.BatchableContext BC) {
-    if (query == null || query == '') {
-      query = SystemUtil.getMastersToDelete();
-    }
     return Database.getQueryLocator(query);
   }
 

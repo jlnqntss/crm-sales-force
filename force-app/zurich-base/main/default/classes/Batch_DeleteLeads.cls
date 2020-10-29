@@ -8,18 +8,17 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
   global String query;
 
   global Batch_DeleteLeads() {
+    query = SystemUtil.getLeadsToDelete();
   }
 
   global Batch_DeleteLeads(String q) {
+    this();
     if (!String.isBlank(q)) {
       query = q;
     }
   }
 
   global Database.QueryLocator start(Database.BatchableContext BC) {
-    if (query == null || query == '') {
-      query = SystemUtil.getLeadsToDelete();
-    }
     return Database.getQueryLocator(query);
   }
 

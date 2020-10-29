@@ -8,18 +8,17 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
   global String query;
 
   global Batch_DeleteQuotes() {
+    query = SystemUtil.getQuotesToDelete();
   }
 
   global Batch_DeleteQuotes(String q) {
+    this();
     if (!String.isBlank(q)) {
       query = q;
     }
   }
 
   global Database.QueryLocator start(Database.BatchableContext BC) {
-    if (query == null || query == '') {
-      query = SystemUtil.getQuotesToDelete();
-    }
     return Database.getQueryLocator(query);
   }
 

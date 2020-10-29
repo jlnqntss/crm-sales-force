@@ -8,18 +8,17 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
   public Boolean esTest;
 
   global Batch_ResponseExternalRequest() {
+    query = SystemUtil.getProcessedExternalRequests();
   }
 
   global Batch_ResponseExternalRequest(String p_query) {
+    this();
     if (!String.isBlank(p_query)) {
       query = p_query;
     }
   }
 
   global Database.QueryLocator start(Database.BatchableContext BC) {
-    if (query == null || query == '') {
-      query = SystemUtil.getProcessedExternalRequests();
-    }
 
     if (Test.isRunningTest()) {
       esTest = true;

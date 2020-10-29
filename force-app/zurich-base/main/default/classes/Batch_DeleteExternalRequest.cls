@@ -8,18 +8,17 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
   global String query;
 
   global Batch_DeleteExternalRequest() {
+    query = SystemUtil.getOldExternalRequests();
   }
 
   global Batch_DeleteExternalRequest(String q) {
+    this();
     if (!String.isBlank(q)) {
       query = q;
     }
   }
 
   global Database.QueryLocator start(Database.BatchableContext BC) {
-    if (query == null || query == '') {
-      query = SystemUtil.getOldExternalRequests();
-    }
     return Database.getQueryLocator(query);
   }
 

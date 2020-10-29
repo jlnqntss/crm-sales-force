@@ -5,19 +5,19 @@
 global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Database.Stateful, Schedulable {
   global String query;
 
-  global Batch_DeleteErrorLogs() {
+  global Batch_DeleteErrorLogs() 
+  {
+      query = SystemUtil.getErrorLogs();
   }
 
   global Batch_DeleteErrorLogs(String q) {
+    this();
     if (!String.isBlank(q)) {
       query = q;
     }
   }
 
   global Database.QueryLocator start(Database.BatchableContext BC) {
-    if (query == null || query == '') {
-      query = SystemUtil.getErrorLogs();
-    }
     return Database.getQueryLocator(query);
   }
 
