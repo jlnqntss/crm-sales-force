@@ -1,7 +1,5 @@
 public without sharing class GenesysInteractionsService {
-  public class GenesysInteractionsServiceException extends Exception {
-  }
-
+  static final String MISSING_FIELDS_REQUIRED = 'some required fields are missing';
   public static Integer version { get; set; }
 
   /**
@@ -19,11 +17,6 @@ public without sharing class GenesysInteractionsService {
     String bestAgentId;
     BestAgent ba = new BestAgent(screenPopRecordId, callLogId, bestAgentId); //Se devolverá todo a null si no entra en el flujo
 
-    //Ahora mismo solo hay una versión del servicio
-    if (version != 1) {
-      version = 1;
-    }
-
     if (version == 1) {
       //Si el servicio no recibe el from, to o interactionType, devolverá un KO
       if (
@@ -31,8 +24,9 @@ public without sharing class GenesysInteractionsService {
         request.fromId == null ||
         request.toId == null
       ) {
-        throw new GenesysInteractionsServiceException(
-          'BAD_REQUEST: some required fields are missing'
+        throw new WS_BaseAPIService.ApiException(
+          'BAD_REQUEST',
+          MISSING_FIELDS_REQUIRED
         );
       }
 
