@@ -6,83 +6,103 @@
  * @date 17/06/2020
  */
 
-global class Batch_PostProcessing implements Database.Batchable<sObject>, Database.Stateful, Schedulable {
-  global String query;
+global class Batch_PostProcessing implements Database.Batchable<sObject>, Database.Stateful, Schedulable
+{
+    global String query;
 
-  global Batch_PostProcessing() {
-    query = SystemUtil.getOutdatedOrderInfo();
-  }
-
-  global Batch_PostProcessing(String q) {
-    this();
-    if (!String.isBlank(q)) {
-      query = q;
+    global Batch_PostProcessing()
+    {
+        query = SystemUtil.getOutdatedOrderInfo();
     }
-  }
 
-  global Database.QueryLocator start(Database.BatchableContext BC) {
-    return Database.getQueryLocator(query);
-  }
-
-  global void execute(SchedulableContext SC) {
-    Id BatchInstanceId = database.executeBatch(new Batch_PostProcessing(), 200);
-  }
-
-  global void execute(Database.BatchableContext BC, List<sObject> scope) {
-    List<Order> processedOrders = (List<Order>) scope;
-    List<OrderItem> itemsToDelete = new List<OrderItem>();
-    List<Discount__c> discountsToDelete = new List<Discount__c>();
-    List<Cover__c> coversToDelete = new List<Cover__c>();
-    SET<ID> keys = new Set<ID>();
-
-    try {
-      if (scope != null && !scope.isEmpty()) {
-        for (Order ord : processedOrders) {
-          keys.add(ord.id); //guardar ids para la query de las covers
-
-          if (!ord.OrderItems.isEmpty()) {
-            for (OrderItem oi : ord.OrderItems) {
-              itemsToDelete.add(oi);
-            }
-          }
-
-          if (!ord.Descuentos__r.isEmpty()) {
-            for (Discount__c dis : ord.Descuentos__r) {
-              discountsToDelete.add(dis);
-            }
-          }
-
-          ord.After_Processing_Check__c = false;
+    global Batch_PostProcessing(String q)
+    {
+        this();
+        if (!String.isBlank(q) )
+        {
+            query = q;
         }
-
-        coversToDelete = [
-          SELECT id
-          FROM Cover__c
-          WHERE Updated__c = FALSE AND PolicyProduct__r.OrderId = :keys
-        ];
-
-        if (!coversToDelete.isEmpty()) {
-          delete coversToDelete;
-        }
-
-        if (!itemsToDelete.isEmpty()) {
-          delete itemsToDelete;
-        }
-
-        if (!discountsToDelete.isEmpty()) {
-          delete discountsToDelete;
-        }
-
-        update processedOrders;
-      }
-    } catch (Exception e) {
-      System.debug(
-        'Ha habido un error en el batch de postprocesamiento: ' + e.getMessage()
-      );
-      ErrorLogUtil.commitError(e, 'Batch_PostProcessing');
     }
-  }
 
-  global void finish(Database.BatchableContext BC) {
-  }
+    global Database.QueryLocator start(Database.BatchableContext BC)
+    {
+        return Database.getQueryLocator(query);
+    }
+
+    global void execute(SchedulableContext SC)
+    {
+        Id BatchInstanceId = database.executeBatch(new Batch_PostProcessing(), 200);
+    }
+
+    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    {
+        List<Order> processedOrders = (List<Order>) scope;
+        List<OrderItem> itemsToDelete = new List<OrderItem>();
+        List<Discount__c> discountsToDelete = new List<Discount__c>();
+        List<Cover__c> coversToDelete = new List<Cover__c>();
+        SET<ID> keys = new Set<ID>();
+
+        try
+        {
+            if (scope != null && !scope.isEmpty() )
+            {
+                for (Order ord : processedOrders)
+                {
+                    keys.add(ord.id); //guardar ids para la query de las covers
+
+                    if (!ord.OrderItems.isEmpty() )
+                    {
+                        for (OrderItem oi : ord.OrderItems)
+                        {
+                            itemsToDelete.add(oi);
+                        }
+                    }
+
+                    if (!ord.Descuentos__r.isEmpty() )
+                    {
+                        for (Discount__c dis : ord.Descuentos__r)
+                        {
+                            discountsToDelete.add(dis);
+                        }
+                    }
+
+                    ord.After_Processing_Check__c = false;
+                }
+
+                coversToDelete = [
+                    SELECT id
+                    FROM Cover__c
+                    WHERE Updated__c = FALSE AND PolicyProduct__r.OrderId = :keys
+                ];
+
+                if (!coversToDelete.isEmpty() )
+                {
+                    delete coversToDelete;
+                }
+
+                if (!itemsToDelete.isEmpty() )
+                {
+                    delete itemsToDelete;
+                }
+
+                if (!discountsToDelete.isEmpty() )
+                {
+                    delete discountsToDelete;
+                }
+
+                update processedOrders;
+            }
+        }
+        catch (Exception e)
+        {
+            System.debug(
+                'Ha habido un error en el batch de postprocesamiento: ' + e.getMessage()
+                );
+            ErrorLogUtil.commitError(e, 'Batch_PostProcessing');
+        }
+    }
+
+    global void finish(Database.BatchableContext BC)
+    {
+    }
 }
