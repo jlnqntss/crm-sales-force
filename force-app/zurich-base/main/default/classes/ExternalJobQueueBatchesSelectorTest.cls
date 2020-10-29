@@ -11,7 +11,7 @@ private class ExternalJobQueueBatchesSelectorTest
     static void test_selectByOrigin_null()
     {
         Test.startTest();
-        List<ExternalJobQueueBatch__mdt> selectedMetadata = new ExternalJobQueueBatchesSelector().selectByOrigin(null);
+        List<ExternalJobQueueBatch__mdt> selectedMetadata = new ExternalJobQueueBatchesSelector(new List<Schema.SObjectField> {ExternalJobQueueBatch__mdt.Origin__c}).selectByOrigin(null);
         Test.stopTest();
 
         System.assertEquals(true, selectedMetadata.isEmpty(), 'Se han obtenido metadatos erróneos');
@@ -27,7 +27,7 @@ private class ExternalJobQueueBatchesSelectorTest
     static void test_selectByOrigin_ok()
     {
         Test.startTest();
-        List<ExternalJobQueueBatch__mdt> selectedMetadata = new ExternalJobQueueBatchesSelector().selectByOrigin(new Set<String> {'INFO'});
+        List<ExternalJobQueueBatch__mdt> selectedMetadata = new ExternalJobQueueBatchesSelector(new List<Schema.SObjectField> {ExternalJobQueueBatch__mdt.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
         Test.stopTest();
 
         System.assertEquals(false, selectedMetadata.isEmpty(), 'No se han obtenido metadatos');
