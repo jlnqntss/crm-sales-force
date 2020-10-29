@@ -43,6 +43,37 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>Intermediary</layout>
+        <sections>
+            <label><!-- Address --></label>
+            <section>Address</section>
+        </sections>
+        <sections>
+            <label><!-- Allocation --></label>
+            <section>Allocation</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Indicators --></label>
+            <section>Indicators</section>
+        </sections>
+        <sections>
+            <label><!-- Intermediary Contact --></label>
+            <section>Intermediary Contact</section>
+        </sections>
+        <sections>
+            <label><!-- Main section --></label>
+            <section>Main section</section>
+        </sections>
+        <sections>
+            <label><!-- System Information --></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>Master layout</layout>
         <sections>
             <label><!-- Custom Links --></label>
@@ -51,6 +82,25 @@
         <sections>
             <label><!-- Fields --></label>
             <section>Fields</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>OCS Partner</layout>
+        <sections>
+            <label><!-- Contact --></label>
+            <section>Contact</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label><!-- System Information --></label>
+            <section>System Information</section>
         </sections>
     </layouts>
     <layouts>
@@ -89,6 +139,10 @@
         <name>BusinessCustomer</name>
     </recordTypes>
     <recordTypes>
+        <label><!-- Intermediary --></label>
+        <name>Intermediary</name>
+    </recordTypes>
+    <recordTypes>
         <label><!-- Master --></label>
         <name>Master</name>
     </recordTypes>
@@ -100,6 +154,11 @@
     <recordTypes>
         <label><!-- Partner --></label>
         <name>Partner</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- For non-klinc partners --></description>
+        <label><!-- Partner OCS --></label>
+        <name>PartnerOCS</name>
     </recordTypes>
     <webLinks>
         <label><!-- GoogleMaps --></label>
