@@ -82,7 +82,7 @@ before_script:
 
     echo 'Installing dependencies'
     npm install
-
+    
     ## Versiones
     sfdx --version
     sfdx plugins --core
@@ -125,7 +125,7 @@ before_script:
     # Se usa npm para evitar problemas con wget
     npm install --global sfdx-cli
 
-    sfdx plugins:install sfpowerkit
+    echo y | sfdx plugins:install sfpowerkit -f
   }
 
 
@@ -377,21 +377,19 @@ before_script:
     echo "Cleaning profiles"
     sfdx sfpowerkit:source:profile:reconcile -u "$org_username"
     
-    if [ "$run_tests" ]; then
+    if [ -f "$run_tests" ]; then
+      echo "Full Deploying"
+      convert_sfdx_project deploy
+      local cmd="sfdx force:mdapi:deploy --deploydir deploy --testlevel RunLocalTests --targetusername "$org_username" --verbose --wait 10 --json" && (echo $cmd >&2)
+    else
       echo "Partial deploying..."
       local cmd="sfdx force:source:deploy --verbose --targetusername "$org_username" --sourcepath force-app --wait 10 --json" && (echo $cmd >&2)
-    else
-      echo "Full Deploying"
-      sfdx_source_convert deploy
-      local cmd="sfdx force:mdapi:deploy --deploydir deploy --testlevel RunLocalTests --targetusername qa --verbose --wait 10 --json" && (echo $cmd >&2)
     fi
 
     local hasError=$cmd |  jq '.status'
     local output=$($cmd) && (echo $output | jq '.' >&2)
 
-    if [ "$hasError" -eq "1" ]; then
-      exit 1
-    fi
+    exit $hasError
   }
 
   # Function to run doc generation
@@ -615,7 +613,7 @@ upload-static-veracode:dev:
     - VERSION=${CI_COMMIT_REF_NAME}
     - rm -rf node_modules
     - npm install --production
-    - convert_sfdx_project
+    - convert_sfdx_project .tmp/veracode true
     - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
     - sfdx 
     - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
