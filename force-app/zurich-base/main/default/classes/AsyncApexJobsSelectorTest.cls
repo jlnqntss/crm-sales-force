@@ -8,10 +8,10 @@ private class AsyncApexJobsSelectorTest
      * @date 29/10/2020
      */
     @isTest
-    static void test_selectByClassId_null()
+    static void test_selectByClassName_null()
     {
         Test.startTest();
-        List<AsyncApexJob> selectedMetadata = new AsyncApexJobsSelector(new List<Schema.SObjectField> {AsyncApexJob.Id}).selectByClassId(null);
+        List<AsyncApexJob> selectedMetadata = new AsyncApexJobsSelector(new List<Schema.SObjectField> {AsyncApexJob.Id}).selectByClassName(null);
         Test.stopTest();
 
         System.assertEquals(true, selectedMetadata.isEmpty(), 'Se han obtenido trabajos de apex erróneos');
@@ -24,10 +24,10 @@ private class AsyncApexJobsSelectorTest
      * @date 29/10/2020
      */
     @isTest
-    static void test_selectByClassId_ok()
+    static void test_selectByClassName_ok()
     {
         Test.startTest();
-        List<AsyncApexJob> selectedMetadata = new AsyncApexJobsSelector(new List<Schema.SObjectField> {AsyncApexJob.Id}).selectByClassId(new Set<String> {'ExternalJobQueueBatch'});
+        List<AsyncApexJob> selectedMetadata = new AsyncApexJobsSelector(new List<Schema.SObjectField> {AsyncApexJob.Id}).selectByClassName(new Set<String> {'ExternalJobQueueBatch'});
         Test.stopTest();
 
         System.assertEquals(true, selectedMetadata.isEmpty(), 'Se han obtenido trabajos de apex erróneos');

@@ -54,15 +54,15 @@ public with sharing class AsyncApexJobsSelector
     // #region Selectors
 
     /**
-     * Recupera clases apex a partir de una lista de ids de clases apex
+     * Recupera clases apex a partir de una lista de nombres de clases apex
      *
      * @author adelgado
      * @param  classIds Trabajos asíncronos de apex a recuperar
      * @return Listado de trabajos asíncronos de apex recuperados. Si no se recibe ningún nombre se devuelve una lista vacía
      */
-    public AsyncApexJob[] selectByClassId(Set<String> classIds)
+    public AsyncApexJob[] selectByClassName(Set<String> classNames)
     {
-        if( classIds == null || classIds.isEmpty() )
+        if( classNames == null || classNames.isEmpty() )
         {
             return new List<AsyncApexJob>();
         }
@@ -70,7 +70,7 @@ public with sharing class AsyncApexJobsSelector
         return Database.query( String.format('{0} {1}', new List<String>
         {
             baseQuery,
-            'WHERE Status NOT IN (\'Completed\', \'Aborted\', \'Failed\') AND ApexClassId IN :classIds AND JobType = \'BatchApex\''
+            'WHERE Status NOT IN (\'Completed\', \'Aborted\', \'Failed\') AND ApexClass.Name IN :classNames AND JobType = \'BatchApex\''
         }) );
     }
 
