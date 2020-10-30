@@ -76,11 +76,7 @@ private class INFOHandlerTest {
   static void test_prepare() {
     Set<String> objects = new Set<String>();
 
-    for (Transformer__mdt setting : [
-      SELECT SalesforceEntity__c
-      FROM Transformer__mdt
-      WHERE Origin__c = 'INFO'
-    ]) {
+    for (Transformer__mdt setting : TransformerSelector.selectMetadataByOrigin(Transformer.ORIGIN_NAME_INFO)) {
       objects.add(setting.SalesforceEntity__c);
     }
 
@@ -322,46 +318,6 @@ private class INFOHandlerTest {
       20,
       relaList.size(),
       'No se han insertado todos los registros de relaciones'
-    );
-  }
-
-  @isTest
-  static void test_persists_ERROR() {
-    List<ExternalRequest__c> externalRequestList = [
-      SELECT
-        Entity__c,
-        Action__c,
-        Payload__c,
-        ContentFormat__c,
-        NumRetry__c,
-        Origin__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO'
-    ];
-
-    externalRequestList.get(0).Payload__c = null;
-
-    Test.startTest();
-    INFOHandler.prepare(externalRequestList);
-    INFOHandler.process(externalRequestList);
-    INFOHandler.persists(externalRequestList);
-    Test.stopTest();
-
-    List<Account> accountList = [SELECT Id FROM Account];
-    List<Contact> contactList = [SELECT Id FROM Contact];
-    List<ContactPointAddress> cpaList = [SELECT Id FROM ContactPointAddress];
-    List<ContactPointPhone> cppList = [SELECT Id FROM ContactPointPhone];
-    List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
-
-    System.assertEquals(
-      19,
-      accountList.size(),
-      'No se han insertado todos los registros de cuenta'
-    );
-    System.assertEquals(
-      19,
-      contactList.size(),
-      'No se han insertado todos los registros de contacto'
     );
   }
 
