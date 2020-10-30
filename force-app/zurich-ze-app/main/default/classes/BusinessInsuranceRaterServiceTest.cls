@@ -5,10 +5,10 @@
  * @date 15/10/2020
  */
 @isTest(SeeAllData=false)
-public with sharing class Test_BusinessInsuranceRaterService {
-  static final String REQUEST_URI = '/ze/v1/services/quotes/';
-  static final String INVALID_REQUEST_URI = '/ze/va/services/quotes/';
-  static final String JSON_INFORMATION = '{\n\"TimeStamp\":\"2020-04-28T12:23:00\",\n\"WebEmail\":\"test@test.com\",\n\"WebPhone\":\"600666000\",\n\"SessionId\":\"xxxxx\",\n\"BusinessCode\":\"3200011531\",\n\"LastStep\":\"CRM-09\",\n\"Status\":\"Activo\",\n\"AccountInformation\":{\n\"FirstName\":\"Nombre\",\n\"LastName\":\"Apellidos\",\n\"Family\":\"10\",\n\"CommercialActivity\":\"101100\",\n\"AnnualRevenue\":\"200000.10\",\n\"NumberOfEmployees\":\"150\",\n\"TradeName\":\"Nombre comercial\",\n\"CompanyName\":\"Nombre Compañía\",\n\"NationalIdentifier\":\"B111111111\"\n},\n\"Offers\":[\n{\n\"QuoteNumberINFO\":\"456789456\",\n\"QuoteNumberJRE\":\"5555555\",\n\"PolicyNumber\":\"654654654\",\n\"OperationCode\":\"P1\",\n\"BusinessCode\":\"3200011531\",\n\"EffectiveDate\":\"2020-09-28\",\n\"CommercialPC\":\"00001\",\n\"TechnicalPC\":\"00526\",\n\"PaymentType\":\"A\",\n\"PaymentTypeSucc\":\"A\",\n\"PaymentChannel\":\"CC\",\n\"PaymentChannelSucc\":\"CC\",\n\"Language\":\"ES\",\n\"BuildingCapital\":\"120000\",\n\"ContentCapital\":\"12000\",\n\"GeneralLiabilityLimit\":\"12000\",\n\"NetPremium\":\"12000\",\n\"ValidationErrors\":\"\",\n\"OfferRiskInformation\":{\n\"PropertyStreetType\":\"VI\",\n\"PropertyStreet\":\"Via Augusta\",\n\"PropertyStreetNumber\":\"12\",\n\"PropertyAdditionalInfo\":\"\",\n\"PropertyPostalCode\":\"08006\",\n\"PropertyCity\":\"Barcelona\",\n\"PropertyState\":\"8\",\n\"PropertyCountry\":\"ESP\",\n\"YearOfConstruction\":\"1960\",\n\"Ownership\":\"P\",\n\"InsuredType\":\"I\",\n\"BuildingType\":\"I\",\n\"Height\":\"AL\",\n\"RiskFactor01\":\"0001\",\n\"RiskFactor02\":\"\",\n\"RiskFactor03\":\"\",\n\"RiskFactor04\":\"\",\n\"RiskFactor05\":\"\",\n\"RiskFactor06\":\"\",\n\"RiskFactor07\":\"\",\n\"RiskFactor08\":\"0039\",\n\"RiskFactor09\":\"\",\n\"Area\":\"50\",\n\"LockType\":true,\n\"SecurityDoor\":false,\n\"BulletproofDoor\":false,\n\"ConnectedAlarm\":false,\n\"FireHydrant\":false,\n\"Surveillance\":false,\n\"SmokeDetector\":false,\n\"Sprayer\":false,\n\"FireExtinguisher\":true,\n\"TypeOfWindows\":\"2\",\n\"Strongbox\":\"N\"\n}\n}\n]\n}';
+public with sharing class BusinessInsuranceRaterServiceTest {
+  static final String REQUEST_URI = '/ze/v1/offers/';
+  static final String INVALID_REQUEST_URI = '/ze/va/offers/';
+  static final String JSON_INFORMATION = '{"timeStamp":"2020-04-28T12:23:00","webEmail":true,"webPhone":"600666000","sessionId":"xxxxx","businessCode":"3200011531","lastStep":"CRM-01","status":"Activo","manager":{"firstName":"ManagerFirstName","lastName":"ManagerLastName","email":"manageremail@manager.com","phone":"123456789"},"accountInformation":{"firstName":"Nombre","lastName":"Apellidos","family":"10","commercialActivity":"101100","annualRevenue":"200000.10","numberOfEmployees":"150","tradeName":"Nombre comercial","companyName":"Nombre Compañía","nationalIdentifier":"B111111111"},"offers":[{"quoteNumberINFO":"456789456","quoteNumberJRE":"5555555","policyNumber":"654654654","operationCode":"P1","businessCode":"3200011531","effectiveDate":"2020-09-28","commercialPC":"00001","technicalPC":"00526","paymentType":"A","paymentTypeSucc":"A","paymentChannel":"CC","paymentChannelSucc":"CC","language":"ES","buildingCapital":"120000","contentCapital":"12000","generalLiabilityLimit":"12000","netPremium":"12000","validationErrors":"","offerRiskInformation":{"propertyStreetType":"VI","propertyStreet":"Via Augusta","propertyStreetNumber":"12","propertyAdditionalInfo":"","propertyPostalCode":"08006","propertyCity":"Barcelona","propertyState":"8","propertyCountry":"ESP","yearOfConstruction":"1960","ownership":"P","insuredType":"I","buildingType":"I","height":"AL","riskFactor01":"0001","riskFactor02":"","riskFactor03":"","riskFactor04":"","riskFactor05":"","riskFactor06":"","riskFactor07":"","riskFactor08":"0039","riskFactor09":"","area":"50","lockType":true,"securityDoor":false,"bulletproofDoor":false,"connectedAlarm":false,"fireHydrant":false,"surveillance":false,"smokeDetector":false,"sprayer":false,"fireExtinguisher":true,"typeOfWindows":"2","strongbox":"N"}}]}';
 
   /**
    * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-01
@@ -214,9 +214,9 @@ public with sharing class Test_BusinessInsuranceRaterService {
     Test.stopTest();
 
     System.assertEquals(
-      false,
+      true,
       BusinessInsuranceRaterService.stepMetadataList.isEmpty(),
-      'The list shouldnt be empty'
+      'The list should be empty'
     );
     System.assertEquals(
       true,

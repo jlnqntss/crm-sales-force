@@ -1,19 +1,20 @@
 /**
- * Clase que implementa el Web Service REST a consumir por el formulario web de Zurich Empresas
+ * Clase que implementa el Web Service REST que servirá de API para los Web Services relacionados con Zurich Empresas
  *
  * @author rlopez
- * @date 15/10/2020
+ * @date 30/10/2020
  */
-@RestResource(urlMapping='/ze/*/rates/*')
-global with sharing class WS_BusinessInsuranceRater extends WS_BaseAPIService {
+@RestResource(urlMapping='/ze/*/*')
+global with sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPIService {
   //TODO: Crear custom labels de estas constantes
   static final String INVALID_URI_MESSAGE = 'Invalid URI versioning';
   static final String INVALID_CONTENTTYPE_MESSAGE = 'Invalid Content-Type on request headers';
+  static final String LASTSTEP_FIELD = 'lastStep';
   /**
    * Metodo Post que recibe la información del formulario web y procesa dicha información
    * en función del paso en el que se encuentre
    * @author rlopez
-   * @date 15/10/2020
+   * @date 30/10/2020
    */
   @HttpPost
   global static void doPost() {
@@ -45,7 +46,7 @@ global with sharing class WS_BusinessInsuranceRater extends WS_BaseAPIService {
       String vendor = WS_BaseAPIService.vendor;
 
       switch on resource {
-        when 'rates' {
+        when 'offers' {
           BusinessInsuranceRaterService.version = version;
           String requestInformation = request.requestBody.toString();
 
@@ -55,11 +56,11 @@ global with sharing class WS_BusinessInsuranceRater extends WS_BaseAPIService {
           );
 
           if (
-            !String.isBlank((String) requestInformationJSON.get('LastStep'))
+            !String.isBlank((String) requestInformationJSON.get(LASTSTEP_FIELD))
           ) {
             //Recuperamos los metadatos que contengan ese LastStep
             BusinessInsuranceRaterService.getRequiredFieldsFromMetadata(
-              (String) requestInformationJSON.get('LastStep')
+              (String) requestInformationJSON.get(LASTSTEP_FIELD)
             );
 
             //Creamos el objeto utilizando los wrappers

@@ -1,15 +1,14 @@
 /**
- * Clases de test para WS_BusinessInsuranceRater
+ * Clases de test para WS_BusinessInsuranceAPIService
  **
  * @author rlopez
  * @date 15/10/2020
  */
 @isTest(SeeAllData=false)
-public with sharing class Test_WS_BusinessInsuranceRater {
-  static final String REQUEST_URI = '/ze/v1/rates/';
-  static final String INVALID_REQUEST_URI = '/ze/va/rates/';
-  //static final String JSON_INFORMATION = '{"TimeStamp":"2020-04-28T12:23:00","WebEmail":"test@test.com","WebPhone":"600666000","SessionId":"xxxxx","BusinessCode":"3200011531","LastStep":"CRM-01","Status":"Activo","AccountInformation":{"FirstName":"Nombre","LastName":"Apellidos","Family":"10","CommercialActivity":"101100","AnnualRevenue":"200000.10","NumberOfEmployees":"150","TradeName":"Nombre comercial","CompanyName":"Nombre Compañía","NationalIdentifier":"B111111111"},"Offers":[{"QuoteNumberINFO":"456789456","QuoteNumberJRE":"5555555","PolicyNumber":"654654654","OperationCode":"P1","BusinessCode":"3200011531","EffectiveDate":"2020-09-28","CommercialPC":"00001","TechnicalPC":"00526","PaymentType":"A","PaymentTypeSucc":"A","PaymentChannel":"CC","PaymentChannelSucc":"CC","Language":"ES","BuildingCapital":"120000","ContentCapital":"12000","GeneralLiabilityLimit":"12000","NetPremium":"12000","ValidationErrors":"","OfferRiskInformation":{"PropertyStreetType":"VI","PropertyStreet":"Via Augusta","PropertyStreetNumber":"12","PropertyAdditionalInfo":"","PropertyPostalCode":"08006","PropertyCity":"Barcelona","PropertyState":"8","PropertyCountry":"ESP","YearOfConstruction":"1960","Ownership":"P","InsuredType":"I","BuildingType":"I","Height":"AL","RiskFactor01":"0001","RiskFactor02":"","RiskFactor03":"","RiskFactor04":"","RiskFactor05":"","RiskFactor06":"","RiskFactor07":"","RiskFactor08":"0039","RiskFactor09":"","Area":"50","LockType":true,"SecurityDoor":false,"BulletproofDoor":false,"ConnectedAlarm":false,"FireHydrant":false,"Surveillance":false,"SmokeDetector":false,"Sprayer":false,"FireExtinguisher":true,"TypeOfWindows":"2","Strongbox":"N"}}]}';
-  static final String JSON_INFORMATION = '{"TimeStamp":"2020-04-28T12:23:00","WebEmail":true,"WebPhone":"600666000","SessionId":"xxxxx","BusinessCode":"3200011531","LastStep":"CRM-01","Status":"Activo","Manager":{"FirstName":"ManagerFirstName","LastName":"ManagerLastName","Email":"manageremail@manager.com","Phone":"123456789"},"AccountInformation":{"FirstName":"Nombre","LastName":"Apellidos","Family":"10","CommercialActivity":"101100","AnnualRevenue":"200000.10","NumberOfEmployees":"150","TradeName":"Nombre comercial","CompanyName":"Nombre Compañía","NationalIdentifier":"B111111111"},"Offers":[{"QuoteNumberINFO":"456789456","QuoteNumberJRE":"5555555","PolicyNumber":"654654654","OperationCode":"P1","BusinessCode":"3200011531","EffectiveDate":"2020-09-28","CommercialPC":"00001","TechnicalPC":"00526","PaymentType":"A","PaymentTypeSucc":"A","PaymentChannel":"CC","PaymentChannelSucc":"CC","Language":"ES","BuildingCapital":"120000","ContentCapital":"12000","GeneralLiabilityLimit":"12000","NetPremium":"12000","ValidationErrors":"","OfferRiskInformation":{"PropertyStreetType":"VI","PropertyStreet":"Via Augusta","PropertyStreetNumber":"12","PropertyAdditionalInfo":"","PropertyPostalCode":"08006","PropertyCity":"Barcelona","PropertyState":"8","PropertyCountry":"ESP","YearOfConstruction":"1960","Ownership":"P","InsuredType":"I","BuildingType":"I","Height":"AL","RiskFactor01":"0001","RiskFactor02":"","RiskFactor03":"","RiskFactor04":"","RiskFactor05":"","RiskFactor06":"","RiskFactor07":"","RiskFactor08":"0039","RiskFactor09":"","Area":"50","LockType":true,"SecurityDoor":false,"BulletproofDoor":false,"ConnectedAlarm":false,"FireHydrant":false,"Surveillance":false,"SmokeDetector":false,"Sprayer":false,"FireExtinguisher":true,"TypeOfWindows":"2","Strongbox":"N"}}]}';
+public with sharing class WS_BusinessInsuranceAPIServiceTest {
+  static final String REQUEST_URI = '/ze/v1/offers/';
+  static final String INVALID_REQUEST_URI = '/ze/va/offers/';
+  static final String JSON_INFORMATION = '{"timeStamp":"2020-04-28T12:23:00","webEmail":true,"webPhone":"600666000","sessionId":"xxxxx","businessCode":"3200011531","lastStep":"CRM-01","status":"Activo","manager":{"firstName":"ManagerFirstName","lastName":"ManagerLastName","email":"manageremail@manager.com","phone":"123456789"},"accountInformation":{"firstName":"Nombre","lastName":"Apellidos","family":"10","commercialActivity":"101100","annualRevenue":"200000.10","numberOfEmployees":"150","tradeName":"Nombre comercial","companyName":"Nombre Compañía","nationalIdentifier":"B111111111"},"offers":[{"quoteNumberINFO":"456789456","quoteNumberJRE":"5555555","policyNumber":"654654654","operationCode":"P1","businessCode":"3200011531","effectiveDate":"2020-09-28","commercialPC":"00001","technicalPC":"00526","paymentType":"A","paymentTypeSucc":"A","paymentChannel":"CC","paymentChannelSucc":"CC","language":"ES","buildingCapital":"120000","contentCapital":"12000","generalLiabilityLimit":"12000","netPremium":"12000","validationErrors":"","offerRiskInformation":{"propertyStreetType":"VI","propertyStreet":"Via Augusta","propertyStreetNumber":"12","propertyAdditionalInfo":"","propertyPostalCode":"08006","propertyCity":"Barcelona","propertyState":"8","propertyCountry":"ESP","yearOfConstruction":"1960","ownership":"P","insuredType":"I","buildingType":"I","height":"AL","riskFactor01":"0001","riskFactor02":"","riskFactor03":"","riskFactor04":"","riskFactor05":"","riskFactor06":"","riskFactor07":"","riskFactor08":"0039","riskFactor09":"","area":"50","lockType":true,"securityDoor":false,"bulletproofDoor":false,"connectedAlarm":false,"fireHydrant":false,"surveillance":false,"smokeDetector":false,"sprayer":false,"fireExtinguisher":true,"typeOfWindows":"2","strongbox":"N"}}]}';
 
   /**
    * Método que comprueba una ejecución correcta de doPost
@@ -18,7 +17,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
    * @date 15/10/2020
    */
   @isTest
-  static void test_doPost_processInformation_ok() {
+  static void test_doPost_processInformation_offers_ok() {
     RestRequest request = new RestRequest();
     RestResponse response = new RestResponse();
     RestContext.response = response;
@@ -30,7 +29,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
     RestContext.request = request;
 
     Test.startTest();
-    WS_BusinessInsuranceRater.doPost();
+    WS_BusinessInsuranceAPIService.doPost();
     Test.stopTest();
 
     System.assertEquals(
@@ -67,7 +66,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
     RestContext.request = request;
 
     Test.startTest();
-    WS_BusinessInsuranceRater.doPost();
+    WS_BusinessInsuranceAPIService.doPost();
     Test.stopTest();
 
     System.assertEquals(
@@ -109,7 +108,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
     RestContext.request = request;
 
     Test.startTest();
-    WS_BusinessInsuranceRater.doPost();
+    WS_BusinessInsuranceAPIService.doPost();
     Test.stopTest();
 
     System.assertEquals(
@@ -140,7 +139,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
    * @date 29/10/2020
    */
   @isTest
-  static void test_doPost_processInformation_missingLastStep_ko() {
+  static void test_doPost_processInformation_missingLastStep_offers_ko() {
     RestRequest request = new RestRequest();
     RestResponse response = new RestResponse();
     RestContext.response = response;
@@ -154,7 +153,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
       JSON_INFORMATION
     );
 
-    requestInformationJSON.remove('LastStep');
+    requestInformationJSON.remove('lastStep');
     String requestInformationWithoutLastStep = JSON.serialize(
       requestInformationJSON
     );
@@ -164,7 +163,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
     RestContext.request = request;
 
     Test.startTest();
-    WS_BusinessInsuranceRater.doPost();
+    WS_BusinessInsuranceAPIService.doPost();
     Test.stopTest();
 
     System.assertEquals(
@@ -194,7 +193,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
    * @date 29/10/2020
    */
   @isTest
-  static void test_doPost_processInformation_invalidJSON_ko() {
+  static void test_doPost_processInformation_invalidJSON_offers_ko() {
     RestRequest request = new RestRequest();
     RestResponse response = new RestResponse();
     RestContext.response = response;
@@ -216,7 +215,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
     RestContext.request = request;
 
     Test.startTest();
-    WS_BusinessInsuranceRater.doPost();
+    WS_BusinessInsuranceAPIService.doPost();
     Test.stopTest();
 
     System.assertEquals(
@@ -246,7 +245,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
    * @date 29/10/2020
    */
   @isTest
-  static void test_doPost_processInformation_notJSON_ko() {
+  static void test_doPost_processInformation_notJSON_offers_ko() {
     RestRequest request = new RestRequest();
     RestResponse response = new RestResponse();
     RestContext.response = response;
@@ -260,7 +259,7 @@ public with sharing class Test_WS_BusinessInsuranceRater {
     RestContext.request = request;
 
     Test.startTest();
-    WS_BusinessInsuranceRater.doPost();
+    WS_BusinessInsuranceAPIService.doPost();
     Test.stopTest();
 
     System.assertEquals(
