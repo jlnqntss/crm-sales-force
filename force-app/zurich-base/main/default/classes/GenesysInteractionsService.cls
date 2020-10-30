@@ -98,7 +98,7 @@ public without sharing class GenesysInteractionsService {
     Boolean isContactPointPhone;
     String screenPopRecordId;
     String bestAgentId;
-    Set<Id> userIds = new Set<Id>();
+    Set<Id> accountIds = new Set<Id>();
 
     //buscar en fromId o toId depende de interactionType
     switch on interactionType {
@@ -121,31 +121,31 @@ public without sharing class GenesysInteractionsService {
     if (isContactPointPhone) {
       List<ContactPointPhone> contactPointPhones = new List<ContactPointPhone>();
       contactPointPhones = [
-        SELECT Id, TelephoneNumber, ContactId__c
+        SELECT Id, TelephoneNumber, ParentId
         FROM ContactPointPhone
         WHERE TelephoneNumber = :contactPoint
       ];
 
       //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
       for (ContactPointPhone contactPointPhone : contactPointPhones) {
-        userIds.add(contactPointPhone.ContactId__c);
+        accountIds.add(contactPointPhone.ParentId);
       }
     } else {
       List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
       contactPointEmails = [
-        SELECT Id, EmailAddress, ContactId__c
+        SELECT Id, EmailAddress, ParentId
         FROM ContactPointEmail
         WHERE EmailAddress = :contactPoint
       ];
 
       //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
       for (ContactPointEmail contactPointEmail : contactPointEmails) {
-        userIds.add(contactPointEmail.ContactId__c);
+        accountIds.add(contactPointEmail.ParentId);
       }
     }
 
     //una vez se tiene el contacto elegido se busca su Case/Opp
-    if (!userIds.isEmpty()) {
+    if (!accountIds.isEmpty()) {
       //Dependiendo de scope
       String scopeFilter = '';
       switch on scope {
@@ -165,13 +165,13 @@ public without sharing class GenesysInteractionsService {
         when 'Opportunity' {
           List<Opportunity> opps = new List<Opportunity>();
           String query =
-            'SELECT OwnerId, ContactId__c, isClosed, CreatedDate, Owner.Email FROM Opportunity WHERE isClosed = FALSE AND ContactId__c IN :userIds ' +
+            'SELECT OwnerId, AccountId, isClosed, CreatedDate, Owner.Email FROM Opportunity WHERE isClosed = FALSE AND AccountId IN :accountIds ' +
             scopeFilter +
             ' ORDER BY CreatedDate DESC';
           opps = Database.query(query);
           if (!opps.isEmpty()) {
             bestAgentId = opps[0].Owner.Email;
-            screenPopRecordId = opps[0].ContactId__c;
+            screenPopRecordId = opps[0].AccountId;
             ownerId = opps[0].OwnerId;
           }
         }
@@ -180,19 +180,19 @@ public without sharing class GenesysInteractionsService {
           cases = [
             SELECT
               OwnerId,
-              ContactId,
+              AccountId,
               isClosed,
               CreatedDate,
               TYPEOF Owner
                 WHEN User THEN Email
               END
             FROM Case
-            WHERE isClosed = FALSE AND ContactId IN :userIds
+            WHERE isClosed = FALSE AND AccountId IN :accountIds
             ORDER BY CreatedDate DESC
           ];
           if (!cases.isEmpty()) {
             bestAgentId = cases[0].Owner.Email;
-            screenPopRecordId = cases[0].ContactId;
+            screenPopRecordId = cases[0].AccountId;
             ownerId = cases[0].OwnerId;
           }
         }
