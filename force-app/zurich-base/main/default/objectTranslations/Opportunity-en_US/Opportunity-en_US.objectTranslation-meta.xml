@@ -15,6 +15,10 @@
             <section>Dates</section>
         </sections>
         <sections>
+            <label><!-- Description --></label>
+            <section>Description</section>
+        </sections>
+        <sections>
             <label><!-- Payment Information --></label>
             <section>Payment Information</section>
         </sections>
