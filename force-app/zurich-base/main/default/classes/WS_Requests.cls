@@ -49,6 +49,5 @@ global without sharing class WS_Requests
     }
 
     class RESTExampleException extends Exception
-    {
-    }
+    {}
 }

@@ -5,12 +5,12 @@
  * @author adelgado
  * @date 13/10/2020
  */
-public class INFOHandler implements ISystem 
+public class INFOHandler implements ISystem
 {
-  @testVisible
-  private static Map<String, Map<sObject, ExternalRequest__c>> recordsToUpsertByObject = new Map<String, Map<sObject, ExternalRequest__c>>();
-  @testVisible
-  private static List<ExternalRequest__c> externalRequestResultList = new List<ExternalRequest__c>();
+    @testVisible
+    private static Map<String, Map<sObject, ExternalRequest__c> > recordsToUpsertByObject = new Map<String, Map<sObject, ExternalRequest__c> >();
+    @testVisible
+    private static List<ExternalRequest__c> externalRequestResultList = new List<ExternalRequest__c>();
 
     // CUSTOM METATDATA
     @testVisible
@@ -35,68 +35,35 @@ public class INFOHandler implements ISystem
         'Relationship__c' // 11
     };
 
-  /**
-   * Obtiene la información necesaria para poder procesar las external request pendientes
-   **
-   * @author adelgado
-   * @date 13/10/2020
-   * @param externalRequestList Lista de external request que deben ser procesadas
-   * @return void
-   * @throws
-   * @where ExternalJobQueueBatch
-   */
-  public static void prepare(List<ExternalRequest__c> externalRequestList) 
-  {
-    // 1 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
-    recordsToUpsertByObject = tf.initRequestsMapBySettings();
-
-    // 2 - Obtener identificadores externos por cada entidad
-    for (ExternalIdField__mdt externalId : new ExternalIdFieldsSelector(new List<Schema.SObjectField>{ExternalIdField__mdt.SalesforceEntity__c, ExternalIdField__mdt.ExternalId__c}).selectByOrigin(new Set<String>{'INFO'})) 
+    /**
+     * Obtiene la información necesaria para poder procesar las external request pendientes
+     **
+     * @author adelgado
+     * @date 13/10/2020
+     * @param externalRequestList Lista de external request que deben ser procesadas
+     * @return void
+     * @throws
+     * @where ExternalJobQueueBatch
+     */
+    public static void prepare(List<ExternalRequest__c> externalRequestList)
     {
-      externalIdByObject.put(
-        externalId.SalesforceEntity__c,
-        externalId.ExternalId__c
-      );
-    }
+        // 1 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
+        recordsToUpsertByObject = tf.initRequestsMapBySettings();
 
-    // 3 - Obtener el número máximo de reintentos
-    maxRetries = (Integer) new ExternalJobQueueBatchesSelector
-    (
-      new List<Schema.SObjectField>{ExternalJobQueueBatch__mdt.Retries__c}).selectByOrigin(new Set<String>{'INFO'}
-    ).get(0).Retries__c;
-  }
-
-  /**
-   * Realiza las transformaciones necesarias para procesar las external request recibidas y convertirlas en objetos de Salesforce
-   **
-   * @author adelgado
-   * @date 13/10/2020
-   * @param externalRequestList Lista de external request que deben ser procesadas
-   * @return void
-   * @throws
-   * @where ExternalJobQueueBatch
-   */
-  public static void process(List<ExternalRequest__c> externalRequestList) {
-    // 1 - Recorrer todas las external request recibidas
-    for (ExternalRequest__c externalRequest : externalRequestList) {
-      try {
-        // 1.1 - Comprobar si el contenido de la solicitud está en formato JSON
-        if (
-          externalRequest.ContentFormat__c == 'JSON' &&
-          String.isNotBlank(externalRequest.Payload__c)
-        ) {
-          // 1.1.1 - Transformar el contenido del JSON a una estructura Map
-          Map<String, Object> recordValuesMap = (Map<String, Object>) JSON.deserializeUntyped(
-            externalRequest.Payload__c
-          );
+        // 2 - Obtener identificadores externos por cada entidad
+        for (ExternalIdField__mdt externalId : new ExternalIdFieldsSelector(new List<Schema.SObjectField> {ExternalIdField__mdt.SalesforceEntity__c, ExternalIdField__mdt.ExternalId__c}).selectByOrigin(new Set<String> {'INFO'}) )
+        {
+            externalIdByObject.put(
+                externalId.SalesforceEntity__c,
+                externalId.ExternalId__c
+                );
+        }
 
         // 3 - Obtener el número máximo de reintentos
-        maxRetries = (Integer) [
-            SELECT Retries__c
-            FROM ExternalJobQueueBatch__mdt
-            WHERE Origin__c = 'INFO'
-                     ]
-                     .Retries__c;
+        maxRetries = (Integer) new ExternalJobQueueBatchesSelector
+                     (
+            new List<Schema.SObjectField> {ExternalJobQueueBatch__mdt.Retries__c}).selectByOrigin(new Set<String> {'INFO'}
+                                                                                                  ).get(0).Retries__c;
     }
 
     /**
@@ -606,5 +573,4 @@ public class INFOHandler implements ISystem
             ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
         }
     }
-  }
 }

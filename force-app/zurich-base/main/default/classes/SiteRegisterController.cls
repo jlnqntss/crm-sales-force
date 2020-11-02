@@ -8,8 +8,7 @@ public with sharing class SiteRegisterController
     private static Id PORTAL_ACCOUNT_ID = '001x000xxx35tPN';
 
     public SiteRegisterController()
-    {
-    }
+    {}
 
     public String username { get; set; }
     public String email { get; set; }

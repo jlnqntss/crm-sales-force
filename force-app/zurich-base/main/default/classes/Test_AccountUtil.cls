@@ -9,8 +9,7 @@ public class Test_AccountUtil
 {
     @testSetup
     static void makeData()
-    {
-    }
+    {}
 
     @IsTest
     static void test_associatePartner()

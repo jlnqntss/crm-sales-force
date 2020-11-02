@@ -31,11 +31,11 @@ private class OpenIDConnectRegHandlerTest
             'facebook',
             null,
             new Map<String, String> {
-            'roles' = > '{crm=[' +
+            'roles' => '{crm=[' +
                       mapping.External_profile_name__c +
                       ']}'
-        }
-            );
+        });
+
         User u = handler.createUser(null, sampleData);
         System.assertEquals('testuserlong@zurich-es.com', u.userName);
         System.assertEquals('testuser@example.org', u.email);
@@ -56,7 +56,7 @@ private class OpenIDConnectRegHandlerTest
             'facebook',
             null,
             new Map<String, String> {
-            'roles' = > '{crm=[' +
+            'roles' => '{crm=[' +
                       mapping.External_profile_name__c +
                       ']}'
         }
@@ -130,7 +130,7 @@ private class OpenIDConnectRegHandlerTest
                 UserInfo.getLocale(),
                 'facebook',
                 null,
-                new Map<String, String> { 'roles' = > '{crm=[testFailProfile]}' }
+                new Map<String, String> { 'roles' => '{crm=[testFailProfile]}' }
                 );
             User u = handler.createUser(null, sampleData);
         }

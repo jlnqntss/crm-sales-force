@@ -13,6 +13,9 @@
 # Ignore Marketing Cloud Namespace
 **/et4ae5__*
 
+# Ignore Pure Cloud Namespace
+**/purecloud__*
+
 # Ignore Standard Profiles
 Analytics.profile-meta.xml
 Chatter External User.profile-meta.xml
@@ -38,3 +41,18 @@ profileSessionSettings*
 
 # Ignore ConnectedApps
 force-app/zurich-base/main/default/connectedApps/GenesysCloudInteractions.connectedApp-meta.xml
+
+# Ignore Other laguages
+**/objectTranslations/*-de
+**/objectTranslations/*-es_MX
+**/objectTranslations/*-fr
+**/objectTranslations/*-it
+**/objectTranslations/*-ja
+**/objectTranslations/*-pt_BR
+de.translation-meta.xml
+es_MX.translation-meta.xml
+fr.translation-meta.xml
+it.translation-meta.xml
+ja.translation-meta.xml
+pt_BR.translation-meta.xml
+

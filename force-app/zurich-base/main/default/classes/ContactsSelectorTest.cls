@@ -15,22 +15,9 @@ private with sharing class ContactsSelectorTest
         };
 
         insert accounts;
-
-        List<Contact> accounts = new List<Account>
-        {
-            new Account (
-                Name = 'Test 1'
-                ),
-            new Account (
-                Name = 'Test 2'
-                )
-        };
     }
 
     @isTest
-    static test_matchedRecordIds_mathedRecords()
-    {
-
-
-    }
+    static void test_matchedRecordIds_mathedRecords()
+    {}
 }

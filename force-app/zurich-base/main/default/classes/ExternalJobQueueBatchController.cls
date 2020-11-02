@@ -1,8 +1,7 @@
 public class ExternalJobQueueBatchController
 {
     public ExternalJobQueueBatchController()
-    {
-    }
+    {}
 
     /**
      * Comprobar si hay external request pendientes de procesar y ejecutar el ExternalJobQueueBatch en caso afirmativo

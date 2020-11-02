@@ -9,7 +9,7 @@
         <items>
             <label>CTI Adapter URL</label>
             <name>reqAdapterUrl</name>
-            <value>https://apps.mypurecloud.com/crm/index.html?crm=salesforce&amp;color=darkblue</value>
+            <value>https://apps.mypurecloud.ie/crm/index.html?crm=salesforce&amp;color=darkblue</value>
         </items>
         <items>
             <label>Use CTI API</label>

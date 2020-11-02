@@ -518,8 +518,7 @@ public class WebServicesParser
             }
         }
         catch (Exception ex)
-        {
-        }
+        {}
     }
 
     /**
@@ -906,8 +905,7 @@ public class WebServicesParser
             }
         }
         catch (Exception ex)
-        {
-        }
+        {}
         return record;
     }
 

@@ -151,6 +151,5 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

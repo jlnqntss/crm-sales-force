@@ -109,6 +109,5 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

@@ -45,8 +45,7 @@ public with sharing class ExternalRequestsSelector
     // #region Constructor
 
     public ExternalRequestsSelector()
-    {
-    }
+    {}
 
     /**
      * Constructor de ExternalRequestsSelector para establecer campos a recuperar
