@@ -79,17 +79,18 @@ private class INFOHandlerTest {
     for (Transformer__mdt setting : TransformerSelector.selectMetadataByOrigin(Transformer.ORIGIN_NAME_INFO)) {
       objects.add(setting.SalesforceEntity__c);
     }
-
-    List<ExternalIdField__mdt> externalIdList = [
-      SELECT SalesforceEntity__c, ExternalId__c
-      FROM ExternalIdField__mdt
-      WHERE Origin__c = 'INFO'
-    ];
-    List<ExternalRequest__c> externalRequestList = [
-      SELECT Entity__c, Action__c, Payload__c, ContentFormat__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO'
-    ];
+    
+    List<ExternalIdField__mdt> externalIdList = new ExternalIdFieldsSelector(new List<Schema.SObjectField>
+                                              { ExternalIdField__mdt.SalesforceEntity__c, 
+                                                ExternalIdField__mdt.ExternalId__c
+                                              }).selectByOrigin(new Set<String>{'INFO'});
+    
+    List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                  { ExternalRequest__c.Entity__c, 
+                                                    ExternalRequest__c.Action__c, 
+                                                    ExternalRequest__c.Payload__c, 
+                                                    ExternalRequest__c.ContentFormat__c
+                                                  }).selectByOrigin(new Set<String>{'INFO'});
 
     Test.startTest();
     INFOHandler.prepare(externalRequestList);
@@ -108,18 +109,16 @@ private class INFOHandlerTest {
   }
 
   @isTest
-  static void test_process_OK() {
-    List<ExternalRequest__c> externalRequestList = [
-      SELECT
-        Entity__c,
-        Action__c,
-        Payload__c,
-        ContentFormat__c,
-        NumRetry__c,
-        Origin__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO'
-    ];
+  static void test_process_OK() 
+  {
+    List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                  { ExternalRequest__c.Entity__c, 
+                                                    ExternalRequest__c.Action__c, 
+                                                    ExternalRequest__c.Payload__c, 
+                                                    ExternalRequest__c.ContentFormat__c,
+                                                    ExternalRequest__c.NumRetry__c,
+                                                    ExternalRequest__c.Origin__c
+                                                  }).selectByOrigin(new Set<String>{'INFO'});
 
     Test.startTest();
     INFOHandler.prepare(externalRequestList);
@@ -179,18 +178,16 @@ private class INFOHandlerTest {
   }
 
   @isTest
-  static void test_process_ERROR_NoEntity() {
-    List<ExternalRequest__c> externalRequestList = [
-      SELECT
-        Entity__c,
-        Action__c,
-        Payload__c,
-        ContentFormat__c,
-        NumRetry__c,
-        Origin__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO'
-    ];
+  static void test_process_ERROR_NoEntity() 
+  {
+    List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                  { ExternalRequest__c.Entity__c, 
+                                                    ExternalRequest__c.Action__c, 
+                                                    ExternalRequest__c.Payload__c, 
+                                                    ExternalRequest__c.ContentFormat__c,
+                                                    ExternalRequest__c.NumRetry__c,
+                                                    ExternalRequest__c.Origin__c
+                                                  }).selectByOrigin(new Set<String>{'INFO'});
 
     for (ExternalRequest__c externalRequest : externalRequestList) {
       externalRequest.Entity__c = 'TTTTTTTTTTTTTT';
@@ -209,18 +206,16 @@ private class INFOHandlerTest {
   }
 
   @isTest
-  static void test_process_ERROR_NoPayload() {
-    List<ExternalRequest__c> externalRequestList = [
-      SELECT
-        Entity__c,
-        Action__c,
-        Payload__c,
-        ContentFormat__c,
-        NumRetry__c,
-        Origin__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO'
-    ];
+  static void test_process_ERROR_NoPayload() 
+  {
+    List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                  { ExternalRequest__c.Entity__c, 
+                                                    ExternalRequest__c.Action__c, 
+                                                    ExternalRequest__c.Payload__c, 
+                                                    ExternalRequest__c.ContentFormat__c,
+                                                    ExternalRequest__c.NumRetry__c,
+                                                    ExternalRequest__c.Origin__c
+                                                  }).selectByOrigin(new Set<String>{'INFO'});
 
     for (ExternalRequest__c externalRequest : externalRequestList) {
       externalRequest.Payload__c = null;
@@ -239,18 +234,16 @@ private class INFOHandlerTest {
   }
 
   @isTest
-  static void test_persists_OK() {
-    List<ExternalRequest__c> externalRequestList = [
-      SELECT
-        Entity__c,
-        Action__c,
-        Payload__c,
-        ContentFormat__c,
-        NumRetry__c,
-        Origin__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO'
-    ];
+  static void test_persists_OK() 
+  {
+    List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                  { ExternalRequest__c.Entity__c, 
+                                                    ExternalRequest__c.Action__c, 
+                                                    ExternalRequest__c.Payload__c, 
+                                                    ExternalRequest__c.ContentFormat__c,
+                                                    ExternalRequest__c.NumRetry__c,
+                                                    ExternalRequest__c.Origin__c
+                                                  }).selectByOrigin(new Set<String>{'INFO'});
 
     Test.startTest();
     INFOHandler.prepare(externalRequestList);
@@ -322,18 +315,16 @@ private class INFOHandlerTest {
   }
 
   @isTest
-  static void test_manageResult_OK() {
-    List<ExternalRequest__c> externalRequestList = [
-      SELECT
-        Entity__c,
-        Action__c,
-        Payload__c,
-        ContentFormat__c,
-        NumRetry__c,
-        Origin__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO'
-    ];
+  static void test_manageResult_OK() 
+  {
+    List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                  { ExternalRequest__c.Entity__c, 
+                                                    ExternalRequest__c.Action__c, 
+                                                    ExternalRequest__c.Payload__c, 
+                                                    ExternalRequest__c.ContentFormat__c,
+                                                    ExternalRequest__c.NumRetry__c,
+                                                    ExternalRequest__c.Origin__c
+                                                  }).selectByOrigin(new Set<String>{'INFO'});
 
     Test.startTest();
     INFOHandler.prepare(externalRequestList);
@@ -342,17 +333,15 @@ private class INFOHandlerTest {
     INFOHandler.manageResult(null, externalRequestList);
     Test.stopTest();
 
-    List<ExternalRequest__c> externalRequestListUpdated = [
-      SELECT
-        Entity__c,
-        Action__c,
-        Payload__c,
-        ContentFormat__c,
-        NumRetry__c,
-        Origin__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO' AND ProcessResult__c != NULL
-    ];
+    List<ExternalRequest__c> externalRequestListUpdated = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                  { ExternalRequest__c.Entity__c, 
+                                                    ExternalRequest__c.Action__c, 
+                                                    ExternalRequest__c.Payload__c, 
+                                                    ExternalRequest__c.ContentFormat__c,
+                                                    ExternalRequest__c.NumRetry__c,
+                                                    ExternalRequest__c.Origin__c
+                                                  }).selectProcessedByOrigin(new Set<String>{'INFO'});
+
     List<ExternalRequestError__c> externalRequestErrors = [
       SELECT Id
       FROM ExternalRequestError__c
@@ -372,18 +361,16 @@ private class INFOHandlerTest {
   }
 
   @isTest
-  static void test_manageResult_ERROR() {
-    List<ExternalRequest__c> externalRequestList = [
-      SELECT
-        Entity__c,
-        Action__c,
-        Payload__c,
-        ContentFormat__c,
-        NumRetry__c,
-        Origin__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO'
-    ];
+  static void test_manageResult_ERROR() 
+  {
+    List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                  { ExternalRequest__c.Entity__c, 
+                                                    ExternalRequest__c.Action__c, 
+                                                    ExternalRequest__c.Payload__c, 
+                                                    ExternalRequest__c.ContentFormat__c,
+                                                    ExternalRequest__c.NumRetry__c,
+                                                    ExternalRequest__c.Origin__c
+                                                  }).selectByOrigin(new Set<String>{'INFO'});
 
     externalRequestList.get(0).Payload__c = null;
 
@@ -394,17 +381,14 @@ private class INFOHandlerTest {
     INFOHandler.manageResult(null, externalRequestList);
     Test.stopTest();
 
-    List<ExternalRequest__c> externalRequestListUpdated = [
-      SELECT
-        Entity__c,
-        Action__c,
-        Payload__c,
-        ContentFormat__c,
-        NumRetry__c,
-        Origin__c
-      FROM ExternalRequest__c
-      WHERE Origin__c = 'INFO' AND ProcessResult__c != NULL
-    ];
+    List<ExternalRequest__c> externalRequestListUpdated = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                  { ExternalRequest__c.Entity__c, 
+                                                    ExternalRequest__c.Action__c, 
+                                                    ExternalRequest__c.Payload__c, 
+                                                    ExternalRequest__c.ContentFormat__c,
+                                                    ExternalRequest__c.NumRetry__c,
+                                                    ExternalRequest__c.Origin__c
+                                                  }).selectProcessedByOrigin(new Set<String>{'INFO'});
 
     System.assertEquals(
       110,
