@@ -92,6 +92,9 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>, Sched
 
     global void finish(Database.BatchableContext bc)
     {
-        //ExternalJobQueueBatchController.checkExternalJobQueueBatch();
+        if( !Test.isRunningTest() )
+        {
+            ExternalJobQueueBatchController.checkExternalJobQueueBatch();
+        }
     }
 }

@@ -39,7 +39,7 @@ public class Test_ErrorLogUtil
         Test.stopTest();
 
         List<Error_Log__c> errorRecords = [SELECT Id FROM Error_Log__c];
-        System.assertEquals(4, errorRecords.size() );
+        System.assertEquals( 4, errorRecords.size() );
     }
 
     @isTest
@@ -67,7 +67,7 @@ public class Test_ErrorLogUtil
         ErrorLogUtil.handleErrors(errorEvents);
         Test.stopTest();
         List<Error_Log__c> errorRecords = [SELECT Id FROM Error_Log__c];
-        System.assertEquals(1, errorRecords.size() );
+        System.assertEquals( 1, errorRecords.size() );
     }
 
     @IsTest
@@ -144,13 +144,7 @@ public class Test_ErrorLogUtil
     static void testCommitExternalRequestErrors()
     {
         // Insertar un external request
-        ExternalRequest__c request = new ExternalRequest__c(
-            Origin__c = 'INFO',
-            Entity__c = 'Customer',
-            Action__c = 'Upsert',
-            ContentFormat__c = 'JSON',
-            Payload__c = '{"campo1": "valor1", "campo2": "valor2"}'
-            );
+        ExternalRequest__c request = TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 1).get(0);
         insert request;
 
         Test.startTest();
