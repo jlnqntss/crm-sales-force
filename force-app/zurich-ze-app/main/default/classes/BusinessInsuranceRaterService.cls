@@ -99,9 +99,9 @@ public without sharing class BusinessInsuranceRaterService
         {
             for (Business_Quotes_Field__mdt metadata : stepMetadataList)
             {
-                if (metadata.Required__c != null && metadata.Required__c == true)
+                if ( metadata.Required__c != null && metadata.Required__c == true && String.isNotBlank(metadata.OriginEntity__c) && String.isNotBlank(metadata.OriginField__c) )
                 {
-                    requiredFieldsMetadataSet.add(metadata.OriginField__c);
+                    requiredFieldsMetadataSet.add( (metadata.OriginEntity__c + metadata.OriginField__c).toLowerCase() );
                 }
             }
         }
@@ -132,9 +132,9 @@ public without sharing class BusinessInsuranceRaterService
 
     private static void setRequiredFields(String field)
     {
-        if ( requiredFieldsMetadataSet.contains(field) )
+        if ( requiredFieldsMetadataSet.contains( field.toLowerCase() ) )
         {
-            currentRequiredFieldsSet.add(field);
+            currentRequiredFieldsSet.add( field.toLowerCase() );
         }
     }
     /**
@@ -155,84 +155,84 @@ public without sharing class BusinessInsuranceRaterService
         public String timeStamp {
             get;
             set {
-                setRequiredFields('timeStamp');
+                setRequiredFields('Request' + 'timeStamp');
                 timeStamp = value;
             }
         }
         public String webEmail {
             get;
             set {
-                setRequiredFields('webEmail');
+                setRequiredFields('Request' + 'webEmail');
                 webEmail = value;
             }
         }
         public String webPhone {
             get;
             set {
-                setRequiredFields('webPhone');
+                setRequiredFields('Request' + 'webPhone');
                 webPhone = value;
             }
         }
         public String sessionId {
             get;
             set {
-                setRequiredFields('sessionId');
+                setRequiredFields('Request' + 'sessionId');
                 sessionId = value;
             }
         }
         public String businessCode {
             get;
             set {
-                setRequiredFields('businessCode');
+                setRequiredFields('Request' + 'businessCode');
                 businessCode = value;
             }
         }
         public String lastStep {
             get;
             set {
-                setRequiredFields('lastStep');
+                setRequiredFields('Request' + 'lastStep');
                 lastStep = value;
             }
         }
         public String status {
             get;
             set {
-                setRequiredFields('status');
+                setRequiredFields('Request' + 'status');
                 status = value;
             }
         }
         public String bestTimeFrom {
             get;
             set {
-                setRequiredFields('bestTimeFrom');
+                setRequiredFields('Request' + 'bestTimeFrom');
                 bestTimeFrom = value;
             }
         }
         public String bestTimeUntil {
             get;
             set {
-                setRequiredFields('bestTimeUntil');
+                setRequiredFields('Request' + 'bestTimeUntil');
                 bestTimeUntil = value;
             }
         }
         public AccountInformation accountInformation {
             get;
             set {
-                setRequiredFields('accountInformation');
+                setRequiredFields('Request' + 'accountInformation');
                 accountInformation = value;
             }
         }
         public Manager manager {
             get;
             set {
-                setRequiredFields('manager');
+                setRequiredFields('Request' + 'manager');
                 manager = value;
             }
         }
         public List<Offer> offers {
             get;
             set {
-                setRequiredFields('offers');
+                setRequiredFields('Request' + 'offers');
                 offers = value;
             }
         }
@@ -249,63 +249,63 @@ public without sharing class BusinessInsuranceRaterService
         public String firstName {
             get;
             set {
-                setRequiredFields('firstName');
+                setRequiredFields('AccountInformation' + 'firstName');
                 firstName = value;
             }
         }
         public String lastName {
             get;
             set {
-                setRequiredFields('lastName');
+                setRequiredFields('AccountInformation' + 'lastName');
                 lastName = value;
             }
         }
         public String family {
             get;
             set {
-                setRequiredFields('family');
+                setRequiredFields('AccountInformation' + 'family');
                 family = value;
             }
         }
         public String commercialActivity {
             get;
             set {
-                setRequiredFields('commercialActivity');
+                setRequiredFields('AccountInformation' + 'commercialActivity');
                 commercialActivity = value;
             }
         }
         public Double annualRevenue {
             get;
             set {
-                setRequiredFields('annualRevenue');
+                setRequiredFields('AccountInformation' + 'annualRevenue');
                 annualRevenue = value;
             }
         }
         public Integer numberOfEmployees {
             get;
             set {
-                setRequiredFields('numberOfEmployees');
+                setRequiredFields('AccountInformation' + 'numberOfEmployees');
                 numberOfEmployees = value;
             }
         }
         public String tradeName {
             get;
             set {
-                setRequiredFields('tradeName');
+                setRequiredFields('AccountInformation' + 'tradeName');
                 tradeName = value;
             }
         }
         public String companyName {
             get;
             set {
-                setRequiredFields('companyName');
+                setRequiredFields('AccountInformation' + 'companyName');
                 companyName = value;
             }
         }
         public String nationalIdentifier {
             get;
             set {
-                setRequiredFields('nationalIdentifier');
+                setRequiredFields('AccountInformation' + 'nationalIdentifier');
                 nationalIdentifier = value;
             }
         }
@@ -322,28 +322,28 @@ public without sharing class BusinessInsuranceRaterService
         public String firstName {
             get;
             set {
-                setRequiredFields('firstName');
+                setRequiredFields('Manager' + 'firstName');
                 firstName = value;
             }
         }
         public String lastName {
             get;
             set {
-                setRequiredFields('lastName');
+                setRequiredFields('Manager' + 'lastName');
                 lastName = value;
             }
         }
         public String email {
             get;
             set {
-                setRequiredFields('email');
+                setRequiredFields('Manager' + 'email');
                 email = value;
             }
         }
         public String phone {
             get;
             set {
-                setRequiredFields('phone');
+                setRequiredFields('Manager' + 'phone');
                 phone = value;
             }
         }
@@ -360,133 +360,133 @@ public without sharing class BusinessInsuranceRaterService
         public String quoteNumberINFO {
             get;
             set {
-                setRequiredFields('quoteNumberINFO');
+                setRequiredFields('Offer' + 'quoteNumberINFO');
                 quoteNumberINFO = value;
             }
         }
         public String quoteNumberJRE {
             get;
             set {
-                setRequiredFields('quoteNumberJRE');
+                setRequiredFields('Offer' + 'quoteNumberJRE');
                 quoteNumberJRE = value;
             }
         }
         public String policyNumber {
             get;
             set {
-                setRequiredFields('policyNumber');
+                setRequiredFields('Offer' + 'policyNumber');
                 policyNumber = value;
             }
         }
         public String operationCode {
             get;
             set {
-                setRequiredFields('operationCode');
+                setRequiredFields('Offer' + 'operationCode');
                 operationCode = value;
             }
         }
         public String businessCode {
             get;
             set {
-                setRequiredFields('businessCode');
+                setRequiredFields('Offer' + 'businessCode');
                 businessCode = value;
             }
         }
         public Date effectiveDate {
             get;
             set {
-                setRequiredFields('effectiveDate');
+                setRequiredFields('Offer' + 'effectiveDate');
                 effectiveDate = value;
             }
         }
         public String commercialPC {
             get;
             set {
-                setRequiredFields('commercialPC');
+                setRequiredFields('Offer' + 'commercialPC');
                 commercialPC = value;
             }
         }
         public String technicalPC {
             get;
             set {
-                setRequiredFields('technicalPC');
+                setRequiredFields('Offer' + 'technicalPC');
                 technicalPC = value;
             }
         }
         public String paymentType {
             get;
             set {
-                setRequiredFields('paymentType');
+                setRequiredFields('Offer' + 'paymentType');
                 paymentType = value;
             }
         }
         public String paymentTypeSucc {
             get;
             set {
-                setRequiredFields('paymentTypeSucc');
+                setRequiredFields('Offer' + 'paymentTypeSucc');
                 paymentTypeSucc = value;
             }
         }
         public String paymentChannel {
             get;
             set {
-                setRequiredFields('paymentChannel');
+                setRequiredFields('Offer' + 'paymentChannel');
                 paymentChannel = value;
             }
         }
         public String paymentChannelSucc {
             get;
             set {
-                setRequiredFields('paymentChannelSucc');
+                setRequiredFields('Offer' + 'paymentChannelSucc');
                 paymentChannelSucc = value;
             }
         }
         public String language {
             get;
             set {
-                setRequiredFields('language');
+                setRequiredFields('Offer' + 'language');
                 language = value;
             }
         }
         public Double buildingCapital {
             get;
             set {
-                setRequiredFields('buildingCapital');
+                setRequiredFields('Offer' + 'buildingCapital');
                 buildingCapital = value;
             }
         }
         public Double contentCapital {
             get;
             set {
-                setRequiredFields('contentCapital');
+                setRequiredFields('Offer' + 'contentCapital');
                 contentCapital = value;
             }
         }
         public Double generalLiabilityLimit {
             get;
             set {
-                setRequiredFields('generalLiabilityLimit');
+                setRequiredFields('Offer' + 'generalLiabilityLimit');
                 generalLiabilityLimit = value;
             }
         }
         public Double netPremium {
             get;
             set {
-                setRequiredFields('netPremium');
+                setRequiredFields('Offer' + 'netPremium');
                 netPremium = value;
             }
         }
         public String validationErrors {
             get;
             set {
-                setRequiredFields('validationErrors');
+                setRequiredFields('Offer' + 'validationErrors');
                 validationErrors = value;
             }
         }
         public OfferRiskInformation offerRiskInformation {
             get;
             set {
-                setRequiredFields('offerRiskInformation');
+                setRequiredFields('Offer' + 'offerRiskInformation');
                 offerRiskInformation = value;
             }
         }
@@ -503,238 +503,238 @@ public without sharing class BusinessInsuranceRaterService
         public String propertyStreetType {
             get;
             set {
-                setRequiredFields('propertyStreetType');
+                setRequiredFields('OfferRiskInformation' + 'propertyStreetType');
                 propertyStreetType = value;
             }
         }
         public String propertyStreet {
             get;
             set {
-                setRequiredFields('propertyStreet');
+                setRequiredFields('OfferRiskInformation' + 'propertyStreet');
                 propertyStreet = value;
             }
         }
         public String propertyStreetNumber {
             get;
             set {
-                setRequiredFields('propertyStreetNumber');
+                setRequiredFields('OfferRiskInformation' + 'propertyStreetNumber');
                 propertyStreetNumber = value;
             }
         }
         public String propertyAdditionalInfo {
             get;
             set {
-                setRequiredFields('propertyAdditionalInfo');
+                setRequiredFields('OfferRiskInformation' + 'propertyAdditionalInfo');
                 propertyAdditionalInfo = value;
             }
         }
         public String propertyPostalCode {
             get;
             set {
-                setRequiredFields('propertyPostalCode');
+                setRequiredFields('OfferRiskInformation' + 'propertyPostalCode');
                 propertyPostalCode = value;
             }
         }
         public String propertyCity {
             get;
             set {
-                setRequiredFields('propertyCity');
+                setRequiredFields('OfferRiskInformation' + 'propertyCity');
                 propertyCity = value;
             }
         }
         public String propertyState {
             get;
             set {
-                setRequiredFields('propertyState');
+                setRequiredFields('OfferRiskInformation' + 'propertyState');
                 propertyState = value;
             }
         }
         public String propertyCountry {
             get;
             set {
-                setRequiredFields('propertyCountry');
+                setRequiredFields('OfferRiskInformation' + 'propertyCountry');
                 propertyCountry = value;
             }
         }
         public Integer yearOfConstruction {
             get;
             set {
-                setRequiredFields('yearOfConstruction');
+                setRequiredFields('OfferRiskInformation' + 'yearOfConstruction');
                 yearOfConstruction = value;
             }
         }
         public String ownership {
             get;
             set {
-                setRequiredFields('ownership');
+                setRequiredFields('OfferRiskInformation' + 'ownership');
                 ownership = value;
             }
         }
         public String insuredType {
             get;
             set {
-                setRequiredFields('insuredType');
+                setRequiredFields('OfferRiskInformation' + 'insuredType');
                 insuredType = value;
             }
         }
         public String buildingType {
             get;
             set {
-                setRequiredFields('buildingType');
+                setRequiredFields('OfferRiskInformation' + 'buildingType');
                 buildingType = value;
             }
         }
         public String height {
             get;
             set {
-                setRequiredFields('height');
+                setRequiredFields('OfferRiskInformation' + 'height');
                 height = value;
             }
         }
         public String riskFactor01 {
             get;
             set {
-                setRequiredFields('riskFactor01');
+                setRequiredFields('OfferRiskInformation' + 'riskFactor01');
                 riskFactor01 = value;
             }
         }
         public String riskFactor02 {
             get;
             set {
-                setRequiredFields('riskFactor02');
+                setRequiredFields('OfferRiskInformation' + 'riskFactor02');
                 riskFactor02 = value;
             }
         }
         public String riskFactor03 {
             get;
             set {
-                setRequiredFields('riskFactor03');
+                setRequiredFields('OfferRiskInformation' + 'riskFactor03');
                 riskFactor03 = value;
             }
         }
         public String riskFactor04 {
             get;
             set {
-                setRequiredFields('riskFactor04');
+                setRequiredFields('OfferRiskInformation' + 'riskFactor04');
                 riskFactor04 = value;
             }
         }
         public String riskFactor05 {
             get;
             set {
-                setRequiredFields('riskFactor05');
+                setRequiredFields('OfferRiskInformation' + 'riskFactor05');
                 riskFactor05 = value;
             }
         }
         public String riskFactor06 {
             get;
             set {
-                setRequiredFields('riskFactor06');
+                setRequiredFields('OfferRiskInformation' + 'riskFactor06');
                 riskFactor06 = value;
             }
         }
         public String riskFactor07 {
             get;
             set {
-                setRequiredFields('riskFactor07');
+                setRequiredFields('OfferRiskInformation' + 'riskFactor07');
                 riskFactor07 = value;
             }
         }
         public String riskFactor08 {
             get;
             set {
-                setRequiredFields('riskFactor08');
+                setRequiredFields('OfferRiskInformation' + 'riskFactor08');
                 riskFactor08 = value;
             }
         }
         public String riskFactor09 {
             get;
             set {
-                setRequiredFields('riskFactor09');
+                setRequiredFields('OfferRiskInformation' + 'riskFactor09');
                 riskFactor09 = value;
             }
         }
         public String area {
             get;
             set {
-                setRequiredFields('area');
+                setRequiredFields('OfferRiskInformation' + 'area');
                 area = value;
             }
         }
         public Boolean lockType {
             get;
             set {
-                setRequiredFields('lockType');
+                setRequiredFields('OfferRiskInformation' + 'lockType');
                 lockType = value;
             }
         }
         public Boolean securityDoor {
             get;
             set {
-                setRequiredFields('securityDoor');
+                setRequiredFields('OfferRiskInformation' + 'securityDoor');
                 securityDoor = value;
             }
         }
         public Boolean bulletproofDoor {
             get;
             set {
-                setRequiredFields('bulletproofDoor');
+                setRequiredFields('OfferRiskInformation' + 'bulletproofDoor');
                 bulletproofDoor = value;
             }
         }
         public Boolean connectedAlarm {
             get;
             set {
-                setRequiredFields('connectedAlarm');
+                setRequiredFields('OfferRiskInformation' + 'connectedAlarm');
                 connectedAlarm = value;
             }
         }
         public Boolean fireHydrant {
             get;
             set {
-                setRequiredFields('fireHydrant');
+                setRequiredFields('OfferRiskInformation' + 'fireHydrant');
                 fireHydrant = value;
             }
         }
         public Boolean surveillance {
             get;
             set {
-                setRequiredFields('surveillance');
+                setRequiredFields('OfferRiskInformation' + 'surveillance');
                 surveillance = value;
             }
         }
         public Boolean smokeDetector {
             get;
             set {
-                setRequiredFields('smokeDetector');
+                setRequiredFields('OfferRiskInformation' + 'smokeDetector');
                 smokeDetector = value;
             }
         }
         public Boolean sprayer {
             get;
             set {
-                setRequiredFields('sprayer');
+                setRequiredFields('OfferRiskInformation' + 'sprayer');
                 sprayer = value;
             }
         }
         public Boolean fireExtinguisher {
             get;
             set {
-                setRequiredFields('fireExtinguisher');
+                setRequiredFields('OfferRiskInformation' + 'fireExtinguisher');
                 fireExtinguisher = value;
             }
         }
         public String typeOfWindows {
             get;
             set {
-                setRequiredFields('typeOfWindows');
+                setRequiredFields('OfferRiskInformation' + 'typeOfWindows');
                 typeOfWindows = value;
             }
         }
         public String strongbox {
             get;
             set {
-                setRequiredFields('strongbox');
+                setRequiredFields('OfferRiskInformation' + 'strongbox');
                 strongbox = value;
             }
         }
