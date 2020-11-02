@@ -5546,10 +5546,6 @@
     </flowDefinitions>
     <flowDefinitions>
         <flows/>
-        <fullName>OpenCTIFlow</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
         <fullName>Quote_Step_4_5_6</fullName>
     </flowDefinitions>
     <prompts>
