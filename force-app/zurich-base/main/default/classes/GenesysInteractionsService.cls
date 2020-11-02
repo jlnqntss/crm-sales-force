@@ -55,164 +55,151 @@ public without sharing class GenesysInteractionsService
             }
         }
 
-        /**
-         * WIP: Falta definir qué campos rellenar en la task
-         * @author nescudero
-         * @date 22/10/2020
-         */
-        @TestVisible
-        private static String createOnqueueInteraction(String ucid)
+        return ba;
+    }
+
+    /**
+     * WIP: Falta definir qué campos rellenar en la task
+     * @author nescudero
+     * @date 22/10/2020
+     */
+    @TestVisible
+    private static String createOnqueueInteraction(String ucid)
+    {
+        Id rtId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
+                  .get('Interaction')
+                  .getRecordTypeId();
+
+        //WIP
+        Task interaction = new Task();
+
+        interaction.Subject = 'Llamada ' + Datetime.now().format();
+        interaction.Status = 'Nueva';
+        interaction.Priority = 'Normal';
+        interaction.CallObject = ucid;
+        interaction.RecordTypeId = rtId;
+        interaction.TaskSubtype = 'Call';
+        insert interaction;
+
+        String taskId = String.valueOf(interaction.Id);
+
+        return taskId;
+    }
+
+    /**
+     * 1. Si hay múltiples clientes => Tenemos que decidirlo. De momento, recordId=null y bestAgentId=null
+       2. Si hay múltiples casos de un mismo cliente =>  RecordId=ID_CLIENTE y *bestAgentId="Case/opportutiny.Owner.Email" del último caso abierto => Si OWner es una cola null
+       3. Si hay solo hay una coincidencia => RecordId=ID_CLIENTE y *bestAgentId="Case/opportutiny.Owner.Email"   => Si Owner es una cola null
+     * @author nescudero
+     * @date 23/10/2020
+     */
+    @TestVisible
+    private static BestAgent findBestAgentFor(String callLogId, String interactionType, String fromId, String toId, String lookFor, String scope)
+    {
+        Id ownerId;
+        String contactPoint;
+        Boolean isContactPointPhone;
+        String screenPopRecordId;
+        String bestAgentId;
+        Set<Id> personIds = new Set<Id>();
+
+        Id interactionWhoId = null;
+        Id interactionWhatId = null;
+
+        //Ver si hay que buscar en ContactPointPhone o ContactPointEmail
+        isContactPointPhone = !contactPoint.containsAny('@');
+
+        //Buscar el contacto
+        if (isContactPointPhone)
         {
-            Id rtId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
-                      .get('Interaction')
-                      .getRecordTypeId();
+            //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
+            for (Contact matchedContact : ContactsSelector.findByPhoneNumber(new List<String> { contactPoint }) )
+            {
+                personIds.add(matchedContact.Id);
+                personIds.add(matchedContact.AccountId);
 
-            //WIP
-            Task interaction = new Task();
+                interactionWhoId = matchedContact.Id;
+            }
+        }
+        else
+        {
+            List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
+            contactPointEmails = [
+                SELECT Id, EmailAddress, ContactId__c
+                FROM ContactPointEmail
+                WHERE EmailAddress = :contactPoint
+            ];
 
-            interaction.Subject = 'Llamada ' + Datetime.now().format();
-            interaction.Status = 'Nueva';
-            interaction.Priority = 'Normal';
-            interaction.CallObject = ucid;
-            interaction.RecordTypeId = rtId;
-            interaction.TaskSubtype = 'Call';
-            insert interaction;
-
-            String taskId = String.valueOf(interaction.Id);
-
-            return taskId;
+            //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
+            for (ContactPointEmail contactPointEmail : contactPointEmails)
+            {
+                personIds.add(contactPointEmail.ContactId__c);
+            }
         }
 
-        /**
-         * 1. Si hay múltiples clientes => Tenemos que decidirlo. De momento, recordId=null y bestAgentId=null
-           2. Si hay múltiples casos de un mismo cliente =>  RecordId=ID_CLIENTE y *bestAgentId="Case/opportutiny.Owner.Email" del último caso abierto => Si OWner es una cola null
-           3. Si hay solo hay una coincidencia => RecordId=ID_CLIENTE y *bestAgentId="Case/opportutiny.Owner.Email"   => Si Owner es una cola null
-         * @author nescudero
-         * @date 23/10/2020
-         */
-        @TestVisible
-        private static BestAgent findBestAgentFor(String callLogId, String interactionType, String fromId, String toId, String lookFor, String scope)
+
+        //una vez se tiene el contacto elegido se busca su Case/Opp
+        if (!personIds.isEmpty() )
         {
-            Id ownerId;
-            String contactPoint;
-            Boolean isContactPointPhone;
-            String screenPopRecordId;
-            String bestAgentId;
-            Set<Id> personIds = new Set<Id>();
-
-            Id interactionWhoId = null;
-            Id interactionWhatId = null;
-
-            //Ver si hay que buscar en ContactPointPhone o ContactPointEmail
-            isContactPointPhone = !contactPoint.containsAny('@');
-
-            //Buscar el contacto
-            if (isContactPointPhone)
-            {
-                //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
-                for (Contact matchedContact : ContactsSelector.findByPhoneNumber(new List<String> { contactPoint }) )
-                {
-                    personIds.add(matchedContact.Id);
-                    personIds.add(matchedContact.AccountId);
-
-                    interactionWhoId = matchedContact.Id;
+            //Dependiendo de scope
+            String scopeFilter = '';
+            switch on scope {
+                when 'all' {
+                    scopeFilter = 'AND Scope__c = \'General\'';     //TODO: cuando esté definido esto pasar a label?
                 }
-            }
-            else
-            {
-                List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
-                contactPointEmails = [
-                    SELECT Id, EmailAddress, ContactId__c
-                    FROM ContactPointEmail
-                    WHERE EmailAddress = :contactPoint
-                ];
-
-                //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
-                for (ContactPointEmail contactPointEmail : contactPointEmails)
-                {
-                    personIds.add(contactPointEmail.ContactId__c);
+                when 'ze' {
+                    scopeFilter = 'AND Scope__c = \'Zurich Empresas\'';     //TODO: cuando esté definido esto pasar a label?
+                }
+                when 'klinc' {
+                    scopeFilter = 'AND Scope__c = \'Klinc\'';     //TODO: cuando esté definido esto pasar a label?
                 }
             }
 
+            //Dependiendo de lookFor
 
-            //una vez se tiene el contacto elegido se busca su Case/Opp
-            if (!personIds.isEmpty() )
-            {
-                //Dependiendo de scope
-                String scopeFilter = '';
-                switch on scope {
-                    when 'all' {
-                        scopeFilter = 'AND Scope__c = \'General\''; //TODO: cuando esté definido esto pasar a label?
-                    }
-                    when 'ze' {
-                        scopeFilter = 'AND Scope__c = \'Zurich Empresas\''; //TODO: cuando esté definido esto pasar a label?
-                    }
-                    when 'klinc' {
-                        scopeFilter = 'AND Scope__c = \'Klinc\''; //TODO: cuando esté definido esto pasar a label?
+
+            switch on lookFor {
+                when 'Opportunity' {
+                    List<Opportunity> opps = new List<Opportunity>();
+                    String query =
+                        'SELECT Id, OwnerId, ContactId__c, isClosed, AccountId, CreatedDate, Owner.Email FROM Opportunity WHERE isClosed = FALSE AND (AccountId IN :personIds OR ContactId__c IN :personIds) ' +
+                        scopeFilter +
+                        ' ORDER BY CreatedDate DESC';
+                    opps = Database.query(query);
+                    if (!opps.isEmpty() )
+                    {
+                        bestAgentId = opps[0].Owner.Email;
+                        screenPopRecordId = opps[0].AccountId;
+                        ownerId = opps[0].OwnerId;
+                        interactionWhatId = opps[0].Id;
                     }
                 }
+                when 'Case' {
+                    List<Case> cases = new List<Case>();
+                    cases = [
+                        SELECT
+                        OwnerId,
+                        ContactId,
+                        isClosed,
+                        CreatedDate,
+                        TYPEOF Owner
+                        WHEN User THEN Email
+                        END
+                        FROM Case
+                        WHERE isClosed = FALSE AND ContactId IN :personIds
+                                         ORDER BY CreatedDate DESC
+                    ];
+                    if (!cases.isEmpty() )
+                    {
+                        bestAgentId = cases[0].Owner.Email;
+                        screenPopRecordId = cases[0].ContactId;
+                        ownerId = cases[0].OwnerId;
 
-                //Dependiendo de lookFor
-
-
-                switch on lookFor {
-                    when 'Opportunity' {
-                        List<Opportunity> opps = new List<Opportunity>();
-                        String query =
-                            'SELECT Id, OwnerId, ContactId__c, isClosed, AccountId, CreatedDate, Owner.Email FROM Opportunity WHERE isClosed = FALSE AND (AccountId IN :personIds OR ContactId__c IN :personIds) ' +
-                            scopeFilter +
-                            ' ORDER BY CreatedDate DESC';
-                        opps = Database.query(query);
-                        if (!opps.isEmpty() )
-                        {
-                            bestAgentId = opps[0].Owner.Email;
-                            screenPopRecordId = opps[0].AccountId;
-                            ownerId = opps[0].OwnerId;
-                            interactionWhatId = opps[0].Id;
-                        }
-                    }
-                    when 'Case' {
-                        List<Case> cases = new List<Case>();
-                        cases = [
-                            SELECT
-                            OwnerId,
-                            ContactId,
-                            isClosed,
-                            CreatedDate,
-                            TYPEOF Owner
-                            WHEN User THEN Email
-                            END
-                            FROM Case
-                            WHERE isClosed = FALSE AND ContactId IN :personIds
-                                             ORDER BY CreatedDate DESC
-                        ];
-                        if (!cases.isEmpty() )
-                        {
-                            bestAgentId = cases[0].Owner.Email;
-                            screenPopRecordId = cases[0].ContactId;
-                            ownerId = cases[0].OwnerId;
-
-                            interactionWhoId = cases[0].ContactId;
-                            interactionWhatId = cases[0].Id;
-                        }
+                        interactionWhoId = cases[0].ContactId;
+                        interactionWhatId = cases[0].Id;
                     }
                 }
             }
-
-            //Actualizar la tarea si se ha conseguido el bestagent
-            if (bestAgentId != null && callLogId != null)
-            {
-                Task interaction = new Task();
-                interaction.Id = Id.valueOf(callLogId);
-                interaction.BestAgent__c = ownerId;
-                interaction.WhoId = interactionWhoId;
-                interaction.WhatId = interactionWhatId;
-                update interaction;
-            }
-
-            //Si todo ha ido bien, screenPopRecordId y bestAgentId estarán rellenos, sino se envían a null
-            BestAgent ba = new BestAgent(screenPopRecordId, callLogId, bestAgentId);
-            return ba;
         }
 
         //Actualizar la tarea si se ha conseguido el bestagent
@@ -221,22 +208,39 @@ public without sharing class GenesysInteractionsService
             Task interaction = new Task();
             interaction.Id = Id.valueOf(callLogId);
             interaction.BestAgent__c = ownerId;
+            interaction.WhoId = interactionWhoId;
+            interaction.WhatId = interactionWhatId;
             update interaction;
         }
 
-        //Salida
-        public class BestAgent
-        {
-            public String screenPopRecordId { get; set; }
-            public String callLogId { get; set; }
-            public String bestAgentId { get; set; }
+        //Si todo ha ido bien, screenPopRecordId y bestAgentId estarán rellenos, sino se envían a null
+        BestAgent ba = new BestAgent(screenPopRecordId, callLogId, bestAgentId);
+        return ba;
+    }
 
-            public BestAgent(String screenPopRecordId, String callLogId, String bestAgentId)
-            {
-                this.screenPopRecordId = screenPopRecordId;
-                this.callLogId = callLogId;
-                this.bestAgentId = bestAgentId;
-            }
+    //Salida
+    public class InteractionRequest
+    {
+        public String interaction { get; set; }
+        public String interactionType { get; set; }
+        public String fromId { get; set; }
+        public String toId { get; set; }
+        public String queueId { get; set; }
+        public String lookFor { get; set; }
+        public String scope { get; set; }
+    }
+
+    public class BestAgent
+    {
+        public String screenPopRecordId { get; set; }
+        public String callLogId { get; set; }
+        public String bestAgentId { get; set; }
+
+        public BestAgent(String screenPopRecordId, String callLogId, String bestAgentId)
+        {
+            this.screenPopRecordId = screenPopRecordId;
+            this.callLogId = callLogId;
+            this.bestAgentId = bestAgentId;
         }
     }
 }

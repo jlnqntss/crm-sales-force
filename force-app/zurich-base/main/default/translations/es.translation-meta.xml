@@ -5552,17 +5552,6 @@
         <flows/>
         <fullName>Quote_Step_4_5_6</fullName>
     </flowDefinitions>
-    <flowDefinitions>
-        <flows>
-            <screens>
-                <fields>
-                    <name>Debuf</name>
-                </fields>
-                <name>Debug</name>
-            </screens>
-        </flows>
-        <fullName>ZESearchAndScreenPop</fullName>
-    </flowDefinitions>
     <prompts>
         <name>Events</name>
         <promptVersions>
@@ -5689,19 +5678,6 @@
         <sections>
             <label><!-- Quotes y Pólizas --></label>
             <name>Quotes y Pólizas</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Users with or without Email Sends --></description>
-        <label><!-- Users with or without Email Sends --></label>
-        <name>Users_with_or_without_Email_Sends</name>
-        <sections>
-            <label><!-- Email Sends (Owner) --></label>
-            <name>Email Sends (Owner)</name>
-        </sections>
-        <sections>
-            <label><!-- Users --></label>
-            <name>Users</name>
         </sections>
     </reportTypes>
     <reportTypes>
