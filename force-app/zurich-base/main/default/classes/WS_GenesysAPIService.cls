@@ -1,5 +1,8 @@
-@RestResource(urlMapping='/genesys-cloud/v1/*')
+@RestResource(urlMapping='/genesys-cloud/*/*')
 global without sharing class WS_GenesysAPIService extends WS_BaseAPIService {
+  static final String INVALID_URI_MESSAGE = 'Invalid URI versioning';
+  static final String INVALID_CONTENTTYPE_MESSAGE = 'Invalid Content-Type on request headers';
+  static final String REGEXP_URI = 'v[0-9]+$';
   /**
    * Recibe las peticiones POST provenientes de genesys
    * Dependiendo del resource se llamará a una clase u otra de apex
@@ -13,15 +16,30 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService {
   global static void doPost() {
     RestRequest request = RestContext.request;
     RestResponse response = RestContext.response;
-    response.addHeader('Content-Type', 'application/json');
-
-    String resource = WS_BaseAPIService.resource;
-    Integer version = WS_BaseAPIService.version;
-    String vendor = WS_BaseAPIService.vendor;
 
     Savepoint sp = Database.setSavepoint();
 
     try {
+      response.addHeader('Content-Type', 'application/json');
+
+      //Si la versión no es correcta, lanzamos error
+      if(!WS_BaseAPIService.isValidVersion)
+      {
+        response.statusCode = 400;
+        throw new WS_BaseAPIService.ApiException('BAD_REQUEST', INVALID_URI_MESSAGE);
+      }
+
+      //Si la cabecera content-type no es JSON, lanzamos error
+      if(!WS_BaseAPIService.isJSONContentType)
+      {
+        response.statusCode = 400;
+        throw new WS_BaseAPIService.ApiException('BAD_REQUEST', INVALID_CONTENTTYPE_MESSAGE);
+      }
+
+      String resource = WS_BaseAPIService.resource;
+      Integer version = WS_BaseAPIService.version;
+      String vendor = WS_BaseAPIService.vendor;
+
       switch on resource {
         when 'interactions' {
           GenesysInteractionsService.version = version;
@@ -38,16 +56,19 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService {
           }
         }
       }
-    } catch (Exception e) {
+    }
+    catch (WS_BaseAPIService.ApiException exAPI) {
       Database.rollback(sp);
-      WS_BaseAPIServiceError badResponse = new WS_BaseAPIServiceError(
-        e,
-        'INTERNAL_SERVER_ERROR',
-        e.getMessage(),
-        e.getStackTraceString()
-      );
-      response.responseBody = Blob.valueOf(JSON.serialize(badResponse));
+
+      response.statusCode = 400;
+      response.responseBody = Blob.valueOf(JSON.serialize(exAPI));
+    }
+    catch (Exception e) {
+      Database.rollback(sp);
+      ErrorLogUtil.commitError(e);
+
       response.statusCode = 500;
+      response.responseBody = Blob.valueOf(JSON.serialize(e));
     }
   }
 }

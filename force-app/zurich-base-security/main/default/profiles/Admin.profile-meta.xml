@@ -1960,6 +1960,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>et4ae5__Test_createQueueableJobFromJB_Event</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>et4ae5__Test_dspControl</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -8891,6 +8895,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>et4ae5__JB_Flow_Event__e.et4ae5__FutureContext__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__JB_Flow_Event__e.et4ae5__IdList__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__JB_Flow_Event__e.et4ae5__Payload__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>et4ae5__Journey__c.et4ae5__ChangeType__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -11880,6 +11899,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>et4ae5__JB_Event__e</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>et4ae5__JB_Flow_Event__e</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
