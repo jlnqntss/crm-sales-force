@@ -108,6 +108,28 @@ public with sharing class ExternalRequestsSelector
     }
 
     /**
+     * Recupera external requests procesadas a partir de una lista de origenes
+     *
+     * @author adelgado
+     * @param  origins Origenes a recuperar
+     * @return Listado de external request recuperadas. Si no se recibe ningún origen se devuelve una lista vacía
+     */
+    public ExternalRequest__c[] selectProcessedByOrigin(Set<String> origins)
+    {
+        if( origins == null || origins.isEmpty() )
+        {
+            return new List<ExternalRequest__c>();
+        }
+
+        return Database.query( String.format('{0} {1} {2}', new List<String>
+        {
+            baseQuery,
+            'WHERE Origin__c IN :origins AND ProcessResult__c != NULL',
+            limitCondition
+        }) );
+    }
+
+    /**
      * Recupera external requests de un origen concreto
      *
      * @author adelgado
