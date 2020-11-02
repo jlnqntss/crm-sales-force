@@ -8,6 +8,13 @@
         <plural>true</plural>
         <value>Options</value>
     </caseValues>
+    <layouts>
+        <layout>Quote Layout</layout>
+        <sections>
+            <label><!-- Economic Information --></label>
+            <section>Economic Information</section>
+        </sections>
+    </layouts>
     <quickActions>
         <label><!-- SendEmail --></label>
         <name>SendEmail</name>

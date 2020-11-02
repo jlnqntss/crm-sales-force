@@ -51,4 +51,9 @@
         <default>false</default>
         <label>Other</label>
     </standardValue>
+    <standardValue>
+        <fullName>Journeys</fullName>
+        <default>false</default>
+        <label>Journeys</label>
+    </standardValue>
 </StandardValueSet>
