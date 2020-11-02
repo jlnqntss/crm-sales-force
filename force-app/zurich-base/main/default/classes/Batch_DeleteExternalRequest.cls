@@ -16,7 +16,7 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
     global Batch_DeleteExternalRequest(String q)
     {
         this();
-        if (!String.isBlank(q) )
+        if ( !String.isBlank(q) )
         {
             query = q;
         }
@@ -39,7 +39,7 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
     {
         List<ExternalRequest__c> requestList = (List<ExternalRequest__c>) scope;
 
-        if (scope != null && !scope.isEmpty() )
+        if ( scope != null && !scope.isEmpty() )
         {
             try
             {
@@ -57,6 +57,5 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

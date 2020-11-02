@@ -16,7 +16,7 @@ global class Batch_DeleteMasters implements Database.Batchable<sObject>, Databas
     global Batch_DeleteMasters(String q)
     {
         this();
-        if (!String.isBlank(q) )
+        if ( !String.isBlank(q) )
         {
             query = q;
         }
@@ -38,7 +38,7 @@ global class Batch_DeleteMasters implements Database.Batchable<sObject>, Databas
 
         try
         {
-            if (scope != null && !scope.isEmpty() )
+            if ( scope != null && !scope.isEmpty() )
             {
                 delete mastersToDelete;
             }
@@ -53,6 +53,5 @@ global class Batch_DeleteMasters implements Database.Batchable<sObject>, Databas
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

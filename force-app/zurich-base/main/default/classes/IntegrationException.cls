@@ -1,2 +1,2 @@
-public class IntegrationException extends Exception {
-}
+public class IntegrationException extends Exception
+{}

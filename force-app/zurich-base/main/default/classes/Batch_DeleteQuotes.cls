@@ -16,7 +16,7 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
     global Batch_DeleteQuotes(String q)
     {
         this();
-        if (!String.isBlank(q) )
+        if ( !String.isBlank(q) )
         {
             query = q;
         }
@@ -41,12 +41,12 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
 
         try
         {
-            if (scope != null && !scope.isEmpty() )
+            if ( scope != null && !scope.isEmpty() )
             {
                 //Borrar primero los casos asociados
                 for (Order quote : quotesToDelete)
                 {
-                    if (!quote.Casos__r.isEmpty() )
+                    if ( !quote.Casos__r.isEmpty() )
                     {
                         for (Case c : quote.Casos__r)
                         {
@@ -57,7 +57,7 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
                     quote.Status = Label.Order_Sync;
                 }
 
-                if (!casesToDelete.isEmpty() )
+                if ( !casesToDelete.isEmpty() )
                 {
                     delete casesToDelete;
                 }
@@ -87,11 +87,11 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
                     }
                 }
 
-                if (!subCoversToDelete.isEmpty() )
+                if ( !subCoversToDelete.isEmpty() )
                 {
                     delete subCoversToDelete;
                 }
-                if (!coversToDelete.isEmpty() )
+                if ( !coversToDelete.isEmpty() )
                 {
                     delete coversToDelete;
                 }
@@ -109,6 +109,5 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

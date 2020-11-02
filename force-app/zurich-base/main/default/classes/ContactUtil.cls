@@ -21,7 +21,7 @@ global without sharing class ContactUtil
         {
             CustomerNum = 'GI-' + CustomerNum;
         }
-        else if (LegalEntity.equals(Label.LifeInsurance) )
+        else if ( LegalEntity.equals(Label.LifeInsurance) )
         {
             CustomerNum = 'LIFE-' + CustomerNum;
         }
@@ -524,7 +524,7 @@ global without sharing class ContactUtil
                       );
         }
 
-        if (incomingContact.LegalEntity__c.equals(Label.GeneralInsurance) )
+        if ( incomingContact.LegalEntity__c.equals(Label.GeneralInsurance) )
         {
             legalEntity = 'GI';
         }
@@ -716,7 +716,7 @@ global without sharing class ContactUtil
                 }
                 else
                 {
-                    if (!String.isBlank(incomingContact.MasterPolicyNum__c) )
+                    if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
                     {
                         //Asociar partner cuando el cliente es nuevo
                         AccountUtil.associatePartner(
@@ -828,7 +828,7 @@ global without sharing class ContactUtil
                     }
                     else
                     {
-                        if (!String.isBlank(incomingContact.MasterPolicyNum__c) )
+                        if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
                         {
                             //Asociar partner cuando el cliente es nuevo
                             AccountUtil.associatePartner(
@@ -886,7 +886,7 @@ global without sharing class ContactUtil
             if (incomingContact.sourceCountry__c != 'Spain')
             {
                 // The master account doesn't have the EMEA customer number
-                if (String.isBlank(alreadyInSFContact.Account.CustomerNum_EMEA__c) )
+                if ( String.isBlank(alreadyInSFContact.Account.CustomerNum_EMEA__c) )
                 {
                     // The master account is updated
                     accountItem.customerNum_EMEA__c = customerNumberOnly;
@@ -940,7 +940,7 @@ global without sharing class ContactUtil
                 }
                 else
                 {
-                    if (!String.isBlank(incomingContact.MasterPolicyNum__c) )
+                    if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
                     {
                         //Asociar partner cuando el cliente es nuevo
                         AccountUtil.associatePartner(
@@ -962,7 +962,7 @@ global without sharing class ContactUtil
             {
                 // The contact comes from Spain
                 // The master account doesn't have the (Spanish) customer number
-                if (String.isBlank(alreadyInSFContact.Account.CustomerNum__c) )
+                if ( String.isBlank(alreadyInSFContact.Account.CustomerNum__c) )
                 {
                     // The master account is updated
                     accountItem.CustomerNum__c = customerNumberOnly;
@@ -1014,7 +1014,7 @@ global without sharing class ContactUtil
                 }
                 else
                 {
-                    if (!String.isBlank(incomingContact.MasterPolicyNum__c) )
+                    if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
                     {
                         //Asociar partner cuando el cliente es nuevo
                         AccountUtil.associatePartner(
@@ -1064,7 +1064,7 @@ global without sharing class ContactUtil
             if (incomingContact.sourceCountry__c != 'Spain')
             {
                 // The master account doesn't have the EMEA customer number
-                if (String.isBlank(alreadyInSFContact.Account.CustomerNum_EMEA__c) )
+                if ( String.isBlank(alreadyInSFContact.Account.CustomerNum_EMEA__c) )
                 {
                     // The master account is updated
                     accountItem.customerNum_EMEA__c = customerNumberOnly;
@@ -1104,7 +1104,7 @@ global without sharing class ContactUtil
                     }
                 }
 
-                if (!String.isBlank(incomingContact.MasterPolicyNum__c) )
+                if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
                 {
                     //Asociar partner cuando el cliente es nuevo
                     AccountUtil.associatePartner(
@@ -1126,7 +1126,7 @@ global without sharing class ContactUtil
             {
                 // The contact comes from Spain
                 // The master account doesn't have the (Spanish) customer number
-                if (String.isBlank(alreadyInSFContact.Account.CustomerNum__c) )
+                if ( String.isBlank(alreadyInSFContact.Account.CustomerNum__c) )
                 {
                     // The master account is updated
                     accountItem.CustomerNum__c = customerNumberOnly;
@@ -1164,7 +1164,7 @@ global without sharing class ContactUtil
                     }
                 }
 
-                if (!String.isBlank(incomingContact.MasterPolicyNum__c) )
+                if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
                 {
                     //Asociar partner cuando el cliente es nuevo
                     AccountUtil.associatePartner(
@@ -1252,7 +1252,7 @@ global without sharing class ContactUtil
                 incomingContact
                 );
 
-            if (!String.isBlank(incomingContact.MasterPolicyNum__c) )
+            if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
             {
                 //Asociar partner cuando el cliente es nuevo
                 AccountUtil.associatePartner(
@@ -1289,7 +1289,7 @@ global without sharing class ContactUtil
                 //Solo actualizar si es cliente
                 if (cont.Status__c == Label.Customer)
                 {
-                    if (!checkRecursive.SetOfIDs.contains(cont.AccountId) )
+                    if ( !checkRecursive.SetOfIDs.contains(cont.AccountId) )
                     {
                         if (oldMap != null)
                         {
@@ -1348,21 +1348,21 @@ global without sharing class ContactUtil
 
                                     for (Contact SFcontact : master.Contacts)
                                     {
-                                        if (!String.isBlank(cont.DNI__c) )
+                                        if ( !String.isBlank(cont.DNI__c) )
                                         {
                                             SFcontact.DNI__c = cont.DNI__c;
                                         }
-                                        if (!String.isBlank(cont.Email) )
+                                        if ( !String.isBlank(cont.Email) )
                                         {
                                             SFcontact.Email = cont.Email;
                                         }
                                         //  if(!String.isBlank(cont.MobilePhone)){SFcontact.MobilePhone=cont.MobilePhone;}
                                         //  if(cont.Birthdate!= null){SFcontact.Birthdate=cont.Birthdate;}
-                                        if (!String.isBlank(cont.FirstName) )
+                                        if ( !String.isBlank(cont.FirstName) )
                                         {
                                             SFcontact.FirstName = cont.FirstName;
                                         }
-                                        if (!String.isBlank(cont.LastName) )
+                                        if ( !String.isBlank(cont.LastName) )
                                         {
                                             SFcontact.LastName = cont.LastName;
                                         }
@@ -1472,12 +1472,12 @@ global without sharing class ContactUtil
             }
         }
 
-        if (updateMasters != null && !updateMasters.isEmpty() )
+        if ( updateMasters != null && !updateMasters.isEmpty() )
         {
             upsert updateMasters;
         }
 
-        if (updateContacts != null && !updateContacts.isEmpty() )
+        if ( updateContacts != null && !updateContacts.isEmpty() )
         {
             upsert updateContacts;
         }
@@ -1525,7 +1525,7 @@ global without sharing class ContactUtil
             }
 
             System.debug(idSet);
-            if (!idSet.isEmpty() )
+            if ( !idSet.isEmpty() )
             {
                 // Define the context for the RollupSummariesUtil.summarize() method
                 RollupSummariesUtil.Context cont = new RollupSummariesUtil.Context(
@@ -1548,7 +1548,7 @@ global without sharing class ContactUtil
 
                 responseObject = (Contact[]) responseObject;
 
-                if (responseObject != null && !responseObject.isEmpty() )
+                if ( responseObject != null && !responseObject.isEmpty() )
                 {
                     update responseObject;
                 }
@@ -1632,7 +1632,7 @@ global without sharing class ContactUtil
 
             if (MapQuotes != null && mapContactos != null)
             {
-                for (Contact cont : mapContactos.values() )
+                for ( Contact cont : mapContactos.values() )
                 {
                     Order quote = MapQuotes.get(cont.LastQuote__c);
                     if (quote.QbLastPage__c != null)
@@ -1664,7 +1664,7 @@ global without sharing class ContactUtil
                 }
 
                 //Update step in the quotes
-                if (quotesToUpdate != null && !quotesToUpdate.isEmpty() )
+                if ( quotesToUpdate != null && !quotesToUpdate.isEmpty() )
                 {
                     update quotesToUpdate.values();
                 }

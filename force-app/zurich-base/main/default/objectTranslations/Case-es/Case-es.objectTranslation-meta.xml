@@ -55,4 +55,24 @@
         <label>Consulta OCS</label>
         <name>OCSInquiry</name>
     </recordTypes>
+    <validationRules>
+        <errorMessage><!-- [VR Caso] Caso en estado CERRADO no puede pasar a ningún otro estado --></errorMessage>
+        <name>StatusRuleCantGoFromClosed</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Caso] Desde ningún otro estado de caso se podrá pasar a NUEVO --></errorMessage>
+        <name>StatusRuleCantGoToNew</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Caso] Caso en estado NUEVO sólo puede pasar a ASIGNADO --></errorMessage>
+        <name>StatusRuleNewOnlyGoToAssigned</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Caso] Caso en estado PENDIENTE sólo puede pasar a RESPONDIDO o CERRADO --></errorMessage>
+        <name>StatusRulePendingOnlyGoToAnsweredOrClose</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Caso] Caso no se puede crear en ningún estado diferente de NUEVO --></errorMessage>
+        <name>StatusRuleStartWithNew</name>
+    </validationRules>
 </CustomObjectTranslation>

@@ -115,7 +115,7 @@ public class CaseUtil
                 }
             }
 
-            if (!idSet.isEmpty() )
+            if ( !idSet.isEmpty() )
             {
                 String whereClause = 'ClaimNumber__c!=NULL';
                 // Define the context for the RollupSummariesUtil.summarize() method
@@ -140,7 +140,7 @@ public class CaseUtil
 
                 responseObject = (Contact[]) responseObject;
 
-                if (responseObject != null && !responseObject.isEmpty() )
+                if ( responseObject != null && !responseObject.isEmpty() )
                 {
                     update responseObject;
                 }
@@ -166,7 +166,7 @@ public class CaseUtil
             {
                 if (
                     !String.isBlank(caso.Origin) &&
-                    (caso.Origin.equals('Web') || caso.Origin.equals('Email') )
+                    ( caso.Origin.equals('Web') || caso.Origin.equals('Email') )
                     )
                 {
                     //Si se ha informado el número de póliza, buscar la póliza y asignar el cliente correspondiente
@@ -216,7 +216,7 @@ public class CaseUtil
                         caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c)
                         )
                     {
-                        if (caso.SourceCountry__c.equals('France') )
+                        if ( caso.SourceCountry__c.equals('France') )
                         {
                             List<Label_Translations__mdt> TypeTranslaton = [
                                 SELECT French__c

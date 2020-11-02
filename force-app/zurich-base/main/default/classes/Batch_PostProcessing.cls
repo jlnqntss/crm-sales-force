@@ -18,7 +18,7 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
     global Batch_PostProcessing(String q)
     {
         this();
-        if (!String.isBlank(q) )
+        if ( !String.isBlank(q) )
         {
             query = q;
         }
@@ -44,13 +44,13 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
 
         try
         {
-            if (scope != null && !scope.isEmpty() )
+            if ( scope != null && !scope.isEmpty() )
             {
                 for (Order ord : processedOrders)
                 {
                     keys.add(ord.id); //guardar ids para la query de las covers
 
-                    if (!ord.OrderItems.isEmpty() )
+                    if ( !ord.OrderItems.isEmpty() )
                     {
                         for (OrderItem oi : ord.OrderItems)
                         {
@@ -58,7 +58,7 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
                         }
                     }
 
-                    if (!ord.Descuentos__r.isEmpty() )
+                    if ( !ord.Descuentos__r.isEmpty() )
                     {
                         for (Discount__c dis : ord.Descuentos__r)
                         {
@@ -75,17 +75,17 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
                     WHERE Updated__c = FALSE AND PolicyProduct__r.OrderId = :keys
                 ];
 
-                if (!coversToDelete.isEmpty() )
+                if ( !coversToDelete.isEmpty() )
                 {
                     delete coversToDelete;
                 }
 
-                if (!itemsToDelete.isEmpty() )
+                if ( !itemsToDelete.isEmpty() )
                 {
                     delete itemsToDelete;
                 }
 
-                if (!discountsToDelete.isEmpty() )
+                if ( !discountsToDelete.isEmpty() )
                 {
                     delete discountsToDelete;
                 }
@@ -103,6 +103,5 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

@@ -16,7 +16,7 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
     global Batch_DeleteLeads(String q)
     {
         this();
-        if (!String.isBlank(q) )
+        if ( !String.isBlank(q) )
         {
             query = q;
         }
@@ -38,7 +38,7 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
 
         try
         {
-            if (scope != null && !scope.isEmpty() )
+            if ( scope != null && !scope.isEmpty() )
             {
                 delete leadsToDelete;
             }
@@ -53,6 +53,5 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }
