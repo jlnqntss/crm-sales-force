@@ -45,11 +45,11 @@ global with sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPIServi
       Integer version = WS_BaseAPIService.version;
       String vendor = WS_BaseAPIService.vendor;
 
+      BusinessInsuranceRaterService.version = version;
+      String requestInformation = request.requestBody.toString();
+
       switch on resource {
         when 'offers' {
-          BusinessInsuranceRaterService.version = version;
-          String requestInformation = request.requestBody.toString();
-
           //TODO: Confirmar si sería mejor sacar el lastStep buscandolo directamente en el string y no haciendo un deserializeUntyped
           Map<String, Object> requestInformationJSON = (Map<String, Object>) JSON.deserializeUntyped(
             requestInformation
@@ -96,6 +96,10 @@ global with sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPIServi
               'LastStep field missing'
             );
           }
+        }
+        when 'interactions' {
+          //TODO parsear la respuesta y llamar al servicio que corresponda
+          response.statusCode = 200;
         }
       }
     } catch (WS_BaseAPIService.ApiException exAPI) {
