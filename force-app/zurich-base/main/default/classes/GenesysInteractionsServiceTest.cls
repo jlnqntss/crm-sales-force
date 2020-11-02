@@ -1,17 +1,16 @@
 @isTest(SeeAllData = false)
 public without sharing class GenesysInteractionsServiceTest
 {
-    public static Account acc;
-    public static Task interaction;
     /**
-     * creación de reistros necesarios
+     * creación de registros necesarios
      **
      * @author nescudero
      * @date 23/10/2020
      */
-    public static void setUp()
+    @testSetup
+    public static void createScenario()
     {
-        acc = new Account();
+        Account acc = new Account();
         acc.LastName = 'nescudero';
         acc.LegalEntity__pc = Label.GeneralInsurance;
         insert acc;
@@ -28,7 +27,12 @@ public without sharing class GenesysInteractionsServiceTest
 
         Case caso = new Case();
         caso.AccountId = acc.Id;
+
         insert caso;
+
+        caso.OwnerId = USerInfo.getUserid();
+
+        update caso;
 
         Opportunity opp = new Opportunity();
         opp.AccountId = acc.Id;
@@ -38,7 +42,7 @@ public without sharing class GenesysInteractionsServiceTest
         opp.Scope__c = 'General';
         insert opp;
 
-        interaction = new Task();
+        Task interaction = new Task();
         interaction.Status = 'Nueva';
         interaction.Priority = 'Normal';
         interaction.CallObject = 'ucid';
@@ -48,167 +52,481 @@ public without sharing class GenesysInteractionsServiceTest
         insert interaction;
     }
 
+
+    // #region initInteraction tests
+
     /**
-     * válida la devolución de un BestAgent y creación de una task
+     * Valida el escenario en el que para un interacción Inbound hay una oportunidad abierta para un cliente
+     * relacioando
      **
-     * @author nescudero
-     * @date 26/10/2020
+     * @author jmartinezpisson
+     * @date 02/11/2020
      */
     @IsTest
-    static void test_initInteraction()
+    static void test_initInteraction_noInteractionId()
     {
-        setUp(); //Se insertan Opp y Case así que ya tendrán Owner
-        String callLogId = String.valueOf(interaction.Id);
-        String screenPopRecordId = acc.Id;
-        Case caso = [
-            SELECT
-            TYPEOF Owner
-            WHEN User THEN Email
-            END
-            FROM Case
-        ][0];
-        String bestAgentCase = caso.Owner.Email;
-        Opportunity opp = [SELECT Owner.Email FROM Opportunity][0];
-        String bestAgentOpp = opp.Owner.Email;
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
 
-        GenesysInteractionsService.BestAgent expectedBaCaseOut = new GenesysInteractionsService.BestAgent(
-            screenPopRecordId,
-            callLogId,
-            bestAgentCase
-            );
-        GenesysInteractionsService.BestAgent expectedBaOppIn = new GenesysInteractionsService.BestAgent(
-            screenPopRecordId,
-            callLogId,
-            bestAgentOpp
-            );
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId =null;
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
 
-        GenesysInteractionsService.InteractionRequest requestBaCaseOut = new GenesysInteractionsService.InteractionRequest();
-        requestBaCaseOut.interaction = 'aaa';
-        requestBaCaseOut.interactionType = 'Outbound';
-        requestBaCaseOut.fromId = '123456789';
-        requestBaCaseOut.toId = '123456789';
-        requestBaCaseOut.queueId = '0001';
-        requestBaCaseOut.lookFor = 'Case';
-        GenesysInteractionsService.InteractionRequest requestBaOppIn = new GenesysInteractionsService.InteractionRequest();
-        requestBaOppIn.interaction = 'bbb';
-        requestBaOppIn.interactionType = 'Inbound';
-        requestBaOppIn.fromId = 'nescudero@nts-solutions.com';
-        requestBaOppIn.toId = 'nescudero@nts-solutions.com';
-        requestBaOppIn.queueId = '0002';
-        requestBaOppIn.lookFor = 'Opportunity';
-        requestBaOppIn.scope = 'all';
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        GenesysInteractionsService.GenesysInteractionsServiceException expectedError;
 
         Test.startTest();
-        GenesysInteractionsService.version = 1; //Importante
-        GenesysInteractionsService.BestAgent baCaseOut = GenesysInteractionsService.initInteraction(
-            requestBaCaseOut
-            );
-        GenesysInteractionsService.version = 1; //Importante
-        GenesysInteractionsService.BestAgent baOppIn = GenesysInteractionsService.initInteraction(
-            requestBaOppIn
-            );
+
+        try
+        {
+            GenesysInteractionsService.initInteraction(testInteractionLog);
+        }
+        catch(GenesysInteractionsService.GenesysInteractionsServiceException error)
+        {
+            expectedError = error;
+        }
+
         Test.stopTest();
 
-        List<Task> tasks = [SELECT Id FROM Task];
-        System.assertEquals(
-            3,
-            tasks.size(),
-            'Se debió crear 2 tasks, una por cada initInteraction + 1 existente en el setUp()'
-            );
-        System.assertEquals(
-            expectedBaCaseOut.bestAgentId,
-            baCaseOut.bestAgentId,
-            'El mejor agente debería haber coincidido'
-            );
-        System.assertEquals(
-            expectedBaOppIn.bestAgentId,
-            baOppIn.bestAgentId,
-            'El mejor agente debería haber coincidido'
-            );
+        // Then
+        System.assertNotEquals(null, expectedError, 'No se ha lanzado una excepción');
+    }
+
+
+    /**
+     * Valida el escenario en el que para un interacción Inbound hay una oportunidad abierta para un cliente
+     * relacioando
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @IsTest
+    static void test_initInteraction_outboundMatchedOpportunityPhoneInteraction()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
+        System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(false, expectedTasks.isEmpty(), 'No se han generado tareas');
+        System.assertEquals(expectedTasks[0].Id, testInteractionLog.callLogId, 'No coinciden el Id. de tarea');
+        System.assertEquals(expectedTasks[0].CallObject, testInteractionLog.interactionId, 'No coinciden el Id. de tarea');
+        System.assertEquals(expectedTasks[0].WhoId, testInteractionLog.customerId, 'No coinciden el Id. de cliente de tarea');
+        System.assertEquals(expectedTasks[0].WhatId, testInteractionLog.screenPopRecordId, 'No coinciden el Id. de registro relacionado de tarea');
+        System.assertEquals(expectedTasks[0].Status, 'Nueva', 'El estado de la tarea no es el inicial');
+    }
+
+
+    // #endregion
+
+    // #region findBestAgentFor tests
+
+
+    /**
+     * Valida el escenario en el que para un interacción Inbound hay una oportunidad abierta para un cliente
+     * relacioando
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @IsTest
+    static void test_findBestAgentFor_noRecordMatches()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '123456789';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        delete [SELECT Id FROM Opportunity];
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.findBestAgentFor(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(testInteractionLog.customerId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de cliente');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(null, testInteractionLog.bestAgentId, 'El id. de agenet no es nulo');
+        System.assertEquals(true, expectedTasks.isEmpty(), 'Se han generado tareas');
     }
 
     /**
-     * válida la creación de una Task
+     * Valida el escenario en el que para un interacción Inbound hay una oportunidad abierta para un cliente
+     * relacioando
      **
-     * @author nescudero
-     * @date 23/10/2020
+     * @author jmartinezpisson
+     * @date 02/11/2020
      */
     @IsTest
-    static void test_createOnqueueInteraction()
+    static void test_findBestAgentFor_ByPhone_inboundMatchedOpportunityInteraction()
     {
-        String ucid = '1234';
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
 
+        testInteractionLog.fromId = '123456789';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+        testInteractionLog.lookFor = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
         Test.startTest();
-        GenesysInteractionsService.createOnqueueInteraction(ucid);
+
+        GenesysInteractionsService.findBestAgentFor(testInteractionLog);
+
         Test.stopTest();
 
-        List<Task> tasks = [SELECT Id FROM Task];
+        // Then
+        Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
 
-        System.assertEquals(1, tasks.size(), 'Se debió crear 1 task');
+        System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
+        System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(true, expectedTasks.isEmpty(), 'Se han generado tareas');
     }
 
     /**
-     * válida la devolución de un BestAgent
+     * Valida el escenario en el que para un interacción Inbound hay una oportunidad abierta para un cliente
+     * relacioando
      **
-     * @author nescudero
-     * @date 23/10/2020
+     * @author jmartinezpisson
+     * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor()
+    static void test_findBestAgentFor_ByPhone_outboundMatchedOpportunityInteraction()
     {
-        setUp(); //Se insertan Opp y Case así que ya tendrán Owner
-        String callLogId = String.valueOf(interaction.Id);
-        String screenPopRecordId = acc.Id;
-        Case caso = [
-            SELECT
-            TYPEOF Owner
-            WHEN User THEN Email
-            END
-            FROM Case
-        ][0];
-        String bestAgentCase = caso.Owner.Email;
-        Opportunity opp = [SELECT Owner.Email FROM Opportunity][0];
-        String bestAgentOpp = opp.Owner.Email;
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
 
-        GenesysInteractionsService.BestAgent expectedBaCaseOut = new GenesysInteractionsService.BestAgent(
-            screenPopRecordId,
-            callLogId,
-            bestAgentCase
-            );
-        GenesysInteractionsService.BestAgent expectedBaOppIn = new GenesysInteractionsService.BestAgent(
-            screenPopRecordId,
-            callLogId,
-            bestAgentOpp
-            );
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
 
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
         Test.startTest();
-        GenesysInteractionsService.BestAgent baCaseOut = GenesysInteractionsService.findBestAgentFor(
-            callLogId,
-            'Outbound',
-            '123456789',
-            '123456789',
-            'Case',
-            'General'
-            );
-        GenesysInteractionsService.BestAgent baOppIn = GenesysInteractionsService.findBestAgentFor(
-            callLogId,
-            'Inbound',
-            'nescudero@nts-solutions.com',
-            'nescudero@nts-solutions.com',
-            'Opportunity',
-            'General'
-            );
+
+        GenesysInteractionsService.findBestAgentFor(testInteractionLog);
+
         Test.stopTest();
 
-        System.assertEquals(
-            expectedBaCaseOut.bestAgentId,
-            baCaseOut.bestAgentId,
-            'El mejor agente debería haber coincidido'
-            );
-        System.assertEquals(
-            expectedBaOppIn.bestAgentId,
-            baOppIn.bestAgentId,
-            'El mejor agente debería haber coincidido'
-            );
+        // Then
+        Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
+        System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(true, expectedTasks.isEmpty(), 'Se han generado tareas');
     }
+
+
+    /**
+     * Valida el escenario en el que para un interacción Inbound hay una caso abierto para un cliente
+     * relacioando
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @IsTest
+    static void test_findBestAgentFor_ByPhone_inboundMatchedCaseInteraction()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '123456789';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+        testInteractionLog.lookFor = 'Case';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.findBestAgentFor(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        Case expectedCase = [SELECT AccountId, Owner.Email FROM Case LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(expectedCase.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
+        System.assertEquals(expectedCase.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(true, expectedTasks.isEmpty(), 'Se han generado tareas');
+    }
+
+    /**
+     * Valida el escenario en el que para un interacción Outbound hay un caso abierto para un cliente
+     * relacioando
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @IsTest
+    static void test_findBestAgentFor_ByPhone_outboundMatchedCaseInteraction()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Case';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toid]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.findBestAgentFor(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        Case expectedCase = [SELECT AccountId, Owner.Email FROM Case LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(expectedCase.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
+        System.assertEquals(expectedCase.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(true, expectedTasks.isEmpty(), 'Se han generado tareas');
+    }
+
+
+    /**
+     * Valida el escenario en el que para un interacción Inbound hay una oportunidad abierta para un cliente
+     * relacioando
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @IsTest
+    static void test_findBestAgentFor_ByEmailinboundMatchedOpportunityInteraction()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = 'nescudero@nts-solutions.com';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+        testInteractionLog.lookFor = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.fromId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.findBestAgentFor(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
+        System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(true, expectedTasks.isEmpty(), 'Se han generado tareas');
+    }
+
+    /**
+     * Valida el escenario en el que para un interacción Inbound hay una oportunidad abierta para un cliente
+     * relacioando
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @IsTest
+    static void test_findBestAgentFor_ByEmail_outboundMatchedOpportunityInteraction()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = 'nescudero@nts-solutions.com';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.toId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.findBestAgentFor(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
+        System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(true, expectedTasks.isEmpty(), 'Se han generado tareas');
+    }
+
+
+    /**
+     * Valida el escenario en el que para un interacción Inbound hay una caso abierto para un cliente
+     * relacioando
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @IsTest
+    static void test_findBestAgentFor_ByEmail_inboundMatchedCaseInteraction()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = 'nescudero@nts-solutions.com';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+        testInteractionLog.lookFor = 'Outbound';
+        testInteractionLog.lookFor = 'Case';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.fromId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.findBestAgentFor(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        Case expectedCase = [SELECT AccountId, Owner.Email FROM Case LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(expectedCase.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
+        System.assertEquals(expectedCase.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(true, expectedTasks.isEmpty(), 'Se han generado tareas');
+    }
+
+    /**
+     * Valida el escenario en el que para un interacción Outbound hay un caso abierto para un cliente
+     * relacioando
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @IsTest
+    static void test_findBestAgentFor_ByEmail_outboundMatchedCaseInteraction()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = 'nescudero@nts-solutions.com';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Case';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.toId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.findBestAgentFor(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        Case expectedCase = [SELECT AccountId, Owner.Email FROM Case LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(expectedCase.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
+        System.assertEquals(expectedCase.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
+        System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(true, expectedTasks.isEmpty(), 'Se han generado tareas');
+    }
+
+    // #endregion
 }

@@ -1,16 +1,16 @@
 @isTest(SeeAllData = false)
-public without sharing class WS_GenesysAPIServiceTest
+private class WS_GenesysAPIServiceTest
 {
-    public static Account acc;
     /**
-     * creación de reistros necesarios
+     * creación de registros necesarios
      **
      * @author nescudero
-     * @date 26/10/2020
+     * @date 23/10/2020
      */
-    public static void setUp()
+    @testSetup
+    static void createScenario()
     {
-        acc = new Account();
+        Account acc = new Account();
         acc.LastName = 'nescudero';
         acc.LegalEntity__pc = Label.GeneralInsurance;
         insert acc;
@@ -25,15 +25,12 @@ public without sharing class WS_GenesysAPIServiceTest
         cpe.EmailAddress = 'nescudero@nts-solutions.com';
         insert cpe;
 
-        Case caso = new Case();
-        caso.AccountId = acc.Id;
-        insert caso;
-
         Opportunity opp = new Opportunity();
         opp.AccountId = acc.Id;
         opp.Name = 'opp';
         opp.StageName = 'New';
         opp.CloseDate = System.today().addDays(10);
+        opp.Scope__c = 'General';
         insert opp;
     }
 
@@ -46,10 +43,18 @@ public without sharing class WS_GenesysAPIServiceTest
     @isTest
     static void test_doPost()
     {
-        setUp(); //Se insertan Opp y Case así que ya tendrán Owner
-        String screenPopRecordId = acc.Id;
-        Opportunity opp = [SELECT Owner.Email FROM Opportunity][0];
-        String bestAgentOpp = opp.Owner.Email;
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '123456789';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
 
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -57,9 +62,7 @@ public without sharing class WS_GenesysAPIServiceTest
         request.requestURI = '/genesys-cloud/v1/interactions/init';
         request.httpMethod = 'POST';
         request.addHeader('Content-Type', 'application/json');
-        request.requestBody = Blob.valueOf(
-            '{"interaction":"123456789","interactionType":"Inbound","fromId": "nescudero@nts-solutions.com","toId": "123456789","queueId": "0001","lookFor": "Opportunity"}'
-            );
+        request.requestBody = Blob.valueOf(JSON.serialize(testInteractionLog) );
 
         RestContext.request = request;
         RestContext.response = response;
@@ -68,16 +71,98 @@ public without sharing class WS_GenesysAPIServiceTest
         WS_GenesysAPIService.doPost();
         Test.stopTest();
 
+        // Then
         Task createdTask = [SELECT id FROM Task][0];
-        System.assertEquals(
-            '{"screenPopRecordId":"' +
-            screenPopRecordId +
-            '","callLogId":"' +
-            createdTask.Id +
-            '","bestAgentId":"' +
-            bestAgentOpp +
-            '"}',
-            response.responseBody.toString()
-            );
+
+        GenesysInteractionsService.Interaction expectedInteraction = (GenesysInteractionsService.Interaction) JSON.deserialize(response.responseBody.toString(), GenesysInteractionsService.Interaction.class);
+
+        System.assertEquals(createdTask.Id, expectedInteraction.callLogId);
+        System.assertEquals(UserInfo.getUserEmail(), expectedInteraction.bestAgentId);
+    }
+
+
+    @isTest
+    static void test_doPost_invalidInput_requiredFields()
+    {
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '123456789';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        //request.requestURI = System.URL.getSalesforceBaseURL().toExternalForm()+'/genesys-cloud/v1/interactions/init';
+        request.requestURI = '/genesys-cloud/v1/interactions/init';
+        request.httpMethod = 'POST';
+        request.addHeader('Content-Type', 'application/json');
+        request.requestBody = Blob.valueOf(JSON.serialize(testInteractionLog) );
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doPost();
+        Test.stopTest();
+
+        // Then
+        Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(RestContext.response.responseBody.toString() );
+
+        System.assertEquals(500, RestContext.response.statusCode);
+        System.assertEquals(GenesysInteractionsService.MISSING_FIELDS_REQUIRED, (String) responseMap.get('message') );
+    }
+
+    @isTest
+    static void test_doPost_invalidVersion()
+    {
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '123456789';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        //request.requestURI = System.URL.getSalesforceBaseURL().toExternalForm()+'/genesys-cloud/v1/interactions/init';
+        request.requestURI = '/genesys-cloud/asv/interactions/init';
+        request.httpMethod = 'POST';
+        request.addHeader('Content-Type', 'application/json');
+        request.requestBody = Blob.valueOf(JSON.serialize(testInteractionLog) );
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doPost();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(400, RestContext.response.statusCode);
+    }
+    @isTest
+    static void test_doPost_invalidContentType()
+    {
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '123456789';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        //request.requestURI = System.URL.getSalesforceBaseURL().toExternalForm()+'/genesys-cloud/v1/interactions/init';
+        request.requestURI = '/genesys-cloud/v1/interactions/init';
+        request.httpMethod = 'POST';
+        request.requestBody = Blob.valueOf(JSON.serialize(testInteractionLog) );
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doPost();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(400, RestContext.response.statusCode);
     }
 }

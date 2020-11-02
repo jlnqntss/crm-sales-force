@@ -1,8 +1,20 @@
 public without sharing class GenesysInteractionsService
 {
-
-    static final String MISSING_FIELDS_REQUIRED = 'some required fields are missing';
     public static Integer version { get; set; }
+    @TestVisible
+    static final String MISSING_FIELDS_REQUIRED = 'some required fields are missing';
+    @TestVisible
+    static final String SCOPE_CODE_ALL = 'all';
+    @TestVisible
+    static final String SCOPE_CODE_ZE = 'ze';
+    @TestVisible
+    static final String SCOPE_CODE_KLINC = 'klinc';
+    static final Map<String, String> SCOPE_NAMES_BY_CODE = new Map<String, String> 
+    {
+        SCOPE_CODE_ALL  => 'General',
+        SCOPE_CODE_ZE => 'Zurich Empresas',
+        SCOPE_CODE_KLINC => 'Klinc'
+    };
 
     /**
      * Sirve a WS_GenesysAPIService
@@ -13,49 +25,21 @@ public without sharing class GenesysInteractionsService
      * @author nescudero
      * @date 22/10/2020
      */
-    public static BestAgent initInteraction(InteractionRequest request)
+    public static Interaction initInteraction(Interaction request)
     {
-        String screenPopRecordId;
-        String callLogId;
-        String bestAgentId;
-        BestAgent ba = new BestAgent(screenPopRecordId, callLogId, bestAgentId); //Se devolverá todo a null si no entra en el flujo
-
-        if (version == 1)
+        // 1 - Si el servicio no recibe el from, to o interactionType, devolverá un KO
+        if ( String.isBlank(request.interactionId) || String.isBlank(request.interactionType) || String.isBlank(request.fromId) || String.isBlank(request.toId) || String.isBlank(request.lookFor))
         {
-            //Si el servicio no recibe el from, to o interactionType, devolverá un KO
-            if (
-                request.interactionType == null ||
-                request.fromId == null ||
-                request.toId == null
-                )
-            {
-                throw new WS_BaseAPIService.ApiException('BAD_REQUEST', MISSING_FIELDS_REQUIRED);
-            }
-
-            //Si el servicio no recibe ucid, no generará tarea y por tanto no devolverá callLogId
-            if (request.interaction != null)
-            {
-                //1º Dejar un registro de la interacción entrante en Salesforce por si el usuario abandona
-                callLogId = createOnqueueInteraction(request.interaction);
-            }
-
-            //Si el servicio no recibe lookFor, no buscará el bestAgentId ni screenPopRecordId
-            if (request.lookFor != null)
-            {
-                //2º Identificar al cliente y el último registro de interés abierto (Oportunidad/Caso).
-                //3º Identificar al gestor preferente (usuario) de la interacción
-                ba = findBestAgentFor(
-                    callLogId,
-                    request.interactionType,
-                    request.fromId,
-                    request.toId,
-                    request.lookFor,
-                    request.scope
-                    );
-            }
+            throw new GenesysInteractionsServiceException(MISSING_FIELDS_REQUIRED);
         }
 
-        return ba;
+        // 2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
+        findBestAgentFor(request);
+
+        // 3 - Se una tarea como registro dela interacción en cola
+        createOnQueueInteraction(request);
+
+        return request;
     }
 
     /**
@@ -63,27 +47,119 @@ public without sharing class GenesysInteractionsService
      * @author nescudero
      * @date 22/10/2020
      */
-    @TestVisible
-    private static String createOnqueueInteraction(String ucid)
+    public static String createOnQueueInteraction(Interaction interactionLog)
     {
-        Id rtId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
+        Id interactionRecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
                   .get('Interaction')
                   .getRecordTypeId();
 
         //WIP
-        Task interaction = new Task();
+        Task interactionTask = new Task(
+            Subject = 'Llamada ' + Datetime.now().format(),
+            Status = 'Nueva',
+            Priority = 'Normal',
+            CallObject = interactionLog.interactionId,
+            RecordTypeId = interactionRecordTypeId,
+            WhoId = interactionLog.customerId,
+            TaskSubtype = 'Call'
+        );
 
-        interaction.Subject = 'Llamada ' + Datetime.now().format();
-        interaction.Status = 'Nueva';
-        interaction.Priority = 'Normal';
-        interaction.CallObject = ucid;
-        interaction.RecordTypeId = rtId;
-        interaction.TaskSubtype = 'Call';
-        insert interaction;
+        if(interactionLog.screenPopRecordId != null && Id.valueOf(interactionLog.screenPopRecordId).getSobjectType() != Contact.SobjectType)
+        {
+            interactionTask.WhatId = interactionLog.screenPopRecordId;
+        }
 
-        String taskId = String.valueOf(interaction.Id);
+        insert interactionTask;
 
-        return taskId;
+        interactionLog.callLogId = interactionTask.Id;
+
+        return interactionTask.Id;
+    }
+
+
+    public static SearchResult findRelatedRecords(Interaction interactionLog)
+    {
+        return findRelatedRecords(
+            interactionLog.interactionType == 'Outbound'? interactionLog.toId:interactionLog.fromId, 
+            interactionLog.lookFor, 
+            interactionLog.scope
+        );
+    }
+
+    /** 
+     * Busca los registros relacionados con la interacción, definidos como el último registro abierto
+     * asociado a cada cliente del tipo definido por el método
+     * 
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    public static SearchResult findRelatedRecords(String searchFor, String lookFor, String scope)
+    {
+        SearchResult searchResults = new SearchResult();
+
+        // 1 - Se realiza la búsqueda de contactos
+        searchResults.names = findCustomers(searchFor);
+
+        // 2 - Se busca sobre los registros relacionados
+        Set<Id> relatedIds = new Set<Id>();
+
+        for(Contact matchedContact : searchResults.names)
+        {
+            relatedIds.add(matchedContact.Id);
+            relatedIds.add(matchedContact.AccountId);
+        }
+
+        switch on lookFor {
+            when 'Opportunity' {
+                List<Opportunity> opportunities = [SELECT Id, OwnerId, ContactId__c, isClosed, AccountId, CreatedDate, Owner.Email
+                                                    FROM Opportunity 
+                                                    WHERE isClosed = FALSE 
+                                                    AND (AccountId IN :relatedIds OR ContactId__c IN :relatedIds)
+                                                    AND Scope__c = :SCOPE_NAMES_BY_CODE.get(scope)
+                                                    ORDER BY CreatedDate DESC];
+
+                searchResults.relatedRecords = (List<SObject>) opportunities;
+            }
+
+            when 'Case' {
+                List<Case> cases = [
+                    SELECT
+                    OwnerId,
+                    AccountId,
+                    ContactId,
+                    isClosed,
+                    CreatedDate,
+                    Owner.Email
+                    FROM Case
+                    WHERE isClosed = FALSE 
+                    AND (AccountId IN :relatedIds OR ContactId IN :relatedIds)
+                    ORDER BY CreatedDate DESC
+                ];
+                
+                searchResults.relatedRecords = (List<SObject>) cases;
+            }
+        }
+
+        return searchResults;
+    }
+
+
+    /** 
+     * Busca los registros relacionados con la interacción
+     * 
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    public static List<Contact> findCustomers(String searchFor)
+    {
+        Set<Id> matchedPersonIds = new Set<Id>();
+
+        if (searchFor.contains('@'))
+        {
+            return ContactsSelector.findByEmail(new List<String> { searchFor });
+        }
+
+        return ContactsSelector.findByPhoneNumber(new List<String> { searchFor });
     }
 
     /**
@@ -93,154 +169,72 @@ public without sharing class GenesysInteractionsService
      * @author nescudero
      * @date 23/10/2020
      */
-    @TestVisible
-    private static BestAgent findBestAgentFor(String callLogId, String interactionType, String fromId, String toId, String lookFor, String scope)
+    public static Interaction findBestAgentFor(Interaction interaction)
     {
-        Id ownerId;
-        String contactPoint;
-        Boolean isContactPointPhone;
-        String screenPopRecordId;
-        String bestAgentId;
-        Set<Id> personIds = new Set<Id>();
+        SearchResult searchResults = findRelatedRecords(interaction);
+        Contact matchedContact = null;
+        SObject matchedRecord = null;
 
-        Id interactionWhoId = null;
-        Id interactionWhatId = null;
-
-        //Ver si hay que buscar en ContactPointPhone o ContactPointEmail
-        isContactPointPhone = !contactPoint.containsAny('@');
-
-        //Buscar el contacto
-        if (isContactPointPhone)
+        // 1 - Se considera como registros encontrados los primeros que se haya devuelto en las listas
+        //     El BestAgent es el propietario del registro relacionado, y se toma su Id como el email
+        if(!searchResults.names.isEmpty())
         {
-            //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
-            for (Contact matchedContact : ContactsSelector.findByPhoneNumber(new List<String> { contactPoint }) )
+            matchedContact = searchResults.names[0];
+            interaction.customerId = matchedContact.Id;
+            interaction.screenPopRecordId = matchedContact.Id;
+        }
+
+        if(!searchResults.relatedRecords.isEmpty())
+        {
+            matchedRecord = searchResults.relatedRecords[0];
+
+            if(matchedRecord instanceof Opportunity)
             {
-                personIds.add(matchedContact.Id);
-                personIds.add(matchedContact.AccountId);
+                Opportunity matchedOpty = (Opportunity) matchedRecord;
 
-                interactionWhoId = matchedContact.Id;
+                interaction.screenPopRecordId = matchedOpty.AccountId;
+                interaction.bestAgentId = matchedOpty.Owner.Email;
             }
-        }
-        else
-        {
-            List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
-            contactPointEmails = [
-                SELECT Id, EmailAddress, ContactId__c
-                FROM ContactPointEmail
-                WHERE EmailAddress = :contactPoint
-            ];
-
-            //1. Si hay múltiples clientes => Se aglutinan y se devuelve el registro más reciente
-            for (ContactPointEmail contactPointEmail : contactPointEmails)
+            else if(matchedRecord instanceof Case)
             {
-                personIds.add(contactPointEmail.ContactId__c);
+                Case matchedCase = (Case) matchedRecord;
+
+                interaction.screenPopRecordId = matchedCase.AccountId;
+                interaction.bestAgentId = matchedCase.Owner.Email;
             }
         }
 
-
-        //una vez se tiene el contacto elegido se busca su Case/Opp
-        if (!personIds.isEmpty() )
-        {
-            //Dependiendo de scope
-            String scopeFilter = '';
-            switch on scope {
-                when 'all' {
-                    scopeFilter = 'AND Scope__c = \'General\'';     //TODO: cuando esté definido esto pasar a label?
-                }
-                when 'ze' {
-                    scopeFilter = 'AND Scope__c = \'Zurich Empresas\'';     //TODO: cuando esté definido esto pasar a label?
-                }
-                when 'klinc' {
-                    scopeFilter = 'AND Scope__c = \'Klinc\'';     //TODO: cuando esté definido esto pasar a label?
-                }
-            }
-
-            //Dependiendo de lookFor
-
-
-            switch on lookFor {
-                when 'Opportunity' {
-                    List<Opportunity> opps = new List<Opportunity>();
-                    String query =
-                        'SELECT Id, OwnerId, ContactId__c, isClosed, AccountId, CreatedDate, Owner.Email FROM Opportunity WHERE isClosed = FALSE AND (AccountId IN :personIds OR ContactId__c IN :personIds) ' +
-                        scopeFilter +
-                        ' ORDER BY CreatedDate DESC';
-                    opps = Database.query(query);
-                    if (!opps.isEmpty() )
-                    {
-                        bestAgentId = opps[0].Owner.Email;
-                        screenPopRecordId = opps[0].AccountId;
-                        ownerId = opps[0].OwnerId;
-                        interactionWhatId = opps[0].Id;
-                    }
-                }
-                when 'Case' {
-                    List<Case> cases = new List<Case>();
-                    cases = [
-                        SELECT
-                        OwnerId,
-                        ContactId,
-                        isClosed,
-                        CreatedDate,
-                        TYPEOF Owner
-                        WHEN User THEN Email
-                        END
-                        FROM Case
-                        WHERE isClosed = FALSE AND ContactId IN :personIds
-                                         ORDER BY CreatedDate DESC
-                    ];
-                    if (!cases.isEmpty() )
-                    {
-                        bestAgentId = cases[0].Owner.Email;
-                        screenPopRecordId = cases[0].ContactId;
-                        ownerId = cases[0].OwnerId;
-
-                        interactionWhoId = cases[0].ContactId;
-                        interactionWhatId = cases[0].Id;
-                    }
-                }
-            }
-        }
-
-        //Actualizar la tarea si se ha conseguido el bestagent
-        if (bestAgentId != null && callLogId != null)
-        {
-            Task interaction = new Task();
-            interaction.Id = Id.valueOf(callLogId);
-            interaction.BestAgent__c = ownerId;
-            interaction.WhoId = interactionWhoId;
-            interaction.WhatId = interactionWhatId;
-            update interaction;
-        }
-
-        //Si todo ha ido bien, screenPopRecordId y bestAgentId estarán rellenos, sino se envían a null
-        BestAgent ba = new BestAgent(screenPopRecordId, callLogId, bestAgentId);
-        return ba;
+        return interaction;
     }
 
     //Salida
-    public class InteractionRequest
+    public class Interaction
     {
-        public String interaction { get; set; }
+        public String interactionId { get; set; }
         public String interactionType { get; set; }
         public String fromId { get; set; }
         public String toId { get; set; }
         public String queueId { get; set; }
         public String lookFor { get; set; }
         public String scope { get; set; }
-    }
 
-    public class BestAgent
-    {
         public String screenPopRecordId { get; set; }
+        public String customerId { get; set; }
         public String callLogId { get; set; }
         public String bestAgentId { get; set; }
 
-        public BestAgent(String screenPopRecordId, String callLogId, String bestAgentId)
+        public override String toString()
         {
-            this.screenPopRecordId = screenPopRecordId;
-            this.callLogId = callLogId;
-            this.bestAgentId = bestAgentId;
+            return JSON.serialize(this);
         }
     }
+
+    public class SearchResult
+    {
+        public transient List<Contact> names;
+        public transient List<SObject> relatedRecords;
+    }
+
+    @TestVisible
+    class GenesysInteractionsServiceException extends Exception {}
 }

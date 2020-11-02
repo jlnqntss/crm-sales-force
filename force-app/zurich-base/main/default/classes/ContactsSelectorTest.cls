@@ -2,22 +2,71 @@
 private with sharing class ContactsSelectorTest
 {
     @TestSetup
-    static void makeData()
+    public static void createScenario()
     {
-        List<Account> accounts = new List<Account>
-        {
-            new Account (
-                Name = 'Test 1'
-                ),
-            new Account (
-                Name = 'Test 2'
-                )
-        };
+        Account acc = new Account();
+        acc.LastName = 'nescudero';
+        acc.LegalEntity__pc = Label.GeneralInsurance;
+        insert acc;
 
-        insert accounts;
+        ContactPointPhone cpp = new ContactPointPhone();
+        cpp.ParentId = acc.Id;
+        cpp.TelephoneNumber = '123456789';
+        insert cpp;
+
+        ContactPointEmail cpe = new ContactPointEmail();
+        cpe.ParentId = acc.Id;
+        cpe.EmailAddress = 'nescudero@nts-solutions.com';
+        insert cpe;
     }
 
     @isTest
-    static void test_matchedRecordIds_mathedRecords()
-    {}
+    static void test_findByPhoneNumber_matchedRecords()
+    {
+        // Escenario
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id, ParentId, ContactId__c FROM ContactPointPhone WHERE TelephoneNumber = '123456789']).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+
+        // Test
+        Test.startTest();
+
+        List<Contact> matchedRecords = ContactsSelector.findByPhoneNumber(new List<String> { '123456789'});
+
+        Test.stopTest();
+
+        // Then
+        Map<Id, Contact> expectedContactsById = new Map<Id, Contact>([SELECT Id FROM Contact WHERE AccountId IN: recordIds OR Id IN: recordIds]);
+
+        for(Contact record : matchedRecords)
+        {
+            System.assertEquals(true, expectedContactsById.containsKey(record.Id) );
+        }
+    }
+
+    @isTest
+    static void test_findByEmail_matchedRecords()
+    {
+        // Escenario
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id, ParentId, ContactId__c FROM ContactPointEmail WHERE EmailAddress = 'nescudero@nts-solutions.com']).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+
+        // Test
+        Test.startTest();
+
+        List<Contact> matchedRecords = ContactsSelector.findByPhoneNumber(new List<String> { 'nescudero@nts-solutions.com'} );
+
+        Test.stopTest();
+
+        // Then
+        Map<Id, Contact> expectedContactsById = new Map<Id, Contact>([SELECT Id FROM Contact WHERE AccountId IN: recordIds OR Id IN: recordIds]);
+
+        for(Contact record : matchedRecords)
+        {
+            System.assertEquals(true, expectedContactsById.containsKey(record.Id) );
+        }
+    }
 }
