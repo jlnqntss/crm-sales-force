@@ -1,8 +1,7 @@
 public without sharing class ErrorLogHandler implements ITrigger
 {
     public ErrorLogHandler()
-    {
-    }
+    {}
 
     /**
      * bulkBefore
@@ -11,8 +10,7 @@ public without sharing class ErrorLogHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * bulkAfter
@@ -21,8 +19,7 @@ public without sharing class ErrorLogHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * beforeInsert
@@ -31,8 +28,7 @@ public without sharing class ErrorLogHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
-    {
-    }
+    {}
 
     /**
      * beforeUpdate
@@ -41,8 +37,7 @@ public without sharing class ErrorLogHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * beforeDelete
@@ -51,8 +46,7 @@ public without sharing class ErrorLogHandler implements ITrigger
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * afterInsert
@@ -74,8 +68,7 @@ public without sharing class ErrorLogHandler implements ITrigger
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * afterDelete
@@ -84,8 +77,7 @@ public without sharing class ErrorLogHandler implements ITrigger
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * andFinally
@@ -94,6 +86,5 @@ public without sharing class ErrorLogHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {
-    }
+    {}
 }

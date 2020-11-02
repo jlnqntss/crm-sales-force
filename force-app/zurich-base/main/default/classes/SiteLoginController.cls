@@ -15,6 +15,5 @@ global with sharing class SiteLoginController
     }
 
     global SiteLoginController()
-    {
-    }
+    {}
 }

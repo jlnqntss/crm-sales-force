@@ -153,8 +153,7 @@ public with sharing class TriggerFactory
             handler = (ITrigger) Type.forName(className).newInstance();
         }
         else
-        {
-        }
+        {}
         return handler;
     }
 

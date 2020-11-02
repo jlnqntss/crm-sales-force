@@ -53,6 +53,5 @@ global class Batch_DeleteMasters implements Database.Batchable<sObject>, Databas
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

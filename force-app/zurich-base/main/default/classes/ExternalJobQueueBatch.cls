@@ -14,8 +14,7 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>, Sched
     global Map<String, ExternalJobQueueBatch__mdt> settingsByOrigin = new Map<String, ExternalJobQueueBatch__mdt>();
 
     global ExternalJobQueueBatch()
-    {
-    }
+    {}
 
     global ExternalJobQueueBatch(String origin)
     {

@@ -4,7 +4,7 @@
  * @author xsobera
  * @date 30/10/2020
  */
-@isTest(SeeAllData=false)
+@isTest(SeeAllData = false)
 public with sharing class TransformerSelectorTest
 {
     @IsTest

@@ -103,6 +103,5 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

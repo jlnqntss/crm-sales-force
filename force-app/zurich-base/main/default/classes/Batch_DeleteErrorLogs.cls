@@ -55,6 +55,5 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

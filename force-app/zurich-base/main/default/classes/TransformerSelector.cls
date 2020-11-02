@@ -31,15 +31,15 @@ public with sharing class TransformerSelector
     public static List<Transformer__mdt> selectMetadataByOrigin(String originSystem)
     {
         //Devolver lista vacía
-        if (String.isBlank(originSystem))
+        if (String.isBlank(originSystem) )
         {
             return new List<Transformer__mdt>();
         }
 
         String query = String.format(
             'SELECT {0} FROM {1} WHERE Origin__c LIKE :originSystem ORDER BY {2}',
-            new List<String>{ getFieldListString(), getSObjectName(), getOrderBy() }
-        );
+            new List<String> { getFieldListString(), getSObjectName(), getOrderBy() }
+            );
 
         return (List<Transformer__mdt>) Database.query(query);
     }

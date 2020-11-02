@@ -12,8 +12,7 @@ public with sharing class PreferenceCentreController
 {
     //#Region Constructor
     public PreferenceCentreController()
-    {
-    }
+    {}
     //#endregion
 
     //#Region public classes
@@ -47,8 +46,7 @@ public with sharing class PreferenceCentreController
         }
 
         public CampaignStatus()
-        {
-        }
+        {}
     }
 
     /**

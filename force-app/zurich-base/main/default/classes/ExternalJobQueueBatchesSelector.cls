@@ -30,8 +30,7 @@ public with sharing class ExternalJobQueueBatchesSelector
     // #region Constructor
 
     public ExternalJobQueueBatchesSelector()
-    {
-    }
+    {}
 
     /**
      * Constructor de ExternalJobQueueBatchesSelector para establecer campos a recuperar

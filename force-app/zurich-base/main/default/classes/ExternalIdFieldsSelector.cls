@@ -30,8 +30,7 @@ public with sharing class ExternalIdFieldsSelector
     // #region Constructor
 
     public ExternalIdFieldsSelector()
-    {
-    }
+    {}
 
     /**
      * Constructor de ExternalIdFieldsSelector para establecer campos a recuperar

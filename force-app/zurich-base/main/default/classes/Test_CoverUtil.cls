@@ -10,8 +10,7 @@ public with sharing class Test_CoverUtil
 {
     @testSetup
     static void makeData()
-    {
-    }
+    {}
 
     @IsTest
     static void test_createCovers()

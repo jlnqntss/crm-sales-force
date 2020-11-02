@@ -19,6 +19,5 @@ private with sharing class ContactsSelectorTest
 
     @isTest
     static void test_matchedRecordIds_mathedRecords()
-    {
-    }
+    {}
 }

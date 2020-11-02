@@ -1,8 +1,7 @@
 public class ExternalRequestHandler implements ITrigger
 {
     public ExternalRequestHandler()
-    {
-    }
+    {}
 
     /**
      * bulkBefore
@@ -11,8 +10,7 @@ public class ExternalRequestHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * bulkAfter
@@ -21,8 +19,7 @@ public class ExternalRequestHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * beforeInsert
@@ -31,8 +28,7 @@ public class ExternalRequestHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
-    {
-    }
+    {}
 
     /**
      * beforeUpdate
@@ -41,8 +37,7 @@ public class ExternalRequestHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * beforeDelete
@@ -51,8 +46,7 @@ public class ExternalRequestHandler implements ITrigger
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * afterInsert
@@ -62,8 +56,7 @@ public class ExternalRequestHandler implements ITrigger
      * has modified any values. The record is 'read only' by this point.
      */
     public void afterInsert(List<SObject> newList)
-    {
-    }
+    {}
 
     /**
      * afterUpdate
@@ -72,8 +65,7 @@ public class ExternalRequestHandler implements ITrigger
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * afterDelete
@@ -82,8 +74,7 @@ public class ExternalRequestHandler implements ITrigger
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * andFinally

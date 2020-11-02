@@ -9,8 +9,7 @@ public class Test_ContactUtil
 {
     @testSetup
     static void makeData()
-    {
-    }
+    {}
 
     @isTest
     static void test_adaptCustomerNum()

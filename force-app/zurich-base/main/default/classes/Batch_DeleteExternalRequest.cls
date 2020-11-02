@@ -57,6 +57,5 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }

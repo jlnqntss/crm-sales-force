@@ -30,8 +30,7 @@ public with sharing class AsyncApexJobsSelector
     // #region Constructor
 
     public AsyncApexJobsSelector()
-    {
-    }
+    {}
 
     /**
      * Constructor de AsyncApexJobsSelector para establecer campos a recuperar

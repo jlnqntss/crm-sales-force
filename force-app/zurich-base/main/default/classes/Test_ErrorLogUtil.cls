@@ -9,8 +9,7 @@ public class Test_ErrorLogUtil
 {
     @testSetup
     static void makeData()
-    {
-    }
+    {}
 
     @isTest
     static void testCommitErrors()

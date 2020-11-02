@@ -227,8 +227,7 @@ public class RollupSummariesUtil
     }
 
     public class BadRollUpSummaryStateException extends Exception
-    {
-    }
+    {}
 
     public enum summaryOperation {
         Sum,

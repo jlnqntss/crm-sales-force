@@ -53,6 +53,5 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
     }
 
     global void finish(Database.BatchableContext BC)
-    {
-    }
+    {}
 }
