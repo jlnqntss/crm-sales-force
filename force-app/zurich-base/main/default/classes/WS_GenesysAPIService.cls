@@ -44,14 +44,14 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService {
         when 'interactions' {
           GenesysInteractionsService.version = version;
           if (RestContext.request.requestURI.endsWith('/init')) {
-            GenesysInteractionsService.InteractionRequest ir = (GenesysInteractionsService.InteractionRequest) JSON.deserialize(
+            GenesysInteractionsService.InteractionRequest interactionRequest = (GenesysInteractionsService.InteractionRequest) JSON.deserialize(
               request.requestBody.toString(),
               GenesysInteractionsService.InteractionRequest.class
             );
-            GenesysInteractionsService.BestAgent ba = GenesysInteractionsService.initInteraction(
-              ir
+            GenesysInteractionsService.BestAgent bestAgent = GenesysInteractionsService.initInteraction(
+              interactionRequest
             );
-            response.responseBody = Blob.valueOf(JSON.serialize(ba));
+            response.responseBody = Blob.valueOf(JSON.serialize(bestAgent));
             response.statusCode = 201;
           }
         }

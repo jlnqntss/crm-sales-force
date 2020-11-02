@@ -4,13 +4,15 @@
  **/
 
 @isTest
-global class Mock_IBA_ResponseGenerator implements HttpCalloutMock {
-  static global HTTPResponse respond(HTTPRequest req) {
-    // Create a fake response
-    HttpResponse res = new HttpResponse();
-    res.setHeader('Content-Type', 'application/json');
-    res.setBody(Label.IBA_Response_Body);
-    res.setStatusCode(200);
-    return res;
-  }
+global class Mock_IBA_ResponseGenerator implements HttpCalloutMock
+{
+    static global HTTPResponse respond(HTTPRequest req)
+    {
+        // Create a fake response
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setBody(Label.IBA_Response_Body);
+        res.setStatusCode(200);
+        return res;
+    }
 }

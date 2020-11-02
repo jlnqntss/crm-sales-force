@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Subtipo --></label>
+    <name>Subtype__c</name>
+    <picklistValues>
+        <masterLabel>Activación</masterLabel>
+        <translation><!-- Activación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Apertura</masterLabel>
+        <translation><!-- Apertura --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>App</masterLabel>
+        <translation><!-- App --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Bloqueo de IMEI</masterLabel>
+        <translation><!-- Bloqueo de IMEI --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cambio de condiciones de mi seguro</masterLabel>
+        <translation><!-- Cambio de condiciones de mi seguro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cambio de datos de contacto</masterLabel>
+        <translation><!-- Cambio de datos de contacto --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cambio de objeto asegurado</masterLabel>
+        <translation><!-- Cambio de objeto asegurado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Catálogo</masterLabel>
+        <translation><!-- Catálogo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Coberturas</masterLabel>
+        <translation><!-- Coberturas --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Contraseña</masterLabel>
+        <translation><!-- Contraseña --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Contratar seguro</masterLabel>
+        <translation><!-- Contratar seguro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Denegación de cobertura</masterLabel>
+        <translation><!-- Denegación de cobertura --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Desactivar FMI</masterLabel>
+        <translation><!-- Desactivar FMI --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación incorrecta</masterLabel>
+        <translation><!-- Documentación incorrecta --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Estado de mi caso</masterLabel>
+        <translation><!-- Estado de mi caso --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Franquicia</masterLabel>
+        <translation><!-- Franquicia --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Incidencia contratación</masterLabel>
+        <translation><!-- Incidencia contratación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Incidencias</masterLabel>
+        <translation><!-- Incidencias --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Otros</masterLabel>
+        <translation><!-- Otros --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Pago de franquicia</masterLabel>
+        <translation><!-- Pago de franquicia --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Partnership</masterLabel>
+        <translation><!-- Partnership --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Precio de mi seguro</masterLabel>
+        <translation><!-- Precio de mi seguro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Problema con la reparación</masterLabel>
+        <translation><!-- Problema con la reparación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recogida/Entrega</masterLabel>
+        <translation><!-- Recogida/Entrega --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Renovación</masterLabel>
+        <translation><!-- Renovación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Solicitud factura</masterLabel>
+        <translation><!-- Solicitud factura --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

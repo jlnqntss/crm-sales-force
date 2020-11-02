@@ -1,6 +1,6 @@
 @isTest(SeeAllData=false)
 public without sharing class GenesysInteractionsServiceTest {
-  public static Contact c;
+  public static Account acc;
   public static Task interaction;
   /**
    * creación de reistros necesarios
@@ -9,27 +9,27 @@ public without sharing class GenesysInteractionsServiceTest {
    * @date 23/10/2020
    */
   public static void setUp() {
-    c = new Contact();
-    c.LastName = 'nescudero';
-    c.LegalEntity__c = Label.GeneralInsurance;
-    insert c;
+    acc = new Account();
+    acc.LastName = 'nescudero';
+    acc.LegalEntity__pc = Label.GeneralInsurance;
+    insert acc;
 
     ContactPointPhone cpp = new ContactPointPhone();
-    cpp.ContactId__c = c.Id;
+    cpp.ParentId = acc.Id;
     cpp.TelephoneNumber = '123456789';
     insert cpp;
 
     ContactPointEmail cpe = new ContactPointEmail();
-    cpe.ContactId__c = c.Id;
+    cpe.ParentId = acc.Id;
     cpe.EmailAddress = 'nescudero@nts-solutions.com';
     insert cpe;
 
     Case caso = new Case();
-    caso.ContactId = c.Id;
+    caso.AccountId = acc.Id;
     insert caso;
 
     Opportunity opp = new Opportunity();
-    opp.ContactId__c = c.Id;
+    opp.AccountId = acc.Id;
     opp.Name = 'opp';
     opp.StageName = 'New';
     opp.CloseDate = System.today().addDays(10);
@@ -55,9 +55,8 @@ public without sharing class GenesysInteractionsServiceTest {
   @IsTest
   static void test_initInteraction() {
     setUp(); //Se insertan Opp y Case así que ya tendrán Owner
-    String ucid = '1234';
     String callLogId = String.valueOf(interaction.Id);
-    String screenPopRecordId = c.Id;
+    String screenPopRecordId = acc.Id;
     Case caso = [
       SELECT
         TYPEOF Owner
@@ -81,25 +80,27 @@ public without sharing class GenesysInteractionsServiceTest {
     );
 
     GenesysInteractionsService.InteractionRequest requestBaCaseOut = new GenesysInteractionsService.InteractionRequest();
-    requestBaCaseOut.interaction = ucid;
+    requestBaCaseOut.interaction = 'aaa';
     requestBaCaseOut.interactionType = 'Outbound';
     requestBaCaseOut.fromId = '123456789';
     requestBaCaseOut.toId = '123456789';
     requestBaCaseOut.queueId = '0001';
     requestBaCaseOut.lookFor = 'Case';
     GenesysInteractionsService.InteractionRequest requestBaOppIn = new GenesysInteractionsService.InteractionRequest();
-    requestBaOppIn.interaction = ucid;
+    requestBaOppIn.interaction = 'bbb';
     requestBaOppIn.interactionType = 'Inbound';
     requestBaOppIn.fromId = 'nescudero@nts-solutions.com';
     requestBaOppIn.toId = 'nescudero@nts-solutions.com';
     requestBaOppIn.queueId = '0002';
     requestBaOppIn.lookFor = 'Opportunity';
-    requestBaOppIn.scope = 'General';
+    requestBaOppIn.scope = 'all';
 
     Test.startTest();
+    GenesysInteractionsService.version = 1; //Importante
     GenesysInteractionsService.BestAgent baCaseOut = GenesysInteractionsService.initInteraction(
       requestBaCaseOut
     );
+    GenesysInteractionsService.version = 1; //Importante
     GenesysInteractionsService.BestAgent baOppIn = GenesysInteractionsService.initInteraction(
       requestBaOppIn
     );
@@ -152,7 +153,7 @@ public without sharing class GenesysInteractionsServiceTest {
   static void test_findBestAgentFor() {
     setUp(); //Se insertan Opp y Case así que ya tendrán Owner
     String callLogId = String.valueOf(interaction.Id);
-    String screenPopRecordId = c.Id;
+    String screenPopRecordId = acc.Id;
     Case caso = [
       SELECT
         TYPEOF Owner
