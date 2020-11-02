@@ -71,17 +71,7 @@ public class Transformer {
       );
     }
     this.origin = originSystem;
-    this.settings = new List<Transformer__mdt>(
-      [
-        SELECT
-          OriginEntity__c,
-          OriginField__c,
-          SalesforceEntity__c,
-          SalesforceField__c
-        FROM Transformer__mdt
-        WHERE Origin__c = :originSystem
-      ]
-    );
+    this.settings =  TransformerSelector.selectMetadataByOrigin(originSystem);
 
     if (settings == null || settings.isEmpty()) {
       throw new TransformerException(

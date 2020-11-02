@@ -1,6 +1,6 @@
 @isTest(SeeAllData=false)
 public without sharing class WS_GenesysAPIServiceTest {
-  public static Contact c;
+  public static Account acc;
   /**
    * creación de reistros necesarios
    **
@@ -8,27 +8,27 @@ public without sharing class WS_GenesysAPIServiceTest {
    * @date 26/10/2020
    */
   public static void setUp() {
-    c = new Contact();
-    c.LastName = 'nescudero';
-    c.LegalEntity__c = Label.GeneralInsurance;
-    insert c;
+    acc = new Account();
+    acc.LastName = 'nescudero';
+    acc.LegalEntity__pc = Label.GeneralInsurance;
+    insert acc;
 
     ContactPointPhone cpp = new ContactPointPhone();
-    cpp.ContactId__c = c.Id;
+    cpp.ParentId = acc.Id;
     cpp.TelephoneNumber = '123456789';
     insert cpp;
 
     ContactPointEmail cpe = new ContactPointEmail();
-    cpe.ContactId__c = c.Id;
+    cpe.ParentId = acc.Id;
     cpe.EmailAddress = 'nescudero@nts-solutions.com';
     insert cpe;
 
     Case caso = new Case();
-    caso.ContactId = c.Id;
+    caso.AccountId = acc.Id;
     insert caso;
 
     Opportunity opp = new Opportunity();
-    opp.ContactId__c = c.Id;
+    opp.AccountId = acc.Id;
     opp.Name = 'opp';
     opp.StageName = 'New';
     opp.CloseDate = System.today().addDays(10);
@@ -44,7 +44,7 @@ public without sharing class WS_GenesysAPIServiceTest {
   @isTest
   static void test_doPost() {
     setUp(); //Se insertan Opp y Case así que ya tendrán Owner
-    String screenPopRecordId = c.Id;
+    String screenPopRecordId = acc.Id;
     Opportunity opp = [SELECT Owner.Email FROM Opportunity][0];
     String bestAgentOpp = opp.Owner.Email;
 

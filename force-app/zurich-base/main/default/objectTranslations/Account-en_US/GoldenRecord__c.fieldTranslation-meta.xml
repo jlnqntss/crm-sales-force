@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Golden Record --></label>
+    <name>GoldenRecord__c</name>
+    <relationshipLabel><!-- Accounts (Golden Record) --></relationshipLabel>
+</CustomFieldTranslation>
