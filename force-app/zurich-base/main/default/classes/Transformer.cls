@@ -15,6 +15,41 @@ public class Transformer
     public static final String OBJECT_NAME_CONTACT_POINT_PHONE = 'ContactPointPhone';
     public static final String OBJECT_NAME_CONTACT_POINT_EMAIL = 'ContactPointEmail';
 
+    private static Map<String, Schema.DescribeSObjectResult> descResultMap = new Map<String, Schema.DescribeSObjectResult>();
+    private static Map<String, Map<String, Schema.SObjectField>> objectFields = new Map<String, Map<String, Schema.SObjectField>>();
+    private static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+
+    // FIXME: hacer que los métodos getDescribe solo se llame una sola vez
+    // class ObjectDefinition
+    // {
+    //     Map<String, SObjectDescribe> fieldDescribesByName = new Map<String, SObjectDescribe>();
+    //     Map<string, Schema.SObjectField> fieldTokensByName;
+    //     Map<string, Schema.SObjectFieldDescribeResult> fieldDescribesByName = new Map<string, Schema.SObjectFieldDescribeResult>();
+
+    //     ObjectDefinition(Schema.SObjectDescribeResult objectDescribe)
+    //     {
+    //         this.objectDescribe = objectDescribe;
+    //         this.fieldTokensByName = objectDescribe.getMap();
+    //     }
+
+    //     Schema.DisplayType getFieldDisplayType(String sObjectFieldname)
+    //     {
+    //         if(!fieldDescribesByName.containsKey(sObjectFieldname))
+    //         {
+    //             if(fieldTokensByName.containsKey(sObjectFieldname))
+    //             {
+    //                 fieldDescribesByName.put(sObjectFieldname, fieldTokensByName.containsKey(sObjectFieldname).getDescribe());
+    //             }
+    //             else
+    //             {
+    //                 //throw new Exception()
+    //             }
+    //         }
+
+    //         return fieldDescribesByName.containsKey(sObjectFieldname).getDisplayType();
+    //     }
+    // }
+
     private Map<String, Map<String, String> > mappingsByObject {
         get {
             if (mappingsByObject == null)
@@ -26,7 +61,6 @@ public class Transformer
         }
         set;
     }
-    private static Map<String, Schema.DescribeSObjectResult> descResultMap;
 
     private List<Transformer__mdt> settings;
     public List<Transformer__mdt> getSettings()
@@ -121,15 +155,16 @@ public class Transformer
      * @author xsobera
      * @date 13/10/2020
      */
-    public sObject transform(
-        String objectName,
-        Map<String, Object> originRecordMap
-        )
+    public sObject transform( String objectName, Map<String, Object> originRecordMap )
     {
         // Obtenemos la información de los campos del objeto Salesforce destino
-        Map<String, Schema.SObjectField> objectFields = getObjectFields(objectName);
+        if(!objectFields.containsKey(objectName))
+        {
+          objectFields.put(objectName, getObjectFields(objectName));
+        }
+
         Map<String, String> mappingByOriginField = mappingsByObject.get(objectName);
-        SObject record = Schema.getGlobalDescribe().get(objectName).newSObject();
+        SObject record = globalDescribe.get(objectName).newSObject();
         String sfFieldNameConfig;
         String originFieldValue;
         Schema.SObjectField sfFieldObj;
@@ -147,54 +182,60 @@ public class Transformer
                 {
                     for (String sfFieldName : getTargetFields(sfFieldNameConfig) )
                     {
-                        sfFieldName = sfFieldName.trim();
+                        sfFieldName = sfFieldName;
                         // comprobar que si es lookup
                         if (!isLookupRelationship(sfFieldName) )
                         {
                             // Validar que el campo indicado en metadata existe en el objeto de salesforce
-                            if (objectFields.keySet().contains(sfFieldName.toLowerCase() ) )
+                            if (objectFields.get(objectName).containsKey(sfFieldName.toLowerCase() ) )
                             {
                                 originFieldValue = String.valueOf(
                                     originRecordMap.get(originRecordField)
                                     );
-                                System.debug(
+                                /*System.debug(
                                     LoggingLevel.DEBUG,
                                     '[Transformer] Obteniendo detalles del campo: ' + sfFieldName
-                                    );
-                                sfFieldObj = objectFields.get(sfFieldName.toLowerCase() );
+                                    );*/
+                                sfFieldObj = objectFields.get(objectName).get(sfFieldName.toLowerCase());
+                                // FIXME: mapa de sobject y sfield
                                 fieldDisplayType = sfFieldObj.getDescribe().getType();
-                                System.debug(
+                                /*System.debug(
                                     LoggingLevel.DEBUG,
                                     '[Transformer] Tipo del campo: ' + fieldDisplayType.name()
-                                    );
+                                    );*/
 
-                                switch on fieldDisplayType.name().toUpperCase()
+                                switch on fieldDisplayType
                                 {
-                                    when 'BOOLEAN' {
+                                    when BOOLEAN
+                                    {
                                         record.put(
                                             sfFieldName,
                                             parseBooleanField(originFieldValue, this.origin)
                                             );
                                     }
-                                    when 'DATE' {
+                                    when DATE
+                                    {
                                         record.put(
                                             sfFieldName,
                                             parseDateField(originFieldValue, this.origin)
                                             );
                                     }
-                                    when 'DATETIME' {
+                                    when DATETIME
+                                    {
                                         record.put(
                                             sfFieldName,
                                             parseDatetimeField(originFieldValue, this.origin)
                                             );
                                     }
-                                    when 'CURRENCY', 'DOUBLE' {
+                                    when CURRENCY, DOUBLE
+                                    {
                                         record.put(
                                             sfFieldName,
                                             parseDoubleField(originFieldValue, this.origin)
                                             );
                                     }
-                                    when 'INTEGER' {
+                                    when INTEGER
+                                    {
                                         record.put(
                                             sfFieldName,
                                             parseIntegerField(originFieldValue, this.origin)
@@ -213,13 +254,13 @@ public class Transformer
                             else
                             {
                                 // Sí hay configuración para el campo origen y sí se ha definido un campo sf pero el objeto salefsorce destino no contiene un campo con el nombre indicado
-                                System.debug(
+                                /*System.debug(
                                     LoggingLevel.ERROR,
                                     '[Transformer] No hay ningún campo en el objeto Salesforce con el nombre indicado. sObject: ' +
                                     objectName +
                                     ' Field: ' +
                                     sfFieldName
-                                    );
+                                    );*/
                                 throw new TransformerException(
                                           'There are not any field with these name in the salesforce object. sObject: ' +
                                           objectName +
@@ -242,14 +283,13 @@ public class Transformer
                 else
                 {
                     // Sí hay configuración para el campo origen pero no se ha definido un campo sf de destino en el metadato (vacío o nulo)
-                    System.debug(
-                        LoggingLevel.WARN,
-                        '[Transformer] No se ha indicado ningún campo Salesforce destino en la configuración.Origin: ' +
-                        origin +
-                        ' Field: ' +
-                        originRecordField
-                        );
-                    //throw new TransformerException('There are not salesforce field in metadata configuration to these values.Origin: ' + origin + ' Field: ' + originRecordField);
+                    // System.debug(
+                    //     LoggingLevel.WARN,
+                    //     '[Transformer] No se ha indicado ningún campo Salesforce destino en la configuración.Origin: ' +
+                    //     origin +
+                    //     ' Field: ' +
+                    //     originRecordField
+                    //     );
 
                     // Guardar en unmappedValues
                     unmappedValues.put(
@@ -261,16 +301,15 @@ public class Transformer
             else
             {
                 // No se ha especificado ninguna configuración para el campo origen xxx
-                System.debug(
-                    LoggingLevel.WARN,
-                    '[Transformer] No hay configuración para los valores solicitados. Origen: ' +
-                    origin +
-                    ' sObject: ' +
-                    objectName +
-                    ' Field: ' +
-                    originRecordField
-                    );
-                //throw new TransformerException('There are not metadata configuration to these values.  Origin: ' + origin + ' sObject: ' + objectName + ' Field: ' + originRecordField);
+                // System.debug(
+                //     LoggingLevel.WARN,
+                //     '[Transformer] No hay configuración para los valores solicitados. Origen: ' +
+                //     origin +
+                //     ' sObject: ' +
+                //     objectName +
+                //     ' Field: ' +
+                //     originRecordField
+                //     );
 
                 // Guardar en unmappedValues
                 unmappedValues.put(
@@ -288,52 +327,39 @@ public class Transformer
      **
      */
     @TestVisible
-    private static Map<String, Schema.SObjectField> getObjectFields(
-        String objectName
-        )
+    private static Map<String, Schema.SObjectField> getObjectFields( String objectName )
     {
         // Obtenemos la información de los campos del objeto Salesforce destino
-        System.debug(LoggingLevel.DEBUG, '[Tramsformer] objectName: ' + objectName);
-
-        if (descResultMap == null)
-        {
-            descResultMap = new Map<String, Schema.DescribeSObjectResult>();
-        }
-
-        Map<String, Schema.SObjectField> objectFields;
+        //System.debug(LoggingLevel.DEBUG, '[Tramsformer] objectName: ' + objectName);
+        Map<String, Schema.SObjectField> currentObjectFields;
         Schema.DescribeSObjectResult descResult;
-        if (!descResultMap.containsKey(objectName) )
+        if ( !descResultMap.containsKey(objectName) )
         {
-            if (
-                Schema.getGlobalDescribe().keySet().contains(objectName.toLowerCase() )
-                )
+            if ( Schema.getGlobalDescribe().containsKey(objectName.toLowerCase()) )
             {
                 descResult = Schema.describeSObjects(new List<String> { objectName })[0];
                 descResultMap.put(objectName, descResult);
             }
             else
             {
-                System.debug(
+                /*System.debug(
                     LoggingLevel.ERROR,
                     '[Transformer] No hay ningún objecto en Salesforce con el nombre indicado. sObject: ' +
                     objectName
-                    );
-                throw new TransformerException(
-                          'There are not any object in Salesforce with these name. sObject: ' +
-                          objectName
-                          );
+                    );*/
+                throw new TransformerException( 'There are not any object in Salesforce with these name. sObject: ' + objectName );
             }
         }
         else
         {
             descResult = descResultMap.get(objectName);
         }
-        objectFields = descResult.fields.getMap();
-        System.debug(
+        currentObjectFields = descResult.fields.getMap();
+        /*System.debug(
             LoggingLevel.DEBUG,
-            '[Transformer] objectFields: ' + JSON.serialize(objectFields.keySet() )
-            );
-        return objectFields;
+            '[Transformer] currentObjectFields: ' + JSON.serialize(currentObjectFields.keySet() )
+            );*/
+        return currentObjectFields;
     }
 
     /**
@@ -353,9 +379,7 @@ public class Transformer
         switch on origin {
             when 'INFO' {
                 Boolean booleanValue = false;
-                if (
-                    String.isNotBlank(strValue) && strValue.trim().equalsIgnoreCase('S')
-                    )
+                if ( String.isNotBlank(strValue) && strValue.equalsIgnoreCase('S') )
                 {
                     booleanValue = true;
                 }
@@ -364,11 +388,11 @@ public class Transformer
             when else
             {
                 // Agregar otros origenens o transformaciones por defecto
-                System.debug(
+                /*System.debug(
                     LoggingLevel.WARN,
                     '[Transformer] parseBooleanField() transformación no específicada para origen: ' +
                     origin
-                    );
+                    );*/
             }
         }
 
@@ -393,17 +417,17 @@ public class Transformer
             when 'INFO' {
                 if (String.isNotBlank(strValue) )
                 {
-                    return Date.valueOf(strValue.trim() );
+                    return Date.valueOf(strValue );
                 }
             }
             when else
             {
                 // Agregar otros origenens o transformaciones por defecto
-                System.debug(
+                /*System.debug(
                     LoggingLevel.WARN,
                     '[Transformer] parseDateField() transformación no específicada para origen: ' +
                     origin
-                    );
+                    );*/
             }
         }
 
@@ -428,17 +452,17 @@ public class Transformer
             when 'INFO' {
                 if (String.isNotBlank(strValue) )
                 {
-                    return Datetime.valueOf(strValue.trim() );
+                    return Datetime.valueOf(strValue );
                 }
             }
             when else
             {
                 // Agregar otros origenens o transformaciones por defecto
-                System.debug(
+                /*System.debug(
                     LoggingLevel.WARN,
                     '[Transformer] parseDatetimeField() transformación no específicada para origen: ' +
                     origin
-                    );
+                    );*/
             }
         }
 
@@ -463,17 +487,17 @@ public class Transformer
             when 'INFO' {
                 if (String.isNotBlank(strValue) )
                 {
-                    return strValue.trim();
+                    return strValue;
                 }
             }
             when else
             {
                 // Agregar otros origenens o transformaciones por defecto
-                System.debug(
+                /*System.debug(
                     LoggingLevel.WARN,
                     '[Transformer] parseStringField() transformación no específicada para origen: ' +
                     origin
-                    );
+                    );*/
             }
         }
 
@@ -498,17 +522,17 @@ public class Transformer
             when 'INFO' {
                 if (String.isNotBlank(strValue) )
                 {
-                    return Double.valueOf(strValue.trim() );
+                    return Double.valueOf(strValue );
                 }
             }
             when else
             {
                 // Agregar otros origenens o transformaciones por defecto
-                System.debug(
+                /*System.debug(
                     LoggingLevel.WARN,
                     '[Transformer] parseDoubleField() transformación no específicada para origen: ' +
                     origin
-                    );
+                    );*/
             }
         }
 
@@ -533,17 +557,17 @@ public class Transformer
             when 'INFO' {
                 if (String.isNotBlank(strValue) && strValue.isNumeric() )
                 {
-                    return Integer.valueOf(strValue.trim() );
+                    return Integer.valueOf(strValue );
                 }
             }
             when else
             {
                 // Agregar otros origenens o transformaciones por defecto
-                System.debug(
+                /*System.debug(
                     LoggingLevel.WARN,
                     '[Transformer] parseIntegerField() transformación no específicada para origen: ' +
                     origin
-                    );
+                    );*/
             }
         }
 
@@ -600,24 +624,35 @@ public class Transformer
             parentExternalFieldName = aux[1];
 
             // Comprobar que existen los campos en hijo y el objeto padre y su campo
-            Map<String, Schema.SObjectField> parentObjectFields = getObjectFields(
-                parentObjectName
-                );
-            if (
-                parentObjectFields.keySet()
-                .contains(parentExternalFieldName.toLowerCase() )
-                )
+            Map<String, Schema.SObjectField> parentObjectFields;
+
+            if(objectFields.containsKey(parentObjectName))
             {
-                Map<String, Schema.SObjectField> childObjectFields = getObjectFields(
-                    String.valueOf(record.getSObjectType() )
-                    );
-                if (childObjectFields.keySet().contains(childFieldName.toLowerCase() ) )
+              parentObjectFields = objectFields.get(parentObjectName);
+            }
+            else
+            {
+              parentObjectFields = getObjectFields(parentObjectName);
+            }
+
+            if (parentObjectFields.containsKey(parentExternalFieldName.toLowerCase()))
+            {
+                Map<String, Schema.SObjectField> childObjectFields;
+
+                if(objectFields.containsKey(String.valueOf(record.getSObjectType())))
+                {
+                  childObjectFields = objectFields.get(String.valueOf(record.getSObjectType()));
+                }
+                else
+                {
+                  childObjectFields = getObjectFields(String.valueOf(record.getSObjectType()));
+                }
+
+                if (childObjectFields.containsKey(childFieldName.toLowerCase() ) )
                 {
                     if (string.isNotBlank(fieldValue) )
                     {
-                        SObject parentObject = Schema.getGlobalDescribe()
-                                               .get(parentObjectName)
-                                               .newSObject();
+                        SObject parentObject = globalDescribe.get(parentObjectName).newSObject();
                         parentObject.put(parentExternalFieldName, fieldValue);
 
                         String relationName = childObjectFields.get(
@@ -625,34 +660,34 @@ public class Transformer
                             )
                                               .getDescribe()
                                               .getRelationshipName();
-                        System.debug(
+                        /*System.debug(
                             LoggingLevel.DEBUG,
                             '[Transformer] Nombre de la relación: ' + relationName
-                            );
+                            );*/
                         record.putSObject(relationName, parentObject);
                     }
                     else
                     {
-                        System.debug(
+                        /*System.debug(
                             LoggingLevel.WARN,
                             '[Transformer] El valor indicado para el lookup es nulo o vacío. sObject: ' +
                             String.valueOf(record.getSObjectType() ) +
                             ' Field: ' +
                             childFieldName
-                            );
+                            );*/
                         record.put(childFieldName, null);
                     }
                 }
                 else
                 {
                     // El hijo no contienen un campo con ese nombre
-                    System.debug(
+                    /*System.debug(
                         LoggingLevel.ERROR,
                         '[Transformer] No hay ningún campo en el objeto hijo de Salesforce con el nombre indicado. sObject: ' +
                         String.valueOf(record.getSObjectType() ) +
                         ' Field: ' +
                         childFieldName
-                        );
+                        );*/
                     throw new TransformerException(
                               'There are not any field with these name in the salesforce child object. sObject: ' +
                               String.valueOf(record.getSObjectType() ) +
@@ -664,13 +699,13 @@ public class Transformer
             else
             {
                 // El padre no contiene un campo con ese nombre
-                System.debug(
+                /*System.debug(
                     LoggingLevel.ERROR,
                     '[Transformer] No hay ningún campo en el objeto padre de Salesforce con el nombre indicado. sObject: ' +
                     parentObjectName +
                     ' Field: ' +
                     parentExternalFieldName
-                    );
+                    );*/
                 throw new TransformerException(
                           'There are not any field with these name in the salesforce parent object. sObject: ' +
                           parentObjectName +
