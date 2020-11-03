@@ -314,7 +314,7 @@ private class WebServicesParserTest
             'GenericWS'
             );
         System.debug('Error map: ' + accountResult.errorMessagesMap);
-        System.assert (accountResult.errorMessagesMap.values().isEmpty() );
+        System.assert ( accountResult.errorMessagesMap.values().isEmpty() );
         System.debug('Result Record Map: ' + accountResult.recordsMap);
         System.debug('Result LvL 2 Record Map: ' + accountResult.secLvlRecordsMap);
     }
@@ -336,8 +336,8 @@ private class WebServicesParserTest
             'GenericWS'
             );
         System.debug('Error map: ' + accountResult.errorMessagesMap);
-        System.assert (accountResult.errorMessagesMap.values().isEmpty() );
-        for (Account acc : (List<Account>) accountResult.recordsMap.values() )
+        System.assert ( accountResult.errorMessagesMap.values().isEmpty() );
+        for ( Account acc : (List<Account>) accountResult.recordsMap.values() )
         {
             System.AssertEquals(acc.AnnualRevenue, 1500000);
             System.AssertEquals(acc.NumberOfEmployees, 5000);
@@ -361,13 +361,13 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (opportunityResult.errorMessagesMap.values().isEmpty() );
+        System.assert ( opportunityResult.errorMessagesMap.values().isEmpty() );
         for (
             Opportunity opp : (List<Opportunity>) opportunityResult.recordsMap.values()
             )
         {
             System.AssertEquals(true, opp.IsPrivate);
-            System.AssertEquals(opp.CloseDate, Date.valueOf('2017-08-20') );
+            System.AssertEquals( opp.CloseDate, Date.valueOf('2017-08-20') );
             System.AssertEquals(opp.AccountId, '001D00000xxxxxx');
             System.AssertEquals(opp.Probability, 11);
         }
@@ -385,8 +385,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (contactResult.errorMessagesMap.values().isEmpty() );
-        for (Contact cont : (List<Contact>) contactResult.recordsMap.values() )
+        System.assert ( contactResult.errorMessagesMap.values().isEmpty() );
+        for ( Contact cont : (List<Contact>) contactResult.recordsMap.values() )
         {
             System.AssertEquals(cont.Email, 'emailTest@miTest.com');
         }
@@ -403,7 +403,7 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (emailsResult.errorMessagesMap.values().isEmpty() );
+        System.assert ( emailsResult.errorMessagesMap.values().isEmpty() );
         for (
             EmailMessage ema : (List<EmailMessage>) emailsResult.recordsMap.values()
             )
@@ -428,9 +428,9 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.debug('Error map: ' + accountResult.errorMessagesMap.values() );
-        System.assert (accountResult.errorMessagesMap.values().isEmpty() );
-        for (Account acc : (List<Account>) accountResult.recordsMap.values() )
+        System.debug( 'Error map: ' + accountResult.errorMessagesMap.values() );
+        System.assert ( accountResult.errorMessagesMap.values().isEmpty() );
+        for ( Account acc : (List<Account>) accountResult.recordsMap.values() )
         {
             System.AssertEquals(acc.AnnualRevenue, 1500000);
             System.AssertEquals(acc.NumberOfEmployees, 5000);
@@ -457,7 +457,7 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!accountResult.errorMessagesMap.values().isEmpty() );
+        System.assert ( !accountResult.errorMessagesMap.values().isEmpty() );
         List<String> errors = accountResult.errorMessagesMap.values();
         for (String errorMsg : errors)
         {
@@ -485,8 +485,8 @@ private class WebServicesParserTest
             null,
             null
             );
-        System.assert (!accountResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : accountResult.errorMessagesMap.values() )
+        System.assert ( !accountResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : accountResult.errorMessagesMap.values() )
         {
             //System.assert(errorMsg.contains(Label.ParametrosVacios));
         }
@@ -506,8 +506,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!accountResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : accountResult.errorMessagesMap.values() )
+        System.assert ( !accountResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : accountResult.errorMessagesMap.values() )
         {
             //System.assert(errorMsg.contains(Label.ObjetoJsonVacio));
         }
@@ -519,10 +519,10 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!accountResult2.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : accountResult2.errorMessagesMap.values() )
+        System.assert ( !accountResult2.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : accountResult2.errorMessagesMap.values() )
         {
-            System.assert (errorMsg.contains(Label.JsonIncorrecto) );
+            System.assert ( errorMsg.contains(Label.JsonIncorrecto) );
         }
 
         String emptyAttributeNameJSON = '[{"":"anyValue"}]';
@@ -532,10 +532,10 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!accountResult3.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : accountResult3.errorMessagesMap.values() )
+        System.assert ( !accountResult3.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : accountResult3.errorMessagesMap.values() )
         {
-            System.assert (errorMsg.contains(Label.NombreAtributoVacio) );
+            System.assert ( errorMsg.contains(Label.NombreAtributoVacio) );
         }
 
         /*String duplicateAttributeNameJSON = '[{"Level":"Cold","Level":"Warm"}]';
@@ -569,8 +569,8 @@ private class WebServicesParserTest
             'GenericWS'
             );
         System.debug('### ErroreMessagesMap: ' + accountResult.errorMessagesMap);
-        System.assert (!accountResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : accountResult.errorMessagesMap.values() )
+        System.assert ( !accountResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : accountResult.errorMessagesMap.values() )
         {
             System.assert (
                 errorMsg.contains('Revenue: ' + Label.EscalaNumeroNoValida) ||
@@ -591,8 +591,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!accountResult2.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : accountResult2.errorMessagesMap.values() )
+        System.assert ( !accountResult2.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : accountResult2.errorMessagesMap.values() )
         {
             System.assert (
                 errorMsg.contains('Revenue: ' + Label.NumeroNoValido) ||
@@ -614,8 +614,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!opportunityResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : opportunityResult.errorMessagesMap.values() )
+        System.assert ( !opportunityResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : opportunityResult.errorMessagesMap.values() )
         {
             System.Debug('errorMsg: ' + errorMsg);
             System.assert (
@@ -638,10 +638,10 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!contactResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : contactResult.errorMessagesMap.values() )
+        System.assert ( !contactResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : contactResult.errorMessagesMap.values() )
         {
-            System.assert (errorMsg.contains('EmailAddress: ' + Label.EmailNoValido) );
+            System.assert ( errorMsg.contains('EmailAddress: ' + Label.EmailNoValido) );
         }
         System.assert (
             contactResult.recordsMap.values() == null ||
@@ -667,8 +667,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!accountResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : accountResult.errorMessagesMap.values() )
+        System.assert ( !accountResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : accountResult.errorMessagesMap.values() )
         {
             System.assert (
                 errorMsg.contains('Revenue: ' + Label.EscalaNumeroNoValida)
@@ -685,10 +685,10 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!opportunityResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : opportunityResult.errorMessagesMap.values() )
+        System.assert ( !opportunityResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : opportunityResult.errorMessagesMap.values() )
         {
-            System.assert (errorMsg.contains('Private: ' + Label.BooleanoNoValido) );
+            System.assert ( errorMsg.contains('Private: ' + Label.BooleanoNoValido) );
         }
         System.assert (
             opportunityResult.recordsMap.values() == null ||
@@ -701,10 +701,10 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!contactResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : contactResult.errorMessagesMap.values() )
+        System.assert ( !contactResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : contactResult.errorMessagesMap.values() )
         {
-            System.assert (errorMsg.contains('EmailAddress: ' + Label.EmailNoValido) );
+            System.assert ( errorMsg.contains('EmailAddress: ' + Label.EmailNoValido) );
         }
         System.assert (
             contactResult.recordsMap.values() == null ||
@@ -730,7 +730,7 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (accountResult.errorMessagesMap.values().isEmpty() );
+        System.assert ( accountResult.errorMessagesMap.values().isEmpty() );
         System.assert (accountResult.recordsMap.values().size() == 1);
 
         WebServicesParser.WebParserResult opportunityResult = WebServicesParser.parseObject(
@@ -739,7 +739,7 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (opportunityResult.errorMessagesMap.values().isEmpty() );
+        System.assert ( opportunityResult.errorMessagesMap.values().isEmpty() );
         System.assert (opportunityResult.recordsMap.values().size() == 1);
 
         WebServicesParser.WebParserResult contactResult = WebServicesParser.parseObject(
@@ -748,7 +748,7 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (contactResult.errorMessagesMap.values().isEmpty() );
+        System.assert ( contactResult.errorMessagesMap.values().isEmpty() );
         System.assert (contactResult.recordsMap.values().size() == 1);
         System.debug('@@FIN_test_parseObject_checkNullables');
     }
@@ -770,8 +770,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!accountResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : accountResult.errorMessagesMap.values() )
+        System.assert ( !accountResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : accountResult.errorMessagesMap.values() )
         {
             System.assert (
                 errorMsg.contains('Revenue: ' + Label.AtributoNoAnulable) ||
@@ -792,8 +792,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!opportunityResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : opportunityResult.errorMessagesMap.values() )
+        System.assert ( !opportunityResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : opportunityResult.errorMessagesMap.values() )
         {
             System.assert (
                 errorMsg.contains('Revenue: ' + Label.AtributoNoAnulable) ||
@@ -813,8 +813,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!contactResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : contactResult.errorMessagesMap.values() )
+        System.assert ( !contactResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : contactResult.errorMessagesMap.values() )
         {
             System.assert (
                 errorMsg.contains('EmailAddress: ' + Label.AtributoNoAnulable)
@@ -844,8 +844,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!accountResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : accountResult.errorMessagesMap.values() )
+        System.assert ( !accountResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : accountResult.errorMessagesMap.values() )
         {
             System.assert (
                 errorMsg.contains('Revenue: ' + Label.EscalaNumeroNoValida) ||
@@ -866,8 +866,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!opportunityResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : opportunityResult.errorMessagesMap.values() )
+        System.assert ( !opportunityResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : opportunityResult.errorMessagesMap.values() )
         {
             System.assert (
                 errorMsg.contains('Private: ' + Label.BooleanoNoValido) ||
@@ -887,8 +887,8 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        System.assert (!contactResult.errorMessagesMap.values().isEmpty() );
-        for (String errorMsg : contactResult.errorMessagesMap.values() )
+        System.assert ( !contactResult.errorMessagesMap.values().isEmpty() );
+        for ( String errorMsg : contactResult.errorMessagesMap.values() )
         {
             System.assert (
                 errorMsg.contains(Label.AtributoRequerido + ': EmailAddress')

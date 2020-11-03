@@ -13,7 +13,7 @@ global without sharing class OrderUtil
     {
         System.debug('- - - - - OrderUtil.upsertQuote - - - - -');
         String legalEntityName;
-        if (quote.LegalEntity__c.equals(Label.GeneralInsurance) )
+        if ( quote.LegalEntity__c.equals(Label.GeneralInsurance) )
         {
             legalEntityName = 'GI';
         }
@@ -102,7 +102,7 @@ global without sharing class OrderUtil
 
         //Si el campo de itemId está vacio (workaround para life, en IBA no se puede crear el ID desde el step 1)
         //Se rellena el itemId con el quoteEntry, assumption: siempre va a haber 1 orderItem, si hay más se lanzará error
-        if (quote.LegalEntity__c.equals(Label.LifeInsurance) )
+        if ( quote.LegalEntity__c.equals(Label.LifeInsurance) )
         {
             if (ExternalRequestUtil.listOrderItems != null)
             {
@@ -213,7 +213,7 @@ global without sharing class OrderUtil
                     );
 
                 //insertar endDate de la anterior versión de póliza
-                if (!policySF.PolicyVersions__r.isEmpty() )
+                if ( !policySF.PolicyVersions__r.isEmpty() )
                 {
                     PolicyVersion__c pversionUpdate = new PolicyVersion__c(
                         Id = policySF.PolicyVersions__r[0].Id,
@@ -231,15 +231,15 @@ global without sharing class OrderUtil
                     pversion
                     );
 
-                if (!String.isBlank(policy.adjustmentReason__c) )
+                if ( !String.isBlank(policy.adjustmentReason__c) )
                 {
                     if (
                         policy.adjustmentReason__c.trim()
-                        .equalsIgnoreCase(Label.P_AdjustmentReason_1.trim() ) ||
+                        .equalsIgnoreCase( Label.P_AdjustmentReason_1.trim() ) ||
                         policy.adjustmentReason__c.trim()
-                        .equalsIgnoreCase(Label.P_AdjustmentReason_2.trim() ) ||
+                        .equalsIgnoreCase( Label.P_AdjustmentReason_2.trim() ) ||
                         policy.adjustmentReason__c.trim()
-                        .equalsIgnoreCase(Label.P_AdjustmentReason_3.trim() )
+                        .equalsIgnoreCase( Label.P_AdjustmentReason_3.trim() )
                         )
                     {
                         //System.debug('>>> Cambio de producto');
@@ -283,7 +283,7 @@ global without sharing class OrderUtil
         {
             System.debug('The Policy does not exist');
             String legalEntityName;
-            if (policy.LegalEntity__c.equals(Label.GeneralInsurance) )
+            if ( policy.LegalEntity__c.equals(Label.GeneralInsurance) )
             {
                 legalEntityName = 'GI';
             }
@@ -371,7 +371,7 @@ global without sharing class OrderUtil
                 }
 
                 //Buscar si existe quote
-                if (!String.isBlank(policy.QuoteEntry__c) )
+                if ( !String.isBlank(policy.QuoteEntry__c) )
                 {
                     //System.debug('Quote existe');
                     Order quoteSF = ExternalRequestUtil.mapQuotes.get(
@@ -451,7 +451,7 @@ global without sharing class OrderUtil
                             }
                         }
                         //Si es de vida y el quote ha llegado sin itemID eliminar los items y covers con id del quoteEntry (workaround life)
-                        if (policy.LegalEntity__c.equals(Label.LifeInsurance) )
+                        if ( policy.LegalEntity__c.equals(Label.LifeInsurance) )
                         {
                             if (
                                 ExternalRequestUtil.orderItemsToInsert.containsKey(
@@ -491,7 +491,7 @@ global without sharing class OrderUtil
                         {
                             if (dis.Policy__r.QuoteEntry__c != null)
                             {
-                                if (dis.Policy__r.QuoteEntry__c.equals(policy.QuoteEntry__c) )
+                                if ( dis.Policy__r.QuoteEntry__c.equals(policy.QuoteEntry__c) )
                                 {
                                     ExternalRequestUtil.discountsToInsert.remove(
                                         dis.DiscountId__c
@@ -534,7 +534,7 @@ global without sharing class OrderUtil
                     );
 
                 //Crear versión de póliza
-                if (!String.isBlank(policy.PolicyContractSerial__c) )
+                if ( !String.isBlank(policy.PolicyContractSerial__c) )
                 {
                     PolicyVersion__c pversion = new PolicyVersion__c(
                         Name = policy.PolicyContractSerial__c,
@@ -559,7 +559,7 @@ global without sharing class OrderUtil
                     }
                 }
 
-                if (!String.isBlank(policy.MasterPolicyNum__c) )
+                if ( !String.isBlank(policy.MasterPolicyNum__c) )
                 {
                     //Asociar partner
                     AccountUtil.associatePartnerToOrder(
@@ -576,11 +576,11 @@ global without sharing class OrderUtil
                     ','
                     );
 
-                if (!String.isBlank(policy.Caseworker__c) )
+                if ( !String.isBlank(policy.Caseworker__c) )
                 {
                     for (String worker : caseWorkers)
                     {
-                        if (!policy.Caseworker__c.equalsIgnoreCase(worker) )
+                        if ( !policy.Caseworker__c.equalsIgnoreCase(worker) )
                         {
                             policy.Offline__c = true;
                         }
@@ -654,7 +654,7 @@ global without sharing class OrderUtil
             }
 
             //Summary Polizas
-            if (!idSet.isEmpty() )
+            if ( !idSet.isEmpty() )
             {
                 String whereClause =
                     'PolicyNum__c!=NULL AND PolicyStatus__c=\'' +
@@ -682,14 +682,14 @@ global without sharing class OrderUtil
 
                 responseObject = (Contact[]) responseObject;
 
-                if (responseObject != null && !responseObject.isEmpty() )
+                if ( responseObject != null && !responseObject.isEmpty() )
                 {
                     update responseObject;
                 }
             }
 
             //Summary Quotes
-            if (!idSetQuotes.isEmpty() )
+            if ( !idSetQuotes.isEmpty() )
             {
                 String whereClause = 'PolicyNum__c=NULL';
                 // Define the context for the RollupSummariesUtil.summarize() method
@@ -717,7 +717,7 @@ global without sharing class OrderUtil
 
                 responseObject = (Contact[]) responseObject;
 
-                if (responseObject != null && !responseObject.isEmpty() )
+                if ( responseObject != null && !responseObject.isEmpty() )
                 {
                     update responseObject;
                 }
@@ -752,7 +752,7 @@ global without sharing class OrderUtil
                 }
             }
 
-            if (!MapQuotes.isEmpty() )
+            if ( !MapQuotes.isEmpty() )
             {
                 contacts = [
                     SELECT id, LastQuote__c
@@ -775,7 +775,7 @@ global without sharing class OrderUtil
                 }
 
                 //Update contacts
-                if (contactsToUpdate != null && !contactsToUpdate.isEmpty() )
+                if ( contactsToUpdate != null && !contactsToUpdate.isEmpty() )
                 {
                     update contactsToUpdate.values();
                 }

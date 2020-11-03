@@ -27,12 +27,12 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             Map<String, Object> deserializedData = (Map<String, Object>) JSON.deserializeUntyped(
                 data
                 );
-            if (deserializedData.containsKey('interaction') )
+            if ( deserializedData.containsKey('interaction') )
             {
                 Map<String, Object> dataInteraction = (Map<String, Object>) deserializedData.get(
                     'interaction'
                     );
-                if (dataInteraction.containsKey('id') )
+                if ( dataInteraction.containsKey('id') )
                 {
                     dataInteractionId = (String) dataInteraction.get('id');
                 }
@@ -48,7 +48,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             List<Task> taskToUpdate = ActivitySelector.selectTasksByCallObjectIdentifier(
                 dataInteractionId
                 );
-            if (!taskToUpdate.isEmpty() )
+            if ( !taskToUpdate.isEmpty() )
             {
                 //Actualizar la task con el usuario logado y devolver el ID
                 taskToUpdate[0].OwnerId = UserInfo.getUserId();

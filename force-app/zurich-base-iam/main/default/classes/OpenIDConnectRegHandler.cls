@@ -27,11 +27,11 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         }
         // De lo contrario se instancia un nuevo usuario
         Map<String, String> details = getExternalColaboration(data);
-        Id profileId = (details.containsKey('profile') )
-                       ? getProfileId(details.get('profile') )
+        Id profileId = ( details.containsKey('profile') )
+                       ? getProfileId( details.get('profile') )
                        : null;
-        Id roleId = (details.containsKey('role') )
-                    ? getUserRoleId(details.get('role') )
+        Id roleId = ( details.containsKey('role') )
+                    ? getUserRoleId( details.get('role') )
                     : null;
         u = new User();
         u.firstName = data.firstName;
@@ -61,11 +61,11 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     {
         Boolean modified = false;
         Map<String, String> details = getExternalColaboration(data);
-        Id profileId = (details.containsKey('profile') )
-                       ? getProfileId(details.get('profile') )
+        Id profileId = ( details.containsKey('profile') )
+                       ? getProfileId( details.get('profile') )
                        : null;
-        Id roleId = (details.containsKey('role') )
-                    ? getUserRoleId(details.get('role') )
+        Id roleId = ( details.containsKey('role') )
+                    ? getUserRoleId( details.get('role') )
                     : null;
         User u = [
             SELECT
@@ -99,7 +99,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             modified = true;
         else if (u.userRoleId != roleId)
             modified = true;
-        else if (u.alias != data.username.left(8) )
+        else if ( u.alias != data.username.left(8) )
             modified = true;
 
         if (modified)
@@ -279,6 +279,5 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
      * @author rpolvera
      */
     class RegHandlerException extends Exception
-    {
-    }
+    {}
 }

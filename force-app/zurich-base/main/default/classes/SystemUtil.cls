@@ -37,7 +37,7 @@ public without sharing class SystemUtil
             WHERE MasterLabel = :Label.ErrorMetadata
         ];
 
-        if (!results.isEmpty() )
+        if ( !results.isEmpty() )
         {
             return results[0];
         }
@@ -80,7 +80,7 @@ public without sharing class SystemUtil
             WHERE MasterLabel = 'AdminSetup'
         ];
 
-        if (!results.isEmpty() )
+        if ( !results.isEmpty() )
         {
             return results[0];
         }
@@ -101,13 +101,13 @@ public without sharing class SystemUtil
 
     public static String maskEmail(String emailToMask, String code)
     {
-        if (!String.isBlank(emailToMask) )
+        if ( !String.isBlank(emailToMask) )
         {
             String[] aux = emailToMask.split('@', 2);
-            if (aux != null && !aux.isEmpty() )
+            if ( aux != null && !aux.isEmpty() )
             {
                 String emailToReturn = aux[0] + '@';
-                if (!String.isBlank(code) )
+                if ( !String.isBlank(code) )
                 {
                     emailToReturn += code + '-';
                 }
@@ -347,7 +347,7 @@ public without sharing class SystemUtil
     {
         ID identifier;
 
-        if (name.equals(Label.Partner) )
+        if ( name.equals(Label.Partner) )
         {
             identifier = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName()
                          .get(name)
@@ -355,7 +355,7 @@ public without sharing class SystemUtil
 
             //el recordtypeId que devuelve para master no es el correcto, workaround:
         }
-        else if (name.equals(Label.Master) )
+        else if ( name.equals(Label.Master) )
         {
             RecordType rt = [
                 SELECT id
@@ -539,7 +539,7 @@ public without sharing class SystemUtil
         for (Contact con : listaContactos)
         {
             String legalEntityName;
-            if (con.LegalEntity__c.equals(Label.GeneralInsurance) )
+            if ( con.LegalEntity__c.equals(Label.GeneralInsurance) )
             {
                 legalEntityName = 'GI';
             }
@@ -615,7 +615,7 @@ public without sharing class SystemUtil
         for (Contact con : listaContactos)
         {
             String legalEntityName;
-            if (con.LegalEntity__c.equals(Label.GeneralInsurance) )
+            if ( con.LegalEntity__c.equals(Label.GeneralInsurance) )
             {
                 legalEntityName = 'GI';
             }
@@ -912,7 +912,7 @@ public without sharing class SystemUtil
     {
         String response = '';
 
-        if (String.isBlank(errorDescription) )
+        if ( String.isBlank(errorDescription) )
         {
             errorDescription = ' ';
         }
@@ -923,14 +923,14 @@ public without sharing class SystemUtil
         jsGen.writeStringField('salesForceId', ID);
         jsGen.writeStringField('errorCode', errorCode);
         jsGen.writeStringField('errorDescription', errorDescription);
-        jsGen.writeStringField('timeStamp', String.valueOf(timeStamp) );
+        jsGen.writeStringField( 'timeStamp', String.valueOf(timeStamp) );
 
         jsGen.writeFieldName('json');
         jsGen.writeStartObject();
         jsGen.writeStringField('Origin', Origin);
         jsGen.writeStringField('Country', Country);
         jsGen.writeStringField('Entity', Entity);
-        jsGen.writeStringField('TimestampJson', String.valueOf(TimestampJson) );
+        jsGen.writeStringField( 'TimestampJson', String.valueOf(TimestampJson) );
         jsGen.writeStringField('Json', Json);
         jsGen.writeEndObject();
         // end object (})

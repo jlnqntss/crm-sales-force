@@ -16,7 +16,7 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
     global Batch_ResponseExternalRequest(String p_query)
     {
         this();
-        if (!String.isBlank(p_query) )
+        if ( !String.isBlank(p_query) )
         {
             query = p_query;
         }
@@ -25,7 +25,7 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
     global Database.QueryLocator start(Database.BatchableContext BC)
     {
 
-        if (Test.isRunningTest() )
+        if ( Test.isRunningTest() )
         {
             esTest = true;
         }
@@ -43,7 +43,7 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)
     {
-        if (scope != null && !scope.isEmpty() )
+        if ( scope != null && !scope.isEmpty() )
         {
             List<ExternalRequest__c> listExternalRequest = (List<ExternalRequest__c>) scope;
             AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
@@ -76,7 +76,7 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
                         );
 
                     System.debug('**** JSON: ' + json);
-                    if (!String.isBlank(json) )
+                    if ( !String.isBlank(json) )
                     {
                         Http http = new Http();
                         HttpRequest request = new HttpRequest();

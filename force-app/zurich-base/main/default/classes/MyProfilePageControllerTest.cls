@@ -15,7 +15,7 @@ public with sharing class MyProfilePageControllerTest
             WHERE UserRoleId != NULL AND UserType = 'CustomerSuccess'
         ];
 
-        if (existingPortalUsers.isEmpty() )
+        if ( existingPortalUsers.isEmpty() )
         {
             User currentUser = [
                 SELECT
@@ -52,7 +52,7 @@ public with sharing class MyProfilePageControllerTest
 
             System.assert (
                 Page.ChangePassword.getUrl()
-                .equals(controller.changePassword().getUrl() )
+                .equals( controller.changePassword().getUrl() )
                 );
 
             String randFax = Math.rint(Math.random() * 1000) + '5551234';

@@ -31,7 +31,7 @@ public with sharing class TransformerSelector
     public static List<Transformer__mdt> selectMetadataByOrigin(String originSystem)
     {
         //Devolver lista vacía
-        if (String.isBlank(originSystem) )
+        if ( String.isBlank(originSystem) )
         {
             return new List<Transformer__mdt>();
         }

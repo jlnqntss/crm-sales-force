@@ -71,7 +71,7 @@ public class Test_ContactUtil
         SET<String> keys = new Set<String>();
         keys.add(ExistingLead.CustomerNum__c);
         mapContacts = SystemUtil.ContactsSelector(keys);
-        System.assertEquals(1, mapContacts.size() );
+        System.assertEquals( 1, mapContacts.size() );
         System.assertEquals(
             ExistingLead.Email,
             mapContacts.get(ExistingLead.CustomerNum__c).Email
@@ -132,7 +132,7 @@ public class Test_ContactUtil
         Contact updatedLead = ExternalRequestUtil.contactsToUpdate.get(
             ExistingLead.CustomerNum__c
             );
-        System.assertEquals(1, ExternalRequestUtil.contactsToUpdate.size() );
+        System.assertEquals( 1, ExternalRequestUtil.contactsToUpdate.size() );
         System.assert (updatedLead.MobilePhone != ExistingLead.MobilePhone);
         Test.stopTest();
     }
@@ -162,7 +162,7 @@ public class Test_ContactUtil
         SET<String> keys = new Set<String>();
         keys.add(ExistingLead.CustomerNum__c);
         mapContacts = SystemUtil.ContactsSelector(keys);
-        System.assertEquals(1, mapContacts.size() );
+        System.assertEquals( 1, mapContacts.size() );
         System.assertEquals(
             ExistingLead.Email,
             mapContacts.get(ExistingLead.CustomerNum__c).Email
@@ -223,7 +223,7 @@ public class Test_ContactUtil
         Contact updatedLead = ExternalRequestUtil.contactsToUpdate.get(
             ExistingLead.CustomerNum__c
             );
-        System.assertEquals(1, ExternalRequestUtil.contactsToUpdate.size() );
+        System.assertEquals( 1, ExternalRequestUtil.contactsToUpdate.size() );
         System.assert (updatedLead.MobilePhone != ExistingLead.MobilePhone);
         Test.stopTest();
     }
@@ -253,7 +253,7 @@ public class Test_ContactUtil
         SET<String> keys = new Set<String>();
         keys.add(ExistingLead.CustomerNum__c);
         mapContacts = SystemUtil.ContactsSelector(keys);
-        System.assertEquals(1, mapContacts.size() );
+        System.assertEquals( 1, mapContacts.size() );
         System.assertEquals(
             ExistingLead.Email,
             mapContacts.get(ExistingLead.CustomerNum__c).Email
@@ -315,7 +315,7 @@ public class Test_ContactUtil
         Contact updatedCustomer = ExternalRequestUtil.contactsToUpdate.get(
             ExistingLead.CustomerNum__c
             );
-        System.assertEquals(1, ExternalRequestUtil.contactsToUpdate.size() );
+        System.assertEquals( 1, ExternalRequestUtil.contactsToUpdate.size() );
         System.assert (updatedCustomer.MobilePhone != ExistingLead.MobilePhone);
         Test.stopTest();
     }
@@ -345,7 +345,7 @@ public class Test_ContactUtil
         SET<String> keys = new Set<String>();
         keys.add(ExistingLead.CustomerNum__c);
         mapContacts = SystemUtil.ContactsSelector(keys);
-        System.assertEquals(1, mapContacts.size() );
+        System.assertEquals( 1, mapContacts.size() );
         System.assertEquals(
             ExistingLead.Email,
             mapContacts.get(ExistingLead.CustomerNum__c).Email
@@ -406,7 +406,7 @@ public class Test_ContactUtil
         Contact updatedCustomer = ExternalRequestUtil.contactsToUpdate.get(
             ExistingLead.CustomerNum__c
             );
-        System.assertEquals(1, ExternalRequestUtil.contactsToUpdate.size() );
+        System.assertEquals( 1, ExternalRequestUtil.contactsToUpdate.size() );
         System.assert (updatedCustomer.MobilePhone != ExistingLead.MobilePhone);
         Test.stopTest();
     }
@@ -811,7 +811,7 @@ public class Test_ContactUtil
             WHERE HashedId__c != NULL
         ];
 
-        System.assertEquals(3, cListNotNull.size() );
+        System.assertEquals( 3, cListNotNull.size() );
     }
 
     @isTest

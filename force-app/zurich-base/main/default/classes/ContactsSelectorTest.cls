@@ -25,7 +25,13 @@ private with sharing class ContactsSelectorTest
     {
         // Escenario
         // SOSL - Resultados de búsqueda
-        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id, ParentId, ContactId__c FROM ContactPointPhone WHERE TelephoneNumber = '123456789']).keySet();
+        Set<Id> recordIds = new Set<Id>();
+        
+        for(ContactPointPhone contactPoint : [SELECT Id, ParentId, ContactId__c FROM ContactPointPhone WHERE TelephoneNumber = '123456789'])
+        {
+            recordIds.add(contactPoint.ParentId);
+        }
+
         Test.setFixedSearchResults(new List<Id>(recordIds) );
 
 
@@ -50,10 +56,15 @@ private with sharing class ContactsSelectorTest
     {
         // Escenario
         // SOSL - Resultados de búsqueda
-        Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id, ParentId, ContactId__c FROM ContactPointEmail WHERE EmailAddress = 'nescudero@nts-solutions.com']).keySet();
+        Set<Id> recordIds = new Set<Id>();
+        
+        for(ContactPointEmail contactPoint : [SELECT Id, ParentId, ContactId__c FROM ContactPointEmail WHERE EmailAddress = 'nescudero@nts-solutions.com'])
+        {
+            recordIds.add(contactPoint.ParentId);
+        }
+
         Test.setFixedSearchResults(new List<Id>(recordIds) );
-
-
+        
         // Test
         Test.startTest();
 

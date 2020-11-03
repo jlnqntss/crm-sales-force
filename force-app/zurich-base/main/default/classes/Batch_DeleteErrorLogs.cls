@@ -14,7 +14,7 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
     global Batch_DeleteErrorLogs(String q)
     {
         this();
-        if (!String.isBlank(q) )
+        if ( !String.isBlank(q) )
         {
             query = q;
         }
@@ -37,7 +37,7 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
     {
         List<Error_Log__c> errorList = (List<Error_Log__c>) scope;
 
-        if (errorList != null && !scope.isEmpty() )
+        if ( errorList != null && !scope.isEmpty() )
         {
             try
             {

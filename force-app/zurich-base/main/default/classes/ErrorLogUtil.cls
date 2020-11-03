@@ -354,7 +354,7 @@ public without sharing class ErrorLogUtil
         Boolean isSuccess = true;
         for (Database.SaveResult sr : results)
         {
-            if (!sr.isSuccess() )
+            if ( !sr.isSuccess() )
             {
                 isSuccess = sr.isSuccess();
                 // for(Database.Error err : sr.getErrors())
@@ -397,20 +397,20 @@ public without sharing class ErrorLogUtil
                 );
         }
 
-        if (!errors.isEmpty() )
+        if ( !errors.isEmpty() )
         {
             Database.SaveResult[] srResults = Database.insert(errors, false);
 
             /* DEBUG */
             for (Database.SaveResult sr : srResults)
             {
-                if (!sr.isSuccess() )
+                if ( !sr.isSuccess() )
                 {
                     System.debug(
                         LoggingLevel.ERROR,
                         '[ERROR LOG] Excepción insertando registros de log:'
                         );
-                    for (Database.Error err : sr.getErrors() )
+                    for ( Database.Error err : sr.getErrors() )
                     {
                         System.debug(
                             LoggingLevel.ERROR,
@@ -461,7 +461,7 @@ public without sharing class ErrorLogUtil
                 );
         }
 
-        if (!errors.isEmpty() )
+        if ( !errors.isEmpty() )
         {
             Database.DMLOptions dmo = new Database.DMLOptions();
             dmo.AllowFieldTruncation = true;
@@ -472,13 +472,13 @@ public without sharing class ErrorLogUtil
             /* DEBUG */
             for (Database.SaveResult sr : srResults)
             {
-                if (!sr.isSuccess() )
+                if ( !sr.isSuccess() )
                 {
                     System.debug(
                         LoggingLevel.ERROR,
                         '[ERROR LOG] Excepción insertando registros de log:'
                         );
-                    for (Database.Error err : sr.getErrors() )
+                    for ( Database.Error err : sr.getErrors() )
                     {
                         System.debug(
                             LoggingLevel.ERROR,
@@ -511,20 +511,20 @@ public without sharing class ErrorLogUtil
         if (errors != null && SETTING_SEND_EMAIL == true)
         {
             List<String> recipients = new List<String>();
-            if (String.isNotBlank(SETTING_NOTIFY_TO) )
+            if ( String.isNotBlank(SETTING_NOTIFY_TO) )
             {
                 List<String> aux = SETTING_NOTIFY_TO.split(',');
-                if (aux != null && !aux.isEmpty() )
+                if ( aux != null && !aux.isEmpty() )
                 {
                     recipients.addAll(aux);
                 }
             }
-            if (!recipients.isEmpty() )
+            if ( !recipients.isEmpty() )
             {
                 List<String> errHtmlTableLines = new List<String>();
                 for (Error_Log__c err : errors)
                 {
-                    if (isErrorSendable(err) )
+                    if ( isErrorSendable(err) )
                     {
                         errHtmlTableLines.add(
                             '<tr><td>' +
@@ -544,7 +544,7 @@ public without sharing class ErrorLogUtil
                     }
                 }
 
-                if (!errHtmlTableLines.isEmpty() )
+                if ( !errHtmlTableLines.isEmpty() )
                 {
                     String subject = '[ERROR LOG] Se ha producido un error que debe ser revisado';
                     String errHtmlTemplate =
@@ -570,7 +570,7 @@ public without sharing class ErrorLogUtil
                     /* Obtener from */
                     String auxAddress = SETTING_NOTIFY_FROM;
                     OrgWideEmailAddress fromEmail;
-                    if (Test.isRunningTest() )
+                    if ( Test.isRunningTest() )
                     {
                         fromEmail = new OrgWideEmailAddress(Address = SETTING_NOTIFY_FROM);
                     }
@@ -604,7 +604,7 @@ public without sharing class ErrorLogUtil
                             LoggingLevel.ERROR,
                             '[ERROR LOG] No se ha podido enviar el email de notifiación de errores'
                             );
-                        System.debug(LoggingLevel.ERROR, 'Mensaje: ' + ex.getMessage() );
+                        System.debug( LoggingLevel.ERROR, 'Mensaje: ' + ex.getMessage() );
                         System.debug(
                             LoggingLevel.ERROR,
                             'Trace: ' + ex.getStackTraceString()

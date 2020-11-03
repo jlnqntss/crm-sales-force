@@ -20,7 +20,7 @@ public class AccountUtil
     {
         Account partnerSF = mapPartners.get(customer.MasterPolicyNum__c);
 
-        if (String.isBlank(customer.MasterPolicyDesc__c) )
+        if ( String.isBlank(customer.MasterPolicyDesc__c) )
         {
             customer.MasterPolicyDesc__c = Label.LeadLastName;
         }
@@ -43,7 +43,7 @@ public class AccountUtil
                 Masterpolicy__c = customer.MasterPolicyNum__c
                 );
 
-            if (!partnersToUpdateList.containsKey(newPartner.Masterpolicy__c) )
+            if ( !partnersToUpdateList.containsKey(newPartner.Masterpolicy__c) )
             {
                 partnersToUpdateList.put(newPartner.Masterpolicy__c, newPartner);
             }
@@ -69,7 +69,7 @@ public class AccountUtil
     {
         Account partnerSF = mapPartners.get(order.MasterPolicyNum__c);
 
-        if (String.isBlank(order.MasterPolicyDescr__c) )
+        if ( String.isBlank(order.MasterPolicyDescr__c) )
         {
             order.MasterPolicyDescr__c = Label.LeadLastName;
         }
@@ -92,7 +92,7 @@ public class AccountUtil
                 Masterpolicy__c = order.MasterPolicyNum__c
                 );
 
-            if (!partnersToUpdateList.containsKey(newPartner.Masterpolicy__c) )
+            if ( !partnersToUpdateList.containsKey(newPartner.Masterpolicy__c) )
             {
                 partnersToUpdateList.put(newPartner.Masterpolicy__c, newPartner);
             }

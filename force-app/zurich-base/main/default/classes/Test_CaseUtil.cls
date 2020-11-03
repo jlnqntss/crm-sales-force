@@ -111,7 +111,7 @@ public with sharing class Test_CaseUtil
             FROM Contact
             WHERE CustomerNum__c = 'GI-3123'
         ];
-        System.AssertEquals(1, existingContactsList.size() );
+        System.AssertEquals( 1, existingContactsList.size() );
 
         SET<String> keys = new Set<String>();
         keys.add('8989'); //Policy

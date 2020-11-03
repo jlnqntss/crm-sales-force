@@ -24,10 +24,10 @@ public class RollupSummariesUtil
     static final Map<String, Decimal> currencyConversionMap = new Map<String, Decimal>();
     private static Decimal convertCurrency(String iso, Decimal val)
     {
-        if (currencyConversionMap.isEmpty() )
+        if ( currencyConversionMap.isEmpty() )
         {
             String query = 'select IsoCode, ConversionRate from CurrencyType where IsActive = true';
-            for (sObject ct : Database.query(query) )
+            for ( sObject ct : Database.query(query) )
             {
                 currencyConversionMap.put(
                     (String) ct.get('IsoCode'),
@@ -69,7 +69,7 @@ public class RollupSummariesUtil
         Map<Id, Sobject> masterRecordsMap = new Map<Id, Sobject>(); //{Master record id, Empty object with id, to update masters}
         for (Id masterId : masterRecordId)
         {
-            masterRecordsMap.put(masterId, context.master.newSobject(masterId) );
+            masterRecordsMap.put( masterId, context.master.newSobject(masterId) );
         }
 
         // variable # 0 of query
@@ -172,7 +172,7 @@ public class RollupSummariesUtil
                 continue;
             }
 
-            for (String alias : mapReferencesAlias.keySet() )
+            for ( String alias : mapReferencesAlias.keySet() )
             {
                 RollupSummaryField summaryField = mapReferencesAlias.get(alias);
                 Object agregateDetail = result.get(alias);
@@ -263,11 +263,11 @@ public class RollupSummariesUtil
             this.detailField = d;
             this.operation = op;
 
-            this.numberTypeMaster = isNumber(masterField.getType() );
-            this.numberTypeDetail = isNumber(detailField.getType() );
-            this.dateHourTypeMaster = isDateTime(masterField.getType() );
-            this.dateHourTypeDetail = isDateTime(detailField.getType() );
-            this.currencyTypeCurrency = isCurrency(masterField.getType() );
+            this.numberTypeMaster = isNumber( masterField.getType() );
+            this.numberTypeDetail = isNumber( detailField.getType() );
+            this.dateHourTypeMaster = isDateTime( masterField.getType() );
+            this.dateHourTypeDetail = isDateTime( detailField.getType() );
+            this.currencyTypeCurrency = isCurrency( masterField.getType() );
             validate();
         }
 

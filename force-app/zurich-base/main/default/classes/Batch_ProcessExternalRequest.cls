@@ -15,7 +15,7 @@ global class Batch_ProcessExternalRequest implements Database.Batchable<sObject>
     global Batch_ProcessExternalRequest(String p_query)
     {
         this();
-        if (!String.isBlank(p_query) )
+        if ( !String.isBlank(p_query) )
         {
             query = p_query;
         }
@@ -35,7 +35,7 @@ global class Batch_ProcessExternalRequest implements Database.Batchable<sObject>
     {
         Savepoint SP = Database.setSavepoint();
 
-        if (scope != null && !scope.isEmpty() )
+        if ( scope != null && !scope.isEmpty() )
         {
             List<ExternalRequest__c> listExternalRequest = (List<ExternalRequest__c>) scope;
 
