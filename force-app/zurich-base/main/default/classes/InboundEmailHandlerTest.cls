@@ -1,5 +1,5 @@
 @isTest(SeeAllData = false)
-private class InboundEmailToRecordHandlerTest
+private class InboundEmailHandlerTest
 {
     static final String EMAIL_SOPORTE = 'soporte-ocs@nts-solutions.com';
     /**
@@ -38,17 +38,18 @@ private class InboundEmailToRecordHandlerTest
         firstEmail.toAddresses = new List<String> {System.UserInfo.getUserEmail()};
 
         Test.startTest();
-        InboundEmailToRecordHandler inboundEmail = new InboundEmailToRecordHandler();
+        InboundEmailHandler inboundEmail = new InboundEmailHandler();
         inboundEmail.handleInboundEmail(firstEmail, null);
         Test.stopTest();
 
         //Comprobamos que se ha creado una oportunidad para el email recibido
         List<Opportunity> opportunitiesCreated = [SELECT Id FROM Opportunity WHERE Name =: emailSubject AND CloseDate =: System.today()];
-        System.assertEquals(1, opportunitiesCreated.size(), 'There should be one new opportunity');
+        System.assertEquals(0, opportunitiesCreated.size(), 'There shouldnt be one new opportunity');
 
-        //Comprobamos que se ha creado un EmailMessage relacionado con la oportunidad
-        List<EmailMessage> emailMessagesCreated = [SELECT Id FROM EmailMessage WHERE RelatedToId =: opportunitiesCreated.get(0).Id];
-        System.assertEquals(1, emailMessagesCreated.size(), 'There should be an EmailMessage related to the opportunity');
+        //Comprobamos que se ha creado un EmailMessage huerfano
+        List<EmailMessage> emailMessagesCreated = [SELECT Id,RelatedToId FROM EmailMessage WHERE Subject =: emailSubject];
+        System.assertEquals(1, emailMessagesCreated.size(), 'There should be an EmailMessage');
+        System.assertEquals(null, emailMessagesCreated.get(0).RelatedToId, 'RelatedToId field should be null');
 
         //Comprobamos que se ha creado un EmailMessageRelation entre el usuario y el EmailMessage creado
         List<EmailMessageRelation> emailMessageRelationsCreated = [SELECT Id FROM EmailMessageRelation WHERE EmailMessageId =: emailMessagesCreated.get(0).Id AND RelationId =: System.UserInfo.getUserId()];
@@ -85,7 +86,7 @@ private class InboundEmailToRecordHandlerTest
         secondEmail.headers = new List<Messaging.InboundEmail.Header> {inReplyToEmailHeader, referencesEmailHeader};
 
         Test.startTest();
-        InboundEmailToRecordHandler inboundEmail = new InboundEmailToRecordHandler();
+        InboundEmailHandler inboundEmail = new InboundEmailHandler();
         inboundEmail.handleInboundEmail(secondEmail, null);
         Test.stopTest();
 

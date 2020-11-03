@@ -1,15 +1,11 @@
-global class InboundEmailToRecordHandler implements Messaging.InboundEmailHandler 
+global class InboundEmailHandler implements Messaging.InboundEmailHandler 
 {
     global Messaging.InboundEmailResult handleInboundEmail(Messaging.InboundEmail email, Messaging.InboundEnvelope envelope) 
     {
         Messaging.InboundEmailResult emailResult = new Messaging.InboundEmailResult();
         InboundEmailHeaders emailHeaders = new InboundEmailHeaders(email);
         List<EmailMessage> relatedEmailMessages;
-		Opportunity relatedOpportunity = new Opportunity(
-            Name = email.Subject,
-            CloseDate = Date.today(),
-            StageName = 'Clientes potenciales'
-         );
+		Id relatedOpportunityId;
         
         // 1 - Se obtiene la referencia del Thread Id de nuestra cabecera
         String threadId = '';
@@ -19,34 +15,14 @@ global class InboundEmailToRecordHandler implements Messaging.InboundEmailHandle
 		System.debug(email.messageId);
         System.debug(email.references);
         
-        
-		if(emailHeaders.inReplyTo.isEmpty() || emailHeaders.references.isEmpty())
-        {
-              relatedOpportunity     = new Opportunity(
-                Name = email.Subject,
-                CloseDate = Date.today(),
-                StageName = 'Clientes potenciales'
-            );
-
-        	insert relatedOpportunity;
-
-        }
-        else
+        if(!emailHeaders.inReplyTo.isEmpty() || !emailHeaders.references.isEmpty())
         {
             relatedEmailMessages = [SELECT Id, RelatedToId FROM EmailMessage WHERE MessageIdentifier IN :emailHeaders.inReplyTo OR MessageIdentifier IN :emailHeaders.references ORDER BY SystemModstamp DESC];
             
-            if(relatedEmailMessages.isEmpty() || String.isEmpty(relatedEmailMessages[0].RelatedToId))
+            if(!relatedEmailMessages.isEmpty() && String.isNotBlank(relatedEmailMessages[0].RelatedToId))
             {
-				insert relatedOpportunity;
+				relatedOpportunityId = relatedEmailMessages[0].RelatedToId;
             }
-            else
-            {
-                relatedOpportunity = new Opportunity(
-                	id = relatedEmailMessages[0].RelatedToId
-                );
-            }
-                
-
         }
         
         // 3 - Se inserta un EmailMessage
@@ -58,7 +34,7 @@ global class InboundEmailToRecordHandler implements Messaging.InboundEmailHandle
         emailMessage.Status = '0';
         emailMessage.Incoming = true;
         emailMessage.ToAddress = String.join(email.toAddresses, ',');
-        emailMessage.RelatedToId = relatedOpportunity.Id;
+        emailMessage.RelatedToId = relatedOpportunityId;
         emailMessage.HtmlBody = email.htmlBody;
         emailMessage.MessageIdentifier = email.messageId;
         emailMessage.ThreadIdentifier = 'test';
