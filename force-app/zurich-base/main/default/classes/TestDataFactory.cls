@@ -1290,6 +1290,104 @@ public class TestDataFactory
 
         return externalRequestList;
     }
+    
+    /**
+     * Genera oportunidades a partir de los campos especificados
+     **
+     * @param String type indica el tipo de oportunidades que se quieren crear
+     * @param String stage indica la etapa de las oportunidades a crear
+     * @param Date closeDate indica la fecha de cierre de la oportunidad, puede ser nulo
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<Opportunity> listado de Opportunities generadas
+     * @author rlopez
+     * @date 03/11/2020
+     */
+    public static List<Opportunity> generateOpportunities(String type, String stage, Date closeDate, Integer numRecords)
+    {
+        List<Opportunity> opportunitiesGenerated = new List<Opportunity>();
+
+        if(String.isBlank(stage))
+        {
+            stage = 'Qualification';
+        }
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        switch on type {
+            when 'ZE' {
+                for(Integer i=0; i<numRecords; i++)
+                {
+                    opportunitiesGenerated.add(
+                        new Opportunity(
+                            Name = 'Test Opportunity ' + i,
+                            StageName = stage,
+                            CloseDate = closeDate
+                        )
+                    );
+                }       
+            }
+            when else {
+                for(Integer i=0; i<numRecords; i++)
+                {
+                    opportunitiesGenerated.add(
+                        new Opportunity(
+                            Name = 'Test Opportunity ' + i,
+                            StageName = stage,
+                            CloseDate = closeDate
+                        )
+                    );
+                } 
+            }
+        }
+
+        return opportunitiesGenerated;
+    }
+
+    /**
+     * Genera EmailMessage relacionados con una lista de oportunidades
+     **
+     * @param List<Opportunity> opportunities lista de oportunidades para las que hay que generar un EmailMessage
+     * @param String fromAddress indica quien envía el email
+     * @param String toAddress indica a quien se envía el email
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<EmailMessage> listado de EmailMessage generados
+     * @author rlopez
+     * @date 03/11/2020
+     */
+    public static List<EmailMessage> generateEmailMessagesFromOpportunities(List<Opportunity> opportunities, String fromAddress, String toAddress, Integer numRecords)
+    {
+        List<EmailMessage> emailMessagesGenerated = new List<EmailMessage>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Opportunity opportunity: opportunities)
+        {
+            if(String.isNotBlank(opportunity.Name))
+            {
+                for(Integer i=0; i<numRecords; i++)
+                {
+                    emailMessagesGenerated.add(
+                        new EmailMessage(
+                            Subject = opportunity.Name,
+                            RelatedToId = opportunity.Id,
+                            FromAddress = fromAddress,
+                            ToAddress = toAddress
+                        )
+                    );
+                }
+            }
+        }
+
+        return emailMessagesGenerated;
+    }
 
     public class TestException extends Exception
     {}
