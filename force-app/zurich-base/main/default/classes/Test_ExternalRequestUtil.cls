@@ -260,7 +260,7 @@ public class Test_ExternalRequestUtil
         }
         catch (Exception e)
         {
-            system.assert (e.getMessage().contains(Label.CustomerError) );
+            system.assert ( e.getMessage().contains(Label.CustomerError) );
         }
         Test.stopTest();
     }
@@ -484,7 +484,7 @@ public class Test_ExternalRequestUtil
             WHERE CustomerNum__c = 'GI-3123'
         ];
         //before inserting customer has 1 policy
-        system.assertEquals(1, customer.Pedidos__r.size() );
+        system.assertEquals( 1, customer.Pedidos__r.size() );
 
         ExternalRequest__c ExtReq = new ExternalRequest__c(
             Origin__c = 'IBA',
@@ -508,7 +508,7 @@ public class Test_ExternalRequestUtil
         ];
         //after inserting customer has 2 policies
         // @todo change 1 por 2
-        system.assertEquals(2, customer.Pedidos__r.size() );
+        system.assertEquals( 2, customer.Pedidos__r.size() );
 
         System.debug('**** PEDIDOS ' + customer.Pedidos__r);
 
@@ -571,7 +571,7 @@ public class Test_ExternalRequestUtil
         catch (Exception e)
         {
             // system.assertEquals(Label.PolicyError,e.getStackTraceString());
-            system.assert (e.getMessage().contains(Label.PolicyError) );
+            system.assert ( e.getMessage().contains(Label.PolicyError) );
         }
 
         Test.stopTest();
@@ -649,7 +649,7 @@ public class Test_ExternalRequestUtil
         }
         catch (Exception e)
         {
-            system.assert (e.getMessage().contains(Label.CustomerError) );
+            system.assert ( e.getMessage().contains(Label.CustomerError) );
         }
 
         //test second error use case: claim without policy
@@ -662,7 +662,7 @@ public class Test_ExternalRequestUtil
         }
         catch (Exception e)
         {
-            system.assert (e.getMessage().contains(Label.PolicyNotExisting) );
+            system.assert ( e.getMessage().contains(Label.PolicyNotExisting) );
         }
 
         Test.stopTest();

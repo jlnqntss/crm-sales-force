@@ -32,7 +32,7 @@ public class OrderItemUtil
         {
             for (Cover__c cover : listCovers)
             {
-                if (receivedCovers.containsKey(cover.PolicyProduct__r.ItemId__c) )
+                if ( receivedCovers.containsKey(cover.PolicyProduct__r.ItemId__c) )
                 {
                     List<Cover__c> existingItemId = receivedCovers.get(
                         cover.PolicyProduct__r.ItemId__c
@@ -185,7 +185,7 @@ public class OrderItemUtil
         Product2 prodRef = new Product2(ProductID__c = productID);
         pricebookEntry.Product2 = prodRef;
 
-        if (!pricebookEntryToInsert.containsKey(pricebookEntry.ProductID__c) )
+        if ( !pricebookEntryToInsert.containsKey(pricebookEntry.ProductID__c) )
         {
             pricebookEntryToInsert.put(pricebookEntry.ProductID__c, pricebookEntry);
         }
@@ -198,7 +198,7 @@ public class OrderItemUtil
             IsActive = true
             );
 
-        if (!productsToInsert.containsKey(newProduct.ProductID__c) )
+        if ( !productsToInsert.containsKey(newProduct.ProductID__c) )
         {
             productsToInsert.put(newProduct.ProductID__c, newProduct);
         }

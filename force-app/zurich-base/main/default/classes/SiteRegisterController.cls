@@ -39,7 +39,7 @@ public with sharing class SiteRegisterController
     public PageReference registerUser()
     {
         // it's okay if password is null - we'll send the user a random password in that case
-        if (!isValidPassword() )
+        if ( !isValidPassword() )
         {
             ApexPages.Message msg = new ApexPages.Message(
                 ApexPages.Severity.ERROR,

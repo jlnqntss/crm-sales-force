@@ -42,7 +42,7 @@ public with sharing class ContactsSelector
             {
                 ContactPointPhone contactPoint = (ContactPointPhone) record;
 
-                if(String.isNotBlank(contactPoint.ParentId) )
+                if( String.isNotBlank(contactPoint.ParentId) )
                 {
                     recordIds.add(contactPoint.ParentId);
                 }
@@ -73,7 +73,7 @@ public with sharing class ContactsSelector
                     recordIds.add(contactPoint.ParentId);
                 }
 
-                if(String.isNotBlank(contactPoint.ContactId__c) )
+                if( String.isNotBlank(contactPoint.ContactId__c) )
                 {
                     recordIds.add(contactPoint.ContactId__c);
                 }

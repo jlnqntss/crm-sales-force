@@ -158,8 +158,8 @@ public class Test_PreferenceCentreController
             WHERE ContactId = :Id
         ];
 
-        System.assertEquals(1, membercampaignLife.size() );
-        System.assertEquals(2, memberCampaigns.size() );
+        System.assertEquals( 1, membercampaignLife.size() );
+        System.assertEquals( 2, memberCampaigns.size() );
     }
 
     @isTest
@@ -230,8 +230,8 @@ public class Test_PreferenceCentreController
             WHERE ContactId = :Id
         ];
 
-        System.assertEquals(1, membercampaignLife.size() );
-        System.assertEquals(2, memberCampaigns.size() );
+        System.assertEquals( 1, membercampaignLife.size() );
+        System.assertEquals( 2, memberCampaigns.size() );
     }
 
     @isTest
@@ -291,7 +291,7 @@ public class Test_PreferenceCentreController
             FROM CampaignMember
             WHERE ContactId = :Id
         ];
-        System.assertEquals(0, member.size() );
+        System.assertEquals( 0, member.size() );
     }
 
     @isTest
@@ -355,7 +355,7 @@ public class Test_PreferenceCentreController
             FROM CampaignMember
             WHERE ContactId = :Id
         ];
-        System.assertEquals(0, member.size() );
+        System.assertEquals( 0, member.size() );
     }
 
     @isTest
@@ -428,8 +428,8 @@ public class Test_PreferenceCentreController
             WHERE LegalEntity__c = :Label.GeneralInsurance
         ];
 
-        System.assertEquals(0, membercampaignGI.size() );
-        System.assertEquals(1, memberCampaigns.size() );
+        System.assertEquals( 0, membercampaignGI.size() );
+        System.assertEquals( 1, memberCampaigns.size() );
         System.assertEquals(true, contacto.HasOptedOutOfEmail);
     }
 
@@ -507,8 +507,8 @@ public class Test_PreferenceCentreController
             WHERE LegalEntity__c = :Label.LifeInsurance
         ];
 
-        System.assertEquals(0, membercampaignLife.size() );
-        System.assertEquals(1, memberCampaigns.size() );
+        System.assertEquals( 0, membercampaignLife.size() );
+        System.assertEquals( 1, memberCampaigns.size() );
         System.assertEquals(true, contacto.HasOptedOutOfEmail);
     }
 
@@ -581,7 +581,7 @@ public class Test_PreferenceCentreController
         Test.stopTest();
 
         //Then
-        System.assertEquals(2, campaigns.size() );
+        System.assertEquals( 2, campaigns.size() );
     }
 
     @isTest
@@ -611,6 +611,6 @@ public class Test_PreferenceCentreController
         Test.stopTest();
 
         //Then
-        System.assertEquals(2, campaigns.size() );
+        System.assertEquals( 2, campaigns.size() );
     }
 }

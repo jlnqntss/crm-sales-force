@@ -9,7 +9,7 @@ global class Mock_Parser
     {
         Map<String, SObject> recordsMap = new Map<String, SObject>();
 
-        if (Entity.equals('Claim') )
+        if ( Entity.equals('Claim') )
         {
             Case claim = new Case(
                 ClaimNumber__c = '797',
@@ -26,7 +26,7 @@ global class Mock_Parser
 
             recordsMap.put(claim.ClaimNumber__c, (SObject) claim);
         }
-        else if (Entity.equals('Customer') )
+        else if ( Entity.equals('Customer') )
         {
             System.debug(
                 'el entity es >>> ' + ExternalRequestUtil.actualRequest.entity__c
@@ -66,7 +66,7 @@ global class Mock_Parser
                 recordsMap.put(customer.CustomerNum__c, (SObject) customer);
             }
         }
-        else if (Entity.equals('Policy') )
+        else if ( Entity.equals('Policy') )
         {
             Order policy = new Order(
                 EffectiveDate = Date.valueOf('1990-01-02'),
@@ -85,7 +85,7 @@ global class Mock_Parser
 
             recordsMap.put(policy.PolicyNum__c, (SObject) policy);
         }
-        else if (Entity.equals('QuoteEntry') )
+        else if ( Entity.equals('QuoteEntry') )
         {
             //Quote from the web
             Order quote = new Order(
@@ -130,7 +130,7 @@ global class Mock_Parser
             itemModel__c = 'IphoneX'
             );
 
-        if (Entity.equals('Quote') )
+        if ( Entity.equals('Quote') )
         {
             Order quoteRef = new Order(
                 QuoteEntry__c = '9090',
@@ -148,7 +148,7 @@ global class Mock_Parser
             listaItems.add( (SObject) item2 );
             secLvlRecordsMap.put('OrderItem', listaItems);
         }
-        else if (Entity.equals('Policy') )
+        else if ( Entity.equals('Policy') )
         {
             Order policyRef = new Order(PolicyNum__c = '1111');
 

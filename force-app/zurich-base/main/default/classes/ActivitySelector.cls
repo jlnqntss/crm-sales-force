@@ -31,7 +31,7 @@ public without sharing class ActivitySelector
         )
     {
         //Devolver lista vacía
-        if (interactionIds.isEmpty() )
+        if ( interactionIds.isEmpty() )
         {
             return new List<Task>();
         }

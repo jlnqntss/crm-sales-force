@@ -25,7 +25,7 @@ public with sharing class TransformerTest
         Transformer myTransformer = new Transformer(Transformer.ORIGIN_NAME_INFO);
         List<Transformer__mdt> settings = myTransformer.getSettings();
 
-        System.debug('Metadatos: ' + JSON.serialize(settings) );
+        System.debug( 'Metadatos: ' + JSON.serialize(settings) );
         System.assertEquals(
             true,
             settings != null && !settings.isEmpty(),

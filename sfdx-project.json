@@ -19,6 +19,10 @@
     {
       "path": "force-app/zurich-base-security",
       "default": false
+    },
+    {
+      "path": "force-app/zurich-ze-app",
+      "default": false
     }
   ],
   "namespace": "",

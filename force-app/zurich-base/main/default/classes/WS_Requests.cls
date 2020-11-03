@@ -35,13 +35,13 @@ global without sharing class WS_Requests
             );
 
         // 3 - Creamos objeto ExternalRequest
-        System.debug(request.get('Timestamp') );
+        System.debug( request.get('Timestamp') );
         ExternalRequest__c req = new ExternalRequest__c(
             Origin__c = (String) request.get('Origin'),
             Country__c = (String) request.get('Country'),
             Entity__c = (String) request.get('Entity'),
             Timestamp__c = Datetime.valueOf( (String) request.get('Timestamp') ),
-            Json__c = JSON.serialize(request.get('Json') )
+            Json__c = JSON.serialize( request.get('Json') )
             );
 
         insert req;

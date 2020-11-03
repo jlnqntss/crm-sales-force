@@ -49,7 +49,7 @@ public class Test_SystemUtil
             );
 
         String legalEntityName;
-        if (quote.LegalEntity__c.equals(Label.GeneralInsurance) )
+        if ( quote.LegalEntity__c.equals(Label.GeneralInsurance) )
         {
             legalEntityName = 'GI';
         }
@@ -126,7 +126,7 @@ public class Test_SystemUtil
     {
         Test.startTest();
         System.assert (
-            String.isNotBlank(Systemutil.getExternalRequests() ),
+            String.isNotBlank( Systemutil.getExternalRequests() ),
             'No se ha podido recuperar la query de external request'
             );
         Test.stopTest();
@@ -137,7 +137,7 @@ public class Test_SystemUtil
     {
         Test.startTest();
         System.assert (
-            String.isNotBlank(Systemutil.getProcessedExternalRequests() ),
+            String.isNotBlank( Systemutil.getProcessedExternalRequests() ),
             'No se ha podido recuperar la query de processed external request'
             );
         Test.stopTest();
@@ -148,7 +148,7 @@ public class Test_SystemUtil
     {
         Test.startTest();
         System.assert (
-            String.isNotBlank(Systemutil.getOldExternalRequests() ),
+            String.isNotBlank( Systemutil.getOldExternalRequests() ),
             'No se ha podido recuperar la query de old external request'
             );
         Test.stopTest();
@@ -159,7 +159,7 @@ public class Test_SystemUtil
     {
         Test.startTest();
         System.assert (
-            String.isNotBlank(Systemutil.getErrorLogs() ),
+            String.isNotBlank( Systemutil.getErrorLogs() ),
             'No se ha podido recuperar la query de error logs'
             );
         Test.stopTest();
@@ -170,7 +170,7 @@ public class Test_SystemUtil
     {
         Test.startTest();
         System.assert (
-            String.isNotBlank(Systemutil.getQuotesToDelete() ),
+            String.isNotBlank( Systemutil.getQuotesToDelete() ),
             'No se ha podido recuperar la query de quotes para borrar'
             );
         Test.stopTest();
@@ -181,7 +181,7 @@ public class Test_SystemUtil
     {
         Test.startTest();
         System.assert (
-            String.isNotBlank(Systemutil.getLeadsToDelete() ),
+            String.isNotBlank( Systemutil.getLeadsToDelete() ),
             'No se ha podido recuperar la query de leads para borrar'
             );
         Test.stopTest();
@@ -192,7 +192,7 @@ public class Test_SystemUtil
     {
         Test.startTest();
         System.assert (
-            String.isNotBlank(Systemutil.getMastersToDelete() ),
+            String.isNotBlank( Systemutil.getMastersToDelete() ),
             'No se ha podido recuperar la query de masters para borrar'
             );
         Test.stopTest();
@@ -326,7 +326,7 @@ public class Test_SystemUtil
             );
         policy.Account = masterRef;
         String legalEntityName;
-        if (policy.LegalEntity__c.equals(Label.GeneralInsurance) )
+        if ( policy.LegalEntity__c.equals(Label.GeneralInsurance) )
         {
             legalEntityName = 'GI';
         }

@@ -12,7 +12,7 @@ public with sharing class Test_PreferenceCentreProcessController
         Test.stopTest();
 
         List<Error_Log__c> errorRecords = [SELECT Id FROM Error_Log__c];
-        System.assertEquals(1, errorRecords.size() );
+        System.assertEquals( 1, errorRecords.size() );
     }
 
     @isTest
@@ -27,7 +27,7 @@ public with sharing class Test_PreferenceCentreProcessController
         Test.stopTest();
 
         List<Error_Log__c> errorRecords = [SELECT Id FROM Error_Log__c];
-        System.assertEquals(1, errorRecords.size() );
+        System.assertEquals( 1, errorRecords.size() );
     }
 
     @isTest
@@ -43,6 +43,6 @@ public with sharing class Test_PreferenceCentreProcessController
         Test.stopTest();
 
         List<Error_Log__c> errorRecords = [SELECT Id FROM Error_Log__c];
-        System.assertEquals(1, errorRecords.size() );
+        System.assertEquals( 1, errorRecords.size() );
     }
 }

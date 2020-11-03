@@ -69,7 +69,7 @@ public class CoverUtil
                         cover.LegalEntity__c = LegalEntity;
                         cover.ownerId = recordOwner.id;
 
-                        if (!subCoversToInsertQuote.containsKey(cover.CoverId__c) )
+                        if ( !subCoversToInsertQuote.containsKey(cover.CoverId__c) )
                         {
                             subCoversToInsertQuote.put(cover.CoverId__c, cover);
                         }
