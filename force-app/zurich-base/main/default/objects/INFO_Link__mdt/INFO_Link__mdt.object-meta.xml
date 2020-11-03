@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Se usa para guardar datos dependientes del link a INFO que estará en distintos page layouts. Los parámetros US, EN, OP y cdfiliac son dinámicos. Ejemplo: info-launch://launch?US=Z33945046&amp;SE=tokenTag&amp;SN=0&amp;PR=0&amp;AC=0&amp;EV=0&amp;OP=9512&amp;EN=PRE&amp;FW=yes&amp;WP=False#cdfiliac=0026784341</description>
+    <label>INFO Link</label>
+    <pluralLabel>INFO Links</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>
