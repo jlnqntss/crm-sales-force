@@ -630,6 +630,16 @@
         <value>QuoteLife</value>
     </labels>
     <labels>
+        <fullName>RESTApiErrorOnDMLRecordTransaction</fullName>
+        <categories>REST API</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DML Record Error on REST API Transaction</shortDescription>
+        <value>Error on DML {0} operation: {1}
+Related record [{2}]
+Related fields: [{3}]</value>
+    </labels>
+    <labels>
         <fullName>RecordOwner</fullName>
         <categories>Values</categories>
         <language>en_US</language>

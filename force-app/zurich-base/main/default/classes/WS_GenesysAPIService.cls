@@ -4,6 +4,7 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
     static final String INVALID_URI_MESSAGE = 'Invalid URI versioning';
     static final String INVALID_CONTENTTYPE_MESSAGE = 'Invalid Content-Type on request headers';
     static final String REGEXP_URI = 'v[0-9]+$';
+
     /**
      * Recibe las peticiones POST provenientes de genesys
      * Dependiendo del resource se llamará a una clase u otra de apex
@@ -29,14 +30,14 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
             if(!WS_BaseAPIService.isValidVersion)
             {
                 response.statusCode = 400;
-                throw new WS_BaseAPIService.ApiException('BAD_REQUEST', INVALID_URI_MESSAGE);
+                throw new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_BAD_REQUEST_KO, INVALID_URI_MESSAGE);
             }
 
             //Si la cabecera content-type no es JSON, lanzamos error
             if(!WS_BaseAPIService.isJSONContentType)
             {
                 response.statusCode = 400;
-                throw new WS_BaseAPIService.ApiException('BAD_REQUEST', INVALID_CONTENTTYPE_MESSAGE);
+                throw new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_BAD_REQUEST_KO, INVALID_CONTENTTYPE_MESSAGE);
             }
 
             String resource = WS_BaseAPIService.resource;
@@ -46,35 +47,42 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
             switch on resource {
                 when 'interactions' {
                     GenesysInteractionsService.version = version;
-                    if (RestContext.request.requestURI.endsWith('/init') )
+
+                    // Init Interaction Resource
+                    if ( RestContext.request.requestURI.endsWith('/init') )
                     {
-                        GenesysInteractionsService.InteractionRequest interactionRequest = (GenesysInteractionsService.InteractionRequest) JSON.deserialize(
+                        GenesysInteractionsService.Interaction interaction = GenesysInteractionsService.initInteraction(
+                            (GenesysInteractionsService.Interaction) JSON.deserialize(
                             request.requestBody.toString(),
-                            GenesysInteractionsService.InteractionRequest.class
-                            );
-                        GenesysInteractionsService.BestAgent bestAgent = GenesysInteractionsService.initInteraction(
-                            interactionRequest
-                            );
-                        response.responseBody = Blob.valueOf(JSON.serialize(bestAgent) );
-                        response.statusCode = 201;
+                            GenesysInteractionsService.Interaction.class
+                        ));
+
+                        response.statusCode = 200;
+                        response.responseBody = Blob.valueOf(interaction.toString());
                     }
                 }
             }
         }
-        catch (WS_BaseAPIService.ApiException exAPI)
+        catch (WS_BaseAPIService.ApiException apiError)
         {
             Database.rollback(sp);
 
             response.statusCode = 400;
-            response.responseBody = Blob.valueOf(JSON.serialize(exAPI) );
+            response.responseBody = Blob.valueOf(apiError.toErrorString());
         }
-        catch (Exception e)
+        catch (DmlException dmlError)
         {
             Database.rollback(sp);
-            ErrorLogUtil.commitError(e);
 
             response.statusCode = 500;
-            response.responseBody = Blob.valueOf(JSON.serialize(e) );
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(dmlError).toErrorString());
+        }
+        catch (Exception genericError)
+        {
+            Database.rollback(sp);
+
+            response.statusCode = 500;
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage()).toErrorString());
         }
     }
 }

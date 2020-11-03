@@ -3,12 +3,31 @@ public with sharing class ContactsSelector
     /**
      * Busca contactos a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
      * maximizar resultados de búsqueda
+     *
+     * @author jmartinezpisson
+     * @date 02/11/2020
      * @param  phones Listado de teléfonos. Válido cualquier formato
-     * @return        return description
+     * @return        Listado de contactos sobre los que se ha realizado match
      */
     public static List<Contact> findByPhoneNumber(List<String> phones)
     {
         Set<Id> matchedRecordIds = findInContactPointsByPhoneNumber(phones);
+
+        return [SELECT Id, AccountId FROM Contact WHERE Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds];
+    }
+
+    /**
+     * Busca contactos a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
+     * maximizar resultados de búsqueda
+     *
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     * @param  emails Listado de emails. Válido cualquier formato
+     * @return        Listado de contactos sobre los que se ha realizado match
+     */
+    public static List<Contact> findByEmail(List<String> emails)
+    {
+        Set<Id> matchedRecordIds = findInContactPointsByEmail(emails);
 
         return [SELECT Id, AccountId FROM Contact WHERE Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds];
     }
@@ -25,7 +44,33 @@ public with sharing class ContactsSelector
 
                 if( String.isNotBlank(contactPoint.ParentId) )
                 {
+                    recordIds.add(contactPoint.ParentId);
+                }
+
+                if(String.isNotBlank(contactPoint.ContactId__c) )
+                {
                     recordIds.add(contactPoint.ContactId__c);
+                }
+            }
+        }
+
+        return recordIds;
+    }
+
+
+    private static Set<Id> findInContactPointsByEmail(List<String> emails)
+    {
+        Set<Id> recordIds = new Set<Id>();
+
+        for(List<SObject> records : [FIND :String.join(emails, ' OR ') IN EMAIL FIELDS RETURNING ContactPointEmail(Id, ParentId, ContactId__c)])
+        {
+            for(sObject record : records)
+            {
+                ContactPointEmail contactPoint = (ContactPointEmail) record;
+
+                if(String.isNotBlank(contactPoint.ParentId) )
+                {
+                    recordIds.add(contactPoint.ParentId);
                 }
 
                 if( String.isNotBlank(contactPoint.ContactId__c) )

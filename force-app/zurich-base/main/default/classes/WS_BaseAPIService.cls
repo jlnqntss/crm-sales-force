@@ -7,7 +7,7 @@ abstract global without sharing class WS_BaseAPIService
         get {
             if(isValidVersion)
             {
-                return Integer.valueOf( urlTokens[2].remove('v') );
+                return Integer.valueOf(urlTokens[2].remove('v') );
             }
             else
             {
@@ -30,7 +30,7 @@ abstract global without sharing class WS_BaseAPIService
         get {
             if(!urlTokens.isEmpty() && urlTokens.get(2) != null)
             {
-                return Pattern.matches( REGEXP_VERSION_VALIDATION, urlTokens.get(2) );
+                return Pattern.matches(REGEXP_VERSION_VALIDATION, urlTokens.get(2) );
             }
             else
             {
@@ -41,7 +41,7 @@ abstract global without sharing class WS_BaseAPIService
 
     public static Boolean isJSONContentType {
         get {
-            if( requestHeaders.containsKey('Content-Type') && requestHeaders.get('Content-Type').contains('application/json') )
+            if(requestHeaders.containsKey('Content-Type') && requestHeaders.get('Content-Type').contains('application/json') )
             {
                 return true;
             }
@@ -50,6 +50,31 @@ abstract global without sharing class WS_BaseAPIService
                 return false;
             }
         }
+    }
+
+
+    public final static String API_BAD_REQUEST_KO = 'BAD_REQUEST';
+    public final static String API_GENERIC_KO = 'GENERIC_ERROR';
+    public final static String API_DML_KO = 'DML_ERROR';
+    public final static String API_DML_RECORD_ERROR_MESSAGE  = Label.RESTApiErrorOnDMLRecordTransaction;
+
+    private static String builDMLMessage(DmlException dmlError)
+    {
+        List<String> messages = new List<String>();
+        Integer i = dmlError.getNumDml();
+
+        while(i > 0)
+        {
+            messages.add(String.format(API_DML_RECORD_ERROR_MESSAGE, new List<String>
+            {
+                dmlError.getDmlType(i).name(),
+                dmlError.getDmlMessage(i),
+                dmlError.getDmlId(i),
+                String.join(dmlError.getDmlFieldNames(i), ', ')
+            }) );
+        }
+
+        return String.join(messages, '\n');
     }
 
     /**
@@ -61,17 +86,63 @@ abstract global without sharing class WS_BaseAPIService
     public class ApiException extends Exception
     {
         public String statusCode;
-        public String message;
-        public String errorDetail;
+        public String errorDetail
+        {
+            get
+            {
+                return this.getStackTraceString();
+            }
+        }
 
+        public String message
+        {
+            get
+            {
+                return this.getMessage();
+            }
+        }
+
+        /**
+         * Constructor por defecto
+         * @author rlopez
+         * @date 29/10/2020
+         */
         public ApiException(String statusCode, String message)
         {
             this.setMessage(message);
-            this.message = this.getMessage();
             this.statusCode = statusCode;
-            this.errorDetail = this.getStackTraceString();
 
             ErrorLogUtil.commitError(this);
+        }
+
+
+        /**
+         * Genera un mensaje de error con el detalle de la excepción DML
+         *
+         * @author jmartinezpisson
+         * @date 02/11/2020
+         * @param  dmlError Excepción DML
+         */
+        public ApiException(DmlException dmlError)
+        {
+            this(API_DML_KO, builDMLMessage(dmLError) );
+        }
+
+        /**
+         * Sobreescribe el toString para devolve un JSON
+         *
+         * @author jmartinezpisson
+         * @date 02/11/2020
+         * @return   JSON formateado con el error y el Stack tarce
+         */
+        public String toErrorString()
+        {
+            System.debug(this);
+            return JSON.serialize(new Map<String, String>
+            {
+                'message' => this.getMessage(),
+                'trace' => this.getStackTraceString()
+            });
         }
     }
 }
