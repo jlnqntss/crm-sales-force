@@ -1318,4 +1318,143 @@ public class TestDataFactory
         }
         return tasks;
     }
+
+    /**
+     * Genera una lista de Accounts
+     **
+     * @param String legalEntity indica a quien se envía el email
+     * @param Integer numRecords número de elementos a generar
+     * @return List<Task> listado de tareas de tipo Interaction
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<Account> generateAccounts(String legalEntity, Integer numRecords)
+    {
+        List<Account> accounts = new List<Account>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for (Integer i = 0; i < numRecords; i++)
+        {
+            accounts.add(
+                new Account(
+                    LastName = 'testlastname' + i,
+                    LegalEntity__pc = legalEntity,
+                    DNI__pc = generateSpanishFormatDNI()
+                )
+            );
+        }
+        return accounts;
+    }
+
+    private static String generateSpanishFormatDNI()
+    {
+        List<String> letters = new List<String> {
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z'
+        };
+
+        Integer numbers = (Math.random() * 100000000).intValue();
+        String letter = letters[Integer.valueof( (Math.random() * letters.size() - 1) )];
+        return String.valueOf(numbers) + letter;
+    }
+
+    /**
+     * Genera ContactPointPhone relacionados con una lista de accounts
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointPhone
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<ContactPointPhone> listado de ContactPointPhones generados
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<ContactPointPhone> generateContactPointPhonesFromAccounts(List<Account> accounts, Integer numRecords)
+    {
+        List<ContactPointPhone> contactPointPhones = new List<ContactPointPhone>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                contactPointPhones.add(
+                    new ContactPointPhone(
+                        ParentId = relatedAccount.Id,
+                        TelephoneNumber = String.valueOf(phoneNumber)
+                    )
+                );
+            }
+        }
+
+        return contactPointPhones;
+    }
+
+    /**
+     * Genera ContactPointEmail relacionados con una lista de accounts
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointEmail
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<ContactPointEmail> listado de ContactPointEmails generados
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<ContactPointEmail> generateContactPointEmailsFromAccounts(List<Account> accounts, Integer numRecords)
+    {
+        List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                contactPointEmails.add(
+                    new ContactPointEmail(
+                        ParentId = relatedAccount.Id,
+                        EmailAddress = relatedAccount.LastName + '@nts-solutions.com'
+                    )
+                );
+            }
+        }
+
+        return contactPointEmails;
+    }
 }

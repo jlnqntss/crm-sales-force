@@ -47,7 +47,7 @@ public with sharing class ContactsSelector
                     recordIds.add(contactPoint.ParentId);
                 }
 
-                if(String.isNotBlank(contactPoint.ContactId__c) )
+                if( String.isNotBlank(contactPoint.ContactId__c) )
                 {
                     recordIds.add(contactPoint.ContactId__c);
                 }
@@ -68,7 +68,7 @@ public with sharing class ContactsSelector
             {
                 ContactPointEmail contactPoint = (ContactPointEmail) record;
 
-                if(String.isNotBlank(contactPoint.ParentId) )
+                if( String.isNotBlank(contactPoint.ParentId) )
                 {
                     recordIds.add(contactPoint.ParentId);
                 }
@@ -81,5 +81,18 @@ public with sharing class ContactsSelector
         }
 
         return recordIds;
+    }
+
+    /**
+     * Busca contactos a partir de un listado de DNIs
+     *
+     * @author rlopez
+     * @date 04/11/2020
+     * @param  dnis   Listado de DNIs. Válido cualquier formato
+     * @return        Listado de contactos sobre los que se ha realizado match
+     */
+    public static List<Contact> findByDNI(List<String> dnis)
+    {
+        return [SELECT Id, AccountId FROM Contact WHERE DNI__c IN : dnis];
     }
 }
