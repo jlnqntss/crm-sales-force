@@ -14,41 +14,47 @@ public class Transformer
     public static final String OBJECT_NAME_CONTACT_POINT_ADDRESS = 'ContactPointAddress';
     public static final String OBJECT_NAME_CONTACT_POINT_PHONE = 'ContactPointPhone';
     public static final String OBJECT_NAME_CONTACT_POINT_EMAIL = 'ContactPointEmail';
+    public static final String OBJECT_NAME_PRODUCT = 'Product2';
+    public static final String OBJECT_NAME_QUOTE = 'Opportunity';
+    public static final String OBJECT_NAME_POLICY = 'Policy__c';
+    public static final String OBJECT_NAME_INSURED_OBJECT = 'Asset';
+    public static final String OBJECT_NAME_RELATIONSHIP = 'Relationship__c';
+    private static Set<String> validObjects = new Set<String> { ORIGIN_NAME_INFO };
 
     private static Map<String, Schema.DescribeSObjectResult> descResultMap = new Map<String, Schema.DescribeSObjectResult>();
     private static Map<String, Map<String, Schema.SObjectField>> objectFields = new Map<String, Map<String, Schema.SObjectField>>();
     private static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
 
     // FIXME: hacer que los métodos getDescribe solo se llame una sola vez
-    // class ObjectDefinition
-    // {
-    //     Map<String, SObjectDescribe> fieldDescribesByName = new Map<String, SObjectDescribe>();
-    //     Map<string, Schema.SObjectField> fieldTokensByName;
-    //     Map<string, Schema.SObjectFieldDescribeResult> fieldDescribesByName = new Map<string, Schema.SObjectFieldDescribeResult>();
+    class ObjectDefinition
+    {
+        Map<String, SObjectDescribe> fieldDescribesByName = new Map<String, SObjectDescribe>();
+        Map<string, Schema.SObjectField> fieldTokensByName;
+        Map<string, Schema.SObjectFieldDescribeResult> fieldDescribesByName = new Map<string, Schema.SObjectFieldDescribeResult>();
 
-    //     ObjectDefinition(Schema.SObjectDescribeResult objectDescribe)
-    //     {
-    //         this.objectDescribe = objectDescribe;
-    //         this.fieldTokensByName = objectDescribe.getMap();
-    //     }
+        ObjectDefinition(Schema.SObjectDescribeResult objectDescribe)
+        {
+            this.objectDescribe = objectDescribe;
+            this.fieldTokensByName = objectDescribe.getMap();
+        }
 
-    //     Schema.DisplayType getFieldDisplayType(String sObjectFieldname)
-    //     {
-    //         if(!fieldDescribesByName.containsKey(sObjectFieldname))
-    //         {
-    //             if(fieldTokensByName.containsKey(sObjectFieldname))
-    //             {
-    //                 fieldDescribesByName.put(sObjectFieldname, fieldTokensByName.containsKey(sObjectFieldname).getDescribe());
-    //             }
-    //             else
-    //             {
-    //                 //throw new Exception()
-    //             }
-    //         }
+        Schema.DisplayType getFieldDisplayType(String sObjectFieldname)
+        {
+            if(!fieldDescribesByName.containsKey(sObjectFieldname))
+            {
+                if(fieldTokensByName.containsKey(sObjectFieldname))
+                {
+                    fieldDescribesByName.put(sObjectFieldname, fieldTokensByName.containsKey(sObjectFieldname).getDescribe());
+                }
+                else
+                {
+                    //throw new Exception()
+                }
+            }
 
-    //         return fieldDescribesByName.containsKey(sObjectFieldname).getDisplayType();
-    //     }
-    // }
+            return fieldDescribesByName.containsKey(sObjectFieldname).getDisplayType();
+        }
+    }
 
     private Map<String, Map<String, String> > mappingsByObject {
         get {
@@ -604,11 +610,7 @@ public class Transformer
      * @date 21/10/2020
      */
     @TestVisible
-    private static void buildParentRelationship(
-        sObject record,
-        String configValue,
-        String fieldValue
-        )
+    private static void buildParentRelationship( sObject record, String configValue, String fieldValue )
     {
         String childFieldName;
         String parentObjectName;
@@ -617,6 +619,7 @@ public class Transformer
         List<String> aux;
         if (isLookupRelationship(configValue) )
         {
+            // FIXME: cachear esta comprobación
             aux = new List<String>(configValue.split(':') );
             childFieldName = aux[0];
             aux = new List<String>(aux[1].split('->') );
@@ -655,39 +658,20 @@ public class Transformer
                         SObject parentObject = globalDescribe.get(parentObjectName).newSObject();
                         parentObject.put(parentExternalFieldName, fieldValue);
 
-                        String relationName = childObjectFields.get(
-                            childFieldName.toLowerCase()
-                            )
-                                              .getDescribe()
-                                              .getRelationshipName();
-                        /*System.debug(
-                            LoggingLevel.DEBUG,
-                            '[Transformer] Nombre de la relación: ' + relationName
-                            );*/
+                        String relationName = childObjectFields.get( childFieldName.toLowerCase() ).getDescribe().getRelationshipName();
+
+                        // Establecer la relación
                         record.putSObject(relationName, parentObject);
                     }
                     else
                     {
-                        /*System.debug(
-                            LoggingLevel.WARN,
-                            '[Transformer] El valor indicado para el lookup es nulo o vacío. sObject: ' +
-                            String.valueOf(record.getSObjectType() ) +
-                            ' Field: ' +
-                            childFieldName
-                            );*/
+                        // El valor indicado para el lookup es nulo o vacío
                         record.put(childFieldName, null);
                     }
                 }
                 else
                 {
                     // El hijo no contienen un campo con ese nombre
-                    /*System.debug(
-                        LoggingLevel.ERROR,
-                        '[Transformer] No hay ningún campo en el objeto hijo de Salesforce con el nombre indicado. sObject: ' +
-                        String.valueOf(record.getSObjectType() ) +
-                        ' Field: ' +
-                        childFieldName
-                        );*/
                     throw new TransformerException(
                               'There are not any field with these name in the salesforce child object. sObject: ' +
                               String.valueOf(record.getSObjectType() ) +
@@ -699,13 +683,6 @@ public class Transformer
             else
             {
                 // El padre no contiene un campo con ese nombre
-                /*System.debug(
-                    LoggingLevel.ERROR,
-                    '[Transformer] No hay ningún campo en el objeto padre de Salesforce con el nombre indicado. sObject: ' +
-                    parentObjectName +
-                    ' Field: ' +
-                    parentExternalFieldName
-                    );*/
                 throw new TransformerException(
                           'There are not any field with these name in the salesforce parent object. sObject: ' +
                           parentObjectName +
