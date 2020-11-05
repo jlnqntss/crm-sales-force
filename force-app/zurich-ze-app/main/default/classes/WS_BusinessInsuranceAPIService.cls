@@ -99,6 +99,7 @@ global with sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPIServi
         }
         when 'interactions' {
           //TODO parsear la respuesta y llamar al servicio que corresponda
+          response.responseBody = Blob.valueOf('{"status":"success", "sfId":"", "errors":[]}');
           response.statusCode = 200;
         }
       }
