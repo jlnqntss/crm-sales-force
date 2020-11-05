@@ -1293,4 +1293,29 @@ public class TestDataFactory
 
     public class TestException extends Exception
     {}
+
+    /**
+     * Genera una lista de tareas con RecordType Interaction
+     **
+     * @param numTasks numero de elementos a generar
+     * @return List<Task> listado de tareas de tipo Interaction
+     * @author nescudero
+     * @date 03/11/2020
+     */
+    public static List<Task> generateInteractionTasks(Integer numTasks)
+    {
+        List<Task> tasks = new List<Task>();
+        for (Integer i = 0; i < numTasks; i++)
+        {
+            Task interaction = new Task();
+            interaction.Status = 'Nueva';
+            interaction.Priority = 'Normal';
+            interaction.CallObject = 'ucid' + i;
+            interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
+                                       .get('Interaction')
+                                       .getRecordTypeId();
+            tasks.add(interaction);
+        }
+        return tasks;
+    }
 }
