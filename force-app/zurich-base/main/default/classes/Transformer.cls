@@ -9,17 +9,6 @@ public class Transformer
     public static final String ORIGIN_NAME_INFO = 'INFO';
     private static Set<String> validOrigins = new Set<String> { ORIGIN_NAME_INFO };
 
-    public static final String OBJECT_NAME_ACCOUNT = 'Account';
-    public static final String OBJECT_NAME_CONTACT = 'Contact';
-    public static final String OBJECT_NAME_CONTACT_POINT_ADDRESS = 'ContactPointAddress';
-    public static final String OBJECT_NAME_CONTACT_POINT_PHONE = 'ContactPointPhone';
-    public static final String OBJECT_NAME_CONTACT_POINT_EMAIL = 'ContactPointEmail';
-    public static final String OBJECT_NAME_PRODUCT = 'Product2';
-    public static final String OBJECT_NAME_QUOTE = 'Opportunity';
-    public static final String OBJECT_NAME_POLICY = 'Policy__c';
-    public static final String OBJECT_NAME_INSURED_OBJECT = 'Asset';
-    public static final String OBJECT_NAME_RELATIONSHIP = 'Relationship__c';
-
     // Cache de validaciones y transformaciones del mapeo campos
     private static Map<String, List<String>> targetFieldsCache = new Map<String, List<String>>();
     private static Map<String, Boolean> lookupsValidationCache = new Map<String, Boolean>();
@@ -53,11 +42,14 @@ public class Transformer
 
         Map<String, Schema.DescribeSObjectResult> descResultMap = new Map<String, Schema.DescribeSObjectResult>();
         Map<String, Map<String, Schema.SObjectField>> fieldsByObjectMap = new Map<String, Map<String, Schema.SObjectField>>();
-        Map<String, Map<String, Schema.SObjectField>> objectFields = new Map<String, Map<String, Schema.SObjectField>>();
         Map<String, Map<String, Schema.DisplayType>> fieldTypeByObjectAndField = new Map<String, Map<String, Schema.DisplayType>>();
 
         ObjectDefinition(String objectName)
         {
+            if(!globalDescribeMap.containsKey(objectName))
+            {
+                throw new TransformerException('There are not any object in Salesforce with these name. sObject: ' + objectName );
+            }
             this.objectName = objectName;
         }
 
@@ -76,7 +68,6 @@ public class Transformer
             {
                 descResult = Schema.describeSObjects(new List<String> { objectName })[0];
                 descResultMap.put(objectName, descResult);
-
             }
             descResult = descResultMap.get(objectName);
 
@@ -571,6 +562,10 @@ public class Transformer
         Map<String, Schema.SObjectField> parentObjectFields = objectDefinitionByName.get(lookupDef.parentObjectName).getObjectFields();
         if (parentObjectFields.containsKey(lookupDef.parentExternalFieldName.toLowerCase()))
         {
+            if( !objectDefinitionByName.containsKey(String.valueOf(record.getSObjectType())))
+            {
+                objectDefinitionByName.put(String.valueOf(record.getSObjectType()), new ObjectDefinition(String.valueOf(record.getSObjectType())));
+            }
             Map<String, Schema.SObjectField> childObjectFields = objectDefinitionByName.get(String.valueOf(record.getSObjectType())).getObjectFields();
             if (childObjectFields.containsKey(lookupDef.childFieldName.toLowerCase()))
             {
