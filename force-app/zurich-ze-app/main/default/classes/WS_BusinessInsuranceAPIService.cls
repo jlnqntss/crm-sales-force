@@ -104,7 +104,9 @@ global with sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPIServi
         }
       }
     } catch (WS_BaseAPIService.ApiException exAPI) {
-      response.responseBody = Blob.valueOf(JSON.serialize(exAPI));
+      //response.responseBody = Blob.valueOf(JSON.serialize(exAPI));
+      ErrorResponseZE errorFormat = new ErrorResponseZE(exAPI);
+      response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
     } catch (Exception ex) {
       if (response.statusCode == null) {
         response.statusCode = 500;
@@ -116,7 +118,30 @@ global with sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPIServi
         'INTERNAL_SERVER_ERROR',
         ex.getMessage()
       );
-      response.responseBody = Blob.valueOf(JSON.serialize(exceptionApi));
+      //response.responseBody = Blob.valueOf(JSON.serialize(exceptionApi));
+      ErrorResponseZE errorFormat = new ErrorResponseZE(exceptionApi);
+      response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
     }
+  }
+
+  public class ErrorResponseZE {
+    public String status {get; set;}
+    public String sfId {get; set;}
+    public List<ErrorResponseZE_Error> errors {get; set;}
+
+    public ErrorResponseZE(WS_BaseAPIService.ApiException error)
+    {
+      this.status = 'error';
+      this.sfId = null;
+      ErrorResponseZE_Error formattedError = new ErrorResponseZE_Error();
+      formattedError.message = error.message;
+      formattedError.errorCode = error.statusCode;
+      this.errors = new List<ErrorResponseZE_Error>{formattedError};
+    }
+  }
+
+  public class ErrorResponseZE_Error {
+    public String message {get; set;}
+    public String errorCode {get; set;}
   }
 }
