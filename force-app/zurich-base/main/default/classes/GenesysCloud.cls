@@ -1,6 +1,9 @@
 public class GenesysCloud
 {
     @TestVisible
+    private class RoutingServiceException extends Exception {}
+
+    @TestVisible
     public static GenesysCloud.RoutingService RoutingService
     {
         get
@@ -12,95 +15,135 @@ public class GenesysCloud
 
             return RoutingService;
         }
-
         private set;
     }
 
-    public class RoutingWork
+    @TestVisible
+    private class RoutingService
     {
-        public String flowId { get; set; }
-        public String queueId { get; set; }
-        public String provider { get; set; }
-        //TODO: Falta definir qué atributos tiene
+        @TestVisible
+        private final String STATUS_CODE_NO_200 = 'response code is not 200';
 
-        public RoutingWork(String flowId, String queueId, String provider){
-            this.flowId = flowId;
-            this.queueId = queueId;
-            this.provider = provider;
+        public void route(purecloud.Email routingEmail){}
+
+        public void remove(purecloud.Email routingEmail){}
+
+        public void transfer(purecloud.Email routingEmail){}
+
+        public RoutingWork route (RoutingWork work){
+            //Setear el mock para que funcionen los tests
+            if (Test.isRunningTest()){
+                Test.setMock(HttpCalloutMock.class, new GenesysCloudMocks());
+            }
+
+            //POST
+            HttpResponse response = purecloud.sdk.Rest.post('/api/v2/conversations/' + work.endpoint, work.toJSON()); //TODO pasar endpoint a label/constante
+            work.interactionId = getIdFromResponse(response);
+            return work;
+        }
+
+        public RoutingWork[] route(RoutingWork[] works){ return works; }
+
+        public String getIdFromResponse(HttpResponse response){
+            //Si la respuesta no es un 200 -> Error
+            if(response.getStatusCode() != 200){
+                throw new GenesysCloud.RoutingServiceException(STATUS_CODE_NO_200);
+            }
+
+            //Devolver el ID solamente si el body lo contiene
+            String responseBody = response.getBody();
+            if(responseBody != null && responseBody.contains('\"id\"')){
+                Map<String, Object> deserializedBody = (Map<String, Object>)JSON.deserializeUntyped(responseBody);
+                if(deserializedBody.containsKey('id')){
+                    return (String)deserializedBody.get('id');
+                }
+            }
+
+            //Si no se encuentra el id no se puede devolver
+            return '';
         }
     }
 
-
-    class RoutingService
+    @TestVisible
+    private virtual class RoutingWork
     {
-        /**
-         * Forma un Payload con los datos rellenos del purecloud.Email
-         * Y utiliza el POST del sdk de genesys.
-         * Parámetros del purecloud.Email: https://help.mypurecloud.com/articles/use-the-sdk-to-route-salesforce-emails
-         * Payload: https://developer.mypurecloud.com/api/rest/v2/conversations/#request-json-post-api-v2-conversations-emails
-         * @author nescudero
-         * @date 05/11/2020
-         */
-        public void route(purecloud.Email routingEmail)
-        {
-            Map<String, Object> payload = new Map<String, Object>();
-            //payload.put('queueId', routingEmail.queue); //Solo se puede enviar o flowId o queueId a la vez
-            payload.put('flowId', routingEmail.flow); //Solo se puede enviar o flowId o queueId a la vez
-            payload.put('provider', 'Salesforce'); //Obligatorio
-            if(routingEmail.skills != null && !routingEmail.skills.isEmpty()){
-                payload.put('skillIds', new List<String>(routingEmail.skills));
+        @TestVisible
+        protected String interactionId {get;set;}           //Id. de la interacción enrutada en Genesys
+        @TestVisible
+        private String provider{get;}                       //VIRTUAL - Sólo lectura. Devolverá una constante con el tipo de elemento a enrutar
+        @TestVisible
+        protected String queueId{get;set{                   //Cola sore la que se enrutará el trabajo. Cuando se setea debe poner a null flowId
+                if(String.isNotEmpty(value))
+                {
+                    flowId = null;
+                }
+                queueId = value;
             }
-            payload.put('languageId', routingEmail.language);
-            //payload.put('priority', 0); //TODO: ¿Esto de dónde se obtiene?
-            if(routingEmail.attributes != null && routingEmail.attributes.containskey('SF_URLPop') && routingEmail.attributes.containskey('SF_SearchValue')){
-                payload.put('attributes', new Map<String, String>{ 'SF_URLPop' => (String)routingEmail.attributes.get('SF_URLPop'), 'SF_SearchValue' => (String)routingEmail.attributes.get('SF_SearchValue')});
+        }
+        @TestVisible
+        protected String flowId{get;set{                    //Flow sobre el que se enrutará el trabajo. Cuando se setea, debe poner a null queueId
+                if(String.isNotEmpty(value))
+                {
+                    queueId = null;
+                }
+                flowId = value;
             }
-            //payload.put('toAddress', routingEmail.); //TODO: ¿De dónde se obtiene esto?
-            //payload.put('toName', routingEmail.);  //TODO: ¿De dónde se obtiene esto?
-            payload.put('fromAddress', routingEmail.fromAddress);
-            payload.put('fromName', routingEmail.fromName);
-            payload.put('subject', routingEmail.subject);
-            //payload.put('direction', routingEmail.);  //TODO: ¿De dónde se obtiene esto?
-            //payload.put('htmlBody', routingEmail.);  //TODO: ¿De dónde se obtiene esto?
-            //payload.put('textBody', routingEmail.);  //TODO: ¿De dónde se obtiene esto?
-            if (Test.isRunningTest()) Test.setMock(HttpCalloutMock.class, new GenesysCloudMocks());
-            else{
-                HttpResponse response = purecloud.SDK.Rest.post('/platform/api/v2/conversations/emails', JSON.serialize(payload)); //TODO pasar endpoint a label/constante
+        }
+        @TestVisible
+        protected transient String endpoint {get;}          //VIRTUAL - Sólo lectura. Devolverá una constante con el endpoint de enrutamiento a enrutar
+        @TestVisible
+        protected String[] skillIds {get;set;}              //Listado de skills para utilizar en el enrutamiento
+        @TestVisible
+        protected Integer priority {get;set;}               //The priority to assign to the conversation for routing
+        @TestVisible
+        protected Map<String,String> attributes {get;set;}  //Atributos personalizados para enrutar
+        @TestVisible
+        private String direction {get{                      //Sólo lectura. Devolverá siempre el valor INBOUND
+                return 'INBOUND';
             }
-            //TODO: ¿Guardar algo de la response? https://developer.mypurecloud.com/api/rest/v2/conversations/#response-json-post-api-v2-conversations-emails-200
         }
 
-        public void remove(purecloud.Email routingEmail)
+        @TestVisible
+        protected String toJSON()
         {
-            //purecloud.Email: https://help.mypurecloud.com/articles/use-the-sdk-to-route-salesforce-emails
-            //TODO: falta definir qué atributos se necesitan y no están en el purecloud.Email para incluirlos como custom attributes en el mapa del routingEmail.attributes
-            //POST: https://developer.mypurecloud.com/api/rest/v2/conversations/#request-json-post-api-v2-conversations-emails--conversationId--participants--participantId--replace
-            //TODO: falta definir de dónde se obtiene {conversationId}
-            //TODO: falta definir de dónde se obtiene {participantId}
-            //purecloud.SDK.Rest.post('/platform/api/v2/conversations/emails/{conversationId}/participants/{participantId}/replace', JSON.serialize(payload))
-            //La respuesta status 200 no tiene body
-        }
-
-        public void transfer(purecloud.Email routingEmail)
-        {
-            //ATENCIÓN: SOLO FUNCIONA CON WINTER'21 debido al patch
-            //Como se utiliza PATCH, no está implementado en el SDK de purecloud, hay que utilizar una Named Credential
-            //La url contenida en el Named Credential será https://api.mypurecloud.com
-            //TODO: conseguir username y contraseña para registrar la Named credential
-            //Se forma un payload con los parámetros del purecloud.Email: https://help.mypurecloud.com/articles/use-the-sdk-to-route-salesforce-emails
-            //Atributos que necesita el PATCH https://developer.mypurecloud.com/api/rest/v2/conversations/#request-json-patch-api-v2-conversations-emails--conversationId-
-            //TODO: falta definir de dónde se obtiene {conversationId}
-            //Enviar una HttpRequest con:
-            //- Endpoint callout:GenesysCloudNamedCredential/platform/api/v2/conversations/emails/{conversationId}
-            //- Method PATCH
-            //- Headers: req.setHeader('Authorization', 'OAuth {!$Credential.OAuthToken}'), Content-Type: application/json
-            //- Body: req.setBody(JSON.serialize(payload));
-            //TODO: ¿Guardar algo de la response? https://developer.mypurecloud.com/api/rest/v2/conversations/#response-json-patch-api-v2-conversations-emails--conversationId--200
-        }
-
-        public void route(RoutingWork routingWork)
-        {
-            //TODO: falta definir qué endpoint se va a utilizar (equivalente al que existe para emails) y qué atributos se necesitan recibir/enviar
+            return JSON.serialize(this);
         }
     }
+
+    public class Email extends RoutingWork
+    {
+        @TestVisible
+        private String provider{get{                            //Sólo lectura. Devolverá una constante con el valor 'Salesforce Email'
+             return 'Salesforce Email';
+            }
+        }
+        @TestVisible
+        private transient String endpoint{get{                  //Sólo lectura. Devolverá una constante con el valor 'emails'
+                return 'emails';
+            }
+        }
+        public transient String screenPopRecordId{get;set{      //Propiedad que al setearse incluye en el mapa attributes el valor SF_URLPop con el valor asignado
+                attributes.put('SF_URLPop',value);
+            }
+        }
+        public String subject{get;set;}                         //Asunto del email
+        public String toName{get;set;}                          //Nombre del destino
+        public String toAddress{get;set;}                       //Dirección de correo electrónico del destino
+        public String fromName{get;set;}                        //Nombre del remitente
+        public String fromAddress{get;set;}                     //Dirección de correo electrónico del remitente
+    }
+
+    public class Task extends RoutingWork
+    {
+        @TestVisible
+        private String provider{get{                            //Sólo lectura. Devolverá una constante con el valor 'Salesforce Task'
+             return 'Salesforce Task';
+            }
+        }
+        public transient String screenPopRecordId{get;set{      //Propiedad que al setearse incluye en el mapa attributes el valor SF_URLPop con el valor asignado
+                attributes.put('SF_URLPop',value);
+            }
+        }
+    }
+
 }
