@@ -629,7 +629,7 @@ public class TestDataFactory
                 'producto_comercial' => String.valueOf(i + 1).leftPad(9, '0'),
                 'producto_nombre' => 'Product' + i,
                 'producto_descripción' => 'Product' + i,
-                'producto_estado' => true
+                'producto_estado' => 'S'
             }
                 );
         }

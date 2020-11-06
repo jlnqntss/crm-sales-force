@@ -92,6 +92,7 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < customersJsonItems.size(); i++)
         {
             accountRecord = (Account) myTransformer.transform(
+                'ACCOUNT',
                 'Account',
                 customersJsonItems[i]
                 );
@@ -108,6 +109,7 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < companiesJsonItems.size(); i++)
         {
             accountRecord = (Account) myTransformer.transform(
+                'ACCOUNT',
                 'Account',
                 companiesJsonItems[i]
                 );
@@ -121,6 +123,7 @@ public with sharing class TransformerTest
                 );
 
             contactRecord = (Contact) myTransformer.transform(
+                'ACCOUNT',
                 'Contact',
                 companiesJsonItems[i]
                 );
@@ -187,6 +190,7 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < emailsJsonItems.size(); i++)
         {
             emailRecord = (ContactPointEmail) myTransformer.transform(
+                'CONTACT_POINT',
                 'ContactPointEmail',
                 emailsJsonItems[i]
                 );
@@ -203,6 +207,7 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < phonesJsonItems.size(); i++)
         {
             phoneRecord = (ContactPointPhone) myTransformer.transform(
+                'CONTACT_POINT',
                 'ContactPointPhone',
                 phonesJsonItems[i]
                 );
@@ -219,6 +224,7 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < addressesJsonItems.size(); i++)
         {
             addressRecord = (ContactPointAddress) myTransformer.transform(
+                'CONTACT_POINT',
                 'ContactPointAddress',
                 addressesJsonItems[i]
                 );
@@ -262,6 +268,7 @@ public with sharing class TransformerTest
         // Instanciar el transformer con la configuración de INFO
         Transformer myTransformer = new Transformer(Transformer.ORIGIN_NAME_INFO);
         myTransformer.transform(
+            'ACCOUNT',
             'Account',
             customersJsonItems[0]
             );
@@ -368,6 +375,7 @@ public with sharing class TransformerTest
             'J'
             )[0];
         Account accountRecord = (Account) myTransformer.transform(
+            'ACCOUNT',
             'Account',
             companyJson
             );
@@ -375,6 +383,7 @@ public with sharing class TransformerTest
                                      .get('BusinessCustomer')
                                      .getRecordTypeId();
         Contact contactRecord = (Contact) myTransformer.transform(
+            'ACCOUNT',
             'Contact',
             companyJson
             );
@@ -445,11 +454,11 @@ public with sharing class TransformerTest
         String myString = Transformer.parseStringField('Hello World!', Transformer.ORIGIN_NAME_INFO);
         Double myDouble = Transformer.parseDoubleField('25.00', Transformer.ORIGIN_NAME_INFO);
         Integer myInteger = Transformer.parseIntegerField('5', Transformer.ORIGIN_NAME_INFO);
-        System.assert(myBoolean != null, '[0] No se ha parseado Boolean');
-        System.assert(myDate != null, '[1] No se ha parseado Date');
-        System.assert(myDatetime != null, '[2] No se ha parseado Datetime');
-        System.assert(myString != null, '[3] No se ha parseado String');
-        System.assert(myDouble != null, '[4] No se ha parseado Double');
-        System.assert(myInteger != null, '[5] No se ha parseado Integer');
+        System.assert (myBoolean != null, '[0] No se ha parseado Boolean');
+        System.assert (myDate != null, '[1] No se ha parseado Date');
+        System.assert (myDatetime != null, '[2] No se ha parseado Datetime');
+        System.assert (myString != null, '[3] No se ha parseado String');
+        System.assert (myDouble != null, '[4] No se ha parseado Double');
+        System.assert (myInteger != null, '[5] No se ha parseado Integer');
     }
 }
