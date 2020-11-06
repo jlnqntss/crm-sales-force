@@ -88,11 +88,41 @@ public with sharing class ContactsSelector
      *
      * @author rlopez
      * @date 04/11/2020
-     * @param  dnis   Listado de DNIs. Válido cualquier formato
-     * @return        Listado de contactos sobre los que se ha realizado match
+     * @param  nationalIds          Listado de DNIs. Válido cualquier formato
+     * @param  nationalIdType       Tipo de documento a buscar
+     * @param  legalEntity          Entidad legal en la que buscar
+     * @param  recordTypeName       Tipo de registro a buscar
+     * @return                      Listado de contactos sobre los que se ha realizado match
      */
-    public static List<Contact> findByDNI(List<String> dnis)
+    public static List<Contact> findByNationalId(List<String> nationalIds, String nationalIdType, String legalEntity, String recordTypeName)
     {
-        return [SELECT Id, AccountId FROM Contact WHERE DNI__c IN : dnis];
+        if( nationalIds != null && !nationalIds.isEmpty() )
+        {
+            if( String.isBlank(nationalIdType) )
+            {
+                nationalIdType = 'N';
+            }
+            if( String.isBlank(legalEntity) )
+            {
+                legalEntity = Label.LifeInsurance;
+            }
+            if( String.isBlank(recordTypeName) )
+            {
+                recordTypeName = 'Master';
+            }
+            Id accountRecordTypeId;
+            Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(recordTypeName);
+
+            if(accountRecordTypeInfo != null)
+            {
+                accountRecordTypeId = accountRecordTypeInfo.getRecordTypeId();
+            }
+
+            return [SELECT Id, AccountId FROM Contact WHERE Account.NationalId__c IN : nationalIds AND Account.NationalIdType__c =: nationalIdType AND Account.LegalEntity__c =: legalEntity AND Account.RecordTypeId =: accountRecordTypeId];
+        }
+        else
+        {
+            return new List<Contact>();
+        }
     }
 }

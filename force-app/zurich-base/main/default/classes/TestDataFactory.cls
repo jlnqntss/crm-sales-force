@@ -1324,11 +1324,11 @@ public class TestDataFactory
      **
      * @param String legalEntity indica a quien se envía el email
      * @param Integer numRecords número de elementos a generar
-     * @return List<Task> listado de tareas de tipo Interaction
+     * @return List<Account> listado de cuentas
      * @author rlopez
      * @date 04/11/2020
      */
-    public static List<Account> generateAccounts(String legalEntity, Integer numRecords)
+    public static List<Account> generateAccounts(String legalEntity, String recordTypeName, Integer numRecords)
     {
         List<Account> accounts = new List<Account>();
 
@@ -1337,13 +1337,23 @@ public class TestDataFactory
             numRecords = 1;
         }
 
+        Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(recordTypeName);
+        Id recordTypeId;
+        if(accountRecordTypeInfo != null)
+        {
+            recordTypeId = accountRecordTypeInfo.getRecordTypeId();
+        }
+
         for (Integer i = 0; i < numRecords; i++)
         {
             accounts.add(
                 new Account(
                     LastName = 'testlastname' + i,
+                    LegalEntity__c = legalEntity,
                     LegalEntity__pc = legalEntity,
-                    DNI__pc = generateSpanishFormatDNI()
+                    NationalId__c = generateSpanishFormatDNI(),
+                    NationalIdType__c = 'N'/*,
+                    RecordTypeId = recordTypeId*/
                 )
             );
         }

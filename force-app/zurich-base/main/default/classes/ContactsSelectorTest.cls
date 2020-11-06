@@ -4,7 +4,7 @@ private with sharing class ContactsSelectorTest
     @TestSetup
     public static void createScenario()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 10);
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
         insert accounts;
 
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
@@ -90,15 +90,15 @@ private with sharing class ContactsSelectorTest
     }
 
     @isTest
-    static void test_findByDNI_matchedRecords()
+    static void test_findByNationalId_matchedRecords()
     {
         // Escenario
 
         //Preparamos datos, recuperamos un DNI de un Contact existente
-        List<Contact> contactsToSearch = [SELECT Id, DNI__c FROM Contact LIMIT 1];
+        List<Contact> contactsToSearch = [SELECT Id, Account.NationalId__c FROM Contact LIMIT 1];
         System.assertEquals(1, contactsToSearch.size(), 'There should be 1 Contact');
 
-        String DNI = contactsToSearch.get(0).DNI__c;
+        String NationalId = contactsToSearch.get(0).Account.NationalId__c;
 
         Set<Id> recordIds = new Set<Id>();
         for(Contact contact: contactsToSearch)
@@ -109,7 +109,7 @@ private with sharing class ContactsSelectorTest
         // Test
         Test.startTest();
 
-        List<Contact> matchedRecords = ContactsSelector.findByDNI(new List<String> { DNI } );
+        List<Contact> matchedRecords = ContactsSelector.findByNationalId(new List<String> { NationalId }, 'N', Label.GeneralInsurance, 'BusinessCustomer');
 
         Test.stopTest();
 
@@ -123,7 +123,7 @@ private with sharing class ContactsSelectorTest
     }
 
     @isTest
-    static void test_findByDNI_notFound()
+    static void test_findByNationalId_notFound()
     {
         // Escenario
 
@@ -133,7 +133,7 @@ private with sharing class ContactsSelectorTest
         // Test
         Test.startTest();
 
-        List<Contact> matchedRecords = ContactsSelector.findByDNI(new List<String> { DNI } );
+        List<Contact> matchedRecords = ContactsSelector.findByNationalId(new List<String> { DNI }, '', '', '');
 
         Test.stopTest();
 
@@ -142,7 +142,7 @@ private with sharing class ContactsSelectorTest
     }
 
     @isTest
-    static void test_findByDNI_matchedRecords_bulk()
+    static void test_findByNationalId_matchedRecords_bulk()
     {
         // Escenario
 
@@ -161,7 +161,7 @@ private with sharing class ContactsSelectorTest
         // Test
         Test.startTest();
 
-        List<Contact> matchedRecords = ContactsSelector.findByDNI(listDNI);
+        List<Contact> matchedRecords = ContactsSelector.findByNationalId(listDNI, '', '', '');
 
         Test.stopTest();
 
