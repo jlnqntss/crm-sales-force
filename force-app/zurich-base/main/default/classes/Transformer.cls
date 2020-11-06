@@ -115,12 +115,12 @@ public class Transformer
         }
     }
 
-    private Map<String, Map<String, String> > mappingsByObject {
+    private Map<String, Map<String, Map<String, String>>> mappingsByObject {
         get {
             if (mappingsByObject == null)
             {
                 // Inicializar mapeo objeto Salesforce => campo origen -> campo destino
-                mappingsByObject = new Map<String, Map<String, String> >();
+                mappingsByObject = new Map<String, Map<String, Map<String, String>>>();
             }
             return mappingsByObject;
         }
@@ -194,18 +194,18 @@ public class Transformer
         // Inicializar mapeo campos según metadatos
         for (Transformer__mdt setting : this.settings)
         {
-            if (!mappingsByObject.containsKey(setting.SalesforceEntity__c) )
-            {
-                mappingsByObject.put(
-                    setting.SalesforceEntity__c,
-                    new Map<String, String>()
-                    );
-            }
+          if (!mappingsByObject.containsKey(setting.OriginEntity__c) )
+          {
+            mappingsByObject.put(setting.OriginEntity__c, new Map<String, Map<String, String>>());
+          }
 
-            mappingsByObject.get(setting.SalesforceEntity__c)
-            .put(setting.OriginField__c.toLowerCase(), setting.SalesforceField__c);
-            mappingsByObject.get(setting.SalesforceEntity__c)
-            .put(setting.OriginField__c.toUpperCase(), setting.SalesforceField__c);
+          if (!mappingsByObject.get(setting.OriginEntity__c).containsKey(setting.SalesforceEntity__c) )
+          {
+            mappingsByObject.get(setting.OriginEntity__c).put(setting.SalesforceEntity__c, new Map<String, String>());
+          }
+
+          mappingsByObject.get(setting.OriginEntity__c).get(setting.SalesforceEntity__c).put(setting.OriginField__c.toLowerCase(), setting.SalesforceField__c);
+          mappingsByObject.get(setting.OriginEntity__c).get(setting.SalesforceEntity__c).put(setting.OriginField__c.toUpperCase(), setting.SalesforceField__c);
         }
     }
 
@@ -220,7 +220,7 @@ public class Transformer
      * @author xsobera
      * @date 13/10/2020
      */
-    public sObject transform( String objectName, Map<String, Object> originRecordMap )
+    public sObject transform( String entity, String objectName, Map<String, Object> originRecordMap )
     {
         // Obtenemos la información de los campos del objeto Salesforce destino
         if( !objectDefinitionByName.containsKey(objectName))
@@ -228,7 +228,7 @@ public class Transformer
             objectDefinitionByName.put(objectName, new ObjectDefinition(objectName));
         }
 
-        Map<String, String> mappingByOriginField = mappingsByObject.get(objectName);
+        Map<String, String> mappingByOriginField = mappingsByObject.get(entity).get(objectName);
         SObject record = objectDefinitionByName.get(objectName).getSObjectType().newSObject();
 
         String sfFieldNameConfig;
@@ -297,9 +297,16 @@ public class Transformer
             when 'INFO'
             {
                 Boolean booleanValue = false;
-                if ( String.isNotBlank(strValue) && strValue.equalsIgnoreCase('S') )
+                if ( String.isNotBlank(strValue) )
                 {
+                  if( strValue.equalsIgnoreCase('S'))
+                  {
                     booleanValue = true;
+                  }
+                  else
+                  {
+                    booleanValue = Boolean.valueOf(strValue);
+                  }
                 }
                 return booleanValue;
             }
