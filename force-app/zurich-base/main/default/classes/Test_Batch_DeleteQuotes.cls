@@ -165,14 +165,14 @@ private class Test_Batch_DeleteQuotes {
   /**
    * For testing Schedule
    */
-  @isTest
-  static void testBatch_schedule() {
-    Batch_DeleteQuotes m = new Batch_DeleteQuotes();
-    String sch = '20 30 8 10 2 ?';
+  // @isTest
+  // static void testBatch_schedule() {
+  //   Batch_DeleteQuotes m = new Batch_DeleteQuotes();
+  //   String sch = '20 30 8 10 2 ?';
 
-    Test.startTest();
-    String jobID = system.schedule('Response External Request', sch, m);
-    Test.stopTest();
-    System.Debug('jobID: ' + jobID);
-  }
+  //   Test.startTest();
+  //   String jobID = system.schedule('Response External Request', sch, m);
+  //   Test.stopTest();
+  //   System.Debug('jobID: ' + jobID);
+  // }
 }

@@ -89,14 +89,14 @@ private class Test_Batch_DeleteExternalRequest {
   /**
    * For testing Schedule
    */
-  @isTest
-  static void testBatch_schedule() {
-    Batch_DeleteExternalRequest m = new Batch_DeleteExternalRequest();
-    String sch = '20 30 8 10 2 ?';
+  // @isTest
+  // static void testBatch_schedule() {
+  //   Batch_DeleteExternalRequest m = new Batch_DeleteExternalRequest();
+  //   String sch = '20 30 8 10 2 ?';
 
-    Test.startTest();
-    String jobID = system.schedule('Delete External Request', sch, m);
-    Test.stopTest();
-    System.Debug('jobID: ' + jobID);
-  }
+  //   Test.startTest();
+  //   String jobID = system.schedule('Delete External Request', sch, m);
+  //   Test.stopTest();
+  //   System.Debug('jobID: ' + jobID);
+  // }
 }

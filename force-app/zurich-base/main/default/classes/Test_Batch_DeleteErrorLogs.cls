@@ -93,14 +93,14 @@ private class Test_Batch_DeleteErrorLogs {
   /**
    * For testing Schedule
    */
-  @isTest
-  static void testBatch_schedule() {
-    Batch_DeleteErrorLogs m = new Batch_DeleteErrorLogs();
-    String sch = '20 30 8 10 2 ?';
+  // @isTest
+  // static void testBatch_schedule() {
+  //   Batch_DeleteErrorLogs m = new Batch_DeleteErrorLogs();
+  //   String sch = '20 30 8 10 2 ?';
 
-    Test.startTest();
-    String jobID = system.schedule('Delete error logs', sch, m);
-    Test.stopTest();
-    System.Debug('jobID: ' + jobID);
-  }
+  //   Test.startTest();
+  //   String jobID = system.schedule('Delete error logs', sch, m);
+  //   Test.stopTest();
+  //   System.Debug('jobID: ' + jobID);
+  // }
 }

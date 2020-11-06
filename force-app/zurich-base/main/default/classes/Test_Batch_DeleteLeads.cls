@@ -80,14 +80,14 @@ private class Test_Batch_DeleteLeads {
     /**
    * For testing Schedule
    */
-  @isTest
-  static void testBatch_schedule() {
-    Batch_DeleteLeads m = new Batch_DeleteLeads();
-    String sch = '20 30 8 10 2 ?';
+  // @isTest
+  // static void testBatch_schedule() {
+  //   Batch_DeleteLeads m = new Batch_DeleteLeads();
+  //   String sch = '20 30 8 10 2 ?';
 
-    Test.startTest();
-    String jobID = system.schedule('Delete Batch Leads', sch, m);
-    Test.stopTest();
-    System.Debug('jobID: ' + jobID);
-  }
+  //   Test.startTest();
+  //   String jobID = system.schedule('Delete Batch Leads', sch, m);
+  //   Test.stopTest();
+  //   System.Debug('jobID: ' + jobID);
+  // }
 }
