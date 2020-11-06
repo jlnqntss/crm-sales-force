@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Multi_Partners__c</fullName>
+    <description>The list of pairs of Multi Partner values from IBA and their corresponding prefix. Each part of the pair must be separated by &quot;:&quot; and each Pair by &quot;;&quot;. Example: Orange Seguros:Orange;Telefon Seguros:Telefon</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Multi-Partners</label>
+    <length>255</length>
+    <required>true</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
