@@ -127,10 +127,16 @@ public class INFOHandler implements ISystem
             {
                 persistRecords('UPSERT', recordsToUpsertByObject);
             }
+            // Delete
+            if ( recordsToDeleteByObject != null && !recordsToDeleteByObject.isEmpty() )
+            {
+                persistRecords('DELETE', recordsToDeleteByObject);
+            }
             
         }
         catch (Exception e)
         {
+            System.debug('Entra' + e.getMessage());
             ErrorLogUtil.commitError(e, 'INFOHandler', 'persists');
         }
     }
@@ -388,11 +394,45 @@ public class INFOHandler implements ISystem
         {
             if ( recordsByObject.containsKey(objectName) && !recordsByObject.get(objectName).isEmpty() )
             {
-                Schema.SObjectField externalId = globalDescribe.get(objectName).getDescribe().fields.getMap().get(externalIdByObject.get(objectName));
+                Schema.SObjectField externalIdField = globalDescribe.get(objectName).getDescribe().fields.getMap().get(externalIdByObject.get(objectName));
 
                 if(action == 'UPSERT')
                 {
-                    Database.UpsertResult[] resultList = Database.upsert(recordsByObject.get(objectName), externalId, false);
+                    Database.UpsertResult[] resultList = Database.upsert(recordsByObject.get(objectName), externalIdField, false);
+
+                    for (Integer i = 0; i < externalRequestByObject.get(objectName).size(); i++)
+                    {
+                        ExternalRequest__c extReq = externalRequestByObject.get(objectName).get(i);
+
+                        //Procesamiento correcto
+                        if ( resultList.get(i).isSuccess() )
+                        {
+                            setExternalRequest(extReq, true, 'OK', null, false);
+                        }
+                        //Procesamiento incorrecto
+                        else
+                        {
+                            setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
+                        }
+                    }
+                }
+                else if(action == 'DELETE')
+                {
+                    Set<Object> externalIdValues = new Set<Object>();
+
+                    for(sObject sObj : recordsByObject.get(objectName))
+                    {
+                        externalIdValues.add(sObj.get(externalIdField));
+                    }
+                    
+                    Database.DeleteResult[] resultList = Database.delete
+                    (
+                        new RecordsSelector
+                        (
+                            globalDescribe.get(objectName)
+                        )
+                        .selectByExternalId(externalIdField, externalIdValues)
+                    );
 
                     for (Integer i = 0; i < externalRequestByObject.get(objectName).size(); i++)
                     {

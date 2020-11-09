@@ -104,6 +104,11 @@ private class INFOHandlerTest
             'No se ha generado correctamente el mapa por entidades'
             );
         System.assertEquals(
+            objects.size(),
+            INFOHandler.recordsToDeleteByObject.size(),
+            'No se ha generado correctamente el mapa por entidades'
+            );
+        System.assertEquals(
             externalIdList.size(),
             INFOHandler.externalIdByObject.size(),
             'No se ha generado correctamente el mapa de identificidadores únicos por entidad'
@@ -111,7 +116,7 @@ private class INFOHandlerTest
     }
 
     @isTest
-    static void test_process_OK()
+    static void test_process_upsert_OK()
     {
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -179,6 +184,47 @@ private class INFOHandlerTest
     }
 
     @isTest
+    static void test_process_delete_OK()
+    {
+        List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                                                    { ExternalRequest__c.Entity__c,
+                                                                                      ExternalRequest__c.Action__c,
+                                                                                      ExternalRequest__c.Payload__c,
+                                                                                      ExternalRequest__c.ContentFormat__c,
+                                                                                      ExternalRequest__c.NumRetry__c,
+                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+
+        for(ExternalRequest__c externalRequest : externalRequestList)
+        {
+            if(externalRequest.Entity__c == 'POLICY' || externalRequest.Entity__c == 'POLICY_RELATIONSHIP')
+            {
+                externalRequest.Processed__C = false;
+                externalRequest.Action__C = 'DELETE';
+            }
+        }
+        update externalRequestList;
+
+        Test.startTest();
+        INFOHandler.prepare(externalRequestList);
+        INFOHandler.process(externalRequestList);
+        Test.stopTest();
+
+        System.assertEquals(20, INFOHandler.recordsToUpsertByObject.get('Account').size(), 'No se ha generado correctamente el mapa de registros de account'); // 10 cuentas de personas físicas y 10 de personas jurídicas
+        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Contact').size(), 'No se ha generado correctamente el mapa de registros de contact');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('ContactPointAddress').size(), 'No se ha generado correctamente el mapa de registros de contactPointAddress');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('ContactPointPhone').size(), 'No se ha generado correctamente el mapa de registros de contactPointPhone');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('ContactPointEmail').size(), 'No se ha generado correctamente el mapa de registros de contactPointEmail');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
+        System.assertEquals(10, INFOHandler.recordsToDeleteByObject.get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de relationship');
+
+        System.assertEquals(0, INFOHandler.recordsToUpsertByObject.get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de policy');
+        System.assertEquals(10, INFOHandler.recordsToDeleteByObject.get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de relationship');
+    }
+
+    @isTest
     static void test_process_ERROR_NoEntity()
     {
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
@@ -235,7 +281,7 @@ private class INFOHandlerTest
     }
 
     @isTest
-    static void test_persists_OK()
+    static void test_persists_upsert_OK()
     {
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -312,6 +358,73 @@ private class INFOHandlerTest
             relaList.size(),
             'No se han insertado todos los registros de relaciones'
             );
+    }
+
+    @isTest
+    static void test_persists_delete_OK()
+    {
+        List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                                                    { ExternalRequest__c.Entity__c,
+                                                                                      ExternalRequest__c.Action__c,
+                                                                                      ExternalRequest__c.Payload__c,
+                                                                                      ExternalRequest__c.ContentFormat__c,
+                                                                                      ExternalRequest__c.NumRetry__c,
+                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+
+        INFOHandler.prepare(externalRequestList);
+        INFOHandler.process(externalRequestList);
+        INFOHandler.persists(externalRequestList);
+        INFOHandler.manageResult(null, externalRequestList);
+
+        List<ExternalRequest__c> externalRequestListUpserted = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                                                            { ExternalRequest__c.Entity__c,
+                                                                                              ExternalRequest__c.Action__c,
+                                                                                              ExternalRequest__c.Payload__c,
+                                                                                              ExternalRequest__c.ContentFormat__c,
+                                                                                              ExternalRequest__c.NumRetry__c,
+                                                                                              ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+
+        List<ExternalRequest__c> externalRequestToDelete = new List<ExternalRequest__c>();
+
+        for(ExternalRequest__c externalRequest : externalRequestListUpserted)
+        {
+            if(externalRequest.Entity__c == 'POLICY' || externalRequest.Entity__c == 'POLICY_RELATIONSHIP')
+            {
+                externalRequest.Processed__C = false;
+                externalRequest.Action__C = 'DELETE';
+                externalRequestToDelete.add(externalRequest);
+            }
+        }
+        update externalRequestToDelete;
+
+        Test.startTest();
+        INFOHandler.prepare(externalRequestToDelete);
+        INFOHandler.process(externalRequestToDelete);
+        INFOHandler.persists(externalRequestToDelete);
+        Test.stopTest();
+
+        List<Account> accountList = [SELECT Id FROM Account];
+        List<Contact> contactList = [SELECT Id FROM Contact];
+        List<ContactPointAddress> cpaList = [SELECT Id FROM ContactPointAddress];
+        List<ContactPointPhone> cppList = [SELECT Id FROM ContactPointPhone];
+        List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
+        List<Product2> prodList = [SELECT Id FROM Product2];
+        List<Opportunity> oppList = [SELECT Id FROM Opportunity];
+        List<Policy__c> policyList = [SELECT Id FROM Policy__c];
+        List<Asset> insObjList = [SELECT Id FROM Asset];
+        List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
+
+        System.assertEquals(20, accountList.size(), 'No se han insertado todos los registros de cuenta');
+        System.assertEquals(20, contactList.size(), 'No se han insertado todos los registros de contacto');
+        System.assertEquals(10, cpaList.size(), 'No se han insertado todos los registros de contactPointAddress');
+        System.assertEquals(10, cppList.size(), 'No se han insertado todos los registros de contactPointPhone');
+        System.assertEquals(10, cpeList.size(), 'No se han insertado todos los registros de contactPointEmail');
+        System.assertEquals(10, prodList.size(), 'No se han insertado todos los registros de producto');
+        System.assertEquals(10, oppList.size(), 'No se han insertado todos los registros de oferta');
+        System.assertEquals(0, policyList.size(), 'No se han borrado todos los registros de póliza');
+        System.assertEquals(10, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
+        System.assertEquals(10, relaList.size(), 'No se han borrado todos los registros de relaciones');
+
     }
 
     @isTest
