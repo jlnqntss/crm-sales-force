@@ -96,17 +96,8 @@ public with sharing class ContactsSelector
      */
     public List<Contact> findByNationalId(List<String> nationalIds, String nationalIdType, String legalEntity)
     {
-        if( nationalIds != null && !nationalIds.isEmpty() )
+        if( nationalIds != null && !nationalIds.isEmpty() && String.isNotBlank(nationalIdType) && String.isNotBlank(legalEntity) )
         {
-            if( String.isBlank(nationalIdType) )
-            {
-                nationalIdType = 'N';
-            }
-            if( String.isBlank(legalEntity) )
-            {
-                legalEntity = Label.LifeInsurance;
-            }
-
             return [SELECT Id, AccountId FROM Contact WHERE Account.NationalId__c IN : nationalIds AND Account.NationalIdType__c =: nationalIdType AND Account.LegalEntity__c =: legalEntity AND RecordTypeId IN: this.recordTypeIds];
         }
         else

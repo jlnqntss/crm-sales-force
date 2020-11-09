@@ -105,7 +105,7 @@ private with sharing class ContactsSelectorTest
         List<Contact> contactsToSearch = [SELECT Id, Account.NationalId__c, RecordTypeId FROM Contact WHERE RecordTypeId =: noVidaRecordTypeId LIMIT 1];
         System.assertEquals(1, contactsToSearch.size(), 'There should be 1 Contact');
 
-        String NationalId = contactsToSearch.get(0).Account.NationalId__c;
+        String nationalId = contactsToSearch.get(0).Account.NationalId__c;
 
         Set<Id> recordIds = new Set<Id>();
         for(Contact contact: contactsToSearch)
@@ -116,7 +116,7 @@ private with sharing class ContactsSelectorTest
         // Test
         Test.startTest();
 
-        List<Contact> matchedRecords = new ContactsSelector().applyScope('ZE').findByNationalId(new List<String> { NationalId }, 'N', Label.GeneralInsurance);
+        List<Contact> matchedRecords = new ContactsSelector().applyScope('ZE').findByNationalId(new List<String> { nationalId }, 'N', Label.GeneralInsurance);
 
         Test.stopTest();
 
@@ -135,12 +135,35 @@ private with sharing class ContactsSelectorTest
         // Escenario
 
         //Preparamos datos, un DNI que no este en ninguno de los contactos existentes
-        String DNI = 'A';
+        String nationalId = 'A';
 
         // Test
         Test.startTest();
 
-        List<Contact> matchedRecords = new ContactsSelector().applyScope('ZE').findByNationalId(new List<String> { DNI }, 'N', Label.GeneralInsurance);
+        List<Contact> matchedRecords = new ContactsSelector().applyScope('ZE').findByNationalId(new List<String> { nationalId }, 'N', Label.GeneralInsurance);
+
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(true, matchedRecords.isEmpty(), 'The list should be empty');
+    }
+
+    @isTest
+    static void test_findByNationalId_emptyNationalIdType()
+    {
+        // Escenario
+
+        //Preparamos datos, un DNI que no este en ninguno de los contactos existentes
+        Id noVidaRecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('CustomerGI').getRecordTypeId();
+        List<Contact> contactsToSearch = [SELECT Id, Account.NationalId__c, RecordTypeId FROM Contact WHERE RecordTypeId =: noVidaRecordTypeId LIMIT 1];
+        System.assertEquals(1, contactsToSearch.size(), 'There should be 1 Contact');
+
+        String nationalId = contactsToSearch.get(0).Account.NationalId__c;
+
+        // Test
+        Test.startTest();
+
+        List<Contact> matchedRecords = new ContactsSelector().applyScope('ZE').findByNationalId(new List<String> { nationalId }, '', Label.GeneralInsurance);
 
         Test.stopTest();
 
