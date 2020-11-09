@@ -4,48 +4,59 @@
  * @date 27/04/2020
  */
 
-global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Database.Stateful, Schedulable {
-  global String query;
+global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Database.Stateful, Schedulable
+{
+    global String query;
 
-  global Batch_DeleteExternalRequest() {
-  }
+    global Batch_DeleteExternalRequest()
+    {}
 
-  global Batch_DeleteExternalRequest(String q) {
-    if (!String.isBlank(q)) {
-      query = q;
+    global Batch_DeleteExternalRequest(String q)
+    {
+        if ( !String.isBlank(q) )
+        {
+            query = q;
+        }
     }
-  }
 
-  global Database.QueryLocator start(Database.BatchableContext BC) {
-    if (query == null || query == '') {
-      query = SystemUtil.getOldExternalRequests();
+    global Database.QueryLocator start(Database.BatchableContext BC)
+    {
+        if (query == null || query == '')
+        {
+            query = SystemUtil.getOldExternalRequests();
+        }
+        return Database.getQueryLocator(query);
     }
-    return Database.getQueryLocator(query);
-  }
 
-  global void execute(SchedulableContext SC) {
-    Id BatchInstanceId = database.executeBatch(
-      new Batch_DeleteExternalRequest(),
-      200
-    );
-  }
-
-  global void execute(Database.BatchableContext BC, List<sObject> scope) {
-    List<ExternalRequest__c> requestList = (List<ExternalRequest__c>) scope;
-
-    if (scope != null && !scope.isEmpty()) {
-      try {
-        delete requestList;
-      } catch (Exception e) {
-        System.debug(
-          'Ha habido un error eliminando los registros de ExternalRequest__c: ' +
-          e.getMessage()
-        );
-        ErrorLogUtil.commitError(e, 'Batch_DeleteExternalRequest');
-      }
+    global void execute(SchedulableContext SC)
+    {
+        Id BatchInstanceId = database.executeBatch(
+            new Batch_DeleteExternalRequest(),
+            200
+            );
     }
-  }
 
-  global void finish(Database.BatchableContext BC) {
-  }
+    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    {
+        List<ExternalRequest__c> requestList = (List<ExternalRequest__c>) scope;
+
+        if ( scope != null && !scope.isEmpty() )
+        {
+            try
+            {
+                delete requestList;
+            }
+            catch (Exception e)
+            {
+                System.debug(
+                    'Ha habido un error eliminando los registros de ExternalRequest__c: ' +
+                    e.getMessage()
+                    );
+                ErrorLogUtil.commitError(e, 'Batch_DeleteExternalRequest');
+            }
+        }
+    }
+
+    global void finish(Database.BatchableContext BC)
+    {}
 }

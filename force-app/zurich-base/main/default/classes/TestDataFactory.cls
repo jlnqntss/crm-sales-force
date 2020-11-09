@@ -1318,4 +1318,213 @@ public class TestDataFactory
         }
         return tasks;
     }
+
+    /**
+     * Genera una lista de Accounts
+     **
+     * @param String legalEntity indica a quien se envía el email
+     * @param Integer numRecords número de elementos a generar
+     * @return List<Account> listado de cuentas
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<Account> generateAccounts(String legalEntity, String recordTypeName, Integer numRecords)
+    {
+        List<Account> accounts = new List<Account>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(recordTypeName);
+        Id recordTypeId;
+        if(accountRecordTypeInfo != null)
+        {
+            recordTypeId = accountRecordTypeInfo.getRecordTypeId();
+        }
+
+        switch on recordTypeName {
+            when 'BusinessCustomer' {
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            Name = 'testname' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N',
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
+            when else {
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            LastName = 'testlastname' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N'
+                        )
+                    );
+                }
+            }
+        }
+
+        return accounts;
+    }
+
+    /**
+     * Genera una lista de Accounts
+     **
+     * @param List<Account> accounts cuentas para las que se van a crear los contactos
+     * @param String recordTypeName tipo de registro de los contactos
+     * @param Integer numRecords número de contactos a generar por cada cuenta
+     * @return List<Account> listado de cuentas
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<Contact> generateContactsFromAccounts(List<Account> accounts, String recordTypeName, Integer numRecords)
+    {
+        List<Contact> contacts = new List<Contact>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        Schema.RecordTypeInfo contactRecordTypeInfo = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get(recordTypeName);
+        Id recordTypeId;
+        if(contactRecordTypeInfo != null)
+        {
+            recordTypeId = contactRecordTypeInfo.getRecordTypeId();
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            for(Account relatedAccount: accounts)
+            {
+                contacts.add(
+                    new Contact(
+                        LastName = 'testlastname' + i,
+                        AccountId = relatedAccount.Id,
+                        RecordTypeId = recordTypeId
+                    )
+                );
+            }
+        }
+
+        return contacts;
+    }
+
+    private static String generateSpanishFormatDNI()
+    {
+        List<String> letters = new List<String> {
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z'
+        };
+
+        Integer numbers = (Math.random() * 100000000).intValue();
+        String letter = letters[Integer.valueof( (Math.random() * letters.size() - 1) )];
+        return String.valueOf(numbers) + letter;
+    }
+
+    /**
+     * Genera ContactPointPhone relacionados con una lista de accounts
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointPhone
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<ContactPointPhone> listado de ContactPointPhones generados
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<ContactPointPhone> generateContactPointPhonesFromAccounts(List<Account> accounts, Integer numRecords)
+    {
+        List<ContactPointPhone> contactPointPhones = new List<ContactPointPhone>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                contactPointPhones.add(
+                    new ContactPointPhone(
+                        ParentId = relatedAccount.Id,
+                        TelephoneNumber = String.valueOf(phoneNumber)
+                    )
+                );
+            }
+        }
+
+        return contactPointPhones;
+    }
+
+    /**
+     * Genera ContactPointEmail relacionados con una lista de accounts
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointEmail
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<ContactPointEmail> listado de ContactPointEmails generados
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<ContactPointEmail> generateContactPointEmailsFromAccounts(List<Account> accounts, Integer numRecords)
+    {
+        List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                contactPointEmails.add(
+                    new ContactPointEmail(
+                        ParentId = relatedAccount.Id,
+                        EmailAddress = relatedAccount.Name + '@nts-solutions.com'
+                    )
+                );
+            }
+        }
+
+        return contactPointEmails;
+    }
 }

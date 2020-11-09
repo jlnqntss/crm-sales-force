@@ -9,714 +9,735 @@
  * 1.0   09-16-2020   Enara Etxaniz   Initial Version
  **/
 @isTest
-public class Test_PreferenceCentreController {
-  //#Region testSetup
-  @testSetup
-  static void makeData() {
-    //Account
-    Account account = new Account(Name = 'Account1', CustomerNum__c = '1234');
-    insert account;
+public class Test_PreferenceCentreController
+{
+    //#Region testSetup
+    @testSetup
+    static void makeData()
+    {
+        //Account
+        Account account = new Account(Name = 'Account1', CustomerNum__c = '1234');
+        insert account;
 
-    //Contact GI
-    Contact customerGI = new Contact(
-      Email = 'test@test.com',
-      Birthdate = Date.valueOf('1990-01-01'),
-      LastName = 'ContactGI',
-      AccountId = account.Id,
-      CustomerNum__c = 'GI-1234',
-      LegalEntity__c = Label.GeneralInsurance,
-      RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerGI)
-    );
-    insert customerGI;
+        //Contact GI
+        Contact customerGI = new Contact(
+            Email = 'test@test.com',
+            Birthdate = Date.valueOf('1990-01-01'),
+            LastName = 'ContactGI',
+            AccountId = account.Id,
+            CustomerNum__c = 'GI-1234',
+            LegalEntity__c = Label.GeneralInsurance,
+            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerGI)
+            );
+        insert customerGI;
 
-    //Contact Life
-    Contact customerLife = new Contact(
-      Email = 'test@test.com',
-      Birthdate = Date.valueOf('1990-01-01'),
-      LastName = 'ContactLife',
-      AccountId = account.Id,
-      CustomerNum__c = 'Life-1234',
-      LegalEntity__c = Label.LifeInsurance,
-      RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerLife)
-    );
-    insert customerLife;
+        //Contact Life
+        Contact customerLife = new Contact(
+            Email = 'test@test.com',
+            Birthdate = Date.valueOf('1990-01-01'),
+            LastName = 'ContactLife',
+            AccountId = account.Id,
+            CustomerNum__c = 'Life-1234',
+            LegalEntity__c = Label.LifeInsurance,
+            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerLife)
+            );
+        insert customerLife;
 
-    //Campaign contacto GI no suscrito
-    Campaign campaignGI = new Campaign(
-      Name = 'CampaignGI',
-      LegalEntity__c = Label.GeneralInsurance,
-      Type = 'Suscripcion',
-      IsActive = true
-    );
-    insert campaignGI;
+        //Campaign contacto GI no suscrito
+        Campaign campaignGI = new Campaign(
+            Name = 'CampaignGI',
+            LegalEntity__c = Label.GeneralInsurance,
+            Type = 'Suscripcion',
+            IsActive = true
+            );
+        insert campaignGI;
 
-    //Campaign contacto Life no suscrito
-    Campaign campaignLife = new Campaign(
-      Name = 'CampaignLife',
-      LegalEntity__c = Label.LifeInsurance,
-      Type = 'Suscripcion',
-      IsActive = true
-    );
-    insert campaignLife;
+        //Campaign contacto Life no suscrito
+        Campaign campaignLife = new Campaign(
+            Name = 'CampaignLife',
+            LegalEntity__c = Label.LifeInsurance,
+            Type = 'Suscripcion',
+            IsActive = true
+            );
+        insert campaignLife;
 
-    //Campaign contacto GI suscrito
-    Campaign campaignContGI = new Campaign(
-      Name = 'campaignContGI',
-      LegalEntity__c = Label.GeneralInsurance,
-      Type = 'Suscripcion',
-      IsActive = true
-    );
-    insert campaignContGI;
+        //Campaign contacto GI suscrito
+        Campaign campaignContGI = new Campaign(
+            Name = 'campaignContGI',
+            LegalEntity__c = Label.GeneralInsurance,
+            Type = 'Suscripcion',
+            IsActive = true
+            );
+        insert campaignContGI;
 
-    CampaignMember campaignMemberGI = new CampaignMember(
-      ContactId = customerGI.Id,
-      CampaignId = campaignContGI.Id
-    );
-    insert campaignMemberGI;
+        CampaignMember campaignMemberGI = new CampaignMember(
+            ContactId = customerGI.Id,
+            CampaignId = campaignContGI.Id
+            );
+        insert campaignMemberGI;
 
-    //Campaign contacto Life suscrito
-    Campaign campaignContLife = new Campaign(
-      Name = 'campaignContLife',
-      LegalEntity__c = Label.LifeInsurance,
-      Type = 'Suscripcion',
-      IsActive = true
-    );
-    insert campaignContLife;
+        //Campaign contacto Life suscrito
+        Campaign campaignContLife = new Campaign(
+            Name = 'campaignContLife',
+            LegalEntity__c = Label.LifeInsurance,
+            Type = 'Suscripcion',
+            IsActive = true
+            );
+        insert campaignContLife;
 
-    CampaignMember campaignMemberLife = new CampaignMember(
-      ContactId = customerLife.Id,
-      CampaignId = campaignContLife.Id
-    );
-    insert campaignMemberLife;
+        CampaignMember campaignMemberLife = new CampaignMember(
+            ContactId = customerLife.Id,
+            CampaignId = campaignContLife.Id
+            );
+        insert campaignMemberLife;
 
-    //Campaing to test translation
-    Campaign campaignTranslate = new Campaign(
-      Name = 'Productos_y_servicios',
-      LegalEntity__c = Label.GeneralInsurance,
-      Type = 'Suscripcion',
-      IsActive = true
-    );
-    insert campaignTranslate;
+        //Campaing to test translation
+        Campaign campaignTranslate = new Campaign(
+            Name = 'Productos_y_servicios',
+            LegalEntity__c = Label.GeneralInsurance,
+            Type = 'Suscripcion',
+            IsActive = true
+            );
+        insert campaignTranslate;
 
-    CampaignMember campaignMemberTrans = new CampaignMember(
-      ContactId= customerGI.Id,
-      CampaignId = campaignTranslate.Id
-    );
-    insert campaignMemberTrans;
-  }
-  //#endregion
+        CampaignMember campaignMemberTrans = new CampaignMember(
+            ContactId= customerGI.Id,
+            CampaignId = campaignTranslate.Id
+            );
+        insert campaignMemberTrans;
+    }
+    //#endregion
 
-  //#Region test_processRequest
+    //#Region test_processRequest
 
-  @isTest
-  static void processRequest_testGICampaignSuscription() {
-    //When
-    String hashedId;
-    String Id;
-    List<Contact> c = [
-      SELECT Id, Name, HashedId__c
-      FROM Contact
-      WHERE LegalEntity__c = :Label.GeneralInsurance
-    ];
+    @isTest
+    static void processRequest_testGICampaignSuscription()
+    {
+        //When
+        String hashedId;
+        String Id;
+        List<Contact> c = [
+            SELECT Id, Name, HashedId__c
+            FROM Contact
+            WHERE LegalEntity__c = :Label.GeneralInsurance
+        ];
 
-    if (c != null & c.size() > 0) {
-      hashedId = c[0].HashedId__c;
-      Id = c[0].Id;
+        if (c != null & c.size() > 0)
+        {
+            hashedId = c[0].HashedId__c;
+            Id = c[0].Id;
+        }
+
+        List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
+
+        Campaign campaignGI = [SELECT Id FROM Campaign WHERE Name = 'CampaignGI'];
+
+        Campaign campaignContGI = [
+            SELECT Id
+            FROM Campaign
+            WHERE Name = 'campaignContGI'
+        ];
+
+        //Test en el que se suscribe en la que no está suscrito // HasOptedOutOfEmail sin cambios
+        PreferenceCentreController.CampaignStatus campaignStatusGI = new PreferenceCentreController.CampaignStatus(
+            campaignGI.Id,
+            'CampaignGI',
+            '',
+            '',
+            true
+            );
+        PreferenceCentreController.CampaignStatus campaignStatusContGI = new PreferenceCentreController.CampaignStatus(
+            campaignContGI.Id,
+            'campaignContGI',
+            '',
+            '',
+            true
+            );
+        campaigns.add(campaignStatusGI);
+        campaigns.add(campaignStatusContGI);
+
+        //Test
+        Test.startTest();
+        PreferenceCentreController.processRequest(hashedId, false, campaigns);
+        Test.stopTest();
+
+        //Then
+        List<CampaignMember> membercampaignLife = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE CampaignId = :campaignGI.Id AND ContactId = :Id
+        ];
+        List<CampaignMember> memberCampaigns = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE ContactId = :Id
+        ];
+
+        System.assertEquals( 1, membercampaignLife.size() );
+        System.assertEquals( 3, memberCampaigns.size() );
     }
 
-    List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
+    @isTest
+    static void processRequest_testLifeCampaignSuscription()
+    {
+        //When
+        String hashedId;
+        String Id;
+        List<Contact> c = [
+            SELECT Id, Name, HashedId__c
+            FROM Contact
+            WHERE LegalEntity__c = :Label.LifeInsurance
+        ];
 
-    Campaign campaignGI = [SELECT Id FROM Campaign WHERE Name = 'CampaignGI'];
+        if (c != null & c.size() > 0)
+        {
+            hashedId = c[0].HashedId__c;
+            Id = c[0].Id;
+        }
 
-    Campaign campaignContGI = [
-      SELECT Id
-      FROM Campaign
-      WHERE Name = 'campaignContGI'
-    ];
+        List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
 
-    //Test en el que se suscribe en la que no está suscrito // HasOptedOutOfEmail sin cambios
-    PreferenceCentreController.CampaignStatus campaignStatusGI = new PreferenceCentreController.CampaignStatus(
-      campaignGI.Id,
-      'CampaignGI',
-      '',
-      '',
-      true
-    );
-    PreferenceCentreController.CampaignStatus campaignStatusContGI = new PreferenceCentreController.CampaignStatus(
-      campaignContGI.Id,
-      'campaignContGI',
-      '',
-      '',
-      true
-    );
-    campaigns.add(campaignStatusGI);
-    campaigns.add(campaignStatusContGI);
+        Campaign campaignLife = [
+            SELECT Id
+            FROM Campaign
+            WHERE Name = 'CampaignLife'
+        ];
 
-    //Test
-    Test.startTest();
-    PreferenceCentreController.processRequest(hashedId, false, campaigns);
-    Test.stopTest();
+        Campaign campaignContLife = [
+            SELECT Id
+            FROM Campaign
+            WHERE Name = 'campaignContLife'
+        ];
 
-    //Then
-    List<CampaignMember> membercampaignLife = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE CampaignId = :campaignGI.Id AND ContactId = :Id
-    ];
-    List<CampaignMember> memberCampaigns = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE ContactId = :Id
-    ];
+        //Test en el que se suscribe en la que no está suscrito // HasOptedOutOfEmail sin cambios
+        PreferenceCentreController.CampaignStatus campaignStatusLife = new PreferenceCentreController.CampaignStatus(
+            campaignLife.Id,
+            'CampaignLife',
+            '',
+            '',
+            true
+            );
+        PreferenceCentreController.CampaignStatus campaignStatusContLife = new PreferenceCentreController.CampaignStatus(
+            campaignContLife.Id,
+            'campaignContLife',
+            '',
+            '',
+            true
+            );
+        campaigns.add(campaignStatusLife);
+        campaigns.add(campaignStatusContLife);
 
-    System.assertEquals(1, membercampaignLife.size());
-    System.assertEquals(3, memberCampaigns.size());
-  }
+        //Test
+        Test.startTest();
+        PreferenceCentreController.processRequest(hashedId, false, campaigns);
+        Test.stopTest();
 
-  @isTest
-  static void processRequest_testLifeCampaignSuscription() {
-    //When
-    String hashedId;
-    String Id;
-    List<Contact> c = [
-      SELECT Id, Name, HashedId__c
-      FROM Contact
-      WHERE LegalEntity__c = :Label.LifeInsurance
-    ];
+        //Then
+        List<CampaignMember> membercampaignLife = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE CampaignId = :campaignLife.Id AND ContactId = :Id
+        ];
 
-    if (c != null & c.size() > 0) {
-      hashedId = c[0].HashedId__c;
-      Id = c[0].Id;
+        List<CampaignMember> memberCampaigns = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE ContactId = :Id
+        ];
+
+        System.assertEquals( 1, membercampaignLife.size() );
+        System.assertEquals( 2, memberCampaigns.size() );
     }
 
-    List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
+    @isTest
+    static void processRequest_testGICampaignDesuscription()
+    {
+        //When
+        String hashedId;
+        String Id;
+        List<Contact> c = [
+            SELECT Id, Name, HashedId__c
+            FROM Contact
+            WHERE LegalEntity__c = :Label.GeneralInsurance
+        ];
 
-    Campaign campaignLife = [
-      SELECT Id
-      FROM Campaign
-      WHERE Name = 'CampaignLife'
-    ];
+        if (c != null & c.size() > 0)
+        {
+            hashedId = c[0].HashedId__c;
+            Id = c[0].Id;
+        }
 
-    Campaign campaignContLife = [
-      SELECT Id
-      FROM Campaign
-      WHERE Name = 'campaignContLife'
-    ];
+        List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
 
-    //Test en el que se suscribe en la que no está suscrito // HasOptedOutOfEmail sin cambios
-    PreferenceCentreController.CampaignStatus campaignStatusLife = new PreferenceCentreController.CampaignStatus(
-      campaignLife.Id,
-      'CampaignLife',
-      '',
-      '',
-      true
-    );
-    PreferenceCentreController.CampaignStatus campaignStatusContLife = new PreferenceCentreController.CampaignStatus(
-      campaignContLife.Id,
-      'campaignContLife',
-      '',
-      '',
-      true
-    );
-    campaigns.add(campaignStatusLife);
-    campaigns.add(campaignStatusContLife);
+        Campaign campaignGI = [SELECT Id FROM Campaign WHERE Name = 'CampaignGI'];
 
-    //Test
-    Test.startTest();
-    PreferenceCentreController.processRequest(hashedId, false, campaigns);
-    Test.stopTest();
+        Campaign campaignContGI = [
+            SELECT Id
+            FROM Campaign
+            WHERE Name = 'campaignContGI'
+        ];
 
-    //Then
-    List<CampaignMember> membercampaignLife = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE CampaignId = :campaignLife.Id AND ContactId = :Id
-    ];
+        //Test en el que se desuscribe en la que está suscrito // HasOptedOutOfEmail sin cambios
+        PreferenceCentreController.CampaignStatus campaignStatusGI = new PreferenceCentreController.CampaignStatus(
+            campaignGI.Id,
+            'campaignGI',
+            '',
+            '',
+            false
+            );
+        PreferenceCentreController.CampaignStatus campaignStatusContGI = new PreferenceCentreController.CampaignStatus(
+            campaignContGI.Id,
+            'campaignContGI',
+            '',
+            '',
+            false
+            );
+        campaigns.add(campaignStatusGI);
+        campaigns.add(campaignStatusContGI);
 
-    List<CampaignMember> memberCampaigns = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE ContactId = :Id
-    ];
+        //Test
+        Test.startTest();
+        PreferenceCentreController.processRequest(hashedId, false, campaigns);
+        Test.stopTest();
 
-    System.assertEquals(1, membercampaignLife.size());
-    System.assertEquals(2, memberCampaigns.size());
-  }
-
-  @isTest
-  static void processRequest_testGICampaignDesuscription() {
-    //When
-    String hashedId;
-    String Id;
-    List<Contact> c = [
-      SELECT Id, Name, HashedId__c
-      FROM Contact
-      WHERE LegalEntity__c = :Label.GeneralInsurance
-    ];
-
-    if (c != null & c.size() > 0) {
-      hashedId = c[0].HashedId__c;
-      Id = c[0].Id;
+        //Then
+        List<CampaignMember> member = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE ContactId = :Id
+        ];
+        // Only campaign translate left
+        System.assertEquals( 1, member.size() );
     }
 
-    List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
+    @isTest
+    static void processRequest_testLifeCampaignDesuscription()
+    {
+        //When
+        String hashedId;
+        String Id;
+        List<Contact> c = [
+            SELECT Id, Name, HashedId__c
+            FROM Contact
+            WHERE LegalEntity__c = :Label.LifeInsurance
+        ];
 
-    Campaign campaignGI = [SELECT Id FROM Campaign WHERE Name = 'CampaignGI'];
+        if (c != null & c.size() > 0)
+        {
+            hashedId = c[0].HashedId__c;
+            Id = c[0].Id;
+        }
 
-    Campaign campaignContGI = [
-      SELECT Id
-      FROM Campaign
-      WHERE Name = 'campaignContGI'
-    ];
+        List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
 
-    //Test en el que se desuscribe en la que está suscrito // HasOptedOutOfEmail sin cambios
-    PreferenceCentreController.CampaignStatus campaignStatusGI = new PreferenceCentreController.CampaignStatus(
-      campaignGI.Id,
-      'campaignGI',
-      '',
-      '',
-      false
-    );
-    PreferenceCentreController.CampaignStatus campaignStatusContGI = new PreferenceCentreController.CampaignStatus(
-      campaignContGI.Id,
-      'campaignContGI',
-      '',
-      '',
-      false
-    );
-    campaigns.add(campaignStatusGI);
-    campaigns.add(campaignStatusContGI);
+        Campaign campaignLife = [
+            SELECT Id
+            FROM Campaign
+            WHERE Name = 'CampaignLife'
+        ];
 
-    //Test
-    Test.startTest();
-    PreferenceCentreController.processRequest(hashedId, false, campaigns);
-    Test.stopTest();
+        Campaign campaignContLife = [
+            SELECT Id
+            FROM Campaign
+            WHERE Name = 'campaignContLife'
+        ];
 
-    //Then
-    List<CampaignMember> member = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE ContactId = :Id
-    ];
-    // Only campaign translate left
-    System.assertEquals(1, member.size());
-  }
+        //Test en el que se desuscribe en la que está suscrito // HasOptedOutOfEmail sin cambios
+        PreferenceCentreController.CampaignStatus campaignStatusLife = new PreferenceCentreController.CampaignStatus(
+            campaignLife.Id,
+            'CampaignLife',
+            '',
+            '',
+            false
+            );
+        PreferenceCentreController.CampaignStatus campaignStatusContLife = new PreferenceCentreController.CampaignStatus(
+            campaignContLife.Id,
+            'campaignContLife',
+            '',
+            '',
+            false
+            );
+        campaigns.add(campaignStatusLife);
+        campaigns.add(campaignStatusContLife);
 
-  @isTest
-  static void processRequest_testLifeCampaignDesuscription() {
-    //When
-    String hashedId;
-    String Id;
-    List<Contact> c = [
-      SELECT Id, Name, HashedId__c
-      FROM Contact
-      WHERE LegalEntity__c = :Label.LifeInsurance
-    ];
+        //Test
+        Test.startTest();
+        PreferenceCentreController.processRequest(hashedId, false, campaigns);
+        Test.stopTest();
 
-    if (c != null & c.size() > 0) {
-      hashedId = c[0].HashedId__c;
-      Id = c[0].Id;
+        //Then
+        List<CampaignMember> member = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE ContactId = :Id
+        ];
+        System.assertEquals( 0, member.size() );
     }
 
-    List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
+    @isTest
+    static void processRequest_testGIHasOptedOutOfEmail()
+    {
+        //When
+        String hashedId;
+        String Id;
+        Boolean hasOptedOutOfEmail;
+        List<Contact> c = [
+            SELECT Id, HashedId__c, HasOptedOutOfEmail
+            FROM Contact
+            WHERE LegalEntity__c = :Label.GeneralInsurance
+        ];
 
-    Campaign campaignLife = [
-      SELECT Id
-      FROM Campaign
-      WHERE Name = 'CampaignLife'
-    ];
+        if (c != null & c.size() > 0)
+        {
+            hashedId = c[0].HashedId__c;
+            Id = c[0].Id;
+            hasOptedOutOfEmail = c[0].HasOptedOutOfEmail;
+        }
 
-    Campaign campaignContLife = [
-      SELECT Id
-      FROM Campaign
-      WHERE Name = 'campaignContLife'
-    ];
+        List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
 
-    //Test en el que se desuscribe en la que está suscrito // HasOptedOutOfEmail sin cambios
-    PreferenceCentreController.CampaignStatus campaignStatusLife = new PreferenceCentreController.CampaignStatus(
-      campaignLife.Id,
-      'CampaignLife',
-      '',
-      '',
-      false
-    );
-    PreferenceCentreController.CampaignStatus campaignStatusContLife = new PreferenceCentreController.CampaignStatus(
-      campaignContLife.Id,
-      'campaignContLife',
-      '',
-      '',
-      false
-    );
-    campaigns.add(campaignStatusLife);
-    campaigns.add(campaignStatusContLife);
+        Campaign campaignGI = [SELECT Id FROM Campaign WHERE Name = 'CampaignGI'];
 
-    //Test
-    Test.startTest();
-    PreferenceCentreController.processRequest(hashedId, false, campaigns);
-    Test.stopTest();
+        Campaign campaignContGI = [
+            SELECT Id
+            FROM Campaign
+            WHERE Name = 'campaignContGI'
+        ];
 
-    //Then
-    List<CampaignMember> member = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE ContactId = :Id
-    ];
-    System.assertEquals(0, member.size());
-  }
+        //Test en el que se deja como están las campañas // HasOptedOutOfEmail a true, el contacto se da de baja
+        PreferenceCentreController.CampaignStatus campaignStatusGI = new PreferenceCentreController.CampaignStatus(
+            campaignGI.Id,
+            'campaignGI',
+            '',
+            '',
+            false
+            );
+        PreferenceCentreController.CampaignStatus campaignStatusContGI = new PreferenceCentreController.CampaignStatus(
+            campaignContGI.Id,
+            'campaignContGI',
+            '',
+            '',
+            true
+            );
+        campaigns.add(campaignStatusGI);
+        campaigns.add(campaignStatusContGI);
 
-  @isTest
-  static void processRequest_testGIHasOptedOutOfEmail() {
-    //When
-    String hashedId;
-    String Id;
-    Boolean hasOptedOutOfEmail;
-    List<Contact> c = [
-      SELECT Id, HashedId__c, HasOptedOutOfEmail
-      FROM Contact
-      WHERE LegalEntity__c = :Label.GeneralInsurance
-    ];
+        //Test
+        Test.startTest();
+        PreferenceCentreController.processRequest(hashedId, true, campaigns);
+        Test.stopTest();
 
-    if (c != null & c.size() > 0) {
-      hashedId = c[0].HashedId__c;
-      Id = c[0].Id;
-      hasOptedOutOfEmail = c[0].HasOptedOutOfEmail;
+        //Then
+        List<CampaignMember> membercampaignGI = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE CampaignId = :campaignGI.Id AND ContactId = :Id
+        ];
+        List<CampaignMember> memberCampaigns = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE ContactId = :Id
+        ];
+        Contact contacto = [
+            SELECT Id, HashedId__c, HasOptedOutOfEmail
+            FROM Contact
+            WHERE LegalEntity__c = :Label.GeneralInsurance
+        ];
+
+        System.assertEquals( 0, membercampaignGI.size() );
+        // Campaign LI and translate left
+        System.assertEquals( 2, memberCampaigns.size() );
+        System.assertEquals(true, contacto.HasOptedOutOfEmail);
     }
 
-    List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
+    @isTest
+    static void processRequest_testLifeHasOptedOutOfEmail()
+    {
+        //When
+        String hashedId;
+        String Id;
+        Boolean hasOptedOutOfEmail;
+        List<Contact> c = [
+            SELECT Id, HashedId__c, HasOptedOutOfEmail
+            FROM Contact
+            WHERE LegalEntity__c = :Label.LifeInsurance
+        ];
 
-    Campaign campaignGI = [SELECT Id FROM Campaign WHERE Name = 'CampaignGI'];
+        if (c != null & c.size() > 0)
+        {
+            hashedId = c[0].HashedId__c;
+            Id = c[0].Id;
+            hasOptedOutOfEmail = c[0].HasOptedOutOfEmail;
+        }
 
-    Campaign campaignContGI = [
-      SELECT Id
-      FROM Campaign
-      WHERE Name = 'campaignContGI'
-    ];
+        List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
 
-    //Test en el que se deja como están las campañas // HasOptedOutOfEmail a true, el contacto se da de baja
-    PreferenceCentreController.CampaignStatus campaignStatusGI = new PreferenceCentreController.CampaignStatus(
-      campaignGI.Id,
-      'campaignGI',
-      '',
-      '',
-      false
-    );
-    PreferenceCentreController.CampaignStatus campaignStatusContGI = new PreferenceCentreController.CampaignStatus(
-      campaignContGI.Id,
-      'campaignContGI',
-      '',
-      '',
-      true
-    );
-    campaigns.add(campaignStatusGI);
-    campaigns.add(campaignStatusContGI);
+        Campaign campaignLife = [
+            SELECT Id
+            FROM Campaign
+            WHERE Name = 'CampaignLife'
+        ];
 
-    //Test
-    Test.startTest();
-    PreferenceCentreController.processRequest(hashedId, true, campaigns);
-    Test.stopTest();
+        Campaign campaignContLife = [
+            SELECT Id
+            FROM Campaign
+            WHERE Name = 'campaignContLife'
+        ];
 
-    //Then
-    List<CampaignMember> membercampaignGI = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE CampaignId = :campaignGI.Id AND ContactId = :Id
-    ];
-    List<CampaignMember> memberCampaigns = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE ContactId = :Id
-    ];
-    Contact contacto = [
-      SELECT Id, HashedId__c, HasOptedOutOfEmail
-      FROM Contact
-      WHERE LegalEntity__c = :Label.GeneralInsurance
-    ];
+        //Test en el que se deja como están las campañas // HasOptedOutOfEmail a true, el contacto se da de baja
+        PreferenceCentreController.CampaignStatus campaignStatusLife = new PreferenceCentreController.CampaignStatus(
+            campaignLife.Id,
+            'CampaignLife',
+            '',
+            '',
+            false
+            );
+        PreferenceCentreController.CampaignStatus campaignStatusContLife = new PreferenceCentreController.CampaignStatus(
+            campaignContLife.Id,
+            'campaignContLife',
+            '',
+            '',
+            true
+            );
+        campaigns.add(campaignStatusLife);
+        campaigns.add(campaignStatusContLife);
 
-    System.assertEquals(0, membercampaignGI.size());
-    // Campaign LI and translate left
-    System.assertEquals(2, memberCampaigns.size());
-    System.assertEquals(true, contacto.HasOptedOutOfEmail);
-  }
+        //Test
+        Test.startTest();
+        PreferenceCentreController.processRequest(hashedId, true, campaigns);
+        Test.stopTest();
 
-  @isTest
-  static void processRequest_testLifeHasOptedOutOfEmail() {
-    //When
-    String hashedId;
-    String Id;
-    Boolean hasOptedOutOfEmail;
-    List<Contact> c = [
-      SELECT Id, HashedId__c, HasOptedOutOfEmail
-      FROM Contact
-      WHERE LegalEntity__c = :Label.LifeInsurance
-    ];
+        //Then
+        List<CampaignMember> membercampaignLife = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE CampaignId = :campaignLife.Id AND ContactId = :Id
+        ];
+        List<CampaignMember> memberCampaigns = [
+            SELECT ContactId
+            FROM CampaignMember
+            WHERE ContactId = :Id
+        ];
+        Contact contacto = [
+            SELECT Id, HashedId__c, HasOptedOutOfEmail
+            FROM Contact
+            WHERE LegalEntity__c = :Label.LifeInsurance
+        ];
 
-    if (c != null & c.size() > 0) {
-      hashedId = c[0].HashedId__c;
-      Id = c[0].Id;
-      hasOptedOutOfEmail = c[0].HasOptedOutOfEmail;
+        System.assertEquals( 0, membercampaignLife.size() );
+        System.assertEquals( 1, memberCampaigns.size() );
+        System.assertEquals(true, contacto.HasOptedOutOfEmail);
     }
 
-    List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
+    @isTest
+    static void getContactData_testgetContactDataNull()
+    {
+        //When
+        String hashedId = 'testing';
 
-    Campaign campaignLife = [
-      SELECT Id
-      FROM Campaign
-      WHERE Name = 'CampaignLife'
-    ];
+        //Test
+        Test.startTest();
+        PreferenceCentreController.getContactData(''); // for coverage
+        Contact contacto = PreferenceCentreController.getContactData(hashedId);
+        Test.stopTest();
 
-    Campaign campaignContLife = [
-      SELECT Id
-      FROM Campaign
-      WHERE Name = 'campaignContLife'
-    ];
-
-    //Test en el que se deja como están las campañas // HasOptedOutOfEmail a true, el contacto se da de baja
-    PreferenceCentreController.CampaignStatus campaignStatusLife = new PreferenceCentreController.CampaignStatus(
-      campaignLife.Id,
-      'CampaignLife',
-      '',
-      '',
-      false
-    );
-    PreferenceCentreController.CampaignStatus campaignStatusContLife = new PreferenceCentreController.CampaignStatus(
-      campaignContLife.Id,
-      'campaignContLife',
-      '',
-      '',
-      true
-    );
-    campaigns.add(campaignStatusLife);
-    campaigns.add(campaignStatusContLife);
-
-    //Test
-    Test.startTest();
-    PreferenceCentreController.processRequest(hashedId, true, campaigns);
-    Test.stopTest();
-
-    //Then
-    List<CampaignMember> membercampaignLife = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE CampaignId = :campaignLife.Id AND ContactId = :Id
-    ];
-    List<CampaignMember> memberCampaigns = [
-      SELECT ContactId
-      FROM CampaignMember
-      WHERE ContactId = :Id
-    ];
-    Contact contacto = [
-      SELECT Id, HashedId__c, HasOptedOutOfEmail
-      FROM Contact
-      WHERE LegalEntity__c = :Label.LifeInsurance
-    ];
-
-    System.assertEquals(0, membercampaignLife.size());
-    System.assertEquals(1, memberCampaigns.size());
-    System.assertEquals(true, contacto.HasOptedOutOfEmail);
-  }
-
-  @isTest
-  static void getContactData_testgetContactDataNull() {
-    //When
-    String hashedId = 'testing';
-
-    //Test
-    Test.startTest();
-    PreferenceCentreController.getContactData(''); // for coverage
-    Contact contacto = PreferenceCentreController.getContactData(hashedId);
-    Test.stopTest();
-
-    //Then
-    System.assertEquals(null, contacto.LastName);
-  }
-
-  @isTest
-  static void getContactData_testgetContactDataOK() {
-    //When
-    String hashedId;
-    String Id;
-    List<Contact> c = [
-      SELECT Id, Name, HashedId__c
-      FROM Contact
-      WHERE LegalEntity__c = :Label.LifeInsurance
-    ];
-
-    if (c != null & c.size() > 0) {
-      hashedId = c[0].HashedId__c;
-      Id = c[0].Id;
+        //Then
+        System.assertEquals(null, contacto.LastName);
     }
 
-    //Test
-    Test.startTest();
-    Contact contacto = PreferenceCentreController.getContactData(hashedId);
-    Test.stopTest();
+    @isTest
+    static void getContactData_testgetContactDataOK()
+    {
+        //When
+        String hashedId;
+        String Id;
+        List<Contact> c = [
+            SELECT Id, Name, HashedId__c
+            FROM Contact
+            WHERE LegalEntity__c = :Label.LifeInsurance
+        ];
 
-    //Then
-    System.assertEquals(Id, contacto.Id);
-  }
+        if (c != null & c.size() > 0)
+        {
+            hashedId = c[0].HashedId__c;
+            Id = c[0].Id;
+        }
 
-  @isTest
-  static void getAllCampaigns_testgetAllLifeCampaignsOK() {
-    //When
-    String hashedId;
-    String Id;
-    List<Contact> c = [
-      SELECT Id, Name, HashedId__c
-      FROM Contact
-      WHERE LegalEntity__c = :Label.LifeInsurance
-    ];
+        //Test
+        Test.startTest();
+        Contact contacto = PreferenceCentreController.getContactData(hashedId);
+        Test.stopTest();
 
-    if (c != null & c.size() > 0) {
-      hashedId = c[0].HashedId__c;
-      Id = c[0].Id;
+        //Then
+        System.assertEquals(Id, contacto.Id);
     }
 
-    //Test
-    Test.startTest();
-    PreferenceCentreController.getAllCampaigns( '', null ); // for coverage
-    List<PreferenceCentreController.CampaignStatus> campaigns = PreferenceCentreController.getAllCampaigns(
-      hashedId,
-      null
-    );
-    Test.stopTest();
+    @isTest
+    static void getAllCampaigns_testgetAllLifeCampaignsOK()
+    {
+        //When
+        String hashedId;
+        String Id;
+        List<Contact> c = [
+            SELECT Id, Name, HashedId__c
+            FROM Contact
+            WHERE LegalEntity__c = :Label.LifeInsurance
+        ];
 
-    //Then
-    System.assertEquals(2, campaigns.size());
-  }
+        if (c != null & c.size() > 0)
+        {
+            hashedId = c[0].HashedId__c;
+            Id = c[0].Id;
+        }
 
-  @isTest
-  static void getAllCampaigns_testgetAllGICampaignsOK() {
-    //When
-    String hashedId;
+        //Test
+        Test.startTest();
+        PreferenceCentreController.getAllCampaigns( '', null ); // for coverage
+        List<PreferenceCentreController.CampaignStatus> campaigns = PreferenceCentreController.getAllCampaigns(
+            hashedId,
+            null
+            );
+        Test.stopTest();
 
-    List<Contact> c = [
-      SELECT Id, Name, HashedId__c
-      FROM Contact
-      WHERE LegalEntity__c = :Label.GeneralInsurance
-    ];
-    System.assert(true, !c.isEmpty());
+        //Then
+        System.assertEquals( 2, campaigns.size() );
+    }
 
-    hashedId = c[0].HashedId__c;
+    @isTest
+    static void getAllCampaigns_testgetAllGICampaignsOK()
+    {
+        //When
+        String hashedId;
 
-    //Test
-    Test.startTest();
-    List<PreferenceCentreController.CampaignStatus> campaigns = PreferenceCentreController.getAllCampaigns(
-      hashedId,
-      null
-    );
-    Test.stopTest();
+        List<Contact> c = [
+            SELECT Id, Name, HashedId__c
+            FROM Contact
+            WHERE LegalEntity__c = :Label.GeneralInsurance
+        ];
+        System.assert ( true, !c.isEmpty() );
 
-    //Then
-    System.assertEquals(3, campaigns.size());
-  }
+        hashedId = c[0].HashedId__c;
 
-  /**
-   * Test: Partner 
-   * 
-   * @author nts (agonzalezisasi)
-   * @date 05/11/2020
-   */
-  @isTest
-  static void processRequest_testGIHasOptedOutOfEmail_Partner() {
-    //When
-    Account account = new Account(Name = 'Account2', CustomerNum__c = '5678');
-    insert account;
+        //Test
+        Test.startTest();
+        List<PreferenceCentreController.CampaignStatus> campaigns = PreferenceCentreController.getAllCampaigns(
+            hashedId,
+            null
+            );
+        Test.stopTest();
 
-    //Contact GI
-    Contact customerPartner = new Contact(
-      Email = 'partner@test.com',
-      Birthdate = Date.valueOf('1990-01-01'),
-      LastName = 'partnerGI',
-      AccountId = account.Id,
-      CustomerNum__c = 'Orange-GI-5678',
-      LegalEntity__c = Label.GeneralInsurance,
-      RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerGI),
-      Partner__c = 'Orange Seguros'
-    );
-    insert customerPartner;
-    
-    List<Contact> c = [
-      SELECT Id, HashedId__c, HasOptedOutOfEmail FROM Contact WHERE Id = :customerPartner.Id
-    ];
-    System.assertEquals(1, c.size());
+        //Then
+        System.assertEquals( 3, campaigns.size() );
+    }
 
-    String hashedId = c[0].HashedId__c;
-    String Id = c[0].Id;
-    Boolean hasOptedOutOfEmail = c[0].HasOptedOutOfEmail;
+    /**
+     * Test: Partner
+     *
+     * @author nts (agonzalezisasi)
+     * @date 05/11/2020
+     */
+    @isTest
+    static void processRequest_testGIHasOptedOutOfEmail_Partner()
+    {
+        //When
+        Account account = new Account(Name = 'Account2', CustomerNum__c = '5678');
+        insert account;
 
-    Campaign campaignGI = [SELECT Id FROM Campaign WHERE Name = 'CampaignGI'];
-    Campaign campaignContGI = [SELECT Id FROM Campaign WHERE Name = 'campaignContGI'];
+        //Contact GI
+        Contact customerPartner = new Contact(
+            Email = 'partner@test.com',
+            Birthdate = Date.valueOf('1990-01-01'),
+            LastName = 'partnerGI',
+            AccountId = account.Id,
+            CustomerNum__c = 'Orange-GI-5678',
+            LegalEntity__c = Label.GeneralInsurance,
+            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerGI),
+            Partner__c = 'Orange Seguros'
+            );
+        insert customerPartner;
 
-    CampaignMember campaignMemberGI = new CampaignMember(
-      ContactId = customerPartner.Id,
-      CampaignId = campaignGI.Id
-    );
-    insert campaignMemberGI;
-    CampaignMember campaignMemberContGI = new CampaignMember(
-      ContactId = customerPartner.Id,
-      CampaignId = campaignContGI.Id
-    );
-    insert campaignMemberContGI;
+        List<Contact> c = [
+            SELECT Id, HashedId__c, HasOptedOutOfEmail FROM Contact WHERE Id = :customerPartner.Id
+        ];
+        System.assertEquals( 1, c.size() );
 
-    //Test en el que se deja como están las campañas // HasOptedOutOfEmail a true, el contacto se da de baja
-    PreferenceCentreController.CampaignStatus campaignStatusGI = new PreferenceCentreController.CampaignStatus(
-      campaignGI.Id, 'campaignGI', '', '', false 
-    );
-    PreferenceCentreController.CampaignStatus campaignStatusContGI = new PreferenceCentreController.CampaignStatus(
-      campaignContGI.Id, 'campaignContGI', '', '', true
-    );
-    List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
-    campaigns.add(campaignStatusGI);
-    campaigns.add(campaignStatusContGI);
+        String hashedId = c[0].HashedId__c;
+        String Id = c[0].Id;
+        Boolean hasOptedOutOfEmail = c[0].HasOptedOutOfEmail;
 
-    //Test
-    Test.startTest();
-    PreferenceCentreController.processRequest(hashedId, true, campaigns);
-    Test.stopTest();
+        Campaign campaignGI = [SELECT Id FROM Campaign WHERE Name = 'CampaignGI'];
+        Campaign campaignContGI = [SELECT Id FROM Campaign WHERE Name = 'campaignContGI'];
 
-    //Then
-    List<CampaignMember> membercampaignGI = [
-      SELECT ContactId FROM CampaignMember WHERE CampaignId = :campaignGI.Id AND ContactId = :Id
-    ];
-    List<CampaignMember> memberCampaigns = [
-      SELECT ContactId FROM CampaignMember WHERE ContactId = :Id
-    ];
-    Contact contacto = [
-      SELECT Id, HashedId__c, HasOptedOutOfEmail FROM Contact WHERE Id = :Id
-    ];
+        CampaignMember campaignMemberGI = new CampaignMember(
+            ContactId = customerPartner.Id,
+            CampaignId = campaignGI.Id
+            );
+        insert campaignMemberGI;
+        CampaignMember campaignMemberContGI = new CampaignMember(
+            ContactId = customerPartner.Id,
+            CampaignId = campaignContGI.Id
+            );
+        insert campaignMemberContGI;
 
-    System.assertEquals(0, membercampaignGI.size());
-    System.assertEquals(1, memberCampaigns.size());
-    System.assertEquals(true, contacto.HasOptedOutOfEmail);
-  }
+        //Test en el que se deja como están las campañas // HasOptedOutOfEmail a true, el contacto se da de baja
+        PreferenceCentreController.CampaignStatus campaignStatusGI = new PreferenceCentreController.CampaignStatus(
+            campaignGI.Id, 'campaignGI', '', '', false
+            );
+        PreferenceCentreController.CampaignStatus campaignStatusContGI = new PreferenceCentreController.CampaignStatus(
+            campaignContGI.Id, 'campaignContGI', '', '', true
+            );
+        List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
+        campaigns.add(campaignStatusGI);
+        campaigns.add(campaignStatusContGI);
 
-  /**
-   * Test: switching to different languages for a campaign
-   * 
-   * @author nts (agonzalezisasi)
-   * @date 04/11/2020
-   */
-  @isTest
-  static void test_switchLanguage()
-  {
-     //When
-    String hashedId;
+        //Test
+        Test.startTest();
+        PreferenceCentreController.processRequest(hashedId, true, campaigns);
+        Test.stopTest();
 
-    List<Contact> c = [SELECT Id, HashedId__c FROM Contact WHERE LegalEntity__c = :Label.GeneralInsurance ];
-    System.assertEquals(true, !c.isEmpty());
+        //Then
+        List<CampaignMember> membercampaignGI = [
+            SELECT ContactId FROM CampaignMember WHERE CampaignId = :campaignGI.Id AND ContactId = :Id
+        ];
+        List<CampaignMember> memberCampaigns = [
+            SELECT ContactId FROM CampaignMember WHERE ContactId = :Id
+        ];
+        Contact contacto = [
+            SELECT Id, HashedId__c, HasOptedOutOfEmail FROM Contact WHERE Id = :Id
+        ];
 
-    hashedId = c[0].HashedId__c;
+        System.assertEquals( 0, membercampaignGI.size() );
+        System.assertEquals( 1, memberCampaigns.size() );
+        System.assertEquals(true, contacto.HasOptedOutOfEmail);
+    }
 
-    //Test
-    Test.startTest();
-    PreferenceCentreController.getAllCampaigns( hashedId, 'fr' );
-    PreferenceCentreController.getAllCampaigns( hashedId, 'en_US' );
-    PreferenceCentreController.getAllCampaigns( hashedId, 'de' );
-    PreferenceCentreController.getAllCampaigns( hashedId, 'it' );
-    PreferenceCentreController.getAllCampaigns( hashedId, 'ja' );
-    PreferenceCentreController.getAllCampaigns( hashedId, 'es_MX' );
-    PreferenceCentreController.getAllCampaigns( hashedId, 'pt_BR' );
-    PreferenceCentreController.getAllCampaigns( hashedId, null );
-    Test.stopTest();
-  }
+    /**
+     * Test: switching to different languages for a campaign
+     *
+     * @author nts (agonzalezisasi)
+     * @date 04/11/2020
+     */
+    @isTest
+    static void test_switchLanguage()
+    {
+        //When
+        String hashedId;
+
+        List<Contact> c = [SELECT Id, HashedId__c FROM Contact WHERE LegalEntity__c = :Label.GeneralInsurance ];
+        System.assertEquals( true, !c.isEmpty() );
+
+        hashedId = c[0].HashedId__c;
+
+        //Test
+        Test.startTest();
+        PreferenceCentreController.getAllCampaigns( hashedId, 'fr' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'en_US' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'de' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'it' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'ja' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'es_MX' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'pt_BR' );
+        PreferenceCentreController.getAllCampaigns( hashedId, null );
+        Test.stopTest();
+    }
 }
