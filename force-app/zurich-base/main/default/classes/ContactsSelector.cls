@@ -1,5 +1,6 @@
 public with sharing class ContactsSelector
 {
+    public Set<Id> recordTypeIds;
     /**
      * Busca contactos a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
      * maximizar resultados de búsqueda
@@ -91,10 +92,9 @@ public with sharing class ContactsSelector
      * @param  nationalIds          Listado de DNIs. Válido cualquier formato
      * @param  nationalIdType       Tipo de documento a buscar
      * @param  legalEntity          Entidad legal en la que buscar
-     * @param  recordTypeName       Tipo de registro a buscar
      * @return                      Listado de contactos sobre los que se ha realizado match
      */
-    public static List<Contact> findByNationalId(List<String> nationalIds, String nationalIdType, String legalEntity, String recordTypeName)
+    public List<Contact> findByNationalId(List<String> nationalIds, String nationalIdType, String legalEntity)
     {
         if( nationalIds != null && !nationalIds.isEmpty() )
         {
@@ -106,23 +106,47 @@ public with sharing class ContactsSelector
             {
                 legalEntity = Label.LifeInsurance;
             }
-            if( String.isBlank(recordTypeName) )
-            {
-                recordTypeName = 'Master';
-            }
-            Id accountRecordTypeId;
-            Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(recordTypeName);
 
-            if(accountRecordTypeInfo != null)
-            {
-                accountRecordTypeId = accountRecordTypeInfo.getRecordTypeId();
-            }
-
-            return [SELECT Id, AccountId FROM Contact WHERE Account.NationalId__c IN : nationalIds AND Account.NationalIdType__c =: nationalIdType AND Account.LegalEntity__c =: legalEntity AND Account.RecordTypeId =: accountRecordTypeId];
+            return [SELECT Id, AccountId FROM Contact WHERE Account.NationalId__c IN : nationalIds AND Account.NationalIdType__c =: nationalIdType AND Account.LegalEntity__c =: legalEntity AND RecordTypeId IN: this.recordTypeIds];
         }
         else
         {
             return new List<Contact>();
         }
+    }
+
+    /**
+     * Instancia ContactSelector inicializando la variable recordTypeIds con los IDs
+     * de los tipos de registro que se utilizan en el Scope indicado com parámetro
+     *
+     * @author rlopez
+     * @date 06/11/2020
+     * @param  scope    Contexto en el que se utilizarán las búsqueda de contacto (ZE, OCS, ...)
+     * @return          Instancia de ContactSelector con la variable recordTypeIds inicializada
+     */
+    public ContactsSelector applyScope(String scope)
+    {
+        Map<ID, Schema.RecordTypeInfo> recordTypeInfosById = Schema.SObjectType.Contact.getRecordTypeInfosById();
+        Map<String, Schema.RecordTypeInfo> recordTypeInfosByDeveloperName = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName();
+
+        this.recordTypeIds = recordTypeInfosById.keySet();
+
+        // Rellenamos el recordTypeIds con los Ids de cada scope
+        switch on scope {
+            when 'ZE' {
+                this.recordTypeIds = new Set<Id>();
+                for (String recordTypeName: recordTypeInfosByDeveloperName.keySet()) {
+                    if(recordTypeName == 'CustomerGI')
+                    {
+                        this.recordTypeIds.add(recordTypeInfosByDeveloperName.get(recordTypeName).getRecordTypeId());
+                    }
+                }
+            }
+            when 'OCS' {
+                
+            }
+        }
+
+        return this;
     }
 }
