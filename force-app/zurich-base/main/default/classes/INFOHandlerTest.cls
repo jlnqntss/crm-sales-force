@@ -72,6 +72,11 @@ private class INFOHandlerTest
             TestDataFactory.generateExternalRequest('INFO', 'QUOTE_RELATIONSHIP', 10)
             );
 
+        //Roles siniestro
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest('INFO', 'CLAIM_RELATIONSHIP', 10)
+            );
+
         insert externalRequestList;
     }
 
@@ -183,7 +188,7 @@ private class INFOHandlerTest
             'No se ha generado correctamente el mapa de registros de claim'
             );
         System.assertEquals(
-            20,
+            30,
             INFOHandler.recordsToUpsertByObject.get('Relationship__c').size(),
             'No se ha generado correctamente el mapa de registros de relationship'
             );
@@ -225,7 +230,7 @@ private class INFOHandlerTest
         System.assertEquals(10, INFOHandler.recordsToDeleteByObject.get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
         System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
         System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de relationship');
+        System.assertEquals(20, INFOHandler.recordsToUpsertByObject.get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de relationship');
 
         System.assertEquals(0, INFOHandler.recordsToUpsertByObject.get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de policy');
         System.assertEquals(10, INFOHandler.recordsToDeleteByObject.get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de relationship');
@@ -253,7 +258,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            120,
+            130,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -281,7 +286,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            120,
+            130,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -367,7 +372,7 @@ private class INFOHandlerTest
             'No se han insertado todos los registros de siniestro'
             );
         System.assertEquals(
-            20,
+            30,
             relaList.size(),
             'No se han insertado todos los registros de relaciones'
             );
@@ -438,7 +443,7 @@ private class INFOHandlerTest
         System.assertEquals(0, policyList.size(), 'No se han borrado todos los registros de póliza');
         System.assertEquals(10, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
         System.assertEquals(10, claimList.size(), 'No se han insertado todos los registros de siniestro');
-        System.assertEquals(10, relaList.size(), 'No se han borrado todos los registros de relaciones');
+        System.assertEquals(20, relaList.size(), 'No se han borrado todos los registros de relaciones');
 
     }
 
@@ -475,7 +480,7 @@ private class INFOHandlerTest
         ];
 
         System.assertEquals(
-            120,
+            130,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
@@ -515,7 +520,7 @@ private class INFOHandlerTest
                                                                                              ExternalRequest__c.Origin__c}).selectProcessedByOrigin(new Set<String> {'INFO'});
 
         System.assertEquals(
-            120,
+            130,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );

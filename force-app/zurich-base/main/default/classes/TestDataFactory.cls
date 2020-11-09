@@ -913,7 +913,7 @@ public class TestDataFactory
 
         for (Integer i = 0; i < totalItems; i++)
         {
-            /* REGISTRO OBJETO ASEGURADO*/
+            /* REGISTRO SINIESTRO*/
             jsonElementsList.add(
                 new Map<String, Object> {
                     'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
@@ -1054,7 +1054,7 @@ public class TestDataFactory
 
         for (Integer i = 0; i < totalItems; i++)
         {
-            /* REGISTRO RELACIÓN PÓLIZA*/
+            /* REGISTRO RELACIÓN OFERTA*/
             jsonElementsList.add(
                 new Map<String, Object> {
                 'id_unico_rol_oferta' => 'O' + String.valueOf(i + 1).leftPad(9, '0'),
@@ -1063,6 +1063,73 @@ public class TestDataFactory
                     Integer.valueof( (Math.random() * roles.size() - 1) )
                                ],
                 'oferta_rol_desc' => 'Test',
+                'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
+            }
+                );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad Relación Siniestro
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author adelgado
+     * @date 23/10/2020
+     */
+    public static List<Map<String, Object> > getINFOClaimRelationshipJson(
+        Integer totalItems
+        )
+    {
+        return buildINFOClaimRelationshipJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOClaimRelationshipJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<String> roles = new List<String> {
+            'ABG',
+            'ABU',
+            'ALL',
+            'ASC',
+            'ASE',
+            'ASG',
+            'ASR',
+            'BEN',
+            'BER',
+            'BRK',
+            'CAI',
+            'CAS',
+            'CAV',
+            'CCN',
+            'CCO',
+            'CCR',
+            'CID',
+            'CLG'
+        };
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO RELACIÓN SINIESTRO*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                'id_unico_rol_siniestro' => 'C' + String.valueOf(i + 1).leftPad(9, '0'),
+                'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                'siniestro_rol' => roles[
+                    Integer.valueof( (Math.random() * roles.size() - 1) )
+                               ],
+                'siniestro_rol_desc' => 'Test',
                 'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
             }
                 );
@@ -1354,6 +1421,23 @@ public class TestDataFactory
                         new ExternalRequest__c(
                             Origin__c = origin,
                             Entity__c = 'QUOTE_RELATIONSHIP',
+                            Action__c = 'UPSERT',
+                            Payload__c = JSON.serialize(payload),
+                            ContentFormat__c = 'JSON'
+                            )
+                        );
+                }
+            }
+            // Rol siniestro
+            when 'CLAIM_RELATIONSHIP' {
+                for (
+                    Map<String, Object> payload : getINFOClaimRelationshipJson(numRecords)
+                    )
+                {
+                    externalRequestList.add(
+                        new ExternalRequest__c(
+                            Origin__c = origin,
+                            Entity__c = 'CLAIM_RELATIONSHIP',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
                             ContentFormat__c = 'JSON'
