@@ -16,7 +16,7 @@ public with sharing class Test_CaseUtil
 
         Order policy = new Order(
             EffectiveDate = Date.valueOf('1990-01-02'),
-            CustomerNum__c = '3123',
+            CustomerNum__c = 'GI-3123',
             PolicyNum__c = '8989',
             Status = 'Sync',
             PolicyContractStartDate__c = Date.valueOf('2020-05-02'),
@@ -99,36 +99,24 @@ public with sharing class Test_CaseUtil
         Case claim = new Case(
             ClaimNumber__c = '797',
             PolicyNum__c = '8989',
-            CustomerNum__c = '3123',
-            LegalEntity__c = Label.LifeInsurance,
+            CustomerNum__c = 'GI-3123',
+            LegalEntity__c = Label.GeneralInsurance,
             DateReg__c = Date.valueOf('2020-01-02'),
             InsuredObjectId__c = '123456789',
             sourceCountry__c = 'Spain'
             );
 
-        List<Contact> existingContactsList = [
-            SELECT Id
-            FROM Contact
-            WHERE CustomerNum__c = 'GI-3123'
-        ];
+        List<Contact> existingContactsList = [SELECT Id FROM Contact WHERE CustomerNum__c = 'GI-3123'];
         System.AssertEquals( 1, existingContactsList.size() );
 
-        SET<String> keys = new Set<String>();
-        keys.add('8989'); //Policy
-        keys.add('3123'); //Contact
-
         Map<String, Case> mapClaims = new Map<String, Case>();
-        mapClaims = SystemUtil.ClaimsSelector(keys);
+        //mapClaims = SystemUtil.ClaimsSelector(keys);
         Map<String, Case> claimsToUpsert = new Map<String, Case>();
-
-        Map<String, Order> mapPolicies = new Map<String, Order>();
-
-        mapPolicies = SystemUtil.PolicySelector(keys);
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
-        mapContacts = SystemUtil.ContactsSelector(new Set<String> { 'GI-3123' });
-        Map<String, OrderItem> mapOrderItem = new Map<String, OrderItem>();
-        mapOrderItem = SystemUtil.OrderItemSelector(keys);
+        Map<String, Order> mapPolicies = SystemUtil.PolicySelector(new Set<String> { '8989' });
+        Map<String, Contact> mapContacts = SystemUtil.ContactsSelector(new Set<String> { 'GI-3123' });
+        Map<String, OrderItem> mapOrderItem = new Map<String, OrderItem> ();
         User recordOwner = SystemUtil.RecordOwnerSelector();
+
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
             IsActive = true,
@@ -153,6 +141,118 @@ public with sharing class Test_CaseUtil
             ExternalRequestUtil.claimsToUpsert != null,
             'Test_CaseUtil: Error al crear claim'
             );
+
+        Test.stopTest();
+    }
+
+    /**
+     * Test: customer doesnt exist
+     *
+     * @author nts (agonzalezisasi)
+     * @date 03/11/2020
+     */
+    @IsTest
+    static void test_createClaim_no_customer()
+    {
+        Case claim = new Case(
+            ClaimNumber__c = '797',
+            PolicyNum__c = '8989',
+            CustomerNum__c = 'GI-666',
+            LegalEntity__c = Label.GeneralInsurance,
+            DateReg__c = Date.valueOf('2020-01-02'),
+            InsuredObjectId__c = '123456789',
+            sourceCountry__c = 'Spain'
+            );
+
+        Map<String, Case> mapClaims = new Map<String, Case>();
+        //mapClaims = SystemUtil.ClaimsSelector(keys);
+        Map<String, Case> claimsToUpsert = new Map<String, Case>();
+        Map<String, Order> mapPolicies = SystemUtil.PolicySelector(new Set<String> { '8989' });
+        Map<String, Contact> mapContacts = new Map<String, Contact> ();
+        Map<String, OrderItem> mapOrderItem = new Map<String, OrderItem> ();
+        User recordOwner = SystemUtil.RecordOwnerSelector();
+
+        Pricebook2 Pricebook = new Pricebook2(
+            Id = Test.getStandardPricebookId(),
+            IsActive = true,
+            Name = Label.PriceBook
+            );
+        update Pricebook;
+
+        Test.startTest();
+
+        ExternalRequestUtil.mapClaims = mapClaims;
+        ExternalRequestUtil.mapPolicies = mapPolicies;
+        ExternalRequestUtil.mapContacts = mapContacts;
+        ExternalRequestUtil.mapOrderItem = mapOrderItem;
+        ExternalRequestUtil.claimsToUpsert = claimsToUpsert;
+        ExternalRequestUtil.recordOwner = recordOwner;
+        ExternalRequestUtil.Pricebook = Pricebook;
+
+        try
+        {
+            CaseUtil.upsertClaim(claim);
+        }
+        catch( Exception e )
+        {
+            System.assertEquals( true, e.getMessage().contains(Label.ClaimError) );
+        }
+
+        Test.stopTest();
+    }
+
+    /**
+     * Test: policy doesnt exist
+     *
+     * @author nts (agonzalezisasi)
+     * @date 03/11/2020
+     */
+    @IsTest
+    static void test_createClaim_no_policy()
+    {
+        Case claim = new Case(
+            ClaimNumber__c = '797',
+            PolicyNum__c = '6666',
+            CustomerNum__c = 'GI-666',
+            LegalEntity__c = Label.GeneralInsurance,
+            DateReg__c = Date.valueOf('2020-01-02'),
+            InsuredObjectId__c = '123456789',
+            sourceCountry__c = 'Spain'
+            );
+
+        Map<String, Case> mapClaims = new Map<String, Case>();
+        //mapClaims = SystemUtil.ClaimsSelector(keys);
+        Map<String, Case> claimsToUpsert = new Map<String, Case>();
+        Map<String, Order> mapPolicies = new Map<String, Order>();
+        Map<String, Contact> mapContacts = new Map<String, Contact> ();
+        Map<String, OrderItem> mapOrderItem = new Map<String, OrderItem> ();
+        User recordOwner = SystemUtil.RecordOwnerSelector();
+
+        Pricebook2 Pricebook = new Pricebook2(
+            Id = Test.getStandardPricebookId(),
+            IsActive = true,
+            Name = Label.PriceBook
+            );
+        update Pricebook;
+
+        Test.startTest();
+
+        ExternalRequestUtil.mapClaims = mapClaims;
+        ExternalRequestUtil.mapPolicies = mapPolicies;
+        ExternalRequestUtil.mapContacts = mapContacts;
+        ExternalRequestUtil.mapOrderItem = mapOrderItem;
+        ExternalRequestUtil.claimsToUpsert = claimsToUpsert;
+        ExternalRequestUtil.recordOwner = recordOwner;
+        ExternalRequestUtil.Pricebook = Pricebook;
+
+        try
+        {
+            CaseUtil.upsertClaim(claim);
+        }
+        catch( Exception e )
+        {
+            System.assertEquals( true, e.getMessage().contains(Label.ClaimError) );
+        }
 
         Test.stopTest();
     }
@@ -188,7 +288,9 @@ public with sharing class Test_CaseUtil
         Test.stopTest();
     }
 
-    /**Method that tests if the case received from email has a contact assigned and the case from Web has a policy assigned */
+    /**
+     * Method that tests if the case received from email has a contact assigned and the case from Web has a policy assigned
+     * */
     @IsTest
     static void test_EmailToCaseAssignContact()
     {
@@ -225,6 +327,70 @@ public with sharing class Test_CaseUtil
 
         System.assert (caso1.ContactId != null);
         System.assert (caso2.Policy__c != null);
+        Test.stopTest();
+    }
+
+    /**
+     * Method that tests if the case received from email has a contact assigned and the case from Web has a policy assigned
+     * Test: test translate
+     * */
+    @IsTest
+    static void test_EmailToCaseAssignContact_translate()
+    {
+        Case caso2 = new Case(
+            LegalEntity__c = Label.GeneralInsurance,
+            Origin = 'Web',
+            Status = 'New',
+            PolicyNum__c = '8989',
+            sourceCountry__c = 'France',
+            Type = 'Siniestro',
+            Subtype__c = 'Contratar seguro'
+            );
+
+
+        Test.startTest();
+        insert caso2;
+        Test.stopTest();
+
+        caso2 = [
+            SELECT id, ContactId, Policy__c
+            FROM Case
+            WHERE PolicyNum__c = '8989'
+        ];
+
+        System.assert (caso2.Policy__c != null);
+    }
+
+    /**
+     * Test unused casehandler methods for coverage.
+     *
+     * @author nts (agonzalezisasi)
+     * @date 04/11/2020
+     */
+    @isTest
+    static void test_unusedhandlermethods()
+    {
+        Case case2 = new Case(
+            LegalEntity__c = Label.GeneralInsurance,
+            Origin = 'Web',
+            Status = 'New',
+            PolicyNum__c = '8989',
+            sourceCountry__c = 'France',
+            Type = 'Siniestro',
+            Subtype__c = 'Contratar seguro'
+            );
+        insert case2;
+
+        Test.startTest();
+        case2.SuppliedEmail = 'edu@test.com';
+        update case2;
+        List<Case> cases = [SELECT Id,SuppliedEmail FROM Case WHERE Id = :case2.Id];
+        System.assertEquals( 1, cases.size() );
+        System.assertEquals(true, cases[0].SuppliedEmail != null);
+
+        delete case2;
+        cases = [SELECT Id FROM Case WHERE Id = :case2.Id];
+        System.assertEquals( true, cases.isEmpty() );
         Test.stopTest();
     }
 }

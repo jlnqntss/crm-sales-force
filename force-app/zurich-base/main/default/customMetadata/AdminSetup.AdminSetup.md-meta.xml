@@ -15,8 +15,28 @@
         <value xsi:type="xsd:string">Basic c2ZzaGlwcGVyZW1lYTp0NVl0NSpfM2VyNGpIZzVoSjY1</value>
     </values>
     <values>
+        <field>IBA_EMEA_Non_Country__c</field>
+        <value xsi:type="xsd:string">Spain</value>
+    </values>
+    <values>
+        <field>IBA_EMEA_Prefix__c</field>
+        <value xsi:type="xsd:string">EMEA</value>
+    </values>
+    <values>
         <field>IBA_EMEA_endpoint__c</field>
         <value xsi:type="xsd:string">https://iba-data-shipper-api.zurich.es/iba-data-shipper-api/V1/updateStatusEMEA</value>
+    </values>
+    <values>
+        <field>IBA_Multi_Partner_Authorization_token__c</field>
+        <value xsi:type="xsd:string">Basic c2ZzaGlwcGVycGFydG5lcjp1ckozRF8qX2FwMjM0MjRXdA==</value>
+    </values>
+    <values>
+        <field>IBA_Multi_Partner_Origin__c</field>
+        <value xsi:type="xsd:string">IBA Multi-Partner</value>
+    </values>
+    <values>
+        <field>IBA_Multi_Partner_endpoint__c</field>
+        <value xsi:type="xsd:string">https://mail.google.com/mail/u/0/#inbox/FMfcgxwKjBPwKjbLsWkzwgnPVQCdPflh</value>
     </values>
     <values>
         <field>IBA_endpoint__c</field>
@@ -25,6 +45,10 @@
     <values>
         <field>MaxRetries__c</field>
         <value xsi:type="xsd:double">3.0</value>
+    </values>
+    <values>
+        <field>Multi_Partners__c</field>
+        <value xsi:type="xsd:string">Orange Seguros:Orange</value>
     </values>
     <values>
         <field>NumDaysDeleteLeads__c</field>
@@ -41,5 +65,21 @@
     <values>
         <field>SameMasterPolicy__c</field>
         <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>WS_Service_Process_Request__c</field>
+        <value xsi:type="xsd:string">ProcessRequest</value>
+    </values>
+    <values>
+        <field>WS_Service_Quote_Entry__c</field>
+        <value xsi:type="xsd:string">QuoteEntry</value>
+    </values>
+    <values>
+        <field>WS_Source_IBA_Multi_Partner__c</field>
+        <value xsi:type="xsd:string">IBA_Multi_Partner</value>
+    </values>
+    <values>
+        <field>WS_Source_IBA__c</field>
+        <value xsi:type="xsd:string">IBA_SP_EMEA</value>
     </values>
 </CustomMetadata>

@@ -153,10 +153,9 @@ private class Test_Batch_DeleteQuotes
         String query = 'SELECT Id, (Select id from Casos__r), (Select itemId__c from OrderItems) from Order';
 
         Test.startTest();
-        Id BatchInstanceId = database.executeBatch(
-            new Batch_DeleteQuotes(query),
-            200
-            );
+        Batch_DeleteQuotes b = new Batch_DeleteQuotes(); // for coverage
+        b = new Batch_DeleteQuotes(query);
+        Id BatchInstanceId = database.executeBatch(b, 200);
         Test.stopTest();
 
         numQuotes = [SELECT COUNT() FROM Order];
@@ -166,4 +165,18 @@ private class Test_Batch_DeleteQuotes
         System.assertEquals(0, numCases);
         System.assertEquals(0, numCovers);
     }
+
+    /**
+     * For testing Schedule
+     */
+    // @isTest
+    // static void testBatch_schedule() {
+    //   Batch_DeleteQuotes m = new Batch_DeleteQuotes();
+    //   String sch = '20 30 8 10 2 ?';
+
+    //   Test.startTest();
+    //   String jobID = system.schedule('Response External Request', sch, m);
+    //   Test.stopTest();
+    //   System.Debug('jobID: ' + jobID);
+    // }
 }

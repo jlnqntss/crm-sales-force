@@ -34,18 +34,13 @@ public class OrderItemUtil
             {
                 if ( receivedCovers.containsKey(cover.PolicyProduct__r.ItemId__c) )
                 {
-                    List<Cover__c> existingItemId = receivedCovers.get(
-                        cover.PolicyProduct__r.ItemId__c
-                        );
+                    List<Cover__c> existingItemId = receivedCovers.get( cover.PolicyProduct__r.ItemId__c );
                     existingItemId.add(cover);
                     receivedCovers.put(cover.PolicyProduct__r.ItemId__c, existingItemId);
                 }
                 else
                 {
-                    receivedCovers.put(
-                        cover.PolicyProduct__r.ItemId__c,
-                        new List<Cover__c> { cover }
-                        );
+                    receivedCovers.put( cover.PolicyProduct__r.ItemId__c, new List<Cover__c> { cover } );
                 }
             }
         }
@@ -62,7 +57,7 @@ public class OrderItemUtil
                 OrderItem orderItemSF = mapOrderItem.get(item.ItemId__c);
                 if (orderItemSF != null)
                 {
-                    System.debug('orderItem existe');
+                    System.debug('orderItem exists');
                     item.Id = orderItemSF.Id;
 
                     // mantener solo el external ID de la poliza
@@ -73,6 +68,7 @@ public class OrderItemUtil
                 }
                 else
                 {
+                    System.debug('orderItem doesnt exist');
                     //if order Item doesn't exist, relate product2
                     PricebookEntry productSF;
                     //Search product by product name
@@ -95,35 +91,24 @@ public class OrderItemUtil
                     else
                     {
                         System.debug('Producto no existe');
-                        createProduct(
-                            item,
-                            productsToInsert,
-                            pricebookEntryToInsert,
-                            Pricebook
-                            );
+                        createProduct( item, productsToInsert, pricebookEntryToInsert, Pricebook );
                         PricebookEntry pricebookRef;
 
                         if (item.itemModel__c != null)
                         {
                             //GI insurance
-                            pricebookRef = new PricebookEntry(
-                                ProductID__c = item.itemModel__c
-                                );
+                            pricebookRef = new PricebookEntry( ProductID__c = item.itemModel__c );
                         }
                         else if (item.Category__c != null)
                         {
                             //life
-                            pricebookRef = new PricebookEntry(
-                                ProductID__c = item.Category__c
-                                );
+                            pricebookRef = new PricebookEntry( ProductID__c = item.Category__c );
                             item.itemModel__c = item.Category__c;
                         }
                         else
                         {
                             //if mandatory value empty in life
-                            pricebookRef = new PricebookEntry(
-                                ProductID__c = 'Insured Person'
-                                );
+                            pricebookRef = new PricebookEntry( ProductID__c = 'Insured Person' );
                             item.itemModel__c = 'Insured Person';
                         }
                         item.PricebookEntry = pricebookRef;
@@ -143,6 +128,7 @@ public class OrderItemUtil
                     order.LegalEntity__c,
                     recordOwner
                     );
+                System.Debug('**** orderItems to Insert: ' + item);
                 orederItemsToInsert.put(item.ItemId__c, item);
             }
         }

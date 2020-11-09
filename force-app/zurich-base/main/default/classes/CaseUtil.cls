@@ -12,56 +12,47 @@ public class CaseUtil
      **/
     public static void upsertClaim(Case claim)
     {
-        System.debug('- - - - - ExternalRequestUtil.processClaim - - - - -');
+        System.debug('- - - - - ExternalRequestUtil.upsertClaim - - - - -');
         Case claimSF = ExternalRequestUtil.mapClaims.get(claim.ClaimNumber__c);
 
-        if (
-            claimSF != null //claim exists
-            )
+        if ( claimSF != null ) //claim exists
         {
             claim.Id = claimSF.Id;
             ExternalRequestUtil.claimsToUpsert.put(claim.ClaimNumber__c, claim);
         }
         else //claim doesn't exist
         {
+            System.Debug('***** PolicyNum: ' + claim.PolicyNum__c);
             Order policySF = ExternalRequestUtil.mapPolicies.get(claim.PolicyNum__c);
-
-            if (
-                policySF != null //policy exists
-                )
+            if ( policySF != null ) //policy exists
             {
                 claim.RecordTypeId = SystemUtil.getClaimRecordType();
                 claim.LegalEntity__c = policySF.LegalEntity__c;
                 claim.OwnerId = ExternalRequestUtil.recordOwner.id;
                 claim.Policy__c = policySF.id;
-                claim.CustomerNum__c = ContactUtil.adaptCustomerNum(
-                    claim.CustomerNum__c,
-                    policySF.LegalEntity__c
-                    );
-
-                if (claim.sourceCountry__c != 'Spain')
-                {
-                    claim.CustomerNum__c = 'EMEA-' + claim.CustomerNum__c;
-                }
+                // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                // we get this from the policy too
+                claim.CustomerNum__c = policySF.CustomerNum__c;
+                // claim.CustomerNum__c = ContactUtil.adaptCustomerNum(
+                //   claim.CustomerNum__c,
+                //   policySF.LegalEntity__c
+                // );
+                // if (claim.sourceCountry__c != 'Spain') {
+                //   claim.CustomerNum__c = 'EMEA-' + claim.CustomerNum__c;
+                // }
 
                 if (claim.InsuredObjectId__c != null)
                 {
-                    OrderItem orderItemSF = ExternalRequestUtil.mapOrderItem.get(
-                        claim.InsuredObjectId__c
-                        );
+                    OrderItem orderItemSF = ExternalRequestUtil.mapOrderItem.get( claim.InsuredObjectId__c );
                     if (orderItemSF != null)
                     {
                         claim.Product__c = orderItemSF.id;
                     }
                 }
 
-                Contact contactSF = ExternalRequestUtil.mapContacts.get(
-                    claim.CustomerNum__c
-                    );
-
-                if (
-                    contactSF != null //contact exists
-                    )
+                System.Debug('***** CustomerNum: ' + claim.CustomerNum__c);
+                Contact contactSF = ExternalRequestUtil.mapContacts.get( claim.CustomerNum__c );
+                if ( contactSF != null ) //contact exists
                 {
                     claim.ContactId = contactSF.Id;
                     ExternalRequestUtil.claimsToUpsert.put(claim.ClaimNumber__c, claim);
@@ -70,27 +61,15 @@ public class CaseUtil
                 {
                     System.debug('Error: Cliente no existe');
                     throw new IntegrationException(
-                              Label.ClaimError +
-                              ' ' +
-                              claim.ClaimNumber__c +
-                              '. ' +
-                              Label.CustomerError +
-                              ' ' +
-                              claim.CustomerNum__c
+                              Label.ClaimError + ' ' + claim.ClaimNumber__c + '. ' + Label.CustomerError + ' ' + claim.CustomerNum__c
                               );
                 }
             }
-            else
+            else // policy doesnt exist
             {
                 System.debug('Error: Póliza no existe');
                 throw new IntegrationException(
-                          Label.ClaimError +
-                          ' ' +
-                          claim.ClaimNumber__c +
-                          '. ' +
-                          Label.PolicyNotExisting +
-                          ' ' +
-                          claim.PolicyNum__c
+                          Label.ClaimError + ' ' + claim.ClaimNumber__c + '. ' + Label.PolicyNotExisting + ' ' + claim.PolicyNum__c
                           );
             }
         }
@@ -164,26 +143,21 @@ public class CaseUtil
         {
             for (Case caso : newList)
             {
-                if (
-                    !String.isBlank(caso.Origin) &&
-                    ( caso.Origin.equals('Web') || caso.Origin.equals('Email') )
-                    )
+                if ( !String.isBlank(caso.Origin) && ( caso.Origin.equals('Web') || caso.Origin.equals('Email') ) )
                 {
                     //Si se ha informado el número de póliza, buscar la póliza y asignar el cliente correspondiente
                     if (caso.PolicyNum__c != null)
                     {
-                        if (caso.sourceCountry__c != 'Spain')
-                        {
-                            caso.PolicyNum__c = 'EMEA-' + caso.PolicyNum__c;
-                        }
+                        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                        // if (caso.sourceCountry__c != 'Spain') {
+                        //   caso.PolicyNum__c = 'EMEA-' + caso.PolicyNum__c;
+                        // }
 
                         List<Order> policies = new List<Order>();
                         policies = [
                             SELECT ID, ContactId__c, LegalEntity__c
                             FROM Order
-                            WHERE
-                                (RecordType.DeveloperName = :Label.PolicyGI
-                                                            OR RecordType.DeveloperName = :Label.PolicyLife)
+                            WHERE (RecordType.DeveloperName = :Label.PolicyGI OR RecordType.DeveloperName = :Label.PolicyLife)
                             AND PolicyNum__c = :caso.PolicyNum__c
                         ];
 
@@ -198,11 +172,8 @@ public class CaseUtil
                     {
                         //Si no se ha informado el número de poliza asignar cliente por mail y entidad legal (Solo si hay 1 cliente con ese mail)
                         List<Contact> contactoSF = [
-                            SELECT id
-                            FROM Contact
-                            WHERE
-                            Email = :caso.SuppliedEmail
-                                    AND LegalEntity__c = :caso.LegalEntity__c
+                            SELECT id FROM Contact
+                            WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
                         ];
 
                         if (contactoSF != null && contactoSF.size() == 1)
@@ -212,9 +183,7 @@ public class CaseUtil
                     }
 
                     //Si el caso es de la web de francia, asignar traducción del tipo y subtipo para la respuesta automática
-                    if (
-                        caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c)
-                        )
+                    if ( caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c) )
                     {
                         if ( caso.SourceCountry__c.equals('France') )
                         {
@@ -229,12 +198,12 @@ public class CaseUtil
                                 WHERE label = :caso.Subtype__c
                             ];
 
-                            if (TypeTranslaton != null)
+                            if ( TypeTranslaton != null && !TypeTranslaton.isEmpty() )
                             {
                                 caso.Type_translation__c = TypeTranslaton[0].French__c;
                             }
 
-                            if (SubTypeTranslation != null)
+                            if ( SubTypeTranslation != null && !SubTypeTranslation.isEmpty() )
                             {
                                 caso.Subtype_translation__c = SubTypeTranslation[0].French__c;
                             }

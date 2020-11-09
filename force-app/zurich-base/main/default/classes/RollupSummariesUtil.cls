@@ -42,19 +42,17 @@ public class RollupSummariesUtil
                  @param ctx Full context that defines the summary
                  @param detailRecords Master / detail objects that are created / modified / deleted during the trigger
                  @returns Memory list of master objects. They are not updated in the BBDD directly.*/
-    public static Sobject[] summarize(Context ctx, Sobject[] detailRecords)
-    {
-        // API name of the search field in the detail object
-        String searchFieldName = ctx.searchField.getName();
+    // public static Sobject[] summarize(Context ctx, Sobject[] detailRecords) {
+    //   // API name of the search field in the detail object
+    //   String searchFieldName = ctx.searchField.getName();
 
-        Set<Id> masterRecordId = new Set<Id>();
-        for (Sobject kid : detailRecords)
-        {
-            masterRecordId.add( (Id) kid.get(searchFieldName) );
-        }
-        //Utils.Debug(LoggingLevel.FINE, 'masterRecordId: ' + masterRecordId);
-        return summarize(ctx, masterRecordId);
-    }
+    //   Set<Id> masterRecordId = new Set<Id>();
+    //   for (Sobject kid : detailRecords) {
+    //     masterRecordId.add((Id) kid.get(searchFieldName));
+    //   }
+    //   //Utils.Debug(LoggingLevel.FINE, 'masterRecordId: ' + masterRecordId);
+    //   return summarize(ctx, masterRecordId);
+    // }
 
     /* Method that summarizes search fields based on the context. Useful in context as batch processes or scheduled processes
                  @param ctx Full context that defines the summary
@@ -84,13 +82,7 @@ public class RollupSummariesUtil
                    create expression added with alias for easy recovery in the AggregateResult class
                             Example: SUM (Amount) Amount*/
             String alias = 'lre' + expressionIndex++; // Generic alias, use the name of the field can exceed the limit of 25 characters
-            selectFields +=
-                ', ' +
-                summaryField.operation +
-                '(' +
-                summaryField.detailField.getName() +
-                ') ' +
-                alias;
+            selectFields += ', ' + summaryField.operation + '(' + summaryField.detailField.getName() + ') ' + alias;
             //System.Debug('selectFields: ' + selectFields);
             mapReferencesAlias.put(alias, summaryField);
             if (
@@ -107,15 +99,7 @@ public class RollupSummariesUtil
         if (IsMultiCurrencyOrg() == true && requiresCurrency == true)
         {
             String searchRelationName = context.searchField.getRelationshipName();
-            selectFields +=
-                ', ' +
-                summaryOperation.Max +
-                '(' +
-                searchRelationName +
-                '.' +
-                CURRENCYISOCODENAME +
-                ') ' +
-                MASTERCURRENCYALIAS;
+            selectFields += ', ' + summaryOperation.Max + '(' + searchRelationName + '.' + CURRENCYISOCODENAME + ') ' + MASTERCURRENCYALIAS;
             //System.Debug('selectFields: ' + selectFields);
         }
 
@@ -191,18 +175,11 @@ public class RollupSummariesUtil
                     {
                         masterObject.put(
                             summaryField.masterField.getName(),
-                            convertCurrency(
-                                (String) result.get(MASTERCURRENCYALIAS),
-                                (Decimal) agregateDetail
-                                )
-                            );
+                            convertCurrency( (String) result.get(MASTERCURRENCYALIAS), (Decimal) agregateDetail ) );
                     }
                     else
                     {
-                        masterObject.put(
-                            summaryField.masterField.getName(),
-                            agregateDetail
-                            );
+                        masterObject.put( summaryField.masterField.getName(), agregateDetail );
                     }
                 }
             }
@@ -275,9 +252,7 @@ public class RollupSummariesUtil
         {
             if (masterField == null || detailField == null || operation == null)
             {
-                throw new BadRollUpSummaryStateException(
-                          'It is necessary to define all the information of the summary operation'
-                          );
+                throw new BadRollUpSummaryStateException( 'It is necessary to define all the information of the summary operation' );
             }
 
             if (operation != summaryOperation.Count)
@@ -287,9 +262,7 @@ public class RollupSummariesUtil
                     (!dateHourTypeDetail && !numberTypeDetail)
                     )
                 {
-                    throw new BadRollUpSummaryStateException(
-                              'Only the Date / Date Time / Time / Number fields are allowed for Sum, Max, Min and Avg'
-                              );
+                    throw new BadRollUpSummaryStateException( 'Only the Date / Date Time / Time / Number fields are allowed for Sum, Max, Min and Avg' );
                 }
             }
 
@@ -299,9 +272,7 @@ public class RollupSummariesUtil
                  summaryOperation.Avg == operation)
                 )
             {
-                throw new BadRollUpSummaryStateException(
-                          'Sum / Avg are not valid for dates'
-                          );
+                throw new BadRollUpSummaryStateException( 'Sum / Avg are not valid for dates' );
             }
         }
 

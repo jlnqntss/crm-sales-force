@@ -53,7 +53,7 @@ private class Test_Batch_PostProcessing
             Status = 'Sync',
             PolicyNum__c = '12345',
             LegalEntity__c = Label.GeneralInsurance,
-            RecordTypeId = SystemUtil.getOrderRecordTypeIdByName(Label.QuoteGI),
+            RecordTypeId = SystemUtil.getOrderRecordTypeIdByName(Label.PolicyGI),
             After_Processing_Check__c = true,
             Processing_Timestamp__c = newTimestamp
             );
@@ -125,7 +125,9 @@ private class Test_Batch_PostProcessing
         System.assertEquals(1, numCover);
 
         Test.startTest();
-        Id BatchInstanceId = database.executeBatch(new Batch_PostProcessing(), 200);
+        Batch_PostProcessing b = new Batch_PostProcessing('select'); // for coverage
+        b = new Batch_PostProcessing();
+        Id BatchInstanceId = database.executeBatch(b, 200);
         Test.stopTest();
 
         policy = [
@@ -141,5 +143,20 @@ private class Test_Batch_PostProcessing
         System.assertEquals(0, numOrderItem);
         System.assertEquals(0, numDiscount);
         System.assertEquals(0, numCover);
+    }
+
+    /**
+     * For testing Schedule
+     */
+    @isTest
+    static void testBatch_schedule()
+    {
+        Batch_PostProcessing m = new Batch_PostProcessing();
+        String sch = '20 30 8 10 2 ?';
+
+        Test.startTest();
+        String jobID = system.schedule('Post Processing batch', sch, m);
+        Test.stopTest();
+        System.Debug('jobID: ' + jobID);
     }
 }

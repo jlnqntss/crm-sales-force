@@ -85,13 +85,27 @@ private class Test_Batch_DeleteErrorLogs
         String query = 'SELECT Id FROM Error_Log__c WHERE Throwing_time__c < LAST_N_DAYS:7';
 
         Test.startTest();
-        Id BatchInstanceId = database.executeBatch(
-            new Batch_DeleteErrorLogs(query),
-            200
-            );
+        Batch_DeleteErrorLogs b = new Batch_DeleteErrorLogs(); // for coverage
+        b = new Batch_DeleteErrorLogs(query);
+        Id BatchInstanceId = database.executeBatch( b, 200 );
         Test.stopTest();
 
         numErrores = [SELECT COUNT() FROM Error_Log__c];
         System.assertEquals(0, numErrores);
     }
+
+
+    /**
+     * For testing Schedule
+     */
+    // @isTest
+    // static void testBatch_schedule() {
+    //   Batch_DeleteErrorLogs m = new Batch_DeleteErrorLogs();
+    //   String sch = '20 30 8 10 2 ?';
+
+    //   Test.startTest();
+    //   String jobID = system.schedule('Delete error logs', sch, m);
+    //   Test.stopTest();
+    //   System.Debug('jobID: ' + jobID);
+    // }
 }

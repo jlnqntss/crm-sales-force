@@ -54,6 +54,9 @@ public class Test_ContactUtil
     @isTest
     static void test_LeadUpdate()
     {
+        Account newMaster = new Account(Name = 'test', CustomerNum__c = '7897');
+        insert newMaster;
+
         Contact ExistingLead = new Contact(
             Email = 'nora@test.com',
             MobilePhone = '11111',
@@ -63,44 +66,24 @@ public class Test_ContactUtil
             CustomerNum__c = 'LIFE-7897',
             LegalEntity__c = Label.LifeInsurance,
             RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.LeadLife),
-            sourceCountry__c = 'Spain'
+            sourceCountry__c = 'Spain',
+            AccountId= newMaster.Id
             );
         insert ExistingLead;
 
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
         SET<String> keys = new Set<String>();
         keys.add(ExistingLead.CustomerNum__c);
-        mapContacts = SystemUtil.ContactsSelector(keys);
-        System.assertEquals( 1, mapContacts.size() );
-        System.assertEquals(
-            ExistingLead.Email,
-            mapContacts.get(ExistingLead.CustomerNum__c).Email
-            );
-        Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
-        keys.add(ExistingLead.Email);
-        mapContactsMatchCode = SystemUtil.ContactsSelectorEmailBirthDate(keys);
-        Map<String, Account> mapPartners = new Map<String, Account>();
 
-        mapPartners = SystemUtil.PartnerSelector(keys);
-        Map<String, Account> mastersToUpdateList = new Map<String, Account>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
-        Map<String, Contact> contactsToUpdateWithPartner = new Map<String, Contact>();
-        Map<String, Account> partnersToUpdateList = new Map<String, Account>();
-        User recordOwner = SystemUtil.RecordOwnerSelector();
+        Map<String, Contact> mapContacts = SystemUtil.ContactsSelector(keys);
+        System.assertEquals( 1, mapContacts.size() );
+        System.assertEquals( ExistingLead.Email, mapContacts.get(ExistingLead.CustomerNum__c).Email );
+
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
             IsActive = true,
             Name = Label.PriceBook
             );
         update Pricebook;
-        Map<String, Object> recordsToProcess = new Map<String, Object>();
-        ExternalRequest__c actualRequest = new ExternalRequest__c(
-            Country__c = 'Spain',
-            Entity__c = 'Customer',
-            Json__c = '[{}]',
-            Origin__c = 'IBA'
-            );
-        insert actualRequest;
 
         Test.startTest();
 
@@ -113,110 +96,8 @@ public class Test_ContactUtil
             Status__c = Label.Lead,
             sourceCountry__c = 'Spain'
             );
-        recordsToProcess.put(actualRequest.Id, lead);
 
-        ExternalRequestUtil.actualRequest = actualRequest;
-        ExternalRequestUtil.recordsToProcess = recordsToProcess;
-        ExternalRequestUtil.mapContacts = mapContacts;
-        ExternalRequestUtil.contactsToUpdate = contactsToUpdate;
-        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCode;
-        ExternalRequestUtil.mastersToUpdate = mastersToUpdateList;
-        ExternalRequestUtil.mapPartners = mapPartners;
-        ExternalRequestUtil.contactsToUpdateWithPartner = contactsToUpdateWithPartner;
-        ExternalRequestUtil.partnersToUpdateList = partnersToUpdateList;
-        ExternalRequestUtil.recordOwner = recordOwner;
-        ExternalRequestUtil.Pricebook = Pricebook;
-
-        ContactUtil.upsertContact(lead, null);
-
-        Contact updatedLead = ExternalRequestUtil.contactsToUpdate.get(
-            ExistingLead.CustomerNum__c
-            );
-        System.assertEquals( 1, ExternalRequestUtil.contactsToUpdate.size() );
-        System.assert (updatedLead.MobilePhone != ExistingLead.MobilePhone);
-        Test.stopTest();
-    }
-
-    /**
-     * @description This method updates the phone of a lead that exists in Salesforce with se same customer number
-     * @author nbizkarra
-     * @date 05/05/2020
-     **/
-    @isTest
-    static void test_LeadUpdate_EMEA()
-    {
-        Contact ExistingLead = new Contact(
-            Email = 'nora@test.com',
-            MobilePhone = '11111',
-            Status__c = Label.Lead,
-            LastName = 'unknown',
-            Birthdate = Date.valueOf('1990-01-01'),
-            CustomerNum__c = 'EMEA-LIFE-7897',
-            LegalEntity__c = Label.LifeInsurance,
-            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.LeadLife),
-            sourceCountry__c = 'France'
-            );
-        insert ExistingLead;
-
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
-        SET<String> keys = new Set<String>();
-        keys.add(ExistingLead.CustomerNum__c);
-        mapContacts = SystemUtil.ContactsSelector(keys);
-        System.assertEquals( 1, mapContacts.size() );
-        System.assertEquals(
-            ExistingLead.Email,
-            mapContacts.get(ExistingLead.CustomerNum__c).Email
-            );
-        Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
-        keys.add(ExistingLead.Email);
-        mapContactsMatchCode = SystemUtil.ContactsSelectorEmailBirthDate(keys);
-        Map<String, Account> mapPartners = new Map<String, Account>();
-
-        mapPartners = SystemUtil.PartnerSelector(keys);
-        Map<String, Account> mastersToUpdateList = new Map<String, Account>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
-        Map<String, Contact> contactsToUpdateWithPartner = new Map<String, Contact>();
-        Map<String, Account> partnersToUpdateList = new Map<String, Account>();
-        User recordOwner = SystemUtil.RecordOwnerSelector();
-        Pricebook2 Pricebook = new Pricebook2(
-            Id = Test.getStandardPricebookId(),
-            IsActive = true,
-            Name = Label.PriceBook
-            );
-        update Pricebook;
-        Map<String, Object> recordsToProcess = new Map<String, Object>();
-        ExternalRequest__c actualRequest = new ExternalRequest__c(
-            Country__c = 'France',
-            Entity__c = 'Customer',
-            Json__c = '[{}]',
-            Origin__c = 'IBA EMEA'
-            );
-        insert actualRequest;
-
-        Test.startTest();
-
-        Contact lead = new Contact(
-            Email = 'nora@test.com',
-            MobilePhone = '456456456',
-            Birthdate = Date.valueOf('1990-01-01'),
-            CustomerNum__c = 'EMEA-LIFE-7897',
-            LegalEntity__c = Label.LifeInsurance,
-            Status__c = Label.Lead,
-            sourceCountry__c = 'France'
-            );
-        recordsToProcess.put(actualRequest.Id, lead);
-
-        ExternalRequestUtil.actualRequest = actualRequest;
-        ExternalRequestUtil.recordsToProcess = recordsToProcess;
-        ExternalRequestUtil.mapContacts = mapContacts;
-        ExternalRequestUtil.contactsToUpdate = contactsToUpdate;
-        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCode;
-        ExternalRequestUtil.mastersToUpdate = mastersToUpdateList;
-        ExternalRequestUtil.mapPartners = mapPartners;
-        ExternalRequestUtil.contactsToUpdateWithPartner = contactsToUpdateWithPartner;
-        ExternalRequestUtil.partnersToUpdateList = partnersToUpdateList;
-        ExternalRequestUtil.recordOwner = recordOwner;
-        ExternalRequestUtil.Pricebook = Pricebook;
+        ExternalRequestUtil.emptyStaticVariables();
 
         ContactUtil.upsertContact(lead, null);
 
@@ -236,6 +117,9 @@ public class Test_ContactUtil
     @isTest
     static void test_CustomerUpdate()
     {
+        Account newMaster = new Account(Name = 'test', CustomerNum__c = '7897');
+        insert newMaster;
+
         Contact ExistingLead = new Contact(
             Email = 'nora@test.com',
             MobilePhone = '11111',
@@ -245,44 +129,25 @@ public class Test_ContactUtil
             CustomerNum__c = 'LIFE-7897',
             LegalEntity__c = Label.LifeInsurance,
             RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.LeadLife),
-            sourceCountry__c = 'Spain'
+            sourceCountry__c = 'Spain',
+            AccountId= newMaster.Id
             );
         insert ExistingLead;
 
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
         SET<String> keys = new Set<String>();
-        keys.add(ExistingLead.CustomerNum__c);
-        mapContacts = SystemUtil.ContactsSelector(keys);
-        System.assertEquals( 1, mapContacts.size() );
-        System.assertEquals(
-            ExistingLead.Email,
-            mapContacts.get(ExistingLead.CustomerNum__c).Email
-            );
-        Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
-        keys.add(ExistingLead.Email);
-        mapContactsMatchCode = SystemUtil.ContactsSelectorEmailBirthDate(keys);
-        Map<String, Account> mapPartners = new Map<String, Account>();
 
-        mapPartners = SystemUtil.PartnerSelector(keys);
-        Map<String, Account> mastersToUpdateList = new Map<String, Account>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
-        Map<String, Contact> contactsToUpdateWithPartner = new Map<String, Contact>();
-        Map<String, Account> partnersToUpdateList = new Map<String, Account>();
-        User recordOwner = SystemUtil.RecordOwnerSelector();
+        keys.add(ExistingLead.CustomerNum__c);
+
+        Map<String, Contact> mapContacts = SystemUtil.ContactsSelector(keys);
+        System.assertEquals( 1, mapContacts.size() );
+        System.assertEquals(ExistingLead.Email, mapContacts.get(ExistingLead.CustomerNum__c).Email );
+
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
             IsActive = true,
             Name = Label.PriceBook
             );
         update Pricebook;
-        Map<String, Object> recordsToProcess = new Map<String, Object>();
-        ExternalRequest__c actualRequest = new ExternalRequest__c(
-            Country__c = 'Spain',
-            Entity__c = 'Customer',
-            Json__c = '[{}]',
-            Origin__c = 'IBA'
-            );
-        insert actualRequest;
 
         Test.startTest();
 
@@ -292,23 +157,12 @@ public class Test_ContactUtil
             Birthdate = Date.valueOf('1990-01-01'),
             CustomerNum__c = 'LIFE-7897',
             LegalEntity__c = Label.LifeInsurance,
-            Status__c = 'Activo',
+            Status__c = Label.Customer,
             sourceCountry__c = 'Spain',
             MasterPolicyNum__c = '123456'
             );
-        recordsToProcess.put(actualRequest.Id, customer);
 
-        ExternalRequestUtil.actualRequest = actualRequest;
-        ExternalRequestUtil.recordsToProcess = recordsToProcess;
-        ExternalRequestUtil.mapContacts = mapContacts;
-        ExternalRequestUtil.contactsToUpdate = contactsToUpdate;
-        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCode;
-        ExternalRequestUtil.mastersToUpdate = mastersToUpdateList;
-        ExternalRequestUtil.mapPartners = mapPartners;
-        ExternalRequestUtil.contactsToUpdateWithPartner = contactsToUpdateWithPartner;
-        ExternalRequestUtil.partnersToUpdateList = partnersToUpdateList;
-        ExternalRequestUtil.recordOwner = recordOwner;
-        ExternalRequestUtil.Pricebook = Pricebook;
+        ExternalRequestUtil.emptyStaticVariables();
 
         ContactUtil.upsertContact(customer, null);
 
@@ -321,104 +175,16 @@ public class Test_ContactUtil
     }
 
     /**
-     * @description This method updates the phone of a lead that exists in Salesforce with se same customer number
-     * @author nbizkarra
-     * @date 05/05/2020
-     **/
-    @isTest
-    static void test_CustomerUpdate_EMEA()
-    {
-        Contact ExistingLead = new Contact(
-            Email = 'nora@test.com',
-            MobilePhone = '11111',
-            Status__c = Label.Lead,
-            LastName = 'unknown',
-            Birthdate = Date.valueOf('1990-01-01'),
-            CustomerNum__c = 'EMEA-LIFE-7897',
-            LegalEntity__c = Label.LifeInsurance,
-            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.LeadLife),
-            sourceCountry__c = 'France'
-            );
-        insert ExistingLead;
-
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
-        SET<String> keys = new Set<String>();
-        keys.add(ExistingLead.CustomerNum__c);
-        mapContacts = SystemUtil.ContactsSelector(keys);
-        System.assertEquals( 1, mapContacts.size() );
-        System.assertEquals(
-            ExistingLead.Email,
-            mapContacts.get(ExistingLead.CustomerNum__c).Email
-            );
-        Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
-        keys.add(ExistingLead.Email);
-        mapContactsMatchCode = SystemUtil.ContactsSelectorEmailBirthDate(keys);
-        Map<String, Account> mapPartners = new Map<String, Account>();
-
-        mapPartners = SystemUtil.PartnerSelector(keys);
-        Map<String, Account> mastersToUpdateList = new Map<String, Account>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
-        Map<String, Contact> contactsToUpdateWithPartner = new Map<String, Contact>();
-        Map<String, Account> partnersToUpdateList = new Map<String, Account>();
-        User recordOwner = SystemUtil.RecordOwnerSelector();
-        Pricebook2 Pricebook = new Pricebook2(
-            Id = Test.getStandardPricebookId(),
-            IsActive = true,
-            Name = Label.PriceBook
-            );
-        update Pricebook;
-        Map<String, Object> recordsToProcess = new Map<String, Object>();
-        ExternalRequest__c actualRequest = new ExternalRequest__c(
-            Country__c = 'France',
-            Entity__c = 'Customer',
-            Json__c = '[{}]',
-            Origin__c = 'IBA EMEA'
-            );
-        insert actualRequest;
-
-        Test.startTest();
-
-        Contact customer = new Contact(
-            Email = 'nora@test.com',
-            MobilePhone = '456456456',
-            Birthdate = Date.valueOf('1990-01-01'),
-            CustomerNum__c = 'EMEA-LIFE-7897',
-            LegalEntity__c = Label.LifeInsurance,
-            Status__c = 'Activo',
-            sourceCountry__c = 'France'
-            );
-        recordsToProcess.put(actualRequest.Id, customer);
-
-        ExternalRequestUtil.actualRequest = actualRequest;
-        ExternalRequestUtil.recordsToProcess = recordsToProcess;
-        ExternalRequestUtil.mapContacts = mapContacts;
-        ExternalRequestUtil.contactsToUpdate = contactsToUpdate;
-        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCode;
-        ExternalRequestUtil.mastersToUpdate = mastersToUpdateList;
-        ExternalRequestUtil.mapPartners = mapPartners;
-        ExternalRequestUtil.contactsToUpdateWithPartner = contactsToUpdateWithPartner;
-        ExternalRequestUtil.partnersToUpdateList = partnersToUpdateList;
-        ExternalRequestUtil.recordOwner = recordOwner;
-        ExternalRequestUtil.Pricebook = Pricebook;
-
-        ContactUtil.upsertContact(customer, null);
-
-        Contact updatedCustomer = ExternalRequestUtil.contactsToUpdate.get(
-            ExistingLead.CustomerNum__c
-            );
-        System.assertEquals( 1, ExternalRequestUtil.contactsToUpdate.size() );
-        System.assert (updatedCustomer.MobilePhone != ExistingLead.MobilePhone);
-        Test.stopTest();
-    }
-
-    /**
-     * @description This method updates the phone of a lead that exists in Salesforce with se same matchcode (email+birthdate)
+     * @description MC1 This method updates the phone of a lead that exists in Salesforce with the same matchcode (email+birthdate)
      * @author nbizkarra
      * @date 05/05/2020
      **/
     @isTest
     static void test_LeadUpdateMatchcode()
     {
+        Account newMaster = new Account(Name = 'test', CustomerNum__c = '7897');
+        insert newMaster;
+
         Contact ExistingLead = new Contact(
             Email = 'nora@test.com',
             MobilePhone = '11111',
@@ -427,40 +193,24 @@ public class Test_ContactUtil
             Birthdate = Date.valueOf('1990-01-01'),
             CustomerNum__c = 'LIFE-2222',
             LegalEntity__c = Label.LifeInsurance,
-            sourceCountry__c = 'Spain'
+            sourceCountry__c = 'Spain',
+            AccountId= newMaster.id
             );
         insert ExistingLead;
 
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
         SET<String> keys = new Set<String>();
-        keys.add(ExistingLead.CustomerNum__c);
-        mapContacts = SystemUtil.ContactsSelector(keys);
+        Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
+        Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         keys.add(ExistingLead.Email);
-        mapContactsMatchCode = SystemUtil.ContactsSelectorEmailBirthDateLECountry(
-            keys
-            );
-        Map<String, Account> mapPartners = new Map<String, Account>();
-        mapPartners = SystemUtil.PartnerSelector(keys);
-        Map<String, Account> mastersToUpdateList = new Map<String, Account>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
-        Map<String, Contact> contactsToUpdateWithPartner = new Map<String, Contact>();
-        Map<String, Account> partnersToUpdateList = new Map<String, Account>();
-        User recordOwner = SystemUtil.RecordOwnerSelector();
+        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode);
+
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
             IsActive = true,
             Name = Label.PriceBook
             );
         update Pricebook;
-        Map<String, Object> recordsToProcess = new Map<String, Object>();
-        ExternalRequest__c actualRequest = new ExternalRequest__c(
-            Country__c = 'Spain',
-            Entity__c = 'Customer',
-            Json__c = '[{}]',
-            Origin__c = 'IBA'
-            );
-        insert actualRequest;
 
         Test.startTest();
         Contact lead = new Contact(
@@ -472,20 +222,9 @@ public class Test_ContactUtil
             Status__c = Label.Lead,
             sourceCountry__c = 'Spain'
             );
-        recordsToProcess.put(actualRequest.Id, lead);
 
-        ExternalRequestUtil.actualRequest = actualRequest;
-        ExternalRequestUtil.recordsToProcess = recordsToProcess;
-        ExternalRequestUtil.mapContacts = mapContacts;
-        ExternalRequestUtil.contactsToUpdate = contactsToUpdate;
-        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCode;
-        ExternalRequestUtil.mapContactsEmailBirthDateLE = mapContactsMatchCode;
-        ExternalRequestUtil.mastersToUpdate = mastersToUpdateList;
-        ExternalRequestUtil.mapPartners = mapPartners;
-        ExternalRequestUtil.contactsToUpdateWithPartner = contactsToUpdateWithPartner;
-        ExternalRequestUtil.partnersToUpdateList = partnersToUpdateList;
-        ExternalRequestUtil.recordOwner = recordOwner;
-        ExternalRequestUtil.Pricebook = Pricebook;
+        ExternalRequestUtil.emptyStaticVariables();
+        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCodeCountry;
 
         ContactUtil.upsertContact(lead, null);
 
@@ -524,39 +263,24 @@ public class Test_ContactUtil
             CustomerNum__c = 'LIFE-2222',
             Status__c = Label.Customer,
             LegalEntity__c = Label.LifeInsurance,
-            sourceCountry__c = 'Spain'
+            sourceCountry__c = 'Spain',
+            AccountId= newMaster.Id
             );
-        customer.AccountId = newMaster.id;
         insert customer;
 
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
         SET<String> keys = new Set<String>();
-        keys.add(customer.CustomerNum__c);
-        mapContacts = SystemUtil.ContactsSelector(keys);
+        Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
+        Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         keys.add(customer.Email);
-        mapContactsMatchCode = SystemUtil.ContactsSelectorEmailBirthDate(keys);
-        Map<String, Account> mapPartners = new Map<String, Account>();
-        mapPartners = SystemUtil.PartnerSelector(keys);
-        Map<String, Account> mastersToUpdateList = new Map<String, Account>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
-        Map<String, Contact> contactsToUpdateWithPartner = new Map<String, Contact>();
-        Map<String, Account> partnersToUpdateList = new Map<String, Account>();
-        User recordOwner = SystemUtil.RecordOwnerSelector();
+        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode);
+
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
             IsActive = true,
             Name = Label.PriceBook
             );
         update Pricebook;
-        Map<String, Object> recordsToProcess = new Map<String, Object>();
-        ExternalRequest__c actualRequest = new ExternalRequest__c(
-            Country__c = 'Spain',
-            Entity__c = 'Customer',
-            Json__c = '[{}]',
-            Origin__c = 'IBA'
-            );
-        insert actualRequest;
 
         Test.startTest();
         Contact lead = new Contact(
@@ -568,19 +292,10 @@ public class Test_ContactUtil
             Status__c = Label.Lead,
             sourceCountry__c = 'Spain'
             );
-        recordsToProcess.put(actualRequest.Id, lead);
 
-        ExternalRequestUtil.actualRequest = actualRequest;
-        ExternalRequestUtil.recordsToProcess = recordsToProcess;
-        ExternalRequestUtil.mapContacts = mapContacts;
-        ExternalRequestUtil.contactsToUpdate = contactsToUpdate;
-        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCode;
-        ExternalRequestUtil.mastersToUpdate = mastersToUpdateList;
-        ExternalRequestUtil.mapPartners = mapPartners;
-        ExternalRequestUtil.contactsToUpdateWithPartner = contactsToUpdateWithPartner;
-        ExternalRequestUtil.partnersToUpdateList = partnersToUpdateList;
-        ExternalRequestUtil.recordOwner = recordOwner;
-        ExternalRequestUtil.Pricebook = Pricebook;
+        ExternalRequestUtil.emptyStaticVariables();
+        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCodeCountry;
+        ExternalRequestUtil.mapContactsEmailBirthDateLE = mapContactsMatchCodeLE;
 
         ContactUtil.upsertContact(lead, null);
 
@@ -618,45 +333,22 @@ public class Test_ContactUtil
             LegalEntity__c = Label.GeneralInsurance,
             sourceCountry__c = 'Spain'
             );
-
         customer.AccountId = newMaster.id;
         insert customer;
 
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
         SET<String> keys = new Set<String>();
-        keys.add(customer.CustomerNum__c);
-        mapContacts = SystemUtil.ContactsSelector(keys);
+        keys.add(customer.Email);
         Map<String, Contact> mapContactsMatchCodeLECountry = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
-        keys.add(customer.Email);
-        mapContactsMatchCodeLECountry = SystemUtil.ContactsSelectorEmailBirthDateLECountry(
-            keys
-            );
-        mapContactsMatchCodeLE = SystemUtil.ContactsSelectorEmailBirthDateLE(keys);
-        mapContactsMatchCode = SystemUtil.ContactsSelectorEmailBirthDate(keys);
-        Map<String, Account> mapPartners = new Map<String, Account>();
+        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeLECountry, mapContactsMatchCodeLE, mapContactsMatchCode);
 
-        mapPartners = SystemUtil.PartnerSelector(keys);
-        Map<String, Account> mastersToUpdateList = new Map<String, Account>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
-        Map<String, Contact> contactsToUpdateWithPartner = new Map<String, Contact>();
-        Map<String, Account> partnersToUpdateList = new Map<String, Account>();
-        User recordOwner = SystemUtil.RecordOwnerSelector();
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
             IsActive = true,
             Name = Label.PriceBook
             );
         update Pricebook;
-        Map<String, Object> recordsToProcess = new Map<String, Object>();
-        ExternalRequest__c actualRequest = new ExternalRequest__c(
-            Country__c = 'Spain',
-            Entity__c = 'Customer',
-            Json__c = '[{}]',
-            Origin__c = 'IBA'
-            );
-        insert actualRequest;
 
         Test.startTest();
         Contact lead = new Contact(
@@ -668,26 +360,15 @@ public class Test_ContactUtil
             Status__c = Label.Lead,
             sourceCountry__c = 'Spain'
             );
-        recordsToProcess.put(actualRequest.Id, lead);
 
-        ExternalRequestUtil.actualRequest = actualRequest;
-        ExternalRequestUtil.recordsToProcess = recordsToProcess;
-        ExternalRequestUtil.mapContacts = mapContacts;
-        ExternalRequestUtil.contactsToUpdate = contactsToUpdate;
+        ExternalRequestUtil.emptyStaticVariables();
         ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCodeLECountry;
         ExternalRequestUtil.mapContactsEmailBirthDateLE = mapContactsMatchCodeLE;
         ExternalRequestUtil.mapContactsEmailBirthDate = mapContactsMatchCode;
-        ExternalRequestUtil.mastersToUpdate = mastersToUpdateList;
-        ExternalRequestUtil.mapPartners = mapPartners;
-        ExternalRequestUtil.contactsToUpdateWithPartner = contactsToUpdateWithPartner;
-        ExternalRequestUtil.partnersToUpdateList = partnersToUpdateList;
-        ExternalRequestUtil.recordOwner = recordOwner;
-        ExternalRequestUtil.Pricebook = Pricebook;
 
         ContactUtil.upsertContact(lead, null);
 
         Contact updatedLead = ExternalRequestUtil.contactsToUpdate.get('LIFE-7897');
-        System.debug('contactsToUpdate >>> ' + contactsToUpdate);
         System.assert (updatedLead != null);
         System.assertEquals(customer.AccountId, updatedLead.AccountId);
 
@@ -702,33 +383,12 @@ public class Test_ContactUtil
     @isTest
     static void test_LeadDoesntExist()
     {
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
-        SET<String> keys = new Set<String>();
-
-        mapContacts = SystemUtil.ContactsSelector(keys);
-        Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
-        mapContactsMatchCode = SystemUtil.ContactsSelectorEmailBirthDate(keys);
-        Map<String, Account> mapPartners = new Map<String, Account>();
-        mapPartners = SystemUtil.PartnerSelector(keys);
-        Map<String, Account> mastersToUpdateList = new Map<String, Account>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
-        Map<String, Contact> contactsToUpdateWithPartner = new Map<String, Contact>();
-        Map<String, Account> partnersToUpdateList = new Map<String, Account>();
-        User recordOwner = SystemUtil.RecordOwnerSelector();
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
             IsActive = true,
             Name = Label.PriceBook
             );
         update Pricebook;
-        Map<String, Object> recordsToProcess = new Map<String, Object>();
-        ExternalRequest__c actualRequest = new ExternalRequest__c(
-            Country__c = 'Spain',
-            Entity__c = 'Customer',
-            Json__c = '[{}]',
-            Origin__c = 'IBA'
-            );
-        insert actualRequest;
 
         Test.startTest();
         Contact lead = new Contact(
@@ -740,24 +400,13 @@ public class Test_ContactUtil
             Status__c = Label.Lead,
             sourceCountry__c = 'Spain'
             );
-        recordsToProcess.put(actualRequest.Id, lead);
 
-        ExternalRequestUtil.actualRequest = actualRequest;
-        ExternalRequestUtil.recordsToProcess = recordsToProcess;
-        ExternalRequestUtil.mapContacts = mapContacts;
-        ExternalRequestUtil.contactsToUpdate = contactsToUpdate;
-        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCode;
-        ExternalRequestUtil.mastersToUpdate = mastersToUpdateList;
-        ExternalRequestUtil.mapPartners = mapPartners;
-        ExternalRequestUtil.contactsToUpdateWithPartner = contactsToUpdateWithPartner;
-        ExternalRequestUtil.partnersToUpdateList = partnersToUpdateList;
-        ExternalRequestUtil.recordOwner = recordOwner;
-        ExternalRequestUtil.Pricebook = Pricebook;
+        ExternalRequestUtil.emptyStaticVariables();
 
         ContactUtil.upsertContact(lead, null);
 
         Contact updatedLead = ExternalRequestUtil.contactsToUpdate.get('LIFE-7897');
-        Account createdMaster = mastersToUpdateList.get('7897');
+        Account createdMaster = ExternalRequestUtil.mastersToUpdate.get('7897');
         System.assert (updatedLead != null);
         System.assert (createdMaster != null);
 
@@ -860,6 +509,47 @@ public class Test_ContactUtil
         System.assertEquals('Step5', quote.Step__c);
 
         Test.stopTest();
+    }
+
+    /**
+     * Test: delete de contact for coverage
+     *
+     * @author nts (agonzalezisasi)
+     * @date 04/11/2020
+     */
+    @isTest
+    static void test_updateAnddeleteContact()
+    {
+        Account newMaster = new Account(
+            Name = 'test',
+            CustomerNum__c = '2222',
+            RecordTypeId = SystemUtil.getAccountRecordTypeIdByName(Label.Master)
+            );
+        insert newMaster;
+
+        Contact customer = new Contact(
+            Email = 'nora@test.com',
+            MobilePhone = '11111',
+            LastName = 'unknown',
+            Birthdate = Date.valueOf('1990-01-01'),
+            CustomerNum__c = 'GI-2222',
+            Status__c = Label.Customer,
+            LegalEntity__c = Label.GeneralInsurance,
+            sourceCountry__c = 'Spain'
+            );
+        customer.AccountId = newMaster.id;
+        insert customer;
+
+        test.startTest();
+
+        customer.MobilePhone = '2222';
+        update customer;
+
+        delete customer;
+        List<Contact> contacts = [SELECT Id FROM Contact WHERE Id = :customer.Id];
+        System.assertEquals( true, contacts.isEmpty() );
+
+        test.stopTest();
     }
 
     /*
