@@ -881,6 +881,64 @@ public class TestDataFactory
 
     /**
      * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad Siniestro
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author adelgado
+     * @date 23/10/2020
+     */
+    public static List<Map<String, Object> > getINFOClaimJson(
+        Integer totalItems
+        )
+    {
+        return buildINFOClaimJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOClaimJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<String> faulFactors = new List<String> {
+            'A',
+            'C'
+        };
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO OBJETO ASEGURADO*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                    'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'siniestro_fecha_ocurrencia' => '2020-11-05',
+                    'siniestro_factor_culpa' => faulFactors[Integer.valueof( (Math.random() * faulFactors.size() - 1) )],
+                    'siniestro_factor_culpa_desc' => '',
+                    'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'poliza_version' => '',
+                    'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0'),
+                    'siniestro_situacion' => '',
+                    'siniestro_situacion_desc' => '',
+                    'siniestro_situacion_tecnica' => '',
+                    'siniestro_situacion_tecnica_desc' => '',
+                    'siniestro_motivo' => '',
+                    'siniestro_motivo_desc' => '',
+                    'riesgo_asegurado' => String.valueOf(i + 1).leftPad(9, '0')
+            }
+                );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
+     * Obtener estructura json del sistema de origen INFO para registros
      * de entidad Relación Póliza
      **
      * @param Integer numero de elementos a generar
@@ -1243,6 +1301,23 @@ public class TestDataFactory
                         new ExternalRequest__c(
                             Origin__c = origin,
                             Entity__c = 'INSURED_OBJECT',
+                            Action__c = 'UPSERT',
+                            Payload__c = JSON.serialize(payload),
+                            ContentFormat__c = 'JSON'
+                            )
+                        );
+                }
+            }
+            // Siniestro
+            when 'CLAIM' {
+                for (
+                    Map<String, Object> payload : getINFOClaimJson(numRecords)
+                    )
+                {
+                    externalRequestList.add(
+                        new ExternalRequest__c(
+                            Origin__c = origin,
+                            Entity__c = 'CLAIM',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
                             ContentFormat__c = 'JSON'
