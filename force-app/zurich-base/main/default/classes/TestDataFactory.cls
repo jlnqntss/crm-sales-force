@@ -629,7 +629,7 @@ public class TestDataFactory
                 'producto_comercial' => String.valueOf(i + 1).leftPad(9, '0'),
                 'producto_nombre' => 'Product' + i,
                 'producto_descripción' => 'Product' + i,
-                'producto_estado' => true
+                'producto_estado' => 'S'
             }
                 );
         }
@@ -1422,11 +1422,11 @@ public class TestDataFactory
      **
      * @param String legalEntity indica a quien se envía el email
      * @param Integer numRecords número de elementos a generar
-     * @return List<Task> listado de tareas de tipo Interaction
+     * @return List<Account> listado de cuentas
      * @author rlopez
      * @date 04/11/2020
      */
-    public static List<Account> generateAccounts(String legalEntity, Integer numRecords)
+    public static List<Account> generateAccounts(String legalEntity, String recordTypeName, Integer numRecords)
     {
         List<Account> accounts = new List<Account>();
 
@@ -1435,17 +1435,87 @@ public class TestDataFactory
             numRecords = 1;
         }
 
-        for (Integer i = 0; i < numRecords; i++)
+        Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(recordTypeName);
+        Id recordTypeId;
+        if(accountRecordTypeInfo != null)
         {
-            accounts.add(
-                new Account(
-                    LastName = 'testlastname' + i,
-                    LegalEntity__pc = legalEntity,
-                    DNI__pc = generateSpanishFormatDNI()
-                )
-            );
+            recordTypeId = accountRecordTypeInfo.getRecordTypeId();
         }
+
+        switch on recordTypeName {
+            when 'BusinessCustomer' {
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            Name = 'testname' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N',
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
+            when else {
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            LastName = 'testlastname' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N'
+                        )
+                    );
+                }
+            }
+        }
+
         return accounts;
+    }
+
+    /**
+     * Genera una lista de Accounts
+     **
+     * @param List<Account> accounts cuentas para las que se van a crear los contactos
+     * @param String recordTypeName tipo de registro de los contactos
+     * @param Integer numRecords número de contactos a generar por cada cuenta
+     * @return List<Account> listado de cuentas
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<Contact> generateContactsFromAccounts(List<Account> accounts, String recordTypeName, Integer numRecords)
+    {
+        List<Contact> contacts = new List<Contact>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        Schema.RecordTypeInfo contactRecordTypeInfo = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get(recordTypeName);
+        Id recordTypeId;
+        if(contactRecordTypeInfo != null)
+        {
+            recordTypeId = contactRecordTypeInfo.getRecordTypeId();
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            for(Account relatedAccount: accounts)
+            {
+                contacts.add(
+                    new Contact(
+                        LastName = 'testlastname' + i,
+                        AccountId = relatedAccount.Id,
+                        RecordTypeId = recordTypeId
+                    )
+                );
+            }
+        }
+
+        return contacts;
     }
 
     private static String generateSpanishFormatDNI()
@@ -1547,7 +1617,7 @@ public class TestDataFactory
                 contactPointEmails.add(
                     new ContactPointEmail(
                         ParentId = relatedAccount.Id,
-                        EmailAddress = relatedAccount.LastName + '@nts-solutions.com'
+                        EmailAddress = relatedAccount.Name + '@nts-solutions.com'
                     )
                 );
             }

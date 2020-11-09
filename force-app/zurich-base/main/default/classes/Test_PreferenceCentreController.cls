@@ -90,6 +90,21 @@ public class Test_PreferenceCentreController
             CampaignId = campaignContLife.Id
             );
         insert campaignMemberLife;
+
+        //Campaing to test translation
+        Campaign campaignTranslate = new Campaign(
+            Name = 'Productos_y_servicios',
+            LegalEntity__c = Label.GeneralInsurance,
+            Type = 'Suscripcion',
+            IsActive = true
+            );
+        insert campaignTranslate;
+
+        CampaignMember campaignMemberTrans = new CampaignMember(
+            ContactId= customerGI.Id,
+            CampaignId = campaignTranslate.Id
+            );
+        insert campaignMemberTrans;
     }
     //#endregion
 
@@ -159,7 +174,7 @@ public class Test_PreferenceCentreController
         ];
 
         System.assertEquals( 1, membercampaignLife.size() );
-        System.assertEquals( 2, memberCampaigns.size() );
+        System.assertEquals( 3, memberCampaigns.size() );
     }
 
     @isTest
@@ -291,7 +306,8 @@ public class Test_PreferenceCentreController
             FROM CampaignMember
             WHERE ContactId = :Id
         ];
-        System.assertEquals( 0, member.size() );
+        // Only campaign translate left
+        System.assertEquals( 1, member.size() );
     }
 
     @isTest
@@ -429,7 +445,8 @@ public class Test_PreferenceCentreController
         ];
 
         System.assertEquals( 0, membercampaignGI.size() );
-        System.assertEquals( 1, memberCampaigns.size() );
+        // Campaign LI and translate left
+        System.assertEquals( 2, memberCampaigns.size() );
         System.assertEquals(true, contacto.HasOptedOutOfEmail);
     }
 
@@ -520,6 +537,7 @@ public class Test_PreferenceCentreController
 
         //Test
         Test.startTest();
+        PreferenceCentreController.getContactData(''); // for coverage
         Contact contacto = PreferenceCentreController.getContactData(hashedId);
         Test.stopTest();
 
@@ -574,6 +592,7 @@ public class Test_PreferenceCentreController
 
         //Test
         Test.startTest();
+        PreferenceCentreController.getAllCampaigns( '', null ); // for coverage
         List<PreferenceCentreController.CampaignStatus> campaigns = PreferenceCentreController.getAllCampaigns(
             hashedId,
             null
@@ -589,18 +608,15 @@ public class Test_PreferenceCentreController
     {
         //When
         String hashedId;
-        String Id;
+
         List<Contact> c = [
             SELECT Id, Name, HashedId__c
             FROM Contact
             WHERE LegalEntity__c = :Label.GeneralInsurance
         ];
+        System.assert ( true, !c.isEmpty() );
 
-        if (c != null & c.size() > 0)
-        {
-            hashedId = c[0].HashedId__c;
-            Id = c[0].Id;
-        }
+        hashedId = c[0].HashedId__c;
 
         //Test
         Test.startTest();
@@ -611,6 +627,117 @@ public class Test_PreferenceCentreController
         Test.stopTest();
 
         //Then
-        System.assertEquals( 2, campaigns.size() );
+        System.assertEquals( 3, campaigns.size() );
+    }
+
+    /**
+     * Test: Partner
+     *
+     * @author nts (agonzalezisasi)
+     * @date 05/11/2020
+     */
+    @isTest
+    static void processRequest_testGIHasOptedOutOfEmail_Partner()
+    {
+        //When
+        Account account = new Account(Name = 'Account2', CustomerNum__c = '5678');
+        insert account;
+
+        //Contact GI
+        Contact customerPartner = new Contact(
+            Email = 'partner@test.com',
+            Birthdate = Date.valueOf('1990-01-01'),
+            LastName = 'partnerGI',
+            AccountId = account.Id,
+            CustomerNum__c = 'Orange-GI-5678',
+            LegalEntity__c = Label.GeneralInsurance,
+            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerGI),
+            Partner__c = 'Orange Seguros'
+            );
+        insert customerPartner;
+
+        List<Contact> c = [
+            SELECT Id, HashedId__c, HasOptedOutOfEmail FROM Contact WHERE Id = :customerPartner.Id
+        ];
+        System.assertEquals( 1, c.size() );
+
+        String hashedId = c[0].HashedId__c;
+        String Id = c[0].Id;
+        Boolean hasOptedOutOfEmail = c[0].HasOptedOutOfEmail;
+
+        Campaign campaignGI = [SELECT Id FROM Campaign WHERE Name = 'CampaignGI'];
+        Campaign campaignContGI = [SELECT Id FROM Campaign WHERE Name = 'campaignContGI'];
+
+        CampaignMember campaignMemberGI = new CampaignMember(
+            ContactId = customerPartner.Id,
+            CampaignId = campaignGI.Id
+            );
+        insert campaignMemberGI;
+        CampaignMember campaignMemberContGI = new CampaignMember(
+            ContactId = customerPartner.Id,
+            CampaignId = campaignContGI.Id
+            );
+        insert campaignMemberContGI;
+
+        //Test en el que se deja como están las campañas // HasOptedOutOfEmail a true, el contacto se da de baja
+        PreferenceCentreController.CampaignStatus campaignStatusGI = new PreferenceCentreController.CampaignStatus(
+            campaignGI.Id, 'campaignGI', '', '', false
+            );
+        PreferenceCentreController.CampaignStatus campaignStatusContGI = new PreferenceCentreController.CampaignStatus(
+            campaignContGI.Id, 'campaignContGI', '', '', true
+            );
+        List<PreferenceCentreController.CampaignStatus> campaigns = new List<PreferenceCentreController.CampaignStatus>();
+        campaigns.add(campaignStatusGI);
+        campaigns.add(campaignStatusContGI);
+
+        //Test
+        Test.startTest();
+        PreferenceCentreController.processRequest(hashedId, true, campaigns);
+        Test.stopTest();
+
+        //Then
+        List<CampaignMember> membercampaignGI = [
+            SELECT ContactId FROM CampaignMember WHERE CampaignId = :campaignGI.Id AND ContactId = :Id
+        ];
+        List<CampaignMember> memberCampaigns = [
+            SELECT ContactId FROM CampaignMember WHERE ContactId = :Id
+        ];
+        Contact contacto = [
+            SELECT Id, HashedId__c, HasOptedOutOfEmail FROM Contact WHERE Id = :Id
+        ];
+
+        System.assertEquals( 0, membercampaignGI.size() );
+        System.assertEquals( 1, memberCampaigns.size() );
+        System.assertEquals(true, contacto.HasOptedOutOfEmail);
+    }
+
+    /**
+     * Test: switching to different languages for a campaign
+     *
+     * @author nts (agonzalezisasi)
+     * @date 04/11/2020
+     */
+    @isTest
+    static void test_switchLanguage()
+    {
+        //When
+        String hashedId;
+
+        List<Contact> c = [SELECT Id, HashedId__c FROM Contact WHERE LegalEntity__c = :Label.GeneralInsurance ];
+        System.assertEquals( true, !c.isEmpty() );
+
+        hashedId = c[0].HashedId__c;
+
+        //Test
+        Test.startTest();
+        PreferenceCentreController.getAllCampaigns( hashedId, 'fr' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'en_US' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'de' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'it' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'ja' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'es_MX' );
+        PreferenceCentreController.getAllCampaigns( hashedId, 'pt_BR' );
+        PreferenceCentreController.getAllCampaigns( hashedId, null );
+        Test.stopTest();
     }
 }

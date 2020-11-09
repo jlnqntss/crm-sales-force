@@ -4,7 +4,7 @@
  * @author nts
  * @date 24/02/2020
  */
-@isTest(SeeAllData = false)
+@isTest(SeeAllData=false)
 public class Test_SystemUtil
 {
     @testSetup
@@ -291,16 +291,18 @@ public class Test_SystemUtil
     @IsTest
     static void test_ContactsSelectorEmailBirthDate()
     {
-        Map<String, Contact> mapa = new Map<String, Contact>();
+        Map<String, Contact> mapa1 = new Map<String, Contact>();
+        Map<String, Contact> mapa2 = new Map<String, Contact>();
+        Map<String, Contact> mapa3 = new Map<String, Contact>();
 
         SET<String> keys = new Set<String>();
         keys.add('andrea11@test.com');
 
         Test.startTest();
-        mapa = SystemUtil.ContactsSelectorEmailBirthDate(keys);
+        SystemUtil.contactsSelectorMatchCode(keys, mapa1, mapa2, mapa3);
 
         System.assert (
-            !mapa.isEmpty(),
+            !mapa1.isEmpty(),
             'Test_SystemUtil: No se han podido recuperar los contactos con email y fecha de nacimiento'
             );
         Test.stopTest();

@@ -8,6 +8,18 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Partner_to_Orange_Seguros</fullName>
+        <field>Partner__c</field>
+        <formula>&quot;Orange Seguros&quot;</formula>
+        <name>Partner to Orange Seguros</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
         <targetObject>ParentId</targetObject>
     </fieldUpdates>
     <fieldUpdates>
@@ -18,6 +30,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
         <targetObject>ParentId</targetObject>
     </fieldUpdates>
     <fieldUpdates>
@@ -28,6 +41,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
         <targetObject>ParentId</targetObject>
     </fieldUpdates>
     <fieldUpdates>
@@ -38,6 +52,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
         <targetObject>ParentId</targetObject>
     </fieldUpdates>
     <fieldUpdates>
@@ -48,6 +63,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
         <targetObject>ParentId</targetObject>
     </fieldUpdates>
     <fieldUpdates>
@@ -58,6 +74,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
         <targetObject>ParentId</targetObject>
     </fieldUpdates>
     <fieldUpdates>
@@ -68,6 +85,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
         <targetObject>ParentId</targetObject>
     </fieldUpdates>
     <rules>
@@ -171,6 +189,29 @@
             <value>contact.klinc@zurich.com</value>
         </criteriaItems>
         <description>Updates Source Country and Legal Entity fields on email to case reception to France and General Insurance repectively, based on the email address.</description>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Set Orange Life Email-to-case</fullName>
+        <actions>
+            <name>Partner_to_Orange_Seguros</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Set_Life_Email_to_case</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Source_Country_to_Spain</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>EmailMessage.ToAddress</field>
+            <operation>contains</operation>
+            <value>ayuda.orangeseguros@zurich.com</value>
+        </criteriaItems>
+        <description>Updates Source Country, Legal Entity and Partner fields on email to case reception based on the email address.</description>
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>

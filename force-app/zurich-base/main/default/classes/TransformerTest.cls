@@ -92,7 +92,8 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < customersJsonItems.size(); i++)
         {
             accountRecord = (Account) myTransformer.transform(
-                Transformer.OBJECT_NAME_ACCOUNT,
+                'ACCOUNT',
+                'Account',
                 customersJsonItems[i]
                 );
             customersAccounts.add(accountRecord);
@@ -108,7 +109,8 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < companiesJsonItems.size(); i++)
         {
             accountRecord = (Account) myTransformer.transform(
-                Transformer.OBJECT_NAME_ACCOUNT,
+                'ACCOUNT',
+                'Account',
                 companiesJsonItems[i]
                 );
             companiesAccounts.add(accountRecord);
@@ -121,7 +123,8 @@ public with sharing class TransformerTest
                 );
 
             contactRecord = (Contact) myTransformer.transform(
-                Transformer.OBJECT_NAME_CONTACT,
+                'ACCOUNT',
+                'Contact',
                 companiesJsonItems[i]
                 );
             companiesContacts.add(contactRecord);
@@ -187,7 +190,8 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < emailsJsonItems.size(); i++)
         {
             emailRecord = (ContactPointEmail) myTransformer.transform(
-                Transformer.OBJECT_NAME_CONTACT_POINT_EMAIL,
+                'CONTACT_POINT',
+                'ContactPointEmail',
                 emailsJsonItems[i]
                 );
             emails.add(emailRecord);
@@ -203,7 +207,8 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < phonesJsonItems.size(); i++)
         {
             phoneRecord = (ContactPointPhone) myTransformer.transform(
-                Transformer.OBJECT_NAME_CONTACT_POINT_PHONE,
+                'CONTACT_POINT',
+                'ContactPointPhone',
                 phonesJsonItems[i]
                 );
             phones.add(phoneRecord);
@@ -219,7 +224,8 @@ public with sharing class TransformerTest
         for (Integer i = 0; i < addressesJsonItems.size(); i++)
         {
             addressRecord = (ContactPointAddress) myTransformer.transform(
-                Transformer.OBJECT_NAME_CONTACT_POINT_ADDRESS,
+                'CONTACT_POINT',
+                'ContactPointAddress',
                 addressesJsonItems[i]
                 );
             addresses.add(addressRecord);
@@ -262,7 +268,8 @@ public with sharing class TransformerTest
         // Instanciar el transformer con la configuración de INFO
         Transformer myTransformer = new Transformer(Transformer.ORIGIN_NAME_INFO);
         myTransformer.transform(
-            Transformer.OBJECT_NAME_ACCOUNT,
+            'ACCOUNT',
+            'Account',
             customersJsonItems[0]
             );
         Map<String, Object> unmappedValues = myTransformer.getUnmappedValues();
@@ -368,6 +375,7 @@ public with sharing class TransformerTest
             'J'
             )[0];
         Account accountRecord = (Account) myTransformer.transform(
+            'ACCOUNT',
             'Account',
             companyJson
             );
@@ -375,6 +383,7 @@ public with sharing class TransformerTest
                                      .get('BusinessCustomer')
                                      .getRecordTypeId();
         Contact contactRecord = (Contact) myTransformer.transform(
+            'ACCOUNT',
             'Contact',
             companyJson
             );
@@ -434,5 +443,22 @@ public with sharing class TransformerTest
             returnedValues[1] == 'field2',
             '[3] No se ha obtenido el valor de configuración esperado'
             );
+    }
+
+    @IsTest
+    static void test_parseMethods()
+    {
+        Boolean myBoolean = Transformer.parseBooleanField('s', Transformer.ORIGIN_NAME_INFO);
+        Date myDate = Transformer.parseDateField('2020-05-01', Transformer.ORIGIN_NAME_INFO);
+        Datetime myDatetime = Transformer.parseDatetimeField('2020-05-01 00:00:00', Transformer.ORIGIN_NAME_INFO);
+        String myString = Transformer.parseStringField('Hello World!', Transformer.ORIGIN_NAME_INFO);
+        Double myDouble = Transformer.parseDoubleField('25.00', Transformer.ORIGIN_NAME_INFO);
+        Integer myInteger = Transformer.parseIntegerField('5', Transformer.ORIGIN_NAME_INFO);
+        System.assert (myBoolean != null, '[0] No se ha parseado Boolean');
+        System.assert (myDate != null, '[1] No se ha parseado Date');
+        System.assert (myDatetime != null, '[2] No se ha parseado Datetime');
+        System.assert (myString != null, '[3] No se ha parseado String');
+        System.assert (myDouble != null, '[4] No se ha parseado Double');
+        System.assert (myInteger != null, '[5] No se ha parseado Integer');
     }
 }

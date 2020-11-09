@@ -4,8 +4,14 @@ private with sharing class ContactsSelectorTest
     @TestSetup
     public static void createScenario()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 10);
+        /*List<Account> businessAccounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+           insert businessAccounts;*/
+
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
         insert accounts;
+
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
+        insert contacts;
 
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
         insert contactPointPhones;
@@ -76,7 +82,7 @@ private with sharing class ContactsSelectorTest
         // Test
         Test.startTest();
 
-        List<Contact> matchedRecords = ContactsSelector.findByPhoneNumber(new List<String> { emailToSearch } );
+        List<Contact> matchedRecords = ContactsSelector.findByEmail(new List<String> { emailToSearch } );
 
         Test.stopTest();
 
@@ -90,15 +96,16 @@ private with sharing class ContactsSelectorTest
     }
 
     @isTest
-    static void test_findByDNI_matchedRecords()
+    static void test_findByNationalId_matchedRecords()
     {
         // Escenario
 
         //Preparamos datos, recuperamos un DNI de un Contact existente
-        List<Contact> contactsToSearch = [SELECT Id, DNI__c FROM Contact LIMIT 1];
+        Id noVidaRecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('CustomerGI').getRecordTypeId();
+        List<Contact> contactsToSearch = [SELECT Id, Account.NationalId__c, RecordTypeId FROM Contact WHERE RecordTypeId =: noVidaRecordTypeId LIMIT 1];
         System.assertEquals(1, contactsToSearch.size(), 'There should be 1 Contact');
 
-        String DNI = contactsToSearch.get(0).DNI__c;
+        String nationalId = contactsToSearch.get(0).Account.NationalId__c;
 
         Set<Id> recordIds = new Set<Id>();
         for(Contact contact: contactsToSearch)
@@ -109,7 +116,7 @@ private with sharing class ContactsSelectorTest
         // Test
         Test.startTest();
 
-        List<Contact> matchedRecords = ContactsSelector.findByDNI(new List<String> { DNI } );
+        List<Contact> matchedRecords = new ContactsSelector().applyScope('ZE').findByNationalId(new List<String> { nationalId }, 'N', Label.GeneralInsurance);
 
         Test.stopTest();
 
@@ -123,17 +130,17 @@ private with sharing class ContactsSelectorTest
     }
 
     @isTest
-    static void test_findByDNI_notFound()
+    static void test_findByNationalId_notFound()
     {
         // Escenario
 
         //Preparamos datos, un DNI que no este en ninguno de los contactos existentes
-        String DNI = 'A';
+        String nationalId = 'A';
 
         // Test
         Test.startTest();
 
-        List<Contact> matchedRecords = ContactsSelector.findByDNI(new List<String> { DNI } );
+        List<Contact> matchedRecords = new ContactsSelector().applyScope('ZE').findByNationalId(new List<String> { nationalId }, 'N', Label.GeneralInsurance);
 
         Test.stopTest();
 
@@ -142,26 +149,49 @@ private with sharing class ContactsSelectorTest
     }
 
     @isTest
-    static void test_findByDNI_matchedRecords_bulk()
+    static void test_findByNationalId_emptyNationalIdType()
+    {
+        // Escenario
+
+        //Preparamos datos, un DNI que no este en ninguno de los contactos existentes
+        Id noVidaRecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('CustomerGI').getRecordTypeId();
+        List<Contact> contactsToSearch = [SELECT Id, Account.NationalId__c, RecordTypeId FROM Contact WHERE RecordTypeId =: noVidaRecordTypeId LIMIT 1];
+        System.assertEquals(1, contactsToSearch.size(), 'There should be 1 Contact');
+
+        String nationalId = contactsToSearch.get(0).Account.NationalId__c;
+
+        // Test
+        Test.startTest();
+
+        List<Contact> matchedRecords = new ContactsSelector().applyScope('ZE').findByNationalId(new List<String> { nationalId }, '', Label.GeneralInsurance);
+
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(true, matchedRecords.isEmpty(), 'The list should be empty');
+    }
+
+    @isTest
+    static void test_findByNationalId_matchedRecords_bulk()
     {
         // Escenario
 
         //Preparamos datos, recuperamos un DNI de un Contact existente
-        List<Contact> contactsToSearch = [SELECT Id, DNI__c FROM Contact];
+        List<Contact> contactsToSearch = [SELECT Id, Account.NationalId__c FROM Contact];
         System.assertEquals(true, contactsToSearch.size() > 1, 'There should be more than 1 Contact');
 
         List<String> listDNI = new List<String>();
         Set<Id> recordIds = new Set<Id>();
         for(Contact contact: contactsToSearch)
         {
-            listDNI.add(contact.DNI__c);
+            listDNI.add(contact.Account.NationalId__c);
             recordIds.add(contact.Id);
         }
 
         // Test
         Test.startTest();
 
-        List<Contact> matchedRecords = ContactsSelector.findByDNI(listDNI);
+        List<Contact> matchedRecords = new ContactsSelector().applyScope('ZE').findByNationalId(listDNI, 'N', Label.GeneralInsurance);
 
         Test.stopTest();
 

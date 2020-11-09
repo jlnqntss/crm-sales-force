@@ -8,13 +8,10 @@ global class Batch_ProcessExternalRequest implements Database.Batchable<sObject>
     public String query;
 
     global Batch_ProcessExternalRequest()
-    {
-        query = SystemUtil.getExternalRequests();
-    }
+    {}
 
     global Batch_ProcessExternalRequest(String p_query)
     {
-        this();
         if ( !String.isBlank(p_query) )
         {
             query = p_query;
@@ -23,6 +20,11 @@ global class Batch_ProcessExternalRequest implements Database.Batchable<sObject>
 
     global Database.QueryLocator start(Database.BatchableContext BC)
     {
+        if (query == null || query == '')
+        {
+            query = SystemUtil.getExternalRequests();
+        }
+
         return Database.getQueryLocator(query);
     }
 
