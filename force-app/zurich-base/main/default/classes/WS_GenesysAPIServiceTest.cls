@@ -165,4 +165,34 @@ private class WS_GenesysAPIServiceTest
         // Then
         System.assertEquals(400, RestContext.response.statusCode);
     }
+
+
+    // #region Test GET Resources
+
+    /**
+     * Valida la entrada al GET
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @isTest
+    static void test_doGet_noSearchString()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/people?searchType=phone';
+        request.httpMethod = 'GET';
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(400, RestContext.response.statusCode);
+    }
+
+    // #endregion
 }

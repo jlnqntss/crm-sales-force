@@ -37,7 +37,8 @@ public class INFOHandler implements ISystem
         'Policy__c', // 8
         'PolicyVersion__c', // 9
         'Asset', // 10
-        'Relationship__c' // 11
+        'Claim__c', // 11
+        'Relationship__c' // 12
     };
 
     /**
@@ -102,6 +103,7 @@ public class INFOHandler implements ISystem
             }
             catch (Exception e)
             {
+                System.debug('Entra' + e.getMessage());
                 setExternalRequest(externalRequest, true, 'KO', e.getMessage() + '\n' + e.getStackTraceString(), false);
                 //ErrorLogUtil.commitError(e, 'INFOHandler', 'process');
             }
@@ -127,10 +129,16 @@ public class INFOHandler implements ISystem
             {
                 persistRecords('UPSERT', recordsToUpsertByObject);
             }
+            // Delete
+            if ( recordsToDeleteByObject != null && !recordsToDeleteByObject.isEmpty() )
+            {
+                persistRecords('DELETE', recordsToDeleteByObject);
+            }
             
         }
         catch (Exception e)
         {
+            System.debug('Entra' + e.getMessage());
             ErrorLogUtil.commitError(e, 'INFOHandler', 'persists');
         }
     }
@@ -325,6 +333,12 @@ public class INFOHandler implements ISystem
                 insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(insObjRecord.ObjectType__c.trim()).getRecordTypeId();
                 addRecordToMap(externalRequest, 'Asset', insObjRecord); 
             }
+            // Siniestro
+            when 'CLAIM' 
+            {
+                Claim__c claimRecord = (Claim__c) tf.transform('CLAIM', 'Claim__c', recordValuesMap);
+                addRecordToMap(externalRequest, 'Claim__c', claimRecord);
+            }
             // Rol póliza
             when 'POLICY_RELATIONSHIP' 
             {
@@ -338,6 +352,13 @@ public class INFOHandler implements ISystem
                 Relationship__c quoRelRecord = (Relationship__c) tf.transform('QUOTE_RELATIONSHIP', 'Relationship__c', recordValuesMap);
                 quoRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Offer').getRecordTypeId();
                 addRecordToMap(externalRequest, 'Relationship__c', quoRelRecord);
+            }
+            // Rol siniestro
+            when 'CLAIM_RELATIONSHIP' 
+            {
+                Relationship__c claimRelRecord = (Relationship__c) tf.transform('CLAIM_RELATIONSHIP', 'Relationship__c', recordValuesMap);
+                claimRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Claim').getRecordTypeId();
+                addRecordToMap(externalRequest, 'Relationship__c', claimRelRecord);
             }
             when else
             {
@@ -388,11 +409,45 @@ public class INFOHandler implements ISystem
         {
             if ( recordsByObject.containsKey(objectName) && !recordsByObject.get(objectName).isEmpty() )
             {
-                Schema.SObjectField externalId = globalDescribe.get(objectName).getDescribe().fields.getMap().get(externalIdByObject.get(objectName));
+                Schema.SObjectField externalIdField = globalDescribe.get(objectName).getDescribe().fields.getMap().get(externalIdByObject.get(objectName));
 
                 if(action == 'UPSERT')
                 {
-                    Database.UpsertResult[] resultList = Database.upsert(recordsByObject.get(objectName), externalId, false);
+                    Database.UpsertResult[] resultList = Database.upsert(recordsByObject.get(objectName), externalIdField, false);
+
+                    for (Integer i = 0; i < externalRequestByObject.get(objectName).size(); i++)
+                    {
+                        ExternalRequest__c extReq = externalRequestByObject.get(objectName).get(i);
+
+                        //Procesamiento correcto
+                        if ( resultList.get(i).isSuccess() )
+                        {
+                            setExternalRequest(extReq, true, 'OK', null, false);
+                        }
+                        //Procesamiento incorrecto
+                        else
+                        {
+                            setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
+                        }
+                    }
+                }
+                else if(action == 'DELETE')
+                {
+                    Set<Object> externalIdValues = new Set<Object>();
+
+                    for(sObject sObj : recordsByObject.get(objectName))
+                    {
+                        externalIdValues.add(sObj.get(externalIdField));
+                    }
+                    
+                    Database.DeleteResult[] resultList = Database.delete
+                    (
+                        new RecordsSelector
+                        (
+                            globalDescribe.get(objectName)
+                        )
+                        .selectByExternalId(externalIdField, externalIdValues)
+                    );
 
                     for (Integer i = 0; i < externalRequestByObject.get(objectName).size(); i++)
                     {
