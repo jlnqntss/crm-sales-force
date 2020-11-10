@@ -529,4 +529,50 @@ public without sharing class GenesysInteractionsServiceTest
     }
 
     // #endregion
+
+    // #region Test methods for findPeopleBy
+
+    /**
+     * Valida el escenario en el que para una b´suqueda de teléfono hay un único resultado.
+     * TODO: Completar con la implementaciónd completa de findPeopleBy
+     **
+     * @author jmartinezpisson
+     * @date 02/11/2020
+     */
+    @IsTest
+    static void test_findPeopleBy_Phone_matchedPerson()
+    {
+        // When
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+
+        searchRequest.searchType = 'phone';
+        searchRequest.value = '123456789';
+        searchRequest.filterBy  = null;
+        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : searchRequest.value]).keySet();
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.SearchResult result = GenesysInteractionsService.findPeopleBy(searchRequest);
+
+        Test.stopTest();
+
+        // Then
+        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE Id IN (SELECT ParentId FROM ContactPointPhone WHERE Id IN :recordIds )];
+
+        System.assertEquals(1, result.screenPopRecordIds.size(), 'Debería haber encontrado un único resultado');
+
+        Set<String> matchedIds = new Set<String>(result.screenPopRecordIds);
+
+        for(Account expectedAccount : expectedAccounts)
+        {
+            matchedIds.contains(expectedAccount.Id);
+        }
+    }
+
+    // #endregion
 }

@@ -1,9 +1,54 @@
 @RestResource(urlMapping = '/genesys-cloud/*/*')
 global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
 {
-    static final String INVALID_URI_MESSAGE = 'Invalid URI versioning';
-    static final String INVALID_CONTENTTYPE_MESSAGE = 'Invalid Content-Type on request headers';
-    static final String REGEXP_URI = 'v[0-9]+$';
+    /**
+     * Recibe y procesa peticiones GET
+     * Identifica el resource, procesa los parámetros y los delega a una segunda clase
+     * @author jmartinezpisson
+     * @date 22/10/2020
+     */
+    @HttpGet
+    global static void doGet()
+    {
+        Savepoint sp = Database.setSavepoint();
+        RestResponse response = RestContext.response;
+
+        response.addHeader('Content-Type', 'application/json');
+
+        try
+        {
+            validateRequest();
+
+            switch on WS_BaseAPIService.resource {
+                // 1 - GET /people: Procesa búsqueda de clientes
+                when 'people' {
+                    GenesysInteractionsService.version =  WS_BaseAPIService.version;
+                    response.statusCode = 200;
+                    response.responseBody = Blob.valueOf(
+                        GenesysInteractionsService.findPeopleBy(new GenesysInteractionsService.SearchResult(RestRequest.request.params) ).toString()
+                        );
+                }
+            }
+        }
+        catch (WS_BaseAPIService.ApiException apiError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 400;
+            response.responseBody = Blob.valueOf(apiError.toErrorString() );
+        }
+        catch (DmlException dmlError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 500;
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(dmlError).toErrorString() );
+        }
+        catch (Exception genericError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 500;
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage() ).toErrorString() );
+        }
+    }
 
     /**
      * Recibe las peticiones POST provenientes de genesys
@@ -20,25 +65,13 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
         RestRequest request = RestContext.request;
         RestResponse response = RestContext.response;
 
+        response.addHeader('Content-Type', 'application/json');
+
         Savepoint sp = Database.setSavepoint();
 
         try
         {
-            response.addHeader('Content-Type', 'application/json');
-
-            //Si la versión no es correcta, lanzamos error
-            if(!WS_BaseAPIService.isValidVersion)
-            {
-                response.statusCode = 400;
-                throw new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_BAD_REQUEST_KO, INVALID_URI_MESSAGE);
-            }
-
-            //Si la cabecera content-type no es JSON, lanzamos error
-            if(!WS_BaseAPIService.isJSONContentType)
-            {
-                response.statusCode = 400;
-                throw new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_BAD_REQUEST_KO, INVALID_CONTENTTYPE_MESSAGE);
-            }
+            validateRequest();
 
             String resource = WS_BaseAPIService.resource;
             Integer version = WS_BaseAPIService.version;
@@ -53,12 +86,12 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                     {
                         GenesysInteractionsService.Interaction interaction = GenesysInteractionsService.initInteraction(
                             (GenesysInteractionsService.Interaction) JSON.deserialize(
-                            request.requestBody.toString(),
-                            GenesysInteractionsService.Interaction.class
-                        ));
+                                request.requestBody.toString(),
+                                GenesysInteractionsService.Interaction.class
+                                ) );
 
                         response.statusCode = 200;
-                        response.responseBody = Blob.valueOf(interaction.toString());
+                        response.responseBody = Blob.valueOf(interaction.toString() );
                     }
                 }
             }
@@ -68,21 +101,21 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
             Database.rollback(sp);
 
             response.statusCode = 400;
-            response.responseBody = Blob.valueOf(apiError.toErrorString());
+            response.responseBody = Blob.valueOf(apiError.toErrorString() );
         }
         catch (DmlException dmlError)
         {
             Database.rollback(sp);
 
             response.statusCode = 500;
-            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(dmlError).toErrorString());
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(dmlError).toErrorString() );
         }
         catch (Exception genericError)
         {
             Database.rollback(sp);
 
             response.statusCode = 500;
-            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage()).toErrorString());
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage() ).toErrorString() );
         }
     }
 }
