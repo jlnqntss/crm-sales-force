@@ -1,0 +1,12 @@
+<apex:page sidebar="false" showHeader="false">
+  <script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var params = url.searchParams.get("params");
+    //var re = "info-launch://launch"+params;
+    var re = "" + params;
+    window.location.replace(re);
+    //alert(re);
+    //close();
+  </script>
+</apex:page>

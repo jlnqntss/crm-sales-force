@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EN__c</fullName>
+    <description>Parámetro EN (entorno) del link a Info. Ejemplo:info-launch://launch?US=Z33945046&amp;SE=tokenTag&amp;SN=0&amp;PR=0&amp;AC=0&amp;EV=0&amp;OP=9512&amp;EN=PRE&amp;FW=yes&amp;WP=False#cdfiliac=0026784341</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <label>EN</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
