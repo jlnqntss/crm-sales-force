@@ -3,6 +3,7 @@
     <fullName>All</fullName>
     <columns>MasterLabel</columns>
     <columns>Origin__c</columns>
+    <columns>OriginEntity__c</columns>
     <columns>SalesforceEntity__c</columns>
     <columns>ExternalId__c</columns>
     <filterScope>Everything</filterScope>

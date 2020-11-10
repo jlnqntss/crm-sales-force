@@ -7,6 +7,10 @@
         <value xsi:type="xsd:string">INFOClaimNumber__c</value>
     </values>
     <values>
+        <field>OriginEntity__c</field>
+        <value xsi:type="xsd:string">CLAIM</value>
+    </values>
+    <values>
         <field>Origin__c</field>
         <value xsi:type="xsd:string">INFO</value>
     </values>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>INFO_POLICY</label>
+    <label>Account_Partner - NOPECON1</label>
     <protected>false</protected>
     <values>
-        <field>ExternalId__c</field>
-        <value xsi:type="xsd:string">InfoPolicyNumber__c</value>
+        <field>OriginEntity__c</field>
+        <value xsi:type="xsd:string">PARTNER</value>
     </values>
     <values>
-        <field>OriginEntity__c</field>
-        <value xsi:type="xsd:string">POLICY</value>
+        <field>OriginField__c</field>
+        <value xsi:type="xsd:string">PARTNER_NOMBRE_PERSONA_CONTACTO</value>
     </values>
     <values>
         <field>Origin__c</field>
@@ -16,6 +16,10 @@
     </values>
     <values>
         <field>SalesforceEntity__c</field>
-        <value xsi:type="xsd:string">Policy__c</value>
+        <value xsi:type="xsd:string">Account</value>
+    </values>
+    <values>
+        <field>SalesforceField__c</field>
+        <value xsi:type="xsd:string">Contact_Name__c</value>
     </values>
 </CustomMetadata>
