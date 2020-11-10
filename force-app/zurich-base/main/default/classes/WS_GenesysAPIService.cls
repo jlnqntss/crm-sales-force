@@ -17,7 +17,7 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
 
         try
         {
-            validateRequest();
+            WS_GenesysAPIService.validateRequest();
 
             switch on WS_BaseAPIService.resource {
                 // 1 - GET /people: Procesa búsqueda de clientes
@@ -25,8 +25,8 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                     GenesysInteractionsService.version =  WS_BaseAPIService.version;
                     response.statusCode = 200;
                     response.responseBody = Blob.valueOf(
-                        GenesysInteractionsService.findPeopleBy(new GenesysInteractionsService.SearchResult(RestRequest.request.params) ).toString()
-                        );
+                        GenesysInteractionsService.findPeopleBy(new GenesysInteractionsService.SearchRequest(RestContext.request.params) ).toString()
+                    );
                 }
             }
         }
