@@ -1,8 +1,55 @@
 @RestResource(urlMapping = '/genesys-cloud/*/*')
 global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
 {
-    
-    
+    /**
+     * Recibe y procesa peticiones GET
+     * Identifica el resource, procesa los parámetros y los delega a una segunda clase
+     * @author jmartinezpisson
+     * @date 22/10/2020
+     */
+    @HttpGet
+    global static void doGet()
+    {
+        Savepoint sp = Database.setSavepoint();
+        RestResponse response = RestContext.response;
+
+        response.addHeader('Content-Type', 'application/json');
+
+        try
+        {
+            validateRequest();
+
+            switch on WS_BaseAPIService.resource {
+                // 1 - GET /people: Procesa búsqueda de clientes
+                when 'people' {
+                    GenesysInteractionsService.version =  WS_BaseAPIService.version;
+                    response.statusCode = 200;
+                    response.responseBody = Blob.valueOf(
+                        GenesysInteractionsService.findPeopleBy(new GenesysInteractionsService.SearchResult(RestRequest.request.params) ).toString()
+                        );
+                }
+            }
+        }
+        catch (WS_BaseAPIService.ApiException apiError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 400;
+            response.responseBody = Blob.valueOf(apiError.toErrorString() );
+        }
+        catch (DmlException dmlError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 500;
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(dmlError).toErrorString() );
+        }
+        catch (Exception genericError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 500;
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage() ).toErrorString() );
+        }
+    }
+
     /**
      * Recibe las peticiones POST provenientes de genesys
      * Dependiendo del resource se llamará a una clase u otra de apex
@@ -39,12 +86,12 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                     {
                         GenesysInteractionsService.Interaction interaction = GenesysInteractionsService.initInteraction(
                             (GenesysInteractionsService.Interaction) JSON.deserialize(
-                            request.requestBody.toString(),
-                            GenesysInteractionsService.Interaction.class
-                        ));
+                                request.requestBody.toString(),
+                                GenesysInteractionsService.Interaction.class
+                                ) );
 
                         response.statusCode = 200;
-                        response.responseBody = Blob.valueOf(interaction.toString());
+                        response.responseBody = Blob.valueOf(interaction.toString() );
                     }
                 }
             }
@@ -54,21 +101,21 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
             Database.rollback(sp);
 
             response.statusCode = 400;
-            response.responseBody = Blob.valueOf(apiError.toErrorString());
+            response.responseBody = Blob.valueOf(apiError.toErrorString() );
         }
         catch (DmlException dmlError)
         {
             Database.rollback(sp);
 
             response.statusCode = 500;
-            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(dmlError).toErrorString());
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(dmlError).toErrorString() );
         }
         catch (Exception genericError)
         {
             Database.rollback(sp);
 
             response.statusCode = 500;
-            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage()).toErrorString());
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage() ).toErrorString() );
         }
     }
 }
