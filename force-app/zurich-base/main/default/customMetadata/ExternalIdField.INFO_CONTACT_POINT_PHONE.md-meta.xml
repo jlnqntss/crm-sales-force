@@ -7,6 +7,10 @@
         <value xsi:type="xsd:string">INFOContactPointNumber__c</value>
     </values>
     <values>
+        <field>OriginEntity__c</field>
+        <value xsi:type="xsd:string">CONTACT_POINT</value>
+    </values>
+    <values>
         <field>Origin__c</field>
         <value xsi:type="xsd:string">INFO</value>
     </values>

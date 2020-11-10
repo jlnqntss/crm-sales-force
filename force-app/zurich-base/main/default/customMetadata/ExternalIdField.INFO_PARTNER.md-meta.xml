@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>INFO_POLICY</label>
+    <label>INFO_PARTNER</label>
     <protected>false</protected>
     <values>
         <field>ExternalId__c</field>
-        <value xsi:type="xsd:string">InfoPolicyNumber__c</value>
+        <value xsi:type="xsd:string">INFOBusinessCode__c</value>
     </values>
     <values>
         <field>OriginEntity__c</field>
-        <value xsi:type="xsd:string">POLICY</value>
+        <value xsi:type="xsd:string">PARTNER</value>
     </values>
     <values>
         <field>Origin__c</field>
@@ -16,6 +16,6 @@
     </values>
     <values>
         <field>SalesforceEntity__c</field>
-        <value xsi:type="xsd:string">Policy__c</value>
+        <value xsi:type="xsd:string">Account</value>
     </values>
 </CustomMetadata>
