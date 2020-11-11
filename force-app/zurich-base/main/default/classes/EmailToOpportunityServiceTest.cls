@@ -39,7 +39,7 @@ private class EmailToOpportunityServiceTest
         firstEmail.toAddresses = new List<String> {System.UserInfo.getUserEmail()};
 
         Test.startTest();
-        EmailToOpportunityService.handleEmail(firstEmail, null);
+        EmailToOpportunityService.searchRelatedEmailAndOpportunity(firstEmail, null);
         Test.stopTest();
 
         //Comprobamos que NO se ha creado una oportunidad para el email recibido
@@ -91,7 +91,7 @@ private class EmailToOpportunityServiceTest
         secondEmail.headers = new List<Messaging.InboundEmail.Header> {inReplyToEmailHeader, referencesEmailHeader};
 
         Test.startTest();
-        EmailToOpportunityService.handleEmail(secondEmail, null);
+        EmailToOpportunityService.searchRelatedEmailAndOpportunity(secondEmail, null);
         Test.stopTest();
 
         //Comprobamos que NO se ha creado una oportunidad para el email recibido
