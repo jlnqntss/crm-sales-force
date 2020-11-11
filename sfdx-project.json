@@ -17,11 +17,11 @@
       "default": false
     },
     {
-      "path": "force-app/zurich-base-security",
+      "path": "force-app/zurich-ze-app",
       "default": false
     },
     {
-      "path": "force-app/zurich-ze-app",
+      "path": "force-app/zurich-base-security",
       "default": false
     }
   ],
