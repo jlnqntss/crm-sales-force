@@ -12,7 +12,7 @@ global without sharing class OrderUtil
     public static void upsertQuote(Contact contact, Order quote)
     {
         System.debug('- - - - - OrderUtil.upsertQuote - - - - -');
-        String legalEntityName = (quote.LegalEntity__c.equals(Label.GeneralInsurance)?'GI':'Life');
+        String legalEntityName = (quote.LegalEntity__c.equals(Label.GeneralInsurance) ? 'GI' : 'Life');
 
         quote.RecordTypeId = SystemUtil.getOrderRecordTypeIdByName( Label.Quote + legalEntityName );
         //contact.CustomerNum__c=ContactUtil.adaptCustomerNum(contact.CustomerNum__c, contact.LegalEntity__c);
