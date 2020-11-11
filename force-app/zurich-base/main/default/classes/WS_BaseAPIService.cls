@@ -9,7 +9,7 @@ abstract global without sharing class WS_BaseAPIService
         get {
             if(isValidVersion)
             {
-                return Integer.valueOf(urlTokens[2].remove('v') );
+                return Integer.valueOf( urlTokens[2].remove('v') );
             }
             else
             {
@@ -32,7 +32,7 @@ abstract global without sharing class WS_BaseAPIService
         get {
             if(!urlTokens.isEmpty() && urlTokens.get(2) != null)
             {
-                return Pattern.matches(REGEXP_VERSION_VALIDATION, urlTokens.get(2) );
+                return Pattern.matches( REGEXP_VERSION_VALIDATION, urlTokens.get(2) );
             }
             else
             {
@@ -43,7 +43,7 @@ abstract global without sharing class WS_BaseAPIService
 
     public static Boolean isJSONContentType {
         get {
-            if(requestHeaders.containsKey('Content-Type') && requestHeaders.get('Content-Type').contains('application/json') )
+            if( requestHeaders.containsKey('Content-Type') && requestHeaders.get('Content-Type').contains('application/json') )
             {
                 return true;
             }
@@ -57,6 +57,7 @@ abstract global without sharing class WS_BaseAPIService
     public final static String API_BAD_REQUEST_KO = 'BAD_REQUEST';
     public final static String API_GENERIC_KO = 'GENERIC_ERROR';
     public final static String API_DML_KO = 'DML_ERROR';
+    public final static String API_JSON_KO = 'JSON_PARSER_ERROR';
     public final static String API_DML_RECORD_ERROR_MESSAGE  = Label.RESTApiErrorOnDMLRecordTransaction;
 
     /**
@@ -73,7 +74,7 @@ abstract global without sharing class WS_BaseAPIService
 
         while(i > 0)
         {
-            messages.add(String.format(API_DML_RECORD_ERROR_MESSAGE, new List<String>
+            messages.add( String.format(API_DML_RECORD_ERROR_MESSAGE, new List<String>
             {
                 dmlError.getDmlType(i).name(),
                 dmlError.getDmlMessage(i),
@@ -155,7 +156,7 @@ abstract global without sharing class WS_BaseAPIService
          */
         public ApiException(DmlException dmlError)
         {
-            this(API_DML_KO, buildDMLMessage(dmLError) );
+            this( API_DML_KO, buildDMLMessage(dmLError) );
         }
 
         /**
