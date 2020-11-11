@@ -2,11 +2,11 @@
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>Nombre de la oferta</value>
+        <value>Número de oferta</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Nombres de ofertas</value>
+        <value>Números de ofertas</value>
     </caseValues>
     <gender>Masculine</gender>
     <name>opportunity_name</name>
