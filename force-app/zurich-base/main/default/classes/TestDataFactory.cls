@@ -348,19 +348,11 @@ public class TestDataFactory
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
-        List<String> homeType = new List<String> { 'F', 'H', 'R', 'T' };
-
-        List<String> streetType = new List<String> {
-            'CL',
-            'CM',
-            'CO',
-            'CR',
-            'CS',
-            'CT',
-            'CU',
-            'DS',
-            'ED'
-        };
+        Schema.DescribeFieldResult homeTypeFieldResult = ContactPointAddress.HomeType__c.getDescribe();
+        List<Schema.PicklistEntry> homeTypeValues = homeTypeFieldResult.getPicklistValues();
+        
+        Schema.DescribeFieldResult streetTypeFieldResult = ContactPointAddress.StreetType__c.getDescribe();
+		List<Schema.PicklistEntry> streetTypeValues = streetTypeFieldResult.getPicklistValues();
 
         List<String> flagType = new List<String> { 'S', 'N', null };
 
@@ -460,12 +452,12 @@ public class TestDataFactory
                                               String.valueOf(i + 1).leftPad(9, '0'), // string
                     'cod_secuencial_domicilio' => String.valueOf(i + 1),
                     'tipo_domicilio' => contactPointType,
-                    'clase_domicilio' => homeType[
-                        Integer.valueof( (Math.random() * homeType.size() - 1) ) // clase domicilio,
-                                        ],
-                    'tipo_via' => streetType[
-                        Integer.valueof( (Math.random() * streetType.size() - 1) ) // clase domicilio,,
-                                 ],
+                    'clase_domicilio' => homeTypeValues[
+                        Integer.valueof( (Math.random() * homeTypeValues.size() - 1) ) // clase domicilio,
+                                        ].getValue(),
+                    'tipo_via' => streetTypeValues[
+                        Integer.valueof( (Math.random() * streetTypeValues.size() - 1) ) // clase domicilio,,
+                                 ].getValue(),
                     'descripcion_dom' => 'Street_' + String.valueOf(i + 1), // dirección
                     'num_via' => String.valueOf(
                         Integer.valueof( (Math.random() * 6) ) + 1
@@ -662,95 +654,20 @@ public class TestDataFactory
             throw new TestException('totalItems must be equal or greater than 1');
         }
 
-        List<String> movementTypes = new List<String> {
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'I',
-            'K',
-            'L',
-            'M',
-            'N',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z',
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9'
-        };
+        Schema.DescribeFieldResult movTypeFieldResult = Policy__c.MovementType__c.getDescribe();
+		List<Schema.PicklistEntry> movTypeValues = movTypeFieldResult.getPicklistValues();
 
-        List<String> movementReasons = new List<String> {
-            'A101',
-            'A102',
-            'A104',
-            'A105',
-            'A106',
-            'A109',
-            'A114',
-            'A115',
-            'A165',
-            'A166',
-            'A203',
-            'A204'
-        };
+        Schema.DescribeFieldResult movReasonFieldResult = Policy__c.MovementReason__c.getDescribe();
+		List<Schema.PicklistEntry> movReasonValues = movReasonFieldResult.getPicklistValues();
 
-        List<String> paymentTypes = new List<String> {
-            'A',
-            'B',
-            'C',
-            'E',
-            'F',
-            'M',
-            'P',
-            'S',
-            'T',
-            'U',
-            'Z'
-        };
+        Schema.DescribeFieldResult paymentTypeFieldResult = Policy__c.PaymentType__c.getDescribe();
+		List<Schema.PicklistEntry> paymentTypeValues = paymentTypeFieldResult.getPicklistValues();
 
-        List<String> businessUnits = new List<String> {
-            '000',
-            '001',
-            '002',
-            '003',
-            '004',
-            '005',
-            '006',
-            '007',
-            '008',
-            '999'
-        };
-
-        List<String> status = new List<String> {
-            'A',
-            'P',
-            'S',
-            'V',
-            '0',
-            '1',
-            '2',
-            '3',
-            '4'
-        };
+        Schema.DescribeFieldResult statusFieldResult = Policy__c.PolicyStatus__c.getDescribe();
+        List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
+        
+        Schema.DescribeFieldResult legalEntityFieldResult = Policy__c.LegalEntity__c.getDescribe();
+		List<Schema.PicklistEntry> legalEntityValues = legalEntityFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -761,27 +678,27 @@ public class TestDataFactory
                 new Map<String, Object> {
                 'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
                 'poliza_version' => '01',
-                'poliza_movimiento' => movementTypes[
-                    Integer.valueof( (Math.random() * movementTypes.size() - 1) )
-                                      ],
+                'poliza_movimiento' => movTypeValues[
+                    Integer.valueof( (Math.random() * movTypeValues.size() - 1) )
+                                      ].getValue(),
                 'poliza_movimiento_desc' => 'Test',
-                'poliza_motivo_movimiento' => movementReasons[
-                    Integer.valueof( (Math.random() * movementReasons.size() - 1) )
-                                             ],
+                'poliza_motivo_movimiento' => movReasonValues[
+                    Integer.valueof( (Math.random() * movReasonValues.size() - 1) )
+                                             ].getValue(),
                 'poliza_motivo_movimiento_desc' => 'Test',
                 'poliza_fecha_inicio' => '',
-                'poliza_entidad_legal' => businessUnits[
-                    Integer.valueof( (Math.random() * businessUnits.size() - 1) )
-                                         ],
+                'poliza_entidad_legal' => legalEntityValues[
+                    Integer.valueof( (Math.random() * legalEntityValues.size() - 1) )
+                                         ].getValue(),
                 'poliza_entidad_legal_desc' => 'Test',
                 'cliente_cod_filiacion' => 'F' +
                                           String.valueOf(i + 1).leftPad(9, '0'),
                 'poliza_producto' => String.valueOf(i + 1).leftPad(9, '0'),
                 'poliza_producto_tecnico' => String.valueOf(i + 1).leftPad(9, '0'),
                 'poliza_producto_comercial' => String.valueOf(i + 1).leftPad(9, '0'),
-                'poliza_estado' => status[
-                    Integer.valueof( (Math.random() * status.size() - 1) )
-                                  ],
+                'poliza_estado' => statusValues[
+                    Integer.valueof( (Math.random() * statusValues.size() - 1) )
+                                  ].getValue(),
                 'poliza_estado_desc' => 'Test',
                 'poliza_estructura' => 'Test',
                 'poliza_negocio' => 'Test',
@@ -789,9 +706,9 @@ public class TestDataFactory
                 'poliza_mediador' => '',
                 'poliza_fecha_vencimiento' => '',
                 'poliza_procedencia_oferta' => '',
-                'poliza_forma_pago' => paymentTypes[
-                    Integer.valueof( (Math.random() * paymentTypes.size() - 1) )
-                                      ],
+                'poliza_forma_pago' => paymentTypeValues[
+                    Integer.valueof( (Math.random() * paymentTypeValues.size() - 1) )
+                                      ].getValue(),
                 'poliza_forma_pago_desc' => 'Test'
                                            /*'prima_tecnica' => String.valueOf(Integer.valueof((Math.random() * 6))),
                                               'prima_suma_recargos_descuentos' => String.valueOf(Integer.valueof((Math.random() * 6))),
@@ -830,14 +747,8 @@ public class TestDataFactory
             throw new TestException('totalItems must be equal or greater than 1');
         }
 
-        List<String> objectTypes = new List<String> {
-            'Address',
-            'Motor',
-            'Person',
-            'Mobile',
-            'Boat',
-            'Electronic Device'
-        };
+        Schema.DescribeFieldResult objectTypeFieldResult = Asset.ObjectType__c.getDescribe();
+		List<Schema.PicklistEntry> objectTypeValues = objectTypeFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -849,9 +760,9 @@ public class TestDataFactory
                 'id_unico_riesgo_asegurado' => String.valueOf(i + 1).leftPad(9, '0'),
                 'oferta_id' => '',
                 'poliza_id' => '',
-                'objeto_tipo' => objectTypes[
-                    Integer.valueof( (Math.random() * objectTypes.size() - 1) )
-                                ],
+                'objeto_tipo' => objectTypeValues[
+                    Integer.valueof( (Math.random() * objectTypeValues.size() - 1) )
+                                ].getValue(),
                 'objeto_secuencia' => '',
                 'vehiculo_marca' => 'Test',
                 'vehiculo_modelo' => 'Test',
@@ -904,10 +815,8 @@ public class TestDataFactory
             throw new TestException('totalItems must be equal or greater than 1');
         }
 
-        List<String> faulFactors = new List<String> {
-            'A',
-            'C'
-        };
+        Schema.DescribeFieldResult faultFactorFieldResult = Claim__c.FaultFactor__c.getDescribe();
+		List<Schema.PicklistEntry> faultFactorValues = faultFactorFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -918,7 +827,7 @@ public class TestDataFactory
                 new Map<String, Object> {
                     'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
                     'siniestro_fecha_ocurrencia' => '2020-11-05',
-                    'siniestro_factor_culpa' => faulFactors[Integer.valueof( (Math.random() * faulFactors.size() - 1) )],
+                    'siniestro_factor_culpa' => faultFactorValues[Integer.valueof( (Math.random() * faultFactorValues.size() - 1) )].getValue(),
                     'siniestro_factor_culpa_desc' => '',
                     'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
                     'poliza_version' => '',
@@ -962,26 +871,8 @@ public class TestDataFactory
             throw new TestException('totalItems must be equal or greater than 1');
         }
 
-        List<String> roles = new List<String> {
-            'ABG',
-            'ABU',
-            'ALL',
-            'ASC',
-            'ASE',
-            'ASG',
-            'ASR',
-            'BEN',
-            'BER',
-            'BRK',
-            'CAI',
-            'CAS',
-            'CAV',
-            'CCN',
-            'CCO',
-            'CCR',
-            'CID',
-            'CLG'
-        };
+        Schema.DescribeFieldResult rolFieldResult = Relationship__c.Role__c.getDescribe();
+		List<Schema.PicklistEntry> rolValues = rolFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -992,9 +883,9 @@ public class TestDataFactory
                 new Map<String, Object> {
                 'id_unico_rol_poliza' => 'P' + String.valueOf(i + 1).leftPad(9, '0'),
                 'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
-                'poliza_rol' => roles[
-                    Integer.valueof( (Math.random() * roles.size() - 1) )
-                               ],
+                'poliza_rol' => rolValues[
+                    Integer.valueof( (Math.random() * rolValues.size() - 1) )
+                               ].getValue(),
                 'poliza_rol_desc' => 'Test',
                 'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
             }
@@ -1029,26 +920,8 @@ public class TestDataFactory
             throw new TestException('totalItems must be equal or greater than 1');
         }
 
-        List<String> roles = new List<String> {
-            'ABG',
-            'ABU',
-            'ALL',
-            'ASC',
-            'ASE',
-            'ASG',
-            'ASR',
-            'BEN',
-            'BER',
-            'BRK',
-            'CAI',
-            'CAS',
-            'CAV',
-            'CCN',
-            'CCO',
-            'CCR',
-            'CID',
-            'CLG'
-        };
+        Schema.DescribeFieldResult rolFieldResult = Relationship__c.Role__c.getDescribe();
+		List<Schema.PicklistEntry> rolValues = rolFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -1059,9 +932,9 @@ public class TestDataFactory
                 new Map<String, Object> {
                 'id_unico_rol_oferta' => 'O' + String.valueOf(i + 1).leftPad(9, '0'),
                 'oferta_id' => String.valueOf(i + 1).leftPad(9, '0'),
-                'oferta_rol' => roles[
-                    Integer.valueof( (Math.random() * roles.size() - 1) )
-                               ],
+                'oferta_rol' => rolValues[
+                    Integer.valueof( (Math.random() * rolValues.size() - 1) )
+                               ].getValue(),
                 'oferta_rol_desc' => 'Test',
                 'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
             }
@@ -1096,26 +969,8 @@ public class TestDataFactory
             throw new TestException('totalItems must be equal or greater than 1');
         }
 
-        List<String> roles = new List<String> {
-            'ABG',
-            'ABU',
-            'ALL',
-            'ASC',
-            'ASE',
-            'ASG',
-            'ASR',
-            'BEN',
-            'BER',
-            'BRK',
-            'CAI',
-            'CAS',
-            'CAV',
-            'CCN',
-            'CCO',
-            'CCR',
-            'CID',
-            'CLG'
-        };
+        Schema.DescribeFieldResult rolFieldResult = Relationship__c.Role__c.getDescribe();
+		List<Schema.PicklistEntry> rolValues = rolFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -1126,9 +981,9 @@ public class TestDataFactory
                 new Map<String, Object> {
                 'id_unico_rol_siniestro' => 'C' + String.valueOf(i + 1).leftPad(9, '0'),
                 'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
-                'siniestro_rol' => roles[
-                    Integer.valueof( (Math.random() * roles.size() - 1) )
-                               ],
+                'siniestro_rol' => rolValues[
+                    Integer.valueof( (Math.random() * rolValues.size() - 1) )
+                               ].getValue(),
                 'siniestro_rol_desc' => 'Test',
                 'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
             }
@@ -1161,18 +1016,8 @@ public class TestDataFactory
             throw new TestException('totalItems must be equal or greater than 1');
         }
 
-        List<String> businessUnits = new List<String> {
-            '000',
-            '001',
-            '002',
-            '003',
-            '004',
-            '005',
-            '006',
-            '007',
-            '008',
-            '999'
-        };
+        Schema.DescribeFieldResult legalEntityFieldResult = Opportunity.LegalEntity__c.getDescribe();
+		List<Schema.PicklistEntry> legalEntityValues = legalEntityFieldResult.getPicklistValues();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -1185,9 +1030,9 @@ public class TestDataFactory
                 'oferta_fecha_creacion' => Date.today(),
                 'oferta_fecha_validez' => Date.today(),
                 'oferta_fecha_efecto' => Date.today(),
-                'oferta_entidad_legal' => businessUnits[
-                    Integer.valueof( (Math.random() * businessUnits.size() - 1) )
-                                         ],
+                'oferta_entidad_legal' => legalEntityValues[
+                    Integer.valueof( (Math.random() * legalEntityValues.size() - 1) )
+                                         ].getValue(),
                 'oferta_entidad_legal_desc' => 'Test',
                 'cliente_cod_filiacion' => 'F' +
                                           String.valueOf(i + 1).leftPad(9, '0'),
@@ -1253,6 +1098,83 @@ public class TestDataFactory
                     'partner_estructura_desc' => 'Test',
                     'partner_nombre_persona_contacto' => 'Contact' + i,
                     'partner_telefono_persona_contacto' => '123456789'
+            }
+                );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad Mediador
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author adelgado
+     * @date 09/11/2020
+     */
+    public static List<Map<String, Object> > getINFOIntermediaryJson(Integer totalItems)
+    {
+        return buildINFOIntermediaryJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOIntermediaryJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        Schema.DescribeFieldResult nationalTypeFieldResult = Account.NationalIdType__c.getDescribe();
+        List<Schema.PicklistEntry> nationalTypeValues = nationalTypeFieldResult.getPicklistValues();
+        
+        Schema.DescribeFieldResult typeFieldResult = Account.Type.getDescribe();
+        List<Schema.PicklistEntry> typeValues = typeFieldResult.getPicklistValues();
+        
+        Schema.DescribeFieldResult statusFieldResult = Account.Status__c.getDescribe();
+		List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO OFERTA*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                    'mediador_id' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0'),
+                    'mediador_desc' => 'Test' + i,
+                    'mediador_nombre' => 'Test' + i,
+                    'mediador_tipo_documento' => nationalTypeValues[Integer.valueof( (Math.random() * nationalTypeValues.size() - 1) )].getValue(),
+                    'mediador_nif_tipo' => 'Test',
+                    'mediador_nif_tipo_desc' => 'Test',
+                    'mediador_tipo' => typeValues[Integer.valueof( (Math.random() * typeValues.size() - 1) )].getValue(),
+                    'mediador_tipo_desc' => 'Test',
+                    'mediador_segmento_comercial' => 'Test',
+                    'mediador_segmento_comercial_desc' => 'Test',
+                    'mediador_codigo dsg' => 'Test',
+                    'mediador_codigo_dt' => 'Test',
+                    'mediador_codigo_dt_desc' => 'Test',
+                    'mediador_zona' => 'Test',
+                    'mediador_zona_desc' => 'Test',
+                    'mediador_negocio_cod_filiacion' => '',
+                    'mediador_negocio_nombre' => 'ParentBusiness' + i,
+                    'mediador_tipo_estado' => statusValues[Integer.valueof( (Math.random() * statusValues.size() - 1) )].getValue(),
+                    'mediador_tipo_estado_desc' => 'Test',
+                    'mediador_fecha_asignacion' => '2021-10-15',
+                    'mediador_domicilio' => 'Dom' + i,
+                    'mediador_poblacion' => 'Pobl' + i,
+                    'mediador_provincia' => 'Prov' + i,
+                    'mediador_nombre_provincia' => 'Intermediary' + i,
+                    'mediador_email_principal' => 'testInter' + i + '@test.com',
+                    'mediador_email_contratacion' => 'testInter' + i + '@test.com',
+                    'mediador_email_siniestros' => 'testInter' + i + '@test.com',
+                    'mediador_email_admin' => 'testInter' + i + '@test.com',
+                    'mediador_telefono_principal' => '123456789',
+                    'mediador_telefono_movil' => '123456789'
+                    
             }
                 );
         }
@@ -1505,6 +1427,23 @@ public class TestDataFactory
                         new ExternalRequest__c(
                             Origin__c = origin,
                             Entity__c = 'PARTNER',
+                            Action__c = 'UPSERT',
+                            Payload__c = JSON.serialize(payload),
+                            ContentFormat__c = 'JSON'
+                            )
+                        );
+                }
+            }
+            //Mediador
+            when 'INTERMEDIARY' {
+                for (
+                    Map<String, Object> payload : getINFOIntermediaryJson(numRecords)
+                    )
+                {
+                    externalRequestList.add(
+                        new ExternalRequest__c(
+                            Origin__c = origin,
+                            Entity__c = 'INTERMEDIARY',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
                             ContentFormat__c = 'JSON'
