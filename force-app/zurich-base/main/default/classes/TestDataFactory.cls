@@ -1167,7 +1167,7 @@ public class TestDataFactory
                     'mediador_domicilio' => 'Dom' + i,
                     'mediador_poblacion' => 'Pobl' + i,
                     'mediador_provincia' => 'Prov' + i,
-                    'mediador_nombre_provincia' => 'Intermediary' + i,
+                    'mediador_provincia_desc' => 'Intermediary' + i,
                     'mediador_email_principal' => 'testInter' + i + '@test.com',
                     'mediador_email_contratacion' => 'testInter' + i + '@test.com',
                     'mediador_email_siniestros' => 'testInter' + i + '@test.com',
