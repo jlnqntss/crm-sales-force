@@ -153,23 +153,22 @@ public class Transformer
         return unmappedValues;
     }
 
-    public Map<String, Map<sObject, ExternalRequest__c> > initRequestsMapBySettings()
+    public Map<String, Map<String, Map<sObject, ExternalRequest__c>>> initRequestsMapBySettings()
     {
-        Map<String, Map<sObject, ExternalRequest__c> > recordsToUpsertByObject = new Map<String, Map<sObject, ExternalRequest__c> >();
+        Map<String, Map<String, Map<sObject, ExternalRequest__c>>> recordsByEntityAndObject = new Map<String, Map<String, Map<sObject, ExternalRequest__c>>>();
 
         // 2 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
         for (Transformer__mdt setting : this.settings)
         {
-            if (!recordsToUpsertByObject.containsKey(setting.SalesforceEntity__c) )
+            if (!recordsByEntityAndObject.containsKey(setting.OriginEntity__c) )
             {
-                recordsToUpsertByObject.put(
-                    setting.SalesforceEntity__c,
-                    new Map<sObject, ExternalRequest__c>()
-                    );
+                recordsByEntityAndObject.put(setting.OriginEntity__c, new Map<String, Map<sObject, ExternalRequest__c>>());
             }
+
+            recordsByEntityAndObject.get(setting.OriginEntity__c).put(setting.SalesforceEntity__c, new Map<sObject, ExternalRequest__c>());
         }
 
-        return recordsToUpsertByObject;
+        return recordsByEntityAndObject;
     }
 
     public Transformer(String originSystem)

@@ -69,8 +69,8 @@ global without sharing class ContactUtil
 
         // Assign record type
         incomingContact.RecordTypeId = incomingContact.Status__c != 'Lead'
-      ? SystemUtil.getContactRecordTypeIdByName('Customer' + legalEntity)
-      : SystemUtil.getContactRecordTypeIdByName('Lead' + legalEntity);
+                                       ? SystemUtil.getContactRecordTypeIdByName('Customer' + legalEntity)
+                                       : SystemUtil.getContactRecordTypeIdByName('Lead' + legalEntity);
 
         // String customerNum = ((Contact) ExternalRequestUtil.recordsToProcess.get(
         //   ExternalRequestUtil.actualRequest.id )).CustomerNum__c;
