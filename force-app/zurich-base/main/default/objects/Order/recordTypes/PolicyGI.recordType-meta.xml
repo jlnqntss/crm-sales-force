@@ -63,6 +63,17 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Canal_de_venta__c</picklist>
+        <values>
+            <fullName>Contact center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Online</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Channel__c</picklist>
         <values>
             <fullName>App</fullName>
@@ -158,6 +169,17 @@
         <values>
             <fullName>New</fullName>
             <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SellChannel__c</picklist>
+        <values>
+            <fullName>Contact center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Online</fullName>
+            <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
