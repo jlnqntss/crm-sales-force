@@ -1211,6 +1211,56 @@ public class TestDataFactory
     }
 
     /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad Partner
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author adelgado
+     * @date 09/11/2020
+     */
+    public static List<Map<String, Object> > getINFOPartnerJson(Integer totalItems)
+    {
+        return buildINFOPartnerJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOPartnerJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        Schema.DescribeFieldResult statusFieldResult = Account.Status__c.getDescribe();
+		List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO OFERTA*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                    'partner_id' => 'Partner' + String.valueOf(i + 1).leftPad(3, '0'),
+                    'partner_desc' => 'Partner' + i,
+                    'partner_estado' => statusValues[Integer.valueof( (Math.random() * statusValues.size() - 1) )].getValue(),
+                    'partner_estado_desc' => 'Test',
+                    'partner_padre_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'partner_padre_desc' => 'Test',
+                    'partner_estructura' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'partner_estructura_desc' => 'Test',
+                    'partner_nombre_persona_contacto' => 'Contact' + i,
+                    'partner_telefono_persona_contacto' => '123456789'
+            }
+                );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
      * Generar registros de ExternalRequest__c a partir de los JSON de prueba
      **
      * @param String Origen
@@ -1445,6 +1495,24 @@ public class TestDataFactory
                         );
                 }
             }
+            //Partner
+            when 'PARTNER' {
+                for (
+                    Map<String, Object> payload : getINFOPartnerJson(numRecords)
+                    )
+                {
+                    externalRequestList.add(
+                        new ExternalRequest__c(
+                            Origin__c = origin,
+                            Entity__c = 'PARTNER',
+                            Action__c = 'UPSERT',
+                            Payload__c = JSON.serialize(payload),
+                            ContentFormat__c = 'JSON'
+                            )
+                        );
+                }
+            }
+
         }
 
         return externalRequestList;

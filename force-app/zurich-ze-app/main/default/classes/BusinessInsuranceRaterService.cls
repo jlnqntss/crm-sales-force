@@ -1,14 +1,14 @@
 public without sharing class BusinessInsuranceRaterService
 {
-    public class BusinessInsuranceRaterServiceException extends Exception
-    {
-    }
-
     public static List<Business_Quotes_Field__mdt> stepMetadataList = new List<Business_Quotes_Field__mdt>();
     public static Set<String> requiredFieldsMetadataSet = new Set<String>();
+    public static Map<String, String> formattedFieldsMetadataMap = new Map<String, String>();
     public static Set<String> currentRequiredFieldsSet = new Set<String>();
 
     public static Integer version { get; set; }
+
+    public static final String LASTSTEP_FIELD = 'lastStep';
+    public static final String INVALID_FIELD_STATUSCODE = 'INVALID_FIELD';
 
     public static void processFormData(Request formData)
     {
@@ -78,7 +78,15 @@ public without sharing class BusinessInsuranceRaterService
      */
     public static void getRequiredFieldsFromMetadata(String step)
     {
-        String stepToSearch = '%' + step + '%';
+        if( String.isBlank(step) )
+        {
+            throw new BusinessInsuranceRaterServiceException(
+                      INVALID_FIELD_STATUSCODE,
+                      'LastStep field missing'
+                      );
+        }
+
+        //String stepToSearch = '%' + step + '%';
         //Map<String, Set<String>> requiredFieldsPerEntity = new Map<String, Set<String>>();
         stepMetadataList = [
             SELECT
@@ -87,21 +95,30 @@ public without sharing class BusinessInsuranceRaterService
             Required__c,
             SalesforceEntity__c,
             SalesforceField__c,
-            Type__c
+            Type__c,
+            FormSteps__c
             FROM Business_Quotes_Field__mdt
             WHERE
-            FormSteps__c LIKE :stepToSearch
-            //AND Required__c = TRUE
-            AND IsActive__c = TRUE
+            /*FormSteps__c LIKE :stepToSearch
+               AND Required__c = TRUE
+               AND */IsActive__c = TRUE
         ];
 
         if ( !stepMetadataList.isEmpty() )
         {
             for (Business_Quotes_Field__mdt metadata : stepMetadataList)
             {
-                if ( metadata.Required__c != null && metadata.Required__c == true && String.isNotBlank(metadata.OriginEntity__c) && String.isNotBlank(metadata.OriginField__c) )
+                /*if ( metadata.Required__c != null && metadata.Required__c == true && String.isNotBlank(metadata.OriginEntity__c) && String.isNotBlank(metadata.OriginField__c) )
+                   {
+                    String key = (metadata.OriginEntity__c + metadata.OriginField__c).toLowerCase();
+                    requiredFieldsMetadataSet.add( key );
+                    formattedFieldsMetadataMap.put(key, metadata.OriginEntity__c + ' - ' + metadata.OriginField__c);
+                   }*/
+                if ( metadata.FormSteps__c.contains(step) && String.isNotBlank(metadata.OriginEntity__c) && String.isNotBlank(metadata.OriginField__c) )
                 {
-                    requiredFieldsMetadataSet.add( (metadata.OriginEntity__c + metadata.OriginField__c).toLowerCase() );
+                    String key = (metadata.OriginEntity__c + metadata.OriginField__c).toLowerCase();
+                    requiredFieldsMetadataSet.add( key );
+                    formattedFieldsMetadataMap.put(key, metadata.OriginEntity__c + ' - ' + metadata.OriginField__c);
                 }
             }
         }
@@ -114,20 +131,26 @@ public without sharing class BusinessInsuranceRaterService
      * @author rlopez
      * @date 21/10/2020
      */
-    public static List<String> validateReceivedInformation()
+    public static void validateReceivedInformation()
     {
         List<String> fieldsNotFound = new List<String>();
 
-        //TODO: Mejorar esto para que puedas especificar el field name y su entity
         for (String field : requiredFieldsMetadataSet)
         {
             if ( !currentRequiredFieldsSet.contains(field) )
             {
-                fieldsNotFound.add(field);
+                fieldsNotFound.add( formattedFieldsMetadataMap.get(field) );
             }
         }
 
-        return fieldsNotFound;
+        if( !fieldsNotFound.isEmpty() )
+        {
+            throw new BusinessInsuranceRaterServiceException(
+                      INVALID_FIELD_STATUSCODE,
+                      'The following fields are missing: ' +
+                      fieldsNotFound.toString()
+                      );
+        }
     }
 
     private static void setRequiredFields(String field)
@@ -737,6 +760,30 @@ public without sharing class BusinessInsuranceRaterService
                 setRequiredFields('OfferRiskInformation' + 'strongbox');
                 strongbox = value;
             }
+        }
+    }
+
+    @TestVisible
+    public class BusinessInsuranceRaterServiceException extends Exception
+    {
+        public String statusCode;
+        public String message
+        {
+            get
+            {
+                return this.getMessage();
+            }
+        }
+
+        /**
+         * Constructor por defecto
+         * @author rlopez
+         * @date 11/11/2020
+         */
+        public BusinessInsuranceRaterServiceException(String statusCode, String message)
+        {
+            this.setMessage(message);
+            this.statusCode = statusCode;
         }
     }
 }
