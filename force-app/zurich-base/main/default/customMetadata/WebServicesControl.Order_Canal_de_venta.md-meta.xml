@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>AttributeName__c</field>
-        <value xsi:type="xsd:string">canal_de_venta</value>
+        <value xsi:type="xsd:string">distributionchannel</value>
     </values>
     <values>
         <field>Duplicate__c</field>
