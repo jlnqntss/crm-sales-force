@@ -20,16 +20,14 @@
 **/purecloud__*
 
 # Ignore Standard Profiles
-Analytics.profile-meta.xml
+Admin.profile-meta.xml
 Chatter External User.profile-meta.xml
 Chatter Free User.profile-meta.xml
 Chatter Moderator User.profile-meta.xml
 ContractManager.profile-meta.xml
 CPQ Integration User.profile-meta.xml
-Executive Sponsor.profile-meta.xml
 Guest License User.profile-meta.xml
 Identity User.profile-meta.xml
-Marketing.profile-meta.xml
 MarketingProfile.profile-meta.xml
 Preference Centre Profile.profile-meta.xml
 ReadOnly.profile-meta.xml
