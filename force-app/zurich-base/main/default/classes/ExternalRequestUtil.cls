@@ -1,1068 +1,1054 @@
 /**
-** Utility class for ExternalRequest__c object
-* @author nbizkarra
-* @date 01/04/2020
-*
-* @update Enara Etxaniz
-* @date 25/08/2020
-* Fix identation
-* Add Customer EMEA logic
-**/
-global without sharing class ExternalRequestUtil
-{
-    // Declare variables
+ ** Utility class for ExternalRequest__c object
+ * @author nbizkarra
+ * @date 01/04/2020
+ *
+ * @update Enara Etxaniz
+ * @date 25/08/2020
+ * Fix identation
+ * Add Customer EMEA logic
+ * 
+ * @update 26/oct/2020 - nts (agonzalezisasi) - Add Customer Multi-Partner logic
+ * 
+ **/
+global without sharing class ExternalRequestUtil {
+  // Declare variables
 
-    // Parsing
-    public static ExternalRequest__c actualRequest = new ExternalRequest__c();
+  // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+  // get this values from adminSetup in the metadata
+  public static String IBA_EMEA_NON_COUNTRY;  // Used in this class and Batch_ResponseExternalRequest.cls
+  private static String IBA_MULTI_PARTNER_ORIGIN;  // Used in this class and Batch_ResponseExternalRequest.cls
+  private static String WS_SOURCE_IBA;
+  private static String WS_SOURCE_IBA_MULTI_PARTNER;
+  private static String WS_SERVICE_NAME_PROCESS_REQUEST;
+  private static String WS_SERVICE_NAME_QUOTE_ENTRY;
+  @testvisible private static Map<String, String> mapMultiPartner;
+  public static String IBA_EMEA;
 
-    public static Map<String, Object> recordsToProcess = new Map<String, Object>();
+  private static final String ACCOUNT_FIELD_IBA = 'CustomerNum__c';
+  private static final String ACCOUNT_FIELD_IBA_EMEA = 'CustomerNum_EMEA__c';
+  private static final String ACCOUNT_FIELD_IBA_MULTI_PARTNER = 'CustomerNum_Partner__c';
 
-    public static Set<String> contactsToSearch = new Set<String>();
-    public static Set<String> contactEmails = new Set<String>();
+  private static String IBA_Prefix;
+  private static String IBA_Source;
+  public static Boolean isIBAMultiPartner; 
+  private static Boolean isEMEA;
+  public static String AccountFieldCustomerNum;
+  public static Map<String, Account> AccountMastersToUpdate;
 
-    public static Set<String> quotesToSearch = new Set<String>();
-    public static Set<String> policiesToSearch = new Set<String>();
-    public static Set<String> orderItemsToSearch = new Set<String>();
-    public static Set<String> productsToSearch = new Set<String>();
-    public static Set<String> partnersToSearch = new Set<String>();
-    public static Set<String> coversToSearch = new Set<String>();
-    public static Set<String> claimsToSearch = new Set<String>();
+  // Parsing
+  public static ExternalRequest__c actualRequest;
 
-    public static Map<String, Order> quotesToProcess = new Map<String, Order>();
-    public static Map<String, List<OrderItem> > orderItemsToProcess = new Map<String, List<OrderItem> >();
-    public static Map<String, List<Discount__c> > discountsToProcess = new Map<String, List<Discount__c> >();
-    public static Map<String, List<Cover__c> > coversToProcess = new Map<String, List<Cover__c> >();
+  public static Map<String, Object> recordsToProcess;
+
+  public static Set<String> contactsToSearch;
+  public static Set<String> contactEmails;
+
+  public static Set<String> quotesToSearch;
+  public static Set<String> policiesToSearch;
+  public static Set<String> orderItemsToSearch;
+  public static Set<String> productsToSearch;
+  public static Set<String> partnersToSearch;
+  public static Set<String> coversToSearch;
+  public static Set<String> claimsToSearch;
+
+  public static Map<String, Order> quotesToProcess;
+  public static Map<String, List<OrderItem>> orderItemsToProcess;
+  public static Map<String, List<Discount__c>> discountsToProcess;
+  public static Map<String, List<Cover__c>> coversToProcess;
+
+  // Querying
+  public static Map<String, Contact> mapContacts;
+  public static Map<String, Contact> mapContactsEmailBirthDateLECountry;
+  public static Map<String, Contact> mapContactsEmailBirthDateLE;
+  public static Map<String, Contact> mapContactsEmailBirthDate;
+
+  public static Map<String, Account> mapPartners;
+
+  public static Map<String, Order> mapQuotes;
+  public static Map<String, Order> mapPolicies;
+  public static Map<String, OrderItem> mapOrderItem;
+
+  public static Map<String, Case> mapClaims;
+  public static Map<String, Contact> contactPolicyDateUpdate;
+
+  public static Map<String, PricebookEntry> mapProducts;
+  public static Map<String, Cover__c> mapCovers;
+  public static Pricebook2 pricebook;
+  public static AdminSetup__mdt adminSetup;
+  public static User recordOwner;
+
+  // Process
+  public static Map<String, Account> mastersToUpdate;
+  public static Map<String, Account> mastersToUpdateEMEA;
+  public static Map<String, Account> mastersToUpdateMultiPartner;
+  public static Map<String, Account> mastersToUpdateById;
+  public static Map<String, Contact> contactsToUpdate;
+  public static Map<String, Order> quotesToUpdateList;
+  public static Map<String, Order> ordersToUpdateList;
+  public static Map<String, Order> policiesToUpdateList;
+  public static Map<String, Contact> contactsToUpdateWithPartner;
+  public static Map<String, Order> ordersToUpdateWithPartner;
+  public static Map<String, Order> policiesToUpdateWithPartner;
+  public static Map<String, Discount__c> discountsToInsert;
+  public static Map<String, Discount__c> discountsToDelete;
+  public static List<Discount__c> listDiscounts;
+  public static Map<String, Product2> productsToInsert;
+  public static Map<String, PricebookEntry> pricebookEntryToInsert;
+  public static List<OrderItem> listOrderItems;
+  public static Map<String, OrderItem> orderItemsToInsert;
+  public static Map<String, Cover__c> subCoversToInsertQuote;
+
+  public static Map<String, Case> claimsToUpsert;
+  public static Map<String, Cover__c> updateCover;
+
+  public static List<Cover__c> insertCover;
+  public static Map<String, Cover__c> mapInsertedCovers;
+  public static List<Cover__c> listCovers;
+  public static Map<String, Account> partnersToUpdateList;
+  public static Map<String, PolicyVersion__c> policyVersionsToUpdateList;
+
+  //---------------------------------------------------------------------------
+  // Main method
+  public static void processExternalRequests(
+    List<ExternalRequest__c> externalRequestList
+  ) {
+    System.debug(
+      '- - - - - ExternalRequestUtil.processExternalRequests - - - - -'
+    );
+    if (externalRequestList != null && !externalRequestList.isEmpty()) {
+      emptyStaticVariables();
+      //-------------------
+      parseExternalRequests(externalRequestList);
+      //-------------------
+      getDataForProcessing();
+      processObjects(externalRequestList);
+      upsertData();
+    }
+  }
+
+  //---------------------------------------------------------------------------
+  // Empty static variables
+  public static void emptyStaticVariables() {
+    System.debug(
+      '- - - - - ExternalRequestUtil.emptyStaticVariables - - - - -'
+    );
+    actualRequest = new ExternalRequest__c();
+
+    recordsToProcess = new Map<String, Object>();
+
+    contactsToSearch = new Set<String>();
+    contactEmails = new Set<String>();
+
+    quotesToSearch = new Set<String>();
+    policiesToSearch = new Set<String>();
+    orderItemsToSearch = new Set<String>();
+    productsToSearch = new Set<String>();
+    partnersToSearch = new Set<String>();
+    coversToSearch = new Set<String>();
+    claimsToSearch = new Set<String>();
+
+    quotesToProcess = new Map<String, Order>();
+    orderItemsToProcess = new Map<String, List<OrderItem>>();
+    discountsToProcess = new Map<String, List<Discount__c>>();
+    coversToProcess = new Map<String, List<Cover__c>>();
 
     // Querying
-    public static Map<String, Contact> mapContacts = new Map<String, Contact>();
-    public static Map<String, Contact> mapContactsEmailBirthDateLECountry = new Map<String, Contact>();
-    public static Map<String, Contact> mapContactsEmailBirthDateLE = new Map<String, Contact>();
-    public static Map<String, Contact> mapContactsEmailBirthDate = new Map<String, Contact>();
+    mapContacts = new Map<String, Contact>();
+    mapContactsEmailBirthDateLECountry = new Map<String, Contact>();
+    mapContactsEmailBirthDateLE = new Map<String, Contact>();
+    mapContactsEmailBirthDate = new Map<String, Contact>();
 
-    public static Map<String, Account> mapPartners = new Map<String, Account>();
+    mapPartners = new Map<String, Account>();
 
-    public static Map<String, Order> mapQuotes = new Map<String, Order>();
-    public static Map<String, Order> mapPolicies = new Map<String, Order>();
-    public static Map<String, OrderItem> mapOrderItem = new Map<String, OrderItem>();
+    mapQuotes = new Map<String, Order>();
+    mapPolicies = new Map<String, Order>();
+    mapOrderItem = new Map<String, OrderItem>();
 
-    public static Map<String, Case> mapClaims = new Map<String, Case>();
-    public static Map<String, Contact> contactPolicyDateUpdate = new Map<String, Contact>();
+    mapClaims = new Map<String, Case>();
+    contactPolicyDateUpdate = new Map<String, Contact>();
 
-    public static Map<String, PricebookEntry> mapProducts = new Map<String, PricebookEntry>();
-    public static Map<String, Cover__c> mapCovers = new Map<String, Cover__c>();
-    public static Pricebook2 pricebook = SystemUtil.getStandardPricebook();
-    public static AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
-    public static User recordOwner = SystemUtil.recordOwnerSelector();
-
-    // Process
-    public static Map<String, Account> mastersToUpdate = new Map<String, Account>();
-    public static Map<String, Account> mastersToUpdateEMEA = new Map<String, Account>();
-    public static Map<String, Account> mastersToUpdateById = new Map<String, Account>();
-    public static Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
-    public static Map<String, Order> quotesToUpdateList = new Map<String, Order>();
-    public static Map<String, Order> ordersToUpdateList = new Map<String, Order>();
-    public static Map<String, Order> policiesToUpdateList = new Map<String, Order>();
-    public static Map<String, Contact> contactsToUpdateWithPartner = new Map<String, Contact>();
-    public static Map<String, Order> ordersToUpdateWithPartner = new Map<String, Order>();
-    public static Map<String, Order> policiesToUpdateWithPartner = new Map<String, Order>();
-    public static Map<String, Discount__c> discountsToInsert = new Map<String, Discount__c>();
-    public static Map<String, Discount__c> discountsToDelete = new Map<String, Discount__c>();
-    public static List<Discount__c> listDiscounts = new List<Discount__c>();
-    public static Map<String, Product2> productsToInsert = new Map<String, Product2>();
-    public static Map<String, PricebookEntry> pricebookEntryToInsert = new Map<String, PricebookEntry>();
-    public static List<OrderItem> listOrderItems = new List<OrderItem>();
-    public static Map<String, OrderItem> orderItemsToInsert = new Map<String, OrderItem>();
-    public static Map<String, Cover__c> subCoversToInsertQuote = new Map<String, Cover__c>();
-
-    public static Map<String, Case> claimsToUpsert = new Map<String, Case>();
-    public static Map<String, Cover__c> updateCover = new Map<String, Cover__c>();
-
-    public static List<Cover__c> insertCover = new List<Cover__c>();
-    public static Map<String, Cover__c> mapInsertedCovers = new Map<String, Cover__c>();
-    public static List<Cover__c> listCovers = new List<Cover__c>();
-    public static Map<String, Account> partnersToUpdateList = new Map<String, Account>();
-    public static Map<String, PolicyVersion__c> policyVersionsToUpdateList = new Map<String, PolicyVersion__c>();
-
-    // Main mehod
-    public static void processExternalRequests(
-        List<ExternalRequest__c> externalRequestList
-        )
-    {
-        System.debug(
-            '- - - - - ExternalRequestUtil.processExternalRequests - - - - -'
-            );
-        if (externalRequestList != null && !externalRequestList.isEmpty() )
-        {
-            emptyStaticVariables();
-            parseExternalRequests(externalRequestList);
-            getDataForProcessing();
-            processObjects(externalRequestList);
-            upsertData();
-        }
-    }
-
-    // Empty static variables
-    private static void emptyStaticVariables()
-    {
-        System.debug(
-            '- - - - - ExternalRequestUtil.emptyStaticVariables - - - - -'
-            );
-        actualRequest = new ExternalRequest__c();
-
-        recordsToProcess = new Map<String, Object>();
-
-        contactsToSearch = new Set<String>();
-        contactEmails = new Set<String>();
-
-        quotesToSearch = new Set<String>();
-        policiesToSearch = new Set<String>();
-        orderItemsToSearch = new Set<String>();
-        productsToSearch = new Set<String>();
-        partnersToSearch = new Set<String>();
-        coversToSearch = new Set<String>();
-        claimsToSearch = new Set<String>();
-
-        quotesToProcess = new Map<String, Order>();
-        orderItemsToProcess = new Map<String, List<OrderItem> >();
-        discountsToProcess = new Map<String, List<Discount__c> >();
-        coversToProcess = new Map<String, List<Cover__c> >();
-
-        // Querying
-        mapContacts = new Map<String, Contact>();
-        mapContactsEmailBirthDateLECountry = new Map<String, Contact>();
-        mapContactsEmailBirthDateLE = new Map<String, Contact>();
-        mapContactsEmailBirthDate = new Map<String, Contact>();
-
-        mapPartners = new Map<String, Account>();
-
-        mapQuotes = new Map<String, Order>();
-        mapPolicies = new Map<String, Order>();
-        mapOrderItem = new Map<String, OrderItem>();
-
-        mapClaims = new Map<String, Case>();
-        contactPolicyDateUpdate = new Map<String, Contact>();
-
-        mapProducts = new Map<String, PricebookEntry>();
-        mapCovers = new Map<String, Cover__c>();
-        pricebook = SystemUtil.getStandardPricebook();
-        adminSetup = SystemUtil.getAdminSetupMetadata();
-        recordOwner = SystemUtil.recordOwnerSelector();
-
-        // Process
-        mastersToUpdate = new Map<String, Account>();
-        mastersToUpdateEMEA = new Map<String, Account>();
-        mastersToUpdateById = new Map<String, Account>();
-        contactsToUpdate = new Map<String, Contact>();
-        quotesToUpdateList = new Map<String, Order>();
-        ordersToUpdateList = new Map<String, Order>();
-        policiesToUpdateList = new Map<String, Order>();
-        contactsToUpdateWithPartner = new Map<String, Contact>();
-        ordersToUpdateWithPartner = new Map<String, Order>();
-        policiesToUpdateWithPartner = new Map<String, Order>();
-        discountsToInsert = new Map<String, Discount__c>();
-        discountsToDelete = new Map<String, Discount__c>();
-        listDiscounts = new List<Discount__c>();
-        productsToInsert = new Map<String, Product2>();
-        pricebookEntryToInsert = new Map<String, PricebookEntry>();
-        listOrderItems = new List<OrderItem>();
-        orderItemsToInsert = new Map<String, OrderItem>();
-        subCoversToInsertQuote = new Map<String, Cover__c>();
-
-        claimsToUpsert = new Map<String, Case>();
-        updateCover = new Map<String, Cover__c>();
-
-        insertCover = new List<Cover__c>();
-        mapInsertedCovers = new Map<String, Cover__c>();
-        listCovers = new List<Cover__c>();
-        partnersToUpdateList = new Map<String, Account>();
-        policyVersionsToUpdateList = new Map<String, PolicyVersion__c>();
-    }
-
-    // Parse External requests
-    private static void parseExternalRequests(
-        List<ExternalRequest__c> externalRequestList
-        )
-    {
-        System.debug(
-            '- - - - - ExternalRequestUtil.parseExternalRequests - - - - -'
-            );
-        System.debug('externalRequestList >>> ' + externalRequestList);
-        for (ExternalRequest__c externalRequestItem : externalRequestList)
-        {
-            try
-            {
-                System.debug('externalRequestItem >>> ' + externalRequestItem);
-                actualRequest = externalRequestItem;
-                if (externalRequestItem.Entity__c != null)
-                {
-                    switch on externalRequestItem.Entity__c {
-                        // Order
-                        when 'QuoteEntry' {
-                            parseQuoteEntry();
-                        }
-                        // Contact && Account
-                        when 'Customer' {
-                            parseCustomer();
-                        }
-                        // Order
-                        when 'Policy' {
-                            parsePolicy();
-                        }
-                        // Case
-                        when 'Claim' {
-                            parseClaim();
-                        }
-                        when else
-                        {
-                            throw new IntegrationException(
-                                      Label.ParseError +
-                                      'Unsupported entity type: ' +
-                                      externalRequestItem.Entity__c
-                                      );
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                //ErrorLogUtil.commitError(e, 'ExternalRequestUtil', externalRequestItem.Id);
-                externalRequestItem.processed__c = true;
-                externalRequestItem.processedDate__c = Datetime.now();
-                externalRequestItem.processResult__c = 'KO';
-                externalRequestItem.error_Log__c =
-                    e.getMessage() +
-                    '\n' +
-                    e.getStackTraceString();
-            }
-        }
-    }
-
-    private static void parseQuoteEntry()
-    {
-        System.debug('- - - - - ExternalRequestUtil.parseQuoteEntry - - - - -');
-        System.debug('actualRequest >>> ' + actualRequest);
-        System.debug('actualRequest.json__c >>> ' + actualRequest.json__c);
-        if (actualRequest != null && String.isNotBlank(actualRequest.json__c) )
-        {
-            if (Test.isRunningTest() )
-            {
-                // Parse quote
-                parseOrder('{}');
-
-                // Parse customer
-                parseCustomer('{}');
-            }
-            else
-            {
-                // Quote entries contains both lead and quote data. Split in separated objects.
-                List<String> splittedQuoteEntry = actualRequest.json__c.split(
-                    '"quoteEntry":'
-                    );
-                if (splittedQuoteEntry.size() == 2)
-                {
-                    splittedQuoteEntry = splittedQuoteEntry[1].split(',"customer":');
-                    if (splittedQuoteEntry.size() == 2)
-                    {
-                        // Reformat properly as indepedent objects
-                        String quoteJson = '[' + splittedQuoteEntry[0] + ']';
-                        String leadJson = '[' + splittedQuoteEntry[1].removeEnd('}]') + ']';
-
-                        // Parse quote
-                        parseOrder(quoteJson);
-
-                        // Parse customer
-                        parseCustomer(leadJson);
-                    }
+    mapProducts = new Map<String, PricebookEntry>();
+    mapCovers = new Map<String, Cover__c>();
+    if( pricebook == null ) pricebook = SystemUtil.getStandardPricebook();
+    if( recordOwner == null ) recordOwner = SystemUtil.recordOwnerSelector();
+    // Get setup data the first time
+    if( adminSetup == null ) adminSetup = SystemUtil.getAdminSetupMetadata();
+    if( adminSetup != null ) {
+        if( IBA_EMEA_NON_COUNTRY == null ) IBA_EMEA_NON_COUNTRY = adminSetup.IBA_EMEA_Non_Country__c;
+        if( IBA_MULTI_PARTNER_ORIGIN == null ) IBA_MULTI_PARTNER_ORIGIN = adminSetup.IBA_Multi_Partner_Origin__c;
+        if( WS_SOURCE_IBA == null ) WS_SOURCE_IBA = adminSetup.WS_Source_IBA__c;
+        if( WS_SOURCE_IBA_MULTI_PARTNER == null ) WS_SOURCE_IBA_MULTI_PARTNER = adminSetup.WS_Source_IBA_Multi_Partner__c;
+        if( WS_SERVICE_NAME_PROCESS_REQUEST == null ) WS_SERVICE_NAME_PROCESS_REQUEST = adminSetup.WS_Service_Process_Request__c;
+        if( WS_SERVICE_NAME_QUOTE_ENTRY == null ) WS_SERVICE_NAME_QUOTE_ENTRY = adminSetup.WS_Service_Quote_Entry__c;
+        if( IBA_EMEA == null ) IBA_EMEA = adminSetup.IBA_EMEA_Prefix__c + '-';
+        if( mapMultiPartner == null && !String.isBlank(adminSetup.Multi_Partners__c)  ) {
+            mapMultiPartner = new Map<String, String>();
+            for(String pair: adminSetup.Multi_Partners__c.split(';')) {
+                List<String> values = pair.split(':');
+                if( values.size() == 2 ) {
+                    mapMultiPartner.put(values.get(0), values.get(1));
                 }
             }
         }
-    }
-
-    private static void parseOrder(String orderJson)
-    {
-        System.debug('- - - - - ExternalRequestUtil.parseOrder - - - - -');
-
-        String entityType = actualRequest.entity__c;
-
-        Map<String, String> errorMessages = new Map<String, String>();
-        Map<String, String> errorMessages2 = new Map<String, String>();
-        Map<String, sObject> recordsMap = new Map<String, sObject>();
-        Map<String, sObject> recordsMap2 = new Map<String, sObject>();
-        Map<String, List<SObject> > secLvlRecordsMap = new Map<String, List<SObject> >();
-        Map<String, List<SObject> > thrLvlRecordsMap = new Map<String, List<SObject> >();
-        if (Test.isRunningTest() )
-        {
-            if (entityType == 'Policy')
-            {
-                recordsMap = Mock_Parser.MockParser('Policy');
-                secLvlRecordsMap = Mock_Parser.MockParserSecondLevel('Policy');
-                thrLvlRecordsMap = Mock_Parser.MockParserThirdLevel('Policy');
-            }
-            else if (entityType == 'QuoteEntry')
-            {
-                recordsMap = Mock_Parser.MockParser('QuoteEntry');
-                //recordsMap2.put('9090', recordsMap.values().get(1));
-                secLvlRecordsMap = Mock_Parser.MockParserSecondLevel('QuoteEntry');
-                thrLvlRecordsMap = Mock_Parser.MockParserThirdLevel('QuoteEntry');
-            }
-        }
-        else
-        {
-            // Reorder
-            orderJson = reorderOrderJson(orderJson);
-
-            // Parse
-            Schema.SObjectType orderEntity = Schema.getGlobalDescribe().get('Order');
-            WebServicesParser.WebParserResult parserResultQuote;
-            if (entityType == 'Policy')
-            {
-                parserResultQuote = WebServicesParser.parseObject(
-                    orderEntity,
-                    orderJson,
-                    'Internal',
-                    'ProcessRequest'
-                    );
-            }
-            else if (entityType == 'QuoteEntry')
-            {
-                parserResultQuote = WebServicesParser.parseObject(
-                    orderEntity,
-                    orderJson,
-                    'Internal',
-                    'QuoteEntry'
-                    );
-            }
-            recordsMap = parserResultQuote.recordsMap;
-            errorMessages = parserResultQuote.errorMessagesMap;
-            secLvlRecordsMap = parserResultQuote.secLvlRecordsMap;
-            thrLvlRecordsMap = parserResultQuote.thrLvlRecordsMap;
-        }
-
-        // Parsing errors?
-        if (!errorMessages.isEmpty() )
-        {
-            throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
-        }
-
-        // Quote or policy
-        Order incomingOrder = (Order) recordsMap.values().get(0);
-
-        // Set source country, timestamp and after processing check
-        incomingOrder.sourceCountry__c = actualRequest.country__c;
-
-        incomingOrder.processing_Timestamp__c = actualRequest.timestamp__c;
-        incomingOrder.after_Processing_Check__c = true;
-
-        if (!String.isBlank(incomingOrder.masterPolicyNum__c) )
-        {
-            partnersToSearch.add(incomingOrder.masterPolicyNum__c);
-        }
-
-        // Add prefix to quotes coming from IBA EMEA to avoid potential repetition of this identifier
-        if (incomingOrder.sourceCountry__c != 'Spain')
-        {
-            if (entityType == 'Policy')
-            {
-                incomingOrder.policyNum__c = 'EMEA-' + incomingOrder.policyNum__c;
-            }
-            else
-            {
-                incomingOrder.quoteEntry__c = 'EMEA-' + incomingOrder.quoteEntry__c;
-            }
-        }
-
-        String customerNumber = ContactUtil.adaptCustomerNum(
-            incomingOrder.customerNum__c,
-            incomingOrder.legalEntity__c
-            );
-        // If the order is a policy
-        if (
-            entityType == 'Policy' &&
-            !String.isBlank(incomingOrder.customerNum__c) &&
-            !String.isBlank(incomingOrder.legalEntity__c)
-            )
-        {
-            if (
-                !String.isBlank(incomingOrder.QuoteEntry__c) &&
-                incomingOrder.sourceCountry__c != 'Spain'
-                )
-            {
-                incomingOrder.QuoteEntry__c = 'EMEA-' + incomingOrder.QuoteEntry__C;
-            }
-            // Assign prefix to the related customer number
-            if (incomingOrder.sourceCountry__c != 'Spain')
-            {
-                customerNumber = 'EMEA-' + customerNumber;
-                incomingOrder.customerNum__c = customerNumber;
-            }
-            // Add customer to search
-            contactsToSearch.add(customerNumber);
-
-            recordsToProcess.put(actualRequest.id, incomingOrder);
-            policiesToSearch.add(incomingOrder.policyNum__c);
-        }
-        else if (entityType == 'QuoteEntry')
-        {
-            // Assign prefix to the related customer number
-            if (incomingOrder.sourceCountry__c != 'Spain')
-            {
-                customerNumber = 'EMEA-' + customerNumber;
-                incomingOrder.customerNum__c = customerNumber;
-            }
-            quotesToProcess.put(actualRequest.id, incomingOrder);
-        }
-
-        if (!String.isBlank(incomingOrder.quoteEntry__c) )
-        {
-            quotesToSearch.add(incomingOrder.quoteEntry__c);
-        }
-
-        // Order Items
-        List<OrderItem> orderItemList = (List<OrderItem>) secLvlRecordsMap.get(
-            'OrderItem'
-            );
-        if (orderItemList != null && !orderItemList.isEmpty() )
-        {
-            // Throw error if it is a General insurance quote and any itemId is empty
-            if (incomingOrder.LegalEntity__c.equals(Label.GeneralInsurance) )
-            {
-                for (OrderItem orderItem : orderItemList)
-                {
-                    if (String.isBlank(orderItem.itemId__c) )
-                    {
-                        throw new IntegrationException(
-                                  Label.ParseError + ': Missing objectID'
-                                  );
-                    }
-                    // Set source country and timestamp
-                    orderItem.sourceCountry__c = actualRequest.country__c;
-
-                    // Add prefix to quotes coming from IBA EMEA to avoid potential repetition of this identifier
-                    if (orderItem.sourceCountry__c != 'Spain')
-                    {
-                        orderItem.itemId__c = 'EMEA-' + orderItem.itemId__c;
-                        if (entityType == 'Policy')
-                        {
-                            orderItem.Order.PolicyNum__c =
-                                'EMEA-' + orderItem.Order.PolicyNum__c;
-                        }
-                    }
-                    orderItem.processing_Timestamp__c = actualRequest.timestamp__c;
-                    orderItemsToSearch.add(orderItem.ItemId__c);
-
-                    if (orderItem.itemModel__c != null)
-                    {
-                        // GI insurance
-                        productsToSearch.add(orderItem.itemModel__c);
-                    }
-                    else
-                    {
-                        // Life insurance, category: insured person
-                        productsToSearch.add(orderItem.category__c);
-                    }
-                }
-            }
-            orderItemsToProcess.put(actualRequest.Id, orderItemList);
-        }
-
-        // Covers
-        List<Cover__c> coverList = (List<Cover__c>) thrLvlRecordsMap.get(
-            'Cover__c'
-            );
-        if (coverList != null)
-        {
-            for (Cover__c coverItem : coverList)
-            {
-                coverItem.sourceCountry__c = actualRequest.country__c;
-
-                // Add prefix to quotes coming from IBA EMEA to avoid potential repetition of this identifier
-                if (coverItem.sourceCountry__c != 'Spain')
-                {
-                    coverItem.coverId__c = 'EMEA-' + coverItem.coverId__c;
-                    if (entityType == 'Policy')
-                    {
-                        coverItem.PolicyProduct__r.ItemId__c =
-                            'EMEA-' + coverItem.PolicyProduct__r.ItemId__c;
-                    }
-                }
-                coverItem.processing_Timestamp__c = actualRequest.timestamp__c;
-                coversToSearch.add(
-                    coverItem.policyProduct__r.itemId__c +
-                    '-' +
-                    coverItem.name
-                    );
-            }
-            coversToProcess.put(actualRequest.Id, coverList);
-        }
-
-        // Discounts
-        List<Discount__c> discountList = (List<Discount__c>) secLvlRecordsMap.get(
-            'Discount__c'
-            );
-        if (discountList != null)
-        {
-            for (Discount__c discountItem : discountList)
-            {
-                // Set source country and timestamp
-                discountItem.sourceCountry__c = actualRequest.country__c;
-                if (discountItem.sourceCountry__c != 'Spain')
-                {
-                    discountItem.DiscountId__c =
-                        'EMEA-' + discountItem.DiscountIdNumber__c;
-                    if (entityType == 'Policy')
-                    {
-                        discountItem.Policy__r.PolicyNum__c =
-                            'EMEA-' + discountItem.Policy__r.PolicyNum__c;
-                    }
-                }
-                else
-                {
-                    discountItem.DiscountId__c = String.valueOf(
-                        discountItem.DiscountIdNumber__c
-                        );
-                }
-                discountItem.processing_Timestamp__c = actualRequest.timestamp__c;
-            }
-            discountsToProcess.put(actualRequest.Id, discountList);
-        }
-    }
-
-    private static void parseCustomer(String customerJson)
-    {
-        System.debug('- - - - - ExternalRequestUtil.parseCustomer - - - - -');
-
-        String entityType = actualRequest.entity__c;
-
-        Map<String, String> errorMessages = new Map<String, String>();
-        Map<String, String> errorMessages2 = new Map<String, String>();
-        Map<String, sObject> recordsMap = new Map<String, sObject>();
-        if (Test.isRunningTest() )
-        {
-            recordsMap = Mock_Parser.MockParser('Customer');
-        }
-        else
-        {
-            Schema.SObjectType contactEntity = Schema.getGlobalDescribe()
-                                               .get('Contact');
-            WebServicesParser.WebParserResult parserResultCustomer = WebServicesParser.parseObject(
-                contactEntity,
-                customerJson,
-                'Internal',
-                'ProcessRequest'
-                );
-            recordsMap = parserResultCustomer.recordsMap;
-            errorMessages = parserResultCustomer.errorMessagesMap;
-        }
-
-        // Parsing errors?
-        if (!errorMessages.isEmpty() )
-        {
-            throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
-        }
-        Contact contact = (Contact) recordsMap.values().get(0);
-
-        contact.sourceCountry__c = actualRequest.country__c;
-        contact.customerNum__c = ContactUtil.adaptCustomerNum(
-            contact.customerNum__c,
-            contact.legalEntity__c
-            );
-
-        // If the contact has declined to receive marketing communications, set HasOptedOutOfEmail to true
-        if (contact.receiveMarketing__c == false)
-        {
-            contact.HasOptedOutOfEmail = true;
-        }
-
-        // The Lastname field is required, it is set to 'unknown' if it comes empty in the request
-        if (String.isBlank(contact.LastName) )
-        {
-            contact.LastName = Label.LeadLastName;
-            contact.FirstName = Label.LeadLastName;
-        }
-
-        // Add prefix to quotes coming from IBA EMEA to avoid potential repetition of this identifier
-        if (contact.sourceCountry__c != 'Spain')
-        {
-            contact.customerNum__c = 'EMEA-' + contact.customerNum__c;
-        }
-
-        contactsToSearch.add(contact.customerNum__c);
-        contactEmails.add(contact.email);
-
-        if (!String.isBlank(contact.masterPolicyNum__c) )
-        {
-            partnersToSearch.add(contact.masterPolicyNum__c);
-        }
-
-        recordsToProcess.put(actualRequest.id, contact);
-    }
-
-    private static void parseCustomer()
-    {
-        if (null != actualRequest.json__c)
-            parseCustomer(actualRequest.json__c);
-    }
-
-    private static void parsePolicy()
-    {
-        if (null != actualRequest.json__c)
-            parseOrder(actualRequest.json__c);
-    }
-
-    private static void parseClaim()
-    {
-        System.debug('- - - - - ExternalRequestUtil.parseClaim - - - - -');
-
-        Map<String, String> errorMessages = new Map<String, String>();
-        Map<String, String> errorMessages2 = new Map<String, String>();
-        Map<String, sObject> recordsMap = new Map<String, sObject>();
-
-        if (Test.isRunningTest() )
-        {
-            recordsMap = Mock_Parser.MockParser(actualRequest.Entity__c);
-        }
-        else
-        {
-            Schema.SObjectType claimEntity = Schema.getGlobalDescribe().get('Case');
-            WebServicesParser.WebParserResult parserResult = WebServicesParser.parseObject(
-                claimEntity,
-                actualRequest.Json__c,
-                'Internal',
-                'ProcessRequest'
-                );
-            recordsMap = parserResult.recordsMap;
-            errorMessages = parserResult.errorMessagesMap;
-        }
-
-        // Parsing errors?
-        if (!errorMessages.isEmpty() )
-        {
-            throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
-        }
-
-        if (recordsMap != null)
-        {
-            Case claim = (Case) recordsMap.values().get(0);
-
-            claim.sourceCountry__c = actualRequest.country__c;
-            if (claim.sourceCountry__c != 'Spain')
-            {
-                claim.claimNumber__c = 'EMEA-' + claim.claimNumber__c;
-            }
-
-            recordsToProcess.put(actualRequest.id, claim);
-            claimsToSearch.add(claim.claimNumber__c);
-
-            // Policy
-            if (!String.isBlank(claim.PolicyNum__c) )
-            {
-                if (claim.sourceCountry__c != 'Spain')
-                {
-                    claim.PolicyNum__c = 'EMEA-' + claim.PolicyNum__c;
-                }
-                policiesToSearch.add(claim.PolicyNum__c);
-            }
-
-            // Customer
-            if (!String.isBlank(claim.customerNum__c) )
-            {
-                // Search customer of both legal entity because claim doesn't specify Legal Entity
-                if (claim.sourceCountry__c != 'Spain')
-                {
-                    contactsToSearch.add(
-                        'EMEA-' +
-                        ContactUtil.adaptCustomerNum(
-                            claim.customerNum__c,
-                            Label.GeneralInsurance
-                            )
-                        );
-                    contactsToSearch.add(
-                        'EMEA-' +
-                        ContactUtil.adaptCustomerNum(
-                            claim.customerNum__c,
-                            Label.LifeInsurance
-                            )
-                        );
-                }
-                else
-                {
-                    contactsToSearch.add(
-                        ContactUtil.adaptCustomerNum(
-                            claim.customerNum__c,
-                            Label.GeneralInsurance
-                            )
-                        );
-                    contactsToSearch.add(
-                        ContactUtil.adaptCustomerNum(
-                            claim.customerNum__c,
-                            Label.LifeInsurance
-                            )
-                        );
-                }
-            }
-
-            // Insured object
-            if (!String.isBlank(claim.insuredObjectId__c) )
-            {
-                if (claim.sourceCountry__c != 'Spain')
-                {
-                    claim.insuredObjectId__c = 'EMEA-' + claim.insuredObjectId__c;
-                }
-                orderItemsToSearch.add(claim.insuredObjectId__c);
-            }
-        }
-    }
-
-    /**
-    ** Method to reorder children and grandchildren (discounts, items and covers) in the received json.
-    * The method returns the related objects in the bottom of the json in order that the parser processes it correctly
-    * @author nbizkarra
-    * @date 25/05/2020
-    **/
-    public static String reorderOrderJson(String receivedJson)
-    {
-        List<Object> objectList = (List<Object>) JSON.deserializeUntyped(
-            receivedJson
-            );
-        Map<String, Object> objectMap = (Map<String, Object>) objectList[0];
-
-        // Discounts
-        Object discountsItem = objectMap.remove('discounts');
-        String discountsSerialized = JSON.serialize(discountsItem);
-
-        // Items
-        Object items = objectMap.remove('items');
-        String itemSerialized = JSON.serialize(items);
-        List<Object> itemsList = (List<Object>) JSON.deserializeUntyped(
-            itemSerialized
-            );
-
-        String itemsString = '';
-        for (Object objectItem : itemsList)
-        {
-            Map<String, Object> mapItems = (Map<String, Object>) objectItem;
-            String covers = JSON.serialize(mapItems.remove('covers') );
-
-            // Item without covers
-            String item = JSON.serialize(mapItems);
-            item = item.removeEnd('}');
-
-            // Add covers in the end
-            item = item + ',"covers":' + covers;
-            itemsString = itemsString + item + '},';
-        }
-        itemsString = itemsString.removeEnd(',');
-        itemsString = '[' + itemsString + ']';
-
-        // Add discount and items to order
-        String order = JSON.serialize(objectMap);
-        order = order.removeEnd('}');
-        order = order + ',"discounts":' + discountsSerialized;
-        order = '[' + order + ',"items":' + itemsString + '}]';
-
-        return order;
-    }
-
-    // Query data needed for processing
-    private static void getDataForProcessing()
-    {
-        System.debug(
-            '- - - - - ExternalRequestUtil.getDataForProcessing - - - - -'
-            );
-        mapContacts = SystemUtil.contactsSelector(contactsToSearch);
-        mapContactsEmailBirthDateLECountry = SystemUtil.contactsSelectorEmailBirthDateLECountry(
-            contactEmails
-            );
-        mapContactsEmailBirthDateLE = SystemUtil.contactsSelectorEmailBirthDateLE(
-            contactEmails
-            );
-        mapContactsEmailBirthDate = SystemUtil.contactsSelectorEmailBirthDate(
-            contactEmails
-            );
-        mapPartners = SystemUtil.partnerSelector(partnersToSearch);
-        mapPolicies = SystemUtil.policySelector(policiesToSearch);
-        mapQuotes = SystemUtil.quoteSelector(quotesToSearch);
-        mapClaims = SystemUtil.claimsSelector(claimsToSearch);
-        mapOrderItem = SystemUtil.orderItemSelector(orderItemsToSearch);
-        mapProducts = SystemUtil.productsSelector(productsToSearch);
-        mapCovers = SystemUtil.coversSelector(coversToSearch);
     }
 
     // Process
-    private static void processObjects(
-        List<ExternalRequest__c> externalRequestList
-        )
-    {
-        System.debug('- - - - - ExternalRequestUtil.processObjects - - - - -');
-        for (ExternalRequest__c externalRequestItem : externalRequestList)
-        {
-            try
-            {
-                actualRequest = externalRequestItem;
-                if (externalRequestItem.entity__c != null)
-                {
-                    switch on externalRequestItem.entity__c {
-                        when 'Customer' {
-                            processCustomer();
-                        }
-                        when 'QuoteEntry' {
-                            processQuoteEntry();
-                        }
-                        when 'Policy' {
-                            processPolicy();
-                        }
-                        when 'Claim' {
-                            processClaim();
-                        }
+    mastersToUpdate = new Map<String, Account>();
+    mastersToUpdateEMEA = new Map<String, Account>();
+    mastersToUpdateMultiPartner = new Map<String, Account>();
+    mastersToUpdateById = new Map<String, Account>();
+    contactsToUpdate = new Map<String, Contact>();
+    quotesToUpdateList = new Map<String, Order>();
+    ordersToUpdateList = new Map<String, Order>();
+    policiesToUpdateList = new Map<String, Order>();
+    contactsToUpdateWithPartner = new Map<String, Contact>();
+    ordersToUpdateWithPartner = new Map<String, Order>();
+    policiesToUpdateWithPartner = new Map<String, Order>();
+    discountsToInsert = new Map<String, Discount__c>();
+    discountsToDelete = new Map<String, Discount__c>();
+    listDiscounts = new List<Discount__c>();
+    productsToInsert = new Map<String, Product2>();
+    pricebookEntryToInsert = new Map<String, PricebookEntry>();
+    listOrderItems = new List<OrderItem>();
+    orderItemsToInsert = new Map<String, OrderItem>();
+    subCoversToInsertQuote = new Map<String, Cover__c>();
+
+    claimsToUpsert = new Map<String, Case>();
+    updateCover = new Map<String, Cover__c>();
+
+    insertCover = new List<Cover__c>();
+    mapInsertedCovers = new Map<String, Cover__c>();
+    listCovers = new List<Cover__c>();
+    partnersToUpdateList = new Map<String, Account>();
+    policyVersionsToUpdateList = new Map<String, PolicyVersion__c>();
+
+    // By default is the original IBA (spain)
+    AccountFieldCustomerNum = ACCOUNT_FIELD_IBA;
+    AccountMastersToUpdate = mastersToUpdate;
+    isIBAMultiPartner = false;
+    isEMEA = false;
+    IBA_Prefix = '';
+    IBA_Source = WS_SOURCE_IBA;
+  }
+
+  //---------------------------------------------------------------------------
+  // Parse External requests
+  private static void parseExternalRequests(
+    List<ExternalRequest__c> externalRequestList
+  ) {
+    System.debug( '- - - - - ExternalRequestUtil.parseExternalRequests - - - - -' );
+    System.debug('externalRequestList >>> ' + externalRequestList);
+
+    // For each External Request
+    for (ExternalRequest__c externalRequestItem : externalRequestList) {
+        try {
+            System.debug('externalRequestItem >>> ' + externalRequestItem);
+            actualRequest = externalRequestItem;
+
+            if (externalRequestItem.Entity__c != null) {
+                // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+                // IBA (Spain) => default value
+                IBA_Prefix = '';
+                IBA_Source = WS_SOURCE_IBA;
+                isIBAMultiPartner = false;
+                isEMEA = false;
+                AccountFieldCustomerNum = ACCOUNT_FIELD_IBA;
+                AccountMastersToUpdate = mastersToUpdate;
+                if( actualRequest.Origin__c == IBA_MULTI_PARTNER_ORIGIN ) { // IBA Multi Partner => Origin = IBA Multi-Partner
+                    isIBAMultiPartner = true;
+                    IBA_Source = WS_SOURCE_IBA_MULTI_PARTNER;
+                    AccountFieldCustomerNum = ACCOUNT_FIELD_IBA_MULTI_PARTNER;
+                    AccountMastersToUpdate = mastersToUpdateMultiPartner;
+                } else if( actualRequest.Country__c != IBA_EMEA_NON_COUNTRY ) { // IBA EMEA => Country <> Spain
+                    isEMEA = true;
+                    IBA_Prefix = IBA_EMEA;
+                    AccountFieldCustomerNum = ACCOUNT_FIELD_IBA_EMEA;
+                    AccountMastersToUpdate = mastersToUpdateEMEA;
+                }
+
+                switch on externalRequestItem.Entity__c {
+                    // Order
+                    when 'QuoteEntry' {
+                      parseQuoteEntry();
                     }
-                    externalRequestItem.processed__c = true;
-                    externalRequestItem.processedDate__c = Datetime.now();
-                    externalRequestItem.processResult__c = 'OK';
-                    externalRequestItem.error_Log__c = ' ';
+                    // Contact && Account
+                    when 'Customer' {
+                      parseCustomer();
+                    }
+                    // Order
+                    when 'Policy' {
+                      parsePolicy();
+                    }
+                    // Case
+                    when 'Claim' {
+                      parseClaim();
+                    }
+                    when else {
+                      throw new IntegrationException( 
+                        Label.ParseError + 'Unsupported entity type: ' + externalRequestItem.Entity__c
+                      );
+                    }
                 }
             }
-            catch (Exception e)
-            {
-                //ErrorLogUtil.commitError(e, 'ExternalRequestUtil', externalRequestItem.Id);
-                externalRequestItem.processed__c = true;
-                externalRequestItem.processedDate__c = Datetime.now();
-                externalRequestItem.processResult__c = 'KO';
-                externalRequestItem.error_Log__c =
-                    e.getMessage() +
-                    '\n' +
-                    e.getStackTraceString();
+        } catch (Exception e) {
+            //ErrorLogUtil.commitError(e, 'ExternalRequestUtil', externalRequestItem.Id);
+            externalRequestItem.processed__c = true;
+            externalRequestItem.processedDate__c = Datetime.now();
+            externalRequestItem.processResult__c = 'KO';
+            externalRequestItem.error_Log__c = e.getMessage() + '\n' + e.getStackTraceString();
+        }
+    }
+  }
+
+  private static void parseQuoteEntry() {
+    System.debug('- - - - - ExternalRequestUtil.parseQuoteEntry - - - - -');
+    // System.debug('actualRequest >>> ' + actualRequest);
+    // System.debug('actualRequest.json__c >>> ' + actualRequest.json__c);
+    if (actualRequest != null && String.isNotBlank(actualRequest.json__c)) {
+      // Quote entries contains both lead and quote data. Split in separated objects.
+      List<String> splittedQuoteEntry = actualRequest.json__c.split('"quoteEntry":');
+      if (splittedQuoteEntry.size() == 2) {
+        splittedQuoteEntry = splittedQuoteEntry[1].split(',"customer":');
+        if (splittedQuoteEntry.size() == 2) {
+          // Reformat properly as indepedent objects
+          String quoteJson = '[' + splittedQuoteEntry[0] + ']';
+          String leadJson = '[' + splittedQuoteEntry[1].removeEnd('}]') + ']';
+
+          // Parse quote
+          parseOrder(quoteJson);
+
+          // Parse customer
+          parseCustomer(leadJson);
+        }
+      }
+    }
+  }
+
+  /**
+   * parseOrder
+   */
+  private static void parseOrder(String orderJson) {
+    System.debug('- - - - - ExternalRequestUtil.parseOrder - - - - -');
+
+    String entityType = actualRequest.entity__c;
+
+    Map<String, String> errorMessages = new Map<String, String>();
+    Map<String, sObject> recordsMap = new Map<String, sObject>();
+    // Map<String, sObject> recordsMap2 = new Map<String, sObject>();
+    Map<String, List<SObject>> secLvlRecordsMap = new Map<String, List<SObject>>();
+    Map<String, List<SObject>> thrLvlRecordsMap = new Map<String, List<SObject>>();
+    
+
+    // Reorder
+    //System.Debug('****** order json: ' + orderJson);
+    orderJson = reorderOrderJson(orderJson);
+    //System.Debug('****** reorder json: ' + orderJson);
+
+    // Parse
+    //System.Debug('*** Parser Init');
+    Schema.SObjectType orderEntity = Schema.getGlobalDescribe().get('Order');
+    WebServicesParser.WebParserResult parserResultQuote;
+    if (entityType == 'Policy') {
+      parserResultQuote = WebServicesParser.parseObject(
+        orderEntity,
+        orderJson,
+        IBA_Source,
+        WS_SERVICE_NAME_PROCESS_REQUEST
+      );
+    } else if (entityType == 'QuoteEntry') {
+      parserResultQuote = WebServicesParser.parseObject(
+        orderEntity,
+        orderJson,
+        IBA_Source,
+        WS_SERVICE_NAME_QUOTE_ENTRY
+      );
+    }
+    recordsMap = parserResultQuote.recordsMap;
+    errorMessages = parserResultQuote.errorMessagesMap;
+    secLvlRecordsMap = parserResultQuote.secLvlRecordsMap;
+    thrLvlRecordsMap = parserResultQuote.thrLvlRecordsMap;
+    //System.Debug('*** Parser End');
+
+
+    if (Test.isRunningTest()) {
+        // System.Debug('*** Test mock init');
+        Mock_Parser.isIBA_MultiPart = isIBAMultiPartner;
+        Mock_Parser.isIBA_EMEA = isEMEA;
+        if (entityType == 'Policy') {
+            recordsMap = Mock_Parser.MockParser('Policy');
+            secLvlRecordsMap = Mock_Parser.MockParserSecondLevel('Policy');
+            thrLvlRecordsMap = Mock_Parser.MockParserThirdLevel('Policy');
+        } else if (entityType == 'QuoteEntry') {
+            recordsMap = Mock_Parser.MockParser('QuoteEntry');
+            //recordsMap2.put('9090', recordsMap.values().get(1));
+            secLvlRecordsMap = Mock_Parser.MockParserSecondLevel('QuoteEntry');
+            thrLvlRecordsMap = Mock_Parser.MockParserThirdLevel('QuoteEntry');
+        }
+        errorMessages.clear();
+        // System.Debug('*** Test mock fin');
+    }
+
+    // Parsing errors?
+    if (!errorMessages.isEmpty()) {
+        throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
+    }
+
+    // Quote or policy
+    Order incomingOrder = (Order) recordsMap.values().get(0);
+    System.Debug('*** incomingOrder: ' + incomingOrder);
+
+    // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+    if( isIBAMultiPartner ) {IBA_Prefix = getMultiPartner(incomingOrder.Partner__c);}
+
+    // FIELDS
+    // Set source country, timestamp and after processing check
+    incomingOrder.sourceCountry__c = actualRequest.country__c;
+    // Processing Timestamp
+    incomingOrder.processing_Timestamp__c = actualRequest.timestamp__c;
+    // After Processing check
+    incomingOrder.after_Processing_Check__c = true;
+    // Partner (account)
+    if (!String.isBlank(incomingOrder.masterPolicyNum__c)) {
+      partnersToSearch.add(incomingOrder.masterPolicyNum__c);
+    }
+
+    String customerNumber = ContactUtil.adaptCustomerNum(incomingOrder.customerNum__c,incomingOrder.legalEntity__c);
+    // Add prefix to quotes to avoid potential repetition of this identifier
+    // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+    if( !String.isBlank(IBA_Prefix) ) {// if (incomingOrder.sourceCountry__c != 'Spain') {
+        if (entityType == 'Policy') {
+            incomingOrder.policyNum__c = IBA_Prefix + incomingOrder.policyNum__c;
+            if ( !String.isBlank(incomingOrder.QuoteEntry__c) ) { //incomingOrder.sourceCountry__c != 'Spain'
+                incomingOrder.QuoteEntry__c = IBA_Prefix + incomingOrder.QuoteEntry__C;
+              }
+        } else {
+            incomingOrder.QuoteEntry__c = IBA_Prefix + incomingOrder.QuoteEntry__c;
+        }
+        customerNumber = IBA_Prefix + customerNumber;
+    }
+    incomingOrder.customerNum__c = customerNumber;
+
+    // If the order is a policy
+    if ( entityType == 'Policy' && 
+        !String.isBlank(incomingOrder.customerNum__c) && !String.isBlank(incomingOrder.legalEntity__c) 
+    ) {
+          // Add customer to search
+          contactsToSearch.add(customerNumber);
+
+          recordsToProcess.put(actualRequest.id, incomingOrder);
+          policiesToSearch.add(incomingOrder.policyNum__c);
+    } else if (entityType == 'QuoteEntry') {
+          quotesToProcess.put(actualRequest.id, incomingOrder);
+    }
+
+    if (!String.isBlank(incomingOrder.quoteEntry__c)) {
+      quotesToSearch.add(incomingOrder.quoteEntry__c);
+    }
+
+    //---------------------------------
+    // Order Items
+    List<OrderItem> orderItemList = (List<OrderItem>) secLvlRecordsMap.get( 'OrderItem' );
+    if (orderItemList != null && !orderItemList.isEmpty()) {
+      // Throw error if it is a General insurance quote and any itemId is empty
+      // if (incomingOrder.LegalEntity__c.equals(Label.GeneralInsurance)) {
+        for (OrderItem orderItem : orderItemList) {
+          if (incomingOrder.LegalEntity__c.equals(Label.GeneralInsurance)) {
+              // Throw error if it is a General insurance quote and any itemId is empty
+              if (String.isBlank(orderItem.itemId__c)) {
+                throw new IntegrationException( Label.ParseError + ': Missing objectID' );
+              }
+
+              // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+              if( !String.isBlank(IBA_Prefix) ) { // if (orderItem.sourceCountry__c != 'Spain') {
+                orderItem.itemId__c = IBA_Prefix + orderItem.itemId__c;
+              }    
+              orderItemsToSearch.add(orderItem.ItemId__c);
+          }
+          // Set source country and timestamp
+          orderItem.sourceCountry__c = actualRequest.country__c;
+          orderItem.processing_Timestamp__c = actualRequest.timestamp__c;
+
+          // Add prefix to quotes coming from IBA EMEA to avoid potential repetition of this identifier
+          // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+          if( !String.isBlank(IBA_Prefix) ) { // if (orderItem.sourceCountry__c != 'Spain') {
+            // orderItem.itemId__c = IBA_Prefix + orderItem.itemId__c;
+            if (entityType == 'Policy') {
+              orderItem.Order.PolicyNum__c = IBA_Prefix + orderItem.Order.PolicyNum__c;
+            } else {
+              orderItem.Order.QuoteEntry__c = IBA_Prefix + orderItem.Order.QuoteEntry__c;
             }
+          }
+
+          if (orderItem.itemModel__c != null) {   // GI insurance
+              productsToSearch.add(orderItem.itemModel__c);
+          } else {    // Life insurance, category: insured person
+              productsToSearch.add(orderItem.category__c);
+          }
+          System.Debug('**** OrderItem: ' + orderItem);
         }
+      // }
+      orderItemsToProcess.put(actualRequest.Id, orderItemList);
     }
 
-    private static void processCustomer()
-    {
-        System.debug('- - - - - ExternalRequestUtil.processCustomer - - - - -');
-        // Get the customer
-        if (recordsToProcess.containsKey(actualRequest.id) )
-        {
-            System.debug('LISTA >>> ' + recordsToProcess);
-            Contact incomingContact = (Contact) recordsToProcess.get(
-                actualRequest.id
-                );
-            ContactUtil.upsertContact(incomingContact, null);
-        }
+    //---------------------------------
+    // Covers
+    List<Cover__c> coverList = (List<Cover__c>) thrLvlRecordsMap.get( 'Cover__c' );
+    if (coverList != null && !coverList.isEmpty() ) {
+      for (Cover__c coverItem : coverList) {
+          coverItem.sourceCountry__c = actualRequest.country__c;
+
+          // Add prefix to quotes coming from IBA EMEA to avoid potential repetition of this identifier
+          // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+          if( !String.isBlank(IBA_Prefix) ) { // if (coverItem.sourceCountry__c != 'Spain') {
+            coverItem.coverId__c = IBA_Prefix + coverItem.coverId__c;
+            // if (entityType == 'Policy') {
+              coverItem.PolicyProduct__r.ItemId__c = IBA_Prefix + coverItem.PolicyProduct__r.ItemId__c;
+            // }
+          }
+          coverItem.processing_Timestamp__c = actualRequest.timestamp__c;
+          coversToSearch.add( coverItem.policyProduct__r.itemId__c + '-' + coverItem.name );
+      }
+      coversToProcess.put(actualRequest.Id, coverList);
     }
 
-    private static void processQuoteEntry()
-    {
-        System.debug('- - - - - ExternalRequestUtil.processQuoteEntry - - - - -');
-        // Get the policy
-        if (
-            recordsToProcess.containsKey(actualRequest.id) &&
-            quotesToProcess.containsKey(actualRequest.id)
-            )
-        {
-            /*List<OrderItem> orderItems = orderItemsToProcess.get(actualRequest.id);
-                  List<Discount__c> discounts = discountsToProcess.get(actualRequest.id);
-                  List<Cover__c> covers = coversToProcess.get(actualRequest.id);*/
-
-            listOrderItems = orderItemsToProcess.get(actualRequest.id);
-            listDiscounts = discountsToProcess.get(actualRequest.id);
-            listCovers = coversToProcess.get(actualRequest.id);
-
-            Contact contact = (Contact) recordsToProcess.get(actualRequest.id);
-            Order quote = (Order) quotesToProcess.get(actualRequest.id);
-
-            OrderUtil.upsertQuote(contact, quote);
-
-            /*OrderUtil.upsertQuote(contact, quote, mapQuotes,quotesToUpdateList,mapContacts,contactsToUpdateList,
-                                        mapContactsEmailBirthDateLECountry, mapContactsEmailBirthDateLE, mastersToUpdate,
-                                        mastersToUpdateEMEA, mapPartners, contactsToUpdateWithPartner,
-                                        ordersToUpdateWithPartner, partnersToUpdateList, discounts, discountsToInsert,
-                                        mapOrderItem,orderItems,mapProducts, productsToInsert, pricebookEntryToInsert,
-                                        Pricebook, orderItemsToInsert, covers,subCoversToInsertQuote,mapCovers,
-                                        updateCover,recordOwner);*/
+    //---------------------------------
+    // Discounts
+    List<Discount__c> discountList = (List<Discount__c>) secLvlRecordsMap.get( 'Discount__c' );
+    if( discountList != null && !discountList.isEmpty() ) {
+      for (Discount__c discountItem : discountList) {
+          // Set source country and timestamp
+          discountItem.sourceCountry__c = actualRequest.country__c;          
+          // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+          if( !String.isBlank(IBA_Prefix) ) { // if (discountItem.sourceCountry__c != 'Spain') {
+              discountItem.DiscountId__c = IBA_Prefix + discountItem.DiscountIdNumber__c;
+              if (entityType == 'Policy') {
+                discountItem.Policy__r.PolicyNum__c = IBA_Prefix + discountItem.Policy__r.PolicyNum__c;
+              } else {
+                discountItem.Policy__r.QuoteEntry__c = IBA_Prefix + discountItem.Policy__r.QuoteEntry__c;
+              }
+          } else {
+              discountItem.DiscountId__c = String.valueOf( discountItem.DiscountIdNumber__c );
+          }
+          discountItem.processing_Timestamp__c = actualRequest.timestamp__c;
         }
+        discountsToProcess.put(actualRequest.Id, discountList);
+    }
+  }
+
+  /**
+   * parseCustomer
+   */
+  private static void parseCustomer(String customerJson) {
+    System.debug('- - - - - ExternalRequestUtil.parseCustomer - - - - -');
+
+    String entityType = actualRequest.entity__c;
+
+    Map<String, String> errorMessages = new Map<String, String>();
+    Map<String, sObject> recordsMap = new Map<String, sObject>();
+    
+    Schema.SObjectType contactEntity = Schema.getGlobalDescribe().get('Contact');
+    WebServicesParser.WebParserResult parserResultCustomer = WebServicesParser.parseObject(
+      contactEntity,
+      customerJson,
+      IBA_Source,
+      WS_SERVICE_NAME_PROCESS_REQUEST
+    );
+    recordsMap = parserResultCustomer.recordsMap;
+    errorMessages = parserResultCustomer.errorMessagesMap;
+    
+    if (Test.isRunningTest()) {
+        Mock_Parser.isIBA_MultiPart = isIBAMultiPartner;
+        Mock_Parser.isIBA_EMEA = isEMEA;
+        recordsMap = Mock_Parser.MockParser('Customer');
+        errorMessages.clear();
     }
 
-    private static void processPolicy()
-    {
-        System.debug('- - - - - ExternalRequestUtil.processPolicy - - - - -');
-        // Get the policy
-        if (recordsToProcess.containsKey(actualRequest.id) )
-        {
-            /*List<OrderItem> orderItems = orderItemsToProcess.get(actualRequest.id);
-                  List<Discount__c> discounts = discountsToProcess.get(actualRequest.id);
-                  List<Cover__c> covers = coversToProcess.get(actualRequest.id);*/
+    // Parsing errors?
+    if (!errorMessages.isEmpty()) {
+      throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
+    }
 
-            listOrderItems = orderItemsToProcess.get(actualRequest.id);
-            listDiscounts = discountsToProcess.get(actualRequest.id);
-            listCovers = coversToProcess.get(actualRequest.id);
+    Contact contact = (Contact) recordsMap.values().get(0);
+    // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+    if( isIBAMultiPartner ) {IBA_Prefix = getMultiPartner(contact.Partner__c);}
 
-            Order policy = (Order) recordsToProcess.get(actualRequest.id);
+    // FIELDS ---------------------
+    // Country
+    contact.sourceCountry__c = actualRequest.country__c;
 
-            /*OrderUtil.upsertPolicy(policy,mapPolicies,policyVersionsToUpdateList,ordersToUpdateList,policiesToUpdateList,
-                                         mapContacts,contactsToUpdateList,mapPartners,policiesToUpdateWithPartner,
-                                         ordersToUpdateWithPartner,partnersToUpdateList,discounts, discountsToInsert,
-                                         discountsToDelete,mapOrderItem,orderItems,mapProducts,productsToInsert,
-                                         pricebookEntryToInsert, Pricebook, orderItemsToInsert, covers,subCoversToInsertQuote,
-                                         mapCovers,updateCover,adminSetup,mapQuotes,quotesToUpdateList,
-                                         contactPolicyDateUpdate,recordOwner);*/
+    // Customer Num
+    contact.customerNum__c = ContactUtil.adaptCustomerNum( contact.customerNum__c, contact.legalEntity__c );
+    // Add prefix to quotes to avoid potential repetition of this identifier
+    // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+    if( !String.isBlank(IBA_Prefix) ) { // if (contact.sourceCountry__c != 'Spain') {
+      contact.customerNum__c = IBA_Prefix + contact.customerNum__c;
+    }
 
-            OrderUtil.upsertPolicy(policy);
-            //if quote has been processed first, remove it
-            if (!String.isBlank(policy.QuoteEntry__c) )
-            {
-                quotesToUpdateList.remove(policy.QuoteEntry__c);
+    // If the contact has declined to receive marketing communications, set HasOptedOutOfEmail to true
+    if (contact.receiveMarketing__c == false) {
+      contact.HasOptedOutOfEmail = true;
+    }
+    // The Lastname field is required, it is set to 'unknown' if it comes empty in the request
+    if (String.isBlank(contact.LastName)) {
+      contact.LastName = Label.LeadLastName;
+      contact.FirstName = Label.LeadLastName;
+    }
+
+    // SEARCH Contacts
+    contactsToSearch.add(contact.customerNum__c);
+    contactEmails.add(contact.email);
+
+    // SEARCH Partners (account)
+    if (!String.isBlank(contact.masterPolicyNum__c)) {
+      partnersToSearch.add(contact.masterPolicyNum__c);
+    }
+
+    recordsToProcess.put(actualRequest.id, contact);
+  }
+
+  /**
+   * parseCustomer
+   */
+  private static void parseCustomer() {
+    if (null != actualRequest.json__c)
+      parseCustomer(actualRequest.json__c);
+  }
+
+  /**
+   * parsePolicy
+   */
+  private static void parsePolicy() {
+    if (null != actualRequest.json__c)
+      parseOrder(actualRequest.json__c);
+  }
+
+  /**
+   * parseClaim
+   */
+  private static void parseClaim() {
+    System.debug('- - - - - ExternalRequestUtil.parseClaim - - - - -');
+
+    Map<String, String> errorMessages = new Map<String, String>();
+    Map<String, sObject> recordsMap = new Map<String, sObject>();
+
+    Schema.SObjectType claimEntity = Schema.getGlobalDescribe().get('Case');
+    WebServicesParser.WebParserResult parserResult = WebServicesParser.parseObject(
+      claimEntity,
+      actualRequest.Json__c,
+      IBA_Source,
+      WS_SERVICE_NAME_PROCESS_REQUEST
+    );
+    recordsMap = parserResult.recordsMap;
+    errorMessages = parserResult.errorMessagesMap;
+  
+    if (Test.isRunningTest()) {
+      Mock_Parser.isIBA_MultiPart = isIBAMultiPartner;
+      Mock_Parser.isIBA_EMEA = isEMEA;
+      recordsMap = Mock_Parser.MockParser(actualRequest.Entity__c);
+      errorMessages.clear();
+    }
+
+    // Parsing errors?
+    if (!errorMessages.isEmpty()) {
+      throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
+    }
+
+    if (recordsMap != null) {
+      Case claim = (Case) recordsMap.values().get(0);
+      System.Debug('***** claim: ' + claim);
+
+      // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+      if( isIBAMultiPartner ) {IBA_Prefix = getMultiPartner(claim.Partner__c);}
+
+      // FIELDS
+      // Source Country
+      claim.sourceCountry__c = actualRequest.country__c;
+      // Claim Number      
+      // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+      if( !String.isBlank(IBA_Prefix) ) { // if (claim.sourceCountry__c != 'Spain') {
+        claim.claimNumber__c = IBA_Prefix + claim.claimNumber__c;
+      }
+
+      recordsToProcess.put(actualRequest.id, claim);
+
+      // Search Claims
+      claimsToSearch.add(claim.claimNumber__c);
+
+      // Policy
+      // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+      if (!String.isBlank(claim.PolicyNum__c)) {
+        if( !String.isBlank(IBA_Prefix) ) { // if (claim.sourceCountry__c != 'Spain') {
+          claim.PolicyNum__c = IBA_Prefix + claim.PolicyNum__c;
+        }
+        // Search Policies
+        policiesToSearch.add(claim.PolicyNum__c);
+      }
+
+      // Customer
+      if (!String.isBlank(claim.customerNum__c)) {
+        // Search customer of both legal entity because claim doesn't specify Legal Entity
+        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+        String customerNumGI = ContactUtil.adaptCustomerNum( claim.customerNum__c, Label.GeneralInsurance );
+        String customerNumLife = ContactUtil.adaptCustomerNum( claim.customerNum__c, Label.GeneralInsurance );
+        if( !String.isBlank(IBA_Prefix) ) { // if (claim.sourceCountry__c != 'Spain') {
+          customerNumGI = IBA_Prefix + customerNumGI;
+          customerNumLife = IBA_Prefix + customerNumLife;  
+        }
+        contactsToSearch.add( customerNumGI );
+        contactsToSearch.add( customerNumLife );
+      }
+
+      // Insured object
+      if (!String.isBlank(claim.insuredObjectId__c)) {
+        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+        if( !String.isBlank(IBA_Prefix) ) { // if (claim.sourceCountry__c != 'Spain') {
+          claim.insuredObjectId__c = IBA_Prefix + claim.insuredObjectId__c;
+        }
+        orderItemsToSearch.add(claim.insuredObjectId__c);
+      }
+    }
+  }
+
+  /**
+   ** Method to reorder children and grandchildren (discounts, items and covers) in the received json.
+   * The method returns the related objects in the bottom of the json in order that the parser processes it correctly
+   * @author nbizkarra
+   * @date 25/05/2020
+   **/
+  public static String reorderOrderJson(String receivedJson) {
+    String itemsString = '';
+    String discountsSerialized = '';
+
+    List<Object> objectList = (List<Object>) JSON.deserializeUntyped(
+      receivedJson
+    );
+    Map<String, Object> objectMap = (Map<String, Object>) objectList[0];
+
+    // Discounts
+    Object discountsItem = objectMap.remove('discounts');
+    if( discountsItem != null )
+        discountsSerialized = JSON.serialize(discountsItem);
+
+    // Items
+    Object items = objectMap.remove('items');
+    if( items != null ) {
+      String itemSerialized = JSON.serialize(items);
+      List<Object> itemsList = (List<Object>) JSON.deserializeUntyped(
+        itemSerialized
+      );
+
+      
+      for (Object objectItem : itemsList) {
+        Map<String, Object> mapItems = (Map<String, Object>) objectItem;
+        String covers = JSON.serialize(mapItems.remove('covers'));
+
+        // Item without covers
+        String item = JSON.serialize(mapItems);
+        item = item.removeEnd('}');
+
+        // Add covers in the end
+        item = item + ',"covers":' + covers;
+        itemsString = itemsString + item + '},';
+      }
+      itemsString = itemsString.removeEnd(',');
+      itemsString = '[' + itemsString + ']';
+    }
+
+    // Add discount and items to order
+    String order = JSON.serialize(objectMap);
+    order = order.removeEnd('}');
+    order = order + ',"discounts":' + discountsSerialized;
+    order = '[' + order + ',"items":' + itemsString + '}]';
+
+    return order;
+  }
+
+  //---------------------------------------------------------------------------
+  // Query data needed for processing
+  private static void getDataForProcessing() {
+    System.debug( '- - - - - ExternalRequestUtil.getDataForProcessing - - - - -' );
+
+    mapContacts = SystemUtil.contactsSelector( contactsToSearch );
+    // mapContactsEmailBirthDateLECountry = SystemUtil.contactsSelectorEmailBirthDateLECountry( contactEmails );
+    // mapContactsEmailBirthDateLE = SystemUtil.contactsSelectorEmailBirthDateLE( contactEmails );
+    // mapContactsEmailBirthDate = SystemUtil.contactsSelectorEmailBirthDate( contactEmails );
+    SystemUtil.contactsSelectorMatchCode(
+      contactEmails, mapContactsEmailBirthDateLECountry, mapContactsEmailBirthDateLE, mapContactsEmailBirthDate
+    );
+    mapPartners = SystemUtil.partnerSelector( partnersToSearch );
+    mapPolicies = SystemUtil.policySelector( policiesToSearch );
+    mapQuotes = SystemUtil.quoteSelector( quotesToSearch );
+    mapClaims = SystemUtil.claimsSelector( claimsToSearch );
+    mapOrderItem = SystemUtil.orderItemSelector( orderItemsToSearch );
+    mapProducts = SystemUtil.productsSelector( productsToSearch );
+    mapCovers = SystemUtil.coversSelector( coversToSearch );
+  }
+
+  //---------------------------------------------------------------------------
+  // Process
+  private static void processObjects( List<ExternalRequest__c> externalRequestList ) 
+  {
+    System.debug('- - - - - ExternalRequestUtil.processObjects - - - - -');
+    for (ExternalRequest__c externalRequestItem : externalRequestList) {
+      try {
+        actualRequest = externalRequestItem;
+        if (externalRequestItem.entity__c != null) {
+          switch on externalRequestItem.entity__c {
+            when 'Customer' {
+              processCustomer();
             }
+            when 'QuoteEntry' {
+              processQuoteEntry();
+            }
+            when 'Policy' {
+              processPolicy();
+            }
+            when 'Claim' {
+              processClaim();
+            }
+          }
+          externalRequestItem.processed__c = true;
+          externalRequestItem.processedDate__c = Datetime.now();
+          externalRequestItem.processResult__c = 'OK';
+          externalRequestItem.error_Log__c = ' ';
         }
+      } catch (Exception e) {
+        //ErrorLogUtil.commitError(e, 'ExternalRequestUtil', externalRequestItem.Id);
+        externalRequestItem.processed__c = true;
+        externalRequestItem.processedDate__c = Datetime.now();
+        externalRequestItem.processResult__c = 'KO';
+        externalRequestItem.error_Log__c =
+          e.getMessage() +
+          '\n' +
+          e.getStackTraceString();
+      }
+    }
+  }
+
+  private static void processCustomer() {
+    System.debug('- - - - - ExternalRequestUtil.processCustomer - - - - -');
+    // Get the customer
+    if (recordsToProcess.containsKey(actualRequest.id)) {
+      System.debug('LISTA >>> ' + recordsToProcess);
+      Contact incomingContact = (Contact) recordsToProcess.get( actualRequest.id );
+
+      ContactUtil.upsertContact(incomingContact, null);
+    }
+  }
+
+  private static void processQuoteEntry() {
+    System.debug('- - - - - ExternalRequestUtil.processQuoteEntry - - - - -');
+    // Get the policy
+    if ( recordsToProcess.containsKey(actualRequest.id) && quotesToProcess.containsKey(actualRequest.id) ) {
+      /*List<OrderItem> orderItems = orderItemsToProcess.get(actualRequest.id);
+            List<Discount__c> discounts = discountsToProcess.get(actualRequest.id);
+            List<Cover__c> covers = coversToProcess.get(actualRequest.id);*/
+
+      listOrderItems = orderItemsToProcess.get(actualRequest.id);
+      listDiscounts = discountsToProcess.get(actualRequest.id);
+      listCovers = coversToProcess.get(actualRequest.id);
+
+      Contact contact = (Contact) recordsToProcess.get(actualRequest.id);
+      Order quote = (Order) quotesToProcess.get(actualRequest.id);
+
+      OrderUtil.upsertQuote(contact, quote);
+
+      /*OrderUtil.upsertQuote(contact, quote, mapQuotes,quotesToUpdateList,mapContacts,contactsToUpdateList,
+                                  mapContactsEmailBirthDateLECountry, mapContactsEmailBirthDateLE, mastersToUpdate, 
+                                  mastersToUpdateEMEA, mapPartners, contactsToUpdateWithPartner,
+                                  ordersToUpdateWithPartner, partnersToUpdateList, discounts, discountsToInsert, 
+                                  mapOrderItem,orderItems,mapProducts, productsToInsert, pricebookEntryToInsert, 
+                                  Pricebook, orderItemsToInsert, covers,subCoversToInsertQuote,mapCovers,
+                                  updateCover,recordOwner);*/
+    }
+  }
+
+  private static void processPolicy() {
+    System.debug('- - - - - ExternalRequestUtil.processPolicy - - - - -');
+    // Get the policy
+    if (recordsToProcess.containsKey(actualRequest.id)) {
+      /*List<OrderItem> orderItems = orderItemsToProcess.get(actualRequest.id);
+            List<Discount__c> discounts = discountsToProcess.get(actualRequest.id);
+            List<Cover__c> covers = coversToProcess.get(actualRequest.id);*/
+
+      listOrderItems = orderItemsToProcess.get(actualRequest.id);
+      listDiscounts = discountsToProcess.get(actualRequest.id);
+      listCovers = coversToProcess.get(actualRequest.id);
+
+      Order policy = (Order) recordsToProcess.get(actualRequest.id);
+
+      /*OrderUtil.upsertPolicy(policy,mapPolicies,policyVersionsToUpdateList,ordersToUpdateList,policiesToUpdateList,
+                                   mapContacts,contactsToUpdateList,mapPartners,policiesToUpdateWithPartner,
+                                   ordersToUpdateWithPartner,partnersToUpdateList,discounts, discountsToInsert,
+                                   discountsToDelete,mapOrderItem,orderItems,mapProducts,productsToInsert,
+                                   pricebookEntryToInsert, Pricebook, orderItemsToInsert, covers,subCoversToInsertQuote,
+                                   mapCovers,updateCover,adminSetup,mapQuotes,quotesToUpdateList,
+                                   contactPolicyDateUpdate,recordOwner);*/
+
+      OrderUtil.upsertPolicy(policy);
+      //if quote has been processed first, remove it
+      if (!String.isBlank(policy.QuoteEntry__c)) {
+        quotesToUpdateList.remove(policy.QuoteEntry__c);
+      }
+    }
+  }
+
+  private static void processClaim() {
+    System.debug('- - - - - ExternalRequestUtil.processClaim - - - - -');
+    // Get the claim
+    if (recordsToProcess.containsKey(actualRequest.id)) {
+      Case claim = (Case) recordsToProcess.get(actualRequest.id);
+
+      /*CaseUtil.upsertClaim(claim, mapClaims, mapPolicies, mapContacts, mapOrderItem,
+       claimsToUpsert, recordOwner);*/
+      CaseUtil.upsertClaim(claim);
+    }
+  }
+
+  //---------------------------------------------------------------------------
+  // Upsert objects
+  private static void upsertData() {
+    if (mastersToUpdate != null && !mastersToUpdate.isEmpty()) {
+      upsert mastersToUpdate.values() Account.Fields.CustomerNum__c;
     }
 
-    private static void processClaim()
-    {
-        System.debug('- - - - - ExternalRequestUtil.processClaim - - - - -');
-        // Get the claim
-        if (recordsToProcess.containsKey(actualRequest.id) )
-        {
-            Case claim = (Case) recordsToProcess.get(actualRequest.id);
-
-            /*CaseUtil.upsertClaim(claim, mapClaims, mapPolicies, mapContacts, mapOrderItem,
-               claimsToUpsert, recordOwner);*/
-            CaseUtil.upsertClaim(claim);
-        }
+    if (mastersToUpdateEMEA != null && !mastersToUpdateEMEA.isEmpty()) {
+      upsert mastersToUpdateEMEA.values() Account.Fields.CustomerNum_EMEA__c;
     }
 
-    // Upsert objects
-    private static void upsertData()
-    {
-        if (mastersToUpdate != null && !mastersToUpdate.isEmpty() )
-        {
-            upsert mastersToUpdate.values() Account.Fields.CustomerNum__c;
-        }
-
-        if (mastersToUpdateEMEA != null && !mastersToUpdateEMEA.isEmpty() )
-        {
-            upsert mastersToUpdateEMEA.values() Account.Fields.CustomerNum_EMEA__c;
-        }
-
-        if (mastersToUpdateById != null && !mastersToUpdateById.isEmpty() )
-        {
-            upsert mastersToUpdateById.values();
-        }
-
-        if (partnersToUpdateList != null && !partnersToUpdateList.isEmpty() )
-        {
-            upsert partnersToUpdateList.values();
-        }
-
-        if (contactsToUpdate != null && !contactsToUpdate.isEmpty() )
-        {
-            //upsert contactsToUpdate.values() Contact.Fields.CustomerNum__c;
-            upsert contactsToUpdate.values();
-        }
-
-        if (
-            contactsToUpdateWithPartner != null &&
-            !contactsToUpdateWithPartner.isEmpty()
-            )
-        {
-            upsert contactsToUpdateWithPartner.values() Contact.Fields.CustomerNum__c;
-        }
-
-        if (contactPolicyDateUpdate != null && !contactPolicyDateUpdate.isEmpty() )
-        {
-            upsert contactPolicyDateUpdate.values();
-        }
-
-        if (quotesToUpdateList != null && !quotesToUpdateList.isEmpty() )
-        {
-            upsert quotesToUpdateList.values() Order.Fields.QuoteEntry__c;
-        }
-
-        if (ordersToUpdateList != null && !ordersToUpdateList.isEmpty() )
-        {
-            //Actualizar por id, para evitar error
-            //upsert ordersToUpdateList.values() Order.Fields.PolicyNum__c;
-            upsert ordersToUpdateList.values();
-        }
-
-        if (policiesToUpdateList != null && !policiesToUpdateList.isEmpty() )
-        {
-            upsert policiesToUpdateList.values() Order.Fields.PolicyNum__c;
-        }
-
-        if (
-            ordersToUpdateWithPartner != null && !ordersToUpdateWithPartner.isEmpty()
-            )
-        {
-            upsert ordersToUpdateWithPartner.values() Order.Fields.QuoteEntry__c;
-        }
-
-        if (
-            policiesToUpdateWithPartner != null &&
-            !policiesToUpdateWithPartner.isEmpty()
-            )
-        {
-            upsert policiesToUpdateWithPartner.values() Order.Fields.PolicyNum__c;
-        }
-
-        if (
-            policyVersionsToUpdateList != null &&
-            !policyVersionsToUpdateList.isEmpty()
-            )
-        {
-            upsert policyVersionsToUpdateList.values();
-        }
-
-        if (productsToInsert != null && !productsToInsert.isEmpty() )
-        {
-            upsert productsToInsert.values() Product2.Fields.ProductID__c;
-            upsert pricebookEntryToInsert.values() PricebookEntry.Fields.ProductID__c;
-        }
-        if (orderItemsToInsert != null && !orderItemsToInsert.isEmpty() )
-        {
-            upsert orderItemsToInsert.values() OrderItem.Fields.ItemId__c;
-        }
-        if (discountsToInsert != null && !discountsToInsert.isEmpty() )
-        {
-            upsert discountsToInsert.values() Discount__c.Fields.DiscountId__c;
-        }
-
-        //Delete discounts from quotes that have converted because id changes
-        if (discountsToDelete != null && !discountsToDelete.isEmpty() )
-        {
-            delete discountsToDelete.values();
-        }
-
-        //insert covers and then subcovers related to covers
-        if (updateCover != null && !updateCover.isEmpty() )
-        {
-            upsert updateCover.values() Cover__c.Fields.CoverId__c;
-            for (Cover__c cover : updateCover.values() )
-            {
-                mapInsertedCovers.put(cover.CoverId__c, cover);
-            }
-        }
-
-        if (subCoversToInsertQuote != null && !subCoversToInsertQuote.isEmpty() )
-        {
-            List<Cover__c> relatedSubCover = new List<Cover__c>();
-            for (Cover__c subcover : subCoversToInsertQuote.values() )
-            {
-                Cover__c insertedCover = mapInsertedCovers.get(
-                    subcover.ParentCoverId__c
-                    );
-                if (insertedCover != null)
-                {
-                    subcover.ParentCover__c = insertedCover.id;
-                    relatedSubCover.add(subcover);
-                }
-            }
-            if (relatedSubCover != null && !relatedSubCover.isEmpty() )
-            {
-                upsert relatedSubCover;
-            }
-        }
-
-        if (claimsToUpsert != null && !claimsToUpsert.isEmpty() )
-        {
-            upsert claimsToUpsert.values() Case.Fields.ClaimNumber__c;
-        }
+    if (mastersToUpdateMultiPartner != null && !mastersToUpdateMultiPartner.isEmpty()) {
+      upsert mastersToUpdateMultiPartner.values() Account.Fields.CustomerNum_Partner__c;
     }
+
+    if (mastersToUpdateById != null && !mastersToUpdateById.isEmpty()) {
+      upsert mastersToUpdateById.values();
+    }
+
+    if (partnersToUpdateList != null && !partnersToUpdateList.isEmpty()) {
+      upsert partnersToUpdateList.values();
+    }
+
+    if (contactsToUpdate != null && !contactsToUpdate.isEmpty()) {
+      //upsert contactsToUpdate.values() Contact.Fields.CustomerNum__c;
+      System.debug('**** Contact');
+      for(Contact c: contactsToUpdate.values() ) {
+        System.debug(c);
+      }
+      upsert contactsToUpdate.values();
+    }
+
+    if ( contactsToUpdateWithPartner != null && !contactsToUpdateWithPartner.isEmpty() ) {
+      upsert contactsToUpdateWithPartner.values() Contact.Fields.CustomerNum__c;
+    }
+
+    if (contactPolicyDateUpdate != null && !contactPolicyDateUpdate.isEmpty()) {
+      upsert contactPolicyDateUpdate.values();
+    }
+
+    if (quotesToUpdateList != null && !quotesToUpdateList.isEmpty()) {
+      upsert quotesToUpdateList.values() Order.Fields.QuoteEntry__c;
+    }
+
+    if (ordersToUpdateList != null && !ordersToUpdateList.isEmpty()) {
+      //Actualizar por id, para evitar error
+      //upsert ordersToUpdateList.values() Order.Fields.PolicyNum__c;
+      System.DEbug('***** Orders To Update');
+      for( Order o : ordersToUpdateList.values() ) {
+        System.Debug(o);
+      }
+      upsert ordersToUpdateList.values();
+    }
+
+    if (policiesToUpdateList != null && !policiesToUpdateList.isEmpty()) {
+      upsert policiesToUpdateList.values() Order.Fields.PolicyNum__c;
+    }
+
+    if (
+      ordersToUpdateWithPartner != null && !ordersToUpdateWithPartner.isEmpty()
+    ) {
+      upsert ordersToUpdateWithPartner.values() Order.Fields.QuoteEntry__c;
+    }
+
+    if ( policiesToUpdateWithPartner != null && !policiesToUpdateWithPartner.isEmpty() ) {
+      upsert policiesToUpdateWithPartner.values() Order.Fields.PolicyNum__c;
+    }
+
+    if ( policyVersionsToUpdateList != null && !policyVersionsToUpdateList.isEmpty() ) {
+      upsert policyVersionsToUpdateList.values();
+    }
+
+    if (productsToInsert != null && !productsToInsert.isEmpty()) {
+      upsert productsToInsert.values() Product2.Fields.ProductID__c;
+      upsert pricebookEntryToInsert.values() PricebookEntry.Fields.ProductID__c;
+    }
+    if (orderItemsToInsert != null && !orderItemsToInsert.isEmpty()) {
+      System.Debug('***** Order Items:');
+      for(OrderItem oi: orderItemsToInsert.values() ) {
+        System.Debug(oi);
+        if( oi.Order != null ) {
+          System.Debug(oi.Order);
+        }
+      }
+      upsert orderItemsToInsert.values() OrderItem.Fields.ItemId__c;
+    }
+    if (discountsToInsert != null && !discountsToInsert.isEmpty()) {
+      System.Debug('**** Discounts: ' );
+      for(Discount__c d: discountsToInsert.values()) {
+          System.Debug(d);
+      }
+      upsert discountsToInsert.values() Discount__c.Fields.DiscountId__c;
+    }
+
+    //Delete discounts from quotes that have converted because id changes
+    if (discountsToDelete != null && !discountsToDelete.isEmpty()) {
+      delete discountsToDelete.values();
+    }
+
+    //insert covers and then subcovers related to covers
+    if (updateCover != null && !updateCover.isEmpty()) {
+      upsert updateCover.values() Cover__c.Fields.CoverId__c;
+      for (Cover__c cover : updateCover.values()) {
+        mapInsertedCovers.put(cover.CoverId__c, cover);
+      }
+    }
+
+    if (subCoversToInsertQuote != null && !subCoversToInsertQuote.isEmpty()) {
+      List<Cover__c> relatedSubCover = new List<Cover__c>();
+      for (Cover__c subcover : subCoversToInsertQuote.values()) {
+        Cover__c insertedCover = mapInsertedCovers.get(
+          subcover.ParentCoverId__c
+        );
+        if (insertedCover != null) {
+          subcover.ParentCover__c = insertedCover.id;
+          relatedSubCover.add(subcover);
+        }
+      }
+      if (relatedSubCover != null && !relatedSubCover.isEmpty()) {
+        upsert relatedSubCover;
+      }
+    }
+
+    if (claimsToUpsert != null && !claimsToUpsert.isEmpty()) {
+      upsert claimsToUpsert.values() Case.Fields.ClaimNumber__c;
+    }
+  }
+
+  //---------------------------------------------------------------------------
+  /**
+   * Get the short term to use for the partner in the customer number. From the
+   * partner string that comes from the json
+   * 
+   * @author nts (agonzalezisasi)
+   * @date 27/10/2020
+   */
+  private static String getMultiPartner(String partner) {
+      String result = null;
+      if( !String.isBlank(partner) && mapMultiPartner.containsKey(partner) ) {
+          result = mapMultiPartner.get(partner) + '-';
+      } else {
+          throw new IntegrationException( 'Partner not registered in the configuration: ' + partner );
+      }
+      return result;
+  }
 }

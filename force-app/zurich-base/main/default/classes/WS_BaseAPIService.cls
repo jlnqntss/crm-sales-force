@@ -1,5 +1,7 @@
 abstract global without sharing class WS_BaseAPIService
 {
+    private static final String INVALID_URI_MESSAGE = 'Invalid URI versioning';
+    private static final String INVALID_CONTENTTYPE_MESSAGE = 'Invalid Content-Type on request headers';
     private static final String REGEXP_VERSION_VALIDATION = 'v[0-9]+$';
     private static String[] urlTokens = RestContext.request.requestURI.split('/');
     private static Map<String, String> requestHeaders = RestContext.request.headers;
@@ -52,13 +54,19 @@ abstract global without sharing class WS_BaseAPIService
         }
     }
 
-
     public final static String API_BAD_REQUEST_KO = 'BAD_REQUEST';
     public final static String API_GENERIC_KO = 'GENERIC_ERROR';
     public final static String API_DML_KO = 'DML_ERROR';
     public final static String API_DML_RECORD_ERROR_MESSAGE  = Label.RESTApiErrorOnDMLRecordTransaction;
 
-    private static String builDMLMessage(DmlException dmlError)
+    /**
+     * Construye un mensaje estandarizado basado en la excepción DML
+     *
+     * @author jmartinezpisson
+     * @param {DMLException} dmlError Error en operación DML
+     * @return  {WS_BaseAPIService.ApiException}
+     */
+    private static String buildDMLMessage(DmlException dmlError)
     {
         List<String> messages = new List<String>();
         Integer i = dmlError.getNumDml();
@@ -75,6 +83,28 @@ abstract global without sharing class WS_BaseAPIService
         }
 
         return String.join(messages, '\n');
+    }
+
+    /**
+     * Valida que la entrada cumple con los criterios del servicio REST
+     *
+     * @author jmartinezpisson
+     * @date 10/11/2020
+     * @throws {WS_BaseAPIService.ApiException}
+     */
+    public static void validateRequest()
+    {
+        //Si la versión no es correcta, lanzamos error
+        if(!WS_BaseAPIService.isValidVersion)
+        {
+            throw new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_BAD_REQUEST_KO, INVALID_URI_MESSAGE);
+        }
+
+        //Si la cabecera content-type no es JSON, lanzamos error
+        if(!WS_BaseAPIService.isJSONContentType)
+        {
+            throw new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_BAD_REQUEST_KO, INVALID_CONTENTTYPE_MESSAGE);
+        }
     }
 
     /**
@@ -125,7 +155,7 @@ abstract global without sharing class WS_BaseAPIService
          */
         public ApiException(DmlException dmlError)
         {
-            this(API_DML_KO, builDMLMessage(dmLError) );
+            this(API_DML_KO, buildDMLMessage(dmLError) );
         }
 
         /**
@@ -137,7 +167,6 @@ abstract global without sharing class WS_BaseAPIService
          */
         public String toErrorString()
         {
-            System.debug(this);
             return JSON.serialize(new Map<String, String>
             {
                 'message' => this.getMessage(),

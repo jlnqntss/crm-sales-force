@@ -39,6 +39,12 @@ public class AccountUtil
                 OwnerId = recordOwner.id,
                 RecordTypeId = SystemUtil.getAccountRecordTypeIdByName(Label.Partner)
                 );
+            // nts (agonzalezisasi) - 03/11/2020 - Inlcude IBA Multi-Partner logic
+            if( !String.isBlank(customer.Partner__c) )
+            {
+                newPartner.Partner__c = customer.Partner__c;
+            }
+
             Account partnerRef = new Account(
                 Masterpolicy__c = customer.MasterPolicyNum__c
                 );

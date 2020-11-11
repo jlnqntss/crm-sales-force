@@ -72,13 +72,26 @@ private class Test_Batch_DeleteLeads
         String query = 'SELECT Id FROM Contact  ';
 
         Test.startTest();
-        Id BatchInstanceId = database.executeBatch(
-            new Batch_DeleteLeads(query),
-            200
-            );
+        Batch_DeleteLeads b = new Batch_DeleteLeads(); // for coverage
+        b = new Batch_DeleteLeads(query);
+        Id BatchInstanceId = database.executeBatch( b, 200 );
         Test.stopTest();
 
         numContact = [SELECT COUNT() FROM Contact];
         System.assertEquals(0, numContact);
     }
+
+    /**
+     * For testing Schedule
+     */
+    // @isTest
+    // static void testBatch_schedule() {
+    //   Batch_DeleteLeads m = new Batch_DeleteLeads();
+    //   String sch = '20 30 8 10 2 ?';
+
+    //   Test.startTest();
+    //   String jobID = system.schedule('Delete Batch Leads', sch, m);
+    //   Test.stopTest();
+    //   System.Debug('jobID: ' + jobID);
+    // }
 }

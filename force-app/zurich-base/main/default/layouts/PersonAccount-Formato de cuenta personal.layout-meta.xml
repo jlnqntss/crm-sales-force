@@ -96,6 +96,10 @@
                 <behavior>Edit</behavior>
                 <field>CustomerValue__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>LinkINFO__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>

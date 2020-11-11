@@ -12,24 +12,13 @@ global without sharing class OrderUtil
     public static void upsertQuote(Contact contact, Order quote)
     {
         System.debug('- - - - - OrderUtil.upsertQuote - - - - -');
-        String legalEntityName;
-        if ( quote.LegalEntity__c.equals(Label.GeneralInsurance) )
-        {
-            legalEntityName = 'GI';
-        }
-        else
-        {
-            legalEntityName = 'Life';
-        }
+        String legalEntityName = (quote.LegalEntity__c.equals(Label.GeneralInsurance)?'GI':'Life');
 
-        quote.RecordTypeId = SystemUtil.getOrderRecordTypeIdByName(
-            Label.Quote + legalEntityName
-            );
+        quote.RecordTypeId = SystemUtil.getOrderRecordTypeIdByName( Label.Quote + legalEntityName );
         //contact.CustomerNum__c=ContactUtil.adaptCustomerNum(contact.CustomerNum__c, contact.LegalEntity__c);
 
         Order quoteSF = ExternalRequestUtil.mapQuotes.get(quote.QuoteEntry__c);
-
-        if (quoteSF != null)
+        if( quoteSF != null )
         {
             System.debug('The Quote exists >>> ' + quoteSF.Id);
             quote.Id = quoteSF.Id;
@@ -44,17 +33,15 @@ global without sharing class OrderUtil
                     quote.QuoteStatus__c = Label.Converted;
                 }
                 //en la web en el paso 3 comprobar si se ha logueado con otro Customer Num, en ese caso reasociar la quote al contacto correcto
-
-                if (
-                    quote.QbLastPage__c.equalsIgnoreCase(Label.Q_StepLogin_v1) ||
-                    quote.QbLastPage__c.equalsIgnoreCase(Label.Q_StepLogin_v2) &&
-                    !quoteSF.ContactId__r.CustomerNum__c.equals(
-                        ContactUtil.adaptCustomerNum(
-                            contact.CustomerNum__c,
-                            contact.LegalEntity__c
-                            )
-                        )
-                    )
+                // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                String customerNum = contact.CustomerNum__c; // ContactUtil.adaptCustomerNum( contact.CustomerNum__c, contact.LegalEntity__c );
+                // System.Debug('*** customerNum: ' + customerNum);
+                // System.Debug('*** existC.CustomerNum: ' + quoteSF.ContactId__r.CustomerNum__c);
+                // (
+                if ( quote.QbLastPage__c.equalsIgnoreCase(Label.Q_StepLogin_v1) ||
+                     quote.QbLastPage__c.equalsIgnoreCase(Label.Q_StepLogin_v2) &&
+                     quoteSF.ContactId__r.CustomerNum__c != customerNum
+                     )
                 {
                     //System.debug('Step3: Reasignar quote');
                     quote = ContactUtil.upsertContact(contact, quote);
@@ -72,9 +59,7 @@ global without sharing class OrderUtil
             quote.Pricebook2Id = ExternalRequestUtil.Pricebook.Id;
             quote.OwnerId = ExternalRequestUtil.recordOwner.id;
 
-            if (
-                !String.isBlank(quote.MasterPolicyNum__c) //Asociar partner
-                )
+            if ( !String.isBlank(quote.MasterPolicyNum__c) ) //Asociar partner
             {
                 AccountUtil.associatePartnerToOrder(
                     quote,
@@ -92,10 +77,10 @@ global without sharing class OrderUtil
             for (Discount__c dis : ExternalRequestUtil.listDiscounts)
             {
                 // If it is an EMEA record, add the prefix to its Orders ExternalId
-                if (quote.SourceCountry__c != 'Spain')
-                {
-                    dis.Policy__r.QuoteEntry__c = 'EMEA-' + dis.Policy__r.QuoteEntry__c;
-                }
+                // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                // if (quote.SourceCountry__c != 'Spain') {
+                //   dis.Policy__r.QuoteEntry__c = 'EMEA-' + dis.Policy__r.QuoteEntry__c;
+                // }
                 ExternalRequestUtil.discountsToInsert.put(dis.DiscountId__c, dis);
             }
         }
@@ -108,11 +93,7 @@ global without sharing class OrderUtil
             {
                 if (ExternalRequestUtil.listOrderItems.size() > 1)
                 {
-                    throw new IntegrationException(
-                              Label.LifeObjectIdNull +
-                              ' ' +
-                              quote.QuoteEntry__c
-                              );
+                    throw new IntegrationException( Label.LifeObjectIdNull + ' ' + quote.QuoteEntry__c );
                 }
                 for (OrderItem item : ExternalRequestUtil.listOrderItems)
                 {
@@ -133,24 +114,22 @@ global without sharing class OrderUtil
             }
         }
 
-        for (OrderItem item : ExternalRequestUtil.listOrderItems)
-        {
-            // If it is an EMEA record, add the prefix to its Orders ExternalId
-            if (quote.SourceCountry__c != 'Spain')
-            {
-                item.Order.QuoteEntry__c = 'EMEA-' + item.Order.QuoteEntry__c;
-            }
-        }
+        // for (OrderItem item : ExternalRequestUtil.listOrderItems) {
+        //   // If it is an EMEA record, add the prefix to its Orders ExternalId
+        //   // todo: agonzalezisasi - es necesario?
+        //   // if (quote.SourceCountry__c != 'Spain') {
+        //   //   item.Order.QuoteEntry__c = 'EMEA-' + item.Order.QuoteEntry__c;
+        //   // }
+        // }
 
-        for (Cover__c cover : ExternalRequestUtil.listCovers)
-        {
-            // If it is an EMEA record, add the prefix to its Items ExternalId
-            if (quote.SourceCountry__c != 'Spain')
-            {
-                cover.PolicyProduct__r.ItemId__c =
-                    'EMEA-' + cover.PolicyProduct__r.ItemId__c;
-            }
-        }
+        // for (Cover__c cover : ExternalRequestUtil.listCovers) {
+        //   // If it is an EMEA record, add the prefix to its Items ExternalId
+        //   // todo: agonzalezisasi - es necesario?
+        //   // if (quote.SourceCountry__c != 'Spain') {
+        //   //   cover.PolicyProduct__r.ItemId__c =
+        //   //     'EMEA-' + cover.PolicyProduct__r.ItemId__c;
+        //   // }
+        // }
 
         if (quote.EffectiveDate == null)
         {
@@ -172,11 +151,7 @@ global without sharing class OrderUtil
             ExternalRequestUtil.updateCover,
             ExternalRequestUtil.recordOwner
             );
-        System.debug(
-            '***** Put quote with quote Entry: ' +
-            quote.QuoteEntry__c +
-            ' in the updating list.'
-            );
+        System.debug( '***** Put quote with quote Entry: ' + quote.QuoteEntry__c + ' in the updating list.' );
 
         ExternalRequestUtil.quotesToUpdateList.put(quote.QuoteEntry__c, quote);
     }
@@ -190,18 +165,17 @@ global without sharing class OrderUtil
     {
         System.debug('- - - - - OrderUtil.upsertPolicy - - - - -');
         Order policySF = ExternalRequestUtil.mapPolicies.get(policy.PolicyNum__c);
+        String customerNumField = ExternalRequestUtil.AccountFieldCustomerNum;
 
         //System.debug('policy.PolicyNum__c >>> ' + policy.PolicyNum__c);
 
-        if (policySF != null)
+        if (policySF != null) //--------------------------------------------------------------  POLICY EXIST
         {
             System.debug('The policy exists');
             policy.Id = policySF.Id;
 
             //ver si ha cambiado la versión de póliza
-            if (
-                !policy.PolicyContractSerial__c.equals(policySF.PolicyContractSerial__c)
-                )
+            if ( !policy.PolicyContractSerial__c.equals(policySF.PolicyContractSerial__c) )
             {
                 //System.debug('>>> PolicyContractSerial__c ha cambiado: ANTES ' + policySF.PolicyContractSerial__c + ' DESPUES ' + policy.PolicyContractSerial__c);
                 PolicyVersion__c pversion = new PolicyVersion__c(
@@ -219,34 +193,23 @@ global without sharing class OrderUtil
                         Id = policySF.PolicyVersions__r[0].Id,
                         EndDate__c = policy.PolicyContractStartDate__c
                         );
-                    ExternalRequestUtil.policyVersionsToUpdateList.put(
-                        pversionUpdate.Name,
-                        pversionUpdate
-                        );
+                    ExternalRequestUtil.policyVersionsToUpdateList.put( pversionUpdate.Name, pversionUpdate );
                 }
 
                 pversion.OrderId__c = policy.id;
-                ExternalRequestUtil.policyVersionsToUpdateList.put(
-                    pversion.Name,
-                    pversion
-                    );
+                ExternalRequestUtil.policyVersionsToUpdateList.put( pversion.Name, pversion );
 
                 if ( !String.isBlank(policy.adjustmentReason__c) )
                 {
                     if (
-                        policy.adjustmentReason__c.trim()
-                        .equalsIgnoreCase( Label.P_AdjustmentReason_1.trim() ) ||
-                        policy.adjustmentReason__c.trim()
-                        .equalsIgnoreCase( Label.P_AdjustmentReason_2.trim() ) ||
-                        policy.adjustmentReason__c.trim()
-                        .equalsIgnoreCase( Label.P_AdjustmentReason_3.trim() )
+                        policy.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_1.trim() ) ||
+                        policy.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_2.trim() ) ||
+                        policy.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_3.trim() )
                         )
                     {
                         //System.debug('>>> Cambio de producto');
                         OrderItemUtil.deactivateOldProduct(
-                            policySF,
-                            ExternalRequestUtil.listOrderItems,
-                            ExternalRequestUtil.orderItemsToInsert
+                            policySF, ExternalRequestUtil.listOrderItems, ExternalRequestUtil.orderItemsToInsert
                             );
                     }
                 }
@@ -279,7 +242,7 @@ global without sharing class OrderUtil
 
             ExternalRequestUtil.policiesToUpdateList.put(policy.PolicyNum__c, policy);
         }
-        else
+        else //--------------------------------------------------------------  POLICY DOESNT EXIST
         {
             System.debug('The Policy does not exist');
             String legalEntityName;
@@ -291,45 +254,32 @@ global without sharing class OrderUtil
             {
                 legalEntityName = 'Life';
             }
-            if (policy.SourceCountry__c == 'Spain')
-            {
-                policy.CustomerNum__c = ContactUtil.adaptCustomerNum(
-                    policy.CustomerNum__c,
-                    policy.LegalEntity__c
-                    );
-            }
-            //System.debug('policy.CustomerNum__c >>> ' + policy.CustomerNum__c);
+            // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+            // if (policy.SourceCountry__c == 'Spain') {
+            //   policy.CustomerNum__c = ContactUtil.adaptCustomerNum(
+            //     policy.CustomerNum__c,
+            //     policy.LegalEntity__c
+            //   );
+            // }
+            System.debug('policy.CustomerNum__c >>> ' + policy.CustomerNum__c);
 
-            Contact contactoPolicy = ExternalRequestUtil.mapContacts.get(
-                policy.CustomerNum__c
-                );
+            Contact contactoPolicy = ExternalRequestUtil.mapContacts.get( policy.CustomerNum__c );
 
             //System.debug('contactoPolicy: ' +contactoPolicy);
-            if (
-                contactoPolicy != null ||
-                ExternalRequestUtil.contactsToUpdate.containsKey(policy.CustomerNum__c)
-                )
+            if ( contactoPolicy != null || ExternalRequestUtil.contactsToUpdate.containsKey(policy.CustomerNum__c) )
             {
                 //Contacto existe
                 //if contact is lead, change to customer
-                if (
-                    ExternalRequestUtil.contactsToUpdate.containsKey(
-                        policy.CustomerNum__c
-                        )
-                    )
+                if ( ExternalRequestUtil.contactsToUpdate.containsKey( policy.CustomerNum__c ) )
                 {
-                    Contact con = ExternalRequestUtil.contactsToUpdate.get(
-                        policy.CustomerNum__c
-                        );
+                    Contact con = ExternalRequestUtil.contactsToUpdate.get( policy.CustomerNum__c );
 
                     if (con != null)
                     {
                         if (con.Status__c == Label.Lead)
                         {
                             con.Status__c = Label.Customer;
-                            con.RecordTypeId = SystemUtil.getContactRecordTypeIdByName(
-                                'Customer' + legalEntityName
-                                );
+                            con.RecordTypeId = SystemUtil.getContactRecordTypeIdByName( 'Customer' + legalEntityName );
                             ExternalRequestUtil.contactsToUpdate.put(con.CustomerNum__c, con);
                         }
                         //actualizar fecha última poliza contratada en el contacto
@@ -344,29 +294,17 @@ global without sharing class OrderUtil
                     if (contactoPolicy.Status__c == Label.Lead)
                     {
                         contactoPolicy.Status__c = Label.Customer;
-                        contactoPolicy.RecordTypeId = SystemUtil.getContactRecordTypeIdByName(
-                            'Customer' + legalEntityName
-                            );
-                        ExternalRequestUtil.contactsToUpdate.put(
-                            contactoPolicy.CustomerNum__c,
-                            contactoPolicy
-                            );
+                        contactoPolicy.RecordTypeId = SystemUtil.getContactRecordTypeIdByName( 'Customer' + legalEntityName );
+                        ExternalRequestUtil.contactsToUpdate.put( contactoPolicy.CustomerNum__c, contactoPolicy );
                     }
                     //actualizar fecha última poliza contratada en el contacto
                     if (policy.EffectiveDate != null)
                     {
                         contactoPolicy.LastPolicyDate__c = policy.EffectiveDate;
                     }
-                    if (
-                        !ExternalRequestUtil.contactPolicyDateUpdate.containsKey(
-                            contactoPolicy.CustomerNum__c
-                            )
-                        )
+                    if ( !ExternalRequestUtil.contactPolicyDateUpdate.containsKey( contactoPolicy.CustomerNum__c ) )
                     {
-                        ExternalRequestUtil.contactPolicyDateUpdate.put(
-                            contactoPolicy.CustomerNum__c,
-                            contactoPolicy
-                            );
+                        ExternalRequestUtil.contactPolicyDateUpdate.put( contactoPolicy.CustomerNum__c, contactoPolicy );
                     }
                 }
 
@@ -374,9 +312,7 @@ global without sharing class OrderUtil
                 if ( !String.isBlank(policy.QuoteEntry__c) )
                 {
                     //System.debug('Quote existe');
-                    Order quoteSF = ExternalRequestUtil.mapQuotes.get(
-                        policy.QuoteEntry__c
-                        );
+                    Order quoteSF = ExternalRequestUtil.mapQuotes.get( policy.QuoteEntry__c );
 
                     if (quoteSF != null)
                     {
@@ -393,27 +329,17 @@ global without sharing class OrderUtil
                                     } */
                     }
 
-                    if (
-                        ExternalRequestUtil.quotesToUpdateList.containsKey(
-                            policy.QuoteEntry__c
-                            )
-                        )
+                    if ( ExternalRequestUtil.quotesToUpdateList.containsKey( policy.QuoteEntry__c ) )
                     {
                         //Si quote existe en la lista de actualización, se saca de la lista
                         //System.debug('Quote existe en la lista de actualización');
                         policy.QuoteStatus__c = Label.Converted;
                         ExternalRequestUtil.quotesToUpdateList.remove(policy.QuoteEntry__c);
 
-                        if (
-                            ExternalRequestUtil.ordersToUpdateWithPartner.containsKey(
-                                policy.QuoteEntry__c
-                                )
-                            )
+                        if ( ExternalRequestUtil.ordersToUpdateWithPartner.containsKey( policy.QuoteEntry__c ) )
                         {
                             //System.debug('Quote borrado de la lista de insercion');
-                            ExternalRequestUtil.ordersToUpdateWithPartner.remove(
-                                policy.QuoteEntry__c
-                                );
+                            ExternalRequestUtil.ordersToUpdateWithPartner.remove( policy.QuoteEntry__c );
                         }
 
                         //Eliminar orderitems relacionados a quoteEntry
@@ -421,11 +347,7 @@ global without sharing class OrderUtil
                         {
                             for (OrderItem item : ExternalRequestUtil.listOrderItems)
                             {
-                                if (
-                                    ExternalRequestUtil.orderItemsToInsert.containsKey(
-                                        item.ItemId__c
-                                        )
-                                    )
+                                if ( ExternalRequestUtil.orderItemsToInsert.containsKey( item.ItemId__c ) )
                                 {
                                     ExternalRequestUtil.orderItemsToInsert.remove(item.ItemId__c);
                                 }
@@ -433,19 +355,9 @@ global without sharing class OrderUtil
                                 //Eliminar covers relacionadas
                                 for (Cover__c cover : ExternalRequestUtil.listCovers)
                                 {
-                                    if (
-                                        ExternalRequestUtil.updateCover.containsKey(
-                                            item.ItemId__c +
-                                            '-' +
-                                            cover.Name
-                                            )
-                                        )
+                                    if ( ExternalRequestUtil.updateCover.containsKey( item.ItemId__c + '-' + cover.Name ) )
                                     {
-                                        ExternalRequestUtil.updateCover.remove(
-                                            item.ItemId__c +
-                                            '-' +
-                                            cover.Name
-                                            );
+                                        ExternalRequestUtil.updateCover.remove( item.ItemId__c + '-' + cover.Name );
                                     }
                                 }
                             }
@@ -453,50 +365,27 @@ global without sharing class OrderUtil
                         //Si es de vida y el quote ha llegado sin itemID eliminar los items y covers con id del quoteEntry (workaround life)
                         if ( policy.LegalEntity__c.equals(Label.LifeInsurance) )
                         {
-                            if (
-                                ExternalRequestUtil.orderItemsToInsert.containsKey(
-                                    policy.QuoteEntry__c
-                                    )
-                                )
+                            if ( ExternalRequestUtil.orderItemsToInsert.containsKey( policy.QuoteEntry__c ) )
                             {
-                                ExternalRequestUtil.orderItemsToInsert.remove(
-                                    policy.QuoteEntry__c
-                                    );
+                                ExternalRequestUtil.orderItemsToInsert.remove( policy.QuoteEntry__c );
                             }
 
                             //Eliminar covers relacionadas
                             for (Cover__c cover : ExternalRequestUtil.listCovers)
                             {
-                                if (
-                                    ExternalRequestUtil.updateCover.containsKey(
-                                        policy.QuoteEntry__c +
-                                        '-' +
-                                        cover.Name
-                                        )
-                                    )
+                                if ( ExternalRequestUtil.updateCover.containsKey( policy.QuoteEntry__c + '-' + cover.Name ) )
                                 {
-                                    ExternalRequestUtil.updateCover.remove(
-                                        policy.QuoteEntry__c +
-                                        '-' +
-                                        cover.Name
-                                        );
+                                    ExternalRequestUtil.updateCover.remove( policy.QuoteEntry__c + '-' + cover.Name );
                                 }
                             }
                         }
 
                         //Eliminar discounts relacionados al quoteEntry (su discount id es diferente a la poliza)
-                        for (
-                            Discount__c dis : ExternalRequestUtil.discountsToInsert.values()
-                            )
+                        for ( Discount__c dis : ExternalRequestUtil.discountsToInsert.values() )
                         {
-                            if (dis.Policy__r.QuoteEntry__c != null)
+                            if ( dis.Policy__r.QuoteEntry__c != null && dis.Policy__r.QuoteEntry__c.equals(policy.QuoteEntry__c) )
                             {
-                                if ( dis.Policy__r.QuoteEntry__c.equals(policy.QuoteEntry__c) )
-                                {
-                                    ExternalRequestUtil.discountsToInsert.remove(
-                                        dis.DiscountId__c
-                                        );
-                                }
+                                ExternalRequestUtil.discountsToInsert.remove( dis.DiscountId__c  );
                             }
                         }
                     }
@@ -505,33 +394,32 @@ global without sharing class OrderUtil
                 }
 
                 policy.OwnerId = ExternalRequestUtil.recordOwner.id;
-                Contact contactRef = new Contact(
-                    CustomerNum__c = policy.CustomerNum__c
-                    );
+                Contact contactRef = new Contact( CustomerNum__c = policy.CustomerNum__c );
                 //policy.ContactId__c=contactoPolicy.Id;
                 policy.ContactId__r = contactRef;
                 String[] adaptCustNum = policy.CustomerNum__c.split('-');
                 String customerNumberOnly;
                 Account masterRef;
-                if (policy.SourceCountry__c != 'Spain')
-                {
-                    customerNumberOnly = adaptCustNum[2];
-                    masterRef = new Account(CustomerNum_EMEA__c = customerNumberOnly);
-                }
-                else
-                {
-                    customerNumberOnly = adaptCustNum[1];
-                    masterRef = new Account(CustomerNum__c = customerNumberOnly);
-                }
+
+                // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                // if( policy.SourceCountry__c != 'Spain') {
+                //   customerNumberOnly = adaptCustNum[2];
+                //   masterRef = new Account(CustomerNum_EMEA__c = customerNumberOnly);
+                // } else {
+                //   customerNumberOnly = adaptCustNum[1];
+                //   masterRef = new Account(CustomerNum__c = customerNumberOnly);
+                // }
+                customerNumberOnly = adaptCustNum[adaptCustNum.size() - 1]; // get the last part. example: EMEA-GI-3291 => 3291
+
+                masterRef = new Account();
+                masterRef.put(customerNumField, customerNumberOnly);
 
                 //policy.AccountId=contactoPolicy.AccountId;
                 policy.Account = masterRef;
                 policy.Status = Label.Order_Sync;
                 policy.Pricebook2Id = ExternalRequestUtil.Pricebook.Id;
 
-                policy.RecordTypeId = SystemUtil.getOrderRecordTypeIdByName(
-                    'Policy' + legalEntityName
-                    );
+                policy.RecordTypeId = SystemUtil.getOrderRecordTypeIdByName( 'Policy' + legalEntityName );
 
                 //Crear versión de póliza
                 if ( !String.isBlank(policy.PolicyContractSerial__c) )
@@ -546,16 +434,9 @@ global without sharing class OrderUtil
                     Order policyRef = new Order(PolicyNum__c = policy.PolicyNum__c);
                     pversion.OrderId__r = policyRef;
 
-                    if (
-                        !ExternalRequestUtil.policyVersionsToUpdateList.containsKey(
-                            pversion.Name
-                            )
-                        )
+                    if ( !ExternalRequestUtil.policyVersionsToUpdateList.containsKey( pversion.Name ) )
                     {
-                        ExternalRequestUtil.policyVersionsToUpdateList.put(
-                            pversion.Name,
-                            pversion
-                            );
+                        ExternalRequestUtil.policyVersionsToUpdateList.put( pversion.Name, pversion );
                     }
                 }
 
@@ -572,9 +453,7 @@ global without sharing class OrderUtil
                 }
 
                 //detectar póliza offline
-                List<String> caseWorkers = ExternalRequestUtil.adminSetup.IBACaseworker__c.split(
-                    ','
-                    );
+                List<String> caseWorkers = ExternalRequestUtil.adminSetup.IBACaseworker__c.split( ',' );
 
                 if ( !String.isBlank(policy.Caseworker__c) )
                 {
@@ -618,13 +497,7 @@ global without sharing class OrderUtil
             {
                 //System.debug('Contacto no existe');
                 throw new IntegrationException(
-                          Label.PolicyError +
-                          '' +
-                          policy.PolicyNum__c +
-                          ', ' +
-                          Label.CustomerError +
-                          ' ' +
-                          policy.CustomerNum__c
+                          Label.PolicyError + '' + policy.PolicyNum__c + ', ' + Label.CustomerError + ' ' + policy.CustomerNum__c
                           );
             }
         }
@@ -656,10 +529,7 @@ global without sharing class OrderUtil
             //Summary Polizas
             if ( !idSet.isEmpty() )
             {
-                String whereClause =
-                    'PolicyNum__c!=NULL AND PolicyStatus__c=\'' +
-                    Label.PolicyStatusActive +
-                    '\'';
+                String whereClause = 'PolicyNum__c!=NULL AND PolicyStatus__c=\'' + Label.PolicyStatusActive + '\'';
                 // Define the context for the RollupSummariesUtil.summarize() method
                 RollupSummariesUtil.Context cont = new RollupSummariesUtil.Context(
                     Contact.SobjectType,
@@ -742,11 +612,7 @@ global without sharing class OrderUtil
             for (Order order : newList)
             {
                 //Actualiza solo quotes y excluye las quotes actualizadas en el postprocesamiento
-                if (
-                    order.ContactId__c != null &&
-                    order.PolicyNum__c == null &&
-                    order.After_Processing_Check__c == true
-                    )
+                if ( order.ContactId__c != null && order.PolicyNum__c == null && order.After_Processing_Check__c == true )
                 {
                     MapQuotes.put(order.ContactId__c, order);
                 }
@@ -754,11 +620,7 @@ global without sharing class OrderUtil
 
             if ( !MapQuotes.isEmpty() )
             {
-                contacts = [
-                    SELECT id, LastQuote__c
-                    FROM Contact
-                    WHERE id = :MapQuotes.keySet()
-                ];
+                contacts = [ SELECT id, LastQuote__c FROM Contact WHERE id = :MapQuotes.keySet() ];
 
                 if (contacts != null)
                 {

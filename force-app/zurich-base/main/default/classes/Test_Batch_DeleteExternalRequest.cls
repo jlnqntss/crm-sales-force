@@ -81,13 +81,27 @@ private class Test_Batch_DeleteExternalRequest
         String query = 'SELECT Id from ExternalRequest__c';
 
         Test.startTest();
-        Id BatchInstanceId = database.executeBatch(
-            new Batch_DeleteExternalRequest(query),
-            200
-            );
+        Batch_DeleteExternalRequest b = new Batch_DeleteExternalRequest(); // for coverage
+        b = new Batch_DeleteExternalRequest(query);
+        Id BatchInstanceId = database.executeBatch( b, 200 );
         Test.stopTest();
 
         numReq = [SELECT COUNT() FROM ExternalRequest__c];
         System.assertEquals(0, numReq);
     }
+
+
+    /**
+     * For testing Schedule
+     */
+    // @isTest
+    // static void testBatch_schedule() {
+    //   Batch_DeleteExternalRequest m = new Batch_DeleteExternalRequest();
+    //   String sch = '20 30 8 10 2 ?';
+
+    //   Test.startTest();
+    //   String jobID = system.schedule('Delete External Request', sch, m);
+    //   Test.stopTest();
+    //   System.Debug('jobID: ' + jobID);
+    // }
 }

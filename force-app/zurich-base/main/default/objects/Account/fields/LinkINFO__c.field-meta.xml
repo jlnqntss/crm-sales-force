@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LinkINFO__c</fullName>
+    <description>OCS - link a INFO para abrir la ficha de una Persona</description>
+    <externalId>false</externalId>
+    <formula>IF($User.FederationIdentifier == NULL,
+HYPERLINK(&quot;/apex/OpenInfoLaunch?params=info-launch%3A%2F%2Flaunch%3FUS=Z43544090%26SE=tokenTag%26SN=0%26PR=0%26AC=0%26EV=0%26OP=9512%26EN=&quot;&amp;$CustomMetadata.INFO_Link__mdt.INFO.EN__c&amp;&quot;%26FW=yes%26WP=False%23cdfiliac=&quot;&amp;INFOCustomerNumber__c, &quot;Link INFO&quot;),
+HYPERLINK(&quot;/apex/OpenInfoLaunch?params=info-launch%3A%2F%2Flaunch%3FUS=&quot;&amp;$User.FederationIdentifier&amp;&quot;%26SE=tokenTag%26SN=0%26PR=0%26AC=0%26EV=0%26OP=9512%26EN=&quot;&amp;$CustomMetadata.INFO_Link__mdt.INFO.EN__c&amp;&quot;%26FW=yes%26WP=False%23cdfiliac=&quot;&amp;INFOCustomerNumber__c, &quot;Link INFO&quot;))</formula>
+    <label>Link INFO</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
