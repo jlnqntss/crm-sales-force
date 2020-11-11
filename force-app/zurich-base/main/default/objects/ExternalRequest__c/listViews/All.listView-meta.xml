@@ -8,8 +8,8 @@
     <columns>Processed__c</columns>
     <columns>ProcessResult__c</columns>
     <columns>ProcessedDate__c</columns>
+    <columns>NumRetry__c</columns>
     <columns>Sent__c</columns>
-    <columns>Retry__c</columns>
     <columns>Error_Log__c</columns>
     <columns>Json__c</columns>
     <columns>LAST_UPDATE</columns>
