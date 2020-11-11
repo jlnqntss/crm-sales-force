@@ -1,9 +1,20 @@
 public class GenesysCloud
 {
+    /**
+     * Representa un elemento utilizado en un recurso REST de Genesys como una solicitud de enrutamiento
+     */
+    public interface IAPIRequest
+    {
+        //Método que devuelve una serialización a JSON de la propia instancia de la clase para su uso en las llamadas al SDK.
+        String toJSON();
+    }
+
     @TestVisible
     private class RoutingServiceException extends Exception {}
 
-    @TestVisible
+    /**
+     * Getter de solo lectura que devuelve la instancia Singleton de RoutingService
+     */
     public static GenesysCloud.RoutingService RoutingService
     {
         get
@@ -18,36 +29,51 @@ public class GenesysCloud
         private set;
     }
 
+    /**
+     * RoutingService ofrece la capa de enrutamiento de Genesys Cloud, ofreciendo métodos de enrutamiento a través de una configuración de enrutamiento especificada antes de enrutar
+     */
     @TestVisible
-    private class RoutingService
+    public class RoutingService
     {
         @TestVisible
-        private final String STATUS_CODE_NO_200 = 'response code is not 200';
+        private final String STATUS_CODE_NO_200 = 'response code is not 200: ';
+        @TestVisible
+        private final String ERROR_IN_RESPONSE = 'response is null';
+        public HttpCalloutMock mock = null;
 
-        public void route(purecloud.Email routingEmail){}
+        /**
+         * Método público que realiza una solicitud al SDK para enruta una instancia de RoutingWork de forma síncrona.
+         * @param work Elemento de trabajo a  enrutar como un email o una tarea de BackOffice
+         * @return Devuelve el elemento enrutado con el identificador de interacción de Genesys Cloud.
+         */
+        public RoutingWork route(RoutingWork work){
+            HttpResponse response = null;
 
-        public void remove(purecloud.Email routingEmail){}
-
-        public void transfer(purecloud.Email routingEmail){}
-
-        public RoutingWork route (RoutingWork work){
             //Setear el mock para que funcionen los tests
-            if (Test.isRunningTest()){
-                Test.setMock(HttpCalloutMock.class, new GenesysCloudMocks());
+            if (Test.isRunningTest() && mock != null){
+                HttpRequest req = new HttpRequest();
+                req.setMethod('POST');
+                req.setEndpoint('/api/v2/conversations/' + work.getEndpoint());
+                req.setBody(work.toJSON());
+                response = mock.respond(req);
+            }
+            else{//POST
+                response = purecloud.sdk.Rest.post('/api/v2/conversations/' + work.getEndpoint(), work.toJSON());
             }
 
-            //POST
-            HttpResponse response = purecloud.sdk.Rest.post('/api/v2/conversations/' + work.endpoint, work.toJSON()); //TODO pasar endpoint a label/constante
             work.interactionId = getIdFromResponse(response);
             return work;
         }
 
-        public RoutingWork[] route(RoutingWork[] works){ return works; }
-
         public String getIdFromResponse(HttpResponse response){
+
+            if(response == null){
+                throw new GenesysCloud.RoutingServiceException(ERROR_IN_RESPONSE);
+            }
+
             //Si la respuesta no es un 200 -> Error
             if(response.getStatusCode() != 200){
-                throw new GenesysCloud.RoutingServiceException(STATUS_CODE_NO_200);
+                throw new GenesysCloud.RoutingServiceException(STATUS_CODE_NO_200 + response.getStatusCode());
             }
 
             //Devolver el ID solamente si el body lo contiene
@@ -64,15 +90,38 @@ public class GenesysCloud
         }
     }
 
-    @TestVisible
-    private virtual class RoutingWork
+    /**
+     * Clase virtual que representa un trabajo a enrutar.
+     * Implemente la interfaz GenesysCloud.IAPIRequest.
+     */
+    public abstract class RoutingWork
     {
+        //Id. de la interacción enrutada en Genesys
         @TestVisible
-        protected String interactionId {get;set;}           //Id. de la interacción enrutada en Genesys
+        protected String interactionId;
+        //VIRTUAL - Sólo lectura. Devolverá una constante con el endpoint de enrutamiento a enrutar
+        protected transient String endpoint
+        {
+            get
+            {
+                return this.getEndpoint();
+            }
+        }
+        //VIRTUAL - Sólo lectura. Devolverá una constante con el tipo de elemento a enrutar.
+        protected String provider
+        {
+            get
+            {
+                return this.getProvider();
+            }
+        }
+        //Cola sore la que se enrutará el trabajo. Cuando se setea debe poner a null flowId
         @TestVisible
-        private String provider{get;}                       //VIRTUAL - Sólo lectura. Devolverá una constante con el tipo de elemento a enrutar
-        @TestVisible
-        protected String queueId{get;set{                   //Cola sore la que se enrutará el trabajo. Cuando se setea debe poner a null flowId
+        public String queueId
+        {
+            get;
+            set
+            {
                 if(String.isNotEmpty(value))
                 {
                     flowId = null;
@@ -80,70 +129,81 @@ public class GenesysCloud
                 queueId = value;
             }
         }
+        //Flow sobre el que se enrutará el trabajo. Cuando se setea, debe poner a null queueId
         @TestVisible
-        protected String flowId{get;set{                    //Flow sobre el que se enrutará el trabajo. Cuando se setea, debe poner a null queueId
+        public String flowId
+        {
+            get;
+            set
+            {
                 if(String.isNotEmpty(value))
                 {
-                    queueId = null;
+                    this.queueId = null;
                 }
                 flowId = value;
             }
         }
+        //Listado de skills para utilizar en el enrutamiento
         @TestVisible
-        protected transient String endpoint {get;}          //VIRTUAL - Sólo lectura. Devolverá una constante con el endpoint de enrutamiento a enrutar
+        public String[] skillIds;
+        //The priority to assign to the conversation for routing
         @TestVisible
-        protected String[] skillIds {get;set;}              //Listado de skills para utilizar en el enrutamiento
-        @TestVisible
-        protected Integer priority {get;set;}               //The priority to assign to the conversation for routing
-        @TestVisible
-        protected Map<String,String> attributes {get;set;}  //Atributos personalizados para enrutar
-        @TestVisible
-        private String direction {get{                      //Sólo lectura. Devolverá siempre el valor INBOUND
+        public Integer priority;
+        //Atributos personalizados para enrutar
+        protected Map<String,String> attributes = new Map<String, String> ();
+        //Sólo lectura. Devolverá siempre el valor INBOUND
+        public String direction
+        {
+            get
+            {
                 return 'INBOUND';
             }
         }
 
-        @TestVisible
-        protected String toJSON()
+        // Método protegido que devuelve una serialización a JSON de la propia instancia de la clase para su uso en las llamadas al SDK.
+        public String toJSON()
         {
             return JSON.serialize(this);
         }
+        //VIRTUAL - Sólo lectura. Devolverá una constante con el tipo de elemento a enrutar.
+        private virtual String getProvider() { return null; }
+        //VIRTUAL - Sólo lectura. Devolverá una constante con el endpoint de enrutamiento a enrutar
+        private virtual String getEndpoint() { return '/emails';}
     }
 
+    /**
+    * Clase pública que extiende RoutingWork para representar un email a enrutar.
+    */
     public class Email extends RoutingWork
     {
-        @TestVisible
-        private String provider{get{                            //Sólo lectura. Devolverá una constante con el valor 'Salesforce Email'
-             return 'Salesforce Email';
+        //Propiedad que al setearse incluye en el mapa attributes el valor SF_URLPop con el valor asignado
+        public transient String screenPopRecordId
+        {
+            get;
+            set
+            {
+                this.attributes.put('SF_URLPop', value);
             }
         }
-        @TestVisible
-        private transient String endpoint{get{                  //Sólo lectura. Devolverá una constante con el valor 'emails'
-                return 'emails';
-            }
+        //Asunto del email
+        public String subject;
+        //Nombre del destino
+        public String toName;
+        //Dirección de correo electrónico del destino
+        public String toAddress;
+        //Nombre del remitente
+        public String fromName;
+        //Dirección de correo electrónico del remitente
+        public String fromAddress;
+        //Sólo lectura. Devolverá una constante con el valor 'Salesforce Email'
+        private override String getProvider()
+        {
+            return 'Salesforce Email';
         }
-        public transient String screenPopRecordId{get;set{      //Propiedad que al setearse incluye en el mapa attributes el valor SF_URLPop con el valor asignado
-                attributes.put('SF_URLPop',value);
-            }
-        }
-        public String subject{get;set;}                         //Asunto del email
-        public String toName{get;set;}                          //Nombre del destino
-        public String toAddress{get;set;}                       //Dirección de correo electrónico del destino
-        public String fromName{get;set;}                        //Nombre del remitente
-        public String fromAddress{get;set;}                     //Dirección de correo electrónico del remitente
-    }
 
-    public class Task extends RoutingWork
-    {
-        @TestVisible
-        private String provider{get{                            //Sólo lectura. Devolverá una constante con el valor 'Salesforce Task'
-             return 'Salesforce Task';
-            }
-        }
-        public transient String screenPopRecordId{get;set{      //Propiedad que al setearse incluye en el mapa attributes el valor SF_URLPop con el valor asignado
-                attributes.put('SF_URLPop',value);
-            }
+        private override String getEndpoint()
+        {
+            return 'emails';
         }
     }
-
 }
