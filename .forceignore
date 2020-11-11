@@ -20,7 +20,6 @@
 **/purecloud__*
 
 # Ignore Standard Profiles
-Admin.profile-meta.xml
 Chatter External User.profile-meta.xml
 Chatter Free User.profile-meta.xml
 Chatter Moderator User.profile-meta.xml
@@ -29,7 +28,6 @@ CPQ Integration User.profile-meta.xml
 Guest License User.profile-meta.xml
 Identity User.profile-meta.xml
 MarketingProfile.profile-meta.xml
-Preference Centre Profile.profile-meta.xml
 ReadOnly.profile-meta.xml
 SolutionManager.profile-meta.xml
 Standard.profile-meta.xml
