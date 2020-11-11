@@ -7,16 +7,6 @@
 @isTest
 public class Test_Batch_ProcessExternalRequest
 {
-    @testSetup
-    static void makeData()
-    {
-        // Es nesecesario indicar que el standard pricebook está activo para que el procesamiento no falle
-        Pricebook2 standardPricebook = new Pricebook2(
-            Id = Test.getStandardPricebookId(),
-            IsActive = true
-            );
-        update standardPricebook;
-    }
     /**
      * Metodo test que comprueba que el batch marca la request como procesada.
      **
@@ -26,6 +16,13 @@ public class Test_Batch_ProcessExternalRequest
     @isTest
     static void testBatch()
     {
+        // Es nesecesario indicar que el standard pricebook está activo para que el procesamiento no falle
+        Pricebook2 standardPricebook = new Pricebook2(
+            Id = Test.getStandardPricebookId(),
+            IsActive = true
+            );
+        update standardPricebook;
+
         ExternalRequest__c request = new ExternalRequest__c(
             Origin__c = 'IBA',
             Country__c = 'Spain',
@@ -37,10 +34,56 @@ public class Test_Batch_ProcessExternalRequest
         insert request;
 
         Test.startTest();
-        Database.executeBatch(new Batch_ProcessExternalRequest(), 1);
+        Batch_ProcessExternalRequest b = new Batch_ProcessExternalRequest('select'); // for coverage
+        b = new Batch_ProcessExternalRequest();
+        Database.executeBatch(b, 1);
         Test.stopTest();
 
         request = [SELECT id, Processed__c FROM ExternalRequest__c];
         System.assertEquals(true, request.Processed__c);
+    }
+
+    /**
+     * Test an exception because the pricebook is not found.
+     *
+     * @author nts (agonzalezisasi)
+     * @date 28/oct/2020
+     */
+    @isTest
+    static void testBatch_ko()
+    {
+        ExternalRequest__c request = new ExternalRequest__c(
+            Origin__c = 'IBA',
+            Country__c = 'Spain',
+            Entity__c = 'Customer',
+            Json__c = '',
+            Timestamp__c = Datetime.now(),
+            Processed__c = false
+            );
+        insert request;
+
+        Test.startTest();
+        Batch_ProcessExternalRequest b = new Batch_ProcessExternalRequest();
+        Database.executeBatch(b, 1);
+        Test.stopTest();
+
+        request = [SELECT id, Processed__c FROM ExternalRequest__c];
+        System.assertEquals(true, request.Processed__c);
+    }
+
+
+    /**
+     * For testing Schedule
+     */
+    @isTest
+    static void testBatch_schedule()
+    {
+        Batch_ProcessExternalRequest m = new Batch_ProcessExternalRequest();
+        String sch = '20 30 8 10 2 ?';
+
+        Test.startTest();
+        String jobID = system.schedule('Response External Request', sch, m);
+        Test.stopTest();
+        System.Debug('jobID: ' + jobID);
     }
 }

@@ -10,7 +10,7 @@
  **/
 public class WebServicesParser
 {
-    private static Map<String, List<WebServicesControl__mdt> > requiredMetadataMap = new Map<String, List<WebServicesControl__mdt> >();
+    private static Map<String, List<WebServicesControl__mdt>> requiredMetadataMap = new Map<String, List<WebServicesControl__mdt> >();
     private static Map<String, WebServicesControl__mdt> metadataMap = new Map<String, WebServicesControl__mdt>();
     @TestVisible
     private static List<WebServicesControl__mdt> metadataList = new List<WebServicesControl__mdt>();
@@ -45,12 +45,7 @@ public class WebServicesParser
         public Schema.SObjectType entityType;
         public boolean upsertRequired = false;
 
-        public WebParserResult(
-            String jsonObj,
-            String src,
-            String serv,
-            Schema.SObjectType entType
-            )
+        public WebParserResult(String jsonObj, String src, String serv, Schema.SObjectType entType)
         {
             this.jsonObject = jsonObj;
             this.source = src;
@@ -131,21 +126,11 @@ public class WebServicesParser
      *  @throws none
      *  @where N/A
      **/
-    public static WebParserResult parseObject(
-        Schema.SObjectType entityType,
-        String jsonObject,
-        String source,
-        String service
-        )
+    public static WebParserResult parseObject(Schema.SObjectType entityType, String jsonObject, String source, String service)
     {
         result = new WebParserResult(jsonObject, source, service, entityType);
 
-        if (
-            String.isBlank(jsonObject) ||
-            String.isBlank(source) ||
-            String.isBlank(service) ||
-            entityType == null
-            )
+        if ( String.isBlank(jsonObject) || String.isBlank(source) ||  String.isBlank(service) || entityType == null )
         {
             result.errorMessagesMap.put('Parameters', Label.EmptyParameters);
             return result;
@@ -153,9 +138,7 @@ public class WebServicesParser
         List<String> errorMessages;
         try
         {
-            List<Object> jsonResults = (List<Object>) JSON.deserializeUntyped(
-                jsonObject
-                );
+            List<Object> jsonResults = (List<Object>) JSON.deserializeUntyped(jsonObject);
 
             retrieveMetadata();
             manageObjectList(jsonResults, errorMessages, entityType);
@@ -180,11 +163,7 @@ public class WebServicesParser
      *
      *  @change gpacho 2020-05-26 External key handling system updated
      **/
-    private static void manageObjectList(
-        List<Object> objects,
-        List<String> errorMessages,
-        Schema.SObjectType entityType
-        )
+    private static void manageObjectList(List<Object> objects, List<String> errorMessages, Schema.SObjectType entityType)
     {
         for (Object jsonResult : objects)
         {
@@ -206,11 +185,7 @@ public class WebServicesParser
      *  @param Schema.SObjectType entityType
      *  @where N/A
      **/
-    private static void manageRecordMap(
-        Map<String, Object> recordMap,
-        List<String> errorMessages,
-        Schema.SObjectType entityType
-        )
+    private static void manageRecordMap(Map<String, Object> recordMap, List<String> errorMessages, Schema.SObjectType entityType)
     {
         SObject record = entityType.newSObject();
         String entityName = entityType.getDescribe().getName();
@@ -218,14 +193,15 @@ public class WebServicesParser
 
         for (String fieldName : recordMap.keySet() )
         {
-            if (!String.isBlank(fieldName) )
+            // System.Debug('****** fieldName: ' + fieldName);
+            if (!String.isBlank(fieldName))
             {
                 fieldControl = checkFieldProcessing(
                     result.source,
                     result.service,
                     entityType,
                     fieldName
-                    );
+                );
 
                 if (fieldControl != null)
                 {
@@ -258,9 +234,7 @@ public class WebServicesParser
                                 List<Object> listMultiPick = (List<Object>) element;
                                 if (!listMultiPick.isEmpty() )
                                 {
-                                    Map<String, Object> mapMultiPick = (Map<String, Object>) listMultiPick.get(
-                                        0
-                                        );
+                                    Map<String, Object> mapMultiPick = (Map<String, Object>) listMultiPick.get(0);
                                     if (!mapMultiPick.values().isEmpty() )
                                     {
                                         System.debug(
@@ -317,7 +291,7 @@ public class WebServicesParser
                             record,
                             element,
                             errorMessages
-                            );
+                        );
                     }
                 }
             }
@@ -505,12 +479,38 @@ public class WebServicesParser
                     //TODO: Añadir mensaje de error
                 }
 
-                String value = checkPicklistValue(
-                    valuesMap,
-                    errorMessages,
-                    fieldControl,
-                    fieldDescribe
-                    );
+                // System.debug('*** valuesMap: ' + valuesMap);
+                // System.debug('*** fieldDescribe: ' + fieldDescribe);
+                String value = null;
+                if( fieldDescribe.getPicklistValues() != null && !fieldDescribe.getPicklistValues().isEmpty() )
+                {
+                    value = checkPicklistValue( valuesMap, errorMessages, fieldControl, fieldDescribe );
+                }
+                else
+                {
+                    // Check if there is any value recovered
+                    if( valuesMap != null && !valuesMap.keySet().isEmpty() )
+                    {
+                        // transform set<> intro list<>
+                        List<String> keyvalues = new List<String>(valuesMap.keySet() );
+                        // Get the first value. There should be only one...
+                        value = keyvalues.get(0);
+                        if( value != null )
+                        {
+                            // Truncate the value to the length of the field
+                            if( value.length() > fieldDescribe.getLength() && fieldDescribe.getLength() > 0 )
+                            {
+                                value = value.substring(0, fieldDescribe.getLength() - 1);
+                            }
+                            // finally check if there are restricted values and if so, filter the value
+                            if( fieldControl.PicklistValues__c != null && !fieldControl.PicklistValues__c.contains(keyvalues.get(0) ) )
+                            {
+                                value = null;
+                            }
+                        }
+                    }
+                }
+                // System.debug('*** value: ' + value);
                 if (!String.isBlank(value) )
                 {
                     writeObjectField(record, fieldControl, value, result, errorMessages);
@@ -533,13 +533,7 @@ public class WebServicesParser
      *  @return SObject Returns a record with the new value added if it is correct, or and errorMessage if it is wrong
      *  @where N/A
      **/
-    private static SObject manageRecordGeneration(
-        WebParserResult result,
-        WebServicesControl__mdt fieldControl,
-        SObject record,
-        Object value,
-        List<String> errorMessages
-        )
+    private static SObject manageRecordGeneration(WebParserResult result, WebServicesControl__mdt fieldControl, SObject record, Object value, List<String> errorMessages)
     {
         Schema.DescribeFieldResult fieldDescribe;
         String textValue;

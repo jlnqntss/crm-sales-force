@@ -7,13 +7,10 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
     global String query;
 
     global Batch_DeleteErrorLogs()
-    {
-        query = SystemUtil.getErrorLogs();
-    }
+    {}
 
     global Batch_DeleteErrorLogs(String q)
     {
-        this();
         if ( !String.isBlank(q) )
         {
             query = q;
@@ -22,6 +19,10 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
 
     global Database.QueryLocator start(Database.BatchableContext BC)
     {
+        if (query == null || query == '')
+        {
+            query = SystemUtil.getErrorLogs();
+        }
         return Database.getQueryLocator(query);
     }
 

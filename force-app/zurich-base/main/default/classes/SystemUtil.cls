@@ -52,11 +52,14 @@ public without sharing class SystemUtil
      *
      * @author nts
      * @date 22/04/2020
+     *
+     * @udpate nts (agonzalezisasi) - 27/10/2020 - Include Multi-Partner logic
      */
     public static AdminSetup__mdt getAdminSetupMetadata()
     {
         List<AdminSetup__mdt> results = new List<AdminSetup__mdt>();
 
+        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
         results = [
             SELECT
             Id,
@@ -75,7 +78,17 @@ public without sharing class SystemUtil
             IBA_endpoint__c,
             IBA_EMEA_Authorization_token__c,
             IBA_EMEA_endpoint__c,
-            SameMasterPolicy__c
+            IBA_Multi_Partner_endpoint__c,
+            IBA_Multi_Partner_Authorization_token__c,
+            SameMasterPolicy__c,
+            IBA_EMEA_Non_Country__c,
+            IBA_Multi_Partner_Origin__c,
+            Multi_Partners__c,
+            WS_Service_Process_Request__c,
+            WS_Service_Quote_Entry__c,
+            WS_Source_IBA__c,
+            WS_Source_IBA_Multi_Partner__c,
+            IBA_EMEA_Prefix__c
             FROM AdminSetup__mdt
             WHERE MasterLabel = 'AdminSetup'
         ];
@@ -439,6 +452,7 @@ public without sharing class SystemUtil
     public static Map<String, Contact> contactsSelector(SET<String> keys)
     {
         Map<String, Contact> mapaContactos = new Map<String, Contact>();
+        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
         List<Contact> listaContactos = [
             SELECT
             Id,
@@ -473,6 +487,7 @@ public without sharing class SystemUtil
             AccountId,
             Account.CustomerNum__c,
             Account.CustomerNum_EMEA__c,
+            Account.CustomerNum_Partner__c,
             SourceCountry__c
             FROM Contact
             WHERE CustomerNum__c IN :keys
@@ -493,74 +508,70 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Contact> contactsSelectorEmailBirthDateLECountry(
-        SET<String> keys
-        )
-    {
-        Map<String, Contact> mapaContactos = new Map<String, Contact>();
-        List<Contact> listaContactos = [
-            SELECT
-            Id,
-            DNI__c,
-            Email,
-            MobilePhone,
-            Birthdate,
-            FirstName,
-            LastName,
-            CustomerNum__c,
-            LegalEntity__c,
-            MailingStreet,
-            MailingPostalCode,
-            MailingCity,
-            MailingState,
-            MailingCountry,
-            Nationality__c,
-            CreditCard__c,
-            MonthExpiryDate__c,
-            YearExpiryDate__c,
-            Job__c,
-            JobPosition__c,
-            CNO__c,
-            Gender__c,
-            Status__c,
-            MasterPolicy__c,
-            MasterPolicyNum__c,
-            MasterPolicyDesc__c,
-            Balance__c,
-            RecordTypeId,
-            AccountId,
-            Account.CustomerNum__c,
-            Account.CustomerNum_EMEA__c,
-            SourceCountry__c
-            FROM Contact
-            WHERE Email IN :keys
-        ];
+    /*public static Map<String, Contact> contactsSelectorEmailBirthDateLECountry(
+       SET<String> keys
+       ) {
+       Map<String, Contact> mapaContactos = new Map<String, Contact>();
+       List<Contact> listaContactos = [
+        SELECT
+          Id,
+          DNI__c,
+          Email,
+          MobilePhone,
+          Birthdate,
+          FirstName,
+          LastName,
+          CustomerNum__c,
+          LegalEntity__c,
+          MailingStreet,
+          MailingPostalCode,
+          MailingCity,
+          MailingState,
+          MailingCountry,
+          Nationality__c,
+          CreditCard__c,
+          MonthExpiryDate__c,
+          YearExpiryDate__c,
+          Job__c,
+          JobPosition__c,
+          CNO__c,
+          Gender__c,
+          Status__c,
+          MasterPolicy__c,
+          MasterPolicyNum__c,
+          MasterPolicyDesc__c,
+          Balance__c,
+          RecordTypeId,
+          AccountId,
+          Account.CustomerNum__c,
+          Account.CustomerNum_EMEA__c,
+          Account.CustomerNum_Partner__c,
+          SourceCountry__c
+        FROM Contact
+        WHERE Email IN :keys
+       ];
 
-        for (Contact con : listaContactos)
-        {
-            String legalEntityName;
-            if ( con.LegalEntity__c.equals(Label.GeneralInsurance) )
-            {
-                legalEntityName = 'GI';
-            }
-            else
-            {
-                legalEntityName = 'Life';
-            }
-
-            // EMEA
-            String matchCode =
-                con.Email +
-                String.valueOfGmt(con.Birthdate) +
-                legalEntityName +
-                con.SourceCountry__c;
-            // END EMEA
-
-            mapaContactos.put(matchCode, con);
+       for (Contact con : listaContactos) {
+        String legalEntityName;
+        if (con.LegalEntity__c.equals(Label.GeneralInsurance)) {
+          legalEntityName = 'GI';
+        } else {
+          legalEntityName = 'Life';
         }
 
-        return mapaContactos;
-    }
+        // EMEA
+        String matchCode =
+          con.Email +
+          String.valueOfGmt(con.Birthdate) +
+          legalEntityName +
+          con.SourceCountry__c;
+        // END EMEA
+
+        mapaContactos.put(matchCode, con);
+       }
+
+       return mapaContactos;
+       }*/
 
     /**
      * Método que obtiene todos los registros de contacto existentes con matchcode email+fechaNacimiento+EntidadLegal
@@ -568,71 +579,67 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Contact> contactsSelectorEmailBirthDateLE(
-        SET<String> keys
-        )
-    {
-        Map<String, Contact> mapaContactos = new Map<String, Contact>();
-        List<Contact> listaContactos = [
-            SELECT
-            Id,
-            DNI__c,
-            Email,
-            MobilePhone,
-            Birthdate,
-            FirstName,
-            LastName,
-            CustomerNum__c,
-            LegalEntity__c,
-            MailingStreet,
-            MailingPostalCode,
-            MailingCity,
-            MailingState,
-            MailingCountry,
-            Nationality__c,
-            CreditCard__c,
-            MonthExpiryDate__c,
-            YearExpiryDate__c,
-            Job__c,
-            JobPosition__c,
-            CNO__c,
-            Gender__c,
-            Status__c,
-            MasterPolicy__c,
-            MasterPolicyNum__c,
-            MasterPolicyDesc__c,
-            Balance__c,
-            RecordTypeId,
-            AccountId,
-            Account.CustomerNum__c,
-            Account.CustomerNum_EMEA__c,
-            SourceCountry__c
-            FROM Contact
-            WHERE Email IN :keys
-        ];
+    /*public static Map<String, Contact> contactsSelectorEmailBirthDateLE(
+       SET<String> keys
+       ) {
+       Map<String, Contact> mapaContactos = new Map<String, Contact>();
+       List<Contact> listaContactos = [
+        SELECT
+          Id,
+          DNI__c,
+          Email,
+          MobilePhone,
+          Birthdate,
+          FirstName,
+          LastName,
+          CustomerNum__c,
+          LegalEntity__c,
+          MailingStreet,
+          MailingPostalCode,
+          MailingCity,
+          MailingState,
+          MailingCountry,
+          Nationality__c,
+          CreditCard__c,
+          MonthExpiryDate__c,
+          YearExpiryDate__c,
+          Job__c,
+          JobPosition__c,
+          CNO__c,
+          Gender__c,
+          Status__c,
+          MasterPolicy__c,
+          MasterPolicyNum__c,
+          MasterPolicyDesc__c,
+          Balance__c,
+          RecordTypeId,
+          AccountId,
+          Account.CustomerNum__c,
+          Account.CustomerNum_EMEA__c,
+          Account.CustomerNum_Partner__c,
+          SourceCountry__c
+        FROM Contact
+        WHERE Email IN :keys
+       ];
 
-        String matchCode;
-        for (Contact con : listaContactos)
-        {
-            String legalEntityName;
-            if ( con.LegalEntity__c.equals(Label.GeneralInsurance) )
-            {
-                legalEntityName = 'GI';
-            }
-            else
-            {
-                legalEntityName = 'Life';
-            }
-
-            matchCode =
-                con.Email +
-                String.valueOfGmt(con.Birthdate) +
-                legalEntityName;
-            mapaContactos.put(matchCode, con);
+       String matchCode;
+       for (Contact con : listaContactos) {
+        String legalEntityName;
+        if (con.LegalEntity__c.equals(Label.GeneralInsurance)) {
+          legalEntityName = 'GI';
+        } else {
+          legalEntityName = 'Life';
         }
 
-        return mapaContactos;
-    }
+        matchCode =
+          con.Email +
+          String.valueOfGmt(con.Birthdate) +
+          legalEntityName;
+        mapaContactos.put(matchCode, con);
+       }
+
+       return mapaContactos;
+       }*/
 
     /**
      * Método que obtiene todos los registros de contacto existentes con matchcode email+fechaNacimiento
@@ -640,11 +647,72 @@ public without sharing class SystemUtil
      * @author gpacho
      * @date 18/09/2020
      **/
-    public static Map<String, Contact> contactsSelectorEmailBirthDate(
-        SET<String> keys
+    /*public static Map<String, Contact> contactsSelectorEmailBirthDate(
+       SET<String> keys
+       ) {
+       Map<String, Contact> mapaContactos = new Map<String, Contact>();
+       List<Contact> listaContactos = [
+        SELECT
+          Id,
+          DNI__c,
+          Email,
+          MobilePhone,
+          Birthdate,
+          FirstName,
+          LastName,
+          CustomerNum__c,
+          LegalEntity__c,
+          MailingStreet,
+          MailingPostalCode,
+          MailingCity,
+          MailingState,
+          MailingCountry,
+          Nationality__c,
+          CreditCard__c,
+          MonthExpiryDate__c,
+          YearExpiryDate__c,
+          Job__c,
+          JobPosition__c,
+          CNO__c,
+          Gender__c,
+          Status__c,
+          MasterPolicy__c,
+          MasterPolicyNum__c,
+          MasterPolicyDesc__c,
+          Balance__c,
+          RecordTypeId,
+          AccountId,
+          Account.CustomerNum__c,
+          Account.CustomerNum_EMEA__c,
+          Account.CustomerNum_Partner__c,
+          SourceCountry__c
+        FROM Contact
+        WHERE Email IN :keys
+       ];
+
+       String matchCode;
+       for (Contact con : listaContactos) {
+        matchCode = con.Email + String.valueOfGmt(con.Birthdate);
+        mapaContactos.put(matchCode, con);
+       }
+       return mapaContactos;
+       }*/
+
+    /**
+     * Método que obtiene todos los registros de contacto existentes con matchcode email+fechaNacimiento
+     *
+     * @author gpacho
+     * @date 18/09/2020
+     **/
+    public static void contactsSelectorMatchCode(
+        SET<String> keys,
+        Map<String, Contact> mapEmailBirthLECountry,
+        Map<String, Contact> mapEmailBirthLE,
+        Map<String, Contact> mapEmailBirth
         )
     {
-        Map<String, Contact> mapaContactos = new Map<String, Contact>();
+        //Map<String, Contact> mapaContactos = new Map<String, Contact>();
+        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
         List<Contact> listaContactos = [
             SELECT
             Id,
@@ -678,18 +746,28 @@ public without sharing class SystemUtil
             AccountId,
             Account.CustomerNum__c,
             Account.CustomerNum_EMEA__c,
+            Account.CustomerNum_Partner__c,
             SourceCountry__c
             FROM Contact
             WHERE Email IN :keys
         ];
 
+        String legalEntityName;
         String matchCode;
         for (Contact con : listaContactos)
         {
+            legalEntityName = (con.LegalEntity__c.equals(Label.GeneralInsurance) ? 'GI' : 'Life');
+
             matchCode = con.Email + String.valueOfGmt(con.Birthdate);
-            mapaContactos.put(matchCode, con);
+            mapEmailBirth.put(matchCode, con);
+
+            matchCode += legalEntityName;
+            mapEmailBirthLE.put(matchCode, con);
+
+            // EMEA
+            matchCode += con.SourceCountry__c;
+            mapEmailBirthLECountry.put(matchCode, con);
         }
-        return mapaContactos;
     }
 
     /**
@@ -701,12 +779,14 @@ public without sharing class SystemUtil
     public static Map<String, Order> PolicySelector(SET<String> keys)
     {
         Map<String, Order> mapaPolicy = new Map<String, Order>();
+        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
         List<Order> listaPolicy = [
             SELECT
             Id,
             AccountId,
             LegalEntity__c,
             PolicyNum__c,
+            CustomerNum__c,
             Masterpolicy__c,
             PolicyContractSerial__c,
             RecordType.DeveloperName,

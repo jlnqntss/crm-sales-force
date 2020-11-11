@@ -60,6 +60,11 @@
                 <default>false</default>
                 <label>Opportunity</label>
             </value>
+            <value>
+                <fullName>Claim__c</fullName>
+                <default>false</default>
+                <label>Claim</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

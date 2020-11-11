@@ -67,4 +67,19 @@ private class Test_Batch_DeleteMasters
         numMasters = [SELECT COUNT() FROM Account];
         System.assertEquals(0, numMasters);
     }
+
+    /**
+     * For testing Schedule
+     */
+    @isTest
+    static void testBatch_schedule()
+    {
+        Batch_DeleteMasters m = new Batch_DeleteMasters();
+        String sch = '20 30 8 10 2 ?';
+
+        Test.startTest();
+        String jobID = system.schedule('Response External Request', sch, m);
+        Test.stopTest();
+        System.Debug('jobID: ' + jobID);
+    }
 }

@@ -386,12 +386,12 @@ before_script:
       local cmd="sfdx force:source:deploy --verbose --targetusername "$org_username" --sourcepath force-app --wait 10 --json" && (echo $cmd >&2)
     fi
 
-    local hasError=$cmd |  jq '.status'
     local output=$($cmd) && (echo $output | jq '.' >&2)
+    local hasError=$(echo $output | jq '.status')
 
     exit $hasError
   }
-
+  
   # Function to run doc generation
   # No arguments.
 

@@ -9,12 +9,14 @@ public without sharing class GenesysInteractionsService
     static final String SCOPE_CODE_ZE = 'ze';
     @TestVisible
     static final String SCOPE_CODE_KLINC = 'klinc';
-    static final Map<String, String> SCOPE_NAMES_BY_CODE = new Map<String, String> 
+    static final Map<String, String> SCOPE_NAMES_BY_CODE = new Map<String, String>
     {
         SCOPE_CODE_ALL  => 'General',
         SCOPE_CODE_ZE => 'Zurich Empresas',
         SCOPE_CODE_KLINC => 'Klinc'
     };
+
+    //#region Métodos públicos
 
     /**
      * Sirve a WS_GenesysAPIService
@@ -28,7 +30,7 @@ public without sharing class GenesysInteractionsService
     public static Interaction initInteraction(Interaction request)
     {
         // 1 - Si el servicio no recibe el from, to o interactionType, devolverá un KO
-        if ( String.isBlank(request.interactionId) || String.isBlank(request.interactionType) || String.isBlank(request.fromId) || String.isBlank(request.toId) || String.isBlank(request.lookFor))
+        if ( String.isBlank(request.interactionId) || String.isBlank(request.interactionType) || String.isBlank(request.fromId) || String.isBlank(request.toId) || String.isBlank(request.lookFor) )
         {
             throw new GenesysInteractionsServiceException(MISSING_FIELDS_REQUIRED);
         }
@@ -50,8 +52,8 @@ public without sharing class GenesysInteractionsService
     public static String createOnQueueInteraction(Interaction interactionLog)
     {
         Id interactionRecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
-                  .get('Interaction')
-                  .getRecordTypeId();
+                                     .get('Interaction')
+                                     .getRecordTypeId();
 
         //WIP
         Task interactionTask = new Task(
@@ -62,7 +64,7 @@ public without sharing class GenesysInteractionsService
             RecordTypeId = interactionRecordTypeId,
             WhoId = interactionLog.customerId,
             TaskSubtype = 'Call'
-        );
+            );
 
         if(interactionLog.screenPopRecordId != null && Id.valueOf(interactionLog.screenPopRecordId).getSobjectType() != Contact.SobjectType)
         {
@@ -80,16 +82,16 @@ public without sharing class GenesysInteractionsService
     public static SearchResult findRelatedRecords(Interaction interactionLog)
     {
         return findRelatedRecords(
-            interactionLog.interactionType == 'Outbound'? interactionLog.toId:interactionLog.fromId, 
-            interactionLog.lookFor, 
+            interactionLog.interactionType == 'Outbound' ? interactionLog.toId : interactionLog.fromId,
+            interactionLog.lookFor,
             interactionLog.scope
-        );
+            );
     }
 
-    /** 
+    /**
      * Busca los registros relacionados con la interacción, definidos como el último registro abierto
      * asociado a cada cliente del tipo definido por el método
-     * 
+     *
      * @author jmartinezpisson
      * @date 02/11/2020
      */
@@ -112,11 +114,11 @@ public without sharing class GenesysInteractionsService
         switch on lookFor {
             when 'Opportunity' {
                 List<Opportunity> opportunities = [SELECT Id, OwnerId, ContactId__c, isClosed, AccountId, CreatedDate, Owner.Email
-                                                    FROM Opportunity 
-                                                    WHERE isClosed = FALSE 
-                                                    AND (AccountId IN :relatedIds OR ContactId__c IN :relatedIds)
-                                                    AND Scope__c = :SCOPE_NAMES_BY_CODE.get(scope)
-                                                    ORDER BY CreatedDate DESC];
+                                                   FROM Opportunity
+                                                   WHERE isClosed = FALSE
+                                                                    AND (AccountId IN :relatedIds OR ContactId__c IN :relatedIds)
+                                                                    AND Scope__c = :SCOPE_NAMES_BY_CODE.get(scope)
+                                                                                   ORDER BY CreatedDate DESC];
 
                 searchResults.relatedRecords = (List<SObject>) opportunities;
             }
@@ -131,11 +133,11 @@ public without sharing class GenesysInteractionsService
                     CreatedDate,
                     Owner.Email
                     FROM Case
-                    WHERE isClosed = FALSE 
-                    AND (AccountId IN :relatedIds OR ContactId IN :relatedIds)
-                    ORDER BY CreatedDate DESC
+                    WHERE isClosed = FALSE
+                                     AND (AccountId IN :relatedIds OR ContactId IN :relatedIds)
+                                     ORDER BY CreatedDate DESC
                 ];
-                
+
                 searchResults.relatedRecords = (List<SObject>) cases;
             }
         }
@@ -144,9 +146,9 @@ public without sharing class GenesysInteractionsService
     }
 
 
-    /** 
+    /**
      * Busca los registros relacionados con la interacción
-     * 
+     *
      * @author jmartinezpisson
      * @date 02/11/2020
      */
@@ -154,7 +156,7 @@ public without sharing class GenesysInteractionsService
     {
         Set<Id> matchedPersonIds = new Set<Id>();
 
-        if (searchFor.contains('@'))
+        if (searchFor.contains('@') )
         {
             return ContactsSelector.findByEmail(new List<String> { searchFor });
         }
@@ -177,14 +179,14 @@ public without sharing class GenesysInteractionsService
 
         // 1 - Se considera como registros encontrados los primeros que se haya devuelto en las listas
         //     El BestAgent es el propietario del registro relacionado, y se toma su Id como el email
-        if(!searchResults.names.isEmpty())
+        if(!searchResults.names.isEmpty() )
         {
             matchedContact = searchResults.names[0];
             interaction.customerId = matchedContact.Id;
             interaction.screenPopRecordId = matchedContact.Id;
         }
 
-        if(!searchResults.relatedRecords.isEmpty())
+        if(!searchResults.relatedRecords.isEmpty() )
         {
             matchedRecord = searchResults.relatedRecords[0];
 
@@ -207,7 +209,36 @@ public without sharing class GenesysInteractionsService
         return interaction;
     }
 
-    //Salida
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     * 
+     * @author jmartinezpisson
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {SearchResult} Resultados devueltos por la búsqueda
+     */
+    public static SearchResult findPeopleBy(SearchRequest request)
+    {
+        SearchResult results = new SearchResult();
+
+        List<Contact> contacts = ContactsSelector.findByPhoneNumber(new List<String> { request.value });
+
+        for(Contact matchedContact : contacts)
+        {
+            results.screenPopRecordIds.add(matchedContact.AccountId);
+        }
+
+        return results;
+    }
+
+    //#endregion
+
+    //#region Inner Classes
+
+    /**
+     * Representa una interacción de Genesys Cloud, enriquecida con información de Salesforce
+     *
+     * @author nescudero
+     */
     public class Interaction
     {
         public String interactionId { get; set; }
@@ -229,10 +260,49 @@ public without sharing class GenesysInteractionsService
         }
     }
 
+    /**
+     * Representa una solicitud de búsqueda en CRM
+     *
+     * @author jmartinezpisson
+     */
+    public class SearchRequest
+    {
+        public String searchType;
+        public String filterBy;
+        public String lookFor;
+        public String value;
+        public String scope;
+
+        public SearchRequest() {}
+        public SearchRequest(Map<String, String> paramsByName)
+        {
+            this.searchType = paramsByName.get('searchType');
+            this.filterBy = paramsByName.get('filterBy');
+            this.value = paramsByName.get('value');
+            this.scope = paramsByName.get('scope');
+        }
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa los resultados de búsqueda del CRM
+     *
+     * @author jmartinezpisson
+     */
     public class SearchResult
     {
         public transient List<Contact> names;
         public transient List<SObject> relatedRecords;
+        public String[] screenPopRecordIds = new String[] {};
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
     }
 
     @TestVisible

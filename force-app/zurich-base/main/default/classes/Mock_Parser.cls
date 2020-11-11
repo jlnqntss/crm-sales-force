@@ -1,10 +1,18 @@
 /**
  * Global class to specify the response expected from the Parser
  * @Autor: nbizkarra (04/05/2020)
+ *
+ * @update nts (agonzalezisasi) - 26/oct/2020 - Include Mult-Partner logic
  **/
 //@isTest
 global class Mock_Parser
 {
+    public static Boolean isIBA_MultiPart = false;
+    public static Boolean isIBA_EMEA = false;
+
+    /**
+     * MockParser
+     */
     static global Map<String, SObject> MockParser(String Entity)
     {
         Map<String, SObject> recordsMap = new Map<String, SObject>();
@@ -20,6 +28,10 @@ global class Mock_Parser
                 InsuredObjectId__c = '123456789',
                 SourceCountry__c = 'Spain'
                 );
+            if( isIBA_EMEA )
+                claim.SourceCountry__c = 'France';
+            if( isIBA_MultiPart )
+                claim.Partner__c = 'Orange Seguros';
 
             //Order policyRef=new Order(PolicyNum__c=claim.PolicyNum__c);
             //claim.Policy__r=policyRef;
@@ -28,9 +40,7 @@ global class Mock_Parser
         }
         else if ( Entity.equals('Customer') )
         {
-            System.debug(
-                'el entity es >>> ' + ExternalRequestUtil.actualRequest.entity__c
-                );
+            System.debug( 'el entity es >>> ' + ExternalRequestUtil.actualRequest.entity__c );
             if (ExternalRequestUtil.actualRequest.entity__c == 'QuoteEntry')
             {
                 Contact lead = new Contact(
@@ -39,11 +49,19 @@ global class Mock_Parser
                     Status__c = Label.Lead,
                     Birthdate = Date.valueOf('1990-01-01'),
                     FirstName = 'Nora',
-                    LastName = 'Bizkarra',
+                    LastName = '', // Bizkarra // for coverage
                     CustomerNum__c = '9999',
                     LegalEntity__c = Label.GeneralInsurance,
                     SourceCountry__c = 'Spain'
                     );
+                if( isIBA_EMEA )
+                    lead.SourceCountry__c = 'France';
+                if( isIBA_MultiPart )
+                {
+                    lead.Partner__c = 'Orange Seguros';
+                    lead.Status__c = Label.Customer;
+                    lead.MasterPolicyNum__c = '666';
+                }
                 recordsMap.put(lead.CustomerNum__c, (SObject) lead);
             }
             else
@@ -61,6 +79,10 @@ global class Mock_Parser
                     MasterPolicyDesc__c = 'Nestle',
                     SourceCountry__c = 'Spain'
                     );
+                if( isIBA_EMEA )
+                    customer.SourceCountry__c = 'France';
+                if( isIBA_MultiPart )
+                    customer.Partner__c = 'Orange Seguros';
 
                 customer.Status__c = Label.Customer;
                 recordsMap.put(customer.CustomerNum__c, (SObject) customer);
@@ -82,6 +104,10 @@ global class Mock_Parser
                 QuoteEntry__c = '10000',
                 SourceCountry__c = 'Spain'
                 );
+            if( isIBA_EMEA )
+                policy.SourceCountry__c = 'France';
+            if( isIBA_MultiPart )
+                policy.Partner__c = 'Orange Seguros';
 
             recordsMap.put(policy.PolicyNum__c, (SObject) policy);
         }
@@ -96,12 +122,19 @@ global class Mock_Parser
                 QuoteEntry__c = '9090',
                 SourceCountry__c = 'Spain'
                 );
+            if( isIBA_EMEA )
+                quote.SourceCountry__c = 'France';
+            if( isIBA_MultiPart )
+                quote.Partner__c = 'Orange Seguros';
 
             recordsMap.put(quote.QuoteEntry__c, (SObject) quote);
         }
         return recordsMap;
     }
 
+    /**
+     * MockParserSecondLevel
+     */
     static global Map<String, List<SObject> > MockParserSecondLevel(
         String Entity
         )
@@ -115,6 +148,9 @@ global class Mock_Parser
             DiscountPct__c = 50,
             DiscountIdNumber__c = 1111
             );
+        if( isIBA_MultiPart )
+            disc.Partner__c = 'Orange Seguros';
+
         OrderItem item = new OrderItem(
             itemId__c = '7777',
             ItemAge__c = 2,
@@ -122,6 +158,9 @@ global class Mock_Parser
             Brand__c = 'Samsung',
             itemModel__c = 'Samsung Galaxy'
             );
+        if( isIBA_MultiPart )
+            item.Partner__c = 'Orange Seguros';
+
         OrderItem item2 = new OrderItem(
             itemId__c = '6666',
             ItemAge__c = 2,
@@ -129,37 +168,41 @@ global class Mock_Parser
             Brand__c = 'Apple',
             itemModel__c = 'IphoneX'
             );
+        if( isIBA_MultiPart )
+            item2.Partner__c = 'Orange Seguros';
 
         if ( Entity.equals('Quote') )
         {
-            Order quoteRef = new Order(
-                QuoteEntry__c = '9090',
-                SourceCountry__c = 'Spain'
-                );
+            // Order quoteRef = new Order(QuoteEntry__c = '9090', SourceCountry__c = 'Spain');
+            // if( isIBA_EMEA ) quoteRef.SourceCountry__c = 'France';
+            // if( isIBA_MultiPart ) quoteRef.Partner__c = 'Orange Seguros';
+
             //Descuento
-            disc.Policy__r = quoteRef;
+            disc.Policy__r = new Order(QuoteEntry__c = '9090');
             listaDescuentos.add( (SObject) disc );
             secLvlRecordsMap.put('Discount__c', listaDescuentos);
 
             //orderItem
-            item.Order = quoteRef;
-            item2.Order = quoteRef;
+            item.Order = new Order(QuoteEntry__c = '9090');
+            item2.Order = new Order(QuoteEntry__c = '9090');
             listaItems.add( (SObject) item );
             listaItems.add( (SObject) item2 );
             secLvlRecordsMap.put('OrderItem', listaItems);
         }
         else if ( Entity.equals('Policy') )
         {
-            Order policyRef = new Order(PolicyNum__c = '1111');
+            // Order policyRef = new Order(PolicyNum__c = '1111');
+            // if( isIBA_EMEA ) policyRef.SourceCountry__c = 'France';
+            // if( isIBA_MultiPart ) policyRef.Partner__c = 'Orange Seguros';
 
             //Descuento
-            disc.Policy__r = policyRef;
+            disc.Policy__r = new Order(PolicyNum__c = '1111');
             listaDescuentos.add( (SObject) disc );
             secLvlRecordsMap.put('Discount__c', listaDescuentos);
 
             //OrderItem
-            item.Order = policyRef;
-            item2.Order = policyRef;
+            item.Order = new Order(PolicyNum__c = '1111');
+            item2.Order = new Order(PolicyNum__c = '1111');
             listaItems.add( (SObject) item );
             listaItems.add( (SObject) item2 );
             secLvlRecordsMap.put('OrderItem', listaItems);
@@ -168,6 +211,9 @@ global class Mock_Parser
         return secLvlRecordsMap;
     }
 
+    /**
+     * MockParserThirdLevel
+     */
     static global Map<String, List<SObject> > MockParserThirdLevel(String Entity)
     {
         Map<String, List<SObject> > thrLvlRecordsMap = new Map<String, List<SObject> >();
@@ -182,6 +228,9 @@ global class Mock_Parser
             SumInsured__c = 1000,
             SourceCountry__c = 'Spain'
             );
+        if( isIBA_MultiPart )
+            cover.Partner__c = 'Orange Seguros';
+
         Cover__c subcover = new Cover__c(
             CoverId__c = '2',
             ParentCoverId__c = '1',
@@ -190,6 +239,9 @@ global class Mock_Parser
             SumInsured__c = 150,
             SourceCountry__c = 'Spain'
             );
+        if( isIBA_MultiPart )
+            subcover.Partner__c = 'Orange Seguros';
+
         Cover__c cover2 = new Cover__c(
             CoverId__c = '3',
             ParentCoverId__c = null,
@@ -198,6 +250,9 @@ global class Mock_Parser
             SumInsured__c = 1000,
             SourceCountry__c = 'Spain'
             );
+        if( isIBA_MultiPart )
+            cover2.Partner__c = 'Orange Seguros';
+
         Cover__c subcover2 = new Cover__c(
             CoverId__c = '4',
             ParentCoverId__c = '3',
@@ -206,21 +261,25 @@ global class Mock_Parser
             SumInsured__c = 150,
             SourceCountry__c = 'Spain'
             );
+        if( isIBA_MultiPart )
+            subcover2.Partner__c = 'Orange Seguros';
 
-        OrderItem itemRef = new OrderItem(itemId__c = '7777');
-        cover.PolicyProduct__r = itemRef;
-        subcover.PolicyProduct__r = itemRef;
-        cover2.PolicyProduct__r = itemRef;
-        subcover2.PolicyProduct__r = itemRef;
+        // OrderItem itemRef = new OrderItem(itemId__c = '7777');
+
+        cover.PolicyProduct__r =  new OrderItem(itemId__c = '7777');
+        subcover.PolicyProduct__r =  new OrderItem(itemId__c = '7777');
+        cover2.PolicyProduct__r =  new OrderItem(itemId__c = '7777');
+        subcover2.PolicyProduct__r =  new OrderItem(itemId__c = '7777');
 
         listaObjetos.add( (SObject) cover );
         listaObjetos.add( (SObject) subcover );
         listaObjetos.add( (SObject) cover2 );
         listaObjetos.add( (SObject) subcover2 );
         //el key deberia ser el external id de item
-        thrLvlRecordsMap.put(itemRef.itemId__c, listaObjetos);
+        thrLvlRecordsMap.put('7777', listaObjetos);
 
-        OrderItem itemRef2 = new OrderItem(itemId__c = '6666');
+        // OrderItem itemRef2 = new OrderItem(itemId__c = '6666');
+
         Cover__c cover3 = new Cover__c(
             CoverId__c = '1',
             ParentCoverId__c = null,
@@ -229,6 +288,9 @@ global class Mock_Parser
             SumInsured__c = 1000,
             SourceCountry__c = 'Spain'
             );
+        if( isIBA_MultiPart )
+            cover3.Partner__c = 'Orange Seguros';
+
         Cover__c subcover3 = new Cover__c(
             CoverId__c = '2',
             ParentCoverId__c = '1',
@@ -237,13 +299,17 @@ global class Mock_Parser
             SumInsured__c = 150,
             SourceCountry__c = 'Spain'
             );
-        cover3.PolicyProduct__r = itemRef2;
-        subcover3.PolicyProduct__r = itemRef2;
+        if( isIBA_MultiPart )
+            subcover3.Partner__c = 'Orange Seguros';
+
+        cover3.PolicyProduct__r = new OrderItem(itemId__c = '6666');
+        subcover3.PolicyProduct__r = new OrderItem(itemId__c = '6666');
+
 
         listaObjetos2.add( (SObject) cover3 );
         listaObjetos2.add( (SObject) subcover3 );
         //el key deberia ser el external id de item
-        thrLvlRecordsMap.put(itemRef2.itemId__c, listaObjetos2);
+        thrLvlRecordsMap.put('6666', listaObjetos2);
 
         return thrLvlRecordsMap;
     }

@@ -629,7 +629,7 @@ public class TestDataFactory
                 'producto_comercial' => String.valueOf(i + 1).leftPad(9, '0'),
                 'producto_nombre' => 'Product' + i,
                 'producto_descripción' => 'Product' + i,
-                'producto_estado' => true
+                'producto_estado' => 'S'
             }
                 );
         }
@@ -881,6 +881,64 @@ public class TestDataFactory
 
     /**
      * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad Siniestro
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author adelgado
+     * @date 23/10/2020
+     */
+    public static List<Map<String, Object> > getINFOClaimJson(
+        Integer totalItems
+        )
+    {
+        return buildINFOClaimJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOClaimJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<String> faulFactors = new List<String> {
+            'A',
+            'C'
+        };
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO SINIESTRO*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                    'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'siniestro_fecha_ocurrencia' => '2020-11-05',
+                    'siniestro_factor_culpa' => faulFactors[Integer.valueof( (Math.random() * faulFactors.size() - 1) )],
+                    'siniestro_factor_culpa_desc' => '',
+                    'poliza_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'poliza_version' => '',
+                    'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0'),
+                    'siniestro_situacion' => '',
+                    'siniestro_situacion_desc' => '',
+                    'siniestro_situacion_tecnica' => '',
+                    'siniestro_situacion_tecnica_desc' => '',
+                    'siniestro_motivo' => '',
+                    'siniestro_motivo_desc' => '',
+                    'riesgo_asegurado' => String.valueOf(i + 1).leftPad(9, '0')
+            }
+                );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
+     * Obtener estructura json del sistema de origen INFO para registros
      * de entidad Relación Póliza
      **
      * @param Integer numero de elementos a generar
@@ -996,7 +1054,7 @@ public class TestDataFactory
 
         for (Integer i = 0; i < totalItems; i++)
         {
-            /* REGISTRO RELACIÓN PÓLIZA*/
+            /* REGISTRO RELACIÓN OFERTA*/
             jsonElementsList.add(
                 new Map<String, Object> {
                 'id_unico_rol_oferta' => 'O' + String.valueOf(i + 1).leftPad(9, '0'),
@@ -1005,6 +1063,73 @@ public class TestDataFactory
                     Integer.valueof( (Math.random() * roles.size() - 1) )
                                ],
                 'oferta_rol_desc' => 'Test',
+                'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
+            }
+                );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad Relación Siniestro
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author adelgado
+     * @date 23/10/2020
+     */
+    public static List<Map<String, Object> > getINFOClaimRelationshipJson(
+        Integer totalItems
+        )
+    {
+        return buildINFOClaimRelationshipJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOClaimRelationshipJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<String> roles = new List<String> {
+            'ABG',
+            'ABU',
+            'ALL',
+            'ASC',
+            'ASE',
+            'ASG',
+            'ASR',
+            'BEN',
+            'BER',
+            'BRK',
+            'CAI',
+            'CAS',
+            'CAV',
+            'CCN',
+            'CCO',
+            'CCR',
+            'CID',
+            'CLG'
+        };
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO RELACIÓN SINIESTRO*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                'id_unico_rol_siniestro' => 'C' + String.valueOf(i + 1).leftPad(9, '0'),
+                'siniestro_id' => String.valueOf(i + 1).leftPad(9, '0'),
+                'siniestro_rol' => roles[
+                    Integer.valueof( (Math.random() * roles.size() - 1) )
+                               ],
+                'siniestro_rol_desc' => 'Test',
                 'cliente_cod_filiacion' => 'F' + String.valueOf(i + 1).leftPad(9, '0')
             }
                 );
@@ -1250,6 +1375,23 @@ public class TestDataFactory
                         );
                 }
             }
+            // Siniestro
+            when 'CLAIM' {
+                for (
+                    Map<String, Object> payload : getINFOClaimJson(numRecords)
+                    )
+                {
+                    externalRequestList.add(
+                        new ExternalRequest__c(
+                            Origin__c = origin,
+                            Entity__c = 'CLAIM',
+                            Action__c = 'UPSERT',
+                            Payload__c = JSON.serialize(payload),
+                            ContentFormat__c = 'JSON'
+                            )
+                        );
+                }
+            }
             // Rol póliza
             when 'POLICY_RELATIONSHIP' {
                 for (
@@ -1286,6 +1428,23 @@ public class TestDataFactory
                         );
                 }
             }
+            // Rol siniestro
+            when 'CLAIM_RELATIONSHIP' {
+                for (
+                    Map<String, Object> payload : getINFOClaimRelationshipJson(numRecords)
+                    )
+                {
+                    externalRequestList.add(
+                        new ExternalRequest__c(
+                            Origin__c = origin,
+                            Entity__c = 'CLAIM_RELATIONSHIP',
+                            Action__c = 'UPSERT',
+                            Payload__c = JSON.serialize(payload),
+                            ContentFormat__c = 'JSON'
+                            )
+                        );
+                }
+            }
         }
 
         return externalRequestList;
@@ -1293,4 +1452,238 @@ public class TestDataFactory
 
     public class TestException extends Exception
     {}
+
+    /**
+     * Genera una lista de tareas con RecordType Interaction
+     **
+     * @param numTasks numero de elementos a generar
+     * @return List<Task> listado de tareas de tipo Interaction
+     * @author nescudero
+     * @date 03/11/2020
+     */
+    public static List<Task> generateInteractionTasks(Integer numTasks)
+    {
+        List<Task> tasks = new List<Task>();
+        for (Integer i = 0; i < numTasks; i++)
+        {
+            Task interaction = new Task();
+            interaction.Status = 'Nueva';
+            interaction.Priority = 'Normal';
+            interaction.CallObject = 'ucid' + i;
+            interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
+                                       .get('Interaction')
+                                       .getRecordTypeId();
+            tasks.add(interaction);
+        }
+        return tasks;
+    }
+
+    /**
+     * Genera una lista de Accounts
+     **
+     * @param String legalEntity indica a quien se envía el email
+     * @param Integer numRecords número de elementos a generar
+     * @return List<Account> listado de cuentas
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<Account> generateAccounts(String legalEntity, String recordTypeName, Integer numRecords)
+    {
+        List<Account> accounts = new List<Account>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(recordTypeName);
+        Id recordTypeId;
+        if(accountRecordTypeInfo != null)
+        {
+            recordTypeId = accountRecordTypeInfo.getRecordTypeId();
+        }
+
+        switch on recordTypeName {
+            when 'BusinessCustomer' {
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            Name = 'testname' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N',
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
+            when else {
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            LastName = 'testlastname' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N'
+                        )
+                    );
+                }
+            }
+        }
+
+        return accounts;
+    }
+
+    /**
+     * Genera una lista de Accounts
+     **
+     * @param List<Account> accounts cuentas para las que se van a crear los contactos
+     * @param String recordTypeName tipo de registro de los contactos
+     * @param Integer numRecords número de contactos a generar por cada cuenta
+     * @return List<Account> listado de cuentas
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<Contact> generateContactsFromAccounts(List<Account> accounts, String recordTypeName, Integer numRecords)
+    {
+        List<Contact> contacts = new List<Contact>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        Schema.RecordTypeInfo contactRecordTypeInfo = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get(recordTypeName);
+        Id recordTypeId;
+        if(contactRecordTypeInfo != null)
+        {
+            recordTypeId = contactRecordTypeInfo.getRecordTypeId();
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            for(Account relatedAccount: accounts)
+            {
+                contacts.add(
+                    new Contact(
+                        LastName = 'testlastname' + i,
+                        AccountId = relatedAccount.Id,
+                        RecordTypeId = recordTypeId
+                    )
+                );
+            }
+        }
+
+        return contacts;
+    }
+
+    private static String generateSpanishFormatDNI()
+    {
+        List<String> letters = new List<String> {
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z'
+        };
+
+        Integer numbers = (Math.random() * 100000000).intValue();
+        String letter = letters[Integer.valueof( (Math.random() * letters.size() - 1) )];
+        return String.valueOf(numbers) + letter;
+    }
+
+    /**
+     * Genera ContactPointPhone relacionados con una lista de accounts
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointPhone
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<ContactPointPhone> listado de ContactPointPhones generados
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<ContactPointPhone> generateContactPointPhonesFromAccounts(List<Account> accounts, Integer numRecords)
+    {
+        List<ContactPointPhone> contactPointPhones = new List<ContactPointPhone>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                contactPointPhones.add(
+                    new ContactPointPhone(
+                        ParentId = relatedAccount.Id,
+                        TelephoneNumber = String.valueOf(phoneNumber)
+                    )
+                );
+            }
+        }
+
+        return contactPointPhones;
+    }
+
+    /**
+     * Genera ContactPointEmail relacionados con una lista de accounts
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointEmail
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<ContactPointEmail> listado de ContactPointEmails generados
+     * @author rlopez
+     * @date 04/11/2020
+     */
+    public static List<ContactPointEmail> generateContactPointEmailsFromAccounts(List<Account> accounts, Integer numRecords)
+    {
+        List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                contactPointEmails.add(
+                    new ContactPointEmail(
+                        ParentId = relatedAccount.Id,
+                        EmailAddress = relatedAccount.Name + '@nts-solutions.com'
+                    )
+                );
+            }
+        }
+
+        return contactPointEmails;
+    }
 }
