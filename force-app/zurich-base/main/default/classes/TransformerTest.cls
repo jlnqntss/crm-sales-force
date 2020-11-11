@@ -40,13 +40,13 @@ public with sharing class TransformerTest
                                    .keySet();
         System.assertEquals(
             true,
-            objectMapped.contains('Account'),
-            '[2] La configuración no contiene mapeo para el objeto Cuenta'
+            objectMapped.contains(INFOHandler.ACCOUNT),
+            '[2] La configuración no contiene mapeo para la entidad ACCOUNT'
             );
         System.assertEquals(
             true,
-            objectMapped.contains('Contact'),
-            '[3] La configuración no contiene mapeo para el objeto Contacto'
+            objectMapped.contains(INFOHandler.CONTACT_POINT),
+            '[3] La configuración no contiene mapeo para la entidad CONTACT POINT'
             );
 
         try

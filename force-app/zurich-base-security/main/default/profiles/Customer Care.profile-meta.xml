@@ -164,6 +164,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>BusinessInsuranceRaterService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>BusinessInsuranceRaterServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CaseHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -352,6 +360,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>RecordsSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>RecordsSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>RollupSummariesUtil</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -489,6 +505,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>WS_BaseAPIService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>WS_BusinessInsuranceAPIService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>WS_BusinessInsuranceAPIServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3459,6 +3483,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.CustomerNum_Partner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.CustomerNum__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3574,6 +3603,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.LinkINFO__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.ListaRobinson__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3666,6 +3700,11 @@
         <editable>false</editable>
         <field>Account.Parent_Business_Code__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Partner__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -4133,6 +4172,46 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Business_Quotes_Field__mdt.FormSteps__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Business_Quotes_Field__mdt.IsActive__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Business_Quotes_Field__mdt.OriginEntity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Business_Quotes_Field__mdt.OriginField__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Business_Quotes_Field__mdt.Required__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Business_Quotes_Field__mdt.SalesforceEntity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Business_Quotes_Field__mdt.SalesforceField__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Business_Quotes_Field__mdt.Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Campaign.ActualCost</field>
         <readable>true</readable>
@@ -4554,6 +4633,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.Partner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.PendingBy__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4924,6 +5008,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contact.LegalEntity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.MailingAddress</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4971,6 +5060,11 @@
         <editable>false</editable>
         <field>Contact.OtherPhone</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Partner__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -5534,6 +5628,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Cover__c.Partner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Cover__c.PolicyProduct__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5615,6 +5714,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Discount__c.DiscountPct__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Discount__c.Partner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5839,12 +5943,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ExternalIdField__mdt.OriginEntity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>ExternalIdField__mdt.Origin__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>ExternalIdField__mdt.SalesforceEntity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ExternalIdField__mdt.Salesforce_entity__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6066,6 +6180,11 @@
         <editable>true</editable>
         <field>IBADocument__c.SourceCountry__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>INFO_Link__mdt.EN__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -6683,6 +6802,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Order.Canal_de_venta__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Order.Caseworker__c</field>
         <readable>true</readable>
@@ -6690,6 +6814,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Order.Channel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Order.Commision__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6824,6 +6953,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Order.Partner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Order.PaymentFrequency__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6895,6 +7029,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Order.QuoteStatus__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Order.SellChannel__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7018,6 +7157,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>OrderItem.Partner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>OrderItem.Processing_Timestamp__c</field>
         <readable>false</readable>
@@ -7090,6 +7234,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>PolicyVersion__c.EndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PolicyVersion__c.Partner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10711,6 +10860,10 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
+        <flow>OpenCTIFlow</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>false</enabled>
         <flow>Quote_Step_4_5_6</flow>
     </flowAccesses>
     <flowAccesses>
@@ -10793,6 +10946,9 @@
         <layout>AuthorizationFormText-Authorization Form Text Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Business_Quotes_Field__mdt-Business Quotes Field Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Campaign-Campaign Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -10867,6 +11023,9 @@
         <layout>ContactPointTypeConsent-Contact Point Type Consent Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ContactRequest-Contact Request Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ContentVersion-Content Version</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -10922,6 +11081,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>IBADocument__c-Formato Documento IBA</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>INFO_Link__mdt-INFO Link Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Idea-Idea Layout</layout>
@@ -12423,6 +12585,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>OpenCTIMock</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>OpenInfoLaunch</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
