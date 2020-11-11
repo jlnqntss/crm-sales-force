@@ -1,5 +1,10 @@
 public class GenesysCloud
 {
+    @TestVisible
+    private static final String ERROR_IN_RESPONSE = 'response is null';
+    @TestVisible
+    private static final String ERROR_RESPONSE_SDK = 'response from genesys cloud SDK: ';
+
     /**
      * Representa un elemento utilizado en un recurso REST de Genesys como una solicitud de enrutamiento
      */
@@ -9,8 +14,22 @@ public class GenesysCloud
         String toJSON();
     }
 
-    @TestVisible
-    private class RoutingServiceException extends Exception {}
+    /**
+     * Clase Exception específica para los errores del RoutingService que vengan de la respuesta del SDK
+     */
+    public class RoutingServiceException extends Exception {
+        public Integer statusCode;
+        public RoutingServiceException(HttpResponse response)
+        {
+            if(response == null){
+                this.setMessage(ERROR_IN_RESPONSE);
+            }
+            else{
+                this.setMessage(ERROR_RESPONSE_SDK + response.getStatus());
+                this.statusCode = response.getStatusCode();
+            }
+        }
+    }
 
     /**
      * Getter de solo lectura que devuelve la instancia Singleton de RoutingService
@@ -30,15 +49,21 @@ public class GenesysCloud
     }
 
     /**
+     * Comprueba si la respuesta ha sido un 200, sino lanza Exception
+     * @param response HttpResponse del SDK
+     */
+    private static void validateResponse(HttpResponse response){
+        if(response == null || response.getStatusCode() != 200){
+            throw new GenesysCloud.RoutingServiceException(response);
+        }
+    }
+
+    /**
      * RoutingService ofrece la capa de enrutamiento de Genesys Cloud, ofreciendo métodos de enrutamiento a través de una configuración de enrutamiento especificada antes de enrutar
      */
     @TestVisible
     public class RoutingService
     {
-        @TestVisible
-        private final String STATUS_CODE_NO_200 = 'response code is not 200: ';
-        @TestVisible
-        private final String ERROR_IN_RESPONSE = 'response is null';
         public HttpCalloutMock mock = null;
 
         /**
@@ -61,20 +86,17 @@ public class GenesysCloud
                 response = purecloud.sdk.Rest.post('/api/v2/conversations/' + work.getEndpoint(), work.toJSON());
             }
 
+            validateResponse(response);
             work.interactionId = getIdFromResponse(response);
             return work;
         }
 
+        /**
+         * Devuelve el interacitionID si lo encuentra
+         * @param response httpResponse del SDK
+         * @return el Id o vacío
+         */
         public String getIdFromResponse(HttpResponse response){
-
-            if(response == null){
-                throw new GenesysCloud.RoutingServiceException(ERROR_IN_RESPONSE);
-            }
-
-            //Si la respuesta no es un 200 -> Error
-            if(response.getStatusCode() != 200){
-                throw new GenesysCloud.RoutingServiceException(STATUS_CODE_NO_200 + response.getStatusCode());
-            }
 
             //Devolver el ID solamente si el body lo contiene
             String responseBody = response.getBody();

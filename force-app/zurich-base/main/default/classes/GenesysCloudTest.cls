@@ -41,7 +41,7 @@ private class GenesysCloudTest {
             GenesysCloud.Email updatedEmail = (GenesysCloud.Email) GenesysCloud.RoutingService.route(email);
         }
         catch(GenesysCloud.RoutingServiceException e){
-            Boolean expectedExceptionThrown =  e.getMessage().contains(GenesysCloud.RoutingService.STATUS_CODE_NO_200) ? true : false;
+            Boolean expectedExceptionThrown =  e.getMessage().contains(GenesysCloud.ERROR_RESPONSE_SDK) ? true : false;
             System.AssertEquals(expectedExceptionThrown, true);
         }
         Test.stopTest();
