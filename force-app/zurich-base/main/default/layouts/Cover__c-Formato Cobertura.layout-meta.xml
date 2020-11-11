@@ -47,6 +47,10 @@
                 <behavior>Required</behavior>
                 <field>LegalEntity__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Partner__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
