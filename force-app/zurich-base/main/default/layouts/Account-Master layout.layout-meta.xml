@@ -25,6 +25,10 @@
                 <behavior>Edit</behavior>
                 <field>CustomerNum_EMEA__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CustomerNum_Partner__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
