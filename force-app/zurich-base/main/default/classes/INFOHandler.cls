@@ -8,9 +8,9 @@
 public class INFOHandler implements ISystem
 {
     @testVisible
-    private static Map<String, Map<sObject, ExternalRequest__c> > recordsToUpsertByObject = new Map<String, Map<sObject, ExternalRequest__c> >();
+    private static Map<String, Map<String, Map<sObject, ExternalRequest__c>>> recordsToUpsertByEntity = new Map<String, Map<String, Map<sObject, ExternalRequest__c>>>();
     @testVisible
-    private static Map<String, Map<sObject, ExternalRequest__c> > recordsToDeleteByObject = new Map<String, Map<sObject, ExternalRequest__c> >();
+    private static Map<String, Map<String, Map<sObject, ExternalRequest__c>>> recordsToDeleteByEntity = new Map<String, Map<String, Map<sObject, ExternalRequest__c>>>();
     @testVisible
     private static List<ExternalRequest__c> externalRequestResultList = new List<ExternalRequest__c>();
 
@@ -20,25 +20,36 @@ public class INFOHandler implements ISystem
     @testVisible
     private static Transformer tf = new Transformer(Transformer.ORIGIN_NAME_INFO);
     @testVisible
-    private static Map<String, String> externalIdByObject = new Map<String, String>();
+    private static Map<String, Map<String, String>> externalIdByEntity = new Map<String, Map<String, String>>();
     @testVisible
     private static Integer maxRetries;
+
+    public static final String ACCOUNT = 'ACCOUNT';
+    public static final String CONTACT_POINT = 'CONTACT_POINT';
+    public static final String PRODUCT = 'PRODUCT';
+    public static final String QUOTE = 'QUOTE';
+    public static final String POLICY = 'POLICY';
+    public static final String INSURED_OBJECT = 'INSURED_OBJECT';
+    public static final String CLAIM = 'CLAIM';
+    public static final String QUOTE_RELATIONSHIP = 'QUOTE_RELATIONSHIP';
+    public static final String POLICY_RELATIONSHIP = 'POLICY_RELATIONSHIP';
+    public static final String CLAIM_RELATIONSHIP = 'CLAIM_RELATIONSHIP';
+    public static final String PARTNER = 'PARTNER';
 
     // Orden de DML sobre entidades
     private static List<String> entityOrder = new List<String> 
     {
-        'Account', // 1
-        'Contact', // 2
-        'ContactPointAddress', // 3
-        'ContactPointPhone', // 4
-        'ContactPointEmail', // 5
-        'Product2', // 6
-        'Opportunity', // 7
-        'Policy__c', // 8
-        'PolicyVersion__c', // 9
-        'Asset', // 10
-        'Claim__c', // 11
-        'Relationship__c' // 12
+        ACCOUNT, // 1
+        CONTACT_POINT, // 2
+        PRODUCT, // 3
+        QUOTE, // 4
+        POLICY, // 5
+        INSURED_OBJECT, // 6
+        CLAIM, // 7
+        QUOTE_RELATIONSHIP, // 8
+        POLICY_RELATIONSHIP, // 9
+        CLAIM_RELATIONSHIP, // 10
+        PARTNER // 11
     };
 
     /**
@@ -54,15 +65,19 @@ public class INFOHandler implements ISystem
     public static void prepare(List<ExternalRequest__c> externalRequestList)
     {
         // 1 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
-        recordsToUpsertByObject = tf.initRequestsMapBySettings();
-        recordsToDeleteByObject = tf.initRequestsMapBySettings();
+        recordsToUpsertByEntity = tf.initRequestsMapBySettings();
+        recordsToDeleteByEntity = tf.initRequestsMapBySettings();
 
         // 2 - Obtener identificadores externos por cada entidad
         for (ExternalIdField__mdt externalId : new ExternalIdFieldsSelector
-            (new List<Schema.SObjectField> {ExternalIdField__mdt.SalesforceEntity__c, ExternalIdField__mdt.ExternalId__c}
+            (new List<Schema.SObjectField> {ExternalIdField__mdt.OriginEntity__c, ExternalIdField__mdt.SalesforceEntity__c, ExternalIdField__mdt.ExternalId__c}
             ).selectByOrigin(new Set<String> {Transformer.ORIGIN_NAME_INFO}) )
         {
-            externalIdByObject.put(externalId.SalesforceEntity__c, externalId.ExternalId__c);
+            if(!externalIdByEntity.containsKey(externalId.OriginEntity__c))
+            {
+                externalIdByEntity.put(externalId.OriginEntity__c, new Map<String, String>());
+            }
+            externalIdByEntity.get(externalId.OriginEntity__c).put(externalId.SalesforceEntity__c, externalId.ExternalId__c);
         }
 
         // 3 - Obtener el número máximo de reintentos
@@ -103,7 +118,7 @@ public class INFOHandler implements ISystem
             }
             catch (Exception e)
             {
-                System.debug('Entra' + e.getMessage());
+                System.debug('[INFOHandler] process() - ' + e.getMessage());
                 setExternalRequest(externalRequest, true, 'KO', e.getMessage() + '\n' + e.getStackTraceString(), false);
                 //ErrorLogUtil.commitError(e, 'INFOHandler', 'process');
             }
@@ -125,20 +140,20 @@ public class INFOHandler implements ISystem
         try
         {
             // Upsert
-            if ( recordsToUpsertByObject != null && !recordsToUpsertByObject.isEmpty() )
+            if ( recordsToUpsertByEntity != null && !recordsToUpsertByEntity.isEmpty() )
             {
-                persistRecords('UPSERT', recordsToUpsertByObject);
+                persistRecords('UPSERT', recordsToUpsertByEntity);
             }
             // Delete
-            if ( recordsToDeleteByObject != null && !recordsToDeleteByObject.isEmpty() )
+            if ( recordsToDeleteByEntity != null && !recordsToDeleteByEntity.isEmpty() )
             {
-                persistRecords('DELETE', recordsToDeleteByObject);
+                persistRecords('DELETE', recordsToDeleteByEntity);
             }
             
         }
         catch (Exception e)
         {
-            System.debug('Entra' + e.getMessage());
+            System.debug('[INFOHandler] persists() - ' + e.getMessage());
             ErrorLogUtil.commitError(e, 'INFOHandler', 'persists');
         }
     }
@@ -194,6 +209,7 @@ public class INFOHandler implements ISystem
                     }
                     catch ( Exception e )
                     {
+                        System.debug('[INFOHandler] manageResult() - ' + e.getMessage());
                         ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
                     }
                 }
@@ -207,6 +223,7 @@ public class INFOHandler implements ISystem
         }
         catch ( Exception e )
         {
+            System.debug('[INFOHandler] manageResult() - ' + e.getMessage());
             ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
         }
     }
@@ -243,33 +260,36 @@ public class INFOHandler implements ISystem
                     // Persona física
                     if (((String) recordValuesMap.get('CLIENTE_TIPO_PERSONA') ).equalsIgnoreCase('F'))
                     {
-                        Account accountRecord = (Account) tf.transform('ACCOUNT', 'Account', recordValuesMap);
+                        Account accountRecord = (Account) tf.transform(ACCOUNT, 'Account', recordValuesMap);
                         accountRecord.FirstName = recordValuesMap.containsKey('CLIENTE_NOMBRE') ? (String) recordValuesMap.get('CLIENTE_NOMBRE') : null;
                         accountRecord.LastName = (recordValuesMap.containsKey('CLIENTE_APELLIDO1') ? (String) recordValuesMap.get('CLIENTE_APELLIDO1'): null) + ' ' +
                                                     (recordValuesMap.containsKey('CLIENTE_APELLIDO2') ? (String) recordValuesMap.get('CLIENTE_APELLIDO2') : null);
                         accountRecord.LegalEntity__pc = recordValuesMap.containsKey('CLIENTE_ENTIDAD_LEGAL') ? (String) recordValuesMap.get('CLIENTE_ENTIDAD_LEGAL') : null;
                         accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
-                        addRecordToMap(externalRequest, 'Account', accountRecord);                                  
+
+                        addRecordToMap(externalRequest, ACCOUNT, 'Account', accountRecord);                                  
                     }
                     // Persona jurídica
                     else if (((String) recordValuesMap.get('CLIENTE_TIPO_PERSONA') ).equalsIgnoreCase('J'))
                     {
                         //Cuenta
-                        Account accountRecord = (Account) tf.transform('ACCOUNT', 'Account', recordValuesMap);
+                        Account accountRecord = (Account) tf.transform(ACCOUNT, 'Account', recordValuesMap);
                         accountRecord.Name = (recordValuesMap.containsKey('CLIENTE_NOMBRE') ? (String) recordValuesMap.get('CLIENTE_NOMBRE') : null) + ' ' +
                                                 (recordValuesMap.containsKey('CLIENTE_APELLIDO1') ? (String) recordValuesMap.get('CLIENTE_APELLIDO1') : null) + ' ' +
                                                 (recordValuesMap.containsKey('CLIENTE_APELLIDO2') ? (String) recordValuesMap.get('CLIENTE_APELLIDO2') : null);
                         accountRecord.LegalEntity__c = recordValuesMap.containsKey('CLIENTE_ENTIDAD_LEGAL') ? (String) recordValuesMap.get('CLIENTE_ENTIDAD_LEGAL') : null;
                         accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
-                        addRecordToMap(externalRequest, 'Account', accountRecord); 
+
+                        addRecordToMap(externalRequest, ACCOUNT, 'Account', accountRecord); 
                         
                         //Contacto
-                        Contact contactRecord = (Contact) tf.transform('ACCOUNT', 'Contact', recordValuesMap);
+                        Contact contactRecord = (Contact) tf.transform(ACCOUNT, 'Contact', recordValuesMap);
                         contactRecord.FirstName = recordValuesMap.containsKey('CLIENTE_NOMBRE') ? (String) recordValuesMap.get('CLIENTE_NOMBRE'): null;
                         contactRecord.LastName = (recordValuesMap.containsKey('CLIENTE_APELLIDO1') ? (String) recordValuesMap.get('CLIENTE_APELLIDO1') : null) + ' ' +
                                                     (recordValuesMap.containsKey('CLIENTE_APELLIDO2') ? (String) recordValuesMap.get('CLIENTE_APELLIDO2') : null);
                         contactRecord.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('CustomerGI').getRecordTypeId();
-                        addRecordToMap(externalRequest, 'Contact', contactRecord); 
+
+                        addRecordToMap(externalRequest, ACCOUNT, 'Contact', contactRecord); 
                     }
                     else
                     {
@@ -287,20 +307,20 @@ public class INFOHandler implements ISystem
                         ((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('B') ||
                         ((String) recordValuesMap.get('TIPO_DOMICILIO') ).equalsIgnoreCase('P'))
                     {
-                        ContactPointAddress cpaRecord = (ContactPointAddress) tf.transform('CONTACT_POINT', 'ContactPointAddress', recordValuesMap);
-                        addRecordToMap(externalRequest, 'ContactPointAddress', cpaRecord); 
+                        ContactPointAddress cpaRecord = (ContactPointAddress) tf.transform(CONTACT_POINT, 'ContactPointAddress', recordValuesMap);
+                        addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointAddress', cpaRecord); 
                     }
                     else if (((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('T'))
                     {
                         //  Vía de contacto telefónico (T)
-                        ContactPointPhone cppRecord = (ContactPointPhone) tf.transform('CONTACT_POINT', 'ContactPointPhone', recordValuesMap);
-                        addRecordToMap(externalRequest, 'ContactPointPhone', cppRecord); 
+                        ContactPointPhone cppRecord = (ContactPointPhone) tf.transform(CONTACT_POINT, 'ContactPointPhone', recordValuesMap);
+                        addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointPhone', cppRecord); 
                     }
                     else if (((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('E'))
                     {
                         // Vía de contacto email (E)
-                        ContactPointEmail cpeRecord = (ContactPointEmail) tf.transform('CONTACT_POINT', 'ContactPointEmail', recordValuesMap);
-                        addRecordToMap(externalRequest, 'ContactPointEmail', cpeRecord); 
+                        ContactPointEmail cpeRecord = (ContactPointEmail) tf.transform(CONTACT_POINT, 'ContactPointEmail', recordValuesMap);
+                        addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointEmail', cpeRecord); 
                     }
                     else
                     {
@@ -311,54 +331,61 @@ public class INFOHandler implements ISystem
             //Producto
             when 'PRODUCT' 
             {
-                Product2 prodRecord = (Product2) tf.transform('PRODUCT', 'Product2', recordValuesMap);
-                addRecordToMap(externalRequest, 'Product2', prodRecord); 
+                Product2 prodRecord = (Product2) tf.transform(PRODUCT, 'Product2', recordValuesMap);
+                addRecordToMap(externalRequest, PRODUCT, 'Product2', prodRecord); 
             }
             // Oferta
             when 'QUOTE' 
             {
-                Opportunity quoteRecord = (Opportunity) tf.transform('QUOTE', 'Opportunity', recordValuesMap);
-                addRecordToMap(externalRequest, 'Opportunity', quoteRecord); 
+                Opportunity quoteRecord = (Opportunity) tf.transform(QUOTE, 'Opportunity', recordValuesMap);
+                addRecordToMap(externalRequest, QUOTE, 'Opportunity', quoteRecord); 
             }
             // Póliza
             when 'POLICY' 
             {
-                Policy__c policyRecord = (Policy__c) tf.transform('POLICY', 'Policy__c', recordValuesMap);
-                addRecordToMap(externalRequest, 'Policy__c', policyRecord); 
+                Policy__c policyRecord = (Policy__c) tf.transform(POLICY, 'Policy__c', recordValuesMap);
+                addRecordToMap(externalRequest, POLICY, 'Policy__c', policyRecord); 
             }
             // Objeto asegurado
             when 'INSURED_OBJECT' 
             {
-                Asset insObjRecord = (Asset) tf.transform('INSURED_OBJECT', 'Asset', recordValuesMap);
+                Asset insObjRecord = (Asset) tf.transform(INSURED_OBJECT, 'Asset', recordValuesMap);
                 insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(insObjRecord.ObjectType__c.trim()).getRecordTypeId();
-                addRecordToMap(externalRequest, 'Asset', insObjRecord); 
+                addRecordToMap(externalRequest, INSURED_OBJECT, 'Asset', insObjRecord); 
             }
             // Siniestro
             when 'CLAIM' 
             {
-                Claim__c claimRecord = (Claim__c) tf.transform('CLAIM', 'Claim__c', recordValuesMap);
-                addRecordToMap(externalRequest, 'Claim__c', claimRecord);
+                Claim__c claimRecord = (Claim__c) tf.transform(CLAIM, 'Claim__c', recordValuesMap);
+                addRecordToMap(externalRequest, CLAIM, 'Claim__c', claimRecord);
             }
             // Rol póliza
             when 'POLICY_RELATIONSHIP' 
             {
-                Relationship__c polRelRecord = (Relationship__c) tf.transform('POLICY_RELATIONSHIP', 'Relationship__c', recordValuesMap);
+                Relationship__c polRelRecord = (Relationship__c) tf.transform(POLICY_RELATIONSHIP, 'Relationship__c', recordValuesMap);
                 polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Policy').getRecordTypeId();
-                addRecordToMap(externalRequest, 'Relationship__c', polRelRecord);
+                addRecordToMap(externalRequest, POLICY_RELATIONSHIP, 'Relationship__c', polRelRecord);
             }
             // Rol oferta
             when 'QUOTE_RELATIONSHIP' 
             {
-                Relationship__c quoRelRecord = (Relationship__c) tf.transform('QUOTE_RELATIONSHIP', 'Relationship__c', recordValuesMap);
+                Relationship__c quoRelRecord = (Relationship__c) tf.transform(QUOTE_RELATIONSHIP, 'Relationship__c', recordValuesMap);
                 quoRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Offer').getRecordTypeId();
-                addRecordToMap(externalRequest, 'Relationship__c', quoRelRecord);
+                addRecordToMap(externalRequest, QUOTE_RELATIONSHIP, 'Relationship__c', quoRelRecord);
             }
             // Rol siniestro
             when 'CLAIM_RELATIONSHIP' 
             {
-                Relationship__c claimRelRecord = (Relationship__c) tf.transform('CLAIM_RELATIONSHIP', 'Relationship__c', recordValuesMap);
+                Relationship__c claimRelRecord = (Relationship__c) tf.transform(CLAIM_RELATIONSHIP, 'Relationship__c', recordValuesMap);
                 claimRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Claim').getRecordTypeId();
-                addRecordToMap(externalRequest, 'Relationship__c', claimRelRecord);
+                addRecordToMap(externalRequest, CLAIM_RELATIONSHIP, 'Relationship__c', claimRelRecord);
+            }
+            // Partner
+            when 'PARTNER' 
+            {
+                Account partnerRecord = (Account) tf.transform(PARTNER, 'Account', recordValuesMap);
+                partnerRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner').getRecordTypeId();
+                addRecordToMap(externalRequest, PARTNER, 'Account', partnerRecord);
             }
             when else
             {
@@ -376,99 +403,79 @@ public class INFOHandler implements ISystem
      * @param recordsToPersist Mapa con los registros sobre los que realizar las operaciones DML por objeto
      * @return void
      */
-    private static void persistRecords(String action, Map<String, Map<sObject, ExternalRequest__c>> recordsToPersist)
+    private static void persistRecords(String action, Map<String, Map<String, Map<sObject, ExternalRequest__c>>> recordsToPersist)
     {
-        Map<String, List<ExternalRequest__c> > externalRequestByObject = new Map<String, List<ExternalRequest__c> >();
-        Map<String, List<sObject> > recordsByObject = new Map<String, List<ExternalRequest__c> >();
-   
-        // 1 - Recorrer todos los registros generados y generar estructuras
-        for ( String objectName : recordsToPersist.keySet() )
+        List<sObject> recordList;
+        List<ExternalRequest__c> externalRequestList;
+        ExternalRequest__c extReq;
+
+        // 1 - Realizar las operaciones DML sobre los registros generados y actualizar external request con resultado
+        for ( String entity : entityOrder )
         {
-            if ( !recordsToPersist.get(objectName).isEmpty() )
+            if ( recordsToPersist.containsKey(entity) )
             {
-                if (!externalRequestByObject.containsKey(objectName) )
+                for ( String objectName : recordsToPersist.get(entity).keySet() )
                 {
-                    externalRequestByObject.put(objectName, new List<ExternalRequest__c>());
-                    recordsByObject.put(objectName, new List<sObject>() );
-                }
-
-                for ( sObject record : recordsToPersist.get(objectName).keySet() )
-                {
-                    if (recordsToPersist.get(objectName).get(record) != null)
+                    if ( !recordsToPersist.get(entity).get(objectName).isEmpty() )
                     {
-                        externalRequestByObject.get(objectName).add(recordsToPersist.get(objectName).get(record) );
-                    }
+                        Schema.SObjectField externalIdField = globalDescribe.get(objectName).getDescribe().fields.getMap().get(externalIdByEntity.get(entity).get(objectName));
 
-                    recordsByObject.get(objectName).add(record);
+                        recordList = new List<sObject>(recordsToPersist.get(entity).get(objectName).keySet());
+                        externalRequestList = recordsToPersist.get(entity).get(objectName).values();
+
+                        if(action == 'UPSERT')
+                        {
+                            Database.UpsertResult[] resultList = Database.upsert(recordList, externalIdField, false);
+                            
+                            for(Integer i = 0; i < externalRequestList.size(); i++)
+                            {
+                                extReq = externalRequestList.get(i);
+
+                                //Procesamiento correcto
+                                if ( resultList.get(i).isSuccess() )
+                                {
+                                    setExternalRequest(extReq, true, 'OK', null, false);
+                                }
+                                //Procesamiento incorrecto
+                                else
+                                {
+                                    setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
+                                }
+                            }
+                        }
+                        else if(action == 'DELETE')
+                        {
+                            Set<Object> externalIdValues = new Set<Object>();
+
+                            for(sObject sObj : recordList)
+                            {
+                                externalIdValues.add(sObj.get(externalIdField));
+                            }
+                            
+                            Database.DeleteResult[] resultList = Database.delete(new RecordsSelector(globalDescribe.get(objectName)).selectByExternalId(externalIdField, externalIdValues));
+
+                            for(Integer i = 0; i < externalRequestList.size(); i++)
+                            {
+                                extReq = externalRequestList.get(i);
+
+                                //Procesamiento correcto
+                                if ( resultList.get(i).isSuccess() )
+                                {
+                                    setExternalRequest(extReq, true, 'OK', null, false);
+                                }
+                                //Procesamiento incorrecto
+                                else
+                                {
+                                    setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-
-        // 2 - Realizar las operaciones DML sobre los registros generados y actualizar external request con resultado
-        for ( String objectName : entityOrder )
-        {
-            if ( recordsByObject.containsKey(objectName) && !recordsByObject.get(objectName).isEmpty() )
-            {
-                Schema.SObjectField externalIdField = globalDescribe.get(objectName).getDescribe().fields.getMap().get(externalIdByObject.get(objectName));
-
-                if(action == 'UPSERT')
-                {
-                    Database.UpsertResult[] resultList = Database.upsert(recordsByObject.get(objectName), externalIdField, false);
-
-                    for (Integer i = 0; i < externalRequestByObject.get(objectName).size(); i++)
-                    {
-                        ExternalRequest__c extReq = externalRequestByObject.get(objectName).get(i);
-
-                        //Procesamiento correcto
-                        if ( resultList.get(i).isSuccess() )
-                        {
-                            setExternalRequest(extReq, true, 'OK', null, false);
-                        }
-                        //Procesamiento incorrecto
-                        else
-                        {
-                            setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
-                        }
-                    }
-                }
-                else if(action == 'DELETE')
-                {
-                    Set<Object> externalIdValues = new Set<Object>();
-
-                    for(sObject sObj : recordsByObject.get(objectName))
-                    {
-                        externalIdValues.add(sObj.get(externalIdField));
-                    }
-                    
-                    Database.DeleteResult[] resultList = Database.delete
-                    (
-                        new RecordsSelector
-                        (
-                            globalDescribe.get(objectName)
-                        )
-                        .selectByExternalId(externalIdField, externalIdValues)
-                    );
-
-                    for (Integer i = 0; i < externalRequestByObject.get(objectName).size(); i++)
-                    {
-                        ExternalRequest__c extReq = externalRequestByObject.get(objectName).get(i);
-
-                        //Procesamiento correcto
-                        if ( resultList.get(i).isSuccess() )
-                        {
-                            setExternalRequest(extReq, true, 'OK', null, false);
-                        }
-                        //Procesamiento incorrecto
-                        else
-                        {
-                            setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
-                        }
-                    }
-                }
-            }
-        }           
-             
-    }
+        
+    }      
 
     /**
      * Informar la external request con el resultado del procesamiento
@@ -484,34 +491,33 @@ public class INFOHandler implements ISystem
      */
     private static void setExternalRequest(ExternalRequest__c externalRequest, Boolean processed, String processResult, String error, Boolean sumRetry)
     {
-        // 1 - Sumar un reintento a la external request
-        if(sumRetry)
-        {
-            externalRequest.NumRetry__c = externalRequest.NumRetry__c == null ? 1: externalRequest.NumRetry__c + 1;
-        }
-
-        // 2 - Si se supera el número de reintentos se marca la external request como procesada
-        if ( externalRequest.NumRetry__c >= maxRetries )
-        {
-            externalRequest.Processed__c = true;
-        }
-        else 
-        {
-            externalRequest.Processed__c = processed;
-        }
-
-        // 3 - Si se marca la external request como procesada se indica la fecha de procesamiento
-        if(processed)
-        {
-            externalRequest.processedDate__c = Datetime.now();
-        }
-
-        externalRequest.ProcessResult__c = processResult;
-        externalRequest.Error_Log__c = error;
-        
-        // 4 - Se añade la external request a la lista para ser actualizada en el método manageResult
         if(!externalRequestResultList.contains(externalRequest))
         {
+            // 1 - Sumar un reintento a la external request
+            if(sumRetry)
+            {
+                externalRequest.NumRetry__c = externalRequest.NumRetry__c == null ? 1: externalRequest.NumRetry__c + 1;
+            }
+
+            // 2 - Si se supera el número de reintentos se marca la external request como procesada
+            if ( externalRequest.NumRetry__c >= maxRetries )
+            {
+                externalRequest.Processed__c = true;
+            }
+            else 
+            {
+                externalRequest.Processed__c = processed;
+            }
+
+            // 3 - Si se marca la external request como procesada se indica la fecha de procesamiento
+            if(processed)
+            {
+                externalRequest.processedDate__c = Datetime.now();
+            }
+
+            externalRequest.ProcessResult__c = processResult;
+            externalRequest.Error_Log__c = error;
+
             externalRequestResultList.add(externalRequest);
         }
     }
@@ -526,15 +532,15 @@ public class INFOHandler implements ISystem
      * @param record Registro generado
      * @return void
      */
-    private static void addRecordToMap(ExternalRequest__c externalRequest, String sObjectType, sObject record)
+    private static void addRecordToMap(ExternalRequest__c externalRequest, String entity, String sObjectType, sObject record)
     {
         if(externalRequest.Action__c.equalsIgnoreCase('UPSERT'))
         {
-            recordsToUpsertByObject.get(sObjectType).put(record, externalRequest);  
+            recordsToUpsertByEntity.get(entity).get(sObjectType).put(record, externalRequest); 
         }
         else if(externalRequest.Action__c.equalsIgnoreCase('DELETE'))
         {
-            recordsToDeleteByObject.get(sObjectType).put(record, externalRequest);  
+            recordsToDeleteByEntity.get(entity).get(sObjectType).put(record, externalRequest);  
         }   
     }
 

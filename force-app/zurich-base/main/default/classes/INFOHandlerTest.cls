@@ -77,6 +77,11 @@ private class INFOHandlerTest
             TestDataFactory.generateExternalRequest('INFO', 'CLAIM_RELATIONSHIP', 10)
             );
 
+        //Partner
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest('INFO', 'PARTNER', 10)
+            );
+
         insert externalRequestList;
     }
 
@@ -87,12 +92,8 @@ private class INFOHandlerTest
 
         for ( Transformer__mdt setting : TransformerSelector.selectMetadataByOrigin(Transformer.ORIGIN_NAME_INFO) )
         {
-            objects.add(setting.SalesforceEntity__c);
+            objects.add(setting.OriginEntity__c);
         }
-
-        List<ExternalIdField__mdt> externalIdList = new ExternalIdFieldsSelector(new List<Schema.SObjectField>
-                                                                                 { ExternalIdField__mdt.SalesforceEntity__c,
-                                                                                   ExternalIdField__mdt.ExternalId__c}).selectByOrigin(new Set<String> {'INFO'});
 
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -106,18 +107,13 @@ private class INFOHandlerTest
 
         System.assertEquals(
             objects.size(),
-            INFOHandler.recordsToUpsertByObject.size(),
+            INFOHandler.recordsToUpsertByEntity.size(),
             'No se ha generado correctamente el mapa por entidades'
             );
         System.assertEquals(
             objects.size(),
-            INFOHandler.recordsToDeleteByObject.size(),
+            INFOHandler.recordsToDeleteByEntity.size(),
             'No se ha generado correctamente el mapa por entidades'
-            );
-        System.assertEquals(
-            externalIdList.size(),
-            INFOHandler.externalIdByObject.size(),
-            'No se ha generado correctamente el mapa de identificidadores únicos por entidad'
             );
     }
 
@@ -139,58 +135,73 @@ private class INFOHandlerTest
 
         System.assertEquals(
             20,
-            INFOHandler.recordsToUpsertByObject.get('Account').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Account').size(),
             'No se ha generado correctamente el mapa de registros de account'
             ); // 10 cuentas de personas físicas y 10 de personas jurídicas
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByObject.get('Contact').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Contact').size(),
             'No se ha generado correctamente el mapa de registros de contact'
             );
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByObject.get('ContactPointAddress').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointAddress').size(),
             'No se ha generado correctamente el mapa de registros de contactPointAddress'
             );
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByObject.get('ContactPointPhone').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointPhone').size(),
             'No se ha generado correctamente el mapa de registros de contactPointPhone'
             );
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByObject.get('ContactPointEmail').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(),
             'No se ha generado correctamente el mapa de registros de contactPointEmail'
             );
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByObject.get('Product2').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(),
             'No se ha generado correctamente el mapa de registros de product'
             );
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByObject.get('Opportunity').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(),
             'No se ha generado correctamente el mapa de registros de opportunity'
             );
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByObject.get('Policy__c').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(),
             'No se ha generado correctamente el mapa de registros de policy'
             );
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByObject.get('Asset').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(),
             'No se ha generado correctamente el mapa de registros de asset'
             );
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByObject.get('Claim__c').size(),
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(),
             'No se ha generado correctamente el mapa de registros de claim'
             );
         System.assertEquals(
-            30,
-            INFOHandler.recordsToUpsertByObject.get('Relationship__c').size(),
-            'No se ha generado correctamente el mapa de registros de relationship'
+            10,
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(),
+            'No se ha generado correctamente el mapa de registros de quote relationship'
+            );
+        System.assertEquals(
+            10,
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(),
+            'No se ha generado correctamente el mapa de registros de policy relationship'
+            );
+        System.assertEquals(
+            10,
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(),
+            'No se ha generado correctamente el mapa de registros de claim relationship'
+            );
+        System.assertEquals(
+            10,
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(),
+            'No se ha generado correctamente el mapa de registros de account'
             );
     }
 
@@ -220,20 +231,23 @@ private class INFOHandlerTest
         INFOHandler.process(externalRequestList);
         Test.stopTest();
 
-        System.assertEquals(20, INFOHandler.recordsToUpsertByObject.get('Account').size(), 'No se ha generado correctamente el mapa de registros de account'); // 10 cuentas de personas físicas y 10 de personas jurídicas
-        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Contact').size(), 'No se ha generado correctamente el mapa de registros de contact');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('ContactPointAddress').size(), 'No se ha generado correctamente el mapa de registros de contactPointAddress');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('ContactPointPhone').size(), 'No se ha generado correctamente el mapa de registros de contactPointPhone');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('ContactPointEmail').size(), 'No se ha generado correctamente el mapa de registros de contactPointEmail');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
-        System.assertEquals(10, INFOHandler.recordsToDeleteByObject.get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByObject.get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
-        System.assertEquals(20, INFOHandler.recordsToUpsertByObject.get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de relationship');
+        System.assertEquals(20, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account'); // 10 cuentas de personas físicas y 10 de personas jurídicas
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Contact').size(), 'No se ha generado correctamente el mapa de registros de contact');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointAddress').size(), 'No se ha generado correctamente el mapa de registros de contactPointAddress');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointPhone').size(), 'No se ha generado correctamente el mapa de registros de contactPointPhone');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(), 'No se ha generado correctamente el mapa de registros de contactPointEmail');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de quote relationship');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de claim relationship');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
 
-        System.assertEquals(0, INFOHandler.recordsToUpsertByObject.get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de policy');
-        System.assertEquals(10, INFOHandler.recordsToDeleteByObject.get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de relationship');
+        System.assertEquals(0, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de policy');
+        System.assertEquals(0, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de policy relationship');
+        System.assertEquals(10, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
+        System.assertEquals(10, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy relationship');
     }
 
     @isTest
@@ -258,7 +272,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            130,
+            140,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -286,7 +300,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            130,
+            140,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -322,7 +336,7 @@ private class INFOHandlerTest
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
 
         System.assertEquals(
-            20,
+            30,
             accountList.size(),
             'No se han insertado todos los registros de cuenta'
             );
@@ -433,7 +447,7 @@ private class INFOHandlerTest
         List<Claim__c> claimList = [SELECT Id FROM Claim__c];
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
 
-        System.assertEquals(20, accountList.size(), 'No se han insertado todos los registros de cuenta');
+        System.assertEquals(30, accountList.size(), 'No se han insertado todos los registros de cuenta');
         System.assertEquals(20, contactList.size(), 'No se han insertado todos los registros de contacto');
         System.assertEquals(10, cpaList.size(), 'No se han insertado todos los registros de contactPointAddress');
         System.assertEquals(10, cppList.size(), 'No se han insertado todos los registros de contactPointPhone');
@@ -480,7 +494,7 @@ private class INFOHandlerTest
         ];
 
         System.assertEquals(
-            130,
+            140,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
@@ -520,7 +534,7 @@ private class INFOHandlerTest
                                                                                              ExternalRequest__c.Origin__c}).selectProcessedByOrigin(new Set<String> {'INFO'});
 
         System.assertEquals(
-            130,
+            140,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
