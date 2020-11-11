@@ -8,7 +8,7 @@ public with sharing class ExternalRequestsSelector
         {
             if(externalRequestFieldsToQuery == null)
             {
-                externalRequestFieldsToQuery = new Set<String> {'Id'};
+                externalRequestFieldsToQuery = new Set<String> {'Id', 'Name'};
             }
 
             return externalRequestFieldsToQuery;
@@ -107,50 +107,6 @@ public with sharing class ExternalRequestsSelector
     }
 
     /**
-     * Recupera external requests de un recordtype concreto
-     *
-     * @author adelgado
-     * @param  recordTypeId RecordType a recuperar
-     * @return Listado de external request recuperadas. Si no se recibe ningún origen se devuelve una lista vacía
-     */
-    public ExternalRequest__c[] selectPendingByRecordType(Id recordTypeId)
-    {
-        if( recordTypeId == null)
-        {
-            return new List<ExternalRequest__c>();
-        }
-
-        return Database.query( String.format('{0} {1} {2}', new List<String>
-        {
-            baseQuery,
-            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false',
-            limitCondition
-        }) );
-    }
-
-    /**
-     * Recupera external requests a partir de la una lista de Ids
-     *
-     * @author adelgado
-     * @param  recordIds Ids de registros de External Request
-     * @return Listado de external request recuperadas. Si no se recibe ningún origen se devuelve una lista vacía
-     */
-    public ExternalRequest__c[] selectById(Set<Id> recordIds)
-    {
-        if( recordIds == null || recordIds.isEmpty() )
-        {
-            return new List<ExternalRequest__c>();
-        }
-
-        return Database.query( String.format('{0} {1} {2}', new List<String>
-        {
-            baseQuery,
-            'WHERE Id IN :recordIds',
-            limitCondition
-        }) );
-    }
-
-    /**
      * Recupera external requests procesadas a partir de una lista de origenes
      *
      * @author adelgado
@@ -173,15 +129,15 @@ public with sharing class ExternalRequestsSelector
     }
 
     /**
-     * Recupera external requests de un recordtype concreto
+     * Recupera external requests de un origen concreto
      *
      * @author adelgado
-     * @param  recordTypeId RecordType a recuperar
+     * @param  origin Origen a recuperar
      * @return Listado de external request recuperadas. Si no se recibe ningún origen se devuelve nulo
      */
-    public Database.QueryLocator queryLocatorPendingByRecordtype(Id recordTypeId)
+    public Database.QueryLocator queryLocatorByOrigin(String origin)
     {
-        if( String.isBlank(recordTypeId) )
+        if( String.isBlank(origin) )
         {
             return null;
         }
@@ -189,7 +145,7 @@ public with sharing class ExternalRequestsSelector
         return Database.getQueryLocator( String.format('{0} {1} {2}', new List<String>
         {
             baseQuery,
-            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false ORDER BY CreatedDate, NumRetry__c',
+            'WHERE Origin__c = :origin AND Processed__c = false ORDER BY CreatedDate, NumRetry__c',
             limitCondition
         }) );
     }

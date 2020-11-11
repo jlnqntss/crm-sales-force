@@ -8,24 +8,22 @@ public class ExternalJobQueueBatchController
      */
     public static void checkExternalJobQueueBatch()
     {
-        try
+        //try
+        //{
+        // 1 - Comprobar si hay external request de INFO pendientes
+        if( !new ExternalRequestsSelector().setLimit(1).selectByOrigin(new Set<String> {'INFO'}).isEmpty() )
         {
-            Id infoRecordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFO').getRecordTypeId();
-
-            // 1 - Comprobar si hay external request de INFO pendientes
-            if( !new ExternalRequestsSelector().setLimit(1).selectPendingByRecordType(infoRecordType).isEmpty() )
+            // 1.1 - Ejecutar el batch en caso de no estar en ejecución
+            if ( new AsyncApexJobsSelector().selectByClassName(new Set<String> {'ExternalJobQueueBatch'}).isEmpty() )
             {
-                // 1.1 - Ejecutar el batch en caso de no estar en ejecución
-                if ( new AsyncApexJobsSelector().selectByClassName(new Set<String> {'ExternalJobQueueBatch'}).isEmpty() )
-                {
-                    database.executeBatch(new ExternalJobQueueBatch('INFO'), 200);
-                }
+                database.executeBatch(new ExternalJobQueueBatch('INFO'), 200);
             }
+        }
 
-        }
-        catch (Exception e)
-        {
-            ErrorLogUtil.commitError(e, 'ExternalJobQueueBatchController', 'checkExternalJobQueueBatch');
-        }
+        //}
+        //catch (Exception e)
+        //{
+        //    ErrorLogUtil.commitError(e, 'ExternalJobQueueBatchController', 'checkExternalJobQueueBatch');
+        //}
     }
 }

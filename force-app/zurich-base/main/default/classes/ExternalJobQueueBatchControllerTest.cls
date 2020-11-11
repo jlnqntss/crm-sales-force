@@ -11,13 +11,12 @@ private class ExternalJobQueueBatchControllerTest
     static void test_checkExternalJobQueueBatch_newExternalRequest()
     {
         List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 10);
-        insert externalRequestList;
 
         Test.startTest();
-        ExternalJobQueueBatchController.checkExternalJobQueueBatch();
+        insert externalRequestList;
         Test.stopTest();
 
-        List<ExternalRequest__c> extReqProcessed = new ExternalRequestsSelector().selectProcessedByOrigin(new Set<String> {'INFO'});
+        List<ExternalRequest__c> extReqProcessed = [SELECT Id FROM ExternalRequest__c WHERE Processed__c = true];
 
         System.assertEquals(10, extReqProcessed.size(), 'No se han procesado las external request insertadas');
 
