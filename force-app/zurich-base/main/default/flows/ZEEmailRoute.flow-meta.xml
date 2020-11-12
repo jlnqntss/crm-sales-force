@@ -48,6 +48,12 @@
             <targetReference>UpdateTask</targetReference>
         </connector>
         <inputParameters>
+            <name>flowId</name>
+            <value>
+                <stringValue>3826817b-5144-4547-a340-2facbd6d76ad</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>fromAddress</name>
             <value>
                 <elementReference>EmailMessage.FromAddress</elementReference>
@@ -66,13 +72,10 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>queueId</name>
-            <value>
-                <stringValue>5abe8c3b-d894-490b-b41e-ce2ec1bab70a</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>screenPopRecordId</name>
+            <value>
+                <elementReference>ScreenPopURL</elementReference>
+            </value>
         </inputParameters>
         <inputParameters>
             <name>subject</name>
@@ -89,6 +92,12 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
+    <formulas>
+        <description>URL de la ficha a abrir con el correo enrutado</description>
+        <name>ScreenPopURL</name>
+        <dataType>String</dataType>
+        <expression>&apos;/flow/ZESearchAndScreenPop?recordId=&apos; +  {!FindOwnerIdAction.screenPopRecordId}</expression>
+    </formulas>
     <interviewLabel>ZE Email Route {!$Flow.CurrentDateTime}</interviewLabel>
     <label>ZE Email Route</label>
     <processMetadataValues>

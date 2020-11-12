@@ -25,6 +25,7 @@ public class GenesysFindBestAgentAction
                 //Añadir a la lista de resultados, el owner Id (email) encontrado
                 result = new FindBestAgentResult();
                 result.ownerId = interaction.interactionId;
+                result.screenPopRecordId = interaction.screenPopRecordId;
                 results.add(result);
             }
         }
@@ -38,6 +39,8 @@ public class GenesysFindBestAgentAction
     {
         @InvocableVariable(label='Owner Id' description='Email del Usuario de Salesforce (Agente)')
         public String ownerId;
+        @InvocableVariable(label='Screen Pop Record Id' description='Screen Pop')
+        public String screenPopRecordId;
     }
 
     /**
