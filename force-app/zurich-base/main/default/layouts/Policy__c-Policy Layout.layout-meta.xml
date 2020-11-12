@@ -13,6 +13,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>PolicyVersion__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>PolicyHolder__c</field>
             </layoutItems>
             <layoutItems>
@@ -26,6 +30,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>MovementReason__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LegalEntity__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -254,7 +262,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h1X000001Lkov</masterLabel>
+        <masterLabel>00h1x000000TJVv</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

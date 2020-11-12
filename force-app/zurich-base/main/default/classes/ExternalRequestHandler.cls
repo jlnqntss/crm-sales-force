@@ -84,6 +84,9 @@ public class ExternalRequestHandler implements ITrigger
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
     {
-        ExternalJobQueueBatchController.checkExternalJobQueueBatch();
+        if( !Test.isRunningTest() )
+        {
+            ExternalJobQueueBatchController.checkExternalJobQueueBatch();
+        }
     }
 }

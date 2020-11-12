@@ -589,10 +589,16 @@ global without sharing class ExternalRequestUtil {
     if (contact.receiveMarketing__c == false) {
       contact.HasOptedOutOfEmail = true;
     }
-    // The Lastname field is required, it is set to 'unknown' if it comes empty in the request
-    if (String.isBlank(contact.LastName)) {
-      contact.LastName = Label.LeadLastName;
-      contact.FirstName = Label.LeadLastName;
+    // The Lastname field is required, it is set to 'unknown' if it comes empty in the request 
+    if(String.isBlank(contact.LastName))
+    {
+        contact.LastName = Label.LeadLastName;
+    }
+
+    // The Firsname field is set to 'unknown' if it comes empty in the request 
+    if(String.isBlank(contact.FirstName))
+    {
+        contact.FirstName = Label.LeadLastName;
     }
 
     // SEARCH Contacts

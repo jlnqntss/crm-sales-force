@@ -7,7 +7,7 @@
 global class ExternalJobQueueBatch implements Database.Batchable<sObject>, Schedulable
 {
     global String query;
-    global String origin;
+    global String exReqRecordTypeId;
     global String classHandler;
     global Id jobId;
 
@@ -18,8 +18,6 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>, Sched
 
     global ExternalJobQueueBatch(String origin)
     {
-        this.origin = origin;
-
         for ( ExternalJobQueueBatch__mdt setting : new ExternalJobQueueBatchesSelector(new List<Schema.SObjectField>
         {
             ExternalJobQueueBatch__mdt.Origin__c,
@@ -35,6 +33,7 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>, Sched
         if ( settingsByOrigin.containsKey(origin) )
         {
             classHandler = settingsByOrigin.get(origin).HandlerClassName__c;
+            exReqRecordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(origin).getRecordTypeId();
         }
     }
 
@@ -45,42 +44,53 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>, Sched
 
     global Database.QueryLocator start(Database.BatchableContext bc)
     {
-        return new ExternalRequestsSelector
-               (
-            new List<Schema.SObjectField>
-        {
-            ExternalRequest__c.Origin__c,
-            ExternalRequest__c.Entity__c,
-            ExternalRequest__c.Action__c,
-            ExternalRequest__c.Payload__c,
-            ExternalRequest__c.ContentFormat__c,
-            ExternalRequest__c.NumRetry__c,
-            ExternalRequest__c.ProcessResult__c,
-            ExternalRequest__c.CreatedDate,
-            ExternalRequest__c.Processed__c,
-            ExternalRequest__c.Error_Log__c
-        }
-               ).queryLocatorByOrigin(origin);
+        return new ExternalRequestsSelector().queryLocatorPendingByRecordtype(exReqRecordTypeId);
     }
 
-    global void execute(Database.BatchableContext bc, List<ExternalRequest__c> externalRequest)
+    global void execute(Database.BatchableContext bc, List<ExternalRequest__c> externalRequestScope)
     {
+        Set<Id> externalRequestIds = new Set<Id>();
+
         try
         {
-            // 1 - Obtener el handler correspondiente al sistema de origen
+            // 1 - Recuperar los ids de los registros recuperados en el inicio del batch
+            for(ExternalRequest__c externalRequest : externalRequestScope)
+            {
+                externalRequestIds.add(externalRequest.Id);
+            }
+
+            // 2 - Recuperar la información necesaria de las external request
+            List<ExternalRequest__c> externalRequests = new ExternalRequestsSelector
+                                                        (
+                new List<Schema.SObjectField>
+            {
+                ExternalRequest__c.Origin__c,
+                ExternalRequest__c.Entity__c,
+                ExternalRequest__c.Action__c,
+                ExternalRequest__c.Payload__c,
+                ExternalRequest__c.ContentFormat__c,
+                ExternalRequest__c.NumRetry__c,
+                ExternalRequest__c.ProcessResult__c,
+                ExternalRequest__c.CreatedDate,
+                ExternalRequest__c.Processed__c,
+                ExternalRequest__c.Error_Log__c
+            }
+                                                        ).selectById(externalRequestIds);
+
+            // 3 - Obtener el handler correspondiente al sistema de origen
             ISystem systemHandler = (ISystem) Type.forName(classHandler).newInstance();
 
-            // 2 - Preparar la información necesaria para procesar las external request
-            systemHandler.prepare(externalRequest);
+            // 4 - Preparar la información necesaria para procesar las external request
+            systemHandler.prepare(externalRequests);
 
-            // 3 - Convertir los registros del origen en registros Salesforce
-            systemHandler.process(externalRequest);
+            // 5 - Convertir los registros del origen en registros Salesforce
+            systemHandler.process(externalRequests);
 
-            // 4 - Realizar las operaciones DML sobre los registros de Salesforce generados
-            systemHandler.persists(externalRequest);
+            // 6 - Realizar las operaciones DML sobre los registros de Salesforce generados
+            systemHandler.persists(externalRequests);
 
-            // 5 - Actualizar las external request con el resultado correspondiente
-            systemHandler.manageResult(jobId, externalRequest);
+            // 7 - Actualizar las external request con el resultado correspondiente
+            systemHandler.manageResult(jobId, externalRequests);
 
         }
         catch (Exception e)
