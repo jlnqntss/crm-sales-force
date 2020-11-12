@@ -4,30 +4,30 @@
     <name>NationalIdType__c</name>
     <picklistValues>
         <masterLabel>C</masterLabel>
-        <translation><!-- C --></translation>
+        <translation>CIF</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>E</masterLabel>
-        <translation><!-- E --></translation>
+        <translation>CEE Business</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>N</masterLabel>
-        <translation><!-- N --></translation>
+        <translation>NIF</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>P</masterLabel>
-        <translation><!-- P --></translation>
+        <translation>Passport</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>R</masterLabel>
-        <translation><!-- R --></translation>
+        <translation>Residence Permit</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S</masterLabel>
-        <translation><!-- S --></translation>
+        <translation>Non-identifiable</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>X</masterLabel>
-        <translation><!-- X --></translation>
+        <translation>Ext. Business</translation>
     </picklistValues>
 </CustomFieldTranslation>
