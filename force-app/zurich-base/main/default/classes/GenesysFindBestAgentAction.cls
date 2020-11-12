@@ -24,7 +24,7 @@ public class GenesysFindBestAgentAction
                 interaction = GenesysInteractionsService.findBestAgentFor(request.toInteraction());
                 //Añadir a la lista de resultados, el owner Id (email) encontrado
                 result = new FindBestAgentResult();
-                result.ownerId = interaction.interactionId;
+                result.ownerId = interaction.bestAgentId;
                 result.screenPopRecordId = interaction.screenPopRecordId;
                 results.add(result);
             }
