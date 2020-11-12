@@ -4,10 +4,10 @@
     <name>PaymentChannelSucc__c</name>
     <picklistValues>
         <masterLabel>BC</masterLabel>
-        <translation><!-- BC --></translation>
+        <translation>Banco</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CC</masterLabel>
-        <translation><!-- CC --></translation>
+        <translation>Tarjeta de Crédito</translation>
     </picklistValues>
 </CustomFieldTranslation>
