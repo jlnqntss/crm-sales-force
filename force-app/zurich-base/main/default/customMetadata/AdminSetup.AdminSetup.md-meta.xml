@@ -32,7 +32,7 @@
     </values>
     <values>
         <field>IBA_Multi_Partner_Origin__c</field>
-        <value xsi:type="xsd:string">IBA Multi-Partner</value>
+        <value xsi:type="xsd:string">Multi-Partner IBA</value>
     </values>
     <values>
         <field>IBA_Multi_Partner_endpoint__c</field>

@@ -117,6 +117,17 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>SellChannel__c</picklist>
+        <values>
+            <fullName>Contact center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Online</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Status</picklist>
         <values>
             <fullName>Activated</fullName>

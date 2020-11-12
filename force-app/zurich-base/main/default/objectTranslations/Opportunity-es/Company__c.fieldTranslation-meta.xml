@@ -4,74 +4,74 @@
     <name>Company__c</name>
     <picklistValues>
         <masterLabel>01</masterLabel>
-        <translation><!-- 01 --></translation>
+        <translation>Allianz</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>02</masterLabel>
-        <translation><!-- 02 --></translation>
+        <translation>AXA</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>03</masterLabel>
-        <translation><!-- 03 --></translation>
+        <translation>Mapfre</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>04</masterLabel>
-        <translation><!-- 04 --></translation>
+        <translation>Generali</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>05</masterLabel>
-        <translation><!-- 05 --></translation>
+        <translation>Reale</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>06</masterLabel>
-        <translation><!-- 06 --></translation>
+        <translation>FIATC</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>07</masterLabel>
-        <translation><!-- 07 --></translation>
+        <translation>Liberty</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>08</masterLabel>
-        <translation><!-- 08 --></translation>
+        <translation>Ocaso</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>09</masterLabel>
-        <translation><!-- 09 --></translation>
+        <translation>Santalucía</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>10</masterLabel>
-        <translation><!-- 10 --></translation>
+        <translation>SegurCaixa</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>11</masterLabel>
-        <translation><!-- 11 --></translation>
+        <translation>Plus Ultra</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>12</masterLabel>
-        <translation><!-- 12 --></translation>
+        <translation>Catalana Occidente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>13</masterLabel>
-        <translation><!-- 13 --></translation>
+        <translation>Caser</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>14</masterLabel>
-        <translation><!-- 14 --></translation>
+        <translation>Helvetia</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>15</masterLabel>
-        <translation><!-- 15 --></translation>
+        <translation>Mutua General de Seguros (MGS)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>16</masterLabel>
-        <translation><!-- 16 --></translation>
+        <translation>Otros (Bancos)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>17</masterLabel>
-        <translation><!-- 17 --></translation>
+        <translation>Otros (Broker Online)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>18</masterLabel>
-        <translation><!-- 18 --></translation>
+        <translation>Desconocida</translation>
     </picklistValues>
 </CustomFieldTranslation>
