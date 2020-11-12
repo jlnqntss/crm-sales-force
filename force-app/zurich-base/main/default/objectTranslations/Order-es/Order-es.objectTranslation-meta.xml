@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Póliza (IBA)</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Pólizas (IBA)</value>
+    </caseValues>
+    <gender>Feminine</gender>
+    <layouts>
+        <layout>Policy GI</layout>
+        <sections>
+            <label><!-- Campos --></label>
+            <section>Campos</section>
+        </sections>
+        <sections>
+            <label><!-- Vínculos personalizados --></label>
+            <section>Vínculos personalizados</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Policy life</layout>
+        <sections>
+            <label><!-- Campos --></label>
+            <section>Campos</section>
+        </sections>
+        <sections>
+            <label><!-- Vínculos personalizados --></label>
+            <section>Vínculos personalizados</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Quote GI</layout>
+        <sections>
+            <label><!-- Campos --></label>
+            <section>Campos</section>
+        </sections>
+        <sections>
+            <label><!-- Vínculos personalizados --></label>
+            <section>Vínculos personalizados</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Quote life</layout>
+        <sections>
+            <label><!-- Campos --></label>
+            <section>Campos</section>
+        </sections>
+        <sections>
+            <label><!-- Vínculos personalizados --></label>
+            <section>Vínculos personalizados</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <label><!-- Póliza GI --></label>
+        <name>PolicyGI</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Póliza vida --></label>
+        <name>PolicyLife</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Quote GI --></label>
+        <name>QuoteGI</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Quote vida --></label>
+        <name>QuoteLife</name>
+    </recordTypes>
+    <validationRules>
+        <errorMessage><!-- The field Policy Number can not be filled if the recordtype is not changed to Policy type. --></errorMessage>
+        <name>Convert_Lead_to_Policy</name>
+    </validationRules>
+</CustomObjectTranslation>
