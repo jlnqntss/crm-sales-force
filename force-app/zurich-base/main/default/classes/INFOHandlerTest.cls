@@ -82,6 +82,11 @@ private class INFOHandlerTest
             TestDataFactory.generateExternalRequest('INFO', 'PARTNER', 10)
             );
 
+        //Mediador
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest('INFO', 'INTERMEDIARY', 10)
+            );
+
         insert externalRequestList;
     }
 
@@ -126,7 +131,8 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Payload__c,
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.Origin__c,
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         Test.startTest();
         INFOHandler.prepare(externalRequestList);
@@ -203,6 +209,11 @@ private class INFOHandlerTest
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(),
             'No se ha generado correctamente el mapa de registros de account'
             );
+        System.assertEquals(
+            10,
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(),
+            'No se ha generado correctamente el mapa de registros de account'
+            );
     }
 
     @isTest
@@ -214,7 +225,8 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Payload__c,
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.Origin__c,
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         for(ExternalRequest__c externalRequest : externalRequestList)
         {
@@ -243,6 +255,7 @@ private class INFOHandlerTest
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de quote relationship');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de claim relationship');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
 
         System.assertEquals(0, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de policy');
         System.assertEquals(0, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de policy relationship');
@@ -259,7 +272,8 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Payload__c,
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.Origin__c,
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         for (ExternalRequest__c externalRequest : externalRequestList)
         {
@@ -272,7 +286,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            140,
+            150,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -287,7 +301,8 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Payload__c,
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.Origin__c,
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         for (ExternalRequest__c externalRequest : externalRequestList)
         {
@@ -300,7 +315,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            140,
+            150,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -315,7 +330,8 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Payload__c,
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.Origin__c,
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         Test.startTest();
         INFOHandler.prepare(externalRequestList);
@@ -336,7 +352,7 @@ private class INFOHandlerTest
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
 
         System.assertEquals(
-            30,
+            40,
             accountList.size(),
             'No se han insertado todos los registros de cuenta'
             );
@@ -401,7 +417,8 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Payload__c,
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.Origin__c,
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         INFOHandler.prepare(externalRequestList);
         INFOHandler.process(externalRequestList);
@@ -414,7 +431,8 @@ private class INFOHandlerTest
                                                                                               ExternalRequest__c.Payload__c,
                                                                                               ExternalRequest__c.ContentFormat__c,
                                                                                               ExternalRequest__c.NumRetry__c,
-                                                                                              ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                              ExternalRequest__c.Origin__c,
+                                                                                              ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         List<ExternalRequest__c> externalRequestToDelete = new List<ExternalRequest__c>();
 
@@ -447,7 +465,7 @@ private class INFOHandlerTest
         List<Claim__c> claimList = [SELECT Id FROM Claim__c];
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
 
-        System.assertEquals(30, accountList.size(), 'No se han insertado todos los registros de cuenta');
+        System.assertEquals(40, accountList.size(), 'No se han insertado todos los registros de cuenta');
         System.assertEquals(20, contactList.size(), 'No se han insertado todos los registros de contacto');
         System.assertEquals(10, cpaList.size(), 'No se han insertado todos los registros de contactPointAddress');
         System.assertEquals(10, cppList.size(), 'No se han insertado todos los registros de contactPointPhone');
@@ -470,7 +488,8 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Payload__c,
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.Origin__c,
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         Test.startTest();
         INFOHandler.prepare(externalRequestList);
@@ -485,7 +504,8 @@ private class INFOHandlerTest
                                                                                              ExternalRequest__c.Payload__c,
                                                                                              ExternalRequest__c.ContentFormat__c,
                                                                                              ExternalRequest__c.NumRetry__c,
-                                                                                             ExternalRequest__c.Origin__c}).selectProcessedByOrigin(new Set<String> {'INFO'});
+                                                                                             ExternalRequest__c.Origin__c,
+                                                                                             ExternalRequest__c.CreatedDate}).selectProcessedByOrigin(new Set<String> {'INFO'});
 
         List<ExternalRequestError__c> externalRequestErrors = [
             SELECT Id
@@ -494,7 +514,7 @@ private class INFOHandlerTest
         ];
 
         System.assertEquals(
-            140,
+            150,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
@@ -514,7 +534,8 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Payload__c,
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.Origin__c,
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         externalRequestList.get(0).Payload__c = null;
 
@@ -531,12 +552,20 @@ private class INFOHandlerTest
                                                                                              ExternalRequest__c.Payload__c,
                                                                                              ExternalRequest__c.ContentFormat__c,
                                                                                              ExternalRequest__c.NumRetry__c,
-                                                                                             ExternalRequest__c.Origin__c}).selectProcessedByOrigin(new Set<String> {'INFO'});
+                                                                                             ExternalRequest__c.Origin__c,
+                                                                                             ExternalRequest__c.CreatedDate}).selectProcessedByOrigin(new Set<String> {'INFO'});
+
+        List<ExternalRequestError__c> errors = [SELECT Id FROM ExternalRequestError__c];
 
         System.assertEquals(
-            140,
+            150,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
+            );
+        System.assertEquals(
+            1,
+            errors.size(),
+            'No se han generado los errores correctamente'
             );
     }
 }
