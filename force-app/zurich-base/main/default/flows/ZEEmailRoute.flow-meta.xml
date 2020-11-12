@@ -1,11 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>FindOwnerIdAction</name>
+        <label>Find OwnerId Action</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <actionName>GenesysFindBestAgentAction</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+        <inputParameters>
+            <name>fromId</name>
+            <value>
+                <elementReference>EmailMessage.FromAddress</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>interactionType</name>
+            <value>
+                <stringValue>Inbound</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>lookFor</name>
+            <value>
+                <stringValue>Opportunity</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>scope</name>
+            <value>
+                <stringValue>ze</stringValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <description>Llamada al Apex invocable que contiene la llamada al Genesys Cloud RoutingWork</description>
         <name>RouteEmailAction</name>
         <label>Route Email Action</label>
         <locationX>176</locationX>
-        <locationY>158</locationY>
+        <locationY>278</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -21,6 +57,12 @@
             <name>fromName</name>
             <value>
                 <elementReference>EmailMessage.FromName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>ownerId</name>
+            <value>
+                <elementReference>FindOwnerIdAction.ownerId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -73,7 +115,7 @@
         <name>UpdateTask</name>
         <label>Update Task</label>
         <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationY>398</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -94,7 +136,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>RouteEmailAction</targetReference>
+            <targetReference>FindOwnerIdAction</targetReference>
         </connector>
     </start>
     <status>Active</status>
