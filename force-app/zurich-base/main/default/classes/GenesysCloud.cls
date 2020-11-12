@@ -61,7 +61,6 @@ public class GenesysCloud
     /**
      * RoutingService ofrece la capa de enrutamiento de Genesys Cloud, ofreciendo métodos de enrutamiento a través de una configuración de enrutamiento especificada antes de enrutar
      */
-    @TestVisible
     public class RoutingService
     {
         public HttpCalloutMock mock = null;
@@ -119,8 +118,7 @@ public class GenesysCloud
     public abstract class RoutingWork
     {
         //Id. de la interacción enrutada en Genesys
-        @TestVisible
-        protected String interactionId;
+        public String interactionId;
         //VIRTUAL - Sólo lectura. Devolverá una constante con el endpoint de enrutamiento a enrutar
         protected transient String endpoint
         {
@@ -138,7 +136,6 @@ public class GenesysCloud
             }
         }
         //Cola sore la que se enrutará el trabajo. Cuando se setea debe poner a null flowId
-        @TestVisible
         public String queueId
         {
             get;
@@ -152,7 +149,6 @@ public class GenesysCloud
             }
         }
         //Flow sobre el que se enrutará el trabajo. Cuando se setea, debe poner a null queueId
-        @TestVisible
         public String flowId
         {
             get;
@@ -166,15 +162,14 @@ public class GenesysCloud
             }
         }
         //Listado de skills para utilizar en el enrutamiento
-        @TestVisible
         public String[] skillIds;
         //The priority to assign to the conversation for routing
-        @TestVisible
         public Integer priority;
         //Atributos personalizados para enrutar
-        protected Map<String,String> attributes = new Map<String, String> ();
+        public Map<String,String> attributes = new Map<String, String> ();
         //Sólo lectura. Devolverá siempre el valor INBOUND
-        public String direction
+        @TestVisible
+        private String direction
         {
             get
             {
