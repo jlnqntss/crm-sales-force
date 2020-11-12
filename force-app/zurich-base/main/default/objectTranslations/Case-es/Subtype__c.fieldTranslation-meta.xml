@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label><!-- Subtipo --></label>
+    <label>Tipo N2</label>
     <name>Subtype__c</name>
     <picklistValues>
         <masterLabel>Activación</masterLabel>

@@ -35,21 +35,23 @@ public class INFOHandler implements ISystem
     public static final String POLICY_RELATIONSHIP = 'POLICY_RELATIONSHIP';
     public static final String CLAIM_RELATIONSHIP = 'CLAIM_RELATIONSHIP';
     public static final String PARTNER = 'PARTNER';
+    public static final String INTERMEDIARY = 'INTERMEDIARY';
 
     // Orden de DML sobre entidades
     private static List<String> entityOrder = new List<String> 
     {
         ACCOUNT, // 1
-        CONTACT_POINT, // 2
-        PRODUCT, // 3
-        QUOTE, // 4
-        POLICY, // 5
-        INSURED_OBJECT, // 6
-        CLAIM, // 7
-        QUOTE_RELATIONSHIP, // 8
-        POLICY_RELATIONSHIP, // 9
-        CLAIM_RELATIONSHIP, // 10
-        PARTNER // 11
+        PARTNER, // 2       
+        INTERMEDIARY, // 3
+        CONTACT_POINT, // 4
+        PRODUCT, // 5
+        QUOTE, // 6
+        POLICY, // 7
+        INSURED_OBJECT, // 8
+        CLAIM, // 9
+        QUOTE_RELATIONSHIP, // 10
+        POLICY_RELATIONSHIP, // 11
+        CLAIM_RELATIONSHIP // 12
     };
 
     /**
@@ -386,6 +388,13 @@ public class INFOHandler implements ISystem
                 Account partnerRecord = (Account) tf.transform(PARTNER, 'Account', recordValuesMap);
                 partnerRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner').getRecordTypeId();
                 addRecordToMap(externalRequest, PARTNER, 'Account', partnerRecord);
+            }
+            // Mediador
+            when 'INTERMEDIARY' 
+            {
+                Account intermRecord = (Account) tf.transform(INTERMEDIARY, 'Account', recordValuesMap);
+                intermRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+                addRecordToMap(externalRequest, INTERMEDIARY, 'Account', intermRecord);
             }
             when else
             {
