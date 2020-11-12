@@ -19,14 +19,61 @@
                 <label>valores</label>
             </value>
             <value>
-                <fullName>no</fullName>
+                <fullName>Realizado</fullName>
+                <default>true</default>
+                <label>Realizado</label>
+            </value>
+            <value>
+                <fullName>Realizado - Impacto en prima</fullName>
                 <default>false</default>
-                <label>no</label>
+                <label>Realizado - Impacto en prima</label>
+            </value>
+            <value>
+                <fullName>Realizado - Sin impacto en prima</fullName>
+                <default>false</default>
+                <label>Realizado - Sin impacto en prima</label>
+            </value>
+            <value>
+                <fullName>No Realizado</fullName>
+                <default>false</default>
+                <label>No Realizado</label>
+            </value>
+            <value>
+                <fullName>No Realizado -Pol. Seguridad</fullName>
+                <default>false</default>
+                <label>No Realizado -Pol. Seguridad</label>
+            </value>
+            <value>
+                <fullName>No realizado - Derivado mediación</fullName>
+                <default>false</default>
+                <label>No realizado - Derivado mediación</label>
+            </value>
+            <value>
+                <fullName>No realizado - No procede</fullName>
+                <default>false</default>
+                <label>No realizado - No procede</label>
+            </value>
+            <value>
+                <fullName>No realizado - Rechazo técnico</fullName>
+                <default>false</default>
+                <label>No realizado - Rechazo técnico</label>
+            </value>
+            <value>
+                <fullName>No realizado - Cliente no interesa</fullName>
+                <default>false</default>
+                <label>No realizado - Cliente no interesa</label>
             </value>
             <value>
                 <fullName>definidos</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>definidos</label>
+            </value>
+            <value>
+                <fullName>no</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>no</label>
             </value>
         </valueSetDefinition>
     </valueSet>

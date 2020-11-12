@@ -11,12 +11,16 @@
             <section>Fields</section>
         </sections>
         <sections>
-            <label><!-- OCS --></label>
-            <section>OCS</section>
+            <label><!-- Relaciones --></label>
+            <section>Relaciones</section>
         </sections>
         <sections>
             <label><!-- System Information --></label>
             <section>System Information</section>
+        </sections>
+        <sections>
+            <label><!-- Tipificación --></label>
+            <section>Tipificación</section>
         </sections>
     </layouts>
     <layouts>
