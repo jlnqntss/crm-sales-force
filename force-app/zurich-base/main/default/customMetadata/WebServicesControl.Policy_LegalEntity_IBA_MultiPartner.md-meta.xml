@@ -64,7 +64,7 @@
     </values>
     <values>
         <field>ServiceName__c</field>
-        <value xsi:type="xsd:string">Order</value>
+        <value xsi:type="xsd:string">ProcessRequest</value>
     </values>
     <values>
         <field>Source__c</field>

@@ -6,6 +6,49 @@
     <description>OCS</description>
     <label>OCS Inquiry</label>
     <picklistValues>
+        <picklist>CloseDetail__c</picklist>
+        <values>
+            <fullName>No Realizado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Realizado -Pol%2E Seguridad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - Cliente no interesa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - Derivado mediación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - No procede</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - Rechazo técnico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Impacto en prima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Sin impacto en prima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>valores</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Origin</picklist>
         <values>
             <fullName>Email</fullName>
@@ -55,6 +98,113 @@
         </values>
         <values>
             <fullName>User didn%27t attend training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Subtype__c</picklist>
+        <values>
+            <fullName>Activación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Apertura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>App</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bloqueo de IMEI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio de condiciones de mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio de datos de contacto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio de objeto asegurado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Catálogo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coberturas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contraseña</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contratar seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegación de cobertura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desactivar FMI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación incorrecta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estado de mi caso</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Franquicia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencia contratación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pago de franquicia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partnership</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Precio de mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Problema con la reparación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recogida%2FEntrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitud factura</fullName>
             <default>false</default>
         </values>
     </picklistValues>

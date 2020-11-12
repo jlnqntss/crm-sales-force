@@ -4,10 +4,10 @@
     <name>PaymentType__c</name>
     <picklistValues>
         <masterLabel>A</masterLabel>
-        <translation><!-- A --></translation>
+        <translation>Annual</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>S</masterLabel>
-        <translation><!-- S --></translation>
+        <translation>Biannual</translation>
     </picklistValues>
 </CustomFieldTranslation>

@@ -19,17 +19,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>Canal_de_venta__c</picklist>
-        <values>
-            <fullName>Contact center</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Online</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Channel__c</picklist>
         <values>
             <fullName>App</fullName>

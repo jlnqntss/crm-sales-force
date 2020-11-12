@@ -2,11 +2,11 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>Scope</value>
+        <value>Ámbito</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Scope</value>
+        <value>Ámbitos</value>
     </caseValues>
     <gender>Masculine</gender>
     <layouts>
@@ -28,4 +28,9 @@
             <section>Main Contact Points</section>
         </sections>
     </layouts>
+    <nameFieldLabel>Nombre de ámbito</nameFieldLabel>
+    <quickActions>
+        <label><!-- Zurich Empresas --></label>
+        <name>Zurich_Empresas</name>
+    </quickActions>
 </CustomObjectTranslation>
