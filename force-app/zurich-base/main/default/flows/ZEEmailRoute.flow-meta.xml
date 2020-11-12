@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <description>Se buscar al mejor gestor posible para el correo electrónico, en base al cliente al que pertenece al email y sus oportunidades abiertas</description>
         <name>FindOwnerIdAction</name>
-        <label>Find OwnerId Action</label>
+        <label>Buscar Gestor Preferente</label>
         <locationX>176</locationX>
         <locationY>158</locationY>
         <actionName>GenesysFindBestAgentAction</actionName>
@@ -39,7 +40,7 @@
     <actionCalls>
         <description>Llamada al Apex invocable que contiene la llamada al Genesys Cloud RoutingWork</description>
         <name>RouteEmailAction</name>
-        <label>Route Email Action</label>
+        <label>Enrutar Email a Flow ZE en Genesys Cloud</label>
         <locationX>176</locationX>
         <locationY>278</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
@@ -92,6 +93,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
+    <description>Realiza el enrutamiento de correos electrónicos del buzón de Zurich Empresas</description>
     <formulas>
         <description>URL de la ficha a abrir con el correo enrutado</description>
         <name>ScreenPopURL</name>
@@ -99,7 +101,7 @@
         <expression>&apos;/flow/ZESearchAndScreenPop?recordId=&apos; +  {!FindOwnerIdAction.screenPopRecordId}</expression>
     </formulas>
     <interviewLabel>ZE Email Route {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>ZE Email Route</label>
+    <label>Zurich Empresas - Enrutamiento de correos electrónicos</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -122,7 +124,7 @@
     <recordUpdates>
         <description>Actualización de CallObject de la task relacionada con el email</description>
         <name>UpdateTask</name>
-        <label>Update Task</label>
+        <label>Actualizar interacción</label>
         <locationX>176</locationX>
         <locationY>398</locationY>
         <filterLogic>and</filterLogic>
@@ -148,7 +150,7 @@
             <targetReference>FindOwnerIdAction</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>EmailMessage</name>
         <dataType>SObject</dataType>
