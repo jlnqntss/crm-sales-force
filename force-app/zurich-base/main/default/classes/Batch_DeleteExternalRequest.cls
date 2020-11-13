@@ -1,56 +1,49 @@
 /**
  * @author nbizkarra-NTS
- * Batch that executes every day and deletes old processed External Requests
+ * Batch to delete External Requests
+ * @change adelgado 13/11/2020 Accept query as parameter to schedule batch
  * @date 27/04/2020
  */
 
-global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Database.Stateful, Schedulable
+global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Schedulable
 {
     global String query;
 
     global Batch_DeleteExternalRequest()
     {}
 
-    global Batch_DeleteExternalRequest(String q)
+    global Batch_DeleteExternalRequest(String query)
     {
-        if ( !String.isBlank(q) )
+        if ( !String.isBlank(query) )
         {
-            query = q;
+            this.query = query;
         }
     }
 
     global Database.QueryLocator start(Database.BatchableContext BC)
     {
-        if (query == null || query == '')
+        if ( String.isBlank(query) )
         {
             query = SystemUtil.getOldExternalRequests();
         }
+
         return Database.getQueryLocator(query);
     }
 
     global void execute(SchedulableContext SC)
     {
-        Id BatchInstanceId = database.executeBatch( new Batch_DeleteExternalRequest(query), 200 );
+        database.executeBatch( new Batch_DeleteExternalRequest(query), 200 );
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)
     {
-        List<ExternalRequest__c> requestList = (List<ExternalRequest__c>) scope;
-
-        if ( scope != null && !scope.isEmpty() )
+        try
         {
-            try
-            {
-                delete requestList;
-            }
-            catch (Exception e)
-            {
-                System.debug(
-                    'Ha habido un error eliminando los registros de ExternalRequest__c: ' +
-                    e.getMessage()
-                    );
-                ErrorLogUtil.commitError(e, 'Batch_DeleteExternalRequest');
-            }
+            delete scope;
+        }
+        catch (Exception e)
+        {
+            ErrorLogUtil.commitError(e, 'Batch_DeleteExternalRequest');
         }
     }
 
