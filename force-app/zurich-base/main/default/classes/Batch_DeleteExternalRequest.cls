@@ -30,10 +30,7 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
 
     global void execute(SchedulableContext SC)
     {
-        Id BatchInstanceId = database.executeBatch(
-            new Batch_DeleteExternalRequest(),
-            200
-            );
+        Id BatchInstanceId = database.executeBatch( new Batch_DeleteExternalRequest(query), 200 );
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)
