@@ -11,7 +11,10 @@ private with sharing class EmailMessagesSelectorTest
         List<EmailMessage> childEmailMessages = TestDataFactory.generateEmailMessagesFromEmailMessages(parentEmailMessages, 1);
         insert childEmailMessages;
 
-        List<Opportunity> opportunities = TestDataFactory.generateOpportunities('ZE', 'Qualification', System.today(), BULK_NUM_RECORDS);
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        insert accounts;
+
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunities(accounts, 'ZE', 'Qualification', System.today(), BULK_NUM_RECORDS);
         insert opportunities;
 
         List<EmailMessage> emailMessagesRelatedToOpportunities = TestDataFactory.generateEmailMessagesFromOpportunities(opportunities, 1);

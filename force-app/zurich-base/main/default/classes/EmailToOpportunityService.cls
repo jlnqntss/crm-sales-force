@@ -63,11 +63,16 @@ public without sharing class EmailToOpportunityService
         try {
             insert emailMessage;
 
-            insert new EmailMessageRelation(
-                EmailMessageId = emailMessage.Id,
-                RelationId = UserInfo.getUserId(),
-                RelationType = 'ToAddress'
-            );
+            List<Contact> contactsByEmail = ContactsSelector.findByEmail(new List<String>{email.fromAddress});
+            if(!contactsByEmail.isEmpty())
+            {
+                insert new EmailMessageRelation(
+                    EmailMessageId = emailMessage.Id,
+                    RelationAddress = email.fromAddress,
+                    RelationId = contactsByEmail.get(0).Id,
+                    RelationType = 'ToAddress'
+                );
+            }
         } catch (EmailToOpportunityServiceException ex) {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_CRITICAL, ex.getMessage(), 'EmailToOpportunityService'); 
         }

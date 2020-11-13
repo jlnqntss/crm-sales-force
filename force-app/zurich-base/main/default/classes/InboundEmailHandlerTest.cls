@@ -11,7 +11,10 @@ private class InboundEmailHandlerTest
     @testSetup
     static void makeData()
     {
-        List<Opportunity> opportunities = TestDataFactory.generateOpportunities('ZE', 'Qualification', System.today(), 10);
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        insert accounts;
+
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunities(accounts, 'ZE', 'Qualification', System.today(), 10);
         insert opportunities;
 
         List<EmailMessage> emailMessages = TestDataFactory.generateEmailMessagesFromOpportunities(opportunities, 1);

@@ -37,6 +37,7 @@ private with sharing class ContactsSelectorTest
         for(ContactPointPhone contactPoint : [SELECT Id, ParentId, ContactId__c FROM ContactPointPhone WHERE TelephoneNumber =: telephoneNumberToSearch])
         {
             recordIds.add(contactPoint.ParentId);
+            recordIds.add(contactPoint.Id);
         }
 
         Test.setFixedSearchResults( new List<Id>(recordIds) );
@@ -48,6 +49,9 @@ private with sharing class ContactsSelectorTest
         List<Contact> matchedRecords = ContactsSelector.findByPhoneNumber(new List<String> { telephoneNumberToSearch });
 
         Test.stopTest();
+
+        //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
 
         // Then
         Map<Id, Contact> expectedContactsById = new Map<Id, Contact>([SELECT Id FROM Contact WHERE AccountId IN: recordIds OR Id IN: recordIds]);
@@ -75,6 +79,7 @@ private with sharing class ContactsSelectorTest
         for(ContactPointEmail contactPoint : [SELECT Id, ParentId, ContactId__c FROM ContactPointEmail WHERE EmailAddress =: emailToSearch])
         {
             recordIds.add(contactPoint.ParentId);
+            recordIds.add(contactPoint.Id);
         }
 
         Test.setFixedSearchResults( new List<Id>(recordIds) );
@@ -85,6 +90,9 @@ private with sharing class ContactsSelectorTest
         List<Contact> matchedRecords = ContactsSelector.findByEmail(new List<String> { emailToSearch } );
 
         Test.stopTest();
+
+        //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
 
         // Then
         Map<Id, Contact> expectedContactsById = new Map<Id, Contact>([SELECT Id FROM Contact WHERE AccountId IN: recordIds OR Id IN: recordIds]);
@@ -120,9 +128,10 @@ private with sharing class ContactsSelectorTest
 
         Test.stopTest();
 
-        // Then
-        System.assertEquals(false, matchedRecords.isEmpty(), 'The list shouldnt be empty');
+        //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
 
+        // Then
         for(Contact record : matchedRecords)
         {
             System.assertEquals(true, recordIds.contains(record.Id), 'Set should contains the record Id');

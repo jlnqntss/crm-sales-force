@@ -1530,7 +1530,7 @@ public class TestDataFactory
      * @author rlopez
      * @date 03/11/2020
      */
-    public static List<Opportunity> generateOpportunities(String type, String stage, Date closeDate, Integer numRecords)
+    public static List<Opportunity> generateOpportunities(List<Account> accounts, String type, String stage, Date closeDate, Integer numRecords)
     {
         List<Opportunity> opportunitiesGenerated = new List<Opportunity>();
 
@@ -1544,30 +1544,39 @@ public class TestDataFactory
             numRecords = 1;
         }
 
-        switch on type {
-            when 'ZE' {
-                for(Integer i=0; i<numRecords; i++)
+        switch on type.toLowerCase() {
+            when 'ze' {
+                for(Account relatedAccount: accounts)
                 {
-                    opportunitiesGenerated.add(
-                        new Opportunity(
-                            Name = 'Test Opportunity ' + i,
-                            StageName = stage,
-                            CloseDate = closeDate
-                        )
-                    );
-                }       
+                    for(Integer i=0; i<numRecords; i++)
+                    {
+                        opportunitiesGenerated.add(
+                            new Opportunity(
+                                AccountId = relatedAccount.Id,
+                                Name = 'Test Opportunity ' + i,
+                                StageName = stage,
+                                CloseDate = closeDate
+                            )
+                        );
+                    }
+                }
             }
             when else {
-                for(Integer i=0; i<numRecords; i++)
+                for(Account relatedAccount: accounts)
                 {
-                    opportunitiesGenerated.add(
-                        new Opportunity(
-                            Name = 'Test Opportunity ' + i,
-                            StageName = stage,
-                            CloseDate = closeDate
-                        )
-                    );
-                } 
+                    for(Integer i=0; i<numRecords; i++)
+                    {
+                        opportunitiesGenerated.add(
+                            new Opportunity(
+                                AccountId = relatedAccount.Id,
+                                Name = 'Test Opportunity ' + i,
+                                StageName = stage,
+                                CloseDate = closeDate,
+                                Scope__c = type
+                            )
+                        );
+                    }
+                }
             }
         }
 

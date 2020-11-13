@@ -11,7 +11,19 @@ private class EmailToOpportunityServiceTest
     @testSetup
     static void makeData()
     {
-        List<Opportunity> opportunities = TestDataFactory.generateOpportunities('ZE', 'Qualification', System.today(), 10);
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        insert accounts;
+
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
+        insert contacts;
+
+        List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 1);
+        insert contactPointEmails;
+
+        contactPointEmails.get(0).EmailAddress = EMAIL_SOPORTE;
+        update contactPointEmails.get(0);
+
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunities(accounts, 'ZE', 'Qualification', System.today(), 10);
         insert opportunities;
 
         List<EmailMessage> emailMessages = TestDataFactory.generateEmailMessagesFromOpportunities(opportunities, 1);
@@ -38,6 +50,17 @@ private class EmailToOpportunityServiceTest
         firstEmail.headers = new List<Messaging.InboundEmail.Header>();
         firstEmail.toAddresses = new List<String> {System.UserInfo.getUserEmail()};
 
+        // SOSL - Resultados de búsqueda
+        Set<String> contactPointRecordIds = new Set<String>();
+
+        for(ContactPointEmail contactPoint : [SELECT Id, ParentId, ContactId__c FROM ContactPointEmail WHERE EmailAddress =: EMAIL_SOPORTE])
+        {
+            contactPointRecordIds.add(contactPoint.ParentId);
+            contactPointRecordIds.add(contactPoint.Id);
+        }
+
+        Test.setFixedSearchResults( new List<String>(contactPointRecordIds) );
+
         Test.startTest();
         EmailToOpportunityService.searchRelatedEmailAndOpportunity(firstEmail, null);
         Test.stopTest();
@@ -55,10 +78,14 @@ private class EmailToOpportunityServiceTest
         System.assertEquals(1, emailMessagesCreated.size(), 'There should be an EmailMessage');
         System.assertEquals(null, emailMessagesCreated.get(0).RelatedToId, 'RelatedToId field should be null');
 
-        //Comprobamos que se ha creado un EmailMessageRelation entre el usuario y el EmailMessage creado
+        //Recuperamos el Contacto para la dirección de email
+        List<Contact> contactsByEmail = ContactsSelector.findByEmail(new List<String> { EMAIL_SOPORTE });
+        System.assertEquals(false, contactsByEmail.isEmpty(), 'List shoudnt be empty');
+
+        //Comprobamos que se ha creado un EmailMessageRelation entre el contacto y el EmailMessage creado
         emailMessagesSelectorObj.fieldsToQuery = new Set<String> {'Id'};
-        List<EmailMessageRelation> emailMessageRelationsCreated = emailMessagesSelectorObj.selectRelationByEmailAndRelation(new Set<String> {emailMessagesCreated.get(0).Id}, new Set<String> {System.UserInfo.getUserId()});
-        System.assertEquals(1, emailMessageRelationsCreated.size(), 'There should be an EmailMessageRelation between the EmailMessage and the current user');
+        List<EmailMessageRelation> emailMessageRelationsCreated = emailMessagesSelectorObj.selectRelationByEmailAndRelation(new Set<String> {emailMessagesCreated.get(0).Id}, new Set<String> {contactsByEmail.get(0).Id});
+        System.assertEquals(1, emailMessageRelationsCreated.size(), 'There should be an EmailMessageRelation between the EmailMessage and the email contact');
     }
 
     /**
@@ -90,6 +117,17 @@ private class EmailToOpportunityServiceTest
         referencesEmailHeader.value = '';
         secondEmail.headers = new List<Messaging.InboundEmail.Header> {inReplyToEmailHeader, referencesEmailHeader};
 
+        // SOSL - Resultados de búsqueda
+        Set<String> contactPointRecordIds = new Set<String>();
+
+        for(ContactPointEmail contactPoint : [SELECT Id, ParentId, ContactId__c FROM ContactPointEmail WHERE EmailAddress =: EMAIL_SOPORTE])
+        {
+            contactPointRecordIds.add(contactPoint.ParentId);
+            contactPointRecordIds.add(contactPoint.Id);
+        }
+
+        Test.setFixedSearchResults( new List<String>(contactPointRecordIds) );
+
         Test.startTest();
         EmailToOpportunityService.searchRelatedEmailAndOpportunity(secondEmail, null);
         Test.stopTest();
@@ -106,8 +144,17 @@ private class EmailToOpportunityServiceTest
         List<EmailMessage> emailMessagesRelatedToOpportunity = emailMessagesSelectorObj.selectByRelatedObjectId(new Set<String> {existingEmails.get(0).RelatedToId});
         System.assertEquals(2, emailMessagesRelatedToOpportunity.size(), 'There should be 2 emails related with the opportunity');
 
-        //Comprobamos que se ha creado 2 EmailMessageRelations entre el usuario y el nuevo EmailMessage creado
-        List<EmailMessageRelation> emailMessageRelationsCreated = [SELECT Id FROM EmailMessageRelation WHERE EmailMessageId IN :emailMessagesRelatedToOpportunity AND RelationId = :System.UserInfo.getUserId()];
-        System.assertEquals(2, emailMessageRelationsCreated.size(), 'There should be 2 EmailMessageRelation between the EmailMessages and the current user');
+        //Recuperamos el último email creado para comprobar si se ha creado correctamente la relación con el contacto
+        List<EmailMessage> emailMessagesCreated = emailMessagesSelectorObj.selectBySubject(new List<String> {emailSubject});
+        System.assertEquals(1, emailMessagesCreated.size(), 'There should be an EmailMessage');
+
+        //Recuperamos el Contacto para la dirección de email
+        List<Contact> contactsByEmail = ContactsSelector.findByEmail(new List<String> { EMAIL_SOPORTE });
+        System.assertEquals(false, contactsByEmail.isEmpty(), 'List shoudnt be empty');
+
+        //Comprobamos que se ha creado un EmailMessageRelation entre el contacto y el EmailMessage creado
+        emailMessagesSelectorObj.fieldsToQuery = new Set<String> {'Id'};
+        List<EmailMessageRelation> emailMessageRelationsCreated = emailMessagesSelectorObj.selectRelationByEmailAndRelation(new Set<String> {emailMessagesCreated.get(0).Id}, new Set<String> {contactsByEmail.get(0).Id});
+        System.assertEquals(1, emailMessageRelationsCreated.size(), 'There should be an EmailMessageRelation between the EmailMessage and the email contact');
     }
 }
