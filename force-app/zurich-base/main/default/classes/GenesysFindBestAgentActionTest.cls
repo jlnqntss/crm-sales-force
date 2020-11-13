@@ -1,49 +1,42 @@
 @isTest
 public class GenesysFindBestAgentActionTest {
 
-    @testSetup
-    public static void createScenario()
+    /**
+     * Generación de escenario usando TestDataFactory
+     * @author nescudero
+     * @date 13/11/2020
+     */
+    @TestSetup
+    static void makeData()
     {
-        Account acc = new Account();
-        acc.LastName = 'nescudero';
-        acc.LegalEntity__pc = Label.GeneralInsurance;
-        insert acc;
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        insert accounts;
 
-        ContactPointPhone cpp = new ContactPointPhone();
-        cpp.ParentId = acc.Id;
-        cpp.TelephoneNumber = '123456789';
-        insert cpp;
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
+        insert contacts;
 
-        ContactPointEmail cpe = new ContactPointEmail();
-        cpe.ParentId = acc.Id;
-        cpe.EmailAddress = 'nescudero@nts-solutions.com';
-        insert cpe;
+        List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
+        insert contactPointPhones;
+        //Actualizar con los datos usados en los test
+        contactPointPhones.get(0).TelephoneNumber = '123456789';
+        update contactPointPhones.get(0);
 
-        Case caso = new Case();
-        caso.AccountId = acc.Id;
+        List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 10);
+        insert contactPointEmails;
+        //Actualizar con los datos usados en los test
+        contactPointEmails.get(0).EmailAddress = 'nescudero@nts-solutions.com';
+        update contactPointEmails.get(0);
 
-        insert caso;
+        //se crea 1 caso para cada cuenta
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        insert cases;
 
-        caso.OwnerId = USerInfo.getUserid();
+        //Se crea 1 opp para cada cuenta
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1);
+        insert opportunities;
 
-        update caso;
-
-        Opportunity opp = new Opportunity();
-        opp.AccountId = acc.Id;
-        opp.Name = 'opp';
-        opp.StageName = 'New';
-        opp.CloseDate = System.today().addDays(10);
-        opp.Scope__c = 'General';
-        insert opp;
-
-        Task interaction = new Task();
-        interaction.Status = 'Nueva';
-        interaction.Priority = 'Normal';
-        interaction.CallObject = 'ucid';
-        interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
-                                   .get('Interaction')
-                                   .getRecordTypeId();
-        insert interaction;
+        List<Task> tasks = TestDataFactory.generateInteractionTasks(10);
+        insert tasks;
     }
 
     @isTest
@@ -51,10 +44,10 @@ public class GenesysFindBestAgentActionTest {
 
         List<GenesysFindBestAgentAction.FindBestAgentRequest> requests = new List<GenesysFindBestAgentAction.FindBestAgentRequest>();
         GenesysFindBestAgentAction.FindBestAgentRequest request = new GenesysFindBestAgentAction.FindBestAgentRequest();
-        request.interactionType = 'Inbound';
+        request.interactionType = 'Inbound'; //buscará por fromId
         request.lookFor = 'Opportunity';
-        request.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
-        request.fromId = 'nescudero@nts-solutions.com';
+        request.scope = GenesysInteractionsService.SCOPE_CODE_ALL; //Opp.Scope__c = 'General'
+        request.fromId = 'nescudero@nts-solutions.com'; //coincide con contactPointEmail.EmailAddress
         requests.add(request);
 
         // SOSL - Resultados de búsqueda

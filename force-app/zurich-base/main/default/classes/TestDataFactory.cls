@@ -350,7 +350,7 @@ public class TestDataFactory
 
         Schema.DescribeFieldResult homeTypeFieldResult = ContactPointAddress.HomeType__c.getDescribe();
         List<Schema.PicklistEntry> homeTypeValues = homeTypeFieldResult.getPicklistValues();
-        
+
         Schema.DescribeFieldResult streetTypeFieldResult = ContactPointAddress.StreetType__c.getDescribe();
 		List<Schema.PicklistEntry> streetTypeValues = streetTypeFieldResult.getPicklistValues();
 
@@ -665,7 +665,7 @@ public class TestDataFactory
 
         Schema.DescribeFieldResult statusFieldResult = Policy__c.PolicyStatus__c.getDescribe();
         List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
-        
+
         Schema.DescribeFieldResult legalEntityFieldResult = Policy__c.LegalEntity__c.getDescribe();
 		List<Schema.PicklistEntry> legalEntityValues = legalEntityFieldResult.getPicklistValues();
 
@@ -1130,10 +1130,10 @@ public class TestDataFactory
 
         Schema.DescribeFieldResult nationalTypeFieldResult = Account.NationalIdType__c.getDescribe();
         List<Schema.PicklistEntry> nationalTypeValues = nationalTypeFieldResult.getPicklistValues();
-        
+
         Schema.DescribeFieldResult typeFieldResult = Account.Type.getDescribe();
         List<Schema.PicklistEntry> typeValues = typeFieldResult.getPicklistValues();
-        
+
         Schema.DescribeFieldResult statusFieldResult = Account.Status__c.getDescribe();
 		List<Schema.PicklistEntry> statusValues = statusFieldResult.getPicklistValues();
 
@@ -1174,7 +1174,7 @@ public class TestDataFactory
                     'mediador_email_admin' => 'testInter' + i + '@test.com',
                     'mediador_telefono_principal' => '123456789',
                     'mediador_telefono_movil' => '123456789'
-                    
+
             }
                 );
         }
@@ -1627,7 +1627,7 @@ public class TestDataFactory
      **
      * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointPhone
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<ContactPointPhone> listado de ContactPointPhones generados
      * @author rlopez
      * @date 04/11/2020
@@ -1663,7 +1663,7 @@ public class TestDataFactory
      **
      * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointEmail
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<ContactPointEmail> listado de ContactPointEmails generados
      * @author rlopez
      * @date 04/11/2020
@@ -1692,5 +1692,79 @@ public class TestDataFactory
         }
 
         return contactPointEmails;
+    }
+
+    /**
+     * Genera Casos relacionados con cuentas
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un listado de registros
+     * @param Integer numRecords número de registros a generar POR CADA CUENTA
+     *
+     * @return List<Case> listado de registros generados
+     * @author nescudero
+     * @date 13/11/2020
+     */
+    public static List<Case> generateCasesForEachAccount(List<Account> accounts, Integer numRecords)
+    {
+        List<Case> cases = new List<Case>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                cases.add(
+                    new Case(
+                        OwnerId = USerInfo.getUserid(),
+                        AccountId = relatedAccount.Id
+                    )
+                );
+            }
+        }
+
+        return cases;
+    }
+
+    /**
+     * Genera Casos relacionados con cuentas
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un listado de registros
+     * @param Integer numRecords número de registros a generar POR CADA CUENTA
+     *
+     * @return List<Opportunity> listado de registros generados
+     * @author nescudero
+     * @date 13/11/2020
+     */
+    public static List<Opportunity> generateOpportunitiesForEachAccount(List<Account> accounts, String scope, String stage, Date closeDate, Integer numRecords)
+    {
+        List<Opportunity> opportunities = new List<Opportunity>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                opportunities.add(
+                    new Opportunity(
+                        OwnerId = USerInfo.getUserid(),
+                        AccountId = relatedAccount.Id,
+                        Name = 'opp'+i,
+                        StageName = stage,
+                        CloseDate = closeDate,
+                        Scope__c = scope
+                    )
+                );
+            }
+        }
+
+        return opportunities;
     }
 }
