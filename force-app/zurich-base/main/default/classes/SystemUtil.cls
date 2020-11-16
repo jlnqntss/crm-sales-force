@@ -230,6 +230,7 @@ public without sharing class SystemUtil
      * Método que obtiene las peticiones externas procesadas para borarlas
      **
      * @author nbizkarra
+     * @change adelgado 13/11/2020 Convertir valor decimal a integer para incluirlo en la query
      * @date 04/05/2020
      */
     public static String getOldExternalRequests()
@@ -238,7 +239,7 @@ public without sharing class SystemUtil
 
         String query =
             'SELECT Id from ExternalRequest__c where CreatedDate < LAST_N_DAYS:' +
-            adminSetup.NumberDaysDeleteRequests__c;
+            adminSetup.NumberDaysDeleteRequests__c.intValue();
 
         return query;
     }

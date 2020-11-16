@@ -1456,6 +1456,210 @@ public class TestDataFactory
 
         return externalRequestList;
     }
+    
+    /**
+     * Genera oportunidades a partir de los campos especificados
+     **
+     * @param String type indica el tipo de oportunidades que se quieren crear
+     * @param String stage indica la etapa de las oportunidades a crear
+     * @param Date closeDate indica la fecha de cierre de la oportunidad, puede ser nulo
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<Opportunity> listado de Opportunities generadas
+     * @author rlopez
+     * @date 03/11/2020
+     */
+    public static List<Opportunity> generateOpportunities(List<Account> accounts, String type, String stage, Date closeDate, Integer numRecords)
+    {
+        List<Opportunity> opportunitiesGenerated = new List<Opportunity>();
+
+        if(String.isBlank(stage))
+        {
+            stage = 'Qualification';
+        }
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        switch on type.toLowerCase() {
+            when 'ze' {
+                for(Account relatedAccount: accounts)
+                {
+                    for(Integer i=0; i<numRecords; i++)
+                    {
+                        opportunitiesGenerated.add(
+                            new Opportunity(
+                                AccountId = relatedAccount.Id,
+                                Name = 'Test Opportunity ' + i,
+                                StageName = stage,
+                                CloseDate = closeDate
+                            )
+                        );
+                    }
+                }
+            }
+            when else {
+                for(Account relatedAccount: accounts)
+                {
+                    for(Integer i=0; i<numRecords; i++)
+                    {
+                        opportunitiesGenerated.add(
+                            new Opportunity(
+                                AccountId = relatedAccount.Id,
+                                Name = 'Test Opportunity ' + i,
+                                StageName = stage,
+                                CloseDate = closeDate,
+                                Scope__c = type
+                            )
+                        );
+                    }
+                }
+            }
+        }
+
+        return opportunitiesGenerated;
+    }
+
+    /**
+     * Genera EmailMessages huerfanos, no están relacionados con ningún registro
+     **
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<EmailMessage> listado de EmailMessage generados
+     * @author rlopez
+     * @date 09/11/2020
+     */
+    public static List<EmailMessage> generateEmailMessages(Integer numRecords)
+    {
+        List<EmailMessage> emailMessagesGenerated = new List<EmailMessage>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            emailMessagesGenerated.add(
+                new EmailMessage(
+                    Subject = 'testsubject' + i,
+                    FromAddress = 'fromaddress' + i + '@nts-solutions.com.invalid',
+                    ToAddress = 'toaddress' + i + '@nts-solutions.com.invalid'
+                )
+            );
+        }
+
+        return emailMessagesGenerated;
+    }
+
+    /**
+     * Genera EmailMessage que dependen de un Email "padre"
+     **
+     * @param List<EmailMessage> emailMessages lista de emails para las que hay que generar un EmailMessage
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<EmailMessage> listado de EmailMessage generados
+     * @author rlopez
+     * @date 09/11/2020
+     */
+    public static List<EmailMessage> generateEmailMessagesFromEmailMessages(List<EmailMessage> emailMessages, Integer numRecords)
+    {
+        List<EmailMessage> emailMessagesGenerated = new List<EmailMessage>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(EmailMessage relatedEmailMessage: emailMessages)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                emailMessagesGenerated.add(
+                    new EmailMessage(
+                        Subject = 'inreplyto ' + relatedEmailMessage.Subject + i,
+                        FromAddress = relatedEmailMessage.ToAddress,
+                        ToAddress = relatedEmailMessage.FromAddress,
+                        MessageIdentifier = relatedEmailMessage.Id
+                    )
+                );
+            }
+        }
+
+        return emailMessagesGenerated;
+    }
+
+    /**
+     * Genera EmailMessage relacionados con una lista de oportunidades
+     **
+     * @param List<Opportunity> opportunities lista de oportunidades para las que hay que generar un EmailMessage
+     * @param Integer numRecords número de elementos a generar
+     * 
+     * @return List<EmailMessage> listado de EmailMessage generados
+     * @author rlopez
+     * @date 03/11/2020
+     */
+    public static List<EmailMessage> generateEmailMessagesFromOpportunities(List<Opportunity> opportunities, Integer numRecords)
+    {
+        List<EmailMessage> emailMessagesGenerated = new List<EmailMessage>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Opportunity opportunity: opportunities)
+        {
+            if(String.isNotBlank(opportunity.Name))
+            {
+                for(Integer i=0; i<numRecords; i++)
+                {
+                    emailMessagesGenerated.add(
+                        new EmailMessage(
+                            Subject = opportunity.Name,
+                            RelatedToId = opportunity.Id,
+                            FromAddress = 'fromaddress' + i + '@nts-solutions.com.invalid',
+                            ToAddress = 'toaddress' + i + '@nts-solutions.com.invalid'
+                        )
+                    );
+                }
+            }
+        }
+
+        return emailMessagesGenerated;
+    }
+
+    /**
+     * Genera EmailMessageRelation para un listado de Emails
+     * (https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_objects_emailmessagerelation.htm)
+     **
+     * @param List<EmailMessage> emails lista de emails para las que hay que generar un EmailMessageRelation
+     * @param Id                 personId Id para la persona (user, contact or lead) que hay que generar un EmailMessageRelation
+     * @param String             relationType tipo de relación a crear (ToAddress, CcAddress, BccAddress, FromAddress, OtherAddress)
+     * 
+     * @return List<EmailMessageRelation> listado de EmailMessageRelation generados
+     * @author rlopez
+     * @date 10/11/2020
+     */
+    public static List<EmailMessageRelation> generateEmailMessageRelations(List<EmailMessage> emails, Id personId, String relationType)
+    {
+        List<EmailMessageRelation> emailMessageRelationsGenerated = new List<EmailMessageRelation>();
+
+        for(EmailMessage relationEmail: emails)
+        {
+            emailMessageRelationsGenerated.add(
+                new EmailMessageRelation(
+                    EmailMessageId = relationEmail.Id,
+                    RelationId = personId,
+                    RelationType = relationType
+                )
+            );
+        }
+
+        return emailMessageRelationsGenerated;
+    }
 
     public class TestException extends Exception
     {}

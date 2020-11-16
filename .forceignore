@@ -55,3 +55,5 @@ it.translation-meta.xml
 ja.translation-meta.xml
 pt_BR.translation-meta.xml
 
+# Ignore EmailServices
+**emailservices
