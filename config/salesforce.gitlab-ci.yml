@@ -610,7 +610,8 @@ upload-static-veracode:dev:
   script:
     - *sfdx_helpers
     - install_toolchain
-    - VERSION=${CI_COMMIT_REF_NAME}
+    - VERSION=$(node scripts/source/get-bumped-version | tail -1)
+    - VERSION=${CI_COMMIT_REF_NAME}.${VERSION}
     - rm -rf node_modules
     - npm install --production
     - convert_sfdx_project .tmp/veracode true
@@ -695,9 +696,11 @@ upload-static-veracode:uat:
   script:
     - *sfdx_helpers
     - install_toolchain
-    - VERSION=${CI_COMMIT_REF_NAME}
+    - VERSION=$(node scripts/source/get-bumped-version | tail -1)
+    - VERSION=${CI_COMMIT_REF_NAME}.${VERSION}
     - rm -rf node_modules
     - npm install --production
+    - VERSION=
     - convert_sfdx_project .tmp/veracode true
     - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
     - sfdx 
