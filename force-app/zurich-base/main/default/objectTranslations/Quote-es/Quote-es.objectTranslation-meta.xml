@@ -9,13 +9,6 @@
         <value>Opciones</value>
     </caseValues>
     <gender>Masculine</gender>
-    <layouts>
-        <layout>Quote Layout</layout>
-        <sections>
-            <label><!-- Economic Information --></label>
-            <section>Economic Information</section>
-        </sections>
-    </layouts>
     <quickActions>
         <label><!-- SendEmail --></label>
         <name>SendEmail</name>
