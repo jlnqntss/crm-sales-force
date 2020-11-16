@@ -28,14 +28,6 @@
             <fullName>Nueva</fullName>
             <default>true</default>
         </values>
-        <values>
-            <fullName>Pendiente</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Planificada</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Subject</picklist>
