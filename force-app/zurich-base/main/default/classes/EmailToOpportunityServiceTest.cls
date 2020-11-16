@@ -42,6 +42,8 @@ private class EmailToOpportunityServiceTest
     @isTest
     static void test_inboundEmail_firstEmail_ok()
     {
+        GenesysCloud.RoutingService.mock = new GenesysCloudMocks('{"id":"1JB9ZmJnCCKXlerwxAOZXC"}', 200);
+
         //Creamos un nuevo email que no está relacionado con ninguno previamente registrado en Salesforce
         String emailSubject = 'First Email Received';
         Messaging.InboundEmail firstEmail = new Messaging.InboundEmail();
@@ -75,6 +77,7 @@ private class EmailToOpportunityServiceTest
 
         //Comprobamos que se ha creado un EmailMessage "huérfano"
         List<EmailMessage> emailMessagesCreated = emailMessagesSelectorObj.selectBySubject(new List<String> {emailSubject});
+        System.assertEquals(false, emailMessagesCreated.isEmpty(), 'List shoudnt be empty');
         System.assertEquals(1, emailMessagesCreated.size(), 'There should be an EmailMessage');
         System.assertEquals(null, emailMessagesCreated.get(0).RelatedToId, 'RelatedToId field should be null');
 
@@ -97,6 +100,8 @@ private class EmailToOpportunityServiceTest
     @isTest
     static void test_inboundEmail_inReplyTo_ok()
     {
+        GenesysCloud.RoutingService.mock = new GenesysCloudMocks('{"id":"1JB9ZmJnCCKXlerwxAOZXC"}', 200);
+
         //Recuperamos un email creado para añadirlo a la cabecera del nuevo email
         List<EmailMessage> existingEmails = [SELECT Id, RelatedToId FROM EmailMessage LIMIT 1];
         System.assertEquals(1, existingEmails.size(), 'There should be one EmailMessage');
