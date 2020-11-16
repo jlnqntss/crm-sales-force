@@ -10,24 +10,375 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
+        <controllingField>TypeN3__c</controllingField>
         <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>valores</fullName>
+                <fullName>Bono</fullName>
                 <default>false</default>
-                <label>valores</label>
+                <label>Bono</label>
             </value>
             <value>
-                <fullName>no</fullName>
+                <fullName>Mi Zurich</fullName>
                 <default>false</default>
-                <label>no</label>
+                <label>Mi Zurich</label>
             </value>
             <value>
-                <fullName>definidos</fullName>
+                <fullName>Oferta</fullName>
                 <default>false</default>
-                <label>definidos</label>
+                <label>Oferta</label>
+            </value>
+            <value>
+                <fullName>Póliza Viaje</fullName>
+                <default>false</default>
+                <label>Póliza Viaje</label>
+            </value>
+            <value>
+                <fullName>Recibo</fullName>
+                <default>false</default>
+                <label>Recibo</label>
+            </value>
+            <value>
+                <fullName>Póliza</fullName>
+                <default>false</default>
+                <label>Póliza</label>
+            </value>
+            <value>
+                <fullName>Productos</fullName>
+                <default>false</default>
+                <label>Productos</label>
+            </value>
+            <value>
+                <fullName>Estado gestión</fullName>
+                <default>false</default>
+                <label>Estado gestión</label>
+            </value>
+            <value>
+                <fullName>Garantías/capitales asegurados</fullName>
+                <default>false</default>
+                <label>Garantías/capitales asegurados</label>
+            </value>
+            <value>
+                <fullName>Precio renovación póliza</fullName>
+                <default>false</default>
+                <label>Precio renovación póliza</label>
+            </value>
+            <value>
+                <fullName>Riesgo asegurado</fullName>
+                <default>false</default>
+                <label>Riesgo asegurado</label>
+            </value>
+            <value>
+                <fullName>Recibo -Estado</fullName>
+                <default>false</default>
+                <label>Recibo -Estado</label>
+            </value>
+            <value>
+                <fullName>Recibo – Importe</fullName>
+                <default>false</default>
+                <label>Recibo – Importe</label>
+            </value>
+            <value>
+                <fullName>Recibo - Fecha</fullName>
+                <default>false</default>
+                <label>Recibo - Fecha</label>
+            </value>
+            <value>
+                <fullName>Peritación</fullName>
+                <default>false</default>
+                <label>Peritación</label>
+            </value>
+            <value>
+                <fullName>Siniestros</fullName>
+                <default>false</default>
+                <label>Siniestros</label>
+            </value>
+            <value>
+                <fullName>Soporte navegación</fullName>
+                <default>false</default>
+                <label>Soporte navegación</label>
+            </value>
+            <value>
+                <fullName>GDPR</fullName>
+                <default>false</default>
+                <label>GDPR</label>
             </value>
         </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Bono</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Mi Zurich</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Oferta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Póliza Viaje</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Recibo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Póliza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Productos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Estado gestión</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Garantías/capitales asegurados</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Precio renovación póliza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Riesgo asegurado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Recibo -Estado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Recibo – Importe</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Recibo - Fecha</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Peritación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Siniestros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Soporte navegación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <controllingFieldValue>Issue</controllingFieldValue>
+            <controllingFieldValue>Web</controllingFieldValue>
+            <controllingFieldValue>Payments</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>GDPR</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>
