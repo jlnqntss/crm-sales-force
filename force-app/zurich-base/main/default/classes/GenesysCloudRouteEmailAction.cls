@@ -3,36 +3,29 @@ public class GenesysCloudRouteEmailAction
 
     /**
      * La acción se diseña como un Invocable Action que recoge los datos de email a enrutar de forma amigable en el Flow y los envía a Genesys mediante el API Apex de GenesysCloud
-     *Acción invocable que enruta un email, definido por RouteEmailRequest, en Genesys Cloud informado del usuario destino deseado
+     * Acción invocable que enruta un email, definido por RouteEmailRequest, en Genesys Cloud informado del usuario destino deseado
      * y el id con el que realizar un ScreenPop. devolviendo el Id. de interacción enrutado.
-     *Delega la ejecución a GenesysCloud.RoutingService.route
-     @param requests Petición de enrutamiento. Formato lista para permitir el bulkificado del flow
-     @return Devuelve los identificadores de interacción dados por Genesys Cloud.
+     * Delega la ejecución a GenesysCloud.RoutingService.route
+       @param requests Petición de enrutamiento. Formato lista para permitir el bulkificado del flow
+       @return Devuelve los identificadores de interacción dados por Genesys Cloud.
      */
     @InvocableMethod(
         label='Route Email to Genesys Cloud'
         description='Allows to route an email through Genesys Cloud'
         category= 'Other'
     )
-    public static List<RouteEmailResult> execute(List<RouteEmailRequest> requests)
+    public static void execute(List<RouteEmailRequest> requests)
     {
-        GenesysCloud.Email email;
-        List<RouteEmailResult> results = new List<RouteEmailResult>();
-        RouteEmailResult result;
+        List<GenesysCloud.Email> emails = new List<GenesysCloud.Email>();
+        List<String> taskIds = new List<String>();
 
-        if(requests.size() == 1)
+        for(RouteEmailRequest request : requests)
         {
-            for(RouteEmailRequest request : requests)
-            {
-                email = new GenesysCloud.Email();
-                email = (GenesysCloud.Email) GenesysCloud.RoutingService.route(request.toEmail());
-                //Añadir a la lista de resultados, el id de interacción recibido de Genesys
-                result = new RouteEmailResult();
-                result.interactionId = email.interactionId;
-                results.add(result);
-            }
+            emails.add(request.toEmail());
+            taskIds.add(request.activityId);
         }
-        return results;
+
+        GenesysCloud.RoutingService.route(emails, new UpdateTasksCallback(taskIds) );
     }
 
     /**
@@ -96,6 +89,43 @@ public class GenesysCloudRouteEmailAction
             email.attributes.put('SF_OwnerId', '' + this.ownerId);
 
             return email;
+        }
+    }
+
+    private class UpdateTasksCallback implements GenesysCloud.IAPICallback
+    {
+        List<String> taskIds;
+
+        public UpdateTasksCallback(List<String> taskIds)
+        {
+            this.taskIds = taskIds;
+        }
+
+        public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
+        {
+            List<Task> interactionTasks = new List<Task>();
+            Integer index = results.size() - 1;
+
+            for(Object result : results)
+            {
+                GenesysCloud.Email email = (GenesysCloud.Email) result;
+                String taskId = taskIds[index--];
+
+                if(String.isNotEmpty(taskId))
+                {
+                    interactionTasks.add(new Task(
+                        Id = taskId,
+                        CallObject = email.interactionId
+                    ));
+                }
+            }
+
+            update interactionTasks;
+        }
+
+        public void onError(Exception error)
+        {
+            throw error;
         }
     }
 }

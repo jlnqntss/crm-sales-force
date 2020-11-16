@@ -45,9 +45,6 @@
         <locationY>278</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
-        <connector>
-            <targetReference>UpdateTask</targetReference>
-        </connector>
         <inputParameters>
             <name>activityId</name>
             <value>
@@ -96,7 +93,6 @@
                 <elementReference>EmailMessage.ToAddress</elementReference>
             </value>
         </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
     <description>Realiza el enrutamiento de correos electrónicos del buzón de Zurich Empresas</description>
@@ -130,27 +126,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordUpdates>
-        <name>UpdateTask</name>
-        <label>Actualizar Tarea</label>
-        <locationX>176</locationX>
-        <locationY>398</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>EmailMessage.ActivityId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>CallObject</field>
-            <value>
-                <elementReference>RouteEmailAction.interactionId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-    </recordUpdates>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
