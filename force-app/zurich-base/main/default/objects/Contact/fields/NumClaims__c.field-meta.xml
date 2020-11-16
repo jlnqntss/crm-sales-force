@@ -6,7 +6,7 @@
     <externalId>false</externalId>
     <label>Número de siniestros</label>
     <precision>16</precision>
-    <required>true</required>
+    <required>false</required>
     <scale>0</scale>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
