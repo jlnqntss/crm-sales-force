@@ -120,11 +120,12 @@ public with sharing class ContactsSelector
         Map<ID, Schema.RecordTypeInfo> recordTypeInfosById = Schema.SObjectType.Contact.getRecordTypeInfosById();
         Map<String, Schema.RecordTypeInfo> recordTypeInfosByDeveloperName = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName();
 
+        //Por defecto añadimos todos los recordTypeIds, y en los distintos scopes controlamos cuales se utilizan
         this.recordTypeIds = recordTypeInfosById.keySet();
 
         // Rellenamos el recordTypeIds con los Ids de cada scope
-        switch on scope {
-            when 'ZE' {
+        switch on scope.toLowerCase() {
+            when 'ze' {
                 this.recordTypeIds = new Set<Id>();
                 for (String recordTypeName: recordTypeInfosByDeveloperName.keySet()) {
                     if(recordTypeName == 'CustomerGI')
@@ -133,7 +134,7 @@ public with sharing class ContactsSelector
                     }
                 }
             }
-            when 'OCS' {
+            when 'klink' {
                 
             }
         }
