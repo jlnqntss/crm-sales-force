@@ -9,6 +9,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
+        <controllingField>Type</controllingField>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
@@ -141,6 +142,222 @@
                 <default>false</default>
                 <label>Cambio de condiciones de mi seguro</label>
             </value>
+            <value>
+                <fullName>No definido</fullName>
+                <default>false</default>
+                <label>No definido</label>
+            </value>
+            <value>
+                <fullName>Apoyo Captación</fullName>
+                <default>false</default>
+                <label>Apoyo Captación</label>
+            </value>
+            <value>
+                <fullName>Gestión Competencias</fullName>
+                <default>false</default>
+                <label>Gestión Competencias</label>
+            </value>
+            <value>
+                <fullName>Validación/ emisión</fullName>
+                <default>false</default>
+                <label>Validación/ emisión</label>
+            </value>
+            <value>
+                <fullName>Reemplazo</fullName>
+                <default>false</default>
+                <label>Reemplazo</label>
+            </value>
+            <value>
+                <fullName>Saneamiento</fullName>
+                <default>false</default>
+                <label>Saneamiento</label>
+            </value>
+            <value>
+                <fullName>Revocación Saneamiento</fullName>
+                <default>false</default>
+                <label>Revocación Saneamiento</label>
+            </value>
+            <value>
+                <fullName>Rehabilitación</fullName>
+                <default>false</default>
+                <label>Rehabilitación</label>
+            </value>
+            <value>
+                <fullName>Anulación</fullName>
+                <default>false</default>
+                <label>Anulación</label>
+            </value>
+            <value>
+                <fullName>Modificación</fullName>
+                <default>false</default>
+                <label>Modificación</label>
+            </value>
+            <value>
+                <fullName>Información</fullName>
+                <default>false</default>
+                <label>Información</label>
+            </value>
+            <value>
+                <fullName>Envíos</fullName>
+                <default>false</default>
+                <label>Envíos</label>
+            </value>
+            <value>
+                <fullName>Quejas y reclamaciones</fullName>
+                <default>false</default>
+                <label>Quejas y reclamaciones</label>
+            </value>
+            <value>
+                <fullName>Sugerencias /felicitaciones</fullName>
+                <default>false</default>
+                <label>Sugerencias /felicitaciones</label>
+            </value>
+            <value>
+                <fullName>Retención</fullName>
+                <default>false</default>
+                <label>Retención</label>
+            </value>
+            <value>
+                <fullName>Recobro indirecto</fullName>
+                <default>false</default>
+                <label>Recobro indirecto</label>
+            </value>
+            <value>
+                <fullName>Gestión de recibos</fullName>
+                <default>false</default>
+                <label>Gestión de recibos</label>
+            </value>
+            <value>
+                <fullName>Recobro reactivo</fullName>
+                <default>false</default>
+                <label>Recobro reactivo</label>
+            </value>
+            <value>
+                <fullName>Recobro proactivo</fullName>
+                <default>false</default>
+                <label>Recobro proactivo</label>
+            </value>
+            <value>
+                <fullName>Campañas Proactiva</fullName>
+                <default>false</default>
+                <label>Campañas Proactiva</label>
+            </value>
+            <value>
+                <fullName>Campañas Reactivo</fullName>
+                <default>false</default>
+                <label>Campañas Reactivo</label>
+            </value>
+            <value>
+                <fullName>Tareas administrativas</fullName>
+                <default>false</default>
+                <label>Tareas administrativas</label>
+            </value>
+            <value>
+                <fullName>Cambio de intermediario</fullName>
+                <default>false</default>
+                <label>Cambio de intermediario</label>
+            </value>
+            <value>
+                <fullName>Verificación Riesgo</fullName>
+                <default>false</default>
+                <label>Verificación Riesgo</label>
+            </value>
         </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <valueName>Apoyo Captación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <valueName>Gestión Competencias</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Validación/ emisión</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Reemplazo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Revocación Saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Rehabilitación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Anulación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Modificación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Incidencias</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Información</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Envíos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Quejas y reclamaciones</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Sugerencias /felicitaciones</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Retención</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Recobro indirecto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Gestión de recibos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Recobro reactivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Recobro proactivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Campañas</controllingFieldValue>
+            <valueName>Campañas Proactiva</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Campañas</controllingFieldValue>
+            <valueName>Campañas Reactivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Tareas</controllingFieldValue>
+            <valueName>Tareas administrativas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Cambio de intermediario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Calidad</controllingFieldValue>
+            <valueName>Verificación Riesgo</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>
