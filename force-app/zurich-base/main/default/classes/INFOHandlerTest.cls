@@ -47,11 +47,6 @@ private class INFOHandlerTest
             TestDataFactory.generateExternalRequest('INFO', 'QUOTE', 10)
             );
 
-        //Opciones ofertas
-        externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'QUOTE_OPTION', 10)
-            );
-
         //Pólizas
         externalRequestList.addAll(
             TestDataFactory.generateExternalRequest('INFO', 'POLICY', 10)
@@ -181,11 +176,6 @@ private class INFOHandlerTest
             );
         System.assertEquals(
             10,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(),
-            'No se ha generado correctamente el mapa de registros de quote'
-            );
-        System.assertEquals(
-            10,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(),
             'No se ha generado correctamente el mapa de registros de policy'
             );
@@ -260,7 +250,6 @@ private class INFOHandlerTest
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(), 'No se ha generado correctamente el mapa de registros de contactPointEmail');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(), 'No se ha generado correctamente el mapa de registros de quote');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de quote relationship');
@@ -297,7 +286,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            160,
+            150,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -326,7 +315,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            160,
+            150,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -357,7 +346,6 @@ private class INFOHandlerTest
         List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
         List<Product2> prodList = [SELECT Id FROM Product2];
         List<Opportunity> oppList = [SELECT Id FROM Opportunity];
-        List<Quote> quoteList = [SELECT Id FROM Quote];
         List<Policy__c> policyList = [SELECT Id FROM Policy__c];
         List<Asset> insObjList = [SELECT Id FROM Asset];
         List<Claim__c> claimList = [SELECT Id FROM Claim__c];
@@ -397,11 +385,6 @@ private class INFOHandlerTest
             10,
             oppList.size(),
             'No se han insertado todos los registros de oferta'
-            );
-        System.assertEquals(
-            10,
-            quoteList.size(),
-            'No se han insertado todos los registros de opciones de oferta'
             );
         System.assertEquals(
             10,
@@ -477,7 +460,6 @@ private class INFOHandlerTest
         List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
         List<Product2> prodList = [SELECT Id FROM Product2];
         List<Opportunity> oppList = [SELECT Id FROM Opportunity];
-        List<Quote> quoteList = [SELECT Id FROM Quote];
         List<Policy__c> policyList = [SELECT Id FROM Policy__c];
         List<Asset> insObjList = [SELECT Id FROM Asset];
         List<Claim__c> claimList = [SELECT Id FROM Claim__c];
@@ -490,7 +472,6 @@ private class INFOHandlerTest
         System.assertEquals(10, cpeList.size(), 'No se han insertado todos los registros de contactPointEmail');
         System.assertEquals(10, prodList.size(), 'No se han insertado todos los registros de producto');
         System.assertEquals(10, oppList.size(), 'No se han insertado todos los registros de oferta');
-        System.assertEquals(10, quoteList.size(), 'No se han insertado todos los registros de opciones de oferta');
         System.assertEquals(0, policyList.size(), 'No se han borrado todos los registros de póliza');
         System.assertEquals(10, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
         System.assertEquals(10, claimList.size(), 'No se han insertado todos los registros de siniestro');
@@ -533,7 +514,7 @@ private class INFOHandlerTest
         ];
 
         System.assertEquals(
-            160,
+            150,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
@@ -577,7 +558,7 @@ private class INFOHandlerTest
         List<ExternalRequestError__c> errors = [SELECT Id FROM ExternalRequestError__c];
 
         System.assertEquals(
-            160,
+            150,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );

@@ -28,7 +28,6 @@ public class INFOHandler implements ISystem
     public static final String CONTACT_POINT = 'CONTACT_POINT';
     public static final String PRODUCT = 'PRODUCT';
     public static final String QUOTE = 'QUOTE';
-    public static final String QUOTE_OPTION = 'QUOTE_OPTION';
     public static final String POLICY = 'POLICY';
     public static final String INSURED_OBJECT = 'INSURED_OBJECT';
     public static final String CLAIM = 'CLAIM';
@@ -47,13 +46,12 @@ public class INFOHandler implements ISystem
         CONTACT_POINT, // 4
         PRODUCT, // 5
         QUOTE, // 6
-        QUOTE_OPTION, // 7
-        POLICY, // 8
-        INSURED_OBJECT, // 9
-        CLAIM, // 10
-        QUOTE_RELATIONSHIP, // 11
-        POLICY_RELATIONSHIP, // 12
-        CLAIM_RELATIONSHIP // 13
+        POLICY, // 7
+        INSURED_OBJECT, // 8
+        CLAIM, // 9
+        QUOTE_RELATIONSHIP, // 10
+        POLICY_RELATIONSHIP, // 11
+        CLAIM_RELATIONSHIP // 12
     };
 
     /**
@@ -343,12 +341,6 @@ public class INFOHandler implements ISystem
             {
                 Opportunity quoteRecord = (Opportunity) tf.transform(QUOTE, 'Opportunity', recordValuesMap);
                 addRecordToMap(externalRequest, QUOTE, 'Opportunity', quoteRecord); 
-            }
-            // Opción oferta
-            when 'QUOTE_OPTION' 
-            {
-                Quote optionRecord = (Quote) tf.transform(QUOTE_OPTION, 'Quote', recordValuesMap);
-                addRecordToMap(externalRequest, QUOTE_OPTION, 'Quote', optionRecord); 
             }
             // Póliza
             when 'POLICY' 

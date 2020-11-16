@@ -70,11 +70,6 @@
                 <default>false</default>
                 <label>Claim</label>
             </value>
-            <value>
-                <fullName>Quote</fullName>
-                <default>false</default>
-                <label>Quote</label>
-            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

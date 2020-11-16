@@ -1183,53 +1183,6 @@ public class TestDataFactory
     }
 
     /**
-     * Obtener estructura json del sistema de origen INFO para registros
-     * de entidad Opción oferta
-     **
-     * @param Integer numero de elementos a generar
-     * @return List<Map<String, Object>> listado de elementos simulando json
-     * @author adelgado
-     * @date 16/11/2020
-     */
-    public static List<Map<String, Object> > getINFOQuoteOptionJson(Integer totalItems)
-    {
-        return buildINFOQuoteOptionJson(totalItems);
-    }
-
-    private static List<Map<String, Object> > buildINFOQuoteOptionJson(
-        Integer totalItems
-        )
-    {
-        if (totalItems == null || totalItems < 1)
-        {
-            throw new TestException('totalItems must be equal or greater than 1');
-        }
-
-        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
-
-        for (Integer i = 0; i < totalItems; i++)
-        {
-            /* REGISTRO OFERTA*/
-            jsonElementsList.add(
-                new Map<String, Object> {
-                    'id_unico_opcion' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'oferta_id' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'objeto_tipo' => 'Test',
-                    'objeto_cod_secuencial' => 'Test',
-                    'opcion' => 'Test',
-                    'opcion_desc' => 'Test',
-                    'opcion_seleccion' => 'Test',
-                    'opcion_paquete_desc' => 'Test',
-                    'importe_acumulado' => '50',
-                    'prima_neta' => '50'
-            }
-                );
-        }
-
-        return jsonElementsList;
-    }
-
-    /**
      * Generar registros de ExternalRequest__c a partir de los JSON de prueba
      **
      * @param String Origen
@@ -1355,21 +1308,6 @@ public class TestDataFactory
                         new ExternalRequest__c(
                             Origin__c = origin,
                             Entity__c = 'QUOTE',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
-                            )
-                        );
-                }
-            }
-            // Opción oferta
-            when 'QUOTE_OPTION' {
-                for (Map<String, Object> payload : getINFOQuoteOptionJson(numRecords) )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'QUOTE_OPTION',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
                             ContentFormat__c = 'JSON'
