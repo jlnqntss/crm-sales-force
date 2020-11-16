@@ -46,4 +46,49 @@
         <default>false</default>
         <label>Modificar mi seguro</label>
     </standardValue>
+    <standardValue>
+        <fullName>No definido</fullName>
+        <default>false</default>
+        <label>No definido</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Venta</fullName>
+        <default>false</default>
+        <label>Venta</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Gestión Servicios</fullName>
+        <default>false</default>
+        <label>Gestión Servicios</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Gestión Cliente</fullName>
+        <default>false</default>
+        <label>Gestión Cliente</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Gestión Económica</fullName>
+        <default>false</default>
+        <label>Gestión Económica</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Campañas</fullName>
+        <default>false</default>
+        <label>Campañas</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Tareas</fullName>
+        <default>false</default>
+        <label>Tareas</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Gestión Mediador</fullName>
+        <default>false</default>
+        <label>Gestión Mediador</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Calidad</fullName>
+        <default>false</default>
+        <label>Calidad</label>
+    </standardValue>
 </StandardValueSet>
