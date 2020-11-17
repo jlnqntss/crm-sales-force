@@ -11,6 +11,8 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>
     private String exReqRecordTypeId;
     private String classHandler;
 
+    private Transformer transformer;
+
     global ExternalJobQueueBatch()
     {}
 
@@ -19,36 +21,14 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>
         this.origin = origin;
         this.query = query;
 
-        List<ExternalJobQueueBatch__mdt> settings = new ExternalJobQueueBatchesSelector
-                                                    (
-            new List<Schema.SObjectField>
-        {
-            ExternalJobQueueBatch__mdt.HandlerClassName__c
-        }
-                                                    ).selectByOrigin(new Set<String> {origin});
-
-        if( settings != null && !settings.isEmpty() )
-        {
-            classHandler = settings.get(0).HandlerClassName__c;
-        }
+        getSettingsByOrigin(origin);
     }
 
     global ExternalJobQueueBatch(String origin)
     {
         this.origin = origin;
 
-        List<ExternalJobQueueBatch__mdt> settings = new ExternalJobQueueBatchesSelector
-                                                    (
-            new List<Schema.SObjectField>
-        {
-            ExternalJobQueueBatch__mdt.HandlerClassName__c
-        }
-                                                    ).selectByOrigin(new Set<String> {origin});
-
-        if( settings != null && !settings.isEmpty() )
-        {
-            classHandler = settings.get(0).HandlerClassName__c;
-        }
+        getSettingsByOrigin(origin);
     }
 
     global Database.QueryLocator start(Database.BatchableContext bc)
@@ -98,7 +78,7 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>
             ISystem systemHandler = (ISystem) Type.forName(classHandler).newInstance();
 
             // 4 - Preparar la información necesaria para procesar las external request
-            systemHandler.prepare(externalRequests);
+            systemHandler.prepare(transformer, externalRequests);
 
             // 5 - Convertir los registros del origen en registros Salesforce
             systemHandler.process(externalRequests);
@@ -121,6 +101,31 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>
         if( !Test.isRunningTest() )
         {
             ExternalJobQueueBatchController.checkExternalJobQueueBatch();
+        }
+    }
+
+    /**
+     * Obtiene la configuración correspondiente al sistema de origen de las external request
+     **
+     * @author adelgado
+     * @date 17/11/2020
+     * @param origin Origen de las external request
+     * @return
+     */
+    private void getSettingsByOrigin(String origin)
+    {
+        List<ExternalJobQueueBatch__mdt> settings = new ExternalJobQueueBatchesSelector
+                                                    (
+            new List<Schema.SObjectField>
+        {
+            ExternalJobQueueBatch__mdt.HandlerClassName__c
+        }
+                                                    ).selectByOrigin(new Set<String> {origin});
+
+        if( settings != null && !settings.isEmpty() )
+        {
+            classHandler = settings.get(0).HandlerClassName__c;
+            transformer = new Transformer(origin);
         }
     }
 }
