@@ -4,47 +4,64 @@
  * @author adelgado
  * @date 13/10/2020
  */
-global class ExternalJobQueueBatch implements Database.Batchable<sObject>, Schedulable
+global class ExternalJobQueueBatch implements Database.Batchable<sObject>
 {
-    global String query;
-    global String exReqRecordTypeId;
-    global String classHandler;
-    global Id jobId;
-
-    global Map<String, ExternalJobQueueBatch__mdt> settingsByOrigin = new Map<String, ExternalJobQueueBatch__mdt>();
+    private String query;
+    private String origin;
+    private String exReqRecordTypeId;
+    private String classHandler;
 
     global ExternalJobQueueBatch()
     {}
 
-    global ExternalJobQueueBatch(String origin)
+    global ExternalJobQueueBatch(String origin, String query)
     {
-        for ( ExternalJobQueueBatch__mdt setting : new ExternalJobQueueBatchesSelector(new List<Schema.SObjectField>
-        {
-            ExternalJobQueueBatch__mdt.Origin__c,
-            ExternalJobQueueBatch__mdt.HandlerClassName__c,
-            ExternalJobQueueBatch__mdt.Priority__c,
-            ExternalJobQueueBatch__mdt.Retries__c,
-            ExternalJobQueueBatch__mdt.Active__c
-        }).selectByOrigin(new Set<String> {origin}) )
-        {
-            settingsByOrigin.put(setting.Origin__c, setting);
-        }
+        this.origin = origin;
+        this.query = query;
 
-        if ( settingsByOrigin.containsKey(origin) )
+        List<ExternalJobQueueBatch__mdt> settings = new ExternalJobQueueBatchesSelector
+                                                    (
+            new List<Schema.SObjectField>
         {
-            classHandler = settingsByOrigin.get(origin).HandlerClassName__c;
-            exReqRecordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(origin).getRecordTypeId();
+            ExternalJobQueueBatch__mdt.HandlerClassName__c
+        }
+                                                    ).selectByOrigin(new Set<String> {origin});
+
+        if( settings != null && !settings.isEmpty() )
+        {
+            classHandler = settings.get(0).HandlerClassName__c;
         }
     }
 
-    global void execute(SchedulableContext SC)
+    global ExternalJobQueueBatch(String origin)
     {
-        jobId = database.executeBatch(new ExternalJobQueueBatch(), 200);
+        this.origin = origin;
+
+        List<ExternalJobQueueBatch__mdt> settings = new ExternalJobQueueBatchesSelector
+                                                    (
+            new List<Schema.SObjectField>
+        {
+            ExternalJobQueueBatch__mdt.HandlerClassName__c
+        }
+                                                    ).selectByOrigin(new Set<String> {origin});
+
+        if( settings != null && !settings.isEmpty() )
+        {
+            classHandler = settings.get(0).HandlerClassName__c;
+        }
     }
 
     global Database.QueryLocator start(Database.BatchableContext bc)
     {
-        return new ExternalRequestsSelector().queryLocatorPendingByRecordtype(exReqRecordTypeId);
+        if( String.isBlank(query) )
+        {
+            exReqRecordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(origin).getRecordTypeId();
+            return new ExternalRequestsSelector().queryLocatorPendingByRecordtype(exReqRecordTypeId);
+        }
+        else
+        {
+            return Database.getQueryLocator(query);
+        }
     }
 
     global void execute(Database.BatchableContext bc, List<ExternalRequest__c> externalRequestScope)
@@ -90,7 +107,7 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>, Sched
             systemHandler.persists(externalRequests);
 
             // 7 - Actualizar las external request con el resultado correspondiente
-            systemHandler.manageResult(jobId, externalRequests);
+            systemHandler.manageResult(bc.getJobId(), externalRequests);
 
         }
         catch (Exception e)

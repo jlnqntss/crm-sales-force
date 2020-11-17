@@ -72,6 +72,9 @@ class GitlabAPIService {
    * @param {string} commit_tag Referencia del tag
    */
   getTag(commit_tag) {
+    console.log(
+      `Fetching ${this.baseUrl}/projects/${this.projectId}/repository/tags/${commit_tag}`
+    );
     return fetch(
       `${this.baseUrl}/projects/${this.projectId}/repository/tags/${commit_tag}`,
       {
@@ -94,6 +97,9 @@ class GitlabAPIService {
   /**
    */
   getTags() {
+    console.log(
+      `Fetching ${this.baseUrl}/projects/${this.projectId}/repository/tags`
+    );
     return fetch(`${this.baseUrl}/projects/${this.projectId}/repository/tags`, {
       method: "GET",
       headers: {
@@ -115,6 +121,9 @@ class GitlabAPIService {
    * @param {string} commit_tag Referencia del tag
    */
   getTagBranchRefs(commitId) {
+    console.log(
+      `Fetching ${this.baseUrl}/projects/${this.projectId}/repository/commits/${commitId}/refs?type=branch`
+    );
     return fetch(
       `${this.baseUrl}/projects/${this.projectId}/repository/commits/${commitId}/refs?type=branch`,
       {
@@ -141,6 +150,9 @@ class GitlabAPIService {
    * @parma {string} ref Referencia GIT a atiquetar
    */
   createTag(tag) {
+    console.log(
+      `Fetching ${this.baseUrl}/projects/${this.projectId}/repository/tags`
+    );
     return fetch(`${this.baseUrl}/projects/${this.projectId}/repository/tags`, {
       method: "POST",
       headers: {
@@ -165,6 +177,9 @@ class GitlabAPIService {
    * @parma {string} branch.ref Referencia GIT sobre la que generar rama
    */
   createBranch(branch) {
+    console.log(
+      `Fetching ${this.baseUrl}/projects/${this.projectId}/repository/branches`
+    );
     return fetch(
       `${this.baseUrl}/projects/${this.projectId}/repository/branches`,
       {
@@ -192,6 +207,9 @@ class GitlabAPIService {
    * @parma {string} request.to Referencia GIT sobre la que generar rama
    */
   compare(request) {
+    console.log(
+      `Fetching ${this.baseUrl}/projects/${this.projectId}/repository/compare?from=${request.from}&to=${request.to}`
+    );
     return fetch(
       `${this.baseUrl}/projects/${this.projectId}/repository/compare?from=${request.from}&to=${request.to}`,
       {
@@ -212,6 +230,9 @@ class GitlabAPIService {
   }
 
   createCommit(commit) {
+    console.log(
+      `Fetching ${this.baseUrl}/projects/${this.projectId}/repository/commits`
+    );
     return fetch(
       `${this.baseUrl}/projects/${this.projectId}/repository/commits`,
       {
@@ -240,6 +261,9 @@ class GitlabAPIService {
    * @param {string} mergeRequest.target_branch  Rama destino
    */
   createMergeRequest(mergeRequest) {
+    console.log(
+      `Fetching ${this.baseUrl}/projects/${this.projectId}/merge_requests`
+    );
     return fetch(`${this.baseUrl}/projects/${this.projectId}/merge_requests`, {
       method: "POST",
       headers: {
@@ -264,6 +288,9 @@ class GitlabAPIService {
    * @param {Boolean} mergeRequest.should_remove_source_branch
    */
   acceptMergeRequest(iid, options) {
+    console.log(
+      `Fetching ${this.baseUrl}/projects/${this.projectId}/merge_requests/${iid}/merge`
+    );
     return fetch(
       `${this.baseUrl}/projects/${this.projectId}/merge_requests/${iid}/merge`,
       {
