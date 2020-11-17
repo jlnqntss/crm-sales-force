@@ -170,6 +170,148 @@ public class Transformer
 
         return recordsByEntityAndObject;
     }
+    
+    @TestVisible
+    class FieldParser
+    {
+        /**
+         * Método que parsea un string en texto de acuerdo con las indicaciones
+         * de formato del sistema origen
+         **
+        * @param String valor a transformar en String , por ejemplo: 'hola'
+        * @return String
+        *
+        * @author xsobera
+        * @date 21/10/2020
+        */
+        public String parseStringField(String strValue)
+        {
+            if ( String.isNotBlank(strValue) )
+            {
+                return strValue;
+            }
+
+            return null;
+        }
+
+        /**
+         * Método que parsea un string en boolean de acuerdo con las indicaciones
+         * de formato del sistema origen
+         **
+        * @param String valor a transformar en boolean, por ejemplo: S, Y, 1 ...
+        * @return Boolean
+        *
+        * @author xsobera
+        * @date 13/10/2020
+        */
+        public Boolean parseBooleanField(String strValue)
+        {
+            if ( String.isNotBlank(strValue) )
+            {
+                return strValue == 'S' || strValue == 's' || strValue == 'TRUE' || strValue == 'true';
+            }
+
+            return false;
+        }
+
+        /**
+         * Método que parsea un string en Date de acuerdo con las indicaciones
+         * de formato del sistema origen
+         **
+        * @param String valor a transformar en Date, por ejemplo: 'YYYY-MM-DD' ...
+        * @return Date
+        *
+        * @author xsobera
+        * @date 20/10/2020
+        */
+        public Date parseDateField(String strValue)
+        {
+            if ( String.isNotBlank(strValue) )
+            {
+                return Date.valueOf(strValue);
+            }
+
+            return null;
+        }
+
+        /**
+         * Método que parsea un string en Datetime de acuerdo con las indicaciones
+         * de formato del sistema origen
+         **
+        * @param String valor a transformar en Datetime, por ejemplo: YYYY-MM-DD HH:MM:SS
+        * @return Datetime
+        *
+        * @author xsobera
+        * @date 20/10/2020
+        */
+        public Datetime parseDatetimeField(String strValue)
+        {
+            if ( String.isNotBlank(strValue) )
+            {
+                return Datetime.valueOf(strValue);
+            }
+
+            return null;
+        }
+
+        /**
+         * Método que parsea un string en Double de acuerdo con las indicaciones
+         * de formato del sistema origen
+         **
+        * @param String valor a transformar en Double, por ejemplo: '0000.00' ...
+        * @return Double
+        *
+        * @author xsobera
+        * @date 26/10/2020
+        */
+        public Double parseDoubleField(String strValue)
+        {
+            if ( String.isNotBlank(strValue) )
+            {
+                return Double.valueOf(strValue );
+            }
+
+            return null;
+        }
+
+        /**
+         * Método que parsea un string en Integer de acuerdo con las indicaciones
+         * de formato del sistema origen
+         **
+        * @param String valor a transformar en Integer, por ejemplo: '0000' ...
+        * @return Integer
+        *
+        * @author xsobera
+        * @date 26/10/2020
+        */
+        public Integer parseIntegerField(String strValue)
+        {
+            if ( String.isNotBlank(strValue) && strValue.isNumeric() )
+            {
+                return Integer.valueOf(strValue );
+            }
+
+            return null;
+        }
+    }
+    
+    @TestVisible
+    private FieldParser parser;
+    @TestVisible
+    private FieldParser getParser(String originSystem)
+    {
+        switch on originSystem
+        {
+            when 'INFO'
+            {
+                return new FieldParser(); 
+            }
+            when else 
+            {
+                return null;
+            }
+        }
+    }
 
     public Transformer(String originSystem)
     {
@@ -181,6 +323,7 @@ public class Transformer
         }
         this.origin = originSystem;
         this.settings =  TransformerSelector.selectMetadataByOrigin(originSystem);
+        this.parser = getParser(originSystem);
 
         if (settings == null || settings.isEmpty() )
         {
@@ -278,189 +421,6 @@ public class Transformer
     }
 
     /**
-     * Método que parsea un string en boolean de acuerdo con las indicaciones
-     * de formato del sistema origen
-     **
-     * @param String valor a transformar en boolean, por ejemplo: S, Y, 1 ...
-     * @param String origen configurado en el Transformer
-     * @return Boolean
-     *
-     * @author xsobera
-     * @date 13/10/2020
-     */
-    @TestVisible
-    private static Boolean parseBooleanField(String strValue, string origin)
-    {
-        switch on origin
-        {
-            when 'INFO'
-            {
-                Boolean booleanValue = false;
-                if ( String.isNotBlank(strValue) )
-                {
-                  if( strValue.equalsIgnoreCase('S'))
-                  {
-                    booleanValue = true;
-                  }
-                  else
-                  {
-                    booleanValue = Boolean.valueOf(strValue);
-                  }
-                }
-                return booleanValue;
-            }
-        }
-
-        System.debug(LoggingLevel.WARN, '[Transformer] parseBooleanField() transformación no específicada para origen: ' + origin );
-        return null;
-    }
-
-    /**
-     * Método que parsea un string en Date de acuerdo con las indicaciones
-     * de formato del sistema origen
-     **
-     * @param String valor a transformar en Date, por ejemplo: 'YYYY-MM-DD' ...
-     * @param String origen configurado en el Transformer
-     * @return Date
-     *
-     * @author xsobera
-     * @date 20/10/2020
-     */
-    @TestVisible
-    private static Date parseDateField(String strValue, String origin)
-    {
-        switch on origin
-        {
-            when 'INFO'
-            {
-                if ( String.isNotBlank(strValue) )
-                {
-                    return Date.valueOf(strValue);
-                }
-            }
-        }
-
-        System.debug(LoggingLevel.WARN, '[Transformer] parseDateField() transformación no específicada para origen: ' + origin );
-        return null;
-    }
-
-    /**
-     * Método que parsea un string en Datetime de acuerdo con las indicaciones
-     * de formato del sistema origen
-     **
-     * @param String valor a transformar en Datetime, por ejemplo: YYYY-MM-DD HH:MM:SS
-     * @param String origen configurado en el Transformer
-     * @return Datetime
-     *
-     * @author xsobera
-     * @date 20/10/2020
-     */
-    @TestVisible
-    private static Datetime parseDatetimeField(String strValue, String origin)
-    {
-        switch on origin
-        {
-            when 'INFO'
-            {
-                if ( String.isNotBlank(strValue) )
-                {
-                    return Datetime.valueOf(strValue);
-                }
-            }
-        }
-
-        System.debug(LoggingLevel.WARN, '[Transformer] parseDatetimeField() transformación no específicada para origen: ' + origin );
-        return null;
-    }
-
-    /**
-     * Método que parsea un string en texto de acuerdo con las indicaciones
-     * de formato del sistema origen
-     **
-     * @param String valor a transformar en String , por ejemplo: 'hola'
-     * @param String origen configurado en el Transformer
-     * @return String
-     *
-     * @author xsobera
-     * @date 21/10/2020
-     */
-    @TestVisible
-    private static String parseStringField(String strValue, String origin)
-    {
-        switch on origin
-        {
-            when 'INFO'
-            {
-                if ( String.isNotBlank(strValue) )
-                {
-                    return strValue;
-                }
-            }
-        }
-
-        System.debug(LoggingLevel.WARN, '[Transformer] parseStringField() transformación no específicada para origen: ' + origin );
-        return null;
-    }
-
-    /**
-     * Método que parsea un string en Double de acuerdo con las indicaciones
-     * de formato del sistema origen
-     **
-     * @param String valor a transformar en Double, por ejemplo: '0000.00' ...
-     * @param String origen configurado en el Transformer
-     * @return Double
-     *
-     * @author xsobera
-     * @date 26/10/2020
-     */
-    @TestVisible
-    private static Double parseDoubleField(String strValue, String origin)
-    {
-        switch on origin
-        {
-            when 'INFO'
-            {
-                if ( String.isNotBlank(strValue) )
-                {
-                    return Double.valueOf(strValue );
-                }
-            }
-        }
-
-        System.debug(LoggingLevel.WARN, '[Transformer] parseDoubleField() transformación no específicada para origen: ' + origin );
-        return null;
-    }
-
-    /**
-     * Método que parsea un string en Integer de acuerdo con las indicaciones
-     * de formato del sistema origen
-     **
-     * @param String valor a transformar en Integer, por ejemplo: '0000' ...
-     * @param String origen configurado en el Transformer
-     * @return Integer
-     *
-     * @author xsobera
-     * @date 26/10/2020
-     */
-    @TestVisible
-    private static Integer parseIntegerField(String strValue, String origin)
-    {
-        switch on origin
-        {
-            when 'INFO'
-            {
-                if ( String.isNotBlank(strValue) && strValue.isNumeric() )
-                {
-                    return Integer.valueOf(strValue );
-                }
-            }
-        }
-
-        System.debug(LoggingLevel.WARN, '[Transformer] parseIntegerField() transformación no específicada para origen: ' + origin );
-        return null;
-    }
-
-    /**
      * Método que comprueba si la configuración de metadatos es lookup
      * Formato targetFieldOfChild:sObjectNameOfParent->externalFieldIdOfParent
      **
@@ -501,28 +461,28 @@ public class Transformer
         {
             when BOOLEAN
             {
-                record.put( sfFieldName, parseBooleanField(fieldValue, this.origin) );
+                record.put( sfFieldName, parser.parseBooleanField(fieldValue) );
             }
             when DATE
             {
-                record.put( sfFieldName, parseDateField(fieldValue, this.origin) );
+                record.put( sfFieldName, parser.parseDateField(fieldValue) );
             }
             when DATETIME
             {
-                record.put( sfFieldName, parseDatetimeField(fieldValue, this.origin) );
+                record.put( sfFieldName, parser.parseDatetimeField(fieldValue) );
             }
             when CURRENCY, DOUBLE
             {
-                record.put( sfFieldName, parseDoubleField(fieldValue, this.origin) );
+                record.put( sfFieldName, parser.parseDoubleField(fieldValue) );
             }
             when INTEGER
             {
-                record.put( sfFieldName, parseIntegerField(fieldValue, this.origin) );
+                record.put( sfFieldName, parser.parseIntegerField(fieldValue) );
             }
             when else
             {
                 // se considera texto el resto de campos
-                record.put( sfFieldName, parseStringField(fieldValue, this.origin) );
+                record.put( sfFieldName, parser.parseStringField(fieldValue) );
             }
         }
     }
