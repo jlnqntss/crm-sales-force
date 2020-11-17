@@ -253,4 +253,78 @@ private with sharing class EmailMessagesSelectorTest
 
         System.assertEquals(true, relatedEmailRelations.isEmpty(), 'The list shouldnt be empty');
     }
+
+    //#region selectByInteractionId
+
+    /**
+     * Prueba la Query del selector con entrada null
+     * @author jmartinezpisson
+     * @date 17/11/2020
+     */
+    @isTest
+    static void test_selectByInteractionId_nullInput()
+    {
+        Test.startTest();
+
+        List<EmailMessage> selectedEmailMessages = new EmailMessagesSelector().selectByInteractionId(null);
+
+        Test.stopTest();
+
+        System.assertEquals(true, selectedEmailMessages.isEmpty(), 'Se debería recibir una lista vacía');
+    }
+
+    /**
+     * Prueba la Query del selector con entrada vacía
+     * @author jmartinezpisson
+     * @date 17/11/2020
+     */
+    @isTest
+    static void test_selectByInteractionId_emptyInput()
+    {
+        Test.startTest();
+
+        List<EmailMessage> selectedEmailMessages = new EmailMessagesSelector().selectByInteractionId(new Set<String>() );
+
+        Test.stopTest();
+
+        System.assertEquals(true, selectedEmailMessages.isEmpty(), 'Se debería recibir una lista vacía');
+    }
+
+
+    /**
+     * Prueba la Query del selector con Ids. reales
+     * @author jmartinezpisson
+     * @date 17/11/2020
+     */
+    @isTest
+    static void test_selectByInteractionId_recordInput()
+    {
+        // When
+        // Se simula una situación en que los EmailMessages tienen interactionIds
+        List<EmailMessage> emailMessages = new List<EmailMessage>();
+        Set<String> interactionIds = new Set<String>();
+
+        for(EmailMessage message : [SELECT Id, GenesysInteractionId__c FROM EmaiLMessage LIMIT 10])
+        {
+            interactionIds.add('genesys-id-' + emailMessages.size() );
+            message.GenesysInteractionId__c = 'genesys-id-' + emailMessages.size();
+            emailMessages.add(message);
+        }
+
+        update emailMessages;
+
+        // Test
+        Test.startTest();
+
+        Map<Id, EmailMessage> selectedEmailMessagesById = new Map<Id, EmailMessage>(new EmailMessagesSelector().selectByInteractionId(interactionIds) );
+
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(emailMessages.size(), selectedEmailMessagesById.size(), 'Se debería recibir una lista no vacía');
+        System.assertEquals(true, selectedEmailMessagesById.keySet().containsAll(new Map<Id, EmailMessage>(emailMessages).keySet() ), 'No contiene todos los ids de email');
+    }
+
+
+    //#endregion
 }

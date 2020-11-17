@@ -53,6 +53,18 @@ public with sharing class EmailMessagesSelector
         set;
     }
 
+
+    //#region Contructores
+    public EmailMessagesSelector()
+    {}
+
+    public EmailMessagesSelector(Set<String> fieldsToQuery)
+    {
+        this();
+        this.fieldsToQuery = fieldsToQuery;
+    }
+    //#endregion
+
     // #######
     // #Region EmailMessage: Queries relacionadas con el objeto EmailMessage
     // #######
@@ -133,8 +145,8 @@ public with sharing class EmailMessagesSelector
                 'WHERE RelatedToId IN : relatedToIds',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
+            });
+
             return (List<EmailMessage>) Database.query(query);
         }
         else
@@ -174,5 +186,49 @@ public with sharing class EmailMessagesSelector
         {
             return new List<EmailMessageRelation>();
         }
+    }
+
+
+    /**
+     * Busca un Email message a través de un Id de area
+     *
+     * @author jmartinezpisson
+     * @date 16/11/2020
+     * @param  activityIds      Listado de Ids. de tarea
+     * @return               Listado de relaciones entre emails sobre los que se ha realizado match
+     */
+    public List<EmailMessage> selectByActivityId(Set<Id> activityIds)
+    {
+        if(activityIds == null || activityIds.isEmpty() )
+        {
+            return new List<EmailMessage>();
+        }
+
+        return (List<EmailMessage>) Database.query(String.format(
+                                                       'SELECT {0} FROM EmailMessage ' +
+                                                       'WHERE ActivityId IN : activityIds',
+                                                       new List<String>
+        {
+            String.join(new List<String> (this.fieldsToQuery), ',')
+        }
+                                                       ) );
+    }
+
+    /**
+     * Busca un Email message a través de un Id de interacción de Genesys Cloud
+     *
+     * @author jmartinezpisson
+     * @date 16/11/2020
+     * @param  interactionIds      Listado de Ids. de Genesys
+     * @return               Listado de emails sobre los que se ha realizado match
+     */
+    public List<EmailMessage> selectByInteractionId(Set<String> interactionIds)
+    {
+        if(interactionIds == null || interactionIds.isEmpty() )
+        {
+            return new List<EmailMessage>();
+        }
+
+        return [SELECT Id, ToIds, ActivityId, Status FROM EmailMessage WHERE GenesysInteractionId__c IN : interactionIds];
     }
 }

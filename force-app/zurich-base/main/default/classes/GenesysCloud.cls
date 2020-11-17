@@ -32,9 +32,9 @@ public class GenesysCloud
     /**
      * Realiza una petición asíncrona al API de Genesys Cloud controlando los límites de SF
      * Gestiona la finalización a través de un callout
-     * 
+     *
      * @param  String method  Nombre del método a ejecutar de forma asíncrona
-     * @param  {IAPIRequest[]} requests PEticiones a procesar
+     * @param  {IAPIRequest[]} requests Peticiones a procesar
      * @param  {IAPICallback} callback Callback de gestión de respuestas del API
      */
     private static void asynchronousCallout(String method, List<IAPIRequest> requests, IAPICallback callback)
@@ -63,7 +63,7 @@ public class GenesysCloud
 
     /**
      * Trabajo que procesa un subconjunto de 50 peticiones al API REST de Genesys Cloud
-     * 
+     *
      * @author jmartinezpisson
      */
     private class AsynchronousCalloutJob implements Queueable, Database.AllowsCallouts
@@ -74,7 +74,7 @@ public class GenesysCloud
 
         /**
          * Inicializa el trabajo encolado con los parámetros necesarios para la ecjución de los callouts
-         * 
+         *
          * @author jmartinezpisson
          * @param  String method  Nombre del método a ejecutar de forma asíncrona
          * @param  {IAPIRequest[]} requests PEticiones a procesar
@@ -89,7 +89,7 @@ public class GenesysCloud
 
         /**
          * Ejecuta la implementación síncrona por petición pasada especificada por method
-         * 
+         *
          * @author jmartinezpisson
          * @param  {QueueableContext} context Contexto del Job
          */
@@ -136,9 +136,9 @@ public class GenesysCloud
         String toJSON();
     }
 
-     /**
+    /**
      * Representa una función de callback del API de Genesys Cloud
-     * 
+     *
      * @author jmartinezpisson
      */
     public interface IAPICallback
@@ -147,8 +147,6 @@ public class GenesysCloud
         void onError(Exception error);
     }
     //#endregion
-
-
 
 
     /**
@@ -256,7 +254,7 @@ public class GenesysCloud
     public abstract class RoutingWork implements IAPIRequest
     {
         //Id. de la interacción enrutada en Genesys
-        public String interactionId;
+        public transient String interactionId;
         //VIRTUAL - Sólo lectura. Devolverá una constante con el endpoint de enrutamiento a enrutar
         protected transient String endpoint
         {
@@ -320,6 +318,12 @@ public class GenesysCloud
         {
             return JSON.serialize(this);
         }
+
+        public Integer hashCode()
+        {
+            return toJSON().hashCode();
+        }
+
         //VIRTUAL - Sólo lectura. Devolverá una constante con el tipo de elemento a enrutar.
         private virtual String getProvider()
         {

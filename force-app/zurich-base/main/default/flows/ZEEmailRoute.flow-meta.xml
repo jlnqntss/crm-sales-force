@@ -46,9 +46,9 @@
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <inputParameters>
-            <name>activityId</name>
+            <name>emailMessageId</name>
             <value>
-                <elementReference>EmailMessage.ActivityId</elementReference>
+                <elementReference>EmailMessage.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>

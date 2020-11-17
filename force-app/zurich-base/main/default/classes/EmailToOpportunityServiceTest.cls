@@ -79,7 +79,7 @@ private class EmailToOpportunityServiceTest
         List<EmailMessage> emailMessagesCreated = emailMessagesSelectorObj.selectBySubject(new List<String> {emailSubject});
         System.assertEquals(false, emailMessagesCreated.isEmpty(), 'List shoudnt be empty');
         System.assertEquals(1, emailMessagesCreated.size(), 'There should be an EmailMessage');
-        System.assertEquals(null, emailMessagesCreated.get(0).RelatedToId, 'RelatedToId field should be null');
+        System.assertEquals(true, String.isNotEmpty(emailMessagesCreated.get(0).RelatedToId), 'RelatedToId field should be not empty');
 
         //Recuperamos el Contacto para la dirección de email
         List<Contact> contactsByEmail = ContactsSelector.findByEmail(new List<String> { EMAIL_SOPORTE });

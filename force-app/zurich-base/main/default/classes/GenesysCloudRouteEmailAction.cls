@@ -11,21 +11,19 @@ public class GenesysCloudRouteEmailAction
      */
     @InvocableMethod(
         label='Route Email to Genesys Cloud'
-        description='Allows to route an email through Genesys Cloud'
-        category= 'Other'
-    )
+               description='Allows to route an email through Genesys Cloud'
+                            category= 'Other'
+        )
     public static void execute(List<RouteEmailRequest> requests)
     {
-        List<GenesysCloud.Email> emails = new List<GenesysCloud.Email>();
-        List<String> taskIds = new List<String>();
+        Map<GenesysCloud.Email, String> emailMessageIdsByGenesysEmail = new Map<GenesysCloud.Email, String>();
 
         for(RouteEmailRequest request : requests)
         {
-            emails.add(request.toEmail());
-            taskIds.add(request.activityId);
+            emailMessageIdsByGenesysEmail.put(request.toEmail(), request.emailMessageId);
         }
 
-        GenesysCloud.RoutingService.route(emails, new UpdateTasksCallback(taskIds) );
+        GenesysCloud.RoutingService.route(new List<GenesysCloud.Email>(emailMessageIdsByGenesysEmail.keySet() ), new UpdateEmailMessageCallback(emailMessageIdsByGenesysEmail) );
     }
 
     /**
@@ -67,6 +65,8 @@ public class GenesysCloudRouteEmailAction
         public String ownerId;
         @InvocableVariable(label = 'Activity Id' description='Id. de la tarea asociada al Email')
         public String activityId;
+        @InvocableVariable(label = 'Email Message Id' description='Id. del Email Message')
+        public String emailMessageId;
 
 
         /**
@@ -87,45 +87,45 @@ public class GenesysCloudRouteEmailAction
             email.priority = this.priority;
             email.screenPopRecordId = '' + this.screenPopRecordId;
             email.attributes.put('SF_OwnerId', '' + this.ownerId);
+            email.attributes.put('SF_EmailURL', URL.getOrgDomainUrl().toExternalForm() + '/' + this.emailMessageId);
 
             return email;
         }
     }
 
-    private class UpdateTasksCallback implements GenesysCloud.IAPICallback
+    private class UpdateEmailMessageCallback implements GenesysCloud.IAPICallback
     {
-        List<String> taskIds;
+        Map<GenesysCloud.Email, String> emailMessageIdsByGenesysEmail;
 
-        public UpdateTasksCallback(List<String> taskIds)
+        public UpdateEmailMessageCallback(Map<GenesysCloud.Email, String> emailMessageIdsByGenesysEmail)
         {
-            this.taskIds = taskIds;
+            this.emailMessageIdsByGenesysEmail = emailMessageIdsByGenesysEmail;
         }
 
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
-            List<Task> interactionTasks = new List<Task>();
-            Integer index = results.size() - 1;
+            List<EmailMessage> emailMessages = new List<EmailMessage>();
 
             for(Object result : results)
             {
                 GenesysCloud.Email email = (GenesysCloud.Email) result;
-                String taskId = taskIds[index--];
+                Id relatedEmailMessageId = emailMessageIdsByGenesysEmail.get(email);
 
-                if(String.isNotEmpty(taskId))
+                if(String.isNotEmpty(relatedEmailMessageId) )
                 {
-                    interactionTasks.add(new Task(
-                        Id = taskId,
-                        CallObject = email.interactionId
-                    ));
+                    emailMessages.add(new EmailMessage(
+                                          Id = relatedEmailMessageId,
+                                          GenesysInteractionId__c = email.interactionId
+                                          ) );
                 }
             }
 
-            update interactionTasks;
+            update emailMessages;
         }
 
         public void onError(Exception error)
         {
-            throw error;
+            ErrorLogUtil.commitError(error);
         }
     }
 }
