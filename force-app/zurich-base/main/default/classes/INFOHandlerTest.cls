@@ -98,9 +98,11 @@ private class INFOHandlerTest
     @isTest
     static void test_prepare()
     {
+        Transformer transformer = new Transformer('INFO');
+
         Set<String> objects = new Set<String>();
 
-        for ( Transformer__mdt setting : TransformerSelector.selectMetadataByOrigin(Transformer.ORIGIN_NAME_INFO) )
+        for ( Transformer__mdt setting : TransformerSelector.selectMetadataByOrigin('INFO') )
         {
             objects.add(setting.OriginEntity__c);
         }
@@ -112,7 +114,7 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.ContentFormat__c}).selectByOrigin(new Set<String> {'INFO'});
 
         Test.startTest();
-        INFOHandler.prepare(externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestList);
         Test.stopTest();
 
         System.assertEquals(
@@ -130,6 +132,8 @@ private class INFOHandlerTest
     @isTest
     static void test_process_upsert_OK()
     {
+        Transformer transformer = new Transformer('INFO');
+
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
                                                                                       ExternalRequest__c.Action__c,
@@ -140,7 +144,7 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         Test.startTest();
-        INFOHandler.prepare(externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestList);
         Test.stopTest();
 
@@ -229,6 +233,8 @@ private class INFOHandlerTest
     @isTest
     static void test_process_delete_OK()
     {
+        Transformer transformer = new Transformer('INFO');
+
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
                                                                                       ExternalRequest__c.Action__c,
@@ -249,7 +255,7 @@ private class INFOHandlerTest
         update externalRequestList;
 
         Test.startTest();
-        INFOHandler.prepare(externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestList);
         Test.stopTest();
 
@@ -277,6 +283,8 @@ private class INFOHandlerTest
     @isTest
     static void test_process_ERROR_NoEntity()
     {
+        Transformer transformer = new Transformer('INFO');
+
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
                                                                                       ExternalRequest__c.Action__c,
@@ -292,7 +300,7 @@ private class INFOHandlerTest
         }
 
         Test.startTest();
-        INFOHandler.prepare(externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestList);
         Test.stopTest();
 
@@ -306,6 +314,8 @@ private class INFOHandlerTest
     @isTest
     static void test_process_ERROR_NoPayload()
     {
+        Transformer transformer = new Transformer('INFO');
+
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
                                                                                       ExternalRequest__c.Action__c,
@@ -321,7 +331,7 @@ private class INFOHandlerTest
         }
 
         Test.startTest();
-        INFOHandler.prepare(externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestList);
         Test.stopTest();
 
@@ -335,6 +345,8 @@ private class INFOHandlerTest
     @isTest
     static void test_persists_upsert_OK()
     {
+        Transformer transformer = new Transformer('INFO');
+
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
                                                                                       ExternalRequest__c.Action__c,
@@ -345,7 +357,7 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         Test.startTest();
-        INFOHandler.prepare(externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestList);
         INFOHandler.persists(externalRequestList);
         Test.stopTest();
@@ -428,6 +440,8 @@ private class INFOHandlerTest
     @isTest
     static void test_persists_delete_OK()
     {
+        Transformer transformer = new Transformer('INFO');
+
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
                                                                                       ExternalRequest__c.Action__c,
@@ -437,7 +451,7 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Origin__c,
                                                                                       ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
-        INFOHandler.prepare(externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestList);
         INFOHandler.persists(externalRequestList);
         INFOHandler.manageResult(null, externalRequestList);
@@ -465,7 +479,7 @@ private class INFOHandlerTest
         update externalRequestToDelete;
 
         Test.startTest();
-        INFOHandler.prepare(externalRequestToDelete);
+        INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestToDelete);
         INFOHandler.persists(externalRequestToDelete);
         Test.stopTest();
@@ -501,6 +515,8 @@ private class INFOHandlerTest
     @isTest
     static void test_manageResult_OK()
     {
+        Transformer transformer = new Transformer('INFO');
+
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
                                                                                       ExternalRequest__c.Action__c,
@@ -511,7 +527,7 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
 
         Test.startTest();
-        INFOHandler.prepare(externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestList);
         INFOHandler.persists(externalRequestList);
         INFOHandler.manageResult(null, externalRequestList);
@@ -547,6 +563,8 @@ private class INFOHandlerTest
     @isTest
     static void test_manageResult_ERROR()
     {
+        Transformer transformer = new Transformer('INFO');
+
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
                                                                                       ExternalRequest__c.Action__c,
@@ -559,7 +577,7 @@ private class INFOHandlerTest
         externalRequestList.get(0).Payload__c = null;
 
         Test.startTest();
-        INFOHandler.prepare(externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestList);
         INFOHandler.persists(externalRequestList);
         INFOHandler.manageResult(null, externalRequestList);
