@@ -116,7 +116,7 @@
         </rules>
     </decisions>
     <description>Orquesta el enrutamiento de correos electrónicos en Genesys Cloud</description>
-    <interviewLabel>GenesysCloudEmailRouter-1_InterviewLabel</interviewLabel>
+    <interviewLabel>GenesysCloudEmailRouter-4_InterviewLabel</interviewLabel>
     <label>Enrutamiento de emails en Genesys Cloud</label>
     <processMetadataValues>
         <name>ObjectType</name>

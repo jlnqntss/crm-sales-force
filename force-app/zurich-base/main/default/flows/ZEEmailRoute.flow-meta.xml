@@ -4,13 +4,16 @@
         <description>Se buscar al mejor gestor posible para el correo electrónico, en base al cliente al que pertenece al email y sus oportunidades abiertas</description>
         <name>FindOwnerIdAction</name>
         <label>Buscar Gestor Preferente</label>
-        <locationX>176</locationX>
-        <locationY>158</locationY>
+        <locationX>456</locationX>
+        <locationY>206</locationY>
         <actionName>GenesysFindBestAgentAction</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>RouteEmailAction</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>LogError</targetReference>
+        </faultConnector>
         <inputParameters>
             <name>fromId</name>
             <value>
@@ -41,17 +44,17 @@
         <description>Llamada al Apex invocable que contiene la llamada al Genesys Cloud RoutingWork</description>
         <name>RouteEmailAction</name>
         <label>Enrutar Email a Flow ZE en Genesys Cloud</label>
-        <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationX>456</locationX>
+        <locationY>326</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
-        <connector>
-            <targetReference>UpdateTask</targetReference>
-        </connector>
+        <faultConnector>
+            <targetReference>LogError</targetReference>
+        </faultConnector>
         <inputParameters>
-            <name>activityId</name>
+            <name>emailMessageId</name>
             <value>
-                <elementReference>EmailMessage.ActivityId</elementReference>
+                <elementReference>EmailMessage.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -96,7 +99,6 @@
                 <elementReference>EmailMessage.ToAddress</elementReference>
             </value>
         </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
     <description>Realiza el enrutamiento de correos electrónicos del buzón de Zurich Empresas</description>
@@ -120,7 +122,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -130,30 +132,42 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordUpdates>
-        <name>UpdateTask</name>
-        <label>Actualizar Tarea</label>
-        <locationX>176</locationX>
-        <locationY>398</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>EmailMessage.ActivityId</elementReference>
-            </value>
-        </filters>
+    <recordCreates>
+        <description>Deja un registro de log del error producido</description>
+        <name>LogError</name>
+        <label>Registrar error</label>
+        <locationX>704</locationX>
+        <locationY>269</locationY>
         <inputAssignments>
-            <field>CallObject</field>
+            <field>Level__c</field>
             <value>
-                <elementReference>RouteEmailAction.interactionId</elementReference>
+                <stringValue>Error</stringValue>
             </value>
         </inputAssignments>
-        <object>Task</object>
-    </recordUpdates>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Record_Object__c</field>
+            <value>
+                <elementReference>EmailMessage.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>ZERouteEmailFlow</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Error_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <start>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
+        <locationX>330</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>FindOwnerIdAction</targetReference>
         </connector>
@@ -166,5 +180,14 @@
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>EmailMessage</objectType>
+    </variables>
+    <variables>
+        <description>Log de error</description>
+        <name>ErrorLogEvent</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Error_Event__e</objectType>
     </variables>
 </Flow>

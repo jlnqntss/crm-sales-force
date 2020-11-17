@@ -23,52 +23,56 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
         try
         {
-            String dataInteractionId = null;
-            Map<String, Object> deserializedData = (Map<String, Object>) JSON.deserializeUntyped(
-                data
-                );
-            if ( deserializedData.containsKey('interaction') )
+            Map<String, Object> deserializedData = (Map<String, Object>) JSON.deserializeUntyped(data);
+            Task interactionTask = createTaskFromCallLog( (Map<String, Object>) deserializedData.get('callLog') );
+            String eventName = (String) deserializedData.get('eventName');
+            String interactionId;
+            Id currentWhatId;
+
+
+            // 1 - Si la tarea de Genesys no cuenta con Id,se busca en el sistema a través del InteractionId
+            //     Este proceso solo se produce en la gestión inicial
+            if(eventName == 'interactionChanged' && String.isEmpty(interactionTask.Id) )
             {
-                Map<String, Object> dataInteraction = (Map<String, Object>) deserializedData.get(
-                    'interaction'
-                    );
-                if ( dataInteraction.containsKey('id') )
+                Map<String, Object> interaction = (Map<String, Object>) deserializedData.get('interaction');
+
+                if ( interaction.containsKey('id') )
                 {
-                    dataInteractionId = (String) dataInteraction.get('id');
+                    interactionId = (String) interaction.get('id');
                 }
+
+                List<Task> existingInteractionTasks = ActivitySelector.selectTasksByCallObjectIdentifier(interactionId);
+
+                System.debug(existingInteractionTasks);
+
+                if(!existingInteractionTasks.isEmpty() )
+                {
+                    interactionTask.Id = existingInteractionTasks[0].Id;
+                    interactionTask.WhatId = existingInteractionTasks[0].WhatId;
+                    interactionTask.WhoId = existingInteractionTasks[0].WhoId;
+                }
+                else if(interactionTask.type == 'Email')
+                {
+                    List<EmailMessage> relatedEmailMessages = new EmailMessagesSelector(new Set<String> { 'Id', 'Status', 'ToIds', 'ActivityId' }).selectByInteractionId(new Set<String> { interactionId });
+
+                    interactionTask.Id = (new EmailMessagesSelector(new Set<String> { 'ActivityId' }).selectByInteractionId(new Set<String> { interactionId }) )[0].ActivityId;
+                }
+
+                System.debug(interactionTask);
+
+                interactionTask.Status = 'Asignada';
+                interactionTask.CallObject = interactionId;
+                interactionTask.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
+                interactionTask.OwnerId = UserInfo.getUserId();
+            }
+            else if(eventName == 'interactionDisconnected')
+            {
+                interactionTask.Status = 'Cerrada';
             }
 
-            //Si no se ha recibido el id universal de Genesys, no hacer nada
-            if (dataInteractionId == null)
-            {
-                return null;
-            }
+            upsert interactionTask;
 
-            //Buscar la task que tenga el mismo ucid
-            List<Task> taskToUpdate = ActivitySelector.selectTasksByCallObjectIdentifier(
-                dataInteractionId
-                );
-            if ( !taskToUpdate.isEmpty() )
-            {
-                //Actualizar la task con el usuario logado y devolver el ID
-                taskToUpdate[0].OwnerId = UserInfo.getUserId();
-                taskToUpdate[0].Status = 'Asignada';
-                update taskToUpdate;
-                return String.valueOf(taskToUpdate[0].Id);
-            }
-            else
-            {
-                //Si no coincide ninguna tarea, entonces hay que crearla
-                Task interaction = new Task();
-                interaction.Status = 'Asignada';
-                interaction.OwnerId = UserInfo.getUserId();
-                interaction.CallObject = dataInteractionId;
-                interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
-                                           .get('Interaction')
-                                           .getRecordTypeId();
-                insert interaction;
-                return String.valueOf(interaction.Id);
-            }
+            return interactionTask.Id;
         }
         catch (Exception e)
         {
@@ -77,5 +81,39 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }
 
         return null;
+    }
+
+    /**
+     * Crea la tarea solventando las deficiencias en el formato de Genesys con respecto al Id.
+     *
+     * @author jmartinezpisson
+     * @date 17/11/2020
+     * @param {Map<String, Object>} callLog: Mapa clave-valor con los datos de la tarea
+     * data.eventName: Representa ele vento que lanza la creación/actualización del Call Log
+     * @return Tarea generada
+     */
+    private static Task createTaskFromCallLog(Map<String, Object> callLog)
+    {
+        Task interactionTask;
+        Id taskId;
+
+        if(callLog.containsKey('Id') )
+        {
+            String id = String.valueOf(callLog.remove('Id') );
+
+            if(id.length() > 10)
+            {
+                taskId = id;
+            }
+        }
+
+        interactionTask = (Task) JSON.deserialize(JSON.serialize(callLog), Task.class);
+
+        if(String.isNotBlank(taskId) )
+        {
+            interactionTask.Id = taskId;
+        }
+
+        return interactionTask;
     }
 }

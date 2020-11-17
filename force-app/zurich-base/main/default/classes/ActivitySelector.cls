@@ -19,6 +19,9 @@ public without sharing class ActivitySelector
         return ' SystemModstamp DESC ';
     }
 
+    public ActivitySelector()
+    {}
+
     /**
      * Obtiene un listado de tareas a través de un listado de InteractionIds
      * @param interactionIds: Listado de interactionIds.  Si null, devolver Lista vacía.
@@ -26,9 +29,7 @@ public without sharing class ActivitySelector
      * @author nescudero
      * @date 27/10/2020
      */
-    public static List<Task> selectTasksByCallObjectIdentifier(
-        List<String> interactionIds
-        )
+    public static List<Task> selectTasksByCallObjectIdentifier(List<String> interactionIds)
     {
         //Devolver lista vacía
         if ( interactionIds == null || interactionIds.isEmpty() )
@@ -40,6 +41,7 @@ public without sharing class ActivitySelector
             'SELECT {0} FROM {1} WHERE CallObject IN :interactionIds ORDER BY {2}',
             new List<String> { getFieldListString(), getSObjectName(), getOrderBy() }
             );
+
         return (List<Task>) Database.query(query);
     }
 
@@ -50,20 +52,25 @@ public without sharing class ActivitySelector
      * @author nescudero
      * @date 27/10/2020
      */
-    public static List<Task> selectTasksByCallObjectIdentifier(
-        String interactionId
-        )
+    public static List<Task> selectTasksByCallObjectIdentifier(String interactionId)
     {
-        //Devolver lista vacía
-        if (interactionId == null)
+        return selectTasksByCallObjectIdentifier(new List<String> {interactionId});
+    }
+
+    /**
+     * Obtiene un listado de tareas a través de un Id
+     * @param taskIds: Ids. de tarea a recuperar a buscar. Si null, devolver Lista vacía.
+     * @return Listado de tareas, ordenado de forma descendente por SystemModstamp
+     * @author nescudero
+     * @date 27/10/2020
+     */
+    public static List<Task> selectTasksById(Set<Id> taskIds)
+    {
+        if(taskIds == null || taskIds.isEmpty() )
         {
             return new List<Task>();
         }
 
-        String query = String.format(
-            'SELECT {0} FROM {1} WHERE CallObject = :interactionId ORDER BY {2}',
-            new List<String> { getFieldListString(), getSObjectName(), getOrderBy() }
-            );
-        return (List<Task>) Database.query(query);
+        return [SELECT Id, WhoId, WhatId FROM Task WHERE Id IN : taskIds];
     }
 }
