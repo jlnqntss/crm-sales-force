@@ -5,9 +5,12 @@
         <name>RedirectToRecord</name>
         <label>Ir a ficha del registro encontrado</label>
         <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationY>278</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
+        <connector>
+            <targetReference>RedirectToRelatedRecord</targetReference>
+        </connector>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -17,11 +20,27 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
+        <description>Utiliza un Aura para ir al email o tarea</description>
+        <name>RedirectToRelatedRecord</name>
+        <label>Ir a ficha del registro relacionado</label>
+        <locationX>50</locationX>
+        <locationY>398</locationY>
+        <actionName>c:RedirectToRecordAction</actionName>
+        <actionType>component</actionType>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>relatedrecordid</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <description>Redirige a la página de búsqueda estándar</description>
         <name>RedirectToSearch</name>
         <label>Ir a pantalla de búsqueda</label>
         <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationY>278</locationY>
         <actionName>c:RedirectToSearchAction</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -32,11 +51,12 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <name>HasRecordIdDecision</name>
         <label>¿Hay Record Id?</label>
         <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationY>158</locationY>
         <defaultConnector>
             <targetReference>RedirectToSearch</targetReference>
         </defaultConnector>
@@ -47,6 +67,9 @@
             <conditions>
                 <leftValueReference>recordid</leftValueReference>
                 <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
             </conditions>
             <connector>
                 <targetReference>RedirectToRecord</targetReference>
@@ -93,6 +116,14 @@
     </variables>
     <variables>
         <name>recordid</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>email o tarea relacionado con recordid</description>
+        <name>relatedrecordid</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
