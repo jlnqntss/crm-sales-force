@@ -479,7 +479,7 @@ private class INFOHandlerTest
         update externalRequestToDelete;
 
         Test.startTest();
-        INFOHandler.prepare(transformer, externalRequestList);
+        INFOHandler.prepare(transformer, externalRequestToDelete);
         INFOHandler.process(externalRequestToDelete);
         INFOHandler.persists(externalRequestToDelete);
         Test.stopTest();
