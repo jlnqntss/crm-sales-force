@@ -1,6 +1,7 @@
 @isTest
 private class GenesysCloudTest
 {
+    //#region RoutingService
 
     @isTest
     static void test_GenesysCloudRoutingService_route_email_ok()
@@ -154,4 +155,143 @@ private class GenesysCloudTest
         }
     }
 
+     //#endregion RoutingService
+
+     //#region CallbacksService
+     @isTest
+     static void test_GenesysCloudCallbacksService_create_callback_ok()
+     {
+        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},'+
+        '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
+        Integer code = 202; //Se va a probar un retorno bueno
+
+        //Set MOCK
+        GenesysCloud.CallbacksService.mock = new GenesysCloudMocks(body, code);
+
+        //montar Callback de prueba
+        GenesysCloud.Callback callback = new GenesysCloud.Callback();
+        GenesysCloud.CallbackRoutingData callbackRoutingData = new GenesysCloud.CallbackRoutingData();
+        callbackRoutingData.queueId = '5abe8c3b-d894-490b-b41e-ce2ec1bab70a';
+        callbackRoutingData.languageId = 'En-US';
+        callbackRoutingData.priority = 1;
+        callbackRoutingData.skillIds = new List<String> {'skill1','skill2'};
+        callbackRoutingData.preferredAgentIds = new List<String> {'agent1','agent2'};
+        callback.routingData = callbackRoutingData;
+        callback.scriptId = 'id de script de genesys';
+        callback.validateCallbackNumbers = false;
+        callback.screenPopRecordId = 'Id del screenPop';
+        callback.countryCode = 'ES';
+        callback.callbackUserName = 'Noemi';
+        callback.callbackNumbers = new List<String>{'123456789'};
+        callback.callbackScheduledTime = String.valueOfGmt(System.now().addDays(10));
+
+        Test.startTest();
+        GenesysCloud.Callback updatedCallback = (GenesysCloud.Callback) GenesysCloud.CallbacksService.create(callback);
+        Test.stopTest();
+
+        System.assertEquals('4b005d83-8246-4eb5-a89c-3f948751632b', updatedCallback.genesysId); //ID que devuelve el mock
+     }
+
+    @isTest
+    static void test_GenesysCloudCallbacksService_create_callback_ko()
+    {
+
+        String body = '';
+        Integer code = 400; //Se va a probar un retorno malo
+
+        GenesysCloud.CallbacksService.mock = new GenesysCloudMocks(body, code);
+
+        GenesysCloud.Callback callback = new GenesysCloud.Callback();
+
+        Test.startTest();
+        try
+        {
+            GenesysCloud.Callback updatedCallback = (GenesysCloud.Callback) GenesysCloud.CallbacksService.create(callback);
+        }
+        catch(GenesysCloud.CallbacksServiceException e)
+        {
+            Boolean expectedExceptionThrown =  e.getMessage().contains(GenesysCloud.ERROR_RESPONSE_SDK) ? true : false;
+            System.AssertEquals(expectedExceptionThrown, true);
+        }
+        Test.stopTest();
+    }
+
+    @isTest
+    static void test_GenesysCloudCallbacksService_create_callbackList_ok()
+    {
+        // When
+        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},'+
+        '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
+        Integer code = 202; //Se va a probar un retorno bueno
+
+        //Set MOCK
+        GenesysCloud.CallbacksService.mock = new GenesysCloudMocks(body, code);
+
+        //montar Callbacks de prueba
+        List<GenesysCloud.Callback> callbacks = new List<GenesysCloud.Callback>();
+        GenesysCloud.Callback callback = new GenesysCloud.Callback();
+        GenesysCloud.CallbackRoutingData callbackRoutingData = new GenesysCloud.CallbackRoutingData();
+        callbackRoutingData.queueId = '5abe8c3b-d894-490b-b41e-ce2ec1bab70a';
+        callbackRoutingData.languageId = 'En-US';
+        callbackRoutingData.priority = 1;
+        callbackRoutingData.skillIds = new List<String> {'skill1','skill2'};
+        callbackRoutingData.preferredAgentIds = new List<String> {'agent1','agent2'};
+        callback.routingData = callbackRoutingData;
+        callback.scriptId = 'id de script de genesys';
+        callback.validateCallbackNumbers = false;
+        callback.screenPopRecordId = 'Id del screenPop';
+        callback.countryCode = 'ES';
+        callback.callbackUserName = 'Noemi';
+        callback.callbackNumbers = new List<String>{'123456789'};
+        callback.callbackScheduledTime = String.valueOfGmt(System.now().addDays(10));
+        callbacks.add(callback);
+        callbacks.add(callback.clone());
+
+        // Test
+        Test.startTest();
+        GenesysCloud.CallbacksService.create(callbacks, new CreateAssertCallback());//El assert está en CreateAssertCallback
+        Test.stopTest();
+    }
+
+    @isTest
+    static void test_GenesysCloudCallbacksService_create_callbackList_ko()
+    {
+        // When
+        String body = '';
+        Integer code = 400; //Se va a probar un retorno malo
+
+        //Set MOCK
+        GenesysCloud.CallbacksService.mock = new GenesysCloudMocks(body, code);
+
+        //montar Callbacks de prueba
+        List<GenesysCloud.Callback> callbacks = new List<GenesysCloud.Callback>();
+        GenesysCloud.Callback callback = new GenesysCloud.Callback();
+        callbacks.add(callback);
+        callbacks.add(callback.clone());
+
+        // Test
+        Test.startTest();
+        GenesysCloud.CallbacksService.create(callbacks, new CreateAssertCallback());//El assert está en CreateAssertCallback
+        Test.stopTest();
+    }
+
+    class CreateAssertCallback implements GenesysCloud.IAPICallback
+    {
+        public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
+        {
+            for(Object result : results)
+            {
+                GenesysCloud.Callback callback = (GenesysCloud.Callback) result;
+
+                System.assertEquals('4b005d83-8246-4eb5-a89c-3f948751632b', callback.genesysId);
+            }
+        }
+
+        public void onError(Exception error)
+        {
+            System.assertEquals(true, error instanceof GenesysCloud.CallbacksServiceException);
+        }
+    }
+
+     //#endregion
 }
