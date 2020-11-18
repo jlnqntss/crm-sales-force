@@ -22,7 +22,7 @@
     <actionCalls>
         <description>Utiliza un Aura para ir al email o tarea</description>
         <name>RedirectToRelatedRecord</name>
-        <label>Ir a ficha del registro relacionado</label>
+        <label>Abrir subpestaña con registro relacionado</label>
         <locationX>50</locationX>
         <locationY>398</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
@@ -31,6 +31,12 @@
             <name>recordId</name>
             <value>
                 <elementReference>relatedrecordid</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>openAsSubtab</name>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>

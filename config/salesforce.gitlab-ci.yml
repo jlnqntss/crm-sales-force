@@ -403,12 +403,12 @@ before_script:
   # en una única carpeta temporal
   # Arguments
   #  $1 directory - Directorio de exportación
-  #  $1 codeOnly - Convierte solo código
+  #  $2 codeOnly - Convierte solo código
   function convert_sfdx_project() {
     for packageDir in $(jq -r '.packageDirectories[].path' < sfdx-project.json)
     do
       if [ -f $pkgDir ]; then
-        if [ -f "$2" ]; then
+        if [ -n "$2" ]; then
           sfdx force:source:convert -r $packageDir -d "$1" -m ApexClass,ApexTrigger,ApexPage,ApexComponent,AuraDefinitionBundle,LightningComponentBundle
         else
           sfdx force:source:convert -r $packageDir -d "$1"
@@ -586,6 +586,9 @@ test-org:
 upload-static-veracode:dev:
   stage: post-deploy
   allow_failure: true
+  artifacts:
+    paths:
+      - .tmp/veracode/
   before_script:
     - '[ "${VERACODE_APP_ID}" ] || exit 0'
     - mkdir -p /usr/share/man/man1
