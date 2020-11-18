@@ -1,6 +1,5 @@
 public class GenesysCloudCreateCallbackAction
 {
-
     /**
      * Acción invocable que crea una tarea de tipo call-me-back, definido por CreateCallbackRequest, en Genesys Cloud.
      *  Delega la ejecución a GenesysCloud.CallbacksService.create
@@ -55,7 +54,6 @@ public class GenesysCloudCreateCallbackAction
         public String[] skills;
         @InvocableVariable(label = 'Preferred Agent Ids' description='Ids de agentes preferidos')
         public String[] preferredAgentIds;
-
 
         /**
          * Hará uso tanto de GenesysCloud.Callback como de GenesysCloud.CallbackRoutingData para poder formar el callback por completo.
