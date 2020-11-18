@@ -148,4 +148,70 @@ public without sharing class ActivitySelectorTest
             'Se debería recibir una lista vacía'
             );
     }
+
+    //#region selectTasksById
+
+    /**
+     * Prueba la Query del selector con entrada null
+     * @author jmartinezpisson
+     * @date 17/11/2020
+     */
+    @isTest
+    static void test_selectTasksById_nullInput()
+    {
+        Test.startTest();
+
+        List<Task> selectedTasks = ActivitySelector.selectTasksById(null);
+
+        Test.stopTest();
+
+        System.assertEquals(true, selectedTasks.isEmpty(), 'Se debería recibir una lista vacía');
+    }
+
+    /**
+     * Prueba la Query del selector con entrada vacía
+     * @author jmartinezpisson
+     * @date 17/11/2020
+     */
+    @isTest
+    static void test_selectTasksById_emptyInput()
+    {
+        Test.startTest();
+
+        List<Task> selectedTasks = ActivitySelector.selectTasksById(new Set<Id>() );
+
+        Test.stopTest();
+
+        System.assertEquals(true, selectedTasks.isEmpty(), 'Se debería recibir una lista vacía');
+    }
+
+
+    /**
+     * Prueba la Query del selector con Ids. reales
+     * @author jmartinezpisson
+     * @date 17/11/2020
+     */
+    @isTest
+    static void test_selectTasksById_recordInput()
+    {
+        // When
+        Set<Id> taskIds = new Map<Id, Task>( [SELECT Id, Subject, CallObject FROM Task WHERE CallObject != null] ).keySet();
+
+        // Test
+        Test.startTest();
+
+        Map<Id, Task> selectedTasksById = new Map<Id, Task>(ActivitySelector.selectTasksById(taskIds) );
+
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(true, !selectedTasksById.isEmpty(), 'Se debería recibir una lista no vacía');
+
+        System.assertEquals(taskIds.size(), selectedTasksById.keySet().size(), 'Se debería recibir una lista vacía');
+        System.assertEquals(true, selectedTasksById.keySet().containsAll(taskIds), 'No contiene todos los ids de tarea');
+
+    }
+
+
+    //#endregion
 }

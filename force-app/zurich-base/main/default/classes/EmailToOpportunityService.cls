@@ -1,5 +1,6 @@
 public without sharing class EmailToOpportunityService
 {
+    private final static String CHANNEL_EMAIL = 'Email';
     /**
      * Método que recibe un InboundEmail, busca si existe en Salesforce un EmailMessage relacionado
      * a partir de las cabeceras del InboundEmail y deja registrada la información en un nuevo EmailMessage.
@@ -14,66 +15,110 @@ public without sharing class EmailToOpportunityService
         InboundEmailHeaders emailHeaders = new InboundEmailHeaders(email);
 
         List<EmailMessage> relatedEmailMessages;
-        Id relatedOpportunityId;
+        Id relatedRecordId;
 
         // 1 - Se obtiene la referencia del Thread Id de nuestra cabecera
         String threadId = email.messageId;
 
-        if(!emailHeaders.inReplyTo.isEmpty() || !emailHeaders.references.isEmpty())
+        try
         {
-            Set<String> messageIdentifiers = new Set<String>();
-            messageIdentifiers.addAll(emailHeaders.inReplyTo);
-            messageIdentifiers.addAll(emailHeaders.references);
-
-            EmailMessagesSelector emailMessagesSelectorObj = new EmailMessagesSelector();
-            emailMessagesSelectorObj.fieldsToQuery = new Set<String>{'Id', 'RelatedToId', 'MessageIdentifier'};
-            relatedEmailMessages = emailMessagesSelectorObj.selectByMessageIdentifier(messageIdentifiers);
-
-            if(!relatedEmailMessages.isEmpty() && String.isNotBlank(relatedEmailMessages[0].RelatedToId))
+            if(!emailHeaders.inReplyTo.isEmpty() || !emailHeaders.references.isEmpty() )
             {
-				relatedOpportunityId = relatedEmailMessages[0].RelatedToId;
+                Set<String> messageIdentifiers = new Set<String>();
+                messageIdentifiers.addAll(emailHeaders.inReplyTo);
+                messageIdentifiers.addAll(emailHeaders.references);
+
+                EmailMessagesSelector emailMessagesSelectorObj = new EmailMessagesSelector();
+                emailMessagesSelectorObj.fieldsToQuery = new Set<String> {'Id', 'RelatedToId', 'MessageIdentifier', 'ActivityId'};
+                relatedEmailMessages = emailMessagesSelectorObj.selectByMessageIdentifier(messageIdentifiers);
+
+                if(!relatedEmailMessages.isEmpty() )
+                {
+                    Map<Id, Task> tasksById = new Map<Id, Task>(ActivitySelector.selectTasksById(new Set<id> { relatedEmailMessages[0].ActivityId }));
+
+                    if(tasksById.containsKey(relatedEmailMessages[0].ActivityId))
+                    {
+                        relatedRecordId = tasksById.get(relatedEmailMessages[0].ActivityId).WhatId;
+                    }
+                }
+
+                if(!relatedEmailMessages.isEmpty() && String.isNotBlank(relatedEmailMessages[0].MessageIdentifier) )
+                {
+                    threadId = relatedEmailMessages[0].MessageIdentifier;
+                }
             }
 
-            if(!relatedEmailMessages.isEmpty() && String.isNotBlank(relatedEmailMessages[0].MessageIdentifier))
+            // 2 - Se inserta un EmailMessage
+            EmailMessage emailMessage = new EmailMessage();
+
+            emailMessage.Subject = email.Subject;
+            emailMessage.FromAddress = email.fromAddress;
+            emailMessage.Headers = processEmailHeaders(email.headers);
+            emailMessage.Status = '0';
+            emailMessage.Incoming = true;
+            emailMessage.ToAddress = String.join(email.toAddresses, ',');
+            emailMessage.HtmlBody = email.htmlBody;
+            emailMessage.MessageIdentifier = email.messageId;
+            emailMessage.ThreadIdentifier = threadId;
+
+
+            if(relatedEmailMessages != null && !relatedEmailMessages.isEmpty() )
             {
-				threadId = relatedEmailMessages[0].MessageIdentifier;
+                emailMessage.ReplyToEmailMessageId = relatedEmailMessages[0].Id;
             }
-        }
 
-        // 2 - Se inserta un EmailMessage
-        EmailMessage emailMessage = new EmailMessage();
+            // 3 - Se gestiona el RelatedToId - si el email existía de forma previa,
+            //     Se relaciona con el mismo registro que el anterior
+            List<Contact> matchedFromAddressContacts = ContactsSelector.findByEmail(new List<String> { email.fromAddress });
 
-        emailMessage.Subject = email.Subject;
-        emailMessage.FromAddress = email.fromAddress;
-        emailMessage.Headers = processEmailHeaders(email.headers);
-        emailMessage.Status = '0';
-        emailMessage.Incoming = true;
-        emailMessage.ToAddress = String.join(email.toAddresses, ',');
-        emailMessage.RelatedToId = relatedOpportunityId;
-        emailMessage.HtmlBody = email.htmlBody;
-        emailMessage.MessageIdentifier = email.messageId;
-        emailMessage.ThreadIdentifier = threadId;
+            if(String.isNotEmpty(relatedRecordId))
+            {
+                emailMessage.RelatedToId = relatedRecordId;
+            }
+            else
+            {
+                // En caso contrario, se genera un Contact Request para dejar un registro mínimo asociado y que el Email Message deje reflejo
+                /// TODO: ¿Gestionar colas aquí?
+                ContactRequest request = new ContactRequest(
+                    RequestDescription = (email.Subject + '\n' + email.plainTextBody).abbreviate(32000),
+                    PreferredChannel = CHANNEL_EMAIL
+                );
 
+                if(!matchedFromAddressContacts.isEmpty())
+                {
+                    request.WhoId = matchedFromAddressContacts[0].Id;
+                }
 
-        if(relatedEmailMessages != null && !relatedEmailMessages.isEmpty())
-        {
-            emailMessage.ReplyToEmailMessageId = relatedEmailMessages[0].Id;
-        }
+                insert request;
 
-        try {
+                emailMessage.RelatedToId = request.Id;
+            }
+
             insert emailMessage;
-
-            List<Contact> contactsByEmail = ContactsSelector.findByEmail(new List<String>{email.fromAddress});
-            if(!contactsByEmail.isEmpty())
+            
+            List<EmailMessageRelation> relations = new List<EmailMessageRelation>
             {
-                insert new EmailMessageRelation(
+                new EmailMessageRelation(
+                    EmailMessageId = emailMessage.Id,
+                    RelationId = UserInfo.getUserId(),
+                    RelationType = 'ToAddress'
+                )
+            };
+
+            if(!matchedFromAddressContacts.isEmpty() )
+            {
+                relations.add(new EmailMessageRelation(
                     EmailMessageId = emailMessage.Id,
                     RelationAddress = email.fromAddress,
-                    RelationId = contactsByEmail.get(0).Id,
-                    RelationType = 'ToAddress'
-                );
+                    RelationId = matchedFromAddressContacts[0].Id,
+                    RelationType = 'FromAddress'
+                ));
             }
-        } catch (Exception ex) {
+
+            insert relations;
+        }
+        catch (Exception ex)
+        {
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_CRITICAL, ex.getMessage(), 'EmailToOpportunityService');
         }
     }
@@ -84,7 +129,7 @@ public without sharing class EmailToOpportunityService
 
         for(Messaging.InboundEmail.Header header : inboundEmailHeaders)
         {
-        	headers.add(header.name + ': ' + header.value);
+            headers.add(header.name + ': ' + header.value);
         }
 
         return String.join(headers, '\n');
@@ -105,7 +150,7 @@ public without sharing class EmailToOpportunityService
             {
                 switch on header.name
                 {
-                 	when('In-Reply-To')
+                    when('In-Reply-To')
                     {
                         this.inReplyTo.addAll(header.value.split(','));
                     }

@@ -1,5 +1,6 @@
 @isTest
-global class GenesysCloudMocks implements HttpCalloutMock {
+global class GenesysCloudMocks implements HttpCalloutMock
+{
 
     String body;
     Integer code;
@@ -10,12 +11,13 @@ global class GenesysCloudMocks implements HttpCalloutMock {
         this.code = code;
     }
 
-    global HTTPResponse respond(HTTPRequest req) {
+    global HTTPResponse respond(HTTPRequest req)
+    {
 
         //Respuesta FAKE
         if(req.getMethod() == 'POST')
         {
-            if(req.getEndpoint().contains('/api/v2/conversations/emails'))
+            if(req.getEndpoint().contains('/api/v2/conversations/emails') )
             {
                 HttpResponse res = new HttpResponse();
                 res.setBody(body);
