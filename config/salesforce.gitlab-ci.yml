@@ -403,12 +403,12 @@ before_script:
   # en una única carpeta temporal
   # Arguments
   #  $1 directory - Directorio de exportación
-  #  $1 codeOnly - Convierte solo código
+  #  $2 codeOnly - Convierte solo código
   function convert_sfdx_project() {
     for packageDir in $(jq -r '.packageDirectories[].path' < sfdx-project.json)
     do
       if [ -f $pkgDir ]; then
-        if [ -f "$2" ]; then
+        if [ -n "$2" ]; then
           sfdx force:source:convert -r $packageDir -d "$1" -m ApexClass,ApexTrigger,ApexPage,ApexComponent,AuraDefinitionBundle,LightningComponentBundle
         else
           sfdx force:source:convert -r $packageDir -d "$1"
@@ -586,6 +586,9 @@ test-org:
 upload-static-veracode:dev:
   stage: post-deploy
   allow_failure: true
+  artifacts:
+    paths:
+      - .tmp/veracode/
   before_script:
     - '[ "${VERACODE_APP_ID}" ] || exit 0'
     - mkdir -p /usr/share/man/man1
@@ -706,11 +709,9 @@ upload-static-veracode:uat:
     - sfdx 
     - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
     - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
-    - SANDBOX_ID=$(java -jar VeracodeJavaAPI.jar -action getsandboxlist -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep -w "sandbox_name=\"DEV\"" | grep -o "sandbox_id=\".*\"" | cut -d "\"" -f2 || :)
-    - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID| grep 'results_ready="true"' || :)
-    - echo "SANDBOX_ID=${SANDBOX_ID}"
+    - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep 'results_ready="true"' || :)
     - echo "IS_SCAN_READY:${IS_SCAN_READY}"
-    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID -sandboxid $SANDBOX_ID||'
+    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID ||'
     - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule*
   only:
     refs:
