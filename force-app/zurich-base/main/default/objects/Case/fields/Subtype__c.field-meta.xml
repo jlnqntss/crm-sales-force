@@ -13,19 +13,9 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Catálogo</fullName>
+                <fullName>Como contrato mi seguro</fullName>
                 <default>false</default>
-                <label>Catálogo</label>
-            </value>
-            <value>
-                <fullName>Contratar seguro</fullName>
-                <default>false</default>
-                <label>Contratar seguro</label>
-            </value>
-            <value>
-                <fullName>Partnership</fullName>
-                <default>false</default>
-                <label>Partnership</label>
+                <label>Como contrato mi seguro</label>
             </value>
             <value>
                 <fullName>Coberturas</fullName>
@@ -33,14 +23,9 @@
                 <label>Coberturas</label>
             </value>
             <value>
-                <fullName>Franquicia</fullName>
+                <fullName>Documentacion necesaria</fullName>
                 <default>false</default>
-                <label>Franquicia</label>
-            </value>
-            <value>
-                <fullName>Incidencia contratación</fullName>
-                <default>false</default>
-                <label>Incidencia contratación</label>
+                <label>Documentación necesaria</label>
             </value>
             <value>
                 <fullName>Precio de mi seguro</fullName>
@@ -48,9 +33,124 @@
                 <label>Precio de mi seguro</label>
             </value>
             <value>
+                <fullName>Franquicia</fullName>
+                <default>false</default>
+                <label>Franquicia</label>
+            </value>
+            <value>
+                <fullName>Nuevo dispositivo</fullName>
+                <default>false</default>
+                <label>Nuevo dispositivo</label>
+            </value>
+            <value>
                 <fullName>Otros</fullName>
                 <default>false</default>
                 <label>Otros</label>
+            </value>
+            <value>
+                <fullName>Descargar App</fullName>
+                <default>false</default>
+                <label>Descargar App</label>
+            </value>
+            <value>
+                <fullName>Como valido mi seguro</fullName>
+                <default>false</default>
+                <label>Como valido mi seguro</label>
+            </value>
+            <value>
+                <fullName>Como firmo mi seguro</fullName>
+                <default>false</default>
+                <label>Como firmo mi seguro</label>
+            </value>
+            <value>
+                <fullName>Metodos de pago admitidos</fullName>
+                <default>false</default>
+                <label>Metodos de pago admitidos</label>
+            </value>
+            <value>
+                <fullName>Solicitud factura</fullName>
+                <default>false</default>
+                <label>Solicitud factura</label>
+            </value>
+            <value>
+                <fullName>Datos personales</fullName>
+                <default>false</default>
+                <label>Datos personales</label>
+            </value>
+            <value>
+                <fullName>Datos de pago</fullName>
+                <default>false</default>
+                <label>Datos de pago</label>
+            </value>
+            <value>
+                <fullName>Contraseña App</fullName>
+                <default>false</default>
+                <label>Contraseña App</label>
+            </value>
+            <value>
+                <fullName>Modificar el beneficiario</fullName>
+                <default>false</default>
+                <label>Modificar el beneficiario</label>
+            </value>
+            <value>
+                <fullName>Modificar el capital</fullName>
+                <default>false</default>
+                <label>Modificar el capital</label>
+            </value>
+            <value>
+                <fullName>Modificar las garantias</fullName>
+                <default>false</default>
+                <label>Modificar las garantias</label>
+            </value>
+            <value>
+                <fullName>Modificar dispositivo asegurado</fullName>
+                <default>false</default>
+                <label>Modificar dispositivo asegurado</label>
+            </value>
+            <value>
+                <fullName>Modificar modalidad del seguro</fullName>
+                <default>false</default>
+                <label>Modificar modalidad del seguro</label>
+            </value>
+            <value>
+                <fullName>Cancelacion</fullName>
+                <default>false</default>
+                <label>Cancelacion</label>
+            </value>
+            <value>
+                <fullName>Como renuevo mi seguro</fullName>
+                <default>false</default>
+                <label>Como renuevo mi seguro</label>
+            </value>
+            <value>
+                <fullName>Cuando me avisan</fullName>
+                <default>false</default>
+                <label>Cuando me avisan</label>
+            </value>
+            <value>
+                <fullName>El precio de mi renovacion</fullName>
+                <default>false</default>
+                <label>El precio de mi renovacion</label>
+            </value>
+            <value>
+                <fullName>Como abro un siniestro</fullName>
+                <default>false</default>
+                <label>Como abro un siniestro</label>
+            </value>
+            <value>
+                <fullName>Pago de franquicia</fullName>
+                <default>false</default>
+                <label>Pago de franquicia</label>
+            </value>
+            <value>
+                <fullName>Estado de mi siniestro</fullName>
+                <default>false</default>
+                <label>Estado de mi siniestro</label>
+            </value>
+            <value>
+                <fullName>Resolucion de mi siniestro</fullName>
+                <default>false</default>
+                <label>Resolucion de mi siniestro</label>
             </value>
             <value>
                 <fullName>Desactivar FMI</fullName>
@@ -68,44 +168,19 @@
                 <label>Bloqueo de IMEI</label>
             </value>
             <value>
-                <fullName>Pago de franquicia</fullName>
-                <default>false</default>
-                <label>Pago de franquicia</label>
-            </value>
-            <value>
                 <fullName>Recogida/Entrega</fullName>
                 <default>false</default>
                 <label>Recogida/Entrega</label>
             </value>
             <value>
-                <fullName>Denegación de cobertura</fullName>
+                <fullName>Denegacion de cobertura</fullName>
                 <default>false</default>
                 <label>Denegación de cobertura</label>
             </value>
             <value>
-                <fullName>Apertura</fullName>
-                <default>false</default>
-                <label>Apertura</label>
-            </value>
-            <value>
-                <fullName>Estado de mi caso</fullName>
-                <default>false</default>
-                <label>Estado de mi caso</label>
-            </value>
-            <value>
-                <fullName>Incidencias</fullName>
-                <default>false</default>
-                <label>Incidencias</label>
-            </value>
-            <value>
-                <fullName>Problema con la reparación</fullName>
+                <fullName>Problema con la reparacion</fullName>
                 <default>false</default>
                 <label>Problema con la reparación</label>
-            </value>
-            <value>
-                <fullName>Activación</fullName>
-                <default>false</default>
-                <label>Activación</label>
             </value>
             <value>
                 <fullName>App</fullName>
@@ -113,251 +188,178 @@
                 <label>App</label>
             </value>
             <value>
-                <fullName>Contraseña</fullName>
+                <fullName>Contratacion</fullName>
                 <default>false</default>
-                <label>Contraseña</label>
+                <label>Contratación</label>
             </value>
             <value>
-                <fullName>Renovación</fullName>
+                <fullName>Validacion</fullName>
                 <default>false</default>
-                <label>Renovación</label>
+                <label>Validación</label>
             </value>
             <value>
-                <fullName>Solicitud factura</fullName>
+                <fullName>Pago</fullName>
                 <default>false</default>
-                <label>Solicitud factura</label>
-            </value>
-            <value>
-                <fullName>Cambio de objeto asegurado</fullName>
-                <default>false</default>
-                <label>Cambio de objeto asegurado</label>
-            </value>
-            <value>
-                <fullName>Cambio de datos de contacto</fullName>
-                <default>false</default>
-                <label>Cambio de datos de contacto</label>
-            </value>
-            <value>
-                <fullName>Cambio de condiciones de mi seguro</fullName>
-                <default>false</default>
-                <label>Cambio de condiciones de mi seguro</label>
-            </value>
-            <value>
-                <fullName>No definido</fullName>
-                <default>false</default>
-                <label>No definido</label>
-            </value>
-            <value>
-                <fullName>Apoyo Captación</fullName>
-                <default>false</default>
-                <label>Apoyo Captación</label>
-            </value>
-            <value>
-                <fullName>Gestión Competencias</fullName>
-                <default>false</default>
-                <label>Gestión Competencias</label>
-            </value>
-            <value>
-                <fullName>Validación/ emisión</fullName>
-                <default>false</default>
-                <label>Validación/ emisión</label>
-            </value>
-            <value>
-                <fullName>Reemplazo</fullName>
-                <default>false</default>
-                <label>Reemplazo</label>
-            </value>
-            <value>
-                <fullName>Saneamiento</fullName>
-                <default>false</default>
-                <label>Saneamiento</label>
-            </value>
-            <value>
-                <fullName>Revocación Saneamiento</fullName>
-                <default>false</default>
-                <label>Revocación Saneamiento</label>
-            </value>
-            <value>
-                <fullName>Rehabilitación</fullName>
-                <default>false</default>
-                <label>Rehabilitación</label>
-            </value>
-            <value>
-                <fullName>Anulación</fullName>
-                <default>false</default>
-                <label>Anulación</label>
-            </value>
-            <value>
-                <fullName>Modificación</fullName>
-                <default>false</default>
-                <label>Modificación</label>
-            </value>
-            <value>
-                <fullName>Información</fullName>
-                <default>false</default>
-                <label>Información</label>
-            </value>
-            <value>
-                <fullName>Envíos</fullName>
-                <default>false</default>
-                <label>Envíos</label>
-            </value>
-            <value>
-                <fullName>Quejas y reclamaciones</fullName>
-                <default>false</default>
-                <label>Quejas y reclamaciones</label>
-            </value>
-            <value>
-                <fullName>Sugerencias /felicitaciones</fullName>
-                <default>false</default>
-                <label>Sugerencias /felicitaciones</label>
-            </value>
-            <value>
-                <fullName>Retención</fullName>
-                <default>false</default>
-                <label>Retención</label>
-            </value>
-            <value>
-                <fullName>Recobro indirecto</fullName>
-                <default>false</default>
-                <label>Recobro indirecto</label>
-            </value>
-            <value>
-                <fullName>Gestión de recibos</fullName>
-                <default>false</default>
-                <label>Gestión de recibos</label>
-            </value>
-            <value>
-                <fullName>Recobro reactivo</fullName>
-                <default>false</default>
-                <label>Recobro reactivo</label>
-            </value>
-            <value>
-                <fullName>Recobro proactivo</fullName>
-                <default>false</default>
-                <label>Recobro proactivo</label>
-            </value>
-            <value>
-                <fullName>Campañas Proactiva</fullName>
-                <default>false</default>
-                <label>Campañas Proactiva</label>
-            </value>
-            <value>
-                <fullName>Campañas Reactivo</fullName>
-                <default>false</default>
-                <label>Campañas Reactivo</label>
-            </value>
-            <value>
-                <fullName>Tareas administrativas</fullName>
-                <default>false</default>
-                <label>Tareas administrativas</label>
-            </value>
-            <value>
-                <fullName>Cambio de intermediario</fullName>
-                <default>false</default>
-                <label>Cambio de intermediario</label>
-            </value>
-            <value>
-                <fullName>Verificación Riesgo</fullName>
-                <default>false</default>
-                <label>Verificación Riesgo</label>
+                <label>Pago</label>
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>Venta</controllingFieldValue>
-            <valueName>Apoyo Captación</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Otros</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Venta</controllingFieldValue>
-            <valueName>Gestión Competencias</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Datos personales</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Validación/ emisión</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Datos de pago</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Reemplazo</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Contraseña App</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Saneamiento</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Modificar el beneficiario</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Revocación Saneamiento</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Modificar el capital</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Rehabilitación</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Modificar las garantias</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Anulación</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Modificar dispositivo asegurado</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Modificación</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Modificar modalidad del seguro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Incidencias</valueName>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Cancelacion</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Información</valueName>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <valueName>Como renuevo mi seguro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Envíos</valueName>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <valueName>Cuando me avisan</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Quejas y reclamaciones</valueName>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <valueName>El precio de mi renovacion</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Sugerencias /felicitaciones</valueName>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Como contrato mi seguro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Retención</valueName>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Coberturas</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Recobro indirecto</valueName>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Documentacion necesaria</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Gestión de recibos</valueName>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Precio de mi seguro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Recobro reactivo</valueName>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Franquicia</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Recobro proactivo</valueName>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Nuevo dispositivo</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Campañas</controllingFieldValue>
-            <valueName>Campañas Proactiva</valueName>
+            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
+            <valueName>Descargar App</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Campañas</controllingFieldValue>
-            <valueName>Campañas Reactivo</valueName>
+            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
+            <valueName>Como valido mi seguro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Tareas</controllingFieldValue>
-            <valueName>Tareas administrativas</valueName>
+            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
+            <valueName>Como firmo mi seguro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Cambio de intermediario</valueName>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Como abro un siniestro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Calidad</controllingFieldValue>
-            <valueName>Verificación Riesgo</valueName>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Pago de franquicia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Estado de mi siniestro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Resolucion de mi siniestro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Desactivar FMI</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Documentación incorrecta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Bloqueo de IMEI</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Recogida/Entrega</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Denegacion de cobertura</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Problema con la reparacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
+            <valueName>Metodos de pago admitidos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
+            <valueName>Solicitud factura</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>App</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Contratacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Validacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Pago</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
