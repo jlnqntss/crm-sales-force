@@ -19,7 +19,7 @@ public without sharing class ReassignInteractionCTIExtensionTest
 
         Test.startTest();
         ReassignInteractionCTIExtension.onSaveLog(
-            '{ "interaction" : { "id": "ucid1"} }'
+            '{"eventName": "interactionChanged", "interaction" : { "id": "ucid1"},  "callLog": {"CallObject": "ucid1"}}'
             );
         Test.stopTest();
 
@@ -42,7 +42,7 @@ public without sharing class ReassignInteractionCTIExtensionTest
     {
         Test.startTest();
         ReassignInteractionCTIExtension.onSaveLog(
-            '{ "interaction" : { "id": "noExiste"} }'
+            '{ "eventName": "interactionChanged", "interaction" : {"id": "noExiste"} , "callLog": {"CallObject": "noExiste"}}'
             );
         Test.stopTest();
 
