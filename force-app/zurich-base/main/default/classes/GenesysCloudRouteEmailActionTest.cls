@@ -1,7 +1,6 @@
 @isTest
 public class GenesysCloudRouteEmailActionTest
 {
-
     @isTest
     static void test_GenesysCloudRouteEmailAction_execute_ok()
     {
@@ -52,7 +51,6 @@ public class GenesysCloudRouteEmailActionTest
     @isTest
     static void test_GenesysCloudRouteEmailAction_execute_ko()
     {
-
         String body = '';
         Integer code = 400; //Se va a probar un retorno malo
 
@@ -72,6 +70,6 @@ public class GenesysCloudRouteEmailActionTest
         List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c];
 
         System.assertEquals(false, errors.isEmpty(), 'No se han generado errores');
-        System.assertEquals(GenesysCloud.ERROR_RESPONSE_SDK + ' null', errors[0].Message__c, 'El error logado no coincide');
+        System.assertEquals(GenesysCloud.ERROR_RESPONSE_SDK + 'null', errors[0].Message__c, 'El error logado no coincide');
     }
 }
