@@ -373,10 +373,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Modificar mi seguro</fullName>
             <default>false</default>
         </values>
