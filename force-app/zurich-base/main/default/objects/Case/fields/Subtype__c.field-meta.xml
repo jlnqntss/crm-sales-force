@@ -23,6 +23,11 @@
                 <label>Coberturas</label>
             </value>
             <value>
+                <fullName>Renovación</fullName>
+                <default>false</default>
+                <label>Renovación</label>
+            </value>
+            <value>
                 <fullName>Documentacion necesaria</fullName>
                 <default>false</default>
                 <label>Documentación necesaria</label>
