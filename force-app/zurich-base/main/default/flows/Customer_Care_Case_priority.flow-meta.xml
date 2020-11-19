@@ -1931,7 +1931,7 @@
                 <leftValueReference>myVariable_current.Type</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Renovación</stringValue>
+                    <stringValue>Renovar mi seguro</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -3943,7 +3943,7 @@
                 <leftValueReference>myVariable_old.Type</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Renovación</stringValue>
+                    <stringValue>Renovar mi seguro</stringValue>
                 </rightValue>
             </conditions>
             <conditions>

@@ -430,10 +430,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Como abro un siniestro</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Como contrato mi seguro</fullName>
             <default>false</default>
         </values>

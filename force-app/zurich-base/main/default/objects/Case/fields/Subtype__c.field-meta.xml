@@ -23,9 +23,9 @@
                 <label>Coberturas</label>
             </value>
             <value>
-                <fullName>Renovación</fullName>
+                <fullName>Renovar mi seguro</fullName>
                 <default>false</default>
-                <label>Renovación</label>
+                <label>Renovar mi seguro</label>
             </value>
             <value>
                 <fullName>Documentacion necesaria</fullName>
@@ -210,12 +210,10 @@
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
-            <controllingFieldValue>Renovación</controllingFieldValue>
             <controllingFieldValue>Contratar seguro</controllingFieldValue>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
             <controllingFieldValue>Siniestro</controllingFieldValue>
             <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
             <valueName>Otros</valueName>
         </valueSettings>
         <valueSettings>
@@ -253,18 +251,6 @@
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
             <valueName>Cancelacion</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Renovación</controllingFieldValue>
-            <valueName>Como renuevo mi seguro</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Renovación</controllingFieldValue>
-            <valueName>Cuando me avisan</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Renovación</controllingFieldValue>
-            <valueName>El precio de mi renovacion</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Contratar seguro</controllingFieldValue>
@@ -349,22 +335,6 @@
         <valueSettings>
             <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
             <valueName>Solicitud factura</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>App</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Contratacion</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Validacion</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Pago</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
