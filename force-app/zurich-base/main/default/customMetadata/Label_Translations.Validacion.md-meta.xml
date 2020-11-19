@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Recogida/Entrega</label>
+    <label>Validacion</label>
     <protected>false</protected>
     <values>
         <field>English__c</field>
@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>French__c</field>
-        <value xsi:type="xsd:string">Dépôt/Retrait objet endommagé</value>
+        <value xsi:type="xsd:string">Validation</value>
     </values>
     <values>
         <field>German__c</field>
@@ -32,6 +32,6 @@
     </values>
     <values>
         <field>Spanish__c</field>
-        <value xsi:type="xsd:string">Recogida/Entrega</value>
+        <value xsi:nil="true"/>
     </values>
 </CustomMetadata>
