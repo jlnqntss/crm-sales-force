@@ -23,13 +23,13 @@ public class GenesysCloudCreateCallbackActionTest
         request.activityId = cr.Id;
         request.queueId = '5abe8c3b-d894-490b-b41e-ce2ec1bab70a';
         request.callbackUserName = 'Noemi2';
-        request.callbackNumbers = new List<String>{'123456789'};
+        request.callbackNumbers = '123456789';
         request.languageId = 'En-US';
         request.priority = 1;
         request.skills = new List<String> {'skill1','skill2'};
         request.preferredAgentIds = new List<String> {'agent1','agent2'};
         request.scriptId = 'Ide de script de genesys';
-        request.callbackScheduledTime = String.valueOfGmt(System.now().addDays(10));
+        request.callbackScheduledTime = System.now().addDays(10);
         request.countryCode = 'ES';
         request.screenPopRecordId = 'Id del registro a ahcer screenPop';
         requests.add(request);
@@ -39,7 +39,7 @@ public class GenesysCloudCreateCallbackActionTest
 
         // Then
         // El ContactRequest debe tener reflejado el Genesys Interaction Id
-        List<ContactRequest> crs = [SELECT Id FROM ContactRequest WHERE GenesysInteractionId__c = '4b005d83-8246-4eb5-a89c-3f948751632b'];
+        List<ContactRequest> crs = [SELECT Id FROM ContactRequest WHERE GenesysInteractionId__c = '7e131fcf-1639-45b2-89e5-9c3787b5dc75'];
         System.assertEquals(false, crs.isEmpty());
         System.assertEquals(cr.Id, crs[0].Id, 'No coincide el ContactRequest con el enrutado');
     }

@@ -183,13 +183,13 @@ private class GenesysCloudTest
         callback.countryCode = 'ES';
         callback.callbackUserName = 'Noemi';
         callback.callbackNumbers = new List<String>{'123456789'};
-        callback.callbackScheduledTime = String.valueOfGmt(System.now().addDays(10));
+        callback.callbackScheduledTime = System.now().addDays(10);
 
         Test.startTest();
         GenesysCloud.Callback updatedCallback = (GenesysCloud.Callback) GenesysCloud.CallbacksService.create(callback);
         Test.stopTest();
 
-        System.assertEquals('4b005d83-8246-4eb5-a89c-3f948751632b', updatedCallback.genesysId); //ID que devuelve el mock
+        System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', updatedCallback.genesysId); //ID que devuelve el mock
      }
 
     @isTest
@@ -243,7 +243,7 @@ private class GenesysCloudTest
         callback.countryCode = 'ES';
         callback.callbackUserName = 'Noemi';
         callback.callbackNumbers = new List<String>{'123456789'};
-        callback.callbackScheduledTime = String.valueOfGmt(System.now().addDays(10));
+        callback.callbackScheduledTime = System.now().addDays(10);
         callbacks.add(callback);
         callbacks.add(callback.clone());
 
@@ -283,7 +283,7 @@ private class GenesysCloudTest
             {
                 GenesysCloud.Callback callback = (GenesysCloud.Callback) result;
 
-                System.assertEquals('4b005d83-8246-4eb5-a89c-3f948751632b', callback.genesysId);
+                System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', callback.genesysId);
             }
         }
 
