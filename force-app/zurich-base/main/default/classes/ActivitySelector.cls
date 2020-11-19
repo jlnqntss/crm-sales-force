@@ -8,7 +8,7 @@ public without sharing class ActivitySelector
 {
     private static String getFieldListString()
     {
-        return ' Id, Status, OwnerId, CallObject ';
+        return ' Id, Status, OwnerId, CallObject, WhatId, WhoId ';
     }
     private static String getSObjectName()
     {
