@@ -278,21 +278,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>Object__c</picklist>
-        <values>
-            <fullName>definidos</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>no</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>valores</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Origin</picklist>
         <values>
             <fullName>Email</fullName>
