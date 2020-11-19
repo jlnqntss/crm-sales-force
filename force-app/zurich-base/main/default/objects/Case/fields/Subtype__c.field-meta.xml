@@ -206,7 +206,7 @@
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Contratar seguro</controllingFieldValue>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
             <controllingFieldValue>Siniestro</controllingFieldValue>
             <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
@@ -262,27 +262,27 @@
             <valueName>El precio de mi renovacion</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Contratar seguro</controllingFieldValue>
             <valueName>Como contrato mi seguro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Contratar seguro</controllingFieldValue>
             <valueName>Coberturas</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Contratar seguro</controllingFieldValue>
             <valueName>Documentacion necesaria</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Contratar seguro</controllingFieldValue>
             <valueName>Precio de mi seguro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Contratar seguro</controllingFieldValue>
             <valueName>Franquicia</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Contratar seguro</controllingFieldValue>
             <valueName>Nuevo dispositivo</valueName>
         </valueSettings>
         <valueSettings>
