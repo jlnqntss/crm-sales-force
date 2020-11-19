@@ -74,11 +74,10 @@ public class GenesysCloudCreateCallbackAction
             callback.scriptId = this.scriptId;
             callback.callbackUserName = this.callbackUserName;
             callback.callbackNumbers = new List<String>{this.callbackNumbers}; //ContactRequest.PreferredPhone is a single phone
-            callback.callbackScheduledTime = this.callbackScheduledTime.format('yyyy-MM-dd\'T\'HH:mm:ss');//Dates must be specified as ISO-8601 strings. For example: yyyy-MM-ddTHH:mm:ss.SSSZ
+            callback.callbackScheduledTime = this.callbackScheduledTime;//Dates must be specified as ISO-8601 strings. For example: yyyy-MM-ddTHH:mm:ss.SSSZ
             callback.validateCallbackNumbers = this.validateCallbackNumbers;
             callback.countryCode = this.countryCode;
             callback.screenPopRecordId = this.screenPopRecordId;
-            //callback.data.put('SF_URLPop', '' + this.screenPopRecordId);
 
             return callback;
         }

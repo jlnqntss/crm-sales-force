@@ -501,9 +501,8 @@ public class GenesysCloud
             if(responseBody != null && String.isNotBlank(responseBody))
             {
                 Map<String, Object> deserializedBody = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
-                List<Object> deserializedIdentifiers = (List<Object>)deserializedBody.get('callbackIdentifiers');
-                Map<String, Object> deserializedId = (Map<String, Object>)deserializedIdentifiers[0];
-                return (String)deserializedId.get('id');
+                Map<String, Object> deserializedConversation = (Map<String, Object>)deserializedBody.get('conversation');
+                return (String)deserializedConversation.get('id');
             }
 
             //Si no se encuentra el id no se puede devolver
@@ -552,7 +551,7 @@ public class GenesysCloud
         //REQUERIDO Listado de números a llamar
         public String[] callbackNumbers;
         //Fecha/hora de la programación. ISO-8601 string (yyyy-MM-ddTHH:mm:ss.SSSZ) Ej: 2016-09-26T15:30:00.000Z
-        public String callbackScheduledTime;
+        public Datetime callbackScheduledTime;
         //Validar los números pasados
         public Boolean validateCallbackNumbers;
         //Código del país. Utilizado en el formateo

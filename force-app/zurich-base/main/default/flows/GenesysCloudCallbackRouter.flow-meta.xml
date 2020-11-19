@@ -109,6 +109,37 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.GenesysInteractionId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myRule_1_A1</targetReference>
             </connector>
@@ -116,7 +147,7 @@
         </rules>
     </decisions>
     <description>Orquesta enrutamiento de call me backs a distintos flows dependiendo de su ámbito</description>
-    <interviewLabel>GenesysCloudCallbackRouter-1_InterviewLabel</interviewLabel>
+    <interviewLabel>GenesysCloudCallbackRouter-2_InterviewLabel</interviewLabel>
     <label>Enrutamiento de callbacks en Genesys Cloud</label>
     <processMetadataValues>
         <name>ObjectType</name>
