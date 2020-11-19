@@ -35,9 +35,9 @@ public class GenesysCloudCreateCallbackAction
         @InvocableVariable(label = 'Callback User Name' description='Nombre de la persona sobre la que se está programando la llamada')
         public String callbackUserName;
         @InvocableVariable(label = 'Callback Numbers' description='Listado de números a llamar' required=true)
-        public String[] callbackNumbers;
+        public String callbackNumbers;
         @InvocableVariable(label = 'Callback Scheduled Time' description='Fecha/hora de la programación')
-        public String callbackScheduledTime;
+        public Datetime callbackScheduledTime;
         @InvocableVariable(label = 'Validate Callback Numbers' description='Validar los números pasados')
         public Boolean validateCallbackNumbers;
         @InvocableVariable(label = 'Country Code' description='Código del país.')
@@ -73,8 +73,8 @@ public class GenesysCloudCreateCallbackAction
             callback.routingData = callbackRoutingData;
             callback.scriptId = this.scriptId;
             callback.callbackUserName = this.callbackUserName;
-            callback.callbackNumbers = this.callbackNumbers;
-            callback.callbackScheduledTime = this.callbackScheduledTime;
+            callback.callbackNumbers = new List<String>{this.callbackNumbers}; //ContactRequest.PreferredPhone is a single phone
+            callback.callbackScheduledTime = this.callbackScheduledTime.format('yyyy-MM-dd\'T\'HH:mm:ss');//Dates must be specified as ISO-8601 strings. For example: yyyy-MM-ddTHH:mm:ss.SSSZ
             callback.validateCallbackNumbers = this.validateCallbackNumbers;
             callback.countryCode = this.countryCode;
             callback.screenPopRecordId = this.screenPopRecordId;
