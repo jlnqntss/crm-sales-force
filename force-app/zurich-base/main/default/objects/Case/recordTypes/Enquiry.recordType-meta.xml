@@ -381,10 +381,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Renovación</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Siniestro</fullName>
             <default>false</default>
         </values>
