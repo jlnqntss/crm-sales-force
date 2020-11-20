@@ -6,23 +6,70 @@
     <compactLayoutAssignment>SiniestroConsulta</compactLayoutAssignment>
     <label>Siniestro</label>
     <picklistValues>
-        <picklist>CloseDetail__c</picklist>
+        <picklist>CauseOfLoss__c</picklist>
         <values>
-            <fullName>Sin INFO</fullName>
+            <fullName>TBD</fullName>
             <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>CloseResult__c</picklist>
+        <picklist>ClaimStatusTPA__c</picklist>
+        <values>
+            <fullName>2%2E5 Fraud</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CloseDetail__c</picklist>
         <values>
             <fullName>No Realizado</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>No Realizado -Pol%2E Seguridad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - Cliente no interesa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - Derivado mediación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - No procede</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - Rechazo técnico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Realizado - Impacto en prima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Sin impacto en prima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>valores</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
-        <picklist>Object__c</picklist>
+        <picklist>LegalEntity__c</picklist>
         <values>
-            <fullName>Bono</fullName>
+            <fullName>General Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Life Insurance</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -38,6 +85,33 @@
         </values>
         <values>
             <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>PendingBy__c</picklist>
+        <values>
+            <fullName>Client</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Competency Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other areas Third parties</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other areas Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supervisor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Systems Incidence</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -80,15 +154,65 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>SourceArea__c</picklist>
+        <values>
+            <fullName>End customer partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Generic Internal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Generic end customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INFO note</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mediator</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner dome</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDC %28Customer Defense Service%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zurich Business Client</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Sub_status__c</picklist>
+        <values>
+            <fullName>BIT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestros</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Subtype__c</picklist>
-        <values>
-            <fullName>Activación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Apertura</fullName>
-            <default>false</default>
-        </values>
         <values>
             <fullName>App</fullName>
             <default>false</default>
@@ -98,23 +222,27 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Catálogo</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Coberturas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Contraseña</fullName>
+            <fullName>Como contrato mi seguro</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Contratar seguro</fullName>
+            <fullName>Como renuevo mi seguro</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Denegación de cobertura</fullName>
+            <fullName>Contraseña App</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contratacion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegacion de cobertura</fullName>
             <default>false</default>
         </values>
         <values>
@@ -122,11 +250,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Documentación incorrecta</fullName>
+            <fullName>Documentacion necesaria</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Estado de mi caso</fullName>
+            <fullName>Estado de mi siniestro</fullName>
             <default>false</default>
         </values>
         <values>
@@ -134,11 +262,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencia contratación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencias</fullName>
+            <fullName>Nuevo dispositivo</fullName>
             <default>false</default>
         </values>
         <values>
@@ -150,15 +274,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Partnership</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Precio de mi seguro</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Problema con la reparación</fullName>
+            <fullName>Problema con la reparacion</fullName>
             <default>false</default>
         </values>
         <values>
@@ -166,11 +286,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Renovación</fullName>
+            <fullName>Solicitud factura</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Solicitud factura</fullName>
+            <fullName>Validacion</fullName>
             <default>false</default>
         </values>
     </picklistValues>
