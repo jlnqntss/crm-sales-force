@@ -69,7 +69,7 @@ public without sharing class EmailToOpportunityService
 
             // 3 - Se gestiona el RelatedToId - si el email existía de forma previa,
             //     Se relaciona con el mismo registro que el anterior
-            List<Contact> matchedFromAddressContacts = ContactsSelector.findByEmail(new List<String> { email.fromAddress });
+            List<Contact> matchedFromAddressContacts = new ContactsSelector().applyScope('all').findByEmail(new List<String> { email.fromAddress });
 
             if(String.isNotEmpty(relatedRecordId))
             {
