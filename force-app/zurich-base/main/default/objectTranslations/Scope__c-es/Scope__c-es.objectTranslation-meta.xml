@@ -25,4 +25,8 @@
         </sections>
     </layouts>
     <nameFieldLabel>Nombre de ámbito</nameFieldLabel>
+    <quickActions>
+        <label><!-- Zurich Empresas --></label>
+        <name>Zurich_Empresas</name>
+    </quickActions>
 </CustomObjectTranslation>

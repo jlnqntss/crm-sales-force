@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Claim Status TPA</label>
+    <name>ClaimStatusTPA__c</name>
+    <picklistValues>
+        <masterLabel>0.1 Under Analysis</masterLabel>
+        <translation><!-- 0.1 Under Analysis --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.0 Submitted to ICP</masterLabel>
+        <translation><!-- 1.0 Submitted to ICP --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.1 Pending excess payment</masterLabel>
+        <translation><!-- 1.1 Pending excess payment --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.10 Delivered</masterLabel>
+        <translation><!-- 1.10 Delivered --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.13 Delivered new device</masterLabel>
+        <translation><!-- 1.13 Delivered new device --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.14 Claim expired for the client</masterLabel>
+        <translation><!-- 1.14 Claim expired for the client --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.16 Object not coincident</masterLabel>
+        <translation><!-- 1.16 Object not coincident --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.2 Documentation pending</masterLabel>
+        <translation><!-- 1.2 Documentation pending --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.21 Rejected offer best object</masterLabel>
+        <translation><!-- 1.21 Rejected offer best object --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.26 Incorrect send documentation</masterLabel>
+        <translation><!-- 1.26 Incorrect send documentation --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.27 Pending to make an appointment</masterLabel>
+        <translation><!-- 1.27 Pending to make an appointment --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.29 No coverage</masterLabel>
+        <translation><!-- 1.29 No coverage --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.3 Pending to pick up device</masterLabel>
+        <translation><!-- 1.3 Pending to pick up device --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.30 Reminder to make an appointment</masterLabel>
+        <translation><!-- 1.30 Reminder to make an appointment --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.4 Repair/Replace in progress</masterLabel>
+        <translation><!-- 1.4 Repair/Replace in progress --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.5 Find my mobile active</masterLabel>
+        <translation><!-- 1.5 Find my mobile active --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.6 Repaired</masterLabel>
+        <translation><!-- 1.6 Repaired --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.7 Replaced</masterLabel>
+        <translation><!-- 1.7 Replaced --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.8 Can not be repaired</masterLabel>
+        <translation><!-- 1.8 Can not be repaired --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>1.9 Pending to be delivered</masterLabel>
+        <translation><!-- 1.9 Pending to be delivered --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>2.1 Closed covered</masterLabel>
+        <translation><!-- 2.1 Closed covered --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>2.2 Claim expired</masterLabel>
+        <translation><!-- 2.2 Claim expired --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>2.3 Reopen claim accepted</masterLabel>
+        <translation><!-- 2.3 Reopen claim accepted --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>2.5 Fraud</masterLabel>
+        <translation><!-- 2.5 Fraud --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>2.7 Closed. Device still on warranty period</masterLabel>
+        <translation><!-- 2.7 Closed. Device still on warranty period --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>3.1 Rejected</masterLabel>
+        <translation><!-- 3.1 Rejected --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>4.13 Delivered new device</masterLabel>
+        <translation><!-- 4.13 Delivered new device --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>4.29 No coverage</masterLabel>
+        <translation><!-- 4.29 No coverage --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>4.3 Pending to pick up device</masterLabel>
+        <translation><!-- 4.3 Pending to pick up device --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>4.31 Potencial bounce received</masterLabel>
+        <translation><!-- 4.31 Potencial bounce received --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>4.4 Repair/Replace in progress</masterLabel>
+        <translation><!-- 4.4 Repair/Replace in progress --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>4.5 Find my mobile active</masterLabel>
+        <translation><!-- 4.5 Find my mobile active --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>4.9 Pending to be delivered</masterLabel>
+        <translation><!-- 4.9 Pending to be delivered --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Successfully sent to ICP</masterLabel>
+        <translation><!-- Successfully sent to ICP --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

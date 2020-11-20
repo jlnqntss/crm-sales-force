@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Resultado de Cierre</label>
+    <label><!-- Close result --></label>
     <name>CloseResult__c</name>
     <picklistValues>
         <masterLabel>No Realizado</masterLabel>

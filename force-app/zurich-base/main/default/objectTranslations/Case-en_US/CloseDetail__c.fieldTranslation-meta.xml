@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Resultado de Cierre</label>
-    <name>CloseResult__c</name>
+    <label><!-- Close detail --></label>
+    <name>CloseDetail__c</name>
     <picklistValues>
         <masterLabel>No Realizado</masterLabel>
         <translation><!-- No Realizado --></translation>
@@ -37,5 +37,9 @@
     <picklistValues>
         <masterLabel>Realizado - Sin impacto en prima</masterLabel>
         <translation><!-- Realizado - Sin impacto en prima --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>valores</masterLabel>
+        <translation><!-- valores --></translation>
     </picklistValues>
 </CustomFieldTranslation>

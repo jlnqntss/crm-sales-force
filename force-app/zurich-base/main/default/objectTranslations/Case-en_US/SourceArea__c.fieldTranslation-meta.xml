@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Source Area --></label>
+    <name>SourceArea__c</name>
+    <picklistValues>
+        <masterLabel>End customer partner</masterLabel>
+        <translation><!-- End customer partner --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Generic Internal</masterLabel>
+        <translation><!-- Generic Internal --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Generic end customer</masterLabel>
+        <translation><!-- Generic end customer --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>INFO note</masterLabel>
+        <translation><!-- INFO note --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Mediator</masterLabel>
+        <translation><!-- Mediator --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Partner</masterLabel>
+        <translation><!-- Partner --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Partner dome</masterLabel>
+        <translation><!-- Partner dome --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SDC (Customer Defense Service)</masterLabel>
+        <translation><!-- SDC (Customer Defense Service) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Zurich Business Client</masterLabel>
+        <translation><!-- Zurich Business Client --></translation>
+    </picklistValues>
+</CustomFieldTranslation>
