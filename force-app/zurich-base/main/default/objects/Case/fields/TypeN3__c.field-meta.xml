@@ -364,6 +364,34 @@
             <valueName>CTL surveys</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>With offer (Recruitment support)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>No offer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>New offer (Support recruitment)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>With offer (Management skills)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>New offer (Competences management)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <valueName>Regular</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <valueName>Urgent</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Incidencias</controllingFieldValue>
             <valueName>Issue</valueName>
         </valueSettings>
@@ -410,34 +438,6 @@
         <valueSettings>
             <controllingFieldValue>Incidencias</controllingFieldValue>
             <valueName>Proteo client</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <valueName>With offer (Recruitment support)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <valueName>No offer</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <valueName>New offer (Support recruitment)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>With offer (Management skills)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>New offer (Competences management)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
-            <valueName>Regular</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
-            <valueName>Urgent</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>

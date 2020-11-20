@@ -6,278 +6,6 @@
     <description>OCS</description>
     <label>OCS Inquiry</label>
     <picklistValues>
-        <picklist>CauseOfLoss__c</picklist>
-        <values>
-            <fullName>Absolute and permanent disability</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Accidental Damage</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Death</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Robbery</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Screen Damage</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>TBD</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Terminal Illness</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Theft Cover Do Not Use</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Water Damage</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>ClaimStatusTPA__c</picklist>
-        <values>
-            <fullName>0%2E1 Under Analysis</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E0 Submitted to ICP</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E1 Pending excess payment</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E10 Delivered</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E13 Delivered new device</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E14 Claim expired for the client</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E16 Object not coincident</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E2 Documentation pending</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E21 Rejected offer best object</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E26 Incorrect send documentation</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E27 Pending to make an appointment</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E29 No coverage</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E3 Pending to pick up device</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E30 Reminder to make an appointment</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E4 Repair%2FReplace in progress</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E5 Find my mobile active</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E6 Repaired</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E7 Replaced</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E8 Can not be repaired</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>1%2E9 Pending to be delivered</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>2%2E1 Closed covered</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>2%2E2 Claim expired</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>2%2E3 Reopen claim accepted</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>2%2E5 Fraud</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>2%2E7 Closed%2E Device still on warranty period</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>3%2E1 Rejected</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>4%2E13 Delivered new device</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>4%2E29 No coverage</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>4%2E3 Pending to pick up device</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>4%2E31 Potencial bounce received</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>4%2E4 Repair%2FReplace in progress</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>4%2E5 Find my mobile active</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>4%2E9 Pending to be delivered</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Successfully sent to ICP</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>CloseDetail__c</picklist>
-        <values>
-            <fullName>No Realizado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No Realizado -Pol%2E Seguridad</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Cliente no interesa</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Derivado mediación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - No procede</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Rechazo técnico</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Impacto en prima</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Sin impacto en prima</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>valores</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>LegalEntity__c</picklist>
-        <values>
-            <fullName>000</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>001</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>002</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>003</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>004</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>005</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>006</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>007</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>008</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>999</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>General Insurance</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Life Insurance</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Origin</picklist>
         <values>
             <fullName>Email</fullName>
@@ -289,33 +17,6 @@
         </values>
         <values>
             <fullName>Web</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>PendingBy__c</picklist>
-        <values>
-            <fullName>Client</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Competency Management</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Other areas Third parties</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Other areas Zurich</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Supervisor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Systems Incidence</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -354,64 +55,6 @@
         </values>
         <values>
             <fullName>User didn%27t attend training</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>SourceArea__c</picklist>
-        <values>
-            <fullName>End customer partner</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generic Internal</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generic end customer</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>INFO note</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Mediator</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Partner</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Partner dome</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>SDC %28Customer Defense Service%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Zurich Business Client</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Sub_status__c</picklist>
-        <values>
-            <fullName>BIT</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cliente</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>IT</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Siniestros</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -470,6 +113,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Incidencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Modificar dispositivo asegurado</fullName>
             <default>false</default>
         </values>
@@ -509,7 +156,7 @@
     <picklistValues>
         <picklist>Type</picklist>
         <values>
-            <fullName>Contratar seguro</fullName>
+            <fullName>Contratar mi seguro</fullName>
             <default>false</default>
         </values>
         <values>
