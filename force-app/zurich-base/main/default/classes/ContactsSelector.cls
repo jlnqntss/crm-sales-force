@@ -10,11 +10,11 @@ public with sharing class ContactsSelector
      * @param  phones Listado de teléfonos. Válido cualquier formato
      * @return        Listado de contactos sobre los que se ha realizado match
      */
-    public static List<Contact> findByPhoneNumber(List<String> phones)
+    public List<Contact> findByPhoneNumber(List<String> phones)
     {
         Set<Id> matchedRecordIds = findInContactPointsByPhoneNumber(phones);
 
-        return [SELECT Id, AccountId FROM Contact WHERE Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds];
+        return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND RecordTypeId IN: this.recordTypeIds];
     }
 
     /**
@@ -26,11 +26,11 @@ public with sharing class ContactsSelector
      * @param  emails Listado de emails. Válido cualquier formato
      * @return        Listado de contactos sobre los que se ha realizado match
      */
-    public static List<Contact> findByEmail(List<String> emails)
+    public List<Contact> findByEmail(List<String> emails)
     {
         Set<Id> matchedRecordIds = findInContactPointsByEmail(emails);
 
-        return [SELECT Id, AccountId FROM Contact WHERE Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds];
+        return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND RecordTypeId IN: this.recordTypeIds];
     }
 
     private static Set<Id> findInContactPointsByPhoneNumber(List<String> phones)
@@ -82,28 +82,6 @@ public with sharing class ContactsSelector
         }
 
         return recordIds;
-    }
-
-    /**
-     * Busca contactos a partir de un listado de DNIs
-     *
-     * @author rlopez
-     * @date 04/11/2020
-     * @param  nationalIds          Listado de DNIs. Válido cualquier formato
-     * @param  nationalIdType       Tipo de documento a buscar
-     * @param  legalEntity          Entidad legal en la que buscar
-     * @return                      Listado de contactos sobre los que se ha realizado match
-     */
-    public List<Contact> findByNationalId(List<String> nationalIds, String nationalIdType, String legalEntity)
-    {
-        if( nationalIds != null && !nationalIds.isEmpty() && String.isNotBlank(nationalIdType) && String.isNotBlank(legalEntity) )
-        {
-            return [SELECT Id, AccountId FROM Contact WHERE Account.NationalId__c IN : nationalIds AND Account.NationalIdType__c =: nationalIdType AND Account.LegalEntity__c =: legalEntity AND RecordTypeId IN: this.recordTypeIds];
-        }
-        else
-        {
-            return new List<Contact>();
-        }
     }
 
     /**

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Cause of loss</label>
+    <name>CauseOfLoss__c</name>
+    <picklistValues>
+        <masterLabel>Absolute and permanent disability</masterLabel>
+        <translation><!-- Absolute and permanent disability --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Accidental Damage</masterLabel>
+        <translation><!-- Accidental Damage --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Death</masterLabel>
+        <translation><!-- Death --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Robbery</masterLabel>
+        <translation><!-- Robbery --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Screen Damage</masterLabel>
+        <translation><!-- Screen Damage --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TBD</masterLabel>
+        <translation><!-- TBD --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Terminal Illness</masterLabel>
+        <translation><!-- Terminal Illness --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Theft Cover Do Not Use</masterLabel>
+        <translation><!-- Theft Cover Do Not Use --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Water Damage</masterLabel>
+        <translation><!-- Water Damage --></translation>
+    </picklistValues>
+</CustomFieldTranslation>
