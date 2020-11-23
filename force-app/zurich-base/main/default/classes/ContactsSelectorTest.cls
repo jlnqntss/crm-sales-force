@@ -16,7 +16,7 @@ private with sharing class ContactsSelectorTest
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
         insert contactPointPhones;
 
-        List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 10);
+        List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, '', 10);
         insert contactPointEmails;
     }
 
