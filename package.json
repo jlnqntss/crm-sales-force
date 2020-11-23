@@ -8,7 +8,7 @@
     "postinstall": "sfdx update && (echo y | sfdx plugins:install sfpowerkit -f)",
     "install:extensions": "type config/vscode-extensions.list | code --install-extension -",
     "test:lwc": "lwc-jest -- --passWithNoTests",
-    "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 10",
+    "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 30",
     "push:source": "sfdx force:source:push -f",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
     "pull:source": "sfdx force:source:pull -f",
