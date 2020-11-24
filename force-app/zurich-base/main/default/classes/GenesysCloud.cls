@@ -4,7 +4,14 @@ public class GenesysCloud
     private static final String ERROR_IN_RESPONSE = 'response is null';
     @TestVisible
     private static final String ERROR_RESPONSE_SDK = 'response from genesys cloud SDK: ';
+    @TestVisible
+    private static final String ERROR_VALIDATE_RESPONSE = 'Service is a required parameter to validate a response';
+    public static final String SERVICE_ROUTING = 'RoutingService';
+    public static final String SERVICE_CALLBACKS = 'CallbacksService';
 
+    public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS }
+
+    public class GenesysCloudException extends Exception {}
 
     //#region Módulos
 
@@ -176,16 +183,20 @@ public class GenesysCloud
      * Comprueba si la respuesta ha sido un 200, sino lanza Exception
      * @param response HttpResponse del SDK
      */
-    private static void validateResponse(HttpResponse response, String service)
+    private static void validateResponse(HttpResponse response, GenesysCloudServices service)
     {
+        if(service == null)
+        {
+            throw new GenesysCloud.GenesysCloudException(ERROR_VALIDATE_RESPONSE);
+        }
         switch on service {
-            when 'RoutingService'  {
+            when SERVICE_ROUTING {
                 if(response == null || response.getStatusCode() != 200)
                 {
                     throw new GenesysCloud.RoutingServiceException(response);
                 }
             }
-            when 'CallbacksService'{
+            when SERVICE_CALLBACKS {
                 if(response == null || response.getStatusCode() != 202)
                 {
                     throw new GenesysCloud.CallbacksServiceException(response);
@@ -193,7 +204,6 @@ public class GenesysCloud
             }
         }
     }
-
 
     //#region Módulo RoutingService
 
@@ -227,7 +237,7 @@ public class GenesysCloud
                 response = purecloud.sdk.Rest.post('/api/v2/conversations/' + work.getEndpoint(), work.toJSON() );
             }
 
-            validateResponse(response, 'RoutingService');
+            validateResponse(response, GenesysCloudServices.SERVICE_ROUTING);
             work.interactionId = getIdFromResponse(response);
             return work;
         }
@@ -460,7 +470,7 @@ public class GenesysCloud
                 response = purecloud.sdk.Rest.post('/api/v2/conversations/callbacks', callback.toJSON() );
             }
 
-            validateResponse(response, 'CallbacksService');
+            validateResponse(response, GenesysCloudServices.SERVICE_CALLBACKS);
             callback.genesysId = getIdFromResponse(response);
             return callback;
         }
