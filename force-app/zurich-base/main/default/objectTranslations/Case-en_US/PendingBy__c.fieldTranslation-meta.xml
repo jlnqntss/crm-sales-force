@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Pending by --></label>
+    <name>PendingBy__c</name>
+    <picklistValues>
+        <masterLabel>Client</masterLabel>
+        <translation><!-- Client --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Competency Management</masterLabel>
+        <translation><!-- Competency Management --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Other areas Third parties</masterLabel>
+        <translation><!-- Other areas Third parties --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Other areas Zurich</masterLabel>
+        <translation><!-- Other areas Zurich --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Supervisor</masterLabel>
+        <translation><!-- Supervisor --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Systems Incidence</masterLabel>
+        <translation><!-- Systems Incidence --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

@@ -6,27 +6,6 @@
     <compactLayoutAssignment>SiniestroConsulta</compactLayoutAssignment>
     <label>Siniestro</label>
     <picklistValues>
-        <picklist>CloseDetail__c</picklist>
-        <values>
-            <fullName>Sin INFO</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>CloseResult__c</picklist>
-        <values>
-            <fullName>No Realizado</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Object__c</picklist>
-        <values>
-            <fullName>Bono</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Origin</picklist>
         <values>
             <fullName>Email</fullName>
@@ -82,14 +61,6 @@
     <picklistValues>
         <picklist>Subtype__c</picklist>
         <values>
-            <fullName>Activación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Apertura</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>App</fullName>
             <default>false</default>
         </values>
@@ -98,23 +69,27 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Catálogo</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Coberturas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Contraseña</fullName>
+            <fullName>Como contrato mi seguro</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Contratar seguro</fullName>
+            <fullName>Como renuevo mi seguro</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Denegación de cobertura</fullName>
+            <fullName>Contraseña App</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contratacion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegacion de cobertura</fullName>
             <default>false</default>
         </values>
         <values>
@@ -122,11 +97,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Documentación incorrecta</fullName>
+            <fullName>Documentacion necesaria</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Estado de mi caso</fullName>
+            <fullName>Estado de mi siniestro</fullName>
             <default>false</default>
         </values>
         <values>
@@ -134,11 +109,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencia contratación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencias</fullName>
+            <fullName>Nuevo dispositivo</fullName>
             <default>false</default>
         </values>
         <values>
@@ -150,15 +121,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Partnership</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Precio de mi seguro</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Problema con la reparación</fullName>
+            <fullName>Problema con la reparacion</fullName>
             <default>false</default>
         </values>
         <values>
@@ -166,18 +133,18 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Renovación</fullName>
+            <fullName>Solicitud factura</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Solicitud factura</fullName>
+            <fullName>Validacion</fullName>
             <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
         <values>
-            <fullName>Contratar seguro</fullName>
+            <fullName>Contratar mi seguro</fullName>
             <default>false</default>
         </values>
     </picklistValues>

@@ -10,28 +10,34 @@ private class WS_GenesysAPIServiceTest
     @testSetup
     static void createScenario()
     {
-        Account acc = new Account();
-        acc.LastName = 'nescudero';
-        acc.LegalEntity__pc = Label.GeneralInsurance;
-        insert acc;
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        insert accounts;
 
-        ContactPointPhone cpp = new ContactPointPhone();
-        cpp.ParentId = acc.Id;
-        cpp.TelephoneNumber = '123456789';
-        insert cpp;
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
+        insert contacts;
 
-        ContactPointEmail cpe = new ContactPointEmail();
-        cpe.ParentId = acc.Id;
-        cpe.EmailAddress = 'nescudero@nts-solutions.com';
-        insert cpe;
+        List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
+        insert contactPointPhones;
+        //Actualizar con los datos usados en los test
+        contactPointPhones.get(0).TelephoneNumber = '123456789';
+        update contactPointPhones.get(0);
 
-        Opportunity opp = new Opportunity();
-        opp.AccountId = acc.Id;
-        opp.Name = 'opp';
-        opp.StageName = 'New';
-        opp.CloseDate = System.today().addDays(10);
-        opp.Scope__c = 'General';
-        insert opp;
+        List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 10);
+        insert contactPointEmails;
+        //Actualizar con los datos usados en los test
+        contactPointEmails.get(0).EmailAddress = 'nescudero@nts-solutions.com';
+        update contactPointEmails.get(0);
+
+        //se crea 1 caso para cada cuenta
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        insert cases;
+
+        //Se crea 1 opp para cada cuenta
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1);
+        insert opportunities;
+
+        List<Task> tasks = TestDataFactory.generateInteractionTasks(10);
+        insert tasks;
     }
 
     /**POST
@@ -54,7 +60,7 @@ private class WS_GenesysAPIServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -62,7 +68,7 @@ private class WS_GenesysAPIServiceTest
         request.requestURI = '/genesys-cloud/v1/interactions/init';
         request.httpMethod = 'POST';
         request.addHeader('Content-Type', 'application/json');
-        request.requestBody = Blob.valueOf(JSON.serialize(testInteractionLog) );
+        request.requestBody = Blob.valueOf( JSON.serialize(testInteractionLog) );
 
         RestContext.request = request;
         RestContext.response = response;
@@ -72,11 +78,16 @@ private class WS_GenesysAPIServiceTest
         Test.stopTest();
 
         // Then
-        Task createdTask = [SELECT id FROM Task][0];
+        List<Task> createdTasks = [SELECT Id FROM Task];
+        Set<Id> tasksIds = new Set<Id>();
+        for(Task createdTask: createdTasks)
+        {
+            tasksIds.add(createdTask.Id);
+        }
 
         GenesysInteractionsService.Interaction expectedInteraction = (GenesysInteractionsService.Interaction) JSON.deserialize(response.responseBody.toString(), GenesysInteractionsService.Interaction.class);
 
-        System.assertEquals(createdTask.Id, expectedInteraction.callLogId);
+        System.assertEquals(true, tasksIds.contains(expectedInteraction.callLogId), 'Set should contains expectedInteraction.callLogId');
         System.assertEquals(UserInfo.getUserEmail(), expectedInteraction.bestAgentId);
     }
 
@@ -96,7 +107,7 @@ private class WS_GenesysAPIServiceTest
         request.requestURI = '/genesys-cloud/v1/interactions/init';
         request.httpMethod = 'POST';
         request.addHeader('Content-Type', 'application/json');
-        request.requestBody = Blob.valueOf(JSON.serialize(testInteractionLog) );
+        request.requestBody = Blob.valueOf( JSON.serialize(testInteractionLog) );
 
         RestContext.request = request;
         RestContext.response = response;
@@ -106,10 +117,10 @@ private class WS_GenesysAPIServiceTest
         Test.stopTest();
 
         // Then
-        Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(RestContext.response.responseBody.toString() );
+        Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped( RestContext.response.responseBody.toString() );
 
         System.assertEquals(500, RestContext.response.statusCode);
-        System.assertEquals(GenesysInteractionsService.MISSING_FIELDS_REQUIRED, (String) responseMap.get('message') );
+        System.assertEquals( GenesysInteractionsService.MISSING_FIELDS_REQUIRED, (String) responseMap.get('message') );
     }
 
     @isTest
@@ -127,7 +138,7 @@ private class WS_GenesysAPIServiceTest
         request.requestURI = '/genesys-cloud/asv/interactions/init';
         request.httpMethod = 'POST';
         request.addHeader('Content-Type', 'application/json');
-        request.requestBody = Blob.valueOf(JSON.serialize(testInteractionLog) );
+        request.requestBody = Blob.valueOf( JSON.serialize(testInteractionLog) );
 
         RestContext.request = request;
         RestContext.response = response;
@@ -153,7 +164,7 @@ private class WS_GenesysAPIServiceTest
         //request.requestURI = System.URL.getSalesforceBaseURL().toExternalForm()+'/genesys-cloud/v1/interactions/init';
         request.requestURI = '/genesys-cloud/v1/interactions/init';
         request.httpMethod = 'POST';
-        request.requestBody = Blob.valueOf(JSON.serialize(testInteractionLog) );
+        request.requestBody = Blob.valueOf( JSON.serialize(testInteractionLog) );
 
         RestContext.request = request;
         RestContext.response = response;

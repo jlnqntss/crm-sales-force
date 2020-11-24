@@ -3,6 +3,42 @@
     <label>Detalle de Cierre</label>
     <name>CloseDetail__c</name>
     <picklistValues>
+        <masterLabel>No Realizado</masterLabel>
+        <translation><!-- No Realizado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No Realizado -Pol. Seguridad</masterLabel>
+        <translation><!-- No Realizado -Pol. Seguridad --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No realizado - Cliente no interesa</masterLabel>
+        <translation><!-- No realizado - Cliente no interesa --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No realizado - Derivado mediación</masterLabel>
+        <translation><!-- No realizado - Derivado mediación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No realizado - No procede</masterLabel>
+        <translation><!-- No realizado - No procede --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No realizado - Rechazo técnico</masterLabel>
+        <translation><!-- No realizado - Rechazo técnico --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado</masterLabel>
+        <translation><!-- Realizado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Impacto en prima</masterLabel>
+        <translation><!-- Realizado - Impacto en prima --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Sin impacto en prima</masterLabel>
+        <translation><!-- Realizado - Sin impacto en prima --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>valores</masterLabel>
         <translation><!-- valores --></translation>
     </picklistValues>
