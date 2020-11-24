@@ -103,7 +103,8 @@ private class EmailToOpportunityServiceTest
         GenesysCloud.RoutingService.mock = new GenesysCloudMocks('{"id":"1JB9ZmJnCCKXlerwxAOZXC"}', 200);
 
         //Recuperamos un email creado para añadirlo a la cabecera del nuevo email
-        List<EmailMessage> existingEmails = [SELECT Id, RelatedToId FROM EmailMessage WHERE RelatedToId != null LIMIT 1];
+        List<Opportunity> existingOpportunities = [SELECT Id FROM Opportunity];
+        List<EmailMessage> existingEmails = [SELECT Id, RelatedToId FROM EmailMessage WHERE RelatedToId IN: existingOpportunities LIMIT 1];
         System.assertEquals(1, existingEmails.size(), 'There should be one EmailMessage');
 
         //Creamos un nuevo email
