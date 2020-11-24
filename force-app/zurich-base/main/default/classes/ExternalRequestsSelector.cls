@@ -8,7 +8,7 @@ public with sharing class ExternalRequestsSelector
         {
             if(externalRequestFieldsToQuery == null)
             {
-                externalRequestFieldsToQuery = new Set<String> {'Id'};
+                externalRequestFieldsToQuery = new Set<String> {'Id', 'Name'};
             }
 
             return externalRequestFieldsToQuery;
@@ -111,7 +111,7 @@ public with sharing class ExternalRequestsSelector
      *
      * @author adelgado
      * @param  recordTypeId RecordType a recuperar
-     * @return Listado de external request recuperadas. Si no se recibe ningún origen se devuelve una lista vacía
+     * @return Listado de external request recuperadas. Si no se recibe ningún recordtype se devuelve una lista vacía
      */
     public ExternalRequest__c[] selectPendingByRecordType(Id recordTypeId)
     {
@@ -133,7 +133,7 @@ public with sharing class ExternalRequestsSelector
      *
      * @author adelgado
      * @param  recordIds Ids de registros de External Request
-     * @return Listado de external request recuperadas. Si no se recibe ningún origen se devuelve una lista vacía
+     * @return Listado de external request recuperadas. Si no se recibe ningún id se devuelve una lista vacía
      */
     public ExternalRequest__c[] selectById(Set<Id> recordIds)
     {
@@ -177,7 +177,7 @@ public with sharing class ExternalRequestsSelector
      *
      * @author adelgado
      * @param  recordTypeId RecordType a recuperar
-     * @return Listado de external request recuperadas. Si no se recibe ningún origen se devuelve nulo
+     * @return Listado de external request recuperadas. Si no se recibe ningún recordtype se devuelve nulo
      */
     public Database.QueryLocator queryLocatorPendingByRecordtype(Id recordTypeId)
     {
@@ -190,6 +190,30 @@ public with sharing class ExternalRequestsSelector
         {
             baseQuery,
             'WHERE RecordTypeId = :recordTypeId AND Processed__c = false ORDER BY CreatedDate, NumRetry__c',
+            limitCondition
+        }) );
+    }
+
+
+    /**
+     * Recupera external requests de un recordtype concreto ordenadas por el campo Name
+     *
+     * @author adelgado
+     * @param  recordTypeId RecordType a recuperar
+     * @param  orderType ASC o DESC. Si es nulo será ASC
+     * @return Listado de external request recuperadas. Si no se recibe ningún recordtype se devuelve una lista vacía
+     */
+    public ExternalRequest__c[] selectMinMaxPendingByRecordType(Id recordTypeId, String orderType)
+    {
+        if( recordTypeId == null)
+        {
+            return new List<ExternalRequest__c>();
+        }
+
+        return Database.query( String.format('{0} {1} {2}', new List<String>
+        {
+            baseQuery,
+            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false ORDER BY Name ' + orderType,
             limitCondition
         }) );
     }
