@@ -11,6 +11,14 @@ public class ContactPointEmailUtil
     public static List<ContactPointEmail> contactPointEmailsToUpdate;
     public static List<Scope__c> scopesToUpdate;
 
+    /**
+     * Método que, en caso de insert o update, recupera los ContactPointEmail marcados con IsPrimary = true
+     * relacionados con el ámbito y los propios ámbitos de los registros que recibimos en el trigger,
+     * para actualizarlos al final del trigger
+     *
+     * @author rlopez
+     * @date 20/11/2020
+     */
     public static void getRelatedPrimaryContactEmails(List<ContactPointEmail> newList, Map<Id, ContactPointEmail> oldMap)
     {
         if(Trigger.isInsert || Trigger.isUpdate)
@@ -57,6 +65,19 @@ public class ContactPointEmailUtil
         }
     }
 
+    /**
+     * Método que, en caso de insert o update, accede a sus registros relacionados y a su ámbito
+     * para actualizar los campos correspondientes.
+     *
+     * Si el nuevo registro tiene IsPrimary = true, en el caso de los ContactPointEmail relacionados
+     * actualizará el campo IsPrimary a false, y en el caso del ámbito actualizará el campo PrimaryEmail__c
+     *
+     * Si el campo no tiene IsPrimary = true y es una actualización de registro, se comprobará si ese registro
+     * esta siendo actualizado de true a false para lanzar un error de que no se puede realizar dicha acción
+     *
+     * @author rlopez
+     * @date 20/11/2020
+     */
     public static void updateRelatedPrimaryContactPointEmails(List<ContactPointEmail> newList, Map<Id, ContactPointEmail> oldMap)
     {
         for(ContactPointEmail newContactPointEmail: newList)
@@ -123,6 +144,12 @@ public class ContactPointEmailUtil
         }
     }
 
+    /**
+     * Método que actualiza los registros relacionados al finalizar el trigger
+     *
+     * @author rlopez
+     * @date 20/11/2020
+     */
     public static void updateRelatedContactPoints()
     {
         if( !scopesToUpdate.isEmpty() )
