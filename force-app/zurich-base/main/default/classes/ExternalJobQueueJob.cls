@@ -19,9 +19,12 @@ public class ExternalJobQueueJob implements Queueable
             {
                 List<String> queries = ExternalJobQueueBatchController.getChunkQueries(origin);
 
-                for(String query : queries)
+                if( queries != null && !queries.isEmpty() )
                 {
-                    database.executeBatch(new ExternalJobQueueBatch(origin, query), 200);
+                    for(String query : queries)
+                    {
+                        database.executeBatch(new ExternalJobQueueBatch(origin, query), 200);
+                    }
                 }
             }
         }
