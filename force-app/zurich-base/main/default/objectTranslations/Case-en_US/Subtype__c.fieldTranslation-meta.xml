@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Type N2</label>
+    <name>Subtype__c</name>
+    <picklistValues>
+        <masterLabel>Anulación</masterLabel>
+        <translation><!-- Anulación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Apoyo Captación</masterLabel>
+        <translation><!-- Apoyo Captación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>App</masterLabel>
+        <translation><!-- App --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Bloqueo de IMEI</masterLabel>
+        <translation><!-- Bloqueo de IMEI --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cambio de intermediario</masterLabel>
+        <translation><!-- Cambio de intermediario --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Campañas Proactiva</masterLabel>
+        <translation><!-- Campañas Proactiva --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Campañas Reactivo</masterLabel>
+        <translation><!-- Campañas Reactivo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cancelacion</masterLabel>
+        <translation><!-- Cancelacion --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Coberturas</masterLabel>
+        <translation><!-- Coberturas --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Como abro un siniestro</masterLabel>
+        <translation><!-- Como abro un siniestro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Como contrato mi seguro</masterLabel>
+        <translation><!-- Como contrato mi seguro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Como firmo mi seguro</masterLabel>
+        <translation><!-- Como firmo mi seguro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Como renuevo mi seguro</masterLabel>
+        <translation><!-- Como renuevo mi seguro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Como valido mi seguro</masterLabel>
+        <translation><!-- Como valido mi seguro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Contraseña App</masterLabel>
+        <translation><!-- Contraseña App --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Contratación</masterLabel>
+        <translation><!-- Contratación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cuando me avisan</masterLabel>
+        <translation><!-- Cuando me avisan --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Datos de pago</masterLabel>
+        <translation><!-- Datos de pago --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Datos personales</masterLabel>
+        <translation><!-- Datos personales --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Denegación de cobertura</masterLabel>
+        <translation><!-- Denegación de cobertura --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Desactivar FMI</masterLabel>
+        <translation><!-- Desactivar FMI --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Descargar App</masterLabel>
+        <translation><!-- Descargar App --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación incorrecta</masterLabel>
+        <translation><!-- Documentación incorrecta --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación necesaria</masterLabel>
+        <translation><!-- Documentación necesaria --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>El precio de mi renovacion</masterLabel>
+        <translation><!-- El precio de mi renovacion --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Envíos</masterLabel>
+        <translation><!-- Envíos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Estado de mi siniestro</masterLabel>
+        <translation><!-- Estado de mi siniestro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Franquicia</masterLabel>
+        <translation><!-- Franquicia --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Gestión Competencias</masterLabel>
+        <translation><!-- Gestión Competencias --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Gestión de recibos</masterLabel>
+        <translation><!-- Gestión de recibos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Incidencias</masterLabel>
+        <translation><!-- Incidencias --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Información</masterLabel>
+        <translation><!-- Información --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Metodos de pago admitidos</masterLabel>
+        <translation><!-- Metodos de pago admitidos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Modificación</masterLabel>
+        <translation><!-- Modificación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Modificar dispositivo asegurado</masterLabel>
+        <translation><!-- Modificar dispositivo asegurado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Modificar el beneficiario</masterLabel>
+        <translation><!-- Modificar el beneficiario --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Modificar el capital</masterLabel>
+        <translation><!-- Modificar el capital --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Modificar las garantias</masterLabel>
+        <translation><!-- Modificar las garantias --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Modificar modalidad del seguro</masterLabel>
+        <translation><!-- Modificar modalidad del seguro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No definido</masterLabel>
+        <translation><!-- No definido --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Nuevo dispositivo</masterLabel>
+        <translation><!-- Nuevo dispositivo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Otros</masterLabel>
+        <translation><!-- Otros --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Pago</masterLabel>
+        <translation><!-- Pago --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Pago de franquicia</masterLabel>
+        <translation><!-- Pago de franquicia --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Precio de mi seguro</masterLabel>
+        <translation><!-- Precio de mi seguro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Problema con la reparación</masterLabel>
+        <translation><!-- Problema con la reparación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Quejas y reclamaciones</masterLabel>
+        <translation><!-- Quejas y reclamaciones --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recobro indirecto</masterLabel>
+        <translation><!-- Recobro indirecto --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recobro proactivo</masterLabel>
+        <translation><!-- Recobro proactivo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recobro reactivo</masterLabel>
+        <translation><!-- Recobro reactivo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recogida/Entrega</masterLabel>
+        <translation><!-- Recogida/Entrega --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Reemplazo</masterLabel>
+        <translation><!-- Reemplazo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Rehabilitación</masterLabel>
+        <translation><!-- Rehabilitación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Resolucion de mi siniestro</masterLabel>
+        <translation><!-- Resolucion de mi siniestro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Retención</masterLabel>
+        <translation><!-- Retención --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Revocación Saneamiento</masterLabel>
+        <translation><!-- Revocación Saneamiento --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Saneamiento</masterLabel>
+        <translation><!-- Saneamiento --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Solicitud factura</masterLabel>
+        <translation><!-- Solicitud factura --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Sugerencias /felicitaciones</masterLabel>
+        <translation><!-- Sugerencias /felicitaciones --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Tareas administrativas</masterLabel>
+        <translation><!-- Tareas administrativas --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Validación</masterLabel>
+        <translation><!-- Validación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Validación/ emisión</masterLabel>
+        <translation><!-- Validación/ emisión --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Verificación Riesgo</masterLabel>
+        <translation><!-- Verificación Riesgo --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

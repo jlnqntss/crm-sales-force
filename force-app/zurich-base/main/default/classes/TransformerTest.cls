@@ -450,17 +450,10 @@ public with sharing class TransformerTest
     {
         Transformer transformer = new Transformer(Transformer.ORIGIN_NAME_INFO);
 
-        Boolean myBoolean = transformer.parser.parseBooleanField('s');
         Date myDate = Transformer.parser.parseDateField('2020-05-01');
         Datetime myDatetime = Transformer.parser.parseDatetimeField('2020-05-01 00:00:00');
-        String myString = Transformer.parser.parseStringField('Hello World!');
-        Double myDouble = Transformer.parser.parseDoubleField('25.00');
-        Integer myInteger = Transformer.parser.parseIntegerField('5');
-        System.assert (myBoolean != null, '[0] No se ha parseado Boolean');
+
         System.assert (myDate != null, '[1] No se ha parseado Date');
         System.assert (myDatetime != null, '[2] No se ha parseado Datetime');
-        System.assert (myString != null, '[3] No se ha parseado String');
-        System.assert (myDouble != null, '[4] No se ha parseado Double');
-        System.assert (myInteger != null, '[5] No se ha parseado Integer');
     }
 }

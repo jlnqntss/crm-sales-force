@@ -158,10 +158,10 @@ public without sharing class GenesysInteractionsService
 
         if (searchFor.contains('@') )
         {
-            return ContactsSelector.findByEmail(new List<String> { searchFor });
+            return new ContactsSelector().applyScope('all').findByEmail(new List<String> { searchFor });
         }
 
-        return ContactsSelector.findByPhoneNumber(new List<String> { searchFor });
+        return new ContactsSelector().applyScope('all').findByPhoneNumber(new List<String> { searchFor });
     }
 
     /**
@@ -220,7 +220,7 @@ public without sharing class GenesysInteractionsService
     {
         SearchResult results = new SearchResult();
 
-        List<Contact> contacts = ContactsSelector.findByPhoneNumber(new List<String> { request.value });
+        List<Contact> contacts = new ContactsSelector().applyScope('all').findByPhoneNumber(new List<String> { request.value });
 
         for(Contact matchedContact : contacts)
         {

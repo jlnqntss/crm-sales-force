@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>French__c</field>
-        <value xsi:type="xsd:string">Envoi/Réception de l’appareil</value>
+        <value xsi:type="xsd:string">Dépôt/Retrait objet endommagé</value>
     </values>
     <values>
         <field>German__c</field>

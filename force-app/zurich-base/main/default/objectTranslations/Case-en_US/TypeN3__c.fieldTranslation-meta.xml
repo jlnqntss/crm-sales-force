@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Type N3</label>
+    <name>TypeN3__c</name>
+    <picklistValues>
+        <masterLabel>Activation failure</masterLabel>
+        <translation><!-- Activation failure --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Annulment</masterLabel>
+        <translation><!-- Annulment --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Bank data</masterLabel>
+        <translation><!-- Bank data --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CTL surveys</masterLabel>
+        <translation><!-- CTL surveys --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cancellation due to change of mediator</masterLabel>
+        <translation><!-- Cancellation due to change of mediator --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Capital decrease</masterLabel>
+        <translation><!-- Capital decrease --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Capital expansion</masterLabel>
+        <translation><!-- Capital expansion --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Card payment</masterLabel>
+        <translation><!-- Card payment --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Certificate</masterLabel>
+        <translation><!-- Certificate --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Change taker</masterLabel>
+        <translation><!-- Change taker --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Claims</masterLabel>
+        <translation><!-- Claims --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Complaints</masterLabel>
+        <translation><!-- Complaints --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Congratulations</masterLabel>
+        <translation><!-- Congratulations --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>DDA part</masterLabel>
+        <translation><!-- DDA part --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Dates</masterLabel>
+        <translation><!-- Dates --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Decrease in guarantees</masterLabel>
+        <translation><!-- Decrease in guarantees --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Digital signature</masterLabel>
+        <translation><!-- Digital signature --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Fines</masterLabel>
+        <translation><!-- Fines --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>General information</masterLabel>
+        <translation><!-- General information --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Green card</masterLabel>
+        <translation><!-- Green card --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Incl./Modif driver (Main-2º)</masterLabel>
+        <translation><!-- Incl./Modif driver (Main-2º) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Inconsistency</masterLabel>
+        <translation><!-- Inconsistency --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Insured management</masterLabel>
+        <translation><!-- Insured management --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Issue</masterLabel>
+        <translation><!-- Issue --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Language change in policy</masterLabel>
+        <translation><!-- Language change in policy --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Navigation</masterLabel>
+        <translation><!-- Navigation --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>New offer (Competences management)</masterLabel>
+        <translation><!-- New offer (Competences management) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>New offer (Support recruitment)</masterLabel>
+        <translation><!-- New offer (Support recruitment) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No offer</masterLabel>
+        <translation><!-- No offer --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Offer (Modification)</masterLabel>
+        <translation><!-- Offer (Modification) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Offer (Shipping)</masterLabel>
+        <translation><!-- Offer (Shipping) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Payments</masterLabel>
+        <translation><!-- Payments --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Personal information</masterLabel>
+        <translation><!-- Personal information --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Policy</masterLabel>
+        <translation><!-- Policy --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Policy supplement</masterLabel>
+        <translation><!-- Policy supplement --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Proteo client</masterLabel>
+        <translation><!-- Proteo client --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Receipt</masterLabel>
+        <translation><!-- Receipt --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Record failure NOT identified</masterLabel>
+        <translation><!-- Record failure NOT identified --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Record failure identified</masterLabel>
+        <translation><!-- Record failure identified --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Regular</masterLabel>
+        <translation><!-- Regular --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Regularization</masterLabel>
+        <translation><!-- Regularization --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Resend receipt</masterLabel>
+        <translation><!-- Resend receipt --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Return</masterLabel>
+        <translation><!-- Return --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Risk change</masterLabel>
+        <translation><!-- Risk change --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Rule 57</masterLabel>
+        <translation><!-- Rule 57 --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Secure document</masterLabel>
+        <translation><!-- Secure document --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Suggestion</masterLabel>
+        <translation><!-- Suggestion --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Transfer payment</masterLabel>
+        <translation><!-- Transfer payment --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Undefined</masterLabel>
+        <translation><!-- Undefined --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Underinsurance</masterLabel>
+        <translation><!-- Underinsurance --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Urgent</masterLabel>
+        <translation><!-- Urgent --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>User / password lock</masterLabel>
+        <translation><!-- User / password lock --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Warranty extension</masterLabel>
+        <translation><!-- Warranty extension --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Way to pay</masterLabel>
+        <translation><!-- Way to pay --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Web</masterLabel>
+        <translation><!-- Web --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>With offer (Management skills)</masterLabel>
+        <translation><!-- With offer (Management skills) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>With offer (Recruitment support)</masterLabel>
+        <translation><!-- With offer (Recruitment support) --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

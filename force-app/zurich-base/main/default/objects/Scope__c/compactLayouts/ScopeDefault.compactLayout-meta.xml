@@ -3,8 +3,5 @@
     <fullName>ScopeDefault</fullName>
     <fields>Name</fields>
     <fields>AccountId__c</fields>
-    <fields>ContactPointAddressId__c</fields>
-    <fields>ContactPointEmailId__c</fields>
-    <fields>ContactPointPhone__c</fields>
     <label>Scope Default</label>
 </CompactLayout>
