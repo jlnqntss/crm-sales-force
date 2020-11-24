@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreferredDateTime</fullName>
+    <active>true</active>
+    <description>Preferred Contact Datetime cannot be more than 30 days into the future</description>
+    <errorConditionFormula>DATEVALUE(PreferredContactDatetime__c) &gt; (TODAY()+30)</errorConditionFormula>
+    <errorDisplayField>PreferredContactDatetime__c</errorDisplayField>
+    <errorMessage>[VR ContactRequest] Preferred Contact Datetime cannot be more than 30 days into the future</errorMessage>
+</ValidationRule>
