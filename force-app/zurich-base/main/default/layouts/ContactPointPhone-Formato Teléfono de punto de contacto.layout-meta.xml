@@ -55,6 +55,10 @@
                 <behavior>Edit</behavior>
                 <field>INFOContactPointNumber__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ScopeId__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
