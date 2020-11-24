@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Cancelar vida Orange</name>
+    <style>none</style>
+    <subject>Hemos recibido tu solicitud - Orange Seguros by Zurich</subject>
+    <textOnly>Zurich - Klinc
+
+
+Hola,
+
+Gracias por tu mensaje y tu confianza en nosotros.
+
+Hemos recibido tu consulta, ¡no te preocupes! en Orange Seguros by Zurich responderemos a todas tus preguntas.
+
+Nuestro horario de atención es de lunes a viernes de 9:00 a 18:00hs.
+
+Nos pondremos en contacto contigo en el menor tiempo posible.
+
+Equipo Orange Seguros by Zurich
+
+Copyright © Orange Seguros by Zurich, All rights reserved.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

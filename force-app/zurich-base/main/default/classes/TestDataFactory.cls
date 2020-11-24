@@ -288,18 +288,10 @@ public class TestDataFactory
                 'cliente_codigo_cnae_cno' => commercialActivities[
                     Integer.valueof( (Math.random() * commercialActivities.size() - 1) ) // cno o cnae
                                             ],
-                'cliente_restringido' => flagType[
-                    Integer.valueof( (Math.random() * flagType.size() - 1) ) // checkbox -> 'S': true, sino false
-                                        ],
-                'cliente_morosidad' => flagType[
-                    Integer.valueof( (Math.random() * flagType.size() - 1) ) // checkbox -> 'S': true, sino false
-                                      ],
-                'cliente_registro_mizurich' => flagType[
-                    Integer.valueof( (Math.random() * flagType.size() - 1) ) // checkbox -> 'S': true, sino false
-                                              ],
-                'cliente_bloqueo_gdpr' => flagType[
-                    Integer.valueof( (Math.random() * flagType.size() - 1) ) // checkbox -> 'S': true, sino false
-                                         ]
+                'cliente_restringido' => (10 * Math.random()) > 5 ? true : false,
+                'cliente_morosidad' => (10 * Math.random()) > 5 ? true : false,
+                'cliente_registro_mizurich' => (10 * Math.random()) > 5 ? true : false,
+                'cliente_bloqueo_gdpr' => (10 * Math.random()) > 5 ? true : false
             }
                 );
         }
@@ -474,9 +466,7 @@ public class TestDataFactory
                         Math.round( (Math.random() * (90000) + 10000) )
                         ),
                     'pais_codigo' => 'ESP', // país
-                    'indicador_domicilio_principal' => flagType[
-                        Integer.valueof( (Math.random() * flagType.size() - 1) ) // checkbox -> 'S': true, sino false,
-                                                      ],
+                    'indicador_domicilio_principal' => false,
                     'numero_prefijo_pais' => '',
                     'numero_tel' => '',
                     'numero_extension_tel' => '',
@@ -621,7 +611,8 @@ public class TestDataFactory
                 'producto_comercial' => String.valueOf(i + 1).leftPad(9, '0'),
                 'producto_nombre' => 'Product' + i,
                 'producto_descripción' => 'Product' + i,
-                'producto_estado' => 'S'
+                'producto_estado' => true,
+                'producto_estado_desc' => 'ACTIVO'
             }
                 );
         }
@@ -709,12 +700,12 @@ public class TestDataFactory
                 'poliza_forma_pago' => paymentTypeValues[
                     Integer.valueof( (Math.random() * paymentTypeValues.size() - 1) )
                                       ].getValue(),
-                'poliza_forma_pago_desc' => 'Test'
-                                           /*'prima_tecnica' => String.valueOf(Integer.valueof((Math.random() * 6))),
-                                              'prima_suma_recargos_descuentos' => String.valueOf(Integer.valueof((Math.random() * 6))),
-                                              'prima_suma_bonus_malus' => String.valueOf(Integer.valueof((Math.random() * 6))),
-                                              'prima_suma_impuestos' => String.valueOf(Integer.valueof((Math.random() * 6))),
-                                              'prima_total' => String.valueOf(Integer.valueof((Math.random() * 6)))*/
+                'poliza_forma_pago_desc' => 'Test',
+                'prima_tecnica' => 10 * Math.random(),
+                'prima_suma_recargos_descuentos' => 10 * Math.random(),
+                'prima_suma_bonus_malus' => 10 * Math.random(),
+                'prima_suma_impuestos' => 10 * Math.random(),
+                'prima_total' => 10 * Math.random()
             }
                 );
         }
@@ -1220,8 +1211,8 @@ public class TestDataFactory
                     'opcion_desc' => 'Test',
                     'opcion_seleccion' => 'Test',
                     'opcion_paquete_desc' => 'Test',
-                    'importe_acumulado' => '50',
-                    'prima_neta' => '50'
+                    'importe_acumulado' => 10 * Math.random(),
+                    'prima_neta' => 10 * Math.random()
             }
                 );
         }
