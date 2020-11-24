@@ -13,47 +13,48 @@ public class ContactPointEmailUtil
 
     public static void getRelatedPrimaryContactEmails(List<ContactPointEmail> newList, Map<Id, ContactPointEmail> oldMap)
     {
-        relatedContactPointEmailsMap = new Map<Id, List<ContactPointEmail> >();
-        relatedScopesMap = new Map<Id, Scope__c>();
-
-        contactPointEmailsToUpdate = new List<ContactPointEmail>();
-        scopesToUpdate = new List<Scope__c>();
-
-        Set<Id> relatedScopes = new Set<Id>();
-
-
-
-        for(ContactPointEmail newContactPointEmail: newList)
+        if(Trigger.isInsert || Trigger.isUpdate)
         {
-            if(newContactPointEmail.ScopeId__c != null)
-            {
-                relatedScopes.add(newContactPointEmail.ScopeId__c);
-            }
-        }
+            //Inicializamos mapas de registros relacionados
+            relatedContactPointEmailsMap = new Map<Id, List<ContactPointEmail> >();
+            relatedScopesMap = new Map<Id, Scope__c>();
 
-        List<ContactPointEmail> relatedContactPointEmails = [
-            SELECT Id, ScopeId__c, IsPrimary
-            FROM ContactPointEmail
-            WHERE ScopeId__c IN: relatedScopes AND IsPrimary = true AND Id NOT IN: newList
-        ];
+            //Inicializamos listas de registros a actualizar al finalizar el trigger
+            contactPointEmailsToUpdate = new List<ContactPointEmail>();
+            scopesToUpdate = new List<Scope__c>();
 
-        for(ContactPointEmail relatedContactPointEmail: relatedContactPointEmails)
-        {
-            List<ContactPointEmail> contactPointEmailList = new List<ContactPointEmail>();
-            if( relatedContactPointEmailsMap.containsKey(relatedContactPointEmail.ScopeId__c) )
+            Set<Id> relatedScopes = new Set<Id>();
+
+            for(ContactPointEmail newContactPointEmail: newList)
             {
-                contactPointEmailList = relatedContactPointEmailsMap.get(relatedContactPointEmail.ScopeId__c);
+                if(newContactPointEmail.ScopeId__c != null)
+                {
+                    relatedScopes.add(newContactPointEmail.ScopeId__c);
+                }
             }
 
-            contactPointEmailList.add(relatedContactPointEmail);
-            relatedContactPointEmailsMap.put(relatedContactPointEmail.ScopeId__c, contactPointEmailList);
-        }
+            List<ContactPointEmail> relatedContactPointEmails = new ContactPointEmailsSelector(
+                new Set<String> {'Id', 'ScopeId__c', 'IsPrimary'}
+                ).selectByScopeIdAndIsPrimary(relatedScopes, true, newList);
 
-        relatedScopesMap = new Map<Id, Scope__c>([
-                                                     SELECT Id, PrimaryEmail__c, PrimaryPhone__c, AccountId__c, Scope__c
-                                                     FROM Scope__c
-                                                     WHERE Id IN: relatedScopes
-                                                 ]);
+            for(ContactPointEmail relatedContactPointEmail: relatedContactPointEmails)
+            {
+                List<ContactPointEmail> contactPointEmailList = new List<ContactPointEmail>();
+                if( relatedContactPointEmailsMap.containsKey(relatedContactPointEmail.ScopeId__c) )
+                {
+                    contactPointEmailList = relatedContactPointEmailsMap.get(relatedContactPointEmail.ScopeId__c);
+                }
+
+                contactPointEmailList.add(relatedContactPointEmail);
+                relatedContactPointEmailsMap.put(relatedContactPointEmail.ScopeId__c, contactPointEmailList);
+            }
+
+            relatedScopesMap = new Map<Id, Scope__c>(
+                new ScopesSelector(
+                    new Set<String> {'Id', 'PrimaryEmail__c', 'AccountId__c', 'Scope__c'}
+                    ).selectById(relatedScopes)
+                );
+        }
     }
 
     public static void updateRelatedPrimaryContactPointEmails(List<ContactPointEmail> newList, Map<Id, ContactPointEmail> oldMap)
@@ -114,7 +115,7 @@ public class ContactPointEmailUtil
 
                         if(!isPrimaryFound)
                         {
-                            newContactPointEmail.addError('There should be at least one primary contact point email');
+                            newContactPointEmail.addError(Label.PrimaryContactPointEmailRequired);
                         }
                     }
                 }

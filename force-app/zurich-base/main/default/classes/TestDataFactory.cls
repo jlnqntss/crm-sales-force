@@ -2097,6 +2097,7 @@ public class TestDataFactory
 
         for(Scope__c relatedScope: scopes)
         {
+            Boolean isPrimary = true;
             for(Integer i=0; i<numRecords; i++)
             {
                 contactPointEmails.add(
@@ -2104,12 +2105,55 @@ public class TestDataFactory
                         ParentId = relatedScope.AccountId__c,
                         EmailAddress = relatedScope.AccountId__r.Name + '@nts-solutions.com',
                         ScopeId__c = relatedScope.Id,
-                        Scope__c = relatedScope.Scope__c
+                        Scope__c = relatedScope.Scope__c,
+                        IsPrimary = isPrimary
                     )
                 );
+                isPrimary = false;
             }
         }
 
         return contactPointEmails;
+    }
+
+    /**
+     * Genera ContactPointPhone relacionados con una lista de scopes
+     **
+     * @param List<Scope> scopes lista de scopes para las que hay que generar un ContactPointPhone
+     * @param Integer numRecords número de elementos a generar
+     *
+     * @return List<ContactPointPhone> listado de ContactPointPhones generados
+     * @author rlopez
+     * @date 23/11/2020
+     */
+    public static List<ContactPointPhone> generateContactPointPhonesFromScopes(List<Scope__c> scopes, Integer numRecords)
+    {
+        List<ContactPointPhone> ContactPointPhones = new List<ContactPointPhone>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Scope__c relatedScope: scopes)
+        {
+            Boolean isPrimary = true;
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                ContactPointPhones.add(
+                    new ContactPointPhone(
+                        ParentId = relatedScope.AccountId__c,
+                        TelephoneNumber = String.valueOf(phoneNumber),
+                        ScopeId__c = relatedScope.Id,
+                        Scope__c = relatedScope.Scope__c,
+                        IsPrimary = isPrimary
+                    )
+                );
+                isPrimary = false;
+            }
+        }
+
+        return ContactPointPhones;
     }
 }

@@ -15,6 +15,21 @@
                 <default>false</default>
                 <label>General</label>
             </value>
+            <value>
+                <fullName>Z</fullName>
+                <default>false</default>
+                <label>Z</label>
+            </value>
+            <value>
+                <fullName>ZE</fullName>
+                <default>false</default>
+                <label>ZE</label>
+            </value>
+            <value>
+                <fullName>ZEO</fullName>
+                <default>false</default>
+                <label>ZEO</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
