@@ -71,63 +71,19 @@
     <picklistValues>
         <picklist>Type</picklist>
         <values>
-            <fullName>Apagado%2FFuera Cobertura</fullName>
+            <fullName>Call</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Broma</fullName>
+            <fullName>Email</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Comunica</fullName>
+            <fullName>Meeting</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Contestador</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cortada</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cuelga en espera</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Error %2F Equivoco</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Error servidor chat</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fallo Audio</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fax</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Ilocalizable</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No contesta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Spam</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Transferencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Útil</fullName>
+            <fullName>Other</fullName>
             <default>false</default>
         </values>
     </picklistValues>

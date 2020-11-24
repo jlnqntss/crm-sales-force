@@ -175,46 +175,6 @@ public class Transformer
     class FieldParser
     {
         /**
-         * Método que parsea un string en texto de acuerdo con las indicaciones
-         * de formato del sistema origen
-         **
-        * @param String valor a transformar en String , por ejemplo: 'hola'
-        * @return String
-        *
-        * @author xsobera
-        * @date 21/10/2020
-        */
-        public String parseStringField(String strValue)
-        {
-            if ( String.isNotBlank(strValue) )
-            {
-                return strValue;
-            }
-
-            return null;
-        }
-
-        /**
-         * Método que parsea un string en boolean de acuerdo con las indicaciones
-         * de formato del sistema origen
-         **
-        * @param String valor a transformar en boolean, por ejemplo: S, Y, 1 ...
-        * @return Boolean
-        *
-        * @author xsobera
-        * @date 13/10/2020
-        */
-        public Boolean parseBooleanField(String strValue)
-        {
-            if ( String.isNotBlank(strValue) )
-            {
-                return strValue == 'S' || strValue == 's' || strValue == 'TRUE' || strValue == 'true';
-            }
-
-            return false;
-        }
-
-        /**
          * Método que parsea un string en Date de acuerdo con las indicaciones
          * de formato del sistema origen
          **
@@ -249,46 +209,6 @@ public class Transformer
             if ( String.isNotBlank(strValue) )
             {
                 return Datetime.valueOf(strValue);
-            }
-
-            return null;
-        }
-
-        /**
-         * Método que parsea un string en Double de acuerdo con las indicaciones
-         * de formato del sistema origen
-         **
-        * @param String valor a transformar en Double, por ejemplo: '0000.00' ...
-        * @return Double
-        *
-        * @author xsobera
-        * @date 26/10/2020
-        */
-        public Double parseDoubleField(String strValue)
-        {
-            if ( String.isNotBlank(strValue) )
-            {
-                return Double.valueOf(strValue );
-            }
-
-            return null;
-        }
-
-        /**
-         * Método que parsea un string en Integer de acuerdo con las indicaciones
-         * de formato del sistema origen
-         **
-        * @param String valor a transformar en Integer, por ejemplo: '0000' ...
-        * @return Integer
-        *
-        * @author xsobera
-        * @date 26/10/2020
-        */
-        public Integer parseIntegerField(String strValue)
-        {
-            if ( String.isNotBlank(strValue) && strValue.isNumeric() )
-            {
-                return Integer.valueOf(strValue );
             }
 
             return null;
@@ -394,7 +314,7 @@ public class Transformer
                         if ( !isLookupRelationship(sfFieldName) )
                         {
                             // Fill value
-                            fillFieldValue( record, sfFieldName, (String) originRecordMap.get(originRecordField) );
+                            fillFieldValue( record, sfFieldName, originRecordMap.get(originRecordField) );
                         }
                         else
                         {
@@ -453,36 +373,23 @@ public class Transformer
      * @author xsobera
      * @date 04/11/2020
      */
-    private void fillFieldValue( sObject record, String sfFieldName, String fieldValue)
+    private void fillFieldValue( sObject record, String sfFieldName, Object fieldValue)
     {
         // Obteniendo tipo del campo: ' + sfFieldName
         Schema.DisplayType fieldDisplayType = objectDefinitionByName.get(String.valueOf(record.getSObjectType())).getFieldType(sfFieldName);
         switch on fieldDisplayType
         {
-            when BOOLEAN
-            {
-                record.put( sfFieldName, parser.parseBooleanField(fieldValue) );
-            }
             when DATE
             {
-                record.put( sfFieldName, parser.parseDateField(fieldValue) );
+                record.put( sfFieldName, parser.parseDateField((String) fieldValue) );
             }
             when DATETIME
             {
-                record.put( sfFieldName, parser.parseDatetimeField(fieldValue) );
+                record.put( sfFieldName, parser.parseDatetimeField((String) fieldValue) );
             }
-            when CURRENCY, DOUBLE
+            when else 
             {
-                record.put( sfFieldName, parser.parseDoubleField(fieldValue) );
-            }
-            when INTEGER
-            {
-                record.put( sfFieldName, parser.parseIntegerField(fieldValue) );
-            }
-            when else
-            {
-                // se considera texto el resto de campos
-                record.put( sfFieldName, parser.parseStringField(fieldValue) );
+                record.put( sfFieldName, fieldValue );
             }
         }
     }
