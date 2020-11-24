@@ -6,74 +6,6 @@
     <compactLayoutAssignment>SiniestroConsulta</compactLayoutAssignment>
     <label>Consulta</label>
     <picklistValues>
-        <picklist>CauseOfLoss__c</picklist>
-        <values>
-            <fullName>TBD</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>ClaimStatusTPA__c</picklist>
-        <values>
-            <fullName>2%2E5 Fraud</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>CloseDetail__c</picklist>
-        <values>
-            <fullName>No Realizado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No Realizado -Pol%2E Seguridad</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Cliente no interesa</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Derivado mediación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - No procede</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Rechazo técnico</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado</fullName>
-            <default>true</default>
-        </values>
-        <values>
-            <fullName>Realizado - Impacto en prima</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Sin impacto en prima</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>valores</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>LegalEntity__c</picklist>
-        <values>
-            <fullName>General Insurance</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Life Insurance</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Origin</picklist>
         <values>
             <fullName>Email</fullName>
@@ -85,33 +17,6 @@
         </values>
         <values>
             <fullName>Web</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>PendingBy__c</picklist>
-        <values>
-            <fullName>Client</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Competency Management</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Other areas Third parties</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Other areas Zurich</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Supervisor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Systems Incidence</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -154,64 +59,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>SourceArea__c</picklist>
-        <values>
-            <fullName>End customer partner</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generic Internal</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generic end customer</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>INFO note</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Mediator</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Partner</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Partner dome</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>SDC %28Customer Defense Service%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Zurich Business Client</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Sub_status__c</picklist>
-        <values>
-            <fullName>BIT</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cliente</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>IT</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Siniestros</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Subtype__c</picklist>
         <values>
             <fullName>App</fullName>
@@ -227,6 +74,10 @@
         </values>
         <values>
             <fullName>Coberturas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Como abro un siniestro</fullName>
             <default>false</default>
         </values>
         <values>
@@ -365,7 +216,11 @@
     <picklistValues>
         <picklist>Type</picklist>
         <values>
-            <fullName>Contratar seguro</fullName>
+            <fullName>Contratar mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencia</fullName>
             <default>false</default>
         </values>
         <values>
@@ -374,6 +229,10 @@
         </values>
         <values>
             <fullName>Pago de mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovar mi seguro</fullName>
             <default>false</default>
         </values>
         <values>

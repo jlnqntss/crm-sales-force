@@ -3,15 +3,75 @@
     <label>Objeto</label>
     <name>Object__c</name>
     <picklistValues>
-        <masterLabel>definidos</masterLabel>
-        <translation><!-- definidos --></translation>
+        <masterLabel>Bono</masterLabel>
+        <translation><!-- Bono --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>no</masterLabel>
-        <translation><!-- no --></translation>
+        <masterLabel>Estado gestión</masterLabel>
+        <translation><!-- Estado gestión --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>valores</masterLabel>
-        <translation><!-- valores --></translation>
+        <masterLabel>GDPR</masterLabel>
+        <translation><!-- GDPR --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Garantías/capitales asegurados</masterLabel>
+        <translation><!-- Garantías/capitales asegurados --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Mi Zurich</masterLabel>
+        <translation><!-- Mi Zurich --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Oferta</masterLabel>
+        <translation><!-- Oferta --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Peritación</masterLabel>
+        <translation><!-- Peritación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Precio renovación póliza</masterLabel>
+        <translation><!-- Precio renovación póliza --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Productos</masterLabel>
+        <translation><!-- Productos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Póliza</masterLabel>
+        <translation><!-- Póliza --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Póliza Viaje</masterLabel>
+        <translation><!-- Póliza Viaje --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recibo</masterLabel>
+        <translation><!-- Recibo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recibo - Fecha</masterLabel>
+        <translation><!-- Recibo - Fecha --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recibo -Estado</masterLabel>
+        <translation><!-- Recibo -Estado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recibo – Importe</masterLabel>
+        <translation><!-- Recibo – Importe --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Riesgo asegurado</masterLabel>
+        <translation><!-- Riesgo asegurado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Siniestros</masterLabel>
+        <translation><!-- Siniestros --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Soporte navegación</masterLabel>
+        <translation><!-- Soporte navegación --></translation>
     </picklistValues>
 </CustomFieldTranslation>

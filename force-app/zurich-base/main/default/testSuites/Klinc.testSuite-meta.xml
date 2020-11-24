@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexTestSuite xmlns="http://soap.sforce.com/2006/04/metadata">
+    <testClassName>ExternalRequestsSelectorTest</testClassName>
+    <testClassName>Mock_IBA_ResponseGenerator</testClassName>
+    <testClassName>TestDataFactory</testClassName>
+    <testClassName>Test_AccountUtil</testClassName>
+    <testClassName>Test_Batch_DeleteErrorLogs</testClassName>
+    <testClassName>Test_Batch_DeleteExternalRequest</testClassName>
+    <testClassName>Test_Batch_DeleteLeads</testClassName>
+    <testClassName>Test_Batch_DeleteMasters</testClassName>
+    <testClassName>Test_Batch_DeleteQuotes</testClassName>
+    <testClassName>Test_Batch_PostProcessing</testClassName>
+    <testClassName>Test_Batch_ProcessExternalRequest</testClassName>
+    <testClassName>Test_Batch_ResponseExternalRequest</testClassName>
+    <testClassName>Test_CaseUtil</testClassName>
+    <testClassName>Test_ContactUtil</testClassName>
+    <testClassName>Test_CoverUtil</testClassName>
+    <testClassName>Test_DocumentUtil</testClassName>
+    <testClassName>Test_EmailIBAUtil</testClassName>
+    <testClassName>Test_ErrorLogUtil</testClassName>
+    <testClassName>Test_ExternalRequestUtil</testClassName>
+    <testClassName>Test_OrderItemUtil</testClassName>
+    <testClassName>Test_OrderUtil</testClassName>
+    <testClassName>Test_PreferenceCentreController</testClassName>
+    <testClassName>Test_PreferenceCentreProcessController</testClassName>
+    <testClassName>Test_SystemUtil</testClassName>
+    <testClassName>Test_WS_Requests</testClassName>
+    <testClassName>WebServicesParserTest</testClassName>
+</ApexTestSuite>
