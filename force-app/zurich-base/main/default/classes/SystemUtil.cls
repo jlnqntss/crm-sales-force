@@ -54,6 +54,7 @@ public without sharing class SystemUtil
      * @date 22/04/2020
      *
      * @udpate nts (agonzalezisasi) - 27/10/2020 - Include Multi-Partner logic
+     * @udpate nts (adelgado) - 24/11/2020 - Include ExternalJobQueueBatchJobs__c
      */
     public static AdminSetup__mdt getAdminSetupMetadata()
     {
@@ -88,7 +89,8 @@ public without sharing class SystemUtil
             WS_Service_Quote_Entry__c,
             WS_Source_IBA__c,
             WS_Source_IBA_Multi_Partner__c,
-            IBA_EMEA_Prefix__c
+            IBA_EMEA_Prefix__c,
+            ExternalJobQueueBatchJobs__c
             FROM AdminSetup__mdt
             WHERE MasterLabel = 'AdminSetup'
         ];

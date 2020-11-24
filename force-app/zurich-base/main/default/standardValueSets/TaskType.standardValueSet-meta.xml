@@ -2,78 +2,23 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>false</sorted>
     <standardValue>
-        <fullName>Útil</fullName>
-        <default>true</default>
-        <label>Útil</label>
+        <fullName>Email</fullName>
+        <default>false</default>
+        <label>Email</label>
     </standardValue>
     <standardValue>
-        <fullName>Transferencia</fullName>
+        <fullName>Meeting</fullName>
         <default>false</default>
-        <label>Transferencia</label>
+        <label>Meeting</label>
     </standardValue>
     <standardValue>
-        <fullName>Error / Equivoco</fullName>
+        <fullName>Other</fullName>
         <default>false</default>
-        <label>Error / Equivoco</label>
+        <label>Other</label>
     </standardValue>
     <standardValue>
-        <fullName>Cortada</fullName>
+        <fullName>Call</fullName>
         <default>false</default>
-        <label>Cortada</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Broma</fullName>
-        <default>false</default>
-        <label>Broma</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Spam</fullName>
-        <default>false</default>
-        <label>Spam</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Comunica</fullName>
-        <default>false</default>
-        <label>Comunica</label>
-    </standardValue>
-    <standardValue>
-        <fullName>No contesta</fullName>
-        <default>false</default>
-        <label>No contesta</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Contestador</fullName>
-        <default>false</default>
-        <label>Contestador</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Fax</fullName>
-        <default>false</default>
-        <label>Fax</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Apagado/Fuera Cobertura</fullName>
-        <default>false</default>
-        <label>Apagado/Fuera Cobertura</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Ilocalizable</fullName>
-        <default>false</default>
-        <label>Ilocalizable</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Fallo Audio</fullName>
-        <default>false</default>
-        <label>Fallo Audio</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Error servidor chat</fullName>
-        <default>false</default>
-        <label>Error servidor chat</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Cuelga en espera</fullName>
-        <default>false</default>
-        <label>Cuelga en espera</label>
+        <label>Call</label>
     </standardValue>
 </StandardValueSet>

@@ -69,7 +69,7 @@ public with sharing class AsyncApexJobsSelector
         return Database.query( String.format('{0} {1}', new List<String>
         {
             baseQuery,
-            'WHERE ApexClassId IN (SELECT Id FROM ApexClass WHERE Name IN :classNames) AND Status NOT IN (\'Completed\', \'Aborted\', \'Failed\') AND JobType = \'BatchApex\''
+            'WHERE ApexClassId IN (SELECT Id FROM ApexClass WHERE Name IN :classNames) AND Status NOT IN (\'Completed\', \'Aborted\', \'Failed\')'
         }) );
     }
 
