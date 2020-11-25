@@ -1,7 +1,7 @@
 /**
  * Clase Apex que personaliza el guardado de interacciones de Genesys Cloud para adaptar los procesos de guardado del conector.
  * Para pruebas unitarias, ejecutar el método a través de un Execute Anoyimous serializando un Mapa de mapas a JSON.
- * '{ "interaction" : { "id": "test1"} } '
+ * '{ "interaction" : { "id": "test1"} } ' '{"eventName": "interactionChanged", "interaction" : { "id": "ucid1"},  "callLog": {"CallObject": "ucid1"}}'
  */
 global without sharing class ReassignInteractionCTIExtension implements purecloud.CTIExtension.SaveLog
 {
@@ -29,7 +29,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             String interactionId;
             Id currentWhatId;
 
-
             // 1 - Si la tarea de Genesys no cuenta con Id,se busca en el sistema a través del InteractionId
             //     Este proceso solo se produce en la gestión inicial
             if(eventName == 'interactionChanged' && String.isEmpty(interactionTask.Id) )
@@ -42,8 +41,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 }
 
                 List<Task> existingInteractionTasks = ActivitySelector.selectTasksByCallObjectIdentifier(interactionId);
-
-                System.debug(existingInteractionTasks);
 
                 if(!existingInteractionTasks.isEmpty() )
                 {
@@ -58,12 +55,13 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     interactionTask.Id = (new EmailMessagesSelector(new Set<String> { 'ActivityId' }).selectByInteractionId(new Set<String> { interactionId }) )[0].ActivityId;
                 }
 
-                System.debug(interactionTask);
-
                 interactionTask.Status = 'Asignada';
                 interactionTask.CallObject = interactionId;
                 interactionTask.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
                 interactionTask.OwnerId = UserInfo.getUserId();
+
+                //Actualizar el CASO relacionado con la TASK
+                changeCaseOwnerFromQueueToUser(interactionTask);
             }
             else if(eventName == 'interactionDisconnected')
             {
@@ -115,5 +113,29 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }
 
         return interactionTask;
+    }
+
+     /**
+     * Si la tarea está asociada a un caso y este caso pertenece a una cola, reasignar el caso al usuario actual.
+     * @param interactionTask Task recibida
+     */
+    @TestVisible
+    private static void changeCaseOwnerFromQueueToUser(Task interactionTask)
+    {
+        //Comprobar si es un CASO
+        if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
+        {
+            List<Case> cases = [SELECT Id, OwnerId, Owner.Type FROM Case WHERE Id = :interactionTask.WhatId];
+            if(!cases.isEmpty())
+            {
+                //Si el propietario es una COLA
+                if(cases[0].OwnerId.getSobjectType() == Group.sObjectType) //(cases[0].Owner.Type == 'Queue')
+                {
+                    //Cambiar el propietario al usuario actual
+                    cases[0].OwnerId = UserInfo.getUserId();
+                    update cases;
+                }
+            }
+        }
     }
 }

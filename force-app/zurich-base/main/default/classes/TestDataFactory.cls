@@ -1509,7 +1509,7 @@ public class TestDataFactory
 
         return externalRequestList;
     }
-    
+
     /**
      * Genera oportunidades a partir de los campos especificados
      **
@@ -1517,7 +1517,7 @@ public class TestDataFactory
      * @param String stage indica la etapa de las oportunidades a crear
      * @param Date closeDate indica la fecha de cierre de la oportunidad, puede ser nulo
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<Opportunity> listado de Opportunities generadas
      * @author rlopez
      * @date 03/11/2020
@@ -1579,7 +1579,7 @@ public class TestDataFactory
      * Genera EmailMessages huerfanos, no están relacionados con ningún registro
      **
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<EmailMessage> listado de EmailMessage generados
      * @author rlopez
      * @date 09/11/2020
@@ -1612,7 +1612,7 @@ public class TestDataFactory
      **
      * @param List<EmailMessage> emailMessages lista de emails para las que hay que generar un EmailMessage
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<EmailMessage> listado de EmailMessage generados
      * @author rlopez
      * @date 09/11/2020
@@ -1649,7 +1649,7 @@ public class TestDataFactory
      **
      * @param List<Opportunity> opportunities lista de oportunidades para las que hay que generar un EmailMessage
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<EmailMessage> listado de EmailMessage generados
      * @author rlopez
      * @date 03/11/2020
@@ -1691,7 +1691,7 @@ public class TestDataFactory
      * @param List<EmailMessage> emails lista de emails para las que hay que generar un EmailMessageRelation
      * @param Id                 personId Id para la persona (user, contact or lead) que hay que generar un EmailMessageRelation
      * @param String             relationType tipo de relación a crear (ToAddress, CcAddress, BccAddress, FromAddress, OtherAddress)
-     * 
+     *
      * @return List<EmailMessageRelation> listado de EmailMessageRelation generados
      * @author rlopez
      * @date 10/11/2020
@@ -2023,5 +2023,55 @@ public class TestDataFactory
         }
 
         return opportunities;
+    }
+
+    /**
+     * Genera Casos con un OwnerId determinado (Cola o Usuario)
+     * @param ownerId ID de Cola o User
+     * @param Integer numRecords número de registros a generar POR CADA CUENTA
+     * @return List<Case> listado de registros generados
+     */
+    public static List<Case> generateCasesWithOwnerId(Id ownerId, Integer numRecords)
+    {
+        List<Case> cases = new List<Case>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            cases.add(
+                new Case(
+                    OwnerId = ownerId
+                )
+            );
+        }
+
+        return cases;
+    }
+
+    /**
+     * Genera una lista de tareas con RecordType Interaction, con un WhatID relleno
+     * @param numTasks numero de elementos a generar
+     * @return List<Task> listado de tareas
+     */
+    public static List<Task> generateInteractionTasksWithWhatId(Id whatId, Integer numTasks)
+    {
+        List<Task> tasks = new List<Task>();
+        for (Integer i = 0; i < numTasks; i++)
+        {
+            Task interaction = new Task();
+            interaction.Status = 'Nueva';
+            interaction.WhatId = whatId;
+            interaction.Priority = 'Normal';
+            interaction.CallObject = 'ucid' + i;
+            interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
+                                       .get('Interaction')
+                                       .getRecordTypeId();
+            tasks.add(interaction);
+        }
+        return tasks;
     }
 }
