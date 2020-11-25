@@ -45,12 +45,12 @@ private with sharing class EmailMessagesSelectorTest
     @isTest
     static void test_selectByMessageIdentifier_matchedRecords()
     {
-        //Recuperamos un email que no tenga MessageIdentifier (un email padre)
-        List<EmailMessage> parentEmailMessageToSearch = [SELECT Id FROM EmailMessage WHERE MessageIdentifier = null LIMIT 1];
-        System.assertEquals(1, parentEmailMessageToSearch.size(), 'There should be 1 EmailMessage');
+        //Recuperamos todos los emails que tengan MessageIdentifier
+        List<EmailMessage> childEmailMessages = [SELECT Id, RelatedToId, MessageIdentifier FROM EmailMessage WHERE MessageIdentifier != null];
+        System.assertEquals(false, childEmailMessages.isEmpty(), 'List should NOT be empty');
 
         //Almacenamos el Id del EmailMessage en un Set de Strings para pasar como parametro al selector
-        Set<String> setToSearch = new Set<String> {parentEmailMessageToSearch.get(0).Id};
+        Set<String> setToSearch = new Set<String> {childEmailMessages.get(0).MessageIdentifier};
 
         //Buscamos EmailMessage que tenga ese Id como MessageIdentifier (indica que es una respuesta sobre ese email)
         Test.startTest();
@@ -72,14 +72,14 @@ private with sharing class EmailMessagesSelectorTest
     static void test_selectByMessageIdentifier_matchedRecords_bulk()
     {
         //Recuperamos un email que no tenga MessageIdentifier (un email padre)
-        List<EmailMessage> emailsMessageToSearch = [SELECT Id FROM EmailMessage WHERE MessageIdentifier = null];
+        List<EmailMessage> emailsMessageToSearch = [SELECT Id, MessageIdentifier FROM EmailMessage WHERE MessageIdentifier != null];
         System.assertEquals(true, emailsMessageToSearch.size() >= BULK_NUM_RECORDS, 'There should be greater than ' + BULK_NUM_RECORDS);
 
         //Almacenamos los Ids delEmailMessages en un Set de Strings para pasar como parametro al selector
         Set<String> setToSearch = new Set<String>();
         for(EmailMessage emailMessage: emailsMessageToSearch)
         {
-            setToSearch.add(emailMessage.Id);
+            setToSearch.add(emailMessage.MessageIdentifier);
         }
 
         //Buscamos EmailMessage que tenga ese Id como MessageIdentifier (indica que es una respuesta sobre ese email)
@@ -283,7 +283,7 @@ private with sharing class EmailMessagesSelectorTest
     {
         Test.startTest();
 
-        List<EmailMessage> selectedEmailMessages = new EmailMessagesSelector().selectByInteractionId(new Set<String>() );
+        List<EmailMessage> selectedEmailMessages = new EmailMessagesSelector().selectByInteractionId( new Set<String>() );
 
         Test.stopTest();
 
@@ -306,7 +306,7 @@ private with sharing class EmailMessagesSelectorTest
 
         for(EmailMessage message : [SELECT Id, GenesysInteractionId__c FROM EmaiLMessage LIMIT 10])
         {
-            interactionIds.add('genesys-id-' + emailMessages.size() );
+            interactionIds.add( 'genesys-id-' + emailMessages.size() );
             message.GenesysInteractionId__c = 'genesys-id-' + emailMessages.size();
             emailMessages.add(message);
         }
@@ -316,13 +316,13 @@ private with sharing class EmailMessagesSelectorTest
         // Test
         Test.startTest();
 
-        Map<Id, EmailMessage> selectedEmailMessagesById = new Map<Id, EmailMessage>(new EmailMessagesSelector().selectByInteractionId(interactionIds) );
+        Map<Id, EmailMessage> selectedEmailMessagesById = new Map<Id, EmailMessage>( new EmailMessagesSelector().selectByInteractionId(interactionIds) );
 
         Test.stopTest();
 
         // Then
         System.assertEquals(emailMessages.size(), selectedEmailMessagesById.size(), 'Se debería recibir una lista no vacía');
-        System.assertEquals(true, selectedEmailMessagesById.keySet().containsAll(new Map<Id, EmailMessage>(emailMessages).keySet() ), 'No contiene todos los ids de email');
+        System.assertEquals(true, selectedEmailMessagesById.keySet().containsAll( new Map<Id, EmailMessage>(emailMessages).keySet() ), 'No contiene todos los ids de email');
     }
 
 
