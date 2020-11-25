@@ -19,7 +19,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
         response.addHeader('Content-Type', 'application/json');
 
         Savepoint sp = Database.setSavepoint();
-        try 
+        try
         {
 
             validateRequest();
@@ -37,7 +37,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
                     Map<String, Object> requestInformationJSON = (Map<String, Object>) JSON.deserializeUntyped(
                         requestInformation
                     );
-                    
+
                     //Recuperamos los metadatos que contengan ese LastStep
                     BusinessInsuranceRaterService.getRequiredFieldsFromMetadata(
                         (String) requestInformationJSON.get(BusinessInsuranceRaterService.LASTSTEP_FIELD)
@@ -55,21 +55,30 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
                     response.statusCode = 200;
                 }
                 when 'interactions' {
-                    //TODO parsear la respuesta y llamar al servicio que corresponda
-                    response.responseBody = Blob.valueOf('{"status":"success", "sfId":"", "errors":[]}');
+                    //Deserializar la request en formato CallMeBack
+                    BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
+                        requestInformation,
+                        BusinessInsuranceCallbackService.CallMeBack.class
+                    );
+                    //Validar que llegan todos los campos necesarios
+                    BusinessInsuranceCallbackService.validateRequiredFields(deserializedRequest);
+                    //Insertar un Contact Request que entrará en el Process Builder
+                    String callMeBackId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
+
+                    response.responseBody = Blob.valueOf('{"status":"success", "sfId":"'+callMeBackId+'", "errors":[]}');
                     response.statusCode = 200;
                 }
             }
-        } 
+        }
         catch (WS_BaseAPIService.ApiException apiError)
         {
             Database.rollback(sp);
-            
+
             response.statusCode = 400;
 
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiError);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-        } 
+        }
         catch (DmlException dmlError)
         {
             Database.rollback(sp);
@@ -90,6 +99,16 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
         }
+        catch (BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException serviceException)
+        {
+            Database.rollback(sp);
+
+            response.statusCode = 400;
+
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(serviceException.statusCode, serviceException.getMessage());
+            ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
+            response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
+        }
         catch (JSONException jsonException)
         {
             Database.rollback(sp);
@@ -100,12 +119,12 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
         }
-        catch (Exception genericError) 
+        catch (Exception genericError)
         {
             Database.rollback(sp);
 
             response.statusCode = 500;
-            
+
             WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage());
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
