@@ -1558,7 +1558,7 @@ public class Test_ExternalRequestUtil
     @isTest
     static void test_dataParseCheck()
     {
-        String json_customer = '[{"status":{"codeValue":"Lead","code":"6","enumName":"CUSTOMER_STATUS"},"masterPolicyDesc":"","masterPolicySerial":"","country":{"codeValue":"España","code":"ES","enumName":"COUNTRY"},"cityArea":"Bilbao","city":"Bilbao","postalCode":"48014","address1":"Mi casa","subagency":"Life Insurance","customerSerial":"234234233","surname":"","firstName":"Toni","birthdate":"1956-06-28","mobilePhone":"66666","primaryEmail":"test@test.com","ssn":"","partner":"Orange Seguros"}]';
+        String json_customer = '[{"status":{"codeValue":"Lead","code":"6","enumName":"CUSTOMER_STATUS"},"masterPolicyDesc":"","masterPolicySerial":"","country":{"codeValue":"España","code":"ES","enumName":"COUNTRY"},"cityArea":"Bilbao","city":"Bilbao","postalCode":"48014","address1":"Mi casa","ZurichCompany":"Life Insurance","customerSerial":"234234233","surname":"","firstName":"Toni","birthdate":"1956-06-28","mobilePhone":"66666","primaryEmail":"test@test.com","ssn":"","partner":"Orange Seguros"}]';
 
         AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
         String WS_SOURCE_IBA_MULTI_PARTNER = adminSetup.WS_Source_IBA_Multi_Partner__c;

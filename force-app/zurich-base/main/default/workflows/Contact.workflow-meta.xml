@@ -18,6 +18,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <rules>
         <fullName>Abandoned lead</fullName>
@@ -31,6 +32,10 @@
             <field>Contact.NumQuotes__c</field>
             <operation>equals</operation>
             <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Contact.CustomerNum__c</field>
+            <operation>notEqual</operation>
         </criteriaItems>
         <description>After 1h from created date if the lead still contains 0 quotes it is considered to be abandoned and the lead is marked in order that Marketing Cloud starts the journey.</description>
         <triggerType>onCreateOnly</triggerType>

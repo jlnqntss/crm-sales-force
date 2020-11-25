@@ -39,7 +39,23 @@ public class Test_SystemUtil
 
         Account master = new Account(CustomerNum__c = '4747', Name = 'Test');
         insert (master);
+        
         Account masterRef = new Account(CustomerNum__c = '4747');
+
+        Contact customer = new Contact(
+            DNI__c = '44348579Ñ',
+            Email = 'andrea11@test.com',
+            Birthdate = Date.valueOf('1990-01-01'),
+            FirstName = 'test',
+            LastName = 'Gomez',
+            CustomerNum__c = '454545',
+            LegalEntity__c = Label.GeneralInsurance
+            );
+        customer.Account = masterRef;
+        insert (customer);
+
+        Contact contactRef = new Contact(CustomerNum__c = '454545');
+
         Order quote = new Order(
             EffectiveDate = Date.valueOf('1994-01-01'),
             CustomerNum__c = '4747',
@@ -62,19 +78,23 @@ public class Test_SystemUtil
             );
         quote.Pricebook2Id = standardPricebook.Id;
         quote.Account = masterRef;
+        quote.ContactId__r = contactRef;
         insert (quote);
 
-        Contact customer = new Contact(
-            DNI__c = '44348579Ñ',
-            Email = 'andrea11@test.com',
-            Birthdate = Date.valueOf('1990-01-01'),
-            FirstName = 'test',
-            LastName = 'Gomez',
-            CustomerNum__c = '454545',
-            LegalEntity__c = Label.GeneralInsurance
+
+        Order quoteRef = new Order(QuoteEntry__c = '333333');
+
+        OrderItem oi = new OrderItem(
+            ItemAge__c = 2,
+            itemId__c = '111111',
+            UnitPrice = 0,
+            Quantity = 1
             );
-        customer.Account = masterRef;
-        insert (customer);
+        oi.Order = quoteRef;
+        oi.PricebookEntryId = testPbe.Id;
+
+        insert (oi);
+        
     }
 
     @IsTest
@@ -289,6 +309,80 @@ public class Test_SystemUtil
     }
 
     @IsTest
+    static void test_ContactsSelectorEmail()
+    {
+        Map<String, List<Contact>> mapa = new Map<String, List<Contact>>();
+        SET<String> keys = new Set<String>();
+        keys.add('andrea11@test.com');
+
+        Test.startTest();
+        mapa = SystemUtil.contactsSelectorEmail(keys);
+
+        System.assert (
+            !mapa.isEmpty(),
+            'Test_SystemUtil: No se han podido recuperar los contactos'
+            );
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void test_contactsSelectorSubscribers()
+    {
+        Contact subscriber = new Contact (
+            Email = 'testexisting@test.com',
+            LastName = 'Test',
+            IsSubscriber__c  = true
+            );
+
+        insert subscriber;
+
+        Map<String, List<Contact>> mapa = new Map<String, List<Contact>>();
+        SET<String> keys = new Set<String>();
+        keys.add('testexisting@test.com');
+
+        Test.startTest();
+        SystemUtil.contactsSelectorMatchCode(keys, null, null, null, mapa);
+        // mapa = SystemUtil.contactsSelectorSubscribers(keys);
+
+        System.assert (
+            !mapa.isEmpty(),
+            'Test_SystemUtil: No se han podido recuperar los contactos'
+            );
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void test_getQuoteSameProduct()
+    {
+        
+        Map<String, List<Order>> mapa = new Map<String, List<Order>>();
+        SET<String> customerNum = new Set<String>();
+        customerNum.add('454545');
+        SET<String> products = new Set<String>();
+        products.add('Test Product');
+
+        Test.startTest();
+        mapa = SystemUtil.getQuoteSameProduct( customerNum,  products);
+
+        System.assert (
+            !mapa.isEmpty(),
+            'Test_SystemUtil: No se han podido recuperar las quotes'
+            );
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void test_getSubscribers()
+    {
+        Test.startTest();
+        System.assert (
+            String.isNotBlank( Systemutil.getSubscribers() ),
+            'No se ha podido recuperar la query de error logs'
+            );
+        Test.stopTest();
+    }
+
+    @IsTest
     static void test_ContactsSelectorEmailBirthDate()
     {
         Map<String, Contact> mapa1 = new Map<String, Contact>();
@@ -299,7 +393,7 @@ public class Test_SystemUtil
         keys.add('andrea11@test.com');
 
         Test.startTest();
-        SystemUtil.contactsSelectorMatchCode(keys, mapa1, mapa2, mapa3);
+        SystemUtil.contactsSelectorMatchCode(keys, mapa1, mapa2, mapa3, null);
 
         System.assert (
             !mapa1.isEmpty(),
