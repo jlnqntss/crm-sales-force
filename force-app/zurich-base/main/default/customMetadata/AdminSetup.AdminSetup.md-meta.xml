@@ -3,6 +3,10 @@
     <label>AdminSetup</label>
     <protected>false</protected>
     <values>
+        <field>ExternalJobQueueBatchJobs__c</field>
+        <value xsi:type="xsd:string">4</value>
+    </values>
+    <values>
         <field>IBACaseworker__c</field>
         <value xsi:type="xsd:string">Klinc_life,Klinc_gi</value>
     </values>
