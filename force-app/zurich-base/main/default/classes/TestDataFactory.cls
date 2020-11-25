@@ -2024,4 +2024,127 @@ public class TestDataFactory
 
         return opportunities;
     }
+
+    /**
+     * Genera scopes relacionados con cuentas
+     * 
+     * @param List<Account> accounts lista de accounts para las que hay que generar un listado de registros
+     * @param String scope el valor del campo scope__c
+     * @param Integer numRecords número de registros a generar POR CADA CUENTA
+     *
+     * @return List<Scope__c> listado de registros generados
+     * @author rlopez
+     * @date 20/11/2020 
+     */
+    public static List<Scope__c> generateScopesForEachAccount(List<Account> accounts, String scope, Integer numRecords)
+    {
+        List<Scope__c> scopes = new List<Scope__c>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        if(String.isBlank(scope))
+        {
+            scope = 'General';
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                scopes.add(
+                    new Scope__c(
+                        Name = scope + i,
+                        Scope__c = scope,
+                        AccountId__c = relatedAccount.Id
+                    )
+                );
+            }
+        }
+
+        return scopes;
+    }
+
+    /**
+     * Genera ContactPointEmail relacionados con una lista de scopes
+     **
+     * @param List<Scope> scopes lista de scopes para las que hay que generar un ContactPointEmail
+     * @param Integer numRecords número de elementos a generar
+     *
+     * @return List<ContactPointEmail> listado de ContactPointEmails generados
+     * @author rlopez
+     * @date 20/11/2020
+     */
+    public static List<ContactPointEmail> generateContactPointEmailsFromScopes(List<Scope__c> scopes, Integer numRecords)
+    {
+        List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Scope__c relatedScope: scopes)
+        {
+            Boolean isPrimary = true;
+            for(Integer i=0; i<numRecords; i++)
+            {
+                contactPointEmails.add(
+                    new ContactPointEmail(
+                        ParentId = relatedScope.AccountId__c,
+                        EmailAddress = relatedScope.AccountId__r.Name + '@nts-solutions.com',
+                        ScopeId__c = relatedScope.Id,
+                        Scope__c = relatedScope.Scope__c,
+                        IsPrimary = isPrimary
+                    )
+                );
+                isPrimary = false;
+            }
+        }
+
+        return contactPointEmails;
+    }
+
+    /**
+     * Genera ContactPointPhone relacionados con una lista de scopes
+     **
+     * @param List<Scope> scopes lista de scopes para las que hay que generar un ContactPointPhone
+     * @param Integer numRecords número de elementos a generar
+     *
+     * @return List<ContactPointPhone> listado de ContactPointPhones generados
+     * @author rlopez
+     * @date 23/11/2020
+     */
+    public static List<ContactPointPhone> generateContactPointPhonesFromScopes(List<Scope__c> scopes, Integer numRecords)
+    {
+        List<ContactPointPhone> ContactPointPhones = new List<ContactPointPhone>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Scope__c relatedScope: scopes)
+        {
+            Boolean isPrimary = true;
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                ContactPointPhones.add(
+                    new ContactPointPhone(
+                        ParentId = relatedScope.AccountId__c,
+                        TelephoneNumber = String.valueOf(phoneNumber),
+                        ScopeId__c = relatedScope.Id,
+                        Scope__c = relatedScope.Scope__c,
+                        IsPrimary = isPrimary
+                    )
+                );
+                isPrimary = false;
+            }
+        }
+
+        return ContactPointPhones;
+    }
 }
