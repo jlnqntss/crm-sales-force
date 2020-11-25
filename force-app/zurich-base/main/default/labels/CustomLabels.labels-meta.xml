@@ -318,6 +318,14 @@
         <value>Indentificador no válido</value>
     </labels>
     <labels>
+        <fullName>InsuredPerson</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Insured Person</shortDescription>
+        <value>Insured Person</value>
+    </labels>
+    <labels>
         <fullName>JsonIncorrecto</fullName>
         <categories>WebService Parser</categories>
         <language>en_US</language>
