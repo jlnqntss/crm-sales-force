@@ -103,8 +103,9 @@ private class EmailToOpportunityServiceTest
         GenesysCloud.RoutingService.mock = new GenesysCloudMocks('{"id":"1JB9ZmJnCCKXlerwxAOZXC"}', 200);
 
         //Recuperamos un email creado para añadirlo a la cabecera del nuevo email
-        List<EmailMessage> existingEmails = [SELECT Id, RelatedToId FROM EmailMessage LIMIT 1];
-        // FIXME: System.assertEquals(1, existingEmails.size(), 'There should be one EmailMessage');
+        List<Opportunity> existingOpportunities = [SELECT Id FROM Opportunity];
+        List<EmailMessage> existingEmails = [SELECT Id, RelatedToId FROM EmailMessage WHERE RelatedToId IN: existingOpportunities LIMIT 1];
+        System.assertEquals(1, existingEmails.size(), 'There should be one EmailMessage');
 
         //Creamos un nuevo email
         String emailSubject = 'Second Email Received';
@@ -139,7 +140,7 @@ private class EmailToOpportunityServiceTest
 
         //Comprobamos que NO se ha creado una oportunidad para el email recibido
         List<Opportunity> opportunitiesCreated = [SELECT Id FROM Opportunity WHERE Name =: emailSubject AND CloseDate =: System.today()];
-        // FIXME: System.assertEquals(0, opportunitiesCreated.size(), 'The list should be empty');
+        System.assertEquals(0, opportunitiesCreated.size(), 'The list should be empty');
 
         //Instanciamos EmailMessagesSelector
         EmailMessagesSelector emailMessagesSelectorObj = new EmailMessagesSelector();
@@ -147,19 +148,19 @@ private class EmailToOpportunityServiceTest
 
         //Comprobamos que se ha creado un nuevo email relacionado con la oportunidad del primer email
         List<EmailMessage> emailMessagesRelatedToOpportunity = emailMessagesSelectorObj.selectByRelatedObjectId(new Set<String> {existingEmails.get(0).RelatedToId});
-        // FIXME: System.assertEquals(2, emailMessagesRelatedToOpportunity.size(), 'There should be 2 emails related with the opportunity');
+        System.assertEquals(2, emailMessagesRelatedToOpportunity.size(), 'There should be 2 emails related with the opportunity');
 
         //Recuperamos el último email creado para comprobar si se ha creado correctamente la relación con el contacto
         List<EmailMessage> emailMessagesCreated = emailMessagesSelectorObj.selectBySubject(new List<String> {emailSubject});
-        // FIXME: System.assertEquals(1, emailMessagesCreated.size(), 'There should be an EmailMessage');
+        System.assertEquals(1, emailMessagesCreated.size(), 'There should be an EmailMessage');
 
         //Recuperamos el Contacto para la dirección de email
         List<Contact> contactsByEmail = new ContactsSelector().applyScope('all').findByEmail(new List<String> { EMAIL_SOPORTE });
-        // FIXME: System.assertEquals(false, contactsByEmail.isEmpty(), 'List shoudnt be empty');
+        System.assertEquals(false, contactsByEmail.isEmpty(), 'List shoudnt be empty');
 
         //Comprobamos que se ha creado un EmailMessageRelation entre el contacto y el EmailMessage creado
         emailMessagesSelectorObj.fieldsToQuery = new Set<String> {'Id'};
         List<EmailMessageRelation> emailMessageRelationsCreated = emailMessagesSelectorObj.selectRelationByEmailAndRelation(new Set<String> {emailMessagesCreated.get(0).Id}, new Set<String> {contactsByEmail.get(0).Id});
-        // FIXME: System.assertEquals(1, emailMessageRelationsCreated.size(), 'There should be an EmailMessageRelation between the EmailMessage and the email contact');
+        System.assertEquals(1, emailMessageRelationsCreated.size(), 'There should be an EmailMessageRelation between the EmailMessage and the email contact');
     }
 }
