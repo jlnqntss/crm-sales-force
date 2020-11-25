@@ -203,7 +203,7 @@ public class Test_ContactUtil
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         keys.add(ExistingLead.Email);
-        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode);
+        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode, null);
 
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
@@ -273,7 +273,7 @@ public class Test_ContactUtil
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         keys.add(customer.Email);
-        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode);
+        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode, null);
 
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
@@ -341,7 +341,9 @@ public class Test_ContactUtil
         Map<String, Contact> mapContactsMatchCodeLECountry = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
-        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeLECountry, mapContactsMatchCodeLE, mapContactsMatchCode);
+        SystemUtil.contactsSelectorMatchCode(
+            keys, mapContactsMatchCodeLECountry, mapContactsMatchCodeLE, mapContactsMatchCode, null
+        );
 
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
@@ -550,6 +552,149 @@ public class Test_ContactUtil
         System.assertEquals( true, contacts.isEmpty() );
 
         test.stopTest();
+    }
+
+   /**
+     * Test: Upsert contact when subscriber exists
+     *
+     * @author nts (nbizkarra)
+     * @date 18/11/2020
+     */
+    @isTest
+    static void test_UpsertContactSubscriber()
+    {
+        Account newMaster = new Account(
+            Name = 'test',
+            RecordTypeId = SystemUtil.getAccountRecordTypeIdByName(Label.Master)
+            );
+        insert newMaster;
+
+        Contact customer = new Contact(
+            Email = 'test@test.com',
+            LastName = 'Test',
+            IsSubscriber__c  = true,
+            Status__c = Label.Lead,
+            LegalEntity__c = Label.LifeInsurance,
+            sourceCountry__c = 'Spain',
+            AccountId= newMaster.Id
+            );
+        insert customer;
+
+        SET<String> keys = new Set<String>();
+        Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
+        Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
+        Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
+        Map<String, List<Contact>> mapSubscribers = new Map<String, List<Contact>>();
+        keys.add(customer.Email);
+        SystemUtil.contactsSelectorMatchCode(keys, 
+            mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode,
+            mapSubscribers
+        );
+        // mapSubscribers = SystemUtil.contactsSelectorSubscribers(keys);
+
+        Pricebook2 Pricebook = new Pricebook2(
+            Id = Test.getStandardPricebookId(),
+            IsActive = true,
+            Name = Label.PriceBook
+            );
+        update Pricebook;
+
+        Test.startTest();
+        Contact lead = new Contact(
+            Email = 'test@test.com',
+            MobilePhone = '456456456',
+            Birthdate = Date.valueOf('1990-01-01'),
+            CustomerNum__c = 'LIFE-7897',
+            LegalEntity__c = Label.LifeInsurance,
+            Status__c = Label.Lead,
+            sourceCountry__c = 'Spain'
+            );
+
+        ExternalRequestUtil.emptyStaticVariables();
+        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCodeCountry;
+        ExternalRequestUtil.mapContactsEmailBirthDateLE = mapContactsMatchCodeLE;
+        ExternalRequestUtil.mapSubscribers = mapSubscribers;
+
+        ContactUtil.upsertContact(lead, null);
+
+        Contact updatedLead = ExternalRequestUtil.contactsToUpdate.get(
+            lead.CustomerNum__c
+            );
+        //A subscriber has been found (same country, partner and LE)
+        System.assert (updatedLead.id != null);
+        Test.stopTest();
+    }
+
+    /**
+     * Test: Upsert contact when subscriber exists from the opposite legal entity
+     *
+     * @author nts (nbizkarra)
+     * @date 18/11/2020
+     */
+    @isTest
+    static void test_UpsertContact_MasterSubscriber()
+    {
+        Account newMaster = new Account(
+            Name = 'test',
+            RecordTypeId = SystemUtil.getAccountRecordTypeIdByName(Label.Master)
+            );
+        insert newMaster;
+
+        Contact customer = new Contact(
+            Email = 'test@test.com',
+            LastName = 'Test',
+            IsSubscriber__c  = true,
+            Status__c = Label.Lead,
+            LegalEntity__c = Label.GeneralInsurance,
+            sourceCountry__c = 'Spain',
+            AccountId= newMaster.Id
+            );
+        insert customer;
+
+        SET<String> keys = new Set<String>();
+        Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
+        Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
+        Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
+        Map<String, List<Contact>> mapSubscribers = new Map<String, List<Contact>>();
+        keys.add(customer.Email);
+        SystemUtil.contactsSelectorMatchCode(keys, 
+            mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode,
+            mapSubscribers
+            );
+        // mapSubscribers = SystemUtil.contactsSelectorSubscribers(keys);
+
+        Pricebook2 Pricebook = new Pricebook2(
+            Id = Test.getStandardPricebookId(),
+            IsActive = true,
+            Name = Label.PriceBook
+            );
+        update Pricebook;
+
+        Test.startTest();
+        Contact lead = new Contact(
+            Email = 'test@test.com',
+            MobilePhone = '456456456',
+            Birthdate = Date.valueOf('1990-01-01'),
+            CustomerNum__c = 'LIFE-7897',
+            LegalEntity__c = Label.LifeInsurance,
+            Status__c = Label.Customer,
+            sourceCountry__c = 'Spain',
+            MasterPolicyNum__c = '123234'
+            );
+
+        ExternalRequestUtil.emptyStaticVariables();
+        ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCodeCountry;
+        ExternalRequestUtil.mapContactsEmailBirthDateLE = mapContactsMatchCodeLE;
+        ExternalRequestUtil.mapSubscribers = mapSubscribers;
+
+        ContactUtil.upsertContact(lead, null);
+
+        Contact updatedLead = ExternalRequestUtil.contactsToUpdate.get(
+            lead.CustomerNum__c
+            );
+        //the lead has been related to the existing subsriber
+        System.assert (updatedLead.AccountId != null);
+        Test.stopTest();
     }
 
     /*
