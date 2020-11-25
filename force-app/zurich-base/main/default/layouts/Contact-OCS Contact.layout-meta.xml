@@ -11,15 +11,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>NumClaims__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>NumPolicies__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
                 <field>Name</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Scope__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -54,10 +50,6 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
-    <miniLayout>
-        <fields>NumClaims__c</fields>
-        <fields>NumPolicies__c</fields>
-    </miniLayout>
     <relatedContent>
         <relatedContentItems>
             <layoutItem>
