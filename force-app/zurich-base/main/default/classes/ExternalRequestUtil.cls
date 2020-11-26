@@ -19,6 +19,8 @@ global without sharing class ExternalRequestUtil {
   public static String IBA_EMEA_NON_COUNTRY;  // Used in this class and Batch_ResponseExternalRequest.cls
   private static String IBA_MULTI_PARTNER_ORIGIN;  // Used in this class and Batch_ResponseExternalRequest.cls
   private static String WS_SOURCE_IBA;
+  // nts (agonzalezisasi) - 24/nov/2020 - Separate Spain and EMEA parser
+  private static String WS_SOURCE_IBA_EMEA;
   private static String WS_SOURCE_IBA_MULTI_PARTNER;
   private static String WS_SERVICE_NAME_PROCESS_REQUEST;
   private static String WS_SERVICE_NAME_QUOTE_ENTRY;
@@ -42,7 +44,11 @@ global without sharing class ExternalRequestUtil {
   public static Map<String, Object> recordsToProcess;
 
   public static Set<String> contactsToSearch;
+  // nts (nbizkarra) - 17/11/2020 - Include search among subscribers
   public static Set<String> contactEmails;
+  // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
+  public static Set<String> contactSameProd;
+  public static Set<String> sameProd;
 
   public static Set<String> quotesToSearch;
   public static Set<String> policiesToSearch;
@@ -63,10 +69,15 @@ global without sharing class ExternalRequestUtil {
   public static Map<String, Contact> mapContactsEmailBirthDateLE;
   public static Map<String, Contact> mapContactsEmailBirthDate;
 
+  public static Map<String, List<Contact>> mapSubscribers;
+  public static Map<String, List<Order>> mapQuoteSameProd;
+ 
   public static Map<String, Account> mapPartners;
 
   public static Map<String, Order> mapQuotes;
   public static Map<String, Order> mapPolicies;
+  
+
   public static Map<String, OrderItem> mapOrderItem;
 
   public static Map<String, Case> mapClaims;
@@ -138,7 +149,11 @@ global without sharing class ExternalRequestUtil {
     recordsToProcess = new Map<String, Object>();
 
     contactsToSearch = new Set<String>();
+    // nts (nbizkarra) - 17/11/2020 - Include search among subscribers
     contactEmails = new Set<String>();
+    // nts (nbizkarra) - 19/11/2020 - Include search quote with same product 
+    contactSameProd = new Set<String>();
+    sameProd = new Set<String>();
 
     quotesToSearch = new Set<String>();
     policiesToSearch = new Set<String>();
@@ -158,6 +173,8 @@ global without sharing class ExternalRequestUtil {
     mapContactsEmailBirthDateLECountry = new Map<String, Contact>();
     mapContactsEmailBirthDateLE = new Map<String, Contact>();
     mapContactsEmailBirthDate = new Map<String, Contact>();
+    mapSubscribers = new Map<String, List<Contact>>();
+    mapQuoteSameProd = new Map<String, List<Order>>();
 
     mapPartners = new Map<String, Account>();
 
@@ -178,6 +195,8 @@ global without sharing class ExternalRequestUtil {
         if( IBA_EMEA_NON_COUNTRY == null ) IBA_EMEA_NON_COUNTRY = adminSetup.IBA_EMEA_Non_Country__c;
         if( IBA_MULTI_PARTNER_ORIGIN == null ) IBA_MULTI_PARTNER_ORIGIN = adminSetup.IBA_Multi_Partner_Origin__c;
         if( WS_SOURCE_IBA == null ) WS_SOURCE_IBA = adminSetup.WS_Source_IBA__c;
+        // nts (agonzalezisasi) - 24/nov/2020 - Separate Spain and EMEA parser
+        if( WS_SOURCE_IBA_EMEA == NULL ) WS_SOURCE_IBA_EMEA = adminSetup.WS_Source_IBA_EMEA__c;
         if( WS_SOURCE_IBA_MULTI_PARTNER == null ) WS_SOURCE_IBA_MULTI_PARTNER = adminSetup.WS_Source_IBA_Multi_Partner__c;
         if( WS_SERVICE_NAME_PROCESS_REQUEST == null ) WS_SERVICE_NAME_PROCESS_REQUEST = adminSetup.WS_Service_Process_Request__c;
         if( WS_SERVICE_NAME_QUOTE_ENTRY == null ) WS_SERVICE_NAME_QUOTE_ENTRY = adminSetup.WS_Service_Quote_Entry__c;
@@ -262,6 +281,7 @@ global without sharing class ExternalRequestUtil {
                     AccountMastersToUpdate = mastersToUpdateMultiPartner;
                 } else if( actualRequest.Country__c != IBA_EMEA_NON_COUNTRY ) { // IBA EMEA => Country <> Spain
                     isEMEA = true;
+                    IBA_Source = WS_SOURCE_IBA_EMEA;
                     IBA_Prefix = IBA_EMEA;
                     AccountFieldCustomerNum = ACCOUNT_FIELD_IBA_EMEA;
                     AccountMastersToUpdate = mastersToUpdateEMEA;
@@ -389,6 +409,7 @@ global without sharing class ExternalRequestUtil {
         // System.Debug('*** Test mock fin');
     }
 
+    System.debug('Parsing errors: ' + errorMessages);
     // Parsing errors?
     if (!errorMessages.isEmpty()) {
         throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
@@ -435,6 +456,8 @@ global without sharing class ExternalRequestUtil {
     ) {
           // Add customer to search
           contactsToSearch.add(customerNumber);
+          // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
+          contactSameProd.add(customerNumber);
 
           recordsToProcess.put(actualRequest.id, incomingOrder);
           policiesToSearch.add(incomingOrder.policyNum__c);
@@ -480,10 +503,23 @@ global without sharing class ExternalRequestUtil {
             }
           }
 
+          
           if (orderItem.itemModel__c != null) {   // GI insurance
-              productsToSearch.add(orderItem.itemModel__c);
+              
+            productsToSearch.add(orderItem.itemModel__c);
+              // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
+              if(entityType == 'Policy'){
+                  sameProd.add(orderItem.itemModel__c);
+              }
+
           } else {    // Life insurance, category: insured person
+              orderItem.category__c = Label.InsuredPerson;
               productsToSearch.add(orderItem.category__c);
+              // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
+              if(entityType == 'Policy'){
+                sameProd.add(Label.InsuredPerson);
+              }
+
           }
           System.Debug('**** OrderItem: ' + orderItem);
         }
@@ -565,6 +601,7 @@ global without sharing class ExternalRequestUtil {
     }
 
     // Parsing errors?
+    System.Debug('------------ Parser errors: ' + errorMessages);
     if (!errorMessages.isEmpty()) {
       throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
     }
@@ -780,8 +817,17 @@ global without sharing class ExternalRequestUtil {
     // mapContactsEmailBirthDateLE = SystemUtil.contactsSelectorEmailBirthDateLE( contactEmails );
     // mapContactsEmailBirthDate = SystemUtil.contactsSelectorEmailBirthDate( contactEmails );
     SystemUtil.contactsSelectorMatchCode(
-      contactEmails, mapContactsEmailBirthDateLECountry, mapContactsEmailBirthDateLE, mapContactsEmailBirthDate
+      contactEmails, 
+      mapContactsEmailBirthDateLECountry, mapContactsEmailBirthDateLE, mapContactsEmailBirthDate,
+      mapSubscribers
     );
+
+    // nts (nbizkarra) - 17/11/2020 - Include search among subscribers
+    // mapSubscribers = SystemUtil.contactsSelectorSubscribers(contactEmails);
+
+    // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
+    mapQuoteSameProd = SystemUtil.getQuoteSameProduct(contactSameProd, sameProd);
+
     mapPartners = SystemUtil.partnerSelector( partnersToSearch );
     mapPolicies = SystemUtil.policySelector( policiesToSearch );
     mapQuotes = SystemUtil.quoteSelector( quotesToSearch );
@@ -797,37 +843,40 @@ global without sharing class ExternalRequestUtil {
   {
     System.debug('- - - - - ExternalRequestUtil.processObjects - - - - -');
     for (ExternalRequest__c externalRequestItem : externalRequestList) {
-      try {
-        actualRequest = externalRequestItem;
-        if (externalRequestItem.entity__c != null) {
-          switch on externalRequestItem.entity__c {
-            when 'Customer' {
-              processCustomer();
+      // nts (agonzalezisasi) - 24/11/2020 - check if it didnt already fail in the parser
+      if( externalRequestItem.processResult__c == null || externalRequestItem.processResult__c != 'KO' ) {
+        try {
+          actualRequest = externalRequestItem;
+          if (externalRequestItem.entity__c != null) {
+            switch on externalRequestItem.entity__c {
+              when 'Customer' {
+                processCustomer();
+              }
+              when 'QuoteEntry' {
+                processQuoteEntry();
+              }
+              when 'Policy' {
+                processPolicy();
+              }
+              when 'Claim' {
+                processClaim();
+              }
             }
-            when 'QuoteEntry' {
-              processQuoteEntry();
-            }
-            when 'Policy' {
-              processPolicy();
-            }
-            when 'Claim' {
-              processClaim();
-            }
+            externalRequestItem.processed__c = true;
+            externalRequestItem.processedDate__c = Datetime.now();
+            externalRequestItem.processResult__c = 'OK';
+            externalRequestItem.error_Log__c = ' ';
           }
+        } catch (Exception e) {
+          //ErrorLogUtil.commitError(e, 'ExternalRequestUtil', externalRequestItem.Id);
           externalRequestItem.processed__c = true;
           externalRequestItem.processedDate__c = Datetime.now();
-          externalRequestItem.processResult__c = 'OK';
-          externalRequestItem.error_Log__c = ' ';
+          externalRequestItem.processResult__c = 'KO';
+          externalRequestItem.error_Log__c =
+            e.getMessage() +
+            '\n' +
+            e.getStackTraceString();
         }
-      } catch (Exception e) {
-        //ErrorLogUtil.commitError(e, 'ExternalRequestUtil', externalRequestItem.Id);
-        externalRequestItem.processed__c = true;
-        externalRequestItem.processedDate__c = Datetime.now();
-        externalRequestItem.processResult__c = 'KO';
-        externalRequestItem.error_Log__c =
-          e.getMessage() +
-          '\n' +
-          e.getStackTraceString();
       }
     }
   }

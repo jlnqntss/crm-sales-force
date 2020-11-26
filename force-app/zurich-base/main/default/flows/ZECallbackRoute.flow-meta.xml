@@ -24,6 +24,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>callbackUserName</name>
+            <value>
+                <elementReference>ContactRequest.WebName__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>activityId</name>
             <value>
                 <elementReference>ContactRequest.Id</elementReference>

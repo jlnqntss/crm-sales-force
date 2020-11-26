@@ -79,11 +79,15 @@
         <value xsi:type="xsd:string">QuoteEntry</value>
     </values>
     <values>
+        <field>WS_Source_IBA_EMEA__c</field>
+        <value xsi:type="xsd:string">IBA_EMEA</value>
+    </values>
+    <values>
         <field>WS_Source_IBA_Multi_Partner__c</field>
         <value xsi:type="xsd:string">IBA_Multi_Partner</value>
     </values>
     <values>
         <field>WS_Source_IBA__c</field>
-        <value xsi:type="xsd:string">IBA_SP_EMEA</value>
+        <value xsi:type="xsd:string">IBA_SP</value>
     </values>
 </CustomMetadata>

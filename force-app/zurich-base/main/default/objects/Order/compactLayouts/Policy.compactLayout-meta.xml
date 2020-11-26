@@ -7,5 +7,6 @@
     <fields>TotalPremium__c</fields>
     <fields>PolicyStatus__c</fields>
     <fields>SourceCountry__c</fields>
+    <fields>Partner__c</fields>
     <label>Policy</label>
 </CompactLayout>
