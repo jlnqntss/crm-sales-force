@@ -116,6 +116,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AccountsSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AccountsSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ActivitySelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -216,6 +224,22 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>EmailMessagesSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>EmailMessagesSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>EmailToOpportunityService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>EmailToOpportunityServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ErrorLogHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -280,6 +304,34 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GenesysCloud</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysCloudMocks</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysCloudRouteEmailAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysCloudRouteEmailActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysCloudTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysFindBestAgentAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysFindBestAgentActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>GenesysInteractionsService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -301,6 +353,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ITrigger</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InboundEmailHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InboundEmailHandlerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -3982,6 +4042,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Asset.IdentifierOld__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Asset.Identifier__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4008,6 +4073,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Asset.LastName2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Asset.LocationId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4547,6 +4617,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.ClosedOnCreate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.ContactId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5042,6 +5117,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contact.NumClaims__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.NumPolicies__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.NumQuotes__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5258,6 +5343,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointAddress.UsageType</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointConsent.ContactPointTypeConsentId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5667,6 +5757,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>DataUsePurpose.IsMaintainablePerContactPoint</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>DataUsePurpose.IsMaintainablePerParty</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>DataUsePurpose.IsMaintainablePerType</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>DataUsePurpose.LegalBasisId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5708,6 +5813,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Discount__c.Updated__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EmailMessage.GenesysInteractionId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5928,11 +6038,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ExternalIdField__mdt.SalesforceEntity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ExternalIdField__mdt.Salesforce_entity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6413,6 +6518,71 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.et4ae5__Mobile_Country_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.CloseDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.ConstructionEndDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.ConstructionStartDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.Description</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.DrivingDirections</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.Location</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.LocationLevel</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.OpenDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.ParentLocationId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.PossessionDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.RemodelEndDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.RemodelStartDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Location.TimeZone</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7532,6 +7702,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Quote.InfoOptionNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Quote.NetPremium__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7777,6 +7952,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>SocialPersona.Klout</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>SocialPersona.ListedCount</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7823,6 +8003,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>SocialPersona.TopicType</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SocialPersona.UserId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9148,6 +9333,51 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>et4ae5__Journey__c.et4ae5__RecordId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__AuthEndpoint__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__ClientId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__ClientSecret__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__JWT_Aud__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__JWT_KID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__JWT_PrivateKey__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__RestEndpoint__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__SoapEndpoint__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__TokenEndpoint__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10750,6 +10980,10 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
+        <flow>GenesysCloudEmailRouter</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
         <flow>GenesysPhone</flow>
     </flowAccesses>
     <flowAccesses>
@@ -10774,11 +11008,15 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>OpenCTIFlow</flow>
+        <flow>Quote_Step_4_5_6</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>false</enabled>
+        <flow>SetExternalRequestRecordType</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>Quote_Step_4_5_6</flow>
+        <flow>ZEEmailRoute</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
@@ -10788,20 +11026,20 @@
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Intermediary</layout>
-        <recordType>Account.Intermediary</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-OCS Partner</layout>
-        <recordType>Account.PartnerOCS</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-Business Customer</layout>
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Account-Intermediary</layout>
+        <recordType>Account.Intermediary</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Account-Master layout</layout>
         <recordType>Account.Master</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-OCS Partner</layout>
+        <recordType>Account.PartnerOCS</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Parent Account</layout>
@@ -10825,6 +11063,14 @@
         <layout>Asset-Asset Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Asset-Boat</layout>
+        <recordType>Asset.Boat</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Asset-Electronic Device</layout>
+        <recordType>Asset.ElectronicDevice</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Asset-Mobile</layout>
         <recordType>Asset.Mobile</recordType>
     </layoutAssignments>
@@ -10835,14 +11081,6 @@
     <layoutAssignments>
         <layout>Asset-Person</layout>
         <recordType>Asset.Person</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Asset-Boat</layout>
-        <recordType>Asset.Boat</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Asset-Electronic Device</layout>
-        <recordType>Asset.ElectronicDevice</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>AssetRelationship-Asset Relationship Layout</layout>
@@ -10872,11 +11110,11 @@
         <layout>CampaignMember-Campaign Member Page Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Case Layout</layout>
+        <layout>Case-Case Default OCS</layout>
+        <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
-        <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Consulta</layout>
@@ -10923,9 +11161,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ContactPointAddress-Formato Dirección de punto de contacto</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ContactPointConsent-Contact Point Consent Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ContactPointEmail-Formato Correo electrónico de punto de contacto</layout>
@@ -10988,6 +11223,10 @@
         <layout>ExternalRequest__c-Formato External request</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ExternalRequest__c-Formato External request</layout>
+        <recordType>ExternalRequest__c.INFO</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>FeedItem-Feed Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -11045,6 +11284,10 @@
     <layoutAssignments>
         <layout>PersonAccount-Formato de cuenta personal</layout>
         <recordType>PersonAccount.Customer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PersonAccount-Formato de cuenta personal</layout>
+        <recordType>PersonAccount.PersonAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PolicyVersion__c-Policy Version Layout</layout>
@@ -11129,15 +11372,15 @@
         <layout>Special_Condition__c-Special Condition Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Task-Activity</layout>
         <recordType>Task.Activity</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Interaction</layout>
         <recordType>Task.Interaction</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Transformer__mdt-Transformer Layout</layout>
@@ -11395,6 +11638,10 @@
     <layoutAssignments>
         <layout>purecloud__PureCloud_Script__c-purecloud__PureCloud Script Layout</layout>
     </layoutAssignments>
+    <loginIpRanges>
+        <endAddress>255.255.255.254</endAddress>
+        <startAddress>1.1.1.1</startAddress>
+    </loginIpRanges>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -11779,6 +12026,24 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>Location</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>LocationTrustMeasure</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>Macro</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -11942,6 +12207,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>ScorecardMetric</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>SocialPersona</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -12943,6 +13217,16 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>ExternalRequest__c.INFO</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Idea.InternalIdeasIdeaRecordType</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Order.PolicyGI</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -12966,6 +13250,11 @@
         <personAccountDefault>true</personAccountDefault>
         <recordType>PersonAccount.Customer</recordType>
         <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>PersonAccount.PersonAccount</recordType>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -13382,11 +13671,23 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-Location</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-LocationTrustMeasure</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-Macro</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-News</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-OnlineSalesHome</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
