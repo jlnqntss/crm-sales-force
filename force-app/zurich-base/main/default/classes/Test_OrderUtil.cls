@@ -332,7 +332,7 @@ public with sharing class Test_OrderUtil
         Test.stopTest();
     }
 
-     /**
+    /**
      * Test: Insert new policy and mark existing quotes with same product as converted
      *
      * @author nts (nbizkarra)
@@ -370,7 +370,7 @@ public with sharing class Test_OrderUtil
 
         Order quote = new Order(
             QbLastPage__c = null,
-            EffectiveDate = Date.valueOf('1994-01-01'), 
+            EffectiveDate = Date.valueOf('1994-01-01'),
             CustomerNum__c = 'GI-3123',
             LegalEntity__c = Label.GeneralInsurance,
             QuoteEntry__c = '456456',
@@ -400,9 +400,9 @@ public with sharing class Test_OrderUtil
         oi.PricebookEntryId = testPbe.Id;
         insert (oi);
 
-       // -------- Data to process
+        // -------- Data to process
 
-       Order policy = new Order(
+        Order policy = new Order(
             EffectiveDate = Date.valueOf('1990-01-02'),
             CustomerNum__c = 'GI-3123',
             PolicyNum__c = '8989',
@@ -421,12 +421,12 @@ public with sharing class Test_OrderUtil
         Externalrequestutil.mapQuoteSameProd = SystemUtil.getQuoteSameProduct(new Set<String> {'GI-3123'}, new Set<String> {'Test Product'} );
 
         Test.startTest();
-        
+
         OrderUtil.upsertPolicy(policy);
 
         //Check if the quote with same product has been covnerted
         Order convertedQuote = ExternalRequestUtil.quotesToUpdateList.get(quote.QuoteEntry__c);
-        System.assert(convertedQuote.QuoteStatus__c == Label.Converted);
+        System.assert (convertedQuote.QuoteStatus__c == Label.Converted);
 
         Test.stopTest();
     }

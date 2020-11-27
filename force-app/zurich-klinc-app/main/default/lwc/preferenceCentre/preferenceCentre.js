@@ -97,9 +97,6 @@ export default class preferenceCentre extends LightningElement {
 
     for (let i = 0; i < copy.length; i++) {
       if (copy[i].idCampaign === campaign) {
-        console.log(copy[i].idCampaign);
-        console.log(copy[i].contactSubscribed);
-        console.log(copy[i].campaignName);
         copy[i].contactSubscribed = this._isCheckedCampaign;
       }
     }

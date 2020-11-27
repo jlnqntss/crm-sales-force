@@ -14,7 +14,7 @@ public without sharing class SystemUtil
     //     'GI' => Label.GeneralInsurance,
     //     'Life' => Label.LifeInsurance
     // };
-    
+
     private static final Map<String, String> legalIdentityByLabel = new Map<String, String> {
         Label.GeneralInsurance => 'GI',
         Label.LifeInsurance => 'Life'
@@ -539,10 +539,10 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 16/11/2020
      **/
-    public static Map<String, List<Contact>> contactsSelectorEmail(SET<String> emails)
+    public static Map<String, List<Contact> > contactsSelectorEmail(SET<String> emails)
     {
-        Map<String, List<Contact>> mapaContactos = new Map<String, List<Contact>>();
-        
+        Map<String, List<Contact> > mapaContactos = new Map<String, List<Contact> >();
+
         List<String> developerNames = new List<String> {
             Label.CustomerGI, Label.CustomerLife, Label.LeadGI, Label.LeadLife
         };
@@ -585,20 +585,23 @@ public without sharing class SystemUtil
             SourceCountry__c,
             Partner__c
             FROM Contact
-            WHERE email IN :emails 
+            WHERE email IN :emails
             AND RecordType.DeveloperName IN :developerNames
         ];
 
         //Rellenar el mapa cuyo key es el email
         for (Contact con : listaContactos)
         {
-            if(mapaContactos.containsKey(con.Email)) {
+            if(mapaContactos.containsKey(con.Email) )
+            {
 
                 mapaContactos.get(con.Email).add(con);
 
-            } else {
+            }
+            else
+            {
 
-                mapaContactos.put(con.Email, new List<Contact>{con});
+                mapaContactos.put(con.Email, new List<Contact> {con});
 
             }
         }
@@ -613,10 +616,10 @@ public without sharing class SystemUtil
      * @date 17/11/2020
      **/
     /*
-    public static Map<String, List<Contact>> contactsSelectorSubscribers(SET<String> emails)
-    {
+       public static Map<String, List<Contact>> contactsSelectorSubscribers(SET<String> emails)
+       {
         Map<String, List<Contact>> mapaContactos = new Map<String, List<Contact>>();
-        
+
         List<Contact> listaContactos = [
             SELECT
             Id,
@@ -655,7 +658,7 @@ public without sharing class SystemUtil
             SourceCountry__c,
             Partner__c
             FROM Contact
-            WHERE email IN :emails 
+            WHERE email IN :emails
             AND CustomerNum__c = null
             AND Birthdate = null
             AND IsSubscriber__c  = true
@@ -676,7 +679,7 @@ public without sharing class SystemUtil
         }
 
         return mapaContactos;
-    }*/
+       }*/
 
     /**
      * Método que obtiene todos los registros de contacto existentes con matchcode email+fechaNacimiento
@@ -885,7 +888,7 @@ public without sharing class SystemUtil
         Map<String, Contact> mapEmailBirthLECountry,
         Map<String, Contact> mapEmailBirthLE,
         Map<String, Contact> mapEmailBirth,
-        Map<String, List<Contact>> mapSubscribers
+        Map<String, List<Contact> > mapSubscribers
         )
     {
         //Map<String, Contact> mapaContactos = new Map<String, Contact>();
@@ -938,23 +941,31 @@ public without sharing class SystemUtil
             legalEntityName = legalIdentityByLabel.get(con.LegalEntity__c);
 
             matchCode = con.Email + String.valueOfGmt(con.Birthdate);
-            if( mapEmailBirth != null ) mapEmailBirth.put(matchCode, con);
+            if( mapEmailBirth != null )
+                mapEmailBirth.put(matchCode, con);
 
             matchCode += legalEntityName;
-            if( mapEmailBirthLE != null) mapEmailBirthLE.put(matchCode, con);
+            if( mapEmailBirthLE != null)
+                mapEmailBirthLE.put(matchCode, con);
 
             // EMEA
             matchCode += con.SourceCountry__c;
-            if( mapEmailBirthLECountry != null ) mapEmailBirthLECountry.put(matchCode, con);
+            if( mapEmailBirthLECountry != null )
+                mapEmailBirthLECountry.put(matchCode, con);
 
             // nts (nbizkarra) - 17/11/2020 - get subscribed contacts by email
             // Subscribers from lead
-            if( mapSubscribers != null ) {
-                if( con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c ) {
-                    if(mapSubscribers.containsKey(con.Email)) {
+            if( mapSubscribers != null )
+            {
+                if( con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c )
+                {
+                    if(mapSubscribers.containsKey(con.Email) )
+                    {
                         mapSubscribers.get(con.Email).add(con);
-                    } else {
-                        mapSubscribers.put(con.Email, new List<Contact>{con});
+                    }
+                    else
+                    {
+                        mapSubscribers.put(con.Email, new List<Contact> {con});
                     }
                 }
             }
@@ -1016,9 +1027,9 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 18/11/2020
      **/
-    public static Map<String, List<Order>> getQuoteSameProduct(SET<String> customerNum, SET<String> products)
+    public static Map<String, List<Order> > getQuoteSameProduct(SET<String> customerNum, SET<String> products)
     {
-        Map<String, List<Order>> mapaQuote = new Map<String, List<Order>>();
+        Map<String, List<Order> > mapaQuote = new Map<String, List<Order> >();
 
         List<Order> listaQuote = [
             SELECT
@@ -1048,13 +1059,16 @@ public without sharing class SystemUtil
         //Rellenar el mapa cuyo key es el customerNum
         for (Order quote : listaQuote)
         {
-            if(mapaQuote.containsKey(quote.ContactId__r.CustomerNum__c)) {
+            if(mapaQuote.containsKey(quote.ContactId__r.CustomerNum__c) )
+            {
 
                 mapaQuote.get(quote.ContactId__r.CustomerNum__c).add(quote);
 
-            } else {
+            }
+            else
+            {
 
-                mapaQuote.put(quote.ContactId__r.CustomerNum__c, new List<Order>{quote});
+                mapaQuote.put(quote.ContactId__r.CustomerNum__c, new List<Order> {quote});
 
             }
         }

@@ -5,7 +5,8 @@
  * @date 17/11/2020
  **/
 @isTest
-public class Test_LeadUtil {
+public class Test_LeadUtil
+{
     @testSetup
     static void makeData()
     {
@@ -57,16 +58,16 @@ public class Test_LeadUtil {
             CheckGI__c = true,
             CheckLife__c = true,
             Country = 'Spain',
-            LeadSource = 'Klinc'            
+            LeadSource = 'Klinc'
             );
-    
+
         subscribers.add(subscriber);
 
         Test.startTest();
 
         LeadUtil.NewSubscribers(subscribers);
         //Check that 2 contacts (life and GI) are created in SF
-        System.assertEquals(2, LeadUtil.contactsToCreate.size());
+        System.assertEquals(2, LeadUtil.contactsToCreate.size() );
 
         Test.stopTest();
     }
@@ -88,9 +89,9 @@ public class Test_LeadUtil {
             CheckGI__c = true,
             CheckLife__c = true,
             Country = 'Spain',
-            LeadSource = 'Klinc'            
+            LeadSource = 'Klinc'
             );
-    
+
         subscribers.add(subscriber);
 
         Test.startTest();
@@ -99,7 +100,7 @@ public class Test_LeadUtil {
         //Check that 2 contacts (life and GI) are updated in SF
         List<Contact> c=LeadUtil.mapContacts.values().get(0);
         System.assertEquals('testexisting@test.com', c.get(0).Email);
-        System.assertEquals(2, LeadUtil.contactsToUpdate.size());
+        System.assertEquals(2, LeadUtil.contactsToUpdate.size() );
 
         Test.stopTest();
     }
@@ -121,16 +122,16 @@ public class Test_LeadUtil {
             CheckGI__c = true,
             CheckLife__c = true,
             Country = 'France',
-            LeadSource = 'Klinc'            
+            LeadSource = 'Klinc'
             );
-    
+
         subscribers.add(subscriber);
 
         Test.startTest();
 
         LeadUtil.NewSubscribers(subscribers);
         //Check that 2 contacts (life and GI) are created in SF
-        System.assertEquals(2, LeadUtil.contactsToCreate.size());
+        System.assertEquals(2, LeadUtil.contactsToCreate.size() );
 
         Test.stopTest();
     }
@@ -167,16 +168,16 @@ public class Test_LeadUtil {
             CheckGI__c = true,
             CheckLife__c = true,
             Country = 'France',
-            LeadSource = 'Klinc'            
+            LeadSource = 'Klinc'
             );
-    
+
         subscribers.add(subscriber);
 
         Test.startTest();
 
         LeadUtil.NewSubscribers(subscribers);
         //Check that 2 contacts (life and GI) are created in SF
-        System.assertEquals(2, LeadUtil.contactsToCreate.size());
+        System.assertEquals(2, LeadUtil.contactsToCreate.size() );
 
         //Check that the created contacts are related to the master whose contact is a customer
         SET<String> customerNum = new SET<String>();
@@ -186,7 +187,7 @@ public class Test_LeadUtil {
 
         System.assertEquals(contact.AccountId, LeadUtil.contactsToCreate.get(0).AccountId);
         System.assertEquals(contact.AccountId, LeadUtil.contactsToCreate.get(1).AccountId);
-        
+
         Test.stopTest();
     }
 }

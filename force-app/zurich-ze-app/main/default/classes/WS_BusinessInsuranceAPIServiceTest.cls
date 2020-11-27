@@ -13,8 +13,8 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
     static final String INTERACTIONS_REQUEST = '{"name":"Carles Sans","phone":"600666000","bestTimeFrom":"2020-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z"}';
     static final String INTERACTIONS_REQUEST_WITHOUT_PHONE = '{"name":"Carles Sans","bestTimeFrom":"2020-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z"}';
     static final String INTERACTIONS_URI = '/ze/v1/interactions/';
-    static final String INTERACTIONS_MOCK_BODY = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},'+
-    '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
+    static final String INTERACTIONS_MOCK_BODY = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},' +
+                                                 '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
 
     /**
      * Método que comprueba una ejecución correcta de doPost
@@ -303,7 +303,7 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
         //setear el GenesysCloudMock ya que no va a entrar en el ProcessBuilder que enruta
 
         Test.startTest();
-            WS_BusinessInsuranceAPIService.doPost();
+        WS_BusinessInsuranceAPIService.doPost();
         Test.stopTest();
 
         System.assertEquals(200, response.statusCode,'Response statusCode should be 200');
@@ -333,7 +333,7 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
         RestContext.request = request;
 
         Test.startTest();
-            WS_BusinessInsuranceAPIService.doPost();
+        WS_BusinessInsuranceAPIService.doPost();
         Test.stopTest();
 
         System.assertEquals(400, response.statusCode,'Response statusCode should be 400');
