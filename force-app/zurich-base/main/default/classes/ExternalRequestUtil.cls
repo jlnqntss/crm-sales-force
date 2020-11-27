@@ -266,6 +266,9 @@ global without sharing class ExternalRequestUtil {
             actualRequest = externalRequestItem;
 
             if (externalRequestItem.Entity__c != null) {
+              // nts (agonzalezisasi) - 26/nov/2020 - for if the external request is caming from a fail
+                externalRequestItem.processResult__c = null;
+
                 // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
                 // IBA (Spain) => default value
                 IBA_Prefix = '';
@@ -326,14 +329,27 @@ global without sharing class ExternalRequestUtil {
     // System.debug('actualRequest >>> ' + actualRequest);
     // System.debug('actualRequest.json__c >>> ' + actualRequest.json__c);
     if (actualRequest != null && String.isNotBlank(actualRequest.json__c)) {
+      String json = actualRequest.json__c;
+      String first_text = '"quoteEntry":';
+      String second_text = '"customer":';
+      Integer first = 0;
+      Integer second = 1;
+      Integer posQuoteEntry = json.indexOf('"quoteEntry":');
+      Integer posConsumer = json.indexOf('"customer":');
+      if( posConsumer < posQuoteEntry ) {
+          first = 1;
+          first_text = '"customer":';
+          second = 0;
+          second_text = '"quoteEntry":';
+      }
       // Quote entries contains both lead and quote data. Split in separated objects.
-      List<String> splittedQuoteEntry = actualRequest.json__c.split('"quoteEntry":');
+      List<String> splittedQuoteEntry = actualRequest.json__c.split(first_text);
       if (splittedQuoteEntry.size() == 2) {
-        splittedQuoteEntry = splittedQuoteEntry[1].split(',"customer":');
+        splittedQuoteEntry = splittedQuoteEntry[1].split(',' + second_text);
         if (splittedQuoteEntry.size() == 2) {
           // Reformat properly as indepedent objects
-          String quoteJson = '[' + splittedQuoteEntry[0] + ']';
-          String leadJson = '[' + splittedQuoteEntry[1].removeEnd('}]') + ']';
+          String quoteJson = '[' + splittedQuoteEntry[first] + ']';
+          String leadJson = '[' + splittedQuoteEntry[second].removeEnd('}]') + ']';
 
           // Parse quote
           parseOrder(quoteJson);
@@ -490,6 +506,7 @@ global without sharing class ExternalRequestUtil {
           }
           // Set source country and timestamp
           orderItem.sourceCountry__c = actualRequest.country__c;
+          orderItem.Partner__c = incomingOrder.Partner__c;
           orderItem.processing_Timestamp__c = actualRequest.timestamp__c;
 
           // Add prefix to quotes coming from IBA EMEA to avoid potential repetition of this identifier
@@ -533,6 +550,7 @@ global without sharing class ExternalRequestUtil {
     if (coverList != null && !coverList.isEmpty() ) {
       for (Cover__c coverItem : coverList) {
           coverItem.sourceCountry__c = actualRequest.country__c;
+          coverItem.Partner__c = incomingOrder.Partner__c;
 
           // Add prefix to quotes coming from IBA EMEA to avoid potential repetition of this identifier
           // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
@@ -554,7 +572,8 @@ global without sharing class ExternalRequestUtil {
     if( discountList != null && !discountList.isEmpty() ) {
       for (Discount__c discountItem : discountList) {
           // Set source country and timestamp
-          discountItem.sourceCountry__c = actualRequest.country__c;          
+          discountItem.sourceCountry__c = actualRequest.country__c;    
+          discountItem.Partner__c = incomingOrder.Partner__c;      
           // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
           if( !String.isBlank(IBA_Prefix) ) { // if (discountItem.sourceCountry__c != 'Spain') {
               discountItem.DiscountId__c = IBA_Prefix + discountItem.DiscountIdNumber__c;
@@ -872,10 +891,7 @@ global without sharing class ExternalRequestUtil {
           externalRequestItem.processed__c = true;
           externalRequestItem.processedDate__c = Datetime.now();
           externalRequestItem.processResult__c = 'KO';
-          externalRequestItem.error_Log__c =
-            e.getMessage() +
-            '\n' +
-            e.getStackTraceString();
+          externalRequestItem.error_Log__c = e.getMessage() + '\n' + e.getStackTraceString();
         }
       }
     }
