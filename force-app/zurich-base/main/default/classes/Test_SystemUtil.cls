@@ -39,7 +39,7 @@ public class Test_SystemUtil
 
         Account master = new Account(CustomerNum__c = '4747', Name = 'Test');
         insert (master);
-        
+
         Account masterRef = new Account(CustomerNum__c = '4747');
 
         Contact customer = new Contact(
@@ -94,7 +94,7 @@ public class Test_SystemUtil
         oi.PricebookEntryId = testPbe.Id;
 
         insert (oi);
-        
+
     }
 
     @IsTest
@@ -311,7 +311,7 @@ public class Test_SystemUtil
     @IsTest
     static void test_ContactsSelectorEmail()
     {
-        Map<String, List<Contact>> mapa = new Map<String, List<Contact>>();
+        Map<String, List<Contact> > mapa = new Map<String, List<Contact> >();
         SET<String> keys = new Set<String>();
         keys.add('andrea11@test.com');
 
@@ -336,7 +336,7 @@ public class Test_SystemUtil
 
         insert subscriber;
 
-        Map<String, List<Contact>> mapa = new Map<String, List<Contact>>();
+        Map<String, List<Contact> > mapa = new Map<String, List<Contact> >();
         SET<String> keys = new Set<String>();
         keys.add('testexisting@test.com');
 
@@ -354,8 +354,8 @@ public class Test_SystemUtil
     @IsTest
     static void test_getQuoteSameProduct()
     {
-        
-        Map<String, List<Order>> mapa = new Map<String, List<Order>>();
+
+        Map<String, List<Order> > mapa = new Map<String, List<Order> >();
         SET<String> customerNum = new Set<String>();
         customerNum.add('454545');
         SET<String> products = new Set<String>();

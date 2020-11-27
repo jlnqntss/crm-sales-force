@@ -13,7 +13,7 @@ public class BusinessInsuranceCallbackService
      */
     public static void validateRequiredFields(CallMeBack callMeBack)
     {
-        if(callMeBack.phone == null || String.isBlank(callMeBack.phone))
+        if(callMeBack.phone == null || String.isBlank(callMeBack.phone) )
         {
             throw new BusinessInsuranceCallbackServiceException(REQUIRED_FIELD_MISSING_STATUSCODE, REQUIRED_FIELD_MISSING);
         }
@@ -32,19 +32,22 @@ public class BusinessInsuranceCallbackService
         List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
         genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
 
-        try{
+        try
+        {
             ContactRequest callMeBack = new ContactRequest();
             callMeBack.PreferredContactDatetime__c = requestCallMeBack.bestTimeFrom;
             callMeBack.PreferredPhone = requestCallMeBack.phone;
             callMeBack.WebName__c = requestCallMeBack.name;
-            if(!genesysQueue.isEmpty())
+            if(!genesysQueue.isEmpty() )
             {   //Cola de Genesys OPCIONAL, si no se rellena, no entrará al ProcessBuilder que rellena el id de interacción
                 callMeBack.GenesysCloudQueueId__c = genesysQueue[0].Id;
             }
             insert callMeBack;
             callMeBackId = String.valueOf(callMeBack.Id);
-        }catch(Exception e){
-            throw new BusinessInsuranceCallbackServiceException(FAIL_INSERT_CALLMEBACK_STATUSCODE, e.getMessage() +' '+ e.getStackTraceString());
+        }
+        catch(Exception e)
+        {
+            throw new BusinessInsuranceCallbackServiceException(FAIL_INSERT_CALLMEBACK_STATUSCODE, e.getMessage() + ' ' + e.getStackTraceString() );
         }
 
         return callMeBackId;

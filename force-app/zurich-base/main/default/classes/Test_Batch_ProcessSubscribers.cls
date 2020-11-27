@@ -1,6 +1,7 @@
 @isTest
 
-public class Test_Batch_ProcessSubscribers {
+public class Test_Batch_ProcessSubscribers
+{
 
     /**
      * Process a Lead
@@ -10,14 +11,14 @@ public class Test_Batch_ProcessSubscribers {
     @isTest
     static void testBatch()
     {
-       
+
         Lead subscriber = new Lead (
             Email = 'testexisting@test.com',
             LastName = 'Test',
             CheckGI__c = true,
             CheckLife__c = true,
             Country = 'France',
-            LeadSource = 'Klinc'            
+            LeadSource = 'Klinc'
             );
         insert subscriber;
 
@@ -49,5 +50,5 @@ public class Test_Batch_ProcessSubscribers {
         System.Debug('jobID: ' + jobID);
     }
 
-   
+
 }

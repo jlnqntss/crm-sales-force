@@ -22,7 +22,7 @@ global class Batch_ProcessSubscribers implements Database.Batchable<sObject>, Da
     {
         if (query == null || query == '')
         {
-             query = SystemUtil.getSubscribers();
+            query = SystemUtil.getSubscribers();
 
         }
 
@@ -41,7 +41,7 @@ global class Batch_ProcessSubscribers implements Database.Batchable<sObject>, Da
         if ( scope != null && !scope.isEmpty() )
         {
             List<Lead> subscribers = (List<Lead>) scope;
-            
+
             try
             {
                 LeadUtil.NewSubscribers(subscribers);
@@ -52,7 +52,7 @@ global class Batch_ProcessSubscribers implements Database.Batchable<sObject>, Da
             {
                 //Se ha producido una excepción no controlada en LeadUtil y se debe hacer rollback de las operaciones parcialmente completas
                 Database.rollback(SP);
-                
+
                 ErrorLogUtil.commitError(e, 'Batch_ProcessSubscribers');
             }
         }
