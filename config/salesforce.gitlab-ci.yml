@@ -564,7 +564,6 @@ test-org:
   stage: post-deploy
   only:
     refs:
-      - dev
       - /^release/.*$/
   allow_failure: false
   dependencies:
@@ -581,6 +580,33 @@ test-org:
   coverage: '/name="testRunCoverage" value="([\d]+%)"/'
   tags:
   - zurich-ci
+
+####################################################
+# Lanza los tests unitarios en el entorno de staging
+#
+# Modificar el script "test:org" del package.json
+# para personalizaciones
+####################################################
+test-org:uat:
+  stage: post-deploy
+  only:
+    refs:
+      - /^release/.*$/
+  allow_failure: false
+  dependencies:
+    - deploy:uat
+  script:
+    - install_toolchain
+    - authenticate QA $QA_SANDBOX_AUTH_URL
+    - test_org QA
+  artifacts:
+    reports:
+      junit: tests/apex/*-junit.xml
+    paths:
+      - tests/
+  coverage: '/name="testRunCoverage" value="([\d]+%)"/'
+  tags:
+  - zurich-ci-uat
 
 ########################################################
 # Genera el paquete de despliegue y sube a Veracode
