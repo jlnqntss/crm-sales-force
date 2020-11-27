@@ -716,8 +716,8 @@ upload-static-veracode:uat:
     - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
     - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep 'results_ready="true"' || :)
     - echo "IS_SCAN_READY:${IS_SCAN_READY}"
-    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version "$VERSION" -scanallnonfataltoplevelmodules false -exclude *nodemodule*avaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID ||'
-    - java -jar VeracodeJ
+    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID ||'
+    - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule*
   only:
     refs:
       - /^release/.*$/
