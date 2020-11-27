@@ -393,7 +393,33 @@ global without sharing class OrderUtil
                     // policy.QuoteEntry__c='';
                 }
 
+                // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
+                if ( ExternalRequestUtil.mapQuoteSameProd.containsKey( policy.CustomerNum__c ) )
+                {
+                    List<Order> quotesSameProd = ExternalRequestUtil.mapQuoteSameProd.get(  policy.CustomerNum__c );
+
+                    if (quotesSameProd != null)
+                    {
+
+                        for( Order quote: quotesSameProd)
+                        {
+                            //Mark other quotes with same product as "Converted"
+                            if( quote.QuoteEntry__c != policy.QuoteEntry__c)
+                            {
+
+                                quote.QuoteStatus__c = Label.Converted;
+                                ExternalRequestUtil.quotesToUpdateList.put(quote.QuoteEntry__c, quote);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
                 policy.OwnerId = ExternalRequestUtil.recordOwner.id;
+                policy.QuoteStatus__c = Label.Converted;
                 Contact contactRef = new Contact( CustomerNum__c = policy.CustomerNum__c );
                 //policy.ContactId__c=contactoPolicy.Id;
                 policy.ContactId__r = contactRef;

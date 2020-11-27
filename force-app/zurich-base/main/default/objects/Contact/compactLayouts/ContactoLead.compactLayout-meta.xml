@@ -6,5 +6,6 @@
     <fields>DNI__c</fields>
     <fields>CustomerID__c</fields>
     <fields>SourceCountry__c</fields>
+    <fields>Partner__c</fields>
     <label>Contacto y lead</label>
 </CompactLayout>

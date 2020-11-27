@@ -8,6 +8,46 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
+                <field>IBA_EMEA_Non_Country__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>IBA_EMEA_Prefix__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>IBA_Multi_Partner_Authorization_token__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>IBA_Multi_Partner_Origin__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>IBA_Multi_Partner_endpoint__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Multi_Partners__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>WS_Service_Process_Request__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>WS_Service_Quote_Entry__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>WS_Source_IBA_Multi_Partner__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>WS_Source_IBA__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
                 <field>MasterLabel</field>
             </layoutItems>
             <layoutItems>
@@ -54,6 +94,10 @@
                 <behavior>Edit</behavior>
                 <field>SameMasterPolicy__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>WS_Source_IBA_EMEA__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -96,6 +140,18 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <miniLayout>
+        <fields>IBA_EMEA_Non_Country__c</fields>
+        <fields>IBA_EMEA_Prefix__c</fields>
+        <fields>IBA_Multi_Partner_Authorization_token__c</fields>
+        <fields>IBA_Multi_Partner_Origin__c</fields>
+        <fields>IBA_Multi_Partner_endpoint__c</fields>
+        <fields>Multi_Partners__c</fields>
+        <fields>WS_Service_Process_Request__c</fields>
+        <fields>WS_Service_Quote_Entry__c</fields>
+        <fields>WS_Source_IBA_Multi_Partner__c</fields>
+        <fields>WS_Source_IBA__c</fields>
+    </miniLayout>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>

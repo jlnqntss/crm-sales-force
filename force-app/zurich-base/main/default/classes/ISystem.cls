@@ -1,6 +1,6 @@
-global interface ISystem
+public interface ISystem
 {
-    void prepare(List<ExternalRequest__c> externalRequestList);
+    void prepare(Transformer transformer, List<ExternalRequest__c> externalRequestList);
 
     void process(List<ExternalRequest__c> externalRequestList);
 

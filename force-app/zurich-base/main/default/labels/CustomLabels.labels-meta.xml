@@ -318,6 +318,14 @@
         <value>Indentificador no válido</value>
     </labels>
     <labels>
+        <fullName>InsuredPerson</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Insured Person</shortDescription>
+        <value>Insured Person</value>
+    </labels>
+    <labels>
         <fullName>JsonIncorrecto</fullName>
         <categories>WebService Parser</categories>
         <language>en_US</language>
@@ -556,6 +564,22 @@
         <protected>false</protected>
         <shortDescription>PriceBook</shortDescription>
         <value>Standard Price Book</value>
+    </labels>
+    <labels>
+        <fullName>PrimaryContactPointEmailRequired</fullName>
+        <categories>Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PrimaryContactPointEmailRequired</shortDescription>
+        <value>There should be at least one primary contact point email</value>
+    </labels>
+    <labels>
+        <fullName>PrimaryContactPointPhoneRequired</fullName>
+        <categories>Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PrimaryContactPointPhoneRequired</shortDescription>
+        <value>There should be at least one primary contact point phone</value>
     </labels>
     <labels>
         <fullName>PruebaLabel</fullName>

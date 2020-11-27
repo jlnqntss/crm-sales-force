@@ -331,4 +331,103 @@ public with sharing class Test_OrderUtil
 
         Test.stopTest();
     }
+
+    /**
+     * Test: Insert new policy and mark existing quotes with same product as converted
+     *
+     * @author nts (nbizkarra)
+     * @date 19/11/2020
+     */
+    @IsTest
+    static void test_NewPolicyExistingProds()
+    {
+        // Instantiate the Pricebook2 record first, setting the Id
+        Pricebook2 standardPricebook = new Pricebook2(
+            Id = Test.getStandardPricebookId(),
+            IsActive = true
+            );
+
+        //Execute an update DML on the Pricebook2 record, to make IsStandard to true
+        update standardPricebook;
+
+        // Create the Product
+        Product2 testProduct = new Product2(
+            Name = 'Test Product',
+            IsActive = true,
+            ProductID__c = 'Test Product'
+            );
+        insert testProduct;
+
+        // Create the PricebookEntry
+        PricebookEntry testPbe = new PricebookEntry(
+            Pricebook2Id = standardPricebook.Id,
+            Product2Id = testProduct.Id,
+            UnitPrice = 100,
+            IsActive = true
+            );
+
+        insert testPbe;
+
+        Order quote = new Order(
+            QbLastPage__c = null,
+            EffectiveDate = Date.valueOf('1994-01-01'),
+            CustomerNum__c = 'GI-3123',
+            LegalEntity__c = Label.GeneralInsurance,
+            QuoteEntry__c = '456456',
+            SourceCountry__c = 'Spain',
+            RecordTypeId = SystemUtil.getOrderRecordTypeIdByName('QuoteGI'),
+            QuoteStatus__c = 'New',
+            Status = 'Sync'
+            );
+
+        Account masterRef = new Account(CustomerNum__c = '3123');
+        Contact contactRef = new Contact(CustomerNum__c = 'GI-3123');
+
+        quote.Pricebook2Id = standardPricebook.Id;
+        quote.Account = masterRef;
+        quote.ContactId__r = contactRef;
+        insert (quote);
+
+        Order quoteRef = new Order(QuoteEntry__c = '456456');
+        //Order Item with product "Test Product"
+        OrderItem oi = new OrderItem(
+            ItemAge__c = 2,
+            itemId__c = '3333',
+            UnitPrice = 0,
+            Quantity = 1
+            );
+        oi.Order = quoteRef;
+        oi.PricebookEntryId = testPbe.Id;
+        insert (oi);
+
+        // -------- Data to process
+
+        Order policy = new Order(
+            EffectiveDate = Date.valueOf('1990-01-02'),
+            CustomerNum__c = 'GI-3123',
+            PolicyNum__c = '8989',
+            Status = 'Sync',
+            PolicyContractStartDate__c = Date.valueOf('2020-05-02'),
+            LegalEntity__c = Label.GeneralInsurance,
+            PolicyStatus__c = Label.PolicyStatusActive,
+            RecordTypeId = SystemUtil.getOrderRecordTypeIdByName(Label.PolicyGI)
+            );
+
+        // Initialize all the lists and parameters used in util classes
+        ExternalRequestUtil.emptyStaticVariables();
+        Externalrequestutil.mapContacts = SystemUtil.contactsSelector(new Set<String> {'GI-3123'});
+        Externalrequestutil.mapPolicies = SystemUtil.policySelector( new Set<String> {'8989'} );
+        Externalrequestutil.mapProducts = SystemUtil.productsSelector( new Set<String> {'Test Product'} );
+        Externalrequestutil.mapQuoteSameProd = SystemUtil.getQuoteSameProduct(new Set<String> {'GI-3123'}, new Set<String> {'Test Product'} );
+
+        Test.startTest();
+
+        OrderUtil.upsertPolicy(policy);
+
+        //Check if the quote with same product has been covnerted
+        Order convertedQuote = ExternalRequestUtil.quotesToUpdateList.get(quote.QuoteEntry__c);
+        System.assert (convertedQuote.QuoteStatus__c == Label.Converted);
+
+        Test.stopTest();
+    }
 }
