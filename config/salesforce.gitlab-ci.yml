@@ -564,7 +564,7 @@ test-org:
   stage: post-deploy
   only:
     refs:
-      - /^release/.*$/
+      - dev
   allow_failure: false
   dependencies:
     - deploy:staging
