@@ -5,7 +5,7 @@
         <accessLevel>Edit</accessLevel>
         <label>Cases CC GI France</label>
         <sharedTo>
-            <group>KLINC_Customer_Care_GI_France</group>
+            <group>KLINC_CustomerCare_GI_France</group>
         </sharedTo>
         <criteriaItems>
             <field>SourceCountry__c</field>
@@ -23,7 +23,7 @@
         <accessLevel>Edit</accessLevel>
         <label>Cases CC GI Spain</label>
         <sharedTo>
-            <group>KLINC_Customer_Care_GI_Spain</group>
+            <group>KLINC_CustomerCare_GI_Spain</group>
         </sharedTo>
         <criteriaItems>
             <field>SourceCountry__c</field>
@@ -59,7 +59,7 @@
         <accessLevel>Edit</accessLevel>
         <label>Cases CC Life Spain</label>
         <sharedTo>
-            <group>KLINC_Customer_Care_Life_Spain</group>
+            <group>KLINC_CustomerCare_Life_Spain</group>
         </sharedTo>
         <criteriaItems>
             <field>SourceCountry__c</field>

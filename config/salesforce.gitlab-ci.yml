@@ -512,6 +512,7 @@ changelog-new-version:
   stage: release
   allow_failure: true
   script:
+    - npm install
     - VERSION=$(echo $CI_COMMIT_REF_NAME | cut -d '-' -f 1)
     - npm run release:changelog -- $VERSION
   only:
@@ -562,7 +563,9 @@ deploy:staging:
 test-org:
   stage: post-deploy
   only:
-    - dev
+    refs:
+      - dev
+      - /^release/.*$/
   allow_failure: false
   dependencies:
     - deploy:staging
@@ -675,6 +678,9 @@ deploy:uat:
 upload-static-veracode:uat:
   stage: post-deploy
   allow_failure: true
+  artifacts:
+    paths:
+      - .tmp/veracode/
   before_script:
     - '[ "${VERACODE_APP_ID}" ] || exit 0'
     - mkdir -p /usr/share/man/man1
@@ -703,7 +709,6 @@ upload-static-veracode:uat:
     - VERSION=${CI_COMMIT_REF_NAME}.${VERSION}
     - rm -rf node_modules
     - npm install --production
-    - VERSION=
     - convert_sfdx_project .tmp/veracode true
     - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
     - sfdx 
@@ -711,8 +716,8 @@ upload-static-veracode:uat:
     - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
     - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep 'results_ready="true"' || :)
     - echo "IS_SCAN_READY:${IS_SCAN_READY}"
-    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID ||'
-    - java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version $VERSION -scanallnonfataltoplevelmodules false -exclude *nodemodule*
+    - '[ "${IS_SCAN_READY}" ] || java -jar VeracodeJavaAPI.jar -action uploadandscan -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID -filepath $CI_DEPLOYMENT_NAME.1.zip -appname $VERACODE_APP_NAME -createprofile false -version "$VERSION" -scanallnonfataltoplevelmodules false -exclude *nodemodule*avaAPI.jar -action deletebuild -vid $VERACODE_API_KEY_ID  -vkey $VERACODE_API_KEY_SECRET  -appid $VERACODE_APP_ID ||'
+    - java -jar VeracodeJ
   only:
     refs:
       - /^release/.*$/
