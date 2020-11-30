@@ -3,7 +3,7 @@
     <layouts>
         <layout>Formato Teléfono de punto de contacto</layout>
         <sections>
-            <label><!-- Additional Information --></label>
+            <label>Información adicional</label>
             <section>Additional Information</section>
         </sections>
         <sections>

@@ -9,6 +9,21 @@
         <value>Objetos asegurados</value>
     </caseValues>
     <gender>Masculine</gender>
+    <layouts>
+        <layout>ZE Address</layout>
+        <sections>
+            <label>Características del edificio</label>
+            <section>Building Characteristics</section>
+        </sections>
+        <sections>
+            <label>Características del interior</label>
+            <section>Internal Characteristics</section>
+        </sections>
+        <sections>
+            <label>Factor de riesgo</label>
+            <section>Risk Factor</section>
+        </sections>
+    </layouts>
     <recordTypes>
         <description><!-- Zurich OCS Address Record Type --></description>
         <label>Dirección</label>
