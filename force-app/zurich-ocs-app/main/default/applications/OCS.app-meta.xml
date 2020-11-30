@@ -6,14 +6,31 @@
         <logoVersion>1</logoVersion>
         <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
+    <description>Application for real customer 360º view</description>
     <formFactors>Small</formFactors>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>OCS</label>
+    <label>One Customer Service</label>
     <navType>Console</navType>
     <profileActionOverrides>
         <actionName>View</actionName>
+        <content>Opci_n_P_gina_de_registro</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Quote</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Opci_n_P_gina_de_registro</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Quote</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
         <content>Policy_Record_Page</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Policy__c</pageOrSobjectType>
@@ -114,18 +131,32 @@
         <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
-    <setupExperience>service</setupExperience>
-    <tabs>standard-Account</tabs>
+    <setupExperience>all</setupExperience>
+    <tabs>standard-home</tabs>
     <tabs>standard-Case</tabs>
+    <tabs>standard-Task</tabs>
+    <tabs>standard-report</tabs>
     <tabs>standard-Opportunity</tabs>
     <tabs>Policy__c</tabs>
-    <tabs>standard-report</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>Claim__c</tabs>
+    <tabs>Scope__c</tabs>
+    <tabs>Relationship__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>OCS_UtilityBar</utilityBar>
     <workspaceConfig>
         <mappings>
+            <tab>Claim__c</tab>
+        </mappings>
+        <mappings>
             <fieldName>PolicyHolder__c</fieldName>
             <tab>Policy__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Relationship__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Scope__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>
@@ -136,6 +167,12 @@
         <mappings>
             <fieldName>AccountId</fieldName>
             <tab>standard-Opportunity</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Task</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-home</tab>
         </mappings>
         <mappings>
             <tab>standard-report</tab>
