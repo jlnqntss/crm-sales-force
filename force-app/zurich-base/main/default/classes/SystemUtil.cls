@@ -7,6 +7,19 @@
  */
 public without sharing class SystemUtil
 {
+    private static final String ADMINSETUP_LABEL = 'AdminSetup';
+    private static final String EMAIL_TO_RETURN = 'mng.dev';
+
+    // Map<String, String> legalIdentityByShort = new Map<String, String> {
+    //     'GI' => Label.GeneralInsurance,
+    //     'Life' => Label.LifeInsurance
+    // };
+
+    private static final Map<String, String> legalIdentityByLabel = new Map<String, String> {
+        Label.GeneralInsurance => 'GI',
+        Label.LifeInsurance => 'Life'
+    };
+
     /**
      * Método que obtiene los settings de metadatos para la configutracion de errores en log.
      *
@@ -90,9 +103,10 @@ public without sharing class SystemUtil
             WS_Source_IBA__c,
             WS_Source_IBA_Multi_Partner__c,
             IBA_EMEA_Prefix__c,
-            ExternalJobQueueBatchJobs__c
+            ExternalJobQueueBatchJobs__c,
+            WS_Source_IBA_EMEA__c
             FROM AdminSetup__mdt
-            WHERE MasterLabel = 'AdminSetup'
+            WHERE MasterLabel = :ADMINSETUP_LABEL
         ];
 
         if ( !results.isEmpty() )
@@ -127,7 +141,7 @@ public without sharing class SystemUtil
                     emailToReturn += code + '-';
                 }
 
-                return emailToReturn + 'mng.dev';
+                return emailToReturn + EMAIL_TO_RETURN;
             }
         }
 
@@ -341,6 +355,20 @@ public without sharing class SystemUtil
     }
 
     /**
+     * Método que obtiene los leads (subscribers) generados a través de web-to-lead
+     **
+     * @author nbizkarra
+     * @date 16/11/2020
+     **/
+    public static String getSubscribers()
+    {
+        String query =
+            'SELECT id, FirstName, Email, LastName, CheckGI__c, CheckLife__c, Country, LeadSource  from Lead ';
+
+        return query;
+    }
+
+    /**
      * Método que obtiene el ID del tipo de registro del objeto Contacto
      **
      * @author nbizkarra
@@ -504,6 +532,154 @@ public without sharing class SystemUtil
 
         return mapaContactos;
     }
+
+    /**
+     * Método que obtiene todos los registros de Contacto existentes por email
+     **
+     * @author nbizkarra
+     * @date 16/11/2020
+     **/
+    public static Map<String, List<Contact> > contactsSelectorEmail(SET<String> emails)
+    {
+        Map<String, List<Contact> > mapaContactos = new Map<String, List<Contact> >();
+
+        List<String> developerNames = new List<String> {
+            Label.CustomerGI, Label.CustomerLife, Label.LeadGI, Label.LeadLife
+        };
+
+        List<Contact> listaContactos = [
+            SELECT
+            Id,
+            DNI__c,
+            Email,
+            MobilePhone,
+            Birthdate,
+            FirstName,
+            LastName,
+            CustomerNum__c,
+            LegalEntity__c,
+            MailingStreet,
+            MailingPostalCode,
+            MailingCity,
+            MailingState,
+            MailingCountry,
+            Nationality__c,
+            CreditCard__c,
+            MonthExpiryDate__c,
+            YearExpiryDate__c,
+            Job__c,
+            JobPosition__c,
+            CNO__c,
+            Gender__c,
+            Status__c,
+            LastPolicyDate__c,
+            MasterPolicy__c,
+            MasterPolicyNum__c,
+            MasterPolicyDesc__c,
+            Balance__c,
+            RecordTypeId,
+            AccountId,
+            Account.CustomerNum__c,
+            Account.CustomerNum_EMEA__c,
+            Account.CustomerNum_Partner__c,
+            SourceCountry__c,
+            Partner__c
+            FROM Contact
+            WHERE email IN :emails
+            AND RecordType.DeveloperName IN :developerNames
+        ];
+
+        //Rellenar el mapa cuyo key es el email
+        for (Contact con : listaContactos)
+        {
+            if(mapaContactos.containsKey(con.Email) )
+            {
+
+                mapaContactos.get(con.Email).add(con);
+
+            }
+            else
+            {
+
+                mapaContactos.put(con.Email, new List<Contact> {con});
+
+            }
+        }
+
+        return mapaContactos;
+    }
+
+    /**
+     * Método que obtiene todos los registros de Contacto existentes por email (únicamente los subscribers)
+     **
+     * @author nbizkarra
+     * @date 17/11/2020
+     **/
+    /*
+       public static Map<String, List<Contact>> contactsSelectorSubscribers(SET<String> emails)
+       {
+        Map<String, List<Contact>> mapaContactos = new Map<String, List<Contact>>();
+
+        List<Contact> listaContactos = [
+            SELECT
+            Id,
+            DNI__c,
+            Email,
+            MobilePhone,
+            Birthdate,
+            FirstName,
+            LastName,
+            CustomerNum__c,
+            LegalEntity__c,
+            MailingStreet,
+            MailingPostalCode,
+            MailingCity,
+            MailingState,
+            MailingCountry,
+            Nationality__c,
+            CreditCard__c,
+            MonthExpiryDate__c,
+            YearExpiryDate__c,
+            Job__c,
+            JobPosition__c,
+            CNO__c,
+            Gender__c,
+            Status__c,
+            LastPolicyDate__c,
+            MasterPolicy__c,
+            MasterPolicyNum__c,
+            MasterPolicyDesc__c,
+            Balance__c,
+            RecordTypeId,
+            AccountId,
+            Account.CustomerNum__c,
+            Account.CustomerNum_EMEA__c,
+            Account.CustomerNum_Partner__c,
+            SourceCountry__c,
+            Partner__c
+            FROM Contact
+            WHERE email IN :emails
+            AND CustomerNum__c = null
+            AND Birthdate = null
+            AND IsSubscriber__c  = true
+        ];
+
+        //Rellenar el mapa cuyo key es el email
+        for (Contact con : listaContactos)
+        {
+            if(mapaContactos.containsKey(con.Email)) {
+
+                mapaContactos.get(con.Email).add(con);
+
+            } else {
+
+                mapaContactos.put(con.Email, new List<Contact>{con});
+
+            }
+        }
+
+        return mapaContactos;
+       }*/
 
     /**
      * Método que obtiene todos los registros de contacto existentes con matchcode email+fechaNacimiento
@@ -708,10 +884,11 @@ public without sharing class SystemUtil
      * @date 18/09/2020
      **/
     public static void contactsSelectorMatchCode(
-        SET<String> keys,
+        SET<String> emails,
         Map<String, Contact> mapEmailBirthLECountry,
         Map<String, Contact> mapEmailBirthLE,
-        Map<String, Contact> mapEmailBirth
+        Map<String, Contact> mapEmailBirth,
+        Map<String, List<Contact> > mapSubscribers
         )
     {
         //Map<String, Contact> mapaContactos = new Map<String, Contact>();
@@ -750,26 +927,48 @@ public without sharing class SystemUtil
             Account.CustomerNum__c,
             Account.CustomerNum_EMEA__c,
             Account.CustomerNum_Partner__c,
-            SourceCountry__c
+            SourceCountry__c,
+            IsSubscriber__c,
+            Partner__c
             FROM Contact
-            WHERE Email IN :keys
+            WHERE Email IN :emails
         ];
 
         String legalEntityName;
         String matchCode;
         for (Contact con : listaContactos)
         {
-            legalEntityName = (con.LegalEntity__c.equals(Label.GeneralInsurance) ? 'GI' : 'Life');
+            legalEntityName = legalIdentityByLabel.get(con.LegalEntity__c);
 
             matchCode = con.Email + String.valueOfGmt(con.Birthdate);
-            mapEmailBirth.put(matchCode, con);
+            if( mapEmailBirth != null )
+                mapEmailBirth.put(matchCode, con);
 
             matchCode += legalEntityName;
-            mapEmailBirthLE.put(matchCode, con);
+            if( mapEmailBirthLE != null)
+                mapEmailBirthLE.put(matchCode, con);
 
             // EMEA
             matchCode += con.SourceCountry__c;
-            mapEmailBirthLECountry.put(matchCode, con);
+            if( mapEmailBirthLECountry != null )
+                mapEmailBirthLECountry.put(matchCode, con);
+
+            // nts (nbizkarra) - 17/11/2020 - get subscribed contacts by email
+            // Subscribers from lead
+            if( mapSubscribers != null )
+            {
+                if( con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c )
+                {
+                    if(mapSubscribers.containsKey(con.Email) )
+                    {
+                        mapSubscribers.get(con.Email).add(con);
+                    }
+                    else
+                    {
+                        mapSubscribers.put(con.Email, new List<Contact> {con});
+                    }
+                }
+            }
         }
     }
 
@@ -820,6 +1019,61 @@ public without sharing class SystemUtil
         }
 
         return mapaPolicy;
+    }
+
+    /**
+     * Método que obtiene todos las quotes del mismo producto
+     **
+     * @author nbizkarra
+     * @date 18/11/2020
+     **/
+    public static Map<String, List<Order> > getQuoteSameProduct(SET<String> customerNum, SET<String> products)
+    {
+        Map<String, List<Order> > mapaQuote = new Map<String, List<Order> >();
+
+        List<Order> listaQuote = [
+            SELECT
+            Id,
+            AccountId,
+            ContactId__r.Id,
+            ContactId__r.CustomerNum__c,
+            LegalEntity__c,
+            QuoteEntry__c,
+            QbLastPage__c,
+            CustomerNum__c,
+            Masterpolicy__c,
+            PolicyNum__c,
+            RecordType.DeveloperName,
+            GoogleCID__c,
+            CampaignParams__c,
+            QuoteStatus__c
+            FROM Order
+            WHERE
+                (RecordType.DeveloperName = :Label.QuoteGI
+                                            OR RecordType.DeveloperName = :Label.QuoteLife)
+            AND ContactId__r.CustomerNum__c IN :customerNum
+            AND Id IN (Select OrderId from OrderItem where Product2.Name IN :products)
+        ];
+
+
+        //Rellenar el mapa cuyo key es el customerNum
+        for (Order quote : listaQuote)
+        {
+            if(mapaQuote.containsKey(quote.ContactId__r.CustomerNum__c) )
+            {
+
+                mapaQuote.get(quote.ContactId__r.CustomerNum__c).add(quote);
+
+            }
+            else
+            {
+
+                mapaQuote.put(quote.ContactId__r.CustomerNum__c, new List<Order> {quote});
+
+            }
+        }
+
+        return mapaQuote;
     }
 
     /**

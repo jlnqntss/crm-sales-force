@@ -8,9 +8,9 @@ public class GenesysCloudCreateCallbackAction
      */
     @InvocableMethod(
         label='Create Callback in Genesys Cloud'
-        description='Allows to create callbacks through Genesys Cloud'
-        category= 'Other'
-    )
+               description='Allows to create callbacks through Genesys Cloud'
+                            category= 'Other'
+        )
     public static void execute(List<CreateCallbackRequest> requests)
     {
         Map<GenesysCloud.Callback, String> contactRequestIdsByCallback = new Map<GenesysCloud.Callback, String>();
@@ -20,7 +20,7 @@ public class GenesysCloudCreateCallbackAction
             contactRequestIdsByCallback.put(request.toCallback(), request.activityId);
         }
 
-        GenesysCloud.CallbacksService.create(new List<GenesysCloud.Callback>(contactRequestIdsByCallback.keySet()), new UpdateContactRequestsCallback(contactRequestIdsByCallback));
+        GenesysCloud.CallbacksService.create(new List<GenesysCloud.Callback>(contactRequestIdsByCallback.keySet() ), new UpdateContactRequestsCallback(contactRequestIdsByCallback) );
     }
 
     /**
@@ -73,7 +73,7 @@ public class GenesysCloudCreateCallbackAction
             callback.routingData = callbackRoutingData;
             callback.scriptId = this.scriptId;
             callback.callbackUserName = this.callbackUserName;
-            callback.callbackNumbers = new List<String>{this.callbackNumbers}; //ContactRequest.PreferredPhone is a single phone
+            callback.callbackNumbers = new List<String> {this.callbackNumbers}; //ContactRequest.PreferredPhone is a single phone
             callback.callbackScheduledTime = this.callbackScheduledTime;//Dates must be specified as ISO-8601 strings. For example: yyyy-MM-ddTHH:mm:ss.SSSZ
             callback.validateCallbackNumbers = this.validateCallbackNumbers;
             callback.countryCode = this.countryCode;
@@ -107,9 +107,9 @@ public class GenesysCloudCreateCallbackAction
                 if(String.isNotEmpty(contactRequestId) )
                 {
                     contactRequests.add(new ContactRequest(
-                                          Id = contactRequestId,
-                                          GenesysInteractionId__c = callback.genesysId
-                                          ) );
+                                            Id = contactRequestId,
+                                            GenesysInteractionId__c = callback.genesysId
+                                            ) );
                 }
             }
 

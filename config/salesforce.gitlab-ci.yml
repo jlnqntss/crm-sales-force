@@ -125,7 +125,7 @@ before_script:
     # Se usa npm para evitar problemas con wget
     npm install --global sfdx-cli
 
-    echo y | sfdx plugins:install sfpowerkit -f
+    echo y | sfdx plugins:install sfpowerkit@2.0.4 -f
   }
 
 
@@ -512,6 +512,7 @@ changelog-new-version:
   stage: release
   allow_failure: true
   script:
+    - npm install
     - VERSION=$(echo $CI_COMMIT_REF_NAME | cut -d '-' -f 1)
     - npm run release:changelog -- $VERSION
   only:
@@ -562,7 +563,8 @@ deploy:staging:
 test-org:
   stage: post-deploy
   only:
-    - dev
+    refs:
+      - dev
   allow_failure: false
   dependencies:
     - deploy:staging
@@ -578,6 +580,33 @@ test-org:
   coverage: '/name="testRunCoverage" value="([\d]+%)"/'
   tags:
   - zurich-ci
+
+####################################################
+# Lanza los tests unitarios en el entorno de staging
+#
+# Modificar el script "test:org" del package.json
+# para personalizaciones
+####################################################
+test-org:uat:
+  stage: post-deploy
+  only:
+    refs:
+      - /^release/.*$/
+  allow_failure: false
+  dependencies:
+    - deploy:uat
+  script:
+    - install_toolchain
+    - authenticate QA $QA_SANDBOX_AUTH_URL
+    - test_org QA
+  artifacts:
+    reports:
+      junit: tests/apex/*-junit.xml
+    paths:
+      - tests/
+  coverage: '/name="testRunCoverage" value="([\d]+%)"/'
+  tags:
+  - zurich-ci-uat
 
 ########################################################
 # Genera el paquete de despliegue y sube a Veracode
@@ -675,6 +704,9 @@ deploy:uat:
 upload-static-veracode:uat:
   stage: post-deploy
   allow_failure: true
+  artifacts:
+    paths:
+      - .tmp/veracode/
   before_script:
     - '[ "${VERACODE_APP_ID}" ] || exit 0'
     - mkdir -p /usr/share/man/man1
@@ -703,7 +735,6 @@ upload-static-veracode:uat:
     - VERSION=${CI_COMMIT_REF_NAME}.${VERSION}
     - rm -rf node_modules
     - npm install --production
-    - VERSION=
     - convert_sfdx_project .tmp/veracode true
     - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
     - sfdx 

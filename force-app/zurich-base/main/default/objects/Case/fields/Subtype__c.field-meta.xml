@@ -203,6 +203,11 @@
                 <label>Otros</label>
             </value>
             <value>
+                <fullName>Internas</fullName>
+                <default>false</default>
+                <label>Internas</label>
+            </value>
+            <value>
                 <fullName>No definido</fullName>
                 <default>false</default>
                 <label>No definido</label>

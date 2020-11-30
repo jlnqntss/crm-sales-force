@@ -6,5 +6,6 @@
     <fields>ClosedDate</fields>
     <fields>ContactId</fields>
     <fields>SourceCountry__c</fields>
+    <fields>Partner__c</fields>
     <label>Siniestro y consulta</label>
 </CompactLayout>

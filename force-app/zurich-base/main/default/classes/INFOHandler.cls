@@ -18,7 +18,7 @@ public class INFOHandler implements ISystem
 
     // CUSTOM METATDATA
     @testVisible
-    private static Transformer tf = new Transformer(Transformer.ORIGIN_NAME_INFO);
+    private static Transformer tf;
     @testVisible
     private static Map<String, Map<String, String>> externalIdByEntity = new Map<String, Map<String, String>>();
     @testVisible
@@ -56,6 +56,36 @@ public class INFOHandler implements ISystem
         CLAIM_RELATIONSHIP // 13
     };
 
+    public static final String SOBJECT_ACCOUNT = 'Account';
+    public static final String SOBJECT_CONTACT = 'Contact';
+    public static final String SOBJECT_CONTACT_POINT_ADDRESS = 'ContactPointAddress';
+    public static final String SOBJECT_CONTACT_POINT_PHONE = 'ContactPointPhone';
+    public static final String SOBJECT_CONTACT_POINT_EMAIL = 'ContactPointEmail';
+    public static final String SOBJECT_PRODUCT = 'Product2';
+    public static final String SOBJECT_OPPORTUNITY = 'Opportunity';
+    public static final String SOBJECT_QUOTE = 'Quote';
+    public static final String SOBJECT_POLICY = 'Policy__c';
+    public static final String SOBJECT_ASSET = 'Asset';
+    public static final String SOBJECT_CLAIM = 'Claim__c';
+    public static final String SOBJECT_RELATIONSHIP = 'Relationship__c';
+
+    // Orden de DML sobre SObjects
+    private static List<String> sObjectOrder = new List<String> 
+    {
+        SOBJECT_ACCOUNT,
+        SOBJECT_CONTACT,
+        SOBJECT_CONTACT_POINT_ADDRESS,
+        SOBJECT_CONTACT_POINT_PHONE,
+        SOBJECT_CONTACT_POINT_EMAIL,
+        SOBJECT_PRODUCT,
+        SOBJECT_OPPORTUNITY,
+        SOBJECT_QUOTE,
+        SOBJECT_POLICY,
+        SOBJECT_ASSET,
+        SOBJECT_CLAIM,
+        SOBJECT_RELATIONSHIP
+    };
+
     /**
      * Obtiene la información necesaria para poder procesar las external request pendientes
      **
@@ -66,13 +96,16 @@ public class INFOHandler implements ISystem
      * @throws
      * @where ExternalJobQueueBatch
      */
-    public static void prepare(List<ExternalRequest__c> externalRequestList)
+    public static void prepare(Transformer INFOTransformer, List<ExternalRequest__c> externalRequestList)
     {
-        // 1 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
+        // 1 - Obtener el tranformer a utilizar
+        tf = INFOTransformer;
+
+        // 2 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
         recordsToUpsertByEntity = tf.initRequestsMapBySettings();
         recordsToDeleteByEntity = tf.initRequestsMapBySettings();
 
-        // 2 - Obtener identificadores externos por cada entidad
+        // 3 - Obtener identificadores externos por cada entidad
         for (ExternalIdField__mdt externalId : new ExternalIdFieldsSelector
             (new List<Schema.SObjectField> {ExternalIdField__mdt.OriginEntity__c, ExternalIdField__mdt.SalesforceEntity__c, ExternalIdField__mdt.ExternalId__c}
             ).selectByOrigin(new Set<String> {Transformer.ORIGIN_NAME_INFO}) )
@@ -84,7 +117,7 @@ public class INFOHandler implements ISystem
             externalIdByEntity.get(externalId.OriginEntity__c).put(externalId.SalesforceEntity__c, externalId.ExternalId__c);
         }
 
-        // 3 - Obtener el número máximo de reintentos
+        // 4 - Obtener el número máximo de reintentos
         maxRetries = (Integer) new ExternalJobQueueBatchesSelector
         (
             new List<Schema.SObjectField> {ExternalJobQueueBatch__mdt.Retries__c}
@@ -431,9 +464,9 @@ public class INFOHandler implements ISystem
         {
             if ( recordsToPersist.containsKey(entity) )
             {
-                for ( String objectName : recordsToPersist.get(entity).keySet() )
+                for ( String objectName : sObjectOrder )
                 {
-                    if ( !recordsToPersist.get(entity).get(objectName).isEmpty() )
+                    if ( recordsToPersist.get(entity).containsKey(objectName) && !recordsToPersist.get(entity).get(objectName).isEmpty() )
                     {
                         Schema.SObjectField externalIdField = globalDescribe.get(objectName).getDescribe().fields.getMap().get(externalIdByEntity.get(entity).get(objectName));
 

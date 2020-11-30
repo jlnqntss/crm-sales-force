@@ -1,3 +1,13 @@
+/**
+ * @description       :
+ * @author            : Enara Etxaniz
+ * @group             :
+ * @last modified on  : 10-14-2020
+ * @last modified by  : Enara Etxaniz
+ * Modifications Log
+ * Ver   Date         Author          Modification
+ * 1.0   10-08-2020   Enara Etxaniz   Initial Version
+ **/
 @isTest
 private class OpenIDConnectRegHandlerTest
 {
@@ -10,14 +20,9 @@ private class OpenIDConnectRegHandlerTest
     @isTest
     static void testCreateAndUpdateUser()
     {
-        Profile_mapping__mdt mapping = [
-            SELECT External_profile_name__c
-            FROM Profile_mapping__mdt
-            WHERE
-            Salesforce_profile_name__c = 'System Administrator'
-                                         OR Salesforce_profile_name__c = 'Administrador del sistema'
-                                                                         LIMIT 1
-        ];
+        Public_Group_Mapping__mdt mapping = [SELECT External_role_name__c
+                                             FROM Public_Group_Mapping__mdt
+                                             WHERE Salesforce_group_name__c = 'KLINC_CustomerCare_GI_France' LIMIT 1];
         OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
         Auth.UserData sampleData = new Auth.UserData(
             'testId',
@@ -30,18 +35,14 @@ private class OpenIDConnectRegHandlerTest
             UserInfo.getLocale(),
             'facebook',
             null,
-            new Map<String, String> {
-            'roles' => '{crm=[' +
-                      mapping.External_profile_name__c +
-                      ']}'
-        });
-
+            new Map<String, String> {'roles' => '{crm=[' + mapping.External_role_name__c + ']}'});
         User u = handler.createUser(null, sampleData);
         System.assertEquals('testuserlong@zurich-es.com', u.userName);
         System.assertEquals('testuser@example.org', u.email);
         System.assertEquals('testLast', u.lastName);
         System.assertEquals('testFirst', u.firstName);
-        insert (u);
+
+        //insert(u);
         String uid = u.id;
 
         sampleData = new Auth.UserData(
@@ -55,22 +56,17 @@ private class OpenIDConnectRegHandlerTest
             UserInfo.getLocale(),
             'facebook',
             null,
-            new Map<String, String> {
-            'roles' => '{crm=[' +
-                      mapping.External_profile_name__c +
-                      ']}'
-        }
-            );
+            new Map<String, String> {'roles' => '{crm=[' + mapping.External_role_name__c + ']}'});
         handler.updateUser(uid, null, sampleData);
-        User updatedUser = [
-            SELECT userName, email, firstName, lastName, alias
-            FROM user
-            WHERE id = :uid
-        ];
+        User updatedUser = [SELECT userName, email, firstName, lastName, alias FROM user WHERE id=:uid];
         System.assertEquals('testnewuserlong@zurich-es.com', updatedUser.userName);
         System.assertEquals('testnewuser@example.org', updatedUser.email);
         System.assertEquals('testNewLast', updatedUser.lastName);
         System.assertEquals('testNewFirst', updatedUser.firstName);
+
+        // GroupMember groupMemberItem = [SELECT GroupId FROM GroupMember WHERE userOrGroupId = :uid LIMIT 1];
+        // Group groupItem = [SELECT DeveloperName FROM Group WHERE Id = :groupMemberItem.GroupId LIMIT 1];
+        // System.assertEquals(groupItem.DeveloperName, 'KLINC_CustomerCare_GI_France');
     }
 
     /**
@@ -95,16 +91,12 @@ private class OpenIDConnectRegHandlerTest
                 UserInfo.getLocale(),
                 'facebook',
                 null,
-                new Map<String, String> {}
-                );
+                new Map<String, String> {});
             User u = handler.createUser(null, sampleData);
         }
         catch (Exception e)
         {
-            System.assertEquals(
-                'OpenIDConnectRegHandler.RegHandlerException',
-                e.getTypeName()
-                );
+            System.assertEquals('OpenIDConnectRegHandler.RegHandlerException', e.getTypeName() );
         }
     }
 
@@ -130,16 +122,12 @@ private class OpenIDConnectRegHandlerTest
                 UserInfo.getLocale(),
                 'facebook',
                 null,
-                new Map<String, String> { 'roles' => '{crm=[testFailProfile]}' }
-                );
+                new Map<String, String> {'roles' => '{crm=[testFailProfile]}'});
             User u = handler.createUser(null, sampleData);
         }
         catch (Exception e)
         {
-            System.assertEquals(
-                'OpenIDConnectRegHandler.RegHandlerException',
-                e.getTypeName()
-                );
+            System.assertEquals('OpenIDConnectRegHandler.RegHandlerException', e.getTypeName() );
         }
     }
 }
