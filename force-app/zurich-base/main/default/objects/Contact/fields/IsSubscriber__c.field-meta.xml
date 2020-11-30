@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsSubscriber__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>KLINC: Indica si un contacto se ha dado de alta como suscriptor en la newsletter. Se rellena en el procesamiento tras darse de alta mediante el formulario Web-to-Lead.</description>
+    <externalId>false</externalId>
+    <label>Subscriber</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

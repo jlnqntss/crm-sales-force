@@ -129,6 +129,10 @@
             <default>false</default>
         </values>
         <values>
+                <fullName>Internas</fullName>
+                <default>false</default>
+        </values>
+        <values>
             <fullName>Pago de franquicia</fullName>
             <default>false</default>
         </values>

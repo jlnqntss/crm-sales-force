@@ -381,6 +381,96 @@ global without sharing class ContactUtil
                     quote.AccountId = alreadyInSFContact.AccountId;
                     quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
                 }
+            } // SEARCH AMONG SUBSCRIBERS // nts (nbizkarra) - 17/11/2020
+            else if ( ExternalRequestUtil.mapSubscribers.containsKey(incomingContact.Email) )
+            {
+                System.debug('>>> Contact found in Subscribers');
+                List <Contact> listSubscribers = ExternalRequestUtil.mapSubscribers.get(incomingContact.Email);
+                Boolean subscriber_found = false;
+
+                // Loop through all the subscribers with same email to find contact with same LE, Country and Partner
+                for(Contact subscriber: listSubscribers)
+                {
+
+                    if( incomingContact.LegalEntity__c == subscriber.LegalEntity__c &&
+                        incomingContact.SourceCountry__c == subscriber.SourceCountry__c &&
+                        incomingContact.Partner__c == subscriber.Partner__c
+                        )
+                    {
+
+                        System.debug('>>> Subscriber found: ' + subscriber);
+                        alreadyInSFContact = subscriber;
+                        incomingContact.Id = alreadyInSFContact.Id;
+                        ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
+                        subscriber_found = true;
+                    }
+                }
+
+                //If no subscriber with same LE, Country and Partner, associate the incoming contact with the existing master
+                if(subscriber_found == false)
+                {
+
+                    System.debug('>>> Subscribers master found');
+
+                    alreadyInSFContact = listSubscribers.get(0);
+                    incomingContact.AccountId = alreadyInSFContact.AccountId;
+                    incomingContact.OwnerId = ExternalRequestUtil.recordOwner.id;
+                    ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
+
+                }
+
+                Account accountItem = new Account();
+                accountItem.Name = incomingContact.FirstName + ' ' + incomingContact.LastName;
+                // The master account doesn't have the customer number
+                // Account.Customer_Num__c / Customer_Num_EMEA__c / Customer_Num_Partner__c
+                if( String.isBlank( (String) alreadyInSFContact.Account.get(customerNumField) ) )
+                {
+                    // The master account is updated
+                    // Account.Customer_Num__c / Customer_Num_EMEA__c / Customer_Num_Partner__c
+                    accountItem.put(customerNumField, customerNumberOnly);
+                    accountItem.Id = alreadyInSFContact.AccountId;
+                    ExternalRequestUtil.mastersToUpdateById.put( (String) accountItem.get(customerNumField), accountItem );
+                }
+                else // The master account has an customer number
+                // The contact is an active customer
+                {
+                    if (incomingContact.Status__c == 'Activo')
+                    {
+                        // The master account is updated
+                        // Account.Customer_Num__c / Customer_Num_EMEA__c / Customer_Num_Partner__c
+                        accountItem.put(customerNumField, customerNumberOnly);
+                        // Populate the Id field only if the account has the same customer number
+                        if ( alreadyInSFContact.Account.get(customerNumField) == customerNumberOnly )
+                        {
+                            ExternalRequestUtil.AccountMastersToUpdate.put( (String) accountItem.get(customerNumField), accountItem );
+                        }
+                        else
+                        {
+                            accountItem.Id = alreadyInSFContact.AccountId;
+                            ExternalRequestUtil.mastersToUpdateById.put( (String) accountItem.get(customerNumField), accountItem );
+                        }
+                    }
+                }
+
+                if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
+                {
+                    //Asociar partner cuando el cliente es nuevo
+                    AccountUtil.associatePartner(
+                        incomingContact,
+                        ExternalRequestUtil.mapPartners,
+                        ExternalRequestUtil.contactsToUpdateWithPartner,
+                        ExternalRequestUtil.partnersToUpdateList,
+                        ExternalRequestUtil.recordOwner
+                        );
+                }
+
+                if (quote != null)
+                {
+                    quote.CustomerNum__c = customerNumberOnly;
+                    quote.AccountId = alreadyInSFContact.AccountId;
+                    quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
+                }
+
             } // NOT FOUND
             else
             {

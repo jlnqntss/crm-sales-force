@@ -28,6 +28,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>WebName__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>CommercialPC__c</field>
             </layoutItems>
             <layoutItems>

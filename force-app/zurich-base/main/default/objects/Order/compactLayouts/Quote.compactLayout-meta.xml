@@ -7,5 +7,6 @@
     <fields>QuoteStatus__c</fields>
     <fields>AbandonedCart__c</fields>
     <fields>SourceCountry__c</fields>
+    <fields>Partner__c</fields>
     <label>Quote</label>
 </CompactLayout>

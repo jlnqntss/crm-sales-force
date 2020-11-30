@@ -17,7 +17,7 @@ global class GenesysCloudMocks implements HttpCalloutMock
         //Respuesta FAKE
         if(req.getMethod() == 'POST')
         {
-            if(req.getEndpoint().contains('/api/v2/conversations/'))
+            if( req.getEndpoint().contains('/api/v2/conversations/') )
             {
                 HttpResponse res = new HttpResponse();
                 res.setBody(body);

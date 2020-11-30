@@ -4,5 +4,6 @@
     <fields>Name</fields>
     <fields>CustomerNum__c</fields>
     <fields>CustomerNum_EMEA__c</fields>
+    <fields>CustomerNum_Partner__c</fields>
     <label>Account Compact Layout</label>
 </CompactLayout>

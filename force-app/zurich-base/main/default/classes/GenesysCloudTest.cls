@@ -82,7 +82,7 @@ private class GenesysCloudTest
         email.fromAddress = 'fromaddress';
 
         emails.add(email);
-        emails.add(email.clone() );
+        emails.add( email.clone() );
 
         // Test
         Test.startTest();
@@ -124,7 +124,7 @@ private class GenesysCloudTest
         email.fromAddress = 'fromaddress';
 
         emails.add(email);
-        emails.add(email.clone() );
+        emails.add( email.clone() );
 
         // Test
         Test.startTest();
@@ -155,14 +155,14 @@ private class GenesysCloudTest
         }
     }
 
-     //#endregion RoutingService
+    //#endregion RoutingService
 
-     //#region CallbacksService
-     @isTest
-     static void test_GenesysCloudCallbacksService_create_callback_ok()
-     {
-        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},'+
-        '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
+    //#region CallbacksService
+    @isTest
+    static void test_GenesysCloudCallbacksService_create_callback_ok()
+    {
+        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},' +
+                      '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
         Integer code = 202; //Se va a probar un retorno bueno
 
         //Set MOCK
@@ -182,7 +182,7 @@ private class GenesysCloudTest
         callback.screenPopRecordId = 'Id del screenPop';
         callback.countryCode = 'ES';
         callback.callbackUserName = 'Noemi';
-        callback.callbackNumbers = new List<String>{'123456789'};
+        callback.callbackNumbers = new List<String> {'123456789'};
         callback.callbackScheduledTime = System.now().addDays(10);
 
         Test.startTest();
@@ -190,7 +190,7 @@ private class GenesysCloudTest
         Test.stopTest();
 
         System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', updatedCallback.genesysId); //ID que devuelve el mock
-     }
+    }
 
     @isTest
     static void test_GenesysCloudCallbacksService_create_callback_ko()
@@ -220,8 +220,8 @@ private class GenesysCloudTest
     static void test_GenesysCloudCallbacksService_create_callbackList_ok()
     {
         // When
-        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},'+
-        '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
+        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},' +
+                      '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
         Integer code = 202; //Se va a probar un retorno bueno
 
         //Set MOCK
@@ -242,14 +242,14 @@ private class GenesysCloudTest
         callback.screenPopRecordId = 'Id del screenPop';
         callback.countryCode = 'ES';
         callback.callbackUserName = 'Noemi';
-        callback.callbackNumbers = new List<String>{'123456789'};
+        callback.callbackNumbers = new List<String> {'123456789'};
         callback.callbackScheduledTime = System.now().addDays(10);
         callbacks.add(callback);
-        callbacks.add(callback.clone());
+        callbacks.add( callback.clone() );
 
         // Test
         Test.startTest();
-        GenesysCloud.CallbacksService.create(callbacks, new CreateAssertCallback());//El assert está en CreateAssertCallback
+        GenesysCloud.CallbacksService.create( callbacks, new CreateAssertCallback() );//El assert está en CreateAssertCallback
         Test.stopTest();
     }
 
@@ -267,11 +267,11 @@ private class GenesysCloudTest
         List<GenesysCloud.Callback> callbacks = new List<GenesysCloud.Callback>();
         GenesysCloud.Callback callback = new GenesysCloud.Callback();
         callbacks.add(callback);
-        callbacks.add(callback.clone());
+        callbacks.add( callback.clone() );
 
         // Test
         Test.startTest();
-        GenesysCloud.CallbacksService.create(callbacks, new CreateAssertCallback());//El assert está en CreateAssertCallback
+        GenesysCloud.CallbacksService.create( callbacks, new CreateAssertCallback() );//El assert está en CreateAssertCallback
         Test.stopTest();
     }
 
@@ -293,5 +293,5 @@ private class GenesysCloudTest
         }
     }
 
-     //#endregion
+    //#endregion
 }
