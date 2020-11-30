@@ -48,6 +48,9 @@
         <locationY>577</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>UpdateTaskWithCustomer</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>LogError</targetReference>
         </faultConnector>
@@ -60,7 +63,7 @@
         <inputParameters>
             <name>flowId</name>
             <value>
-                <elementReference>GenesysFlowId</elementReference>
+                <stringValue>2a5bca8b-cdae-411f-b383-a07d7b78c57c</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -108,11 +111,11 @@
     </actionCalls>
     <apiVersion>50.0</apiVersion>
     <assignments>
-        <description>Agregar Skills al listado de skills, y asignar la variable GenesysFlowId dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsAndFlowCustomers</name>
-        <label>Asignar skills y GenesysFlow para Customers</label>
-        <locationX>61</locationX>
-        <locationY>335</locationY>
+        <description>Agregar Skills al listado de skills dependiendo del buzón de entrada de email-to-case</description>
+        <name>AddSkillsDefault</name>
+        <label>Asignar skills (DEFAULT)</label>
+        <locationX>573</locationX>
+        <locationY>346</locationY>
         <assignmentItems>
             <assignToReference>Skills</assignToReference>
             <operator>Add</operator>
@@ -120,71 +123,16 @@
                 <stringValue>Test</stringValue>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>GenesysFlowId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>2a5bca8b-cdae-411f-b383-a07d7b78c57c</stringValue>
-            </value>
-        </assignmentItems>
         <connector>
             <targetReference>RouteEmailAction</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <description>Agregar Skills al listado de skills, y asignar la variable GenesysFlowId dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsAndFlowDefault</name>
-        <label>Asignar skills y GenesysFlow (DEFAULT)</label>
-        <locationX>649</locationX>
-        <locationY>417</locationY>
-        <assignmentItems>
-            <assignToReference>Skills</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Test</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>GenesysFlowId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>2a5bca8b-cdae-411f-b383-a07d7b78c57c</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>RouteEmailAction</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Agregar Skills al listado de skills, y asignar la variable GenesysFlowId dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsAndFlowIntermediaries</name>
-        <label>Asignar skills y GenesysFlow para Intermediarios</label>
-        <locationX>67</locationX>
-        <locationY>199</locationY>
-        <assignmentItems>
-            <assignToReference>Skills</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Test</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>GenesysFlowId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>2a5bca8b-cdae-411f-b383-a07d7b78c57c</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>RouteEmailAction</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Agregar Skills al listado de skills, y asignar la variable GenesysFlowId dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsAndFlowPartnerDome</name>
-        <label>Asignar skills y GenesysFlow para Cúpula de Partners</label>
-        <locationX>61</locationX>
-        <locationY>50</locationY>
+        <description>Agregar Skills al listado de skills dependiendo del buzón de entrada de email-to-case</description>
+        <name>AddSkillsPartnerDome</name>
+        <label>Asignar skills para Cúpula de Partners</label>
+        <locationX>120</locationX>
+        <locationY>364</locationY>
         <assignmentItems>
             <assignToReference>Skills</assignToReference>
             <operator>Add</operator>
@@ -192,35 +140,21 @@
                 <stringValue>CúpulaPartner</stringValue>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>GenesysFlowId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>2a5bca8b-cdae-411f-b383-a07d7b78c57c</stringValue>
-            </value>
-        </assignmentItems>
         <connector>
             <targetReference>RouteEmailAction</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <description>Agregar Skills al listado de skills, y asignar la variable GenesysFlowId dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsAndFlowPartners</name>
-        <label>Asignar skills y GenesysFlow para Partners</label>
-        <locationX>50</locationX>
-        <locationY>481</locationY>
+        <description>Agregar Skills al listado de skills dependiendo del buzón de entrada de email-to-case</description>
+        <name>AddSkillsPartners</name>
+        <label>Asignar skills para Partners</label>
+        <locationX>342</locationX>
+        <locationY>477</locationY>
         <assignmentItems>
             <assignToReference>Skills</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>Partner</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>GenesysFlowId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>2a5bca8b-cdae-411f-b383-a07d7b78c57c</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -231,42 +165,12 @@
         <description>Dependiendo del ToAddress , del Email-To-Case por donde entra el email, se pueden asignar las skills que se requerirán o el flow al que redirigir</description>
         <name>InboxChoice</name>
         <label>Decidir según buzón de entrada</label>
-        <locationX>512</locationX>
-        <locationY>64</locationY>
+        <locationX>343</locationX>
+        <locationY>231</locationY>
         <defaultConnector>
-            <targetReference>AddSkillsAndFlowDefault</targetReference>
+            <targetReference>AddSkillsDefault</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Intermediaries</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>soporte-ocs@</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AddSkillsAndFlowIntermediaries</targetReference>
-            </connector>
-            <label>Intermediaries</label>
-        </rules>
-        <rules>
-            <name>Customers</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>42c5d93f@</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AddSkillsAndFlowCustomers</targetReference>
-            </connector>
-            <label>Customers</label>
-        </rules>
         <rules>
             <name>Partners</name>
             <conditionLogic>and</conditionLogic>
@@ -278,7 +182,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>AddSkillsAndFlowPartners</targetReference>
+                <targetReference>AddSkillsPartners</targetReference>
             </connector>
             <label>Partners</label>
         </rules>
@@ -293,7 +197,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>AddSkillsAndFlowPartnerDome</targetReference>
+                <targetReference>AddSkillsPartnerDome</targetReference>
             </connector>
             <label>Partner Dome</label>
         </rules>
@@ -306,6 +210,7 @@
         <expression>&apos;/lightning/page/recordActionFlow?lightning__flowDevName=CSMSearchAndScreenPop&amp;lightning__flowArgs=&apos;
 + &apos;[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.FromAddress} + &apos;&quot;},&apos;
 + &apos;{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.ParentId} + &apos;&quot;},&apos;
++ &apos;{&quot;name&quot;: &quot;customerId&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.Parent.ContactId} + &apos;&quot;},&apos;
 + &apos;{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!FindOwnerIdAction.screenPopRecordId} + &apos;&quot;}]&apos;</expression>
     </formulas>
     <interviewLabel>CSM - Enrutamiento de correos electrónicos {!$Flow.CurrentDateTime}</interviewLabel>
@@ -362,6 +267,35 @@
         <object>Error_Event__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordUpdates>
+        <description>Se actualizar el EmailMessage.ActivityId poniéndole en Task.WhoId el EmailMessage.Parent.AccountId</description>
+        <name>UpdateTaskWithCustomer</name>
+        <label>Actualizar interacción con el cliente</label>
+        <locationX>903</locationX>
+        <locationY>762</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>EmailMessage.ActivityId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>WhoId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>EmailMessage.Parent.ContactId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+    </recordUpdates>
     <start>
         <locationX>763</locationX>
         <locationY>166</locationY>
