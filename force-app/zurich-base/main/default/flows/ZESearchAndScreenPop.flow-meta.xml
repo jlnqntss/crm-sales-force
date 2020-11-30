@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <description>Utiliza un Aura para ir al email o tarea</description>
+        <name>RedirectToEmailMessage</name>
+        <label>Abrir el Email en una pestaña</label>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
+        <actionName>c:RedirectToRecordAction</actionName>
+        <actionType>component</actionType>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>relatedrecordid</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <description>Utiliza un Aura para ir al contacto</description>
         <name>RedirectToRecord</name>
         <label>Ir a ficha del registro encontrado</label>
@@ -41,22 +57,6 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <actionCalls>
-        <description>Redirige a la página de búsqueda estándar</description>
-        <name>RedirectToSearch</name>
-        <label>Ir a pantalla de búsqueda</label>
-        <locationX>314</locationX>
-        <locationY>278</locationY>
-        <actionName>c:RedirectToSearchAction</actionName>
-        <actionType>component</actionType>
-        <inputParameters>
-            <name>searchFor</name>
-            <value>
-                <elementReference>phone</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
     <apiVersion>49.0</apiVersion>
     <decisions>
         <name>HasRecordIdDecision</name>
@@ -64,7 +64,7 @@
         <locationX>182</locationX>
         <locationY>158</locationY>
         <defaultConnector>
-            <targetReference>RedirectToSearch</targetReference>
+            <targetReference>RedirectToEmailMessage</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
