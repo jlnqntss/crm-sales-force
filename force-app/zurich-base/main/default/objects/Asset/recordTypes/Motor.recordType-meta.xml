@@ -24,29 +24,68 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>ObjectType__c</picklist>
+        <picklist>LegalEntity__c</picklist>
         <values>
-            <fullName>Address</fullName>
+            <fullName>000</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Boat</fullName>
+            <fullName>001</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Electronic Device</fullName>
+            <fullName>002</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Mobile</fullName>
+            <fullName>003</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Motor</fullName>
+            <fullName>004</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Person</fullName>
+            <fullName>005</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>006</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>007</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>008</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>999</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>General Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Life Insurance</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Scope__c</picklist>
+        <values>
+            <fullName>Z</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>ZE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZEO</fullName>
             <default>false</default>
         </values>
     </picklistValues>
