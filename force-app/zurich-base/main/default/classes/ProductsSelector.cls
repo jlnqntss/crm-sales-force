@@ -1,4 +1,4 @@
-public with sharing class ScopesSelector
+public with sharing class ProductsSelector
 {
     //Esta propiedad indica el objeto Salesforce del que vamos a extraer los campos necesarios en la query
     //Si no se indica el objeto, solo se recupera el Id del objeto Salesforce
@@ -55,10 +55,10 @@ public with sharing class ScopesSelector
 
 
     //#region Contructores
-    public ScopesSelector()
+    public ProductsSelector()
     {}
 
-    public ScopesSelector(Set<String> fieldsToQuery)
+    public ProductsSelector(Set<String> fieldsToQuery)
     {
         this();
         this.fieldsToQuery = fieldsToQuery;
@@ -66,87 +66,32 @@ public with sharing class ScopesSelector
     //#endregion
 
     /**
-     * Busca scpes a partir del Id
+     * Busca Products a partir del Commercial Product Code
      *
      * @author rlopez
-     * @date 23/11/2020
-     * @param  ids   Listado de identificadores. Válido cualquier formato
-     * @return       Listado de scopes sobre los que se ha realizado match
+     * @date 25/11/2020
+     * @param  commercialProductCodes     Listado de Commercial Product Codes
+     * @param  technicalProductCodes     Listado de Technical Product Codes
+     *
+     * @return                            Listado de Product2 sobre los que se ha realizado match
      */
-    public List<Scope__c> selectById(Set<Id> ids)
+    public List<Product2> selectByCommercialPCAndTechnicalPC(Set<String> commercialProductCodes, Set<String> technicalProductCodes)
     {
-        if(ids != null)
+        if(commercialProductCodes != null && technicalProductCodes != null)
         {
-            this.sObjectToQuery = 'Scope__c';
+            this.sObjectToQuery = 'Product2';
             String query = String.format(
-                'SELECT {0} FROM Scope__c ' +
-                'WHERE Id IN : ids ',
+                'SELECT {0} FROM Product2 ' +
+                'WHERE CommercialCode__c IN : commercialProductCodes AND TechnicalCode__c IN : technicalProductCodes',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
             }
                 );
-            return (List<Scope__c>) Database.query(query);
+            return (List<Product2>) Database.query(query);
         }
         else
         {
-            return new List<Scope__c>();
-        }
-    }
-
-    /**
-     * Busca scpes a partir del AccountId
-     *
-     * @author rlopez
-     * @date 26/11/2020
-     * @param  ids   Listado de identificadores. Válido cualquier formato
-     * @return       Listado de scopes sobre los que se ha realizado match
-     */
-    public List<Scope__c> selectByAccountId(Set<Id> ids)
-    {
-        if(ids != null)
-        {
-            this.sObjectToQuery = 'Scope__c';
-            String query = String.format(
-                'SELECT {0} FROM Scope__c ' +
-                'WHERE AccountId__c IN : ids ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<Scope__c>) Database.query(query);
-        }
-        else
-        {
-            return new List<Scope__c>();
-        }
-    }
-
-    /**
-     * Busca scpes a partir del AccountId y del valor de Scope
-     *
-     * @author rlopez
-     * @date 26/11/2020
-     * @param  ids      Listado de identificadores. Válido cualquier formato
-     * @param  scope    Valor del Scope a buscar
-     * @return          Listado de scopes sobre los que se ha realizado match
-     */
-    public List<Scope__c> selectByAccountIdAndScope(Set<Id> ids, String scope)
-    {
-        if(ids != null)
-        {
-            this.sObjectToQuery = 'Scope__c';
-            String query = String.format(
-                'SELECT {0} FROM Scope__c ' +
-                'WHERE AccountId__c IN : ids AND Scope__c = : scope',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<Scope__c>) Database.query(query);
-        }
-        else
-        {
-            return new List<Scope__c>();
+            return new List<Product2>();
         }
     }
 }

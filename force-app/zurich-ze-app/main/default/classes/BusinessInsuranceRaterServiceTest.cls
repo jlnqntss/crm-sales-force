@@ -11,17 +11,38 @@ public with sharing class BusinessInsuranceRaterServiceTest
     static final String INVALID_REQUEST_URI = '/ze/va/offers/';
     static final String JSON_INFORMATION = '{"timeStamp":"2020-04-28T12:23:00","webEmail":true,"webPhone":"600666000","sessionId":"xxxxx","businessCode":"3200011531","lastStep":"CRM-01","status":"Activo","manager":{"firstName":"ManagerFirstName","lastName":"ManagerLastName","email":"manageremail@manager.com","phone":"123456789"},"accountInformation":{"firstName":"Nombre","lastName":"Apellidos","family":"10","commercialActivity":"101100","annualRevenue":"200000.10","numberOfEmployees":"150","tradeName":"Nombre comercial","companyName":"Nombre Compañía","nationalIdentifier":"B111111111"},"offers":[{"quoteNumberINFO":"456789456","quoteNumberJRE":"5555555","policyNumber":"654654654","operationCode":"P1","businessCode":"3200011531","effectiveDate":"2020-09-28","commercialPC":"00001","technicalPC":"00526","paymentType":"A","paymentTypeSucc":"A","paymentChannel":"CC","paymentChannelSucc":"CC","language":"ES","buildingCapital":"120000","contentCapital":"12000","generalLiabilityLimit":"12000","netPremium":"12000","validationErrors":"","offerRiskInformation":{"propertyStreetType":"VI","propertyStreet":"Via Augusta","propertyStreetNumber":"12","propertyAdditionalInfo":"","propertyPostalCode":"08006","propertyCity":"Barcelona","propertyState":"8","propertyCountry":"ESP","yearOfConstruction":"1960","ownership":"P","insuredType":"I","buildingType":"I","height":"AL","riskFactor01":"0001","riskFactor02":"","riskFactor03":"","riskFactor04":"","riskFactor05":"","riskFactor06":"","riskFactor07":"","riskFactor08":"0039","riskFactor09":"","area":"50","lockType":true,"securityDoor":false,"bulletproofDoor":false,"connectedAlarm":false,"fireHydrant":false,"surveillance":false,"smokeDetector":false,"sprayer":false,"fireExtinguisher":true,"typeOfWindows":"2","strongbox":"N"}}]}';
 
+    @TestSetup
+    static void createScenario()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        insert accounts;
+
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
+        insert contacts;
+
+        List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
+        insert scopes;
+
+        /*List<Scope__c> insertedScopes = [SELECT Id, AccountId__c, Scope__c, AccountId__r.Name FROM Scope__c WHERE Id IN: scopes];
+
+           List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromScopes(insertedScopes, 10);
+           insert contactPointEmails;*/
+    }
+
     /**
-     * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-01
+     * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-04
      **
      * @author rlopez
      * @date 26/10/2020
      */
     @isTest
-    static void test_processFormData_CRM01_ok()
+    static void test_processFormData_CRM04_ok()
     {
+        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSONForExistingCustomer('CRM-04', existingAccounts.get(0).NationalId__c, 'newemail@fakeemail.com.invalid', '123456789');
         BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
-            JSON_INFORMATION,
+            JSON.serialize(jsonInformation),
             BusinessInsuranceRaterService.Request.class
             );
 
@@ -29,7 +50,85 @@ public with sharing class BusinessInsuranceRaterServiceTest
         BusinessInsuranceRaterService.processFormData(requestInformationObject);
         Test.stopTest();
 
-        System.assertEquals(true, true, 'true');
+        List<Scope__c> scopesByAccount = new ScopesSelector(
+            new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
+            ).selectByAccountId(new Set<Id> {existingAccounts.get(0).Id});
+        System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
+        System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
+        System.assertEquals('newemail@fakeemail.com.invalid', scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
+        System.assertEquals('123456789', scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+
+        Set<Id> scopeIds = new Set<Id>();
+        for(Scope__c scope: scopesByAccount)
+        {
+            scopeIds.add(scope.Id);
+        }
+
+        List<ContactPointEmail> contactPointEmails = new ContactPointEmailsSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndEmailAddress(scopeIds, 'newemail@fakeemail.com.invalid');
+        System.assertEquals(1, contactPointEmails.size(), 'There should be 1 Contact Point Email');
+        System.assertEquals(true, contactPointEmails.get(0).IsPrimary, 'IsPrimary should be true');
+
+        List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, '123456789');
+        System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
+        System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
+
+        List<Opportunity> offersCreated = [SELECT Id FROM Opportunity];
+        System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
+    }
+
+    /**
+     * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-04
+     **
+     * @author rlopez
+     * @date 26/10/2020
+     */
+    @isTest
+    static void test_processFormData_CRM03_ok()
+    {
+        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSONForExistingCustomer('CRM-04', existingAccounts.get(0).NationalId__c, 'newemail@fakeemail.com.invalid', '123456789');
+        BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );
+
+        Test.startTest();
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        Test.stopTest();
+
+        List<Scope__c> scopesByAccount = new ScopesSelector(
+            new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
+            ).selectByAccountId(new Set<Id> {existingAccounts.get(0).Id});
+        System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
+        System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
+        System.assertEquals('newemail@fakeemail.com.invalid', scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
+        System.assertEquals('123456789', scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+
+        Set<Id> scopeIds = new Set<Id>();
+        for(Scope__c scope: scopesByAccount)
+        {
+            scopeIds.add(scope.Id);
+        }
+
+        List<ContactPointEmail> contactPointEmails = new ContactPointEmailsSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndEmailAddress(scopeIds, 'newemail@fakeemail.com.invalid');
+        System.assertEquals(1, contactPointEmails.size(), 'There should be 1 Contact Point Email');
+        System.assertEquals(true, contactPointEmails.get(0).IsPrimary, 'IsPrimary should be true');
+
+        List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, '123456789');
+        System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
+        System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
+
+        List<Opportunity> offersCreated = [SELECT Id FROM Opportunity];
+        System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
     }
 
     /**
@@ -69,7 +168,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
      * @date 26/10/2020
      */
     @isTest
-    static void test_processFormData_CRM03_ok()
+    static void test_processFormData_CRM01_ok()
     {}
 
     /**
@@ -89,7 +188,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
      * @date 26/10/2020
      */
     @isTest
-    static void test_processFormData_CRM04_ok()
+    static void test_processFormData_CRM0_ok()
     {}
 
     /**

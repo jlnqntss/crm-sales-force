@@ -1,71 +1,442 @@
 public without sharing class BusinessInsuranceRaterService
 {
     public static List<Business_Quotes_Field__mdt> stepMetadataList = new List<Business_Quotes_Field__mdt>();
+    public static Map<String, Business_Insurance_Scope_Setting__mdt> scopeSettings = new Map<String, Business_Insurance_Scope_Setting__mdt>();
     public static Set<String> requiredFieldsMetadataSet = new Set<String>();
     public static Map<String, String> formattedFieldsMetadataMap = new Map<String, String>();
     public static Set<String> currentRequiredFieldsSet = new Set<String>();
+
+    public static Set<String> offersSteps = new Set<String> {'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07', 'CRM-08'};
+    public static Set<String> managerSteps = new Set<String> {'CRM-07', 'CRM-08'};
 
     public static Integer version { get; set; }
 
     public static final String LASTSTEP_FIELD = 'lastStep';
     public static final String INVALID_FIELD_STATUSCODE = 'INVALID_FIELD';
 
+    public static Account currentCustomer;
+    public static Account currentManager;
+    public static Scope__c currentScope;
+    public static ContactPointEmail currentContactPointEmail;
+    public static ContactPointPhone currentContactPointPhone;
+
     public static void processFormData(Request formData)
     {
+        //0. Inicializamos scopeSettings
+        initScopeSettings();
         //Para todos los pasos
         //1. Buscamos el cliente y si no existe lo insertamos
         //TODO: Llamar al servicio que contenga la lógica de búsqueda de clientes
+        currentCustomer = searchCustomer(formData);
+
+        //Sí el currentScope está inicializado, es que lo hemos creado porque no existía
+        //la cuenta, si no, quiere decir que la cuenta existe y tenemos que ver si existe el Scope
+        if(currentScope == null && currentCustomer != null)
+        {
+            currentScope = searchScope(formData.businessCode);
+        }
+
+        //Sí alguna de las vías de contacto no existe, es porque hemos encontrado el Scope,
+        //si no, es que el scope se ha creado porque no existía y por lo tanto se han creado las vías
+        //Sí el scope existe, buscamos las vías
+        if( (currentContactPointEmail == null || currentContactPointPhone == null) && currentScope != null )
+        {
+            manageContactPoints(formData.webEmail, formData.webPhone);
+        }
 
         //2. Creamos una tarea para el advisor
-        createTasks(formData); //TODO: Confirmar si en todos los pasos se crea una tarea (Duda en el CRM-08)
+        //createTasks(formData); //TODO: Confirmar si en todos los pasos se crea una tarea (Duda en el CRM-08)
+        createContactRequest(formData);
 
-        String lastStep = formData.LastStep;
-        if (
-            lastStep == 'CRM-03' ||
-            lastStep == 'CRM-04' ||
-            lastStep == 'CRM-06' ||
-            lastStep == 'CRM-08'
-            )
-        {
-            createOffers(formData);
-        }
+        createOffers(formData);
 
-        if (lastStep == 'CRM-05' || lastStep == 'CRM-07')
-        {
-            createLostOffers(formData); //TODO: Si la creación de ofertas es igual pero simplemente cambiando el stage, se podría usar la misma pasando stage como parametro
-        }
+        //TODO: Confirmar donde va esta parte, puede que haya que buscar el manager antes de crear la poliza
+        searchManager(formData);
+    }
 
-        if (lastStep == 'CRM-07' || lastStep == 'CRM-08')
+    private static void initScopeSettings()
+    {
+        List<Business_Insurance_Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Business_Insurance_Scope_Setting__mdt
+        ];
+
+        if( !scopeSettingsList.isEmpty() )
         {
-            createManagers(formData);
+            for(Business_Insurance_Scope_Setting__mdt setting: scopeSettingsList)
+            {
+                scopeSettings.put(setting.BusinessCode__c, setting);
+            }
         }
     }
 
-    private static void createTasks(Request formData)
+    private static Account searchCustomer(Request formData)
     {
-        //TODO: Crear una tarea con los datos necesarios del objeto Request formData
+        List<Account> customers = new List<Account>();
+
+        AccountInformation accountInfo = formData.accountInformation;
+        System.debug('accountInfo.nationalIdentifier: ' + accountInfo.nationalIdentifier);
+        if( String.isNotBlank(accountInfo.nationalIdentifier) )
+        {
+            //Sí tenemos DNI --> customers = findCustomersByDocumentId(new List<String>{accountInfo.nationalIdentifier}, 'CIF', 'ze', Label.GeneralInsurance)
+            customers = [SELECT Id FROM Account WHERE NationalId__c =: accountInfo.nationalIdentifier];
+        }
+
+        if( customers.isEmpty() && String.isNotBlank(formData.webEmail) )
+        {
+            //Buscamos por Email --> customers = findCustomersByEmail(new List<String>{formData.webEmail}, 'ze')
+        }
+
+        if( customers.isEmpty() && String.isNotBlank(formData.webPhone) )
+        {
+            //Buscamos por Telefono --> customers = findCustomersByPhoneNumber(new List<String>{formData.webPhone}, 'ze')
+        }
+
+        if( customers.isEmpty() )
+        {
+            //Creamos un nuevo Account
+            customers.add( createLead(formData) );
+        }
+
+        //TODO: Borrar esto cuando tengamos las funciones de búsqueda
+        /*customers = [
+            SELECT Id FROM Account
+           ];*/
+
+        return customers.get(0);
+    }
+
+    private static Scope__c searchScope(String businessCode)
+    {
+        String scope = 'ZE';
+        if( scopeSettings.containsKey(businessCode) )
+        {
+            scope = scopeSettings.get(businessCode).Scope__c;
+        }
+
+        List<Scope__c> scopes = new ScopesSelector(
+            new Set<String> {'Id', 'AccountId__c', 'Scope__c'}
+            ).selectByAccountIdAndScope(new Set<Id> {currentCustomer.Id}, scope);
+
+        if( scopes.isEmpty() )
+        {
+            scopes.add(
+                new Scope__c()
+                );
+
+            insert scopes;
+        }
+
+        return scopes.get(0);
+    }
+
+    private static void manageContactPoints(String email, String phone)
+    {
+        System.debug('email:' + email);
+        System.debug('phone:' + phone);
+        List<SObject> contactPointsToInsert = new List<SObject>();
+        List<SObject> contactPointsToUpdate = new List<SObject>();
+
+        //1. ContactPointEmail
+        List<ContactPointEmail> contactPointEmailsByScope = new ContactPointEmailsSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndEmailAddress(new Set<Id> {currentScope.Id}, email);
+
+        if( contactPointEmailsByScope.isEmpty() && String.isNotBlank(email) )
+        {
+            //Creamos
+            contactPointsToInsert.add(
+                new ContactPointEmail(
+                    IsPrimary = true,
+                    ActiveFromDate = System.today(),
+                    EmailAddress = email,
+                    Scope__c = currentScope.Scope__c,
+                    ParentId = currentScope.AccountId__c,
+                    ScopeId__c = currentScope.Id
+                    )
+                );
+        }
+        else
+        {
+            //actualizamos el registro encontrado y añadimos a contactPointsToUpdate
+            for(ContactPointEmail contactPointEmail: contactPointEmailsByScope)
+            {
+                if(!contactPointEmail.IsPrimary)
+                {
+                    contactPointEmail.IsPrimary = true;
+                    contactPointsToUpdate.add(contactPointEmail);
+                    break; //Solo debería existir 1 con ese email para el scope actual
+                }
+            }
+        }
+
+        //2. ContactPointPhone
+        List<ContactPointPhone> contactPointPhonesByScope = new ContactPointPhonesSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndTelephoneNumber(new Set<Id> {currentScope.Id}, phone);
+
+        if( contactPointPhonesByScope.isEmpty() && String.isNotBlank(email) )
+        {
+            //Creamos
+            contactPointsToInsert.add(
+                new ContactPointPhone(
+                    IsPrimary = true,
+                    ActiveFromDate = System.today(),
+                    TelephoneNumber = phone,
+                    Scope__c = currentScope.Scope__c,
+                    ParentId = currentScope.AccountId__c,
+                    ScopeId__c = currentScope.Id
+                    )
+                );
+        }
+        else
+        {
+            //actualizamos el registro encontrado y añadimos a contactPointsToUpdate
+            for(ContactPointPhone ContactPointPhone: ContactPointPhonesByScope)
+            {
+                if(!ContactPointPhone.IsPrimary)
+                {
+                    ContactPointPhone.IsPrimary = true;
+                    contactPointsToUpdate.add(ContactPointPhone);
+                    break; //Solo debería existir 1 con ese phone para el scope actual
+                }
+            }
+        }
+
+        if( !contactPointsToInsert.isEmpty() )
+        {
+            insert contactPointsToInsert;
+        }
+    }
+
+    private static Account createLead(Request formData)
+    {
+        Account accountToCreate = new Account();
+        insert accountToCreate;
+
+        Contact contactToCreate = new Contact(
+            AccountId = accountToCreate.Id
+            );
+        insert contactToCreate;
+
+        currentScope = new Scope__c(
+            Scope__c = 'ZE',
+            AccountId__c = accountToCreate.Id
+            );
+        insert currentScope;
+
+        //insert ContactPointEmail for Scope and Account
+        List<SObject> contactPointsToCreate = new List<SObject>();
+        contactPointsToCreate.add(
+            new ContactPointEmail(
+                IsPrimary = true,
+                ActiveFromDate = System.today(),
+                EmailAddress = formData.webEmail,
+                Scope__c = currentScope.Scope__c,
+                ParentId = currentScope.AccountId__c,
+                ScopeId__c = currentScope.Id
+                )
+            );
+
+        contactPointsToCreate.add(
+            new ContactPointPhone(
+                IsPrimary = true,
+                ActiveFromDate = System.today(),
+                TelephoneNumber = formData.webPhone,
+                Scope__c = currentScope.Scope__c,
+                ParentId = currentScope.AccountId__c,
+                ScopeId__c = currentScope.Id
+                )
+            );
+        insert contactPointsToCreate;
+
+        return accountToCreate;
+    }
+
+    private static void createContactRequest(Request formData)
+    {
+        //TODO: Confirmar si hay que crear un ContactRequest para todos los pasos
+        if(formData.lastStep == 'CRM-03')
+        {}
+        insert new ContactRequest(
+            //TODO: Crear campos commercialPC, technicalPC y lookup a product
+            );
     }
 
     private static void createOffers(Request formData)
     {
-        //TODO: Crear ofertas con los datos necesarios del objeto Request formData
+        if( offersSteps.contains(formData.lastStep) )
+        {
+            Business_Insurance_Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
+            List<Opportunity> offersToCreate = new List<Opportunity>();
+            List<Policy__c> policiesToCreate = new List<Policy__c>();
+            List<Asset> risksToCreate = new List<Asset>();
+
+            Map<String, Asset> quoteNumberAssetMap = new Map<String, Asset>();
+            Map<String, String> quoteNumberToPolicyNumberMap = new Map<String, String>();
+            Map<String, String> commercialPCToProductIdMap = new Map<String, String>();
+
+            List<BusinessInsuranceRaterService.Offer> receivedOffers = formData.offers;
+            if( !receivedOffers.isEmpty() )
+            {
+                //Extraemos los valores de CommercialPC y TechnicalPC para buscar el producto relacionado
+                Set<String> commercialPCCodes = new Set<String>();
+                Set<String> technicalPCCodes = new Set<String>();
+                for(BusinessInsuranceRaterService.Offer offer: receivedOffers)
+                {
+                    if( String.isNotBlank(offer.commercialPC) )
+                    {
+                        commercialPCCodes.add(offer.commercialPC);
+                    }
+
+                    if( String.isNotBlank(offer.technicalPC) )
+                    {
+                        technicalPCCodes.add(offer.technicalPC);
+                    }
+                }
+
+                if( !commercialPCCodes.isEmpty() || !technicalPCCodes.isEmpty() )
+                {
+                    List<Product2> productsByCommercialPC = new ProductsSelector(
+                        new Set<String> {'Id', 'CommercialCode__c'}
+                        ).selectByCommercialPcAndTechnicalPC(commercialPCCodes, technicalPCCodes);
+                    if( !productsByCommercialPC.isEmpty() )
+                    {
+                        for(Product2 relatedProduct: productsByCommercialPC)
+                        {
+                            commercialPCToProductIdMap.put(relatedProduct.CommercialCode__c, relatedProduct.Id);
+                        }
+                    }
+                }
+
+                for(BusinessInsuranceRaterService.Offer offer: receivedOffers)
+                {
+                    offersToCreate.add(
+                        new Opportunity(
+                            Name = (String.isNotBlank(offer.quoteNumberINFO) ? offer.quoteNumberINFO : 'Test Name'), //TODO: Que nombre ponemos si no tenemos quoteNumber?
+                            Scope__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Scope__c) ? currentScopeSettings.Scope__c : 'ZE'),
+                            InfoQuoteNumber__c = offer.quoteNumberINFO,
+                            StageName = 'Closed Lost', //TODO: Calculado
+                            //Owner = new User(), //TODO: Calculado, buscar advisor relacionado o owner generico
+                            AccountId = currentCustomer.Id,
+                            Language__c = offer.language,
+                            IssuedOnline__c = true,
+                            ResultingPolicyNumber__c = offer.policyNumber,
+                            EffectiveDate__c = offer.effectiveDate, //TODO: hacer el parse de texto a fecha?
+                            BusinessCode__c = formData.businessCode,
+                            BusinessName__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Scope_Name__c) ? currentScopeSettings.Scope_Name__c : 'Zurich Empresas'),
+                            CloseDate = System.today(),
+                            ExpirationDate__c = System.today().addDays(15), //TODO: Mover a un metadato?
+                            CommercialProductCode__c = offer.commercialPC,
+                            TechnicalProductCode__c = offer.technicalPc,
+                            TotalPremium__c = offer.netPremium,
+                            BuildingCapital__c = offer.buildingCapital,
+                            ContentCapital__c = offer.contentCapital,
+                            GeneralLiabilityLimit__c = offer.generalLiabilityLimit,
+                            PaymentType__c = offer.paymentType,
+                            PaymentTypeSucc__c = offer.paymentTypeSucc,
+                            PaymentChannel__c = offer.paymentChannel,
+                            PaymentChannelSucc__c = offer.paymentChannelSucc,
+                            ValidationErrors__c = offer.validationErrors,
+                            ProductId__c = (commercialPCToProductIdMap.containsKey(offer.commercialPC) ? commercialPCToProductIdMap.get(offer.commercialPC) : null)
+                            )
+                        );
+
+                    if( String.isNotBlank(offer.policyNumber) )
+                    {
+                        quoteNumberToPolicyNumberMap.put(offer.quoteNumberINFO, offer.policyNumber);
+                    }
+
+                    BusinessInsuranceRaterService.OfferRiskInformation risk = offer.offerRiskInformation;
+                    if(risk != null)
+                    {
+                        quoteNumberAssetMap.put( offer.quoteNumberINFO, new Asset(
+                                                     //TODO: Mapear todos los campos de Asset
+                                                     ) );
+                    }
+                }
+
+                if( !offersToCreate.isEmpty() )
+                {
+                    insert offersToCreate;
+
+                    for(Opportunity offer: offersToCreate)
+                    {
+                        if( quoteNumberToPolicyNumberMap.containsKey(offer.InfoQuoteNumber__c) )
+                        {
+                            //TODO: Confirmar si es necesario mapear todos los campos o solo el InfoPolicyNumber
+                            policiesToCreate.add(
+                                new Policy__c(
+                                    InfoPolicyNumber__c = quoteNumberToPolicyNumberMap.get(offer.InfoQuoteNumber__c),
+                                    Scope__c = offer.Scope__c,
+                                    BusinessCode__c = offer.BusinessCode__c,
+                                    BusinessName__c = offer.BusinessName__c,
+                                    ScopeId__c = offer.ScopeId__c,
+                                    ProductId__c = offer.ProductId__c,
+                                    OpportunityName__c = offer.Id
+                                    )
+                                );
+                        }
+
+                        if( quoteNumberAssetMap.containsKey(offer.InfoQuoteNumber__c) )
+                        {
+                            Asset risk = quoteNumberAssetMap.get(offer.InfoQuoteNumber__c);
+                            if(risk != null)
+                            {
+                                //risk.OfferId__c = offer.Id;
+                                risksToCreate.add(risk);
+                            }
+                        }
+                    }
+
+                    /*if(!policiesToCreate.isEmpty())
+                       {
+                        insert policiesToCreate;
+                       }*/
+
+                    /*if(!risksToCreate.isEmpty())
+                       {
+                        insert risksToCreate;
+                       }*/
+                }
+            }
+        }
     }
 
-    private static void createLostOffers(Request formData)
-    {
-        //TODO: Crear ofertas perdidas con los datos necesarios del objeto Request formData
-        //Si hay objeto riesgo en el formData
-        createRisks(formData);
-    }
-
-    private static void createRisks(Request formData)
-    {
-        //TODO: Crear ofertas con los datos necesarios del objeto Request formData
-    }
-
-    private static void createManagers(Request formData)
+    private static void searchManager(Request formData)
     {
         //TODO: Crear un PersonAccount manager con los datos necesarios del objeto Request formData
+        if( managerSteps.contains(formData.lastStep) )
+        {
+            List<Account> managers = new List<Account>();
+            BusinessInsuranceRaterService.Manager managerInformation = formData.manager;
+            if(managerInformation.phone != formData.webPhone && managerInformation.email != formData.webEmail)
+            {
+                if( String.isNotBlank(managerInformation.email) )
+                {
+                    //Buscamos por Email --> managers = findCustomersByEmail(new List<String>{managerInformation.email}, 'ze')
+                }
+
+                if( managers.isEmpty() && String.isNotBlank(managerInformation.phone) )
+                {
+                    //Buscamos por Telefono --> managers = findCustomersByPhoneNumber(new List<String>{formData.phone}, 'ze')
+                }
+
+                if( managers.isEmpty() )
+                {
+                    currentManager = new Account(
+                        FirstName = managerInformation.firstName,
+                        LastName = managerInformation.lastName
+                        );
+                    //TODO: Creamos vias de contacto con email y telefono?
+                    insert currentManager;
+                }
+            }
+            else
+            {
+                currentManager = currentCustomer;
+            }
+        }
     }
 
     /**

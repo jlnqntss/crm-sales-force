@@ -2119,7 +2119,7 @@ public class TestDataFactory
      */
     public static List<ContactPointPhone> generateContactPointPhonesFromScopes(List<Scope__c> scopes, Integer numRecords)
     {
-        List<ContactPointPhone> ContactPointPhones = new List<ContactPointPhone>();
+        List<ContactPointPhone> contactPointPhones = new List<ContactPointPhone>();
 
         if(numRecords == null)
         {
@@ -2132,7 +2132,7 @@ public class TestDataFactory
             for(Integer i=0; i<numRecords; i++)
             {
                 Integer phoneNumber = (Math.random() * 1000000000).intValue();
-                ContactPointPhones.add(
+                contactPointPhones.add(
                     new ContactPointPhone(
                         ParentId = relatedScope.AccountId__c,
                         TelephoneNumber = String.valueOf(phoneNumber),
@@ -2145,6 +2145,246 @@ public class TestDataFactory
             }
         }
 
-        return ContactPointPhones;
+        return contactPointPhones;
+    }
+
+    /**
+     * Genera un JSON del formulario web de Zurich Empresas en función del paso indicado
+     **
+     * @param String lastStep paso del que queremos crear el JSON
+     *
+     * @return Map<String, Object> o String JSON generado
+     * @author rlopez
+     * @date 25/11/2020
+     */
+    public static Map<String, Object> generateBusinessInsuranceOffersWebJSONForExistingCustomer(String lastStep, String nationalId, String email, String phone)
+    {
+        Map<String, Object> jsonInformation = new Map<String, Object>();
+
+        //Datos comunes
+        jsonInformation.put('timeStamp', JSON.serialize(datetime.now()));
+        jsonInformation.put('webEmail', email);        
+        jsonInformation.put('sessionId', Math.random());
+        jsonInformation.put('businessCode', '3200012477');
+        jsonInformation.put('lastStep', lastStep);
+
+        switch on lastStep {
+            when 'CRM-01' {
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('accountInformation', new Map<String, Object>
+                {
+                    'firstName'  => 'FirstName',
+                    'lastName' => 'LastName'
+                });
+            }
+            when 'CRM-02' {
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('accountInformation', new Map<String, Object>
+                {
+                    'firstName'  => 'FirstName',
+                    'lastName' => 'LastName',
+                    'family' => '10',
+                    'commercialActivity' => '101100'
+                });
+            }
+            when 'CRM-03' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Activo');
+                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
+                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('accountInformation', new Map<String, Object>
+                {
+                    'firstName'  => 'FirstName',
+                    'lastName' => 'LastName',
+                    'family' => '10',
+                    'commercialActivity' => '101100'
+                });
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    new Map<String, Object>{
+                        'commercialPC' => '00001',
+                        'technicalPC' => '00526'
+                    },
+                    new Map<String, Object>{
+                        'commercialPC' => '00004',
+                        'technicalPC' => '00236'
+                    }
+                });
+            }
+            when 'CRM-04' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
+                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    new Map<String, Object>{
+                        'offerRiskInformation' => generateOfferRiskInformation()
+                    }
+                });
+            }
+            when 'CRM-05' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
+                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    generateOfferWithRisk()
+                });
+            }
+            when 'CRM-06' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Activo');
+                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
+                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    generateOfferWithRisk()
+                });
+            }
+            when 'CRM-07' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
+                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    generateOfferWithRisk()
+                });
+
+                jsonInformation.put('manager', generateManagerInformation(email, phone));
+            }
+            when 'CRM-08' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'ACtivo');
+                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
+                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    generateOfferWithRisk()
+                });
+
+                jsonInformation.put('manager', generateManagerInformation(email, phone));
+            }
+        }
+
+        return jsonInformation;
+    }
+
+    private static Map<String, Object> generateCompleteAccountInformation(String nationalId)
+    {
+        return new Map<String, String>
+        {
+            'firstName'  => 'FirstName',
+            'lastName' => 'LastName',
+            'family' => '10',
+            'commercialActivity' => '101100',
+            'annualRevenue' => '200000.10',
+            'numberOfEmployees' => '150',
+            'nationalIdentifier' => nationalId
+        };
+    }
+
+    private static Map<String, Object> generateOfferRiskInformation()
+    {
+        return new Map<String, Object>{
+            'propertyStreetType' => 'VI',
+            'propertyStreet' => 'Via Augusta',
+            'propertyStreetNumber' => '12',
+            'propertyAdditionalInfo' => '',
+            'propertyPostalCode' => '08006',
+            'propertyCity' => 'Barcelona',
+            'propertyState' => '8',
+            'propertyCountry' => 'ESP',
+            'yearOfConstruction' => '1960',
+            'ownership' => 'P',
+            'insuredType' => 'I',
+            'buildingType' => 'I',
+            'height' => 'AL',
+            'riskFactor01' => '0001',
+            'riskFactor02' => '',
+            'riskFactor03' => '',
+            'riskFactor04' => '',
+            'riskFactor05' => '',
+            'riskFactor06' => '',
+            'riskFactor07' => '',
+            'riskFactor08' => '0039',
+            'riskFactor09' => '',
+            'area' => '50',
+            'lockType' => true,
+            'securityDoor' => false,
+            'bulletproofDoor' => false,
+            'connectedAlarm' => false,
+            'fireHydrant' => false,
+            'surveillance' => false,
+            'smokeDetector' => false,
+            'sprayer' => false,
+            'fireExtinguisher' => true,
+            'typeOfWindows' => '2',
+            'strongbox' => 'N'
+        };
+    }
+
+    private static Map<String, Object> generateOfferWithRisk()
+    {
+        return new Map<String, Object>{
+            'quoteNumberINFO' => '456789456',
+            'quoteNumberJRE' => '789989799',
+            'operationCode' => 'P1',
+            'businessCode' => '3200012477',
+            'effectiveDate' => Date.valueOf(System.today().addDays(15)),
+            'commercialPC' => '00002',
+            'technicalPC' => '00527',
+            'paymentType' => 'A',
+            'paymentTypeSucc' => 'A',
+            'paymentChannel' => 'CC',
+            'paymentChannelSucc' => 'CC',
+            'language' => 'ES',
+            'buildingCapital' => '120000',
+            'contentCapital' => '12000',
+            'generalLiabilityLimit' => '12000',
+            'netPremium' => '12000',
+            'validationErrors' => '',
+            'offerRiskInformation' => generateOfferRiskInformation()
+        };
+    }
+
+    private static Map<String, Object> generateManagerInformation(String email, String phone)
+    {
+        return new Map<String, Object>{
+            'email' => email,
+            'phone' => phone,
+            'firstName' => 'ManagerFirstName',
+            'lastName' => 'ManagerLastName'
+        };
+    }
+
+    public static List<Product2> generateProducts(Integer numRecords)
+    {
+        List<Product2> products = new List<Product2>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            products.add(
+                new Product2(
+                    Name = 'Product Name ' + i,
+                    CommercialCode__c = String.valueOf((Math.random() * 100000).intValue()),
+                    TechnicalCode__c = String.valueOf((Math.random() * 100000).intValue())
+                )
+            );
+        }
+
+        return products;
     }
 }
