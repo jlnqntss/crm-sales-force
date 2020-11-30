@@ -382,40 +382,43 @@ global without sharing class ContactUtil
                     quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
                 }
             } // SEARCH AMONG SUBSCRIBERS // nts (nbizkarra) - 17/11/2020
-            else if (ExternalRequestUtil.mapSubscribers.containsKey(incomingContact.Email))
+            else if (ExternalRequestUtil.mapSubscribers.containsKey(incomingContact.Email) )
             {
                 System.debug('>>> Contact found in Subscribers');
                 List <Contact> listSubscribers = ExternalRequestUtil.mapSubscribers.get(incomingContact.Email);
                 Boolean subscriber_found = false;
 
                 // Loop through all the subscribers with same email to find contact with same LE, Country and Partner
-                for(Contact subscriber: listSubscribers){
+                for(Contact subscriber: listSubscribers)
+                {
 
-                    if( incomingContact.LegalEntity__c == subscriber.LegalEntity__c && 
-                        incomingContact.SourceCountry__c == subscriber.SourceCountry__c && 
-                        incomingContact.Partner__c == subscriber.Partner__c 
-                    ){
+                    if( incomingContact.LegalEntity__c == subscriber.LegalEntity__c &&
+                        incomingContact.SourceCountry__c == subscriber.SourceCountry__c &&
+                        incomingContact.Partner__c == subscriber.Partner__c
+                        )
+                    {
 
                         System.debug('>>> Subscriber found: ' + subscriber);
                         alreadyInSFContact = subscriber;
                         incomingContact.Id = alreadyInSFContact.Id;
                         ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
                         subscriber_found = true;
-                    }  
+                    }
                 }
 
                 //If no subscriber with same LE, Country and Partner, associate the incoming contact with the existing master
-                if(subscriber_found == false){
+                if(subscriber_found == false)
+                {
 
-                        System.debug('>>> Subscribers master found');
+                    System.debug('>>> Subscribers master found');
 
-                        alreadyInSFContact = listSubscribers.get(0);
-                        incomingContact.AccountId = alreadyInSFContact.AccountId;
-                        incomingContact.OwnerId = ExternalRequestUtil.recordOwner.id;
-                        ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
-                        
+                    alreadyInSFContact = listSubscribers.get(0);
+                    incomingContact.AccountId = alreadyInSFContact.AccountId;
+                    incomingContact.OwnerId = ExternalRequestUtil.recordOwner.id;
+                    ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
+
                 }
-                
+
                 Account accountItem = new Account();
                 accountItem.Name = incomingContact.FirstName + ' ' + incomingContact.LastName;
                 // The master account doesn't have the customer number
@@ -450,15 +453,15 @@ global without sharing class ContactUtil
                 }
 
                 if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
-                        {
-                            //Asociar partner cuando el cliente es nuevo
-                            AccountUtil.associatePartner(
-                                incomingContact,
-                                ExternalRequestUtil.mapPartners,
-                                ExternalRequestUtil.contactsToUpdateWithPartner,
-                                ExternalRequestUtil.partnersToUpdateList,
-                                ExternalRequestUtil.recordOwner
-                                );
+                {
+                    //Asociar partner cuando el cliente es nuevo
+                    AccountUtil.associatePartner(
+                        incomingContact,
+                        ExternalRequestUtil.mapPartners,
+                        ExternalRequestUtil.contactsToUpdateWithPartner,
+                        ExternalRequestUtil.partnersToUpdateList,
+                        ExternalRequestUtil.recordOwner
+                        );
                 }
 
                 if (quote != null)

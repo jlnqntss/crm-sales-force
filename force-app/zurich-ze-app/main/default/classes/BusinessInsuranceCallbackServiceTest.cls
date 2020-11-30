@@ -14,17 +14,19 @@ public class BusinessInsuranceCallbackServiceTest
         BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
             COMPLETE_CALLBACK,
             BusinessInsuranceCallbackService.CallMeBack.class
-        );
+            );
 
         BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException expectedError;
 
         Test.startTest();
-            try {
-                BusinessInsuranceCallbackService.validateRequiredFields(deserializedRequest);
-            }catch(BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException error)
-            {
-                expectedError = error;
-            }
+        try
+        {
+            BusinessInsuranceCallbackService.validateRequiredFields(deserializedRequest);
+        }
+        catch(BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException error)
+        {
+            expectedError = error;
+        }
         Test.stopTest();
 
         System.assertEquals(null, expectedError, 'No debe lanzar excepción porque están bien los campos rellenos');
@@ -39,17 +41,19 @@ public class BusinessInsuranceCallbackServiceTest
         BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
             NO_COMPLETE_CALLBACK,
             BusinessInsuranceCallbackService.CallMeBack.class
-        );
+            );
 
         BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException expectedError;
 
         Test.startTest();
-            try {
-                BusinessInsuranceCallbackService.validateRequiredFields(deserializedRequest);
-            }catch(BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException error)
-            {
-                expectedError = error;
-            }
+        try
+        {
+            BusinessInsuranceCallbackService.validateRequiredFields(deserializedRequest);
+        }
+        catch(BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException error)
+        {
+            expectedError = error;
+        }
         Test.stopTest();
 
         System.assertNotEquals(null, expectedError, 'No se ha lanzado una excepción y se debería haberla lanzado');
@@ -64,10 +68,10 @@ public class BusinessInsuranceCallbackServiceTest
         BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
             COMPLETE_CALLBACK,
             BusinessInsuranceCallbackService.CallMeBack.class
-        );
+            );
 
         Test.startTest();
-            String contactRequestId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
+        String contactRequestId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
         Test.stopTest();
 
         ContactRequest cr = [SELECT Id FROM ContactRequest LIMIT 1];
@@ -86,17 +90,19 @@ public class BusinessInsuranceCallbackServiceTest
         BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
             CALLBACK_WITH_BADTIME,
             BusinessInsuranceCallbackService.CallMeBack.class
-        );
+            );
 
         BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException expectedError;
 
         Test.startTest();
-            try {
-                String contactRequestId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
-            }catch(BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException error)
-            {
-                expectedError = error;
-            }
+        try
+        {
+            String contactRequestId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
+        }
+        catch(BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException error)
+        {
+            expectedError = error;
+        }
         Test.stopTest();
 
         List<ContactRequest> crs = [SELECT Id FROM ContactRequest];

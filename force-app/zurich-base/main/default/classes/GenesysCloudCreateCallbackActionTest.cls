@@ -10,8 +10,8 @@ public class GenesysCloudCreateCallbackActionTest
         insert cr;
 
         // Datos petición
-        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},'+
-        '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
+        String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},' +
+                      '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
         Integer code = 202; //Se va a probar un retorno bueno
 
         //Se necesita un MOCK porque en medio hay una llamada al SDK de genesys con POST
@@ -40,7 +40,7 @@ public class GenesysCloudCreateCallbackActionTest
         // Then
         // El ContactRequest debe tener reflejado el Genesys Interaction Id
         List<ContactRequest> crs = [SELECT Id FROM ContactRequest WHERE GenesysInteractionId__c = '7e131fcf-1639-45b2-89e5-9c3787b5dc75'];
-        System.assertEquals(false, crs.isEmpty());
+        System.assertEquals(false, crs.isEmpty() );
         System.assertEquals(cr.Id, crs[0].Id, 'No coincide el ContactRequest con el enrutado');
     }
 
@@ -55,7 +55,7 @@ public class GenesysCloudCreateCallbackActionTest
 
         Test.startTest();
 
-        GenesysCloudCreateCallbackAction.execute(new List<GenesysCloudCreateCallbackAction.CreateCallbackRequest>{new GenesysCloudCreateCallbackAction.CreateCallbackRequest()});
+        GenesysCloudCreateCallbackAction.execute(new List<GenesysCloudCreateCallbackAction.CreateCallbackRequest> {new GenesysCloudCreateCallbackAction.CreateCallbackRequest()});
 
         Test.stopTest();
 
