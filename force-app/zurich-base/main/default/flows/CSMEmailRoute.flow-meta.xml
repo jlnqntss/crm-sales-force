@@ -48,9 +48,6 @@
         <locationY>577</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
-        <connector>
-            <targetReference>UpdateTaskWithCustomer</targetReference>
-        </connector>
         <faultConnector>
             <targetReference>LogError</targetReference>
         </faultConnector>
@@ -210,7 +207,6 @@
         <expression>&apos;/lightning/page/recordActionFlow?lightning__flowDevName=CSMSearchAndScreenPop&amp;lightning__flowArgs=&apos;
 + &apos;[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.FromAddress} + &apos;&quot;},&apos;
 + &apos;{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.ParentId} + &apos;&quot;},&apos;
-+ &apos;{&quot;name&quot;: &quot;customerId&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.Parent.ContactId} + &apos;&quot;},&apos;
 + &apos;{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!FindOwnerIdAction.screenPopRecordId} + &apos;&quot;}]&apos;</expression>
     </formulas>
     <interviewLabel>CSM - Enrutamiento de correos electrónicos {!$Flow.CurrentDateTime}</interviewLabel>
@@ -267,35 +263,6 @@
         <object>Error_Event__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordUpdates>
-        <description>Se actualizar el EmailMessage.ActivityId poniéndole en Task.WhoId el EmailMessage.Parent.AccountId</description>
-        <name>UpdateTaskWithCustomer</name>
-        <label>Actualizar interacción con el cliente</label>
-        <locationX>903</locationX>
-        <locationY>762</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>EmailMessage.ActivityId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>WhoId</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>WhoId</field>
-            <value>
-                <elementReference>EmailMessage.Parent.ContactId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-    </recordUpdates>
     <start>
         <locationX>763</locationX>
         <locationY>166</locationY>

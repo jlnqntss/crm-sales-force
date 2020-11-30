@@ -109,7 +109,7 @@
         <expression>&apos;/lightning/page/recordActionFlow?lightning__flowDevName=CCSSearchAndScreenPop&amp;lightning__flowArgs=&apos;
 + &apos;[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.FromAddress} + &apos;&quot;},&apos;
 + &apos;{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.ParentId} + &apos;&quot;},&apos;
-+ &apos;{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.Parent.ContactId} + &apos;&quot;}]&apos;</expression>
++ &apos;{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.Parent.AccountId} + &apos;&quot;}]&apos;</expression>
     </formulas>
     <interviewLabel>CCS - Enrutamiento de correos electrónicos {!$Flow.CurrentDateTime}</interviewLabel>
     <label>CCS - Enrutamiento de correos electrónicos</label>
