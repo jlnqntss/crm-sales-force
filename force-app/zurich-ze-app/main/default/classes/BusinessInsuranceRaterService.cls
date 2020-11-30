@@ -6,8 +6,18 @@ public without sharing class BusinessInsuranceRaterService
     public static Map<String, String> formattedFieldsMetadataMap = new Map<String, String>();
     public static Set<String> currentRequiredFieldsSet = new Set<String>();
 
-    public static Set<String> offersSteps = new Set<String> {'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07', 'CRM-08'};
+    public static Set<String> offersSteps = new Set<String> {'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07', 'CRM-08'};
     public static Set<String> managerSteps = new Set<String> {'CRM-07', 'CRM-08'};
+
+    public static Map<String, String> opportunityStageByStep = new Map<String, String>
+    {
+        'CRM-03' => 'Qualification',
+        'CRM-04' => 'Closed Lost',
+        'CRM-05' => 'Closed Lost',
+        'CRM-06' => 'Negotiation',
+        'CRM-07' => 'Closed Lost',
+        'CRM-08' => 'Closed Won'
+    };
 
     public static Integer version { get; set; }
 
@@ -17,6 +27,7 @@ public without sharing class BusinessInsuranceRaterService
     public static Account currentCustomer;
     public static Account currentManager;
     public static Scope__c currentScope;
+    public static Id currentAdvisorId;
     public static ContactPointEmail currentContactPointEmail;
     public static ContactPointPhone currentContactPointPhone;
 
@@ -24,36 +35,45 @@ public without sharing class BusinessInsuranceRaterService
     {
         //0. Inicializamos scopeSettings
         initScopeSettings();
-        //Para todos los pasos
+
         //1. Buscamos el cliente y si no existe lo insertamos
-        //TODO: Llamar al servicio que contenga la lógica de búsqueda de clientes
         currentCustomer = searchCustomer(formData);
 
+        //2. Buscamos el scope y si no existe lo insertamos
         //Sí el currentScope está inicializado, es que lo hemos creado porque no existía
         //la cuenta, si no, quiere decir que la cuenta existe y tenemos que ver si existe el Scope
         if(currentScope == null && currentCustomer != null)
         {
-            currentScope = searchScope(formData.businessCode);
+            searchScope(formData.businessCode);
         }
 
-        //Sí alguna de las vías de contacto no existe, es porque hemos encontrado el Scope,
-        //si no, es que el scope se ha creado porque no existía y por lo tanto se han creado las vías
+        //3. Buscamos vías de contacto y si no existen las insertamos
+        //Sí alguna de las vías de contacto no existe, es porque hemos encontrado el Scope, si no,
+        //es que el scope se ha creado porque no existía y por lo tanto se han creado las vías
         //Sí el scope existe, buscamos las vías
         if( (currentContactPointEmail == null || currentContactPointPhone == null) && currentScope != null )
         {
             manageContactPoints(formData.webEmail, formData.webPhone);
         }
 
-        //2. Creamos una tarea para el advisor
-        //createTasks(formData); //TODO: Confirmar si en todos los pasos se crea una tarea (Duda en el CRM-08)
+        //4. Buscamos un advisor para asignar a la oportunidad y a la tarea
+        searchAdvisor();
+
+        //5. Creamos la tarea para el advisor
+        //TODO: Confirmar si en todos los pasos se crea una tarea (Duda en el CRM-08)
         createContactRequest(formData);
 
-        createOffers(formData);
-
-        //TODO: Confirmar donde va esta parte, puede que haya que buscar el manager antes de crear la poliza
+        //6. Buscamos a la persona autorizada
         searchManager(formData);
+
+        //7. Creamos las ofertas recibidas en la petición
+        createOffers(formData);
     }
 
+    /**
+     * Método encargado de cargar los datos de scope para identificar
+     * correctamente a que scope pertenece la petición a partir del BusinessCode
+     */
     private static void initScopeSettings()
     {
         List<Business_Insurance_Scope_Setting__mdt> scopeSettingsList = [
@@ -70,6 +90,10 @@ public without sharing class BusinessInsuranceRaterService
         }
     }
 
+    /**
+     * Método que busca si el cliente realizando la solicitud existe en el CRM.
+     * En caso de no existir, se creará un PersonAccount de tipo Lead (y sus registros relacionados: Scope y ContactPoints)
+     */
     private static Account searchCustomer(Request formData)
     {
         List<Account> customers = new List<Account>();
@@ -79,7 +103,7 @@ public without sharing class BusinessInsuranceRaterService
         if( String.isNotBlank(accountInfo.nationalIdentifier) )
         {
             //Sí tenemos DNI --> customers = findCustomersByDocumentId(new List<String>{accountInfo.nationalIdentifier}, 'CIF', 'ze', Label.GeneralInsurance)
-            customers = [SELECT Id FROM Account WHERE NationalId__c =: accountInfo.nationalIdentifier];
+            customers = [SELECT Id, Name FROM Account WHERE NationalId__c =: accountInfo.nationalIdentifier];
         }
 
         if( customers.isEmpty() && String.isNotBlank(formData.webEmail) )
@@ -106,7 +130,14 @@ public without sharing class BusinessInsuranceRaterService
         return customers.get(0);
     }
 
-    private static Scope__c searchScope(String businessCode)
+    /**
+     * Método que busca si ya existe un Scope con el BusinessCode recibido
+     * para el cliente que realiza la solicitud.
+     *
+     * Si lo encuentra, se actualizarán los campos correspondientes
+     * Si no lo encuenta, se creará uno nuevo
+     */
+    private static void searchScope(String businessCode)
     {
         String scope = 'ZE';
         if( scopeSettings.containsKey(businessCode) )
@@ -115,21 +146,34 @@ public without sharing class BusinessInsuranceRaterService
         }
 
         List<Scope__c> scopes = new ScopesSelector(
-            new Set<String> {'Id', 'AccountId__c', 'Scope__c'}
+            new Set<String> {'Id', 'AccountId__c', 'Scope__c', 'HasOptedOutOfEmail__c', 'Contactable__c', 'LastContactableModifiedDate__c'}
             ).selectByAccountIdAndScope(new Set<Id> {currentCustomer.Id}, scope);
 
         if( scopes.isEmpty() )
         {
-            scopes.add(
-                new Scope__c()
-                );
-
-            insert scopes;
+            createScope(currentCustomer, businessCode);
         }
+        else
+        {
+            currentScope = scopes.get(0);
+            currentScope.HasOptedOutOfEmail__c = false;
+            if(!currentScope.Contactable__c)
+            {
+                currentScope.Contactable__c = true;
+                currentScope.LastContactableModifiedDate__c = System.now();
+            }
 
-        return scopes.get(0);
+            update currentScope;
+        }
     }
 
+    /**
+     * Método que busca vías de contacto para el email y telefono especificados en la petición y
+     * para el cliente y ámbito encontrados.
+     *
+     * Si existen vías de contacto para ese email o teléfono, se actualizarán como vías de contacto principales
+     * Si no existen, se crearán esos registros como vías de contacto principales
+     */
     private static void manageContactPoints(String email, String phone)
     {
         System.debug('email:' + email);
@@ -209,9 +253,24 @@ public without sharing class BusinessInsuranceRaterService
         }
     }
 
+    /**
+     * Método encargado de generar un nuevo cliente de tipo Lead cuando no se ha encontrado
+     * en el CRM con los datos recibidos.
+     *
+     * Además se encarga de crear el ámbito y las vías de contacto para ese cliente
+     */
     private static Account createLead(Request formData)
     {
-        Account accountToCreate = new Account();
+        Business_Insurance_Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
+        BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
+        Account accountToCreate = new Account(
+            FirstName = (String.isNotBlank(accountInformation.firstName) ? accountInformation.firstName : accountInformation.lastName),
+            LastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName),
+            Family__c = accountInformation.family,
+            CommercialActivity__c = accountInformation.commercialActivity,
+            AnnualRevenue = accountInformation.annualRevenue,
+            NumberOfEmployees = accountInformation.numberOfEmployees
+            );
         insert accountToCreate;
 
         Contact contactToCreate = new Contact(
@@ -219,11 +278,7 @@ public without sharing class BusinessInsuranceRaterService
             );
         insert contactToCreate;
 
-        currentScope = new Scope__c(
-            Scope__c = 'ZE',
-            AccountId__c = accountToCreate.Id
-            );
-        insert currentScope;
+        createScope(accountToCreate, formData.businessCode);
 
         //insert ContactPointEmail for Scope and Account
         List<SObject> contactPointsToCreate = new List<SObject>();
@@ -253,16 +308,38 @@ public without sharing class BusinessInsuranceRaterService
         return accountToCreate;
     }
 
+    /**
+     * Método encargado de generar un nuevo ámbito para el cliente y BusinessCode especificados
+     */
+    private static void createScope(Account relatedAccount, String businessCode)
+    {
+        Business_Insurance_Scope_Setting__mdt currentScopeSettings = scopeSettings.get(businessCode);
+        currentScope = new Scope__c(
+            Scope__c = currentScopeSettings.Scope__c,
+            Name = currentScopeSettings.Scope_Name__c,
+            AccountId__c = relatedAccount.Id,
+            HasOptedOutOfEmail__c = false,
+            Contactable__c = true,
+            LastContactableModifiedDate__c = System.now()
+            );
+        insert currentScope;
+    }
+
+    /**
+     * Método encargado de crear la tarea para el advisor
+     */
     private static void createContactRequest(Request formData)
     {
-        //TODO: Confirmar si hay que crear un ContactRequest para todos los pasos
-        if(formData.lastStep == 'CRM-03')
-        {}
         insert new ContactRequest(
-            //TODO: Crear campos commercialPC, technicalPC y lookup a product
+
             );
     }
 
+    /**
+     * Método encargado de crear las ofertas a partir de la información recibida en la petición.
+     *
+     * Se encarga además de crear los riesgos y la póliza, en caso de recibir la información necesaria para ambos.
+     */
     private static void createOffers(Request formData)
     {
         if( offersSteps.contains(formData.lastStep) )
@@ -271,53 +348,41 @@ public without sharing class BusinessInsuranceRaterService
             List<Opportunity> offersToCreate = new List<Opportunity>();
             List<Policy__c> policiesToCreate = new List<Policy__c>();
             List<Asset> risksToCreate = new List<Asset>();
+            List<ContactRequest> contactRequestsToCreate = new List<ContactRequest>();
 
             Map<String, Asset> quoteNumberAssetMap = new Map<String, Asset>();
             Map<String, String> quoteNumberToPolicyNumberMap = new Map<String, String>();
-            Map<String, String> commercialPCToProductIdMap = new Map<String, String>();
+            Map<String, Product2> productCodesToProductMap = new Map<String, Product2>();
 
             List<BusinessInsuranceRaterService.Offer> receivedOffers = formData.offers;
             if( !receivedOffers.isEmpty() )
             {
-                //Extraemos los valores de CommercialPC y TechnicalPC para buscar el producto relacionado
-                Set<String> commercialPCCodes = new Set<String>();
-                Set<String> technicalPCCodes = new Set<String>();
+                productCodesToProductMap = getProductsFromOfferCodes(receivedOffers);
+
                 for(BusinessInsuranceRaterService.Offer offer: receivedOffers)
                 {
-                    if( String.isNotBlank(offer.commercialPC) )
+                    String productCodes = offer.commercialPC + offer.technicalPC;
+                    String offerName = offer.quoteNumberINFO;
+                    if( String.isBlank(offerName) )
                     {
-                        commercialPCCodes.add(offer.commercialPC);
-                    }
-
-                    if( String.isNotBlank(offer.technicalPC) )
-                    {
-                        technicalPCCodes.add(offer.technicalPC);
-                    }
-                }
-
-                if( !commercialPCCodes.isEmpty() || !technicalPCCodes.isEmpty() )
-                {
-                    List<Product2> productsByCommercialPC = new ProductsSelector(
-                        new Set<String> {'Id', 'CommercialCode__c'}
-                        ).selectByCommercialPcAndTechnicalPC(commercialPCCodes, technicalPCCodes);
-                    if( !productsByCommercialPC.isEmpty() )
-                    {
-                        for(Product2 relatedProduct: productsByCommercialPC)
+                        if(productCodesToProductMap.containsKey(productCodes) && productCodesToProductMap.get(productCodes) != null)
                         {
-                            commercialPCToProductIdMap.put(relatedProduct.CommercialCode__c, relatedProduct.Id);
+                            offerName = productCodesToProductMap.get(productCodes).Name + ' - ' + currentCustomer.Name;
+                        }
+                        else
+                        {
+                            offerName = offer.commercialPC + ' - ' + offer.technicalPC + ' - ' + currentCustomer.Name;
                         }
                     }
-                }
 
-                for(BusinessInsuranceRaterService.Offer offer: receivedOffers)
-                {
                     offersToCreate.add(
                         new Opportunity(
-                            Name = (String.isNotBlank(offer.quoteNumberINFO) ? offer.quoteNumberINFO : 'Test Name'), //TODO: Que nombre ponemos si no tenemos quoteNumber?
+                            Name = offerName,
+                            ScopeId__c = currentScope.Id,
                             Scope__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Scope__c) ? currentScopeSettings.Scope__c : 'ZE'),
                             InfoQuoteNumber__c = offer.quoteNumberINFO,
-                            StageName = 'Closed Lost', //TODO: Calculado
-                            //Owner = new User(), //TODO: Calculado, buscar advisor relacionado o owner generico
+                            StageName = (opportunityStageByStep.containsKey(formData.lastStep) && String.isNotBlank(offer.quoteNumberINFO) ? opportunityStageByStep.get(formData.lastStep) : 'Qualification'),
+                            OwnerId = currentAdvisorId,
                             AccountId = currentCustomer.Id,
                             Language__c = offer.language,
                             IssuedOnline__c = true,
@@ -338,7 +403,7 @@ public without sharing class BusinessInsuranceRaterService
                             PaymentChannel__c = offer.paymentChannel,
                             PaymentChannelSucc__c = offer.paymentChannelSucc,
                             ValidationErrors__c = offer.validationErrors,
-                            ProductId__c = (commercialPCToProductIdMap.containsKey(offer.commercialPC) ? commercialPCToProductIdMap.get(offer.commercialPC) : null)
+                            ProductId__c = (productCodesToProductMap.containsKey(productCodes) && productCodesToProductMap.get(productCodes) != null ? productCodesToProductMap.get(productCodes).Id : null)
                             )
                         );
 
@@ -403,6 +468,55 @@ public without sharing class BusinessInsuranceRaterService
         }
     }
 
+    /**
+     * Método encargado de recuperar los productos a partir de los Commercial y Technical Codes de las ofertas
+     */
+    private static Map<String, Product2> getProductsFromOfferCodes(List<BusinessInsuranceRaterService.Offer> offers)
+    {
+        Map<String, Product2> productCodesToProduct = new Map<String,Product2>();
+        if( offers != null && !offers.isEmpty() )
+        {
+            Set<String> commercialPCCodes = new Set<String>();
+            Set<String> technicalPCCodes = new Set<String>();
+            for(BusinessInsuranceRaterService.Offer offer: offers)
+            {
+                if( String.isNotBlank(offer.commercialPC) )
+                {
+                    commercialPCCodes.add(offer.commercialPC);
+                }
+
+                if( String.isNotBlank(offer.technicalPC) )
+                {
+                    technicalPCCodes.add(offer.technicalPC);
+                }
+
+                productCodesToProduct.put(offer.commercialPC + offer.technicalPC, null);
+            }
+
+            if( !commercialPCCodes.isEmpty() || !technicalPCCodes.isEmpty() )
+            {
+                List<Product2> productsByCommercialPC = new ProductsSelector(
+                    new Set<String> {'Id', 'Name', 'CommercialCode__c', 'TechnicalCode__c'}
+                    ).selectByCommercialPcAndTechnicalPC(commercialPCCodes, technicalPCCodes);
+                if( !productsByCommercialPC.isEmpty() )
+                {
+                    for(Product2 relatedProduct: productsByCommercialPC)
+                    {
+                        if( productCodesToProduct.containsKey(relatedProduct.CommercialCode__c + relatedProduct.TechnicalCode__c) )
+                        {
+                            productCodesToProduct.put(relatedProduct.CommercialCode__c + relatedProduct.TechnicalCode__c, relatedProduct);
+                        }
+                    }
+                }
+            }
+        }
+
+        return productCodesToProduct;
+    }
+
+    /**
+     * Método encargado de buscar a la persona autorizada para gestionar la póliza
+     */
     private static void searchManager(Request formData)
     {
         //TODO: Crear un PersonAccount manager con los datos necesarios del objeto Request formData
@@ -436,6 +550,26 @@ public without sharing class BusinessInsuranceRaterService
             {
                 currentManager = currentCustomer;
             }
+        }
+    }
+
+    /**
+     * Método encargado de buscar un advisor que ya haya atentido ofertas para el cliente y el ámbito de la petición actual
+     */
+    private static void searchAdvisor()
+    {
+        //TODO: Limite de fecha?
+        List<Opportunity> existingOffers = new OpportunitiesSelector(
+            new Set<String> {'Id', 'OwnerId'}
+            ).selectByAccountIdAndScopes(currentCustomer.Id, new Set<Id> {currentScope.Id});
+
+        if( existingOffers.isEmpty() )
+        {
+            currentAdvisorId = System.UserInfo.getUserId();
+        }
+        else
+        {
+            currentAdvisorId = existingOffers.get(0).OwnerId;
         }
     }
 

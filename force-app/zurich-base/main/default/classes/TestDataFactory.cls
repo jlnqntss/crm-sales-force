@@ -2157,7 +2157,7 @@ public class TestDataFactory
      * @author rlopez
      * @date 25/11/2020
      */
-    public static Map<String, Object> generateBusinessInsuranceOffersWebJSONForExistingCustomer(String lastStep, String nationalId, String email, String phone)
+    public static Map<String, Object> generateBusinessInsuranceOffersWebJSON(String lastStep, String nationalId, String email, String phone, List<Product2> products)
     {
         Map<String, Object> jsonInformation = new Map<String, Object>();
 
@@ -2192,6 +2192,10 @@ public class TestDataFactory
                 jsonInformation.put('status', 'Activo');
                 jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
                 jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                
+                //TODO: En ese paso no se tiene NationalId, eliminar cuando tengas búsqueda por email y teléfono
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+                /*
                 jsonInformation.put('accountInformation', new Map<String, Object>
                 {
                     'firstName'  => 'FirstName',
@@ -2199,15 +2203,16 @@ public class TestDataFactory
                     'family' => '10',
                     'commercialActivity' => '101100'
                 });
+                */
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
                     new Map<String, Object>{
-                        'commercialPC' => '00001',
-                        'technicalPC' => '00526'
+                        'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
+                        'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue()))
                     },
                     new Map<String, Object>{
-                        'commercialPC' => '00004',
-                        'technicalPC' => '00236'
+                        'commercialPC' => (!products.isEmpty() && products.get(1) != null ? products.get(1).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
+                        'technicalPC' => (!products.isEmpty() && products.get(1) != null ? products.get(1).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue()))
                     }
                 });
             }

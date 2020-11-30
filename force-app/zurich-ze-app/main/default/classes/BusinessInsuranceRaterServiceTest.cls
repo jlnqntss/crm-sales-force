@@ -23,6 +23,8 @@ public with sharing class BusinessInsuranceRaterServiceTest
         List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
         insert scopes;
 
+        List<Product2> products = TestDataFactory.generateProducts(10);
+        insert products;
         /*List<Scope__c> insertedScopes = [SELECT Id, AccountId__c, Scope__c, AccountId__r.Name FROM Scope__c WHERE Id IN: scopes];
 
            List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromScopes(insertedScopes, 10);
@@ -40,7 +42,10 @@ public with sharing class BusinessInsuranceRaterServiceTest
     {
         List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account];
         System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSONForExistingCustomer('CRM-04', existingAccounts.get(0).NationalId__c, 'newemail@fakeemail.com.invalid', '123456789');
+
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-04', existingAccounts.get(0).NationalId__c, 'newemail@fakeemail.com.invalid', '123456789', existingProducts);
         BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
             JSON.serialize(jsonInformation),
             BusinessInsuranceRaterService.Request.class
@@ -91,7 +96,17 @@ public with sharing class BusinessInsuranceRaterServiceTest
     {
         List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account];
         System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSONForExistingCustomer('CRM-04', existingAccounts.get(0).NationalId__c, 'newemail@fakeemail.com.invalid', '123456789');
+
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-03', existingAccounts.get(0).NationalId__c, 'newemail@fakeemail.com.invalid', '123456789', existingProducts);
         BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
             JSON.serialize(jsonInformation),
             BusinessInsuranceRaterService.Request.class
@@ -127,8 +142,13 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
-        List<Opportunity> offersCreated = [SELECT Id FROM Opportunity];
+        List<Opportunity> offersCreated = [SELECT Id, ProductId__c FROM Opportunity];
         System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
+
+        for(Opportunity offer: offersCreated)
+        {
+            System.assertEquals(true, productIds.contains(offer.ProductId__c), 'Set should contain product id');
+        }
     }
 
     /**
