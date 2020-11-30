@@ -2197,4 +2197,42 @@ public class TestDataFactory
         }
         return tasks;
     }
+
+    /**
+     * Genera una lista colas aunque en los test se ven las que hay en la Org
+     * @param num numero de elementos a generar
+     * @return List<Group> listado de colas
+     */
+    public static List<Group> generateQueueGroups(Integer num)
+    {
+        List<Group> queues = new List<Group>();
+        for (Integer i = 0; i < num; i++)
+        {
+            Group queue = new Group();
+            queue.Type = 'Queue';
+            queue.Name = 'queue' + i;
+            queues.add(queue);
+        }
+        return queues;
+    }
+
+    /**
+     * Genera una lista colas aunque en los test se ven las que hay en la Org
+     * @param num numero de elementos a generar
+     * @param groupId id de la cola
+     * @param queueObject el objeto a encola, por ejemplo 'Case'
+     * @return List<Group> listado de colas
+     */
+    public static List<QueueSObject> generateQueueSObject(Id groupId, String queueObject, Integer num)
+    {
+        List<QueueSObject> queues = new List<QueueSObject>();
+        for (Integer i = 0; i < num; i++)
+        {
+            QueueSObject queue = new QueueSObject();
+            queue.QueueId = groupId;
+            queue.SObjectType = queueObject;
+            queues.add(queue);
+        }
+        return queues;
+    }
 }

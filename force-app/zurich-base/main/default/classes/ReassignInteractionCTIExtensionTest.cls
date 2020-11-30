@@ -85,10 +85,10 @@ public without sharing class ReassignInteractionCTIExtensionTest
     private static void byPassMixedDMLOperation()
     {
         //Crear Cola por si acaso en la Org no estan creadas aún (Se ven en los test)
-        Group g1 = new Group(Name='group name', type='Queue');
-        insert g1;
-        QueuesObject q1 = new QueueSObject(QueueID = g1.id, SobjectType = 'Case');
-        insert q1;
+        List<Group> queue = TestDataFactory.generateQueueGroups(1);
+        insert queue;
+        List<QueueSObject> queueType = TestDataFactory.generateQueueSObject(queue[0].Id, 'Case', 1);
+        insert queueType;
     }
 
     /**

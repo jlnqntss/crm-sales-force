@@ -52,8 +52,11 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 {
                     List<EmailMessage> relatedEmailMessages = new EmailMessagesSelector(new Set<String> { 'Id', 'ParentId', 'Status', 'ToIds', 'ActivityId' }).selectByInteractionId(new Set<String> { interactionId });
 
-                    interactionTask.Id = (new EmailMessagesSelector(new Set<String> { 'ActivityId' }).selectByInteractionId(new Set<String> { interactionId }))[0].ActivityId;
-                    interactionTask.WhatId = (new EmailMessagesSelector(new Set<String> { 'ParentId' }).selectByInteractionId(new Set<String> { interactionId }))[0].ParentId;
+                    interactionTask.Id = relatedEmailMessages[0].ActivityId;
+                    if(relatedEmailMessages[0].ParentId != null)
+                    {
+                        interactionTask.WhatId = relatedEmailMessages[0].ParentId;
+                    }
                 }
 
                 interactionTask.Status = 'Asignada';
