@@ -56,6 +56,36 @@ public class INFOHandler implements ISystem
         CLAIM_RELATIONSHIP // 13
     };
 
+    public static final String SOBJECT_ACCOUNT = 'Account';
+    public static final String SOBJECT_CONTACT = 'Contact';
+    public static final String SOBJECT_CONTACT_POINT_ADDRESS = 'ContactPointAddress';
+    public static final String SOBJECT_CONTACT_POINT_PHONE = 'ContactPointPhone';
+    public static final String SOBJECT_CONTACT_POINT_EMAIL = 'ContactPointEmail';
+    public static final String SOBJECT_PRODUCT = 'Product2';
+    public static final String SOBJECT_OPPORTUNITY = 'Opportunity';
+    public static final String SOBJECT_QUOTE = 'Quote';
+    public static final String SOBJECT_POLICY = 'Policy__c';
+    public static final String SOBJECT_ASSET = 'Asset';
+    public static final String SOBJECT_CLAIM = 'Claim__c';
+    public static final String SOBJECT_RELATIONSHIP = 'Relationship__c';
+
+    // Orden de DML sobre SObjects
+    private static List<String> sObjectOrder = new List<String> 
+    {
+        SOBJECT_ACCOUNT,
+        SOBJECT_CONTACT,
+        SOBJECT_CONTACT_POINT_ADDRESS,
+        SOBJECT_CONTACT_POINT_PHONE,
+        SOBJECT_CONTACT_POINT_EMAIL,
+        SOBJECT_PRODUCT,
+        SOBJECT_OPPORTUNITY,
+        SOBJECT_QUOTE,
+        SOBJECT_POLICY,
+        SOBJECT_ASSET,
+        SOBJECT_CLAIM,
+        SOBJECT_RELATIONSHIP
+    };
+
     /**
      * Obtiene la información necesaria para poder procesar las external request pendientes
      **
@@ -434,9 +464,9 @@ public class INFOHandler implements ISystem
         {
             if ( recordsToPersist.containsKey(entity) )
             {
-                for ( String objectName : recordsToPersist.get(entity).keySet() )
+                for ( String objectName : sObjectOrder )
                 {
-                    if ( !recordsToPersist.get(entity).get(objectName).isEmpty() )
+                    if ( recordsToPersist.get(entity).containsKey(objectName) && !recordsToPersist.get(entity).get(objectName).isEmpty() )
                     {
                         Schema.SObjectField externalIdField = globalDescribe.get(objectName).getDescribe().fields.getMap().get(externalIdByEntity.get(entity).get(objectName));
 
