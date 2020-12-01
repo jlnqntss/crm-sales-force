@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>GI</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>GI</label>
+        <sharedTo>
+            <group>Read_GI</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Zurich</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

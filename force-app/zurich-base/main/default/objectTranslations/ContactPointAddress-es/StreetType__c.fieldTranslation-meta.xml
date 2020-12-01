@@ -4,103 +4,103 @@
     <name>StreetType__c</name>
     <picklistValues>
         <masterLabel>AC</masterLabel>
-        <translation><!-- AC --></translation>
+        <translation>Aptdo. Correo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>AG</masterLabel>
-        <translation><!-- AG --></translation>
+        <translation>Agrupación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>AL</masterLabel>
-        <translation><!-- AL --></translation>
+        <translation>Alameda</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>AO</masterLabel>
-        <translation><!-- AO --></translation>
+        <translation>Conjunto residencial</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>AP</masterLabel>
-        <translation><!-- AP --></translation>
+        <translation>Apartamento</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>AR</masterLabel>
-        <translation><!-- AR --></translation>
+        <translation>Arrabal</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>AU</masterLabel>
-        <translation><!-- AU --></translation>
+        <translation>Autopista</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>AV</masterLabel>
-        <translation><!-- AV --></translation>
+        <translation>Avenida</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>BC</masterLabel>
-        <translation><!-- BC --></translation>
+        <translation>Barranco</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>BD</masterLabel>
-        <translation><!-- BD --></translation>
+        <translation>Bajada</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>BL</masterLabel>
-        <translation><!-- BL --></translation>
+        <translation>Bloque</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>BO</masterLabel>
-        <translation><!-- BO --></translation>
+        <translation>Barrio</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>BV</masterLabel>
-        <translation><!-- BV --></translation>
+        <translation>Bulevard</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CA</masterLabel>
-        <translation><!-- CA --></translation>
+        <translation>Campo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CH</masterLabel>
-        <translation><!-- CH --></translation>
+        <translation>Chalet</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CJ</masterLabel>
-        <translation><!-- CJ --></translation>
+        <translation>Callejón</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CL</masterLabel>
-        <translation><!-- CL --></translation>
+        <translation>Calle</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CM</masterLabel>
-        <translation><!-- CM --></translation>
+        <translation>Camino</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CO</masterLabel>
-        <translation><!-- CO --></translation>
+        <translation>Colonia</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CR</masterLabel>
-        <translation><!-- CR --></translation>
+        <translation>Carretera</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CS</masterLabel>
-        <translation><!-- CS --></translation>
+        <translation>Casas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CT</masterLabel>
-        <translation><!-- CT --></translation>
+        <translation>Cuesta</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>CU</masterLabel>
-        <translation><!-- CU --></translation>
+        <translation>Cruce</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>DS</masterLabel>
-        <translation><!-- DS --></translation>
+        <translation>Diseminado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>ED</masterLabel>
-        <translation><!-- ED --></translation>
+        <translation>Edificio</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>ES</masterLabel>

@@ -144,4 +144,17 @@
             <value>Life Insurance</value>
         </criteriaItems>
     </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>OCSInquiry_GI</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>OCSInquiry_GI</label>
+        <sharedTo>
+            <group>Read_GI</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Consulta OCS</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
 </SharingRules>
