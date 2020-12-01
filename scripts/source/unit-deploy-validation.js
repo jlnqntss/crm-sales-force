@@ -1,49 +1,7 @@
-const {
-  readFileSync,
-  mkdirSync,
-  rmdirSync,
-  existsSync,
-  moveSync
-} = require("fs-extra");
-const mergedirs = require("merge-dirs").default;
+const { mkdirSync, rmdirSync } = require("fs-extra");
 const { execSync } = require("child_process");
 const { argv } = require("process");
-
-/**
- * Convierte el proyecto SFDX al formato Metadata API, que permite hacer validación completa
- * @param {String} targetDirectory
- */
-function convert_sfdx_project(targetDirectory) {
-  const sfdxProject = JSON.parse(
-    readFileSync("sfdx-project.json", { encoding: "utf-8" })
-  );
-
-  console.log("Converting project...");
-
-  sfdxProject.packageDirectories.forEach((dir) => {
-    console.log(`Converting package ${dir.path}...`);
-    execSync(
-      `sfdx force:source:convert -r "${dir.path}" -d ".tmp/${dir.path}"`
-    );
-
-    if (existsSync(`${targetDirectory}/package.xml`)) {
-      console.log("Merging package.xml");
-      execSync(
-        `sfdx sfpowerkit:project:manifest:merge -p ".tmp/${dir.path}/package.xml,${targetDirectory}/package.xml" -d ".tmp"`,
-        {
-          stdio: "inherit"
-        }
-      );
-      console.log("Copying package.xml");
-      moveSync(`.tmp/package.xml`, `.tmp/${dir.path}/package.xml`, {
-        overwrite: true
-      });
-    }
-
-    mergedirs(`.tmp/${dir.path}`, `${targetDirectory}`, "overwrite");
-    rmdirSync(".tmp");
-  });
-}
+const { convertSFDXProject } = require("./convertSFDXProject");
 
 /**
  * Valida un despliegue a un entorno a la org indicada como parámetro
@@ -63,7 +21,7 @@ async function main() {
     });
 
     // 3 - Convierte el proyecto a formato Metadata API y  valida contra el entorno
-    convert_sfdx_project("deploy");
+    convertSFDXProject("deploy");
 
     // 4 - Deshace los cambios de los perfiles
     execSync(`git reset --hard`, {
