@@ -155,13 +155,13 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <gender>Masculine</gender>
-    <label>Claim</label>
+    <label>Siniestro</label>
     <nameField>
         <label>Claim Number</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Claims</pluralLabel>
+    <pluralLabel>Siniestros</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
