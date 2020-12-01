@@ -1,5 +1,5 @@
 @isTest
-private class CasesSelectorTest 
+private class CasesSelectorTest
 {
     @TestSetup
     public static void createScenario()
@@ -30,7 +30,7 @@ private class CasesSelectorTest
 
         Test.stopTest();
 
-        System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');   
+        System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');
     }
 
     @isTest
@@ -39,7 +39,7 @@ private class CasesSelectorTest
         // Test
         Test.startTest();
 
-        List<Case> matchedRecords = new CasesSelector().findOpenByAccount(new List<String>());
+        List<Case> matchedRecords = new CasesSelector().findOpenByAccount(new List<String>() );
 
         Test.stopTest();
 

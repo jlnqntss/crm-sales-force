@@ -1,4 +1,4 @@
-public with sharing class CasesSelector 
+public with sharing class CasesSelector
 {
     /**
      * Busca casos abiertos ordenados por fecha de creación a partir de una lista de ids de cuentas
@@ -9,11 +9,11 @@ public with sharing class CasesSelector
      */
     public List<Case> findOpenByAccount(String[] accountIds)
     {
-        if(accountIds != null && !accountIds.isEmpty())
+        if(accountIds != null && !accountIds.isEmpty() )
         {
             return [SELECT OwnerId, Owner.Email FROM Case WHERE isClosed = FALSE AND AccountId IN : accountIds ORDER BY CreatedDate DESC];
         }
-        else 
+        else
         {
             return new List<Case>();
         }

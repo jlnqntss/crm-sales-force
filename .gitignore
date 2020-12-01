@@ -6,6 +6,7 @@
 
 # Temp files
 .tmp/
+deploy
 
 # Logs
 logs

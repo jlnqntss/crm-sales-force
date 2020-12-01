@@ -162,7 +162,7 @@ private with sharing class AccountsSelectorTest
             recordIds.add(contactPoint.Id);
             telephoneNumberToSearch.add(contactPoint.TelephoneNumber);
         }
-        Test.setFixedSearchResults(new List<Id>(recordIds));
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -188,7 +188,7 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-            List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByPhoneNumber(new List<String>());
+        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByPhoneNumber(new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista de teléfonos
@@ -207,7 +207,7 @@ private with sharing class AccountsSelectorTest
             recordIds.add(contactPoint.Id);
             emailsToSearch.add(contactPoint.EmailAddress);
         }
-        Test.setFixedSearchResults(new List<Id>(recordIds));
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -233,7 +233,7 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-            List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByEmail(new List<String>());
+        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByEmail(new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -246,7 +246,7 @@ private with sharing class AccountsSelectorTest
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id businessCustomerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: businessCustomerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size()>0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
         {
@@ -282,7 +282,7 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-            List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByPolicyNumber(new List<String>());
+        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByPolicyNumber(new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -295,7 +295,7 @@ private with sharing class AccountsSelectorTest
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id businessCustomerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: businessCustomerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size()>0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
         {
@@ -306,7 +306,7 @@ private with sharing class AccountsSelectorTest
         List<Opportunity> quotesSelected = [SELECT InfoQuoteNumber__c FROM Opportunity WHERE AccountId IN :accountIds];
         for(Opportunity quote: quotesSelected)
         {
-            if(!String.isBlank(quote.InfoQuoteNumber__c))
+            if(!String.isBlank(quote.InfoQuoteNumber__c) )
             {
                 quoteNumbers.add(quote.InfoQuoteNumber__c);
             }
@@ -334,7 +334,7 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-            List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByQuoteNumber(new List<String>());
+        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByQuoteNumber(new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -347,7 +347,7 @@ private with sharing class AccountsSelectorTest
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, Phone, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size()>0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         List<String> phoneNumbers = new List<String>();
         for(Account account: accountsToSearch)
@@ -355,11 +355,11 @@ private with sharing class AccountsSelectorTest
             accountIds.add(account.Id);
             phoneNumbers.add(account.Phone);
         }
-        Test.setFixedSearchResults(new List<Id>(accountIds));
+        Test.setFixedSearchResults(new List<Id>(accountIds) );
 
         // Test
         Test.startTest();
-            List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByIntermediaryPhoneNumber(phoneNumbers);
+        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByIntermediaryPhoneNumber(phoneNumbers);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -377,7 +377,7 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-            List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByIntermediaryPhoneNumber(new List<String>());
+        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByIntermediaryPhoneNumber(new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -390,7 +390,7 @@ private with sharing class AccountsSelectorTest
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, INFOIntermediaryCode__c, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size()>0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         List<String> codes = new List<String>();
         for(Account account: accountsToSearch)
@@ -401,7 +401,7 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-            List<Account> matchedRecords = new AccountsSelector().applyScope('csm').findByIntermediaryCode(codes);
+        List<Account> matchedRecords = new AccountsSelector().applyScope('csm').findByIntermediaryCode(codes);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -419,7 +419,7 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-            List<Account> matchedRecords = new AccountsSelector().applyScope('csm').findByIntermediaryCode(new List<String>());
+        List<Account> matchedRecords = new AccountsSelector().applyScope('csm').findByIntermediaryCode(new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista

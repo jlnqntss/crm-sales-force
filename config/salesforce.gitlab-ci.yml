@@ -379,8 +379,9 @@ before_script:
     
     if [ -f "$run_tests" ]; then
       echo "Full Deploying"
-      convert_sfdx_project deploy
-      local cmd="sfdx force:mdapi:deploy --deploydir deploy --testlevel RunLocalTests --targetusername "$org_username" --verbose --wait 10 --json" && (echo $cmd >&2)
+      node scripts/source/convert-sfdx-project.js deploy
+      local cmd="sfdx force:mdapi:deploy --deploydir deploy --testlevel RunLocalTests --targetusername "$org_username" --verbose--wait 10 --json" && (echo $cmd >&2)
+
     else
       echo "Partial deploying..."
       local cmd="sfdx force:source:deploy --verbose --targetusername "$org_username" --sourcepath force-app --wait 10 --json" && (echo $cmd >&2)

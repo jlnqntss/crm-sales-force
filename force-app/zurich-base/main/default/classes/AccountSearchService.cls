@@ -1,7 +1,8 @@
 /**
  * Clase de servicio que uniformiza la búsqueda y extracción de datos de clientes y mediadores en el sistema.
  */
-public with sharing class AccountSearchService {
+public with sharing class AccountSearchService
+{
 
     public static final String SCOPE_CODE_ALL = 'all';
     public static final String SCOPE_CODE_ZE = 'ze';
@@ -15,19 +16,23 @@ public with sharing class AccountSearchService {
         SCOPE_CODE_CSM => 'csm'
     };
     static final String INVALID_SCOPE = 'Invalid scope. Please, try with all, ze or klinc.';
-    public class Scope{
+    public class Scope
+    {
         public String all
         {
-            get{
+            get {
                 return SCOPE_NAMES_BY_CODE.get('all');
             }
         }
         public String scope
         {
-            get{
-                if(scope == null){
+            get {
+                if(scope == null)
+                {
                     return all;
-                }else{
+                }
+                else
+                {
                     return scope;
                 }
             }
@@ -37,11 +42,12 @@ public with sharing class AccountSearchService {
                 {
                     scope = all;
                 }
-                else if(SCOPE_NAMES_BY_CODE.containsKey(value))
+                else if(SCOPE_NAMES_BY_CODE.containsKey(value) )
                 {
                     scope = SCOPE_NAMES_BY_CODE.get(value);
                 }
-                else{
+                else
+                {
                     throw new AccountSearchServiceException(INVALID_SCOPE);
                 }
             }
@@ -69,7 +75,7 @@ public with sharing class AccountSearchService {
             accountIds.add(account.Id);
         }
 
-        return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN :accountIds];
+        return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN : accountIds];
     }
 
     /**
@@ -93,7 +99,7 @@ public with sharing class AccountSearchService {
             accountIds.add(account.Id);
         }
 
-        return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN :accountIds];
+        return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN : accountIds];
     }
 
     /**
@@ -159,5 +165,6 @@ public with sharing class AccountSearchService {
     }
 
     @TestVisible
-    class AccountSearchServiceException extends Exception {}
+    class AccountSearchServiceException extends Exception
+    {}
 }

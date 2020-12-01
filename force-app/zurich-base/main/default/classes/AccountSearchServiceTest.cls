@@ -40,13 +40,13 @@ private class AccountSearchServiceTest
             recordIds.add(contactPoint.Id);
             telephoneNumberToSearch.add(contactPoint.TelephoneNumber);
         }
-        Test.setFixedSearchResults(new List<Id>(recordIds));
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, scope);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -66,9 +66,9 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByPhoneNumber(new List<String>(), scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByPhoneNumber(new List<String>(), scope);
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista de teléfonos
@@ -87,13 +87,13 @@ private class AccountSearchServiceTest
             recordIds.add(contactPoint.Id);
             emailsToSearch.add(contactPoint.EmailAddress);
         }
-        Test.setFixedSearchResults(new List<Id>(recordIds));
+        Test.setFixedSearchResults(new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByEmail(emailsToSearch, scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByEmail(emailsToSearch, scope);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -113,9 +113,9 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByEmail(new List<String>(), scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByEmail(new List<String>(), scope);
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -128,7 +128,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id businessCustomerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, NationalId__c, RecordTypeId FROM Account WHERE RecordTypeId =: businessCustomerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size()>0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         List<String> nationalIds = new List<String>();
         for(Account account: accountsToSearch)
@@ -139,10 +139,10 @@ private class AccountSearchServiceTest
 
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', scope, Label.GeneralInsurance);
-            //La 'N' y la Label.GeneralInsurance es porque se crean así las cuentas en TestDataFactory
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', scope, Label.GeneralInsurance);
+        //La 'N' y la Label.GeneralInsurance es porque se crean así las cuentas en TestDataFactory
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -160,10 +160,10 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(new List<String>(), 'N', scope, Label.GeneralInsurance);
-            //La 'N' y la Label.GeneralInsurance es porque se crean así las cuentas en TestDataFactory
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(new List<String>(), 'N', scope, Label.GeneralInsurance);
+        //La 'N' y la Label.GeneralInsurance es porque se crean así las cuentas en TestDataFactory
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -176,7 +176,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id businessCustomerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: businessCustomerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size()>0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
         {
@@ -192,9 +192,9 @@ private class AccountSearchServiceTest
 
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByPolicyNumber(policyNumbers, scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByPolicyNumber(policyNumbers, scope);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -212,9 +212,9 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByPolicyNumber(new List<String>(), scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByPolicyNumber(new List<String>(), scope);
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -227,7 +227,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas que tienen ofertas del TestSetUp
         Id businessCustomerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: businessCustomerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size()>0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
         {
@@ -243,9 +243,9 @@ private class AccountSearchServiceTest
 
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByQuoteNumber(quoteNumbers, scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByQuoteNumber(quoteNumbers, scope);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -263,9 +263,9 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'all';
-            List<Account> matchedRecords = AccountSearchService.findCustomersByQuoteNumber(new List<String>(), scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'all';
+        List<Account> matchedRecords = AccountSearchService.findCustomersByQuoteNumber(new List<String>(), scope);
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -278,7 +278,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, Phone, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size()>0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         List<String> phoneNumbers = new List<String>();
         for(Account account: accountsToSearch)
@@ -286,13 +286,13 @@ private class AccountSearchServiceTest
             accountIds.add(account.Id);
             phoneNumbers.add(account.Phone);
         }
-        Test.setFixedSearchResults(new List<Id>(accountIds));
+        Test.setFixedSearchResults(new List<Id>(accountIds) );
 
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'csm';
-            List<Account> matchedRecords = AccountSearchService.findIntermediariesByPhoneNumber(phoneNumbers, scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'csm';
+        List<Account> matchedRecords = AccountSearchService.findIntermediariesByPhoneNumber(phoneNumbers, scope);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -310,9 +310,9 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'csm';
-            List<Account> matchedRecords = AccountSearchService.findIntermediariesByPhoneNumber(new List<String>(), scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'csm';
+        List<Account> matchedRecords = AccountSearchService.findIntermediariesByPhoneNumber(new List<String>(), scope);
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -325,7 +325,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, INFOIntermediaryCode__c, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size()>0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         List<String> codes = new List<String>();
         for(Account account: accountsToSearch)
@@ -336,9 +336,9 @@ private class AccountSearchServiceTest
 
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'csm';
-            List<Account> matchedRecords = AccountSearchService.findIntermediariesByCode(codes, scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'csm';
+        List<Account> matchedRecords = AccountSearchService.findIntermediariesByCode(codes, scope);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -356,9 +356,9 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = 'csm';
-            List<Account> matchedRecords = AccountSearchService.findIntermediariesByCode(new List<String>(), scope);
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = 'csm';
+        List<Account> matchedRecords = AccountSearchService.findIntermediariesByCode(new List<String>(), scope);
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
