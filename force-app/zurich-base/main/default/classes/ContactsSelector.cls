@@ -33,7 +33,7 @@ public with sharing class ContactsSelector
         return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND RecordTypeId IN: this.recordTypeIds];
     }
 
-    private static Set<Id> findInContactPointsByPhoneNumber(List<String> phones)
+    public static Set<Id> findInContactPointsByPhoneNumber(List<String> phones)
     {
         Set<Id> recordIds = new Set<Id>();
 
@@ -59,7 +59,7 @@ public with sharing class ContactsSelector
     }
 
 
-    private static Set<Id> findInContactPointsByEmail(List<String> emails)
+    public static Set<Id> findInContactPointsByEmail(List<String> emails)
     {
         Set<Id> recordIds = new Set<Id>();
 

@@ -1782,6 +1782,20 @@ public class TestDataFactory
                     );
                 }
             }
+            when 'Intermediary' {
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                    accounts.add(
+                        new Account(
+                            Name = 'intermediaryName' + i,
+                            INFOIntermediaryCode__c = String.valueOf(phoneNumber),
+                            Phone = String.valueOf(phoneNumber),
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
             when else {
                 for (Integer i = 0; i < numRecords; i++)
                 {
@@ -2016,7 +2030,8 @@ public class TestDataFactory
                         Name = 'opp'+i,
                         StageName = stage,
                         CloseDate = closeDate,
-                        Scope__c = scope
+                        Scope__c = scope,
+                        InfoQuoteNumber__c = 'opp'+relatedAccount.Id+i
                     )
                 );
             }
@@ -2391,5 +2406,38 @@ public class TestDataFactory
         }
 
         return products;
+    }
+
+    /**
+     * Genera Policy__c relacionadas con cuentas
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un listado de registros
+     * @param Integer numRecords número de registros a generar POR CADA CUENTA
+     */
+    public static List<Policy__c> generatePoliciesForEachAccount(List<Account> accounts, Integer numRecords)
+    {
+        List<Policy__c> policies = new List<Policy__c>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer policyNumber = (Math.random() * 1000000000).intValue();
+                policies.add(
+                    new Policy__c(
+                        Name = String.valueOf(policyNumber),
+                        PolicyHolder__c = relatedAccount.Id,
+                        InfoPolicyNumber__c = String.valueOf(policyNumber)
+                    )
+                );
+            }
+        }
+
+        return policies;
     }
 }
