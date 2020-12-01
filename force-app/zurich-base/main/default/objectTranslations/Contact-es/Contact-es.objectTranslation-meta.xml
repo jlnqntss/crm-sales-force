@@ -1,101 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObjectTranslation>
     <layouts>
         <layout>Copy of Customer Layout_prod</layout>
         <sections>
-            <label><!-- Contact Actions --></label>
+            <label></label>
             <section>Contact Actions</section>
         </sections>
         <sections>
-            <label><!-- Información de contacto --></label>
+            <label></label>
             <section>Información de contacto</section>
         </sections>
         <sections>
-            <label><!-- Información pólizas y siniestros --></label>
+            <label></label>
             <section>Información pólizas y siniestros</section>
         </sections>
         <sections>
-            <label><!-- Marketing --></label>
+            <label></label>
             <section>Marketing</section>
         </sections>
     </layouts>
     <layouts>
         <layout>Customer Layout</layout>
         <sections>
-            <label><!-- Información de contacto --></label>
+            <label></label>
             <section>Información de contacto</section>
         </sections>
         <sections>
-            <label><!-- Información pólizas y siniestros --></label>
+            <label></label>
             <section>Información pólizas y siniestros</section>
         </sections>
         <sections>
-            <label><!-- Marketing --></label>
+            <label></label>
             <section>Marketing</section>
         </sections>
     </layouts>
     <layouts>
         <layout>OCS Contact</layout>
         <sections>
-            <label><!-- Custom Links --></label>
+            <label></label>
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label><!-- Fields --></label>
+            <label></label>
             <section>Fields</section>
         </sections>
         <sections>
-            <label><!-- Other information --></label>
+            <label></label>
             <section>Other information</section>
         </sections>
     </layouts>
     <recordTypes>
-        <description><!-- Record type for business contacts --></description>
-        <label><!-- Contact --></label>
+        <description></description>
+        <label></label>
         <name>Contact</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Cliente no vida --></label>
+        <label></label>
         <name>CustomerGI</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Cliente vida --></label>
+        <label></label>
         <name>CustomerLife</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Lead no vida --></label>
+        <label></label>
         <name>LeadGI</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Lead vida --></label>
+        <label></label>
         <name>LeadLife</name>
     </recordTypes>
     <webLinks>
-        <label><!-- GoogleMaps --></label>
+        <label></label>
         <name>GoogleMaps</name>
     </webLinks>
     <webLinks>
-        <label><!-- GoogleSearch --></label>
+        <label></label>
         <name>GoogleSearch</name>
     </webLinks>
     <webLinks>
-        <label><!-- ExactTarget_Resubscribe --></label>
+        <label></label>
         <name>et4ae5__ExactTarget_Resubscribe</name>
     </webLinks>
     <webLinks>
-        <label><!-- ExactTarget_Unsubscribe --></label>
+        <label></label>
         <name>et4ae5__ExactTarget_Unsubscribe</name>
     </webLinks>
     <webLinks>
-        <label><!-- Send_ExactTarget_Email --></label>
+        <label></label>
         <name>et4ae5__Send_ExactTarget_Email</name>
     </webLinks>
     <webLinks>
-        <label><!-- Send_ExactTarget_SMS --></label>
+        <label></label>
         <name>et4ae5__Send_ExactTarget_SMS</name>
     </webLinks>
     <webLinks>
-        <label><!-- View_ExactTarget_Analytics --></label>
+        <label></label>
         <name>et4ae5__View_ExactTarget_Analytics</name>
     </webLinks>
 </CustomObjectTranslation>
