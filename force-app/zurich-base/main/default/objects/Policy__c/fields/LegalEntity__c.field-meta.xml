@@ -12,14 +12,64 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Vida</fullName>
+                <fullName>Life Insurance</fullName>
                 <default>false</default>
-                <label>Vida</label>
+                <label>Life Insurance</label>
             </value>
             <value>
-                <fullName>NoVida</fullName>
+                <fullName>General Insurance</fullName>
                 <default>false</default>
-                <label>No Vida</label>
+                <label>General Insurance</label>
+            </value>
+            <value>
+                <fullName>000</fullName>
+                <default>false</default>
+                <label>Todos</label>
+            </value>
+            <value>
+                <fullName>001</fullName>
+                <default>false</default>
+                <label>Zurich</label>
+            </value>
+            <value>
+                <fullName>002</fullName>
+                <default>false</default>
+                <label>CAN SSGG</label>
+            </value>
+            <value>
+                <fullName>003</fullName>
+                <default>false</default>
+                <label>CAS SSGG</label>
+            </value>
+            <value>
+                <fullName>004</fullName>
+                <default>false</default>
+                <label>CAS Vida</label>
+            </value>
+            <value>
+                <fullName>005</fullName>
+                <default>false</default>
+                <label>Zurich Vida</label>
+            </value>
+            <value>
+                <fullName>006</fullName>
+                <default>false</default>
+                <label>DZ Pensiones</label>
+            </value>
+            <value>
+                <fullName>007</fullName>
+                <default>false</default>
+                <label>EPSV Zurich</label>
+            </value>
+            <value>
+                <fullName>008</fullName>
+                <default>false</default>
+                <label>BSSG</label>
+            </value>
+            <value>
+                <fullName>999</fullName>
+                <default>false</default>
+                <label>Multientidad</label>
             </value>
         </valueSetDefinition>
     </valueSet>
