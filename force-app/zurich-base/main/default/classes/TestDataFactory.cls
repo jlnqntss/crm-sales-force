@@ -1727,16 +1727,16 @@ public class TestDataFactory
      */
     public static List<Task> generateInteractionTasks(Integer numTasks)
     {
+        Id recordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
+        Task interaction;
         List<Task> tasks = new List<Task>();
         for (Integer i = 0; i < numTasks; i++)
         {
-            Task interaction = new Task();
+            interaction = new Task();
             interaction.Status = 'Nueva';
             interaction.Priority = 'Normal';
             interaction.CallObject = 'ucid' + i;
-            interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
-                                       .get('Interaction')
-                                       .getRecordTypeId();
+            interaction.RecordTypeId = recordTypeId;
             tasks.add(interaction);
         }
         return tasks;
@@ -2182,17 +2182,17 @@ public class TestDataFactory
      */
     public static List<Task> generateInteractionTasksWithWhatId(Id whatId, Integer numTasks)
     {
+        Id recordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
+        Task interaction;
         List<Task> tasks = new List<Task>();
         for (Integer i = 0; i < numTasks; i++)
         {
-            Task interaction = new Task();
+            interaction = new Task();
             interaction.Status = 'Nueva';
             interaction.WhatId = whatId;
             interaction.Priority = 'Normal';
             interaction.CallObject = 'ucid' + i;
-            interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
-                                    .get('Interaction')
-                                    .getRecordTypeId();
+            interaction.RecordTypeId = recordTypeId;
             tasks.add(interaction);
         }
         return tasks;
@@ -2205,10 +2205,11 @@ public class TestDataFactory
      */
     public static List<Group> generateQueueGroups(Integer num)
     {
+        Group queue;
         List<Group> queues = new List<Group>();
         for (Integer i = 0; i < num; i++)
         {
-            Group queue = new Group();
+            queue = new Group();
             queue.Type = 'Queue';
             queue.Name = 'queue' + i;
             queues.add(queue);
@@ -2225,10 +2226,11 @@ public class TestDataFactory
      */
     public static List<QueueSObject> generateQueueSObject(Id groupId, String queueObject, Integer num)
     {
+        QueueSObject queue;
         List<QueueSObject> queues = new List<QueueSObject>();
         for (Integer i = 0; i < num; i++)
         {
-            QueueSObject queue = new QueueSObject();
+            queue = new QueueSObject();
             queue.QueueId = groupId;
             queue.SObjectType = queueObject;
             queues.add(queue);
