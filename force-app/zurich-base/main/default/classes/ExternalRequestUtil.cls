@@ -1059,9 +1059,9 @@ global without sharing class ExternalRequestUtil {
       System.Debug('***** Order Items:');
       for(OrderItem oi: orderItemsToInsert.values() ) {
         System.Debug(oi);
-        if( oi.Order != null ) {
-          System.Debug(oi.Order);
-        }
+        // if( oi.Order != null ) {
+        //  System.Debug(oi.Order);
+        // }
       }
       upsert orderItemsToInsert.values() OrderItem.Fields.ItemId__c;
     }
