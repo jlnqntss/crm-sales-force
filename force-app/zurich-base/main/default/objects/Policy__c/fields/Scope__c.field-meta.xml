@@ -16,6 +16,16 @@
                 <default>false</default>
                 <label>General</label>
             </value>
+            <value>
+                <fullName>ZE</fullName>
+                <default>false</default>
+                <label>Zurich Empresas</label>
+            </value>
+            <value>
+                <fullName>ZEO</fullName>
+                <default>false</default>
+                <label>Zurich Empresas Orange</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

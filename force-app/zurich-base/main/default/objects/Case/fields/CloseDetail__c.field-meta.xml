@@ -15,56 +15,6 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>valores</fullName>
-                <default>false</default>
-                <label>valores</label>
-            </value>
-            <value>
-                <fullName>Realizado</fullName>
-                <default>true</default>
-                <label>Realizado</label>
-            </value>
-            <value>
-                <fullName>Realizado - Impacto en prima</fullName>
-                <default>false</default>
-                <label>Realizado - Impacto en prima</label>
-            </value>
-            <value>
-                <fullName>Realizado - Sin impacto en prima</fullName>
-                <default>false</default>
-                <label>Realizado - Sin impacto en prima</label>
-            </value>
-            <value>
-                <fullName>No Realizado</fullName>
-                <default>false</default>
-                <label>No Realizado</label>
-            </value>
-            <value>
-                <fullName>No Realizado -Pol. Seguridad</fullName>
-                <default>false</default>
-                <label>No Realizado -Pol. Seguridad</label>
-            </value>
-            <value>
-                <fullName>No realizado - Derivado mediación</fullName>
-                <default>false</default>
-                <label>No realizado - Derivado mediación</label>
-            </value>
-            <value>
-                <fullName>No realizado - No procede</fullName>
-                <default>false</default>
-                <label>No realizado - No procede</label>
-            </value>
-            <value>
-                <fullName>No realizado - Rechazo técnico</fullName>
-                <default>false</default>
-                <label>No realizado - Rechazo técnico</label>
-            </value>
-            <value>
-                <fullName>No realizado - Cliente no interesa</fullName>
-                <default>false</default>
-                <label>No realizado - Cliente no interesa</label>
-            </value>
-            <value>
                 <fullName>Sin INFO</fullName>
                 <default>false</default>
                 <label>Sin INFO</label>
@@ -108,11 +58,6 @@
                 <fullName>Cambio de tomador</fullName>
                 <default>false</default>
                 <label>Cambio de tomador</label>
-            </value>
-            <value>
-                <fullName>Detalle Cierre</fullName>
-                <default>false</default>
-                <label>Detalle Cierre</label>
             </value>
             <value>
                 <fullName>Oferta no accesible</fullName>
@@ -383,18 +328,6 @@
                 <fullName>Atención empleado</fullName>
                 <default>false</default>
                 <label>Atención empleado</label>
-            </value>
-            <value>
-                <fullName>definidos</fullName>
-                <default>false</default>
-                <isActive>false</isActive>
-                <label>definidos</label>
-            </value>
-            <value>
-                <fullName>no</fullName>
-                <default>false</default>
-                <isActive>false</isActive>
-                <label>no</label>
             </value>
         </valueSetDefinition>
         <valueSettings>

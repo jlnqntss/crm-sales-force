@@ -175,7 +175,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
-        Set<Id> recordIds = new Map<Id, Account> ([SELECT Id FROM Account WHERE RecordtypeId = :intermediaryRecordTypeId AND Phone = '111555777']).keySet();
+        Set<Id> recordIds = new Map<Id, Account> ([SELECT Id FROM Account WHERE RecordtypeId = : intermediaryRecordTypeId AND Phone = '111555777']).keySet();
         Test.setFixedSearchResults(new List<Id>(recordIds) );
 
         // Test
@@ -190,7 +190,7 @@ public without sharing class GenesysInteractionsServiceTest
         List<Task> expectedTasks = [SELECT AccountId, Owner.Email, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
 
         System.assertEquals(expectedAccounts[0].Id, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de mediador');
-       
+
         System.assertEquals(false, expectedTasks.isEmpty(), 'No se han generado tareas');
         System.assertEquals(expectedTasks[0].Id, testInteractionLog.callLogId, 'No coinciden el Id. de tarea');
         System.assertEquals(expectedTasks[0].CallObject, testInteractionLog.interactionId, 'No coinciden el Id. de tarea');
@@ -821,7 +821,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
         System.assertNotEquals(null, expectedError, 'No se ha lanzado una excepción');
-        
+
     }
 
     /**
@@ -860,7 +860,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
         System.assertNotEquals(null, expectedError, 'No se ha lanzado una excepción');
-        
+
     }
 
     /**
@@ -899,7 +899,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
         System.assertNotEquals(null, expectedError, 'No se ha lanzado una excepción');
-        
+
     }
 
     /**
@@ -938,7 +938,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
         System.assertNotEquals(null, expectedError, 'No se ha lanzado una excepción');
-        
+
     }
 
     /**
@@ -960,13 +960,13 @@ public without sharing class GenesysInteractionsServiceTest
         Test.startTest();
 
         List<GenesysInteractionsService.Agent> bestAgents = GenesysInteractionsService.findBestAgents(intermediary);
-        
+
         Test.stopTest();
 
         // Then
         System.assertEquals(false, bestAgents.isEmpty(), 'No se ha generado la estructura de agentes');
         System.assertEquals(2, bestAgents.size(), 'No se ha generado la estructura de agentes correctamente');
-        
+
     }
 
 
