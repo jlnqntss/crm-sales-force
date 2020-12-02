@@ -2178,7 +2178,7 @@ public class TestDataFactory
 
         //Datos comunes
         jsonInformation.put('timeStamp', JSON.serialize(datetime.now()));
-        jsonInformation.put('webEmail', email);        
+        jsonInformation.put('webEmail', email);
         jsonInformation.put('sessionId', Math.random());
         jsonInformation.put('businessCode', '3200012477');
         jsonInformation.put('lastStep', lastStep);
@@ -2205,12 +2205,9 @@ public class TestDataFactory
             when 'CRM-03' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Activo');
-                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
-                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
                 
-                //TODO: En ese paso no se tiene NationalId, eliminar cuando tengas búsqueda por email y teléfono
-                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
-                /*
                 jsonInformation.put('accountInformation', new Map<String, Object>
                 {
                     'firstName'  => 'FirstName',
@@ -2218,7 +2215,7 @@ public class TestDataFactory
                     'family' => '10',
                     'commercialActivity' => '101100'
                 });
-                */
+                
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
                     new Map<String, Object>{
@@ -2234,8 +2231,8 @@ public class TestDataFactory
             when 'CRM-04' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Abandono');
-                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
-                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
@@ -2247,8 +2244,8 @@ public class TestDataFactory
             when 'CRM-05' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Abandono');
-                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
-                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
@@ -2258,8 +2255,8 @@ public class TestDataFactory
             when 'CRM-06' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Activo');
-                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
-                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
@@ -2269,8 +2266,8 @@ public class TestDataFactory
             when 'CRM-07' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'Abandono');
-                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
-                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
@@ -2282,8 +2279,8 @@ public class TestDataFactory
             when 'CRM-08' {
                 jsonInformation.put('webPhone', phone);
                 jsonInformation.put('status', 'ACtivo');
-                jsonInformation.put('bestTimeFrom', JSON.serialize(datetime.now()));
-                jsonInformation.put('bestTimeUntil', JSON.serialize(datetime.now().addHours(4)));
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
@@ -2295,6 +2292,21 @@ public class TestDataFactory
         }
 
         return jsonInformation;
+    }
+
+    private static String datetimeToISOString(Datetime datetimeToConvert)
+    {
+        return  datetimeToConvert.year() + '-' + 
+                ('0'+datetimeToConvert.month()).right(2) + '-' +
+                ('0'+datetimeToConvert.day()).right(2) + '-' +
+                'T' + 
+                ('0'+datetimeToConvert.hour()).right(2) + 
+                ':' + 
+                ('0'+datetimeToConvert.minute()).right(2) + 
+                ':' + 
+                ('0'+datetimeToConvert.second()).right(2) + 
+                '.' + 
+                ('00'+datetimeToConvert.millisecond()).right(3) + 'Z';
     }
 
     private static Map<String, Object> generateCompleteAccountInformation(String nationalId)
@@ -2353,12 +2365,14 @@ public class TestDataFactory
 
     private static Map<String, Object> generateOfferWithRisk()
     {
+        Datetime twoWeeks = System.today().addDays(15);
         return new Map<String, Object>{
+            'policyNumber' => String.valueOf((Math.random() * 10000000).intValue()),
             'quoteNumberINFO' => '456789456',
             'quoteNumberJRE' => '789989799',
             'operationCode' => 'P1',
             'businessCode' => '3200012477',
-            'effectiveDate' => Date.valueOf(System.today().addDays(15)),
+            'effectiveDate' => twoWeeks.year()+'-'+('0'+twoWeeks.month()).right(2)+'-'+('0'+twoWeeks.day()).right(2),
             'commercialPC' => '00002',
             'technicalPC' => '00527',
             'paymentType' => 'A',
@@ -2439,5 +2453,111 @@ public class TestDataFactory
         }
 
         return policies;
+    }
+
+    /**
+     * Genera Campaigns para una entidad legal
+     **
+     * @param String legalEntity entidad legal para la que vamos a crear las campañas
+     * @param Integer numRecords número de elementos a generar
+     *
+     * @return List<Campaign> listado de Campaigns generadas
+     * @author rlopez
+     * @date 02/12/2020
+     */
+    public static List<Campaign> generateCampaigns(String legalEntity, Integer numRecords)
+    {
+        List<Campaign> campaigns = new List<Campaign>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            campaigns.add(
+                new Campaign(
+                    Name = 'TestCampaign ' + i,
+                    LegalEntity__c = legalEntity
+                )
+            );
+        }
+
+        return campaigns;
+    }
+
+    /**
+     * Genera CampaignMembers a partir de una lista de contactos y para cada campaña especificada
+     **
+     * @param List<Contact> contacts listado de contactos que vamos a suscribir en las campañas
+     * @param List<Campaign> campaigns listado de campañas
+     *
+     * @return List<CampaignMember> listado de CampaignMembers generados
+     * @author rlopez
+     * @date 02/12/2020
+     */
+    public static List<CampaignMember> generateCampaignMembersForEachCampaign(List<Contact> contacts, List<Campaign> campaigns)
+    {
+        List<CampaignMember> campaignMembers = new List<CampaignMember>();
+
+        for(Contact member: contacts)
+        {
+            for(Campaign campaign: campaigns)
+            {
+                campaignMembers.add(
+                    new CampaignMember(
+                        ContactId = member.Id,
+                        CampaignId = campaign.Id,
+                        Status = 'Subscribed'
+                    )
+                );
+            }
+        }
+
+        return campaignMembers;
+    }
+
+    /**
+     * Genera Oportunidades relacionadas con Scopes
+     **
+     * @param List<Scope__c> scopes lista de scopes para las que hay que generar un listado de registros
+     * @param String stage etapa de las oportunidades
+     * @param Date closeDate fecha de cierre de las oportunidades
+     * @param Integer numRecords número de registros a generar POR CADA SCOPE
+     *
+     * @return List<Opportunity> listado de registros generados
+     * @author rlopez
+     * @date 02/12/2020
+     */
+    public static List<Opportunity> generateOpportunitiesForEachScope(List<Scope__c> scopes, String stage, Date closeDate, Integer numRecords)
+    {
+        List<Opportunity> opportunities = new List<Opportunity>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Scope__c relatedScope: scopes)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                opportunities.add(
+                    new Opportunity(
+                        OwnerId = USerInfo.getUserid(),
+                        AccountId = relatedScope.AccountId__c,
+                        Name = 'opp'+i,
+                        StageName = stage,
+                        CloseDate = closeDate,
+                        Scope__c = relatedScope.Scope__c,
+                        ScopeId__c = relatedScope.Id,
+                        InfoQuoteNumber__c = 'opp'+relatedScope.AccountId__c+i
+                    )
+                );
+            }
+        }
+
+        return opportunities;
     }
 }
