@@ -15,7 +15,7 @@ public with sharing class AccountsSelector
      */
     public List<Account> findByNationalId(List<String> nationalIds, String nationalIdType, String legalEntity)
     {
-        String query = 'SELECT Id, NationalId__c, NumPolicies__pc, NumQuotes__pc FROM Account WHERE RecordTypeId IN: recordTypeIds AND NationalId__c IN : nationalIds';
+        String query = 'SELECT Id, Name, PersonContactId, NationalId__c, NumPolicies__pc, NumQuotes__pc FROM Account WHERE RecordTypeId IN: recordTypeIds AND NationalId__c IN : nationalIds';
 
         if(!String.isBlank(nationalIdType))
         {
@@ -82,7 +82,7 @@ public with sharing class AccountsSelector
     {
         Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByPhoneNumber(phones);
 
-        return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
+        return [SELECT Id, Name, PersonContactId, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
     }
 
     /**
@@ -95,7 +95,7 @@ public with sharing class AccountsSelector
     {
         Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByEmail(emails);
 
-        return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
+        return [SELECT Id, Name, PersonContactId, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
     }
 
     /**
