@@ -1,19 +1,28 @@
 public without sharing class GenesysInteractionsService
 {
     public static Integer version { get; set; }
+
     @TestVisible
     static final String MISSING_FIELDS_REQUIRED = 'some required fields are missing';
+    @TestVisible
+    static final String FILTER_NOT_DEFINED = 'filterBy value not defined';
+    @TestVisible
+    static final String SEARCHTYPE_NOT_DEFINED = 'searchType value not defined';
+
     @TestVisible
     static final String SCOPE_CODE_ALL = 'all';
     @TestVisible
     static final String SCOPE_CODE_ZE = 'ze';
     @TestVisible
     static final String SCOPE_CODE_KLINC = 'klinc';
+    @TestVisible
+    static final String SCOPE_CODE_CSM = 'csm';
     static final Map<String, String> SCOPE_NAMES_BY_CODE = new Map<String, String>
     {
         SCOPE_CODE_ALL  => 'General',
         SCOPE_CODE_ZE => 'Zurich Empresas',
-        SCOPE_CODE_KLINC => 'Klinc'
+        SCOPE_CODE_KLINC => 'Klinc',
+        SCOPE_CODE_CSM => 'csm'
     };
 
     //#region Métodos públicos
@@ -35,10 +44,19 @@ public without sharing class GenesysInteractionsService
             throw new GenesysInteractionsServiceException(MISSING_FIELDS_REQUIRED);
         }
 
-        // 2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
-        findBestAgentFor(request);
+        // 2 - Comprobar si se trata de un mediador y buscarlo
+        if( request.scope == SCOPE_CODE_CSM )
+        {
+            findIntermediary(request);
+        }
+        // 3 - Resto de scopes
+        else //FIXME: Refactorizar cuando se modifique el flow de ZE / ZE Orange para aceptar la estructura Agent
+        {
+            // 3.2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
+            findBestAgentFor(request);
+        }
 
-        // 3 - Se una tarea como registro dela interacción en cola
+        // 4 - Se una tarea como registro de la interacción en cola
         createOnQueueInteraction(request);
 
         return request;
@@ -213,21 +231,233 @@ public without sharing class GenesysInteractionsService
      * Lanza una búsqueda con la configuración determinada por request
      * 
      * @author jmartinezpisson
+     * @change adelgado 20/11/2020 Añadida lógica para realizar la búsqueda aplicando los filtros de la request
      * @param {SearchRequest} request Solicitud de búsqueda
      * @return {SearchResult} Resultados devueltos por la búsqueda
      */
     public static SearchResult findPeopleBy(SearchRequest request)
     {
-        SearchResult results = new SearchResult();
-
-        List<Contact> contacts = new ContactsSelector().applyScope('all').findByPhoneNumber(new List<String> { request.value });
-
-        for(Contact matchedContact : contacts)
+        // 1 - Comprobar que la request tiene informados todos los campos requeridos
+        if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) || String.isBlank(request.scope) || String.isBlank(request.legalEntity) )
         {
-            results.screenPopRecordIds.add(matchedContact.AccountId);
+            throw new GenesysPeopleServiceException(MISSING_FIELDS_REQUIRED);
+        }
+
+        SearchResult results = new SearchResult();
+        
+        // 2 - Realizar la búsqueda de registros en base a los filtros definidos en la request
+        switch on request.filterBy 
+        {
+            when 'customers' 
+            {
+                results = findCustomersBy(request); 
+            }
+            when 'intermediaries' 
+            {
+                results = findIntermediariesBy(request);
+            }
+            /*when 'prospects'
+            {
+                //TODO - Implementar en el futuro con la lógica correspondiente
+            }
+            when 'partners'
+            {
+                //TODO - Implementar en el futuro con la lógica correspondiente
+            }*/
+            when else 
+            {
+                throw new GenesysPeopleServiceException(FILTER_NOT_DEFINED);
+            }
+        }
+
+        // 3 - Devolver los resultados obtenidos
+        return results;
+    }
+
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     * 
+     * @author adelgado
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {SearchResult} Resultados devueltos por la búsqueda
+     */
+    public static SearchResult findCustomersBy(SearchRequest request)
+    {
+        SearchResult results = new SearchResult();
+        List<Account> accounts = new List<Account>();
+
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = request.scope;
+
+        switch on request.searchType
+        {
+            when 'phone'
+            {
+                accounts = AccountSearchService.findCustomersByPhoneNumber( new List<String>{request.value}, scope );
+            }
+            when 'email'
+            {
+                accounts = AccountSearchService.findCustomersByEmail( new List<String>{request.value}, scope );
+            }
+            when 'document'
+            {
+                accounts = AccountSearchService.findCustomersByDocumentId( new List<String>{request.value}, null, scope, null );
+            }
+            when 'policy_code'
+            {
+                accounts = AccountSearchService.findCustomersByPolicyNumber( new List<String>{request.value}, scope );
+
+                if(accounts == null || accounts.isEmpty())
+                {
+                    accounts = AccountSearchService.findCustomersByQuoteNumber( new List<String>{request.value}, scope );
+                }
+            }
+            /*when 'case_number'
+            {
+                //TODO - Implementar en el futuro con la lógica correspondiente
+            }*/
+            when else 
+            {
+                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);        
+            }
+        }
+
+        if(accounts.size() == 1)
+        {
+            Account customer = accounts.get(0);
+            results.screenPopRecordId = customer.Id;
+            results.totalPolices = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
+            results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
         }
 
         return results;
+    }
+
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     * 
+     * @author adelgado
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {SearchResult} Resultados devueltos por la búsqueda
+     */
+    public static SearchResult findIntermediariesBy(SearchRequest request)
+    {
+        SearchResult results = new SearchResult();
+        List<Account> accounts = new List<Account>();
+
+        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+        scope.scope = request.scope;
+
+        switch on request.searchType
+        {
+            when 'phone'
+            {
+                accounts = AccountSearchService.findIntermediariesByPhoneNumber( new List<String>{request.value}, scope );
+            }
+            when 'intermediary_code'
+            {
+                accounts = AccountSearchService.findIntermediariesByCode( new List<String>{request.value}, scope );
+            }
+            when else 
+            {
+                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);        
+            }
+        }   
+
+        if(accounts.size() == 1)
+        {
+            Account intermediary = accounts.get(0);
+
+            results.screenPopRecordId = intermediary.Id;
+            results.territoryCode = intermediary.ZoneCode__c;
+
+            results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c));
+        }
+
+        return results;
+    }
+
+     /**
+     * Genera una lista estructura Agent con los gestores preferentes del mediador
+     * 
+     * @author adelgado
+     * @date 24/11/2020
+     */
+    public static List<Agent> findBestAgents(Intermediary intermediary)
+    {
+        Set<Agent> bestAgents = new Set<Agent>();
+
+        // 1 - Obtener los gestores de los casos abiertos asociados al mediador
+        for(Case openCase : new CasesSelector().findOpenByAccount(new List<String>{intermediary.intermediaryId}))
+        {
+            bestAgents.add
+            (
+                new Agent(openCase.Owner.Email, true, false, false)
+            );
+        }
+
+        // 2 - Comprobar si uno de los gestores con casos abiertos es el preferente del mediador para individuals
+        Boolean exists = false;
+        if(!String.isBlank(intermediary.individualsManager))
+        {
+            for(Agent agent : bestAgents)
+            {
+                if(agent.agentId.equalsIgnoreCase(intermediary.individualsManager))
+                {
+                    agent.isForIndividuals = true;
+                    exists = true;
+                    break;
+                }
+            }
+
+            if(!exists)
+            {
+                bestAgents.add(new Agent(intermediary.individualsManager, false, true, false));
+            }
+        }
+
+        // 3 - Comprobar si uno de los gestores con casos abiertos es el preferente del mediador para administración
+        exists = false;
+        if(!String.isBlank(intermediary.administrationManager))
+        {
+            for(Agent agent : bestAgents)
+            {
+                if(agent.agentId.equalsIgnoreCase(intermediary.administrationManager))
+                {
+                    agent.isForAdministrative = true;
+                    exists = true;
+                    break;
+                }
+            }
+
+            if(!exists)
+            {
+                bestAgents.add(new Agent(intermediary.administrationManager, false, false, true));
+            }
+        }
+        
+        return new List<Agent>(bestAgents);
+    }
+
+    /**
+     * Busca el mediador a partir de su ANI
+     *
+     * @author adelgado
+     * @date 26/11/2020
+     */
+    public static Interaction findIntermediary(Interaction request)
+    {
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.searchType = 'phone';
+        searchRequest.filterBy = 'intermediaries';
+        searchRequest.value = request.fromId;
+        searchRequest.scope = request.scope;
+
+        request.caller = findIntermediariesBy(searchRequest);
+
+        request.screenPopRecordId = request.caller.screenPopRecordId;
+
+        return request;
     }
 
     //#endregion
@@ -252,7 +482,8 @@ public without sharing class GenesysInteractionsService
         public String screenPopRecordId { get; set; }
         public String customerId { get; set; }
         public String callLogId { get; set; }
-        public String bestAgentId { get; set; }
+        public String bestAgentId { get; set; } //FIXME: Eliminar cuando se modifique el flow de ZE / ZE Orange
+        public SearchResult caller { get; set; }
 
         public override String toString()
         {
@@ -272,6 +503,7 @@ public without sharing class GenesysInteractionsService
         public String lookFor;
         public String value;
         public String scope;
+        public String legalEntity;
 
         public SearchRequest() {}
         public SearchRequest(Map<String, String> paramsByName)
@@ -280,6 +512,7 @@ public without sharing class GenesysInteractionsService
             this.filterBy = paramsByName.get('filterBy');
             this.value = paramsByName.get('value');
             this.scope = paramsByName.get('scope');
+            this.legalEntity = paramsByName.get('legalEntity');
         }
 
         public override String toString()
@@ -297,7 +530,58 @@ public without sharing class GenesysInteractionsService
     {
         public transient List<Contact> names;
         public transient List<SObject> relatedRecords;
-        public String[] screenPopRecordIds = new String[] {};
+        public String screenPopRecordId;
+        public String territoryCode;
+        public Integer totalPolices;
+        public Integer totalQuotes;
+        public Agent[] bestAgents;
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa la información del mediador
+     *
+     * @author adelgado
+     */
+    public class Intermediary
+    {
+        public String intermediaryId;
+        public String individualsManager;
+        public String administrationManager;
+
+        public Intermediary(){}
+
+        public Intermediary(String intermediaryId, String individualsManager, String administrationManager)
+        {
+            this.intermediaryId = intermediaryId;
+            this.individualsManager = individualsManager;
+            this.administrationManager = administrationManager;
+        }
+    }
+
+    /**
+     * Representa la información del agente en el CRM
+     *
+     * @author adelgado
+     */
+    public class Agent
+    {
+        public String agentId;
+        public Boolean hasOpenWork;
+        public Boolean isForIndividuals;
+        public Boolean isForAdministrative;
+
+        public Agent(String agentId, Boolean hasOpenWork, Boolean isForIndividuals, Boolean isForAdministrative)
+        {
+            this.agentId = agentId;
+            this.hasOpenWork = hasOpenWork;
+            this.isForIndividuals = isForIndividuals;
+            this.isForAdministrative = isForAdministrative;
+        }
 
         public override String toString()
         {
@@ -307,4 +591,7 @@ public without sharing class GenesysInteractionsService
 
     @TestVisible
     class GenesysInteractionsServiceException extends Exception {}
+
+    @TestVisible
+    class GenesysPeopleServiceException extends Exception {}
 }

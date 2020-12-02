@@ -3,6 +3,11 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>console:history</componentName>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>eager</name>
                     <type>decorator</type>
@@ -36,11 +41,6 @@
                 <componentName>opencti:softPhone</componentName>
             </componentInstance>
         </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentName>console:history</componentName>
-            </componentInstance>
-        </itemInstances>
         <name>utilityItems</name>
         <type>Region</type>
     </flexiPageRegions>
@@ -51,6 +51,10 @@
     <masterLabel>OCS UtilityBar</masterLabel>
     <template>
         <name>one:utilityBarTemplateDesktop</name>
+        <properties>
+            <name>isLeftAligned</name>
+            <value>false</value>
+        </properties>
     </template>
     <type>UtilityBar</type>
 </FlexiPage>

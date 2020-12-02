@@ -492,19 +492,20 @@ global without sharing class ExternalRequestUtil {
       // Throw error if it is a General insurance quote and any itemId is empty
       // if (incomingOrder.LegalEntity__c.equals(Label.GeneralInsurance)) {
         for (OrderItem orderItem : orderItemList) {
-          // nts (agonzalezisasi) - 27/nov/2020 - add prefix to all
-          // if (incomingOrder.LegalEntity__c.equals(Label.GeneralInsurance)) {
+          if (incomingOrder.LegalEntity__c.equals(Label.GeneralInsurance)) {
               // Throw error if it is a General insurance quote and any itemId is empty
               if (String.isBlank(orderItem.itemId__c)) {
                 throw new IntegrationException( Label.ParseError + ': Missing objectID' );
               }
-
+          }
+          // nts (agonzalezisasi) - 27/nov/2020 - add prefix to all
+          if( String.isNotBlank(orderItem.itemId__c) ) {
               // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
               if( !String.isBlank(IBA_Prefix) ) { // if (orderItem.sourceCountry__c != 'Spain') {
                 orderItem.itemId__c = IBA_Prefix + orderItem.itemId__c;
               }    
               orderItemsToSearch.add(orderItem.ItemId__c);
-          // }
+          }
           // Set source country and timestamp
           orderItem.sourceCountry__c = actualRequest.country__c;
           orderItem.Partner__c = incomingOrder.Partner__c;

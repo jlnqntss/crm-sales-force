@@ -11,6 +11,7 @@
     "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 30",
     "push:source": "sfdx force:source:push -f",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
+    "deploy:validate": "node scripts/source/unit-deploy-validation.js",
     "pull:source": "sfdx force:source:pull -f",
     "retrieve:": "sfdx force:source:retrieve --sourcepath=force-app",
     "pull:profiles": "sfdx force:source:pull -f && sfdx sfpowerkit:source:profile:reconcile -s",
@@ -33,9 +34,12 @@
     "@salesforce/eslint-config-lwc": "^0.7.0",
     "@salesforce/sfdx-lwc-jest": "latest",
     "eslint": "^7.10.0",
+    "fs-extra": "^9.0.1",
     "husky": "^4.3.0",
+    "merge-dirs": "^0.2.1",
     "mustache": "^4.0.1",
     "node-fetch": "^2.6.1",
+    "node-merge": "^0.1.0",
     "prettier": "^2.1.2",
     "pretty-quick": "^3.0.2"
   }
