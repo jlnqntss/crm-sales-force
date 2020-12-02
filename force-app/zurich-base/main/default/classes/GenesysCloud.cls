@@ -427,7 +427,7 @@ public class GenesysCloud
             }
             else
             {
-                this.setMessage(ERROR_RESPONSE_SDK + response.getStatus() );
+                this.setMessage(ERROR_RESPONSE_SDK + response.getStatusCode()+ ' ' + response.getStatus() + ' ' +response.getBody());
                 this.statusCode = response.getStatusCode();
             }
         }
