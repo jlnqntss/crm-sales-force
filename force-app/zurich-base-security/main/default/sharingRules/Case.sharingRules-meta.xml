@@ -154,7 +154,7 @@
         <criteriaItems>
             <field>RecordTypeId</field>
             <operation>equals</operation>
-            <value>Consulta OCS</value>
+            <value>OCS Inquiry</value>
         </criteriaItems>
     </sharingCriteriaRules>
 </SharingRules>
