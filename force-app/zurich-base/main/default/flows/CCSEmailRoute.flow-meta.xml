@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <description>Se buscar al mejor gestor posible para el correo electrónico, en base al cliente al que pertenece al email y sus casos abiertos</description>
+        <description>Se buscar al mejor gestor posible para el correo electrónico, en base al cliente al que pertenece al email y sus oportunidades abiertas</description>
         <name>FindOwnerIdAction</name>
         <label>Buscar Gestor Preferente</label>
-        <locationX>889</locationX>
-        <locationY>324</locationY>
+        <locationX>456</locationX>
+        <locationY>206</locationY>
         <actionName>GenesysFindBestAgentAction</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>InboxChoice</targetReference>
+            <targetReference>RouteEmailAction</targetReference>
         </connector>
         <faultConnector>
             <targetReference>LogError</targetReference>
@@ -43,9 +43,9 @@
     <actionCalls>
         <description>Llamada al Apex invocable que contiene la llamada al Genesys Cloud RoutingWork</description>
         <name>RouteEmailAction</name>
-        <label>Enrutar Email a Flow Mediadores en Genesys Cloud</label>
-        <locationX>900</locationX>
-        <locationY>577</locationY>
+        <label>Enrutar Email a Flow CCS en Genesys Cloud</label>
+        <locationX>456</locationX>
+        <locationY>326</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -88,12 +88,6 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>skillIds</name>
-            <value>
-                <elementReference>Skills</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>subject</name>
             <value>
                 <elementReference>EmailMessage.Subject</elementReference>
@@ -107,110 +101,18 @@
         </inputParameters>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
-    <assignments>
-        <description>Agregar Skills al listado de skills dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsDefault</name>
-        <label>Asignar skills (DEFAULT)</label>
-        <locationX>573</locationX>
-        <locationY>346</locationY>
-        <assignmentItems>
-            <assignToReference>Skills</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Test</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>RouteEmailAction</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Agregar Skills al listado de skills dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsPartnerDome</name>
-        <label>Asignar skills para Cúpula de Partners</label>
-        <locationX>120</locationX>
-        <locationY>364</locationY>
-        <assignmentItems>
-            <assignToReference>Skills</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>CúpulaPartner</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>RouteEmailAction</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Agregar Skills al listado de skills dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsPartners</name>
-        <label>Asignar skills para Partners</label>
-        <locationX>342</locationX>
-        <locationY>477</locationY>
-        <assignmentItems>
-            <assignToReference>Skills</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Partner</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>RouteEmailAction</targetReference>
-        </connector>
-    </assignments>
-    <decisions>
-        <description>Dependiendo del ToAddress , del Email-To-Case por donde entra el email, se pueden asignar las skills que se requerirán o el flow al que redirigir</description>
-        <name>InboxChoice</name>
-        <label>Decidir según buzón de entrada</label>
-        <locationX>343</locationX>
-        <locationY>231</locationY>
-        <defaultConnector>
-            <targetReference>AddSkillsDefault</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Partners</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>75c2e048@</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AddSkillsPartners</targetReference>
-            </connector>
-            <label>Partners</label>
-        </rules>
-        <rules>
-            <name>PartnerDome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>5ab211b9@</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AddSkillsPartnerDome</targetReference>
-            </connector>
-            <label>Partner Dome</label>
-        </rules>
-    </decisions>
-    <description>Realiza el enrutamiento de correos electrónicos del buzón de Mediadores</description>
+    <description>Realiza el enrutamiento de correos electrónicos del buzón de CCS</description>
     <formulas>
         <description>URL de la ficha a abrir con el correo enrutado</description>
         <name>ScreenPopURL</name>
         <dataType>String</dataType>
-        <expression>&apos;/lightning/page/recordActionFlow?lightning__flowDevName=CSMSearchAndScreenPop&amp;lightning__flowArgs=&apos;
+        <expression>&apos;/lightning/page/recordActionFlow?lightning__flowDevName=CCSSearchAndScreenPop&amp;lightning__flowArgs=&apos;
 + &apos;[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.FromAddress} + &apos;&quot;},&apos;
 + &apos;{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.ParentId} + &apos;&quot;},&apos;
-+ &apos;{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!FindOwnerIdAction.screenPopRecordId} + &apos;&quot;}]&apos;</expression>
++ &apos;{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!EmailMessage.Parent.AccountId} + &apos;&quot;}]&apos;</expression>
     </formulas>
-    <interviewLabel>CSM - Enrutamiento de correos electrónicos {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>CSM - Enrutamiento de correos electrónicos</label>
+    <interviewLabel>CCS - Enrutamiento de correos electrónicos {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>CCS - Enrutamiento de correos electrónicos</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -234,8 +136,8 @@
         <description>Deja un registro de log del error producido</description>
         <name>LogError</name>
         <label>Registrar error</label>
-        <locationX>1137</locationX>
-        <locationY>387</locationY>
+        <locationX>704</locationX>
+        <locationY>269</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -264,8 +166,8 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <start>
-        <locationX>763</locationX>
-        <locationY>166</locationY>
+        <locationX>330</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>FindOwnerIdAction</targetReference>
         </connector>
@@ -287,21 +189,5 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Error_Event__e</objectType>
-    </variables>
-    <variables>
-        <description>variable que almacena el ID de Genesys  para asignarlo dependiendo del buzón de entrada</description>
-        <name>GenesysFlowId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <description>listado de skills</description>
-        <name>Skills</name>
-        <dataType>String</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
     </variables>
 </Flow>
