@@ -5,7 +5,7 @@
         <name>RedirectToCase</name>
         <label>Abrir el Caso en una pestaña</label>
         <locationX>314</locationX>
-        <locationY>614</locationY>
+        <locationY>278</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -18,29 +18,10 @@
     </actionCalls>
     <actionCalls>
         <description>Utiliza un Aura para ir al contacto</description>
-        <name>RedirectToCustomer</name>
-        <label>Abrir la ficha del customer</label>
-        <locationX>50</locationX>
-        <locationY>278</locationY>
-        <actionName>c:RedirectToRecordAction</actionName>
-        <actionType>component</actionType>
-        <connector>
-            <targetReference>HasRecordIdDecision</targetReference>
-        </connector>
-        <inputParameters>
-            <name>recordId</name>
-            <value>
-                <elementReference>customerId</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
-        <description>Utiliza un Aura para ir al contacto</description>
         <name>RedirectToRecord</name>
         <label>Ir a ficha del registro encontrado</label>
         <locationX>50</locationX>
-        <locationY>614</locationY>
+        <locationY>278</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <connector>
@@ -59,7 +40,7 @@
         <name>RedirectToRelatedRecord</name>
         <label>Abrir subpestaña con registro relacionado</label>
         <locationX>50</locationX>
-        <locationY>734</locationY>
+        <locationY>398</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -78,36 +59,10 @@
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <decisions>
-        <description>Si no llega vacío el valor de EmailMessage.ParentId.AccountId, se puede abrir la ficha del cliente</description>
-        <name>HasCustomerIdDecision</name>
-        <label>¿Hay Customer Id?</label>
-        <locationX>182</locationX>
-        <locationY>158</locationY>
-        <defaultConnector>
-            <targetReference>HasRecordIdDecision</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
-        <rules>
-            <name>HasCustomerIdOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>customerId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>RedirectToCustomer</targetReference>
-            </connector>
-            <label>Sí</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>HasRecordIdDecision</name>
         <label>¿Hay Record Id?</label>
         <locationX>182</locationX>
-        <locationY>494</locationY>
+        <locationY>158</locationY>
         <defaultConnector>
             <targetReference>RedirectToCase</targetReference>
         </defaultConnector>
@@ -128,12 +83,9 @@
             <label>Sí</label>
         </rules>
     </decisions>
-    <description>Cuando un mediador atiende un Caso enrutado por Genesys, se deberían abrir de forma automática:
-Ficha del cliente
-Ficha del mediador
-Ficha del caso</description>
-    <interviewLabel>CSM - Apertura de ficha de Genesys {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>CSM - Apertura de ficha de Genesys</label>
+    <description>Abre las fichas del cliente y del caso</description>
+    <interviewLabel>CCS - Apertura de ficha de Genesys {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>CCS - Apertura de ficha de Genesys</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -158,18 +110,10 @@ Ficha del caso</description>
         <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>HasCustomerIdDecision</targetReference>
+            <targetReference>HasRecordIdDecision</targetReference>
         </connector>
     </start>
     <status>Active</status>
-    <variables>
-        <description>variable de entrada para recibir un ID con el que abrir una ficha con el AuraAction</description>
-        <name>customerId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
     <variables>
         <name>phone</name>
         <dataType>String</dataType>
