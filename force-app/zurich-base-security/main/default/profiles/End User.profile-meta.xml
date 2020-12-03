@@ -11419,10 +11419,6 @@
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Business Customer</layout>
-        <recordType>Account.Lead</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-Master layout</layout>
         <recordType>Account.Master</recordType>
     </layoutAssignments>
@@ -13509,11 +13505,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.Intermediary</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Account.Lead</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

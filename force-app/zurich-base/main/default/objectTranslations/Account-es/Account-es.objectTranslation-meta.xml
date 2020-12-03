@@ -143,11 +143,6 @@
         <name>Intermediary</name>
     </recordTypes>
     <recordTypes>
-        <description><!-- Comprende aquellos posibles clientes todavía no existentes en el sistema transaccional --></description>
-        <label><!-- Lead --></label>
-        <name>Lead</name>
-    </recordTypes>
-    <recordTypes>
         <label><!-- Master --></label>
         <name>Master</name>
     </recordTypes>

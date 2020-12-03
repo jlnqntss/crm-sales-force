@@ -11396,10 +11396,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
-        <recordType>Account.Lead</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Account Layout</layout>
         <recordType>Account.Master</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -12406,11 +12402,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.Intermediary</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Account.Lead</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

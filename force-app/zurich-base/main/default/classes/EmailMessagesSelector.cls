@@ -1,4 +1,4 @@
-public with sharing class EmailMessagesSelector
+public without sharing class EmailMessagesSelector
 {
     //Esta propiedad indica el objeto Salesforce del que vamos a extraer los campos necesarios en la query
     //Si no se indica el objeto, solo se recupera el Id del objeto Salesforce
@@ -224,11 +224,22 @@ public with sharing class EmailMessagesSelector
      */
     public List<EmailMessage> selectByInteractionId(Set<String> interactionIds)
     {
-        if(interactionIds == null || interactionIds.isEmpty() )
+        if(interactionIds != null)
+        {
+            this.sObjectToQuery = 'EmailMessage';
+            String query = String.format(
+                'SELECT {0} FROM EmailMessage ' +
+                'WHERE GenesysInteractionId__c IN :interactionIds ' +
+                'ORDER BY SystemModstamp DESC',
+                new List<String> {
+                String.join(new List<String> (this.fieldsToQuery), ',')
+            }
+                );
+            return (List<EmailMessage>) Database.query(query);
+        }
+        else
         {
             return new List<EmailMessage>();
         }
-
-        return [SELECT Id, ToIds, ActivityId, Status FROM EmailMessage WHERE GenesysInteractionId__c IN : interactionIds];
     }
 }
