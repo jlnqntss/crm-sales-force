@@ -6,7 +6,6 @@
     <externalId>false</externalId>
     <label>Intermediary</label>
     <referenceTo>Account</referenceTo>
-    <relationshipLabel>Policies (Intermediary)</relationshipLabel>
     <relationshipName>Policies</relationshipName>
     <required>false</required>
     <trackHistory>false</trackHistory>

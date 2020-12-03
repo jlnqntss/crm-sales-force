@@ -6,7 +6,6 @@
     <externalId>false</externalId>
     <label>Scope Name</label>
     <referenceTo>Scope__c</referenceTo>
-    <relationshipLabel>Policies</relationshipLabel>
     <relationshipName>Policies</relationshipName>
     <required>false</required>
     <trackHistory>false</trackHistory>

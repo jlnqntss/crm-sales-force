@@ -2,12 +2,12 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>Póliza</value>
+        <value>Policy</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Pólizas</value>
+        <value>Policies</value>
     </caseValues>
-    <gender>Feminine</gender>
-    <nameFieldLabel>Número de Póliza</nameFieldLabel>
+    <nameFieldLabel><!-- Policy Number --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>
