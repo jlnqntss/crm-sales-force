@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Actividad equipo electrónico</label>
-    <name>ActivityDescription__c</name>
+    <label>Número de Oferta/Póliza</label>
+    <name>OfferPolicyNumber__c</name>
 </CustomFieldTranslation>

@@ -3,27 +3,31 @@
     <label><!-- Object Type --></label>
     <name>ObjectType__c</name>
     <picklistValues>
-        <masterLabel>Address</masterLabel>
-        <translation><!-- Address --></translation>
+        <masterLabel>BIEN ASEG</masterLabel>
+        <translation><!-- BIEN ASEG --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Boat</masterLabel>
-        <translation><!-- Boat --></translation>
+        <masterLabel>COMERCIOS_SERVICIOS</masterLabel>
+        <translation><!-- COMERCIOS_SERVICIOS --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Electronic Device</masterLabel>
-        <translation><!-- Electronic Device --></translation>
+        <masterLabel>EMBARCACION</masterLabel>
+        <translation><!-- EMBARCACION --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Mobile</masterLabel>
-        <translation><!-- Mobile --></translation>
+        <masterLabel>EMPRESA</masterLabel>
+        <translation><!-- EMPRESA --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Motor</masterLabel>
-        <translation><!-- Motor --></translation>
+        <masterLabel>PERSONA ACCIDENTES</masterLabel>
+        <translation><!-- PERSONA ACCIDENTES --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Person</masterLabel>
-        <translation><!-- Person --></translation>
+        <masterLabel>VEHICULO</masterLabel>
+        <translation><!-- VEHICULO --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VIVIENDA</masterLabel>
+        <translation><!-- VIVIENDA --></translation>
     </picklistValues>
 </CustomFieldTranslation>
