@@ -2249,7 +2249,7 @@ public class TestDataFactory
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
-                    generateOfferWithRisk()
+                    generateOfferWithRisk(products)
                 });
             }
             when 'CRM-06' {
@@ -2260,7 +2260,7 @@ public class TestDataFactory
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
-                    generateOfferWithRisk()
+                    generateOfferWithRisk(products)
                 });
             }
             when 'CRM-07' {
@@ -2271,7 +2271,7 @@ public class TestDataFactory
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
-                    generateOfferWithRisk()
+                    generateOfferWithRisk(products)
                 });
 
                 jsonInformation.put('manager', generateManagerInformation(email, phone));
@@ -2284,7 +2284,7 @@ public class TestDataFactory
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
-                    generateOfferWithRisk()
+                    generateOfferWithRisk(products)
                 });
 
                 jsonInformation.put('manager', generateManagerInformation(email, phone));
@@ -2363,7 +2363,7 @@ public class TestDataFactory
         };
     }
 
-    private static Map<String, Object> generateOfferWithRisk()
+    private static Map<String, Object> generateOfferWithRisk(List<Product2> products)
     {
         Datetime twoWeeks = System.today().addDays(15);
         return new Map<String, Object>{
@@ -2373,8 +2373,8 @@ public class TestDataFactory
             'operationCode' => 'P1',
             'businessCode' => '3200012477',
             'effectiveDate' => twoWeeks.year()+'-'+('0'+twoWeeks.month()).right(2)+'-'+('0'+twoWeeks.day()).right(2),
-            'commercialPC' => '00002',
-            'technicalPC' => '00527',
+            'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
+            'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue())),
             'paymentType' => 'A',
             'paymentTypeSucc' => 'A',
             'paymentChannel' => 'CC',

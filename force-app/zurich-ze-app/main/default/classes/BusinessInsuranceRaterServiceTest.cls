@@ -57,6 +57,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         BusinessInsuranceRaterService.processFormData(requestInformationObject);
         Test.stopTest();
 
+        //Comprobamos que se ha actualizado el Scope correctamente
         List<Scope__c> scopesByAccount = new ScopesSelector(
             new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
             ).selectByAccountId(new Set<Id> {existingAccounts.get(0).Id});
@@ -71,6 +72,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             scopeIds.add(scope.Id);
         }
 
+        //Comprobamos que los ContactPoints se han creado/actualizado correctamente
         List<ContactPointEmail> contactPointEmails = new ContactPointEmailsSelector(
             new Set<String> {'Id', 'IsPrimary'}
             ).selectByScopeIdAndEmailAddress(scopeIds, emailFromJSON);
@@ -83,6 +85,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
+        //Comprobamos que se han generado las ofertas correctamente
         List<Opportunity> offersCreated = [SELECT Id FROM Opportunity];
         System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
     }
@@ -151,6 +154,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
         List<Opportunity> offersCreated = [SELECT Id, ProductId__c FROM Opportunity];
+        System.assertEquals(false, offersCreated.isEmpty(), 'List should NOT be empty');
         System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
 
         for(Opportunity offer: offersCreated)
@@ -175,6 +179,11 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
 
         List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
 
         Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-07', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
         BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
@@ -212,8 +221,17 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
-        List<Opportunity> offersCreated = [SELECT Id FROM Opportunity];
+        List<Opportunity> offersCreated = [SELECT Id, ProductId__c FROM Opportunity];
+        System.assertEquals(false, offersCreated.isEmpty(), 'List should NOT be empty');
         System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
+
+        for(Opportunity offer: offersCreated)
+        {
+            System.assertEquals(true, productIds.contains(offer.ProductId__c), 'Set should contain product id');
+        }
+
+        List<Asset> risksCreated = [SELECT Id FROM Asset WHERE OfferId__c IN: offersCreated];
+        System.assertEquals(false, risksCreated.isEmpty(), 'List should NOT be empty');
     }
 
     /**
@@ -234,6 +252,11 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
 
         List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
 
         Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-08', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
 
@@ -277,8 +300,41 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
-        List<Opportunity> offersCreated = [SELECT Id FROM Opportunity];
+        List<Opportunity> offersCreated = [SELECT Id, ProductId__c FROM Opportunity];
+        System.assertEquals(false, offersCreated.isEmpty(), 'List should NOT be empty');
         System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
+
+        for(Opportunity offer: offersCreated)
+        {
+            System.assertEquals(true, productIds.contains(offer.ProductId__c), 'Set should contain product id');
+        }
+
+        List<Asset> risksCreated = [SELECT Id FROM Asset WHERE OfferId__c IN: offersCreated];
+        System.assertEquals(false, risksCreated.isEmpty(), 'List should NOT be empty');
+
+        List<BusinessInsuranceRaterService.Offer> offersReceived = requestInformationObject.offers;
+        Set<String> policyNumbers = new Set<String>();
+        for(BusinessInsuranceRaterService.Offer offer: offersReceived)
+        {
+            if( String.isNotBlank(offer.policyNumber) )
+            {
+                policyNumbers.add(offer.policyNumber);
+            }
+        }
+
+        List<Policy__c> policiesCreated = new PoliciesSelector(
+            new Set<String> {'Id', 'InfoPolicyNumber__c'}
+            ).selectByHolderAndNumber(existingAccounts.get(0).Id, policyNumbers);
+        System.assertEquals(false, policiesCreated.isEmpty(), 'List should NOT be empty');
+
+        for(Policy__c policy: policiesCreated)
+        {
+            System.assertEquals(true, policyNumbers.contains(policy.InfoPolicyNumber__c), 'Set should contain InfoPolicyNumber__c');
+        }
+
+        //Comprobamos que se ha creado la relación entre las pólizas y el manager
+        List<Relationship__c> relationsCreated = [SELECT Id FROM Relationship__c WHERE PolicyId__c IN: policiesCreated];
+        System.assertEquals(false, relationsCreated.isEmpty(), 'List should NOT be empty');
     }
 
     /**

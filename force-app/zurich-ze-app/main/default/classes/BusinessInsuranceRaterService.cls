@@ -3,7 +3,7 @@ public without sharing class BusinessInsuranceRaterService
     public static AccountSearchService.Scope accSearchServiceScope = new AccountSearchService.Scope();
 
     public static List<Business_Quotes_Field__mdt> stepMetadataList = new List<Business_Quotes_Field__mdt>();
-    public static Map<String, Business_Insurance_Scope_Setting__mdt> scopeSettings = new Map<String, Business_Insurance_Scope_Setting__mdt>();
+    public static Map<String, Scope_Setting__mdt> scopeSettings = new Map<String, Scope_Setting__mdt>();
     public static Set<String> requiredFieldsMetadataSet = new Set<String>();
     public static Map<String, String> formattedFieldsMetadataMap = new Map<String, String>();
     public static Set<String> currentRequiredFieldsSet = new Set<String>();
@@ -11,6 +11,7 @@ public without sharing class BusinessInsuranceRaterService
     public static Set<String> contactRequestSteps = new Set<String> {'CRM-01', 'CRM-02', 'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07'};
     public static Set<String> offersSteps = new Set<String> {'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07', 'CRM-08'};
     public static Set<String> managerSteps = new Set<String> {'CRM-07', 'CRM-08'};
+    public static Set<String> legitLeadStageSteps = new Set<String> {'CRM-03'};
 
     public static Integer version { get; set; }
 
@@ -73,14 +74,14 @@ public without sharing class BusinessInsuranceRaterService
     private static void initScopeSettings()
     {
         accSearchServiceScope.scope = AccountSearchService.SCOPE_CODE_ZE;
-        List<Business_Insurance_Scope_Setting__mdt> scopeSettingsList = [
+        List<Scope_Setting__mdt> scopeSettingsList = [
             SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
-            FROM Business_Insurance_Scope_Setting__mdt
+            FROM Scope_Setting__mdt
         ];
 
         if( !scopeSettingsList.isEmpty() )
         {
-            for(Business_Insurance_Scope_Setting__mdt setting: scopeSettingsList)
+            for(Scope_Setting__mdt setting: scopeSettingsList)
             {
                 scopeSettings.put(setting.BusinessCode__c, setting);
             }
@@ -265,15 +266,17 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static Account createLead(Request formData)
     {
-        Business_Insurance_Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
+        Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
+        //Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
         BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
         Account accountToCreate = new Account(
-            FirstName = (String.isNotBlank(accountInformation.firstName) ? accountInformation.firstName : accountInformation.lastName),
+            FirstName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.firstName : ''),
             LastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName),
             Family__c = accountInformation.family,
             CommercialActivity__c = accountInformation.commercialActivity,
             AnnualRevenue = accountInformation.annualRevenue,
-            NumberOfEmployees = accountInformation.numberOfEmployees
+            NumberOfEmployees = accountInformation.numberOfEmployees/*,
+                                                                       RecordTypeId = leadRecordTypeId*/
             );
         insert accountToCreate;
 
@@ -298,7 +301,7 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static Scope__c createScope(Account relatedAccount, String businessCode)
     {
-        Business_Insurance_Scope_Setting__mdt currentScopeSettings = scopeSettings.get(businessCode);
+        Scope_Setting__mdt currentScopeSettings = scopeSettings.get(businessCode);
         Scope__c scopeForRelatedAccount = new Scope__c(
             Scope__c = currentScopeSettings.Scope__c,
             Name = currentScopeSettings.Scope_Name__c,
@@ -323,7 +326,7 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static void manageOffersAndRelatedInformation(Request formData)
     {
-        Business_Insurance_Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
+        Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         List<Opportunity> offersToCreate = new List<Opportunity>();
         List<Policy__c> policiesToCreate = new List<Policy__c>();
         List<Asset> risksToCreate = new List<Asset>();
@@ -356,7 +359,11 @@ public without sharing class BusinessInsuranceRaterService
                         }
                     }
 
-                    String stageName = 'App Submitted';
+                    String stageName = 'Legit Lead';
+                    if( offer.netPremium == null && !legitLeadStageSteps.contains(formData.lastStep) )
+                    {
+                        stageName = 'App Submitted';
+                    }
                     if(offer.netPremium != null)
                     {
                         stageName = 'Quoted';
@@ -382,7 +389,7 @@ public without sharing class BusinessInsuranceRaterService
                             BusinessCode__c = formData.businessCode,
                             BusinessName__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Scope_Name__c) ? currentScopeSettings.Scope_Name__c : 'Zurich Empresas'),
                             CloseDate = System.today(),
-                            ExpirationDate__c = System.today().addDays(15), //TODO: Mover a un metadato?
+                            ExpirationDate__c = System.today().addDays(15),
                             CommercialProductCode__c = offer.commercialPC,
                             TechnicalProductCode__c = offer.technicalPc,
                             TotalPremium__c = offer.netPremium,
@@ -483,6 +490,7 @@ public without sharing class BusinessInsuranceRaterService
                     if( !policiesToCreate.isEmpty() )
                     {
                         insert policiesToCreate;
+                        createRelationPolicyManager(policiesToCreate);
                     }
 
                     if( !risksToCreate.isEmpty() )
@@ -586,7 +594,15 @@ public without sharing class BusinessInsuranceRaterService
         {
             List<Account> managers = new List<Account>();
             BusinessInsuranceRaterService.Manager managerInformation = formData.manager;
-            if(managerInformation.phone != formData.webPhone && managerInformation.email != formData.webEmail) //TODO: Confirmar esta condición con Asier
+            if(String.isBlank(managerInformation.phone) && String.isBlank(managerInformation.email) ||
+               managerInformation.phone == formData.webPhone && managerInformation.email == formData.webEmail
+               )
+            {
+                //Sí el teléfono y el email son iguales que los introducidos en el primer paso del formulario
+                //la persona autorizada es el propio cliente
+                currentManager = currentCustomer;
+            }
+            else
             {
                 if( String.isNotBlank(managerInformation.email) )
                 {
@@ -609,10 +625,6 @@ public without sharing class BusinessInsuranceRaterService
                     currentManager = managers.get(0);
                     updateManagerScopeAndContactPoints(formData);
                 }
-            }
-            else
-            {
-                currentManager = currentCustomer;
             }
         }
     }
@@ -647,10 +659,11 @@ public without sharing class BusinessInsuranceRaterService
     private static void createManagerAndContactPoints(Request formData)
     {
         BusinessInsuranceRaterService.Manager managerInformation = formData.manager;
-        //TODO: RecordType ?
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
         currentManager = new Account(
             FirstName = managerInformation.firstName,
-            LastName = managerInformation.lastName
+            LastName = managerInformation.lastName,
+            RecordTypeId = customerRecordTypeId
             );
         insert currentManager;
 
@@ -734,36 +747,47 @@ public without sharing class BusinessInsuranceRaterService
         {
             List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
             Boolean appSubmittedOffers = false;
+            Boolean allOffersLegiLead = true;
             for(Opportunity offer: createdOffers)
             {
                 if(offer.StageName == 'App Submitted')
                 {
+                    //Sí al menos 1 oferta tiene StageName = App Submitted
+                    //ponemos la variable a true para seleccionar la campaña de App Submitted Leads
                     appSubmittedOffers = true;
-                    break;
+                }
+
+                if(offer.StageName != 'Legit Lead')
+                {
+                    //Sí alguna de las ofertas no tiene StageName = Legit Lead
+                    //no puede ir a la campaña de Legit Leads
+                    allOffersLegiLead = false;
                 }
             }
 
             String campaingName = '';
             if (currentScope.Scope__c.toLowerCase() == 'ze')
             {
+                campaingName = 'ZE_Quoted Leads';
                 if(appSubmittedOffers)
                 {
                     campaingName = 'ZE_App Submitted Leads';
                 }
-                else
+                if(allOffersLegiLead)
                 {
-                    campaingName = 'ZE_Quoted Leads';
+                    campaingName = 'ZE_Legit Leads';
                 }
             }
             else
             {
+                campaingName = 'ZEO_Quoted Leads';
                 if(appSubmittedOffers)
                 {
                     campaingName = 'ZEO_App Submitted Leads';
                 }
-                else
+                if(allOffersLegiLead)
                 {
-                    campaingName = 'ZEO_Quoted Leads';
+                    campaingName = 'ZEO_Legit Leads';
                 }
             }
 
@@ -787,6 +811,39 @@ public without sharing class BusinessInsuranceRaterService
                         ScopeId__c = currentScope.Id
                         );
                 }
+            }
+        }
+    }
+
+    /**
+     * Método encargado de crear la relación entre las pólizas creadas
+     * y la persona autorizada
+     *
+     * @author rlopez
+     */
+    private static void createRelationPolicyManager(List<Policy__c> createdPolicies)
+    {
+        if( !createdPolicies.isEmpty() )
+        {
+            Id policyRelationshipRecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Policy').getRecordTypeId();
+            List<Relationship__c> relations = new List<Relationship__c>();
+            for(Policy__c policy: createdPolicies)
+            {
+                relations.add(
+                    new Relationship__c(
+                        LegalEntity__c = Label.GeneralInsurance,
+                        PolicyId__c = policy.Id,
+                        PrimaryAccountId__c = currentManager.Id,
+                        RecordTypeId = policyRelationshipRecordTypeId,
+                        Role__c = 'OCSPAU',
+                        Scope__c = currentScope.Scope__c
+                        )
+                    );
+            }
+
+            if( !relations.isEmpty() )
+            {
+                insert relations;
             }
         }
     }
