@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OfferPolicyNumber__c</fullName>
+    <description>Muestra el número de Offer Number si este está relleno y si no, el número de Policy Number. El campo deberá ser un vínculo al registro correspondiente</description>
+    <externalId>false</externalId>
+    <formula>HYPERLINK(
+    &quot;/&quot; &amp; BLANKVALUE( OfferId__c , PolicyId__c ), 
+    BLANKVALUE( OfferId__r.Name , PolicyId__r.Name )
+)</formula>
+    <label>Offer/Policy Number</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
