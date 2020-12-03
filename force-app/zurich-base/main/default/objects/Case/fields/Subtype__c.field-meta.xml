@@ -173,9 +173,19 @@
                 <label>Denegación de cobertura</label>
             </value>
             <value>
+                <fullName>Denegación de cobertura</fullName>
+                <default>false</default>
+                <label>Denegación de cobertura (borrar)</label>
+            </value>
+            <value>
                 <fullName>Problema con la reparacion</fullName>
                 <default>false</default>
                 <label>Problema con la reparación</label>
+            </value>
+            <value>
+                <fullName>Problema con la reparación</fullName>
+                <default>false</default>
+                <label>Problema con la reparación (borrar)</label>
             </value>
             <value>
                 <fullName>App</fullName>
@@ -201,6 +211,11 @@
                 <fullName>Otros</fullName>
                 <default>false</default>
                 <label>Otros</label>
+            </value>
+            <value>
+                <fullName>Internas</fullName>
+                <default>false</default>
+                <label>Internas</label>
             </value>
             <value>
                 <fullName>No definido</fullName>

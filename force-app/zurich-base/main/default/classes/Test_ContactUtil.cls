@@ -343,7 +343,7 @@ public class Test_ContactUtil
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         SystemUtil.contactsSelectorMatchCode(
             keys, mapContactsMatchCodeLECountry, mapContactsMatchCodeLE, mapContactsMatchCode, null
-        );
+            );
 
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
@@ -554,7 +554,7 @@ public class Test_ContactUtil
         test.stopTest();
     }
 
-   /**
+    /**
      * Test: Upsert contact when subscriber exists
      *
      * @author nts (nbizkarra)
@@ -584,12 +584,12 @@ public class Test_ContactUtil
         Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
-        Map<String, List<Contact>> mapSubscribers = new Map<String, List<Contact>>();
+        Map<String, List<Contact> > mapSubscribers = new Map<String, List<Contact> >();
         keys.add(customer.Email);
-        SystemUtil.contactsSelectorMatchCode(keys, 
-            mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode,
-            mapSubscribers
-        );
+        SystemUtil.contactsSelectorMatchCode(keys,
+                                             mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode,
+                                             mapSubscribers
+                                             );
         // mapSubscribers = SystemUtil.contactsSelectorSubscribers(keys);
 
         Pricebook2 Pricebook = new Pricebook2(
@@ -655,12 +655,12 @@ public class Test_ContactUtil
         Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
-        Map<String, List<Contact>> mapSubscribers = new Map<String, List<Contact>>();
+        Map<String, List<Contact> > mapSubscribers = new Map<String, List<Contact> >();
         keys.add(customer.Email);
-        SystemUtil.contactsSelectorMatchCode(keys, 
-            mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode,
-            mapSubscribers
-            );
+        SystemUtil.contactsSelectorMatchCode(keys,
+                                             mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode,
+                                             mapSubscribers
+                                             );
         // mapSubscribers = SystemUtil.contactsSelectorSubscribers(keys);
 
         Pricebook2 Pricebook = new Pricebook2(

@@ -554,7 +554,7 @@
         </rules>
     </decisions>
     <description>Orquesta el enrutamiento de correos electrónicos en Genesys Cloud</description>
-    <interviewLabel>GenesysCloudEmailRouter-6_InterviewLabel</interviewLabel>
+    <interviewLabel>GenesysCloudEmailRouter-9_InterviewLabel</interviewLabel>
     <label>Enrutamiento de emails en Genesys Cloud</label>
     <processMetadataValues>
         <name>ObjectType</name>

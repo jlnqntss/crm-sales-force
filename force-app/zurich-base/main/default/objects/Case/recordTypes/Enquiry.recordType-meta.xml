@@ -181,6 +181,10 @@
             <default>false</default>
         </values>
         <values>
+                <fullName>Internas</fullName>
+                <default>false</default>
+        </values>
+        <values>
             <fullName>Pago</fullName>
             <default>false</default>
         </values>
