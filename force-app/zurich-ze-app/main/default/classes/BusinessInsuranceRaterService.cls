@@ -267,7 +267,7 @@ public without sharing class BusinessInsuranceRaterService
     private static Account createLead(Request formData)
     {
         Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
-        //Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
+        Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
         BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
         Account accountToCreate = new Account(
             FirstName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.firstName : ''),
@@ -275,15 +275,10 @@ public without sharing class BusinessInsuranceRaterService
             Family__c = accountInformation.family,
             CommercialActivity__c = accountInformation.commercialActivity,
             AnnualRevenue = accountInformation.annualRevenue,
-            NumberOfEmployees = accountInformation.numberOfEmployees/*,
-                                                                       RecordTypeId = leadRecordTypeId*/
+            NumberOfEmployees = accountInformation.numberOfEmployees,
+            RecordTypeId = leadRecordTypeId
             );
         insert accountToCreate;
-
-        /*Contact contactToCreate = new Contact(
-            AccountId = accountToCreate.Id
-            );
-           insert contactToCreate;*/
 
         //Creamos un Scope para el cliente que acabamos de crear
         currentScope = createScope(accountToCreate, formData.businessCode);
