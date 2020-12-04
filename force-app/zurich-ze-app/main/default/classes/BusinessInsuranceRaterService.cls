@@ -276,6 +276,10 @@ public without sharing class BusinessInsuranceRaterService
             CommercialActivity__c = accountInformation.commercialActivity,
             AnnualRevenue = accountInformation.annualRevenue,
             NumberOfEmployees = accountInformation.numberOfEmployees,
+            TradeName__c = accountInformation.tradeName,
+            CompanyName__pc = accountInformation.companyName,
+            NationalId__c = accountInformation.nationalIdentifier,
+            NationalIdType__c = 'N',
             RecordTypeId = leadRecordTypeId
             );
         insert accountToCreate;

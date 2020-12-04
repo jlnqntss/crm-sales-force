@@ -2238,6 +2238,8 @@ public class TestDataFactory
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
                     new Map<String, Object>{
+                        'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
+                        'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue())),
                         'offerRiskInformation' => generateOfferRiskInformation()
                     }
                 });
@@ -2320,6 +2322,8 @@ public class TestDataFactory
             'commercialActivity' => '101100',
             'annualRevenue' => '200000.10',
             'numberOfEmployees' => '150',
+            'tradeName' => 'TradeName',
+            'companyName' => 'CompanyName',
             'nationalIdentifier' => nationalId
         };
     }

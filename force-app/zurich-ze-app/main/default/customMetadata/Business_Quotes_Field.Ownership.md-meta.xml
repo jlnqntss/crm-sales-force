@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>OriginField__c</field>
-        <value xsi:type="xsd:string">pwnership</value>
+        <value xsi:type="xsd:string">ownership</value>
     </values>
     <values>
         <field>Required__c</field>
