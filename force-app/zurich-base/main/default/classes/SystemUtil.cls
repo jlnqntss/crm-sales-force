@@ -85,6 +85,7 @@ public without sharing class SystemUtil
             QualifiedApiName,
             NumberDaysDeleteErrors__c,
             NumberDaysDeleteRequests__c,
+            NumberDaysDeleteRequestErrors__c,
             NumDaysDeleteLeads__c,
             IBACaseworker__c,
             MaxRetries__c,
@@ -259,6 +260,24 @@ public without sharing class SystemUtil
 
         return query;
     }
+
+    /**
+     * Método que obtiene los errores de peticiones externas procesadas para borrarlas
+     **
+     * @author adelgado
+     * @date 03/12/2020
+     */
+    public static String getOldExternalRequestErrors()
+    {
+        AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
+
+        String query =
+            'SELECT Id from ExternalRequestError__c where CreatedDate < LAST_N_DAYS:' +
+            adminSetup.NumberDaysDeleteRequestErrors__c.intValue();
+
+        return query;
+    }
+
     /**
      * Método que obtiene los error logs para borrarlos
      **

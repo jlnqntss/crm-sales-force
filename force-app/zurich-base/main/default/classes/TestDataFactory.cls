@@ -1238,6 +1238,8 @@ public class TestDataFactory
     {
         List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
+        Id infoRecordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFO').getRecordTypeId();
+
         switch on type.toUpperCase()
         {
             // Persona física
@@ -1252,7 +1254,8 @@ public class TestDataFactory
                             Entity__c = 'ACCOUNT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1267,7 +1270,8 @@ public class TestDataFactory
                             Entity__c = 'ACCOUNT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1284,7 +1288,8 @@ public class TestDataFactory
                             Entity__c = 'CONTACT_POINT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1301,7 +1306,8 @@ public class TestDataFactory
                             Entity__c = 'CONTACT_POINT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1318,7 +1324,8 @@ public class TestDataFactory
                             Entity__c = 'CONTACT_POINT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1333,7 +1340,8 @@ public class TestDataFactory
                             Entity__c = 'PRODUCT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1348,7 +1356,8 @@ public class TestDataFactory
                             Entity__c = 'QUOTE',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1363,7 +1372,8 @@ public class TestDataFactory
                             Entity__c = 'QUOTE_OPTION',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1378,7 +1388,8 @@ public class TestDataFactory
                             Entity__c = 'POLICY',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1395,7 +1406,8 @@ public class TestDataFactory
                             Entity__c = 'INSURED_OBJECT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1412,7 +1424,8 @@ public class TestDataFactory
                             Entity__c = 'CLAIM',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1431,7 +1444,8 @@ public class TestDataFactory
                             Entity__c = 'POLICY_RELATIONSHIP',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1448,7 +1462,8 @@ public class TestDataFactory
                             Entity__c = 'QUOTE_RELATIONSHIP',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1465,7 +1480,8 @@ public class TestDataFactory
                             Entity__c = 'CLAIM_RELATIONSHIP',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1482,7 +1498,8 @@ public class TestDataFactory
                             Entity__c = 'PARTNER',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1499,7 +1516,8 @@ public class TestDataFactory
                             Entity__c = 'INTERMEDIARY',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
