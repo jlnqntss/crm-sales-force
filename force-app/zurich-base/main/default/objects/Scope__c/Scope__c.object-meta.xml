@@ -155,13 +155,13 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <gender>Masculine</gender>
-    <label>Ámbito</label>
+    <label>Scope</label>
     <nameField>
         <label>Scope Name</label>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Ámbitos</pluralLabel>
+    <pluralLabel>Scopes</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
