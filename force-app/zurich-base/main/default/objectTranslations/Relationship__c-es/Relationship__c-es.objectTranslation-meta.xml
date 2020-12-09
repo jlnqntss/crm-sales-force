@@ -2,41 +2,14 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>Relationship</value>
+        <value>Relación</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Relationships</value>
+        <value>Relaciones</value>
     </caseValues>
     <gender>Feminine</gender>
-    <layouts>
-        <layout>Claim</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Household</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Offer</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>Policy</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
+    <nameFieldLabel>Número de relación</nameFieldLabel>
     <recordTypes>
         <description><!-- Identifica el tipo de relación: Siniestro --></description>
         <label>Siniestro</label>
@@ -44,7 +17,7 @@
     </recordTypes>
     <recordTypes>
         <description><!-- Identifica el tipo de relación: Relación familiar --></description>
-        <label>Relación familiar</label>
+        <label>Familia</label>
         <name>Household</name>
     </recordTypes>
     <recordTypes>

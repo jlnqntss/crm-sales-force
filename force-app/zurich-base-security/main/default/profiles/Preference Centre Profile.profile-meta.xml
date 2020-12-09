@@ -117,6 +117,14 @@
         <visible>false</visible>
     </applicationVisibilities>
     <classAccesses>
+        <apexClass>AccountSearchService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AccountSearchServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AccountUtil</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -202,6 +210,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CaseUtil</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CasesSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CasesSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -4160,11 +4176,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Asset.IdentifierOld__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Asset.Identifier__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4205,6 +4216,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Asset.LocationId</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Asset.LockType__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4231,6 +4247,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Asset.OfferId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Asset.OfferPolicyNumber__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6325,11 +6346,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>ExternalIdField__mdt.Salesforce_entity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>ExternalJobQueueBatch__mdt.Active__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -7248,7 +7264,6 @@
         <field>Order.CampaignParams__c</field>
         <readable>false</readable>
     </fieldPermissions>
-\n
     <fieldPermissions>
         <editable>false</editable>
         <field>Order.Caseworker__c</field>
@@ -9436,16 +9451,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>et4ae5__IndividualEmailResult__c.LegalEntity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>et4ae5__IndividualEmailResult__c.Scope__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>et4ae5__IndividualEmailResult__c.et4ae5__CampaignMemberId__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -11354,10 +11359,6 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
-        <flow>Webform_CallBack</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
     <flowAccesses>
@@ -11623,9 +11624,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>OrderItem-Order Product Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Outlook-Formato Outlook</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PersonAccount-Formato de cuenta personal</layout>

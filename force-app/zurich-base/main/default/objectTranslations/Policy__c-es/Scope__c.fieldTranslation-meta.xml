@@ -6,4 +6,12 @@
         <masterLabel>General</masterLabel>
         <translation>General</translation>
     </picklistValues>
+    <picklistValues>
+        <masterLabel>Zurich Empresas</masterLabel>
+        <translation><!-- Zurich Empresas --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Zurich Empresas Orange</masterLabel>
+        <translation><!-- Zurich Empresas Orange --></translation>
+    </picklistValues>
 </CustomFieldTranslation>
