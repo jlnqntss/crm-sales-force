@@ -291,7 +291,7 @@ public without sharing class SystemUtil
 
         String query =
             'SELECT Id from Error_Log__c where CreatedDate < LAST_N_DAYS:' +
-            adminSetup.NumberDaysDeleteErrors__c;
+            adminSetup.NumberDaysDeleteErrors__c.intValue();
 
         return query;
     }
@@ -307,7 +307,7 @@ public without sharing class SystemUtil
 
         String query =
             'SELECT Id, (Select id from Casos__r), (Select itemId__c from OrderItems) from Order where LastModifiedDate < LAST_N_DAYS:' +
-            adminSetup.NumDaysDeleteLeads__c +
+            adminSetup.NumDaysDeleteLeads__c.intValue() +
             ' AND (RecordType.DeveloperName=\'' +
             Label.QuoteGI +
             '\' OR RecordType.DeveloperName=\'' +
@@ -336,7 +336,7 @@ public without sharing class SystemUtil
             'AND Id NOT IN (SELECT ContactId__c  from Order )' +
             'AND Id NOT IN (SELECT ContactId from Case)' +
             ' AND LastModifiedDate < LAST_N_DAYS:' +
-            adminSetup.NumDaysDeleteLeads__c;
+            adminSetup.NumDaysDeleteLeads__c.intValue();
 
         return query;
     }
