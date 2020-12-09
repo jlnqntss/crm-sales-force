@@ -13,7 +13,7 @@ public class BusinessInsuranceCallbackService
      */
     public static void validateRequiredFields(CallMeBack callMeBack)
     {
-        if(callMeBack.phone == null || String.isBlank(callMeBack.phone) )
+        if( callMeBack.phone == null || String.isBlank(callMeBack.phone) )
         {
             throw new BusinessInsuranceCallbackServiceException(REQUIRED_FIELD_MISSING_STATUSCODE, REQUIRED_FIELD_MISSING);
         }
@@ -38,7 +38,7 @@ public class BusinessInsuranceCallbackService
             callMeBack.PreferredContactDatetime__c = requestCallMeBack.bestTimeFrom;
             callMeBack.PreferredPhone = requestCallMeBack.phone;
             callMeBack.WebName__c = requestCallMeBack.name;
-            if(!genesysQueue.isEmpty() )
+            if( !genesysQueue.isEmpty() )
             {   //Cola de Genesys OPCIONAL, si no se rellena, no entrará al ProcessBuilder que rellena el id de interacción
                 callMeBack.GenesysCloudQueueId__c = genesysQueue[0].Id;
             }
@@ -47,7 +47,7 @@ public class BusinessInsuranceCallbackService
         }
         catch(Exception e)
         {
-            throw new BusinessInsuranceCallbackServiceException(FAIL_INSERT_CALLMEBACK_STATUSCODE, e.getMessage() + ' ' + e.getStackTraceString() );
+            throw new BusinessInsuranceCallbackServiceException( FAIL_INSERT_CALLMEBACK_STATUSCODE, e.getMessage() + ' ' + e.getStackTraceString() );
         }
 
         return callMeBackId;

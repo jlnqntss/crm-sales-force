@@ -183,4 +183,36 @@ private class Test_Batch_DeleteExternalRequest
 
         System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
     }
+
+    /**
+     * Comprobar la programación del batch
+     * *
+     * @author adelgado
+     * @date 03/12/2020
+     */
+    @isTest
+    static void testBatch_scheduleExternalRequestClear_Params()
+    {
+        Test.startTest();
+        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClear('Test_scheduleExternalRequestClear', null, 'SELECT Id FROM ExternalRequest__c');
+        Test.stopTest();
+
+        System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
+    }
+
+    /**
+     * Comprobar la programación del batch
+     * *
+     * @author adelgado
+     * @date 03/12/2020
+     */
+    @isTest
+    static void testBatch_scheduleExternalRequestErrorClear_Params()
+    {
+        Test.startTest();
+        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestErrorClear('Test_scheduleExternalRequestErrorClear', null, 'SELECT Id FROM ExternalRequestError__c');
+        Test.stopTest();
+
+        System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
+    }
 }

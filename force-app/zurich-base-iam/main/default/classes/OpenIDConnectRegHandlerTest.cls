@@ -96,7 +96,7 @@ private class OpenIDConnectRegHandlerTest
         }
         catch (Exception e)
         {
-            System.assertEquals('OpenIDConnectRegHandler.RegHandlerException', e.getTypeName() );
+            System.assertEquals( 'OpenIDConnectRegHandler.RegHandlerException', e.getTypeName() );
         }
     }
 
@@ -127,7 +127,7 @@ private class OpenIDConnectRegHandlerTest
         }
         catch (Exception e)
         {
-            System.assertEquals('OpenIDConnectRegHandler.RegHandlerException', e.getTypeName() );
+            System.assertEquals( 'OpenIDConnectRegHandler.RegHandlerException', e.getTypeName() );
         }
     }
 }

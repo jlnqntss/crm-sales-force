@@ -51,6 +51,8 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
                     BusinessInsuranceRaterService.validateReceivedInformation();
 
+                    BusinessInsuranceRaterService.processFormData(requestInformationObject);
+
                     response.responseBody = Blob.valueOf('{"status":"success", "sfId":"", "errors":[]}');
                     response.statusCode = 200;
                 }

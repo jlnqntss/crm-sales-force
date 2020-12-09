@@ -56,7 +56,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
         // Actualizar asignación a grupos
 
-        futureGroupMemberUpdate(JSON.serialize(groupMemberList) );
+        futureGroupMemberUpdate( JSON.serialize(groupMemberList) );
 
         return u;
     }
@@ -103,7 +103,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             modified = true;
         else if (u.profileId    != profileId)
             modified = true;
-        else if (u.alias        != data.username.left(8) )
+        else if ( u.alias        != data.username.left(8) )
             modified = true;
 
         if (modified)
@@ -122,7 +122,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
         List<GroupMember> groupMemberList = assignPublicGroups(userId, publicGroupIdList);
 
-        futureGroupMemberUpdate(JSON.serialize(groupMemberList) );
+        futureGroupMemberUpdate( JSON.serialize(groupMemberList) );
     }
 
     /**
@@ -191,12 +191,12 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             // Recuperación de los roles del usuario recibidos desde el IAM
 
 
-            System.debug('**** GET EXTERNAL ROLE NAMES, ROLES: ' + data.attributeMap.get('roles').remove('{')
-                         .remove('}')
-                         .remove('[')
-                         .remove(']')
-                         .split('=')[1]
-                         .split(',') );
+            System.debug( '**** GET EXTERNAL ROLE NAMES, ROLES: ' + data.attributeMap.get('roles').remove('{')
+                          .remove('}')
+                          .remove('[')
+                          .remove(']')
+                          .split('=')[1]
+                          .split(',') );
 
 
             return data.attributeMap.get('roles').remove('{')
@@ -284,7 +284,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         }
         catch (Exception e)
         {
-            System.debug('**** GET PUBLIC GROUPS, EXCEPTION: ' + e.getMessage() );
+            System.debug( '**** GET PUBLIC GROUPS, EXCEPTION: ' + e.getMessage() );
             throw new RegHandlerException('Error al obtener los grupos públicos del usuario. Compruebe que los nombres de los roles proporcionados son válidos. Para más ayuda, póngase en contacto con su administrador.');
         }
     }
@@ -315,7 +315,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             {
                 if(role == 'KLINC_Admin')
                     admin = true;
-                if(role.contains('KLINC_CustomerCare') )
+                if( role.contains('KLINC_CustomerCare') )
                     customerCare = true;
             }
 
@@ -334,7 +334,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         }
         catch (Exception e)
         {
-            System.debug('**** GET PROFILE BASED ON ROLES, EXCEPTION: ' + e.getMessage() );
+            System.debug( '**** GET PROFILE BASED ON ROLES, EXCEPTION: ' + e.getMessage() );
             throw new RegHandlerException('Error al obtener perfil. Compruebe que los roles del usuario son válidos. Para más ayuda, póngase en contacto con su administrador.');
         }
     }
@@ -369,7 +369,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         catch (Exception e)
         {
 
-            System.debug('**** ASSIGN PUBLIC GROUPS EXCEPTION: ' + e.getMessage() );
+            System.debug( '**** ASSIGN PUBLIC GROUPS EXCEPTION: ' + e.getMessage() );
             throw new RegHandlerException('Error al asignar grupos públicos. Para más ayuda contacte con su administrador.');
         }
     }
@@ -384,13 +384,13 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     global static void updatePublicGroupMembership(Id userId, List<GroupMember> groupMemberList)
     {
         List<GroupMember> actualGroupMemberList = new List<GroupMember>();
-        if(!String.isBlank(userId) )
+        if( !String.isBlank(userId) )
             actualGroupMemberList = [SELECT groupId FROM GroupMember WHERE userOrGroupId = :userId];
 
-        if(!actualGroupMemberList.isEmpty() )
+        if( !actualGroupMemberList.isEmpty() )
             delete actualGroupMemberList;
 
-        if(!groupMemberList.isEmpty() )
+        if( !groupMemberList.isEmpty() )
             insert groupMemberList;
     }
 
@@ -400,9 +400,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     {
         try
         {
-            List<GroupMember> groupMemberList = (List<GroupMember>) (JSON.deserialize(groupMemberListJson, List<GroupMember>.class) );
+            List<GroupMember> groupMemberList = (List<GroupMember>) ( JSON.deserialize(groupMemberListJson, List<GroupMember>.class) );
 
-            if(!groupMemberList.isEmpty() )
+            if( !groupMemberList.isEmpty() )
                 updatePublicGroupMembership(groupMemberList.get(0).UserOrGroupId, groupMemberList);
         }
         catch (Exception e)

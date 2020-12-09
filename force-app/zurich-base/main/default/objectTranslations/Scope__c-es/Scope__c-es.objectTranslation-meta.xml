@@ -23,10 +23,6 @@
             <label><!-- Custom Links --></label>
             <section>Custom Links</section>
         </sections>
-        <sections>
-            <label><!-- Main Contact Points --></label>
-            <section>Main Contact Points</section>
-        </sections>
     </layouts>
     <nameFieldLabel>Nombre de ámbito</nameFieldLabel>
     <quickActions>
