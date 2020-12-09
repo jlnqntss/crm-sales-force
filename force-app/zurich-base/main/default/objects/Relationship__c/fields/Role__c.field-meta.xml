@@ -461,6 +461,11 @@
                 <default>false</default>
                 <label>VIS</label>
             </value>
+            <value>
+                <fullName>OCSPAU</fullName>
+                <default>false</default>
+                <label>OCSPAU</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

@@ -9,11 +9,12 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
 {
     public String query;
 
-    global Batch_ResponseExternalRequest() {}
+    global Batch_ResponseExternalRequest()
+    {}
 
     global Batch_ResponseExternalRequest(String p_query)
     {
-        if (!String.isBlank(p_query) )
+        if ( !String.isBlank(p_query) )
         {
             query = p_query;
         }
@@ -36,7 +37,7 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)
     {
-        if (scope != null && !scope.isEmpty() )
+        if ( scope != null && !scope.isEmpty() )
         {
             // Scope
             List<ExternalRequest__c> listExternalRequest = (List<ExternalRequest__c>) scope;
@@ -137,5 +138,6 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
         }
     }
 
-    global void finish(Database.BatchableContext BC) {}
+    global void finish(Database.BatchableContext BC)
+    {}
 }

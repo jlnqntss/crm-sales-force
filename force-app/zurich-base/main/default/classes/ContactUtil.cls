@@ -382,7 +382,7 @@ global without sharing class ContactUtil
                     quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
                 }
             } // SEARCH AMONG SUBSCRIBERS // nts (nbizkarra) - 17/11/2020
-            else if (ExternalRequestUtil.mapSubscribers.containsKey(incomingContact.Email) )
+            else if ( ExternalRequestUtil.mapSubscribers.containsKey(incomingContact.Email) )
             {
                 System.debug('>>> Contact found in Subscribers');
                 List <Contact> listSubscribers = ExternalRequestUtil.mapSubscribers.get(incomingContact.Email);
