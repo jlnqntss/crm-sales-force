@@ -519,7 +519,7 @@ public without sharing class BusinessInsuranceRaterService
                 RequestReason = 'Offer',
                 Status = 'New',
                 WebName__c = formData.accountInformation.firstName + ' ' + formData.accountInformation.lastName,
-                WhoId = currentCustomer.Id //currentCustomer.PersonContactId
+                WhoId = currentCustomer.PersonContactId//currentCustomer.Id
                 );
 
             if( !offersToCreate.isEmpty() )
@@ -527,7 +527,7 @@ public without sharing class BusinessInsuranceRaterService
                 contactRequestToCreate.WhatId = offersToCreate.get(0).Id;
             }
 
-            insert contactRequestsToCreate;
+            insert contactRequestToCreate;
         }
     }
 

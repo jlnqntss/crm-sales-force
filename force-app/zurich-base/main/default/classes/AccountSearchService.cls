@@ -42,7 +42,7 @@ public with sharing class AccountSearchService
                 {
                     scope = all;
                 }
-                else if(SCOPE_NAMES_BY_CODE.containsKey(value) )
+                else if( SCOPE_NAMES_BY_CODE.containsKey(value) )
                 {
                     scope = SCOPE_NAMES_BY_CODE.get(value);
                 }
@@ -75,7 +75,7 @@ public with sharing class AccountSearchService
             accountIds.add(account.Id);
         }
 
-        return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN : accountIds];
+        return [SELECT Id, NumPolicies__pc, NumQuotes__pc, Name, PersonContactId FROM Account WHERE Id IN : accountIds];
     }
 
     /**
@@ -99,7 +99,7 @@ public with sharing class AccountSearchService
             accountIds.add(account.Id);
         }
 
-        return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN : accountIds];
+        return [SELECT Id, NumPolicies__pc, NumQuotes__pc, Name, PersonContactId FROM Account WHERE Id IN : accountIds];
     }
 
     /**
