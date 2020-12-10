@@ -25,6 +25,20 @@
       "default": false
     }
   ],
+  "plugins": {
+    "nts1": {
+      "hooks": {
+        "profiles": {
+          "pullChanges": true,
+          "reconcileWithProject": false,
+          "reconcileWithOrg": true
+        },
+        "translations": {
+          "pullObjectTranslations": true
+        }
+      }
+    }
+  },
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "50.0"
