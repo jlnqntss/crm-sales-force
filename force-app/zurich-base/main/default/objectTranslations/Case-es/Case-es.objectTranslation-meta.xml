@@ -15,7 +15,7 @@
             <section>Relaciones</section>
         </sections>
         <sections>
-            <label><!-- System Information --></label>
+            <label>Información del sistema</label>
             <section>System Information</section>
         </sections>
         <sections>
@@ -56,7 +56,7 @@
     </recordTypes>
     <recordTypes>
         <description><!-- OCS --></description>
-        <label>Consulta OCS</label>
+        <label>Caso</label>
         <name>OCSInquiry</name>
     </recordTypes>
     <validationRules>
