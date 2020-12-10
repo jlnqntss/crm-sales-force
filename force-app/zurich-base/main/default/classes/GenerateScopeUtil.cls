@@ -142,66 +142,88 @@ public class GenerateScopeUtil
                     scopeNameValue = 'General';
                 }
 
-                // 4.3 - Instanciar un objeto del tipo recibido en el evento y asignarle el campo RelatedId__c
-                SObject record = Schema.getGlobalDescribe().get(event.ObjectType__c).newSObject();
-                record.Id = event.RelatedId__c;
-
-                // 4.4 - Especificar el valor de la picklist de scope
-                record.put('Scope__c', scopePicklistValue);
-
-                // 4.5 - Si se ha recibido uan cuenta, se genera (si no existe) y se asigna el scope correspondiente al registro
-                if( String.isNotBlank(event.AccountId__c) )
+                // 4.3 - Si se trata de una cuenta, únicamente se genera el scope correspondiente
+                if(event.ObjectType__c == 'Account')
                 {
-                    scopeToAssign = null;
+                    Scope__c newScope = new Scope__c
+                                        (
+                        Name = scopeNameValue,
+                        AccountId__c = event.AccountId__c,
+                        Scope__c = scopePicklistValue
+                                        );
 
-                    // 4.5.1 - Comprobar si la cuenta ya tiene generado el scope necesario
-                    for( Scope__c scope : scopesByAccountId.get(event.AccountId__c) )
+                    scopesToInsert.add(newScope);
+
+                    if( !scopesByAccountIdAndType.containsKey(event.AccountId__c) )
                     {
-                        if(scope.Scope__c == scopePicklistValue)
-                        {
-                            scopeToAssign = scope;
-                            break;
-                        }
+                        scopesByAccountIdAndType.put( event.AccountId__c, new Map<String, Scope__c>() );
                     }
 
-                    // 4.5.2 - Si no se ha econtrado el scope, se genera
-                    if(scopeToAssign == null)
-                    {
-                        // 4.5.3 - Comprobar si el scope está pendiente de ser insertado porque ya se ha generado para otro registro
-                        if( scopesByAccountIdAndType.containsKey(event.AccountId__c) && scopesByAccountIdAndType.get(event.AccountId__c).containsKey(scopePicklistValue) )
-                        {
-                            scopeToAssign = scopesByAccountIdAndType.get(event.AccountId__c).get(scopePicklistValue);
-                        }
-                        // 4.5.4 - Si no se ha econtrado el scope y no se ha generado anteriormente, se genera el scope con los datos necesarios
-                        else
-                        {
-                            Scope__c newScope = new Scope__c
-                                                (
-                                Name = scopeNameValue,
-                                AccountId__c = event.AccountId__c,
-                                Scope__c = scopePicklistValue
-                                                );
-
-                            scopeToAssign = newScope;
-                            scopesToInsert.add(newScope);
-
-                            if( !scopesByAccountIdAndType.containsKey(event.AccountId__c) )
-                            {
-                                scopesByAccountIdAndType.put( event.AccountId__c, new Map<String, Scope__c>() );
-                            }
-
-                            scopesByAccountIdAndType.get(event.AccountId__c).put(scopePicklistValue, newScope);
-                        }
-                    }
-
-                    if(scopeToAssign != null)
-                    {
-                        scopesByObject.put(record.Id, scopeToAssign);
-                    }
+                    scopesByAccountIdAndType.get(event.AccountId__c).put(scopePicklistValue, newScope);
                 }
+                else
+                {
+                    // 4.4 - Instanciar un objeto del tipo recibido en el evento y asignarle el campo RelatedId__c
+                    SObject record = Schema.getGlobalDescribe().get(event.ObjectType__c).newSObject();
+                    record.Id = event.RelatedId__c;
 
-                // 4.6 - Añadir el SObject a la lista de SObjects a actualizar
-                sobjectsToUpdate.add(record);
+                    // 4.5 - Especificar el valor de la picklist de scope
+                    record.put('Scope__c', scopePicklistValue);
+
+                    // 4.6 - Si se ha recibido uan cuenta, se genera (si no existe) y se asigna el scope correspondiente al registro
+                    if( String.isNotBlank(event.AccountId__c) )
+                    {
+                        scopeToAssign = null;
+
+                        // 4.6.1 - Comprobar si la cuenta ya tiene generado el scope necesario
+                        for( Scope__c scope : scopesByAccountId.get(event.AccountId__c) )
+                        {
+                            if(scope.Scope__c == scopePicklistValue)
+                            {
+                                scopeToAssign = scope;
+                                break;
+                            }
+                        }
+
+                        // 4.6.2 - Si no se ha econtrado el scope, se genera
+                        if(scopeToAssign == null)
+                        {
+                            // 4.6.3 - Comprobar si el scope está pendiente de ser insertado porque ya se ha generado para otro registro
+                            if( scopesByAccountIdAndType.containsKey(event.AccountId__c) && scopesByAccountIdAndType.get(event.AccountId__c).containsKey(scopePicklistValue) )
+                            {
+                                scopeToAssign = scopesByAccountIdAndType.get(event.AccountId__c).get(scopePicklistValue);
+                            }
+                            // 4.6.4 - Si no se ha econtrado el scope y no se ha generado anteriormente, se genera el scope con los datos necesarios
+                            else
+                            {
+                                Scope__c newScope = new Scope__c
+                                                    (
+                                    Name = scopeNameValue,
+                                    AccountId__c = event.AccountId__c,
+                                    Scope__c = scopePicklistValue
+                                                    );
+
+                                scopeToAssign = newScope;
+                                scopesToInsert.add(newScope);
+
+                                if( !scopesByAccountIdAndType.containsKey(event.AccountId__c) )
+                                {
+                                    scopesByAccountIdAndType.put( event.AccountId__c, new Map<String, Scope__c>() );
+                                }
+
+                                scopesByAccountIdAndType.get(event.AccountId__c).put(scopePicklistValue, newScope);
+                            }
+                        }
+
+                        if(scopeToAssign != null)
+                        {
+                            scopesByObject.put(record.Id, scopeToAssign);
+                        }
+                    }
+
+                    // 4.7 - Añadir el SObject a la lista de SObjects a actualizar
+                    sobjectsToUpdate.add(record);
+                }
             }
 
             // 5 - Insertar los registros de scope generados

@@ -138,4 +138,30 @@ public class Test_AccountUtil
 
         Test.stopTest();
     }
+
+    /**
+     * Test que comprueba la generación del ámbito correspondiente para cuenta de INFO
+     *
+     * @author adelgado
+     * @date 09/12/2020
+     */
+    @isTest
+    static void test_generateScope()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 20);
+
+        for(Integer i = 0; i < accounts.size(); i++)
+        {
+            accounts[i].INFOCustomerNumber__c = String.valueOf(i);
+        }
+
+        Test.startTest();
+        insert accounts;
+        Test.stopTest();
+
+        List<Scope__c> scopes = [SELECT Id, Name FROM Scope__c WHERE AccountId__c IN : accounts];
+
+        System.assertEquals(20, scopes.size(), 'No se han generado todos los ámbitos necesarios');
+
+    }
 }

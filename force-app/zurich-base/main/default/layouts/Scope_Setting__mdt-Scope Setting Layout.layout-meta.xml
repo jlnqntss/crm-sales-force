@@ -26,6 +26,10 @@
                 <behavior>Edit</behavior>
                 <field>Scope_Name__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Sandbox__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
