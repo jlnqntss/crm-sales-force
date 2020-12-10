@@ -1912,6 +1912,43 @@ public class TestDataFactory
     }
 
     /**
+     * Genera ContactPointAddress relacionados con una lista de accounts
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointAddress
+     * @param Integer numRecords número de elementos a generar
+     *
+     * @return List<ContactPointAddress> listado de ContactPointAddress generados
+     * @author adelgado
+     * @date 10/12/2020
+     */
+    public static List<ContactPointAddress> generateContactPointAddressesFromAccounts(List<Account> accounts, Integer numRecords)
+    {
+        List<ContactPointAddress> contactPointAddresses = new List<ContactPointAddress>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                contactPointAddresses.add(
+                    new ContactPointAddress(
+                        Name = 'Address' + i,
+                        ParentId = relatedAccount.Id,
+                        Street = 'Street ' + i
+                    )
+                );
+            }
+        }
+
+        return contactPointAddresses;
+    }
+
+    /**
      * Genera ContactPointPhone relacionados con una lista de accounts
      **
      * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointPhone
