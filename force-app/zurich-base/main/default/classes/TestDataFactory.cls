@@ -1814,6 +1814,20 @@ public class TestDataFactory
                     );
                 }
             }
+            when 'Customer' { // PersonalAccount
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            LastName = 'testlastname' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N',
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
             when else {
                 for (Integer i = 0; i < numRecords; i++)
                 {
