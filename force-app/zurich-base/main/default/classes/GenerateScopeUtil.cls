@@ -130,7 +130,7 @@ public class GenerateScopeUtil
             for(GenerateScopeEvent__e event : events)
             {
                 // 4.1 - Comprobar si se ha recibido el código de negocio para recuperar el scope correspondiente
-                if( String.isNotBlank(event.BusinessCode__c) )
+                if( String.isNotBlank(event.BusinessCode__c) && scopeSettingsByCode.containsKey(event.BusinessCode__c) )
                 {
                     scopePicklistValue = scopeSettingsByCode.get(event.BusinessCode__c).Scope__c;
                     scopeNameValue = scopeSettingsByCode.get(event.BusinessCode__c).Scope_Name__c;
