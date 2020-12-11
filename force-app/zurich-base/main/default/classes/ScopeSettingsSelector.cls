@@ -1,17 +1,10 @@
 public class ScopeSettingsSelector
 {
-    Boolean isSandbox;
+    public Boolean isSandbox;
 
     public ScopeSettingsSelector()
     {
-        if( Test.isRunningTest() )
-        {
-            isSandbox = true;
-        }
-        else
-        {
-            isSandbox = [SELECT Id, isSandbox FROM Organization LIMIT 1].isSandbox;
-        }
+        isSandbox = [SELECT Id, isSandbox FROM Organization LIMIT 1].isSandbox;
     }
 
     /**
@@ -25,11 +18,11 @@ public class ScopeSettingsSelector
     {
         if(isSandbox)
         {
-            return [SELECT BusinessCode__c, Scope__c, Scope_Name__c FROM Scope_Setting__mdt WHERE Sandbox__c = true];
+            return [SELECT SandboxBusinessCode__c, Scope__c, Scope_Name__c FROM Scope_Setting__mdt];
         }
         else
         {
-            return [SELECT BusinessCode__c, Scope__c, Scope_Name__c FROM Scope_Setting__mdt WHERE Sandbox__c = false];
+            return [SELECT BusinessCode__c, Scope__c, Scope_Name__c FROM Scope_Setting__mdt];
         }
     }
 
@@ -45,11 +38,11 @@ public class ScopeSettingsSelector
     {
         if(isSandbox)
         {
-            return [SELECT BusinessCode__c, Scope__c, Scope_Name__c FROM Scope_Setting__mdt WHERE Sandbox__c = true AND BusinessCode__c IN : businessCodes];
+            return [SELECT SandboxBusinessCode__c, Scope__c, Scope_Name__c FROM Scope_Setting__mdt WHERE SandboxBusinessCode__c IN : businessCodes];
         }
         else
         {
-            return [SELECT BusinessCode__c, Scope__c, Scope_Name__c FROM Scope_Setting__mdt WHERE Sandbox__c = false AND BusinessCode__c IN : businessCodes];
+            return [SELECT BusinessCode__c, Scope__c, Scope_Name__c FROM Scope_Setting__mdt WHERE BusinessCode__c IN : businessCodes];
         }
     }
 

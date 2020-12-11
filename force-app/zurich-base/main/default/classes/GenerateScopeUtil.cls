@@ -101,10 +101,18 @@ public class GenerateScopeUtil
 
         try
         {
-            // 1 - Recuperar metadatos con la configuración de scopes
-            for( Scope_Setting__mdt scopeSetting : new ScopeSettingsSelector().selectAll() )
+            // 1 - Recuperar metadatos con la configuración de scopes (Se tiene en cuenta el entorno)
+            ScopeSettingsSelector scopeSettingSelector = new ScopeSettingsSelector();
+            for( Scope_Setting__mdt scopeSetting : scopeSettingSelector.selectAll() )
             {
-                scopeSettingsByCode.put(scopeSetting.BusinessCode__c, scopeSetting);
+                if(scopeSettingSelector.isSandbox)
+                {
+                    scopeSettingsByCode.put(scopeSetting.SandboxBusinessCode__c, scopeSetting);
+                }
+                else
+                {
+                    scopeSettingsByCode.put(scopeSetting.BusinessCode__c, scopeSetting);
+                }
             }
 
             // 2 - Obtener los ids de las cuentas y generar un mapa con todos ellos para agrupar los scopes que tienen actualmente generados
