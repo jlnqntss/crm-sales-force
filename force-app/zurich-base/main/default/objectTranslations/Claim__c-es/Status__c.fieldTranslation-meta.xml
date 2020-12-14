@@ -3,15 +3,19 @@
     <label>Estado</label>
     <name>Status__c</name>
     <picklistValues>
-        <masterLabel>definidos</masterLabel>
-        <translation><!-- definidos --></translation>
+        <masterLabel>Pendiente</masterLabel>
+        <translation><!-- Pendiente --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>no</masterLabel>
-        <translation><!-- no --></translation>
+        <masterLabel>Pte de aprobación</masterLabel>
+        <translation><!-- Pte de aprobación --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>valores</masterLabel>
-        <translation><!-- valores --></translation>
+        <masterLabel>Rehabilitado</masterLabel>
+        <translation><!-- Rehabilitado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Terminado</masterLabel>
+        <translation><!-- Terminado --></translation>
     </picklistValues>
 </CustomFieldTranslation>
