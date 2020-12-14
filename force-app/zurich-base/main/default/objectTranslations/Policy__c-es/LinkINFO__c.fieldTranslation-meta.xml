@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Enlace INFO</label>
-    <name>PolicyLink__c</name>
+    <label>Enlace Póliza INFO</label>
+    <name>LinkINFO__c</name>
 </CustomFieldTranslation>
