@@ -12,19 +12,24 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>valores</fullName>
+                <fullName>A</fullName>
                 <default>false</default>
-                <label>valores</label>
+                <label>Pte de aprobación</label>
             </value>
             <value>
-                <fullName>no</fullName>
+                <fullName>P</fullName>
                 <default>false</default>
-                <label>no</label>
+                <label>Pendiente</label>
             </value>
             <value>
-                <fullName>definidos</fullName>
+                <fullName>R</fullName>
                 <default>false</default>
-                <label>definidos</label>
+                <label>Rehabilitado</label>
+            </value>
+            <value>
+                <fullName>T</fullName>
+                <default>false</default>
+                <label>Terminado</label>
             </value>
         </valueSetDefinition>
     </valueSet>
