@@ -1814,6 +1814,20 @@ public class TestDataFactory
                     );
                 }
             }
+            when 'Customer' { // PersonalAccount
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            LastName = 'testlastname' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N',
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
             when else {
                 for (Integer i = 0; i < numRecords; i++)
                 {
@@ -1909,6 +1923,43 @@ public class TestDataFactory
         Integer numbers = (Math.random() * 100000000).intValue();
         String letter = letters[Integer.valueof( (Math.random() * letters.size() - 1) )];
         return String.valueOf(numbers) + letter;
+    }
+
+    /**
+     * Genera ContactPointAddress relacionados con una lista de accounts
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointAddress
+     * @param Integer numRecords número de elementos a generar
+     *
+     * @return List<ContactPointAddress> listado de ContactPointAddress generados
+     * @author adelgado
+     * @date 10/12/2020
+     */
+    public static List<ContactPointAddress> generateContactPointAddressesFromAccounts(List<Account> accounts, Integer numRecords)
+    {
+        List<ContactPointAddress> contactPointAddresses = new List<ContactPointAddress>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                contactPointAddresses.add(
+                    new ContactPointAddress(
+                        Name = 'Address' + i,
+                        ParentId = relatedAccount.Id,
+                        Street = 'Street ' + i
+                    )
+                );
+            }
+        }
+
+        return contactPointAddresses;
     }
 
     /**

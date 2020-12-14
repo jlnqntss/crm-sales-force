@@ -118,4 +118,29 @@ public class AccountUtil
 
         ordersToUpdateWithPartner.put(key, order);
     }
+
+    /**
+     * Método que controla la generación del scope correspondiente
+     * Actualmente solo se generá scope para Accounts que provengan de INFO
+     *
+     * @author adelgado
+     * @date 07/12/2020
+     */
+    public static void generateScope(List<Account> newList)
+    {
+        List<Account> accountsToGenerateScope = new List<Account>();
+
+        for(Account account : newList)
+        {
+            if( String.isNotBlank(account.INFOCustomerNumber__c) )
+            {
+                accountsToGenerateScope.add(account);
+            }
+        }
+
+        if( !accountsToGenerateScope.isEmpty() )
+        {
+            GenerateScopeUtil.generateScopeEvents('Id', null, accountsToGenerateScope);
+        }
+    }
 }
