@@ -82,7 +82,7 @@ private class GenesysCloudTest
         email.fromAddress = 'fromaddress';
 
         emails.add(email);
-        emails.add(email.clone() );
+        emails.add( email.clone() );
 
         // Test
         Test.startTest();
@@ -124,7 +124,7 @@ private class GenesysCloudTest
         email.fromAddress = 'fromaddress';
 
         emails.add(email);
-        emails.add(email.clone() );
+        emails.add( email.clone() );
 
         // Test
         Test.startTest();
@@ -245,11 +245,11 @@ private class GenesysCloudTest
         callback.callbackNumbers = new List<String> {'123456789'};
         callback.callbackScheduledTime = System.now().addDays(10);
         callbacks.add(callback);
-        callbacks.add(callback.clone() );
+        callbacks.add( callback.clone() );
 
         // Test
         Test.startTest();
-        GenesysCloud.CallbacksService.create(callbacks, new CreateAssertCallback() );//El assert está en CreateAssertCallback
+        GenesysCloud.CallbacksService.create( callbacks, new CreateAssertCallback() );//El assert está en CreateAssertCallback
         Test.stopTest();
     }
 
@@ -267,11 +267,11 @@ private class GenesysCloudTest
         List<GenesysCloud.Callback> callbacks = new List<GenesysCloud.Callback>();
         GenesysCloud.Callback callback = new GenesysCloud.Callback();
         callbacks.add(callback);
-        callbacks.add(callback.clone() );
+        callbacks.add( callback.clone() );
 
         // Test
         Test.startTest();
-        GenesysCloud.CallbacksService.create(callbacks, new CreateAssertCallback() );//El assert está en CreateAssertCallback
+        GenesysCloud.CallbacksService.create( callbacks, new CreateAssertCallback() );//El assert está en CreateAssertCallback
         Test.stopTest();
     }
 

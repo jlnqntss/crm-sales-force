@@ -6,7 +6,6 @@
     <externalId>false</externalId>
     <label>Product Name</label>
     <referenceTo>Product2</referenceTo>
-    <relationshipLabel>Policies</relationshipLabel>
     <relationshipName>Policies</relationshipName>
     <required>false</required>
     <trackHistory>false</trackHistory>

@@ -40,7 +40,7 @@ public class GenesysCloudCreateCallbackActionTest
         // Then
         // El ContactRequest debe tener reflejado el Genesys Interaction Id
         List<ContactRequest> crs = [SELECT Id FROM ContactRequest WHERE GenesysInteractionId__c = '7e131fcf-1639-45b2-89e5-9c3787b5dc75'];
-        System.assertEquals(false, crs.isEmpty() );
+        System.assertEquals( false, crs.isEmpty() );
         System.assertEquals(cr.Id, crs[0].Id, 'No coincide el ContactRequest con el enrutado');
     }
 

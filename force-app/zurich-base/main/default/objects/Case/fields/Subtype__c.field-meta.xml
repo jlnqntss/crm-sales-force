@@ -348,6 +348,10 @@
             <valueName>Como renuevo mi seguro</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Internas</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
             <valueName>Cuando me avisan</valueName>
         </valueSettings>

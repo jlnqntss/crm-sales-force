@@ -20,7 +20,7 @@ public class GenesysCloudCreateCallbackAction
             contactRequestIdsByCallback.put(request.toCallback(), request.activityId);
         }
 
-        GenesysCloud.CallbacksService.create(new List<GenesysCloud.Callback>(contactRequestIdsByCallback.keySet() ), new UpdateContactRequestsCallback(contactRequestIdsByCallback) );
+        GenesysCloud.CallbacksService.create( new List<GenesysCloud.Callback>( contactRequestIdsByCallback.keySet() ), new UpdateContactRequestsCallback(contactRequestIdsByCallback) );
     }
 
     /**
@@ -104,12 +104,12 @@ public class GenesysCloudCreateCallbackAction
                 GenesysCloud.Callback callback = (GenesysCloud.Callback) result;
                 Id contactRequestId = contactRequestIdsByCallback.get(callback);
 
-                if(String.isNotEmpty(contactRequestId) )
+                if( String.isNotEmpty(contactRequestId) )
                 {
-                    contactRequests.add(new ContactRequest(
-                                            Id = contactRequestId,
-                                            GenesysInteractionId__c = callback.genesysId
-                                            ) );
+                    contactRequests.add( new ContactRequest(
+                                             Id = contactRequestId,
+                                             GenesysInteractionId__c = callback.genesysId
+                                             ) );
                 }
             }
 
