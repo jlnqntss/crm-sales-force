@@ -425,4 +425,31 @@ private with sharing class AccountsSelectorTest
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
         System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
     }
+
+    /**
+     * Test findByIdsAndScope method
+     * 
+     * @author NTS (agonzalezisasi)
+     * @date 10/12/2020
+     */
+    @isTest
+    static void test_findByIdsAndScope_ok()
+    {
+        // Include Personal Accounts Test - 10/12/2020 - NTS (agonzalezisasi)
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 2);
+        insert accounts;
+        List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 3);
+        insert scopes;
+
+        Test.startTest();
+            Set<Id> ids = new Set<Id>{accounts[0].Id, accounts[1].Id};
+            AccountsSelector accountSel = new AccountsSelector();
+            List<Account> result = accountSel.findByIdsAndScope(ids, new List<String>{'ZE', 'ZEO'});
+        Test.stopTest();
+
+        System.Debug('-------------- Results');
+        System.assertEquals(2, result.size(), 'There should be 2 accounts');
+        System.assertEquals(3, result[0].Scope__r.size(), 'There should be 3 scopes for the first account');
+        System.assertEquals(3, result[1].Scope__r.size(), 'There should be 3 scopes for the second account');
+    }
 }
