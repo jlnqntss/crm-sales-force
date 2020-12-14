@@ -58,9 +58,9 @@ public class LeadUtil
                 // Contact creation
                 if(subscriber.CheckGI__c == true)
                 {
-                    contactsToCreate.add(createSubscriberRecord(
-                                             Label.GeneralInsurance, RECORDTYPE_LEAD_GI, subscriber, recordOwner
-                                             ) );
+                    contactsToCreate.add( createSubscriberRecord(
+                                              Label.GeneralInsurance, RECORDTYPE_LEAD_GI, subscriber, recordOwner
+                                              ) );
                 }
 
                 if(subscriber.CheckLife__c == true)
@@ -149,7 +149,7 @@ public class LeadUtil
                         }
 
                         //Associate to the master whose related contact is a customer
-                        if (mapCustomers != null && !mapCustomers.isEmpty() )
+                        if ( mapCustomers != null && !mapCustomers.isEmpty() )
                         {
 
                             // System.debug('>>> Relate to customer : ' + mapCustomers.values().get(0));
@@ -203,17 +203,17 @@ public class LeadUtil
 
         //---------------------------------------------------------------------------
         // Upsert objects
-        if (mastersToCreate != null && !mastersToCreate.isEmpty() )
+        if ( mastersToCreate != null && !mastersToCreate.isEmpty() )
         {
             insert mastersToCreate.values();
         }
 
-        if (contactsToCreate != null && !contactsToCreate.isEmpty() )
+        if ( contactsToCreate != null && !contactsToCreate.isEmpty() )
         {
             for(Contact cont: contactsToCreate)
             {
 
-                if(mastersToCreate.containsKey(cont.Email) )
+                if( mastersToCreate.containsKey(cont.Email) )
                 {
 
                     Account master = mastersToCreate.get(cont.Email);
@@ -224,7 +224,7 @@ public class LeadUtil
             insert contactsToCreate;
         }
 
-        if (contactsToUpdate != null && !contactsToUpdate.isEmpty() )
+        if ( contactsToUpdate != null && !contactsToUpdate.isEmpty() )
         {
             upsert contactsToUpdate.values();
         }

@@ -1238,6 +1238,8 @@ public class TestDataFactory
     {
         List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
+        Id infoRecordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFO').getRecordTypeId();
+
         switch on type.toUpperCase()
         {
             // Persona física
@@ -1252,7 +1254,8 @@ public class TestDataFactory
                             Entity__c = 'ACCOUNT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1267,7 +1270,8 @@ public class TestDataFactory
                             Entity__c = 'ACCOUNT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1284,7 +1288,8 @@ public class TestDataFactory
                             Entity__c = 'CONTACT_POINT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1301,7 +1306,8 @@ public class TestDataFactory
                             Entity__c = 'CONTACT_POINT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1318,7 +1324,8 @@ public class TestDataFactory
                             Entity__c = 'CONTACT_POINT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1333,7 +1340,8 @@ public class TestDataFactory
                             Entity__c = 'PRODUCT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1348,7 +1356,8 @@ public class TestDataFactory
                             Entity__c = 'QUOTE',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1363,7 +1372,8 @@ public class TestDataFactory
                             Entity__c = 'QUOTE_OPTION',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1378,7 +1388,8 @@ public class TestDataFactory
                             Entity__c = 'POLICY',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1395,7 +1406,8 @@ public class TestDataFactory
                             Entity__c = 'INSURED_OBJECT',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1412,7 +1424,8 @@ public class TestDataFactory
                             Entity__c = 'CLAIM',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1431,7 +1444,8 @@ public class TestDataFactory
                             Entity__c = 'POLICY_RELATIONSHIP',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1448,7 +1462,8 @@ public class TestDataFactory
                             Entity__c = 'QUOTE_RELATIONSHIP',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1465,7 +1480,8 @@ public class TestDataFactory
                             Entity__c = 'CLAIM_RELATIONSHIP',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1482,7 +1498,8 @@ public class TestDataFactory
                             Entity__c = 'PARTNER',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1499,7 +1516,8 @@ public class TestDataFactory
                             Entity__c = 'INTERMEDIARY',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON'
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -1509,7 +1527,7 @@ public class TestDataFactory
 
         return externalRequestList;
     }
-    
+
     /**
      * Genera oportunidades a partir de los campos especificados
      **
@@ -1517,7 +1535,7 @@ public class TestDataFactory
      * @param String stage indica la etapa de las oportunidades a crear
      * @param Date closeDate indica la fecha de cierre de la oportunidad, puede ser nulo
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<Opportunity> listado de Opportunities generadas
      * @author rlopez
      * @date 03/11/2020
@@ -1579,7 +1597,7 @@ public class TestDataFactory
      * Genera EmailMessages huerfanos, no están relacionados con ningún registro
      **
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<EmailMessage> listado de EmailMessage generados
      * @author rlopez
      * @date 09/11/2020
@@ -1612,7 +1630,7 @@ public class TestDataFactory
      **
      * @param List<EmailMessage> emailMessages lista de emails para las que hay que generar un EmailMessage
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<EmailMessage> listado de EmailMessage generados
      * @author rlopez
      * @date 09/11/2020
@@ -1649,7 +1667,7 @@ public class TestDataFactory
      **
      * @param List<Opportunity> opportunities lista de oportunidades para las que hay que generar un EmailMessage
      * @param Integer numRecords número de elementos a generar
-     * 
+     *
      * @return List<EmailMessage> listado de EmailMessage generados
      * @author rlopez
      * @date 03/11/2020
@@ -1691,7 +1709,7 @@ public class TestDataFactory
      * @param List<EmailMessage> emails lista de emails para las que hay que generar un EmailMessageRelation
      * @param Id                 personId Id para la persona (user, contact or lead) que hay que generar un EmailMessageRelation
      * @param String             relationType tipo de relación a crear (ToAddress, CcAddress, BccAddress, FromAddress, OtherAddress)
-     * 
+     *
      * @return List<EmailMessageRelation> listado de EmailMessageRelation generados
      * @author rlopez
      * @date 10/11/2020
@@ -1727,16 +1745,16 @@ public class TestDataFactory
      */
     public static List<Task> generateInteractionTasks(Integer numTasks)
     {
+        Id recordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
+        Task interaction;
         List<Task> tasks = new List<Task>();
         for (Integer i = 0; i < numTasks; i++)
         {
-            Task interaction = new Task();
+            interaction = new Task();
             interaction.Status = 'Nueva';
             interaction.Priority = 'Normal';
             interaction.CallObject = 'ucid' + i;
-            interaction.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
-                                       .get('Interaction')
-                                       .getRecordTypeId();
+            interaction.RecordTypeId = recordTypeId;
             tasks.add(interaction);
         }
         return tasks;
@@ -1777,6 +1795,20 @@ public class TestDataFactory
                             LegalEntity__c = legalEntity,
                             NationalId__c = generateSpanishFormatDNI(),
                             NationalIdType__c = 'N',
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
+            when 'Intermediary' {
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                    accounts.add(
+                        new Account(
+                            Name = 'intermediaryName' + i,
+                            INFOIntermediaryCode__c = String.valueOf(phoneNumber),
+                            Phone = String.valueOf(phoneNumber),
                             RecordTypeId = recordTypeId
                         )
                     );
@@ -2016,7 +2048,8 @@ public class TestDataFactory
                         Name = 'opp'+i,
                         StageName = stage,
                         CloseDate = closeDate,
-                        Scope__c = scope
+                        Scope__c = scope,
+                        InfoQuoteNumber__c = 'opp'+relatedAccount.Id+i
                     )
                 );
             }
@@ -2027,14 +2060,14 @@ public class TestDataFactory
 
     /**
      * Genera scopes relacionados con cuentas
-     * 
+     *
      * @param List<Account> accounts lista de accounts para las que hay que generar un listado de registros
      * @param String scope el valor del campo scope__c
      * @param Integer numRecords número de registros a generar POR CADA CUENTA
      *
      * @return List<Scope__c> listado de registros generados
      * @author rlopez
-     * @date 20/11/2020 
+     * @date 20/11/2020
      */
     public static List<Scope__c> generateScopesForEachAccount(List<Account> accounts, String scope, Integer numRecords)
     {
@@ -2044,6 +2077,7 @@ public class TestDataFactory
         {
             numRecords = 1;
         }
+
 
         if(String.isBlank(scope))
         {
@@ -2119,7 +2153,7 @@ public class TestDataFactory
      */
     public static List<ContactPointPhone> generateContactPointPhonesFromScopes(List<Scope__c> scopes, Integer numRecords)
     {
-        List<ContactPointPhone> ContactPointPhones = new List<ContactPointPhone>();
+        List<ContactPointPhone> contactPointPhones = new List<ContactPointPhone>();
 
         if(numRecords == null)
         {
@@ -2132,7 +2166,7 @@ public class TestDataFactory
             for(Integer i=0; i<numRecords; i++)
             {
                 Integer phoneNumber = (Math.random() * 1000000000).intValue();
-                ContactPointPhones.add(
+                contactPointPhones.add(
                     new ContactPointPhone(
                         ParentId = relatedScope.AccountId__c,
                         TelephoneNumber = String.valueOf(phoneNumber),
@@ -2145,6 +2179,497 @@ public class TestDataFactory
             }
         }
 
-        return ContactPointPhones;
+        return contactPointPhones;
+    }
+
+    /**
+     * Genera un JSON del formulario web de Zurich Empresas en función del paso indicado
+     **
+     * @param String lastStep paso del que queremos crear el JSON
+     *
+     * @return Map<String, Object> o String JSON generado
+     * @author rlopez
+     * @date 25/11/2020
+     */
+    public static Map<String, Object> generateBusinessInsuranceOffersWebJSON(String lastStep, String nationalId, String email, String phone, List<Product2> products)
+    {
+        Map<String, Object> jsonInformation = new Map<String, Object>();
+
+        //Datos comunes
+        jsonInformation.put('timeStamp', JSON.serialize(datetime.now()));
+        jsonInformation.put('webEmail', email);
+        jsonInformation.put('sessionId', Math.random());
+        jsonInformation.put('businessCode', '3200012477');
+        jsonInformation.put('lastStep', lastStep);
+
+        switch on lastStep {
+            when 'CRM-01' {
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('accountInformation', new Map<String, Object>
+                {
+                    'firstName'  => 'FirstName',
+                    'lastName' => 'LastName'
+                });
+            }
+            when 'CRM-02' {
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('accountInformation', new Map<String, Object>
+                {
+                    'firstName'  => 'FirstName',
+                    'lastName' => 'LastName',
+                    'family' => '10',
+                    'commercialActivity' => '101100'
+                });
+            }
+            when 'CRM-03' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Activo');
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
+                
+                jsonInformation.put('accountInformation', new Map<String, Object>
+                {
+                    'firstName'  => 'FirstName',
+                    'lastName' => 'LastName',
+                    'family' => '10',
+                    'commercialActivity' => '101100'
+                });
+                
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    new Map<String, Object>{
+                        'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
+                        'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue()))
+                    },
+                    new Map<String, Object>{
+                        'commercialPC' => (!products.isEmpty() && products.get(1) != null ? products.get(1).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
+                        'technicalPC' => (!products.isEmpty() && products.get(1) != null ? products.get(1).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue()))
+                    }
+                });
+            }
+            when 'CRM-04' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    new Map<String, Object>{
+                        'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
+                        'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue())),
+                        'offerRiskInformation' => generateOfferRiskInformation()
+                    }
+                });
+            }
+            when 'CRM-05' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    generateOfferWithRisk(products)
+                });
+            }
+            when 'CRM-06' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Activo');
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    generateOfferWithRisk(products)
+                });
+            }
+            when 'CRM-07' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'Abandono');
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    generateOfferWithRisk(products)
+                });
+
+                jsonInformation.put('manager', generateManagerInformation(email, phone));
+            }
+            when 'CRM-08' {
+                jsonInformation.put('webPhone', phone);
+                jsonInformation.put('status', 'ACtivo');
+                jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
+                jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
+                jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
+
+                jsonInformation.put('offers', new List<Map<String, Object>>{
+                    generateOfferWithRisk(products)
+                });
+
+                jsonInformation.put('manager', generateManagerInformation(email, phone));
+            }
+        }
+
+        return jsonInformation;
+    }
+
+    private static String datetimeToISOString(Datetime datetimeToConvert)
+    {
+        return  datetimeToConvert.year() + '-' + 
+                ('0'+datetimeToConvert.month()).right(2) + '-' +
+                ('0'+datetimeToConvert.day()).right(2) + '-' +
+                'T' + 
+                ('0'+datetimeToConvert.hour()).right(2) + 
+                ':' + 
+                ('0'+datetimeToConvert.minute()).right(2) + 
+                ':' + 
+                ('0'+datetimeToConvert.second()).right(2) + 
+                '.' + 
+                ('00'+datetimeToConvert.millisecond()).right(3) + 'Z';
+    }
+
+    private static Map<String, Object> generateCompleteAccountInformation(String nationalId)
+    {
+        return new Map<String, String>
+        {
+            'firstName'  => 'FirstName',
+            'lastName' => 'LastName',
+            'family' => '10',
+            'commercialActivity' => '101100',
+            'annualRevenue' => '200000.10',
+            'numberOfEmployees' => '150',
+            'tradeName' => 'TradeName',
+            'companyName' => 'CompanyName',
+            'nationalIdentifier' => nationalId
+        };
+    }
+
+    private static Map<String, Object> generateOfferRiskInformation()
+    {
+        return new Map<String, Object>{
+            'propertyStreetType' => 'VI',
+            'propertyStreet' => 'Via Augusta',
+            'propertyStreetNumber' => '12',
+            'propertyAdditionalInfo' => '',
+            'propertyPostalCode' => '08006',
+            'propertyCity' => 'Barcelona',
+            'propertyState' => '8',
+            'propertyCountry' => 'ESP',
+            'yearOfConstruction' => '1960',
+            'ownership' => 'P',
+            'insuredType' => 'I',
+            'buildingType' => 'I',
+            'height' => 'AL',
+            'riskFactor01' => '0001',
+            'riskFactor02' => '',
+            'riskFactor03' => '',
+            'riskFactor04' => '',
+            'riskFactor05' => '',
+            'riskFactor06' => '',
+            'riskFactor07' => '',
+            'riskFactor08' => '0039',
+            'riskFactor09' => '',
+            'area' => '50',
+            'lockType' => true,
+            'securityDoor' => false,
+            'bulletproofDoor' => false,
+            'connectedAlarm' => false,
+            'fireHydrant' => false,
+            'surveillance' => false,
+            'smokeDetector' => false,
+            'sprayer' => false,
+            'fireExtinguisher' => true,
+            'typeOfWindows' => '2',
+            'strongbox' => 'N'
+        };
+    }
+
+    private static Map<String, Object> generateOfferWithRisk(List<Product2> products)
+    {
+        Datetime twoWeeks = System.today().addDays(15);
+        return new Map<String, Object>{
+            'policyNumber' => String.valueOf((Math.random() * 10000000).intValue()),
+            'quoteNumberINFO' => '456789456',
+            'quoteNumberJRE' => '789989799',
+            'operationCode' => 'P1',
+            'businessCode' => '3200012477',
+            'effectiveDate' => twoWeeks.year()+'-'+('0'+twoWeeks.month()).right(2)+'-'+('0'+twoWeeks.day()).right(2),
+            'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
+            'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue())),
+            'paymentType' => 'A',
+            'paymentTypeSucc' => 'A',
+            'paymentChannel' => 'CC',
+            'paymentChannelSucc' => 'CC',
+            'language' => 'ES',
+            'buildingCapital' => '120000',
+            'contentCapital' => '12000',
+            'generalLiabilityLimit' => '12000',
+            'netPremium' => '12000',
+            'validationErrors' => '',
+            'offerRiskInformation' => generateOfferRiskInformation()
+        };
+    }
+
+    private static Map<String, Object> generateManagerInformation(String email, String phone)
+    {
+        return new Map<String, Object>{
+            'email' => email,
+            'phone' => phone,
+            'firstName' => 'ManagerFirstName',
+            'lastName' => 'ManagerLastName'
+        };
+    }
+
+    public static List<Product2> generateProducts(Integer numRecords)
+    {
+        List<Product2> products = new List<Product2>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            products.add(
+                new Product2(
+                    Name = 'Product Name ' + i,
+                    CommercialCode__c = String.valueOf((Math.random() * 100000).intValue()),
+                    TechnicalCode__c = String.valueOf((Math.random() * 100000).intValue())
+                )
+            );
+        }
+
+        return products;
+    }
+
+    /*
+    * Genera Casos con un OwnerId determinado (Cola o Usuario)
+    * @param ownerId ID de Cola o User
+    * @param Integer numRecords número de registros a generar POR CADA CUENTA
+    * @return List<Case> listado de registros generados
+    */
+   public static List<Case> generateCasesWithOwnerId(Id ownerId, Integer numRecords)
+   {
+       List<Case> cases = new List<Case>();
+
+       if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+        for(Integer i=0; i<numRecords; i++)
+        {
+            cases.add(
+                new Case(
+                    OwnerId = ownerId
+                )
+            );
+        }
+
+        return cases;
+    }
+
+    /**
+     * Genera una lista de tareas con RecordType Interaction, con un WhatID relleno
+     * @param numTasks numero de elementos a generar
+     * @return List<Task> listado de tareas
+     */
+    public static List<Task> generateInteractionTasksWithWhatId(Id whatId, Integer numTasks)
+    {
+        Id recordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
+        Task interaction;
+        List<Task> tasks = new List<Task>();
+        for (Integer i = 0; i < numTasks; i++)
+        {
+            interaction = new Task();
+            interaction.Status = 'Nueva';
+            interaction.WhatId = whatId;
+            interaction.Priority = 'Normal';
+            interaction.CallObject = 'ucid' + i;
+            interaction.RecordTypeId = recordTypeId;
+            tasks.add(interaction);
+        }
+        return tasks;
+    }
+
+    /**
+     * Genera una lista colas aunque en los test se ven las que hay en la Org
+     * @param num numero de elementos a generar
+     * @return List<Group> listado de colas
+     */
+    public static List<Group> generateQueueGroups(Integer num)
+    {
+        Group queue;
+        List<Group> queues = new List<Group>();
+        for (Integer i = 0; i < num; i++)
+        {
+            queue = new Group();
+            queue.Type = 'Queue';
+            queue.Name = 'queue' + i;
+            queues.add(queue);
+        }
+        return queues;
+    }
+
+    /**
+     * Genera una lista colas aunque en los test se ven las que hay en la Org
+     * @param num numero de elementos a generar
+     * @param groupId id de la cola
+     * @param queueObject el objeto a encola, por ejemplo 'Case'
+     * @return List<Group> listado de colas
+     */
+    public static List<QueueSObject> generateQueueSObject(Id groupId, String queueObject, Integer num)
+    {
+        QueueSObject queue;
+        List<QueueSObject> queues = new List<QueueSObject>();
+        for (Integer i = 0; i < num; i++)
+        {
+            queue = new QueueSObject();
+            queue.QueueId = groupId;
+            queue.SObjectType = queueObject;
+            queues.add(queue);
+        }
+        return queues;
+    }
+
+    /**
+     * Genera Policy__c relacionadas con cuentas
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un listado de registros
+     * @param Integer numRecords número de registros a generar POR CADA CUENTA
+     */
+    public static List<Policy__c> generatePoliciesForEachAccount(List<Account> accounts, Integer numRecords)
+    {
+        List<Policy__c> policies = new List<Policy__c>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer policyNumber = (Math.random() * 1000000000).intValue();
+                policies.add(
+                    new Policy__c(
+                        Name = String.valueOf(policyNumber),
+                        PolicyHolder__c = relatedAccount.Id,
+                        InfoPolicyNumber__c = String.valueOf(policyNumber)
+                    )
+                );
+            }
+        }
+
+        return policies;
+    }
+
+    /**
+     * Genera Campaigns para una entidad legal
+     **
+     * @param String legalEntity entidad legal para la que vamos a crear las campañas
+     * @param Integer numRecords número de elementos a generar
+     *
+     * @return List<Campaign> listado de Campaigns generadas
+     * @author rlopez
+     * @date 02/12/2020
+     */
+    public static List<Campaign> generateCampaigns(String legalEntity, Integer numRecords)
+    {
+        List<Campaign> campaigns = new List<Campaign>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            campaigns.add(
+                new Campaign(
+                    Name = 'TestCampaign ' + i,
+                    LegalEntity__c = legalEntity
+                )
+            );
+        }
+
+        return campaigns;
+    }
+
+    /**
+     * Genera CampaignMembers a partir de una lista de contactos y para cada campaña especificada
+     **
+     * @param List<Contact> contacts listado de contactos que vamos a suscribir en las campañas
+     * @param List<Campaign> campaigns listado de campañas
+     *
+     * @return List<CampaignMember> listado de CampaignMembers generados
+     * @author rlopez
+     * @date 02/12/2020
+     */
+    public static List<CampaignMember> generateCampaignMembersForEachCampaign(List<Contact> contacts, List<Campaign> campaigns)
+    {
+        List<CampaignMember> campaignMembers = new List<CampaignMember>();
+
+        for(Contact member: contacts)
+        {
+            for(Campaign campaign: campaigns)
+            {
+                campaignMembers.add(
+                    new CampaignMember(
+                        ContactId = member.Id,
+                        CampaignId = campaign.Id,
+                        Status = 'Subscribed'
+                    )
+                );
+            }
+        }
+
+        return campaignMembers;
+    }
+
+    /**
+     * Genera Oportunidades relacionadas con Scopes
+     **
+     * @param List<Scope__c> scopes lista de scopes para las que hay que generar un listado de registros
+     * @param String stage etapa de las oportunidades
+     * @param Date closeDate fecha de cierre de las oportunidades
+     * @param Integer numRecords número de registros a generar POR CADA SCOPE
+     *
+     * @return List<Opportunity> listado de registros generados
+     * @author rlopez
+     * @date 02/12/2020
+     */
+    public static List<Opportunity> generateOpportunitiesForEachScope(List<Scope__c> scopes, String stage, Date closeDate, Integer numRecords)
+    {
+        List<Opportunity> opportunities = new List<Opportunity>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Scope__c relatedScope: scopes)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                opportunities.add(
+                    new Opportunity(
+                        OwnerId = USerInfo.getUserid(),
+                        AccountId = relatedScope.AccountId__c,
+                        Name = 'opp'+i,
+                        StageName = stage,
+                        CloseDate = closeDate,
+                        Scope__c = relatedScope.Scope__c,
+                        ScopeId__c = relatedScope.Id,
+                        InfoQuoteNumber__c = 'opp'+relatedScope.AccountId__c+i
+                    )
+                );
+            }
+        }
+
+        return opportunities;
     }
 }

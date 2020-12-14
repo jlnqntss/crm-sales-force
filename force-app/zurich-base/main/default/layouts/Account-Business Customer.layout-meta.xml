@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
-    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -286,11 +283,8 @@
     </relatedLists>
     <relatedLists>
         <fields>RECORDTYPE</fields>
+        <fields>Identifier__c</fields>
         <fields>Role__c</fields>
-        <fields>ClaimId__c</fields>
-        <fields>OpportunityId__c</fields>
-        <fields>PolicyId__c</fields>
-        <fields>SecondaryAccountId__c</fields>
         <relatedList>Relationship__c.PrimaryAccountId__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -305,7 +299,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h1X000001Lkp3</masterLabel>
+        <masterLabel>00h0E000000T5Id</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

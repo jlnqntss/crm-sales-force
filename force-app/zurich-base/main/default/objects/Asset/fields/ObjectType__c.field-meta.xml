@@ -12,34 +12,75 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
+                <fullName>0000000057</fullName>
+                <default>false</default>
+                <label>EMBARCACION</label>
+            </value>
+            <value>
+                <fullName>0000000044</fullName>
+                <default>false</default>
+                <label>PERSONA ACCIDENTES</label>
+            </value>
+            <value>
+                <fullName>0000000008</fullName>
+                <default>false</default>
+                <label>EMPRESA</label>
+            </value>
+            <value>
+                <fullName>0000000062</fullName>
+                <default>false</default>
+                <label>COMERCIOS_SERVICIOS</label>
+            </value>
+            <value>
+                <fullName>0000000018</fullName>
+                <default>false</default>
+                <label>VIVIENDA</label>
+            </value>
+            <value>
+                <fullName>0000000003</fullName>
+                <default>false</default>
+                <label>VEHICULO</label>
+            </value>
+            <value>
+                <fullName>0000000050</fullName>
+                <default>false</default>
+                <label>BIEN ASEG</label>
+            </value>
+            <value>
                 <fullName>Address</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Address</label>
-            </value>
-            <value>
-                <fullName>Motor</fullName>
-                <default>false</default>
-                <label>Motor</label>
-            </value>
-            <value>
-                <fullName>Person</fullName>
-                <default>false</default>
-                <label>Person</label>
-            </value>
-            <value>
-                <fullName>Mobile</fullName>
-                <default>false</default>
-                <label>Mobile</label>
             </value>
             <value>
                 <fullName>Boat</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Boat</label>
             </value>
             <value>
                 <fullName>Electronic Device</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Electronic Device</label>
+            </value>
+            <value>
+                <fullName>Mobile</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Mobile</label>
+            </value>
+            <value>
+                <fullName>Motor</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Motor</label>
+            </value>
+            <value>
+                <fullName>Person</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Person</label>
             </value>
         </valueSetDefinition>
     </valueSet>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Z</fullName>
+        <default>false</default>
+        <label>General</label>
+    </customValue>
+    <customValue>
+        <fullName>ZE</fullName>
+        <default>false</default>
+        <label>Zurich Empresas</label>
+    </customValue>
+    <customValue>
+        <fullName>ZEO</fullName>
+        <default>false</default>
+        <label>Zurich Empresas Orange</label>
+    </customValue>
+    <masterLabel>Scope</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>FormSteps__c</field>
-        <value xsi:type="xsd:string">CRM-05;CRM-06;CRM-07;CRM-08</value>
+        <value xsi:type="xsd:string">CRM-03;CRM-04;CRM-05;CRM-06;CRM-07;CRM-08</value>
     </values>
     <values>
         <field>IsActive__c</field>

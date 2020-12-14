@@ -85,6 +85,7 @@ public without sharing class SystemUtil
             QualifiedApiName,
             NumberDaysDeleteErrors__c,
             NumberDaysDeleteRequests__c,
+            NumberDaysDeleteRequestErrors__c,
             NumDaysDeleteLeads__c,
             IBACaseworker__c,
             MaxRetries__c,
@@ -259,6 +260,24 @@ public without sharing class SystemUtil
 
         return query;
     }
+
+    /**
+     * Método que obtiene los errores de peticiones externas procesadas para borrarlas
+     **
+     * @author adelgado
+     * @date 03/12/2020
+     */
+    public static String getOldExternalRequestErrors()
+    {
+        AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
+
+        String query =
+            'SELECT Id from ExternalRequestError__c where CreatedDate < LAST_N_DAYS:' +
+            adminSetup.NumberDaysDeleteRequestErrors__c.intValue();
+
+        return query;
+    }
+
     /**
      * Método que obtiene los error logs para borrarlos
      **
@@ -272,7 +291,7 @@ public without sharing class SystemUtil
 
         String query =
             'SELECT Id from Error_Log__c where CreatedDate < LAST_N_DAYS:' +
-            adminSetup.NumberDaysDeleteErrors__c;
+            adminSetup.NumberDaysDeleteErrors__c.intValue();
 
         return query;
     }
@@ -288,7 +307,7 @@ public without sharing class SystemUtil
 
         String query =
             'SELECT Id, (Select id from Casos__r), (Select itemId__c from OrderItems) from Order where LastModifiedDate < LAST_N_DAYS:' +
-            adminSetup.NumDaysDeleteLeads__c +
+            adminSetup.NumDaysDeleteLeads__c.intValue() +
             ' AND (RecordType.DeveloperName=\'' +
             Label.QuoteGI +
             '\' OR RecordType.DeveloperName=\'' +
@@ -317,7 +336,7 @@ public without sharing class SystemUtil
             'AND Id NOT IN (SELECT ContactId__c  from Order )' +
             'AND Id NOT IN (SELECT ContactId from Case)' +
             ' AND LastModifiedDate < LAST_N_DAYS:' +
-            adminSetup.NumDaysDeleteLeads__c;
+            adminSetup.NumDaysDeleteLeads__c.intValue();
 
         return query;
     }
@@ -592,7 +611,7 @@ public without sharing class SystemUtil
         //Rellenar el mapa cuyo key es el email
         for (Contact con : listaContactos)
         {
-            if(mapaContactos.containsKey(con.Email) )
+            if( mapaContactos.containsKey(con.Email) )
             {
 
                 mapaContactos.get(con.Email).add(con);
@@ -959,7 +978,7 @@ public without sharing class SystemUtil
             {
                 if( con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c )
                 {
-                    if(mapSubscribers.containsKey(con.Email) )
+                    if( mapSubscribers.containsKey(con.Email) )
                     {
                         mapSubscribers.get(con.Email).add(con);
                     }
@@ -1059,7 +1078,7 @@ public without sharing class SystemUtil
         //Rellenar el mapa cuyo key es el customerNum
         for (Order quote : listaQuote)
         {
-            if(mapaQuote.containsKey(quote.ContactId__r.CustomerNum__c) )
+            if( mapaQuote.containsKey(quote.ContactId__r.CustomerNum__c) )
             {
 
                 mapaQuote.get(quote.ContactId__r.CustomerNum__c).add(quote);

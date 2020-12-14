@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>ZE</label>
+    <protected>false</protected>
+    <values>
+        <field>BusinessCode__c</field>
+        <value xsi:type="xsd:string">3200012477</value>
+    </values>
+    <values>
+        <field>Scope_Name__c</field>
+        <value xsi:type="xsd:string">Zurich Empresas</value>
+    </values>
+    <values>
+        <field>Scope__c</field>
+        <value xsi:type="xsd:string">ZE</value>
+    </values>
+</CustomMetadata>

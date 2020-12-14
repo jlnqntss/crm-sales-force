@@ -7,6 +7,7 @@ public with sharing class AccountsSelector
      *
      * @author rlopez
      * @date 04/11/2020
+     * @change 25/11/2020 adelgado Cambio para hacer la query dinámica en base a los parámetros recibidos
      * @param  nationalIds          Listado de DNIs. Válido cualquier formato
      * @param  nationalIdType       Tipo de documento a buscar
      * @param  legalEntity          Entidad legal en la que buscar
@@ -14,14 +15,20 @@ public with sharing class AccountsSelector
      */
     public List<Account> findByNationalId(List<String> nationalIds, String nationalIdType, String legalEntity)
     {
-        if( nationalIds != null && !nationalIds.isEmpty() && String.isNotBlank(nationalIdType) && String.isNotBlank(legalEntity) )
+        String query = 'SELECT Id, Name, PersonContactId, NationalId__c, NumPolicies__pc, NumQuotes__pc FROM Account WHERE RecordTypeId IN: recordTypeIds AND NationalId__c IN : nationalIds';
+
+        if(!String.isBlank(nationalIdType))
         {
-            return [SELECT Id, NationalId__c FROM Account WHERE NationalId__c IN : nationalIds AND NationalIdType__c =: nationalIdType AND LegalEntity__c =: legalEntity AND RecordTypeId IN: this.recordTypeIds];
+            query += '  AND NationalIdType__c =: nationalIdType';
         }
-        else
+
+        if(!String.isBlank(legalEntity))
         {
-            return new List<Account>();
+            query += '  AND LegalEntity__c =: legalEntity';
         }
+        
+
+        return Database.query(query);
     }
 
     /**
@@ -46,17 +53,122 @@ public with sharing class AccountsSelector
             when 'ze' {
                 this.recordTypeIds = new Set<Id>();
                 for (String recordTypeName: recordTypeInfosByDeveloperName.keySet()) {
-                    if(recordTypeName == 'BusinessCustomer')
+                    if(recordTypeName == 'BusinessCustomer' || recordTypeName == 'Lead')
                     {
                         this.recordTypeIds.add(recordTypeInfosByDeveloperName.get(recordTypeName).getRecordTypeId());
                     }
                 }
             }
             when 'klink' {
-                
+
+            }
+            when 'csm' 
+            {
+                this.recordTypeIds = new Set<Id>();
+                this.recordTypeIds.add(Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId());
             }
         }
 
         return this;
     }
+
+    /**
+     * Busca cuentas a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
+     * maximizar resultados de búsqueda
+     * @param  phones Listado de teléfonos. Válido cualquier formato
+     * @return        Listado de cuentas sobre los que se ha realizado match
+     */
+    public List<Account> findByPhoneNumber(List<String> phones)
+    {
+        Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByPhoneNumber(phones);
+
+        return [SELECT Id, Name, PersonContactId, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
+    }
+
+    /**
+     * Busca cuentas a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
+     * maximizar resultados de búsqueda
+     * @param  emails Listado de emails. Válido cualquier formato
+     * @return        Listado de cuentas sobre los que se ha realizado match
+     */
+    public List<Account> findByEmail(List<String> emails)
+    {
+        Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByEmail(emails);
+
+        return [SELECT Id, Name, PersonContactId, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
+    }
+
+    /**
+     * Busca cuentas a partir de números de póliza
+     * @param  policyNumbers números de póliza
+     * @return listado de cuentas
+     */
+    public List<Account> findByPolicyNumber(String[] policyNumbers)
+    {
+        if(policyNumbers != null && !policyNumbers.isEmpty())
+        {
+            return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT PolicyHolder__c FROM Policy__c WHERE InfoPolicyNumber__c IN :policyNumbers) AND RecordTypeId IN :this.recordTypeIds];
+        }
+        else 
+        {
+            return new List<Account>();
+        }
+
+    }
+
+    /**
+     * Busca cuentas a partir de números de póliza
+     * @param  policyNumbers números de póliza
+     * @return listado de cuentas
+     */
+    public List<Account> findByQuoteNumber(String[] quoteNumbers)
+    {
+        if(quoteNumbers != null && !quoteNumbers.isEmpty())
+        {
+            return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT AccountId FROM Opportunity WHERE InfoQuoteNumber__c IN :quoteNumbers) AND RecordTypeId IN :this.recordTypeIds];
+        }
+        else 
+        {
+            return new List<Account>();
+        }
+    }
+
+    /**
+     * Busca cuentas de MEDIADORES partir de un número de teléfono (No usan ContactPointPhone)
+     * @param phones teléfonos
+     * @param inIntermediary boolean para redirigir a la búsqueda de customers en vez de a mediadores
+     * @return listado de cuentas
+     */
+    public List<Account> findByIntermediaryPhoneNumber(List<String> phones)
+    {
+        Set<Id> recordIds = new Set<Id>();
+
+        for(List<SObject> records : [FIND :String.join(phones, ' OR ').replace('+', '\\+') IN PHONE FIELDS RETURNING Account(Id)])
+        {
+            for(sObject record : records)
+            {
+                recordIds.add(record.Id);
+            }
+        }
+
+        return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE Id IN :recordIds AND RecordTypeId IN :this.recordTypeIds];
+    }
+
+    /**
+     * Busca cuentas de MEDIADORES partir de un código de intermediario
+     * @param codes códigos de intermediario
+     * @return listado de cuentas
+     */
+    public List<Account> findByIntermediaryCode(List<String> codes)
+    {
+        if(codes != null && !codes.isEmpty())
+        {
+            return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE INFOIntermediaryCode__c IN :codes AND RecordTypeId IN :this.recordTypeIds];
+        }
+        else 
+        {
+            return new List<Account>();
+        }
+    }
+
 }

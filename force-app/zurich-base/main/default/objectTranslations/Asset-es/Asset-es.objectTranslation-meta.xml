@@ -21,7 +21,7 @@
     </recordTypes>
     <recordTypes>
         <description><!-- Zurich OCS Electronic Device Record Type --></description>
-        <label>Dispositivo Electrónico</label>
+        <label>Equipo Electrónico</label>
         <name>ElectronicDevice</name>
     </recordTypes>
     <recordTypes>

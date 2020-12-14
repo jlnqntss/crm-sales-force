@@ -155,13 +155,13 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <gender>Feminine</gender>
-    <label>Policy (INFO)</label>
+    <label>Póliza</label>
     <nameField>
         <label>Policy Number</label>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Policies (INFO)</pluralLabel>
+    <pluralLabel>Pólizas</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
