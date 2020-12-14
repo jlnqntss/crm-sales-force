@@ -106,10 +106,6 @@ public without sharing class ScopeHandler implements ITrigger
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
     {
-        if( Trigger.isAfter ) {
-            if( scope.accountsToUpdate != null && !scope.accountsToUpdate.isEmpty() ) {
-                update scope.accountsToUpdate;
-            }
-        }
+        scope.finish( Trigger.operationType  );
     }
 }

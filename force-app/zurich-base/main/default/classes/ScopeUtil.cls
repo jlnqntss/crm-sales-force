@@ -7,6 +7,7 @@
 global without sharing class ScopeUtil
 {
     private static final Boolean showDebug = false;
+
     // Fields to check if there is any change
     private static final List<String> FieldsToCheckChange = new List<String> {
         'PrimaryEmail__c',
@@ -36,7 +37,7 @@ global without sharing class ScopeUtil
      */
     public void bulkContactableBefore( List<Scope__c> newList, Map<Id, Scope__c> oldMap )
     {
-        System.debug('- - - - - bulkContactableBefore - - - - -');
+        System.debug('- - - - - ScopeUtil.bulkContactableBefore - - - - -');
         if( newList != null ) {
             this.scopesToSetContatable = new List<Scope__c>();            
             
@@ -86,7 +87,8 @@ global without sharing class ScopeUtil
      */
     public void bulkContactableAfter( List<Scope__c> newList, Map<Id, Scope__c> oldMap ) 
     {
-        System.debug('- - - - - bulkContactableAfter - - - - -');
+        System.debug('- - - - - ScopeUtil.bulkContactableAfter - - - - -');
+        
         if( newList != null ) {
             Set<ID> accounts = new Set<ID>();
 
@@ -129,7 +131,7 @@ global without sharing class ScopeUtil
      */
     public void checkContactable()
     {
-        System.debug('- - - - - checkContactable - - - - -');
+        System.debug('- - - - - ScopeUtil.checkContactable - - - - -');
 
         if( scopesToSetContatable != null && !scopesToSetContatable.isEmpty() ) {
             for(Integer i=0,j=scopesToSetContatable.size(); i<j; i++) {
@@ -152,7 +154,7 @@ global without sharing class ScopeUtil
      **/
     public void checkAccounts()
     {
-        System.debug('- - - - - checkAccounts - - - - -');
+        System.debug('- - - - - ScopeUtil.checkAccounts - - - - -');
 
         if( accountsToCheck != null && !accountsToCheck.isEmpty() ) {
             this.accountsToUpdate = new List<Account>();
@@ -177,18 +179,53 @@ global without sharing class ScopeUtil
                         a.SincronizarMC__pc = isContactable;
                         accountsToUpdate.add(a);
                     }
-                    // for(Integer i=0,j=a.Contacts.size(); i < j; i++) {
-                    //     Contact c = a.Contacts[i];
+                }
+            }
+        }
+    }
 
-                    //     if( showDebug ) System.Debug('--------- Contact: ' + c);
-                    //     if( showDebug ) System.Debug('--------- SincronizarMC: ' + c.SincronizarMC__c);
-                    //     // Update contact, if is contactable and was not marked as syncro with MC
-                    //     // or if is not contactable any more and was marked as syncro with MC
-                    //     if( (isContactable && !c.SincronizarMC__c) || (!isContactable && c.SincronizarMC__c) ) {
-                    //         c.SincronizarMC__c = isContactable;
-                    //         contactsToUpdate.add(c);
-                    //     }
-                    // }
+    /**
+     * Final actions in for the scope triggers
+     * - afterInsert: update the personal accounts
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 14/12/2020
+     */
+    public void finish(System.TriggerOperation triggerOperation) { 
+        System.debug('- - - - - ScopeUtil.finish - - - - -');
+        
+        switch on triggerOperation { 
+            when AFTER_INSERT, AFTER_UPDATE { 
+                // Update personal accounts
+                if( this.accountsToUpdate != null && !this.accountsToUpdate.isEmpty() ) {
+                    try {
+                        Map<ID, List<Database.Error>> mapOfErrors = new Map<ID, List<Database.Error>>();
+                        for(Account a: this.accountsToUpdate) {
+                            if( showDebug ) System.debug(a);
+                        }
+                        // Update
+                        List<Database.SaveResult> listaSaveResult = Database.update(this.accountsToUpdate, false);
+                        // Check if there are any errors
+                        for(Database.SaveResult saveResult:listaSaveResult) { 
+                            if( !saveResult.isSuccess() ) {
+                                mapOfErrors.put(saveResult.getId(), saveResult.getErrors());
+                            }
+                        }
+
+                        // If there are error, register them in the error log
+                        if( !mapOfErrors.isEmpty() ) {
+                            for( String key: mapOfErrors.keySet() ) {
+                                List<Database.Error> listOfErrors = mapOfErrors.get(key);
+                                string errorMessage = 'ID [' + key+ ']';
+                                for(Integer i=0, j=listOfErrors.size(); i<j; i++) {
+                                    errorMessage = '\n[' + listOfErrors[i].getStatusCode() + ']: ' + listOfErrors[i].getMessage();
+                                }
+                                ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, errorMessage, 'ScopeUtil.finish');
+                            }
+                        }
+                    } catch( Exception ex ) {
+                        ErrorLogUtil.commitError(ex, 'ScopeUtil.finish');
+                    }
                 }
             }
         }
