@@ -11149,10 +11149,6 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
-        <flow>Webform_CallBack</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
     <flowAccesses>
