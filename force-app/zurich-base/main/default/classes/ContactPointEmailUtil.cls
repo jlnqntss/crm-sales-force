@@ -145,6 +145,31 @@ public class ContactPointEmailUtil
     }
 
     /**
+     * Método que controla la generación del scope correspondiente
+     * Actualmente solo se generá scope para ContactPointEmail que provengan de INFO
+     *
+     * @author adelgado
+     * @date 07/12/2020
+     */
+    public static void generateScope(List<ContactPointEmail> newList)
+    {
+        List<ContactPointEmail> cpeToGenerateScope = new List<ContactPointEmail>();
+
+        for(ContactPointEmail contactPointEmail : newList)
+        {
+            if( String.isNotBlank(contactPointEmail.INFOContactPointNumber__c) )
+            {
+                cpeToGenerateScope.add(contactPointEmail);
+            }
+        }
+
+        if( !cpeToGenerateScope.isEmpty() )
+        {
+            GenerateScopeUtil.generateScopeEvents('ParentId', null, cpeToGenerateScope);
+        }
+    }
+
+    /**
      * Método que actualiza los registros relacionados al finalizar el trigger
      *
      * @author rlopez

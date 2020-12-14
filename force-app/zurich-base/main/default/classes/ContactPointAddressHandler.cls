@@ -1,6 +1,6 @@
-public without sharing class ContactPointEmailHandler implements ITrigger
+public class ContactPointAddressHandler implements ITrigger
 {
-    public ContactPointEmailHandler()
+    public ContactPointAddressHandler()
     {}
 
     /**
@@ -19,9 +19,7 @@ public without sharing class ContactPointEmailHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-        ContactPointEmailUtil.getRelatedPrimaryContactEmails( (List<ContactPointEmail>) newList, (Map<Id, ContactPointEmail>) oldMap );
-    }
+    {}
 
     /**
      * beforeInsert
@@ -59,8 +57,7 @@ public without sharing class ContactPointEmailHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
-        ContactPointEmailUtil.generateScope(newList);
-        ContactPointEmailUtil.updateRelatedPrimaryContactPointEmails( (List<ContactPointEmail>) newList, null );
+        ContactPointAddressUtil.generateScope(newList);
     }
 
     /**
@@ -70,9 +67,7 @@ public without sharing class ContactPointEmailHandler implements ITrigger
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-        ContactPointEmailUtil.updateRelatedPrimaryContactPointEmails( (List<ContactPointEmail>) newList, (Map<Id, ContactPointEmail>) oldMap );
-    }
+    {}
 
     /**
      * afterDelete
@@ -90,7 +85,5 @@ public without sharing class ContactPointEmailHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {
-        ContactPointEmailUtil.updateRelatedContactPoints();
-    }
+    {}
 }

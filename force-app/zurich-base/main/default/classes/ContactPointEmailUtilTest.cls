@@ -381,4 +381,39 @@ private with sharing class ContactPointEmailUtilTest
         System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
         System.assertEquals(currentPrimaryEmail, updatedScopes.get(0).PrimaryEmail__c, 'Email should be the same');
     }
+
+    /**
+     * Test que comprueba la generación del ámbito correspondiente para cada vía de contacto de email
+     *
+     * @author adelgado
+     * @date 09/12/2020
+     */
+    @isTest
+    static void test_generateScope()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+
+        List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 2);
+
+        for(Integer i = 0; i < contactPointEmails.size(); i++)
+        {
+            contactPointEmails[i].INFOContactPointNumber__c = String.valueOf(i);
+        }
+
+        Test.startTest();
+        insert contactPointEmails;
+        Test.stopTest();
+
+        List<Scope__c> scopes = [SELECT Id, Name FROM Scope__c WHERE AccountId__c IN : accounts]; //10 creados en el testSetup y 10 creados en el trigger de eventos
+        List<ContactPointEmail> contactPointEmailsUpdated = [SELECT Scope__c, ScopeId__c FROM ContactPointEmail];
+
+        System.assertEquals(20, scopes.size(), 'No se han generado todos los ámbitos necesarios');
+
+        for(ContactPointEmail cpe : contactPointEmailsUpdated)
+        {
+            System.assert (String.isNotBlank(cpe.Scope__c), 'No se ha informado la picklist de scope');
+            System.assert (cpe.ScopeId__c != null, 'No se ha asignado el scope correspondiente');
+        }
+    }
+
 }
