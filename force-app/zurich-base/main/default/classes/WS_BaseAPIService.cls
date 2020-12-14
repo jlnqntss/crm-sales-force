@@ -74,6 +74,7 @@ abstract global without sharing class WS_BaseAPIService
 
         while(i > 0)
         {
+            i--;
             messages.add( String.format(API_DML_RECORD_ERROR_MESSAGE, new List<String>
             {
                 dmlError.getDmlType(i).name(),
