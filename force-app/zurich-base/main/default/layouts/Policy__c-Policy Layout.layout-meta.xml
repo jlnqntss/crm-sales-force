@@ -39,6 +39,10 @@
                 <behavior>Readonly</behavior>
                 <field>LinkINFO__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>LinkINFOBills__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
