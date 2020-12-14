@@ -6850,71 +6850,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.CloseDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.ConstructionEndDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.ConstructionStartDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.Description</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.DrivingDirections</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.Location</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.LocationLevel</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.OpenDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.ParentLocationId</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.PossessionDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.RemodelEndDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.RemodelStartDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Location.TimeZone</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.AccountId</field>
         <readable>true</readable>
@@ -12378,15 +12313,6 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>Location</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
@@ -14545,14 +14471,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-Location</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-LocationTrustMeasure</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-LoyaltyMemberCurrency</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -14638,10 +14556,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-OmniSupervisorLightning</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-OnlineSalesHome</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -15140,10 +15054,6 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>AccessCMC</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AccessContentBuilder</name>
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
@@ -15767,10 +15677,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
-        <name>ManageSandboxes</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
         <name>ManageSearchPromotionRules</name>
     </userPermissions>
     <userPermissions>
@@ -15800,10 +15706,6 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>ManageTranslation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageTrustMeasures</name>
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
@@ -16075,10 +15977,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
-        <name>ViewAllProfiles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
         <name>ViewAllUsers</name>
     </userPermissions>
     <userPermissions>
@@ -16144,10 +16042,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewSetup</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewTrustMeasures</name>
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
