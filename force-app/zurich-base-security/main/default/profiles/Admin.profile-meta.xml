@@ -7096,6 +7096,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.StageNameINFO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.SurchargeDiscount__c</field>
         <readable>true</readable>
     </fieldPermissions>
