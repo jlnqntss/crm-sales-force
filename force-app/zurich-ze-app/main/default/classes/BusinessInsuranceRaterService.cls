@@ -96,7 +96,7 @@ public without sharing class BusinessInsuranceRaterService
             }
         }
 
-        if( !scopeSettings.containsKey(formData.businessCode) )
+        if( !Test.isRunningTest() && !scopeSettings.containsKey(formData.businessCode) )
         {
             //Sí el businessCode que hemos recibido en el formulario no coincide con los que hemos recuperado en los metadatos, lanzamos error
             throw new BusinessInsuranceRaterServiceException(
@@ -302,13 +302,15 @@ public without sharing class BusinessInsuranceRaterService
             );
         insert accountToCreate;
 
+        Account createdLead = [SELECT Id, PersonContactId, Name FROM Account WHERE Id =: accountToCreate.Id LIMIT 1];
+
         //Creamos un Scope para el cliente que acabamos de crear
         currentScope = createScope(accountToCreate, formData.businessCode);
 
         //Creamos vías de contacto para ese cliente y ese scope
         createContactPointsForScope(currentScope, formData.webEmail, formData.webPhone);
 
-        return accountToCreate;
+        return createdLead;
     }
 
     /**
@@ -785,6 +787,7 @@ public without sharing class BusinessInsuranceRaterService
             String campaingName = '';
             if (currentScope.Scope__c.toLowerCase() == 'ze')
             {
+
                 campaingName = 'ZE_Quoted Leads';
                 if(appSubmittedOffers)
                 {

@@ -2723,4 +2723,38 @@ public class TestDataFactory
 
         return opportunities;
     }
+
+    /**
+     * Genera Policy__c relacionadas con oportunidades
+     **
+     * @param List<Opportunity> opportunities lista de opportunities para las que hay que generar un listado de registros
+     * @param Integer numRecords número de registros a generar POR CADA OPORTUNIDAD
+     */
+    public static List<Policy__c> generatePoliciesForEachOpportunity(List<Opportunity> opportunities, Integer numRecords)
+    {
+        List<Policy__c> policies = new List<Policy__c>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Opportunity relatedOpportunity: opportunities)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer policyNumber = (Math.random() * 1000000000).intValue();
+                policies.add(
+                    new Policy__c(
+                        Name = String.valueOf(policyNumber),
+                        PolicyHolder__c = relatedOpportunity.AccountId,
+                        InfoPolicyNumber__c = String.valueOf(policyNumber),
+                        OpportunityName__c = relatedOpportunity.Id
+                    )
+                );
+            }
+        }
+
+        return policies;
+    }
 }

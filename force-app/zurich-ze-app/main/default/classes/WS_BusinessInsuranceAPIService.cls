@@ -31,6 +31,15 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             BusinessInsuranceRaterService.version = version;
             String requestInformation = request.requestBody.toString();
 
+            if(!Test.isRunningTest())
+            {
+                insert new Error_Log__c(
+                    Message__c = requestInformation,
+                    Level__c = 'warning',
+                    Type_Name__c = 'JSON recibido por WS de Zurich Empresas'
+                );
+            }
+
             switch on resource {
                 when 'offers' {
                     //TODO: Confirmar si sería mejor sacar el lastStep buscandolo directamente en el string y no haciendo un deserializeUntyped
