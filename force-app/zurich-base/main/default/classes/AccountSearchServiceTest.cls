@@ -5,11 +5,8 @@ private class AccountSearchServiceTest
     public static void createScenario()
     {
         //Zurich Empresas
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
-
-        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
-        insert contacts;
 
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
         insert contactPointPhones;
@@ -24,7 +21,7 @@ private class AccountSearchServiceTest
         insert opportunities;
 
         //Intermediary-> NO tienen ContactPointPhones!!!
-        List<Account> intermediaryAccounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Intermediary', 10);
+        List<Account> intermediaryAccounts = TestDataFactory.generateAccounts('001', 'Intermediary', 10);
         insert intermediaryAccounts;
     }
 
@@ -40,7 +37,7 @@ private class AccountSearchServiceTest
             recordIds.add(contactPoint.Id);
             telephoneNumberToSearch.add(contactPoint.TelephoneNumber);
         }
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -87,7 +84,7 @@ private class AccountSearchServiceTest
             recordIds.add(contactPoint.Id);
             emailsToSearch.add(contactPoint.EmailAddress);
         }
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -126,8 +123,8 @@ private class AccountSearchServiceTest
     static void test_findCustomersByDocumentId_ok()
     {
         //Recuperamos las cuentas que tienen polizas del TestSetUp
-        Id businessCustomerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
-        List<Account> accountsToSearch = [SELECT Id, NationalId__c, RecordTypeId FROM Account WHERE RecordTypeId =: businessCustomerRecordTypeId];
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+        List<Account> accountsToSearch = [SELECT Id, NationalId__c, RecordTypeId FROM Account WHERE RecordTypeId =: customerRecordTypeId];
         System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         List<String> nationalIds = new List<String>();
@@ -141,8 +138,8 @@ private class AccountSearchServiceTest
         Test.startTest();
         AccountSearchService.Scope scope = new AccountSearchService.Scope();
         scope.scope = 'all';
-        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', scope, Label.GeneralInsurance);
-        //La 'N' y la Label.GeneralInsurance es porque se crean así las cuentas en TestDataFactory
+        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', scope, '001');
+        //La 'N' es porque se crean así las cuentas en TestDataFactory
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -162,8 +159,8 @@ private class AccountSearchServiceTest
         Test.startTest();
         AccountSearchService.Scope scope = new AccountSearchService.Scope();
         scope.scope = 'all';
-        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(new List<String>(), 'N', scope, Label.GeneralInsurance);
-        //La 'N' y la Label.GeneralInsurance es porque se crean así las cuentas en TestDataFactory
+        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(new List<String>(), 'N', scope, '001');
+        //La 'N' es porque se crean así las cuentas en TestDataFactory
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -174,8 +171,8 @@ private class AccountSearchServiceTest
     static void test_findCustomersByPolicyNumber_ok()
     {
         //Recuperamos las cuentas que tienen polizas del TestSetUp
-        Id businessCustomerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
-        List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: businessCustomerRecordTypeId];
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+        List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: customerRecordTypeId];
         System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
@@ -225,8 +222,8 @@ private class AccountSearchServiceTest
     static void test_findCustomersByQuoteNumber_ok()
     {
         //Recuperamos las cuentas que tienen ofertas del TestSetUp
-        Id businessCustomerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
-        List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: businessCustomerRecordTypeId];
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+        List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: customerRecordTypeId];
         System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
@@ -286,7 +283,7 @@ private class AccountSearchServiceTest
             accountIds.add(account.Id);
             phoneNumbers.add(account.Phone);
         }
-        Test.setFixedSearchResults(new List<Id>(accountIds) );
+        Test.setFixedSearchResults( new List<Id>(accountIds) );
 
         // Test
         Test.startTest();

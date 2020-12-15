@@ -10,11 +10,8 @@ private class WS_GenesysAPIServiceTest
     @testSetup
     static void createScenario()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
-
-        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
-        insert contacts;
 
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
         insert contactPointPhones;

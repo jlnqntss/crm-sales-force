@@ -10,16 +10,13 @@ public without sharing class GenesysInteractionsServiceTest
     @testSetup
     public static void createScenario()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
         //Actualizar con los datos usados en los test
         accounts.get(0).NationalId__c = '777888111Y';
         update accounts.get(0);
 
-        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
-        insert contacts;
-
-        List<Account> intermediaries = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Intermediary', 10);
+        List<Account> intermediaries = TestDataFactory.generateAccounts('001', 'Intermediary', 10);
         insert intermediaries;
         //Actualizar con los datos usados en los test
         intermediaries.get(0).INFOIntermediaryCode__c = '999888777';
@@ -85,7 +82,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         GenesysInteractionsService.GenesysInteractionsServiceException expectedError;
@@ -130,7 +127,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -176,7 +173,7 @@ public without sharing class GenesysInteractionsServiceTest
         // SOSL - Resultados de búsqueda
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         Set<Id> recordIds = new Map<Id, Account> ([SELECT Id FROM Account WHERE RecordtypeId = : intermediaryRecordTypeId AND Phone = '111555777']).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -229,7 +226,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -270,7 +267,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -311,7 +308,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -353,7 +350,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -394,7 +391,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toid]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -437,7 +434,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.fromId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -478,7 +475,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.toId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -521,7 +518,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.fromId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -562,7 +559,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.toId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -605,7 +602,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : searchRequest.value]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -641,7 +638,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : searchRequest.value]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
@@ -742,7 +739,7 @@ public without sharing class GenesysInteractionsServiceTest
         // SOSL - Resultados de búsqueda
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         Set<Id> recordIds = new Map<Id, Account> ([SELECT Id FROM Account WHERE RecordTypeId = : intermediaryRecordTypeId AND Phone = : searchRequest.value]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds) );
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();

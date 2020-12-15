@@ -4,14 +4,8 @@ private with sharing class ContactsSelectorTest
     @TestSetup
     public static void createScenario()
     {
-        /*List<Account> businessAccounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
-           insert businessAccounts;*/
-
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
-
-        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
-        insert contacts;
 
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
         insert contactPointPhones;
@@ -109,8 +103,8 @@ private with sharing class ContactsSelectorTest
         // Escenario
 
         //Preparamos datos, recuperamos un email de un ContactPointEmail existente
-        Id noVidaRecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('CustomerGI').getRecordTypeId();
-        List<Contact> contactsToSearch = [SELECT Id, AccountId FROM Contact WHERE RecordTypeId =: noVidaRecordTypeId LIMIT 1];
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+        List<Contact> contactsToSearch = [SELECT Id, AccountId FROM Contact WHERE Account.RecordTypeId =: customerRecordTypeId LIMIT 1];
         System.assertEquals(1, contactsToSearch.size(), 'There should be 1 Contact');
 
         List<ContactPointEmail> contactPointEmailToSearch = [SELECT Id, EmailAddress FROM ContactPointEmail WHERE ParentId =: contactsToSearch.get(0).AccountId LIMIT 1];

@@ -4,7 +4,7 @@ private with sharing class CampaignsSelectorTest
     @TestSetup
     public static void createScenario()
     {
-        List<Campaign> campaigns = TestDataFactory.generateCampaigns(Label.GeneralInsurance, 10);
+        List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 10);
         insert campaigns;
     }
 
