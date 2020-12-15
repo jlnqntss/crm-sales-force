@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>PopSearchPage</name>
+        <label>Abrir ficha de búsqueda</label>
+        <locationX>578</locationX>
+        <locationY>398</locationY>
+        <actionName>c:RedirectToSearchAction</actionName>
+        <actionType>component</actionType>
+        <inputParameters>
+            <name>searchFor</name>
+            <value>
+                <elementReference>phone</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <description>Utiliza un Aura para ir al email o tarea</description>
         <name>RedirectToEmailMessage</name>
         <label>Abrir el Email en una pestaña</label>
         <locationX>314</locationX>
-        <locationY>278</locationY>
+        <locationY>398</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -61,10 +76,10 @@
     <decisions>
         <name>HasRecordIdDecision</name>
         <label>¿Hay Record Id?</label>
-        <locationX>182</locationX>
+        <locationX>314</locationX>
         <locationY>158</locationY>
         <defaultConnector>
-            <targetReference>RedirectToEmailMessage</targetReference>
+            <targetReference>RelatedRecordIdExists</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -81,6 +96,44 @@
                 <targetReference>RedirectToRecord</targetReference>
             </connector>
             <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Si nos llega un related record desde la llamada de Genesys, intentamos abrir la ficha del registro relacionado</description>
+        <name>RelatedRecordIdExists</name>
+        <label>¿Hay Related Record Id?</label>
+        <locationX>578</locationX>
+        <locationY>278</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>relatedrecordid</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RedirectToEmailMessage</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+        <rules>
+            <name>IsSearchPhoneAvailable</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>phone</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>PopSearchPage</targetReference>
+            </connector>
+            <label>¿Hay teléfono para buscar?</label>
         </rules>
     </decisions>
     <interviewLabel>Zurich Empresas - Apertura de ficha de Genesys {!$Flow.CurrentDateTime}</interviewLabel>
@@ -106,13 +159,13 @@
     <processType>Flow</processType>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>56</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>HasRecordIdDecision</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>phone</name>
         <dataType>String</dataType>
