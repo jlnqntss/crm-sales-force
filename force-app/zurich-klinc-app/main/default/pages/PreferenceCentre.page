@@ -1,9 +1,19 @@
 <apex:page>
+  <apex:slds />
   <apex:includeLightning />
-  <div id="lightningvf" />
-  <script
-    src="http://klinc.secure.force.com/unsubscribe/lightning/lightning.out.js"
-  ></script>
+  <div id="lightningvf">
+    <div
+      id="skeleton"
+      class="slds-grid_frame slds-theme_shade slds-spinner_container slds-is-fixed"
+    >
+      <div role="status" class="slds-spinner slds-spinner_medium">
+        <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
     (function () {
       var hashId = "{!$CurrentPage.parameters.Hash}";
@@ -18,10 +28,12 @@
               language: language
             },
             "lightningvf",
-            function (cmp) {}
+            function (cmp) {
+              document.getElementById("skeleton").remove();
+            }
           );
         },
-        "http://klinc.secure.force.com/unsubscribe"
+        window.location.toString()
       );
     })();
   </script>
