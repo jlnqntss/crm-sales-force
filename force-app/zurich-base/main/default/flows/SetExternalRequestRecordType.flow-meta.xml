@@ -2,6 +2,20 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>49.0</apiVersion>
     <assignments>
+        <description>Asignar el tipo de registro GENERIC</description>
+        <name>set_GenericRecordType</name>
+        <label>Asignar tipo de registro GENERIC</label>
+        <locationX>314</locationX>
+        <locationY>493</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>select_GENERICRecordtype.Id</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <description>Asignar el tipo de registro de INFO</description>
         <name>set_InfoRecordType</name>
         <label>Asignar tipo de registro INFO</label>
@@ -21,6 +35,9 @@
         <label>¿ Origen INFO ?</label>
         <locationX>182</locationX>
         <locationY>253</locationY>
+        <defaultConnector>
+            <targetReference>select_GENERICRecordtype</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>yes_q_OrigenINFO</name>
@@ -60,6 +77,36 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Obtener el tipo de registro Genérico</description>
+        <name>select_GENERICRecordtype</name>
+        <label>Obtener tipo de registro GENERIC</label>
+        <locationX>314</locationX>
+        <locationY>373</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>set_GenericRecordType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>ExternalRequest__c</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>GENERIC</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <description>Obtener el tipo de registro de INFO</description>
         <name>select_INFORecordtype</name>

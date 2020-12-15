@@ -11534,6 +11534,10 @@
         <recordType>ExternalRequest__c.INFO</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ExternalRequest__c-Formato External request</layout>
+        <recordType>ExternalRequest__c.GENERIC</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>FeedItem-Feed Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -13506,7 +13510,12 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>ExternalRequest__c.INFO</recordType>
-        <visible>false</visible>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>ExternalRequest__c.GENERIC</recordType>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>

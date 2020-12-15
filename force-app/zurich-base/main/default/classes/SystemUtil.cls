@@ -207,6 +207,7 @@ public without sharing class SystemUtil
             'Retry__c ' +
             'FROM ExternalRequest__c ' +
             'WHERE Processed__c = false ' +
+            'AND RecordType.DeveloperName = \'GENERIC\' ' +
             'ORDER BY CreatedDate ';
 
         return query;
@@ -235,7 +236,7 @@ public without sharing class SystemUtil
             'Sent__c, ' +
             'Retry__c ' +
             'FROM ExternalRequest__c ' +
-            'WHERE Processed__c = true AND Sent__c = false AND Retry__c <' +
+            'WHERE Processed__c = true AND RecordType.DeveloperName = \'GENERIC\' AND Sent__c = false AND Retry__c <' +
             adminSetup.MaxRetries__c +
             ' ' +
             'ORDER BY CreatedDate';
