@@ -33,11 +33,8 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             if(!Test.isRunningTest())
             {
-                insert new Error_Log__c(
-                    Message__c = requestInformation,
-                    Level__c = 'warning',
-                    Type_Name__c = 'JSON recibido por WS de Zurich Empresas'
-                );
+                //Log para registrar el JSON recibido
+                ErrorLogUtil.commitError('warning', requestInformation, 'JSON recibido por WS de Zurich Empresas');
             }
 
             switch on resource {
