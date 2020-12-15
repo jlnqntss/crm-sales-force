@@ -17,6 +17,7 @@ public without sharing class BusinessInsuranceRaterService
 
     public static final String LASTSTEP_FIELD = 'lastStep';
     public static final String INVALID_FIELD_STATUSCODE = 'INVALID_FIELD';
+    public static final String INVALID_BUSINESS_CODE_STATUSCODE = 'INVALID_BUSINESS_CODE';
 
     public static final String QUEUE_NAME = 'ZurichEmpresas';
 
@@ -29,8 +30,16 @@ public without sharing class BusinessInsuranceRaterService
 
     public static void processFormData(Request formData)
     {
+        if( String.isBlank(formData.webEmail) )
+        {
+            throw new BusinessInsuranceRaterServiceException(
+                      INVALID_FIELD_STATUSCODE,
+                      'WebEmail field is empty'
+                      );
+        }
+
         //0. Inicializamos scopeSettings
-        initScopeSettings();
+        initScopeSettings(formData);
 
         //1. Buscamos el cliente y si no existe lo insertamos
         currentCustomer = manageCustomer(formData);
@@ -71,7 +80,7 @@ public without sharing class BusinessInsuranceRaterService
      *
      * @author rlopez
      */
-    private static void initScopeSettings()
+    private static void initScopeSettings(Request formData)
     {
         accSearchServiceScope.scope = AccountSearchService.SCOPE_CODE_ZE;
         List<Scope_Setting__mdt> scopeSettingsList = [
@@ -85,6 +94,15 @@ public without sharing class BusinessInsuranceRaterService
             {
                 scopeSettings.put(setting.BusinessCode__c, setting);
             }
+        }
+
+        if( !Test.isRunningTest() && !scopeSettings.containsKey(formData.businessCode) )
+        {
+            //Sí el businessCode que hemos recibido en el formulario no coincide con los que hemos recuperado en los metadatos, lanzamos error
+            throw new BusinessInsuranceRaterServiceException(
+                      INVALID_BUSINESS_CODE_STATUSCODE,
+                      'Invalid businessCode received: ' + formData.businessCode
+                      );
         }
     }
 
@@ -284,13 +302,15 @@ public without sharing class BusinessInsuranceRaterService
             );
         insert accountToCreate;
 
+        Account createdLead = [SELECT Id, PersonContactId, Name FROM Account WHERE Id =: accountToCreate.Id LIMIT 1];
+
         //Creamos un Scope para el cliente que acabamos de crear
         currentScope = createScope(accountToCreate, formData.businessCode);
 
         //Creamos vías de contacto para ese cliente y ese scope
         createContactPointsForScope(currentScope, formData.webEmail, formData.webPhone);
 
-        return accountToCreate;
+        return createdLead;
     }
 
     /**
@@ -767,6 +787,7 @@ public without sharing class BusinessInsuranceRaterService
             String campaingName = '';
             if (currentScope.Scope__c.toLowerCase() == 'ze')
             {
+
                 campaingName = 'ZE_Quoted Leads';
                 if(appSubmittedOffers)
                 {
