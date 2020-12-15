@@ -207,6 +207,7 @@ public without sharing class SystemUtil
             'Retry__c ' +
             'FROM ExternalRequest__c ' +
             'WHERE Processed__c = false ' +
+            'AND RecordType.DeveloperName = \'GENERIC\' ' +
             'ORDER BY CreatedDate ';
 
         return query;
