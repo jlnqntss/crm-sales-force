@@ -2277,7 +2277,7 @@ public class TestDataFactory
                 jsonInformation.put('status', 'Activo');
                 jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
                 jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
-                
+
                 jsonInformation.put('accountInformation', new Map<String, Object>
                 {
                     'firstName'  => 'FirstName',
@@ -2285,7 +2285,7 @@ public class TestDataFactory
                     'family' => '10',
                     'commercialActivity' => '101100'
                 });
-                
+
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
                     new Map<String, Object>{
@@ -2368,16 +2368,16 @@ public class TestDataFactory
 
     private static String datetimeToISOString(Datetime datetimeToConvert)
     {
-        return  datetimeToConvert.year() + '-' + 
+        return  datetimeToConvert.year() + '-' +
                 ('0'+datetimeToConvert.month()).right(2) + '-' +
                 ('0'+datetimeToConvert.day()).right(2) + '-' +
-                'T' + 
-                ('0'+datetimeToConvert.hour()).right(2) + 
-                ':' + 
-                ('0'+datetimeToConvert.minute()).right(2) + 
-                ':' + 
-                ('0'+datetimeToConvert.second()).right(2) + 
-                '.' + 
+                'T' +
+                ('0'+datetimeToConvert.hour()).right(2) +
+                ':' +
+                ('0'+datetimeToConvert.minute()).right(2) +
+                ':' +
+                ('0'+datetimeToConvert.second()).right(2) +
+                '.' +
                 ('00'+datetimeToConvert.millisecond()).right(3) + 'Z';
     }
 
@@ -2675,6 +2675,40 @@ public class TestDataFactory
                         Status = 'Subscribed'
                     )
                 );
+            }
+        }
+
+        return campaignMembers;
+    }
+
+    /**
+     * Genera CampaignMembers a partir de una lista de cuentas personales y para cada campaña especificada
+     **
+     * @param List<Account> accounts listado de contactos que vamos a suscribir en las campañas
+     * @param List<Campaign> campaigns listado de campañas
+     *
+     * @return List<CampaignMember> listado de CampaignMembers generados
+     * @author rlopez
+     * @date 02/12/2020
+     */
+    public static List<CampaignMember> generateCampaignMembersForEachCampaign(List<Account> contacts, List<Campaign> campaigns)
+    {
+        List<CampaignMember> campaignMembers = new List<CampaignMember>();
+
+        for(Account member: contacts)
+        {
+            if(member.PersonContactId != null)
+            {
+                for(Campaign campaign: campaigns)
+                {
+                    campaignMembers.add(
+                        new CampaignMember(
+                            ContactId = member.PersonContactId,
+                            CampaignId = campaign.Id,
+                            Status = 'Subscribed'
+                        )
+                    );
+                }
             }
         }
 

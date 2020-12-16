@@ -10,7 +10,7 @@ private with sharing class CampaignMembersSelectorTest
         List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 10);
         insert campaigns;
 
-        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(contacts, campaigns);
+        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaigns);
         insert campaignMembers;
     }
 
