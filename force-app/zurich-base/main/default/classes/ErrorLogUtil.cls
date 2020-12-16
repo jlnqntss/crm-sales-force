@@ -125,6 +125,27 @@ public without sharing class ErrorLogUtil
             );
     }
 
+    public static void commitError(
+        String level,
+        String message,
+        String throwingClass,
+        String stackTrace
+        )
+    {
+        publish(
+            message,
+            throwingClass, // throwingClass
+            null, // throwingMethod
+            null, // lineNumber
+            level,
+            stackTrace, // stackTrace
+            null, //jobId
+            null, //recordId
+            null, //objectName
+            null //type
+            );
+    }
+
     /**
      * Método que publica el evento de tipo Error
      **

@@ -754,7 +754,7 @@ global without sharing class ExternalRequestUtil {
         // Search customer of both legal entity because claim doesn't specify Legal Entity
         // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
         String customerNumGI = ContactUtil.adaptCustomerNum( claim.customerNum__c, Label.GeneralInsurance );
-        String customerNumLife = ContactUtil.adaptCustomerNum( claim.customerNum__c, Label.GeneralInsurance );
+        String customerNumLife = ContactUtil.adaptCustomerNum( claim.customerNum__c, Label.LifeInsurance );
         if( !String.isBlank(IBA_Prefix) ) { // if (claim.sourceCountry__c != 'Spain') {
           customerNumGI = IBA_Prefix + customerNumGI;
           customerNumLife = IBA_Prefix + customerNumLife;  

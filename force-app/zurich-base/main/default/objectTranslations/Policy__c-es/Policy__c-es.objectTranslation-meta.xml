@@ -9,5 +9,24 @@
         <value>Pólizas</value>
     </caseValues>
     <gender>Feminine</gender>
+    <layouts>
+        <layout>Policy Layout</layout>
+        <sections>
+            <label>Códigos adicionales</label>
+            <section>Additional codes</section>
+        </sections>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Información económica</label>
+            <section>Economic data</section>
+        </sections>
+        <sections>
+            <label>Fechas clave</label>
+            <section>Key dates</section>
+        </sections>
+    </layouts>
     <nameFieldLabel>Número de Póliza</nameFieldLabel>
 </CustomObjectTranslation>
