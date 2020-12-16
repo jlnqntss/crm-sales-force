@@ -12,20 +12,55 @@
     <layouts>
         <layout>Opportunity Layout</layout>
         <sections>
-            <label><!-- Dates --></label>
+            <label>Fechas Clave</label>
             <section>Dates</section>
         </sections>
         <sections>
-            <label><!-- Description --></label>
+            <label>Descripción</label>
             <section>Description</section>
         </sections>
         <sections>
-            <label><!-- Payment Information --></label>
+            <label>Información pago</label>
             <section>Payment Information</section>
         </sections>
         <sections>
-            <label><!-- Product Information --></label>
+            <label>Información producto</label>
             <section>Product Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>ZE Offer</layout>
+        <sections>
+            <label><!-- Campos --></label>
+            <section>Campos</section>
+        </sections>
+        <sections>
+            <label><!-- Intermediaries --></label>
+            <section>Intermediaries</section>
+        </sections>
+        <sections>
+            <label><!-- Milestones --></label>
+            <section>Milestones</section>
+        </sections>
+        <sections>
+            <label><!-- Offer --></label>
+            <section>Offer</section>
+        </sections>
+        <sections>
+            <label><!-- Payment methods --></label>
+            <section>Payment methods</section>
+        </sections>
+        <sections>
+            <label><!-- Policy --></label>
+            <section>Policy</section>
+        </sections>
+        <sections>
+            <label><!-- Validation errors --></label>
+            <section>Validation errors</section>
+        </sections>
+        <sections>
+            <label><!-- Vínculos personalizados --></label>
+            <section>Vínculos personalizados</section>
         </sections>
     </layouts>
 </CustomObjectTranslation>
