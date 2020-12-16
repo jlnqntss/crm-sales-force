@@ -218,6 +218,11 @@
                 <label>Internas</label>
             </value>
             <value>
+                <fullName>Backoffice</fullName>
+                <default>false</default>
+                <label>Backoffice</label>
+            </value>
+            <value>
                 <fullName>No definido</fullName>
                 <default>false</default>
                 <label>No definido</label>
@@ -350,6 +355,10 @@
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
             <valueName>Internas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
+            <valueName>Backoffice</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>

@@ -336,7 +336,7 @@ public without sharing class SystemUtil
             '\')' +
             'AND Id NOT IN (SELECT ContactId__c  from Order )' +
             'AND Id NOT IN (SELECT ContactId from Case)' +
-            ' AND LastModifiedDate < LAST_N_DAYS:' +
+            ' AND CreatedDate < LAST_N_DAYS:' +
             adminSetup.NumDaysDeleteLeads__c.intValue();
 
         return query;
