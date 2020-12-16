@@ -1,7 +1,7 @@
 ####################################################
 # Salesforce Zurich CI - Pipelines
 #
-# Adaptación de los pipelines de NTS y la plantilla estándar 
+# Adaptación de los pipelines de NTS y la plantilla estándar
 # SF para GitLab
 # para Zurich, aplicando estrategia git-flow
 #
@@ -18,19 +18,19 @@
 # DEVHUB_AUTH_URL:
 # URL de autenticación SFDX para el DevHub de Zurich
 #
-# TEST_DISABLED: 
+# TEST_DISABLED:
 # Deshabilita tests preliminares/post-staging
 #
 # ALLOW_FAILURE
 # Permite que las etapas de testing fallen
 #
 # SFDX_NTS1_GIT_URI
-# URI donde se aloja el plugin SFDX NTS1 
+# URI donde se aloja el plugin SFDX NTS1
 # proporcionado por NTS
 ####################################################
 
 ####################################################
-# Imagen Docker para los jobs. Puesto que el 
+# Imagen Docker para los jobs. Puesto que el
 # pipeline es JS, se utiliza node.
 ####################################################
 image: 807625060872.dkr.ecr.eu-west-1.amazonaws.com/capside/node/12
@@ -80,9 +80,12 @@ before_script:
     install_salesforce_cli
     install_jq
 
+    echo 'Clearing cache'
+    npm cache clean --force
+
     echo 'Installing dependencies'
     npm install
-    
+
     ## Versiones
     sfdx --version
     sfdx plugins --core
@@ -376,7 +379,7 @@ before_script:
 
     echo "Cleaning profiles"
     sfdx sfpowerkit:source:profile:reconcile -u "$org_username"
-    
+
     if [ -f "$run_tests" ]; then
       echo "Full Deploying"
       node scripts/source/convert-sfdx-project.js deploy
@@ -392,7 +395,7 @@ before_script:
 
     exit $hasError
   }
-  
+
   # Function to run doc generation
   # No arguments.
 
@@ -419,7 +422,7 @@ before_script:
   }
 
 before_script:
-  - *sfdx_helpers  
+  - *sfdx_helpers
 
 
 ####################################################
@@ -444,7 +447,7 @@ test-lwc:
     - zurich-ci
 
 ########################################################
-# Descarga la versión de producción y ejecuta un test 
+# Descarga la versión de producción y ejecuta un test
 # de seguridad con Veracode para verificar dependencias
 ########################################################
 veracode:
@@ -464,7 +467,7 @@ veracode:
     - export SRCCLR_SCM_REF="master"
     - export SRCCLR_SCM_REF_TYPE="branch"
     - export SRCCLR_SCM_REV=${CI_COMMIT_REF_NAME}
-    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty 
+    - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty
     - curl -sSL "https://download.sourceclear.com/ci.sh" | sh -s -- scan --allow-dirty | if grep -q "Issue ID"; then exit 1; fi
   except:
     - tags
@@ -649,7 +652,7 @@ upload-static-veracode:dev:
     - npm install --production
     - convert_sfdx_project .tmp/veracode true
     - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
-    - sfdx 
+    - sfdx
     - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
     - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
     - SANDBOX_ID=$(java -jar VeracodeJavaAPI.jar -action getsandboxlist -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep -w "sandbox_name=\"DEV\"" | grep -o "sandbox_id=\".*\"" | cut -d "\"" -f2 || :)
@@ -670,7 +673,7 @@ promotion:uat:
   stage: promotion
   script:
     - npm install
-    - npm run release:create 
+    - npm run release:create
   only:
     - /^\d*\.\d*\.\d*-UAT$/
   except:
@@ -684,7 +687,7 @@ promotion:uat:
 deploy:uat:
   stage: deploy
   only:
-    refs: 
+    refs:
       - /^release/.*$/
   allow_failure: false
   environment:
@@ -738,7 +741,7 @@ upload-static-veracode:uat:
     - npm install --production
     - convert_sfdx_project .tmp/veracode true
     - zip --symlinks -r $CI_DEPLOYMENT_NAME.1.zip .tmp/veracode
-    - sfdx 
+    - sfdx
     - wget -O vosp-api-wrappers-java-19.11.6.0-dist.zip https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.11.6.0/vosp-api-wrappers-java-19.11.6.0-dist.zip
     - unzip vosp-api-wrappers-java-19.11.6.0-dist.zip
     - IS_SCAN_READY=$(java -jar VeracodeJavaAPI.jar -action getbuildinfo -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET -appid $VERACODE_APP_ID | grep 'results_ready="true"' || :)
@@ -754,7 +757,7 @@ upload-static-veracode:uat:
 ####################################################
 # PRODUCTION JOBS
 ####################################################
-    
+
 ####################################################
 # Deploy metadata into the production org.
 ####################################################
@@ -779,7 +782,7 @@ promotion:prd:
   stage: promotion
   script:
     - npm install
-    - npm run release:finish 
+    - npm run release:finish
   only:
     - /^\d*\.\d*\.\d*$/
   except:
