@@ -10,6 +10,9 @@ private with sharing class CampaignMembersSelectorTest
         List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 10);
         insert campaigns;
 
+        // hotfix: obtener cuentas de tipo personales con el campo PersonContactId relleno
+        accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null]);
+
         List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaigns);
         insert campaignMembers;
     }
