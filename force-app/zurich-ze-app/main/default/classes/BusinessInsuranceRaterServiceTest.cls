@@ -13,7 +13,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
     @TestSetup
     static void createScenario()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 10);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
 
         List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
@@ -21,14 +21,9 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         List<Product2> products = TestDataFactory.generateProducts(10);
         insert products;
-        /*List<Scope__c> insertedScopes = [SELECT Id, AccountId__c, Scope__c, AccountId__r.Name FROM Scope__c WHERE Id IN: scopes];
-
-           List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromScopes(insertedScopes, 10);
-           insert contactPointEmails;*/
-
 
         //Insertamos Campañas de Zurich Empresas
-        List<Campaign> businessInsuranceCampaigns = TestDataFactory.generateCampaigns(Label.GeneralInsurance, 6);
+        List<Campaign> businessInsuranceCampaigns = TestDataFactory.generateCampaigns('001', 6);
         businessInsuranceCampaigns.get(0).Name = 'ZE_App Submitted Leads';
         businessInsuranceCampaigns.get(1).Name = 'ZE_Legit Leads';
         businessInsuranceCampaigns.get(2).Name = 'ZE_Quoted Leads';
@@ -36,26 +31,6 @@ public with sharing class BusinessInsuranceRaterServiceTest
         businessInsuranceCampaigns.get(4).Name = 'ZEO_Legit Leads';
         businessInsuranceCampaigns.get(5).Name = 'ZEO_Quoted Leads';
         insert businessInsuranceCampaigns;
-
-        //Insertamos los scope settings necesarios para la integración
-        /*Scope_Setting__mdt> scopeSettingsList = [
-            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c*/
-        /*List<Scope_Setting__mdt> scopeSettingsList = new List<Scope_Setting__mdt>();
-           scopeSettingsList.add(
-            new Scope_Setting__mdt(
-                BusinessCode__c = '3200012477',
-                Scope__c = 'ZE',
-                Scope_Name__c = 'Zurich Empresas'
-            )
-           );
-           scopeSettingsList.add(
-            new Scope_Setting__mdt(
-                BusinessCode__c = '3200012478',
-                Scope__c = 'ZEO',
-                Scope_Name__c = 'Orange Seguros'
-            )
-           );
-           insert scopeSettingsList;*/
     }
 
     /**

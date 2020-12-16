@@ -20,6 +20,7 @@ public without sharing class BusinessInsuranceRaterService
     public static final String INVALID_BUSINESS_CODE_STATUSCODE = 'INVALID_BUSINESS_CODE';
 
     public static final String QUEUE_NAME = 'ZurichEmpresas';
+    public static final String ZURICH_LEGAL_ENTITY = '001';
 
     public static Account currentCustomer;
     public static Account currentManager;
@@ -121,7 +122,7 @@ public without sharing class BusinessInsuranceRaterService
         if( String.isNotBlank(accountInfo.nationalIdentifier) )
         {
             //Sí tenemos DNI
-            customers = AccountSearchService.findCustomersByDocumentId(new List<String> {accountInfo.nationalIdentifier}, 'N', accSearchServiceScope, Label.GeneralInsurance);
+            customers = AccountSearchService.findCustomersByDocumentId(new List<String> {accountInfo.nationalIdentifier}, 'N', accSearchServiceScope, ZURICH_LEGAL_ENTITY);
         }
 
         if( customers.isEmpty() && String.isNotBlank(formData.webEmail) )
@@ -297,8 +298,9 @@ public without sharing class BusinessInsuranceRaterService
             TradeName__c = accountInformation.tradeName,
             CompanyName__pc = accountInformation.companyName,
             NationalId__c = accountInformation.nationalIdentifier,
-            NationalIdType__c = 'N',
-            RecordTypeId = leadRecordTypeId
+            NationalIdType__c = (String.isBlank(accountInformation.nationalIdentifier) ? '' : 'N'),
+            RecordTypeId = leadRecordTypeId,
+            LegalEntity__c = ZURICH_LEGAL_ENTITY
             );
         insert accountToCreate;
 
@@ -345,14 +347,16 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static void manageOffersAndRelatedInformation(Request formData)
     {
+        Id addressRecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get('Address').getRecordTypeId();
+
         Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         List<Opportunity> offersToCreate = new List<Opportunity>();
         List<Policy__c> policiesToCreate = new List<Policy__c>();
         List<Asset> risksToCreate = new List<Asset>();
         List<ContactRequest> contactRequestsToCreate = new List<ContactRequest>();
 
-        Map<String, BusinessInsuranceRaterService.OfferRiskInformation> quoteNumberRiskMap = new Map<String, BusinessInsuranceRaterService.OfferRiskInformation>();
-        Map<String, String> quoteNumberToPolicyNumberMap = new Map<String, String>();
+        Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation> quoteNumberRiskMap = new Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation>();
+        Map<Integer, String> quoteNumberToPolicyNumberMap = new Map<Integer, String>();
         Map<String, Product2> productCodesToProductMap = new Map<String, Product2>();
 
         if( offersSteps.contains(formData.lastStep) )
@@ -362,8 +366,9 @@ public without sharing class BusinessInsuranceRaterService
             {
                 productCodesToProductMap = getProductsFromOfferCodes(receivedOffers);
 
-                for(BusinessInsuranceRaterService.Offer offer: receivedOffers)
+                for(Integer i=0; i < receivedOffers.size(); i++)
                 {
+                    BusinessInsuranceRaterService.Offer offer = receivedOffers.get(i);
                     String productCodes = offer.commercialPC + offer.technicalPC;
                     String offerName = offer.quoteNumberINFO;
                     if( String.isBlank(offerName) )
@@ -405,12 +410,12 @@ public without sharing class BusinessInsuranceRaterService
                             IssuedOnline__c = true,
                             ResultingPolicyNumber__c = offer.policyNumber,
                             EffectiveDate__c = offer.effectiveDate,
-                            BusinessCode__c = formData.businessCode,
+                            BusinessCode__c = offer.businessCode,
                             BusinessName__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Scope_Name__c) ? currentScopeSettings.Scope_Name__c : 'Zurich Empresas'),
                             CloseDate = System.today(),
                             ExpirationDate__c = System.today().addDays(15),
                             CommercialProductCode__c = offer.commercialPC,
-                            TechnicalProductCode__c = offer.technicalPc,
+                            TechnicalProductCode__c = offer.technicalPC,
                             TotalPremium__c = offer.netPremium,
                             BuildingCapital__c = offer.buildingCapital,
                             ContentCapital__c = offer.contentCapital,
@@ -420,19 +425,20 @@ public without sharing class BusinessInsuranceRaterService
                             PaymentChannel__c = offer.paymentChannel,
                             PaymentChannelSucc__c = offer.paymentChannelSucc,
                             ValidationErrors__c = offer.validationErrors,
-                            ProductId__c = (productCodesToProductMap.containsKey(productCodes) && productCodesToProductMap.get(productCodes) != null ? productCodesToProductMap.get(productCodes).Id : null)
+                            ProductId__c = (productCodesToProductMap.containsKey(productCodes) && productCodesToProductMap.get(productCodes) != null ? productCodesToProductMap.get(productCodes).Id : null),
+                            LegalEntity__c = ZURICH_LEGAL_ENTITY
                             )
                         );
 
                     if( String.isNotBlank(offer.policyNumber) )
                     {
-                        quoteNumberToPolicyNumberMap.put(offer.quoteNumberINFO, offer.policyNumber);
+                        quoteNumberToPolicyNumberMap.put(i, offer.policyNumber);
                     }
 
                     BusinessInsuranceRaterService.OfferRiskInformation risk = offer.offerRiskInformation;
                     if(risk != null)
                     {
-                        quoteNumberRiskMap.put( offer.quoteNumberINFO, risk);
+                        quoteNumberRiskMap.put( i, risk);
                     }
                 }
 
@@ -440,29 +446,40 @@ public without sharing class BusinessInsuranceRaterService
                 {
                     insert offersToCreate;
 
-                    for(Opportunity offer: offersToCreate)
+                    for(Integer i=0; i < offersToCreate.size(); i++)
                     {
+                        Opportunity offer = offersToCreate.get(i);
                         //Creamos las polizas
-                        if( quoteNumberToPolicyNumberMap.containsKey(offer.InfoQuoteNumber__c) )
+                        if( quoteNumberToPolicyNumberMap.containsKey(i) )
                         {
                             policiesToCreate.add(
                                 new Policy__c(
-                                    InfoPolicyNumber__c = quoteNumberToPolicyNumberMap.get(offer.InfoQuoteNumber__c),
+                                    InfoPolicyNumber__c = quoteNumberToPolicyNumberMap.get(i),
                                     PolicyHolder__c = currentCustomer.Id
                                     )
                                 );
                         }
 
                         //Creamos los riesgos
-                        if( quoteNumberRiskMap.containsKey(offer.InfoQuoteNumber__c) )
+                        if( quoteNumberRiskMap.containsKey(i) )
                         {
-                            BusinessInsuranceRaterService.OfferRiskInformation risk = quoteNumberRiskMap.get(offer.InfoQuoteNumber__c);
+                            BusinessInsuranceRaterService.OfferRiskInformation risk = quoteNumberRiskMap.get(i);
                             if(risk != null)
                             {
+                                String riskName = 'Desconocido';
+                                if( String.isNotBlank(risk.propertyStreet) )
+                                {
+                                    riskName = risk.propertyStreet + ', ';
+                                    if( String.isNotBlank(risk.propertyStreetNumber) )
+                                    {
+                                        riskName += risk.propertyStreetNumber;
+                                    }
+                                }
+
                                 risksToCreate.add(
                                     new Asset(
-                                        Name = risk.propertyStreet + ', ' + risk.propertyStreetNumber,
-                                        INFOInsuredObjectCode__c = offer.InfoQuoteNumber__c + '01',
+                                        Name = riskName,
+                                        INFOInsuredObjectCode__c = (String.isBlank(offer.InfoQuoteNumber__c) ? null : offer.InfoQuoteNumber__c + '01'),
                                         OfferId__c = offer.Id,
                                         AccountId = currentCustomer.Id,
                                         Scope__c = currentScope.Scope__c,
@@ -499,7 +516,9 @@ public without sharing class BusinessInsuranceRaterService
                                         Sprayer__c = risk.sprayer,
                                         FireExtinguisher__c = risk.fireExtinguisher,
                                         TypeOfWindows__c = risk.typeOfWindows,
-                                        Safe__c = risk.strongbox
+                                        Safe__c = risk.strongbox,
+                                        recordTypeId = addressRecordTypeId,
+                                        LegalEntity__c = ZURICH_LEGAL_ENTITY
                                         )
                                     );
                             }
@@ -851,7 +870,7 @@ public without sharing class BusinessInsuranceRaterService
             {
                 relations.add(
                     new Relationship__c(
-                        LegalEntity__c = Label.GeneralInsurance,
+                        LegalEntity__c = ZURICH_LEGAL_ENTITY,
                         PolicyId__c = policy.Id,
                         PrimaryAccountId__c = currentManager.Id,
                         RecordTypeId = policyRelationshipRecordTypeId,
