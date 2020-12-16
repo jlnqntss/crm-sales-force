@@ -59,6 +59,7 @@ public without sharing class ContactPointEmailHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
+        ContactPointEmailUtil.generateScope(newList);
         ContactPointEmailUtil.updateRelatedPrimaryContactPointEmails( (List<ContactPointEmail>) newList, null );
     }
 

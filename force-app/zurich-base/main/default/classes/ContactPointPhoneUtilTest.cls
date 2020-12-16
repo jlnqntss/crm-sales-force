@@ -10,14 +10,8 @@ private with sharing class ContactPointPhoneUtilTest
     @TestSetup
     public static void createScenario()
     {
-        /*List<Account> businessAccounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
-           insert businessAccounts;*/
-
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
-
-        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
-        insert contacts;
 
         List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
         insert scopes;
@@ -379,5 +373,39 @@ private with sharing class ContactPointPhoneUtilTest
             ).selectById(new Set<Id> {currentScopeId});
         System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
         System.assertEquals(currentPrimaryEmail, updatedScopes.get(0).PrimaryPhone__c, 'Phone should be the same');
+    }
+
+    /**
+     * Test que comprueba la generación del ámbito correspondiente para cada vía de contacto de email
+     *
+     * @author adelgado
+     * @date 09/12/2020
+     */
+    @isTest
+    static void test_generateScope()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+
+        List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 2);
+
+        for(Integer i = 0; i < contactPointPhones.size(); i++)
+        {
+            contactPointPhones[i].INFOContactPointNumber__c = String.valueOf(i);
+        }
+
+        Test.startTest();
+        insert contactPointPhones;
+        Test.stopTest();
+
+        List<Scope__c> scopes = [SELECT Id, Name FROM Scope__c WHERE AccountId__c IN : accounts]; //10 creados en el testSetup y 10 creados en el trigger de eventos
+        List<ContactPointPhone> contactPointPhonesUpdated = [SELECT Scope__c, ScopeId__c FROM ContactPointPhone];
+
+        System.assertEquals(20, scopes.size(), 'No se han generado todos los ámbitos necesarios');
+
+        for(ContactPointPhone cpp : contactPointPhonesUpdated)
+        {
+            System.assert (String.isNotBlank(cpp.Scope__c), 'No se ha informado la picklist de scope');
+            System.assert (cpp.ScopeId__c != null, 'No se ha asignado el scope correspondiente');
+        }
     }
 }

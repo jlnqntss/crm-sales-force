@@ -14,7 +14,7 @@ public with sharing class ContactsSelector
     {
         Set<Id> matchedRecordIds = findInContactPointsByPhoneNumber(phones);
 
-        return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND RecordTypeId IN: this.recordTypeIds];
+        return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND (RecordTypeId IN: this.recordTypeIds OR Account.RecordTypeId IN :this.recordTypeIds) ];
     }
 
     /**
@@ -30,7 +30,7 @@ public with sharing class ContactsSelector
     {
         Set<Id> matchedRecordIds = findInContactPointsByEmail(emails);
 
-        return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND RecordTypeId IN: this.recordTypeIds];
+        return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND (RecordTypeId IN: this.recordTypeIds OR Account.RecordTypeId IN :this.recordTypeIds)];
     }
 
     public static Set<Id> findInContactPointsByPhoneNumber(List<String> phones)
@@ -98,17 +98,22 @@ public with sharing class ContactsSelector
         Map<ID, Schema.RecordTypeInfo> recordTypeInfosById = Schema.SObjectType.Contact.getRecordTypeInfosById();
         Map<String, Schema.RecordTypeInfo> recordTypeInfosByDeveloperName = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName();
 
+        Set<Id> accountRecordTypeIds = Schema.SObjectType.Account.getRecordTypeInfosById().keySet();
+        Map<String, Schema.RecordTypeInfo> accountRecordTypeInfosByDeveloperName = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName();
+
         //Por defecto añadimos todos los recordTypeIds, y en los distintos scopes controlamos cuales se utilizan
-        this.recordTypeIds = recordTypeInfosById.keySet();
+        this.recordTypeIds = new Set<Id>();
+        this.recordTypeIds.addAll(recordTypeInfosById.keySet());
+        this.recordTypeIds.addAll(accountRecordTypeIds );
 
         // Rellenamos el recordTypeIds con los Ids de cada scope
         switch on scope.toLowerCase() {
             when 'ze' {
                 this.recordTypeIds = new Set<Id>();
-                for (String recordTypeName: recordTypeInfosByDeveloperName.keySet()) {
-                    if(recordTypeName == 'CustomerGI')
+                for (String recordTypeName: accountRecordTypeInfosByDeveloperName.keySet()) {
+                    if(recordTypeName == 'Customer' || recordTypeName == 'Lead')
                     {
-                        this.recordTypeIds.add(recordTypeInfosByDeveloperName.get(recordTypeName).getRecordTypeId());
+                        this.recordTypeIds.add(accountRecordTypeInfosByDeveloperName.get(recordTypeName).getRecordTypeId());
                     }
                 }
             }

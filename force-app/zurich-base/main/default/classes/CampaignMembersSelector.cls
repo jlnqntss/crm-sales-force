@@ -1,59 +1,5 @@
-public with sharing class CampaignMembersSelector
+public with sharing class CampaignMembersSelector extends BaseSelector
 {
-    //Esta propiedad indica el objeto Salesforce del que vamos a extraer los campos necesarios en la query
-    //Si no se indica el objeto, solo se recupera el Id del objeto Salesforce
-    public String sObjectToQuery {get; set;}
-    public Set<String> fieldsToQuery
-    {
-        get
-        {
-            if( String.isNotBlank(this.sObjectToQuery) )
-            {
-                SObjectType currentObjectType = Schema.getGlobalDescribe().get(this.sObjectToQuery);
-                Map<String,Schema.SObjectField> currentTypeFields = currentObjectType.getDescribe().fields.getMap();
-
-                if( fieldsToQuery == null || fieldsToQuery.isEmpty() )
-                {
-                    fieldsToQuery = new Set<String>();
-
-                    //Recuperamos los required y externalIds
-                    for( Schema.SObjectField sObjectField: currentTypeFields.values() )
-                    {
-                        //Si el campo es requerido o externalId, lo incluimos en el Set de campos a recuperar en la query
-                        if(sObjectField.getDescribe().isNillable() != true || sObjectField.getDescribe().isExternalId() == true)
-                        {
-                            fieldsToQuery.add( sObjectField.getDescribe().getName() );
-                        }
-                    }
-                }
-                else
-                {
-                    //Comprobamos que los campos existen en los campos del objeto, si alguno no existe lo eliminamos del Set
-                    for(String field: fieldsToQuery)
-                    {
-                        if( !currentTypeFields.containsKey(field) )
-                        {
-                            fieldsToQuery.remove(field);
-                        }
-                    }
-
-                    if( fieldsToQuery.isEmpty() )
-                    {
-                        fieldsToQuery.add('Id');
-                    }
-                }
-
-                return fieldsToQuery;
-            }
-            else
-            {
-                return new Set<String> {'Id'};
-            }
-        }
-        set;
-    }
-
-
     //#region Contructores
     public CampaignMembersSelector()
     {}
@@ -61,12 +7,13 @@ public with sharing class CampaignMembersSelector
     public CampaignMembersSelector(Set<String> fieldsToQuery)
     {
         this();
+        this.sObjectToQuery = 'CampaignMember';
         this.fieldsToQuery = fieldsToQuery;
     }
     //#endregion
 
     /**
-     * Busca campañas a partir del Name
+     * Busca miembros de campaña a partir del Id de campaña y de un conjuno de Ids de contactos
      *
      * @author rlopez
      * @date 01/12/2020
@@ -78,7 +25,6 @@ public with sharing class CampaignMembersSelector
     {
         if(campaignId != null && contactIds != null)
         {
-            this.sObjectToQuery = 'CampaignMember';
             String query = String.format(
                 'SELECT {0} FROM CampaignMember ' +
                 'WHERE campaignId = : campaignId AND ContactId IN : contactIds ',

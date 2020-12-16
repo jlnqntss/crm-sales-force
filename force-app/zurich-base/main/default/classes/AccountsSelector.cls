@@ -53,7 +53,7 @@ public with sharing class AccountsSelector
             when 'ze' {
                 this.recordTypeIds = new Set<Id>();
                 for (String recordTypeName: recordTypeInfosByDeveloperName.keySet()) {
-                    if(recordTypeName == 'BusinessCustomer' || recordTypeName == 'Lead')
+                    if(recordTypeName == 'Customer' || recordTypeName == 'Lead')
                     {
                         this.recordTypeIds.add(recordTypeInfosByDeveloperName.get(recordTypeName).getRecordTypeId());
                     }
@@ -171,4 +171,24 @@ public with sharing class AccountsSelector
         }
     }
 
+    /**
+     * Find Accounts by Ids. Include the Scope__c childs of the Account, filtering them by Scope
+     * Used:
+     *    ScopeUtil.cls
+     * 
+     * @author NTS (agonzalezisasi)
+     * @date 10/12/2020
+     * @param accountIds   list of account ids
+     * @param scopeTypes    list of type of scopes to filter (ZE, ZEO)
+     */
+    public List<Account> findByIdsAndScope(Set<Id> accountIds, List<String> scopeTypes) {
+        List<Account> result = new List<Account>();
+        if( accountIds != null && !accountIds.isEmpty() && scopeTypes != null && !scopeTypes.isEmpty() ) {
+            result = [SELECT Id, SincronizarMC__pc,
+                        (SELECT Id, Contactable__c FROM Scope__r WHERE Scope__c IN :scopeTypes)
+                      FROM Account
+                      WHERE Id IN :accountIds];
+        }
+        return result;
+    }
 }

@@ -171,4 +171,28 @@ public class Test_ErrorLogUtil
             '[0] No se han recuperado los registros esperados'
             );
     }
+
+    @isTest
+    static void testCommitError_newWebFormRequest()
+    {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON( 'CRM-01', '1111111A', emailFromJSON, phoneFromJSON, new List<Product2>() );
+        String serializedJSON = JSON.serialize(jsonInformation);
+        Test.startTest();
+        ErrorLogUtil.commitError( 'warning', 'New webform request', 'WS_BusinessInsuranceAPIService', serializedJSON );
+        Test.stopTest();
+
+        List<Error_Log__c> errorRecords = [
+            SELECT Id, Stack_Trace__c
+            FROM Error_Log__c
+        ];
+        System.assertEquals(
+            false,
+            errorRecords.isEmpty(),
+            'Debería existir un error log'
+            );
+
+        System.assertEquals(true, serializedJSON == errorRecords.get(0).Stack_Trace__c, 'StackTrace debería contener el valor de serializedJSON');
+    }
 }

@@ -1814,6 +1814,20 @@ public class TestDataFactory
                     );
                 }
             }
+            when 'Customer' { // PersonalAccount
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            LastName = 'testlastname' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N',
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
             when else {
                 for (Integer i = 0; i < numRecords; i++)
                 {
@@ -1909,6 +1923,43 @@ public class TestDataFactory
         Integer numbers = (Math.random() * 100000000).intValue();
         String letter = letters[Integer.valueof( (Math.random() * letters.size() - 1) )];
         return String.valueOf(numbers) + letter;
+    }
+
+    /**
+     * Genera ContactPointAddress relacionados con una lista de accounts
+     **
+     * @param List<Account> accounts lista de accounts para las que hay que generar un ContactPointAddress
+     * @param Integer numRecords número de elementos a generar
+     *
+     * @return List<ContactPointAddress> listado de ContactPointAddress generados
+     * @author adelgado
+     * @date 10/12/2020
+     */
+    public static List<ContactPointAddress> generateContactPointAddressesFromAccounts(List<Account> accounts, Integer numRecords)
+    {
+        List<ContactPointAddress> contactPointAddresses = new List<ContactPointAddress>();
+
+        if(numRecords == null)
+        {
+            numRecords = 1;
+        }
+
+        for(Account relatedAccount: accounts)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                contactPointAddresses.add(
+                    new ContactPointAddress(
+                        Name = 'Address' + i,
+                        ParentId = relatedAccount.Id,
+                        Street = 'Street ' + i
+                    )
+                );
+            }
+        }
+
+        return contactPointAddresses;
     }
 
     /**
@@ -2226,7 +2277,7 @@ public class TestDataFactory
                 jsonInformation.put('status', 'Activo');
                 jsonInformation.put('bestTimeFrom', datetimeToISOString(System.now()));
                 jsonInformation.put('bestTimeUntil', datetimeToISOString(System.now().addHours(4)));
-                
+
                 jsonInformation.put('accountInformation', new Map<String, Object>
                 {
                     'firstName'  => 'FirstName',
@@ -2234,7 +2285,7 @@ public class TestDataFactory
                     'family' => '10',
                     'commercialActivity' => '101100'
                 });
-                
+
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
                     new Map<String, Object>{
@@ -2317,16 +2368,16 @@ public class TestDataFactory
 
     private static String datetimeToISOString(Datetime datetimeToConvert)
     {
-        return  datetimeToConvert.year() + '-' + 
+        return  datetimeToConvert.year() + '-' +
                 ('0'+datetimeToConvert.month()).right(2) + '-' +
                 ('0'+datetimeToConvert.day()).right(2) + '-' +
-                'T' + 
-                ('0'+datetimeToConvert.hour()).right(2) + 
-                ':' + 
-                ('0'+datetimeToConvert.minute()).right(2) + 
-                ':' + 
-                ('0'+datetimeToConvert.second()).right(2) + 
-                '.' + 
+                'T' +
+                ('0'+datetimeToConvert.hour()).right(2) +
+                ':' +
+                ('0'+datetimeToConvert.minute()).right(2) +
+                ':' +
+                ('0'+datetimeToConvert.second()).right(2) +
+                '.' +
                 ('00'+datetimeToConvert.millisecond()).right(3) + 'Z';
     }
 
@@ -2631,6 +2682,40 @@ public class TestDataFactory
     }
 
     /**
+     * Genera CampaignMembers a partir de una lista de cuentas personales y para cada campaña especificada
+     **
+     * @param List<Account> accounts listado de contactos que vamos a suscribir en las campañas
+     * @param List<Campaign> campaigns listado de campañas
+     *
+     * @return List<CampaignMember> listado de CampaignMembers generados
+     * @author rlopez
+     * @date 02/12/2020
+     */
+    public static List<CampaignMember> generateCampaignMembersForEachCampaign(List<Account> contacts, List<Campaign> campaigns)
+    {
+        List<CampaignMember> campaignMembers = new List<CampaignMember>();
+
+        for(Account member: contacts)
+        {
+            if(member.PersonContactId != null)
+            {
+                for(Campaign campaign: campaigns)
+                {
+                    campaignMembers.add(
+                        new CampaignMember(
+                            ContactId = member.PersonContactId,
+                            CampaignId = campaign.Id,
+                            Status = 'Subscribed'
+                        )
+                    );
+                }
+            }
+        }
+
+        return campaignMembers;
+    }
+
+    /**
      * Genera Oportunidades relacionadas con Scopes
      **
      * @param List<Scope__c> scopes lista de scopes para las que hay que generar un listado de registros
@@ -2671,5 +2756,39 @@ public class TestDataFactory
         }
 
         return opportunities;
+    }
+
+    /**
+     * Genera Policy__c relacionadas con oportunidades
+     **
+     * @param List<Opportunity> opportunities lista de opportunities para las que hay que generar un listado de registros
+     * @param Integer numRecords número de registros a generar POR CADA OPORTUNIDAD
+     */
+    public static List<Policy__c> generatePoliciesForEachOpportunity(List<Opportunity> opportunities, Integer numRecords)
+    {
+        List<Policy__c> policies = new List<Policy__c>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Opportunity relatedOpportunity: opportunities)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer policyNumber = (Math.random() * 1000000000).intValue();
+                policies.add(
+                    new Policy__c(
+                        Name = String.valueOf(policyNumber),
+                        PolicyHolder__c = relatedOpportunity.AccountId,
+                        InfoPolicyNumber__c = String.valueOf(policyNumber),
+                        OpportunityName__c = relatedOpportunity.Id
+                    )
+                );
+            }
+        }
+
+        return policies;
     }
 }

@@ -145,6 +145,31 @@ public class ContactPointPhoneUtil
     }
 
     /**
+     * Método que controla la generación del scope correspondiente
+     * Actualmente solo se generá scope para ContactPointPhone que provengan de INFO
+     *
+     * @author adelgado
+     * @date 07/12/2020
+     */
+    public static void generateScope(List<ContactPointPhone> newList)
+    {
+        List<ContactPointPhone> cppToGenerateScope = new List<ContactPointPhone>();
+
+        for(ContactPointPhone contactPointPhone : newList)
+        {
+            if( String.isNotBlank(contactPointPhone.INFOContactPointNumber__c) )
+            {
+                cppToGenerateScope.add(contactPointPhone);
+            }
+        }
+
+        if( !cppToGenerateScope.isEmpty() )
+        {
+            GenerateScopeUtil.generateScopeEvents('ParentId', null, cppToGenerateScope);
+        }
+    }
+
+    /**
      * Método que actualiza los registros relacionados al finalizar el trigger
      *
      * @author rlopez

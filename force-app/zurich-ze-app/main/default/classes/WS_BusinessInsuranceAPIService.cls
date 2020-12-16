@@ -18,6 +18,12 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
         RestResponse response = RestContext.response;
         response.addHeader('Content-Type', 'application/json');
 
+        if(!Test.isRunningTest() && request.requestBody != null)
+        {
+            //Log para registrar el JSON recibido
+            ErrorLogUtil.commitError('warning', 'New webform request', 'WS_BusinessInsuranceAPIService', request.requestBody.toString());
+        }
+
         Savepoint sp = Database.setSavepoint();
         try
         {

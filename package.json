@@ -8,7 +8,7 @@
     "postinstall": "sfdx update && (echo y | sfdx plugins:install sfpowerkit -f)",
     "install:extensions": "type config/vscode-extensions.list | code --install-extension -",
     "test:lwc": "lwc-jest -- --passWithNoTests",
-    "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 60",
+    "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 120",
     "push:source": "sfdx force:source:push -f",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
     "deploy:validate": "node scripts/source/unit-deploy-validation.js",
@@ -31,16 +31,16 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^11.0.0",
-    "@salesforce/eslint-config-lwc": "^0.7.0",
-    "@salesforce/sfdx-lwc-jest": "latest",
-    "eslint": "^7.10.0",
+    "@salesforce/eslint-config-lwc": "^0.8.0",
+    "@salesforce/sfdx-lwc-jest": "^0.10.2",
+    "eslint": "^7.15.0",
     "fs-extra": "^9.0.1",
-    "husky": "^4.3.0",
+    "husky": "^4.3.6",
     "merge-dirs": "^0.2.1",
-    "mustache": "^4.0.1",
+    "mustache": "^4.1.0",
     "node-fetch": "^2.6.1",
     "node-merge": "^0.1.0",
-    "prettier": "^2.1.2",
-    "pretty-quick": "^3.0.2"
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0"
   }
 }

@@ -1,5 +1,6 @@
 @isTest
-public class GenesysFindBestAgentActionTest {
+public class GenesysFindBestAgentActionTest
+{
 
     /**
      * Generación de escenario usando TestDataFactory
@@ -9,11 +10,8 @@ public class GenesysFindBestAgentActionTest {
     @TestSetup
     static void makeData()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 10);
         insert accounts;
-
-        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
-        insert contacts;
 
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
         insert contactPointPhones;
@@ -40,7 +38,8 @@ public class GenesysFindBestAgentActionTest {
     }
 
     @isTest
-     static void test_GenesysFindBestAgentAction_execute_ok() {
+    static void test_GenesysFindBestAgentAction_execute_ok()
+    {
 
         List<GenesysFindBestAgentAction.FindBestAgentRequest> requests = new List<GenesysFindBestAgentAction.FindBestAgentRequest>();
         GenesysFindBestAgentAction.FindBestAgentRequest request = new GenesysFindBestAgentAction.FindBestAgentRequest();
@@ -52,7 +51,7 @@ public class GenesysFindBestAgentActionTest {
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : request.fromId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds));
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         Test.startTest();
         List<GenesysFindBestAgentAction.FindBestAgentResult> updatedInteraction = GenesysFindBestAgentAction.execute(requests);
@@ -65,7 +64,8 @@ public class GenesysFindBestAgentActionTest {
     }
 
     @isTest
-     static void test_GenesysFindBestAgentAction_execute_ko() {
+    static void test_GenesysFindBestAgentAction_execute_ko()
+    {
 
         List<GenesysFindBestAgentAction.FindBestAgentRequest> requests = new List<GenesysFindBestAgentAction.FindBestAgentRequest>();
         GenesysFindBestAgentAction.FindBestAgentRequest request = new GenesysFindBestAgentAction.FindBestAgentRequest();
@@ -77,10 +77,10 @@ public class GenesysFindBestAgentActionTest {
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : request.fromId]).keySet();
-        Test.setFixedSearchResults(new List<Id>(recordIds));
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         Test.startTest();
-            List<GenesysFindBestAgentAction.FindBestAgentResult> updatedInteraction = GenesysFindBestAgentAction.execute(requests);
+        List<GenesysFindBestAgentAction.FindBestAgentResult> updatedInteraction = GenesysFindBestAgentAction.execute(requests);
         Test.stopTest();
 
         System.assertEquals(null, updatedInteraction[0].ownerId, 'No se puede encontrar el mejor agente porque no existe el Contacto con email noexisto@noexisto.com');
