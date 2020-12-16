@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusRuleCantReturnToNew</fullName>
+    <active>true</active>
+    <errorConditionFormula>RecordType.DeveloperName = &quot;Activity&quot; &amp;&amp; ISCHANGED(Status) &amp;&amp; ISPICKVAL(Status,&quot;Nueva&quot;)</errorConditionFormula>
+    <errorMessage>[VR Tarea] Una actividad no puede volver al estado NUEVA</errorMessage>
+</ValidationRule>
