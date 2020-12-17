@@ -289,6 +289,18 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         }
     }
 
+    // nts (agonzalezisasi) - 17/12/2020 - Include OCS Roles and correct System Admin for languages
+    private static final List<String> SYS_ADMIN_TRANSLATIONS = new List<String> {
+        'System Administrator',
+        'Administrador del sistema',
+        'Systemadministrator',
+        'Administrateur système',
+        'Administrador do sistema',
+        'システム管理者',
+        'Amministratore del sistema'
+    };
+    private static final List<String> ROL_OCS = new List<String>{ 'ZE_Director', 'ZE_Suscriptor', 'ZE_Advisor' };
+
     /**
      * @Description Recupera el id del perfil en función de los roles de usuario que llegan.
      * Si contiene algún rol de admin, se devolverá el id del perfil de administrador del sistema.
@@ -298,6 +310,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
      * @author eetxaniz
      * @param {List<String>} roleNameList - Lista de roles recibidos en la llamada.
      * @return {Id} Id del perfil de Salesforce, si el nulo, no se ha encontrado un perfil válido.
+     * 
+     * @change nts (agonzalezisasi) - 17/12/2020 - Include OCS Roles and correct System Admin for languages
      */
     global Id getProfileBasedOnRoles(List<String> roleNameList)
     {
@@ -310,6 +324,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             // Se recupera el id del perfil que corresponde en base a los roles que llegan.
             Boolean admin = false;
             Boolean customerCare = false;
+            Boolean isOcs = false;
 
             for(String role : roleNameList)
             {
@@ -317,15 +332,21 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                     admin = true;
                 if( role.contains('KLINC_CustomerCare') )
                     customerCare = true;
+                if( OpenIDConnectRegHandler.ROL_OCS.contains(role) )
+                    isOcs = true;
             }
 
             // Return admin profile id
             if(admin)
-                return [SELECT Id FROM Profile WHERE Name = 'System Administrator' LIMIT 1].Id;
+                return [SELECT Id FROM Profile WHERE Name IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS LIMIT 1].Id;
 
             // Return customer care profile id
             if(customerCare)
                 return [SELECT Id FROM Profile WHERE Name = 'Customer Care' LIMIT 1].Id;
+
+            // Return OCS profile id
+            if(isOcs)
+                return [SELECT Id FROM Profile WHERE Name = 'ZE User' LIMIT 1].Id;
 
 
             // Return analytics profile id
