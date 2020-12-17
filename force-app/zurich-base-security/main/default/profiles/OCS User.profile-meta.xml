@@ -13042,7 +13042,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>OpenInfoLaunch</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>PreferenceCentre</apexPage>
