@@ -11671,7 +11671,7 @@
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Activity</layout>
         <recordType>Task.Activity</recordType>
     </layoutAssignments>
     <layoutAssignments>
