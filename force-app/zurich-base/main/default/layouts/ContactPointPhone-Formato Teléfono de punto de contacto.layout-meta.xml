@@ -20,7 +20,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>PhoneType</field>
+                <field>PhoneType__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

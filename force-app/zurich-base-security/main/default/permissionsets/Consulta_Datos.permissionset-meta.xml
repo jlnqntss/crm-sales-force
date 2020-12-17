@@ -1383,6 +1383,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ContactPointPhone.PhoneType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>ContactPointPhone.PreferenceRank</field>
         <readable>true</readable>
     </fieldPermissions>
