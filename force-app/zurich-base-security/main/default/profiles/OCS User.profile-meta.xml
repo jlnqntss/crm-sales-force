@@ -11583,6 +11583,10 @@
         <recordType>PersonAccount.Customer</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>PersonAccount-ZE Lead</layout>
+        <recordType>PersonAccount.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>PolicyVersion__c-Policy Version Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
