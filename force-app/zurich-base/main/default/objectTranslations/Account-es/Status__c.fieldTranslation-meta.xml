@@ -4,22 +4,22 @@
     <name>Status__c</name>
     <picklistValues>
         <masterLabel>001</masterLabel>
-        <translation><!-- 001 --></translation>
+        <translation>Activo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>002</masterLabel>
-        <translation><!-- 002 --></translation>
+        <translation>Activo cartera</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>003</masterLabel>
-        <translation><!-- 003 --></translation>
+        <translation>Inactivo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>004</masterLabel>
-        <translation><!-- 004 --></translation>
+        <translation>Pendiente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>005</masterLabel>
-        <translation><!-- 005 --></translation>
+        <translation>En trámite</translation>
     </picklistValues>
 </CustomFieldTranslation>

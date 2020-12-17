@@ -4,70 +4,70 @@
     <name>Family__c</name>
     <picklistValues>
         <masterLabel>10</masterLabel>
-        <translation><!-- 10 --></translation>
+        <translation>Alimentación y dietética</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>20</masterLabel>
-        <translation><!-- 20 --></translation>
+        <translation>Restauración</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>25</masterLabel>
-        <translation><!-- 25 --></translation>
+        <translation>Deportes y ocio</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>30</masterLabel>
-        <translation><!-- 30 --></translation>
+        <translation>Varios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>31</masterLabel>
-        <translation><!-- 31 --></translation>
+        <translation>Papelería y regalos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>32</masterLabel>
-        <translation><!-- 32 --></translation>
+        <translation>Electrónica y maquinaria</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>40</masterLabel>
-        <translation><!-- 40 --></translation>
+        <translation>Confecciones y textiles</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>50</masterLabel>
-        <translation><!-- 50 --></translation>
+        <translation>Oficinas y consultorios</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>60</masterLabel>
-        <translation><!-- 60 --></translation>
+        <translation>Servicios en general</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>61</masterLabel>
-        <translation><!-- 61 --></translation>
+        <translation>Construcción y reformas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>62</masterLabel>
-        <translation><!-- 62 --></translation>
+        <translation>Enseñanza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>70</masterLabel>
-        <translation><!-- 70 --></translation>
+        <translation>Calzado, marroquinería y piel</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>75</masterLabel>
-        <translation><!-- 75 --></translation>
+        <translation>Sanidad</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>80</masterLabel>
-        <translation><!-- 80 --></translation>
+        <translation>Peluquería y belleza</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>85</masterLabel>
-        <translation><!-- 85 --></translation>
+        <translation>Automoción</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>90</masterLabel>
-        <translation><!-- 90 --></translation>
+        <translation>Muebles, decoración y menaje hogar</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>95</masterLabel>
-        <translation><!-- 95 --></translation>
+        <translation>Locales</translation>
     </picklistValues>
 </CustomFieldTranslation>
