@@ -18,6 +18,14 @@
     (function () {
       var hashId = "{!$CurrentPage.parameters.Hash}";
       var language = "{!$CurrentPage.parameters.Language}";
+
+      var lightningEndPointURI = window.location.href.split("?")[0];
+      if (
+        lightningEndPointURI.length > 0 &&
+        lightningEndPointURI.substr(-1) == "/"
+      ) {
+        lightningEndPointURI = lightningEndPointURI.slice(0, -1);
+      }
       $Lightning.use(
         "c:PreferenceCentreApp",
         function () {
@@ -33,7 +41,7 @@
             }
           );
         },
-        window.location.toString()
+        lightningEndPointURI
       );
     })();
   </script>

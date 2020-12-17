@@ -13,11 +13,8 @@ public with sharing class BusinessInsuranceRaterServiceTest
     @TestSetup
     static void createScenario()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 10);
         insert accounts;
-
-        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
-        insert contacts;
 
         List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
         insert scopes;
@@ -28,6 +25,37 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
            List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromScopes(insertedScopes, 10);
            insert contactPointEmails;*/
+
+
+        //Insertamos Campañas de Zurich Empresas
+        List<Campaign> businessInsuranceCampaigns = TestDataFactory.generateCampaigns(Label.GeneralInsurance, 6);
+        businessInsuranceCampaigns.get(0).Name = 'ZE_App Submitted Leads';
+        businessInsuranceCampaigns.get(1).Name = 'ZE_Legit Leads';
+        businessInsuranceCampaigns.get(2).Name = 'ZE_Quoted Leads';
+        businessInsuranceCampaigns.get(3).Name = 'ZEO_App Submitted Leads';
+        businessInsuranceCampaigns.get(4).Name = 'ZEO_Legit Leads';
+        businessInsuranceCampaigns.get(5).Name = 'ZEO_Quoted Leads';
+        insert businessInsuranceCampaigns;
+
+        //Insertamos los scope settings necesarios para la integración
+        /*Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c*/
+        /*List<Scope_Setting__mdt> scopeSettingsList = new List<Scope_Setting__mdt>();
+           scopeSettingsList.add(
+            new Scope_Setting__mdt(
+                BusinessCode__c = '3200012477',
+                Scope__c = 'ZE',
+                Scope_Name__c = 'Zurich Empresas'
+            )
+           );
+           scopeSettingsList.add(
+            new Scope_Setting__mdt(
+                BusinessCode__c = '3200012478',
+                Scope__c = 'ZEO',
+                Scope_Name__c = 'Orange Seguros'
+            )
+           );
+           insert scopeSettingsList;*/
     }
 
     /**
@@ -39,10 +67,12 @@ public with sharing class BusinessInsuranceRaterServiceTest
     @isTest
     static void test_processFormData_CRM04_ok()
     {
+        Id personAccountRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
         String emailFromJSON = 'newemail@fakeemail.com.invalid';
         String phoneFromJSON = '123456789';
 
-        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account WHERE NationalId__c != null];
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null AND RecordTypeId =: personAccountRecordTypeId];
         System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
 
         List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
@@ -86,12 +116,44 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
         //Comprobamos que se han generado las ofertas correctamente
-        List<Opportunity> offersCreated = [SELECT Id FROM Opportunity];
+        List<Opportunity> offersCreated = [SELECT Id, StageName FROM Opportunity];
+        System.assertEquals(false, offersCreated.isEmpty(), 'List should NOT be empty');
         System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
+
+        Set<Id> offersIds = new Set<Id>();
+        for(Opportunity offer: offersCreated)
+        {
+            offersIds.add(offer.Id);
+            System.assertEquals('App Submitted', offer.StageName, 'StageName should be App Submitted');
+        }
+
+        //Comprobamos que se han generado los objetos asegurados
+        List<Asset> risks = [SELECT Id FROM Asset WHERE OfferId__c IN: offersCreated];
+        System.assertEquals(false, risks.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(requestInformationObject.offers.size(), risks.size(), 'There should be the same insured objects than offers');
+
+        //Comprobamos que no se ha generado póliza
+        List<Policy__c> policies = new PoliciesSelector(
+            new Set<String> {'Id'}
+            ).selectByOpportunityName(offersIds);
+        System.assertEquals(true, policies.isEmpty(), 'List should be empty');
+
+        //Comprobamos que se ha generado un Contact Request
+        List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest WHERE WhatId IN: offersIds];
+        System.assertEquals(false, contactRequests.isEmpty(), 'List should NOT be empty');
+
+        //Comprobamos que se ha generado un CampaignMember para el cliente en la campaña correspondiente
+        List<Campaign> campaigns = new CampaignsSelector().selectByName(new Set<String> {'ZE_App Submitted Leads'});
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        List<CampaignMember> campaignMembers = new CampaignMembersSelector(
+            new Set<String> {'Id'}
+            ).selectByCampaignAndContact(campaigns.get(0).Id, new Set<Id> {existingAccounts.get(0).PersonContactId});
+        System.assertEquals(false, campaignMembers.isEmpty(), 'List should NOT be empty');
     }
 
     /**
-     * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-04
+     * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-03
      **
      * @author rlopez
      * @date 26/10/2020
@@ -99,10 +161,12 @@ public with sharing class BusinessInsuranceRaterServiceTest
     @isTest
     static void test_processFormData_CRM03_ok()
     {
+        Id personAccountRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
         String emailFromJSON = 'newemail@fakeemail.com.invalid';
         String phoneFromJSON = '123456789';
 
-        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account];
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null AND RecordTypeId =: personAccountRecordTypeId];
         System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
 
         List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
@@ -124,7 +188,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         BusinessInsuranceRaterService.processFormData(requestInformationObject);
         Test.stopTest();
 
-        List<Account> createdAccount = [SELECT Id FROM Account WHERE FirstName =: requestInformationObject.accountInformation.firstName AND LastName =: requestInformationObject.accountInformation.lastName];
+        List<Account> createdAccount = [SELECT Id, PersonContactId FROM Account WHERE FirstName =: requestInformationObject.accountInformation.firstName AND LastName =: requestInformationObject.accountInformation.lastName];
         System.assertEquals(false, createdAccount.isEmpty(), 'List should NOT be empty');
 
         List<Scope__c> scopesByAccount = new ScopesSelector(
@@ -153,14 +217,40 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
-        List<Opportunity> offersCreated = [SELECT Id, ProductId__c FROM Opportunity];
+        List<Opportunity> offersCreated = [SELECT Id, ProductId__c, StageName FROM Opportunity];
         System.assertEquals(false, offersCreated.isEmpty(), 'List should NOT be empty');
         System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
 
+        Set<Id> offersIds = new Set<Id>();
         for(Opportunity offer: offersCreated)
         {
+            offersIds.add(offer.Id);
+            System.assertEquals('Legit Lead', offer.StageName, 'StageName should be Legit Lead');
             System.assertEquals(true, productIds.contains(offer.ProductId__c), 'Set should contain product id');
         }
+
+        //Comprobamos que no se han generado objetos asegurados
+        List<Asset> risks = [SELECT Id FROM Asset WHERE OfferId__c IN: offersCreated];
+        System.assertEquals(true, risks.isEmpty(), 'List should NOT be empty');
+
+        //Comprobamos que no se ha generado póliza
+        List<Policy__c> policies = new PoliciesSelector(
+            new Set<String> {'Id'}
+            ).selectByOpportunityName(offersIds);
+        System.assertEquals(true, policies.isEmpty(), 'List should be empty');
+
+        //Comprobamos que se ha generado un Contact Request
+        List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest WHERE WhatId IN: offersIds];
+        System.assertEquals(false, contactRequests.isEmpty(), 'List should NOT be empty');
+
+        //Comprobamos que se ha generado un CampaignMember para el cliente en la campaña correspondiente
+        List<Campaign> campaigns = new CampaignsSelector().selectByName(new Set<String> {'ZE_Legit Leads'});
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        List<CampaignMember> campaignMembers = new CampaignMembersSelector(
+            new Set<String> {'Id'}
+            ).selectByCampaignAndContact(campaigns.get(0).Id, new Set<Id> {createdAccount.get(0).PersonContactId});
+        System.assertEquals(false, campaignMembers.isEmpty(), 'List should NOT be empty');
     }
 
     /**
@@ -362,7 +452,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         }
 
         Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
-        jsonInformation.remove('webEmail');
+        jsonInformation.remove('webPhone');
 
         Test.startTest();
         try
@@ -375,9 +465,93 @@ public with sharing class BusinessInsuranceRaterServiceTest
         }
         catch (Exception ex)
         {
-            System.debug( ex.getMessage() );
-            System.debug( ex.getStackTraceString() );
             System.assertEquals(true, ex.getMessage().contains('The following fields are missing'), 'Error message should contain \'The following fields are missing\'');
+        }
+        Test.stopTest();
+    }
+
+    /**
+     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos cuando llega un BusinessCode incorrecto
+     **
+     * @author rlopez
+     * @date 11/12/2020
+     */
+    /*@isTest
+       static void test_processFormData_invalid_businessCode_ko()
+       {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+
+        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
+        jsonInformation.put('businessCode', '11111111');
+
+        Test.startTest();
+        try
+        {
+            BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+                JSON.serialize(jsonInformation),
+                BusinessInsuranceRaterService.Request.class
+                );
+            BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        }
+        catch (Exception ex)
+        {
+            System.assertEquals(true, ex.getMessage().contains('Invalid businessCode received'), 'Error message should contain \'Invalid businessCode received\'');
+        }
+        Test.stopTest();
+       }*/
+
+    /**
+     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos cuando el campo WebEmail está vacío
+     **
+     * @author rlopez
+     * @date 11/12/2020
+     */
+    @isTest
+    static void test_processFormData_empty_webEmail_ko()
+    {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+
+        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
+        jsonInformation.put('webEmail', '');
+
+        Test.startTest();
+        try
+        {
+            BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+                JSON.serialize(jsonInformation),
+                BusinessInsuranceRaterService.Request.class
+                );
+            BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        }
+        catch (Exception ex)
+        {
+            System.assertEquals(true, ex.getMessage().contains('WebEmail field is empty'), 'Error message should contain \'WebEmail field is empty\'');
         }
         Test.stopTest();
     }

@@ -31,6 +31,10 @@
                 <behavior>Edit</behavior>
                 <field>FaultFactor__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>LinkINFO__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -48,10 +52,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>InsuredObject__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>INFOClaimLink__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
