@@ -130,4 +130,68 @@ private class OpenIDConnectRegHandlerTest
             System.assertEquals( 'OpenIDConnectRegHandler.RegHandlerException', e.getTypeName() );
         }
     }
+
+    @isTest
+    static void testGetProfileId()
+    {
+        List<Profile_mapping__mdt> mappings = [SELECT External_profile_name__c FROM Profile_mapping__mdt];
+        if( !mappings.isEmpty() ) {
+            OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+            ID profileId = handler.getProfileId(new List<String> {mappings[0].External_profile_name__c});
+        }
+    }
+
+    /**
+     * Test the creation and update of users with one of the roles for OCS
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 17/12/2020
+     */
+    @isTest
+    static void testCreateAndUpdateUser_ocs()
+    {
+        String rol_name = 'ZE_Suscriptor';
+
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleData = new Auth.UserData(
+            'testId',
+            'testFirst',
+            'testLast',
+            'testFirst testLast',
+            'testuser@example.org',
+            null,
+            'testuserlong',
+            UserInfo.getLocale(),
+            'facebook',
+            null,
+            new Map<String, String> {'roles' => '{crm=[' + rol_name + ']}'});
+        User u = handler.createUser(null, sampleData);
+        System.assertEquals('testuserlong@zurich-es.com', u.userName);
+        System.assertEquals('testuser@example.org', u.email);
+        System.assertEquals('testLast', u.lastName);
+        System.assertEquals('testFirst', u.firstName);
+
+        //insert(u);
+        String uid = u.id;
+
+        sampleData = new Auth.UserData(
+            'testNewId',
+            'testNewFirst',
+            'testNewLast',
+            'testNewFirst testNewLast',
+            'testnewuser@example.org',
+            null,
+            'testnewuserlong',
+            UserInfo.getLocale(),
+            'facebook',
+            null,
+            new Map<String, String> {'roles' => '{crm=[' + rol_name + ']}'});
+        handler.updateUser(uid, null, sampleData);
+        User updatedUser = [SELECT userName, email, firstName, lastName, alias, Profile.Name FROM user WHERE id=:uid];
+        System.assertEquals('testnewuserlong@zurich-es.com', updatedUser.userName);
+        System.assertEquals('testnewuser@example.org', updatedUser.email);
+        System.assertEquals('testNewLast', updatedUser.lastName);
+        System.assertEquals('testNewFirst', updatedUser.firstName);
+        System.assertEquals('ZE User', updatedUser.Profile.Name);
+    }
 }
