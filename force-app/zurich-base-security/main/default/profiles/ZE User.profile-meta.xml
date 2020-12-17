@@ -11579,10 +11579,6 @@
         <layout>OrderItem-Order Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PersonAccount-Formato de cuenta personal</layout>
-        <recordType>PersonAccount.Customer</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>PersonAccount-ZE Customer</layout>
         <recordType>PersonAccount.Customer</recordType>
     </layoutAssignments>
