@@ -57,3 +57,6 @@ pt_BR.translation-meta.xml
 
 # Ignore EmailServices
 **emailservices
+
+# Configuración especifica de cada entorno
+force-app/zurich-base/main/default/customMetadata/AdminSetup.AdminSetup.md-meta.xml

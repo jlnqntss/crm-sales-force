@@ -53,7 +53,7 @@ public with sharing class AccountsSelector
             when 'ze' {
                 this.recordTypeIds = new Set<Id>();
                 for (String recordTypeName: recordTypeInfosByDeveloperName.keySet()) {
-                    if(recordTypeName == 'BusinessCustomer' || recordTypeName == 'Lead')
+                    if(recordTypeName == 'Customer' || recordTypeName == 'Lead')
                     {
                         this.recordTypeIds.add(recordTypeInfosByDeveloperName.get(recordTypeName).getRecordTypeId());
                     }

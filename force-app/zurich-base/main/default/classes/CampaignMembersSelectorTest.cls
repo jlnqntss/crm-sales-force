@@ -4,16 +4,16 @@ private with sharing class CampaignMembersSelectorTest
     @TestSetup
     public static void createScenario()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
 
-        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'CustomerGI', 1);
-        insert contacts;
-
-        List<Campaign> campaigns = TestDataFactory.generateCampaigns(Label.GeneralInsurance, 10);
+        List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 10);
         insert campaigns;
 
-        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(contacts, campaigns);
+        // hotfix: obtener cuentas de tipo personales con el campo PersonContactId relleno
+        accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null]);
+
+        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaigns);
         insert campaignMembers;
     }
 
