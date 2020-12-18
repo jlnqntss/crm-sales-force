@@ -25,8 +25,14 @@ public without sharing class EmailToOpportunityService
             if(!emailHeaders.inReplyTo.isEmpty() || !emailHeaders.references.isEmpty() )
             {
                 Set<String> messageIdentifiers = new Set<String>();
-                messageIdentifiers.addAll(emailHeaders.inReplyTo);
-                messageIdentifiers.addAll(emailHeaders.references);
+                if(!emailHeaders.inReplyTo.isEmpty())
+                {
+                    messageIdentifiers.addAll(emailHeaders.inReplyTo);
+                }
+                if(!emailHeaders.references.isEmpty())
+                {
+                    messageIdentifiers.addAll(emailHeaders.references);
+                }
 
                 EmailMessagesSelector emailMessagesSelectorObj = new EmailMessagesSelector();
                 emailMessagesSelectorObj.fieldsToQuery = new Set<String> {'Id', 'RelatedToId', 'MessageIdentifier', 'ActivityId'};
