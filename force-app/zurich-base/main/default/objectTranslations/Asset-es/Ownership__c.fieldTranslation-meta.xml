@@ -4,10 +4,10 @@
     <name>Ownership__c</name>
     <picklistValues>
         <masterLabel>I</masterLabel>
-        <translation><!-- I --></translation>
+        <translation>Inquilino</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>P</masterLabel>
-        <translation><!-- P --></translation>
+        <translation>Propietario</translation>
     </picklistValues>
 </CustomFieldTranslation>

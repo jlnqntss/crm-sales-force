@@ -4,14 +4,14 @@
     <name>TypeOfWindows__c</name>
     <picklistValues>
         <masterLabel>1</masterLabel>
-        <translation><!-- 1 --></translation>
+        <translation>Normales</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2</masterLabel>
-        <translation><!-- 2 --></translation>
+        <translation>Dos capas (6 mm)</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3</masterLabel>
-        <translation><!-- 3 --></translation>
+        <translation>Tres o más capas (6 mm)</translation>
     </picklistValues>
 </CustomFieldTranslation>
