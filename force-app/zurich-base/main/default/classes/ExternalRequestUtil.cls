@@ -34,7 +34,7 @@ global without sharing class ExternalRequestUtil {
   private static String IBA_Prefix;
   private static String IBA_Source;
   public static Boolean isIBAMultiPartner; 
-  private static Boolean isEMEA;
+  public static Boolean isEMEA;
   public static String AccountFieldCustomerNum;
   public static Map<String, Account> AccountMastersToUpdate;
 
