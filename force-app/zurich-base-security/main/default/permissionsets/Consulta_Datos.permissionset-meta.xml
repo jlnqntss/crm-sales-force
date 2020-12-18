@@ -643,6 +643,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Asset.RegistrationNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Asset.RiskFactor01__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -894,6 +899,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.LegalEntity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.MediatedCustomer__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1373,6 +1383,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ContactPointPhone.PhoneType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>ContactPointPhone.PreferenceRank</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1394,6 +1409,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Event.BestAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Event.CallRecording__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1433,6 +1453,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.Activity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.Amount</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1454,6 +1479,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.CommercialCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.CommercialProductCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1583,6 +1613,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.ResultingPolicyNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.ScopeId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1593,7 +1628,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.StageNameINFO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.TechnicalCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.TechnicalProductCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1919,6 +1964,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.BestAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.CallRecording__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

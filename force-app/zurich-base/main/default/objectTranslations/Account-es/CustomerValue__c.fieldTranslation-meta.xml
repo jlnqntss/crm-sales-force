@@ -4,30 +4,30 @@
     <name>CustomerValue__c</name>
     <picklistValues>
         <masterLabel>1 - Top value</masterLabel>
-        <translation><!-- 1 - Top value --></translation>
+        <translation>1 - Valor Top</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>2 - High value</masterLabel>
-        <translation><!-- 2 - High value --></translation>
+        <translation>2 - Valor Alto</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>3 - Middle value</masterLabel>
-        <translation><!-- 3 - Middle value --></translation>
+        <translation>3 - Valor Medio</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>4 - Low value</masterLabel>
-        <translation><!-- 4 - Low value --></translation>
+        <translation>4 - Valor Bajo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>5 - Negative or Zero value</masterLabel>
-        <translation><!-- 5 - Negative or Zero value --></translation>
+        <translation>5 - Valor Negativo o Cero</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>6 - Life exclusive</masterLabel>
-        <translation><!-- 6 - Life exclusive --></translation>
+        <translation>6 - Exclusivo Vida</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>7 - Not applicable</masterLabel>
-        <translation><!-- 7 - Not applicable --></translation>
+        <translation>7 - No Aplica</translation>
     </picklistValues>
 </CustomFieldTranslation>

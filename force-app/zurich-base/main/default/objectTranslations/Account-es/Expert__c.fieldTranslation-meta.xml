@@ -4,18 +4,18 @@
     <name>Expert__c</name>
     <picklistValues>
         <masterLabel>Advanced</masterLabel>
-        <translation><!-- Advanced --></translation>
+        <translation>Avanzado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Basic</masterLabel>
-        <translation><!-- Basic --></translation>
+        <translation>Básico</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>No</masterLabel>
-        <translation><!-- No --></translation>
+        <translation>No</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Specialist</masterLabel>
-        <translation><!-- Specialist --></translation>
+        <translation>Especialista</translation>
     </picklistValues>
 </CustomFieldTranslation>

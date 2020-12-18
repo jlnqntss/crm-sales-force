@@ -47,6 +47,11 @@
                 <label>BIEN ASEG</label>
             </value>
             <value>
+                <fullName>0000000041</fullName>
+                <default>false</default>
+                <label>EQUIPO ELECTRÓNICO</label>
+            </value>
+            <value>
                 <fullName>Address</fullName>
                 <default>false</default>
                 <isActive>false</isActive>

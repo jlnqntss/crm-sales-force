@@ -4,14 +4,14 @@
     <name>Height__c</name>
     <picklistValues>
         <masterLabel>AL</masterLabel>
-        <translation><!-- AL --></translation>
+        <translation>Altura</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>PB</masterLabel>
-        <translation><!-- PB --></translation>
+        <translation>Planta baja</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>SO</masterLabel>
-        <translation><!-- SO --></translation>
+        <translation>Sótano</translation>
     </picklistValues>
 </CustomFieldTranslation>

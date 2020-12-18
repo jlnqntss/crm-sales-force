@@ -345,6 +345,17 @@ public class INFOHandler implements ISystem
                         ((String) recordValuesMap.get('TIPO_DOMICILIO') ).equalsIgnoreCase('P'))
                     {
                         ContactPointAddress cpaRecord = (ContactPointAddress) tf.transform(CONTACT_POINT, 'ContactPointAddress', recordValuesMap);
+                        cpaRecord.Street = String.join
+                        (
+                            new List<String>
+                            {
+                                cpaRecord.StreetType__c, 
+                                cpaRecord.Street,
+                                cpaRecord.StreetNumber__c,
+                                cpaRecord.OtherInfo__c
+                            }
+                            , ' '
+                        );
                         addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointAddress', cpaRecord); 
                     }
                     else if (((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('T'))
