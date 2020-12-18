@@ -436,6 +436,8 @@ before_script:
 test-lwc:
   stage: validate
   except:
+    refs:
+      - /^release/.*$/
     variables:
       - $TEST_DISABLED
   allow_failure: false
@@ -445,6 +447,21 @@ test-lwc:
     - lint
   tags:
     - zurich-ci
+test-lwc-uat:
+  stage: validate
+  except:
+    variables:
+      - $TEST_DISABLED
+  only:
+    refs:
+        - /^release/.*$/
+  allow_failure: false
+  script:
+    - install_toolchain
+    - test_lwc_jest
+    - lint
+  tags:
+    - zurich-ci-uat
 
 ########################################################
 # Descarga la versión de producción y ejecuta un test
