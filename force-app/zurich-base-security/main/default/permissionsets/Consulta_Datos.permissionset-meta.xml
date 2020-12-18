@@ -1413,6 +1413,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Event.CallRecording__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Event.Channel__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1959,6 +1964,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.BestAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.CallRecording__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
