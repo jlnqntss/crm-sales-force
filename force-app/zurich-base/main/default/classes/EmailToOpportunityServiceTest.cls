@@ -101,8 +101,17 @@ private class EmailToOpportunityServiceTest
 
         //Recuperamos un email creado para añadirlo a la cabecera del nuevo email
         List<Opportunity> existingOpportunities = [SELECT Id FROM Opportunity];
-        List<EmailMessage> existingEmails = [SELECT Id, RelatedToId FROM EmailMessage WHERE RelatedToId IN: existingOpportunities LIMIT 1];
+
+        List<EmailMessage> existingEmails = [SELECT Id, RelatedToId, MessageIdentifier FROM EmailMessage WHERE RelatedToId IN: existingOpportunities LIMIT 1];
         System.assertEquals(1, existingEmails.size(), 'There should be one EmailMessage');
+
+        EmailMessage parentEmail = new EmailMessage(
+            RelatedToId = existingEmails.get(0).RelatedToId
+            );
+        insert parentEmail;
+
+        existingEmails.get(0).MessageIdentifier = parentEmail.Id;
+        update existingEmails;
 
         //Creamos un nuevo email
         String emailSubject = 'Second Email Received';
@@ -114,11 +123,11 @@ private class EmailToOpportunityServiceTest
         //Lo relacionamos, a traves de las cabeceras, con el email previamente recuperado y que ya existe en Salesforce relacionado con una Oportunidad
         Messaging.InboundEmail.Header inReplyToEmailHeader = new Messaging.InboundEmail.Header();
         inReplyToEmailHeader.name = 'In-Reply-To';
-        inReplyToEmailHeader.value = existingEmails.get(0).Id;
-        Messaging.InboundEmail.Header referencesEmailHeader = new Messaging.InboundEmail.Header();
-        referencesEmailHeader.name = 'References';
-        referencesEmailHeader.value = '';
-        secondEmail.headers = new List<Messaging.InboundEmail.Header> {inReplyToEmailHeader, referencesEmailHeader};
+        inReplyToEmailHeader.value = parentEmail.Id;
+        /*Messaging.InboundEmail.Header referencesEmailHeader = new Messaging.InboundEmail.Header();
+           referencesEmailHeader.name = 'References';
+           referencesEmailHeader.value = '';*/
+        secondEmail.headers = new List<Messaging.InboundEmail.Header> {inReplyToEmailHeader};
 
         // SOSL - Resultados de búsqueda
         Set<String> contactPointRecordIds = new Set<String>();
@@ -135,6 +144,8 @@ private class EmailToOpportunityServiceTest
         EmailToOpportunityService.searchRelatedEmailAndOpportunity(secondEmail, null);
         Test.stopTest();
 
+        List<EmailMessage> stillExists = [SELECT Id, RelatedToId FROM EmailMessage WHERE Id IN: existingEmails];
+
         //Comprobamos que NO se ha creado una oportunidad para el email recibido
         List<Opportunity> opportunitiesCreated = [SELECT Id FROM Opportunity WHERE Name =: emailSubject AND CloseDate =: System.today()];
         System.assertEquals(0, opportunitiesCreated.size(), 'The list should be empty');
@@ -145,7 +156,7 @@ private class EmailToOpportunityServiceTest
 
         //Comprobamos que se ha creado un nuevo email relacionado con la oportunidad del primer email
         List<EmailMessage> emailMessagesRelatedToOpportunity = emailMessagesSelectorObj.selectByRelatedObjectId(new Set<String> {existingEmails.get(0).RelatedToId});
-        // FIXME: System.assertEquals(2, emailMessagesRelatedToOpportunity.size(), 'There should be 2 emails related with the opportunity');
+        System.assertEquals(3, emailMessagesRelatedToOpportunity.size(), 'There should be 3 emails related with the opportunity');
 
         //Recuperamos el último email creado para comprobar si se ha creado correctamente la relación con el contacto
         List<EmailMessage> emailMessagesCreated = emailMessagesSelectorObj.selectBySubject(new List<String> {emailSubject});

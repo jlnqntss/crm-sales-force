@@ -4,22 +4,22 @@
     <name>Building_Type__c</name>
     <picklistValues>
         <masterLabel>IN</masterLabel>
-        <translation><!-- IN --></translation>
+        <translation>Industrial</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>MP</masterLabel>
-        <translation><!-- MP --></translation>
+        <translation>Mercado público</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>OF</masterLabel>
-        <translation><!-- OF --></translation>
+        <translation>Oficinas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>VI</masterLabel>
-        <translation><!-- VI --></translation>
+        <translation>Viviendas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>VO</masterLabel>
-        <translation><!-- VO --></translation>
+        <translation>Viviendas y oficinas</translation>
     </picklistValues>
 </CustomFieldTranslation>

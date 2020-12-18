@@ -11583,6 +11583,10 @@
         <recordType>PersonAccount.Customer</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>PersonAccount-ZE Lead</layout>
+        <recordType>PersonAccount.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>PolicyVersion__c-Policy Version Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -11671,11 +11675,11 @@
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Activity</layout>
         <recordType>Task.Activity</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Interaction</layout>
         <recordType>Task.Interaction</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -13042,7 +13046,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>OpenInfoLaunch</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>PreferenceCentre</apexPage>

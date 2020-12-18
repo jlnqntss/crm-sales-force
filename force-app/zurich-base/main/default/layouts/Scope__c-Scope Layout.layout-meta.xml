@@ -133,13 +133,34 @@
         <fields>CASES.PRIORITY</fields>
         <relatedList>Case.ScopeId__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>TelephoneNumber</fields>
+        <fields>ActiveFromDate</fields>
+        <fields>PhoneType__c</fields>
+        <fields>IsPrimary</fields>
+        <fields>LastModifiedDate</fields>
+        <relatedList>ContactPointPhone.ScopeId__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>EmailAddress</fields>
+        <fields>IsPrimary</fields>
+        <fields>LastModifiedDate</fields>
+        <relatedList>ContactPointEmail.ScopeId__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>Name</fields>
+        <fields>ActiveFromDate</fields>
+        <fields>IsPrimary</fields>
+        <fields>LastModifiedDate</fields>
+        <relatedList>ContactPointAddress.ScopeId__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h1x000000TJdp</masterLabel>
+        <masterLabel>00h0E000000T5Ic</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>OriginField__c</field>
-        <value xsi:type="xsd:string">TCTICOM1</value>
+        <value xsi:type="xsd:string">TIPO_COMUNICACION</value>
     </values>
     <values>
         <field>Origin__c</field>
@@ -20,6 +20,6 @@
     </values>
     <values>
         <field>SalesforceField__c</field>
-        <value xsi:type="xsd:string">PhoneType</value>
+        <value xsi:type="xsd:string">PhoneType__c</value>
     </values>
 </CustomMetadata>

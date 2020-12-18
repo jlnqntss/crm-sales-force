@@ -11579,8 +11579,15 @@
         <layout>OrderItem-Order Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PersonAccount-Formato de cuenta personal</layout>
+        <layout>PersonAccount-ZE Customer</layout>
         <recordType>PersonAccount.Customer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PersonAccount-ZE Lead</layout>
+        <recordType>PersonAccount.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-ZE Offer</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PolicyVersion__c-Policy Version Layout</layout>

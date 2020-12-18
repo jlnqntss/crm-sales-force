@@ -4951,6 +4951,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.MediatedCustomer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Object__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5856,6 +5861,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ContactPointPhone.PhoneType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ContactPointPhone.PreferenceRank</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6302,6 +6312,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.BestAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Event.CallRecording__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8617,6 +8632,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.BestAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.CallRecording__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11610,6 +11630,10 @@
     <layoutAssignments>
         <layout>PersonAccount-Formato de cuenta personal</layout>
         <recordType>PersonAccount.Customer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PersonAccount-ZE Lead</layout>
+        <recordType>PersonAccount.Lead</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PolicyVersion__c-Policy Version Layout</layout>

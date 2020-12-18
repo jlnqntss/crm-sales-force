@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>0001</masterLabel>
+        <translation>Centro comercial</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0002</masterLabel>
+        <translation>Más de 10% Jamones</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0003</masterLabel>
+        <translation>Degustación</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0004</masterLabel>
+        <translation>Catering</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0005</masterLabel>
+        <translation>Servicio de bar</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0006</masterLabel>
+        <translation>Peluquería canina</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0007</masterLabel>
+        <translation>Telefonía móvil</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0008</masterLabel>
+        <translation>Artículos de más de 1500</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0009</masterLabel>
+        <translation>Hogar</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0010</masterLabel>
+        <translation>Cambio de moneda</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0011</masterLabel>
+        <translation>Aparatos audiovisuales y/o informáticos</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0012</masterLabel>
+        <translation>Complementos y prenda de vestir sin piel fina</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0013</masterLabel>
+        <translation>Perfumería y cosmética</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0014</masterLabel>
+        <translation>Alquiler</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0015</masterLabel>
+        <translation>Antigüedades</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0016</masterLabel>
+        <translation>Mobiliario</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0017</masterLabel>
+        <translation>Pista de baile</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0018</masterLabel>
+        <translation>Sólo juegos de mesa</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0019</masterLabel>
+        <translation>Contenido mayor que 30.000</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0020</masterLabel>
+        <translation>Lavandería autoservicio</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0021</masterLabel>
+        <translation>Venta online</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0022</masterLabel>
+        <translation>Salón de belleza</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0023</masterLabel>
+        <translation>Exposición y venta</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0024</masterLabel>
+        <translation>Con servicio de bar</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0025</masterLabel>
+        <translation>Espectáculo</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0026</masterLabel>
+        <translation>Máquinas expendedoras de alimentos o bebidas</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0027</masterLabel>
+        <translation>Prendas de piel fina</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0028</masterLabel>
+        <translation>Accesorios</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0029</masterLabel>
+        <translation>Horno</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0030</masterLabel>
+        <translation>Máquinas tragaperras o expendedoras de tabaco</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0031</masterLabel>
+        <translation>Prendas de piel</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0032</masterLabel>
+        <translation>Parque infantil</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0033</masterLabel>
+        <translation>Servicio cafetería</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0034</masterLabel>
+        <translation>Exposición y accesorios</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0035</masterLabel>
+        <translation>Servicio bancario</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0036</masterLabel>
+        <translation>Reparto a domicilio</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0037</masterLabel>
+        <translation>Self-Service</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0038</masterLabel>
+        <translation>Caja de cobro automático</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>0039</masterLabel>
+        <translation>Aforo</translation>
+    </valueTranslation>
+</GlobalValueSetTranslation>

@@ -3,7 +3,6 @@
     <fullName>IntermediaryDefault</fullName>
     <fields>Name</fields>
     <fields>INFOIntermediaryCode__c</fields>
-    <fields>Type</fields>
     <fields>MainEmail__c</fields>
     <fields>MiAgencia__c</fields>
     <fields>TerritorialDirection__c</fields>

@@ -4,10 +4,10 @@
     <name>Safe__c</name>
     <picklistValues>
         <masterLabel>B</masterLabel>
-        <translation><!-- B --></translation>
+        <translation>Más de 100kg/Empotrada</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>N</masterLabel>
-        <translation><!-- N --></translation>
+        <translation>No</translation>
     </picklistValues>
 </CustomFieldTranslation>

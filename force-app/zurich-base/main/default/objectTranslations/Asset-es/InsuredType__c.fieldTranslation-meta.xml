@@ -4,10 +4,10 @@
     <name>InsuredType__c</name>
     <picklistValues>
         <masterLabel>I</masterLabel>
-        <translation><!-- I --></translation>
+        <translation>Inmueble</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>O</masterLabel>
-        <translation><!-- O --></translation>
+        <translation>Obras de reforma</translation>
     </picklistValues>
 </CustomFieldTranslation>

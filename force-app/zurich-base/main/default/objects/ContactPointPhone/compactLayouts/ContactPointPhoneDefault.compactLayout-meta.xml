@@ -2,7 +2,7 @@
 <CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ContactPointPhoneDefault</fullName>
     <fields>TelephoneNumber</fields>
-    <fields>ContactId__c</fields>
+    <fields>ParentId</fields>
     <fields>ActiveFromDate</fields>
     <label>Contact Point Phone Default</label>
 </CompactLayout>
