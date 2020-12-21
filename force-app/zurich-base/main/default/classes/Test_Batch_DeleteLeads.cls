@@ -23,9 +23,23 @@ private class Test_Batch_DeleteLeads
             LastName = 'Sanchez',
             CustomerNum__c = 'GI-3123',
             LegalEntity__c = Label.GeneralInsurance,
-            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.LeadGI)
+            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.LeadGI),
+            IsSubscriber__c = true // it will be anonymized
             );
         insert lead;
+
+        Contact lead2 = new Contact(
+            Email = 'edu2@test.com',
+            Birthdate = Date.valueOf('1990-01-01'),
+            FirstName = 'Edu2',
+            LastName = 'Sanchez2',
+            CustomerNum__c = 'GI-1111',
+            LegalEntity__c = Label.GeneralInsurance,
+            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.LeadGI),
+            IsSubscriber__c = true,
+            HasOptedOutOfEmail = true //it will be deleted
+            );
+        insert lead2;
     }
 
     /**
@@ -40,7 +54,7 @@ private class Test_Batch_DeleteLeads
     static void test_NoEliminarLead()
     {
         Integer numContact = [SELECT COUNT() FROM Contact];
-        System.assertEquals(1, numContact);
+        System.assertEquals(2, numContact);
 
         String query = 'SELECT Id FROM Error_Log__c WHERE LastModifiedDate < LAST_N_DAYS:7';
         Test.startTest();
@@ -52,7 +66,7 @@ private class Test_Batch_DeleteLeads
 
         numContact = [SELECT COUNT() FROM Contact];
 
-        System.assertEquals(1, numContact);
+        System.assertEquals(2, numContact);
     }
 
     /**
@@ -67,9 +81,13 @@ private class Test_Batch_DeleteLeads
     static void test_EliminarLead()
     {
         Integer numContact = [SELECT COUNT() FROM Contact];
-        System.assertEquals(1, numContact);
+        System.assertEquals(2, numContact);
 
-        String query = 'SELECT Id FROM Contact  ';
+        String query = 'SELECT Id , AccountId, IsSubscriber__c, HasOptedOutOfEmail, Balance__c, Birthdate, CNO__c,' +
+        'CreditCard__c, CustomerID__c, CustomerNum__c, DNI__c, EmailHash__c, Gender__c, Job__c,' +
+        'JobPosition__c, MailingCity, MailingCountry, MailingPostalCode, MailingState, MailingStreet,' +
+        'MasterPolicy__c, MasterPolicyDesc__c, MasterPolicyNum__c, MobilePhone, MonthExpiryDate__c, ' +
+        'Nationality__c, YearExpiryDate__c from Contact ';
 
         Test.startTest();
         Batch_DeleteLeads b = new Batch_DeleteLeads(); // for coverage
@@ -78,7 +96,8 @@ private class Test_Batch_DeleteLeads
         Test.stopTest();
 
         numContact = [SELECT COUNT() FROM Contact];
-        System.assertEquals(0, numContact);
+        // Lead1 will be anonymized and lead2 will be deleted
+        System.assertEquals(1, numContact);
     }
 
     /**

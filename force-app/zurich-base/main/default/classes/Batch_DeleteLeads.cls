@@ -35,13 +35,64 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)
     {
-        List<Contact> leadsToDelete = (List<Contact>) scope;
+        List<Contact> leads = (List<Contact>) scope; 
+        List<Contact> deleteLeads = new List<Contact>();
+        List<Contact> subscribersToUpdate = new List<Contact>();
 
         try
         {
             if ( scope != null && !scope.isEmpty() )
             {
-                delete leadsToDelete;
+                for ( Contact lead: leads )
+                {
+                    // nts (nbizkarra) - 17/dic/2020 - Include Subscribers
+                    // Si es lead de IBA, subscriber y no está desuscrito se borra toda la información de la tarificación
+                    // Se mantiene: Nombre, email, isSubscriber, SourceCountry, Legal Entity, Record Type, Partner y Status
+                    if ( lead.IsSubscriber__c == true && lead.HasOptedOutOfEmail == false)
+                    {
+                        lead.Balance__c = null;
+                        lead.Birthdate = null;
+                        lead.CNO__c = null;
+                        lead.CreditCard__c = null;
+                        lead.CustomerID__c = null;
+                        lead.CustomerNum__c = null;
+                        lead.DNI__c = null;
+                        lead.EmailHash__c = null;
+                        lead.Gender__c = null;
+                        lead.Job__c = null;
+                        lead.JobPosition__c = null;
+                        lead.MailingCity = null;
+                        lead.MailingCountry = null;
+                        lead.MailingPostalCode = null;
+                        lead.MailingState = null;
+                        lead.MailingStreet = null;
+                        lead.MasterPolicy__c = null;
+                        lead.MasterPolicyDesc__c = null;
+                        lead.MasterPolicyNum__c = null;
+                        lead.MobilePhone = null;
+                        lead.MonthExpiryDate__c = null;
+                        lead.Nationality__c = null;
+                        lead.YearExpiryDate__c = null;
+                    
+                        subscribersToUpdate.add(lead);
+                    }
+                    else 
+                    {
+                        deleteLeads.add(lead);            
+                    }
+
+                }
+                
+                if ( deleteLeads!= null && !deleteLeads.isEmpty())
+                {
+                    delete deleteLeads;
+                }
+
+                if ( subscribersToUpdate!= null && !subscribersToUpdate.isEmpty())
+                {
+                    update subscribersToUpdate;
+                }
+                
             }
         }
         catch (Exception e)
