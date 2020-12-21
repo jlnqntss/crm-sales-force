@@ -5347,7 +5347,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.IsSubscriber__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>

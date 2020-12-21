@@ -328,15 +328,29 @@ public without sharing class SystemUtil
     {
         AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
 
+        // nts (nbizkarra) - 17/dic/2020 - Modificación de borrado de Subscribers
+            /* Los Leads que no sean suscriptores se borrarán (IsSubscriber__c = false)
+               Los Subscriptores que se hayan desuscrito se borrarán (IsSubscriber__c = true AND HasOptedOutOfEmail=true)
+               Los Leads que sean Suscriptores no se borrarán, solo se mantendrá la información del suscriptor. Todos los
+               campos de la tarificación deben ser borrados (IsSubscriber__c = true AND CustomerNum__c !=null AND HasOptedOutOfEmail = false)  */
+
         String query =
-            'SELECT Id , AccountId  from Contact where (RecordType.DeveloperName=\'' +
+            'SELECT Id , AccountId, IsSubscriber__c, HasOptedOutOfEmail, Balance__c, Birthdate, CNO__c,' +
+            'CreditCard__c, CustomerID__c, CustomerNum__c, DNI__c, EmailHash__c, Gender__c, Job__c,' +
+            'JobPosition__c, MailingCity, MailingCountry, MailingPostalCode, MailingState, MailingStreet,' +
+            'MasterPolicy__c, MasterPolicyDesc__c, MasterPolicyNum__c, MobilePhone, MonthExpiryDate__c, ' +
+            'Nationality__c, YearExpiryDate__c from Contact '+
+            'where (RecordType.DeveloperName=\'' +
             Label.LeadLife +
             '\' OR RecordType.DeveloperName=\'' +
             Label.LeadGI +
             '\')' +
             'AND Id NOT IN (SELECT ContactId__c  from Order )' +
             'AND Id NOT IN (SELECT ContactId from Case)' +
-            ' AND CreatedDate < LAST_N_DAYS:' +
+            'AND (IsSubscriber__c = false ' +
+            'OR (IsSubscriber__c = true AND HasOptedOutOfEmail=true)' +
+            'OR (IsSubscriber__c = true AND CustomerNum__c !=null AND HasOptedOutOfEmail = false) )' +
+            'AND CreatedDate < LAST_N_DAYS:' +
             adminSetup.NumDaysDeleteLeads__c.intValue();
 
         return query;
