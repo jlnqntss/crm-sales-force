@@ -133,6 +133,8 @@ public with sharing class Test_CaseUtil
         ExternalRequestUtil.claimsToUpsert = claimsToUpsert;
         ExternalRequestUtil.recordOwner = recordOwner;
         ExternalRequestUtil.Pricebook = Pricebook;
+        ExternalRequestUtil.isIBAMultiPartner = false;
+        ExternalRequestUtil.isEMEA = false;
 
         CaseUtil.upsertClaim(claim);
 
@@ -188,6 +190,8 @@ public with sharing class Test_CaseUtil
         ExternalRequestUtil.claimsToUpsert = claimsToUpsert;
         ExternalRequestUtil.recordOwner = recordOwner;
         ExternalRequestUtil.Pricebook = Pricebook;
+        ExternalRequestUtil.isIBAMultiPartner = false;
+        ExternalRequestUtil.isEMEA = false;
 
         try
         {
