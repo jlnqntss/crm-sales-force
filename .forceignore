@@ -60,3 +60,4 @@ pt_BR.translation-meta.xml
 
 # Configuración especifica de cada entorno
 force-app/zurich-base/main/default/customMetadata/AdminSetup.AdminSetup.md-meta.xml
+force-app/zurich-base/main/default/customMetadata/ErrorManagementSetting.Klinc_errores.md-meta.xml
