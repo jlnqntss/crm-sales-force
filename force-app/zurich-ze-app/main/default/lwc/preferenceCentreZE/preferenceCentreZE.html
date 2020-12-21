@@ -1,0 +1,40 @@
+<!--
+  @description       : Html for the Preference center (started as a copy of Preference center for Klinc)
+  @author            : nts (agonzalezisasi)
+  @group             : 
+  @last modified on  : 15-12-2020
+  Modifications Log 
+  Ver   Date         Author                 Modification
+  1.0   15-12-2020   nts (agonzalezisasi)   Initial Version
+-->
+<template>
+  <lightning-card>
+    <div class="container-body">
+      <div class="container-general">
+        <div class="slds-is-relative slds-scope" id="preferences">
+          <div class="slds-box communication-box cZ_EA_CommunityEditCommunications" style="overflow: auto" >
+            <div class="logo-header">
+                <img src={zurichLogoUrl} alt="Zurich - Companies" />
+            </div>
+            <h3 lang={language} class="communication-title">{label.PreferenceCentreTitleLabel}</h3>
+            <h6 class="communication-title">{label.PreferenceCentreSubtitleLabel}</h6>
+            <!-- hasOptedOutOfEmail-->
+            <div class="baja-news">
+                <h4 class="communication-title slds-size_1-of-1">{label.EmailOptOutCheckboxLabel}</h4>
+                <p class="slds-p-vertical_small slds-p-right_small">{label.EmailOptOutTextLabel}</p>
+                <!-- Botón baja-->
+                <div class="slds-button cancel">
+                    <label>
+                        <input id="contact" type="checkbox" onchange={handleChange}/><span>{label.EmailOptOutButtonLabel}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="component-content enviar">
+                <button class="slds-button" type="button" onclick={handleClick}>{label.PreferenceCentreSaveLabel}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </lightning-card>
+</template>
