@@ -11551,7 +11551,7 @@
         <layout>Macro-Macro Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Opportunity-Opportunity Layout</layout>
+        <layout>Opportunity-ZE Offer</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>OpportunityLineItem-Opportunity Product Layout</layout>
@@ -11585,9 +11585,6 @@
     <layoutAssignments>
         <layout>PersonAccount-ZE Lead</layout>
         <recordType>PersonAccount.Lead</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-ZE Offer</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PolicyVersion__c-Policy Version Layout</layout>

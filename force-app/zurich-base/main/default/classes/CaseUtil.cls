@@ -33,10 +33,12 @@ public class CaseUtil
                 // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
                 // we get this from the policy too
                 claim.CustomerNum__c = policySF.CustomerNum__c;
-                // claim.CustomerNum__c = ContactUtil.adaptCustomerNum(
-                //   claim.CustomerNum__c,
-                //   policySF.LegalEntity__c
-                // );
+                // nts (agonzalezisasi) - 18/dic/2020 - fix: when claim is IBA Spain add LegalEntity to the search if needed
+                if( !ExternalRequestUtil.isIBAMultiPartner && !ExternalRequestUtil.isEMEA ) {
+                    if( !claim.CustomerNum__c.contains('GI') && !claim.CustomerNum__c.contains('LIFE') ) {
+                         claim.CustomerNum__c = ContactUtil.adaptCustomerNum(claim.CustomerNum__c, policySF.LegalEntity__c);
+                    }
+                }
                 // if (claim.sourceCountry__c != 'Spain') {
                 //   claim.CustomerNum__c = 'EMEA-' + claim.CustomerNum__c;
                 // }
