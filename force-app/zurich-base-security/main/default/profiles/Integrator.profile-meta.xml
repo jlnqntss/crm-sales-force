@@ -6516,6 +6516,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ExternalRequest__c.Error_Log_Response__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ExternalRequest__c.Json__c</field>
         <readable>true</readable>
     </fieldPermissions>
