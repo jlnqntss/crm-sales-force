@@ -93,6 +93,7 @@ public class Test_Batch_ResponseExternalRequest
 
     /**
      * For testing process result NO ok, status request no 200 and for coverage
+     * @change: nts (agonzalezisasi) - 11/dic/2020 - Include response error log 
      */
     @isTest
     static void testBatch_nok()
@@ -120,10 +121,11 @@ public class Test_Batch_ResponseExternalRequest
         Id BatchInstanceId = Database.executeBatch( b, 10 );
         Test.stopTest();
         // Check results
-        List<ExternalRequest__c> ersResult = [SELECT id, Retry__c FROM ExternalRequest__c];
+        List<ExternalRequest__c> ersResult = [SELECT id, Retry__c, Error_Log_Response__c FROM ExternalRequest__c];
         for( ExternalRequest__c e: ersResult)
         {
             System.assertEquals(1, e.Retry__c);
+            System.assertNotEquals(null, e.Error_Log_Response__c);
         }
     }
 

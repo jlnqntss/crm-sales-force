@@ -31,6 +31,10 @@
                 <behavior>Edit</behavior>
                 <field>Json__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Error_Log_Response__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
