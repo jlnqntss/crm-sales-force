@@ -55,7 +55,7 @@ export default class preferenceCentre extends LightningElement {
             hasOptedOutOfEmail: this._isCheckedHasOptedOutOfEmail
         });
 
-        if( this.label.PreferenceCentreRedirect != '' ) {
+        if( this.label.PreferenceCentreRedirect !== '' ) {
             window.location.replace(this.label.PreferenceCentreRedirect);
         }
         
