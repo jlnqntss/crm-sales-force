@@ -5,8 +5,8 @@
         <description>Se asigna a Opportunity.StageName el valor Closed won</description>
         <name>UpdateOfferClosedWon</name>
         <label>Cambiar Oferta a Closed Won</label>
-        <locationX>172</locationX>
-        <locationY>517</locationY>
+        <locationX>150</locationX>
+        <locationY>553</locationY>
         <assignmentItems>
             <assignToReference>GetRelatedOffer.StageName</assignToReference>
             <operator>Assign</operator>
@@ -37,6 +37,39 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Deja un registro con el error producido</description>
+        <name>LogError</name>
+        <label>Registrar error</label>
+        <locationX>426</locationX>
+        <locationY>371</locationY>
+        <inputAssignments>
+            <field>Level__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Record_Object__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>PolicyTriggerAfterFlow</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Error_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <description>Ofertas cuyo Opportunity.Id sea igual al Policy__c.OpportunityName__c y cuyo Opportunity.StageName NO sea Closed Won</description>
         <name>GetRelatedOffer</name>
@@ -47,6 +80,9 @@
         <connector>
             <targetReference>UpdateOfferClosedWon</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>LogError</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>

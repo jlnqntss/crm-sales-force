@@ -5,8 +5,8 @@
         <description>Se rellena el campo Policy__c.OpportunityName__c con el ID de la Oferta obtenida del Get Records</description>
         <name>UpdateLookupOffer</name>
         <label>Rellenar Lookup a Oferta</label>
-        <locationX>185</locationX>
-        <locationY>511</locationY>
+        <locationX>181</locationX>
+        <locationY>636</locationY>
         <assignmentItems>
             <assignToReference>$Record.OpportunityName__c</assignToReference>
             <operator>Assign</operator>
@@ -15,6 +15,28 @@
             </value>
         </assignmentItems>
     </assignments>
+    <decisions>
+        <name>OfferFound</name>
+        <label>¿Offer Encontrada?</label>
+        <locationX>376</locationX>
+        <locationY>493</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetRelatedOffer.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateLookupOffer</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
     <description>Automatismo para que cada vez que se inserte o actualice una póliza se actualice la etapa de la oferta relacionada</description>
     <interviewLabel>Póliza Trigger - Before insert/update {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Póliza Trigger - Before insert/update</label>
@@ -45,7 +67,7 @@
         <locationY>340</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>UpdateLookupOffer</targetReference>
+            <targetReference>OfferFound</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
