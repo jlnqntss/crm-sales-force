@@ -33,6 +33,15 @@
     <navType>Console</navType>
     <profileActionOverrides>
         <actionName>View</actionName>
+        <content>ZE_Lead</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>PersonAccount.Lead</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
         <content>OCS_Partner_Default</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
@@ -251,15 +260,6 @@
         <actionName>View</actionName>
         <content>ZE_Lead</content>
         <formFactor>Small</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>PersonAccount.Lead</recordType>
-        <type>Flexipage</type>
-        <profile>Admin</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>ZE_Lead</content>
-        <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>PersonAccount.Lead</recordType>
         <type>Flexipage</type>
@@ -273,6 +273,7 @@
     <tabs>standard-Task</tabs>
     <tabs>standard-Dashboard</tabs>
     <tabs>standard-report</tabs>
+    <tabs>standard-ContactRequest</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Zurich_Empresas_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -286,6 +287,9 @@
         </mappings>
         <mappings>
             <tab>standard-Account</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-ContactRequest</tab>
         </mappings>
         <mappings>
             <tab>standard-Dashboard</tab>
