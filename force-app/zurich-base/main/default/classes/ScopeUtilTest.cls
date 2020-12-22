@@ -20,16 +20,22 @@ public class ScopeUtilTest
     }
 
     /**
-     * Test insertion of scopes filling the fields
+     * When inserting scopes, test that the Contactable__c field is filled taking in consideration this fields:
      *  - PrimaryEmail__c
      *  - HasOptedOutOfEmail__c
      *  - PrimaryPhone__c
+     * Test that the field SincronizarMC__pc of the personal accounts is also filled correctly depending on 
+     * the Contactable__c field of the related Scope
+     * 
+     * Also test that the field HashedId__c of the Scope is generated correctly.
      * 
      * In scope, 2 should be contactables and 2 not contactables
      * In contact, all should be sync MC because of the 2 scopes contactable
      * 
      * @author nts (agonzalezisasi)
      * @date 30/11/2020
+     * 
+     * @change 15/12/2020 - nts (agonzalezisasi) - Add the test for the HashedId__c field
      */
     @isTest
     static void test_insertScopes_ok()
@@ -61,12 +67,18 @@ public class ScopeUtilTest
         Test.stopTest();
 
         if( showDebug ) System.Debug('--------------- ScopeUtilTest.test_insertScopes_ok Results');
-        List<Scope__c> scopesResult = [SELECT Id, Contactable__c FROM Scope__c WHERE Id IN :scopes];
+        List<Scope__c> scopesResult = [SELECT Id, Contactable__c, HashedId__c FROM Scope__c WHERE Id IN :scopes];
+        // Check Contactable
         System.assertEquals(4, scopesResult.size(), 'There should exist 4 new scopes');
         System.assertEquals(true, scopesResult[0].Contactable__c, 'The first one should be Contactable');
         System.assertEquals(true, scopesResult[1].Contactable__c, 'The Second one should be Contactable');
         System.assertEquals(false, scopesResult[2].Contactable__c, 'The Third one should NOT be Contactable');
-        System.assertEquals(false, scopesResult[3].Contactable__c, 'The Third one should NOT be Contactable');
+        System.assertEquals(false, scopesResult[3].Contactable__c, 'The Fourth one should NOT be Contactable');
+        // Check generated Hash Id
+        System.assertNotEquals(null, scopesResult[0].HashedId__c, 'The HashedId for the first scope should not be null');
+        System.assertNotEquals(null, scopesResult[1].HashedId__c, 'The HashedId for the second scope should not be null');
+        System.assertNotEquals(null, scopesResult[2].HashedId__c, 'The HashedId for the third scope should not be null');
+        System.assertNotEquals(null, scopesResult[3].HashedId__c, 'The HashedId for the fourth scope should not be null');
 
         List<Account> accountResults = [SELECT Id, SincronizarMC__pc FROM Account WHERE Id = :a.Id];
         System.assertEquals(1, accountResults.size(), 'There should be 1 account');
@@ -74,7 +86,8 @@ public class ScopeUtilTest
     }
 
     /**
-     * Test update of scopes
+     * When updating scopes, check that the field Contactable__c of the Scope and the field SincronizarMC__pc of the
+     * personal Account are filled correctly (check test_insertScopes_ok for more details about the logic).
      * 
      * In scope, 1 should not be contactables at first (insert) and then change to contactables after update
      * In contact, all should be sync MC because of the 2 scopes contactable

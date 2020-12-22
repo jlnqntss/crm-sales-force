@@ -13,11 +13,7 @@ public without sharing class PreferenceCentreProcessController
         }
         catch (Exception e)
         {
-            ErrorLogUtil.commitError(
-                e,
-                'PreferenceCentreProcessController',
-                contact.Id
-                );
+            ErrorLogUtil.commitError( e, 'PreferenceCentreProcessController', contact.Id );
         }
     }
 
@@ -34,11 +30,7 @@ public without sharing class PreferenceCentreProcessController
         }
         catch (Exception e)
         {
-            ErrorLogUtil.commitError(
-                e,
-                'PreferenceCentreProcessController',
-                memberToInsertList[0].ContactId
-                );
+            ErrorLogUtil.commitError( e, 'PreferenceCentreProcessController', memberToInsertList[0].ContactId );
         }
     }
 
@@ -55,11 +47,29 @@ public without sharing class PreferenceCentreProcessController
         }
         catch (Exception e)
         {
-            ErrorLogUtil.commitError(
-                e,
-                'PreferenceCentreProcessController',
-                membersToDeleteList[0].ContactId
-                );
+            ErrorLogUtil.commitError( e, 'PreferenceCentreProcessController', membersToDeleteList[0].ContactId );
         }
+    }
+
+    /**
+     * This method executes the select with permission to see the scopes. Selector not used because of the permissions
+     * issue.
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2020
+     */
+    public static Scope__c getScopeData(String hashedId) {
+        System.debug('- - - - - PreferenceCentreProcessController.getScopeData - - - - - ');
+
+        Scope__c scope = null;
+
+        // Get the scope by the given hash id
+        //! The condition for "Id" should be removed in the future
+        List<Scope__c> scopes = [SELECT Id, HasOptedOutOfEmail__c FROM Scope__c WHERE Id = :hashedId OR HashedId__c = :hashedId];
+        if( !scopes.isEmpty() ) {
+            scope = scopes[0];
+        }
+    
+        return scope;
     }
 }
