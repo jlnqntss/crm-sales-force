@@ -5,7 +5,7 @@
         <description>Se asigna a Opportunity.StageName el valor Closed won</description>
         <name>UpdateOfferClosedWon</name>
         <label>Cambiar Oferta a Closed Won</label>
-        <locationX>150</locationX>
+        <locationX>175</locationX>
         <locationY>553</locationY>
         <assignmentItems>
             <assignToReference>GetRelatedOffer.StageName</assignToReference>
@@ -14,6 +14,9 @@
                 <stringValue>Closed Won</stringValue>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>UpdateOffer</targetReference>
+        </connector>
     </assignments>
     <description>Automatismo que cada vez que se inserta o actualiza una póliza se actualiza la etapa de la oferta relacionada</description>
     <interviewLabel>Póliza Trigger - After insert/update {!$Flow.CurrentDateTime}</interviewLabel>
@@ -41,8 +44,8 @@
         <description>Deja un registro con el error producido</description>
         <name>LogError</name>
         <label>Registrar error</label>
-        <locationX>426</locationX>
-        <locationY>371</locationY>
+        <locationX>423</locationX>
+        <locationY>345</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -74,8 +77,8 @@
         <description>Ofertas cuyo Opportunity.Id sea igual al Policy__c.OpportunityName__c y cuyo Opportunity.StageName NO sea Closed Won</description>
         <name>GetRelatedOffer</name>
         <label>Conseguir Oferta Relacionada</label>
-        <locationX>178</locationX>
-        <locationY>342</locationY>
+        <locationX>176</locationX>
+        <locationY>339</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>UpdateOfferClosedWon</targetReference>
@@ -102,6 +105,17 @@
         <object>Opportunity</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <description>Actualiza los registros de ofertas con su nuevo Stage</description>
+        <name>UpdateOffer</name>
+        <label>Actualizar Oferta</label>
+        <locationX>425</locationX>
+        <locationY>554</locationY>
+        <faultConnector>
+            <targetReference>LogError</targetReference>
+        </faultConnector>
+        <inputReference>GetRelatedOffer</inputReference>
+    </recordUpdates>
     <start>
         <locationX>50</locationX>
         <locationY>50</locationY>
