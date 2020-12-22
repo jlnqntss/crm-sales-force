@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Birthdate__c</fullName>
+    <description>(OCS/ZE). Fecha de nacimiento (personas) o constitución de la compañía</description>
+    <externalId>false</externalId>
+    <label>Birthdate / Incorporation date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Date</type>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ListaRobinson__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>(OCS/ZE). Indica si el cliente está dado de alta en la Lista Robinson</description>
+    <externalId>false</externalId>
+    <label>Lista Robinson</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

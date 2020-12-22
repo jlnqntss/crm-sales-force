@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Identifier__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(RecordType.DeveloperName, 
+&quot;Boat&quot;,RegistrationNumber__c &amp; &quot; - &quot; &amp; BoatName__c, 
+&quot;Address&quot;,AddressType__c &amp; &quot; &quot; &amp; AddressName__c &amp; &quot; &quot; &amp; AddressNumber__c &amp; &quot; &quot; &amp; AddressAdditionalInfo__c,
+&quot;ElectronicDevice&quot;,ActivityDescription__c,
+&quot;Mobile&quot;,BrandName__c &amp; &quot; &quot; &amp; Model__c,
+&quot;Motor&quot;,RegistrationNumber__c &amp; &quot; - &quot; &amp; BrandName__c &amp; &quot; &quot; &amp; Model__c,
+&quot;Person&quot;,TEXT(DAY(Birthdate__c))+&quot;/&quot;+TEXT(MONTH(Birthdate__c))+&quot;/&quot;+TEXT(YEAR(Birthdate__c)) &amp; &quot; - &quot; &amp; FirstName__c &amp; &quot; &quot; &amp; LastName1__c &amp; &quot; &quot; &amp; LastName2__c ,
+ INFOInsuredObjectCode__c )</formula>
+    <label>Identifier</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

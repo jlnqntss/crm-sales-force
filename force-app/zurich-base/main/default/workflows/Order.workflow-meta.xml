@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Carrito_Abandonado_True</fullName>
+        <description>Update Abandoned cart field to true</description>
+        <field>AbandonedCart__c</field>
+        <literalValue>1</literalValue>
+        <name>Carrito Abandonado True</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Abandoned cart</fullName>
+        <active>true</active>
+        <description>After 1 hour of  inactivity the quote is considered to be abandoned and the quote is marked in order that Marketing Cloud starts the journey of Abandoned Cart. The condition checks if the LastModifiedDateis is within the last 5 seconds</description>
+        <formula>LastModifiedDate+0.0000578704 &gt;= NOW()&amp;&amp;  AbandonedCart__c = false &amp;&amp;  PolicyNum__c==null  &amp;&amp; (RecordType.DeveloperName =&#39;QuoteGI&#39; || RecordType.DeveloperName =&#39;QuoteLife&#39;) &amp;&amp;  EffectiveDate &gt;= TODAY()</formula>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Carrito_Abandonado_True</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <offsetFromField>Order.LastModifiedDate</offsetFromField>
+            <timeLength>1</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+</Workflow>

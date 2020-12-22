@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Abandoned_Lead__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This field is used in order to identify the abandoned cart in step 1</description>
+    <externalId>false</externalId>
+    <label>Abandoned Lead</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

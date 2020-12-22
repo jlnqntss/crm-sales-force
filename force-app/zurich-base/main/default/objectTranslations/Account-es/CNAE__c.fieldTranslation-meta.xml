@@ -1,0 +1,3061 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- CNAE --></label>
+    <name>CNAE__c</name>
+    <picklistValues>
+        <masterLabel>00100</masterLabel>
+        <translation>AGRICULTURA, GANADERIA, CAZA Y SERVICIOS RELACIONADOS CON LAS MISMAS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00111</masterLabel>
+        <translation>Cultivo de cereales (excepto arroz), leguminosas y semillas oleaginosas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00112</masterLabel>
+        <translation>Cultivo de arroz</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00113</masterLabel>
+        <translation>Cultivo de hortalizas, raíces y tubérculos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00114</masterLabel>
+        <translation>Cultivo de caña de azúcar</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00115</masterLabel>
+        <translation>Cultivo de tabaco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00116</masterLabel>
+        <translation>Cultivo de plantas para fibras textiles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00119</masterLabel>
+        <translation>Otros cultivos no perennes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00120</masterLabel>
+        <translation>Cultivos perennes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00121</masterLabel>
+        <translation>Cultivo de la vid</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00122</masterLabel>
+        <translation>Cultivo de frutos tropicales y subtropicales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00123</masterLabel>
+        <translation>Cultivo de cítricos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00124</masterLabel>
+        <translation>Cultivo de frutos con hueso y pepitas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00125</masterLabel>
+        <translation>Cultivo de otros árboles y arbustos frutales y frutos secos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00126</masterLabel>
+        <translation>Cultivo de frutos oleaginosos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00127</masterLabel>
+        <translation>Cultivo de plantas para bebidas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00128</masterLabel>
+        <translation>Cultivo de especias, plantas aromáticas, medicinales y farmacéuticas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00129</masterLabel>
+        <translation>Otros cultivos perennes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00130</masterLabel>
+        <translation>Propagación de plantas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00140</masterLabel>
+        <translation>Producción ganadera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00141</masterLabel>
+        <translation>Explotación de ganado bovino para la producción de leche</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00142</masterLabel>
+        <translation>Explotación de otro ganado bovino y búfalos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00143</masterLabel>
+        <translation>Explotación de caballos y otros equinos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00144</masterLabel>
+        <translation>Explotación de camellos y otros camélidos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00145</masterLabel>
+        <translation>Explotación de ganado ovino y caprino</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00146</masterLabel>
+        <translation>Explotación de ganado porcino</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00147</masterLabel>
+        <translation>Avicultura</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00149</masterLabel>
+        <translation>Otras explotaciones de ganado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00150</masterLabel>
+        <translation>Producción agrícola combinada con la producción ganadera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00161</masterLabel>
+        <translation>Actividades de apoyo a la agricultura</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00162</masterLabel>
+        <translation>Actividades de apoyo a la ganadería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00163</masterLabel>
+        <translation>Actividades de preparación posterior a la cosecha</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00164</masterLabel>
+        <translation>Tratamiento de semillas para reproducción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00170</masterLabel>
+        <translation>Caza, captura de animales y servicios relacionados con las mismas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00200</masterLabel>
+        <translation>Silvicultura y explotación forestal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00210</masterLabel>
+        <translation>Silvicultura y otras actividades forestales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00220</masterLabel>
+        <translation>Explotación de la madera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00230</masterLabel>
+        <translation>Recolección de productos silvestres, excepto madera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00240</masterLabel>
+        <translation>Servicios de apoyo a la silvicultura</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00300</masterLabel>
+        <translation>PESCA Y ACUICULTURA</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00310</masterLabel>
+        <translation>Pesca</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00311</masterLabel>
+        <translation>Pesca marina</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00312</masterLabel>
+        <translation>Pesca en agua dulce</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00320</masterLabel>
+        <translation>Acuicultura</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00321</masterLabel>
+        <translation>Acuicultura marina</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00322</masterLabel>
+        <translation>Acuicultura en agua dulce</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00500</masterLabel>
+        <translation>EXTRACCION DE ANTRACITA, HULLA Y LIGNITO</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00510</masterLabel>
+        <translation>Extracción de antracita y hulla</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00520</masterLabel>
+        <translation>Extracción de lignito</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00600</masterLabel>
+        <translation>Extracción de crudo de petróleo y gas natural</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00610</masterLabel>
+        <translation>Extracción de crudo de petróleo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00620</masterLabel>
+        <translation>Extracción de gas natural</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00700</masterLabel>
+        <translation>EXTRACCIÓN DE MINERALES METALICOS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00710</masterLabel>
+        <translation>Extracción de minerales de hierro</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00720</masterLabel>
+        <translation>Extracción de minerales metálicos no férreos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00721</masterLabel>
+        <translation>Extracción de minerales de uranio y torio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00729</masterLabel>
+        <translation>Extracción de otros minerales metálicos no férreos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00800</masterLabel>
+        <translation>Otras industrias extractivas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00810</masterLabel>
+        <translation>Extracción de piedra, arena y arcilla</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00811</masterLabel>
+        <translation>Extracción de piedra ornamental y para la construcción, piedra caliza, yeso, creta y pizarra</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00812</masterLabel>
+        <translation>Extracción de gravas y arenas; extracción de arcilla y caolín</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00891</masterLabel>
+        <translation>Extracción de minerales para productos químicos y fertilizantes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00892</masterLabel>
+        <translation>Extracción de turba</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00893</masterLabel>
+        <translation>Extracción de sal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00899</masterLabel>
+        <translation>Otras industrias extractivas n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00910</masterLabel>
+        <translation>Actividades de apoyo a la extracción de petróleo y gas natural</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>00990</masterLabel>
+        <translation>Actividades de apoyo a otras industrias extractivas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01000</masterLabel>
+        <translation>Industria de la alimentación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01010</masterLabel>
+        <translation>Procesado y conservación de carne y elaboración de productos cárnicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01011</masterLabel>
+        <translation>Procesado y conservación de carne</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01012</masterLabel>
+        <translation>Procesado y conservación de volatería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01013</masterLabel>
+        <translation>Elaboración de productos cárnicos y de volatería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01020</masterLabel>
+        <translation>Procesado y conservación de pescados, crustáceos y moluscos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01021</masterLabel>
+        <translation>Procesado de pescados, crustáceos y moluscos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01022</masterLabel>
+        <translation>Fabricación de conservas de pescado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01030</masterLabel>
+        <translation>Procesado y conservación de frutas y hortalizas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01031</masterLabel>
+        <translation>Procesado y conservación de patatas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01032</masterLabel>
+        <translation>Elaboración de zumos de frutas y hortalizas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01039</masterLabel>
+        <translation>Otro procesado y conservación de frutas y hortalizas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01040</masterLabel>
+        <translation>Fabricación de aceites y grasas vegetales y animales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01042</masterLabel>
+        <translation>Fabricación de margarina y grasas comestibles similares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01043</masterLabel>
+        <translation>Fabricación de aceite de oliva</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01044</masterLabel>
+        <translation>Fabricación de otros aceites y grasas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01050</masterLabel>
+        <translation>Fabricación de productos lácteos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01052</masterLabel>
+        <translation>Elaboración de helados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01053</masterLabel>
+        <translation>Fabricación de quesos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01054</masterLabel>
+        <translation>Preparación de leche y otros productos lácteos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01060</masterLabel>
+        <translation>Fabricación de productos de molinería, almidones y productos amiláceos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01061</masterLabel>
+        <translation>Fabricación de productos de molinería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01062</masterLabel>
+        <translation>Fabricación de almidones y productos amiláceos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01070</masterLabel>
+        <translation>Fabricación de productos de panadería y pastas alimenticias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01071</masterLabel>
+        <translation>Fabricación de pan y de productos frescos de panadería y pastelería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01072</masterLabel>
+        <translation>Fabricación de galletas y productos de panadería y pastelería de larga duración</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01073</masterLabel>
+        <translation>Fabricación de pastas alimenticias, cuscús y productos similares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01080</masterLabel>
+        <translation>Fabricación de otros productos alimenticios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01081</masterLabel>
+        <translation>Fabricación de azúcar</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01082</masterLabel>
+        <translation>Fabricación de cacao, chocolate y productos de confitería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01083</masterLabel>
+        <translation>Elaboración de café, té e infusiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01084</masterLabel>
+        <translation>Elaboración de especias, salsas y condimentos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01085</masterLabel>
+        <translation>Elaboración de platos y comidas preparados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01086</masterLabel>
+        <translation>Elaboración de preparados alimenticios homogeneizados y alimentos dietéticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01089</masterLabel>
+        <translation>Elaboración de otros productos alimenticios n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01090</masterLabel>
+        <translation>Fabricación de productos para la alimentación animal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01091</masterLabel>
+        <translation>Fabricación de productos para la alimentación de animales de granja</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01092</masterLabel>
+        <translation>Fabricación de productos para la alimentación de animales de compañía</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01100</masterLabel>
+        <translation>Fabricación de bebidas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01101</masterLabel>
+        <translation>Destilación, rectificación y mezcla de bebidas alcohólicas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01102</masterLabel>
+        <translation>Elaboración de vinos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01103</masterLabel>
+        <translation>Elaboración de sidra y otras bebidas fermentadas a partir de frutas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01104</masterLabel>
+        <translation>Elaboración de otras bebidas no destiladas, procedentes de la fermentación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01105</masterLabel>
+        <translation>Fabricación de cerveza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01106</masterLabel>
+        <translation>Fabricación de malta</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01107</masterLabel>
+        <translation>Fabricación de bebidas no alcohólicas; producción de aguas minerales y otras aguas embotelladas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01200</masterLabel>
+        <translation>Industria del tabaco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01300</masterLabel>
+        <translation>Industria textil</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01310</masterLabel>
+        <translation>Preparación e hilado de fibras textiles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01320</masterLabel>
+        <translation>Fabricación de tejidos textiles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01330</masterLabel>
+        <translation>Acabado de textiles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01390</masterLabel>
+        <translation>Fabricación de otros productos textiles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01391</masterLabel>
+        <translation>Fabricación de tejidos de punto</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01392</masterLabel>
+        <translation>Fabricación de artículos confeccionados con textiles, excepto prendas de vestir</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01393</masterLabel>
+        <translation>Fabricación de alfombras y moquetas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01394</masterLabel>
+        <translation>Fabricación de cuerdas, cordeles, bramantes y redes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01395</masterLabel>
+        <translation>Fabricación de telas no tejidas y artículos confeccionados con ellas, excepto prendas de vestir</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01396</masterLabel>
+        <translation>Fabricación de otros productos textiles de uso técnico e industrial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01399</masterLabel>
+        <translation>Fabricación de otros productos textiles n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01400</masterLabel>
+        <translation>Confección de prendas de vestir</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01411</masterLabel>
+        <translation>Confección de prendas de vestir de cuero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01412</masterLabel>
+        <translation>Confección de ropa de trabajo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01413</masterLabel>
+        <translation>Confección de otras prendas de vestir exteriores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01414</masterLabel>
+        <translation>Confección de ropa interior</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01419</masterLabel>
+        <translation>Confección de otras prendas de vestir y accesorios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01420</masterLabel>
+        <translation>Fabricación de artículos de peletería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01430</masterLabel>
+        <translation>Confección de prendas de vestir de punto</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01431</masterLabel>
+        <translation>Confección de calcetería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01439</masterLabel>
+        <translation>Confección de otras prendas de vestir de punto</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01500</masterLabel>
+        <translation>Industria del cuero y calzado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01511</masterLabel>
+        <translation>Preparación, curtido y acabado del cuero; preparación y teñido de pieles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01512</masterLabel>
+        <translation>Fabricación de artículos de marroquinería, viaje y de guarnicionería y talabartería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01520</masterLabel>
+        <translation>Fabricación de calzado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01600</masterLabel>
+        <translation>INDUSTRIA DE LA MADERA Y DEL CORCHO, EXCEPTO MUEBLES; CESTERIA Y ESPARTERIA</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01610</masterLabel>
+        <translation>Aserrado y cepillado de la madera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01621</masterLabel>
+        <translation>Fabricación de chapas y tableros de madera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01622</masterLabel>
+        <translation>Fabricación de suelos de madera ensamblados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01623</masterLabel>
+        <translation>Fabricación de otras estructuras de madera y piezas de carpintería y ebanistería para la construcción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01624</masterLabel>
+        <translation>Fabricación de envases y embalajes de madera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01629</masterLabel>
+        <translation>Fabricación de otros productos de madera; artículos de corcho, cestería y espartería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01700</masterLabel>
+        <translation>INDUSTRIA DEL PAPEL</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01710</masterLabel>
+        <translation>Fabricación de pasta papelera, papel y cartón</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01711</masterLabel>
+        <translation>Fabricación de pasta papelera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01712</masterLabel>
+        <translation>Fabricación de papel y cartón</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01720</masterLabel>
+        <translation>Fabricación de artículos de papel y de cartón</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01721</masterLabel>
+        <translation>Fabricación de papel y cartón ondulados; fabricación de envases y embalajes de papel y cartón</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01722</masterLabel>
+        <translation>Fabricación de artículos de papel y cartón para uso doméstico, sanitario e higiénico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01723</masterLabel>
+        <translation>Fabricación de artículos de papelería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01724</masterLabel>
+        <translation>Fabricación de papeles pintados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01729</masterLabel>
+        <translation>Fabricación de otros artículos de papel y cartón</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01800</masterLabel>
+        <translation>ARTES GRAFICAS Y REPRODUCCION DE SOPORTES GRABADOS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01810</masterLabel>
+        <translation>Artes gráficas y servicios relacionados con las mismas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01811</masterLabel>
+        <translation>Impresión de periódicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01812</masterLabel>
+        <translation>Otras actividades de impresión y artes gráficas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01813</masterLabel>
+        <translation>Servicios de preimpresión y preparación de soportes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01814</masterLabel>
+        <translation>Encuadernación y servicios relacionados con la misma</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01820</masterLabel>
+        <translation>Reproducción de soportes grabados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01900</masterLabel>
+        <translation>COQUERIAS Y REFINO DE PETROLEO</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01910</masterLabel>
+        <translation>Coquerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>01920</masterLabel>
+        <translation>Refino de petróleo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02000</masterLabel>
+        <translation>INDUSTRIA QUIMICA</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02010</masterLabel>
+        <translation>Fabricación de productos químicos básicos, compuestos nitrogenados, fertilizantes, plásticos y caucho sintético en formas primarias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02011</masterLabel>
+        <translation>Fabricación de gases industriales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02012</masterLabel>
+        <translation>Fabricación de colorantes y pigmentos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02013</masterLabel>
+        <translation>Fabricación de otros productos básicos de química inorgánica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02014</masterLabel>
+        <translation>Fabricación de otros productos básicos de química orgánica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02015</masterLabel>
+        <translation>Fabricación de fertilizantes y compuestos nitrogenados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02016</masterLabel>
+        <translation>Fabricación de plásticos en formas primarias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02017</masterLabel>
+        <translation>Fabricación de caucho sintético en formas primarias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02020</masterLabel>
+        <translation>Fabricación de pesticidas y otros productos agroquímicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02030</masterLabel>
+        <translation>Fabricación de pinturas, barnices y revestimientos similares; tintas de imprenta y masillas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02040</masterLabel>
+        <translation>Fabricación de jabones, detergentes y otros artículos de limpieza y abrillantamiento. Fabricación de perfumes y cosméticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02041</masterLabel>
+        <translation>Fabricación de jabones, detergentes y otros artículos de limpieza y abrillantamiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02042</masterLabel>
+        <translation>Fabricación de perfumes y cosméticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02050</masterLabel>
+        <translation>Fabricación de otros productos químicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02051</masterLabel>
+        <translation>Fabricación de explosivos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02052</masterLabel>
+        <translation>Fabricación de colas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02053</masterLabel>
+        <translation>Fabricación de aceites esenciales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02059</masterLabel>
+        <translation>Fabricación de otros productos químicos n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02060</masterLabel>
+        <translation>Fabricación de fibras artificiales y sintéticas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02110</masterLabel>
+        <translation>Fabricación de productos farmacéuticos de base</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02120</masterLabel>
+        <translation>Fabricación de especialidades farmacéuticas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02200</masterLabel>
+        <translation>FABRICACION DE PRODUCTOS DE CAUCHO Y PLÁSTICOS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02210</masterLabel>
+        <translation>Fabricación de productos de caucho</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02211</masterLabel>
+        <translation>Fabricación de neumáticos y cámaras de caucho; reconstrucción y recauchutado de neumáticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02219</masterLabel>
+        <translation>Fabricación de otros productos de caucho</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02220</masterLabel>
+        <translation>Fabricación de productos de plástico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02221</masterLabel>
+        <translation>Fabricación de placas, hojas, tubos y perfiles de plástico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02222</masterLabel>
+        <translation>Fabricación de envases y embalajes de plástico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02223</masterLabel>
+        <translation>Fabricación de productos de plástico para la construcción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02229</masterLabel>
+        <translation>Fabricación de otros productos de plástico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02300</masterLabel>
+        <translation>FABRICACION DE OTROS PRODUCTOS MINERALES NO METÁLICOS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02310</masterLabel>
+        <translation>Fabricación de vidrio y productos de vidrio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02311</masterLabel>
+        <translation>Fabricación de vidrio plano</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02312</masterLabel>
+        <translation>Manipulado y transformación de vidrio plano</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02313</masterLabel>
+        <translation>Fabricación de vidrio hueco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02314</masterLabel>
+        <translation>Fabricación de fibra de vidrio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02319</masterLabel>
+        <translation>Fabricación y manipulado de otro vidrio, incluido el vidrio técnico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02320</masterLabel>
+        <translation>Fabricación de productos cerámicos refractarios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02331</masterLabel>
+        <translation>Fabricación de azulejos y baldosas de cerámica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02332</masterLabel>
+        <translation>Fabricación de ladrillos, tejas y productos de tierras cocidas para la construcción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02340</masterLabel>
+        <translation>Fabricación de otros productos cerámicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02341</masterLabel>
+        <translation>Fabricación de artículos cerámicos de uso doméstico y ornamental</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02342</masterLabel>
+        <translation>Fabricación de aparatos sanitarios cerámicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02343</masterLabel>
+        <translation>Fabricación de aisladores y piezas aislantes de material cerámico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02344</masterLabel>
+        <translation>Fabricación de otros productos cerámicos de uso técnico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02349</masterLabel>
+        <translation>Fabricación de otros productos cerámicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02350</masterLabel>
+        <translation>Fabricación de cemento, cal y yeso</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02351</masterLabel>
+        <translation>Fabricación de cemento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02352</masterLabel>
+        <translation>Fabricación de cal y yeso</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02360</masterLabel>
+        <translation>Fabricación de elementos de hormigón, cemento y yeso</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02361</masterLabel>
+        <translation>Fabricación de elementos de hormigón para la construcción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02362</masterLabel>
+        <translation>Fabricación de elementos de yeso para la construcción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02363</masterLabel>
+        <translation>Fabricación de hormigón fresco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02364</masterLabel>
+        <translation>Fabricación de mortero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02365</masterLabel>
+        <translation>Fabricación de fibrocemento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02369</masterLabel>
+        <translation>Fabricación de otros productos de hormigón, yeso y cemento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02370</masterLabel>
+        <translation>Corte, tallado y acabado de la piedra</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02390</masterLabel>
+        <translation>Fabricación de productos abrasivos y productos minerales no metálicos n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02391</masterLabel>
+        <translation>Fabricación de productos abrasivos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02399</masterLabel>
+        <translation>Fabricación de otros productos minerales no metálicos n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02400</masterLabel>
+        <translation>Metalurgia; fabricación de productos de hierro, acero y ferroaleaciones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02410</masterLabel>
+        <translation>Fabricación de productos básicos de hierro, acero y ferroaleaciones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02420</masterLabel>
+        <translation>Fabricación de tubos, tuberías, perfiles huecos y sus accesorios, de acero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02430</masterLabel>
+        <translation>Fabricación de otros productos de primera transformación del acero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02431</masterLabel>
+        <translation>Estirado en frío</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02432</masterLabel>
+        <translation>Laminación en frío</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02433</masterLabel>
+        <translation>Producción de perfiles en frío por conformación con plegado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02434</masterLabel>
+        <translation>Trefilado en frío</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02440</masterLabel>
+        <translation>Producción de metales preciosos y de otros metales no férreos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02441</masterLabel>
+        <translation>Producción de metales preciosos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02442</masterLabel>
+        <translation>Producción de aluminio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02443</masterLabel>
+        <translation>Producción de plomo, zinc y estaño</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02444</masterLabel>
+        <translation>Producción de cobre</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02445</masterLabel>
+        <translation>Producción de otros metales no férreos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02446</masterLabel>
+        <translation>Procesamiento de combustibles nucleares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02450</masterLabel>
+        <translation>Fundición de metales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02451</masterLabel>
+        <translation>Fundición de hierro</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02452</masterLabel>
+        <translation>Fundición de acero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02453</masterLabel>
+        <translation>Fundición de metales ligeros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02454</masterLabel>
+        <translation>Fundición de otros metales no férreos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02500</masterLabel>
+        <translation>FABRICACION DE PRODUCTOS METALICOS, EXCEPTO MAQUINARIA Y EQUIPO</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02511</masterLabel>
+        <translation>Fabricación de estructuras metálicas y sus componentes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02512</masterLabel>
+        <translation>Fabricación de carpintería metálica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02520</masterLabel>
+        <translation>Fabricación de cisternas, grandes depósitos y contenedores de metal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02521</masterLabel>
+        <translation>Fabricación de radiadores y calderas para calefacción central</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02529</masterLabel>
+        <translation>Fabricación de otras cisternas, grandes depósitos y contenedores de metal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02530</masterLabel>
+        <translation>Fabricación de generadores de vapor, excepto calderas para calefacción central</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02540</masterLabel>
+        <translation>Fabricación de armas y municiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02550</masterLabel>
+        <translation>Forja, estampación y embutición de metales; metalurgia de polvos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02560</masterLabel>
+        <translation>Tratamiento y revestimiento de metales. Ingeniería mecánica por cuenta de terceros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02561</masterLabel>
+        <translation>Tratamiento y revestimiento de metales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02562</masterLabel>
+        <translation>Ingeniería mecánica por cuenta de terceros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02570</masterLabel>
+        <translation>Fabricación de artículos de cuchillería y cubertería, herramientas y ferretería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02571</masterLabel>
+        <translation>Fabricación de artículos de cuchillería y cubertería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02572</masterLabel>
+        <translation>Fabricación de cerraduras y herrajes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02573</masterLabel>
+        <translation>Fabricación de herramientas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02591</masterLabel>
+        <translation>Fabricación de bidones y toneles de hierro o acero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02592</masterLabel>
+        <translation>Fabricación de envases y embalajes metálicos ligeros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02593</masterLabel>
+        <translation>Fabricación de productos de alambre, cadenas y muelles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02594</masterLabel>
+        <translation>Fabricación de pernos y productos de tornillería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02599</masterLabel>
+        <translation>Fabricación de otros productos metálicos n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02600</masterLabel>
+        <translation>Fabricación de productos informáticos, electrónicos y ópticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02611</masterLabel>
+        <translation>Fabricación de componentes electrónicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02612</masterLabel>
+        <translation>Fabricación de circuitos impresos ensamblados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02620</masterLabel>
+        <translation>Fabricación de ordenadores y equipos periféricos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02630</masterLabel>
+        <translation>Fabricación de equipos de telecomunicaciones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02640</masterLabel>
+        <translation>Fabricación de productos electrónicos de consumo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02651</masterLabel>
+        <translation>Fabricación de instrumentos y aparatos de medida, verificación y navegación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02652</masterLabel>
+        <translation>Fabricación de relojes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02660</masterLabel>
+        <translation>Fabricación de equipos de radiación, electromédicos y electroterapéuticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02670</masterLabel>
+        <translation>Fabricación de instrumentos de óptica y equipo fotográfico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02680</masterLabel>
+        <translation>Fabricación de soportes magnéticos y ópticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02700</masterLabel>
+        <translation>Fabricación de material y equipo eléctrico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02711</masterLabel>
+        <translation>Fabricación de motores, generadores y transformadores eléctricos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02712</masterLabel>
+        <translation>Fabricación de aparatos de distribución y control eléctrico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02720</masterLabel>
+        <translation>Fabricación de pilas y acumuladores eléctricos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02731</masterLabel>
+        <translation>Fabricación de cables de fibra óptica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02732</masterLabel>
+        <translation>Fabricación de otros hilos y cables electrónicos y eléctricos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02733</masterLabel>
+        <translation>Fabricación de dispositivos de cableado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02740</masterLabel>
+        <translation>Fabricación de lámparas y aparatos eléctricos de iluminación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02750</masterLabel>
+        <translation>Fabricación de aparatos domésticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02751</masterLabel>
+        <translation>Fabricación de electrodomésticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02752</masterLabel>
+        <translation>Fabricación de aparatos domésticos no eléctricos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02790</masterLabel>
+        <translation>Fabricación de otro material y equipo eléctrico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02800</masterLabel>
+        <translation>Fabricación de maquinaria y equipo n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02811</masterLabel>
+        <translation>Fabricación de motores y turbinas, excepto los destinados a aeronaves, vehículos automóviles y ciclomotores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02812</masterLabel>
+        <translation>Fabricación de equipos de transmisión hidráulica y neumática</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02813</masterLabel>
+        <translation>Fabricación de otras bombas y compresores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02814</masterLabel>
+        <translation>Fabricación de otra grifería y válvulas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02815</masterLabel>
+        <translation>Fabricación de cojinetes, engranajes y órganos mecánicos de transmisión</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02820</masterLabel>
+        <translation>Fabricación de otra maquinaria de uso general</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02821</masterLabel>
+        <translation>Fabricación de hornos y quemadores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02822</masterLabel>
+        <translation>Fabricación de maquinaria de elevación y manipulación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02823</masterLabel>
+        <translation>Fabricación de máquinas y equipos de oficina, excepto equipos informáticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02824</masterLabel>
+        <translation>Fabricación de herramientas eléctricas manuales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02825</masterLabel>
+        <translation>Fabricación de maquinaria de ventilación y refrigeración no doméstica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02829</masterLabel>
+        <translation>Fabricación de otra maquinaria de uso general n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02830</masterLabel>
+        <translation>Fabricación de maquinaria agraria y forestal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02841</masterLabel>
+        <translation>Fabricación de maquinas herramienta para trabajar el metal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02849</masterLabel>
+        <translation>Fabricación de otras máquinas herramienta</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02890</masterLabel>
+        <translation>Fabricación de otra maquinaria para usos específicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02891</masterLabel>
+        <translation>Fabricación de maquinaria para la industria metalúrgica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02892</masterLabel>
+        <translation>Fabricación de maquinaria para las industrias extractivas y de la construcción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02893</masterLabel>
+        <translation>Fabricación de maquinaria para la industria de la alimentación, bebidas y tabaco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02894</masterLabel>
+        <translation>Fabricación de maquinaria para las industrias textil, de la confección y del cuero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02895</masterLabel>
+        <translation>Fabricación de maquinaria para la industria del papel y del cartón</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02896</masterLabel>
+        <translation>Fabricación de maquinaria para las industrias del plástico y del caucho</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02899</masterLabel>
+        <translation>Fabricación de otra maquinaria para usos específicos n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02900</masterLabel>
+        <translation>Fabricación de vehículos de motor, remolques y semirremolques</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02910</masterLabel>
+        <translation>Fabricación de vehículos de motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02920</masterLabel>
+        <translation>Fabricación de carrocerías para vehículos de motor; fabricación de remolques y semirremolques</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02930</masterLabel>
+        <translation>Fabricación de componentes, piezas y accesorios para vehículos de motor.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02931</masterLabel>
+        <translation>Fabricación de equipos eléctricos y electrónicos para vehículos de motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02932</masterLabel>
+        <translation>Fabricación de otros componentes, piezas y accesorios para vehículos de motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03000</masterLabel>
+        <translation>FABRICACION DE OTRO MATERIAL DE TRANSPORTE</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03010</masterLabel>
+        <translation>Construcción naval</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03011</masterLabel>
+        <translation>Construcción de barcos y estructuras flotantes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03012</masterLabel>
+        <translation>Construcción de embarcaciones de recreo y deporte</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03020</masterLabel>
+        <translation>Fabricación de locomotoras y material ferroviario</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03030</masterLabel>
+        <translation>Construcción aeronáutica y espacial y su maquinaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03040</masterLabel>
+        <translation>Fabricación de vehículos militares de combate</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03090</masterLabel>
+        <translation>Fabricación de material de transporte n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03091</masterLabel>
+        <translation>Fabricación de motocicletas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03092</masterLabel>
+        <translation>Fabricación de bicicletas y de vehículos para personas con discapacidad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03099</masterLabel>
+        <translation>Fabricación de otro material de transporte n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03100</masterLabel>
+        <translation>Fabricación de muebles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03101</masterLabel>
+        <translation>Fabricación de muebles de oficina y de establecimientos comerciales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03102</masterLabel>
+        <translation>Fabricación de muebles de cocina</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03103</masterLabel>
+        <translation>Fabricación de colchones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03109</masterLabel>
+        <translation>Fabricación de otros muebles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03200</masterLabel>
+        <translation>Otras industrias manufactureras</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03210</masterLabel>
+        <translation>Fabricación de artículos de joyería, bisutería y similares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03211</masterLabel>
+        <translation>Fabricación de monedas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03212</masterLabel>
+        <translation>Fabricación de artículos de joyería y artículos similares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03213</masterLabel>
+        <translation>Fabricación de artículos de bisutería y artículos similares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03220</masterLabel>
+        <translation>Fabricación de instrumentos musicales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03230</masterLabel>
+        <translation>Fabricación de artículos de deporte</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03240</masterLabel>
+        <translation>Fabricación de juegos y juguetes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03250</masterLabel>
+        <translation>Fabricación de instrumentos y suministros médicos y odontológicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03290</masterLabel>
+        <translation>Industrias manufactureras n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03291</masterLabel>
+        <translation>Fabricación de escobas, brochas y cepillos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03299</masterLabel>
+        <translation>Otras industrias manufactureras n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03311</masterLabel>
+        <translation>Reparación de productos metálicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03312</masterLabel>
+        <translation>Reparación de maquinaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03313</masterLabel>
+        <translation>Reparación de equipos electrónicos y ópticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03314</masterLabel>
+        <translation>Reparación de equipos eléctricos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03315</masterLabel>
+        <translation>Reparación y mantenimiento naval</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03316</masterLabel>
+        <translation>Reparación y mantenimiento aeronáutico y espacial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03317</masterLabel>
+        <translation>Reparación y mantenimiento de otro material de transporte</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03319</masterLabel>
+        <translation>Reparación de otros equipos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03320</masterLabel>
+        <translation>Instalación de máquinas y equipos industriales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03500</masterLabel>
+        <translation>Suministro de energía eléctrica, gas, vapor y aire acondicionado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03510</masterLabel>
+        <translation>Producción, transporte y distribución de energía eléctrica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03512</masterLabel>
+        <translation>Transporte de energía eléctrica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03513</masterLabel>
+        <translation>Distribución de energía eléctrica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03514</masterLabel>
+        <translation>Comercio de energía eléctrica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03515</masterLabel>
+        <translation>Producción de energía hidroeléctrica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03516</masterLabel>
+        <translation>Producción de energía eléctrica de origen térmico convencional</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03517</masterLabel>
+        <translation>Producción de energía eléctrica de origen nuclear</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03518</masterLabel>
+        <translation>Producción de energía eléctrica de origen eólico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03519</masterLabel>
+        <translation>Producción de energía eléctrica de otros tipos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03521</masterLabel>
+        <translation>Producción de gas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03522</masterLabel>
+        <translation>Distribución por tubería de combustibles gaseosos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03523</masterLabel>
+        <translation>Comercio de gas por tubería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03530</masterLabel>
+        <translation>Suministro de vapor y aire acondicionado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03600</masterLabel>
+        <translation>Captación, depuración y distribución de agua</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03700</masterLabel>
+        <translation>Recogida y tratamiento de aguas residuales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03800</masterLabel>
+        <translation>Recogida, tratamiento y eliminación de residuos; valorización</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03811</masterLabel>
+        <translation>Recogida de residuos no peligrosos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03812</masterLabel>
+        <translation>Recogida de residuos peligrosos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03821</masterLabel>
+        <translation>Tratamiento y eliminación de residuos no peligrosos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03822</masterLabel>
+        <translation>Tratamiento y eliminación de residuos peligrosos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03831</masterLabel>
+        <translation>Separación y clasificación de materiales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03832</masterLabel>
+        <translation>Valorización de materiales ya clasificados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03900</masterLabel>
+        <translation>Actividades de descontaminación y otros servicios de gestión de residuos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04100</masterLabel>
+        <translation>Construcción de edificios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04110</masterLabel>
+        <translation>Promoción inmobiliaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04120</masterLabel>
+        <translation>Construcción de edificios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04121</masterLabel>
+        <translation>Construcción de edificios residenciales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04122</masterLabel>
+        <translation>Construcción de edificios no residenciales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04200</masterLabel>
+        <translation>Ingeniería civil</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04211</masterLabel>
+        <translation>Construcción de carreteras y autopistas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04212</masterLabel>
+        <translation>Construcción de vías férreas de superficie y subterráneas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04213</masterLabel>
+        <translation>Construcción de puentes y túneles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04221</masterLabel>
+        <translation>Construcción de redes para fluidos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04222</masterLabel>
+        <translation>Construcción de redes eléctricas y de telecomunicaciones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04291</masterLabel>
+        <translation>Obras hidráulicas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04299</masterLabel>
+        <translation>Construcción de otros proyectos de ingeniería civil n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04310</masterLabel>
+        <translation>Demolición y preparación de terrenos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04311</masterLabel>
+        <translation>Demolición</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04312</masterLabel>
+        <translation>Preparación de terrenos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04313</masterLabel>
+        <translation>Perforaciones y sondeos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04321</masterLabel>
+        <translation>Instalaciones eléctricas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04322</masterLabel>
+        <translation>Fontanería, instalaciones de sistemas de calefacción y aire acondicionado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04329</masterLabel>
+        <translation>Otras instalaciones en obras de construcción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04330</masterLabel>
+        <translation>Acabado de edificios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04331</masterLabel>
+        <translation>Revocamiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04332</masterLabel>
+        <translation>Instalación de carpintería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04333</masterLabel>
+        <translation>Revestimiento de suelos y paredes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04334</masterLabel>
+        <translation>Pintura y acristalamiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04339</masterLabel>
+        <translation>Otro acabado de edificios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04391</masterLabel>
+        <translation>Construcción de cubiertas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04399</masterLabel>
+        <translation>Otras actividades de construcción especializada n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04500</masterLabel>
+        <translation>VENTA Y REPARACION DE VEHICULOS DE MOTOR Y MOTOCICLETAS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04510</masterLabel>
+        <translation>Venta de vehículos de motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04511</masterLabel>
+        <translation>Venta de automóviles y vehículos de motor ligeros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04519</masterLabel>
+        <translation>Venta de otros vehículos de motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04520</masterLabel>
+        <translation>Mantenimiento y reparación de vehículos de motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04530</masterLabel>
+        <translation>Comerció de repuestos y accesorios de vehículos de motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04531</masterLabel>
+        <translation>Comercio al por mayor de repuestos y accesorios de vehículos de motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04532</masterLabel>
+        <translation>Comercio al por menor de repuestos y accesorios de vehículos de motor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04540</masterLabel>
+        <translation>Venta, mantenimiento y reparación de motocicletas y de sus repuestos y accesorios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04600</masterLabel>
+        <translation>COMERCIO AL POR MAYOR E INTERMEDIARIOS DEL COMERCIO, EXCEPTO DE VEHICULOS DE MOTOR Y MOTOCICLETAS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04610</masterLabel>
+        <translation>Intermediarios del comercio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04611</masterLabel>
+        <translation>Intermediarios del comercio de materias primas agrarias, animales vivos, materias primas textiles y productos semielaborados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04612</masterLabel>
+        <translation>Intermediarios del comercio de combustibles, minerales, metales y productos químicos industriales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04613</masterLabel>
+        <translation>Intermediarios del comercio de la madera y materiales de construcción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04614</masterLabel>
+        <translation>Intermediarios del comercio de maquinaria, equipo industrial, embarcaciones y aeronaves</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04615</masterLabel>
+        <translation>Intermediarios del comercio de muebles, artículos para el hogar y ferretería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04616</masterLabel>
+        <translation>Intermediarios del comercio de textiles, prendas de vestir, peletería, calzado y artículos de cuero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04617</masterLabel>
+        <translation>Intermediarios del comercio de productos alimenticios, bebidas y tabaco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04618</masterLabel>
+        <translation>Intermediarios del comercio especializados en la venta de otros productos específicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04619</masterLabel>
+        <translation>Intermediarios del comercio de productos diversos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04620</masterLabel>
+        <translation>Comercio al por mayor de materias primas agrarias y de animales vivos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04621</masterLabel>
+        <translation>Comercio al por mayor de cereales, tabaco en rama, simientes y alimentos para animales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04622</masterLabel>
+        <translation>Comercio al por mayor de flores y plantas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04623</masterLabel>
+        <translation>Comercio al por mayor de animales vivos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04624</masterLabel>
+        <translation>Comercio al por mayor de cueros y pieles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04630</masterLabel>
+        <translation>Comercio al por mayor de productos alimenticios, bebidas y tabaco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04631</masterLabel>
+        <translation>Comercio al por mayor de frutas y hortalizas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04632</masterLabel>
+        <translation>Comercio al por mayor de carne y productos cárnicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04633</masterLabel>
+        <translation>Comercio al por mayor de productos lácteos, huevos, aceites y grasas comestibles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04634</masterLabel>
+        <translation>Comercio al por mayor de bebidas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04635</masterLabel>
+        <translation>Comercio al por mayor de productos del tabaco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04636</masterLabel>
+        <translation>Comercio al por mayor de azúcar, chocolate y confitería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04637</masterLabel>
+        <translation>Comercio al por mayor de café, té, cacao y especias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04638</masterLabel>
+        <translation>Comercio al por mayor de pescados, mariscos y otros productos alimenticios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04639</masterLabel>
+        <translation>Comercio al por mayor, no especializado, de productos alimenticios, bebidas y tabaco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04641</masterLabel>
+        <translation>Comercio al por mayor de textiles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04642</masterLabel>
+        <translation>Comercio al por mayor de prendas de vestir y calzado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04643</masterLabel>
+        <translation>Comercio al por mayor de aparatos electrodomésticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04644</masterLabel>
+        <translation>Comercio al por mayor de porcelana, cristalería y artículos de limpieza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04645</masterLabel>
+        <translation>Comercio al por mayor de productos de perfumería y cosmética</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04646</masterLabel>
+        <translation>Comercio al por mayor de productos farmacéuticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04647</masterLabel>
+        <translation>Comercio al por mayor de muebles, alfombras y aparatos de iluminación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04648</masterLabel>
+        <translation>Comercio al por mayor de artículos de relojería y joyería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04649</masterLabel>
+        <translation>Comercio al por mayor de otros artículos de uso doméstico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04651</masterLabel>
+        <translation>Comercio al por mayor de ordenadores, equipos periféricos y programas informáticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04652</masterLabel>
+        <translation>Comercio al por mayor de equipos electrónicos y de telecomunicaciones y sus componentes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04660</masterLabel>
+        <translation>Comercio al por mayor de otra maquinaria, equipos y suministros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04661</masterLabel>
+        <translation>Comercio al por mayor de maquinaria, equipos y suministros agrícolas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04662</masterLabel>
+        <translation>Comercio al por mayor de máquinas herramienta</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04663</masterLabel>
+        <translation>Comercio al por mayor de maquinaria para la minería, la construcción y la ingeniería civil</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04664</masterLabel>
+        <translation>Comercio al por mayor de maquinaria para la industria textil y de máquinas de coser y tricotar</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04665</masterLabel>
+        <translation>Comercio al por mayor de muebles de oficina</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04666</masterLabel>
+        <translation>Comercio al por mayor de otra maquinaria y equipo de oficina</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04669</masterLabel>
+        <translation>Comercio al por mayor de otra maquinaria y equipo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04671</masterLabel>
+        <translation>Comercio al por mayor de combustibles sólidos, líquidos y gaseosos, y productos similares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04672</masterLabel>
+        <translation>Comercio al por mayor de metales y minerales metálicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04673</masterLabel>
+        <translation>Comercio al por mayor de madera, materiales de construcción y aparatos sanitarios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04674</masterLabel>
+        <translation>Comercio al por mayor de ferretería, fontanería y calefacción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04675</masterLabel>
+        <translation>Comercio al por mayor de productos químicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04676</masterLabel>
+        <translation>Comercio al por mayor de otros productos semielaborados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04677</masterLabel>
+        <translation>Comercio al por mayor de chatarra y productos de desecho</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04690</masterLabel>
+        <translation>Comercio al por mayor no especializado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04700</masterLabel>
+        <translation>COMERCIO AL POR MENOR, EXCEPTO DE VEHICULOS DE MOTOR Y MOTOCICLETAS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04710</masterLabel>
+        <translation>Comercio al por menor en establecimientos no especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04711</masterLabel>
+        <translation>Comercio al por menor en establecimientos no especializados, con predominio en productos alimenticios, bebidas y tabaco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04719</masterLabel>
+        <translation>Otro comercio al por menor en establecimientos no especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04720</masterLabel>
+        <translation>Comercio al por menor de productos alimenticios, bebidas y tabaco en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04721</masterLabel>
+        <translation>Comercio al por menor de frutas y hortalizas en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04722</masterLabel>
+        <translation>Comercio al por menor de carne y productos cárnicos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04723</masterLabel>
+        <translation>Comercio al por menor de pescados y mariscos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04724</masterLabel>
+        <translation>Comercio al por menor de pan y productos de panadería, confitería y pastelería en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04725</masterLabel>
+        <translation>Comercio al por menor de bebidas en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04726</masterLabel>
+        <translation>Comercio al por menor de productos de tabaco en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04729</masterLabel>
+        <translation>Otro comercio al por menor de productos alimenticios en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04730</masterLabel>
+        <translation>Comercio al por menor de combustible para la automoción en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04741</masterLabel>
+        <translation>Comercio al por menor de ordenadores, equipos periféricos y programas informáticos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04742</masterLabel>
+        <translation>Comercio al por menor de equipos de telecomunicaciones en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04743</masterLabel>
+        <translation>Comercio al por menor de equipos de audio y vídeo en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04750</masterLabel>
+        <translation>Comercio al por menor de otros artículos de uso doméstico en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04751</masterLabel>
+        <translation>Comercio al por menor de textiles en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04752</masterLabel>
+        <translation>Comercio al por menor de ferretería, pintura y vidrio en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04753</masterLabel>
+        <translation>Comercio al por menor de alfombras, moquetas y revestimientos de paredes y suelos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04754</masterLabel>
+        <translation>Comercio al por menor de aparatos electrodomésticos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04759</masterLabel>
+        <translation>Comercio al por menor de muebles, aparatos de iluminación y otros artículos de uso doméstico en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04761</masterLabel>
+        <translation>Comercio al por menor de libros en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04762</masterLabel>
+        <translation>Comercio al por menor de periódicos y artículos de papelería en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04763</masterLabel>
+        <translation>Comercio al por menor de grabaciones de música y vídeo en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04764</masterLabel>
+        <translation>Comercio al por menor de artículos deportivos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04765</masterLabel>
+        <translation>Comercio al por menor de juegos y juguetes en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04771</masterLabel>
+        <translation>Comercio al por menor de prendas de vestir en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04772</masterLabel>
+        <translation>Comercio al por menor de calzado y artículos de cuero en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04773</masterLabel>
+        <translation>Comercio al por menor de productos farmacéuticos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04774</masterLabel>
+        <translation>Comercio al por menor de artículos médicos y ortopédicos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04775</masterLabel>
+        <translation>Comercio al por menor de productos cosméticos e higiénicos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04776</masterLabel>
+        <translation>Comercio al por menor de flores, plantas, semillas, fertilizantes, animales de compañía y alimentos para los mismos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04777</masterLabel>
+        <translation>Comercio al por menor de artículos de relojería y joyería en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04778</masterLabel>
+        <translation>Otro comercio al por menor de artículos nuevos en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04779</masterLabel>
+        <translation>Comercio al por menor de artículos de segunda mano en establecimientos especializados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04780</masterLabel>
+        <translation>Comercio al por menor en puestos de venta y mercadillos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04781</masterLabel>
+        <translation>Comercio al por menor de productos alimenticios, bebidas y tabaco en puestos de venta y mercadillos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04782</masterLabel>
+        <translation>Comercio al por menor de productos textiles, prendas de vestir y calzado en puestos de venta y mercadillos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04789</masterLabel>
+        <translation>Comercio al por menor de otros productos en puestos de venta y mercadillos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04790</masterLabel>
+        <translation>Comercio al por menor no realizado ni en establecimientos, ni en puestos de venta ni en mercadillos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04791</masterLabel>
+        <translation>Comercio al por menor por correspondencia o Internet</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04799</masterLabel>
+        <translation>Otro comercio al por menor no realizado ni en establecimientos, ni en puestos de venta ni en mercadillos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04910</masterLabel>
+        <translation>Transporte interurbano de pasajeros por ferrocarril</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04920</masterLabel>
+        <translation>Transporte de mercancías por ferrocarril</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04930</masterLabel>
+        <translation>Otro transporte terrestre de pasajeros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04931</masterLabel>
+        <translation>Transporte terrestre urbano y suburbano de pasajeros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04932</masterLabel>
+        <translation>Transporte por taxi</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04939</masterLabel>
+        <translation>Otros tipos de transporte terrestre de pasajeros n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04940</masterLabel>
+        <translation>Transporte de mercancías por carretera y servicios de mudanza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04941</masterLabel>
+        <translation>Transporte de mercancías por carretera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04942</masterLabel>
+        <translation>Servicios de mudanza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04950</masterLabel>
+        <translation>Transporte por tubería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05010</masterLabel>
+        <translation>Transporte marítimo de pasajeros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05020</masterLabel>
+        <translation>Transporte marítimo de mercancías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05030</masterLabel>
+        <translation>Transporte de pasajeros por vías navegables interiores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05040</masterLabel>
+        <translation>Transporte de mercancías por vías navegables interiores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05110</masterLabel>
+        <translation>Transporte aéreo de pasajeros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05121</masterLabel>
+        <translation>Transporte aéreo de mercancías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05122</masterLabel>
+        <translation>Transporte espacial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05210</masterLabel>
+        <translation>Depósito y almacenamiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05221</masterLabel>
+        <translation>Actividades anexas al transporte terrestre</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05222</masterLabel>
+        <translation>Actividades anexas al transporte marítimo y por vías navegables interiores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05223</masterLabel>
+        <translation>Actividades anexas al transporte aéreo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05224</masterLabel>
+        <translation>Manipulación de mercancías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05229</masterLabel>
+        <translation>Otras actividades anexas al transporte</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05300</masterLabel>
+        <translation>Actividades postales y de correo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05310</masterLabel>
+        <translation>Actividades postales sometidas a la obligación del servicio universal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05320</masterLabel>
+        <translation>Otras actividades postales y de correos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05500</masterLabel>
+        <translation>Servicios de alojamiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05510</masterLabel>
+        <translation>Hoteles y alojamientos similares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05520</masterLabel>
+        <translation>Alojamientos turísticos y otros alojamientos de corta estancia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05530</masterLabel>
+        <translation>Campings</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05590</masterLabel>
+        <translation>Otros alojamientos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05610</masterLabel>
+        <translation>Restaurantes y puestos de comidas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05620</masterLabel>
+        <translation>Provisión de comidas preparadas para eventos y otros servicios de comidas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05621</masterLabel>
+        <translation>Provisión de comidas preparadas para eventos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05629</masterLabel>
+        <translation>Otros servicios de comidas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05630</masterLabel>
+        <translation>Establecimientos de bebidas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05800</masterLabel>
+        <translation>Edición</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05811</masterLabel>
+        <translation>Edición de libros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05812</masterLabel>
+        <translation>Edición de directorios y guías de direcciones postales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05813</masterLabel>
+        <translation>Edición de periódicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05814</masterLabel>
+        <translation>Edición de revistas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05819</masterLabel>
+        <translation>Otras actividades editoriales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05821</masterLabel>
+        <translation>Edición de videojuegos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05829</masterLabel>
+        <translation>Edición de otros programas informáticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05912</masterLabel>
+        <translation>Actividades de postproducción cinematográfica, de vídeo y de programas de televisión</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05914</masterLabel>
+        <translation>Actividades de exhibición cinematográfica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05915</masterLabel>
+        <translation>Actividades de producción cinematográfica y de vídeo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05916</masterLabel>
+        <translation>Actividades de producción de programas de televisión</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05917</masterLabel>
+        <translation>Actividades de distribución cinematográfica y de vídeo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05918</masterLabel>
+        <translation>Actividades de distribución de programas de televisión</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05920</masterLabel>
+        <translation>Actividades de grabación de sonido y edición musical</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06010</masterLabel>
+        <translation>Actividades de radiodifusión</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06020</masterLabel>
+        <translation>Actividades de programación y emisión de televisión</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06110</masterLabel>
+        <translation>Telecomunicaciones por cable</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06120</masterLabel>
+        <translation>Telecomunicaciones inalámbricas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06130</masterLabel>
+        <translation>Telecomunicaciones por satélite</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06190</masterLabel>
+        <translation>Otras actividades de telecomunicaciones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06201</masterLabel>
+        <translation>Actividades de programación informática</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06202</masterLabel>
+        <translation>Actividades de consultoría informática</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06203</masterLabel>
+        <translation>Gestión de recursos informáticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06209</masterLabel>
+        <translation>Otros servicios relacionados con las tecnologías de la información y la informática</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06300</masterLabel>
+        <translation>Servicios de información</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06311</masterLabel>
+        <translation>Proceso de datos, hosting y actividades relacionadas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06312</masterLabel>
+        <translation>Portales web</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06391</masterLabel>
+        <translation>Actividades de las agencias de noticias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06399</masterLabel>
+        <translation>Otros servicios de información n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06400</masterLabel>
+        <translation>Servicios financieros, excepto seguros y fondos de pensiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06410</masterLabel>
+        <translation>Intermediación monetaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06411</masterLabel>
+        <translation>Banco central</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06419</masterLabel>
+        <translation>Otra intermediación monetaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06420</masterLabel>
+        <translation>Actividades de las sociedades holding</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06430</masterLabel>
+        <translation>Inversión colectiva, fondos y entidades financieras similares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06490</masterLabel>
+        <translation>Otros servicios financieros, excepto seguros y fondos de pensiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06491</masterLabel>
+        <translation>Arrendamiento financiero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06492</masterLabel>
+        <translation>Otras actividades crediticias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06499</masterLabel>
+        <translation>Otros servicios financieros, excepto seguros y fondos de pensiones n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06500</masterLabel>
+        <translation>Seguros, reaseguros y fondos de pensiones, excepto Seguridad Social obligatoria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06511</masterLabel>
+        <translation>Seguros de vida</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06512</masterLabel>
+        <translation>Seguros distintos de los seguros de vida</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06520</masterLabel>
+        <translation>Reaseguros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06530</masterLabel>
+        <translation>Fondos de pensiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06600</masterLabel>
+        <translation>Actividades auxiliares a los servicios financieros y a los seguros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06610</masterLabel>
+        <translation>Actividades auxiliares a los servicios financieros, excepto seguros y planes de pensiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06611</masterLabel>
+        <translation>Administración de mercados financieros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06612</masterLabel>
+        <translation>Actividades de intermediación en operaciones con valores y otros activos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06619</masterLabel>
+        <translation>Otras actividades auxiliares a los servicios financieros, excepto seguros y fondos de pensiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06620</masterLabel>
+        <translation>Actividades auxiliares a seguros y planes de pensiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06621</masterLabel>
+        <translation>Evaluación de riesgos y daños</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06622</masterLabel>
+        <translation>Actividades de agentes y corredores de seguros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06629</masterLabel>
+        <translation>Otras actividades auxiliares a seguros y fondos de pensiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06630</masterLabel>
+        <translation>Actividades de gestión de fondos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06800</masterLabel>
+        <translation>ACTIVIDADES INMOBILIARIAS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06810</masterLabel>
+        <translation>Compraventa de bienes inmobiliarios por cuenta propia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06820</masterLabel>
+        <translation>Alquiler de bienes inmobiliarios por cuenta propia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06830</masterLabel>
+        <translation>Actividades inmobiliarias por cuenta de terceros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06831</masterLabel>
+        <translation>Agentes de la propiedad inmobiliaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06832</masterLabel>
+        <translation>Gestión y administración de la propiedad inmobiliaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06910</masterLabel>
+        <translation>Actividades jurídicas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06920</masterLabel>
+        <translation>Actividades de contabilidad, teneduría de libros, auditoría y asesoría fiscal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07010</masterLabel>
+        <translation>Actividades de las sedes centrales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07020</masterLabel>
+        <translation>Actividades de consultoría de gestión empresarial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07021</masterLabel>
+        <translation>Relaciones públicas y comunicación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07022</masterLabel>
+        <translation>Otras actividades de consultoría de gestión empresarial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07110</masterLabel>
+        <translation>Servicios técnicos de arquitectura e ingeniería y otras actividades relacionadas con el asesoramiento técnico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07111</masterLabel>
+        <translation>Servicios técnicos de arquitectura</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07112</masterLabel>
+        <translation>Servicios técnicos de ingeniería y otras actividades relacionadas con el asesoramiento técnico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07120</masterLabel>
+        <translation>Ensayos y análisis técnicos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07211</masterLabel>
+        <translation>Investigación y desarrollo experimental en biotecnología</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07219</masterLabel>
+        <translation>Otra investigación y desarrollo experimental en ciencias naturales y técnicas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07220</masterLabel>
+        <translation>Investigación y desarrollo experimental en ciencias sociales y humanidades</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07310</masterLabel>
+        <translation>Publicidad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07311</masterLabel>
+        <translation>Agencias de publicidad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07312</masterLabel>
+        <translation>Servicios de representación de medios de comunicación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07320</masterLabel>
+        <translation>Estudios de mercado y realización de encuestas de opinión pública</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07400</masterLabel>
+        <translation>Otras actividades profesionales, científicas y técnicas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07410</masterLabel>
+        <translation>Actividades de diseño especializado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07420</masterLabel>
+        <translation>Actividades de fotografía</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07430</masterLabel>
+        <translation>Actividades de traducción e interpretación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07490</masterLabel>
+        <translation>Otras actividades profesionales, científicas y técnicas n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07500</masterLabel>
+        <translation>Actividades veterinarias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07711</masterLabel>
+        <translation>Alquiler de automóviles y vehículos de motor ligeros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07712</masterLabel>
+        <translation>Alquiler de camiones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07721</masterLabel>
+        <translation>Alquiler de artículos de ocio y deportivos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07722</masterLabel>
+        <translation>Alquiler de cintas de vídeo y discos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07729</masterLabel>
+        <translation>Alquiler de otros efectos personales y artículos de uso doméstico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07730</masterLabel>
+        <translation>Alquiler de otra maquinaria, equipos y bienes tangibles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07731</masterLabel>
+        <translation>Alquiler de maquinaria y equipo de uso agrícola</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07732</masterLabel>
+        <translation>Alquiler de maquinaria y equipo para la construcción e ingeniería civil</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07733</masterLabel>
+        <translation>Alquiler de maquinaria y equipo de oficina, incluidos ordenadores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07734</masterLabel>
+        <translation>Alquiler de medios de navegación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07735</masterLabel>
+        <translation>Alquiler de medios de transporte aéreo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07739</masterLabel>
+        <translation>Alquiler de otra maquinaria, equipos y bienes tangibles n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07740</masterLabel>
+        <translation>Arrendamiento de la propiedad intelectual y productos similares, excepto trabajos protegidos por los derechos de autor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07810</masterLabel>
+        <translation>Actividades de las agencias de colocación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07820</masterLabel>
+        <translation>Actividades de las empresas de trabajo temporal</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07830</masterLabel>
+        <translation>Otra provisión de recursos humanos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07900</masterLabel>
+        <translation>Actividades de agencias de viaje, operadores turísticos, servicios de reservas y actividades relacionadas con los mismos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07910</masterLabel>
+        <translation>Actividades de agencias de viaje y operadores turísticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07911</masterLabel>
+        <translation>Actividades de las agencias de viajes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07912</masterLabel>
+        <translation>Actividades de los operadores turísticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07990</masterLabel>
+        <translation>Otros servicios de reservas y actividades relacionadas con los mismos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08010</masterLabel>
+        <translation>Actividades de seguridad privada</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08020</masterLabel>
+        <translation>Servicios de sistemas de seguridad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08030</masterLabel>
+        <translation>Actividades de investigación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08110</masterLabel>
+        <translation>Servicios integrales a edificios e instalaciones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08121</masterLabel>
+        <translation>Limpieza general de edificios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08122</masterLabel>
+        <translation>Otras actividades de limpieza industrial y de edificios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08129</masterLabel>
+        <translation>Otras actividades de limpieza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08130</masterLabel>
+        <translation>Actividades de jardinería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08210</masterLabel>
+        <translation>Actividades administrativas y auxiliares de oficina</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08211</masterLabel>
+        <translation>Servicios administrativos combinados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08219</masterLabel>
+        <translation>Actividades de fotocopiado, preparación de documentos y otras actividades especializadas de oficina</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08220</masterLabel>
+        <translation>Actividades de los centros de llamadas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08230</masterLabel>
+        <translation>Organización de convenciones y ferias de muestras</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08291</masterLabel>
+        <translation>Actividades de las agencias de cobros y de información comercial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08292</masterLabel>
+        <translation>Actividades de envasado y empaquetado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08299</masterLabel>
+        <translation>Otras actividades de apoyo a las empresas n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08400</masterLabel>
+        <translation>Administración Pública y defensa; Seguridad Social obligatoria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08410</masterLabel>
+        <translation>Administración Pública y de la política económica y social</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08411</masterLabel>
+        <translation>Actividades generales de la Administración Pública</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08412</masterLabel>
+        <translation>Regulación de las actividades sanitarias, educativas y culturales y otros servicios sociales, excepto Seguridad Social</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08413</masterLabel>
+        <translation>Regulación de la actividad económica y contribución a su mayor eficiencia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08420</masterLabel>
+        <translation>Prestación de servicios a la comunidad en general</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08421</masterLabel>
+        <translation>Asuntos exteriores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08422</masterLabel>
+        <translation>Defensa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08423</masterLabel>
+        <translation>Justicia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08424</masterLabel>
+        <translation>Orden público y seguridad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08425</masterLabel>
+        <translation>Protección civil</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08430</masterLabel>
+        <translation>Seguridad Social obligatoria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08500</masterLabel>
+        <translation>EDUCACION</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08510</masterLabel>
+        <translation>Educación preprimaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08520</masterLabel>
+        <translation>Educación primaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08530</masterLabel>
+        <translation>Educación secundaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08531</masterLabel>
+        <translation>Educación secundaria general</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08532</masterLabel>
+        <translation>Educación secundaria técnica y profesional</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08540</masterLabel>
+        <translation>Educación postsecundaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08541</masterLabel>
+        <translation>Educación postsecundaria no terciaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08543</masterLabel>
+        <translation>Educación universitaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08544</masterLabel>
+        <translation>Educación terciaria no universitaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08550</masterLabel>
+        <translation>Otra educación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08551</masterLabel>
+        <translation>Educación deportiva y recreativa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08552</masterLabel>
+        <translation>Educación cultural</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08553</masterLabel>
+        <translation>Actividades de las escuelas de conducción y pilotaje</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08559</masterLabel>
+        <translation>Otra educación n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08560</masterLabel>
+        <translation>Actividades auxiliares a la educación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08600</masterLabel>
+        <translation>Actividades sanitarias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08610</masterLabel>
+        <translation>Actividades hospitalarias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08621</masterLabel>
+        <translation>Actividades de medicina general</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08622</masterLabel>
+        <translation>Actividades de medicina especializada</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08623</masterLabel>
+        <translation>Actividades odontológicas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08690</masterLabel>
+        <translation>Otras actividades sanitarias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08710</masterLabel>
+        <translation>Asistencia en establecimientos residenciales con cuidados sanitarios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08720</masterLabel>
+        <translation>Asistencia en establecimientos residenciales para personas con discapacidad intelectual, enfermedad mental y drogodependencia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08730</masterLabel>
+        <translation>Asistencia en establecimientos residenciales para personas mayores y con discapacidad física</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08731</masterLabel>
+        <translation>Asistencia en establecimientos residenciales para personas mayores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08732</masterLabel>
+        <translation>Asistencia en establecimientos residenciales para personas con discapacidad física</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08790</masterLabel>
+        <translation>Otras actividades de asistencia en establecimientos residenciales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08800</masterLabel>
+        <translation>Actividades de servicios sociales sin alojamiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08810</masterLabel>
+        <translation>Actividades de servicios sociales sin alojamiento para personas mayores y con discapacidad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08811</masterLabel>
+        <translation>Actividades de servicios sociales sin alojamiento para personas mayores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08812</masterLabel>
+        <translation>Actividades de servicios sociales sin alojamiento para personas con discapacidad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08890</masterLabel>
+        <translation>Otras actividades de servicios sociales sin alojamiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08891</masterLabel>
+        <translation>Actividades de cuidado diurno de niños</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08899</masterLabel>
+        <translation>Otras actividades de servicios sociales sin alojamiento n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09000</masterLabel>
+        <translation>Actividades de creación, artísticas y espectáculos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09001</masterLabel>
+        <translation>Artes escénicas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09002</masterLabel>
+        <translation>Actividades auxiliares a las artes escénicas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09003</masterLabel>
+        <translation>Creación artística y literaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09004</masterLabel>
+        <translation>Gestión de salas de espectáculos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09102</masterLabel>
+        <translation>Actividades de museos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09103</masterLabel>
+        <translation>Gestión de lugares y edificios históricos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09104</masterLabel>
+        <translation>Actividades de los jardines botánicos, parques zoológicos y reservas naturales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09105</masterLabel>
+        <translation>Actividades de bibliotecas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09106</masterLabel>
+        <translation>Actividades archivos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09200</masterLabel>
+        <translation>Actividades de juegos de azar y apuestas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09310</masterLabel>
+        <translation>Actividades deportivas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09311</masterLabel>
+        <translation>Gestión de instalaciones deportivas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09312</masterLabel>
+        <translation>Actividades de los clubes deportivos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09313</masterLabel>
+        <translation>Actividades de los gimnasios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09319</masterLabel>
+        <translation>Otras actividades deportivas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09320</masterLabel>
+        <translation>Actividades recreativas y de entretenimiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09321</masterLabel>
+        <translation>Actividades de los parques de atracciones y los parques temáticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09329</masterLabel>
+        <translation>Otras actividades recreativas y de entretenimiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09400</masterLabel>
+        <translation>ACTIVIDADES ASOCIATIVAS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09410</masterLabel>
+        <translation>Actividades de organizaciones empresariales, profesionales y patronales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09411</masterLabel>
+        <translation>Actividades de organizaciones empresariales y patronales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09412</masterLabel>
+        <translation>Actividades de organizaciones profesionales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09420</masterLabel>
+        <translation>Actividades sindicales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09490</masterLabel>
+        <translation>Otras actividades asociativas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09491</masterLabel>
+        <translation>Actividades de organizaciones religiosas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09492</masterLabel>
+        <translation>Actividades de organizaciones políticas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09499</masterLabel>
+        <translation>Otras actividades asociativas n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09511</masterLabel>
+        <translation>Reparación de ordenadores y equipos periféricos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09512</masterLabel>
+        <translation>Reparación de equipos de comunicación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09521</masterLabel>
+        <translation>Reparación de aparatos electrónicos de audio y vídeo de uso doméstico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09522</masterLabel>
+        <translation>Reparación de aparatos electrodomésticos y de equipos para el hogar y el jardín</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09523</masterLabel>
+        <translation>Reparación de calzado y artículos de cuero</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09524</masterLabel>
+        <translation>Reparación de muebles y artículos de menaje</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09525</masterLabel>
+        <translation>Reparación de relojes y joyería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09529</masterLabel>
+        <translation>Reparación de otros efectos personales y artículos de uso doméstico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09600</masterLabel>
+        <translation>Otros servicios personales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09601</masterLabel>
+        <translation>Lavado y limpieza de prendas textiles y de piel</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09602</masterLabel>
+        <translation>Peluquería y otros tratamientos de belleza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09603</masterLabel>
+        <translation>Pompas fúnebres y actividades relacionadas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09604</masterLabel>
+        <translation>Actividades de mantenimiento físico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09609</masterLabel>
+        <translation>Otros servicios personales n.c.o.p.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09700</masterLabel>
+        <translation>Actividades de los hogares como empleadores de personal doméstico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09900</masterLabel>
+        <translation>Actividades de organizaciones y organismos extraterritoriales</translation>
+    </picklistValues>
+</CustomFieldTranslation>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Entidad Legal</label>
+    <name>LegalEntity__c</name>
+    <picklistValues>
+        <masterLabel>BSSG</masterLabel>
+        <translation><!-- BSSG --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CAN SSGG</masterLabel>
+        <translation><!-- CAN SSGG --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CAS SSGG</masterLabel>
+        <translation><!-- CAS SSGG --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CAS Vida</masterLabel>
+        <translation><!-- CAS Vida --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>DZ Pensiones</masterLabel>
+        <translation><!-- DZ Pensiones --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>EPSV Zurich</masterLabel>
+        <translation><!-- EPSV Zurich --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>General Insurance</masterLabel>
+        <translation><!-- General Insurance --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Life Insurance</masterLabel>
+        <translation><!-- Life Insurance --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Multientidad</masterLabel>
+        <translation><!-- Multientidad --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Todos</masterLabel>
+        <translation><!-- Todos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Zurich</masterLabel>
+        <translation><!-- Zurich --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Zurich Vida</masterLabel>
+        <translation><!-- Zurich Vida --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

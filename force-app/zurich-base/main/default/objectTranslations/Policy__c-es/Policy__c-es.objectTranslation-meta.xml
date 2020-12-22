@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Póliza</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Pólizas</value>
+    </caseValues>
+    <gender>Feminine</gender>
+    <layouts>
+        <layout>Policy Layout</layout>
+        <sections>
+            <label>Datos comerciales</label>
+            <section>Additional codes</section>
+        </sections>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Información económica</label>
+            <section>Economic data</section>
+        </sections>
+        <sections>
+            <label>Fechas clave</label>
+            <section>Key dates</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Número de Póliza</nameFieldLabel>
+</CustomObjectTranslation>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Nueva</fullName>
+        <default>true</default>
+        <label>Nueva</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Asignada</fullName>
+        <default>false</default>
+        <label>Asignada</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Pendiente</fullName>
+        <default>false</default>
+        <label>Pendiente</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Planificada</fullName>
+        <default>false</default>
+        <label>Planificada</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Cerrada</fullName>
+        <default>false</default>
+        <label>Cerrada</label>
+        <closed>true</closed>
+    </standardValue>
+</StandardValueSet>

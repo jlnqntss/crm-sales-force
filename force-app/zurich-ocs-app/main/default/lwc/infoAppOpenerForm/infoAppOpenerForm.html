@@ -1,0 +1,68 @@
+<template>
+  <lightning-card icon-name="standard:apex" title="INFO URL Protocol Debugger">
+    <div
+      class="slds-form slds-form_stacked slds-p-around_small"
+      onchange={updateUrl}
+    >
+      <lightning-input
+        name="base-url"
+        label="Base URL"
+        placeholder="info://info-record"
+        required
+      ></lightning-input>
+      <lightning-input
+        name="action-path"
+        label="Path"
+        placeholder="action/save"
+      ></lightning-input>
+
+      <lightning-card title="Parameters" icon-name="custom:custom19">
+        <lightning-button
+          class="add-parameter-action"
+          slot="actions"
+          icon-name="utility:add"
+          label="Add parameter"
+          onclick={addParameter}
+        ></lightning-button>
+
+        <div class="slds-p-around_medium">
+          <ul>
+            <template for:each={parameters} for:item="parameter">
+              <li key={parameter.index}>
+                <c-info-app-opener-form-parameter
+                  index={parameter.index}
+                  name={parameter.name}
+                  value={parameter.value}
+                  onchange={updateParameter}
+                  ondelete={removeParameter}
+                ></c-info-app-opener-form-parameter>
+              </li>
+            </template>
+
+            <template if:false={parameters.length}>
+              Add a new parameter to pass tokens on the URL
+            </template>
+          </ul>
+        </div>
+      </lightning-card>
+    </div>
+
+    <lightning-layout vertical-align="center" slot="footer">
+      <lightning-layout-item size="8" class="slds-text-align_left">
+        <span class={urlCssClass}>{url}</span>
+      </lightning-layout-item>
+      <lightning-layout-item size="4" class="slds-text-align_right">
+        <lightning-button-group>
+          <lightning-button
+            class="open-url-action"
+            disabled={isInvalidUrl}
+            label="Open"
+            icon-name="utility:new_window"
+            onclick={openUrl}
+          ></lightning-button>
+          <a class="custom-url" href={url}></a>
+        </lightning-button-group>
+      </lightning-layout-item>
+    </lightning-layout>
+  </lightning-card>
+</template>

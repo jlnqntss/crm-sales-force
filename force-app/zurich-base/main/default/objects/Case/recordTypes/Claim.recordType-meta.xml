@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Claim</fullName>
+    <active>true</active>
+    <businessProcess>Siniestro</businessProcess>
+    <compactLayoutAssignment>SiniestroConsulta</compactLayoutAssignment>
+    <label>Siniestro</label>
+    <picklistValues>
+        <picklist>Origin</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>High</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Low</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medium</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason</picklist>
+        <values>
+            <fullName>Complex functionality</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Existing problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instructions not clear</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>User didn%27t attend training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Subtype__c</picklist>
+        <values>
+            <fullName>App</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bloqueo de IMEI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coberturas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Como contrato mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Como renuevo mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contraseña App</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contratacion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegacion de cobertura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desactivar FMI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion necesaria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estado de mi siniestro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Franquicia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nuevo dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pago de franquicia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Precio de mi seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Problema con la reparacion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recogida%2FEntrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitud factura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Validacion</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Contratar mi seguro</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TypeN3__c</picklist>
+        <values>
+            <fullName>Activation failure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Annulment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bank data</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTL surveys</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancellation due to change of mediator</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Capital decrease</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Capital expansion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Card payment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Certificate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Change taker</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Claims</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaints</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Congratulations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DDA part</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dates</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Decrease in guarantees</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Digital signature</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fines</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>General information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Green card</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incl%2E%2FModif driver %28Main-2º%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inconsistency</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insured management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Issue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Language change in policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Navigation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New offer %28Competences management%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New offer %28Support recruitment%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No offer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Offer %28Modification%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Offer %28Shipping%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Payments</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Personal information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy supplement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proteo client</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Receipt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Record failure NOT identified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Record failure identified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Regular</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Regularization</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resend receipt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Return</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Risk change</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rule 57</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Secure document</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suggestion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transfer payment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Undefined</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Underinsurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Urgent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>User %2F password lock</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Warranty extension</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Way to pay</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>With offer %28Management skills%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>With offer %28Recruitment support%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

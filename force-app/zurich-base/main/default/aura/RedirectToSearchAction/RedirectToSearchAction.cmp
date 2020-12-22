@@ -1,0 +1,5 @@
+<aura:component
+  implements="force:lightningQuickAction,lightning:availableForFlowActions"
+>
+  <aura:attribute name="searchFor" type="String" />
+</aura:component>

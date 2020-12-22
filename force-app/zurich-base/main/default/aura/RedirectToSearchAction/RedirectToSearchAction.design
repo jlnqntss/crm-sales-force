@@ -1,0 +1,3 @@
+<design:component label="Redirección a búsqueda">
+   <design:attribute name="searchFor" label="Buscar..."/>
+</design:component>

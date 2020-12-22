@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Update_abandoned_lead</fullName>
+        <field>Abandoned_Lead__c</field>
+        <literalValue>1</literalValue>
+        <name>Update abandoned lead</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_sincronizar_MC</fullName>
+        <field>SincronizarMC__c</field>
+        <literalValue>1</literalValue>
+        <name>Update sincronizar MC</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Abandoned lead</fullName>
+        <active>true</active>
+        <criteriaItems>
+            <field>Contact.Status__c</field>
+            <operation>equals</operation>
+            <value>Lead</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Contact.NumQuotes__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Contact.CustomerNum__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <description>After 1h from created date if the lead still contains 0 quotes it is considered to be abandoned and the lead is marked in order that Marketing Cloud starts the journey.</description>
+        <triggerType>onCreateOnly</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Update_abandoned_lead</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <offsetFromField>Contact.CreatedDate</offsetFromField>
+            <timeLength>1</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+    <rules>
+        <fullName>Sincronizar a MC</fullName>
+        <actions>
+            <name>Update_sincronizar_MC</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>(1 AND 2) OR 3</booleanFilter>
+        <criteriaItems>
+            <field>Contact.Email</field>
+            <operation>notEqual</operation>
+            <value>null</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Contact.Bounced__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Contact.MobilePhone</field>
+            <operation>notEqual</operation>
+            <value>null</value>
+        </criteriaItems>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

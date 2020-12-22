@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Payment Channel --></label>
+    <name>PaymentChannel__c</name>
+    <picklistValues>
+        <masterLabel>BC</masterLabel>
+        <translation>Bank</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CC</masterLabel>
+        <translation>Credit Card</translation>
+    </picklistValues>
+</CustomFieldTranslation>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Origin__c</fullName>
+    <description>Indicates which external system sends data to Salesforce</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Indicates which external system sends data to Salesforce</inlineHelpText>
+    <label>Origen</label>
+    <length>255</length>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

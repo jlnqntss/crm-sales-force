@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Actividad comercial</label>
+    <name>CommercialActivity__c</name>
+    <picklistValues>
+        <masterLabel>101100</masterLabel>
+        <translation>Comestibles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101310</masterLabel>
+        <translation>Comercio de café y té</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101350</masterLabel>
+        <translation>Caramelos y dulces</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101365</masterLabel>
+        <translation>Carnicerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101370</masterLabel>
+        <translation>Cereales, pienso, semillas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101420</masterLabel>
+        <translation>Charcutería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101430</masterLabel>
+        <translation>Churrerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101510</masterLabel>
+        <translation>Congelados</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101840</masterLabel>
+        <translation>Frutería y verdulerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101930</masterLabel>
+        <translation>Dietética, herbolarios y especias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>101960</masterLabel>
+        <translation>Jamones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>102320</masterLabel>
+        <translation>Panadería o pastelería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>102390</masterLabel>
+        <translation>Pescadería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>102480</masterLabel>
+        <translation>Pollos asados, rostisseria, platos preparados, freiduría y huevería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>102530</masterLabel>
+        <translation>Salazones, ahumados y conservas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>102570</masterLabel>
+        <translation>Supermercados y autoservicios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>102660</masterLabel>
+        <translation>Vinos y licores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>201215</masterLabel>
+        <translation>Bar cafetería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>201216</masterLabel>
+        <translation>Bar restaurante</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>201440</masterLabel>
+        <translation>Cibercafé</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>201920</masterLabel>
+        <translation>Heladería, horchatería y zumerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>202450</masterLabel>
+        <translation>Pubs y bares musicales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>202510</masterLabel>
+        <translation>Restaurante</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>202540</masterLabel>
+        <translation>Salones de banquetes y celebración (bodas, bautizos, comuniones)</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>202590</masterLabel>
+        <translation>Sociedad gastronómica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>203000</masterLabel>
+        <translation>Comida rápida, pizzería, hamburguesería y bocatería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>251050</masterLabel>
+        <translation>Administración de lotería y quinielas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>251140</masterLabel>
+        <translation>Armería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>251255</masterLabel>
+        <translation>Salones de billares y/o juegos recreativos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>251600</masterLabel>
+        <translation>Artículos de deportes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>251640</masterLabel>
+        <translation>Discos, cassettes, CDs, DVDs y cintas de vídeo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>251770</masterLabel>
+        <translation>Filatelia/numismática</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>251980</masterLabel>
+        <translation>Juguetería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>252080</masterLabel>
+        <translation>Ludoteca</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>252650</masterLabel>
+        <translation>Videoclub, venta y alquier de videojuegos y DVDs</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301120</masterLabel>
+        <translation>Animales domésticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301230</masterLabel>
+        <translation>Bazares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301270</masterLabel>
+        <translation>Bisutería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301660</masterLabel>
+        <translation>Droguerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301720</masterLabel>
+        <translation>Estancos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301780</masterLabel>
+        <translation>Floristería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301810</masterLabel>
+        <translation>Aparatos y artículos de fotografía y revelado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301820</masterLabel>
+        <translation>Estudio de fotografía</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301850</masterLabel>
+        <translation>Artículos de fumador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301970</masterLabel>
+        <translation>Joyería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>301990</masterLabel>
+        <translation>Kiosco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>302470</masterLabel>
+        <translation>Relojerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>302520</masterLabel>
+        <translation>Artículos de reventa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>302560</masterLabel>
+        <translation>Sistemas de seguridad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>312030</masterLabel>
+        <translation>Papelería y/o librería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>312320</masterLabel>
+        <translation>Papelerías y objetos de escritorio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>312460</masterLabel>
+        <translation>Artículos de regalo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>321030</masterLabel>
+        <translation>Accesorios y repuestos de maquinaria y motores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>321390</masterLabel>
+        <translation>Cerrajerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>321690</masterLabel>
+        <translation>Electrodomésticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>321700</masterLabel>
+        <translation>Electrónica, materiales y accesorios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>321760</masterLabel>
+        <translation>Ferreterías y bricolaje</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>321830</masterLabel>
+        <translation>Aparatos de frío/calefacción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>321950</masterLabel>
+        <translation>Instrumentos musicales en general y sus accesorios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>322100</masterLabel>
+        <translation>Maquinaria en general</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>322110</masterLabel>
+        <translation>Máquinas de oficina</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>322280</masterLabel>
+        <translation>Software e instalación de ordenadores personales y complementos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>322440</masterLabel>
+        <translation>Aparatos de precisión</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>322600</masterLabel>
+        <translation>Telefonía móvil</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>401080</masterLabel>
+        <translation>Comercio de alfombras y tapices</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>401150</masterLabel>
+        <translation>Artículos para bebé</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>401160</masterLabel>
+        <translation>Uniformes y vestuario profesional</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>401170</masterLabel>
+        <translation>Tiendas nupciales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>401300</masterLabel>
+        <translation>Tienda de ropa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>401340</masterLabel>
+        <translation>Exclusivamente camisería y/o corbatería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>401500</masterLabel>
+        <translation>Confecciones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>401560</masterLabel>
+        <translation>Cortinas, mantas, ropa de baño y lencería del hogar</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>401650</masterLabel>
+        <translation>Disfraces, alquiler y venta</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>402020</masterLabel>
+        <translation>Lencería y corseteria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>402190</masterLabel>
+        <translation>Mercería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>402360</masterLabel>
+        <translation>Peletería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>402550</masterLabel>
+        <translation>Sastrería, arreglos y/o alquiler de ropa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>402580</masterLabel>
+        <translation>Tapicerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>402590</masterLabel>
+        <translation>Telas, lanas, géneros de punto</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>402610</masterLabel>
+        <translation>Tintorería y/o lavandería no industriales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>501060</masterLabel>
+        <translation>Agencias de seguros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>501070</masterLabel>
+        <translation>Agencias de viajes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>501170</masterLabel>
+        <translation>Asesoría</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>501610</masterLabel>
+        <translation>Despacho profesional</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>501620</masterLabel>
+        <translation>Despacho técnico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>501890</masterLabel>
+        <translation>Gestoría</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>502240</masterLabel>
+        <translation>Notaría</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>502260</masterLabel>
+        <translation>Oficina</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>502265</masterLabel>
+        <translation>Oficina bancaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>502271</masterLabel>
+        <translation>Agencia inmobiliaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>502272</masterLabel>
+        <translation>CoWorking</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>601450</masterLabel>
+        <translation>Cibersala</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>601800</masterLabel>
+        <translation>Fotocopiadoras y multicopistas (reproducción, no venta)</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>602070</masterLabel>
+        <translation>Locutorio telefónico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>602180</masterLabel>
+        <translation>Mensajería/Paquetería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>602630</masterLabel>
+        <translation>Casa de moneda y cambio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>611570</masterLabel>
+        <translation>Cristales, lunas y espejos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>611680</masterLabel>
+        <translation>Electricidad, materiales y accesorios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>611790</masterLabel>
+        <translation>Fontanería y saneamiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>612140</masterLabel>
+        <translation>Ventanas, persianas y toldos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>612150</masterLabel>
+        <translation>Materiales de construcción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>612330</masterLabel>
+        <translation>Papeles pintados, moquetas, parquets y pinturas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>612400</masterLabel>
+        <translation>Pinturas y barnices</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>621000</masterLabel>
+        <translation>Academias docentes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>621010</masterLabel>
+        <translation>Academias de baile y/o estudios de yoga, pilates</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>621180</masterLabel>
+        <translation>Autoescuela</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>621720</masterLabel>
+        <translation>Escuela/taller de dibujo, pintura o artesanales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>621910</masterLabel>
+        <translation>Guarderías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>701290</masterLabel>
+        <translation>Bolsos y maletas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>701330</masterLabel>
+        <translation>Calzados (reparación y venta de complementos)</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>702140</masterLabel>
+        <translation>Marroquinerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>702680</masterLabel>
+        <translation>Zapatería</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>751460</masterLabel>
+        <translation>Clínica dental</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>751470</masterLabel>
+        <translation>Gabinete médico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>751480</masterLabel>
+        <translation>Clínica veterinaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>751740</masterLabel>
+        <translation>Farmacias con o sin ortopedia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>752270</masterLabel>
+        <translation>Óptica y prótesis auditiva</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>752280</masterLabel>
+        <translation>Instrumental médico</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>752290</masterLabel>
+        <translation>Ortopedias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>752340</masterLabel>
+        <translation>Parafarmacia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>801240</masterLabel>
+        <translation>Salones de belleza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>802370</masterLabel>
+        <translation>Peluquerías y/o barberías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>802380</masterLabel>
+        <translation>Perfumería y cosmética</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>802550</masterLabel>
+        <translation>Salones de tatuajes y similares, piercing y pintores corporales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>851200</masterLabel>
+        <translation>Automóviles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>851250</masterLabel>
+        <translation>Bicicletas, ciclomotores y motocicletas con o sin taller</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>851670</masterLabel>
+        <translation>Efectos navales</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>852230</masterLabel>
+        <translation>Venta y montaje de neumáticos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>901150</masterLabel>
+        <translation>Artículos de artesanía</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>901380</masterLabel>
+        <translation>Cererías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>901490</masterLabel>
+        <translation>Venta de colchones</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>901580</masterLabel>
+        <translation>Cuadros y objetos de arte</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>901590</masterLabel>
+        <translation>Cuchillerías</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>901940</masterLabel>
+        <translation>Imágenes y objetos de culto</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>902000</masterLabel>
+        <translation>Lámparas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>902120</masterLabel>
+        <translation>Marcos, molduras, litografías y cuadros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>902170</masterLabel>
+        <translation>Menaje del hogar</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>902220</masterLabel>
+        <translation>Muebles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>902430</masterLabel>
+        <translation>Porcelanas y cerámicas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>951870</masterLabel>
+        <translation>Galería comercial (sólo inmueble)</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>952040</masterLabel>
+        <translation>Local sin actividad comercial o industrial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>952050</masterLabel>
+        <translation>Locales de reunión y asociaciones</translation>
+    </picklistValues>
+</CustomFieldTranslation>

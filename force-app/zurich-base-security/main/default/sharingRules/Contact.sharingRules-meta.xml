@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Contact_GI</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Contact_GI</label>
+        <sharedTo>
+            <group>Read_GI</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Contact</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Zurich</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Contacts_GI_France</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Contacts GI France</label>
+        <sharedTo>
+            <group>KLINC_GI_France</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>France</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Contacts_GI_Spain</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Contacts GI Spain</label>
+        <sharedTo>
+            <group>KLINC_GI_Spain</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Spain</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Contacts_Life_Orange</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Contacts Life Orange</label>
+        <sharedTo>
+            <group>KLINC_Life_Orange</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Partner__c</field>
+            <operation>equals</operation>
+            <value>Orange Seguros</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Life Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Contacts_Life_Spain</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Contacts Life Spain</label>
+        <sharedTo>
+            <group>KLINC_Life_Spain</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Spain</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Life Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingGuestRules>
+        <fullName>Site_Access</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Site Access</label>
+        <sharedTo>
+            <guestUser>Preference_Centre</guestUser>
+        </sharedTo>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Life Insurance,General Insurance</value>
+        </criteriaItems>
+    </sharingGuestRules>
+</SharingRules>

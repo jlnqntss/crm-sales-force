@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Oferta</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Ofertas</value>
+    </caseValues>
+    <gender>Feminine</gender>
+    <layouts>
+        <layout>Opportunity Layout</layout>
+        <sections>
+            <label>Fechas Clave</label>
+            <section>Dates</section>
+        </sections>
+        <sections>
+            <label>Descripción</label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label>Información pago</label>
+            <section>Payment Information</section>
+        </sections>
+        <sections>
+            <label>Información producto</label>
+            <section>Product Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>ZE Offer</layout>
+        <sections>
+            <label><!-- Campos --></label>
+            <section>Campos</section>
+        </sections>
+        <sections>
+            <label><!-- Intermediaries --></label>
+            <section>Intermediaries</section>
+        </sections>
+        <sections>
+            <label><!-- Milestones --></label>
+            <section>Milestones</section>
+        </sections>
+        <sections>
+            <label><!-- Offer --></label>
+            <section>Offer</section>
+        </sections>
+        <sections>
+            <label><!-- Payment methods --></label>
+            <section>Payment methods</section>
+        </sections>
+        <sections>
+            <label><!-- Policy --></label>
+            <section>Policy</section>
+        </sections>
+        <sections>
+            <label><!-- Validation errors --></label>
+            <section>Validation errors</section>
+        </sections>
+        <sections>
+            <label><!-- Vínculos personalizados --></label>
+            <section>Vínculos personalizados</section>
+        </sections>
+    </layouts>
+</CustomObjectTranslation>

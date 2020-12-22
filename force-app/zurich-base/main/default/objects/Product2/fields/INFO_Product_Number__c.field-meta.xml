@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>INFO_Product_Number__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>(OCS). En Productos que provengan de INFO, el campo estará conformado por la concatenación del Commercial ID y el Technical ID</description>
+    <externalId>true</externalId>
+    <label>INFO Product Number</label>
+    <length>20</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

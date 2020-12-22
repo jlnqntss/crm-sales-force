@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>000</masterLabel>
+        <translation>All</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>001</masterLabel>
+        <translation>Zurich</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>002</masterLabel>
+        <translation>CAN SSGG</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>003</masterLabel>
+        <translation>CAS SSGG</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>004</masterLabel>
+        <translation>CAS Life</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>005</masterLabel>
+        <translation>Zurich Life</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>006</masterLabel>
+        <translation>DZ Pensions</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>007</masterLabel>
+        <translation>EPSV Zurich</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>008</masterLabel>
+        <translation>BSSG</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>999</masterLabel>
+        <translation>Multientity</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>General Insurance</masterLabel>
+        <translation><!-- General Insurance --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Life Insurance</masterLabel>
+        <translation><!-- Life Insurance --></translation>
+    </valueTranslation>
+</GlobalValueSetTranslation>

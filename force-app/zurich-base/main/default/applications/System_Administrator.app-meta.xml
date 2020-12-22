@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0C65E4</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>System Administrator</label>
+    <navType>Standard</navType>
+    <tabs>ExternalRequest__c</tabs>
+    <tabs>Error_Log__c</tabs>
+    <tabs>ExternalRequestError__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>System_Administrator_UtilityBar</utilityBar>
+</CustomApplication>

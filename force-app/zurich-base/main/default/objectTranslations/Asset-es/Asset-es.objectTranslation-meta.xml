@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Objeto asegurado</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Objetos asegurados</value>
+    </caseValues>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>ZE Address</layout>
+        <sections>
+            <label>Características del edificio</label>
+            <section>Building Characteristics</section>
+        </sections>
+        <sections>
+            <label>Características del interior</label>
+            <section>Internal Characteristics</section>
+        </sections>
+        <sections>
+            <label>Factor de riesgo</label>
+            <section>Risk Factor</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <description><!-- Zurich OCS Address Record Type --></description>
+        <label>Dirección</label>
+        <name>Address</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Boat Record Type --></description>
+        <label>Embarcación</label>
+        <name>Boat</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Electronic Device Record Type --></description>
+        <label>Equipo Electrónico</label>
+        <name>ElectronicDevice</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Mobile Record Type --></description>
+        <label>Móvil</label>
+        <name>Mobile</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Motor Record Type --></description>
+        <label>Motor</label>
+        <name>Motor</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Zurich OCS Person Record Type --></description>
+        <label>Persona</label>
+        <name>Person</name>
+    </recordTypes>
+</CustomObjectTranslation>

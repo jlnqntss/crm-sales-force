@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContactPointAddressDefault</fullName>
+    <fields>Address</fields>
+    <fields>ParentId</fields>
+    <fields>ActiveFromDate</fields>
+    <label>Contact Point Address Default</label>
+</CompactLayout>

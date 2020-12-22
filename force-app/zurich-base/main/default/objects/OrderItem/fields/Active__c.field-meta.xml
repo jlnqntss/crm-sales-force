@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Specifies if the product is active in the policy</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Specifies if the product is active in the policy</inlineHelpText>
+    <label>Activo</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

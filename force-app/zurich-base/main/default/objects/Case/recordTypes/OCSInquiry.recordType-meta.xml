@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OCSInquiry</fullName>
+    <active>true</active>
+    <businessProcess>OCS</businessProcess>
+    <description>OCS</description>
+    <label>OCS Inquiry</label>
+    <picklistValues>
+        <picklist>CloseDetail__c</picklist>
+        <values>
+            <fullName>Accesos 902</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anulación no tramitada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aplicativo web</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Argumentario</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Atención empleado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio canal distribución</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio de tomador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campaña</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Caída sistema</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coberturas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cobro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Conductores agravados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Corregida</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Datos erróneos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Datos personales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desacuerdo en indemnización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desaparición riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desbloqueo registro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Descuento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Descuentos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Empresa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Encias</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Envío mail</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Error FIVA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estado firma digital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extorno</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Falta aviso</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Falta de datos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fechas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fuera plazo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Garantías</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión Compet</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión incorrecta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión incorrecta comercialización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Información</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insatisfacción atención</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insatisfacción mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insatisfacción procesos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insatisfacción siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mail activación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Modificación garantías</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NIF bloqueado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No accesible</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No autoservicio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No es cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No facilita datos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No procede</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no accesible</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Promo %2F Regalo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Póliza anulada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recepción datos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reemplazo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso en tramitación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SINCO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Saneamiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sin INFO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitud extorno</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tiempo de espera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Usos %2F Actividad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vida</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Origin</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>High</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Low</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medium</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason</picklist>
+        <values>
+            <fullName>Complex functionality</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Existing problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instructions not clear</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>User didn%27t attend training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Calidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campañas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión Económica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión Mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión Servicios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No definido</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Tareas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Venta</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CauseOfLoss__c</fullName>
+    <externalId>false</externalId>
+    <label>Motivo pérdida</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>TBD</fullName>
+                <default>false</default>
+                <label>TBD</label>
+            </value>
+            <value>
+                <fullName>Robbery</fullName>
+                <default>false</default>
+                <label>Robbery</label>
+            </value>
+            <value>
+                <fullName>Theft Cover Do Not Use</fullName>
+                <default>false</default>
+                <label>Theft Cover Do Not Use</label>
+            </value>
+            <value>
+                <fullName>Death</fullName>
+                <default>false</default>
+                <label>Death</label>
+            </value>
+            <value>
+                <fullName>Absolute and permanent disability</fullName>
+                <default>false</default>
+                <label>Absolute and permanent disability</label>
+            </value>
+            <value>
+                <fullName>Screen Damage</fullName>
+                <default>false</default>
+                <label>Screen Damage</label>
+            </value>
+            <value>
+                <fullName>Water Damage</fullName>
+                <default>false</default>
+                <label>Water Damage</label>
+            </value>
+            <value>
+                <fullName>Terminal Illness</fullName>
+                <default>false</default>
+                <label>Terminal Illness</label>
+            </value>
+            <value>
+                <fullName>Accidental Damage</fullName>
+                <default>false</default>
+                <label>Accidental Damage</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

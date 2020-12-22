@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Competencias</label>
+    <name>Company__c</name>
+    <picklistValues>
+        <masterLabel>01</masterLabel>
+        <translation>Allianz</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>02</masterLabel>
+        <translation>AXA</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>03</masterLabel>
+        <translation>Mapfre</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>04</masterLabel>
+        <translation>Generali</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>05</masterLabel>
+        <translation>Reale</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>06</masterLabel>
+        <translation>FIATC</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>07</masterLabel>
+        <translation>Liberty</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>08</masterLabel>
+        <translation>Ocaso</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>09</masterLabel>
+        <translation>Santalucía</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>10</masterLabel>
+        <translation>SegurCaixa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>11</masterLabel>
+        <translation>Plus Ultra</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>12</masterLabel>
+        <translation>Catalana Occidente</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>13</masterLabel>
+        <translation>Caser</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>14</masterLabel>
+        <translation>Helvetia</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>15</masterLabel>
+        <translation>Mutua General de Seguros (MGS)</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>16</masterLabel>
+        <translation>Otros (Bancos)</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>17</masterLabel>
+        <translation>Otros (Broker Online)</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>18</masterLabel>
+        <translation>Desconocida</translation>
+    </picklistValues>
+</CustomFieldTranslation>

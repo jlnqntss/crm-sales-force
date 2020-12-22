@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClaimStatusTPA__c</fullName>
+    <externalId>false</externalId>
+    <label>TPA estado</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>2.5 Fraud</fullName>
+                <default>false</default>
+                <label>2.5 Fraud</label>
+            </value>
+            <value>
+                <fullName>1.1 Pending excess payment</fullName>
+                <default>false</default>
+                <label>1.1 Pending excess payment</label>
+            </value>
+            <value>
+                <fullName>3.1 Rejected</fullName>
+                <default>false</default>
+                <label>3.1 Rejected</label>
+            </value>
+            <value>
+                <fullName>1.3 Pending to pick up device</fullName>
+                <default>false</default>
+                <label>1.3 Pending to pick up device</label>
+            </value>
+            <value>
+                <fullName>1.10 Delivered</fullName>
+                <default>false</default>
+                <label>1.10 Delivered</label>
+            </value>
+            <value>
+                <fullName>2.1 Closed covered</fullName>
+                <default>false</default>
+                <label>2.1 Closed covered</label>
+            </value>
+            <value>
+                <fullName>4.4 Repair/Replace in progress</fullName>
+                <default>false</default>
+                <label>4.4 Repair/Replace in progress</label>
+            </value>
+            <value>
+                <fullName>4.29 No coverage</fullName>
+                <default>false</default>
+                <label>4.29 No coverage</label>
+            </value>
+            <value>
+                <fullName>4.5 Find my mobile active</fullName>
+                <default>false</default>
+                <label>4.5 Find my mobile active</label>
+            </value>
+            <value>
+                <fullName>1.7 Replaced</fullName>
+                <default>false</default>
+                <label>1.7 Replaced</label>
+            </value>
+            <value>
+                <fullName>1.30 Reminder to make an appointment</fullName>
+                <default>false</default>
+                <label>1.30 Reminder to make an appointment</label>
+            </value>
+            <value>
+                <fullName>4.13 Delivered new device</fullName>
+                <default>false</default>
+                <label>4.13 Delivered new device</label>
+            </value>
+            <value>
+                <fullName>4.3 Pending to pick up device</fullName>
+                <default>false</default>
+                <label>4.3 Pending to pick up device</label>
+            </value>
+            <value>
+                <fullName>Successfully sent to ICP</fullName>
+                <default>false</default>
+                <label>Successfully sent to ICP</label>
+            </value>
+            <value>
+                <fullName>1.2 Documentation pending</fullName>
+                <default>false</default>
+                <label>1.2 Documentation pending</label>
+            </value>
+            <value>
+                <fullName>1.21 Rejected offer best object</fullName>
+                <default>false</default>
+                <label>1.21 Rejected offer best object</label>
+            </value>
+            <value>
+                <fullName>4.31 Potencial bounce received</fullName>
+                <default>false</default>
+                <label>4.31 Potencial bounce received</label>
+            </value>
+            <value>
+                <fullName>1.8 Can not be repaired</fullName>
+                <default>false</default>
+                <label>1.8 Can not be repaired</label>
+            </value>
+            <value>
+                <fullName>1.27 Pending to make an appointment</fullName>
+                <default>false</default>
+                <label>1.27 Pending to make an appointment</label>
+            </value>
+            <value>
+                <fullName>1.4 Repair/Replace in progress</fullName>
+                <default>false</default>
+                <label>1.4 Repair/Replace in progress</label>
+            </value>
+            <value>
+                <fullName>1.6 Repaired</fullName>
+                <default>false</default>
+                <label>1.6 Repaired</label>
+            </value>
+            <value>
+                <fullName>2.2 Claim expired</fullName>
+                <default>false</default>
+                <label>2.2 Claim expired</label>
+            </value>
+            <value>
+                <fullName>2.7 Closed. Device still on warranty period</fullName>
+                <default>false</default>
+                <label>2.7 Closed. Device still on warranty period</label>
+            </value>
+            <value>
+                <fullName>1.14 Claim expired for the client</fullName>
+                <default>false</default>
+                <label>1.14 Claim expired for the client</label>
+            </value>
+            <value>
+                <fullName>2.3 Reopen claim accepted</fullName>
+                <default>false</default>
+                <label>2.3 Reopen claim accepted</label>
+            </value>
+            <value>
+                <fullName>0.1 Under Analysis</fullName>
+                <default>false</default>
+                <label>0.1 Under Analysis</label>
+            </value>
+            <value>
+                <fullName>1.0 Submitted to ICP</fullName>
+                <default>false</default>
+                <label>1.0 Submitted to ICP</label>
+            </value>
+            <value>
+                <fullName>1.29 No coverage</fullName>
+                <default>false</default>
+                <label>1.29 No coverage</label>
+            </value>
+            <value>
+                <fullName>1.5 Find my mobile active</fullName>
+                <default>false</default>
+                <label>1.5 Find my mobile active</label>
+            </value>
+            <value>
+                <fullName>1.9 Pending to be delivered</fullName>
+                <default>false</default>
+                <label>1.9 Pending to be delivered</label>
+            </value>
+            <value>
+                <fullName>1.16 Object not coincident</fullName>
+                <default>false</default>
+                <label>1.16 Object not coincident</label>
+            </value>
+            <value>
+                <fullName>4.9 Pending to be delivered</fullName>
+                <default>false</default>
+                <label>4.9 Pending to be delivered</label>
+            </value>
+            <value>
+                <fullName>1.13 Delivered new device</fullName>
+                <default>false</default>
+                <label>1.13 Delivered new device</label>
+            </value>
+            <value>
+                <fullName>1.26 Incorrect send documentation</fullName>
+                <default>false</default>
+                <label>1.26 Incorrect send documentation</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

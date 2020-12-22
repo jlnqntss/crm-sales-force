@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PolicyId__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>(OCS) Identifica la Póliza</description>
+    <externalId>false</externalId>
+    <label>Policy</label>
+    <referenceTo>Policy__c</referenceTo>
+    <relationshipLabel>Relationships</relationshipLabel>
+    <relationshipName>Relationships</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

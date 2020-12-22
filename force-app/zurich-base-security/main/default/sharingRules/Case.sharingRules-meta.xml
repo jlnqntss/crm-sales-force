@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Cases_CC_GI_France</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cases CC GI France</label>
+        <sharedTo>
+            <group>KLINC_CustomerCare_GI_France</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>France</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cases_CC_GI_Spain</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cases CC GI Spain</label>
+        <sharedTo>
+            <group>KLINC_CustomerCare_GI_Spain</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Spain</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cases_CC_Life_Orange</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cases CC Life Orange</label>
+        <sharedTo>
+            <group>KLINC_CustomerCare_Life_Orange</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Partner__c</field>
+            <operation>equals</operation>
+            <value>Orange Seguros</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Life Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cases_CC_Life_Spain</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cases CC Life Spain</label>
+        <sharedTo>
+            <group>KLINC_CustomerCare_Life_Spain</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Spain</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Life Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cases_GI_France</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Cases GI France</label>
+        <sharedTo>
+            <group>KLINC_GI_France</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>France</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cases_GI_Spain</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Cases GI Spain</label>
+        <sharedTo>
+            <group>KLINC_GI_Spain</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Spain</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cases_Life_Orange</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Cases Life Orange</label>
+        <sharedTo>
+            <group>KLINC_Life_Orange</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Partner__c</field>
+            <operation>equals</operation>
+            <value>Orange Seguros</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Life Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cases_Life_Spain</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Cases Life Spain</label>
+        <sharedTo>
+            <group>KLINC_Life_Spain</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Spain</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Life Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>OCSInquiry_GI</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>OCSInquiry_GI</label>
+        <sharedTo>
+            <group>Read_GI</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>OCS Inquiry</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TypeN3__c</fullName>
+    <description>Tercer nivel de tipificación</description>
+    <externalId>false</externalId>
+    <label>Type N3</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Subtype__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Undefined</fullName>
+                <default>false</default>
+                <label>Undefined</label>
+            </value>
+            <value>
+                <fullName>With offer (Recruitment support)</fullName>
+                <default>false</default>
+                <label>With offer (Recruitment support)</label>
+            </value>
+            <value>
+                <fullName>No offer</fullName>
+                <default>false</default>
+                <label>No offer</label>
+            </value>
+            <value>
+                <fullName>New offer (Support recruitment)</fullName>
+                <default>false</default>
+                <label>New offer (Support recruitment)</label>
+            </value>
+            <value>
+                <fullName>With offer (Management skills)</fullName>
+                <default>false</default>
+                <label>With offer (Management skills)</label>
+            </value>
+            <value>
+                <fullName>New offer (Competences management)</fullName>
+                <default>false</default>
+                <label>New offer (Competences management)</label>
+            </value>
+            <value>
+                <fullName>Regular</fullName>
+                <default>false</default>
+                <label>Regular</label>
+            </value>
+            <value>
+                <fullName>Urgent</fullName>
+                <default>false</default>
+                <label>Urgent</label>
+            </value>
+            <value>
+                <fullName>Annulment</fullName>
+                <default>false</default>
+                <label>Annulment</label>
+            </value>
+            <value>
+                <fullName>Cancellation due to change of mediator</fullName>
+                <default>false</default>
+                <label>Cancellation due to change of mediator</label>
+            </value>
+            <value>
+                <fullName>Change taker</fullName>
+                <default>false</default>
+                <label>Change taker</label>
+            </value>
+            <value>
+                <fullName>Risk change</fullName>
+                <default>false</default>
+                <label>Risk change</label>
+            </value>
+            <value>
+                <fullName>Dates</fullName>
+                <default>false</default>
+                <label>Dates</label>
+            </value>
+            <value>
+                <fullName>Offer (Modification)</fullName>
+                <default>false</default>
+                <label>Offer (Modification)</label>
+            </value>
+            <value>
+                <fullName>Warranty extension</fullName>
+                <default>false</default>
+                <label>Warranty extension</label>
+            </value>
+            <value>
+                <fullName>Decrease in guarantees</fullName>
+                <default>false</default>
+                <label>Decrease in guarantees</label>
+            </value>
+            <value>
+                <fullName>Capital expansion</fullName>
+                <default>false</default>
+                <label>Capital expansion</label>
+            </value>
+            <value>
+                <fullName>Capital decrease</fullName>
+                <default>false</default>
+                <label>Capital decrease</label>
+            </value>
+            <value>
+                <fullName>Incl./Modif driver (Main-2º)</fullName>
+                <default>false</default>
+                <label>Incl./Modif driver (Main-2º)</label>
+            </value>
+            <value>
+                <fullName>Way to pay</fullName>
+                <default>false</default>
+                <label>Way to pay</label>
+            </value>
+            <value>
+                <fullName>Bank data</fullName>
+                <default>false</default>
+                <label>Bank data</label>
+            </value>
+            <value>
+                <fullName>Return</fullName>
+                <default>false</default>
+                <label>Return</label>
+            </value>
+            <value>
+                <fullName>Insured management</fullName>
+                <default>false</default>
+                <label>Insured management</label>
+            </value>
+            <value>
+                <fullName>Personal information</fullName>
+                <default>false</default>
+                <label>Personal information</label>
+            </value>
+            <value>
+                <fullName>Language change in policy</fullName>
+                <default>false</default>
+                <label>Language change in policy</label>
+            </value>
+            <value>
+                <fullName>Regularization</fullName>
+                <default>false</default>
+                <label>Regularization</label>
+            </value>
+            <value>
+                <fullName>Underinsurance</fullName>
+                <default>false</default>
+                <label>Underinsurance</label>
+            </value>
+            <value>
+                <fullName>General information</fullName>
+                <default>false</default>
+                <label>General information</label>
+            </value>
+            <value>
+                <fullName>Policy</fullName>
+                <default>false</default>
+                <label>Policy</label>
+            </value>
+            <value>
+                <fullName>Offer (Shipping)</fullName>
+                <default>false</default>
+                <label>Offer (Shipping)</label>
+            </value>
+            <value>
+                <fullName>Green card</fullName>
+                <default>false</default>
+                <label>Green card</label>
+            </value>
+            <value>
+                <fullName>Secure document</fullName>
+                <default>false</default>
+                <label>Secure document</label>
+            </value>
+            <value>
+                <fullName>Receipt</fullName>
+                <default>false</default>
+                <label>Receipt</label>
+            </value>
+            <value>
+                <fullName>DDA part</fullName>
+                <default>false</default>
+                <label>DDA part</label>
+            </value>
+            <value>
+                <fullName>Policy supplement</fullName>
+                <default>false</default>
+                <label>Policy supplement</label>
+            </value>
+            <value>
+                <fullName>Certificate</fullName>
+                <default>false</default>
+                <label>Certificate</label>
+            </value>
+            <value>
+                <fullName>Complaints</fullName>
+                <default>false</default>
+                <label>Complaints</label>
+            </value>
+            <value>
+                <fullName>Claims</fullName>
+                <default>false</default>
+                <label>Claims</label>
+            </value>
+            <value>
+                <fullName>Issue</fullName>
+                <default>false</default>
+                <label>Issue</label>
+            </value>
+            <value>
+                <fullName>Web</fullName>
+                <default>false</default>
+                <label>Web</label>
+            </value>
+            <value>
+                <fullName>Payments</fullName>
+                <default>false</default>
+                <label>Payments</label>
+            </value>
+            <value>
+                <fullName>Fines</fullName>
+                <default>false</default>
+                <label>Fines</label>
+            </value>
+            <value>
+                <fullName>Record failure identified</fullName>
+                <default>false</default>
+                <label>Record failure identified</label>
+            </value>
+            <value>
+                <fullName>Record failure NOT identified</fullName>
+                <default>false</default>
+                <label>Record failure NOT identified</label>
+            </value>
+            <value>
+                <fullName>Navigation</fullName>
+                <default>false</default>
+                <label>Navigation</label>
+            </value>
+            <value>
+                <fullName>User / password lock</fullName>
+                <default>false</default>
+                <label>User / password lock</label>
+            </value>
+            <value>
+                <fullName>Inconsistency</fullName>
+                <default>false</default>
+                <label>Inconsistency</label>
+            </value>
+            <value>
+                <fullName>Digital signature</fullName>
+                <default>false</default>
+                <label>Digital signature</label>
+            </value>
+            <value>
+                <fullName>Activation failure</fullName>
+                <default>false</default>
+                <label>Activation failure</label>
+            </value>
+            <value>
+                <fullName>Proteo client</fullName>
+                <default>false</default>
+                <label>Proteo client</label>
+            </value>
+            <value>
+                <fullName>Suggestion</fullName>
+                <default>false</default>
+                <label>Suggestion</label>
+            </value>
+            <value>
+                <fullName>Congratulations</fullName>
+                <default>false</default>
+                <label>Congratulations</label>
+            </value>
+            <value>
+                <fullName>Resend receipt</fullName>
+                <default>false</default>
+                <label>Resend receipt</label>
+            </value>
+            <value>
+                <fullName>Card payment</fullName>
+                <default>false</default>
+                <label>Card payment</label>
+            </value>
+            <value>
+                <fullName>Transfer payment</fullName>
+                <default>false</default>
+                <label>Transfer payment</label>
+            </value>
+            <value>
+                <fullName>Rule 57</fullName>
+                <default>false</default>
+                <label>Rule 57</label>
+            </value>
+            <value>
+                <fullName>CTL surveys</fullName>
+                <default>false</default>
+                <label>CTL surveys</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
+            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
+            <controllingFieldValue>Retención</controllingFieldValue>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Campañas Proactiva</controllingFieldValue>
+            <controllingFieldValue>Campañas Reactivo</controllingFieldValue>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
+            <controllingFieldValue>Verificación Riesgo</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Rehabilitación</controllingFieldValue>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>Undefined</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
+            <valueName>Complaints</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
+            <valueName>Claims</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
+            <valueName>Suggestion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
+            <valueName>Congratulations</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Resend receipt</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Card payment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Transfer payment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Rule 57</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Campañas Proactiva</controllingFieldValue>
+            <valueName>CTL surveys</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>With offer (Recruitment support)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>No offer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>New offer (Support recruitment)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>With offer (Management skills)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>New offer (Competences management)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <valueName>Regular</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <valueName>Urgent</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Issue</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Web</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Payments</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Fines</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Record failure identified</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Record failure NOT identified</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Navigation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>User / password lock</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Inconsistency</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Digital signature</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Activation failure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <valueName>Proteo client</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Annulment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Cancellation due to change of mediator</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Change taker</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Risk change</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Dates</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Offer (Modification)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Warranty extension</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Decrease in guarantees</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Capital expansion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Capital decrease</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Incl./Modif driver (Main-2º)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Way to pay</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Bank data</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Return</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Insured management</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Personal information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Language change in policy</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Regularization</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Underinsurance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <valueName>General information</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>Policy</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>Offer (Shipping)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>Green card</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>Secure document</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>Receipt</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>DDA part</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>Policy supplement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>Certificate</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

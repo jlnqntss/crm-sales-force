@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Asignado</fullName>
+        <default>false</default>
+        <label>Asignado</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Cerrado</fullName>
+        <default>false</default>
+        <label>Cerrado</label>
+        <closed>true</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Nuevo</fullName>
+        <default>true</default>
+        <label>Nuevo</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>En espera</fullName>
+        <default>false</default>
+        <label>En espera</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Resuelto</fullName>
+        <default>false</default>
+        <label>Resuelto</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Reabierto</fullName>
+        <default>false</default>
+        <label>Reabierto</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Respuesta recibida</fullName>
+        <default>false</default>
+        <label>Respuesta recibida</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Pendiente</fullName>
+        <default>false</default>
+        <label>Pendiente</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Respondido</fullName>
+        <default>false</default>
+        <label>Respondido</label>
+        <closed>false</closed>
+    </standardValue>
+</StandardValueSet>

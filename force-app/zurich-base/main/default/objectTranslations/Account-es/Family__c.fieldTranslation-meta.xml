@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Familia</label>
+    <name>Family__c</name>
+    <picklistValues>
+        <masterLabel>10</masterLabel>
+        <translation>Alimentación y dietética</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>20</masterLabel>
+        <translation>Restauración</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>25</masterLabel>
+        <translation>Deportes y ocio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>30</masterLabel>
+        <translation>Varios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>31</masterLabel>
+        <translation>Papelería y regalos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>32</masterLabel>
+        <translation>Electrónica y maquinaria</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>40</masterLabel>
+        <translation>Confecciones y textiles</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>50</masterLabel>
+        <translation>Oficinas y consultorios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>60</masterLabel>
+        <translation>Servicios en general</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>61</masterLabel>
+        <translation>Construcción y reformas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>62</masterLabel>
+        <translation>Enseñanza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>70</masterLabel>
+        <translation>Calzado, marroquinería y piel</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>75</masterLabel>
+        <translation>Sanidad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>80</masterLabel>
+        <translation>Peluquería y belleza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>85</masterLabel>
+        <translation>Automoción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>90</masterLabel>
+        <translation>Muebles, decoración y menaje hogar</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>95</masterLabel>
+        <translation>Locales</translation>
+    </picklistValues>
+</CustomFieldTranslation>

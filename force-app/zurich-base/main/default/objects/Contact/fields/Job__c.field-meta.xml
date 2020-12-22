@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Job__c</fullName>
+    <description>Life lead or customer job</description>
+    <externalId>false</externalId>
+    <label>Profesión</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>TBD</fullName>
+                <default>false</default>
+                <label>TBD</label>
+            </value>
+            <value>
+                <fullName>Agricultor, ganadero de reses no bravas</fullName>
+                <default>false</default>
+                <label>Agricultor, ganadero de reses no bravas</label>
+            </value>
+            <value>
+                <fullName>Escoger...</fullName>
+                <default>false</default>
+                <label>Escoger...</label>
+            </value>
+            <value>
+                <fullName>Director de cine y espectáculos</fullName>
+                <default>false</default>
+                <label>Director de cine y espectáculos</label>
+            </value>
+            <value>
+                <fullName>Pastelero, panadero y cocinero</fullName>
+                <default>false</default>
+                <label>Pastelero, panadero y cocinero</label>
+            </value>
+            <value>
+                <fullName>Boxeador Professional</fullName>
+                <default>false</default>
+                <label>Boxeador Professional</label>
+            </value>
+            <value>
+                <fullName>Antidisturbios: Policía Municipal, Autonómica y Guardia Civil</fullName>
+                <default>false</default>
+                <label>Antidisturbios: Policía Municipal, Autonómica y Guardia Civil</label>
+            </value>
+            <value>
+                <fullName>Administrativo: Policía Municipal, Autonómica y Guardia Civil</fullName>
+                <default>false</default>
+                <label>Administrativo: Policía Municipal, Autonómica y Guardia Civil</label>
+            </value>
+            <value>
+                <fullName>Guarda Jurado armado, vigilante seguridad armado</fullName>
+                <default>false</default>
+                <label>Guarda Jurado armado, vigilante seguridad armado</label>
+            </value>
+            <value>
+                <fullName>Estudiante</fullName>
+                <default>false</default>
+                <label>Estudiante</label>
+            </value>
+            <value>
+                <fullName>Óptico y/u optometrista y otorrinolaringólogo</fullName>
+                <default>false</default>
+                <label>Óptico y/u optometrista y otorrinolaringólogo</label>
+            </value>
+            <value>
+                <fullName>Piloto</fullName>
+                <default>false</default>
+                <label>Piloto</label>
+            </value>
+            <value>
+                <fullName>Ingeniería (técnico, naval, industrial, montes y caminos, agrónomo y aeronáutico)</fullName>
+                <default>false</default>
+                <label>Ingeniería (técnico, naval, industrial, montes y caminos, agrónomo y aeronáutico)</label>
+            </value>
+            <value>
+                <fullName>Controlador aéreo</fullName>
+                <default>false</default>
+                <label>Controlador aéreo</label>
+            </value>
+            <value>
+                <fullName>Mediador de seguros</fullName>
+                <default>false</default>
+                <label>Mediador de seguros</label>
+            </value>
+            <value>
+                <fullName>Joyero, relojero y reparador de electrodomésticos</fullName>
+                <default>false</default>
+                <label>Joyero, relojero y reparador de electrodomésticos</label>
+            </value>
+            <value>
+                <fullName>Periodista, presentador e intérprete</fullName>
+                <default>false</default>
+                <label>Periodista, presentador e intérprete</label>
+            </value>
+            <value>
+                <fullName>Artista, decorador, restaurador</fullName>
+                <default>false</default>
+                <label>Artista, decorador, restaurador</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

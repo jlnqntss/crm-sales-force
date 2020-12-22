@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PaymentFrequency__c</fullName>
+    <externalId>false</externalId>
+    <label>Frecuencia de pago</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>TBD</fullName>
+                <default>false</default>
+                <label>TBD</label>
+            </value>
+            <value>
+                <fullName>Semestral</fullName>
+                <default>false</default>
+                <label>Semestral</label>
+            </value>
+            <value>
+                <fullName>Mensual</fullName>
+                <default>false</default>
+                <label>Mensual</label>
+            </value>
+            <value>
+                <fullName>Anual</fullName>
+                <default>false</default>
+                <label>Anual</label>
+            </value>
+            <value>
+                <fullName>Trimestral</fullName>
+                <default>false</default>
+                <label>Trimestral</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

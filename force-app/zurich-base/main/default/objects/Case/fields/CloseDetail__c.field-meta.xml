@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CloseDetail__c</fullName>
+    <description>Dependiente de Type N3</description>
+    <externalId>false</externalId>
+    <label>Close detail</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>TypeN3__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sin INFO</fullName>
+                <default>false</default>
+                <label>Sin INFO</label>
+            </value>
+            <value>
+                <fullName>No autoservicio</fullName>
+                <default>false</default>
+                <label>No autoservicio</label>
+            </value>
+            <value>
+                <fullName>Caída sistema</fullName>
+                <default>false</default>
+                <label>Caída sistema</label>
+            </value>
+            <value>
+                <fullName>No accesible</fullName>
+                <default>false</default>
+                <label>No accesible</label>
+            </value>
+            <value>
+                <fullName>Descuentos</fullName>
+                <default>false</default>
+                <label>Descuentos</label>
+            </value>
+            <value>
+                <fullName>Usos / Actividad</fullName>
+                <default>false</default>
+                <label>Usos / Actividad</label>
+            </value>
+            <value>
+                <fullName>Conductores agravados</fullName>
+                <default>false</default>
+                <label>Conductores agravados</label>
+            </value>
+            <value>
+                <fullName>SINCO</fullName>
+                <default>false</default>
+                <label>SINCO</label>
+            </value>
+            <value>
+                <fullName>Cambio de tomador</fullName>
+                <default>false</default>
+                <label>Cambio de tomador</label>
+            </value>
+            <value>
+                <fullName>Oferta no accesible</fullName>
+                <default>false</default>
+                <label>Oferta no accesible</label>
+            </value>
+            <value>
+                <fullName>Gestión Compet</fullName>
+                <default>false</default>
+                <label>Gestión Compet</label>
+            </value>
+            <value>
+                <fullName>Encias</fullName>
+                <default>false</default>
+                <label>Encias</label>
+            </value>
+            <value>
+                <fullName>Falta de datos</fullName>
+                <default>false</default>
+                <label>Falta de datos</label>
+            </value>
+            <value>
+                <fullName>Garantías</fullName>
+                <default>false</default>
+                <label>Garantías</label>
+            </value>
+            <value>
+                <fullName>Fechas</fullName>
+                <default>false</default>
+                <label>Fechas</label>
+            </value>
+            <value>
+                <fullName>Datos personales</fullName>
+                <default>false</default>
+                <label>Datos personales</label>
+            </value>
+            <value>
+                <fullName>Desaparición riesgo</fullName>
+                <default>false</default>
+                <label>Desaparición riesgo</label>
+            </value>
+            <value>
+                <fullName>Precio</fullName>
+                <default>false</default>
+                <label>Precio</label>
+            </value>
+            <value>
+                <fullName>Fuera plazo</fullName>
+                <default>false</default>
+                <label>Fuera plazo</label>
+            </value>
+            <value>
+                <fullName>Descuento</fullName>
+                <default>false</default>
+                <label>Descuento</label>
+            </value>
+            <value>
+                <fullName>Argumentario</fullName>
+                <default>false</default>
+                <label>Argumentario</label>
+            </value>
+            <value>
+                <fullName>Reemplazo</fullName>
+                <default>false</default>
+                <label>Reemplazo</label>
+            </value>
+            <value>
+                <fullName>Modificación garantías</fullName>
+                <default>false</default>
+                <label>Modificación garantías</label>
+            </value>
+            <value>
+                <fullName>Saneamiento</fullName>
+                <default>false</default>
+                <label>Saneamiento</label>
+            </value>
+            <value>
+                <fullName>Cambio canal distribución</fullName>
+                <default>false</default>
+                <label>Cambio canal distribución</label>
+            </value>
+            <value>
+                <fullName>Coberturas</fullName>
+                <default>false</default>
+                <label>Coberturas</label>
+            </value>
+            <value>
+                <fullName>Insatisfacción siniestros</fullName>
+                <default>false</default>
+                <label>Insatisfacción siniestros</label>
+            </value>
+            <value>
+                <fullName>Insatisfacción procesos</fullName>
+                <default>false</default>
+                <label>Insatisfacción procesos</label>
+            </value>
+            <value>
+                <fullName>No facilita datos</fullName>
+                <default>false</default>
+                <label>No facilita datos</label>
+            </value>
+            <value>
+                <fullName>No es cliente</fullName>
+                <default>false</default>
+                <label>No es cliente</label>
+            </value>
+            <value>
+                <fullName>Vida</fullName>
+                <default>false</default>
+                <label>Vida</label>
+            </value>
+            <value>
+                <fullName>Empresa</fullName>
+                <default>false</default>
+                <label>Empresa</label>
+            </value>
+            <value>
+                <fullName>Póliza anulada</fullName>
+                <default>false</default>
+                <label>Póliza anulada</label>
+            </value>
+            <value>
+                <fullName>Campaña</fullName>
+                <default>false</default>
+                <label>Campaña</label>
+            </value>
+            <value>
+                <fullName>Insatisfacción atención</fullName>
+                <default>false</default>
+                <label>Insatisfacción atención</label>
+            </value>
+            <value>
+                <fullName>Insatisfacción mediador</fullName>
+                <default>false</default>
+                <label>Insatisfacción mediador</label>
+            </value>
+            <value>
+                <fullName>Error FIVA</fullName>
+                <default>false</default>
+                <label>Error FIVA</label>
+            </value>
+            <value>
+                <fullName>Mail activación</fullName>
+                <default>false</default>
+                <label>Mail activación</label>
+            </value>
+            <value>
+                <fullName>Estado firma digital</fullName>
+                <default>false</default>
+                <label>Estado firma digital</label>
+            </value>
+            <value>
+                <fullName>Datos erróneos</fullName>
+                <default>false</default>
+                <label>Datos erróneos</label>
+            </value>
+            <value>
+                <fullName>Aplicativo web</fullName>
+                <default>false</default>
+                <label>Aplicativo web</label>
+            </value>
+            <value>
+                <fullName>NIF bloqueado</fullName>
+                <default>false</default>
+                <label>NIF bloqueado</label>
+            </value>
+            <value>
+                <fullName>Información</fullName>
+                <default>false</default>
+                <label>Información</label>
+            </value>
+            <value>
+                <fullName>Documentación</fullName>
+                <default>false</default>
+                <label>Documentación</label>
+            </value>
+            <value>
+                <fullName>Desbloqueo registro</fullName>
+                <default>false</default>
+                <label>Desbloqueo registro</label>
+            </value>
+            <value>
+                <fullName>Corregida</fullName>
+                <default>false</default>
+                <label>Corregida</label>
+            </value>
+            <value>
+                <fullName>Recepción datos</fullName>
+                <default>false</default>
+                <label>Recepción datos</label>
+            </value>
+            <value>
+                <fullName>Envío mail</fullName>
+                <default>false</default>
+                <label>Envío mail</label>
+            </value>
+            <value>
+                <fullName>Gestión incorrecta</fullName>
+                <default>false</default>
+                <label>Gestión incorrecta</label>
+            </value>
+            <value>
+                <fullName>Extorno</fullName>
+                <default>false</default>
+                <label>Extorno</label>
+            </value>
+            <value>
+                <fullName>Falta aviso</fullName>
+                <default>false</default>
+                <label>Falta aviso</label>
+            </value>
+            <value>
+                <fullName>Anulación no tramitada</fullName>
+                <default>false</default>
+                <label>Anulación no tramitada</label>
+            </value>
+            <value>
+                <fullName>Solicitud extorno</fullName>
+                <default>false</default>
+                <label>Solicitud extorno</label>
+            </value>
+            <value>
+                <fullName>Promo / Regalo</fullName>
+                <default>false</default>
+                <label>Promo / Regalo</label>
+            </value>
+            <value>
+                <fullName>No procede</fullName>
+                <default>false</default>
+                <label>No procede</label>
+            </value>
+            <value>
+                <fullName>Cobro</fullName>
+                <default>false</default>
+                <label>Cobro</label>
+            </value>
+            <value>
+                <fullName>Siniestro</fullName>
+                <default>false</default>
+                <label>Siniestro</label>
+            </value>
+            <value>
+                <fullName>Desacuerdo en indemnización</fullName>
+                <default>false</default>
+                <label>Desacuerdo en indemnización</label>
+            </value>
+            <value>
+                <fullName>Retraso en tramitación</fullName>
+                <default>false</default>
+                <label>Retraso en tramitación</label>
+            </value>
+            <value>
+                <fullName>Tiempo de espera</fullName>
+                <default>false</default>
+                <label>Tiempo de espera</label>
+            </value>
+            <value>
+                <fullName>Accesos 902</fullName>
+                <default>false</default>
+                <label>Accesos 902</label>
+            </value>
+            <value>
+                <fullName>Gestión incorrecta comercialización</fullName>
+                <default>false</default>
+                <label>Gestión incorrecta comercialización</label>
+            </value>
+            <value>
+                <fullName>Atención empleado</fullName>
+                <default>false</default>
+                <label>Atención empleado</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
+            <valueName>Información</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Proteo client</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Datos erróneos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Aplicativo web</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Navigation</controllingFieldValue>
+            <valueName>Documentación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>NIF bloqueado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>User / password lock</controllingFieldValue>
+            <valueName>Desbloqueo registro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <valueName>Vida</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Inconsistency</controllingFieldValue>
+            <valueName>Corregida</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Digital signature</controllingFieldValue>
+            <valueName>Recepción datos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Activation failure</controllingFieldValue>
+            <valueName>Envío mail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
+            <valueName>Garantías</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
+            <valueName>Fechas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
+            <valueName>Datos personales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Undefined</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <valueName>Sin INFO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Undefined</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <valueName>No autoservicio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Undefined</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <controllingFieldValue>Regular</controllingFieldValue>
+            <valueName>Caída sistema</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Undefined</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <valueName>No accesible</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Undefined</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <valueName>Descuentos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Undefined</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <valueName>Usos / Actividad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Undefined</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <valueName>Conductores agravados</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Undefined</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <valueName>SINCO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Undefined</controllingFieldValue>
+            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
+            <controllingFieldValue>No offer</controllingFieldValue>
+            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
+            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
+            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
+            <valueName>Cambio de tomador</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Regular</controllingFieldValue>
+            <valueName>Oferta no accesible</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Regular</controllingFieldValue>
+            <valueName>Gestión Compet</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <valueName>Desaparición riesgo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <controllingFieldValue>Certificate</controllingFieldValue>
+            <valueName>Precio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Fuera plazo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <valueName>Descuento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <valueName>Argumentario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <valueName>Reemplazo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <valueName>Modificación garantías</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <controllingFieldValue>Certificate</controllingFieldValue>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <valueName>Cambio canal distribución</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <controllingFieldValue>Certificate</controllingFieldValue>
+            <valueName>Coberturas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <controllingFieldValue>Certificate</controllingFieldValue>
+            <valueName>Insatisfacción siniestros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <controllingFieldValue>Certificate</controllingFieldValue>
+            <valueName>Insatisfacción procesos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulment</controllingFieldValue>
+            <controllingFieldValue>Certificate</controllingFieldValue>
+            <valueName>Insatisfacción atención</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <valueName>No facilita datos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <valueName>No es cliente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>General information</controllingFieldValue>
+            <valueName>Empresa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Certificate</controllingFieldValue>
+            <valueName>Póliza anulada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Certificate</controllingFieldValue>
+            <valueName>Campaña</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Certificate</controllingFieldValue>
+            <valueName>Insatisfacción mediador</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Anulación no tramitada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Solicitud extorno</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Promo / Regalo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>No procede</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Cobro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Siniestro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Desacuerdo en indemnización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Retraso en tramitación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Tiempo de espera</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Accesos 902</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Gestión incorrecta comercialización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Complaints</controllingFieldValue>
+            <valueName>Atención empleado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Gestión incorrecta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Extorno</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Claims</controllingFieldValue>
+            <valueName>Falta aviso</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Mail activación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <valueName>Estado firma digital</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

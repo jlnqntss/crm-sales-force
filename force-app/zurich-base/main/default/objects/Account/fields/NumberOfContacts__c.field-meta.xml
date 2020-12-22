@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NumberOfContacts__c</fullName>
+    <description>Hidden Field used to set the number of contacts, used in customer entity formula field to determine if a customer of opposite legal entity exist.</description>
+    <externalId>false</externalId>
+    <label>Número de contactos</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

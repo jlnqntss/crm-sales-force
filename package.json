@@ -1,18 +1,27 @@
 {
-  "name": "sfdx-project-template",
-  "author": "GitLab",
+  "name": "zurich-salesforce",
+  "author": "NTS",
+  "version": "1.0.0",
   "scripts": {
-    "postinstall": "sfdx update && sfdx plugins:install sfpowerkit",
+    "lint": "npm run lint:lwc",
+    "lint:lwc": "eslint --no-error-on-unmatched-pattern force-app/**/main/default/lwc",
+    "postinstall": "sfdx update && (echo y | sfdx plugins:install sfpowerkit -f)",
     "install:extensions": "type config/vscode-extensions.list | code --install-extension -",
-    "test:lwc": "lwc-jest",
-    "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 10",
-    "push:source": "sfdx force:source:push",
+    "test:lwc": "lwc-jest -- --passWithNoTests",
+    "test:org": "sfdx force:apex:test:run --codecoverage --resultformat human --wait 120",
+    "push:source": "sfdx force:source:push -f",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
-    "pull:source": "sfdx force:source:pull",
-    "retrieve:source": "sfdx force:source:retrieve --sourcepath=force-app",
+    "deploy:validate": "node scripts/source/unit-deploy-validation.js",
+    "pull:source": "sfdx force:source:pull -f",
+    "retrieve:": "sfdx force:source:retrieve --sourcepath=force-app",
     "pull:profiles": "sfdx force:source:pull -f && sfdx sfpowerkit:source:profile:reconcile -s",
     "retrieve:profiles:all": "sfdx sfpowerkit:source:profile:retrieve",
-    "retrieve:email-templates": "node scripts/source/retrieve-templates.js"
+    "retrieve:email-templates": "node scripts/source/retrieve-templates.js",
+    "docs:update": "node scripts/source/update-docs.js",
+    "release:create": "node scripts/source/create-release.js",
+    "release:candidate": "node scripts/source/increment-release.js",
+    "release:finish": "node scripts/source/finish-release.js",
+    "release:changelog": "node scripts/source/changelog.js"
   },
   "husky": {
     "hooks": {
@@ -20,13 +29,18 @@
     }
   },
   "devDependencies": {
-    "@salesforce/eslint-config-lwc": "latest",
-    "@salesforce/lwc-jest": "latest",
-    "eslint": "latest",
-    "husky": "^4.3.0",
-    "prettier": "^2.1.2",
-    "prettier-plugin-apex": "^1.7.0",
-    "pretty-quick": "^3.0.2",
-    "sfpowerkit": "latest"
+    "@commitlint/config-conventional": "^11.0.0",
+    "@commitlint/lint": "^11.0.0",
+    "@salesforce/eslint-config-lwc": "^0.8.0",
+    "@salesforce/sfdx-lwc-jest": "^0.10.2",
+    "eslint": "^7.15.0",
+    "fs-extra": "^9.0.1",
+    "husky": "^4.3.6",
+    "merge-dirs": "^0.2.1",
+    "mustache": "^4.1.0",
+    "node-fetch": "^2.6.1",
+    "node-merge": "^0.1.0",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0"
   }
 }

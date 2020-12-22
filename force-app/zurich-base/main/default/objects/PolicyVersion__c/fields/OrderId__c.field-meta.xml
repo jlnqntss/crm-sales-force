@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OrderId__c</fullName>
+    <description>Order to which is related to</description>
+    <externalId>false</externalId>
+    <label>Póliza</label>
+    <referenceTo>Order</referenceTo>
+    <relationshipLabel>Versiones de póliza</relationshipLabel>
+    <relationshipName>PolicyVersions</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>true</writeRequiresMasterRead>
+</CustomField>

@@ -1,0 +1,4 @@
+<design:component label="Redirección a registro">
+   <design:attribute name="recordId" label="Id. de registro"/>
+   <design:attribute name="openAsSubtab" label="¿Abrir como subpestaña?"/>
+</design:component>

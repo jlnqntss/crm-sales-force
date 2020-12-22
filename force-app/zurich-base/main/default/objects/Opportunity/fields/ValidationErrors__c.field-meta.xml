@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidationErrors__c</fullName>
+    <description>(ZE) identifica los errores de la validación con INFO (suscripción/competencias).</description>
+    <externalId>false</externalId>
+    <label>Validation Errors</label>
+    <length>32000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

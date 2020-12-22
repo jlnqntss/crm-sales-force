@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PolicyDefault</fullName>
+    <fields>Name</fields>
+    <fields>ProductId__c</fields>
+    <fields>PolicyHolder__c</fields>
+    <fields>BusinessName__c</fields>
+    <fields>IntermediaryName__c</fields>
+    <fields>TotalPremium__c</fields>
+    <label>Policy Default</label>
+</CompactLayout>

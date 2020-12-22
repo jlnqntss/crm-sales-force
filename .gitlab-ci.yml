@@ -1,14 +1,2 @@
 include:
   - local: "config/salesforce.gitlab-ci.yml"
-  - template: SAST.gitlab-ci.yml
-
-sast:
-  # Run Security scanning job 'SAST' within the 'preliminary-testing' stage
-  stage: preliminary-testing
-  # Override executing any pre-scripts and SFDX helper functions
-  before_script:
-    - echo "Skipping sfdx helper scripts"
-  # Run only APEX and Secret scanning and run each analyzer as an isolated job instead of single job in DinD
-  variables:
-    SAST_DEFAULT_ANALYZERS: "pmd-apex,secrets"
-    SAST_DISABLE_DIND: "true"
