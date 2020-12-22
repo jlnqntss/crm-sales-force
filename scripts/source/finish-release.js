@@ -13,11 +13,11 @@ async function main() {
   });
   let tag = await gitLabService.getTag(process.env["CI_COMMIT_TAG"]);
 
-  let releaseBranch = await gitLabService
-    .getTagBranchRefs(tag.target)
-    .find((ref) => {
+  let releaseBranch = (await gitLabService.getTagBranchRefs(tag.target)).find(
+    (ref) => {
       return ref.includes("release");
-    });
+    }
+  );
 
   if (releaseBranch) {
     console.log("Commit is in release branch");
