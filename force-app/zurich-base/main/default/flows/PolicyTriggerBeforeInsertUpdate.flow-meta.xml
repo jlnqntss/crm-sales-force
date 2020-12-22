@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
+    <assignments>
+        <description>Se rellena el campo Policy__c.OpportunityName__c con el ID de la Oferta obtenida del Get Records</description>
+        <name>UpdateLookupOffer</name>
+        <label>Rellenar Lookup a Oferta</label>
+        <locationX>181</locationX>
+        <locationY>636</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.OpportunityName__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetRelatedOffer.Id</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>OfferFound</name>
+        <label>¿Offer Encontrada?</label>
+        <locationX>376</locationX>
+        <locationY>493</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetRelatedOffer.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateLookupOffer</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <description>Automatismo para que cada vez que se inserte o actualice una póliza se actualice la etapa de la oferta relacionada</description>
+    <interviewLabel>Póliza Trigger - Before insert/update {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Póliza Trigger - Before insert/update</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Se busca la oferta cuyo InfoQuoteNumber__c (identificador de la oferta en INFO) sea igual al que tiene la póliza</description>
+        <name>GetRelatedOffer</name>
+        <label>Conseguir Oferta relacionada</label>
+        <locationX>172</locationX>
+        <locationY>340</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>OfferFound</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>InfoQuoteNumber__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.InfoQuoteNumber__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>GetRelatedOffer</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityName__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>InfoQuoteNumber__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Policy__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
