@@ -2,7 +2,7 @@
 <StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <valueTranslation>
         <masterLabel>App Submitted</masterLabel>
-        <translation>Petición Enviada</translation>
+        <translation>App Submitted</translation>
     </valueTranslation>
     <valueTranslation>
         <masterLabel>Closed Lost</masterLabel>
@@ -14,10 +14,10 @@
     </valueTranslation>
     <valueTranslation>
         <masterLabel>Legit Lead</masterLabel>
-        <translation>Candidato Legítimo</translation>
+        <translation>Legit Lead</translation>
     </valueTranslation>
     <valueTranslation>
         <masterLabel>Quoted</masterLabel>
-        <translation>Cotizada</translation>
+        <translation>Quoted</translation>
     </valueTranslation>
 </StandardValueSetTranslation>
