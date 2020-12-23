@@ -19,6 +19,24 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Orders_GI_Germany</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Orders GI Germany</label>
+        <sharedTo>
+            <group>KLINC_GI_Germany</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Germany</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Orders_GI_Spain</fullName>
         <accessLevel>Read</accessLevel>
         <label>Orders GI Spain</label>
