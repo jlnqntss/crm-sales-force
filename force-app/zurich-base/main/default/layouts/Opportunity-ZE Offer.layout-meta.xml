@@ -294,6 +294,13 @@
         <fields>PRODUCT2.NAME</fields>
         <relatedList>Asset.OfferId__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>ProductId__c</fields>
+        <fields>TotalPremium__c</fields>
+        <fields>LinkINFO__c</fields>
+        <relatedList>Policy__c.OpportunityName__c</relatedList>
+    </relatedLists>
     <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
