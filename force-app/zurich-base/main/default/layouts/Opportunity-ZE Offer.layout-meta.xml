@@ -52,7 +52,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Probability</field>
+                <field>PendingBy__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -221,6 +221,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ValidationErrors__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Probability</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>
