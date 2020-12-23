@@ -153,12 +153,28 @@
         <value>Darse de baja de Klinc</value>
     </labels>
     <labels>
+        <fullName>EmailOptOutCheckboxOCS</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EmailOptOutCheckboxOCS</shortDescription>
+        <value>Darse de baja</value>
+    </labels>
+    <labels>
         <fullName>EmailOptOutText</fullName>
         <categories>PreferenceCentre</categories>
         <language>es</language>
         <protected>false</protected>
         <shortDescription>EmailOptOutText</shortDescription>
         <value>Esto cancelará cualquier suscripción a las comunicaciones de Klinc. Ten en cuenta que ello no afectará las comunicaciones transaccionales (por ejemplo, e-mails relacionados con la contratación de un seguro o la gestión de un siniestro).</value>
+    </labels>
+    <labels>
+        <fullName>EmailOptOutTextOCS</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EmailOptOutTextOCS</shortDescription>
+        <value>Esto cancelará cualquier suscripción a las comunicaciones. Ten en cuenta que ello no afectará las comunicaciones transaccionales (por ejemplo, e-mails relacionados con la contratación de un seguro o la gestión de un siniestro).</value>
     </labels>
     <labels>
         <fullName>EmptyJsonObject</fullName>
@@ -532,6 +548,14 @@
         <protected>true</protected>
         <shortDescription>PrecisionNumeroNoValida</shortDescription>
         <value>Precisión del número no válida</value>
+    </labels>
+    <labels>
+        <fullName>PreferenceCentreRedirect</fullName>
+        <categories>PreferenceCentre</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PreferenceCentreRedirect</shortDescription>
+        <value>https://klinc.com/</value>
     </labels>
     <labels>
         <fullName>PreferenceCentreSave</fullName>

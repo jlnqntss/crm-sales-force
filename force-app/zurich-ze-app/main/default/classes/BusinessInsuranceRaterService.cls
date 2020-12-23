@@ -535,15 +535,15 @@ public without sharing class BusinessInsuranceRaterService
                     {
                         insert risksToCreate;
                     }
-
-                    //Crear Campaign Member
-                    manageCampaignAssignment(offersToCreate);
                 }
             }
         }
 
         if( contactRequestSteps.contains(formData.lastStep) )
         {
+            //Crear Campaign Member
+            manageCampaignAssignment(offersToCreate);
+
             //OPCIONAL - puede que no requiera funcionar con genesys
             List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
             genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
@@ -552,7 +552,7 @@ public without sharing class BusinessInsuranceRaterService
             ContactRequest contactRequestToCreate = new ContactRequest(
                 GenesysCloudQueueId__c = (!genesysQueue.isEmpty() ? genesysQueue.get(0).Id : null),
                 OwnerId = currentAdvisorId,
-                PreferredChannel = 'Phone',
+                PreferredChannel = (String.isBlank(formData.webPhone) ? 'Email' : 'Phone'),
                 PreferredContactDatetime__c = ( String.isNotBlank(formData.bestTimeFrom) ? Datetime.valueOf( JSON.deserialize(formData.bestTimeFrom, Datetime.class) ) : System.now() ),
                 PreferredPhone = formData.webPhone,
                 RequestReason = 'Offer',
@@ -781,9 +781,10 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static void manageCampaignAssignment(List<Opportunity> createdOffers)
     {
+        List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
+        String campaingName = '';
         if( !createdOffers.isEmpty() )
         {
-            List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
             Boolean appSubmittedOffers = false;
             Boolean allOffersLegiLead = true;
             for(Opportunity offer: createdOffers)
@@ -803,10 +804,8 @@ public without sharing class BusinessInsuranceRaterService
                 }
             }
 
-            String campaingName = '';
             if (currentScope.Scope__c.toLowerCase() == 'ze')
             {
-
                 campaingName = 'ZE_Quoted Leads';
                 if(appSubmittedOffers)
                 {
@@ -829,27 +828,38 @@ public without sharing class BusinessInsuranceRaterService
                     campaingName = 'ZEO_Legit Leads';
                 }
             }
-
-            businessInsuranceCampaigns = new CampaignsSelector(
-                new Set<String> {'Id'}
-                ).selectByName(new Set<String> {campaingName});
-
-            if( !businessInsuranceCampaigns.isEmpty() )
+        }
+        else
+        {
+            if (currentScope.Scope__c.toLowerCase() == 'ze')
             {
-                //Primero, comprobamos si el cliente ya existe en la campaña
-                List<CampaignMember> campaingMembers = new CampaignMembersSelector(
-                    new Set<String> {'Id'}
-                    ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
-                if( campaingMembers.isEmpty() )
-                {
-                    //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
-                    insert new CampaignMember(
-                        CampaignId = businessInsuranceCampaigns.get(0).Id,
-                        ContactId = currentCustomer.PersonContactId,
-                        Status = 'Subscribed',
-                        ScopeId__c = currentScope.Id
-                        );
-                }
+                campaingName = 'ZE_Legit Leads';
+            }
+            else
+            {
+                campaingName = 'ZEO_Legit Leads';
+            }
+        }
+
+        businessInsuranceCampaigns = new CampaignsSelector(
+            new Set<String> {'Id'}
+            ).selectByName(new Set<String> {campaingName});
+
+        if( !businessInsuranceCampaigns.isEmpty() )
+        {
+            //Primero, comprobamos si el cliente ya existe en la campaña
+            List<CampaignMember> campaingMembers = new CampaignMembersSelector(
+                new Set<String> {'Id'}
+                ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
+            if( campaingMembers.isEmpty() )
+            {
+                //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
+                insert new CampaignMember(
+                    CampaignId = businessInsuranceCampaigns.get(0).Id,
+                    ContactId = currentCustomer.PersonContactId,
+                    Status = 'Subscribed',
+                    ScopeId__c = currentScope.Id
+                    );
             }
         }
     }
