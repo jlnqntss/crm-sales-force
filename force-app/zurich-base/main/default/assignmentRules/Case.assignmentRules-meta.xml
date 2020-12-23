@@ -22,6 +22,15 @@
             </criteriaItems>
         </ruleEntry>
         <ruleEntry>
+            <assignedTo>Customer_Care_Germany</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.SourceCountry__c</field>
+                <operation>equals</operation>
+                <value>Germany</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
             <assignedTo>Customer_Care</assignedTo>
             <assignedToType>Queue</assignedToType>
             <booleanFilter>1 OR 2</booleanFilter>

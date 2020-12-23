@@ -19,6 +19,24 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Cases_CC_GI_Germany</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cases CC GI Germany</label>
+        <sharedTo>
+            <group>KLINC_Customer_Care_GI_Germany</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Germany</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Cases_CC_GI_Spain</fullName>
         <accessLevel>Edit</accessLevel>
         <label>Cases CC GI Spain</label>
@@ -83,6 +101,24 @@
             <field>SourceCountry__c</field>
             <operation>equals</operation>
             <value>France</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cases_GI_Germany</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Cases GI Germany</label>
+        <sharedTo>
+            <group>KLINC_GI_Germany</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Germany</value>
         </criteriaItems>
         <criteriaItems>
             <field>LegalEntity__c</field>

@@ -56,6 +56,17 @@
         <targetObject>ParentId</targetObject>
     </fieldUpdates>
     <fieldUpdates>
+        <fullName>Source_Country_to_Germany</fullName>
+        <field>SourceCountry__c</field>
+        <formula>&quot;Germany&quot;</formula>
+        <name>Source Country to Germany</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Source_Country_to_Spain</fullName>
         <field>SourceCountry__c</field>
         <formula>&quot;Spain&quot;</formula>
@@ -189,6 +200,25 @@
             <value>contact.klinc@zurich.com</value>
         </criteriaItems>
         <description>Updates Source Country and Legal Entity fields on email to case reception to France and General Insurance repectively, based on the email address.</description>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Set Germany GI Email-to-case</fullName>
+        <actions>
+            <name>Set_GI_Email_to_case</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Source_Country_to_Germany</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>EmailMessage.ToAddress</field>
+            <operation>equals</operation>
+            <value>hilfe.klinc@zurich.com</value>
+        </criteriaItems>
+        <description>Updates Source Country and Legal Entity fields on email to case reception to Germany and General Insurance repectively, based on the email address.</description>
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>
