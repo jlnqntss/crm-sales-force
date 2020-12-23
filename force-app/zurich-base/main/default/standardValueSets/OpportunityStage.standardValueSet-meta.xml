@@ -2,43 +2,27 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>false</sorted>
     <standardValue>
-        <fullName>Qualification</fullName>
+        <fullName>Legit Lead</fullName>
         <default>false</default>
-        <description>You&#39;ve contacted the prospect and they&#39;re interested.</description>
-        <label>Qualification</label>
+        <label>Legit Lead</label>
         <closed>false</closed>
-        <forecastCategory>Pipeline</forecastCategory>
-        <probability>10</probability>
+        <forecastCategory>Omitted</forecastCategory>
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Needs Analysis</fullName>
+        <fullName>App Submitted</fullName>
         <default>false</default>
-        <description>You&#39;re defining the prospect&#39;s needs.</description>
-        <label>Needs Analysis</label>
+        <label>App Submitted</label>
         <closed>false</closed>
-        <forecastCategory>Pipeline</forecastCategory>
-        <probability>35</probability>
+        <forecastCategory>Omitted</forecastCategory>
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Proposal</fullName>
+        <fullName>Quoted</fullName>
         <default>false</default>
-        <description>You&#39;re developing a sales proposal for the prospect.</description>
-        <label>Proposal</label>
+        <label>Quoted</label>
         <closed>false</closed>
-        <forecastCategory>BestCase</forecastCategory>
-        <probability>75</probability>
-        <won>false</won>
-    </standardValue>
-    <standardValue>
-        <fullName>Negotiation</fullName>
-        <default>false</default>
-        <description>You&#39;re working with the prospect on the proposal you delivered.</description>
-        <label>Negotiation</label>
-        <closed>false</closed>
-        <forecastCategory>Forecast</forecastCategory>
-        <probability>90</probability>
+        <forecastCategory>Omitted</forecastCategory>
         <won>false</won>
     </standardValue>
     <standardValue>
@@ -59,15 +43,6 @@
         <closed>true</closed>
         <forecastCategory>Omitted</forecastCategory>
         <probability>0</probability>
-        <won>false</won>
-    </standardValue>
-    <standardValue>
-        <fullName>Open</fullName>
-        <default>false</default>
-        <label>Open</label>
-        <closed>false</closed>
-        <forecastCategory>Pipeline</forecastCategory>
-        <probability>5</probability>
         <won>false</won>
     </standardValue>
 </StandardValueSet>

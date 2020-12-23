@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PendingBy__c</fullName>
+    <description>(ZE). Utilizado para cuando la tramitación de la oferta depende de un factor externo</description>
+    <externalId>false</externalId>
+    <label>Pending by</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>StageName</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ninguno</fullName>
+                <default>false</default>
+                <label>Ninguno</label>
+            </value>
+            <value>
+                <fullName>Suscripción</fullName>
+                <default>false</default>
+                <label>Suscripción</label>
+            </value>
+            <value>
+                <fullName>Cliente</fullName>
+                <default>false</default>
+                <label>Cliente</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>App Submitted</controllingFieldValue>
+            <valueName>Ninguno</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>App Submitted</controllingFieldValue>
+            <valueName>Suscripción</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>App Submitted</controllingFieldValue>
+            <valueName>Cliente</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

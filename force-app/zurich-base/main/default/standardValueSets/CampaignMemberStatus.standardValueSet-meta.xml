@@ -2,6 +2,21 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>true</sorted>
     <standardValue>
+        <fullName>Communicate</fullName>
+        <default>false</default>
+        <label>Communicate</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Delete</fullName>
+        <default>false</default>
+        <label>Delete</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Pending</fullName>
+        <default>false</default>
+        <label>Pending</label>
+    </standardValue>
+    <standardValue>
         <fullName>Responded</fullName>
         <default>false</default>
         <label>Responded</label>
@@ -12,28 +27,13 @@
         <label>Sent</label>
     </standardValue>
     <standardValue>
-        <fullName>Suscrito</fullName>
-        <default>false</default>
-        <label>Suscrito</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Pending</fullName>
-        <default>false</default>
-        <label>Pending</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Communicate</fullName>
-        <default>false</default>
-        <label>Communicate</label>
-    </standardValue>
-    <standardValue>
         <fullName>Stop</fullName>
         <default>false</default>
         <label>Stop</label>
     </standardValue>
     <standardValue>
-        <fullName>Delete</fullName>
+        <fullName>Subscribed</fullName>
         <default>false</default>
-        <label>Delete</label>
-    </standardValue>    
+        <label>Subscribed</label>
+    </standardValue>
 </StandardValueSet>
