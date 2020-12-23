@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestringirEdicionRegistro</fullName>
+    <active>true</active>
+    <description>Los perfiles de ZE User y OCS User no pueden editar campañas</description>
+    <errorConditionFormula>OR($Profile.Name = &apos;OCS User&apos;,$Profile.Name = &apos;ZE User&apos;)</errorConditionFormula>
+    <errorMessage>[VR Campaña] La edición de este objeto no está permitida para tu perfil.</errorMessage>
+</ValidationRule>
