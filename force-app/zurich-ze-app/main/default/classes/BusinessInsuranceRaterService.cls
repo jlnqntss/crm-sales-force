@@ -21,6 +21,7 @@ public without sharing class BusinessInsuranceRaterService
 
     public static final String QUEUE_NAME = 'ZurichEmpresas';
     public static final String ZURICH_LEGAL_ENTITY = '001';
+    public static final String SPANISH_PHONE_PREFIX = '+34';
 
     public static Account currentCustomer;
     public static Account currentManager;
@@ -452,10 +453,13 @@ public without sharing class BusinessInsuranceRaterService
                         //Creamos las polizas
                         if( quoteNumberToPolicyNumberMap.containsKey(i) )
                         {
+                            String policyNumber = quoteNumberToPolicyNumberMap.get(i);
                             policiesToCreate.add(
                                 new Policy__c(
-                                    InfoPolicyNumber__c = quoteNumberToPolicyNumberMap.get(i),
-                                    PolicyHolder__c = currentCustomer.Id
+                                    Name = policyNumber,
+                                    InfoPolicyNumber__c = policyNumber,
+                                    PolicyHolder__c = currentCustomer.Id,
+                                    InfoQuoteNumber__c = offer.InfoQuoteNumber__c
                                     )
                                 );
                         }
@@ -898,6 +902,26 @@ public without sharing class BusinessInsuranceRaterService
     }
 
     /**
+     * Método que añade el prefijo español a un número de teléfono si no lo tiene
+     *
+     * @param String phone teléfono al que añadir el prefijo
+     * @return String phone teléfono con prefijo añadido
+     * @author rlopez
+     * @date 23/12/2020
+     */
+    public static String addPrefixToPhone(String phone)
+    {
+        if( !phone.startsWith('+') )
+        {
+            return SPANISH_PHONE_PREFIX + phone;
+        }
+        else
+        {
+            return phone;
+        }
+    }
+
+    /**
      * Método que recupera por metadatos los campos requeridos para el paso especificado
      *
      * @param String step Paso del formulario en el que nos han enviado la información
@@ -1009,7 +1033,7 @@ public without sharing class BusinessInsuranceRaterService
             get;
             set {
                 setRequiredFields('Request' + 'webPhone');
-                webPhone = value;
+                webPhone = String.isNotBlank(value) ? addPrefixToPhone(value) : value;
             }
         }
         public String sessionId {
