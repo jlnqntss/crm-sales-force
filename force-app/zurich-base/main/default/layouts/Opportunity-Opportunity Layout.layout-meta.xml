@@ -28,14 +28,6 @@
                 <behavior>Edit</behavior>
                 <field>CommercialStructureName__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>CommercialProductCode__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>TechnicalProductCode__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -105,6 +97,10 @@
                 <behavior>Edit</behavior>
                 <field>CreatedDate__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>CloseDate</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -150,14 +146,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ProductId__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>BuildingCapital__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ContentCapital__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -229,10 +217,6 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>CreatedById</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>CloseDate</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
