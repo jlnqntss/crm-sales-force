@@ -781,88 +781,85 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static void manageCampaignAssignment(List<Opportunity> createdOffers)
     {
-        if( String.isNotBlank(currentCustomer.PersonContactId) )
+        List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
+        String campaingName = '';
+        if( !createdOffers.isEmpty() )
         {
-            List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
-            String campaingName = '';
-            if( !createdOffers.isEmpty() )
+            Boolean appSubmittedOffers = false;
+            Boolean allOffersLegiLead = true;
+            for(Opportunity offer: createdOffers)
             {
-                Boolean appSubmittedOffers = false;
-                Boolean allOffersLegiLead = true;
-                for(Opportunity offer: createdOffers)
+                if(offer.StageName == 'App Submitted')
                 {
-                    if(offer.StageName == 'App Submitted')
-                    {
-                        //Sí al menos 1 oferta tiene StageName = App Submitted
-                        //ponemos la variable a true para seleccionar la campaña de App Submitted Leads
-                        appSubmittedOffers = true;
-                    }
-
-                    if(offer.StageName != 'Legit Lead')
-                    {
-                        //Sí alguna de las ofertas no tiene StageName = Legit Lead
-                        //no puede ir a la campaña de Legit Leads
-                        allOffersLegiLead = false;
-                    }
+                    //Sí al menos 1 oferta tiene StageName = App Submitted
+                    //ponemos la variable a true para seleccionar la campaña de App Submitted Leads
+                    appSubmittedOffers = true;
                 }
 
-                if (currentScope.Scope__c.toLowerCase() == 'ze')
+                if(offer.StageName != 'Legit Lead')
                 {
-                    campaingName = 'ZE_Quoted Leads';
-                    if(appSubmittedOffers)
-                    {
-                        campaingName = 'ZE_App Submitted Leads';
-                    }
-                    if(allOffersLegiLead)
-                    {
-                        campaingName = 'ZE_Legit Leads';
-                    }
+                    //Sí alguna de las ofertas no tiene StageName = Legit Lead
+                    //no puede ir a la campaña de Legit Leads
+                    allOffersLegiLead = false;
                 }
-                else
+            }
+
+            if (currentScope.Scope__c.toLowerCase() == 'ze')
+            {
+                campaingName = 'ZE_Quoted Leads';
+                if(appSubmittedOffers)
                 {
-                    campaingName = 'ZEO_Quoted Leads';
-                    if(appSubmittedOffers)
-                    {
-                        campaingName = 'ZEO_App Submitted Leads';
-                    }
-                    if(allOffersLegiLead)
-                    {
-                        campaingName = 'ZEO_Legit Leads';
-                    }
+                    campaingName = 'ZE_App Submitted Leads';
+                }
+                if(allOffersLegiLead)
+                {
+                    campaingName = 'ZE_Legit Leads';
                 }
             }
             else
             {
-                if (currentScope.Scope__c.toLowerCase() == 'ze')
+                campaingName = 'ZEO_Quoted Leads';
+                if(appSubmittedOffers)
                 {
-                    campaingName = 'ZE_Legit Leads';
+                    campaingName = 'ZEO_App Submitted Leads';
                 }
-                else
+                if(allOffersLegiLead)
                 {
                     campaingName = 'ZEO_Legit Leads';
                 }
             }
-
-            businessInsuranceCampaigns = new CampaignsSelector(
-                new Set<String> {'Id'}
-                ).selectByName(new Set<String> {campaingName});
-
-            if( !businessInsuranceCampaigns.isEmpty() )
+        }
+        else
+        {
+            if (currentScope.Scope__c.toLowerCase() == 'ze')
             {
-                //Primero, comprobamos si el cliente ya existe en la campaña
-                List<CampaignMember> campaingMembers = new CampaignMembersSelector(
-                    new Set<String> {'Id'}
-                    ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
-                if( campaingMembers.isEmpty() )
-                {
-                    //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
-                    insert new CampaignMember(
-                        CampaignId = businessInsuranceCampaigns.get(0).Id,
-                        ContactId = currentCustomer.PersonContactId,
-                        Status = 'Subscribed',
-                        ScopeId__c = currentScope.Id
-                        );
-                }
+                campaingName = 'ZE_Legit Leads';
+            }
+            else
+            {
+                campaingName = 'ZEO_Legit Leads';
+            }
+        }
+
+        businessInsuranceCampaigns = new CampaignsSelector(
+            new Set<String> {'Id'}
+            ).selectByName(new Set<String> {campaingName});
+
+        if( !businessInsuranceCampaigns.isEmpty() )
+        {
+            //Primero, comprobamos si el cliente ya existe en la campaña
+            List<CampaignMember> campaingMembers = new CampaignMembersSelector(
+                new Set<String> {'Id'}
+                ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
+            if( campaingMembers.isEmpty() )
+            {
+                //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
+                insert new CampaignMember(
+                    CampaignId = businessInsuranceCampaigns.get(0).Id,
+                    ContactId = currentCustomer.PersonContactId,
+                    Status = 'Subscribed',
+                    ScopeId__c = currentScope.Id
+                    );
             }
         }
     }
