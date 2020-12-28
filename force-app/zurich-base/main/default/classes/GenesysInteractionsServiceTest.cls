@@ -115,6 +115,12 @@ public without sharing class GenesysInteractionsServiceTest
     @IsTest
     static void test_initInteraction_outboundMatchedOpportunityPhoneInteraction()
     {
+        //TODO: Mejora -> Sobrecargar método en TestDataFactory.generateOpportunitiesForEachAccount() con nuevo parámetro ownerID sin romper test antiguos
+        //Controlar el email que tiene UserInfo:
+        Id testUserId = UserInfo.getUserId();
+        User testUser = new User(Id = testUserId, Email = 'emailfortesting@nts-solutions.com');
+        update testUser;
+
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
 
@@ -137,8 +143,8 @@ public without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email, OwnerId FROM Opportunity LIMIT 1];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email, BestAgent__c, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
 
         System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -149,6 +155,7 @@ public without sharing class GenesysInteractionsServiceTest
         System.assertEquals(expectedTasks[0].WhoId, testInteractionLog.customerId, 'No coinciden el Id. de cliente de tarea');
         System.assertEquals(expectedTasks[0].WhatId, testInteractionLog.screenPopRecordId, 'No coinciden el Id. de registro relacionado de tarea');
         System.assertEquals(expectedTasks[0].Status, 'Nueva', 'El estado de la tarea no es el inicial');
+        System.assertEquals(expectedTasks[0].BestAgent__c, expectedOpportunity.OwnerId, 'El Lookup de BestAgent debería estar relleno con el ID del usuario que tenga el Email que se ha pasado a Genesys');
     }
 
     /**
