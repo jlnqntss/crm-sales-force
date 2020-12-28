@@ -4,6 +4,7 @@
     <active>true</active>
     <description>Los Advisors pueden cambiar de etapa únicamente a Closed Lost si la etapa es diferente de Open o a cualquier etapa si estaba en Open.</description>
     <errorConditionFormula>AND(
+ISCHANGED(StageName),
 NOT(ISPICKVAL(PRIORVALUE(StageName),&quot;Open&quot;)) &amp;&amp; 
 NOT(ISPICKVAL(StageName,&quot;Closed Lost&quot;)),
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos;,
