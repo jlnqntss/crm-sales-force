@@ -115,6 +115,11 @@ public without sharing class GenesysInteractionsServiceTest
     @IsTest
     static void test_initInteraction_outboundMatchedOpportunityPhoneInteraction()
     {
+        //Controlar el email que tiene UserInfo:
+        Id testUserId = UserInfo.getUserId();
+        User testUser = new User(Id = testUserId, Email = 'emailfortesting@nts-solutions.com');
+        update testUser;
+
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
 
