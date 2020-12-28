@@ -2,6 +2,6 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>StatusRuleFirstStatusHasToBeNew</fullName>
     <active>true</active>
-    <errorConditionFormula>ISNEW() &amp;&amp; RecordType.DeveloperName = &quot;Activity&quot; &amp;&amp; NOT(ISPICKVAL(Status, &quot;Nueva&quot;)) &amp;&amp; $Profile.Id  &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp; $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos;</errorConditionFormula>
+    <errorConditionFormula>ISNEW() &amp;&amp; RecordType.DeveloperName = &quot;Activity&quot; &amp;&amp; NOT(ISPICKVAL(Status, &quot;Nueva&quot;)) &amp;&amp; $Profile.Id  &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp; $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp; $Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;</errorConditionFormula>
     <errorMessage>[VR Tarea] Una actividad no puede crearse en un estado que no sea NUEVA</errorMessage>
 </ValidationRule>
