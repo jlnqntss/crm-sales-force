@@ -781,85 +781,88 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static void manageCampaignAssignment(List<Opportunity> createdOffers)
     {
-        List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
-        String campaingName = '';
-        if( !createdOffers.isEmpty() )
+        if( String.isNotBlank(currentCustomer.PersonContactId) )
         {
-            Boolean appSubmittedOffers = false;
-            Boolean allOffersLegiLead = true;
-            for(Opportunity offer: createdOffers)
+            List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
+            String campaingName = '';
+            if( !createdOffers.isEmpty() )
             {
-                if(offer.StageName == 'App Submitted')
+                Boolean appSubmittedOffers = false;
+                Boolean allOffersLegiLead = true;
+                for(Opportunity offer: createdOffers)
                 {
-                    //Sí al menos 1 oferta tiene StageName = App Submitted
-                    //ponemos la variable a true para seleccionar la campaña de App Submitted Leads
-                    appSubmittedOffers = true;
+                    if(offer.StageName == 'App Submitted')
+                    {
+                        //Sí al menos 1 oferta tiene StageName = App Submitted
+                        //ponemos la variable a true para seleccionar la campaña de App Submitted Leads
+                        appSubmittedOffers = true;
+                    }
+
+                    if(offer.StageName != 'Legit Lead')
+                    {
+                        //Sí alguna de las ofertas no tiene StageName = Legit Lead
+                        //no puede ir a la campaña de Legit Leads
+                        allOffersLegiLead = false;
+                    }
                 }
 
-                if(offer.StageName != 'Legit Lead')
+                if (currentScope.Scope__c.toLowerCase() == 'ze')
                 {
-                    //Sí alguna de las ofertas no tiene StageName = Legit Lead
-                    //no puede ir a la campaña de Legit Leads
-                    allOffersLegiLead = false;
+                    campaingName = 'ZE_Quoted Leads';
+                    if(appSubmittedOffers)
+                    {
+                        campaingName = 'ZE_App Submitted Leads';
+                    }
+                    if(allOffersLegiLead)
+                    {
+                        campaingName = 'ZE_Legit Leads';
+                    }
                 }
-            }
-
-            if (currentScope.Scope__c.toLowerCase() == 'ze')
-            {
-                campaingName = 'ZE_Quoted Leads';
-                if(appSubmittedOffers)
+                else
                 {
-                    campaingName = 'ZE_App Submitted Leads';
-                }
-                if(allOffersLegiLead)
-                {
-                    campaingName = 'ZE_Legit Leads';
+                    campaingName = 'ZEO_Quoted Leads';
+                    if(appSubmittedOffers)
+                    {
+                        campaingName = 'ZEO_App Submitted Leads';
+                    }
+                    if(allOffersLegiLead)
+                    {
+                        campaingName = 'ZEO_Legit Leads';
+                    }
                 }
             }
             else
             {
-                campaingName = 'ZEO_Quoted Leads';
-                if(appSubmittedOffers)
+                if (currentScope.Scope__c.toLowerCase() == 'ze')
                 {
-                    campaingName = 'ZEO_App Submitted Leads';
+                    campaingName = 'ZE_Legit Leads';
                 }
-                if(allOffersLegiLead)
+                else
                 {
                     campaingName = 'ZEO_Legit Leads';
                 }
             }
-        }
-        else
-        {
-            if (currentScope.Scope__c.toLowerCase() == 'ze')
-            {
-                campaingName = 'ZE_Legit Leads';
-            }
-            else
-            {
-                campaingName = 'ZEO_Legit Leads';
-            }
-        }
 
-        businessInsuranceCampaigns = new CampaignsSelector(
-            new Set<String> {'Id'}
-            ).selectByName(new Set<String> {campaingName});
-
-        if( !businessInsuranceCampaigns.isEmpty() )
-        {
-            //Primero, comprobamos si el cliente ya existe en la campaña
-            List<CampaignMember> campaingMembers = new CampaignMembersSelector(
+            businessInsuranceCampaigns = new CampaignsSelector(
                 new Set<String> {'Id'}
-                ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
-            if( campaingMembers.isEmpty() )
+                ).selectByName(new Set<String> {campaingName});
+
+            if( !businessInsuranceCampaigns.isEmpty() )
             {
-                //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
-                insert new CampaignMember(
-                    CampaignId = businessInsuranceCampaigns.get(0).Id,
-                    ContactId = currentCustomer.PersonContactId,
-                    Status = 'Subscribed',
-                    ScopeId__c = currentScope.Id
-                    );
+                //Primero, comprobamos si el cliente ya existe en la campaña
+                List<CampaignMember> campaingMembers = new CampaignMembersSelector(
+                    new Set<String> {'Id'}
+                    ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
+                if( campaingMembers.isEmpty() )
+                {
+                    //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
+                    insert new CampaignMember(
+                        CampaignId = businessInsuranceCampaigns.get(0).Id,
+                        ContactId = currentCustomer.PersonContactId,
+                        Status = 'Subscribed',
+                        ScopeId__c = currentScope.Id
+                        );
+                }
             }
         }
     }
