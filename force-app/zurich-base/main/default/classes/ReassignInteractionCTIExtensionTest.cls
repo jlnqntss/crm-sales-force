@@ -57,8 +57,8 @@ public without sharing class ReassignInteractionCTIExtensionTest
     static void test_onSaveLog_changeCaseOwnerFromQueueToUser_ok()
     {
         Test.startTest();
-            //En el stopTest finaliza el future
-            byPassMixedDMLOperation();
+        //En el stopTest finaliza el future
+        byPassMixedDMLOperation();
         Test.stopTest();
 
         List<Group> queues = [SELECT Id, Type FROM Group WHERE Type = 'Queue'];
@@ -99,8 +99,8 @@ public without sharing class ReassignInteractionCTIExtensionTest
     static void test_onSaveLog_changeCaseOwnerFromQueueToUser_ko()
     {
         Test.startTest();
-            //En el stopTest finaliza el future
-            byPassMixedDMLOperation();
+        //En el stopTest finaliza el future
+        byPassMixedDMLOperation();
         Test.stopTest();
 
         List<Group> queues = [SELECT Id, Type FROM Group WHERE Type = 'Queue'];

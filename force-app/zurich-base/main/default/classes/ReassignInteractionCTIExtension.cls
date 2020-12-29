@@ -119,7 +119,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         return interactionTask;
     }
 
-     /**
+    /**
      * Si la tarea está asociada a un caso y este caso pertenece a una cola, reasignar el caso al usuario actual.
      * @param interactionTask Task recibida
      */
@@ -130,7 +130,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
         {
             List<Case> cases = [SELECT Id, OwnerId, Owner.Type FROM Case WHERE Id = :interactionTask.WhatId];
-            if(!cases.isEmpty())
+            if(!cases.isEmpty() )
             {
                 //Si el propietario es una COLA
                 if(cases[0].OwnerId.getSobjectType() == Group.sObjectType) //(cases[0].Owner.Type == 'Queue')
@@ -144,7 +144,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
         {
             List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
-            if(!contactrequests.isEmpty())
+            if(!contactrequests.isEmpty() )
             {
                 //Cambiar el propietario al usuario actual siempre
                 contactrequests[0].OwnerId = UserInfo.getUserId();
@@ -154,7 +154,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
         {
             List<Opportunity> offers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id = :interactionTask.WhatId];
-            if(!offers.isEmpty())
+            if(!offers.isEmpty() )
             {
                 //Si el Owner es el Integrador hay que cambiarlo
                 if(offers[0].OwnerId != null && offers[0].Owner.Profile.Name == 'Integrator')
