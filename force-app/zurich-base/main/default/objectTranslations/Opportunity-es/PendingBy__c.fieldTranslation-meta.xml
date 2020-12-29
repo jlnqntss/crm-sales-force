@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Pendiente de</label>
+    <name>PendingBy__c</name>
+    <picklistValues>
+        <masterLabel>Cliente</masterLabel>
+        <translation><!-- Cliente --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Ninguno</masterLabel>
+        <translation><!-- Ninguno --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Suscripción</masterLabel>
+        <translation><!-- Suscripción --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

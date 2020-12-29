@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Canal</label>
+    <name>Channel__c</name>
+    <picklistValues>
+        <masterLabel>Agents</masterLabel>
+        <translation>Agentes</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Bank Insurance</masterLabel>
+        <translation>Bancaseguros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Brokers</masterLabel>
+        <translation>Corredores</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Direct Management</masterLabel>
+        <translation>Gestión directa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Partners</masterLabel>
+        <translation>Partners</translation>
+    </picklistValues>
+</CustomFieldTranslation>

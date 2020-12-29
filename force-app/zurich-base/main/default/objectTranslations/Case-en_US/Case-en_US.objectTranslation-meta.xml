@@ -60,6 +60,10 @@
         <name>OCSInquiry</name>
     </recordTypes>
     <validationRules>
+        <errorMessage><!-- [VR Caso] Es obligatorio cumplimentar &quot;Pendiente de&quot; si el estado es &quot;Pendiente&quot; --></errorMessage>
+        <name>PendingRulePendingByRequired</name>
+    </validationRules>
+    <validationRules>
         <errorMessage><!-- [VR Caso] Caso en estado CERRADO no puede pasar a ningún otro estado --></errorMessage>
         <name>StatusRuleCantGoFromClosed</name>
     </validationRules>
@@ -72,7 +76,7 @@
         <name>StatusRuleNewOnlyGoToAssigned</name>
     </validationRules>
     <validationRules>
-        <errorMessage><!-- [VR Caso] Caso en estado PENDIENTE sólo puede pasar a RESPONDIDO o CERRADO --></errorMessage>
+        <errorMessage><!-- [VR Caso] Caso en estado PENDIENTE sólo puede pasar a RESPONDIDO o CERRADO o ASIGNADO --></errorMessage>
         <name>StatusRulePendingOnlyGoToAnsweredOrClose</name>
     </validationRules>
     <validationRules>

@@ -15,6 +15,10 @@
         <translation>App</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Backoffice</masterLabel>
+        <translation><!-- Backoffice --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Bloqueo de IMEI</masterLabel>
         <translation>Block IMEI</translation>
     </picklistValues>

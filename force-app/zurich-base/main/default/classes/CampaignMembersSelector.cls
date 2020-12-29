@@ -39,4 +39,31 @@ public with sharing class CampaignMembersSelector extends BaseSelector
             return new List<CampaignMember>();
         }
     }
+
+    /**
+     * Busca miembros de campaña a partir del Status
+     *
+     * @author rlopez
+     * @date 21/12/2020
+     * @param  status   Estado del miembro de campaña a buscar
+     * @return          Listado de CampaignMembers sobre los que se ha realizado match
+     */
+    public List<CampaignMember> selectByStatus(String status)
+    {
+        if( String.isNotBlank(status) )
+        {
+            String query = String.format(
+                'SELECT {0} FROM CampaignMember ' +
+                'WHERE Status = : status ',
+                new List<String> {
+                String.join(new List<String> (this.fieldsToQuery), ',')
+            }
+                );
+            return (List<CampaignMember>) Database.query(query);
+        }
+        else
+        {
+            return new List<CampaignMember>();
+        }
+    }
 }

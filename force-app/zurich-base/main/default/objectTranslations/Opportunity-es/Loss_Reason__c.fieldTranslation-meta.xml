@@ -3,23 +3,47 @@
     <label>Motivo de pérdida</label>
     <name>Loss_Reason__c</name>
     <picklistValues>
-        <masterLabel>Lost to Competitor</masterLabel>
-        <translation><!-- Lost to Competitor --></translation>
+        <masterLabel>Cancelada</masterLabel>
+        <translation><!-- Cancelada --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>No Budget / Lost Funding</masterLabel>
-        <translation><!-- No Budget / Lost Funding --></translation>
+        <masterLabel>Coberturas</masterLabel>
+        <translation><!-- Coberturas --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>No Decision / Non-Responsive</masterLabel>
-        <translation><!-- No Decision / Non-Responsive --></translation>
+        <masterLabel>Competencia</masterLabel>
+        <translation><!-- Competencia --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Other</masterLabel>
-        <translation><!-- Other --></translation>
+        <masterLabel>Estudiante</masterLabel>
+        <translation><!-- Estudiante --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Price</masterLabel>
-        <translation><!-- Price --></translation>
+        <masterLabel>Exclusión/Política Técnica</masterLabel>
+        <translation><!-- Exclusión/Política Técnica --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Fake</masterLabel>
+        <translation><!-- Fake --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No Interesa</masterLabel>
+        <translation><!-- No Interesa --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No responde</masterLabel>
+        <translation><!-- No responde --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Precio</masterLabel>
+        <translation><!-- Precio --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Solicitud de cancelación</masterLabel>
+        <translation><!-- Solicitud de cancelación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Ya es cliente</masterLabel>
+        <translation><!-- Ya es cliente --></translation>
     </picklistValues>
 </CustomFieldTranslation>

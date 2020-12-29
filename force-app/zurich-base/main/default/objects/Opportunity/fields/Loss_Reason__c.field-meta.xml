@@ -8,33 +8,108 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
+        <controllingField>StageName</controllingField>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Lost to Competitor</fullName>
+                <fullName>Competencia</fullName>
                 <default>false</default>
-                <label>Lost to Competitor</label>
+                <label>Competencia</label>
             </value>
             <value>
-                <fullName>No Budget / Lost Funding</fullName>
+                <fullName>No Interesa</fullName>
                 <default>false</default>
-                <label>No Budget / Lost Funding</label>
+                <label>No Interesa</label>
             </value>
             <value>
-                <fullName>No Decision / Non-Responsive</fullName>
+                <fullName>Precio</fullName>
                 <default>false</default>
-                <label>No Decision / Non-Responsive</label>
+                <label>Precio</label>
             </value>
             <value>
-                <fullName>Price</fullName>
+                <fullName>Coberturas</fullName>
                 <default>false</default>
-                <label>Price</label>
+                <label>Coberturas</label>
             </value>
             <value>
-                <fullName>Other</fullName>
+                <fullName>Fake</fullName>
                 <default>false</default>
-                <label>Other</label>
+                <label>Fake</label>
+            </value>
+            <value>
+                <fullName>Estudiante</fullName>
+                <default>false</default>
+                <label>Estudiante</label>
+            </value>
+            <value>
+                <fullName>Exclusión/Política Técnica</fullName>
+                <default>false</default>
+                <label>Exclusión/Política Técnica</label>
+            </value>
+            <value>
+                <fullName>Ya es cliente</fullName>
+                <default>false</default>
+                <label>Ya es cliente</label>
+            </value>
+            <value>
+                <fullName>No responde</fullName>
+                <default>false</default>
+                <label>No responde</label>
+            </value>
+            <value>
+                <fullName>Solicitud de cancelación</fullName>
+                <default>false</default>
+                <label>Solicitud de cancelación</label>
+            </value>
+            <value>
+                <fullName>Cancelada</fullName>
+                <default>false</default>
+                <label>Cancelada</label>
             </value>
         </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Competencia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>No Interesa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Precio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Coberturas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Fake</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Estudiante</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Exclusión/Política Técnica</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Ya es cliente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>No responde</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Solicitud de cancelación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Cancelada</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>

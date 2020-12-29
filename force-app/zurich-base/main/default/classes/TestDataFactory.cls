@@ -2660,7 +2660,7 @@ public class TestDataFactory
      * @author rlopez
      * @date 02/12/2020
      */
-    public static List<CampaignMember> generateCampaignMembersForEachCampaign(List<Contact> contacts, List<Campaign> campaigns)
+    public static List<CampaignMember> generateCampaignMembersForEachCampaign(List<Contact> contacts, List<Campaign> campaigns, String status)
     {
         List<CampaignMember> campaignMembers = new List<CampaignMember>();
 
@@ -2672,7 +2672,7 @@ public class TestDataFactory
                     new CampaignMember(
                         ContactId = member.Id,
                         CampaignId = campaign.Id,
-                        Status = 'Subscribed'
+                        Status = status
                     )
                 );
             }
@@ -2691,7 +2691,7 @@ public class TestDataFactory
      * @author rlopez
      * @date 02/12/2020
      */
-    public static List<CampaignMember> generateCampaignMembersForEachCampaign(List<Account> contacts, List<Campaign> campaigns)
+    public static List<CampaignMember> generateCampaignMembersForEachCampaign(List<Account> contacts, List<Campaign> campaigns, String status)
     {
         List<CampaignMember> campaignMembers = new List<CampaignMember>();
 
@@ -2705,7 +2705,7 @@ public class TestDataFactory
                         new CampaignMember(
                             ContactId = member.PersonContactId,
                             CampaignId = campaign.Id,
-                            Status = 'Subscribed'
+                            Status = status
                         )
                     );
                 }
@@ -2790,5 +2790,48 @@ public class TestDataFactory
         }
 
         return policies;
+    }
+
+    /**
+     * Genera usuarios para un perfil dado
+     **
+     * @param String profileId
+     * @param Integer numRecords número de registros a generar
+     *
+     * @return List<User> listado de Users generados
+     * @author rlopez
+     * @date 22/12/2020
+     */
+    public static List<User> generateUsersByProfile(String profileId, Integer numRecords)
+    {
+        List<User> users = new List<User>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            if(String.isNotBlank(profileId))
+            {
+                String email = 'testuser'+i+'@nts-solutions.com.invalid';
+                users.add(
+                    new User(
+                        Username=email + profileId, 
+                        LastName='User'+i, 
+                        Email=email, 
+                        Alias='user'+i,
+                        ProfileId=profileId, 
+                        TimeZoneSidKey='Europe/Rome',
+                        LocaleSidKey='es_ES',
+                        EmailEncodingKey='UTF-8',
+                        LanguageLocaleKey='es'
+                    )
+                );
+            }
+        }
+
+        return users;
     }
 }
