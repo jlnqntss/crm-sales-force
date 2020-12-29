@@ -2242,7 +2242,7 @@ public class TestDataFactory
      * @author rlopez
      * @date 25/11/2020
      */
-    public static Map<String, Object> generateBusinessInsuranceOffersWebJSON(String lastStep, String nationalId, String email, String phone, List<Product2> products)
+    public static Map<String, Object> generateBusinessInsuranceOffersWebJSON(String lastStep, String nationalId, String email, String phone, String businessCode, List<Product2> products)
     {
         Map<String, Object> jsonInformation = new Map<String, Object>();
 
@@ -2250,7 +2250,7 @@ public class TestDataFactory
         jsonInformation.put('timeStamp', JSON.serialize(datetime.now()));
         jsonInformation.put('webEmail', email);
         jsonInformation.put('sessionId', Math.random());
-        jsonInformation.put('businessCode', '3200012477');
+        jsonInformation.put('businessCode', businessCode);
         jsonInformation.put('lastStep', lastStep);
 
         switch on lastStep {
