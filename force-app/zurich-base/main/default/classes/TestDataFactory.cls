@@ -2321,7 +2321,7 @@ public class TestDataFactory
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
-                    generateOfferWithRisk(products)
+                    generateOfferWithRisk(products, businessCode)
                 });
             }
             when 'CRM-06' {
@@ -2332,7 +2332,7 @@ public class TestDataFactory
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
-                    generateOfferWithRisk(products)
+                    generateOfferWithRisk(products, businessCode)
                 });
             }
             when 'CRM-07' {
@@ -2343,7 +2343,7 @@ public class TestDataFactory
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
-                    generateOfferWithRisk(products)
+                    generateOfferWithRisk(products, businessCode)
                 });
 
                 jsonInformation.put('manager', generateManagerInformation(email, phone));
@@ -2356,7 +2356,7 @@ public class TestDataFactory
                 jsonInformation.put('accountInformation', generateCompleteAccountInformation(nationalId));
 
                 jsonInformation.put('offers', new List<Map<String, Object>>{
-                    generateOfferWithRisk(products)
+                    generateOfferWithRisk(products, businessCode)
                 });
 
                 jsonInformation.put('manager', generateManagerInformation(email, phone));
@@ -2437,7 +2437,7 @@ public class TestDataFactory
         };
     }
 
-    private static Map<String, Object> generateOfferWithRisk(List<Product2> products)
+    private static Map<String, Object> generateOfferWithRisk(List<Product2> products, String businessCode)
     {
         Datetime twoWeeks = System.today().addDays(15);
         return new Map<String, Object>{
@@ -2445,7 +2445,7 @@ public class TestDataFactory
             'quoteNumberINFO' => '456789456',
             'quoteNumberJRE' => '789989799',
             'operationCode' => 'P1',
-            'businessCode' => '3200012477',
+            'businessCode' => businessCode,
             'effectiveDate' => twoWeeks.year()+'-'+('0'+twoWeeks.month()).right(2)+'-'+('0'+twoWeeks.day()).right(2),
             'commercialPC' => (!products.isEmpty() ? products.get(0).CommercialCode__c : String.valueOf((Math.random() * 100000).intValue())),
             'technicalPC' => (!products.isEmpty() ? products.get(0).TechnicalCode__c : String.valueOf((Math.random() * 100000).intValue())),

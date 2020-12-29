@@ -699,7 +699,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
         System.assertEquals(scopeSettingsList.get(0).Scope__c, scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
-        System.assertEquals(phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
         Set<Id> scopeIds = new Set<Id>();
         for(Scope__c scope: scopesByAccount)
@@ -715,7 +715,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary'}
-            ).selectByScopeIdAndTelephoneNumber(scopeIds, phoneFromJSON);
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON);
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
@@ -803,7 +803,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
         System.assertEquals(scopeSettingsList.get(0).Scope__c, scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
-        System.assertEquals(phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
         Set<Id> scopeIds = new Set<Id>();
         for(Scope__c scope: scopesByAccount)
@@ -819,7 +819,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary'}
-            ).selectByScopeIdAndTelephoneNumber(scopeIds, phoneFromJSON);
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON);
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
