@@ -52,7 +52,13 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
 
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-04', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-04', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
         BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
             JSON.serialize(jsonInformation),
             BusinessInsuranceRaterService.Request.class
@@ -67,7 +73,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
             ).selectByAccountId(new Set<Id> {existingAccounts.get(0).Id});
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
-        System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
+        System.assertEquals(scopeSettingsList.get(0).Scope__c, scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
         System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
@@ -153,7 +159,13 @@ public with sharing class BusinessInsuranceRaterServiceTest
             productIds.add(product.Id);
         }
 
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-03', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-03', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
         BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
             JSON.serialize(jsonInformation),
             BusinessInsuranceRaterService.Request.class
@@ -170,7 +182,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
             ).selectByAccountId(new Set<Id> {createdAccount.get(0).Id});
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
-        System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
+        System.assertEquals(scopeSettingsList.get(0).Scope__c, scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
         System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
@@ -200,7 +212,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         for(Opportunity offer: offersCreated)
         {
             offersIds.add(offer.Id);
-            System.assertEquals('Legit Lead', offer.StageName, 'StageName should be Legit Lead');
+            System.assertEquals('App Submitted', offer.StageName, 'StageName should be App Submitted');
             System.assertEquals(true, productIds.contains(offer.ProductId__c), 'Set should contain product id');
         }
 
@@ -219,7 +231,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(false, contactRequests.isEmpty(), 'List should NOT be empty');
 
         //Comprobamos que se ha generado un CampaignMember para el cliente en la campaña correspondiente
-        List<Campaign> campaigns = new CampaignsSelector().selectByName(new Set<String> {'ZE_Legit Leads'});
+        List<Campaign> campaigns = new CampaignsSelector().selectByName(new Set<String> {'ZE_App Submitted Leads'});
         System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
 
         List<CampaignMember> campaignMembers = new CampaignMembersSelector(
@@ -250,7 +262,13 @@ public with sharing class BusinessInsuranceRaterServiceTest
             productIds.add(product.Id);
         }
 
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-07', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-07', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
         BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
             JSON.serialize(jsonInformation),
             BusinessInsuranceRaterService.Request.class
@@ -264,7 +282,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
             ).selectByAccountId(new Set<Id> {existingAccounts.get(0).Id});
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
-        System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
+        System.assertEquals(scopeSettingsList.get(0).Scope__c, scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
         System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
@@ -323,7 +341,13 @@ public with sharing class BusinessInsuranceRaterServiceTest
             productIds.add(product.Id);
         }
 
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-08', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-08', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
 
         //Modificamos Manager antes de procesar información
         Map<String, Object> managerInformation = (Map<String, Object>) jsonInformation.get('manager');
@@ -343,7 +367,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
             ).selectByAccountId(new Set<Id> {existingAccounts.get(0).Id});
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
-        System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
+        System.assertEquals(scopeSettingsList.get(0).Scope__c, scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
         System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
@@ -431,8 +455,16 @@ public with sharing class BusinessInsuranceRaterServiceTest
             productIds.add(product.Id);
         }
 
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
-        jsonInformation.remove('webPhone');
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+        Map<String, Object> accountInformation = (Map<String, Object>) jsonInformation.get('accountInformation');
+        accountInformation.remove('lastName');
+        jsonInformation.put('accountInformation', accountInformation);
 
         Test.startTest();
         try
@@ -456,9 +488,9 @@ public with sharing class BusinessInsuranceRaterServiceTest
      * @author rlopez
      * @date 11/12/2020
      */
-    /*@isTest
-       static void test_processFormData_invalid_businessCode_ko()
-       {
+    @isTest
+    static void test_processFormData_invalid_businessCode_ko()
+    {
         String emailFromJSON = 'newemail@fakeemail.com.invalid';
         String phoneFromJSON = '123456789';
 
@@ -474,8 +506,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             productIds.add(product.Id);
         }
 
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
-        jsonInformation.put('businessCode', '11111111');
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, '11111111', existingProducts);
 
         Test.startTest();
         try
@@ -491,7 +522,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             System.assertEquals(true, ex.getMessage().contains('Invalid businessCode received'), 'Error message should contain \'Invalid businessCode received\'');
         }
         Test.stopTest();
-       }*/
+    }
 
     /**
      * Método que comprueba una ejecución incorrecta en el procesamiento de los datos cuando el campo WebEmail está vacío
@@ -517,7 +548,13 @@ public with sharing class BusinessInsuranceRaterServiceTest
             productIds.add(product.Id);
         }
 
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, existingProducts);
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
         jsonInformation.put('webEmail', '');
 
         Test.startTest();
@@ -551,7 +588,13 @@ public with sharing class BusinessInsuranceRaterServiceTest
         List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account];
         System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
 
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON( 'CRM-02', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, new List<Product2>() );
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON( 'CRM-02', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, new List<Product2>() );
 
         BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
             JSON.serialize(jsonInformation),
@@ -569,7 +612,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
             ).selectByAccountId(new Set<Id> {createdAccount.get(0).Id});
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
-        System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
+        System.assertEquals(scopeSettingsList.get(0).Scope__c, scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
         System.assertEquals(true, String.isBlank(scopesByAccount.get(0).PrimaryPhone__c), 'Phone should be empty');
 
@@ -594,8 +637,219 @@ public with sharing class BusinessInsuranceRaterServiceTest
         List<ContactRequest> contactRequestsCreated = [SELECT Id FROM ContactRequest WHERE WhoId =: createdAccount.get(0).PersonContactId];
         System.assertEquals(false, contactRequestsCreated.isEmpty(), 'List should not be empty');
 
-        //Comprobamos que se ha generado un CampaignMember para el cliente en la campaña correspondiente
+        //Comprobamos que NO se ha generado un CampaignMember para el cliente en la campaña correspondiente
         List<Campaign> campaigns = new CampaignsSelector().selectByName(new Set<String> {'ZE_Legit Leads'});
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        List<CampaignMember> campaignMembers = new CampaignMembersSelector(
+            new Set<String> {'Id'}
+            ).selectByCampaignAndContact(campaigns.get(0).Id, new Set<Id> {createdAccount.get(0).PersonContactId});
+        System.assertEquals(true, campaignMembers.isEmpty(), 'List should be empty');
+    }
+
+    /**
+     * Método que comprueba que si no hay productos relacionados con la oferta no se genera el miembro de campaña
+     **
+     * @author rlopez
+     * @date 29/12/2020
+     */
+    @isTest
+    static void test_allEmptyProducts_ok()
+    {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
+
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-07', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+        BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );
+
+        //Modificamos el CommercialPC para que no encuentre los productos, no cree relación
+        //producto-oferta y, por este motivo, no cree el miembro de campaña
+        List<BusinessInsuranceRaterService.Offer> offersToCreate = requestInformationObject.offers;
+        for(Integer i=0; i < offersToCreate.size(); i++)
+        {
+            offersToCreate.get(i).commercialPC = String.valueOf(i);
+        }
+
+        Test.startTest();
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        Test.stopTest();
+
+        List<Scope__c> scopesByAccount = new ScopesSelector(
+            new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
+            ).selectByAccountId(new Set<Id> {existingAccounts.get(0).Id});
+        System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
+        System.assertEquals(scopeSettingsList.get(0).Scope__c, scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
+        System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
+        System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+
+        Set<Id> scopeIds = new Set<Id>();
+        for(Scope__c scope: scopesByAccount)
+        {
+            scopeIds.add(scope.Id);
+        }
+
+        List<ContactPointEmail> contactPointEmails = new ContactPointEmailsSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndEmailAddress(scopeIds, emailFromJSON);
+        System.assertEquals(1, contactPointEmails.size(), 'There should be 1 Contact Point Email');
+        System.assertEquals(true, contactPointEmails.get(0).IsPrimary, 'IsPrimary should be true');
+
+        List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON);
+        System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
+        System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
+
+        List<Opportunity> offersCreated = [SELECT Id, ProductId__c FROM Opportunity];
+        System.assertEquals(false, offersCreated.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
+
+        for(Opportunity offer: offersCreated)
+        {
+            System.assertEquals(true, String.isBlank(offer.ProductId__c), 'Relation should be empty');
+        }
+
+        List<Asset> risksCreated = [SELECT Id FROM Asset WHERE OfferId__c IN: offersCreated];
+        System.assertEquals(false, risksCreated.isEmpty(), 'List should NOT be empty');
+
+        //Comprobamos que se crea el ContactRequest
+        List<ContactRequest> contactRequestsCreated = [SELECT Id FROM ContactRequest WHERE WhoId =: existingAccounts.get(0).PersonContactId];
+        System.assertEquals(false, contactRequestsCreated.isEmpty(), 'List should not be empty');
+
+        //Comprobamos que se ha generado un CampaignMember para el cliente en la campaña correspondiente
+        List<Campaign> campaigns = new CampaignsSelector().selectByName(new Set<String> {'ZE_Quoted Leads'});
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        List<CampaignMember> campaignMembers = new CampaignMembersSelector(
+            new Set<String> {'Id'}
+            ).selectByCampaignAndContact(campaigns.get(0).Id, new Set<Id> {existingAccounts.get(0).PersonContactId});
+        System.assertEquals(true, campaignMembers.isEmpty(), 'Products not found during execution, list should be empty');
+    }
+
+    /**
+     * Método que si solo hay un producto, de varios, que tiene relación con la oferta
+     * si se genera el miembro de campaña
+     **
+     * @author rlopez
+     * @date 29/12/2020
+     */
+    @isTest
+    static void test_oneEmptyProduct_ok()
+    {
+        Id personAccountRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null AND RecordTypeId =: personAccountRecordTypeId];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
+
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZEO'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-03', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+        BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );
+
+        //Modificamos el CommercialPC de un producto para que no cree relación
+        //producto-oferta. Como son más de 1, sí creará el miembro de campaña
+        List<BusinessInsuranceRaterService.Offer> offersToCreate = requestInformationObject.offers;
+        System.assertEquals(false, offersToCreate.isEmpty(), 'List should NOT be empty');
+        offersToCreate.get(0).commercialPC = '0';
+
+        Test.startTest();
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        Test.stopTest();
+
+        List<Account> createdAccount = [SELECT Id, PersonContactId FROM Account WHERE FirstName =: requestInformationObject.accountInformation.firstName AND LastName =: requestInformationObject.accountInformation.lastName];
+        System.assertEquals(false, createdAccount.isEmpty(), 'List should NOT be empty');
+
+        List<Scope__c> scopesByAccount = new ScopesSelector(
+            new Set<String> {'Id', 'Scope__c', 'PrimaryEmail__c', 'PrimaryPhone__c'}
+            ).selectByAccountId(new Set<Id> {createdAccount.get(0).Id});
+        System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
+        System.assertEquals(scopeSettingsList.get(0).Scope__c, scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
+        System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
+        System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+
+        Set<Id> scopeIds = new Set<Id>();
+        for(Scope__c scope: scopesByAccount)
+        {
+            scopeIds.add(scope.Id);
+        }
+
+        List<ContactPointEmail> contactPointEmails = new ContactPointEmailsSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndEmailAddress(scopeIds, emailFromJSON);
+        System.assertEquals(1, contactPointEmails.size(), 'There should be 1 Contact Point Email');
+        System.assertEquals(true, contactPointEmails.get(0).IsPrimary, 'IsPrimary should be true');
+
+        List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
+            new Set<String> {'Id', 'IsPrimary'}
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON);
+        System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
+        System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
+
+        List<Opportunity> offersCreated = [SELECT Id, ProductId__c, StageName FROM Opportunity];
+        System.assertEquals(false, offersCreated.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(requestInformationObject.offers.size(), offersCreated.size(), 'There should be the same opportunities than offers');
+
+        Set<Id> offersIds = new Set<Id>();
+        for(Opportunity offer: offersCreated)
+        {
+            offersIds.add(offer.Id);
+            System.assertEquals('App Submitted', offer.StageName, 'StageName should be App Submitted');
+        }
+
+        //Comprobamos que no se han generado objetos asegurados
+        List<Asset> risks = [SELECT Id FROM Asset WHERE OfferId__c IN: offersCreated];
+        System.assertEquals(true, risks.isEmpty(), 'List should NOT be empty');
+
+        //Comprobamos que no se ha generado póliza
+        List<Policy__c> policies = new PoliciesSelector(
+            new Set<String> {'Id'}
+            ).selectByOpportunityName(offersIds);
+        System.assertEquals(true, policies.isEmpty(), 'List should be empty');
+
+        //Comprobamos que se ha generado un Contact Request
+        List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest WHERE WhatId IN: offersIds];
+        System.assertEquals(false, contactRequests.isEmpty(), 'List should NOT be empty');
+
+        //Comprobamos que se ha generado un CampaignMember para el cliente en la campaña correspondiente
+        List<Campaign> campaigns = new CampaignsSelector().selectByName(new Set<String> {'ZEO_App Submitted Leads'});
         System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
 
         List<CampaignMember> campaignMembers = new CampaignMembersSelector(
@@ -605,34 +859,56 @@ public with sharing class BusinessInsuranceRaterServiceTest
     }
 
     /**
-     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos en el paso CRM-02
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_processFormData_CRM02_ko()
-    {}
-
-    /**
-     * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-03
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_processFormData_CRM01_ok()
-    {}
-
-    /**
      * Método que comprueba una ejecución incorrecta en el procesamiento de los datos en el paso CRM-03
      **
      * @author rlopez
      * @date 26/10/2020
      */
     @isTest
-    static void test_processFormData_CRM03_ko()
-    {}
+    static void test_offerNumber_alreadyExists_ko()
+    {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+
+        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account WHERE NationalId__c != null];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
+
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-07', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+        BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );
+
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+
+        Test.startTest();
+        try
+        {
+            BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        }
+        catch (Exception ex)
+        {
+            System.assertEquals(true, ex.getMessage().contains('DUPLICATE_VALUE'), 'Error message should contain \'DUPLICATE_VALUE\'');
+        }
+        Test.stopTest();
+
+        //Comprobamos que se ha generado 1 Contact Request
+        List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest];
+        System.assertEquals(1, contactRequests.size(), 'There should be just 1 Contact Request');
+    }
 
     /**
      * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-04

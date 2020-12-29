@@ -98,7 +98,7 @@ public without sharing class BusinessInsuranceRaterService
             }
         }
 
-        if( !Test.isRunningTest() && !scopeSettings.containsKey(formData.businessCode) )
+        if( !scopeSettings.containsKey(formData.businessCode) )
         {
             //Sí el businessCode que hemos recibido en el formulario no coincide con los que hemos recuperado en los metadatos, lanzamos error
             throw new BusinessInsuranceRaterServiceException(
@@ -385,7 +385,7 @@ public without sharing class BusinessInsuranceRaterService
                     }
 
                     String stageName = 'Legit Lead';
-                    if( offer.netPremium == null && !legitLeadStageSteps.contains(formData.lastStep) )
+                    if( offer.netPremium == null && String.isNotBlank(formData.webPhone) )
                     {
                         stageName = 'App Submitted';
                     }
@@ -546,7 +546,7 @@ public without sharing class BusinessInsuranceRaterService
         if( contactRequestSteps.contains(formData.lastStep) )
         {
             //Crear Campaign Member
-            manageCampaignAssignment(offersToCreate);
+            manageCampaignAssignment(offersToCreate, formData.webPhone);
 
             //OPCIONAL - puede que no requiera funcionar con genesys
             List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
@@ -783,87 +783,87 @@ public without sharing class BusinessInsuranceRaterService
      *
      * @author rlopez
      */
-    private static void manageCampaignAssignment(List<Opportunity> createdOffers)
+    private static void manageCampaignAssignment(List<Opportunity> createdOffers, String phone)
     {
-        List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
-        String campaingName = '';
-        if( !createdOffers.isEmpty() )
+        if( String.isNotBlank(currentCustomer.PersonContactId) )
         {
-            Boolean appSubmittedOffers = false;
-            Boolean allOffersLegiLead = true;
-            for(Opportunity offer: createdOffers)
+            List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
+            String campaingName = '';
+            if( !createdOffers.isEmpty() )
             {
-                if(offer.StageName == 'App Submitted')
+                Boolean allOffersQuoted = true;
+                Boolean offersWithProduct = false;
+                for(Opportunity offer: createdOffers)
                 {
-                    //Sí al menos 1 oferta tiene StageName = App Submitted
-                    //ponemos la variable a true para seleccionar la campaña de App Submitted Leads
-                    appSubmittedOffers = true;
+                    if(offer.StageName != 'Quoted')
+                    {
+                        //Hay alguna oferta que no tiene StageName = Quoted
+                        //no puede ir a la campaña de Quoted Leads
+                        allOffersQuoted = false;
+                    }
+
+                    if( String.isNotBlank(offer.ProductId__c) )
+                    {
+                        offersWithProduct = true;
+                    }
                 }
 
-                if(offer.StageName != 'Legit Lead')
+                //Solo creamos el miembro de campaña si existe alguna oferta con producto
+                if(offersWithProduct)
                 {
-                    //Sí alguna de las ofertas no tiene StageName = Legit Lead
-                    //no puede ir a la campaña de Legit Leads
-                    allOffersLegiLead = false;
-                }
-            }
+                    if (currentScope.Scope__c.toLowerCase() == 'ze')
+                    {
+                        campaingName = 'ZE_Quoted Leads';
+                        if(!allOffersQuoted)
+                        {
+                            if( String.isNotBlank(phone) )
+                            {
+                                campaingName = 'ZE_App Submitted Leads';
+                            }
+                            else
+                            {
+                                campaingName = 'ZE_Legit Leads';
+                            }
+                        }
+                    }
+                    else
+                    {
+                        campaingName = 'ZEO_Quoted Leads';
+                        if(!allOffersQuoted)
+                        {
+                            if( String.isNotBlank(phone) )
+                            {
+                                campaingName = 'ZEO_App Submitted Leads';
+                            }
+                            else
+                            {
+                                campaingName = 'ZEO_Legit Leads';
+                            }
+                        }
+                    }
 
-            if (currentScope.Scope__c.toLowerCase() == 'ze')
-            {
-                campaingName = 'ZE_Quoted Leads';
-                if(appSubmittedOffers)
-                {
-                    campaingName = 'ZE_App Submitted Leads';
-                }
-                if(allOffersLegiLead)
-                {
-                    campaingName = 'ZE_Legit Leads';
-                }
-            }
-            else
-            {
-                campaingName = 'ZEO_Quoted Leads';
-                if(appSubmittedOffers)
-                {
-                    campaingName = 'ZEO_App Submitted Leads';
-                }
-                if(allOffersLegiLead)
-                {
-                    campaingName = 'ZEO_Legit Leads';
-                }
-            }
-        }
-        else
-        {
-            if (currentScope.Scope__c.toLowerCase() == 'ze')
-            {
-                campaingName = 'ZE_Legit Leads';
-            }
-            else
-            {
-                campaingName = 'ZEO_Legit Leads';
-            }
-        }
+                    businessInsuranceCampaigns = new CampaignsSelector(
+                        new Set<String> {'Id'}
+                        ).selectByName(new Set<String> {campaingName});
 
-        businessInsuranceCampaigns = new CampaignsSelector(
-            new Set<String> {'Id'}
-            ).selectByName(new Set<String> {campaingName});
-
-        if( !businessInsuranceCampaigns.isEmpty() )
-        {
-            //Primero, comprobamos si el cliente ya existe en la campaña
-            List<CampaignMember> campaingMembers = new CampaignMembersSelector(
-                new Set<String> {'Id'}
-                ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
-            if( campaingMembers.isEmpty() )
-            {
-                //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
-                insert new CampaignMember(
-                    CampaignId = businessInsuranceCampaigns.get(0).Id,
-                    ContactId = currentCustomer.PersonContactId,
-                    Status = 'Subscribed',
-                    ScopeId__c = currentScope.Id
-                    );
+                    if( !businessInsuranceCampaigns.isEmpty() )
+                    {
+                        //Primero, comprobamos si el cliente ya existe en la campaña
+                        List<CampaignMember> campaingMembers = new CampaignMembersSelector(
+                            new Set<String> {'Id'}
+                            ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
+                        if( campaingMembers.isEmpty() )
+                        {
+                            //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
+                            insert new CampaignMember(
+                                CampaignId = businessInsuranceCampaigns.get(0).Id,
+                                ContactId = currentCustomer.PersonContactId,
+                                Status = 'Subscribed',
+                                ScopeId__c = currentScope.Id
+                                );
+                        }
+                    }
+                }
             }
         }
     }
