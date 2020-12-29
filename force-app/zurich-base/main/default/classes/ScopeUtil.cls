@@ -6,7 +6,7 @@
  */
 global without sharing class ScopeUtil
 {
-    private static final Boolean showDebug = false;
+    private static final Boolean showDebug = true;
 
     // Fields to check if there is any change
     private static final List<String> FieldsToCheckChange = new List<String> {
@@ -18,13 +18,14 @@ global without sharing class ScopeUtil
     // Scope__c field (picklist) of Scope__c object
     private static final List<String> ScopesToConsider = new List<String> {'ZE','ZEO'};
 
-    // List of Scopes to change the Contactable field
+    // List of Scopes to change the Contactable field.
     private List<Scope__c> scopesToSetContatable;
+    // Map of Scopes that will be updated. Used in AFTER trigger
+    private Map<ID, Scope__c> scopesToUpdateAfter;
     // List of accounts of the changed Scopes
     private List<Account> accountsToCheck;
     // List of accounts to update because of the scopes
-    public List<Account> accountsToUpdate;
-    //public List<Contact> contactsToUpdate;
+    private List<Account> accountsToUpdate;
 
     /**
      * Select the scopes that has a change in the following fields:
@@ -190,6 +191,9 @@ global without sharing class ScopeUtil
      * 
      * @author nts (agonzalezisasi)
      * @date 14/12/2020
+     * 
+     * @change 15/12/2020 - nts (agonzalezisasi) - Add the test for the HashedId__c field
+     * @change 15/12/2020 - nts (agonzalezisasi) - Make the process of update indepedent
      */
     public void finish(System.TriggerOperation triggerOperation) { 
         System.debug('- - - - - ScopeUtil.finish - - - - -');
@@ -197,34 +201,100 @@ global without sharing class ScopeUtil
         switch on triggerOperation { 
             when AFTER_INSERT, AFTER_UPDATE { 
                 // Update personal accounts
-                if( this.accountsToUpdate != null && !this.accountsToUpdate.isEmpty() ) {
-                    try {
-                        Map<ID, List<Database.Error>> mapOfErrors = new Map<ID, List<Database.Error>>();
-                        for(Account a: this.accountsToUpdate) {
-                            if( showDebug ) System.debug(a);
-                        }
-                        // Update
-                        List<Database.SaveResult> listaSaveResult = Database.update(this.accountsToUpdate, false);
-                        // Check if there are any errors
-                        for(Database.SaveResult saveResult:listaSaveResult) { 
-                            if( !saveResult.isSuccess() ) {
-                                mapOfErrors.put(saveResult.getId(), saveResult.getErrors());
-                            }
+                doUpdate( this.accountsToUpdate );
+
+                // Only for After Insert Events
+                if( triggerOperation == System.TriggerOperation.AFTER_INSERT ) {
+                    doUpdate( this.scopesToUpdateAfter.values() );
+                }
+            }
+        }
+    }
+
+    /**
+     * This method does the update for the given list of sobjects with allornone to false.
+     * It also registers the errors in the log if there are any.
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 15/12/2020
+     * 
+     * @change 15/12/2020 - nts (agonzalezisasi) - Make the process of update indepedent
+     */
+    public void doUpdate( List<SObject> listToUpdate ) {
+        System.debug('- - - - - ScopeUtil.doUpdate - - - - -');
+
+        if( listToUpdate != null && !listToUpdate.isEmpty() ) {
+            try {
+                Map<ID, List<Database.Error>> mapOfErrors = new Map<ID, List<Database.Error>>();
+                for(SObject so: listToUpdate) {
+                    if( showDebug ) System.debug(so);
+                }
+                // Do the Update
+                List<Database.SaveResult> listaSaveResult = Database.update(listToUpdate, false);
+
+                // Check if there are any errors...
+                for(Database.SaveResult saveResult:listaSaveResult) { 
+                    if( !saveResult.isSuccess() ) {
+                        mapOfErrors.put(saveResult.getId(), saveResult.getErrors());
+                    }
+                }
+
+                // If there are errors, register them in the Error Log
+                if( !mapOfErrors.isEmpty() ) {
+                    // for each register (sobject) ...
+                    for( String key: mapOfErrors.keySet() ) {
+                        // fill a message with all the errors of that sobject...
+                        List<Database.Error> listOfErrors = mapOfErrors.get(key);
+                        string errorMessage = 'ID [' + key+ ']';
+                        for(Integer i=0, j=listOfErrors.size(); i<j; i++) {
+                            errorMessage = '\n[' + listOfErrors[i].getStatusCode() + ']: ' + listOfErrors[i].getMessage();
                         }
 
-                        // If there are error, register them in the error log
-                        if( !mapOfErrors.isEmpty() ) {
-                            for( String key: mapOfErrors.keySet() ) {
-                                List<Database.Error> listOfErrors = mapOfErrors.get(key);
-                                string errorMessage = 'ID [' + key+ ']';
-                                for(Integer i=0, j=listOfErrors.size(); i<j; i++) {
-                                    errorMessage = '\n[' + listOfErrors[i].getStatusCode() + ']: ' + listOfErrors[i].getMessage();
-                                }
-                                ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, errorMessage, 'ScopeUtil.finish');
-                            }
+                        // send the message to the Error Log
+                        ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, errorMessage, 'ScopeUtil.doUpdate');
+                    }
+                }
+            } catch( Exception ex ) {
+                ErrorLogUtil.commitError(ex, 'ScopeUtil.doUpdate');
+            }
+        }
+    }
+
+    /**
+     * Generates for security a hash id from the scope SF Id. 
+     * This is to be used in the Preference Center ZE, to unsuscribe from the given scope
+     *
+     * @author nts (agonzalezisasi)
+     * @date 15/12/2020
+     */
+    public void generateHashId( List<Scope__c> newList )
+    {
+        System.debug('- - - - - ScopeUtil.generateHashId - - - - -');
+
+        if (newList != null && !newList.isEmpty() ) {
+            if( this.scopesToUpdateAfter == null ) {
+                this.scopesToUpdateAfter = new Map<ID, Scope__c>();
+            }
+
+            for (Scope__c s: newList) {
+                if (s.Id != null && s.HashedId__c == null) { // not needed but just to be sure....
+                    try {
+                        Scope__c aux = null;
+                        if( this.scopesToUpdateAfter.containsKey(s.Id) ) {
+                            if( showDebug ) System.Debug(s.Id + ': the scope has other changes');
+
+                            aux = this.scopesToUpdateAfter.get(s.Id);
+                        } else {
+                            if( showDebug ) System.Debug(s.Id + ': the scope only has this change');
+
+                            // Creates another object for the update, only to change the HasedId__c field
+                            aux = new Scope__c(Id = s.Id);
+                            this.scopesToUpdateAfter.put(s.Id, aux);
                         }
+                        // Generate the hash
+                        aux.HashedId__c = SystemUtil.generateHash(s.Id);
                     } catch( Exception ex ) {
-                        ErrorLogUtil.commitError(ex, 'ScopeUtil.finish');
+                        ErrorLogUtil.commitError(ex, 'ScopeUtil.generateHashId');
                     }
                 }
             }

@@ -104,6 +104,24 @@
                 <default>false</default>
                 <label>GDPR</label>
             </value>
+            <value>
+                <fullName>definidos</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>definidos</label>
+            </value>
+            <value>
+                <fullName>no</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>no</label>
+            </value>
+            <value>
+                <fullName>valores</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>valores</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Record failure NOT identified</controllingFieldValue>

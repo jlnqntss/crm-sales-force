@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestringirCambiosEtapa</fullName>
+    <active>true</active>
+    <description>Los Advisors pueden cambiar de etapa únicamente a Closed Lost si la etapa es diferente de Open o a cualquier etapa si estaba en Open.</description>
+    <errorConditionFormula>AND(
+NOT(ISPICKVAL(PRIORVALUE(StageName),&quot;Open&quot;)) &amp;&amp; 
+NOT(ISPICKVAL(StageName,&quot;Closed Lost&quot;)),
+$Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos;,
+$Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos;
+)</errorConditionFormula>
+    <errorMessage>[VR Offer] El cambio de etapa indicado no está permitido.</errorMessage>
+</ValidationRule>

@@ -162,6 +162,15 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Scopes</pluralLabel>
+    <profileSearchLayouts>
+        <fields>NAME</fields>
+        <fields>AccountId__c</fields>
+        <fields>Contactable__c</fields>
+        <fields>PrimaryEmail__c</fields>
+        <fields>PrimaryPhone__c</fields>
+        <fields>Scope__c</fields>
+        <profileName>ZE User</profileName>
+    </profileSearchLayouts>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>

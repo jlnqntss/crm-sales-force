@@ -45,4 +45,29 @@ public with sharing class Test_PreferenceCentreProcessController
         List<Error_Log__c> errorRecords = [SELECT Id FROM Error_Log__c];
         System.assertEquals( 1, errorRecords.size() );
     }
+
+    /**
+     * Test the select to Scope
+     */
+    @isTest
+    static void test_getScopeData()
+    {
+        System.Debug('- - - - - Test_PreferenceCentreProcessController.test_getScopeData - - - - -');
+
+        String hashid = '123456';
+
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 1);
+        insert accounts;
+        List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
+        scopes[0].HashedId__c = hashid;
+        insert scopes;
+
+        test.startTest();
+        Scope__c scope = PreferenceCentreProcessController.getScopeData(hashid);
+        test.stopTest();
+
+        System.Debug('---------------- Results');
+        System.assertNotEquals(null, scope, 'The scope should not be null');
+        
+    }
 }
