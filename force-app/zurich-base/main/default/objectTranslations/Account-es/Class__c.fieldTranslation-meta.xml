@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Clase</label>
+    <name>Class__c</name>
+    <picklistValues>
+        <masterLabel>AC</masterLabel>
+        <translation>Atención al Cliente (gestión directa)</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>AE</masterLabel>
+        <translation>Agente exclusivo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>AF</masterLabel>
+        <translation>Agente afecto</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>AS</masterLabel>
+        <translation>Agencia de Suscripción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>AV</masterLabel>
+        <translation>Agente vinculado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>BA</masterLabel>
+        <translation>Banco cobro recibos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>BC</masterLabel>
+        <translation>Banco</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>BD</masterLabel>
+        <translation>Banco cobro recibos al descuento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>BM</masterLabel>
+        <translation>Pago fraccionado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CB</masterLabel>
+        <translation>Cobrador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CC</masterLabel>
+        <translation>Cuentas compañía</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CD</masterLabel>
+        <translation>Plaza de cobro directo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CE</masterLabel>
+        <translation>Operador Banca-Seguros Cedido</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CF</masterLabel>
+        <translation>Corredor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CO</masterLabel>
+        <translation>Cobro por correo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CR</masterLabel>
+        <translation>Correduría con núm. DGS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>EC</masterLabel>
+        <translation>Colectivo empleado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>EM</masterLabel>
+        <translation>Empleado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>FR</masterLabel>
+        <translation>Fraccionamiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>I</masterLabel>
+        <translation>Ejecutivo de agencias / Jefe de cuentas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>LI</masterLabel>
+        <translation>Corredor o correduría en trámite con la DGS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>LP</masterLabel>
+        <translation>MEDIADOR EXTRANJERO EN ESPAÑA EN LPS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>MC</masterLabel>
+        <translation>Mediador de Seguros Complementarios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ME</masterLabel>
+        <translation>Mediador de Seguros Complementarios Exento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>OC</masterLabel>
+        <translation>Oficinas compañía</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>OE</masterLabel>
+        <translation>Operador Banca-Seguros exclusivo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>OP</masterLabel>
+        <translation>Oficina particulares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>OS</masterLabel>
+        <translation>Oficina servicio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>OV</masterLabel>
+        <translation>Operador Banca-Seguros vinculado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PL</masterLabel>
+        <translation>Sólo plaza</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PR</masterLabel>
+        <translation>Precontencioso</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SU</masterLabel>
+        <translation>Sucursal extranjera</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TC</masterLabel>
+        <translation>Cobro tarjeta crédito</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VD</masterLabel>
+        <translation>Venta Directa</translation>
+    </picklistValues>
+</CustomFieldTranslation>

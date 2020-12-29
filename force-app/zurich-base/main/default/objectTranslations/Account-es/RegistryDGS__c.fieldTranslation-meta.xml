@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Comunicar prima renovación</label>
-    <name>NotifyPremiumRenewal__c</name>
+    <label>Registro DGS</label>
+    <name>RegistryDGS__c</name>
 </CustomFieldTranslation>
