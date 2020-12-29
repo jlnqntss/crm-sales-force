@@ -69,7 +69,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
         System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
-        System.assertEquals(phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
         Set<Id> scopeIds = new Set<Id>();
         for(Scope__c scope: scopesByAccount)
@@ -86,7 +86,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary'}
-            ).selectByScopeIdAndTelephoneNumber(scopeIds, phoneFromJSON);
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, requestInformationObject.webPhone);
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
@@ -172,7 +172,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
         System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
-        System.assertEquals(phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
         Set<Id> scopeIds = new Set<Id>();
         for(Scope__c scope: scopesByAccount)
@@ -188,7 +188,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary'}
-            ).selectByScopeIdAndTelephoneNumber(scopeIds, phoneFromJSON);
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, requestInformationObject.webPhone);
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
@@ -266,7 +266,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
         System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
-        System.assertEquals(phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
         Set<Id> scopeIds = new Set<Id>();
         for(Scope__c scope: scopesByAccount)
@@ -282,7 +282,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary'}
-            ).selectByScopeIdAndTelephoneNumber(scopeIds, phoneFromJSON);
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, requestInformationObject.webPhone);
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
@@ -345,7 +345,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(1, scopesByAccount.size(), 'There should be 1 scope for the customer');
         System.assertEquals('ZE', scopesByAccount.get(0).Scope__c, 'Scope__c should be the same');
         System.assertEquals(emailFromJSON, scopesByAccount.get(0).PrimaryEmail__c, 'Email should be the same');
-        System.assertEquals(phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + phoneFromJSON, scopesByAccount.get(0).PrimaryPhone__c, 'Phone should be the same');
 
         Set<Id> scopeIds = new Set<Id>();
         for(Scope__c scope: scopesByAccount)
@@ -361,7 +361,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary'}
-            ).selectByScopeIdAndTelephoneNumber(scopeIds, phoneFromJSON);
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, requestInformationObject.webPhone);
         System.assertEquals(1, contactPointPhones.size(), 'There should be 1 Contact Point Phone');
         System.assertEquals(true, contactPointPhones.get(0).IsPrimary, 'IsPrimary should be true');
 
@@ -388,13 +388,14 @@ public with sharing class BusinessInsuranceRaterServiceTest
         }
 
         List<Policy__c> policiesCreated = new PoliciesSelector(
-            new Set<String> {'Id', 'InfoPolicyNumber__c'}
+            new Set<String> {'Id', 'InfoPolicyNumber__c', 'OpportunityName__c'}
             ).selectByHolderAndNumber(existingAccounts.get(0).Id, policyNumbers);
         System.assertEquals(false, policiesCreated.isEmpty(), 'List should NOT be empty');
 
         for(Policy__c policy: policiesCreated)
         {
             System.assertEquals(true, policyNumbers.contains(policy.InfoPolicyNumber__c), 'Set should contain InfoPolicyNumber__c');
+            System.assertEquals(true, String.isNotBlank(policy.OpportunityName__c), 'OpportunityName__c has been filled from Flow');
         }
 
         //Comprobamos que se ha creado la relación entre las pólizas y el manager
@@ -586,7 +587,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary'}
-            ).selectByScopeIdAndTelephoneNumber(scopeIds, phoneFromJSON);
+            ).selectByScopeIdAndTelephoneNumber(scopeIds, requestInformationObject.webPhone);
         System.assertEquals(true, contactPointPhones.isEmpty(), 'There should be 1 Contact Point Phone');
 
         //Comprobamos que se crea el ContactRequest
@@ -758,6 +759,46 @@ public with sharing class BusinessInsuranceRaterServiceTest
             true,
             BusinessInsuranceRaterService.requiredFieldsMetadataSet.isEmpty(),
             'The set should be empty, as the step doesnt exists'
+            );
+    }
+
+    /**
+     * Método que comprueba que NO se recuperan correctamente los metadatos cuando se solicita un paso inexistente en el formulario
+     */
+    @isTest
+    static void test_addPrefixToPhone_ok()
+    {
+        String phone = '666123456';
+
+        Test.startTest();
+        String phoneWithPrefix = BusinessInsuranceRaterService.addPrefixToPhone(phone);
+        Test.stopTest();
+
+        System.assertEquals(
+            true,
+            phoneWithPrefix.startsWith(BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX),
+            'Phone should start with ' + BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX
+            );
+    }
+
+    /**
+     * Método que comprueba que NO se recuperan correctamente los metadatos cuando se solicita un paso inexistente en el formulario
+     */
+    @isTest
+    static void test_addPrefixToPhone_already_specified_ok()
+    {
+        String phone = '+34666123456';
+
+        Test.startTest();
+        String phoneWithPrefix = BusinessInsuranceRaterService.addPrefixToPhone(phone);
+        Test.stopTest();
+
+        //Para comprobar que si el número de teléfono ya tiene prefijo, hacemos un split del teléfono
+        //utilizando el prefijo y debería dividir el string en 2
+        System.assertEquals(
+            true,
+            phoneWithPrefix.split('\\' + BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX).size() < 3,
+            BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + ' should appear once'
             );
     }
 }

@@ -64,8 +64,8 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 interactionTask.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
                 interactionTask.OwnerId = UserInfo.getUserId();
 
-                //Actualizar el CASO relacionado con la TASK
-                changeCaseOwnerFromQueueToUser(interactionTask);
+                //Actualizar el registro relacionado con la TASK
+                changeOwnerFromQueueToUser(interactionTask);
             }
             else if(eventName == 'interactionDisconnected')
             {
@@ -124,7 +124,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * @param interactionTask Task recibida
      */
     @TestVisible
-    private static void changeCaseOwnerFromQueueToUser(Task interactionTask)
+    private static void changeOwnerFromQueueToUser(Task interactionTask)
     {
         //Comprobar si es un CASO
         if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
@@ -138,6 +138,30 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     //Cambiar el propietario al usuario actual
                     cases[0].OwnerId = UserInfo.getUserId();
                     update cases;
+                }
+            }
+        }//Comprobar si es un ContactRequest
+        else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
+        {
+            List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
+            if(!contactrequests.isEmpty())
+            {
+                //Cambiar el propietario al usuario actual siempre
+                contactrequests[0].OwnerId = UserInfo.getUserId();
+                update contactrequests;
+            }
+        }//Comprobar si es una Offer
+        else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
+        {
+            List<Opportunity> offers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id = :interactionTask.WhatId];
+            if(!offers.isEmpty())
+            {
+                //Si el Owner es el Integrador hay que cambiarlo
+                if(offers[0].OwnerId != null && offers[0].Owner.Profile.Name == 'Integrator')
+                {
+                    //Cambiar el propietario al usuario actual
+                    offers[0].OwnerId = UserInfo.getUserId();
+                    update offers;
                 }
             }
         }
