@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>German__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Du bekommst eine Nachricht, wenn es etwas Neues in unserem Lifestyle-Blog gibt.</value>
     </values>
     <values>
         <field>Italian__c</field>

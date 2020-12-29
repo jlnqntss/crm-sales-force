@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>SendEmail</description>
     <fieldOverrides>
         <field>ToIds</field>
         <formula>Case.ContactId</formula>
@@ -11,9 +12,10 @@
 AND(Ispickval( Case.LegalEntity__c, &quot;General Insurance&quot;), Case.SourceCountry__c=&apos;France&apos;),&quot;contact.klinc@zurich.com&quot;,
 	if(and(ispickval( Case.LegalEntity__c, &quot;Life Insurance&quot;), Case.SourceCountry__c=&apos;Spain&apos;, Case.Partner__c==Null),&quot;ayudaklincvida@zurich.com&quot;,
 		if(and(ispickval( Case.LegalEntity__c, &quot;General Insurance&quot;), Case.SourceCountry__c=&apos;Spain&apos;, Case.Partner__c==Null),&quot;ayuda.klinc@zurich.com&quot;,
-			if(and(ispickval(Case.LegalEntity__c, &quot;Life Insurance&quot;),Case.SourceCountry__c=&apos;Spain&apos;,Case.Partner__c==&apos;Orange Seguros&apos;),&quot;ayuda.orangeseguros@zurich.com&quot;,&quot;&quot;)
+			if(and(ispickval(Case.LegalEntity__c, &quot;Life Insurance&quot;),Case.SourceCountry__c=&apos;Spain&apos;,Case.Partner__c==&apos;Orange Seguros&apos;),&quot;ayuda.orangeseguros@zurich.com&quot;,
+				if(and(ispickval(Case.LegalEntity__c, &quot;General Insurance&quot;),Case.SourceCountry__c=&apos;Germany&apos;,Case.Partner__c==null),&quot;hilfe.klinc@zurich.com&quot;,&quot;&quot;)
 		)
-	)
+	))
 	
 )</formula>
     </fieldOverrides>
@@ -54,6 +56,9 @@ AND(Ispickval( Case.LegalEntity__c, &quot;General Insurance&quot;), Case.SourceC
         </quickActionLayoutColumns>
         <quickActionLayoutColumns/>
     </quickActionLayout>
+    <quickActionSendEmailOptions>
+        <ignoreDefaultEmailTemplateSubject>false</ignoreDefaultEmailTemplateSubject>
+    </quickActionSendEmailOptions>
     <standardLabel>SendEmail</standardLabel>
     <targetObject>EmailMessage</targetObject>
     <targetParentField>Parent</targetParentField>
