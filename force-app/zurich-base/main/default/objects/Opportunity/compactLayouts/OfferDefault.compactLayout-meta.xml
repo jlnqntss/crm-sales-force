@@ -4,7 +4,6 @@
     <fields>Name</fields>
     <fields>AccountId</fields>
     <fields>ProductId__c</fields>
-    <fields>Activity__c</fields>
     <fields>EffectiveDate__c</fields>
     <fields>TotalPremium__c</fields>
     <label>Offer Default</label>

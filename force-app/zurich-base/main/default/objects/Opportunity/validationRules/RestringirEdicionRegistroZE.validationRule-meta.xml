@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestringirEdicionRegistroZE</fullName>
+    <active>true</active>
+    <description>Los usuarios con perfil ZE User no podrán editar los campos de Name y CloseDate</description>
+    <errorConditionFormula>AND($Profile.Name = &apos;ZE User&apos;,OR(ISCHANGED(Name),ISCHANGED(CloseDate)))</errorConditionFormula>
+    <errorMessage>[VR Offer] Su perfil no permite la edición de alguno de los campos modificados</errorMessage>
+</ValidationRule>

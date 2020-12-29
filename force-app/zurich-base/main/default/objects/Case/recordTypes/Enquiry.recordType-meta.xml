@@ -6,6 +6,60 @@
     <compactLayoutAssignment>SiniestroConsulta</compactLayoutAssignment>
     <label>Consulta</label>
     <picklistValues>
+        <picklist>CallCenter__c</picklist>
+        <values>
+            <fullName>CC Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CSM Administración</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CSM Particulares</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CauseOfLoss__c</picklist>
+        <values>
+            <fullName>TBD</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ClaimStatusTPA__c</picklist>
+        <values>
+            <fullName>2%2E5 Fraud</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CloseResult__c</picklist>
+        <values>
+            <fullName>No Realizado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LegalEntity__c</picklist>
+        <values>
+            <fullName>General Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Life Insurance</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Object__c</picklist>
+        <values>
+            <fullName>Bono</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Origin</picklist>
         <values>
             <fullName>Email</fullName>
@@ -17,6 +71,33 @@
         </values>
         <values>
             <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>PendingBy__c</picklist>
+        <values>
+            <fullName>Client</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Competency Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other areas Third parties</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other areas Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supervisor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Systems Incidence</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -55,6 +136,79 @@
         </values>
         <values>
             <fullName>User didn%27t attend training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Scope__c</picklist>
+        <values>
+            <fullName>Z</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZEO</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SourceArea__c</picklist>
+        <values>
+            <fullName>End customer partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Generic Internal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Generic end customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INFO note</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mediator</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner dome</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDC %28Customer Defense Service%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zurich Business Client</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Sub_status__c</picklist>
+        <values>
+            <fullName>BIT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestros</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -149,6 +303,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Internas</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Metodos de pago admitidos</fullName>
             <default>false</default>
         </values>
@@ -179,10 +337,6 @@
         <values>
             <fullName>Otros</fullName>
             <default>false</default>
-        </values>
-        <values>
-                <fullName>Internas</fullName>
-                <default>false</default>
         </values>
         <values>
             <fullName>Pago</fullName>
