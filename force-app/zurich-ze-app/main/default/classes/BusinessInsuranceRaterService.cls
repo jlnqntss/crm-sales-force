@@ -411,7 +411,7 @@ public without sharing class BusinessInsuranceRaterService
                             IssuedOnline__c = true,
                             ResultingPolicyNumber__c = offer.policyNumber,
                             EffectiveDate__c = offer.effectiveDate,
-                            BusinessCode__c = offer.businessCode,
+                            BusinessCode__c = (String.isNotBlank(offer.businessCode) ? offer.businessCode : formData.businessCode),
                             BusinessName__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Scope_Name__c) ? currentScopeSettings.Scope_Name__c : 'Zurich Empresas'),
                             CloseDate = System.today(),
                             ExpirationDate__c = System.today().addDays(15),
