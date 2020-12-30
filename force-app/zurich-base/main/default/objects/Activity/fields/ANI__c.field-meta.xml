@@ -4,6 +4,8 @@
     <description>Número origen de la interacción</description>
     <externalId>false</externalId>
     <label>ANI</label>
+    <length>255</length>
     <required>false</required>
-    <type>Phone</type>
+    <type>Text</type>
+    <unique>false</unique>
 </CustomField>
