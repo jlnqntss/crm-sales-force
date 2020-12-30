@@ -2818,11 +2818,11 @@ public class TestDataFactory
                 String email = 'testuser'+i+'@nts-solutions.com.invalid';
                 users.add(
                     new User(
-                        Username=email + profileId, 
-                        LastName='User'+i, 
-                        Email=email, 
+                        Username=email + profileId,
+                        LastName='User'+i,
+                        Email=email,
                         Alias='user'+i,
-                        ProfileId=profileId, 
+                        ProfileId=profileId,
                         TimeZoneSidKey='Europe/Rome',
                         LocaleSidKey='es_ES',
                         EmailEncodingKey='UTF-8',
@@ -2833,5 +2833,31 @@ public class TestDataFactory
         }
 
         return users;
+    }
+
+    /**
+     * Genera Colas de GenesysCloud -> Fallará si en la Org no está instalado el paquete gestionado
+     * @param Integer numRecords número de registros a generar
+     * @return List<User> listado de Users generados
+     */
+    public static List<purecloud__PureCloud_Queue__c> generateGenesysQueues(Integer numRecords)
+    {
+        List<purecloud__PureCloud_Queue__c> genesysQueues = new List<purecloud__PureCloud_Queue__c>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            genesysQueues.add(
+                new purecloud__PureCloud_Queue__c(
+                    Name='GenesysQueueName'+i,
+                    purecloud__PureCloud_Queue_ID__c='GenesysQueueId'+i
+                )
+            );
+        }
+        return genesysQueues;
     }
 }

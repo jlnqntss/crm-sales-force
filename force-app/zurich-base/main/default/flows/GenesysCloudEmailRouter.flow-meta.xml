@@ -296,7 +296,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_3</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -393,38 +393,7 @@
                 <leftValueReference>myVariable_current.ToAddress</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <stringValue>5ab211b9@</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>75c2e048@</stringValue>
+                    <stringValue>soporte-ocs+particulares</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -544,7 +513,7 @@
                 <leftValueReference>myVariable_current.ToAddress</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <stringValue>42c5d93f@</stringValue>
+                    <stringValue>soporte-ocs+ccs</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -554,7 +523,7 @@
         </rules>
     </decisions>
     <description>Orquesta el enrutamiento de correos electrónicos en Genesys Cloud</description>
-    <interviewLabel>GenesysCloudEmailRouter-9_InterviewLabel</interviewLabel>
+    <interviewLabel>GenesysCloudEmailRouter-6_InterviewLabel</interviewLabel>
     <label>Enrutamiento de emails en Genesys Cloud</label>
     <processMetadataValues>
         <name>ObjectType</name>

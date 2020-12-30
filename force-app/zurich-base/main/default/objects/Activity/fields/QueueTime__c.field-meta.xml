@@ -4,7 +4,7 @@
     <description>Tiempo en cola</description>
     <externalId>false</externalId>
     <label>Queue Time</label>
-    <precision>4</precision>
+    <precision>9</precision>
     <required>false</required>
     <scale>0</scale>
     <type>Number</type>

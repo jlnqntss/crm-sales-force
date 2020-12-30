@@ -4,6 +4,10 @@ public class GenesysCloudRouteEmailActionTest
     @isTest
     static void test_GenesysCloudRouteEmailAction_execute_ok()
     {
+        List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
+        queues = TestDataFactory.generateGenesysQueues(1);
+        insert queues;
+
         // When
         // EmailMessage - Se necesita un mensaje de email que no enrute a través de PB.
         EmailMessage testMessage = new EmailMessage(
@@ -24,8 +28,8 @@ public class GenesysCloudRouteEmailActionTest
 
         GenesysCloudRouteEmailAction.RouteEmailRequest email = new GenesysCloudRouteEmailAction.RouteEmailRequest();
 
-        email.queueId = 'debe ser null si hay flowID';
-        email.flowId = 'debe ser null si hay queueId';
+        email.queueId = queues[0].Name;
+        //email.flowId = 'debe ser null si hay queueId';
         email.skillIds = new List<String> {'skill1','skill2'};
         email.priority = 1;
         email.screenPopRecordId = 'recordID';
