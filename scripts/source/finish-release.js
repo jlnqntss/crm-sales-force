@@ -12,18 +12,21 @@ async function main() {
     token: process.env["CI_GITLAB_TOKEN"]
   });
   let tag = await gitLabService.getTag(process.env["CI_COMMIT_TAG"]);
+  let refs = await gitLabService.getTagBranchRefs(tag.target);
+  let isRelease = false;
 
-  let releaseBranch = await gitLabService
-    .getTagBranchRefs(tag.target)
-    .find((ref) => {
-      return ref.includes("release");
-    });
+  refs.forEach((ref) => {
+    if (ref.name.includes("release")) {
+      isRelease = true;
+    }
+  });
 
-  if (releaseBranch) {
+  if (isRelease) {
     console.log("Commit is in release branch");
     let { iid } = await gitLabService.createMergeRequest({
-      source_branch: tag.target,
-      target_branch: `release/${tag.split("-")[0]}`
+      title: `Merge branch release/${tag.name.split("-")[0]} to master`,
+      source_branch: `release/${tag.name.split("-")[0]}`,
+      target_branch: "master"
     });
 
     await gitLabService.acceptMergeRequest(iid, {

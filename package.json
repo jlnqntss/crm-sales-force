@@ -20,7 +20,7 @@
     "docs:update": "node scripts/source/update-docs.js",
     "release:create": "node scripts/source/create-release.js",
     "release:candidate": "node scripts/source/increment-release.js",
-    "release:finish": "node scripts/source/create-finish.js",
+    "release:finish": "node scripts/source/finish-release.js",
     "release:changelog": "node scripts/source/changelog.js"
   },
   "husky": {
