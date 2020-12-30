@@ -4,12 +4,12 @@
         <description>Se buscar al mejor gestor posible para el correo electrónico, en base al cliente al que pertenece al email y sus oportunidades abiertas</description>
         <name>FindOwnerIdAction</name>
         <label>Buscar Gestor Preferente</label>
-        <locationX>456</locationX>
+        <locationX>555</locationX>
         <locationY>206</locationY>
         <actionName>GenesysFindBestAgentAction</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>RouteEmailAction</targetReference>
+            <targetReference>InboxChoice</targetReference>
         </connector>
         <faultConnector>
             <targetReference>LogError</targetReference>
@@ -44,8 +44,8 @@
         <description>Llamada al Apex invocable que contiene la llamada al Genesys Cloud RoutingWork</description>
         <name>RouteEmailAction</name>
         <label>Enrutar Email a Flow CCS en Genesys Cloud</label>
-        <locationX>456</locationX>
-        <locationY>326</locationY>
+        <locationX>559</locationX>
+        <locationY>399</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -55,12 +55,6 @@
             <name>emailMessageId</name>
             <value>
                 <elementReference>EmailMessage.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>flowId</name>
-            <value>
-                <stringValue>2a5bca8b-cdae-411f-b383-a07d7b78c57c</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -79,6 +73,12 @@
             <name>ownerId</name>
             <value>
                 <elementReference>FindOwnerIdAction.ownerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>queueId</name>
+            <value>
+                <elementReference>GenesysId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -101,6 +101,157 @@
         </inputParameters>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
+    <assignments>
+        <name>CancelsChoice</name>
+        <label>Decisión Cancelaciones</label>
+        <locationX>183</locationX>
+        <locationY>531</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>QA_CCS_Cancelaciones</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>CarChangeChoice</name>
+        <label>Decisión Cambio Vehículo</label>
+        <locationX>189</locationX>
+        <locationY>401</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>QA_CCS_Cambio Vehículo</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Default</name>
+        <label>Genérico</label>
+        <locationX>243</locationX>
+        <locationY>237</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>QA_CCS_Generico</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>LifeChoice</name>
+        <label>Decisión Vida</label>
+        <locationX>166</locationX>
+        <locationY>764</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>QA_CCS_Vida</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>TravelChoice</name>
+        <label>Decisión Travel</label>
+        <locationX>175</locationX>
+        <locationY>657</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>QA_CCS_Travel</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Dependiendo del ToAddres del email-to-case, se pueden asignar variables</description>
+        <name>InboxChoice</name>
+        <label>Decidir según buzón de entrada</label>
+        <locationX>50</locationX>
+        <locationY>179</locationY>
+        <defaultConnector>
+            <targetReference>Default</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default</defaultConnectorLabel>
+        <rules>
+            <name>CarChange</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>soporte-ocs+ccs.cambio.vehiculo</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CarChangeChoice</targetReference>
+            </connector>
+            <label>Cambio Vehículo</label>
+        </rules>
+        <rules>
+            <name>Cancels</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>soporte-ocs+ccs.cancelaciones</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CancelsChoice</targetReference>
+            </connector>
+            <label>Cancelaciones</label>
+        </rules>
+        <rules>
+            <name>Travel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>soporte-ocs+ccs.travel</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>TravelChoice</targetReference>
+            </connector>
+            <label>Travel</label>
+        </rules>
+        <rules>
+            <name>Life</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>soporte-ocs+ccs.vida</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>LifeChoice</targetReference>
+            </connector>
+            <label>Vida</label>
+        </rules>
+    </decisions>
     <description>Realiza el enrutamiento de correos electrónicos del buzón de CCS</description>
     <formulas>
         <description>URL de la ficha a abrir con el correo enrutado</description>
@@ -136,7 +287,7 @@
         <description>Deja un registro de log del error producido</description>
         <name>LogError</name>
         <label>Registrar error</label>
-        <locationX>704</locationX>
+        <locationX>803</locationX>
         <locationY>269</locationY>
         <inputAssignments>
             <field>Level__c</field>
@@ -166,7 +317,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <start>
-        <locationX>330</locationX>
+        <locationX>429</locationX>
         <locationY>48</locationY>
         <connector>
             <targetReference>FindOwnerIdAction</targetReference>
@@ -189,5 +340,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Error_Event__e</objectType>
+    </variables>
+    <variables>
+        <description>Es el nombre de la cola de genesys</description>
+        <name>GenesysId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>
