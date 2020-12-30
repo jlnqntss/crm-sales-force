@@ -219,6 +219,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Backoffice</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Bloqueo de IMEI</fullName>
             <default>false</default>
         </values>
