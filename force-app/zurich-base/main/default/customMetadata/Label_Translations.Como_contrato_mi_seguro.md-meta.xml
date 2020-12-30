@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>English__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">How to purchase a policy</value>
     </values>
     <values>
         <field>French__c</field>
@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>German__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Wie schließe ich eine Versicherung bei Klinc ab?</value>
     </values>
     <values>
         <field>Italian__c</field>

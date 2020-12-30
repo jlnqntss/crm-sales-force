@@ -353,14 +353,6 @@
             <valueName>Como renuevo mi seguro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Internas</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
-            <valueName>Backoffice</valueName>
-        </valueSettings>
-        <valueSettings>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
             <valueName>Cuando me avisan</valueName>
         </valueSettings>
@@ -551,6 +543,10 @@
             <valueName>Como firmo mi seguro</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
+            <valueName>Backoffice</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
             <valueName>Como abro un siniestro</valueName>
         </valueSettings>
@@ -589,6 +585,10 @@
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
             <valueName>Problema con la reparacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Internas</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Pago de mi seguro</controllingFieldValue>

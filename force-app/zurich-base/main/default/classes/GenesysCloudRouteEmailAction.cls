@@ -16,11 +16,36 @@ public class GenesysCloudRouteEmailAction
         )
     public static void execute(List<RouteEmailRequest> requests)
     {
+        //Construir mapa con las colas de Genesys <-> Nombre
+        Map<String,String> mapGenesysQueueNameId = new Map<String,String>();
+        List<purecloud__PureCloud_Queue__c> genesysQueues = new List<purecloud__PureCloud_Queue__c>();
+        genesysQueues = [SELECT Id, Name, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c];
+        for(purecloud__PureCloud_Queue__c gQueue: genesysQueues)
+        {
+            mapGenesysQueueNameId.put(gQueue.Name,gQueue.purecloud__PureCloud_Queue_ID__c);
+        }
+
         Map<GenesysCloud.Email, String> emailMessageIdsByGenesysEmail = new Map<GenesysCloud.Email, String>();
 
         for(RouteEmailRequest request : requests)
         {
-            emailMessageIdsByGenesysEmail.put(request.toEmail(), request.emailMessageId);
+            //Si viene relleno queueId pero no existe
+            if(request.queueId != null && !mapGenesysQueueNameId.containsKey(request.queueId))
+            { //Lanzar excepción para que el Flow registre un error
+                throw new GenesysRouteEmailActionException('The genesys queue '+ request.queueId +' does not exists.');
+            }
+            //Si viene relleno queueId y sí existe:
+            else if(request.queueId != null && mapGenesysQueueNameId.containsKey(request.queueId))
+            {
+                //Sustituir el nombre de la cola por su ID
+                String queueId = mapGenesysQueueNameId.get(request.queueId);
+                request.queueId = queueId;
+                emailMessageIdsByGenesysEmail.put(request.toEmail(), request.emailMessageId);
+            }
+            //Si no viene relleno queueId, enrutar normal, ya que es opcional si va relleno flowId
+            else{
+                emailMessageIdsByGenesysEmail.put(request.toEmail(), request.emailMessageId);
+            }
         }
 
         GenesysCloud.RoutingService.route(new List<GenesysCloud.Email>(emailMessageIdsByGenesysEmail.keySet() ), new UpdateEmailMessageCallback(emailMessageIdsByGenesysEmail) );
@@ -128,4 +153,7 @@ public class GenesysCloudRouteEmailAction
             ErrorLogUtil.commitError(error);
         }
     }
+
+    @TestVisible
+    class GenesysRouteEmailActionException extends Exception {}
 }

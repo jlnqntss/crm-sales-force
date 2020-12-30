@@ -177,7 +177,12 @@ public class Test_ErrorLogUtil
     {
         String emailFromJSON = 'newemail@fakeemail.com.invalid';
         String phoneFromJSON = '123456789';
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON( 'CRM-01', '1111111A', emailFromJSON, phoneFromJSON, new List<Product2>() );
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON( 'CRM-01', '1111111A', emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, new List<Product2>() );
         String serializedJSON = JSON.serialize(jsonInformation);
         Test.startTest();
         ErrorLogUtil.commitError( 'warning', 'New webform request', 'WS_BusinessInsuranceAPIService', serializedJSON );

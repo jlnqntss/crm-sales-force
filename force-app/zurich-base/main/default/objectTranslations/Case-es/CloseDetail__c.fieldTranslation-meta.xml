@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Detalle de Cierre</label>
+    <name>CloseDetail__c</name>
+    <picklistValues>
+        <masterLabel>Accesos 902</masterLabel>
+        <translation><!-- Accesos 902 --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Anulación no tramitada</masterLabel>
+        <translation><!-- Anulación no tramitada --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Aplicativo web</masterLabel>
+        <translation><!-- Aplicativo web --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Argumentario</masterLabel>
+        <translation><!-- Argumentario --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Atención empleado</masterLabel>
+        <translation><!-- Atención empleado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cambio canal distribución</masterLabel>
+        <translation><!-- Cambio canal distribución --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cambio de tomador</masterLabel>
+        <translation><!-- Cambio de tomador --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Campaña</masterLabel>
+        <translation><!-- Campaña --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Caída sistema</masterLabel>
+        <translation><!-- Caída sistema --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Coberturas</masterLabel>
+        <translation><!-- Coberturas --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cobro</masterLabel>
+        <translation><!-- Cobro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Conductores agravados</masterLabel>
+        <translation><!-- Conductores agravados --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Corregida</masterLabel>
+        <translation><!-- Corregida --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Datos erróneos</masterLabel>
+        <translation><!-- Datos erróneos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Datos personales</masterLabel>
+        <translation><!-- Datos personales --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Desacuerdo en indemnización</masterLabel>
+        <translation><!-- Desacuerdo en indemnización --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Desaparición riesgo</masterLabel>
+        <translation><!-- Desaparición riesgo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Desbloqueo registro</masterLabel>
+        <translation><!-- Desbloqueo registro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Descuento</masterLabel>
+        <translation><!-- Descuento --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Descuentos</masterLabel>
+        <translation><!-- Descuentos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación</masterLabel>
+        <translation><!-- Documentación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Empresa</masterLabel>
+        <translation><!-- Empresa --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Encias</masterLabel>
+        <translation><!-- Encias --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Envío mail</masterLabel>
+        <translation><!-- Envío mail --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Error FIVA</masterLabel>
+        <translation><!-- Error FIVA --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Estado firma digital</masterLabel>
+        <translation><!-- Estado firma digital --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Extorno</masterLabel>
+        <translation><!-- Extorno --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Falta aviso</masterLabel>
+        <translation><!-- Falta aviso --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Falta de datos</masterLabel>
+        <translation><!-- Falta de datos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Fechas</masterLabel>
+        <translation><!-- Fechas --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Fuera plazo</masterLabel>
+        <translation><!-- Fuera plazo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Garantías</masterLabel>
+        <translation><!-- Garantías --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Gestión Compet</masterLabel>
+        <translation><!-- Gestión Compet --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Gestión incorrecta</masterLabel>
+        <translation><!-- Gestión incorrecta --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Gestión incorrecta comercialización</masterLabel>
+        <translation><!-- Gestión incorrecta comercialización --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Información</masterLabel>
+        <translation><!-- Información --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Insatisfacción atención</masterLabel>
+        <translation><!-- Insatisfacción atención --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Insatisfacción mediador</masterLabel>
+        <translation><!-- Insatisfacción mediador --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Insatisfacción procesos</masterLabel>
+        <translation><!-- Insatisfacción procesos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Insatisfacción siniestros</masterLabel>
+        <translation><!-- Insatisfacción siniestros --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Mail activación</masterLabel>
+        <translation><!-- Mail activación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Modificación garantías</masterLabel>
+        <translation><!-- Modificación garantías --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>NIF bloqueado</masterLabel>
+        <translation><!-- NIF bloqueado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No accesible</masterLabel>
+        <translation><!-- No accesible --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No autoservicio</masterLabel>
+        <translation><!-- No autoservicio --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No es cliente</masterLabel>
+        <translation><!-- No es cliente --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No facilita datos</masterLabel>
+        <translation><!-- No facilita datos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No procede</masterLabel>
+        <translation><!-- No procede --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Oferta no accesible</masterLabel>
+        <translation><!-- Oferta no accesible --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Precio</masterLabel>
+        <translation><!-- Precio --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Promo / Regalo</masterLabel>
+        <translation><!-- Promo / Regalo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Póliza anulada</masterLabel>
+        <translation><!-- Póliza anulada --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Recepción datos</masterLabel>
+        <translation><!-- Recepción datos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Reemplazo</masterLabel>
+        <translation><!-- Reemplazo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Retraso en tramitación</masterLabel>
+        <translation><!-- Retraso en tramitación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SINCO</masterLabel>
+        <translation><!-- SINCO --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Saneamiento</masterLabel>
+        <translation><!-- Saneamiento --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Sin INFO</masterLabel>
+        <translation><!-- Sin INFO --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Siniestro</masterLabel>
+        <translation><!-- Siniestro --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Solicitud extorno</masterLabel>
+        <translation><!-- Solicitud extorno --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Tiempo de espera</masterLabel>
+        <translation><!-- Tiempo de espera --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Usos / Actividad</masterLabel>
+        <translation><!-- Usos / Actividad --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Vida</masterLabel>
+        <translation><!-- Vida --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

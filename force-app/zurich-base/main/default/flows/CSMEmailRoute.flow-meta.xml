@@ -58,12 +58,6 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>flowId</name>
-            <value>
-                <stringValue>2a5bca8b-cdae-411f-b383-a07d7b78c57c</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>fromAddress</name>
             <value>
                 <elementReference>EmailMessage.FromAddress</elementReference>
@@ -79,6 +73,12 @@
             <name>ownerId</name>
             <value>
                 <elementReference>FindOwnerIdAction.ownerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>queueId</name>
+            <value>
+                <elementReference>GenesysId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -108,16 +108,16 @@
     </actionCalls>
     <apiVersion>50.0</apiVersion>
     <assignments>
-        <description>Agregar Skills al listado de skills dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsDefault</name>
-        <label>Asignar skills (DEFAULT)</label>
-        <locationX>573</locationX>
-        <locationY>346</locationY>
+        <description>Agregar Skills al listado de skills y asignar Cola de Genesys dependiendo del buzón de entrada de email-to-case</description>
+        <name>DefaultChoice</name>
+        <label>Decisión por defecto</label>
+        <locationX>292</locationX>
+        <locationY>98</locationY>
         <assignmentItems>
-            <assignToReference>Skills</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
             <value>
-                <stringValue>Test</stringValue>
+                <stringValue>QA_CSM_Particulares</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -125,16 +125,16 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Agregar Skills al listado de skills dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsPartnerDome</name>
-        <label>Asignar skills para Cúpula de Partners</label>
-        <locationX>120</locationX>
-        <locationY>364</locationY>
+        <description>Agregar Skills al listado de skills y a la Cola Genesys dependiendo del buzón de entrada de email-to-case</description>
+        <name>DTBCNChoice</name>
+        <label>Decisión DTBCN</label>
+        <locationX>286</locationX>
+        <locationY>238</locationY>
         <assignmentItems>
-            <assignToReference>Skills</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
             <value>
-                <stringValue>CúpulaPartner</stringValue>
+                <stringValue>QA_CSM_DTBCN</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -142,16 +142,67 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Agregar Skills al listado de skills dependiendo del buzón de entrada de email-to-case</description>
-        <name>AddSkillsPartners</name>
-        <label>Asignar skills para Partners</label>
-        <locationX>342</locationX>
-        <locationY>477</locationY>
+        <description>Agregar Skills al listado de skills y Cola Genesys dependiendo del buzón de entrada de email-to-case</description>
+        <name>DTBILChoice</name>
+        <label>Decisión DTBIL</label>
+        <locationX>288</locationX>
+        <locationY>351</locationY>
         <assignmentItems>
-            <assignToReference>Skills</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
             <value>
-                <stringValue>Partner</stringValue>
+                <stringValue>QA_CSM_DTBIL</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Asignar la Cola Genesys dependiendo del buzón de entrada email-to-case</description>
+        <name>DTMADChoice</name>
+        <label>Decisión DTMAD</label>
+        <locationX>231</locationX>
+        <locationY>493</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>QA_CSM_DTMAD</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Asignar Cola Genesys dependiendo del buzón de entrada email-to-case</description>
+        <name>DTSEVChoice</name>
+        <label>Decisión DTSEV</label>
+        <locationX>232</locationX>
+        <locationY>624</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>QA_CSM_DTSEV</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Asignar Cola Genesys dependiendo del buzón de entrada email-to-case</description>
+        <name>DTVALChoice</name>
+        <label>Decisión DTVAL</label>
+        <locationX>229</locationX>
+        <locationY>734</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>QA_CSM_DTVAL</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -162,41 +213,86 @@
         <description>Dependiendo del ToAddress , del Email-To-Case por donde entra el email, se pueden asignar las skills que se requerirán o el flow al que redirigir</description>
         <name>InboxChoice</name>
         <label>Decidir según buzón de entrada</label>
-        <locationX>343</locationX>
-        <locationY>231</locationY>
+        <locationX>47</locationX>
+        <locationY>211</locationY>
         <defaultConnector>
-            <targetReference>AddSkillsDefault</targetReference>
+            <targetReference>DefaultChoice</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Partners</name>
+            <name>DTBCN</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EmailMessage.ToAddress</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <stringValue>75c2e048@</stringValue>
+                    <stringValue>soporte-ocs+particulares.dtbcn</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>AddSkillsPartners</targetReference>
+                <targetReference>DTBCNChoice</targetReference>
             </connector>
-            <label>Partners</label>
+            <label>DTBCN</label>
         </rules>
         <rules>
-            <name>PartnerDome</name>
+            <name>DTBIL</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EmailMessage.ToAddress</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <stringValue>5ab211b9@</stringValue>
+                    <stringValue>soporte-ocs+particulares.dtbil</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>AddSkillsPartnerDome</targetReference>
+                <targetReference>DTBILChoice</targetReference>
             </connector>
-            <label>Partner Dome</label>
+            <label>DTBIL</label>
+        </rules>
+        <rules>
+            <name>DTMAD</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>soporte-ocs+particulares.dtmad</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DTMADChoice</targetReference>
+            </connector>
+            <label>DTMAD</label>
+        </rules>
+        <rules>
+            <name>DTSEV</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>soporte-ocs+particulares.dtsev</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DTSEVChoice</targetReference>
+            </connector>
+            <label>DTSEV</label>
+        </rules>
+        <rules>
+            <name>DTVAL</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>soporte-ocs+particulares.dtval</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DTVALChoice</targetReference>
+            </connector>
+            <label>DTVAL</label>
         </rules>
     </decisions>
     <description>Realiza el enrutamiento de correos electrónicos del buzón de Mediadores</description>
@@ -291,6 +387,14 @@
     <variables>
         <description>variable que almacena el ID de Genesys  para asignarlo dependiendo del buzón de entrada</description>
         <name>GenesysFlowId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Nombre de la cola Genesys, que dependerá del buzón email-to-case utilizado</description>
+        <name>GenesysId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
