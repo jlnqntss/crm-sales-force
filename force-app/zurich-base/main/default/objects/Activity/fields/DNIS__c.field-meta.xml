@@ -4,6 +4,8 @@
     <description>Número destino de la interacción</description>
     <externalId>false</externalId>
     <label>DNIS</label>
+    <length>255</length>
     <required>false</required>
-    <type>Phone</type>
+    <type>Text</type>
+    <unique>false</unique>
 </CustomField>
