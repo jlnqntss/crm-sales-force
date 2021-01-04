@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <actionCalls>
+        <description>Ejecuta el servicio BusinessInsuranceRater para crear el Lead, sus vías de contacto y el ámbito</description>
+        <name>CreateLead</name>
+        <label>Create Lead</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <actionName>BusinessInsuranceCreateLeadAction</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <name>commercialActivity</name>
+            <value>
+                <elementReference>CommercialActivity</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>email</name>
+            <value>
+                <elementReference>Email.value</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>firstName</name>
+            <value>
+                <elementReference>FirstName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>lastName</name>
+            <value>
+                <elementReference>LastName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>nationalIdentifier</name>
+            <value>
+                <elementReference>NationalIdentifier</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>phone</name>
+            <value>
+                <elementReference>Phone.value</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>scopeBusinessCode</name>
+            <value>
+                <elementReference>Scope</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>50.0</apiVersion>
+    <choices>
+        <description>Datos del ámbito Zurich Empresas</description>
+        <name>ScopeZEChoice</name>
+        <choiceText>Zurich Empresas</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3200012491</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Zurich Empresas Orange</description>
+        <name>ScopeZEOChoice</name>
+        <choiceText>Zurich Empresas Orange</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3200012539</stringValue>
+        </value>
+    </choices>
+    <description>Muestra un formulario para introducir los datos para generar un Lead, sus vías de contacto y ámbito</description>
+    <dynamicChoiceSets>
+        <description>Lista de valores de actividad comercial</description>
+        <name>CommercialActivityPicklist</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>CommercialActivity__c</picklistField>
+        <picklistObject>Account</picklistObject>
+    </dynamicChoiceSets>
+    <interviewLabel>Zurich Empresas - Creación de Leads {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Zurich Empresas - Creación de Lead</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <description>Ventana para introducir los datos del cliente (lead) a crear</description>
+        <name>AccountInformation</name>
+        <label>Introduce datos del cliente</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>CreateLead</targetReference>
+        </connector>
+        <fields>
+            <name>LastName</name>
+            <dataType>String</dataType>
+            <fieldText>Apellido</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>FirstName</name>
+            <dataType>String</dataType>
+            <fieldText>Nombre</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>CommercialActivity</name>
+            <choiceReferences>CommercialActivityPicklist</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Actividad Comercial</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>NationalIdentifier</name>
+            <dataType>String</dataType>
+            <fieldText>CIF/NIF</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Email</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Phone</name>
+            <extensionName>flowruntime:phone</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Teléfono</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Scope</name>
+            <choiceReferences>ScopeZEChoice</choiceReferences>
+            <choiceReferences>ScopeZEOChoice</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Ámbito</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>AccountInformation</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+</Flow>
