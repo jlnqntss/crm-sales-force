@@ -89,8 +89,8 @@ public class ContactPointEmailUtil
             if(newContactPointEmail.ScopeId__c != null)
             {
                 Id key = newContactPointEmail.ScopeId__c;
-                if( (Trigger.isInsert && newContactPointEmail.IsPrimary) ||
-                    Trigger.isUpdate && newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary
+                if( (oldMap == null && newContactPointEmail.IsPrimary) ||
+                    oldMap != null && newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary
                      )
                 {
                     //Ha pasado de false a true (es decir, lo han marcado como IsPrimary)
@@ -118,7 +118,7 @@ public class ContactPointEmailUtil
                         }
                     }
                 }
-                else if(Trigger.isUpdate && !newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary)
+                else if(oldMap != null && !newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary)
                 {
                     //Ha pasado de true a false, no se puede quedar sin contacto primario
                     //Comprobamos si alguno de sus relacionados tiene primary = true, sino hay que devolver un error

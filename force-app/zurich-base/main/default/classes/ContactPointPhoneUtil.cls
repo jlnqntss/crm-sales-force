@@ -89,8 +89,8 @@ public class ContactPointPhoneUtil
             if(newContactPointPhone.ScopeId__c != null)
             {
                 Id key = newContactPointPhone.ScopeId__c;
-                if( (Trigger.isInsert && newContactPointPhone.IsPrimary) ||
-                    Trigger.isUpdate && newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary
+                if( (oldMap == null && newContactPointPhone.IsPrimary) ||
+                    oldMap != null && newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary
                      )
                 {
                     //Ha pasado de false a true (es decir, lo han marcado como IsPrimary)
@@ -118,7 +118,7 @@ public class ContactPointPhoneUtil
                         }
                     }
                 }
-                else if(Trigger.isUpdate && !newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary)
+                else if(oldMap != null && !newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary)
                 {
                     //Ha pasado de true a false, no se puede quedar sin contacto primario
                     //Comprobamos si alguno de sus relacionados tiene primary = true, sino hay que devolver un error
