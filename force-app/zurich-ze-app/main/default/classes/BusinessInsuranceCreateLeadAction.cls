@@ -1,19 +1,20 @@
 /**
- * 
+ *
  */
 global with sharing class BusinessInsuranceCreateLeadAction {
 
     @InvocableMethod(
-        label='Create Lead' 
-        description='Creates a Lead, Contact Points and Scope with the information provided' 
+        label='Create Lead'
+        description='Creates a Lead, Contact Points and Scope with the information provided'
         category='Other'
     )
-    global static void createLead(List<CreateLeadActionRequest> createLeadActionRequests) 
+    global static void createLead(List<CreateLeadActionRequest> createLeadActionRequests)
     {
         CreateLeadActionRequest request = createLeadActionRequests[0];
 
         //Convertimos la información recibida al Request Wrapper de BusinessInsuranceRaterService
         BusinessInsuranceRaterService.Request formRequest = new BusinessInsuranceRaterService.Request();
+        formRequest.doNotCreateCallback = true; //Desde el flow ZECreateLead no se quiere crear ContactRequest
         formRequest.lastStep = 'CRM-01';
         formRequest.webEmail = request.email;
         formRequest.webPhone = request.phone;

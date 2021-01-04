@@ -543,7 +543,7 @@ public without sharing class BusinessInsuranceRaterService
             }
         }
 
-        if( contactRequestSteps.contains(formData.lastStep) )
+        if( contactRequestSteps.contains(formData.lastStep) && formData.doNotCreateCallback == false )
         {
             //Crear Campaign Member
             manageCampaignAssignment(offersToCreate, formData.webPhone);
@@ -1015,6 +1015,20 @@ public without sharing class BusinessInsuranceRaterService
      */
     public class Request
     {
+        //Desde el Flow ZECreateLead no se quiere crear ContactRequest
+        public Boolean doNotCreateCallback {
+            get {
+                if(doNotCreateCallback == null){
+                    return false;
+                }else{
+                    return doNotCreateCallback;
+                }
+            }
+            set {
+                doNotCreateCallback = value;
+            }
+        }
+
         public String timeStamp {
             get;
             set {
