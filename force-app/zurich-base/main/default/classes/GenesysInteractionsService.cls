@@ -336,7 +336,7 @@ public without sharing class GenesysInteractionsService
         {
             Account customer = accounts.get(0);
             results.screenPopRecordId = customer.Id;
-            results.totalPolices = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
+            results.totalPolicies = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
         }
 
@@ -542,7 +542,7 @@ public without sharing class GenesysInteractionsService
         public transient List<SObject> relatedRecords;
         public String screenPopRecordId;
         public String territoryCode;
-        public Integer totalPolices;
+        public Integer totalPolicies;
         public Integer totalQuotes;
         public Agent[] bestAgents;
 
