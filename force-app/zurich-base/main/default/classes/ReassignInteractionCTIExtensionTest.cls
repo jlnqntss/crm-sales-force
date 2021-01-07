@@ -240,4 +240,147 @@ public without sharing class ReassignInteractionCTIExtensionTest
 
         System.assertEquals(integratorId, updatedContactRequest[0].OwnerId, 'El ContactRequest, al no estar relacionado con la Task, no debería haberse modificado su OwnerId');
     }
+
+    /**
+     * Prueba que se actualice el Owner del Offer relacionado con la task
+     * Y del resto de Offer que coincidan en misma AccountId y ScopeId
+     */
+    @isTest
+    static void test_changeOwner_ExtraOffers_ok()
+    {
+        List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
+        Id integratorId = users[0].Id;
+
+        //Crear Offer relacionado a la TASK
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        //2º crear ámbito ZE
+        List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
+        insert scopes;
+
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 5);
+        for(Opportunity opp: opportunities)
+        {
+            opp.OwnerId = integratorId; //Poner al usuario integrador como Owner
+            opp.ScopeId__c = scopes[0].Id; //Poner el mismo scope a todas
+        }
+        insert opportunities;
+        Id selectedOppId = opportunities[0].Id;
+        List<Task> interaction = TestDataFactory.generateInteractionTasksWithWhatId(selectedOppId, 1);
+        insert interaction;
+
+        System.assertEquals(integratorId, opportunities[0].OwnerId, 'Se debería haber insertado el Offer con Owner el usuario integrador');
+        System.assertEquals(opportunities[0].Id, interaction[0].WhatId, 'Se debería haber insertado la Task con WhatId la Offer');
+        System.assertEquals(scopes[0].Id, opportunities[0].ScopeId__c, 'Se debería haber insertado la Offer con el mismo Scope ZE');
+
+        ReassignInteractionCTIExtension.onSaveLog(
+            '{ "eventName": "interactionChanged", "interaction" : {"id": "ucid0"} , "callLog": {"CallObject": "ucid0"}}'
+            );
+
+        List<Opportunity> updatedOffer = [SELECT Id, AccountId, ScopeId__c, OwnerId FROM Opportunity ];
+
+        Integer i = 0;
+        for(Opportunity o: updatedOffer)
+        {
+            System.assertEquals(scopes[0].Id, o.ScopeId__c, 'ScopeId - '+ i);
+            System.assertEquals(accounts[0].Id, o.AccountId, 'AccountId - '+ i);
+            System.assertEquals(UserInfo.getUserId(), o.OwnerId, 'OwnerId - '+ i);
+            i++;
+        }
+    }
+
+    /**
+     * Prueba que NO se actualice el Owner del Offer relacionado con la task
+     * Y del resto de Offer que coincidan en misma AccountId y ScopeId
+     */
+    @isTest
+    static void test_changeOwner_ExtraOffers_ko()
+    {
+        List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
+        Id integratorId = users[0].Id;
+
+        //Crear Offer relacionado a la TASK
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        //2º crear ámbito ZE
+        List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
+        insert scopes;
+
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 5);
+        for(Opportunity opp: opportunities)
+        {
+            opp.OwnerId = integratorId; //Poner al usuario integrador como Owner
+            opp.ScopeId__c = scopes[0].Id; //Poner el mismo scope a todas
+        }
+        insert opportunities;
+
+        System.assertEquals(integratorId, opportunities[0].OwnerId, 'Se debería haber insertado el Offer con Owner el usuario integrador');
+        System.assertEquals(scopes[0].Id, opportunities[0].ScopeId__c, 'Se debería haber insertado la Offer con el mismo Scope ZE');
+
+        ReassignInteractionCTIExtension.onSaveLog(
+            '{ "eventName": "interactionChanged", "interaction" : {"id": "ucid0"} , "callLog": {"CallObject": "ucid0"}}'
+            );
+
+        List<Opportunity> updatedOffer = [SELECT Id, AccountId, ScopeId__c, OwnerId FROM Opportunity ];
+
+        Integer i = 0;
+        for(Opportunity o: updatedOffer)
+        {
+            System.assertEquals(scopes[0].Id, o.ScopeId__c, 'ScopeId - '+ i);
+            System.assertEquals(accounts[0].Id, o.AccountId, 'AccountId - '+ i);
+            System.assertEquals(integratorId, o.OwnerId, 'El Offer, al no estar relacionado con la Task, no debería haberse modificado su OwnerId - '+ i);
+            i++;
+        }
+    }
+
+    /**
+     * Prueba que NO se actualice el Owner del Offer relacionado con la task
+     * Y del resto de Offer que coincidan en misma AccountId y ScopeId
+     */
+    @isTest
+    static void test_changeOwner_ExtraOffers_ko_v2()
+    {
+        List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
+        Id integratorId = users[0].Id;
+
+        //Crear Offer relacionado a la TASK
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 5);
+        for(Opportunity opp: opportunities)
+        {
+            opp.OwnerId = integratorId; //Poner al usuario integrador como Owner
+        }
+        insert opportunities;
+        Id selectedOppId = opportunities[0].Id;
+        List<Task> interaction = TestDataFactory.generateInteractionTasksWithWhatId(selectedOppId, 1);
+        insert interaction;
+
+        System.assertEquals(integratorId, opportunities[0].OwnerId, 'Se debería haber insertado el Offer con Owner el usuario integrador');
+        System.assertEquals(opportunities[0].Id, interaction[0].WhatId, 'Se debería haber insertado la Task con WhatId la Offer');
+
+        ReassignInteractionCTIExtension.onSaveLog(
+            '{ "eventName": "interactionChanged", "interaction" : {"id": "ucid0"} , "callLog": {"CallObject": "ucid0"}}'
+            );
+
+        List<Opportunity> updatedOffer = [SELECT Id, AccountId, ScopeId__c, OwnerId FROM Opportunity ];
+
+        Integer i = 0;
+        for(Opportunity o: updatedOffer)
+        {
+            System.assertEquals(accounts[0].Id, o.AccountId, 'AccountId - '+ i);
+            if(o.Id == selectedOppId)
+            {
+                System.assertEquals(UserInfo.getUserId(), o.OwnerId, 'El OwnerId de la Offer seleccionada sí cambia - '+ i);
+            }
+            else{
+                System.assertEquals(integratorId, o.OwnerId, 'El OwnerId del resto de Offers se mantiene en Integrator porque no están en el mismo scope que la principal - '+ i);
+            }
+            i++;
+        }
+    }
+
 }
