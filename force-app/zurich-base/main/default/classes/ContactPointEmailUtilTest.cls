@@ -410,4 +410,36 @@ private with sharing class ContactPointEmailUtilTest
         }
     }
 
+    /**
+     * Test que comprueba que se informa el email primario en el scope
+     *
+     * @author adelgado
+     * @date 04/01/2021
+     */
+    @isTest
+    static void test_setScopePrimaryEmail()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+
+        List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 2);
+
+        for(Integer i = 0; i < contactPointEmails.size(); i++)
+        {
+            contactPointEmails[i].INFOContactPointNumber__c = String.valueOf(i);
+        }
+
+        Test.startTest();
+        insert contactPointEmails;
+        Test.stopTest();
+
+        List<Scope__c> scopes = [SELECT Id, PrimaryEmail__c FROM Scope__c WHERE AccountId__c IN : accounts];
+
+        System.assertEquals(20, scopes.size(), 'No se han generado todos los ámbitos necesarios');
+
+        for(Scope__c scope : scopes)
+        {
+            System.assert (String.isNotBlank(scope.PrimaryEmail__c), 'No se ha informado el email principal del scope');
+        }
+    }
+
 }

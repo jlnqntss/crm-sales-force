@@ -408,4 +408,36 @@ private with sharing class ContactPointPhoneUtilTest
             System.assert (cpp.ScopeId__c != null, 'No se ha asignado el scope correspondiente');
         }
     }
+
+    /**
+     * Test que comprueba que se informa el email primario en el scope
+     *
+     * @author adelgado
+     * @date 04/01/2021
+     */
+    @isTest
+    static void test_setScopePrimaryPhone()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+
+        List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 2);
+
+        for(Integer i = 0; i < contactPointPhones.size(); i++)
+        {
+            contactPointPhones[i].INFOContactPointNumber__c = String.valueOf(i);
+        }
+
+        Test.startTest();
+        insert contactPointPhones;
+        Test.stopTest();
+
+        List<Scope__c> scopes = [SELECT Id, PrimaryPhone__c FROM Scope__c WHERE AccountId__c IN : accounts];
+
+        System.assertEquals(20, scopes.size(), 'No se han generado todos los ámbitos necesarios');
+
+        for(Scope__c scope : scopes)
+        {
+            System.assert (String.isNotBlank(scope.PrimaryPhone__c), 'No se ha informado el teléfono principal del scope');
+        }
+    }
 }

@@ -75,8 +75,12 @@ public class ContactPointEmailUtil
      * Si el campo no tiene IsPrimary = true y es una actualización de registro, se comprobará si ese registro
      * esta siendo actualizado de true a false para lanzar un error de que no se puede realizar dicha acción
      *
+     * Si no es ninguno de los casos anteriores, se comprueba que el scope relacionado tenga el campo PrimaryEmail__c
+     * informado. Si no es así, se informa con el campo EmailAddress.
+     *
      * @author rlopez
      * @date 20/11/2020
+     * @change 04/01/2021 adelgado Cambio para informar el email primario del scope relacionado
      */
     public static void updateRelatedPrimaryContactPointEmails(List<ContactPointEmail> newList, Map<Id, ContactPointEmail> oldMap)
     {
@@ -85,8 +89,8 @@ public class ContactPointEmailUtil
             if(newContactPointEmail.ScopeId__c != null)
             {
                 Id key = newContactPointEmail.ScopeId__c;
-                if( (Trigger.isInsert && newContactPointEmail.IsPrimary) ||
-                    Trigger.isUpdate && newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary
+                if( (oldMap == null && newContactPointEmail.IsPrimary) ||
+                    oldMap != null && newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary
                      )
                 {
                     //Ha pasado de false a true (es decir, lo han marcado como IsPrimary)
@@ -114,29 +118,38 @@ public class ContactPointEmailUtil
                         }
                     }
                 }
-                else
+                else if(oldMap != null && !newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary)
                 {
-                    if(Trigger.isUpdate && !newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary)
-                    {
-                        //Ha pasado de true a false, no se puede quedar sin contacto primario
-                        //Comprobamos si alguno de sus relacionados tiene primary = true, sino hay que devolver un error
-                        Boolean isPrimaryFound = false;
+                    //Ha pasado de true a false, no se puede quedar sin contacto primario
+                    //Comprobamos si alguno de sus relacionados tiene primary = true, sino hay que devolver un error
+                    Boolean isPrimaryFound = false;
 
-                        if ( relatedContactPointEmailsMap.containsKey(key) )
+                    if ( relatedContactPointEmailsMap.containsKey(key) )
+                    {
+                        List<ContactPointEmail> relatedContactPointEmails = relatedContactPointEmailsMap.get(key);
+                        for(ContactPointEmail relatedContactPoint: relatedContactPointEmails)
                         {
-                            List<ContactPointEmail> relatedContactPointEmails = relatedContactPointEmailsMap.get(key);
-                            for(ContactPointEmail relatedContactPoint: relatedContactPointEmails)
+                            if(relatedContactPoint.IsPrimary)
                             {
-                                if(relatedContactPoint.IsPrimary)
-                                {
-                                    isPrimaryFound = true;
-                                }
+                                isPrimaryFound = true;
                             }
                         }
+                    }
 
-                        if(!isPrimaryFound)
+                    if(!isPrimaryFound)
+                    {
+                        newContactPointEmail.addError(Label.PrimaryContactPointEmailRequired);
+                    }
+                }
+                else
+                {
+                    if( relatedScopesMap.containsKey(key) && String.isBlank(relatedScopesMap.get(key).PrimaryEmail__c) )
+                    {
+                        Scope__c relatedScope = relatedScopesMap.get(key);
+                        if(relatedScope != null)
                         {
-                            newContactPointEmail.addError(Label.PrimaryContactPointEmailRequired);
+                            relatedScope.PrimaryEmail__c = newContactPointEmail.EmailAddress;
+                            scopesToUpdate.add(relatedScope);
                         }
                     }
                 }

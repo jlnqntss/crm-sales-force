@@ -75,8 +75,12 @@ public class ContactPointPhoneUtil
      * Si el campo no tiene IsPrimary = true y es una actualización de registro, se comprobará si ese registro
      * esta siendo actualizado de true a false para lanzar un error de que no se puede realizar dicha acción
      *
+     * Si no es ninguno de los casos anteriores, se comprueba que el scope relacionado tenga el campo PrimaryPhone__c
+     * informado. Si no es así, se informa con el campo TelephoneNumber.
+     *
      * @author rlopez
      * @date 23/11/2020
+     * @change 04/01/2021 adelgado Cambio para informar el teléfono primario del scope relacionado
      */
     public static void updateRelatedPrimaryContactPointPhones(List<ContactPointPhone> newList, Map<Id, ContactPointPhone> oldMap)
     {
@@ -85,8 +89,8 @@ public class ContactPointPhoneUtil
             if(newContactPointPhone.ScopeId__c != null)
             {
                 Id key = newContactPointPhone.ScopeId__c;
-                if( (Trigger.isInsert && newContactPointPhone.IsPrimary) ||
-                    Trigger.isUpdate && newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary
+                if( (oldMap == null && newContactPointPhone.IsPrimary) ||
+                    oldMap != null && newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary
                      )
                 {
                     //Ha pasado de false a true (es decir, lo han marcado como IsPrimary)
@@ -114,29 +118,38 @@ public class ContactPointPhoneUtil
                         }
                     }
                 }
-                else
+                else if(oldMap != null && !newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary)
                 {
-                    if(Trigger.isUpdate && !newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary)
-                    {
-                        //Ha pasado de true a false, no se puede quedar sin contacto primario
-                        //Comprobamos si alguno de sus relacionados tiene primary = true, sino hay que devolver un error
-                        Boolean isPrimaryFound = false;
+                    //Ha pasado de true a false, no se puede quedar sin contacto primario
+                    //Comprobamos si alguno de sus relacionados tiene primary = true, sino hay que devolver un error
+                    Boolean isPrimaryFound = false;
 
-                        if ( relatedContactPointPhonesMap.containsKey(key) )
+                    if ( relatedContactPointPhonesMap.containsKey(key) )
+                    {
+                        List<ContactPointPhone> relatedContactPointPhones = relatedContactPointPhonesMap.get(key);
+                        for(ContactPointPhone relatedContactPoint: relatedContactPointPhones)
                         {
-                            List<ContactPointPhone> relatedContactPointPhones = relatedContactPointPhonesMap.get(key);
-                            for(ContactPointPhone relatedContactPoint: relatedContactPointPhones)
+                            if(relatedContactPoint.IsPrimary)
                             {
-                                if(relatedContactPoint.IsPrimary)
-                                {
-                                    isPrimaryFound = true;
-                                }
+                                isPrimaryFound = true;
                             }
                         }
+                    }
 
-                        if(!isPrimaryFound)
+                    if(!isPrimaryFound)
+                    {
+                        newContactPointPhone.addError(Label.PrimaryContactPointPhoneRequired);
+                    }
+                }
+                else
+                {
+                    if( relatedScopesMap.containsKey(key) && String.isBlank(relatedScopesMap.get(key).PrimaryPhone__c) )
+                    {
+                        Scope__c relatedScope = relatedScopesMap.get(key);
+                        if(relatedScope != null)
                         {
-                            newContactPointPhone.addError(Label.PrimaryContactPointPhoneRequired);
+                            relatedScope.PrimaryPhone__c = newContactPointPhone.TelephoneNumber;
+                            scopesToUpdate.add(relatedScope);
                         }
                     }
                 }
