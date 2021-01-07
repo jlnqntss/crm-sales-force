@@ -45,7 +45,7 @@ private class ExternalJobQueueBatchControllerTest
         System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
         System.assertEquals
         (
-            'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Name >= \'' + firstPendingExtReq.get(0).Name + '\' AND Name <= \'' + lastPendingExtReq.get(0).Name + '\' AND Processed__c = false',
+            'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Id >= \'' + ( (String) firstPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Id <= \'' + ( (String) lastPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Processed__c = false',
             queries.get(0),
             'No se ha generado la query correctamente'
         );
@@ -75,7 +75,7 @@ private class ExternalJobQueueBatchControllerTest
         System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
         System.assertEquals
         (
-            'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Name >= \'' + firstPendingExtReq.get(0).Name + '\' AND Name <= \'' + lastPendingExtReq.get(0).Name + '\' AND Processed__c = false',
+            'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Id >= \'' + ( (String) firstPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Id <= \'' + ( (String) lastPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Processed__c = false',
             queries.get(0),
             'No se ha generado la query correctamente'
         );
