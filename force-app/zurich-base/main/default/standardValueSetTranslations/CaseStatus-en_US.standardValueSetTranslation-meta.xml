@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Asignado</masterLabel>
+        <translation>Assigned</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Cerrado</masterLabel>
+        <translation>Closed</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>En espera</masterLabel>
+        <translation>Waiting</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Nuevo</masterLabel>
+        <translation>New</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Pendiente</masterLabel>
+        <translation>Pending</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Reabierto</masterLabel>
+        <translation>Reopened</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Respondido</masterLabel>
+        <translation>Answered</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Respuesta recibida</masterLabel>
+        <translation>Response received</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Resuelto</masterLabel>
+        <translation>Resolved</translation>
+    </valueTranslation>
+</StandardValueSetTranslation>
