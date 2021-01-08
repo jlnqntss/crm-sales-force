@@ -67,7 +67,9 @@ public class ContactPointAddressHandler implements ITrigger
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        ContactPointAddressUtil.generateScope(newList);
+    }
 
     /**
      * afterDelete

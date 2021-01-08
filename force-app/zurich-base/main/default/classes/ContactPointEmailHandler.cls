@@ -71,6 +71,7 @@ public without sharing class ContactPointEmailHandler implements ITrigger
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        ContactPointEmailUtil.generateScope(newList);
         ContactPointEmailUtil.updateRelatedPrimaryContactPointEmails( (List<ContactPointEmail>) newList, (Map<Id, ContactPointEmail>) oldMap );
     }
 
