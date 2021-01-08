@@ -14,16 +14,20 @@
       })
     );
 
-    if (redirectEvent) {
+    if (window.sforce && window.sforce.one) {
+      sforce.one.navigateToURL(
+        "/one/one.app#" + encodeURIComponent(searchUrlHash),
+        true
+      );
+    } else if (redirectEvent) {
       redirectEvent
         .setParams({
-          url: "/one/one.app#" + encodeURIComponent(searchUrlHash)
+          url: "/one/one.app#" + encodeURIComponent(searchUrlHash),
+          isRedirect: true
         })
         .fire();
-    } else {
-      sforce.one.navigateToURL(
-        "/one/one.app#" + encodeURIComponent(searchUrlHash)
-      );
     }
+
+    return Promise.resolve();
   }
 });

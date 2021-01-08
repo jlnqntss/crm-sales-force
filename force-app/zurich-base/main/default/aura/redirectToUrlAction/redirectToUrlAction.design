@@ -1,0 +1,4 @@
+<design:component label="Redirección a URL">
+   <design:attribute name="url" label="URL"/>
+   <design:attribute name="isRedirect" label="¿Es una redirección?"/>
+</design:component>
