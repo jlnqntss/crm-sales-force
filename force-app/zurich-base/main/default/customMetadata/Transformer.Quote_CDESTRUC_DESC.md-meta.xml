@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Policy - TCMOMOVP</label>
+    <label>Quote - CDESTRUC_DESC</label>
     <protected>false</protected>
     <values>
         <field>OriginEntity__c</field>
-        <value xsi:type="xsd:string">POLICY</value>
+        <value xsi:type="xsd:string">QUOTE</value>
     </values>
     <values>
         <field>OriginField__c</field>
-        <value xsi:type="xsd:string">POLIZA_MOVIMIENTO_MOTIVO_COD</value>
+        <value xsi:type="xsd:string">OFERTA_ESTRUCTURA_DESC</value>
     </values>
     <values>
         <field>Origin__c</field>
@@ -16,10 +16,10 @@
     </values>
     <values>
         <field>SalesforceEntity__c</field>
-        <value xsi:type="xsd:string">Policy__c</value>
+        <value xsi:type="xsd:string">Opportunity</value>
     </values>
     <values>
         <field>SalesforceField__c</field>
-        <value xsi:type="xsd:string">MovementReason__c</value>
+        <value xsi:type="xsd:string">CommercialStructureName__c</value>
     </values>
 </CustomMetadata>
