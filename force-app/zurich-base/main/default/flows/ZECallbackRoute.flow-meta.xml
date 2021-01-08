@@ -54,10 +54,7 @@
         <description>Usado en el Flow ZEScreenPopAndSearch para abrir ficha, y si no hay ficha, se abrirá el ContactRequest que ese siempre existe</description>
         <name>ScreenPopURL</name>
         <dataType>String</dataType>
-        <expression>&apos;/lightning/page/recordActionFlow?lightning__flowDevName=ZESearchAndScreenPop&amp;lightning__flowArgs=&apos;
-+ &apos;[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!ContactRequest.PreferredPhone} + &apos;&quot;},&apos;
-+ &apos;{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; +{!ContactRequest.Id} + &apos;&quot;},&apos;
-+ &apos;{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!ContactRequest.WhoId} + &apos;&quot;}]&apos;</expression>
+        <expression>&apos;/flow/ZEGetCallback?id=&apos;+{!ContactRequest.Id}</expression>
     </formulas>
     <interviewLabel>Zurich Empresas - Enrutamiento de call me backs {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Zurich Empresas - Enrutamiento de call me backs</label>
