@@ -71,11 +71,12 @@ public without sharing class ScopeHandler implements ITrigger
      *
      * This method is called iteratively for each record inserted during an AFTER
      * trigger. Always put field validation in the 'After' methods in case another trigger
-     * has modified any values. The record is 'read only' by this point.
+     * has modified any values. The record is 'read only' by this point. 
      */
     public void afterInsert(List<SObject> newList)
     {
         scope.checkAccounts();
+        scope.generateHashId((List<Scope__c>) newList);
     }
 
     /**

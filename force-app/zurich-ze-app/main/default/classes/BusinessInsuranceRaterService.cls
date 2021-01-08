@@ -21,6 +21,7 @@ public without sharing class BusinessInsuranceRaterService
 
     public static final String QUEUE_NAME = 'ZurichEmpresas';
     public static final String ZURICH_LEGAL_ENTITY = '001';
+    public static final String SPANISH_PHONE_PREFIX = '+34';
 
     public static Account currentCustomer;
     public static Account currentManager;
@@ -97,7 +98,7 @@ public without sharing class BusinessInsuranceRaterService
             }
         }
 
-        if( !Test.isRunningTest() && !scopeSettings.containsKey(formData.businessCode) )
+        if( !scopeSettings.containsKey(formData.businessCode) )
         {
             //Sí el businessCode que hemos recibido en el formulario no coincide con los que hemos recuperado en los metadatos, lanzamos error
             throw new BusinessInsuranceRaterServiceException(
@@ -384,7 +385,7 @@ public without sharing class BusinessInsuranceRaterService
                     }
 
                     String stageName = 'Legit Lead';
-                    if( offer.netPremium == null && !legitLeadStageSteps.contains(formData.lastStep) )
+                    if( offer.netPremium == null && String.isNotBlank(formData.webPhone) )
                     {
                         stageName = 'App Submitted';
                     }
@@ -410,7 +411,7 @@ public without sharing class BusinessInsuranceRaterService
                             IssuedOnline__c = true,
                             ResultingPolicyNumber__c = offer.policyNumber,
                             EffectiveDate__c = offer.effectiveDate,
-                            BusinessCode__c = offer.businessCode,
+                            BusinessCode__c = (String.isNotBlank(offer.businessCode) ? offer.businessCode : formData.businessCode),
                             BusinessName__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Scope_Name__c) ? currentScopeSettings.Scope_Name__c : 'Zurich Empresas'),
                             CloseDate = System.today(),
                             ExpirationDate__c = System.today().addDays(15),
@@ -452,10 +453,13 @@ public without sharing class BusinessInsuranceRaterService
                         //Creamos las polizas
                         if( quoteNumberToPolicyNumberMap.containsKey(i) )
                         {
+                            String policyNumber = quoteNumberToPolicyNumberMap.get(i);
                             policiesToCreate.add(
                                 new Policy__c(
-                                    InfoPolicyNumber__c = quoteNumberToPolicyNumberMap.get(i),
-                                    PolicyHolder__c = currentCustomer.Id
+                                    Name = policyNumber,
+                                    InfoPolicyNumber__c = policyNumber,
+                                    PolicyHolder__c = currentCustomer.Id,
+                                    InfoQuoteNumber__c = offer.InfoQuoteNumber__c
                                     )
                                 );
                         }
@@ -535,15 +539,15 @@ public without sharing class BusinessInsuranceRaterService
                     {
                         insert risksToCreate;
                     }
-
-                    //Crear Campaign Member
-                    manageCampaignAssignment(offersToCreate);
                 }
             }
         }
 
         if( contactRequestSteps.contains(formData.lastStep) )
         {
+            //Crear Campaign Member
+            manageCampaignAssignment(offersToCreate, formData.webPhone);
+
             //OPCIONAL - puede que no requiera funcionar con genesys
             List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
             genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
@@ -552,7 +556,7 @@ public without sharing class BusinessInsuranceRaterService
             ContactRequest contactRequestToCreate = new ContactRequest(
                 GenesysCloudQueueId__c = (!genesysQueue.isEmpty() ? genesysQueue.get(0).Id : null),
                 OwnerId = currentAdvisorId,
-                PreferredChannel = 'Phone',
+                PreferredChannel = (String.isBlank(formData.webPhone) ? 'Email' : 'Phone'),
                 PreferredContactDatetime__c = ( String.isNotBlank(formData.bestTimeFrom) ? Datetime.valueOf( JSON.deserialize(formData.bestTimeFrom, Datetime.class) ) : System.now() ),
                 PreferredPhone = formData.webPhone,
                 RequestReason = 'Offer',
@@ -779,76 +783,86 @@ public without sharing class BusinessInsuranceRaterService
      *
      * @author rlopez
      */
-    private static void manageCampaignAssignment(List<Opportunity> createdOffers)
+    private static void manageCampaignAssignment(List<Opportunity> createdOffers, String phone)
     {
-        if( !createdOffers.isEmpty() )
+        if( String.isNotBlank(currentCustomer.PersonContactId) )
         {
             List<Campaign> businessInsuranceCampaigns = new List<Campaign>();
-            Boolean appSubmittedOffers = false;
-            Boolean allOffersLegiLead = true;
-            for(Opportunity offer: createdOffers)
-            {
-                if(offer.StageName == 'App Submitted')
-                {
-                    //Sí al menos 1 oferta tiene StageName = App Submitted
-                    //ponemos la variable a true para seleccionar la campaña de App Submitted Leads
-                    appSubmittedOffers = true;
-                }
-
-                if(offer.StageName != 'Legit Lead')
-                {
-                    //Sí alguna de las ofertas no tiene StageName = Legit Lead
-                    //no puede ir a la campaña de Legit Leads
-                    allOffersLegiLead = false;
-                }
-            }
-
             String campaingName = '';
-            if (currentScope.Scope__c.toLowerCase() == 'ze')
+            if( !createdOffers.isEmpty() )
             {
+                Boolean allOffersQuoted = true;
+                Boolean offersWithProduct = false;
+                for(Opportunity offer: createdOffers)
+                {
+                    if(offer.StageName != 'Quoted')
+                    {
+                        //Hay alguna oferta que no tiene StageName = Quoted
+                        //no puede ir a la campaña de Quoted Leads
+                        allOffersQuoted = false;
+                    }
 
-                campaingName = 'ZE_Quoted Leads';
-                if(appSubmittedOffers)
-                {
-                    campaingName = 'ZE_App Submitted Leads';
+                    if( String.isNotBlank(offer.ProductId__c) )
+                    {
+                        offersWithProduct = true;
+                    }
                 }
-                if(allOffersLegiLead)
-                {
-                    campaingName = 'ZE_Legit Leads';
-                }
-            }
-            else
-            {
-                campaingName = 'ZEO_Quoted Leads';
-                if(appSubmittedOffers)
-                {
-                    campaingName = 'ZEO_App Submitted Leads';
-                }
-                if(allOffersLegiLead)
-                {
-                    campaingName = 'ZEO_Legit Leads';
-                }
-            }
 
-            businessInsuranceCampaigns = new CampaignsSelector(
-                new Set<String> {'Id'}
-                ).selectByName(new Set<String> {campaingName});
-
-            if( !businessInsuranceCampaigns.isEmpty() )
-            {
-                //Primero, comprobamos si el cliente ya existe en la campaña
-                List<CampaignMember> campaingMembers = new CampaignMembersSelector(
-                    new Set<String> {'Id'}
-                    ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
-                if( campaingMembers.isEmpty() )
+                //Solo creamos el miembro de campaña si existe alguna oferta con producto
+                if(offersWithProduct)
                 {
-                    //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
-                    insert new CampaignMember(
-                        CampaignId = businessInsuranceCampaigns.get(0).Id,
-                        ContactId = currentCustomer.PersonContactId,
-                        Status = 'Subscribed',
-                        ScopeId__c = currentScope.Id
-                        );
+                    if (currentScope.Scope__c.toLowerCase() == 'ze')
+                    {
+                        campaingName = 'ZE_Quoted Leads';
+                        if(!allOffersQuoted)
+                        {
+                            if( String.isNotBlank(phone) )
+                            {
+                                campaingName = 'ZE_App Submitted Leads';
+                            }
+                            else
+                            {
+                                campaingName = 'ZE_Legit Leads';
+                            }
+                        }
+                    }
+                    else
+                    {
+                        campaingName = 'ZEO_Quoted Leads';
+                        if(!allOffersQuoted)
+                        {
+                            if( String.isNotBlank(phone) )
+                            {
+                                campaingName = 'ZEO_App Submitted Leads';
+                            }
+                            else
+                            {
+                                campaingName = 'ZEO_Legit Leads';
+                            }
+                        }
+                    }
+
+                    businessInsuranceCampaigns = new CampaignsSelector(
+                        new Set<String> {'Id'}
+                        ).selectByName(new Set<String> {campaingName});
+
+                    if( !businessInsuranceCampaigns.isEmpty() )
+                    {
+                        //Primero, comprobamos si el cliente ya existe en la campaña
+                        List<CampaignMember> campaingMembers = new CampaignMembersSelector(
+                            new Set<String> {'Id'}
+                            ).selectByCampaignAndContact(businessInsuranceCampaigns.get(0).Id, new Set<Id> {currentCustomer.PersonContactId});
+                        if( campaingMembers.isEmpty() )
+                        {
+                            //Si no hemos encontrado al cliente en la campaña, creamos su CampaignMember
+                            insert new CampaignMember(
+                                CampaignId = businessInsuranceCampaigns.get(0).Id,
+                                ContactId = currentCustomer.PersonContactId,
+                                Status = 'Subscribed',
+                                ScopeId__c = currentScope.Id
+                                );
+                        }
+                    }
                 }
             }
         }
@@ -884,6 +898,26 @@ public without sharing class BusinessInsuranceRaterService
             {
                 insert relations;
             }
+        }
+    }
+
+    /**
+     * Método que añade el prefijo español a un número de teléfono si no lo tiene
+     *
+     * @param String phone teléfono al que añadir el prefijo
+     * @return String phone teléfono con prefijo añadido
+     * @author rlopez
+     * @date 23/12/2020
+     */
+    public static String addPrefixToPhone(String phone)
+    {
+        if( !phone.startsWith('+') )
+        {
+            return SPANISH_PHONE_PREFIX + phone;
+        }
+        else
+        {
+            return phone;
         }
     }
 
@@ -999,7 +1033,7 @@ public without sharing class BusinessInsuranceRaterService
             get;
             set {
                 setRequiredFields('Request' + 'webPhone');
-                webPhone = value;
+                webPhone = String.isNotBlank(value) ? addPrefixToPhone(value) : value;
             }
         }
         public String sessionId {

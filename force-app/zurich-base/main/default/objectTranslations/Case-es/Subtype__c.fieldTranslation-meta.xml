@@ -15,6 +15,10 @@
         <translation><!-- App --></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Backoffice</masterLabel>
+        <translation><!-- Backoffice --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Bloqueo de IMEI</masterLabel>
         <translation><!-- Bloqueo de IMEI --></translation>
     </picklistValues>
@@ -83,6 +87,10 @@
         <translation><!-- Denegación de cobertura --></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Denegación de cobertura (borrar)</masterLabel>
+        <translation><!-- Denegación de cobertura (borrar) --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Desactivar FMI</masterLabel>
         <translation><!-- Desactivar FMI --></translation>
     </picklistValues>
@@ -129,6 +137,10 @@
     <picklistValues>
         <masterLabel>Información</masterLabel>
         <translation><!-- Información --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Internas</masterLabel>
+        <translation><!-- Internas --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Metodos de pago admitidos</masterLabel>
@@ -185,6 +197,10 @@
     <picklistValues>
         <masterLabel>Problema con la reparación</masterLabel>
         <translation><!-- Problema con la reparación --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Problema con la reparación (borrar)</masterLabel>
+        <translation><!-- Problema con la reparación (borrar) --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Quejas y reclamaciones</masterLabel>

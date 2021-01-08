@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>German__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Meine versicherung verlängern</value>
     </values>
     <values>
         <field>Italian__c</field>

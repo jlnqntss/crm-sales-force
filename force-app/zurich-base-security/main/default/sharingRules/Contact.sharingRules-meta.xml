@@ -37,6 +37,24 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Contacts_GI_Germany</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Contacts GI Germany</label>
+        <sharedTo>
+            <group>KLINC_GI_Germany</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Germany</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Contacts_GI_Spain</fullName>
         <accessLevel>Read</accessLevel>
         <label>Contacts GI Spain</label>

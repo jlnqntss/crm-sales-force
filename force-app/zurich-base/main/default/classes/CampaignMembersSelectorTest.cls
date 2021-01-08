@@ -13,7 +13,7 @@ private with sharing class CampaignMembersSelectorTest
         // hotfix: obtener cuentas de tipo personales con el campo PersonContactId relleno
         accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null]);
 
-        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaigns);
+        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaigns, 'Subscribed');
         insert campaignMembers;
     }
 
@@ -87,6 +87,53 @@ private with sharing class CampaignMembersSelectorTest
         List<CampaignMember> matchedRecords = new CampaignMembersSelector(
             new Set<String> {'invalidField'}
             ).selectByCampaignAndContact(campaignToSearch, contactsToSearch);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_selectByStatus_matchedRecords()
+    {
+        List<Campaign> campaigns = [SELECT Id FROM Campaign];
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        Id campaignToSearch = campaigns.get(0).Id;
+
+        List<CampaignMember> currentCampaignMembers = [SELECT Id, Status FROM CampaignMember];
+        System.assertEquals(false, currentCampaignMembers.isEmpty(), 'List should NOT be empty');
+
+        String statusToSearch = currentCampaignMembers.get(0).Status;
+
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector(
+            new Set<String> {'Id', 'Status'}
+            ).selectByStatus(statusToSearch);
+        Test.stopTest();
+
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
+
+        for(CampaignMember matched: matchedRecords)
+        {
+            System.assertEquals(true, matched.Status == statusToSearch, 'Status should be the same');
+        }
+    }
+
+    @isTest
+    static void test_selectByStatus_emptyString_matchedRecords()
+    {
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectByStatus( '' );
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_selectByStatus_null_matchedRecords()
+    {
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectByStatus(null);
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');

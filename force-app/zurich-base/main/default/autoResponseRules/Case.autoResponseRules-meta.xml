@@ -26,12 +26,28 @@
                 <value>Web</value>
             </criteriaItems>
             <criteriaItems>
+                <field>Case.SourceCountry__c</field>
+                <operation>equals</operation>
+                <value>Germany</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>noreply.klinc@zurich.com</senderEmail>
+            <senderName>Klinc</senderName>
+            <template>GI_DE_Templates/Web_to_case_response_HTML_DE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Web</value>
+            </criteriaItems>
+            <criteriaItems>
                 <field>Case.Partner__c</field>
                 <operation>equals</operation>
                 <value>Orange Seguros</value>
             </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
-            <senderEmail>noreply.klinc@zurich.com</senderEmail>
+            <senderEmail>noreply.orangeseguros@zurich.com</senderEmail>
             <senderName>Orange Seguros by Zurich</senderName>
             <template>Life_Orange_Templates/Web_to_case_response_Orange_HTML</template>
         </ruleEntry>
@@ -73,12 +89,28 @@
                 <value>Email</value>
             </criteriaItems>
             <criteriaItems>
-                <field>Case.Partner__c</field>
+                <field>Case.OwnerId</field>
                 <operation>equals</operation>
-                <value>Orange Seguros</value>
+                <value>Customer Care - Germany</value>
             </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
             <senderEmail>noreply.klinc@zurich.com</senderEmail>
+            <senderName>Klinc</senderName>
+            <template>GI_DE_Templates/Email_to_case_response_HTML_DE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Customer Care - Orange</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>noreply.orangeseguros@zurich.com</senderEmail>
             <senderName>Orange Seguros by Zurich</senderName>
             <template>Life_Orange_Templates/Email_to_case_response_Orange_HTML</template>
         </ruleEntry>

@@ -3616,7 +3616,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Channel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.ClaimsEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Class__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3732,6 +3742,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.IntermediaryAdministrationEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3887,6 +3902,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Rating</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.RegistryDGS__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4881,12 +4901,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.ClosedDate</field>
+        <field>Case.ClosedBy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Case.ClosedOnCreate</field>
+        <editable>false</editable>
+        <field>Case.ClosedDate</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5336,6 +5356,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Scope__c.HashedId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.HomePhone</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5347,7 +5372,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.IsSubscriber__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -5652,11 +5677,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointAddress.UsageType</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ContactPointConsent.ContactPointTypeConsentId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6091,21 +6111,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>DataUsePurpose.IsMaintainablePerContactPoint</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>DataUsePurpose.IsMaintainablePerParty</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>DataUsePurpose.IsMaintainablePerType</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>DataUsePurpose.LegalBasisId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6311,6 +6316,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.ANI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.BestAgent__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6342,6 +6352,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.Location</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.PhoneNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.QueueTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6532,6 +6552,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ExternalRequest__c.Error_Log__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ExternalRequest__c.Error_Log_Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7072,6 +7097,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PaymentType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PendingBy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8281,11 +8311,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>SocialPersona.Klout</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>SocialPersona.ListedCount</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8332,11 +8357,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>SocialPersona.TopicType</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>SocialPersona.UserId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8626,6 +8646,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.ANI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.ActivityDate</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8646,12 +8671,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.DNIS__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.Description</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.InboundOutbound__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.PhoneNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.QueueTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9667,51 +9707,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>et4ae5__Journey__c.et4ae5__RecordId__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__AuthEndpoint__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__ClientId__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__ClientSecret__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__JWT_Aud__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__JWT_KID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__JWT_PrivateKey__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__RestEndpoint__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__SoapEndpoint__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>et4ae5__MCOAuthClientDetail__mdt.et4ae5__TokenEndpoint__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12546,15 +12541,6 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>SocialPersona</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
         <object>SocialPost</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -13555,11 +13541,6 @@
         <default>true</default>
         <recordType>ExternalRequest__c.GENERIC</recordType>
         <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Idea.InternalIdeasIdeaRecordType</recordType>
-        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>

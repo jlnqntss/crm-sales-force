@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>English__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">How can I open a case?</value>
     </values>
     <values>
         <field>French__c</field>
@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>German__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Wie eröffne ich einen Schadensfall?</value>
     </values>
     <values>
         <field>Italian__c</field>

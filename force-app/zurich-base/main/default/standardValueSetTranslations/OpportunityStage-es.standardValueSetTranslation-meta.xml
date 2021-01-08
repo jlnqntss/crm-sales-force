@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>App Submitted</masterLabel>
+        <translation>App Submitted</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Closed Lost</masterLabel>
+        <translation>Cerrada Perdida</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Closed Won</masterLabel>
+        <translation>Cerrada Ganada</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Legit Lead</masterLabel>
+        <translation>Legit Lead</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Quoted</masterLabel>
+        <translation>Quoted</translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

@@ -5321,6 +5321,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Scope__c.HashedId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contact.HomePhone</field>
         <readable>false</readable>
     </fieldPermissions>

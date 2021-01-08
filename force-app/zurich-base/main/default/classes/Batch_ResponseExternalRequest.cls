@@ -3,6 +3,7 @@
  * @Autor: nbizkarra (04/05/2020)
  *
  * @change: nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
+ * @change: nts (agonzalezisasi) - 11/dic/2020 - Include response error log 
  **/
 
 global class Batch_ResponseExternalRequest implements Database.Batchable<sObject>, Database.Stateful, Schedulable, Database.AllowsCallouts
@@ -120,6 +121,10 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
                         else
                         {
                             ExtReq.Retry__c = ExtReq.Retry__c + 1;
+
+                            String message = 'Response: ' + response;
+                            message += '\nBody: ' + response.getBody();
+                            ExtReq.Error_Log_Response__c = message;
                         }
                     }
                     else

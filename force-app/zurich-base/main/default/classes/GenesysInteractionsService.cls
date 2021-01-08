@@ -88,6 +88,16 @@ public without sharing class GenesysInteractionsService
         {
             interactionTask.WhatId = interactionLog.screenPopRecordId;
         }
+        //se rellena el campo BestAgent de la Task con el ID del usuario del cual se va a pasar a genesys su email
+        if(interactionLog.bestAgentId != null)
+        {
+            List<User> agents = new List<User>();
+            agents = [SELECT Id, Email FROM User WHERE isActive = True AND Email = :interactionLog.bestAgentId];
+            if(!agents.isEmpty())
+            {
+                interactionTask.BestAgent__c = agents[0].Id;
+            }
+        }
 
         insert interactionTask;
 
@@ -229,7 +239,7 @@ public without sharing class GenesysInteractionsService
 
     /**
      * Lanza una búsqueda con la configuración determinada por request
-     * 
+     *
      * @author jmartinezpisson
      * @change adelgado 20/11/2020 Añadida lógica para realizar la búsqueda aplicando los filtros de la request
      * @param {SearchRequest} request Solicitud de búsqueda
@@ -244,15 +254,15 @@ public without sharing class GenesysInteractionsService
         }
 
         SearchResult results = new SearchResult();
-        
+
         // 2 - Realizar la búsqueda de registros en base a los filtros definidos en la request
-        switch on request.filterBy 
+        switch on request.filterBy
         {
-            when 'customers' 
+            when 'customers'
             {
-                results = findCustomersBy(request); 
+                results = findCustomersBy(request);
             }
-            when 'intermediaries' 
+            when 'intermediaries'
             {
                 results = findIntermediariesBy(request);
             }
@@ -264,7 +274,7 @@ public without sharing class GenesysInteractionsService
             {
                 //TODO - Implementar en el futuro con la lógica correspondiente
             }*/
-            when else 
+            when else
             {
                 throw new GenesysPeopleServiceException(FILTER_NOT_DEFINED);
             }
@@ -276,7 +286,7 @@ public without sharing class GenesysInteractionsService
 
     /**
      * Lanza una búsqueda con la configuración determinada por request
-     * 
+     *
      * @author adelgado
      * @param {SearchRequest} request Solicitud de búsqueda
      * @return {SearchResult} Resultados devueltos por la búsqueda
@@ -316,9 +326,9 @@ public without sharing class GenesysInteractionsService
             {
                 //TODO - Implementar en el futuro con la lógica correspondiente
             }*/
-            when else 
+            when else
             {
-                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);        
+                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);
             }
         }
 
@@ -326,7 +336,7 @@ public without sharing class GenesysInteractionsService
         {
             Account customer = accounts.get(0);
             results.screenPopRecordId = customer.Id;
-            results.totalPolices = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
+            results.totalPolicies = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
         }
 
@@ -335,7 +345,7 @@ public without sharing class GenesysInteractionsService
 
     /**
      * Lanza una búsqueda con la configuración determinada por request
-     * 
+     *
      * @author adelgado
      * @param {SearchRequest} request Solicitud de búsqueda
      * @return {SearchResult} Resultados devueltos por la búsqueda
@@ -358,11 +368,11 @@ public without sharing class GenesysInteractionsService
             {
                 accounts = AccountSearchService.findIntermediariesByCode( new List<String>{request.value}, scope );
             }
-            when else 
+            when else
             {
-                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);        
+                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);
             }
-        }   
+        }
 
         if(accounts.size() == 1)
         {
@@ -379,7 +389,7 @@ public without sharing class GenesysInteractionsService
 
      /**
      * Genera una lista estructura Agent con los gestores preferentes del mediador
-     * 
+     *
      * @author adelgado
      * @date 24/11/2020
      */
@@ -435,7 +445,7 @@ public without sharing class GenesysInteractionsService
                 bestAgents.add(new Agent(intermediary.administrationManager, false, false, true));
             }
         }
-        
+
         return new List<Agent>(bestAgents);
     }
 
@@ -532,7 +542,7 @@ public without sharing class GenesysInteractionsService
         public transient List<SObject> relatedRecords;
         public String screenPopRecordId;
         public String territoryCode;
-        public Integer totalPolices;
+        public Integer totalPolicies;
         public Integer totalQuotes;
         public Agent[] bestAgents;
 

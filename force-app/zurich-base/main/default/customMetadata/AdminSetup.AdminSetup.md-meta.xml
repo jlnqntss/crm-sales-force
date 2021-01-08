@@ -32,7 +32,7 @@
     </values>
     <values>
         <field>IBA_Multi_Partner_Authorization_token__c</field>
-        <value xsi:type="xsd:string">Basic c2ZzaGlwcGVycGFydG5lcjp1ckozRF8qX2FwMjM0MjRXdA==</value>
+        <value xsi:type="xsd:string">Basic c2ZzaGlwcGVycGFydG5lcjprM2Y1c285ZXFfc2EqZmRMUEU=</value>
     </values>
     <values>
         <field>IBA_Multi_Partner_Origin__c</field>
@@ -40,7 +40,7 @@
     </values>
     <values>
         <field>IBA_Multi_Partner_endpoint__c</field>
-        <value xsi:type="xsd:string">https://mail.google.com/mail/u/0/#inbox/FMfcgxwKjBPwKjbLsWkzwgnPVQCdPflh</value>
+        <value xsi:type="xsd:string">https://iba-data-shipper-api.zurich.es/iba-data-shipper-api/V1/updateStatusPartner</value>
     </values>
     <values>
         <field>IBA_endpoint__c</field>
