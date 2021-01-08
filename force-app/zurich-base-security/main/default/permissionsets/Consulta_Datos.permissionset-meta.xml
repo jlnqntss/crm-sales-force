@@ -1918,6 +1918,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Relationship__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Scope__c.Contactable__c</field>
         <readable>true</readable>
     </fieldPermissions>
