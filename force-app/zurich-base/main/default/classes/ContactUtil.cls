@@ -140,7 +140,9 @@ global without sharing class ContactUtil
 
                 if( !String.isBlank(incomingContact.sourceCountry__c) )
                 {
-                    emailBirthDateLECountryCode = emailBirthDateLECode + incomingContact.sourceCountry__c;
+                    // nts (agonzalezisasi) - 08/dic/2021 - Force to find the contact by Country and Partner
+                    emailBirthDateLECountryCode = emailBirthDateLECode + incomingContact.sourceCountry__c + 
+                            incomingContact.Partner__c;
                 }
             }
 
@@ -148,7 +150,7 @@ global without sharing class ContactUtil
             System.debug( '>>> ExternalRequestUtil.recordsToProcess ' + ExternalRequestUtil.recordsToProcess );
             System.debug( '>>> ExternalRequestUtil.actualRequest ' + ExternalRequestUtil.actualRequest );
 
-            // EMAIL - BIRTHDATE - LEGALENTITY - COUNTRY
+            // EMAIL - BIRTHDATE - LEGALENTITY - COUNTRY + PARTNER
             if ( ExternalRequestUtil.mapContactsEmailBirthDateLECountry.containsKey( emailBirthDateLECountryCode ) )
             {
                 // If contact exists with a different customer number
@@ -267,17 +269,17 @@ global without sharing class ContactUtil
                 else // The master account has an EMEA customer number
                 // The contact is a lead
                 {
-                    if (incomingContact.Status__c == 'Lead')
-                    {
-                        incomingContact.CustomerNum__c = alreadyInSFContact.CustomerNum__c;
-                        // todo: forced to be the same id if is the same CustomerNum and already exist
-                        incomingContact.Id = alreadyInSFContact.Id;
-                        // Notice that the master account IS NOT UPDATED (by not putting it in any map)
-                    }
-                    else // The contact is an ACTIVE customer
-                    // The master account is updated
-                    // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
-                    {
+                    // if (incomingContact.Status__c == 'Lead')
+                    // {
+                    //     incomingContact.CustomerNum__c = alreadyInSFContact.CustomerNum__c;
+                    //     // todo: forced to be the same id if is the same CustomerNum and already exist
+                    //     incomingContact.Id = alreadyInSFContact.Id;
+                    //     // Notice that the master account IS NOT UPDATED (by not putting it in any map)
+                    // }
+                    // else // The contact is an ACTIVE customer
+                    // // The master account is updated
+                    // // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
+                    // {
                         accountItem.put(customerNumField, customerNumberOnly);
                         // Populate the Id field only if the account has the same customer number
                         if ( alreadyInSFContact.Account.get(customerNumField) == customerNumberOnly )
@@ -289,7 +291,7 @@ global without sharing class ContactUtil
                             accountItem.Id = alreadyInSFContact.AccountId;
                             ExternalRequestUtil.mastersToUpdateById.put( (String) accountItem.get(customerNumField), accountItem );
                         }
-                    }
+                    // }
                 }
 
                 // todo: this cant happen because of the match condition
