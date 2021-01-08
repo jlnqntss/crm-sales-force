@@ -13,7 +13,7 @@ public class OpportunityUtil
 
         for(Opportunity opty : newList)
         {
-            if( String.isNotBlank(opty.InfoQuoteNumber__c) )
+            if( String.isNotBlank(opty.InfoQuoteNumber__c) && opty.ScopeId__c == null)
             {
                 optysToGenerateScope.add(opty);
             }

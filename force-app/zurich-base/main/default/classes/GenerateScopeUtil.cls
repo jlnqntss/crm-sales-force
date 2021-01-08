@@ -252,6 +252,7 @@ public class GenerateScopeUtil
             // 7 - Actualizar los registros
             if( !sobjectsToUpdate.isEmpty() )
             {
+                sobjectsToUpdate.sort();
                 update sobjectsToUpdate;
             }
 
