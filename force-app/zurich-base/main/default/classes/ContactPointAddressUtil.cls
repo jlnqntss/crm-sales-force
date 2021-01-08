@@ -11,11 +11,11 @@ public class ContactPointAddressUtil
     {
         List<ContactPointAddress> cpaToGenerateScope = new List<ContactPointAddress>();
 
-        for(ContactPointAddress ContactPointAddress : newList)
+        for(ContactPointAddress contactPointAddress : newList)
         {
-            if( String.isNotBlank(ContactPointAddress.INFOContactPointNumber__c) )
+            if( String.isNotBlank(contactPointAddress.INFOContactPointNumber__c) && contactPointAddress.ScopeId__c == null)
             {
-                cpaToGenerateScope.add(ContactPointAddress);
+                cpaToGenerateScope.add(contactPointAddress);
             }
         }
 
