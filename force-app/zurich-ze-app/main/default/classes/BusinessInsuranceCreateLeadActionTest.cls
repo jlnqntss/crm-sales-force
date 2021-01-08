@@ -5,7 +5,7 @@ public class BusinessInsuranceCreateLeadActionTest
     static void test_businessInsuranceCreateLeadAction_createLead_ok()
     {
         String businessCode = '3200012491';
-        
+
         //Preparamos la Request
         List<BusinessInsuranceCreateLeadAction.CreateLeadActionRequest> requests = new List<BusinessInsuranceCreateLeadAction.CreateLeadActionRequest>();
         BusinessInsuranceCreateLeadAction.CreateLeadActionRequest leadInformation = new BusinessInsuranceCreateLeadAction.CreateLeadActionRequest();
@@ -37,5 +37,8 @@ public class BusinessInsuranceCreateLeadActionTest
 
         List<ContactPointPhone> createdContactPointPhones = new ContactPointPhonesSelector().selectByScopeIdAndTelephoneNumber(new Set<Id>{createdScopes.get(0).Id}, leadInformation.phone);
         System.assertEquals(false, createdContactPointPhones.isEmpty(), 'List should NOT be empty');
+
+        List<ContactRequest> createdContactRequests = [SELECT Id FROM ContactRequest];
+        System.assertEquals(true, createdContactRequests.isEmpty(), 'Desde el Flow de ZECreateLEad no se quiere crear Contact Request');
     }
 }
