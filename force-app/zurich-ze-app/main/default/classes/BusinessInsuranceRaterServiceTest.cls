@@ -1077,4 +1077,49 @@ public with sharing class BusinessInsuranceRaterServiceTest
             BusinessInsuranceRaterService.SPANISH_PHONE_PREFIX + ' should appear once'
             );
     }
+
+    /**
+     * Paso CRM-01. Desde el flow ZECreateLead no se quiere crear ContactRequest
+     */
+    @isTest
+    static void test_processFormData_CRM01_FromFlowZECreateLead_ok()
+    {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+
+        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
+
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+        //Desde el Flow ZECreateLead no se quiere crear ContactRequest
+        jsonInformation.put('doNotCreateCallback', true);
+
+        Test.startTest();
+            BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+                JSON.serialize(jsonInformation),
+                BusinessInsuranceRaterService.Request.class
+                );
+            BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        Test.stopTest();
+
+        //Comprobamos que se ha generado un Contact Request
+        List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest];
+        System.assertEquals(true, contactRequests.isEmpty(), 'Desde el Flow ZECreateLead no se quiere crear ContactRequest');
+    }
+
 }
