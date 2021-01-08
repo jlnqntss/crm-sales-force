@@ -71,6 +71,7 @@ public without sharing class ContactPointPhoneHandler implements ITrigger
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        ContactPointPhoneUtil.generateScope(newList);
         ContactPointPhoneUtil.updateRelatedPrimaryContactPointPhones( (List<ContactPointPhone>) newList, (Map<Id, ContactPointPhone>) oldMap );
     }
 
