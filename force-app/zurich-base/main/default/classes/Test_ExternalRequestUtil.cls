@@ -633,8 +633,8 @@ public class Test_ExternalRequestUtil
         Test.stopTest();
 
         Order newQuote=[SELECT Id, ContactId__r.CustomerNum__c FROM Order WHERE QuoteEntry__c='9090'];
-        //check if the quote has been asigned to the existing lead (matchcode)
-        System.assertEquals(lead.CustomerNum__c, newQuote.ContactId__r.CustomerNum__c);
+        //check if the quote has been asigned to a new lead (matchcode)
+        System.assertEquals('GI-9999', newQuote.ContactId__r.CustomerNum__c);
     }
 
     /**

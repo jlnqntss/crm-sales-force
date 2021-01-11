@@ -982,8 +982,9 @@ public without sharing class SystemUtil
             if( mapEmailBirthLE != null)
                 mapEmailBirthLE.put(matchCode, con);
 
-            // EMEA
-            matchCode += con.SourceCountry__c;
+            // EMEA + PARTNER 
+            // nts (agonzalezisasi) - 08/dic/2021 - Force to find the contact by Country and Partner
+            matchCode += con.SourceCountry__c + con.Partner__c;
             if( mapEmailBirthLECountry != null )
                 mapEmailBirthLECountry.put(matchCode, con);
 
