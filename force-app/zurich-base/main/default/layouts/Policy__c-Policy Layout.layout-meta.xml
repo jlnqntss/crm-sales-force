@@ -83,8 +83,8 @@
                 <field>Intermediary_Code__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>IntermediaryName__c</field>
+                <behavior>Readonly</behavior>
+                <field>IntermediaryNameForm__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
