@@ -153,16 +153,31 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }//Comprobar si es una Offer
         else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
         {
-            List<Opportunity> offers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id = :interactionTask.WhatId];
-            if(!offers.isEmpty() )
+            List<Opportunity> offers = [SELECT Id, AccountId, ScopeId__c, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id = :interactionTask.WhatId];
+            if(!offers.isEmpty())
             {
-                //Si el Owner es el Integrador hay que cambiarlo
-                if(offers[0].OwnerId != null && offers[0].Owner.Profile.Name == 'Integrator')
+                List<Opportunity> totalOffers = new List<Opportunity>();
+                totalOffers.addAll(offers);
+                //Si el cliente de la oferta tiene más ofertas que también están asignadas a Integrator, cambiarlas todas de owner
+                if(offers[0].AccountId != null && offers[0].ScopeId__c != null)
                 {
-                    //Cambiar el propietario al usuario actual
-                    offers[0].OwnerId = UserInfo.getUserId();
-                    update offers;
+                    Id accountId = offers[0].AccountId;
+                    Id scopeId = offers[0].ScopeId__c;
+                    List<Opportunity> extraOffers = new List<Opportunity>();
+                    extraOffers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id != :interactionTask.WhatId AND AccountId = :accountId AND ScopeId__c = :scopeId];
+                    if(!extraOffers.isEmpty()){totalOffers.addAll(extraOffers);}
                 }
+
+                //Si el Owner es el Integrador hay que cambiarlo
+                for(Opportunity offer: totalOffers)
+                {
+                    if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator')
+                    {
+                        //Cambiar el propietario al usuario actual
+                        offer.OwnerId = UserInfo.getUserId();
+                    }
+                }
+                update totalOffers;
             }
         }
     }

@@ -14,4 +14,8 @@
         <value>Case.Claim</value>
     </filters>
     <label>Siniestros</label>
+    <sharedTo>
+        <role>Customer_Care</role>
+        <role>KLINC_Global</role>
+    </sharedTo>
 </ListView>

@@ -1,0 +1,4 @@
+<aura:component implements="lightning:availableForFlowActions">
+  <aura:attribute name="url" type="String" />
+  <aura:attribute name="isRedirect" type="Boolean" />
+</aura:component>

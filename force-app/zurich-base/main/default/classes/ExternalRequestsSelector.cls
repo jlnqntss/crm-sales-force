@@ -196,7 +196,7 @@ public with sharing class ExternalRequestsSelector
 
 
     /**
-     * Recupera external requests de un recordtype concreto ordenadas por el campo Name
+     * Recupera external requests de un recordtype concreto ordenadas por el Id
      *
      * @author adelgado
      * @param  recordTypeId RecordType a recuperar
@@ -213,7 +213,7 @@ public with sharing class ExternalRequestsSelector
         return Database.query( String.format('{0} {1} {2}', new List<String>
         {
             baseQuery,
-            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false ORDER BY Name ' + orderType,
+            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false ORDER BY Id ' + orderType,
             limitCondition
         }) );
     }

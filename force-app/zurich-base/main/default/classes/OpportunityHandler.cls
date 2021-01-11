@@ -67,7 +67,9 @@ public class OpportunityHandler implements ITrigger
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        OpportunityUtil.generateScope(newList);
+    }
 
     /**
      * afterDelete
