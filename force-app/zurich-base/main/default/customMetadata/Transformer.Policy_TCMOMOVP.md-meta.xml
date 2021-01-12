@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>OriginField__c</field>
-        <value xsi:type="xsd:string">POLIZA_MOTIVO_MOVIMIENTO</value>
+        <value xsi:type="xsd:string">POLIZA_MOVIMIENTO_MOTIVO_COD</value>
     </values>
     <values>
         <field>Origin__c</field>
