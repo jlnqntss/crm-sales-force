@@ -2,7 +2,7 @@
 <EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
     <available>true</available>
     <encodingKey>ISO-8859-1</encodingKey>
-    <name>Web to case response HTML DE</name>
+    <name>DE - Contratar seguro 1 - When customer asks about insurance coverages</name>
     <style>none</style>
     <subject>Wir haben Deine Anfrage erhalten - Klinc</subject>
     <type>custom</type>
