@@ -1807,7 +1807,7 @@ public class TestDataFactory
                     accounts.add(
                         new Account(
                             Name = 'intermediaryName' + i,
-                            INFOIntermediaryCode__c = String.valueOf(phoneNumber),
+                            INFOIntermediaryCode__c = String.valueOf(phoneNumber).leftPad(10, '0'),
                             Phone = String.valueOf(phoneNumber),
                             RecordTypeId = recordTypeId
                         )
