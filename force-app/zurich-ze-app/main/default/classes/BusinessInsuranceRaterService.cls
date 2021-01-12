@@ -22,6 +22,7 @@ public without sharing class BusinessInsuranceRaterService
     public static final String QUEUE_NAME = 'ZurichEmpresas';
     public static final String ZURICH_LEGAL_ENTITY = '001';
     public static final String SPANISH_PHONE_PREFIX = '+34';
+    public static final String PROFILE_NAME = 'ZE User';
 
     public static Account currentCustomer;
     public static Account currentManager;
@@ -494,7 +495,9 @@ public without sharing class BusinessInsuranceRaterService
                                     Name = policyNumber,
                                     InfoPolicyNumber__c = policyNumber,
                                     PolicyHolder__c = currentCustomer.Id,
-                                    InfoQuoteNumber__c = offer.InfoQuoteNumber__c
+                                    InfoQuoteNumber__c = offer.InfoQuoteNumber__c,
+                                    BusinessCode__c = offer.BusinessCode__c,
+                                    ScopeId__c = currentScope.Id
                                     )
                                 );
                         }
@@ -715,7 +718,7 @@ public without sharing class BusinessInsuranceRaterService
     {
         List<Opportunity> existingOffers = new OpportunitiesSelector(
             new Set<String> {'Id', 'OwnerId'}
-            ).selectByAccountIdAndScopes(currentCustomer.Id, new Set<Id> {currentScope.Id});
+            ).selectByAccountIdScopesAndOwnerProfile(currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String>{PROFILE_NAME});
 
         if( existingOffers.isEmpty() )
         {
