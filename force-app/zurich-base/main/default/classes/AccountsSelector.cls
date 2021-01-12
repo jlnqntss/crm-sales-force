@@ -163,7 +163,15 @@ public with sharing class AccountsSelector
     {
         if(codes != null && !codes.isEmpty())
         {
-            return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE INFOIntermediaryCode__c IN :codes AND RecordTypeId IN :this.recordTypeIds];
+            Set<String> paddedCodes = new Set<String>();
+
+            for(String code : codes)
+            {
+                paddedCodes.add(code.leftPad(10, '0'));
+                
+            }
+
+            return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE INFOIntermediaryCode__c IN :paddedCodes AND RecordTypeId IN :this.recordTypeIds];
         }
         else 
         {
