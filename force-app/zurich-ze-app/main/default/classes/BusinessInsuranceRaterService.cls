@@ -22,6 +22,7 @@ public without sharing class BusinessInsuranceRaterService
     public static final String QUEUE_NAME = 'ZurichEmpresas';
     public static final String ZURICH_LEGAL_ENTITY = '001';
     public static final String SPANISH_PHONE_PREFIX = '+34';
+    public static final String PROFILE_NAME = 'ZE User';
 
     public static Account currentCustomer;
     public static Account currentManager;
@@ -114,6 +115,8 @@ public without sharing class BusinessInsuranceRaterService
      * En caso de no existir, se creará un PersonAccount de tipo Lead (y sus registros relacionados: Scope y ContactPoints)
      *
      * @author rlopez
+     * 
+     * @change nts (agonzalezisasi) - 08/12/2021 - Actualizar algunos datos del Customer encontrado con los datos de la Request
      */
     private static Account manageCustomer(Request formData)
     {
@@ -142,6 +145,9 @@ public without sharing class BusinessInsuranceRaterService
         {
             //Creamos un nuevo Account
             customers.add( createLead(formData) );
+        } else {
+            // Se actualizan algunos datos del Customer con lo que llega de la request
+            updateCustomer(customers.get(0), formData);
         }
 
         return customers.get(0);
@@ -317,6 +323,36 @@ public without sharing class BusinessInsuranceRaterService
     }
 
     /**
+     * Método encargado de actualizar algunos de los campos del Customer encontrado con los datos recibidos del request
+     *  
+     * @author nts (agonzalezisasi)
+     * @date 08/01/2021
+     */
+    private static void updateCustomer(Account customer, Request formData) 
+    {
+        if( customer != null && formData != null ) {
+            Account accountToUpdate = new Account(Id= customer.Id);
+
+            accountToUpdate.Family__c = formData.accountInformation.family;
+            accountToUpdate.CommercialActivity__c = formData.accountInformation.commercialActivity;
+            accountToUpdate.AnnualRevenue = formData.accountInformation.annualRevenue;
+            accountToUpdate.NumberOfEmployees = formData.accountInformation.numberOfEmployees;
+            accountToUpdate.TradeName__c = formData.accountInformation.tradeName;
+            accountToUpdate.CompanyName__pc = formData.accountInformation.companyName;
+
+            update accountToUpdate;
+
+            // Si se ha hecho el update, para evitar hacer una soql copiamos los datos a la variable customer original
+            customer.Family__c = formData.accountInformation.family;
+            customer.CommercialActivity__c = formData.accountInformation.commercialActivity;
+            customer.AnnualRevenue = formData.accountInformation.annualRevenue;
+            customer.NumberOfEmployees = formData.accountInformation.numberOfEmployees;
+            customer.TradeName__c = formData.accountInformation.tradeName;
+            customer.CompanyName__pc = formData.accountInformation.companyName;
+        }
+    }
+
+    /**
      * Método encargado de generar un nuevo ámbito para el cliente y BusinessCode especificados
      *
      * @author rlopez
@@ -459,7 +495,9 @@ public without sharing class BusinessInsuranceRaterService
                                     Name = policyNumber,
                                     InfoPolicyNumber__c = policyNumber,
                                     PolicyHolder__c = currentCustomer.Id,
-                                    InfoQuoteNumber__c = offer.InfoQuoteNumber__c
+                                    InfoQuoteNumber__c = offer.InfoQuoteNumber__c,
+                                    BusinessCode__c = offer.BusinessCode__c,
+                                    ScopeId__c = currentScope.Id
                                     )
                                 );
                         }
@@ -680,7 +718,7 @@ public without sharing class BusinessInsuranceRaterService
     {
         List<Opportunity> existingOffers = new OpportunitiesSelector(
             new Set<String> {'Id', 'OwnerId'}
-            ).selectByAccountIdAndScopes(currentCustomer.Id, new Set<Id> {currentScope.Id});
+            ).selectByAccountIdScopesAndOwnerProfile(currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String>{PROFILE_NAME});
 
         if( existingOffers.isEmpty() )
         {
