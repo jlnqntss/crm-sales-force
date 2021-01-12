@@ -28,6 +28,10 @@
                 <behavior>Edit</behavior>
                 <field>CommercialStructureName__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>TotalOptions__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
