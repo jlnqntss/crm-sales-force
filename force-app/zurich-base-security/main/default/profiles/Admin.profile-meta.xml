@@ -7025,6 +7025,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.IntermediaryNameForm__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.IntermediaryName__c</field>
         <readable>true</readable>
@@ -7162,6 +7167,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.TechnicalCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.TotalOptions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7762,6 +7772,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.IntermediaryId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.IntermediaryNameForm__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -11,6 +11,36 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
+                <fullName>A</fullName>
+                <default>false</default>
+                <label>A</label>
+            </value>
+            <value>
+                <fullName>P</fullName>
+                <default>false</default>
+                <label>P</label>
+            </value>
+            <value>
+                <fullName>S</fullName>
+                <default>false</default>
+                <label>S</label>
+            </value>
+            <value>
+                <fullName>V</fullName>
+                <default>false</default>
+                <label>V</label>
+            </value>
+            <value>
+                <fullName>0</fullName>
+                <default>false</default>
+                <label>0</label>
+            </value>
+            <value>
+                <fullName>1</fullName>
+                <default>false</default>
+                <label>1</label>
+            </value>
+            <value>
                 <fullName>2</fullName>
                 <default>false</default>
                 <label>2</label>
@@ -21,9 +51,9 @@
                 <label>3</label>
             </value>
             <value>
-                <fullName>V</fullName>
+                <fullName>4</fullName>
                 <default>false</default>
-                <label>V</label>
+                <label>4</label>
             </value>
         </valueSetDefinition>
     </valueSet>
