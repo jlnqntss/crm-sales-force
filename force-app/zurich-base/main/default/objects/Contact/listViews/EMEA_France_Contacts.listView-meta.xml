@@ -14,4 +14,8 @@
         <value>France</value>
     </filters>
     <label>EMEA France Contacts</label>
+    <sharedTo>
+        <role>Customer_Care</role>
+        <role>KLINC_Global</role>
+    </sharedTo>
 </ListView>
