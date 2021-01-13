@@ -8,7 +8,7 @@ public class ContactPointPhoneUtil
     public static Map<Id, List<ContactPointPhone> > relatedContactPointPhonesMap;
     public static Map<Id, Scope__c> relatedScopesMap;
 
-    public static List<ContactPointPhone> ContactPointPhonesToUpdate;
+    public static List<ContactPointPhone> contactPointPhonesToUpdate;
     public static List<Scope__c> scopesToUpdate;
 
     /**
@@ -28,7 +28,7 @@ public class ContactPointPhoneUtil
             relatedScopesMap = new Map<Id, Scope__c>();
 
             //Inicializamos listas de registros a actualizar al finalizar el trigger
-            ContactPointPhonesToUpdate = new List<ContactPointPhone>();
+            contactPointPhonesToUpdate = new List<ContactPointPhone>();
             scopesToUpdate = new List<Scope__c>();
 
             Set<Id> relatedScopes = new Set<Id>();
@@ -104,7 +104,7 @@ public class ContactPointPhoneUtil
                             relatedContactPoint.IsPrimary = false;
                         }
 
-                        ContactPointPhonesToUpdate.addAll(relatedContactPointPhones);
+                        contactPointPhonesToUpdate.addAll(relatedContactPointPhones);
                     }
 
                     //Actualizamos Scopes
@@ -170,7 +170,7 @@ public class ContactPointPhoneUtil
 
         for(ContactPointPhone contactPointPhone : newList)
         {
-            if( String.isNotBlank(contactPointPhone.INFOContactPointNumber__c) && contactPointPhone.ScopeId__c == null)
+            if( String.isNotBlank(contactPointPhone.INFOContactPointNumber__c) && contactPointPhone.ScopeId__c == null && contactPointPhone.ParentId != null)
             {
                 cppToGenerateScope.add(contactPointPhone);
             }
@@ -190,14 +190,14 @@ public class ContactPointPhoneUtil
      */
     public static void updateRelatedContactPoints()
     {
-        if( !scopesToUpdate.isEmpty() )
+        if( scopesToUpdate != null && !scopesToUpdate.isEmpty() )
         {
             update scopesToUpdate;
         }
 
-        if( !ContactPointPhonesToUpdate.isEmpty() )
+        if( contactPointPhonesToUpdate != null && !contactPointPhonesToUpdate.isEmpty() )
         {
-            update ContactPointPhonesToUpdate;
+            update contactPointPhonesToUpdate;
         }
     }
 }

@@ -117,7 +117,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CSM_Particulares</stringValue>
+                <stringValue>Email_CSM_Particulare</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -134,7 +134,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CSM_DTBCN</stringValue>
+                <stringValue>Email_CSM_DTBCN</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -151,7 +151,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CSM_DTBIL</stringValue>
+                <stringValue>Email_CSM_DTBIL</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -168,7 +168,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CSM_DTMAD</stringValue>
+                <stringValue>Email_CSM_DTMAD</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -185,7 +185,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CSM_DTSEV</stringValue>
+                <stringValue>Email_CSM_DTSEV</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -202,7 +202,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CSM_DTVAL</stringValue>
+                <stringValue>Email_CSM_DTVAL</stringValue>
             </value>
         </assignmentItems>
         <connector>

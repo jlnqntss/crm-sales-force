@@ -14,4 +14,8 @@
         <value>Orange Seguros</value>
     </filters>
     <label>Orange Customers</label>
+    <sharedTo>
+        <role>Customer_Care</role>
+        <role>KLINC_Global</role>
+    </sharedTo>
 </ListView>

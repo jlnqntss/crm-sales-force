@@ -75,7 +75,7 @@ public with sharing class AccountSearchService
             accountIds.add(account.Id);
         }
 
-        return [SELECT Id, NumPolicies__pc, NumQuotes__pc, Name, PersonContactId FROM Account WHERE Id IN : accountIds];
+        return AccountsSelector.selectById(accountIds, new Set<String> {'Id', 'NumPolicies__pc', 'NumQuotes__pc', 'Name', 'PersonContactId'});
     }
 
     /**
@@ -99,7 +99,7 @@ public with sharing class AccountSearchService
             accountIds.add(account.Id);
         }
 
-        return [SELECT Id, NumPolicies__pc, NumQuotes__pc, Name, PersonContactId FROM Account WHERE Id IN : accountIds];
+        return AccountsSelector.selectById(accountIds, new Set<String> {'Id', 'NumPolicies__pc', 'NumQuotes__pc', 'Name', 'PersonContactId'});
     }
 
     /**
