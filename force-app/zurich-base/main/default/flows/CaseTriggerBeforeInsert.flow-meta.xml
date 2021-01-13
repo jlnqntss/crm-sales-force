@@ -2,6 +2,23 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
+        <description>Si hay varios emails iguales registrados en salesforce, no se puede saber a qué cuenta hay que relacionarla, así que habrá que dejarla vacía</description>
+        <name>NumberOfEmails</name>
+        <label>Número de emails</label>
+        <locationX>640</locationX>
+        <locationY>104</locationY>
+        <assignmentItems>
+            <assignToReference>n</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>SearchContactPointEmail</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>MoreThanOneEmail</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>rellena el caso con el account y contact del contact point email coincidente</description>
         <name>SetAccountContact</name>
         <label>Poner Account y Contact</label>
@@ -23,24 +40,47 @@
         </assignmentItems>
     </assignments>
     <decisions>
+        <description>si hay más de un email, no hace nada porque no se sabe a cuál asignar</description>
+        <name>MoreThanOneEmail</name>
+        <label>¿Hay más de 1 email coincidente?</label>
+        <locationX>632</locationX>
+        <locationY>302</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>n</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RunCollection</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Si parent Id está relleno con un Individual o está a null o vacío, no se podrá buscar la cuenta</description>
         <name>ParentIdIsAccount</name>
         <label>¿ParentId es una cuenta?</label>
-        <locationX>658</locationX>
-        <locationY>296</locationY>
+        <locationX>300</locationX>
+        <locationY>565</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>SearchContactPointEmail.ParentId</leftValueReference>
+                <leftValueReference>RunCollection.ParentId</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>SearchContactPointEmail.ParentId</leftValueReference>
+                <leftValueReference>RunCollection.ParentId</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
                     <stringValue>001</stringValue>
@@ -55,6 +95,18 @@
     <description>rellena el account y contact según coincida el web email con un contact point email</description>
     <interviewLabel>Case Trigger - Before insert {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before insert</label>
+    <loops>
+        <description>la colección solo debería tener 1 elemento</description>
+        <name>RunCollection</name>
+        <label>Recorrer Colección</label>
+        <locationX>307</locationX>
+        <locationY>372</locationY>
+        <collectionReference>SearchContactPointEmail</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>ParentIdIsAccount</targetReference>
+        </nextValueConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -89,7 +141,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>SearchContactPointEmail.ParentId</elementReference>
+                <elementReference>RunCollection.ParentId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -100,11 +152,11 @@
         <description>busca  un contact point email que coincida con el web email relleno por el email-to-case</description>
         <name>SearchContactPointEmail</name>
         <label>Buscar Contact Point Email</label>
-        <locationX>479</locationX>
-        <locationY>237</locationY>
+        <locationX>481</locationX>
+        <locationY>69</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>ParentIdIsAccount</targetReference>
+            <targetReference>NumberOfEmails</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -121,7 +173,7 @@
                 <booleanValue>false</booleanValue>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>ContactPointEmail</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
@@ -144,4 +196,16 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <description>número de emails coincidentes dentro de SF</description>
+        <name>n</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
 </Flow>
