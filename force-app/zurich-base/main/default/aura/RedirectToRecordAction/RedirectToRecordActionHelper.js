@@ -7,15 +7,17 @@
   redirectTo: function (recordId) {
     var redirectEvent = $A.get("e.force:navigateToSObject");
 
-    if (redirectEvent) {
+    if (window.sforce && window.sforce.one) {
+      sforce.one.navigateToSObject(recordId);
+    } else if (redirectEvent) {
       redirectEvent
         .setParams({
           recordId: recordId
         })
         .fire();
-    } else {
-      sforce.one.navigateToSObject(recordId);
     }
+
+    return Promise.resolve();
   },
   /**
    * Abre una subpestaña con el Id. de registro identificado
@@ -24,6 +26,10 @@
    */
   openAsSubtab: function (recordId, workspaceAPI) {
     var helper = this;
+
+    if (window.sforce && window.sforce.one) {
+      sforce.one.navigateToSObject(recordId);
+    }
 
     return workspaceAPI
       .getFocusedTabInfo()
@@ -36,7 +42,6 @@
         });
       })
       .catch(function (error) {
-        console.log(error);
         return helper.redirectTo(recordId);
       });
   }

@@ -44,12 +44,18 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>ContactRequest.WhatId</elementReference>
+                <elementReference>ScreenPopURL</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
     <description>Realiza el enrutamiento de call me backs del ámbito Zurich Empresas</description>
+    <formulas>
+        <description>Usado en el Flow ZEScreenPopAndSearch para abrir ficha, y si no hay ficha, se abrirá el ContactRequest que ese siempre existe</description>
+        <name>ScreenPopURL</name>
+        <dataType>String</dataType>
+        <expression>&apos;/flow/ZEGetCallback?id=&apos;+{!ContactRequest.Id}</expression>
+    </formulas>
     <interviewLabel>Zurich Empresas - Enrutamiento de call me backs {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Zurich Empresas - Enrutamiento de call me backs</label>
     <processMetadataValues>

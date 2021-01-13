@@ -129,6 +129,11 @@ public class CaseUtil
         }
     }
 
+    public static final Map<String, String> mapCountryTranslationField = new Map<String, String> {
+        'France' => 'French__c',
+        'Germany' => 'German__c'
+    };
+
     /**
      * Método que asocia el contacto o la póliza en los casos creados por email-to-case y web-to-case
      * y setea la traduccion del tipo y subtipo del caso dependiendo del pais
@@ -143,6 +148,22 @@ public class CaseUtil
 
         if (newList != null)
         {
+            // nts (agonzalezisasi) - 11/ene/2020 - fix Multipartner
+            // Get the configuration
+            AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
+            // Get the Country that is not EMEA (Spain)
+            String IBA_EMEA_NON_COUNTRY = adminSetup.IBA_EMEA_Non_Country__c;
+            // Get the EMEA prefix
+            String IBA_EMEA = adminSetup.IBA_EMEA_Prefix__c;
+            // Get the Multi-Partner prefixes if any
+            Map<String, String> mapMultiPartner = new Map<String, String>();
+            for(String pair: adminSetup.Multi_Partners__c.split(';')) {
+                List<String> values = pair.split(':');
+                if( values.size() == 2 ) {
+                    mapMultiPartner.put(values.get(0), values.get(1));
+                }
+            }
+        
             for (Case caso : newList)
             {
                 if ( !String.isBlank(caso.Origin) && ( caso.Origin.equals('Web') || caso.Origin.equals('Email') ) )
@@ -150,10 +171,18 @@ public class CaseUtil
                     //Si se ha informado el número de póliza, buscar la póliza y asignar el cliente correspondiente
                     if (caso.PolicyNum__c != null)
                     {
-                        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-                        // if (caso.sourceCountry__c != 'Spain') {
-                        //   caso.PolicyNum__c = 'EMEA-' + caso.PolicyNum__c;
-                        // }
+                        // nts (agonzalezisasi) - 11/ene/2020 - fix Multipartner
+                        if( caso.Partner__c != null ) { // Is a multipartner
+                            if( mapMultiPartner.containsKey(caso.Partner__c) ) {
+                                String partnerName = mapMultiPartner.get(caso.Partner__c);
+                                caso.PolicyNum__c = partnerName + '-' + caso.PolicyNum__c;
+                            }
+                        } else { // Is not multipartner
+                            // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                            if (caso.sourceCountry__c != IBA_EMEA_NON_COUNTRY) { // Is not Spain => EMEA (france, germany)
+                                caso.PolicyNum__c = IBA_EMEA + '-' + caso.PolicyNum__c;
+                            }
+                        }
 
                         List<Order> policies = new List<Order>();
                         policies = [
@@ -187,27 +216,23 @@ public class CaseUtil
                     //Si el caso es de la web de francia, asignar traducción del tipo y subtipo para la respuesta automática
                     if ( caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c) )
                     {
-                        if ( caso.SourceCountry__c.equals('France') )
+                        if ( mapCountryTranslationField.containsKey(caso.SourceCountry__c) )
                         {
-                            List<Label_Translations__mdt> TypeTranslaton = [
-                                SELECT French__c
-                                FROM Label_Translations__mdt
-                                WHERE label = :caso.Type
-                            ];
-                            List<Label_Translations__mdt> SubTypeTranslation = [
-                                SELECT French__c
-                                FROM Label_Translations__mdt
-                                WHERE label = :caso.Subtype__c
-                            ];
+                            String fieldName = mapCountryTranslationField.get(caso.SourceCountry__c);
+                            String queryType = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Type + '\'';
+                            String querySubtype = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Subtype__c + '\'';
+
+                            List<Label_Translations__mdt> TypeTranslaton = Database.query(queryType);
+                            List<Label_Translations__mdt> SubTypeTranslation = Database.query(querySubtype);
 
                             if ( TypeTranslaton != null && !TypeTranslaton.isEmpty() )
                             {
-                                caso.Type_translation__c = TypeTranslaton[0].French__c;
+                                caso.Type_translation__c = (String)TypeTranslaton[0].get(fieldName);
                             }
 
                             if ( SubTypeTranslation != null && !SubTypeTranslation.isEmpty() )
                             {
-                                caso.Subtype_translation__c = SubTypeTranslation[0].French__c;
+                                caso.Subtype_translation__c = (String)SubTypeTranslation[0].get(fieldName);
                             }
                         }
                     }

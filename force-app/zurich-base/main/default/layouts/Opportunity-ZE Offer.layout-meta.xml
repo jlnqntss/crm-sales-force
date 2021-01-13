@@ -54,6 +54,14 @@
                 <behavior>Edit</behavior>
                 <field>PendingBy__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>InfoQuoteNumber__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>TotalOptions__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -90,8 +98,8 @@
                 <field>IntermediaryCode__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>IntermediaryName__c</field>
+                <behavior>Readonly</behavior>
+                <field>IntermediaryNameForm__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -308,7 +316,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0E000000TB0j</masterLabel>
+        <masterLabel>00h5I000000TO55</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

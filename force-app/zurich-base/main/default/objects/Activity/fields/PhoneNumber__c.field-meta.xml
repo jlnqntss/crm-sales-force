@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PhoneNumber__c</fullName>
+    <description>ZE/OCS. Permite a gestores y advisors informar el teléfono cuando se cree la tarea de forma manual</description>
+    <externalId>false</externalId>
+    <label>Phone Number</label>
+    <required>false</required>
+    <type>Phone</type>
+</CustomField>

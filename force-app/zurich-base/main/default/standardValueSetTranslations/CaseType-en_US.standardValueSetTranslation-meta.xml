@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Calidad</masterLabel>
+        <translation><!-- Calidad --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Campañas</masterLabel>
+        <translation><!-- Campañas --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Contratar mi seguro</masterLabel>
+        <translation>Purchase my insurance</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Gestión Cliente</masterLabel>
+        <translation><!-- Gestión Cliente --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Gestión Económica</masterLabel>
+        <translation><!-- Gestión Económica --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Gestión Mediador</masterLabel>
+        <translation><!-- Gestión Mediador --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Gestión Servicios</masterLabel>
+        <translation><!-- Gestión Servicios --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Incidencia</masterLabel>
+        <translation>Incidence</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Modificar mi seguro</masterLabel>
+        <translation>Edit my insurance</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>No definido</masterLabel>
+        <translation><!-- No definido --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Pago de mi seguro</masterLabel>
+        <translation>Pay my insurance</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Renovar mi seguro</masterLabel>
+        <translation>Renew my insurance</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Siniestro</masterLabel>
+        <translation>Claim</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Tareas</masterLabel>
+        <translation><!-- Tareas --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Validar mi seguro</masterLabel>
+        <translation>Confirm my insurance</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Venta</masterLabel>
+        <translation><!-- Venta --></translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

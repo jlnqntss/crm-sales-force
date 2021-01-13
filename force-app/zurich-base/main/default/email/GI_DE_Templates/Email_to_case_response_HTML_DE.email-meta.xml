@@ -4,7 +4,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Email to case response HTML DE</name>
     <style>none</style>
-    <subject>Hemos recibido tu solicitud - Zurich Klinc</subject>
+    <subject>Wir haben ihre Anfrage erhalten - Klinc</subject>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>
