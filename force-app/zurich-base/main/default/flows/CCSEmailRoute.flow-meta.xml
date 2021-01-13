@@ -110,7 +110,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CCS_Cancelaciones</stringValue>
+                <stringValue>Email_CCS_Cancelaciones</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -126,7 +126,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CCS_Cambio Vehículo</stringValue>
+                <stringValue>Email_CCS_Cambio Vehículo</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -142,7 +142,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CCS_Generico</stringValue>
+                <stringValue>Email_CCS_Generico</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -158,7 +158,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CCS_Vida</stringValue>
+                <stringValue>Email_CCS_Vida</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -174,7 +174,7 @@
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>QA_CCS_Travel</stringValue>
+                <stringValue>Email_CCS_Travel</stringValue>
             </value>
         </assignmentItems>
         <connector>
