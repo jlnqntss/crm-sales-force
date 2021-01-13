@@ -190,7 +190,7 @@ public without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE Id IN :recordIds];
+        List<Account> expectedAccounts = AccountsSelector.selectById(recordIds, new Set<String> {'Id'});
         List<Task> expectedTasks = [SELECT AccountId, Owner.Email, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
 
         System.assertEquals(expectedAccounts[0].Id, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de mediador');
@@ -756,7 +756,7 @@ public without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE Id IN :recordIds];
+        List<Account> expectedAccounts = AccountsSelector.selectById(recordIds, new Set<String> {'Id'});
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
