@@ -190,12 +190,12 @@ public class ContactPointEmailUtil
      */
     public static void updateRelatedContactPoints()
     {
-        if( !scopesToUpdate.isEmpty() )
+        if( scopesToUpdate != null && !scopesToUpdate.isEmpty() )
         {
             update scopesToUpdate;
         }
 
-        if( !contactPointEmailsToUpdate.isEmpty() )
+        if( contactPointEmailsToUpdate != null && !contactPointEmailsToUpdate.isEmpty() )
         {
             update contactPointEmailsToUpdate;
         }
