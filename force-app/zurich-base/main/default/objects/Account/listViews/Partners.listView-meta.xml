@@ -10,4 +10,8 @@
         <value>Account.Partner</value>
     </filters>
     <label>Partners</label>
+    <sharedTo>
+        <role>Customer_Care</role>
+        <role>KLINC_Global</role>
+    </sharedTo>
 </ListView>

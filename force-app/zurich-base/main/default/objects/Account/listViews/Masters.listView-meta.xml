@@ -10,4 +10,8 @@
         <value>Account.Master</value>
     </filters>
     <label>Masters</label>
+    <sharedTo>
+        <role>Customer_Care</role>
+        <role>KLINC_Global</role>
+    </sharedTo>
 </ListView>

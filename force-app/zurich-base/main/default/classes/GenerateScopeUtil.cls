@@ -63,14 +63,7 @@ public class GenerateScopeUtil
         }
         catch (Exception e)
         {
-            if (EventBus.TriggerContext.currentContext().retries < 9)
-            {
-                throw new EventBus.RetryableException( e.getMessage() );
-            }
-            else
-            {
-                ErrorLogUtil.commitError(e, 'GenerateScopeUtil', 'generateScopeEvents');
-            }
+            ErrorLogUtil.commitError(e, 'GenerateScopeUtil', 'generateScopeEvents');
         }
 
         return null;
@@ -94,6 +87,7 @@ public class GenerateScopeUtil
         Map<String, Scope__c> scopesByObject = new Map<String, Scope__c>();
 
         Set<Id> accountIds = new Set<Id>();
+        Set<String> sObjectsTypes = new Set<String>();
 
         String scopePicklistValue;
         String scopeNameValue;
@@ -232,6 +226,8 @@ public class GenerateScopeUtil
                     // 4.7 - Añadir el SObject a la lista de SObjects a actualizar
                     sobjectsToUpdate.add(record);
                 }
+
+                sObjectsTypes.add(event.ObjectType__c);
             }
 
             // 5 - Insertar los registros de scope generados
@@ -252,7 +248,11 @@ public class GenerateScopeUtil
             // 7 - Actualizar los registros
             if( !sobjectsToUpdate.isEmpty() )
             {
-                sobjectsToUpdate.sort();
+                if(sObjectsTypes.size() > 1)
+                {
+                    sobjectsToUpdate.sort();
+                }
+
                 update sobjectsToUpdate;
             }
 
