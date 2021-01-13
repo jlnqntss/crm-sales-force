@@ -170,7 +170,7 @@ public class ContactPointEmailUtil
 
         for(ContactPointEmail contactPointEmail : newList)
         {
-            if( String.isNotBlank(contactPointEmail.INFOContactPointNumber__c) && contactPointEmail.ScopeId__c == null)
+            if( String.isNotBlank(contactPointEmail.INFOContactPointNumber__c) && contactPointEmail.ScopeId__c == null && contactPointEmail.ParentId != null)
             {
                 cpeToGenerateScope.add(contactPointEmail);
             }
