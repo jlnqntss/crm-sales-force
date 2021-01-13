@@ -13,7 +13,7 @@ public class PolicyUtil
 
         for(Policy__c policy : newList)
         {
-            if( String.isNotBlank(policy.InfoPolicyNumber__c) && policy.ScopeId__c == null)
+            if( String.isNotBlank(policy.InfoPolicyNumber__c) && policy.ScopeId__c == null && policy.PolicyHolder__c != null)
             {
                 polToGenerateScope.add(policy);
             }
