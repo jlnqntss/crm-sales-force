@@ -14,6 +14,7 @@
     <label>Customer Care</label>
     <queue>Customer_Care</queue>
     <sharedTo>
-        <allInternalUsers/>
+        <role>Customer_Care</role>
+        <role>KLINC_Global</role>
     </sharedTo>
 </ListView>

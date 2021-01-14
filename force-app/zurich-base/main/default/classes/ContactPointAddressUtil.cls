@@ -13,7 +13,8 @@ public class ContactPointAddressUtil
 
         for(ContactPointAddress contactPointAddress : newList)
         {
-            if( String.isNotBlank(contactPointAddress.INFOContactPointNumber__c) && contactPointAddress.ScopeId__c == null)
+            if( String.isNotBlank(contactPointAddress.INFOContactPointNumber__c) && contactPointAddress.ScopeId__c == null
+                && contactPointAddress.ParentId != null)
             {
                 cpaToGenerateScope.add(contactPointAddress);
             }

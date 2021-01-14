@@ -16,4 +16,8 @@
         <value>Activo</value>
     </filters>
     <label>Clientes</label>
+    <sharedTo>
+        <role>Customer_Care</role>
+        <role>KLINC_Global</role>
+    </sharedTo>
 </ListView>

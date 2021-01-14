@@ -26,7 +26,7 @@ public with sharing class AccountsSelector
         {
             query += '  AND LegalEntity__c =: legalEntity';
         }
-        
+
 
         return Database.query(query);
     }
@@ -62,7 +62,7 @@ public with sharing class AccountsSelector
             when 'klink' {
 
             }
-            when 'csm' 
+            when 'csm'
             {
                 this.recordTypeIds = new Set<Id>();
                 this.recordTypeIds.add(Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId());
@@ -109,7 +109,7 @@ public with sharing class AccountsSelector
         {
             return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT PolicyHolder__c FROM Policy__c WHERE InfoPolicyNumber__c IN :policyNumbers) AND RecordTypeId IN :this.recordTypeIds];
         }
-        else 
+        else
         {
             return new List<Account>();
         }
@@ -127,7 +127,7 @@ public with sharing class AccountsSelector
         {
             return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT AccountId FROM Opportunity WHERE InfoQuoteNumber__c IN :quoteNumbers) AND RecordTypeId IN :this.recordTypeIds];
         }
-        else 
+        else
         {
             return new List<Account>();
         }
@@ -163,9 +163,17 @@ public with sharing class AccountsSelector
     {
         if(codes != null && !codes.isEmpty())
         {
-            return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE INFOIntermediaryCode__c IN :codes AND RecordTypeId IN :this.recordTypeIds];
+            Set<String> paddedCodes = new Set<String>();
+
+            for(String code : codes)
+            {
+                paddedCodes.add(code.leftPad(10, '0'));
+                
+            }
+
+            return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE INFOIntermediaryCode__c IN :paddedCodes AND RecordTypeId IN :this.recordTypeIds];
         }
-        else 
+        else
         {
             return new List<Account>();
         }
@@ -175,7 +183,7 @@ public with sharing class AccountsSelector
      * Find Accounts by Ids. Include the Scope__c childs of the Account, filtering them by Scope
      * Used:
      *    ScopeUtil.cls
-     * 
+     *
      * @author NTS (agonzalezisasi)
      * @date 10/12/2020
      * @param accountIds   list of account ids
@@ -190,5 +198,24 @@ public with sharing class AccountsSelector
                       WHERE Id IN :accountIds];
         }
         return result;
+    }
+
+    /**
+     * Obtiene un listado de cuentas según los IDs recibidos
+     * @param accountIds: Listado de cuentas.  Si null, devolver Lista vacía.
+     * @param selectFields: campos de la query.
+     * @return Listado de cuentas
+     */
+    public static List<Account> selectById(Set<Id> accountIds, Set<String> selectFields)
+    {
+        //Devolver lista vacía
+        if ( accountIds == null || accountIds.isEmpty() )
+        {
+            return new List<Account>();
+        }
+
+        String query = String.format('SELECT {0} FROM Account WHERE Id IN :accountIds', new List<String> {String.join(new List<String> (selectFields), ',')});
+
+        return (List<Account>) Database.query(query);
     }
 }
