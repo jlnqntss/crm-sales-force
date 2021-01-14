@@ -331,6 +331,7 @@ public without sharing class BusinessInsuranceRaterService
     private static void updateCustomer(Account customer, Request formData) 
     {
         if( customer != null && formData != null ) {
+            System.debug('updateCustomer');
             Account accountToUpdate = new Account(Id= customer.Id);
 
             accountToUpdate.Family__c = formData.accountInformation.family;
@@ -590,12 +591,19 @@ public without sharing class BusinessInsuranceRaterService
             List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
             genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
 
+            /*Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
+                String.isNotBlank(formData.bestTimeFrom) ? (Datetime) JSON.deserialize(formData.bestTimeFrom, Datetime.class) : System.now() 
+            );*/
+            Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
+                formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now() 
+            );
+
             //Creamos ContactRequest para cualquiera de los pasos
             ContactRequest contactRequestToCreate = new ContactRequest(
                 GenesysCloudQueueId__c = (!genesysQueue.isEmpty() ? genesysQueue.get(0).Id : null),
                 OwnerId = currentAdvisorId,
                 PreferredChannel = (String.isBlank(formData.webPhone) ? 'Email' : 'Phone'),
-                PreferredContactDatetime__c = ( String.isNotBlank(formData.bestTimeFrom) ? Datetime.valueOf( JSON.deserialize(formData.bestTimeFrom, Datetime.class) ) : System.now() ),
+                PreferredContactDatetime__c = preferredContactDatetime,
                 PreferredPhone = formData.webPhone,
                 RequestReason = 'Offer',
                 Status = 'New',
@@ -1067,7 +1075,7 @@ public without sharing class BusinessInsuranceRaterService
             }
         }
 
-        public String timeStamp {
+        public Datetime timeStamp {
             get;
             set {
                 setRequiredFields('Request' + 'timeStamp');
@@ -1116,14 +1124,14 @@ public without sharing class BusinessInsuranceRaterService
                 status = value;
             }
         }
-        public String bestTimeFrom {
+        public Datetime bestTimeFrom {
             get;
             set {
                 setRequiredFields('Request' + 'bestTimeFrom');
                 bestTimeFrom = value;
             }
         }
-        public String bestTimeUntil {
+        public Datetime bestTimeUntil {
             get;
             set {
                 setRequiredFields('Request' + 'bestTimeUntil');

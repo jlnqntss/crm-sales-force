@@ -35,7 +35,7 @@ public class BusinessInsuranceCallbackService
         try
         {
             ContactRequest callMeBack = new ContactRequest();
-            callMeBack.PreferredContactDatetime__c = requestCallMeBack.bestTimeFrom;
+            callMeBack.PreferredContactDatetime__c = BusinessInsuranceUtil.getPreferredContactDatetime(requestCallMeBack.bestTimeFrom);
             callMeBack.PreferredPhone = requestCallMeBack.phone;
             callMeBack.WebName__c = requestCallMeBack.name;
             if( !genesysQueue.isEmpty() )

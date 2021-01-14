@@ -911,84 +911,71 @@ public with sharing class BusinessInsuranceRaterServiceTest
     }
 
     /**
-     * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-04
+     * Método que comprueba si al pasar una fecha fuera del horario de atención
+     * se genera el ContactRequest con la siguiente hora hábil
      **
      * @author rlopez
-     * @date 26/10/2020
+     * @date 13/01/2021
      */
     @isTest
-    static void test_processFormData_CRM0_ok()
-    {}
+    static void test_processFormData_CRM03_within_businessHours_ok()
+    {
+        Id personAccountRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
-    /**
-     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos en el paso CRM-04
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_processFormData_CRM04_ko()
-    {}
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
 
-    /**
-     * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-05
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_processFormData_CRM05_ok()
-    {}
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null AND RecordTypeId =: personAccountRecordTypeId];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
 
-    /**
-     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos en el paso CRM-05
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_processFormData_CRM05_ko()
-    {}
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
 
-    /**
-     * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-06
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_processFormData_CRM06_ok()
-    {}
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts)
+        {
+            productIds.add(product.Id);
+        }
 
-    /**
-     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos en el paso CRM-06
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_processFormData_CRM06_ko()
-    {}
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
 
-    /**
-     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos en el paso CRM-07
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_processFormData_CRM07_ko()
-    {}
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-03', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+        
+        //Modificamos la fecha de bestTimeFrom para que sea una fecha no válida
+        List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name =: BusinessInsuranceUtil.ZE_BUSINESS_HOURS];
+        System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
 
-    /**
-     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos en el paso CRM-08
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_processFormData_CRM08_ko()
-    {}
+        Datetime notWithinDatetime = System.now();
+        while(BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime))
+        {
+            notWithinDatetime = notWithinDatetime.addDays(1);
+        }
+
+        jsonInformation.put('bestTimeFrom', TestDataFactory.datetimeToISOString(notWithinDatetime));
+
+        BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );
+
+        Test.startTest();
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        Test.stopTest();
+
+        List<Account> createdAccount = [SELECT Id, PersonContactId FROM Account WHERE FirstName =: requestInformationObject.accountInformation.firstName AND LastName =: requestInformationObject.accountInformation.lastName];
+        System.assertEquals(false, createdAccount.isEmpty(), 'List should NOT be empty');
+
+        //Comprobamos que se ha generado un Contact Request
+        //con PreferredContactDatetime distinto al bestTimeFrom solicitado
+        List<ContactRequest> contactRequests = [SELECT Id, PreferredContactDatetime__c FROM ContactRequest WHERE WhoId =: createdAccount.get(0).PersonContactId];
+        System.assertEquals(false, contactRequests.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(true, contactRequests.get(0).PreferredContactDatetime__c != notWithinDatetime, 'Datetime are different');
+        System.assertEquals(true, BusinessHours.isWithin(businessHoursList.get(0).Id, contactRequests.get(0).PreferredContactDatetime__c), 'Datetime is within ZE Business Hours');
+    }
 
     /**
      * Método que comprueba que se recuperan correctamente los metadatos cuando se solicita un paso existente en el formulario
