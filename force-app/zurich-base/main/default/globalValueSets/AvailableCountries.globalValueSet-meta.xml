@@ -10,6 +10,11 @@
         <default>false</default>
         <label>France</label>
     </customValue>
+    <customValue>
+        <fullName>Germany</fullName>
+        <default>false</default>
+        <label>Germany</label>
+    </customValue>
     <description>Lists the available language country and iso codes</description>
     <masterLabel>Available countries</masterLabel>
     <sorted>false</sorted>

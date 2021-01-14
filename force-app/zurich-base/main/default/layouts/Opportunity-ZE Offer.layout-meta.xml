@@ -58,6 +58,10 @@
                 <behavior>Required</behavior>
                 <field>InfoQuoteNumber__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>TotalOptions__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -94,8 +98,8 @@
                 <field>IntermediaryCode__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>IntermediaryName__c</field>
+                <behavior>Readonly</behavior>
+                <field>IntermediaryNameForm__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

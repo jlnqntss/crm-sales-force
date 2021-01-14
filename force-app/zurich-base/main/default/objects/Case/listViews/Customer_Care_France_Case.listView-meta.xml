@@ -13,6 +13,7 @@
     <label>Customer Care - France</label>
     <queue>Customer_Care_France</queue>
     <sharedTo>
-        <allInternalUsers/>
+        <role>Customer_Care</role>
+        <role>KLINC_Global</role>
     </sharedTo>
 </ListView>

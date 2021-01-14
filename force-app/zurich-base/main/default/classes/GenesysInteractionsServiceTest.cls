@@ -19,7 +19,7 @@ public without sharing class GenesysInteractionsServiceTest
         List<Account> intermediaries = TestDataFactory.generateAccounts('001', 'Intermediary', 10);
         insert intermediaries;
         //Actualizar con los datos usados en los test
-        intermediaries.get(0).INFOIntermediaryCode__c = '999888777';
+        intermediaries.get(0).INFOIntermediaryCode__c = '0999888777';
         intermediaries.get(0).Phone = '111555777';
         update intermediaries.get(0);
 
@@ -190,7 +190,7 @@ public without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE Id IN :recordIds];
+        List<Account> expectedAccounts = AccountsSelector.selectById(recordIds, new Set<String> {'Id'});
         List<Task> expectedTasks = [SELECT AccountId, Owner.Email, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
 
         System.assertEquals(expectedAccounts[0].Id, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de mediador');
@@ -756,7 +756,7 @@ public without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE Id IN :recordIds];
+        List<Account> expectedAccounts = AccountsSelector.selectById(recordIds, new Set<String> {'Id'});
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
@@ -789,7 +789,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
-        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE RecordTypeId = : intermediaryRecordTypeId AND InfoIntermediaryCode__c = : searchRequest.value];
+        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE RecordTypeId = : intermediaryRecordTypeId AND InfoIntermediaryCode__c = : searchRequest.value.leftPad(10, '0')];
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');

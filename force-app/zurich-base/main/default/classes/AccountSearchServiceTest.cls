@@ -50,7 +50,7 @@ private class AccountSearchServiceTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>([SELECT Id FROM Account WHERE Id IN: recordIds]);
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}) );
 
         for(Account record : matchedRecords)
         {
@@ -97,7 +97,7 @@ private class AccountSearchServiceTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>([SELECT Id FROM Account WHERE Id IN: recordIds]);
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}) );
 
         for(Account record : matchedRecords)
         {

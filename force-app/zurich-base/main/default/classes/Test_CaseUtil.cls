@@ -357,12 +357,14 @@ public with sharing class Test_CaseUtil
         Test.stopTest();
 
         caso2 = [
-            SELECT id, ContactId, Policy__c
+            SELECT id, ContactId, Policy__c, Type_translation__c, Subtype_translation__c
             FROM Case
-            WHERE PolicyNum__c = '8989'
+            WHERE PolicyNum__c = 'EMEA-8989'
         ];
 
-        System.assert (caso2.Policy__c != null);
+        System.assert (String.isNotEmpty(caso2.Type_translation__c) );
+        System.assert (String.isNotEmpty(caso2.Subtype_translation__c) );
+        System.assert (caso2.Policy__c == null);
     }
 
     /**

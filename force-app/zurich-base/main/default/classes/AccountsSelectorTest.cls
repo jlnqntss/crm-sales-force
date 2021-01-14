@@ -172,7 +172,7 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>([SELECT Id FROM Account WHERE Id IN: recordIds]);
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}) );
 
         for(Account record : matchedRecords)
         {
@@ -217,7 +217,7 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>([SELECT Id FROM Account WHERE Id IN: recordIds]);
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}) );
 
         for(Account record : matchedRecords)
         {
@@ -448,5 +448,36 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(2, result.size(), 'There should be 2 accounts');
         System.assertEquals(3, result[0].Scope__r.size(), 'There should be 3 scopes for the first account');
         System.assertEquals(3, result[1].Scope__r.size(), 'There should be 3 scopes for the second account');
+    }
+
+    @isTest
+    static void test_selectById_ko()
+    {
+        Test.startTest();
+
+        List<Account> selectedAccounts = AccountsSelector.selectById(new Set<Id>(), new Set<String> {'Id'});
+
+        Test.stopTest();
+
+        System.assertEquals(true, selectedAccounts.isEmpty(), 'Se debería recibir una lista vacía');
+    }
+
+    @isTest
+    static void test_selectById_ok()
+    {
+        // When
+        Set<Id> accountIds = new Map<Id, Account>( [SELECT Id FROM Account] ).keySet();
+
+        // Test
+        Test.startTest();
+
+        Map<Id, Account> selectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(accountIds, new Set<String> {'Id'}) );
+
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(true, !selectedAccountsById.isEmpty(), 'Se debería recibir una lista no vacía');
+        System.assertEquals(accountIds.size(), selectedAccountsById.keySet().size(), 'Se debería recibir el mismo número de cuentas');
+        System.assertEquals(true, selectedAccountsById.keySet().containsAll(accountIds), 'No contiene todos los ids de cuenta');
     }
 }

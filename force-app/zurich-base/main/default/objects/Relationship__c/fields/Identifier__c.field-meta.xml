@@ -4,10 +4,10 @@
     <description>Dependiendo del Record Type, se muestra el link al registro correspondiente</description>
     <externalId>false</externalId>
     <formula>CASE( RecordType.DeveloperName , 
-&quot;Policy&quot; , HYPERLINK(&quot;/&quot; &amp; PolicyId__c,  PolicyId__r.Name ), 
-&quot;Offer&quot; , HYPERLINK(&quot;/&quot; &amp;  OpportunityId__c ,   OpportunityId__r.Name ),
-&quot;Claim&quot; , HYPERLINK(&quot;/&quot; &amp;   ClaimId__c ,   ClaimId__r.Name ),
-&quot;Household&quot; , HYPERLINK(&quot;/&quot; &amp; SecondaryAccountId__c , SecondaryAccountId__r.Name ),
+&quot;Policy&quot; , HYPERLINK(&quot;/&quot; &amp; PolicyId__c,  PolicyId__r.Name, &apos;_self&apos; ), 
+&quot;Offer&quot; , HYPERLINK(&quot;/&quot; &amp;  OpportunityId__c ,   OpportunityId__r.Name, &apos;_self&apos; ),
+&quot;Claim&quot; , HYPERLINK(&quot;/&quot; &amp;   ClaimId__c ,   ClaimId__r.Name, &apos;_self&apos; ),
+&quot;Household&quot; , HYPERLINK(&quot;/&quot; &amp; SecondaryAccountId__c , SecondaryAccountId__r.Name, &apos;_self&apos; ),
 &quot;&quot;)</formula>
     <label>Identifier</label>
     <required>false</required>

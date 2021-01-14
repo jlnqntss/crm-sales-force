@@ -82,4 +82,90 @@ private with sharing class OpportunitiesSelectorTest
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
+
+    @isTest
+    static void test_selectByAccountIdScopesAndOwnerProfile_matchedRecords()
+    {
+        List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
+        System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> scopesIds = new Set<Id>();
+        for(Scope__c scope: existingScopes)
+        {
+            scopesIds.add(scope.Id);
+        }
+
+        Test.startTest();
+        List<Opportunity> matchedRecords = new OpportunitiesSelector(
+            new Set<String> {'Id', 'AccountId', 'ScopeId__c', 'OwnerId'}
+            ).selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {'System Administrator'});
+        Test.stopTest();
+
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> ownerIds = new Set<Id>();
+        for(Opportunity matchedOpp: matchedRecords)
+        {
+            System.assertEquals(true, scopesIds.contains(matchedOpp.ScopeId__c), 'Set should contain the Id');
+            System.assertEquals(true, matchedOpp.AccountId == existingScopes.get(0).AccountId__c, 'AccountId should be the same');
+            ownerIds.add(matchedOpp.OwnerId);
+        }
+
+        List<User> owners = [SELECT Id, Profile.Name FROM User WHERE Id IN: ownerIds];
+        System.assertEquals(false, owners.isEmpty(), 'List should NOT be empty');
+        for(User retrievedOwner: owners)
+        {
+            System.assertEquals(true, retrievedOwner.Profile.Name == 'System Administrator', 'Profile should be admin');
+        }
+    }
+
+    @isTest
+    static void test_selectByAccountIdScopesAndOwnerProfile_matchedRecords_emptyResults()
+    {
+        List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
+        System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> scopesIds = new Set<Id>();
+        for(Scope__c scope: existingScopes)
+        {
+            scopesIds.add(scope.Id);
+        }
+
+        Test.startTest();
+        List<Opportunity> matchedRecords = new OpportunitiesSelector(
+            new Set<String> {'Id', 'AccountId', 'ScopeId__c'}
+            ).selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {'ZE User'});
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_selectByAccountIdScopesAndOwnerProfile_emptySet_matchedRecords()
+    {
+        List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
+        System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> scopesIds = new Set<Id>();
+        for(Scope__c scope: existingScopes)
+        {
+            scopesIds.add(scope.Id);
+        }
+
+        Test.startTest();
+        List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {});
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_selectByAccountIdScopesAndOwnerProfile_nullSet_matchedRecords()
+    {
+        Test.startTest();
+        List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(null, null, null);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
 }
