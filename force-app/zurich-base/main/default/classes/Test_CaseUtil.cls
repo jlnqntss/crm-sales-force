@@ -362,8 +362,8 @@ public with sharing class Test_CaseUtil
             WHERE PolicyNum__c = 'EMEA-8989'
         ];
 
-        System.assert(String.isNotEmpty(caso2.Type_translation__c));
-        System.assert(String.isNotEmpty(caso2.Subtype_translation__c));
+        System.assert (String.isNotEmpty(caso2.Type_translation__c) );
+        System.assert (String.isNotEmpty(caso2.Subtype_translation__c) );
         System.assert (caso2.Policy__c == null);
     }
 
