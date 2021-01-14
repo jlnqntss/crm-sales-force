@@ -18,7 +18,6 @@ public class BusinessInsuranceUtil
      */
     public static Datetime getPreferredContactDatetime(Datetime requestedDatetime)
     {
-        System.debug('Fecha getPreferredContactDatetime: ' + requestedDatetime);
         Datetime result;
 
         if(requestedDatetime == null)
@@ -30,10 +29,8 @@ public class BusinessInsuranceUtil
         List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name=:ZE_BUSINESS_HOURS];
         if(businessHoursList != null && !businessHoursList.isEmpty())
         {
-            System.debug('Fecha businessHoursList: ' + businessHoursList);
             Id zeBusinessHoursId = businessHoursList.get(0).Id;
             result = ( BusinessHours.isWithin(zeBusinessHoursId, requestedDatetime) ? requestedDatetime : BusinessHours.nextStartDate(zeBusinessHoursId, requestedDatetime));
-            System.debug('Fecha result: ' + result);
         }
         else
         {

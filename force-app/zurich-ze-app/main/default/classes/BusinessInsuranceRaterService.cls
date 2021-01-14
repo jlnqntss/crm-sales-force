@@ -595,9 +595,6 @@ public without sharing class BusinessInsuranceRaterService
             List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
             genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
 
-            /*Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
-                String.isNotBlank(formData.bestTimeFrom) ? (Datetime) JSON.deserialize(formData.bestTimeFrom, Datetime.class) : System.now() 
-            );*/
             Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
                 formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now() 
             );

@@ -2,7 +2,11 @@
 public class BusinessInsuranceUtilTest
 {
     /**
+     * Test que comprueba que si la fecha enviada está dentro
+     * del horario de atención, la fecha de getPreferredContactDatetime es la misma
      * 
+     * @author rlopez
+     * @date 13/01/2020 
      */
     @isTest
     static void test_getPreferredContactDatetime_within_ok()
@@ -22,7 +26,11 @@ public class BusinessInsuranceUtilTest
     }
 
     /**
+     * Test que comprueba que si la fecha enviada NO está dentro
+     * del horario de atención, la fecha de getPreferredContactDatetime es la próxima hora hábil 
      * 
+     * @author rlopez
+     * @date 13/01/2020 
      */
     @isTest
     static void test_getPreferredContactDatetime_not_within_ok()
@@ -46,7 +54,11 @@ public class BusinessInsuranceUtilTest
     }
 
     /**
+     * Test que comprueba que si la fecha es null,
+     * getPreferredContactDatetime devuelve la próxima hora hábil
      * 
+     * @author rlopez
+     * @date 13/01/2020 
      */
     @isTest
     static void test_getPreferredContactDatetime_null_ok()
