@@ -252,7 +252,6 @@ public class GenerateScopeUtil
                 {
                     sobjectsToUpdate.sort();
                 }
-
                 update sobjectsToUpdate;
             }
 
