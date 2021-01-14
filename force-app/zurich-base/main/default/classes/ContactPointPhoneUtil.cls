@@ -170,7 +170,8 @@ public class ContactPointPhoneUtil
 
         for(ContactPointPhone contactPointPhone : newList)
         {
-            if( String.isNotBlank(contactPointPhone.INFOContactPointNumber__c) && contactPointPhone.ScopeId__c == null && contactPointPhone.ParentId != null)
+            if( String.isNotBlank(contactPointPhone.INFOContactPointNumber__c) && contactPointPhone.ScopeId__c == null
+                && contactPointPhone.ParentId != null)
             {
                 cppToGenerateScope.add(contactPointPhone);
             }
