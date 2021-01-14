@@ -12,13 +12,17 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>NetPremium__c</field>
+                <field>PackageDescription__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>QuoteNumber</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>NetPremium__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

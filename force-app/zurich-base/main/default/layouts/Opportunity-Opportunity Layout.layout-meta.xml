@@ -333,6 +333,7 @@
     <relatedLists>
         <fields>QUOTE.QUOTENUMBER</fields>
         <fields>QUOTE.NAME</fields>
+        <fields>PackageDescription__c</fields>
         <fields>TotalPremium__c</fields>
         <relatedList>RelatedQuoteList</relatedList>
         <sortField>QUOTE.QUOTENUMBER</sortField>
