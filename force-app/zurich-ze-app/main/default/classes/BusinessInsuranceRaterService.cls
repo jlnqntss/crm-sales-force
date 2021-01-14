@@ -115,7 +115,7 @@ public without sharing class BusinessInsuranceRaterService
      * En caso de no existir, se creará un PersonAccount de tipo Lead (y sus registros relacionados: Scope y ContactPoints)
      *
      * @author rlopez
-     * 
+     *
      * @change nts (agonzalezisasi) - 08/12/2021 - Actualizar algunos datos del Customer encontrado con los datos de la Request
      */
     private static Account manageCustomer(Request formData)
@@ -145,7 +145,9 @@ public without sharing class BusinessInsuranceRaterService
         {
             //Creamos un nuevo Account
             customers.add( createLead(formData) );
-        } else {
+        }
+        else
+        {
             // Se actualizan algunos datos del Customer con lo que llega de la request
             updateCustomer(customers.get(0), formData);
         }
@@ -324,13 +326,14 @@ public without sharing class BusinessInsuranceRaterService
 
     /**
      * Método encargado de actualizar algunos de los campos del Customer encontrado con los datos recibidos del request
-     *  
+     *
      * @author nts (agonzalezisasi)
      * @date 08/01/2021
      */
-    private static void updateCustomer(Account customer, Request formData) 
+    private static void updateCustomer(Account customer, Request formData)
     {
-        if( customer != null && formData != null ) {
+        if( customer != null && formData != null )
+        {
             Account accountToUpdate = new Account(Id= customer.Id);
 
             accountToUpdate.Family__c = formData.accountInformation.family;
@@ -718,7 +721,7 @@ public without sharing class BusinessInsuranceRaterService
     {
         List<Opportunity> existingOffers = new OpportunitiesSelector(
             new Set<String> {'Id', 'OwnerId'}
-            ).selectByAccountIdScopesAndOwnerProfile(currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String>{PROFILE_NAME});
+            ).selectByAccountIdScopesAndOwnerProfile(currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String> {PROFILE_NAME});
 
         if( existingOffers.isEmpty() )
         {
@@ -1056,9 +1059,12 @@ public without sharing class BusinessInsuranceRaterService
         //Desde el Flow ZECreateLead no se quiere crear ContactRequest
         public Boolean doNotCreateCallback {
             get {
-                if(doNotCreateCallback == null){
+                if(doNotCreateCallback == null)
+                {
                     return false;
-                }else{
+                }
+                else
+                {
                     return doNotCreateCallback;
                 }
             }

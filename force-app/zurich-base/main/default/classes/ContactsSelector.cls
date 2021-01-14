@@ -108,7 +108,7 @@ public with sharing class ContactsSelector
 
         // Rellenamos el recordTypeIds con los Ids de cada scope
         switch on scope.toLowerCase() {
-            when 'ze' {
+            when 'zurich empresas' {
                 this.recordTypeIds = new Set<Id>();
                 for (String recordTypeName: accountRecordTypeInfosByDeveloperName.keySet()) {
                     if(recordTypeName == 'Customer' || recordTypeName == 'Lead')

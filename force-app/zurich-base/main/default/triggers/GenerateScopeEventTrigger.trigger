@@ -2,17 +2,18 @@ trigger GenerateScopeEventTrigger on GenerateScopeEvent__e (after insert)
 {
     if (Trigger.new != null)
     {
-        try 
+        try
         {
             GenerateScopeUtil.handleEventsBatch(Trigger.New);
 
-        } catch (Exception e) 
+        }
+        catch (Exception e)
         {
             if (EventBus.TriggerContext.currentContext().retries < 9)
             {
                 throw new EventBus.RetryableException( e.getMessage() );
             }
-            else 
+            else
             {
                 ErrorLogUtil.commitError(e, 'GenerateScopeEventTrigger', 'handleEventsBatch');
             }

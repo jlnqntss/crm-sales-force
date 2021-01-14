@@ -98,7 +98,7 @@ private with sharing class OpportunitiesSelectorTest
         Test.startTest();
         List<Opportunity> matchedRecords = new OpportunitiesSelector(
             new Set<String> {'Id', 'AccountId', 'ScopeId__c', 'OwnerId'}
-            ).selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String>{'System Administrator'});
+            ).selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {'System Administrator'});
         Test.stopTest();
 
         System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
@@ -116,7 +116,7 @@ private with sharing class OpportunitiesSelectorTest
         for(User retrievedOwner: owners)
         {
             System.assertEquals(true, retrievedOwner.Profile.Name == 'System Administrator', 'Profile should be admin');
-        }        
+        }
     }
 
     @isTest
@@ -134,7 +134,7 @@ private with sharing class OpportunitiesSelectorTest
         Test.startTest();
         List<Opportunity> matchedRecords = new OpportunitiesSelector(
             new Set<String> {'Id', 'AccountId', 'ScopeId__c'}
-            ).selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String>{'ZE User'});
+            ).selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {'ZE User'});
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
@@ -153,7 +153,7 @@ private with sharing class OpportunitiesSelectorTest
         }
 
         Test.startTest();
-        List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String>{});
+        List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {});
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');

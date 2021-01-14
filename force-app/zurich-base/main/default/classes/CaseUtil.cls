@@ -34,9 +34,11 @@ public class CaseUtil
                 // we get this from the policy too
                 claim.CustomerNum__c = policySF.CustomerNum__c;
                 // nts (agonzalezisasi) - 18/dic/2020 - fix: when claim is IBA Spain add LegalEntity to the search if needed
-                if( !ExternalRequestUtil.isIBAMultiPartner && !ExternalRequestUtil.isEMEA ) {
-                    if( !claim.CustomerNum__c.contains('GI') && !claim.CustomerNum__c.contains('LIFE') ) {
-                         claim.CustomerNum__c = ContactUtil.adaptCustomerNum(claim.CustomerNum__c, policySF.LegalEntity__c);
+                if( !ExternalRequestUtil.isIBAMultiPartner && !ExternalRequestUtil.isEMEA )
+                {
+                    if( !claim.CustomerNum__c.contains('GI') && !claim.CustomerNum__c.contains('LIFE') )
+                    {
+                        claim.CustomerNum__c = ContactUtil.adaptCustomerNum(claim.CustomerNum__c, policySF.LegalEntity__c);
                     }
                 }
                 // if (claim.sourceCountry__c != 'Spain') {
@@ -157,13 +159,15 @@ public class CaseUtil
             String IBA_EMEA = adminSetup.IBA_EMEA_Prefix__c;
             // Get the Multi-Partner prefixes if any
             Map<String, String> mapMultiPartner = new Map<String, String>();
-            for(String pair: adminSetup.Multi_Partners__c.split(';')) {
+            for(String pair: adminSetup.Multi_Partners__c.split(';') )
+            {
                 List<String> values = pair.split(':');
-                if( values.size() == 2 ) {
-                    mapMultiPartner.put(values.get(0), values.get(1));
+                if( values.size() == 2 )
+                {
+                    mapMultiPartner.put(values.get(0), values.get(1) );
                 }
             }
-        
+
             for (Case caso : newList)
             {
                 if ( !String.isBlank(caso.Origin) && ( caso.Origin.equals('Web') || caso.Origin.equals('Email') ) )
@@ -172,14 +176,18 @@ public class CaseUtil
                     if (caso.PolicyNum__c != null)
                     {
                         // nts (agonzalezisasi) - 11/ene/2020 - fix Multipartner
-                        if( caso.Partner__c != null ) { // Is a multipartner
-                            if( mapMultiPartner.containsKey(caso.Partner__c) ) {
+                        if( caso.Partner__c != null )   // Is a multipartner
+                        {
+                            if( mapMultiPartner.containsKey(caso.Partner__c) )
+                            {
                                 String partnerName = mapMultiPartner.get(caso.Partner__c);
                                 caso.PolicyNum__c = partnerName + '-' + caso.PolicyNum__c;
                             }
-                        } else { // Is not multipartner
-                            // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-                            if (caso.sourceCountry__c != IBA_EMEA_NON_COUNTRY) { // Is not Spain => EMEA (france, germany)
+                        }
+                        else     // Is not multipartner
+                        {   // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                            if (caso.sourceCountry__c != IBA_EMEA_NON_COUNTRY)   // Is not Spain => EMEA (france, germany)
+                            {
                                 caso.PolicyNum__c = IBA_EMEA + '-' + caso.PolicyNum__c;
                             }
                         }
@@ -227,12 +235,12 @@ public class CaseUtil
 
                             if ( TypeTranslaton != null && !TypeTranslaton.isEmpty() )
                             {
-                                caso.Type_translation__c = (String)TypeTranslaton[0].get(fieldName);
+                                caso.Type_translation__c = (String) TypeTranslaton[0].get(fieldName);
                             }
 
                             if ( SubTypeTranslation != null && !SubTypeTranslation.isEmpty() )
                             {
-                                caso.Subtype_translation__c = (String)SubTypeTranslation[0].get(fieldName);
+                                caso.Subtype_translation__c = (String) SubTypeTranslation[0].get(fieldName);
                             }
                         }
                     }
