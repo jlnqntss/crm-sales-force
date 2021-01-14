@@ -57,19 +57,30 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     {
                         interactionTask.WhatId = relatedEmailMessages[0].ParentId;
                     }
+                    interactionTask.TaskSubtype = 'Email';
                 }
 
+                if(interactionTask.type == 'Call')
+                {
+                    interactionTask.TaskSubtype = 'Call';
+                }
                 interactionTask.Status = 'Asignada';
                 interactionTask.CallObject = interactionId;
                 interactionTask.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
                 interactionTask.OwnerId = UserInfo.getUserId();
 
                 //Actualizar el registro relacionado con la TASK
-                changeOwnerFromQueueToUser(interactionTask);
+                //changeOwnerFromQueueToUser(interactionTask);
             }
             else if(eventName == 'interactionDisconnected')
             {
                 interactionTask.Status = 'Cerrada';
+            }
+
+            //Actualizar Owner del registro relacionado en cualquier situación que se tenga whatId
+            if(interactionTask.WhatId != null)
+            {
+                changeOwnerFromQueueToUser(interactionTask);
             }
 
             upsert interactionTask;

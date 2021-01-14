@@ -14,6 +14,11 @@
                 <operation>equals</operation>
                 <value>France</value>
             </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Customer Care - France</value>
+            </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
             <senderEmail>noreply.klinc@zurich.com</senderEmail>
             <senderName>Klinc</senderName>
@@ -29,6 +34,11 @@
                 <field>Case.SourceCountry__c</field>
                 <operation>equals</operation>
                 <value>Germany</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Customer Care - Germany</value>
             </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
             <senderEmail>noreply.klinc@zurich.com</senderEmail>
@@ -46,6 +56,11 @@
                 <operation>equals</operation>
                 <value>Orange Seguros</value>
             </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Customer Care - Orange</value>
+            </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
             <senderEmail>noreply.orangeseguros@zurich.com</senderEmail>
             <senderName>Orange Seguros by Zurich</senderName>
@@ -60,6 +75,11 @@
             <criteriaItems>
                 <field>Case.Partner__c</field>
                 <operation>equals</operation>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Customer Care</value>
             </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
             <senderEmail>noreply.klinc@zurich.com</senderEmail>
@@ -123,6 +143,11 @@
             <criteriaItems>
                 <field>Case.Partner__c</field>
                 <operation>equals</operation>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Customer Care</value>
             </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
             <senderEmail>noreply.klinc@zurich.com</senderEmail>

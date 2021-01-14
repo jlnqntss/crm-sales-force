@@ -1,5 +1,9 @@
 /**
- *
+ * Accióp invocable para ejecutar la lógica de creación de Lead
+ * del formulario de Zurich Empresas desde un Flow
+ * 
+ * @author rlopez
+ * @date 30/12/2020
  */
 global with sharing class BusinessInsuranceCreateLeadAction {
 
@@ -8,26 +12,39 @@ global with sharing class BusinessInsuranceCreateLeadAction {
         description='Creates a Lead, Contact Points and Scope with the information provided'
         category='Other'
     )
-    global static void createLead(List<CreateLeadActionRequest> createLeadActionRequests)
+    global static List<CreateLeadActionResponse> createLead(List<CreateLeadActionRequest> createLeadActionRequests)
     {
-        CreateLeadActionRequest request = createLeadActionRequests[0];
+        List<CreateLeadActionResponse> results = new List<CreateLeadActionResponse>();
 
-        //Convertimos la información recibida al Request Wrapper de BusinessInsuranceRaterService
-        BusinessInsuranceRaterService.Request formRequest = new BusinessInsuranceRaterService.Request();
-        formRequest.doNotCreateCallback = true; //Desde el flow ZECreateLead no se quiere crear ContactRequest
-        formRequest.lastStep = 'CRM-01';
-        formRequest.webEmail = request.email;
-        formRequest.webPhone = request.phone;
-        formRequest.businessCode = request.scopeBusinessCode;
+        if(createLeadActionRequests != null && !createLeadActionRequests.isEmpty())
+        {
+            CreateLeadActionRequest request = createLeadActionRequests[0];
 
-        BusinessInsuranceRaterService.AccountInformation accountInformation = new BusinessInsuranceRaterService.AccountInformation();
-        accountInformation.lastName = request.lastName;
-        accountInformation.firstName = request.firstName;
-        accountInformation.commercialActivity = request.commercialActivity;
-        accountInformation.nationalIdentifier = request.nationalIdentifier;
-        formRequest.accountInformation = accountInformation;
+            //Convertimos la información recibida al Request Wrapper de BusinessInsuranceRaterService
+            BusinessInsuranceRaterService.Request formRequest = new BusinessInsuranceRaterService.Request();
+            formRequest.doNotCreateCallback = true; //Desde el flow ZECreateLead no se quiere crear ContactRequest
+            formRequest.lastStep = 'CRM-01';
+            formRequest.webEmail = request.email;
+            formRequest.webPhone = request.phone;
+            formRequest.businessCode = request.scopeBusinessCode;
 
-        BusinessInsuranceRaterService.processFormData(formRequest);
+            BusinessInsuranceRaterService.AccountInformation accountInformation = new BusinessInsuranceRaterService.AccountInformation();
+            accountInformation.lastName = request.lastName;
+            accountInformation.firstName = request.firstName;
+            accountInformation.commercialActivity = request.commercialActivity;
+            accountInformation.nationalIdentifier = request.nationalIdentifier;
+            formRequest.accountInformation = accountInformation;
+
+            Account currentCustomer = BusinessInsuranceRaterService.processFormData(formRequest);
+            if(currentCustomer != null && String.isNotBlank(currentCustomer.Id))
+            {
+                CreateLeadActionResponse response = new CreateLeadActionResponse();
+                response.leadId = currentCustomer.Id;
+                results.add(response);
+            }
+        }
+
+        return results;
     }
 
     global class CreateLeadActionRequest
@@ -80,5 +97,11 @@ global with sharing class BusinessInsuranceCreateLeadAction {
             required=true
         )
         global String scopeBusinessCode;
+    }
+
+    global class CreateLeadActionResponse
+    {
+        @InvocableVariable(label='Lead Id' description='Id del Lead encontrado o creado')
+        global String leadId;
     }
 }

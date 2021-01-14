@@ -172,7 +172,7 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}));
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}) );
 
         for(Account record : matchedRecords)
         {
@@ -217,7 +217,7 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}));
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}) );
 
         for(Account record : matchedRecords)
         {
@@ -455,7 +455,7 @@ private with sharing class AccountsSelectorTest
     {
         Test.startTest();
 
-        List<Account> selectedAccounts = AccountsSelector.selectById(new Set<Id>(), new Set<String>{'Id'});
+        List<Account> selectedAccounts = AccountsSelector.selectById(new Set<Id>(), new Set<String> {'Id'});
 
         Test.stopTest();
 
@@ -471,7 +471,7 @@ private with sharing class AccountsSelectorTest
         // Test
         Test.startTest();
 
-        Map<Id, Account> selectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(accountIds, new Set<String>{'Id'}));
+        Map<Id, Account> selectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(accountIds, new Set<String> {'Id'}) );
 
         Test.stopTest();
 
