@@ -105,7 +105,8 @@ public without sharing class SystemUtil
             WS_Source_IBA_Multi_Partner__c,
             IBA_EMEA_Prefix__c,
             ExternalJobQueueBatchJobs__c,
-            WS_Source_IBA_EMEA__c
+            WS_Source_IBA_EMEA__c,
+            NumDaysCallAtribution__c
             FROM AdminSetup__mdt
             WHERE MasterLabel = :ADMINSETUP_LABEL
         ];
@@ -328,7 +329,7 @@ public without sharing class SystemUtil
     {
         AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
 
-        // nts (nbizkarra) - 17/dic/2020 - Modificación de borrado de Subscribers
+        // nts (nbizkarra) -  17/dic/2020 - Modificación de borrado de Subscribers
             /* Los Leads que no sean suscriptores se borrarán (IsSubscriber__c = false)
                Los Subscriptores que se hayan desuscrito se borrarán (IsSubscriber__c = true AND HasOptedOutOfEmail=true)
                Los Leads que sean Suscriptores no se borrarán, solo se mantendrá la información del suscriptor. Todos los
@@ -339,7 +340,7 @@ public without sharing class SystemUtil
             'CreditCard__c, CustomerID__c, CustomerNum__c, DNI__c, EmailHash__c, Gender__c, Job__c,' +
             'JobPosition__c, MailingCity, MailingCountry, MailingPostalCode, MailingState, MailingStreet,' +
             'MasterPolicy__c, MasterPolicyDesc__c, MasterPolicyNum__c, MobilePhone, MonthExpiryDate__c, ' +
-            'Nationality__c, YearExpiryDate__c from Contact '+
+            'Nationality__c, YearExpiryDate__c, Abandoned_Lead__c from Contact '+
             'where (RecordType.DeveloperName=\'' +
             Label.LeadLife +
             '\' OR RecordType.DeveloperName=\'' +
@@ -347,11 +348,12 @@ public without sharing class SystemUtil
             '\')' +
             'AND Id NOT IN (SELECT ContactId__c  from Order )' +
             'AND Id NOT IN (SELECT ContactId from Case)' +
-            'AND (IsSubscriber__c = false ' +
-            'OR (IsSubscriber__c = true AND HasOptedOutOfEmail=true)' +
-            'OR (IsSubscriber__c = true AND CustomerNum__c !=null AND HasOptedOutOfEmail = false) )' +
-            'AND CreatedDate < LAST_N_DAYS:' +
-            adminSetup.NumDaysDeleteLeads__c.intValue();
+            'AND (' +
+                '(( IsSubscriber__c = false OR (IsSubscriber__c = true AND CustomerNum__c !=null)) AND CreatedDate < LAST_N_DAYS:'+ 
+                    adminSetup.NumDaysDeleteLeads__c.intValue() +')'+
+                    // nts (nbizkarra) - 14/ene/2021 - Un subscriptor que no es lead, si se desuscribe se borra sin tener en cuenta los 10 días
+                'OR (IsSubscriber__c = true AND HasOptedOutOfEmail=true AND CustomerNum__c =null) ' +
+            ')';
 
         return query;
     }
@@ -517,7 +519,11 @@ public without sharing class SystemUtil
     public static Map<String, Contact> contactsSelector(SET<String> keys)
     {
         Map<String, Contact> mapaContactos = new Map<String, Contact>();
+        AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
         // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+        // nts (nbizkarra) - 07/ene/2021 - Include interaction tasks
+        Date startDate = Date.today().addDays(-Integer.valueOf(adminSetup.NumDaysCallAtribution__c));
+
         List<Contact> listaContactos = [
             SELECT
             Id,
@@ -553,7 +559,9 @@ public without sharing class SystemUtil
             Account.CustomerNum__c,
             Account.CustomerNum_EMEA__c,
             Account.CustomerNum_Partner__c,
-            SourceCountry__c
+            SourceCountry__c,
+            (Select id , WhatId, OwnerId from Tasks where RecordType.DeveloperName =: Label.Interaction and CallResult__c=: Label.Valid and 
+            CustomerInterest__c =: Label.Interested and CreatedDate >= :startDate ) 
             FROM Contact
             WHERE CustomerNum__c IN :keys
         ];
@@ -919,6 +927,7 @@ public without sharing class SystemUtil
      **/
     public static void contactsSelectorMatchCode(
         SET<String> emails,
+        SET<String> mobiles,
         Map<String, Contact> mapEmailBirthLECountry,
         Map<String, Contact> mapEmailBirthLE,
         Map<String, Contact> mapEmailBirth,
@@ -965,7 +974,8 @@ public without sharing class SystemUtil
             IsSubscriber__c,
             Partner__c
             FROM Contact
-            WHERE Email IN :emails
+            WHERE Email IN :emails 
+            OR MobilePhone IN:mobiles
         ];
 
         String legalEntityName;
@@ -973,7 +983,7 @@ public without sharing class SystemUtil
         for (Contact con : listaContactos)
         {
             legalEntityName = legalIdentityByLabel.get(con.LegalEntity__c);
- 
+
             matchCode = con.Email + String.valueOfGmt(con.Birthdate);
             if( mapEmailBirth != null )
                 mapEmailBirth.put(matchCode, con);
@@ -987,6 +997,20 @@ public without sharing class SystemUtil
             matchCode += con.SourceCountry__c + con.Partner__c;
             if( mapEmailBirthLECountry != null )
                 mapEmailBirthLECountry.put(matchCode, con);
+
+            // nts (nbizkarra) - 11/ene/2021 - build matchcode with sourceCountry + mobilephone
+            matchCode = con.SourceCountry__c + con.MobilePhone + String.valueOfGmt(con.Birthdate);
+            if( mapEmailBirth != null )
+                mapEmailBirth.put(matchCode, con);
+
+            matchCode += legalEntityName;
+            if( mapEmailBirthLE != null)
+                mapEmailBirthLE.put(matchCode, con);
+
+            matchCode += con.SourceCountry__c + con.Partner__c;
+            if( mapEmailBirthLECountry != null )
+                mapEmailBirthLECountry.put(matchCode, con);
+
 
             // nts (nbizkarra) - 17/11/2020 - get subscribed contacts by email
             // Subscribers from lead
@@ -1127,7 +1151,6 @@ public without sharing class SystemUtil
             AccountId,
             ContactId__r.Id,
             ContactId__r.CustomerNum__c,
-            ContactId__r.Status__c,
             LegalEntity__c,
             QuoteEntry__c,
             QbLastPage__c,
