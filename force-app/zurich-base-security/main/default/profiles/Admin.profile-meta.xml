@@ -6316,6 +6316,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.ANIPhone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.ANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6332,6 +6337,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.Channel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.DNISPhone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.DNIS__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8676,6 +8691,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.ANIPhone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.ANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8697,6 +8717,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Channel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.DNISPhone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
