@@ -11,6 +11,7 @@ const { convertSFDXProject } = require("./convertSFDXProject");
 async function main() {
   try {
     let username = argv[2];
+    let tmpDir = "./tmp";
 
     // 1 - Crea una carpeta temporal deploy
     mkdirSync("deploy", { recursive: true });
@@ -21,7 +22,7 @@ async function main() {
     });
 
     // 3 - Convierte el proyecto a formato Metadata API y  valida contra el entorno
-    convertSFDXProject("deploy");
+    convertSFDXProject("deploy", `${tmpDir}`);
 
     // 4 - Deshace los cambios de los perfiles
     execSync(`git reset --hard`, {
