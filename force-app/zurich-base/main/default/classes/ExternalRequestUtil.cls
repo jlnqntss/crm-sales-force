@@ -553,21 +553,24 @@ global without sharing class ExternalRequestUtil {
       orderItemsToProcess.put(actualRequest.Id, orderItemList);
 
       // nts (nbizkarra) - 05/01/2021 - fill insured device name in the order, used to help customer care team
-      // Only for GI
+      // Only for  GI
       if (incomingOrder.LegalEntity__c == Label.GeneralInsurance){
 
         String deviceName;
         
-        if( incomingOrder.Bundle__c.equals(Label.NoBundle)  || incomingOrder.Bundle__c == null){
-          
-          deviceName = orderItemList.get(0).itemModel__c;
+        if( incomingOrder.Bundle__c != null ){
 
-        }else{ //If it is a bundle, fill it with bundle name
+          if( incomingOrder.Bundle__c.equals(Label.NoBundle)  || incomingOrder.Bundle__c == null){
           
-          deviceName = incomingOrder.Bundle__c;
-          
+            deviceName = orderItemList.get(0).itemModel__c;
+  
+          }else{ //If it is a bundle, fill it with bundle name
+            
+            deviceName = incomingOrder.Bundle__c;
+            
+          }
         }
-
+        
         //update Order device name field
         if ( entityType == 'Policy' ){
 
@@ -902,11 +905,12 @@ global without sharing class ExternalRequestUtil {
     mapCovers = SystemUtil.coversSelector( coversToSearch );
   }
 
-  //---------------------------------------------------------------------------
+  //-------------------------------------------------------------:--------------
   // Process
   private static void processObjects( List<ExternalRequest__c> externalRequestList ) 
   {
     System.debug('- - - - - ExternalRequestUtil.processObjects - - - - -');
+    System.debug('- - - - - ExternalRequestUtil.processObjects - - - - -: ' + externalRequestList );
     for (ExternalRequest__c externalRequestItem : externalRequestList) {
       // nts (agonzalezisasi) - 24/11/2020 - check if it didnt already fail in the parser
       if( externalRequestItem.processResult__c == null || externalRequestItem.processResult__c != 'KO' ) {

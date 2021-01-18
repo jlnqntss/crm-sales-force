@@ -520,9 +520,17 @@ public without sharing class SystemUtil
     {
         Map<String, Contact> mapaContactos = new Map<String, Contact>();
         AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
+        
         // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
         // nts (nbizkarra) - 07/ene/2021 - Include interaction tasks
-        Date startDate = Date.today().addDays(-Integer.valueOf(adminSetup.NumDaysCallAtribution__c));
+        Decimal numDays= 10;
+
+        if ( adminSetup.NumDaysCallAtribution__c != null ){
+
+            numDays = adminSetup.NumDaysCallAtribution__c;
+        }
+
+        Date startDate = Date.today().addDays(-Integer.valueOf(numDays));
 
         List<Contact> listaContactos = [
             SELECT

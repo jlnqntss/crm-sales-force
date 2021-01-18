@@ -55,6 +55,10 @@
         <value xsi:type="xsd:string">Orange Seguros:Orange</value>
     </values>
     <values>
+        <field>NumDaysCallAtribution__c</field>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
         <field>NumDaysDeleteLeads__c</field>
         <value xsi:type="xsd:double">10.0</value>
     </values>
