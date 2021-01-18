@@ -2432,10 +2432,6 @@
         <recordType>Task.Activity</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <recordType>Task.Interaction</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
     <tabSettings>
         <tab>Claim__c</tab>
         <visibility>Visible</visibility>
