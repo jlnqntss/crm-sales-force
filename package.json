@@ -12,6 +12,7 @@
     "push:source": "sfdx force:source:push -f",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
     "deploy:validate": "node scripts/source/unit-deploy-validation.js",
+    "deploy:dir": "node scripts/source/unit-deploy-to-dir.js",
     "pull:source": "sfdx force:source:pull -f",
     "retrieve:": "sfdx force:source:retrieve --sourcepath=force-app",
     "pull:profiles": "sfdx force:source:pull -f && sfdx sfpowerkit:source:profile:reconcile -s",
@@ -42,5 +43,8 @@
     "node-merge": "^0.1.0",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0"
+  },
+  "dependencies": {
+    "text-cleaner": "^1.2.1"
   }
 }
