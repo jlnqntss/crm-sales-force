@@ -530,7 +530,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
      * @author rlopez
      * @date 11/12/2020
      */
-    @isTest
+    /*@isTest
     static void test_processFormData_empty_webEmail_ko()
     {
         String emailFromJSON = 'newemail@fakeemail.com.invalid';
@@ -571,7 +571,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             System.assertEquals(true, ex.getMessage().contains('WebEmail field is empty'), 'Error message should contain \'WebEmail field is empty\'');
         }
         Test.stopTest();
-    }
+    }*/
 
     /**
      * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-02

@@ -33,13 +33,13 @@ public without sharing class BusinessInsuranceRaterService
 
     public static Account processFormData(Request formData)
     {
-        if( String.isBlank(formData.webEmail) )
+        /*if( String.isBlank(formData.webEmail) )
         {
             throw new BusinessInsuranceRaterServiceException(
                       INVALID_FIELD_STATUSCODE,
                       'WebEmail field is empty'
                       );
-        }
+        }*/
 
         //0. Inicializamos scopeSettings
         initScopeSettings(formData);
@@ -299,9 +299,14 @@ public without sharing class BusinessInsuranceRaterService
         Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
         BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
+        String lastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName);
+        if(String.isBlank(lastName))
+        {
+            lastName = 'Desconocido';
+        }
         Account accountToCreate = new Account(
             FirstName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.firstName : ''),
-            LastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName),
+            LastName = lastName,
             Family__c = accountInformation.family,
             CommercialActivity__c = accountInformation.commercialActivity,
             AnnualRevenue = accountInformation.annualRevenue,
