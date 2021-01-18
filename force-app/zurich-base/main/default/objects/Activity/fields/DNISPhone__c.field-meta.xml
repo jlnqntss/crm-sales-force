@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>DNISPhone__c</fullName>
-    <description>Hay un flow que rellena este campo con DNIS si no es un correo</description>
-    <externalId>false</externalId>
-    <label>DNIS Phone</label>
-    <required>false</required>
-    <type>Phone</type>
-</CustomField>
