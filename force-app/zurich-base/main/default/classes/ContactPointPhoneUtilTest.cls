@@ -440,4 +440,84 @@ private with sharing class ContactPointPhoneUtilTest
             System.assert (String.isNotBlank(scope.PrimaryPhone__c), 'No se ha informado el teléfono principal del scope');
         }
     }
+
+    /**
+     * Test que comprueba que no se devuelve un teléfono formateado si no viene informado
+     *
+     * @author adelgado
+     * @date 18/01/2021
+     */
+    @isTest
+    static void test_formatPhoneNumber_nullValues()
+    {
+        Test.startTest();
+        String formattedNumber = ContactPointPhoneUtil.formatPhoneNumber(null, null);
+        Test.stopTest();
+
+        System.assertEquals(null, formattedNumber, 'Se ha formateado el teléfono y no deberia');
+    }
+
+    /**
+     * Test que comprueba que se devuelve un teléfono formateado si no viene informado el prefijo
+     *
+     * @author adelgado
+     * @date 18/01/2021
+     */
+    @isTest
+    static void test_formatPhoneNumber_nullAreaCode()
+    {
+        Test.startTest();
+        String formattedNumber = ContactPointPhoneUtil.formatPhoneNumber(null, '123456789');
+        Test.stopTest();
+
+        System.assertEquals('123456789', formattedNumber, 'Se ha formateado el teléfono de forma incorrecta');
+    }
+
+    /**
+     * Test que comprueba que se devuelve un teléfono formateado si viene informado el prefijo con un '+'
+     *
+     * @author adelgado
+     * @date 18/01/2021
+     */
+    @isTest
+    static void test_formatPhoneNumber_areaCodePlus()
+    {
+        Test.startTest();
+        String formattedNumber = ContactPointPhoneUtil.formatPhoneNumber('+34', '123456789');
+        Test.stopTest();
+
+        System.assertEquals('+34123456789', formattedNumber, 'Se ha formateado el teléfono de forma incorrecta');
+    }
+
+    /**
+     * Test que comprueba que se devuelve un teléfono formateado si viene informado el prefijo sin un '+'
+     *
+     * @author adelgado
+     * @date 18/01/2021
+     */
+    @isTest
+    static void test_formatPhoneNumber_areaCodeWithoutPlus()
+    {
+        Test.startTest();
+        String formattedNumber = ContactPointPhoneUtil.formatPhoneNumber('34', '123456789');
+        Test.stopTest();
+
+        System.assertEquals('+34123456789', formattedNumber, 'Se ha formateado el teléfono de forma incorrecta');
+    }
+
+    /**
+     * Test que comprueba que se devuelve un teléfono formateado si viene informado el teléfono con un '+'
+     *
+     * @author adelgado
+     * @date 18/01/2021
+     */
+    @isTest
+    static void test_formatPhoneNumber_phoneNumberPlus()
+    {
+        Test.startTest();
+        String formattedNumber = ContactPointPhoneUtil.formatPhoneNumber('+34', '+34123456789');
+        Test.stopTest();
+
+        System.assertEquals('+34123456789', formattedNumber, 'Se ha formateado el teléfono de forma incorrecta');
+    }
 }
