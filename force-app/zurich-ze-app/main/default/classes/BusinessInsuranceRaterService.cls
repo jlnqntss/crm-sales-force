@@ -31,7 +31,7 @@ public without sharing class BusinessInsuranceRaterService
     public static ContactPointEmail currentContactPointEmail;
     public static ContactPointPhone currentContactPointPhone;
 
-    public static void processFormData(Request formData)
+    public static Account processFormData(Request formData)
     {
         if( String.isBlank(formData.webEmail) )
         {
@@ -75,6 +75,8 @@ public without sharing class BusinessInsuranceRaterService
         //   - Polizas (Policy__c)
         //   - Call me back o abandono (ContactRequest)
         manageOffersAndRelatedInformation(formData);
+
+        return currentCustomer;
     }
 
     /**

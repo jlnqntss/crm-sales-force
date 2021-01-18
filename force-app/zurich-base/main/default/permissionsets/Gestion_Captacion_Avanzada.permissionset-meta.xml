@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Permite permisos adicionales a la gestión de captación. Actualmente transferencia de registros.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Gestión Captación Avanzada</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>TransferAnyEntity</name>
+    </userPermissions>
+</PermissionSet>

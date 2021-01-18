@@ -123,6 +123,10 @@
                 <behavior>Edit</behavior>
                 <field>SellChannel__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>receiveMarketing__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
