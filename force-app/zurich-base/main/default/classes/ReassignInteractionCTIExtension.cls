@@ -59,11 +59,11 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     }
                     interactionTask.TaskSubtype = 'Email';
                 }
-
-                if(interactionTask.type == 'Call')
+                else if(interactionTask.type == 'Call')
                 {
                     interactionTask.TaskSubtype = 'Call';
                 }
+
                 interactionTask.Status = 'Asignada';
                 interactionTask.CallObject = interactionId;
                 interactionTask.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
@@ -83,6 +83,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 changeOwnerFromQueueToUser(interactionTask);
             }
 
+            System.debug(interactionTask);
             upsert interactionTask;
 
             return interactionTask.Id;
@@ -112,17 +113,23 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
         if(callLog.containsKey('Id') )
         {
-            String id = String.valueOf(callLog.remove('Id') );
+            String idjson = String.valueOf(callLog.remove('Id') );
 
-            if(id.length() > 10)
+            if(idjson.length() > 10)
             {
-                taskId = id;
+                try{
+                    taskId = Id.valueOf(idjson);
+                }
+                catch(Exception e){
+                    taskId = null;
+                    ErrorLogUtil.commitError(e);
+                }
             }
         }
 
         interactionTask = (Task) JSON.deserialize(JSON.serialize(callLog), Task.class);
 
-        if(String.isNotBlank(taskId) )
+        if(String.isNotBlank(taskId))
         {
             interactionTask.Id = taskId;
         }
