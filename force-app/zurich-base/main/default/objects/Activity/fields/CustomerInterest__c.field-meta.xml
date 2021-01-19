@@ -7,7 +7,7 @@
     <required>false</required>
     <type>Picklist</type>
     <valueSet>
-        <controllingField>CallResult__c</controllingField>
+        <controllingField>Klinc_CallResult__c</controllingField>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
