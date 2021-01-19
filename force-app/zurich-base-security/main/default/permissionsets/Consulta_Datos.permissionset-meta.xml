@@ -1908,6 +1908,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Quote.PackageDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Quote.TotalPremium__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2425,10 +2430,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <recordType>Task.Activity</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <recordType>Task.Interaction</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <tabSettings>

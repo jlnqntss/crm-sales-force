@@ -21,6 +21,10 @@
         <translation>Llámame ahora</translation>
     </valueTranslation>
     <valueTranslation>
+        <masterLabel>Expertise request</masterLabel>
+        <translation>Solicitud peritación</translation>
+    </valueTranslation>
+    <valueTranslation>
         <masterLabel>Interacción programada</masterLabel>
         <translation><!-- Interacción programada --></translation>
     </valueTranslation>
@@ -29,11 +33,31 @@
         <translation>Otro</translation>
     </valueTranslation>
     <valueTranslation>
+        <masterLabel>Receipt review</masterLabel>
+        <translation>Revisión recibo</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Reminder</masterLabel>
+        <translation>Recordatorio</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Scaled other areas</masterLabel>
+        <translation>Escalado otras áreas</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Scaling Supervisor</masterLabel>
+        <translation>Supervisor de escalado</translation>
+    </valueTranslation>
+    <valueTranslation>
         <masterLabel>Send Letter</masterLabel>
         <translation>Enviar carta</translation>
     </valueTranslation>
     <valueTranslation>
         <masterLabel>Send Quote</masterLabel>
         <translation>Enviar reseña</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Technical direction scaling</masterLabel>
+        <translation>Escalado dirección técnica</translation>
     </valueTranslation>
 </StandardValueSetTranslation>

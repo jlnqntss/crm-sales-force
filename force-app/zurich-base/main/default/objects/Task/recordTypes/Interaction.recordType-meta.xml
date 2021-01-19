@@ -2,6 +2,7 @@
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Interaction</fullName>
     <active>true</active>
+    <compactLayoutAssignment>OCS_Interaction</compactLayoutAssignment>
     <label>Interaction</label>
     <picklistValues>
         <picklist>Priority</picklist>

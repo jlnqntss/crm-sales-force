@@ -28,10 +28,6 @@
                 <behavior>Edit</behavior>
                 <field>CommercialStructureName__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>TotalOptions__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -333,6 +329,7 @@
     <relatedLists>
         <fields>QUOTE.QUOTENUMBER</fields>
         <fields>QUOTE.NAME</fields>
+        <fields>PackageDescription__c</fields>
         <fields>TotalPremium__c</fields>
         <relatedList>RelatedQuoteList</relatedList>
         <sortField>QUOTE.QUOTENUMBER</sortField>

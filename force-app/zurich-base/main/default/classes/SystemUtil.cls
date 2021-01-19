@@ -973,7 +973,7 @@ public without sharing class SystemUtil
         for (Contact con : listaContactos)
         {
             legalEntityName = legalIdentityByLabel.get(con.LegalEntity__c);
-
+ 
             matchCode = con.Email + String.valueOfGmt(con.Birthdate);
             if( mapEmailBirth != null )
                 mapEmailBirth.put(matchCode, con);
@@ -1127,6 +1127,7 @@ public without sharing class SystemUtil
             AccountId,
             ContactId__r.Id,
             ContactId__r.CustomerNum__c,
+            ContactId__r.Status__c,
             LegalEntity__c,
             QuoteEntry__c,
             QbLastPage__c,

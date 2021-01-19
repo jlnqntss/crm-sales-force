@@ -22,6 +22,16 @@ global without sharing class OrderUtil
         {
             System.debug('The Quote exists >>> ' + quoteSF.Id);
             quote.Id = quoteSF.Id;
+            System.debug('quoteSF.ContactId__r.Status__c >>> ' + quoteSF.ContactId__r.Status__c);
+            System.debug('contact.Status__c >>> ' + contact.Status__c);
+            // nts (nbizkarra) - 13/ene/2021 - Copiar el consentimiento a nivel de quote
+            //If the lead change to a customer, the quote must have the same consent of the original lead (consent is not updated)
+            if( !(quoteSF.ContactId__r.Status__c == 'Lead' && contact.Status__c == 'Activo') ){
+
+                quote.receiveMarketing__c = contact.receiveMarketing__c;
+
+            }
+
             if (quote.QbLastPage__c != null)
             {
                 if (
@@ -52,6 +62,9 @@ global without sharing class OrderUtil
         else
         {
             System.debug('The quote does not exist');
+
+            // nts (nbizkarra) - 13/ene/2021 - Copiar el consentimiento a nivel de quote
+            quote.receiveMarketing__c = contact.receiveMarketing__c;
 
             quote = ContactUtil.upsertContact(contact, quote);
 
