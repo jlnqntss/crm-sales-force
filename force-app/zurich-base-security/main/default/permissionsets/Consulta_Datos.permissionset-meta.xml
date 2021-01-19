@@ -1748,6 +1748,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Policy__c.InfoQuoteNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Policy__c.IntermediaryId__c</field>
         <readable>true</readable>
     </fieldPermissions>
