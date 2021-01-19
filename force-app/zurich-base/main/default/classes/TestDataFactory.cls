@@ -2247,7 +2247,7 @@ public class TestDataFactory
         Map<String, Object> jsonInformation = new Map<String, Object>();
 
         //Datos comunes
-        jsonInformation.put('timeStamp', JSON.serialize(datetime.now()));
+        jsonInformation.put('timeStamp', datetimeToISOString(System.now()));
         jsonInformation.put('webEmail', email);
         jsonInformation.put('sessionId', Math.random());
         jsonInformation.put('businessCode', businessCode);
@@ -2366,11 +2366,11 @@ public class TestDataFactory
         return jsonInformation;
     }
 
-    private static String datetimeToISOString(Datetime datetimeToConvert)
+    public static String datetimeToISOString(Datetime datetimeToConvert)
     {
         return  datetimeToConvert.year() + '-' +
                 ('0'+datetimeToConvert.month()).right(2) + '-' +
-                ('0'+datetimeToConvert.day()).right(2) + '-' +
+                ('0'+datetimeToConvert.day()).right(2) +
                 'T' +
                 ('0'+datetimeToConvert.hour()).right(2) +
                 ':' +
