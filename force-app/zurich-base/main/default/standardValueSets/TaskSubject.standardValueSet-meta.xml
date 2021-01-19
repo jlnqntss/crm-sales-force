@@ -46,4 +46,34 @@
         <default>false</default>
         <label>Abandono</label>
     </standardValue>
+    <standardValue>
+        <fullName>Reminder</fullName>
+        <default>false</default>
+        <label>Reminder</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Receipt review</fullName>
+        <default>false</default>
+        <label>Receipt review</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Scaling Supervisor</fullName>
+        <default>false</default>
+        <label>Scaling Supervisor</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Technical direction scaling</fullName>
+        <default>false</default>
+        <label>Technical direction scaling</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Scaled other areas</fullName>
+        <default>false</default>
+        <label>Scaled other areas</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Expertise request</fullName>
+        <default>false</default>
+        <label>Expertise request</label>
+    </standardValue>
 </StandardValueSet>
