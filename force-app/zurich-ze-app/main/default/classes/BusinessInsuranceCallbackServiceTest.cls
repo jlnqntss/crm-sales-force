@@ -109,4 +109,42 @@ public class BusinessInsuranceCallbackServiceTest
         System.assertEquals(0, crs.size(), 'No debería haberse creado el Contact Request');
         System.assertNotEquals(null, expectedError, 'Debería haber saltado la Validation Rule de que no se permite ContactRequest mayor a 30 días en el futuro');
     }
+
+    /**
+     * Comprueba que al insertar un CallMeBack con una fecha fuera del horario de atención,
+     * se crea con la próxima hora hábil
+     * 
+     * @author rlopez
+     * @date 14/01/2020
+     */
+    @isTest
+    static void test_insertCallMeBack_within_businessHours_ok()
+    {
+        BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
+            COMPLETE_CALLBACK,
+            BusinessInsuranceCallbackService.CallMeBack.class
+            );
+
+        //Modificamos la fecha de bestTimeFrom para que sea una fecha no válida
+        List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name =: BusinessInsuranceUtil.ZE_BUSINESS_HOURS];
+        System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
+
+        Datetime notWithinDatetime = System.now();
+        while(BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime))
+        {
+            notWithinDatetime = notWithinDatetime.addDays(1);
+        }
+
+        deserializedRequest.bestTimeFrom = notWithinDatetime;
+
+        Test.startTest();
+        String contactRequestId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
+        Test.stopTest();
+
+        ContactRequest cr = [SELECT Id, PreferredContactDatetime__c FROM ContactRequest LIMIT 1];
+
+        System.assertEquals(String.valueOf(cr.Id), contactRequestId, 'Se debería haber creado 1 contact request, el ID recibido debería coincidir');
+        System.assertEquals(true, cr.PreferredContactDatetime__c != notWithinDatetime, 'La fecha debería ser distinta a la que hemos especificado en la petición');
+        System.assertEquals(true, BusinessHours.isWithin(businessHoursList.get(0).Id, cr.PreferredContactDatetime__c), 'La nueva fecha debería estar dentro del horario de atención');
+    }
 }
