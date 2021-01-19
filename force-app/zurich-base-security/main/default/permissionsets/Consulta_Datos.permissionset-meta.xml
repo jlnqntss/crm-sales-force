@@ -1478,6 +1478,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Event.Response__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Event.Type</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2074,6 +2079,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.QueueTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
