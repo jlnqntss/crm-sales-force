@@ -45,7 +45,7 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
             {
                 for ( Contact lead: leads )
                 {
-                    // nts (nbizkarra) - 17/dic/2020 - Include Subscribers
+                    // nts (nbizkarra) - 17/dic/2020 -  Include Subscribers
                     // Si es lead de IBA, subscriber y no está desuscrito se borra toda la información de la tarificación
                     // Se mantiene: Nombre, email, isSubscriber, SourceCountry, Legal Entity, Record Type, Partner y Status
                     if ( lead.IsSubscriber__c == true && lead.HasOptedOutOfEmail == false)
@@ -73,6 +73,7 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
                         lead.MonthExpiryDate__c = null;
                         lead.Nationality__c = null;
                         lead.YearExpiryDate__c = null;
+                        lead.Abandoned_Lead__c = false;
                     
                         subscribersToUpdate.add(lead);
                     }

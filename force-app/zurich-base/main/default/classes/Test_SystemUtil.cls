@@ -340,8 +340,10 @@ public class Test_SystemUtil
         SET<String> keys = new Set<String>();
         keys.add('testexisting@test.com');
 
+        SET<String> mobiles = new Set<String>();
+
         Test.startTest();
-        SystemUtil.contactsSelectorMatchCode(keys, null, null, null, mapa);
+        SystemUtil.contactsSelectorMatchCode(keys, mobiles, null, null, null, mapa);
         // mapa = SystemUtil.contactsSelectorSubscribers(keys);
 
         System.assert (
@@ -392,8 +394,10 @@ public class Test_SystemUtil
         SET<String> keys = new Set<String>();
         keys.add('andrea11@test.com');
 
+        SET<String> mobiles = new Set<String>();
+
         Test.startTest();
-        SystemUtil.contactsSelectorMatchCode(keys, mapa1, mapa2, mapa3, null);
+        SystemUtil.contactsSelectorMatchCode(keys, mobiles, mapa1, mapa2, mapa3, null);
 
         System.assert (
             !mapa1.isEmpty(),

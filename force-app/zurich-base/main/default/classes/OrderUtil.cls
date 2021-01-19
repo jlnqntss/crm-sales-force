@@ -5,7 +5,7 @@
 global without sharing class OrderUtil
 {
     /**
-     * Método que inserta o actualiza una quote y sus objetos relacionados.
+     * Método que inserta o actualiza  una quote y sus objetos relacionados.
      * @author nbizkarra
      * @date 08/04/2020
      **/
@@ -22,16 +22,6 @@ global without sharing class OrderUtil
         {
             System.debug('The Quote exists >>> ' + quoteSF.Id);
             quote.Id = quoteSF.Id;
-            System.debug('quoteSF.ContactId__r.Status__c >>> ' + quoteSF.ContactId__r.Status__c);
-            System.debug('contact.Status__c >>> ' + contact.Status__c);
-            // nts (nbizkarra) - 13/ene/2021 - Copiar el consentimiento a nivel de quote
-            //If the lead change to a customer, the quote must have the same consent of the original lead (consent is not updated)
-            if( !(quoteSF.ContactId__r.Status__c == 'Lead' && contact.Status__c == 'Activo') ){
-
-                quote.receiveMarketing__c = contact.receiveMarketing__c;
-
-            }
-
             if (quote.QbLastPage__c != null)
             {
                 if (
@@ -62,9 +52,6 @@ global without sharing class OrderUtil
         else
         {
             System.debug('The quote does not exist');
-
-            // nts (nbizkarra) - 13/ene/2021 - Copiar el consentimiento a nivel de quote
-            quote.receiveMarketing__c = contact.receiveMarketing__c;
 
             quote = ContactUtil.upsertContact(contact, quote);
 
@@ -459,7 +446,7 @@ global without sharing class OrderUtil
                 policy.Pricebook2Id = ExternalRequestUtil.Pricebook.Id;
 
                 policy.RecordTypeId = SystemUtil.getOrderRecordTypeIdByName( 'Policy' + legalEntityName );
-
+                
                 //Crear versión de póliza
                 if ( !String.isBlank(policy.PolicyContractSerial__c) )
                 {
@@ -478,7 +465,7 @@ global without sharing class OrderUtil
                         ExternalRequestUtil.policyVersionsToUpdateList.put( pversion.Name, pversion );
                     }
                 }
-
+                
                 if ( !String.isBlank(policy.MasterPolicyNum__c) )
                 {
                     //Asociar partner
@@ -503,6 +490,18 @@ global without sharing class OrderUtil
                             policy.Offline__c = true;
                         }
                     }
+                }
+             
+                // nts (nbizkarra) - 07/ene/2021 - Modelo de atribución
+                // Se relaciona la póliza con el agente si el cliente tiene tareas de llamada registradas
+                if ( !contactoPolicy.Tasks.isEmpty() )
+                {   
+                    policy.RelatedAgent__c = contactoPolicy.Tasks.get(0).OwnerId;
+                    //Relacionar la tarea a la póliza:                       
+                    //task.WhatId= policy.PolicyNum__c; No es posible relacionarlo con el id externo, se hará después de instertar la poliza
+                    //upsert with relationships on polymorphic keys (whatId is polymorhpic) is not yet supported.                            
+                    ExternalRequestUtil.tasksToUpdate.put( policy.PolicyNum__c, contactoPolicy.Tasks.get(0));
+
                 }
 
                 //Descuentos

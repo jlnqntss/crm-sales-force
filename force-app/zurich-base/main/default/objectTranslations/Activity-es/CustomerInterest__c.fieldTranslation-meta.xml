@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Interés del cliente</label>
+    <name>CustomerInterest__c</name>
+    <picklistValues>
+        <masterLabel>Interested</masterLabel>
+        <translation>Interesado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Not interested</masterLabel>
+        <translation>No interesado</translation>
+    </picklistValues>
+</CustomFieldTranslation>

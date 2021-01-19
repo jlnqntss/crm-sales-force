@@ -199,11 +199,12 @@ public class Test_ContactUtil
         insert ExistingLead;
 
         SET<String> keys = new Set<String>();
+        SET<String> mobiles = new Set<String>();
         Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         keys.add(ExistingLead.Email);
-        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode, null);
+        SystemUtil.contactsSelectorMatchCode(keys, mobiles, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode, null);
 
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
@@ -269,11 +270,12 @@ public class Test_ContactUtil
         insert customer;
 
         SET<String> keys = new Set<String>();
+        SET<String> mobiles = new Set<String>();
         Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         keys.add(customer.Email);
-        SystemUtil.contactsSelectorMatchCode(keys, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode, null);
+        SystemUtil.contactsSelectorMatchCode(keys, mobiles, mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode, null);
 
         Pricebook2 Pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
@@ -338,11 +340,12 @@ public class Test_ContactUtil
 
         SET<String> keys = new Set<String>();
         keys.add(customer.Email);
+        SET<String> mobiles = new Set<String>();
         Map<String, Contact> mapContactsMatchCodeLECountry = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         SystemUtil.contactsSelectorMatchCode(
-            keys, mapContactsMatchCodeLECountry, mapContactsMatchCodeLE, mapContactsMatchCode, null
+            keys, mobiles, mapContactsMatchCodeLECountry, mapContactsMatchCodeLE, mapContactsMatchCode, null
             );
 
         Pricebook2 Pricebook = new Pricebook2(
@@ -581,12 +584,13 @@ public class Test_ContactUtil
         insert customer;
 
         SET<String> keys = new Set<String>();
+        SET<String> mobiles = new Set<String>();
         Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         Map<String, List<Contact> > mapSubscribers = new Map<String, List<Contact> >();
         keys.add(customer.Email);
-        SystemUtil.contactsSelectorMatchCode(keys,
+        SystemUtil.contactsSelectorMatchCode(keys, mobiles,
                                              mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode,
                                              mapSubscribers
                                              );
@@ -652,12 +656,13 @@ public class Test_ContactUtil
         insert customer;
 
         SET<String> keys = new Set<String>();
+        SET<String> mobiles = new Set<String>();
         Map<String, Contact> mapContactsMatchCodeCountry = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCodeLE = new Map<String, Contact>();
         Map<String, Contact> mapContactsMatchCode = new Map<String, Contact>();
         Map<String, List<Contact> > mapSubscribers = new Map<String, List<Contact> >();
         keys.add(customer.Email);
-        SystemUtil.contactsSelectorMatchCode(keys,
+        SystemUtil.contactsSelectorMatchCode(keys, mobiles,
                                              mapContactsMatchCodeCountry, mapContactsMatchCodeLE, mapContactsMatchCode,
                                              mapSubscribers
                                              );
