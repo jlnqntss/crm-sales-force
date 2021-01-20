@@ -193,4 +193,17 @@
             <value>OCS Inquiry</value>
         </criteriaItems>
     </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>OCSInquiry_Z_GI_ES</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>OCSInquiry_Z_GI_ES</label>
+        <sharedTo>
+            <group>Write_Z_ES</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>OCS Inquiry</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
 </SharingRules>
