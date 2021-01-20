@@ -19,7 +19,7 @@ public without sharing class BusinessInsuranceRaterService
     public static final String INVALID_FIELD_STATUSCODE = 'INVALID_FIELD';
     public static final String INVALID_BUSINESS_CODE_STATUSCODE = 'INVALID_BUSINESS_CODE';
 
-    public static final String QUEUE_NAME = 'ZurichEmpresas';
+    public static final String QUEUE_NAME = 'Voz_ZurichEmpresas';
     public static final String ZURICH_LEGAL_ENTITY = '001';
     public static final String SPANISH_PHONE_PREFIX = '+34';
     public static final String PROFILE_NAME = 'ZE User';
@@ -601,7 +601,7 @@ public without sharing class BusinessInsuranceRaterService
             genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
 
             Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
-                formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now() 
+                formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now()
             );
 
             //Creamos ContactRequest para cualquiera de los pasos
