@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>51.0</apiVersion>
+    <apiVersion>50.0</apiVersion>
     <assignments>
         <name>Asignacion_lista</name>
         <label>Asignacion lista</label>
@@ -248,7 +248,7 @@
         </fields>
         <fields>
             <name>NewCallback</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Nuevo Callback&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Nuevo Callback&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -314,17 +314,7 @@
             <targetReference>Recuperar_Caso</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
-    <variables>
-        <name>BotonCallback</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>&lt;button&gt; Nuevo Callback&lt;/button&gt;</stringValue>
-        </value>
-    </variables>
+    <status>Active</status>
     <variables>
         <name>ClosestCRCount</name>
         <dataType>Number</dataType>
