@@ -3886,6 +3886,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.PartnerSFCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PartnerSector__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Partner__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7243,7 +7253,7 @@
         <editable>true</editable>
         <field>Order.InsuredObjectName__c</field>
         <readable>true</readable>
-    </fieldPermissions>  
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Order.RelatedAgent__c</field>
