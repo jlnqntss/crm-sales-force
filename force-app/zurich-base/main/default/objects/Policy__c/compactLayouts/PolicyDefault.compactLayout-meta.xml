@@ -5,7 +5,7 @@
     <fields>ProductId__c</fields>
     <fields>PolicyHolder__c</fields>
     <fields>BusinessName__c</fields>
-    <fields>IntermediaryName__c</fields>
+    <fields>IntermediaryNameForm__c</fields>
     <fields>TotalPremium__c</fields>
     <label>Policy Default</label>
 </CompactLayout>
