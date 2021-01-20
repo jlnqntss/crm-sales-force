@@ -293,6 +293,8 @@ public without sharing class BusinessInsuranceRaterService
      * Además, se encarga de crear el ámbito y las vías de contacto para ese cliente
      *
      * @author rlopez
+     * 
+     * @change nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
      */
     private static Account createLead(Request formData)
     {
@@ -318,16 +320,88 @@ public without sharing class BusinessInsuranceRaterService
             RecordTypeId = leadRecordTypeId,
             LegalEntity__c = ZURICH_LEGAL_ENTITY
             );
-        insert accountToCreate;
 
-        Account createdLead = [SELECT Id, PersonContactId, Name FROM Account WHERE Id =: accountToCreate.Id LIMIT 1];
+        // Prepare the External Id with the webEmail and the webPhone fields
+        string externalid = '';
+        if( String.isNotBlank(formData.webEmail)) externalid = formData.webEmail;
+        if( String.isNotBlank(formData.webPhone)) externalid += formData.webPhone;
 
-        //Creamos un Scope para el cliente que acabamos de crear
-        currentScope = createScope(accountToCreate, formData.businessCode);
+        // If is not blank execute an upsert
+        if( String.isNotBlank(externalid) ) {
+            accountToCreate.LeadWebId__c = externalid;
+            
+            System.Debug('---------------- external id: ' + externalid);
+            upsert accountToCreate LeadWebId__c;
+        } else {
+            insert accountToCreate;
+        }
 
-        //Creamos vías de contacto para ese cliente y ese scope
-        createContactPointsForScope(currentScope, formData.webEmail, formData.webPhone);
+        string query = 'SELECT Id, PersonContactId, Name ';
+        List<string> scopeConditions = new List<string>();
 
+        // ContactPointEmail child query and Scope Email condition
+        if( String.isNotBlank(formData.webEmail) ) {
+            query += ', (SELECT id, IsPrimary, ActiveFromDate, EmailAddress, Scope__c, ParentId, ScopeId__c FROM ContactPointEmails WHERE EmailAddress = \'' + formData.webEmail + '\')';
+
+            scopeConditions.add('PrimaryEmail__c = \'' + formData.webEmail + '\'');
+        }
+
+        // ContactPointPhone child query and Scope Phone condition
+        if( String.isNotBlank(formData.webPhone) ) {
+            query += ', (SELECT id, IsPrimary, ActiveFromDate, TelephoneNumber, Scope__c, ParentId, ScopeId__c FROM ContactPointPhones WHERE TelephoneNumber = \'' + formData.webPhone + '\')';
+
+            scopeConditions.add('PrimaryPhone__c = \'' + formData.webPhone + '\'');
+        }
+
+        // Scope child query
+        if( !scopeConditions.isEmpty() ) {
+            query += ', (SELECT id, Scope__c, Name, AccountId__c, HasOptedOutOfEmail__c, Contactable__c, LastContactableModifiedDate__c FROM Scope__r WHERE ';
+            query += String.join(scopeConditions, ' AND ');
+            query += ')';
+        }
+                        
+        query += ' FROM Account WHERE Id = \'' + accountToCreate.Id + '\' LIMIT 1';
+
+        /*
+        Account createdLead = [
+            SELECT Id, PersonContactId, Name,
+                (SELECT id, PrimaryEmail__c, PrimaryPhone__c FROM Scope__r), 
+                (SELECT id, EmailAddress FROM ContactPointEmails),
+                (SELECT id, TelephoneNumber FROM ContactPointPhones)
+            FROM Account WHERE Id =: accountToCreate.Id LIMIT 1
+        ];*/
+        List<Account> accounts = Database.query(query);
+
+        Account createdLead = null;
+        if( !accounts.isEmpty() ) {
+            createdLead = accounts[0];
+
+            // Scope creation
+            if( createdLead.Scope__r != null && !createdLead.Scope__r.isEmpty() ) {
+                currentScope = createdLead.Scope__r[0];
+            } else {
+                //Creamos un Scope para el cliente que acabamos de crear
+                currentScope = createScope(accountToCreate, formData.businessCode);
+            }
+
+            // ContactPoints creation
+            string webEmail = formData.webEmail;
+            string webPhone = formData.webPhone;
+
+            if( createdLead.ContactPointEmails != null && !createdLead.ContactPointEmails.isEmpty() ) {
+                // To avoid creation in "createContactPointsForScope" method if already exist
+                webEmail = null;
+            }
+
+            if( createdLead.ContactPointPhones != null && !createdLead.ContactPointPhones.isEmpty() ) {
+                // To avoid creation in "createContactPointsForScope" method if already exist
+                webPhone = null;
+            }
+
+            //Creamos vías de contacto para ese cliente y ese scope
+            createContactPointsForScope(currentScope, formData.webEmail, formData.webPhone);
+        }
+    
         return createdLead;
     }
 
