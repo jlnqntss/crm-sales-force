@@ -171,6 +171,22 @@
         <fields>Scope__c</fields>
         <profileName>ZE User</profileName>
     </profileSearchLayouts>
+    <profileSearchLayouts>
+        <fields>NAME</fields>
+        <fields>AccountId__c</fields>
+        <fields>PrimaryPhone__c</fields>
+        <fields>PrimaryEmail__c</fields>
+        <fields>Contactable__c</fields>
+        <profileName>OCS User</profileName>
+    </profileSearchLayouts>
+    <profileSearchLayouts>
+        <fields>NAME</fields>
+        <fields>AccountId__c</fields>
+        <fields>PrimaryPhone__c</fields>
+        <fields>PrimaryEmail__c</fields>
+        <fields>Contactable__c</fields>
+        <profileName>System Administrator</profileName>
+    </profileSearchLayouts>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>

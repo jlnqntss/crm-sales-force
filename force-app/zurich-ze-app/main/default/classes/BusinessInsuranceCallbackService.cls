@@ -3,7 +3,7 @@ public class BusinessInsuranceCallbackService
     public static final String REQUIRED_FIELD_MISSING = 'Required field is missing';
     public static final String REQUIRED_FIELD_MISSING_STATUSCODE = 'REQUIRED_FIELD_MISSING';
     public static final String FAIL_INSERT_CALLMEBACK_STATUSCODE = 'FAIL_INSERT_CALLMEBACK';
-    public static final String QUEUE_NAME = 'ZurichEmpresas';
+    public static final String QUEUE_NAME = 'Voz_ZurichEmpresas';
     //public static final String QUEUE_NOT_EXISTS = 'There is no queue ZurichEmpresas in Genesys Cloud';
     //public static final String QUEUE_NOT_EXISTS_STATUSCODE = 'QUEUE_NO_EXISTS';
 
@@ -35,7 +35,7 @@ public class BusinessInsuranceCallbackService
         try
         {
             ContactRequest callMeBack = new ContactRequest();
-            callMeBack.PreferredContactDatetime__c = requestCallMeBack.bestTimeFrom;
+            callMeBack.PreferredContactDatetime__c = BusinessInsuranceUtil.getPreferredContactDatetime(requestCallMeBack.bestTimeFrom);
             callMeBack.PreferredPhone = requestCallMeBack.phone;
             callMeBack.WebName__c = requestCallMeBack.name;
             if( !genesysQueue.isEmpty() )

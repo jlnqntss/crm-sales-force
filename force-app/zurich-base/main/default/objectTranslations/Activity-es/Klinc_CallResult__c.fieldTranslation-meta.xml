@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Resultado de la llamada</label>
+    <name>Klinc_CallResult__c</name>
+    <picklistValues>
+        <masterLabel>No answer</masterLabel>
+        <translation>No contesta</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Replanned</masterLabel>
+        <translation>Replanificada</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Valid</masterLabel>
+        <translation>Útil</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Wrong number</masterLabel>
+        <translation>Número incorrecto</translation>
+    </picklistValues>
+</CustomFieldTranslation>
