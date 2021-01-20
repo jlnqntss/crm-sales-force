@@ -443,7 +443,7 @@ public with sharing class Test_OrderUtil
 
         //Create new task associated  to existing customer
         Task task = new Task(
-            CallResult__c= Label.Valid,
+            Klinc_CallResult__c = Label.Valid,
             CustomerInterest__c = Label.Interested,
             RecordTypeId = recordTypeId,
             WhoId = cont.id

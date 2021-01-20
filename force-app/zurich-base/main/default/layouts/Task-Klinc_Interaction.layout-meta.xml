@@ -25,7 +25,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>CallResult__c</field>
+                <field>Klinc_CallResult__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

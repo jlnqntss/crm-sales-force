@@ -3,7 +3,7 @@
     <fullName>KLINC_customerInterest</fullName>
     <active>true</active>
     <description>Validation rule  that checks that customer&apos;s interest is filled when the call result is valid.</description>
-    <errorConditionFormula>ISPICKVAL(CallResult__c ,&quot;Valid&quot;) &amp;&amp; ISPICKVAL(CustomerInterest__c,&quot;&quot;)</errorConditionFormula>
+    <errorConditionFormula>ISPICKVAL(Klinc_CallResult__c ,&quot;Valid&quot;) &amp;&amp; ISPICKVAL(CustomerInterest__c,&quot;&quot;)</errorConditionFormula>
     <errorDisplayField>CustomerInterest__c</errorDisplayField>
     <errorMessage>Customer&apos;s interest must be entered.</errorMessage>
 </ValidationRule>
