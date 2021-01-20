@@ -252,57 +252,30 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>Callback_Section1</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>Callback_Section1_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>Fecha_y_hora_de_preferencia</name>
-                    <dataType>DateTime</dataType>
-                    <fieldText>Fecha y hora de preferencia</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>true</isRequired>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>6</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>Callback_Section1_Column2</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>Telefono</name>
-                    <extensionName>flowruntime:phone</extensionName>
-                    <fieldType>ComponentInstance</fieldType>
-                    <inputParameters>
-                        <name>required</name>
-                        <value>
-                            <booleanValue>true</booleanValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>value</name>
-                        <value>
-                            <elementReference>Recuperar_Caso.SuppliedPhone</elementReference>
-                        </value>
-                    </inputParameters>
-                    <isRequired>true</isRequired>
-                    <storeOutputAutomatically>true</storeOutputAutomatically>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>6</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <isRequired>false</isRequired>
+            <name>Fecha_y_hora_de_preferencia</name>
+            <dataType>DateTime</dataType>
+            <fieldText>Fecha y hora de preferencia</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Telefono</name>
+            <extensionName>flowruntime:phone</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>Recuperar_Caso.SuppliedPhone</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
