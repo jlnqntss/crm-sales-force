@@ -144,6 +144,14 @@ global without sharing class ContactUtil
                     emailBirthDateLECountryCode = emailBirthDateLECode + incomingContact.sourceCountry__c + 
                             incomingContact.Partner__c;
                 }
+            } // nts (nbizkarra) - 11/ene/2021 - If email is empty, create matchcode with sourcecountry+mobilephone
+            else if ( String.isBlank(incomingContact.Email) && !String.isBlank(incomingContact.MobilePhone) 
+                    && !String.isBlank(incomingContact.sourceCountry__c) && null != incomingContact.Birthdate )
+            {   
+                emailBirthDateCode = incomingContact.SourceCountry__c + incomingContact.MobilePhone + String.valueOfGmt(incomingContact.Birthdate);
+                emailBirthDateLECode = emailBirthDateCode + legalEntity;
+                emailBirthDateLECountryCode = emailBirthDateLECode + incomingContact.sourceCountry__c + incomingContact.Partner__c;     
+
             }
 
             System.debug( '>>> ExternalRequestUtil.mapContacts ' + ExternalRequestUtil.mapContacts );
@@ -178,6 +186,11 @@ global without sharing class ContactUtil
                         //         );
                         //     }
                         // }
+                        // nts (nbizkarra) - 11/ene/2021 - avoid overwritting existing email in salesforce's contact when incoming is empty
+                        if( String.isBlank(incomingContact.Email) && !String.isBlank(alreadyInSFContact.Email) ){
+
+                            incomingContact.Email = alreadyInSFContact.Email;
+                        }
                         incomingContact.CustomerNum__c = alreadyInSFContact.CustomerNum__c;
                         ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
                     }
@@ -223,7 +236,7 @@ global without sharing class ContactUtil
                     }
                     else
                     {
-                        // todo: always will be the same country
+                        // todo:  always will be the same country
                         // if ( incomingContact.sourceCountry__c == alreadyInSFContact.sourceCountry__c ) {
                         incomingContact.Id = alreadyInSFContact.Id;
                         // } else {
@@ -472,7 +485,6 @@ global without sharing class ContactUtil
                     quote.AccountId = alreadyInSFContact.AccountId;
                     quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
                 }
-
             } // NOT FOUND
             else
             {

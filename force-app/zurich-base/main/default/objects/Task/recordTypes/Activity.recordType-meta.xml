@@ -2,6 +2,7 @@
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Activity</fullName>
     <active>true</active>
+    <compactLayoutAssignment>OCS_Interaction</compactLayoutAssignment>
     <label>Activity</label>
     <picklistValues>
         <picklist>Priority</picklist>
@@ -28,51 +29,35 @@
             <fullName>Nueva</fullName>
             <default>true</default>
         </values>
-        <values>
-            <fullName>Pendiente</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Planificada</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Subject</picklist>
-        <values>
-            <fullName>Abandono</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Buzón de saturación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Buzón fuera de horario</fullName>
-            <default>false</default>
-        </values>
         <values>
             <fullName>Call</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Call me now</fullName>
+            <fullName>Expertise request</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Interacción programada</fullName>
+            <fullName>Receipt review</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Other</fullName>
+            <fullName>Reminder</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Send Letter</fullName>
+            <fullName>Scaled other areas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Send Quote</fullName>
+            <fullName>Scaling Supervisor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Technical direction scaling</fullName>
             <default>false</default>
         </values>
     </picklistValues>

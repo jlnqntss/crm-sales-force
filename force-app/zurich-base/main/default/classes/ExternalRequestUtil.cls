@@ -49,6 +49,7 @@ global without sharing class ExternalRequestUtil {
   // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
   public static Set<String> contactSameProd;
   public static Set<String> sameProd;
+  public static Set<String> mobilePhones;
 
   public static Set<String> quotesToSearch;
   public static Set<String> policiesToSearch;
@@ -119,6 +120,8 @@ global without sharing class ExternalRequestUtil {
   public static Map<String, Account> partnersToUpdateList;
   public static Map<String, PolicyVersion__c> policyVersionsToUpdateList;
 
+  public static Map<String, Task> tasksToUpdate;
+
   //---------------------------------------------------------------------------
   // Main method
   public static void processExternalRequests(
@@ -154,6 +157,8 @@ global without sharing class ExternalRequestUtil {
     // nts (nbizkarra) - 19/11/2020 - Include search quote with same product 
     contactSameProd = new Set<String>();
     sameProd = new Set<String>();
+
+    mobilePhones = new Set<String>();
 
     quotesToSearch = new Set<String>();
     policiesToSearch = new Set<String>();
@@ -241,6 +246,8 @@ global without sharing class ExternalRequestUtil {
     listCovers = new List<Cover__c>();
     partnersToUpdateList = new Map<String, Account>();
     policyVersionsToUpdateList = new Map<String, PolicyVersion__c>();
+
+    tasksToUpdate = new Map<String, Task>();
 
     // By default is the original IBA (spain)
     AccountFieldCustomerNum = ACCOUNT_FIELD_IBA;
@@ -544,6 +551,44 @@ global without sharing class ExternalRequestUtil {
         }
       // }
       orderItemsToProcess.put(actualRequest.Id, orderItemList);
+
+      // nts (nbizkarra) - 05/01/2021 - fill insured device name in the order, used to help customer care team
+      // Only for  GI
+      if (incomingOrder.LegalEntity__c == Label.GeneralInsurance){
+
+        String deviceName;
+        
+        if( incomingOrder.Bundle__c != null ){
+
+          if( incomingOrder.Bundle__c.equals(Label.NoBundle)  || incomingOrder.Bundle__c == null){
+          
+            deviceName = orderItemList.get(0).itemModel__c;
+  
+          }else{ //If it is a bundle, fill it with bundle name
+            
+            deviceName = incomingOrder.Bundle__c;
+            
+          }
+        }
+        
+        //update Order device name field
+        if ( entityType == 'Policy' ){
+
+          if(recordsToProcess.containsKey(actualRequest.id)){
+
+            Order policy =  (Order) recordsToProcess.get(actualRequest.id);
+            policy.InsuredObjectName__c = deviceName;
+            recordsToProcess.put(actualRequest.id, policy);
+
+          }
+
+        } else if (entityType == 'QuoteEntry') {
+
+          if(quotesToProcess.containsKey(actualRequest.id))
+            quotesToProcess.get(actualRequest.id).InsuredObjectName__c = deviceName;
+
+        }
+      }  
     }
 
     //---------------------------------
@@ -662,6 +707,7 @@ global without sharing class ExternalRequestUtil {
     // SEARCH Contacts
     contactsToSearch.add(contact.customerNum__c);
     contactEmails.add(contact.email);
+    mobilePhones.add(contact.MobilePhone);
 
     // SEARCH Partners (account)
     if (!String.isBlank(contact.masterPolicyNum__c)) {
@@ -839,6 +885,7 @@ global without sharing class ExternalRequestUtil {
     // mapContactsEmailBirthDate = SystemUtil.contactsSelectorEmailBirthDate( contactEmails );
     SystemUtil.contactsSelectorMatchCode(
       contactEmails, 
+      mobilePhones,
       mapContactsEmailBirthDateLECountry, mapContactsEmailBirthDateLE, mapContactsEmailBirthDate,
       mapSubscribers
     );
@@ -846,7 +893,7 @@ global without sharing class ExternalRequestUtil {
     // nts (nbizkarra) - 17/11/2020 - Include search among subscribers
     // mapSubscribers = SystemUtil.contactsSelectorSubscribers(contactEmails);
 
-    // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
+    // nts (nbizkarra) -  19/11/2020 - Include search quote with same product
     mapQuoteSameProd = SystemUtil.getQuoteSameProduct(contactSameProd, sameProd);
 
     mapPartners = SystemUtil.partnerSelector( partnersToSearch );
@@ -858,11 +905,12 @@ global without sharing class ExternalRequestUtil {
     mapCovers = SystemUtil.coversSelector( coversToSearch );
   }
 
-  //---------------------------------------------------------------------------
+  //-------------------------------------------------------------:--------------
   // Process
   private static void processObjects( List<ExternalRequest__c> externalRequestList ) 
   {
     System.debug('- - - - - ExternalRequestUtil.processObjects - - - - -');
+    System.debug('- - - - - ExternalRequestUtil.processObjects - - - - -: ' + externalRequestList );
     for (ExternalRequest__c externalRequestItem : externalRequestList) {
       // nts (agonzalezisasi) - 24/11/2020 - check if it didnt already fail in the parser
       if( externalRequestItem.processResult__c == null || externalRequestItem.processResult__c != 'KO' ) {
@@ -1104,6 +1152,20 @@ global without sharing class ExternalRequestUtil {
 
     if (claimsToUpsert != null && !claimsToUpsert.isEmpty()) {
       upsert claimsToUpsert.values() Case.Fields.ClaimNumber__c;
+    }
+    // nts (nbizkarra) - 07/ene/2021 - Modelo de atribución
+    if (tasksToUpdate != null && !tasksToUpdate.isEmpty()) {
+
+      //relacionar tarea con id de SF de la póliza
+      for( String key: tasksToUpdate.keySet() ){
+
+        if(ordersToUpdateList.containsKey(key)){
+
+          tasksToUpdate.get(key).WhatId = ordersToUpdateList.get(key).id;
+
+        }
+      }
+      upsert tasksToUpdate.values();
     }
   }
 

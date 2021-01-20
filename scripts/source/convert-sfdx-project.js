@@ -9,8 +9,9 @@ const { argv, exit } = require("process");
 async function main() {
   try {
     let dir = argv[2];
+    let tmpDir = "./tmp";
 
-    convertSFDXProject(dir);
+    convertSFDXProject(dir, `${tmpDir}`);
   } catch (error) {
     console.error(error);
     exit(1);

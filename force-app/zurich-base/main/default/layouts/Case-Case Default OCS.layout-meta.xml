@@ -181,6 +181,16 @@
             </layoutItem>
         </relatedContentItems>
     </relatedContent>
+    <relatedLists>
+        <relatedList>RelatedFileList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>MergedRecord.CaseNumber</fields>
+        <fields>MergedRecord.Subject</fields>
+        <fields>LatestMaster.CaseNumber</fields>
+        <fields>CreatedDate</fields>
+        <relatedList>RelatedMergeHistoryList</relatedList>
+    </relatedLists>
     <relatedObjects>ContactId</relatedObjects>
     <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>

@@ -33,13 +33,13 @@ public without sharing class BusinessInsuranceRaterService
 
     public static Account processFormData(Request formData)
     {
-        if( String.isBlank(formData.webEmail) )
+        /*if( String.isBlank(formData.webEmail) )
         {
             throw new BusinessInsuranceRaterServiceException(
                       INVALID_FIELD_STATUSCODE,
                       'WebEmail field is empty'
                       );
-        }
+        }*/
 
         //0. Inicializamos scopeSettings
         initScopeSettings(formData);
@@ -117,7 +117,7 @@ public without sharing class BusinessInsuranceRaterService
      * En caso de no existir, se creará un PersonAccount de tipo Lead (y sus registros relacionados: Scope y ContactPoints)
      *
      * @author rlopez
-     * 
+     *
      * @change nts (agonzalezisasi) - 08/12/2021 - Actualizar algunos datos del Customer encontrado con los datos de la Request
      */
     private static Account manageCustomer(Request formData)
@@ -147,7 +147,9 @@ public without sharing class BusinessInsuranceRaterService
         {
             //Creamos un nuevo Account
             customers.add( createLead(formData) );
-        } else {
+        }
+        else
+        {
             // Se actualizan algunos datos del Customer con lo que llega de la request
             updateCustomer(customers.get(0), formData);
         }
@@ -297,9 +299,14 @@ public without sharing class BusinessInsuranceRaterService
         Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
         BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
+        String lastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName);
+        if(String.isBlank(lastName))
+        {
+            lastName = 'Desconocido';
+        }
         Account accountToCreate = new Account(
             FirstName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.firstName : ''),
-            LastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName),
+            LastName = lastName,
             Family__c = accountInformation.family,
             CommercialActivity__c = accountInformation.commercialActivity,
             AnnualRevenue = accountInformation.annualRevenue,
@@ -326,13 +333,14 @@ public without sharing class BusinessInsuranceRaterService
 
     /**
      * Método encargado de actualizar algunos de los campos del Customer encontrado con los datos recibidos del request
-     *  
+     *
      * @author nts (agonzalezisasi)
      * @date 08/01/2021
      */
-    private static void updateCustomer(Account customer, Request formData) 
+    private static void updateCustomer(Account customer, Request formData)
     {
-        if( customer != null && formData != null ) {
+        if( customer != null && formData != null )
+        {
             Account accountToUpdate = new Account(Id= customer.Id);
 
             accountToUpdate.Family__c = formData.accountInformation.family;
@@ -592,12 +600,16 @@ public without sharing class BusinessInsuranceRaterService
             List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
             genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
 
+            Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
+                formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now() 
+            );
+
             //Creamos ContactRequest para cualquiera de los pasos
             ContactRequest contactRequestToCreate = new ContactRequest(
                 GenesysCloudQueueId__c = (!genesysQueue.isEmpty() ? genesysQueue.get(0).Id : null),
                 OwnerId = currentAdvisorId,
                 PreferredChannel = (String.isBlank(formData.webPhone) ? 'Email' : 'Phone'),
-                PreferredContactDatetime__c = ( String.isNotBlank(formData.bestTimeFrom) ? Datetime.valueOf( JSON.deserialize(formData.bestTimeFrom, Datetime.class) ) : System.now() ),
+                PreferredContactDatetime__c = preferredContactDatetime,
                 PreferredPhone = formData.webPhone,
                 RequestReason = 'Offer',
                 Status = 'New',
@@ -720,7 +732,7 @@ public without sharing class BusinessInsuranceRaterService
     {
         List<Opportunity> existingOffers = new OpportunitiesSelector(
             new Set<String> {'Id', 'OwnerId'}
-            ).selectByAccountIdScopesAndOwnerProfile(currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String>{PROFILE_NAME});
+            ).selectByAccountIdScopesAndOwnerProfile(currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String> {PROFILE_NAME});
 
         if( existingOffers.isEmpty() )
         {
@@ -1058,9 +1070,12 @@ public without sharing class BusinessInsuranceRaterService
         //Desde el Flow ZECreateLead no se quiere crear ContactRequest
         public Boolean doNotCreateCallback {
             get {
-                if(doNotCreateCallback == null){
+                if(doNotCreateCallback == null)
+                {
                     return false;
-                }else{
+                }
+                else
+                {
                     return doNotCreateCallback;
                 }
             }
@@ -1069,7 +1084,7 @@ public without sharing class BusinessInsuranceRaterService
             }
         }
 
-        public String timeStamp {
+        public Datetime timeStamp {
             get;
             set {
                 setRequiredFields('Request' + 'timeStamp');
@@ -1118,14 +1133,14 @@ public without sharing class BusinessInsuranceRaterService
                 status = value;
             }
         }
-        public String bestTimeFrom {
+        public Datetime bestTimeFrom {
             get;
             set {
                 setRequiredFields('Request' + 'bestTimeFrom');
                 bestTimeFrom = value;
             }
         }
-        public String bestTimeUntil {
+        public Datetime bestTimeUntil {
             get;
             set {
                 setRequiredFields('Request' + 'bestTimeUntil');

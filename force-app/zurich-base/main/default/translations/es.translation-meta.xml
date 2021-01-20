@@ -5603,6 +5603,10 @@
         </promptVersions>
     </prompts>
     <quickActions>
+        <label>Recordatorio</label>
+        <name>CallReminder_Klinc</name>
+    </quickActions>
+    <quickActions>
         <label><!-- Follow Up --></label>
         <name>Follow_Up</name>
     </quickActions>
