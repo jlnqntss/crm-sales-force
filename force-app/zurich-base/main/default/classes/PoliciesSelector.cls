@@ -108,6 +108,11 @@ public with sharing class PoliciesSelector extends BaseSelector
     {
         if(String.isNotBlank(policyNumber))
         {
+            if(policyNumber.length() > 14) // completar con 0 por la izquierda hasta 14 digitos
+            {
+                policyNumber = policyNumber.leftPad(14, '0');
+            }
+
             String query = String.format(
                 'SELECT {0} FROM Policy__c ' +
                 'WHERE InfoPolicyNumber__c = : policyNumber ',

@@ -107,6 +107,14 @@ public with sharing class AccountsSelector
     {
         if(policyNumbers != null && !policyNumbers.isEmpty())
         {
+            for (Integer i = 0; i < policyNumbers.size(); i++)
+            {
+                // rellenar con 0 hasta completar 14 digitos
+                if(policyNumbers.get(i) != null && policyNumbers.get(i).length() < 14)
+                {
+                    policyNumbers.set(i, policyNumbers.get(i).leftPad(14, '0'));
+                }
+            }
             return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT PolicyHolder__c FROM Policy__c WHERE InfoPolicyNumber__c IN :policyNumbers) AND RecordTypeId IN :this.recordTypeIds];
         }
         else
@@ -125,6 +133,14 @@ public with sharing class AccountsSelector
     {
         if(quoteNumbers != null && !quoteNumbers.isEmpty())
         {
+            for (Integer i = 0; i < quoteNumbers.size(); i++)
+            {
+                // rellenar con 0 hasta completar 14 digitos
+                if(quoteNumbers.get(i) != null && quoteNumbers.get(i).length() < 14)
+                {
+                    quoteNumbers.set(i, quoteNumbers.get(i).leftPad(14, '0'));
+                }
+            }
             return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT AccountId FROM Opportunity WHERE InfoQuoteNumber__c IN :quoteNumbers) AND RecordTypeId IN :this.recordTypeIds];
         }
         else
@@ -168,7 +184,7 @@ public with sharing class AccountsSelector
             for(String code : codes)
             {
                 paddedCodes.add(code.leftPad(10, '0'));
-                
+
             }
 
             return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE INFOIntermediaryCode__c IN :paddedCodes AND RecordTypeId IN :this.recordTypeIds];
