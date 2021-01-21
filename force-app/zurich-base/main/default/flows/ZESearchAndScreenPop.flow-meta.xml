@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>PopSearchPage</name>
-        <label>Abrir ficha de búsqueda</label>
-        <locationX>578</locationX>
-        <locationY>398</locationY>
-        <actionName>c:RedirectToSearchAction</actionName>
-        <actionType>component</actionType>
-        <inputParameters>
-            <name>searchFor</name>
-            <value>
-                <elementReference>phone</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
         <description>Utiliza un Aura para ir al email o tarea</description>
         <name>RedirectToEmailMessage</name>
         <label>Abrir el Email en una pestaña</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>398</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
@@ -35,8 +20,8 @@
         <description>Utiliza un Aura para ir al contacto</description>
         <name>RedirectToRecord</name>
         <label>Ir a ficha del registro encontrado</label>
-        <locationX>50</locationX>
-        <locationY>278</locationY>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <connector>
@@ -54,8 +39,8 @@
         <description>Utiliza un Aura para ir al email o tarea</description>
         <name>RedirectToRelatedRecord</name>
         <label>Abrir subpestaña con registro relacionado</label>
-        <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -73,13 +58,136 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>49.0</apiVersion>
+    <assignments>
+        <description>Almacenamos el valor del WebName recuperado</description>
+        <name>SaveWebName</name>
+        <label>Guardar WebName</label>
+        <locationX>842</locationX>
+        <locationY>638</locationY>
+        <assignmentItems>
+            <assignToReference>WebName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FindContactRequest.WebName__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>phone</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FindContactRequest.PreferredPhone</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>OpenCreateLeadFlow</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Almacenamos el valor del WebName y del Phone recuperado</description>
+        <name>SaveWebNameAndPhone</name>
+        <label>Guardar WebName y Phone</label>
+        <locationX>50</locationX>
+        <locationY>518</locationY>
+        <assignmentItems>
+            <assignToReference>WebName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FindContactRequestById.WebName__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>phone</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FindContactRequestById.PreferredPhone</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>OpenCreateLeadFlowFromRecordId</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>ContactRequestFoundByIdDecision</name>
+        <label>¿Hemos encontrado ContactRequest?</label>
+        <locationX>182</locationX>
+        <locationY>398</locationY>
+        <defaultConnector>
+            <targetReference>RedirectToRecord</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>ContactRequestFoundByIdOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FindContactRequestById</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SaveWebNameAndPhone</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ContactRequestFoundDecision</name>
+        <label>¿Hemos encontrado ContactRequest?</label>
+        <locationX>974</locationX>
+        <locationY>518</locationY>
+        <defaultConnector>
+            <targetReference>OpenCreateLeadFlow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>ContactRequestFoundOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FindContactRequest</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SaveWebName</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>HasEmailIdDecision</name>
+        <label>¿Hay Email Id?</label>
+        <locationX>776</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>FindContactRequest</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>HasEmailIdOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>relatedrecordid</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RedirectToEmailMessage</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>HasRecordIdDecision</name>
         <label>¿Hay Record Id?</label>
-        <locationX>314</locationX>
+        <locationX>479</locationX>
         <locationY>158</locationY>
         <defaultConnector>
-            <targetReference>RelatedRecordIdExists</targetReference>
+            <targetReference>HasEmailIdDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -93,49 +201,17 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>RedirectToRecord</targetReference>
+                <targetReference>FindContactRequestById</targetReference>
             </connector>
             <label>Sí</label>
         </rules>
     </decisions>
-    <decisions>
-        <description>Si nos llega un related record desde la llamada de Genesys, intentamos abrir la ficha del registro relacionado</description>
-        <name>RelatedRecordIdExists</name>
-        <label>¿Hay Related Record Id?</label>
-        <locationX>578</locationX>
-        <locationY>278</locationY>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
-        <rules>
-            <name>Yes</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>relatedrecordid</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>RedirectToEmailMessage</targetReference>
-            </connector>
-            <label>Sí</label>
-        </rules>
-        <rules>
-            <name>IsSearchPhoneAvailable</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>phone</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>PopSearchPage</targetReference>
-            </connector>
-            <label>¿Hay teléfono para buscar?</label>
-        </rules>
-    </decisions>
+    <formulas>
+        <description>Calcula la fecha de ayer</description>
+        <name>Yesterday</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW() + (-1)</expression>
+    </formulas>
     <interviewLabel>Zurich Empresas - Apertura de ficha de Genesys {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Zurich Empresas - Apertura de ficha de Genesys</label>
     <processMetadataValues>
@@ -157,15 +233,123 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordLookups>
+        <description>Busca el registro de ContactRequest que ha podido lanzar este Flow para recuperar el campo WebName__c</description>
+        <name>FindContactRequest</name>
+        <label>Buscar ContactRequest por Teléfono</label>
+        <locationX>974</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ContactRequestFoundDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CreatedDate</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <elementReference>Yesterday</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>PreferredPhone</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>phone</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>WhoId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ContactRequest</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>WebName__c</queriedFields>
+        <queriedFields>PreferredPhone</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Comprobamos si el Id recibido es de un Contact Request</description>
+        <name>FindContactRequestById</name>
+        <label>Buscar ContactRequest por Id</label>
+        <locationX>182</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ContactRequestFoundByIdDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordid</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ContactRequest</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>WebName__c</queriedFields>
+        <queriedFields>PreferredPhone</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>188</locationX>
+        <locationX>353</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>HasRecordIdDecision</targetReference>
         </connector>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
+    <subflows>
+        <description>Llamada al Flow de Creación de Leads para que muestre el formulario al agente</description>
+        <name>OpenCreateLeadFlow</name>
+        <label>Abrir Flow de Creación de Leads</label>
+        <locationX>974</locationX>
+        <locationY>854</locationY>
+        <flowName>ZECreateLead</flowName>
+        <inputAssignments>
+            <name>InputPhone</name>
+            <value>
+                <elementReference>phone</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>InputWebName</name>
+            <value>
+                <elementReference>WebName</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Llamada al Flow de Creación de Leads para que muestre el formulario al agente</description>
+        <name>OpenCreateLeadFlowFromRecordId</name>
+        <label>Abrir Flow de Creación de Leads</label>
+        <locationX>50</locationX>
+        <locationY>638</locationY>
+        <flowName>ZECreateLead</flowName>
+        <inputAssignments>
+            <name>InputPhone</name>
+            <value>
+                <elementReference>phone</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>InputWebName</name>
+            <value>
+                <elementReference>WebName</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>phone</name>
         <dataType>String</dataType>
@@ -199,5 +383,13 @@
         <value>
             <numberValue>0.0</numberValue>
         </value>
+    </variables>
+    <variables>
+        <description>Variable para almacenar el WebName recuperado en Buscar ContactRequest</description>
+        <name>WebName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

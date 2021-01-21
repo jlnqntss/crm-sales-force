@@ -1,5 +1,6 @@
 public class BusinessInsuranceCallbackService
 {
+    public static AccountSearchService.Scope accSearchServiceScope = new AccountSearchService.Scope();
     public static final String REQUIRED_FIELD_MISSING = 'Required field is missing';
     public static final String REQUIRED_FIELD_MISSING_STATUSCODE = 'REQUIRED_FIELD_MISSING';
     public static final String FAIL_INSERT_CALLMEBACK_STATUSCODE = 'FAIL_INSERT_CALLMEBACK';
@@ -32,6 +33,9 @@ public class BusinessInsuranceCallbackService
         List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
         genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
 
+        accSearchServiceScope.scope = AccountSearchService.SCOPE_CODE_ZE;
+        List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone}, accSearchServiceScope);
+
         try
         {
             ContactRequest callMeBack = new ContactRequest();
@@ -41,6 +45,10 @@ public class BusinessInsuranceCallbackService
             if( !genesysQueue.isEmpty() )
             {   //Cola de Genesys OPCIONAL, si no se rellena, no entrará al ProcessBuilder que rellena el id de interacción
                 callMeBack.GenesysCloudQueueId__c = genesysQueue[0].Id;
+            }
+            if( !customers.isEmpty() )
+            {
+                callMeBack.WhoId = customers.get(0).PersonContactId;
             }
             insert callMeBack;
             callMeBackId = String.valueOf(callMeBack.Id);
