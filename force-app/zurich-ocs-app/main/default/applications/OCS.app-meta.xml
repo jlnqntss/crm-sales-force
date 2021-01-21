@@ -392,12 +392,14 @@
             <tab>Relationship__c</tab>
         </mappings>
         <mappings>
+            <fieldName>AccountId__c</fieldName>
             <tab>Scope__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>
         </mappings>
         <mappings>
+            <fieldName>AccountId</fieldName>
             <tab>standard-Case</tab>
         </mappings>
         <mappings>
