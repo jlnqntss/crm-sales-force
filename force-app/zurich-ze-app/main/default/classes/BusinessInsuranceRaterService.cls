@@ -18,6 +18,7 @@ public without sharing class BusinessInsuranceRaterService
     public static final String LASTSTEP_FIELD = 'lastStep';
     public static final String INVALID_FIELD_STATUSCODE = 'INVALID_FIELD';
     public static final String INVALID_BUSINESS_CODE_STATUSCODE = 'INVALID_BUSINESS_CODE';
+    public static final String DUPLICATE_REQUEST_STATUSCODE = 'DUPLICATE_LEAD_REQUEST';
 
     public static final String QUEUE_NAME = 'Voz_ZurichEmpresas';
     public static final String ZURICH_LEGAL_ENTITY = '001';
@@ -321,87 +322,35 @@ public without sharing class BusinessInsuranceRaterService
             LegalEntity__c = ZURICH_LEGAL_ENTITY
             );
 
-        // Prepare the External Id with the webEmail and the webPhone fields
+        // nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
+        // Preparamos el external id con los campos webEmail y webPhone si estan informados
         string externalid = '';
         if( String.isNotBlank(formData.webEmail)) externalid = formData.webEmail;
         if( String.isNotBlank(formData.webPhone)) externalid += formData.webPhone;
 
-        // If is not blank execute an upsert
+        // Si alguno de ellos no esta en blanco hacemos upsert
         if( String.isNotBlank(externalid) ) {
             accountToCreate.LeadWebId__c = externalid;
             
-            System.Debug('---------------- external id: ' + externalid);
-            upsert accountToCreate LeadWebId__c;
+            //System.Debug('---------------- external id: ' + externalid);
+            Database.UpsertResult result = Database.upsert(accountToCreate, Schema.Account.LeadWebId__c);
+            // En caso de que sea actualizacion la consideramos duplicado por ha sido en muy poco tiempo y
+            // no le ha dado tiempo a indexar la busqueda inicial por DNI, Email, Phone
+            if( !result.isCreated() ) {
+                throw new BusinessInsuranceRaterServiceException(DUPLICATE_REQUEST_STATUSCODE, 'Error on DML DUPLICATE_VALUE operation: duplicate value found with Web Form Data');
+            }
         } else {
             insert accountToCreate;
         }
 
-        string query = 'SELECT Id, PersonContactId, Name ';
-        List<string> scopeConditions = new List<string>();
+        Account createdLead = [SELECT Id, PersonContactId, Name FROM Account WHERE Id =: accountToCreate.Id LIMIT 1];
 
-        // ContactPointEmail child query and Scope Email condition
-        if( String.isNotBlank(formData.webEmail) ) {
-            query += ', (SELECT id, IsPrimary, ActiveFromDate, EmailAddress, Scope__c, ParentId, ScopeId__c FROM ContactPointEmails WHERE EmailAddress = \'' + formData.webEmail + '\')';
+        //Creamos un Scope para el cliente que acabamos de crear
+        currentScope = createScope(accountToCreate, formData.businessCode);
 
-            scopeConditions.add('PrimaryEmail__c = \'' + formData.webEmail + '\'');
-        }
+        //Creamos vías de contacto para ese cliente y ese scope
+        createContactPointsForScope(currentScope, formData.webEmail, formData.webPhone);
 
-        // ContactPointPhone child query and Scope Phone condition
-        if( String.isNotBlank(formData.webPhone) ) {
-            query += ', (SELECT id, IsPrimary, ActiveFromDate, TelephoneNumber, Scope__c, ParentId, ScopeId__c FROM ContactPointPhones WHERE TelephoneNumber = \'' + formData.webPhone + '\')';
-
-            scopeConditions.add('PrimaryPhone__c = \'' + formData.webPhone + '\'');
-        }
-
-        // Scope child query
-        if( !scopeConditions.isEmpty() ) {
-            query += ', (SELECT id, Scope__c, Name, AccountId__c, HasOptedOutOfEmail__c, Contactable__c, LastContactableModifiedDate__c FROM Scope__r WHERE ';
-            query += String.join(scopeConditions, ' AND ');
-            query += ')';
-        }
-                        
-        query += ' FROM Account WHERE Id = \'' + accountToCreate.Id + '\' LIMIT 1';
-
-        /*
-        Account createdLead = [
-            SELECT Id, PersonContactId, Name,
-                (SELECT id, PrimaryEmail__c, PrimaryPhone__c FROM Scope__r), 
-                (SELECT id, EmailAddress FROM ContactPointEmails),
-                (SELECT id, TelephoneNumber FROM ContactPointPhones)
-            FROM Account WHERE Id =: accountToCreate.Id LIMIT 1
-        ];*/
-        List<Account> accounts = Database.query(query);
-
-        Account createdLead = null;
-        if( !accounts.isEmpty() ) {
-            createdLead = accounts[0];
-
-            // Scope creation
-            if( createdLead.Scope__r != null && !createdLead.Scope__r.isEmpty() ) {
-                currentScope = createdLead.Scope__r[0];
-            } else {
-                //Creamos un Scope para el cliente que acabamos de crear
-                currentScope = createScope(accountToCreate, formData.businessCode);
-            }
-
-            // ContactPoints creation
-            string webEmail = formData.webEmail;
-            string webPhone = formData.webPhone;
-
-            if( createdLead.ContactPointEmails != null && !createdLead.ContactPointEmails.isEmpty() ) {
-                // To avoid creation in "createContactPointsForScope" method if already exist
-                webEmail = null;
-            }
-
-            if( createdLead.ContactPointPhones != null && !createdLead.ContactPointPhones.isEmpty() ) {
-                // To avoid creation in "createContactPointsForScope" method if already exist
-                webPhone = null;
-            }
-
-            //Creamos vías de contacto para ese cliente y ese scope
-            createContactPointsForScope(currentScope, formData.webEmail, formData.webPhone);
-        }
-    
         return createdLead;
     }
 
