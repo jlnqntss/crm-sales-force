@@ -18,6 +18,7 @@ public without sharing class BusinessInsuranceRaterService
     public static final String LASTSTEP_FIELD = 'lastStep';
     public static final String INVALID_FIELD_STATUSCODE = 'INVALID_FIELD';
     public static final String INVALID_BUSINESS_CODE_STATUSCODE = 'INVALID_BUSINESS_CODE';
+    public static final String DUPLICATE_REQUEST_STATUSCODE = 'DUPLICATE_LEAD_REQUEST';
 
     public static final String QUEUE_NAME = 'Voz_ZurichEmpresas';
     public static final String ZURICH_LEGAL_ENTITY = '001';
@@ -293,6 +294,8 @@ public without sharing class BusinessInsuranceRaterService
      * Además, se encarga de crear el ámbito y las vías de contacto para ese cliente
      *
      * @author rlopez
+     * 
+     * @change nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
      */
     private static Account createLead(Request formData)
     {
@@ -318,7 +321,27 @@ public without sharing class BusinessInsuranceRaterService
             RecordTypeId = leadRecordTypeId,
             LegalEntity__c = ZURICH_LEGAL_ENTITY
             );
-        insert accountToCreate;
+
+        // nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
+        // Preparamos el external id con los campos webEmail y webPhone si estan informados
+        string externalid = '';
+        if( String.isNotBlank(formData.webEmail)) externalid = formData.webEmail;
+        if( String.isNotBlank(formData.webPhone)) externalid += formData.webPhone;
+
+        // Si alguno de ellos no esta en blanco hacemos upsert
+        if( String.isNotBlank(externalid) ) {
+            accountToCreate.LeadWebId__c = externalid;
+            
+            //System.Debug('---------------- external id: ' + externalid);
+            Database.UpsertResult result = Database.upsert(accountToCreate, Schema.Account.LeadWebId__c);
+            // En caso de que sea actualizacion la consideramos duplicado por ha sido en muy poco tiempo y
+            // no le ha dado tiempo a indexar la busqueda inicial por DNI, Email, Phone
+            if( !result.isCreated() ) {
+                throw new BusinessInsuranceRaterServiceException(DUPLICATE_REQUEST_STATUSCODE, 'Error on DML DUPLICATE_VALUE operation: duplicate value found with Web Form Data');
+            }
+        } else {
+            insert accountToCreate;
+        }
 
         Account createdLead = [SELECT Id, PersonContactId, Name FROM Account WHERE Id =: accountToCreate.Id LIMIT 1];
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LeadWebId__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>This field is used to avoid duplicate of leads when the ZE form is abandoned. Will be used concatenating the email and phone.</description>
+    <externalId>true</externalId>
+    <label>LeadWebId</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>
