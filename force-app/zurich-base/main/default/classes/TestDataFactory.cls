@@ -1122,7 +1122,7 @@ public class TestDataFactory
         Schema.DescribeFieldResult nationalTypeFieldResult = Account.NationalIdType__c.getDescribe();
         List<Schema.PicklistEntry> nationalTypeValues = nationalTypeFieldResult.getPicklistValues();
 
-        Schema.DescribeFieldResult typeFieldResult = Account.Type.getDescribe();
+        Schema.DescribeFieldResult typeFieldResult = Account.Class__c.getDescribe();
         List<Schema.PicklistEntry> typeValues = typeFieldResult.getPicklistValues();
 
         Schema.DescribeFieldResult statusFieldResult = Account.Status__c.getDescribe();
