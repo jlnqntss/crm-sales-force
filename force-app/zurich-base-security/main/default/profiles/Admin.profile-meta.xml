@@ -7898,6 +7898,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.PolicyType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.PolicyVersion__c</field>
         <readable>true</readable>
