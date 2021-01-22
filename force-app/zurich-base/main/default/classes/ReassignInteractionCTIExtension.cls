@@ -5,6 +5,11 @@
  */
 global without sharing class ReassignInteractionCTIExtension implements purecloud.CTIExtension.SaveLog
 {
+    private final static String TASK_SUBTYPE_CALL = 'Call';
+    private final static String TASK_SUBTYPE_EMAIL = 'Email';
+    private final static String TASK_STATUS_ASSIGNED = 'Asignada';
+    private final static String TASK_STATUS_CLOSED = 'Cerrada';
+
     /**
      * Identifica una tarea a través del parámetro data.interaction.id y devuelve dicha tarea modificando el usuario Asignado
      * @param data: JSON string con la información de Genesys Cloud
@@ -48,7 +53,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     interactionTask.WhatId = existingInteractionTasks[0].WhatId;
                     interactionTask.WhoId = existingInteractionTasks[0].WhoId;
                 }
-                else if(interactionTask.type == 'Email')
+                else if(interactionTask.type == TASK_SUBTYPE_EMAIL)
                 {
                     List<EmailMessage> relatedEmailMessages = new EmailMessagesSelector(new Set<String> { 'Id', 'ParentId', 'Status', 'ToIds', 'ActivityId' }).selectByInteractionId(new Set<String> { interactionId });
 
@@ -57,14 +62,15 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     {
                         interactionTask.WhatId = relatedEmailMessages[0].ParentId;
                     }
-                    interactionTask.TaskSubtype = 'Email';
+                    interactionTask.TaskSubtype = TASK_SUBTYPE_EMAIL;
                 }
 
-                if(interactionTask.type == 'Call')
+                if(interactionTask.type == TASK_SUBTYPE_CALL)
                 {
-                    interactionTask.TaskSubtype = 'Call';
+                    interactionTask.TaskSubtype = TASK_SUBTYPE_CALL;
                 }
-                interactionTask.Status = 'Asignada';
+
+                interactionTask.Status = TASK_STATUS_ASSIGNED;
                 interactionTask.CallObject = interactionId;
                 interactionTask.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
                 interactionTask.OwnerId = UserInfo.getUserId();
@@ -74,7 +80,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             }
             else if(eventName == 'interactionDisconnected')
             {
-                interactionTask.Status = 'Cerrada';
+                interactionTask.Status = TASK_STATUS_CLOSED;
             }
 
             //Actualizar Owner del registro relacionado en cualquier situación que se tenga whatId
@@ -102,22 +108,26 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * @author jmartinezpisson
      * @date 17/11/2020
      * @param {Map<String, Object>} callLog: Mapa clave-valor con los datos de la tarea
-     * data.eventName: Representa ele vento que lanza la creación/actualización del Call Log
      * @return Tarea generada
      */
     private static Task createTaskFromCallLog(Map<String, Object> callLog)
     {
         Task interactionTask;
-        Id taskId;
+        Id taskId, whatId, whoId;
 
         if(callLog.containsKey('Id') )
         {
-            String id = String.valueOf(callLog.remove('Id') );
+            taskId = parseId(callLog.remove('Id') );
+        }
 
-            if(id.length() > 10)
-            {
-                taskId = id;
-            }
+        if(callLog.containsKey('WhatId') )
+        {
+            whatId = parseId(callLog.remove('WhatId') );
+        }
+
+        if(callLog.containsKey('WhoId') )
+        {
+            whoId = parseId(callLog.remove('WhoId') );
         }
 
         interactionTask = (Task) JSON.deserialize(JSON.serialize(callLog), Task.class);
@@ -127,7 +137,32 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             interactionTask.Id = taskId;
         }
 
+        if(String.isNotBlank(whatId) )
+        {
+            interactionTask.WhatId = whatId;
+        }
+
+        if(String.isNotBlank(whoId) )
+        {
+            interactionTask.WhoId = whoId;
+        }
+
         return interactionTask;
+    }
+
+    /**
+     * Parsea un Id de un Object
+     *
+     * @author jmartinezpisson
+     * @date 17/11/2020
+     * @param {Object} idToParse Id a tratar
+     * @return {Id} Id parseado. null si el valor no era un Id.
+     */
+    private static Id parseId(Object idToParse)
+    {
+        String id = String.valueOf(idToParse);
+
+        return id.length() > 10 ? id : null;
     }
 
     /**
@@ -165,7 +200,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
         {
             List<Opportunity> offers = [SELECT Id, AccountId, ScopeId__c, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id = :interactionTask.WhatId];
-            if(!offers.isEmpty())
+            if(!offers.isEmpty() )
             {
                 List<Opportunity> totalOffers = new List<Opportunity>();
                 totalOffers.addAll(offers);
@@ -176,7 +211,10 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     Id scopeId = offers[0].ScopeId__c;
                     List<Opportunity> extraOffers = new List<Opportunity>();
                     extraOffers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id != :interactionTask.WhatId AND AccountId = :accountId AND ScopeId__c = :scopeId];
-                    if(!extraOffers.isEmpty()){totalOffers.addAll(extraOffers);}
+                    if(!extraOffers.isEmpty() )
+                    {
+                        totalOffers.addAll(extraOffers);
+                    }
                 }
 
                 //Si el Owner es el Integrador hay que cambiarlo
