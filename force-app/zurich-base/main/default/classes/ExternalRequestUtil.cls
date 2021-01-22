@@ -706,8 +706,12 @@ global without sharing class ExternalRequestUtil {
 
     // SEARCH Contacts
     contactsToSearch.add(contact.customerNum__c);
-    contactEmails.add(contact.email);
-    mobilePhones.add(contact.MobilePhone);
+    if( String.isNotBlank(contact.email) ) {
+      contactEmails.add(contact.email);
+    }
+    if( String.isNotBlank(contact.MobilePhone) ) {
+      mobilePhones.add(contact.MobilePhone);
+    }
 
     // SEARCH Partners (account)
     if (!String.isBlank(contact.masterPolicyNum__c)) {
