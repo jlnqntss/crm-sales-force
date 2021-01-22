@@ -64,8 +64,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     }
                     interactionTask.TaskSubtype = TASK_SUBTYPE_EMAIL;
                 }
-
-                if(interactionTask.type == TASK_SUBTYPE_CALL)
+                else if(interactionTask.type == TASK_SUBTYPE_CALL)
                 {
                     interactionTask.TaskSubtype = TASK_SUBTYPE_CALL;
                 }
@@ -74,9 +73,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 interactionTask.CallObject = interactionId;
                 interactionTask.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
                 interactionTask.OwnerId = UserInfo.getUserId();
-
-                //Actualizar el registro relacionado con la TASK
-                //changeOwnerFromQueueToUser(interactionTask);
             }
             else if(eventName == 'interactionDisconnected')
             {
