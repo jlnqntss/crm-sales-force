@@ -81,8 +81,10 @@ public without sharing class GenesysInteractionsService
             CallObject = interactionLog.interactionId,
             RecordTypeId = interactionRecordTypeId,
             WhoId = interactionLog.customerId,
-            TaskSubtype = 'Call'
-            );
+            TaskSubtype = 'Call',
+            ANI__c = interactionLog.fromId,
+            DNIS__c = interactionLog.toId
+        );
 
         if(interactionLog.screenPopRecordId != null && Id.valueOf(interactionLog.screenPopRecordId).getSobjectType() != Contact.SobjectType)
         {
