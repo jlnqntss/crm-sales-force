@@ -4,6 +4,14 @@
         <field>ToAddress</field>
         <formula>Opportunity.ScopeId__r.PrimaryEmail__c</formula>
     </fieldOverrides>
+    <fieldOverrides>
+        <field>ValidatedFromAddress</field>
+        <formula>IF( 
+   ISPICKVAL(Opportunity.ScopeId__r.Scope__c, &apos;ZE&apos;), &apos;info.zurichempresas@zurich.com&apos;,
+  IF(ISPICKVAL(Opportunity.ScopeId__r.Scope__c, &apos;ZEO&apos;), &apos;info.orangeseguros@zurich.com&apos;,
+  &apos;&apos;)
+)</formula>
+    </fieldOverrides>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
