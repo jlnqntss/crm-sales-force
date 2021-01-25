@@ -35,12 +35,12 @@ public without sharing class BusinessInsuranceRaterService
     public static Account processFormData(Request formData)
     {
         /*if( String.isBlank(formData.webEmail) )
-        {
+           {
             throw new BusinessInsuranceRaterServiceException(
                       INVALID_FIELD_STATUSCODE,
                       'WebEmail field is empty'
                       );
-        }*/
+           }*/
 
         //0. Inicializamos scopeSettings
         initScopeSettings(formData);
@@ -294,7 +294,7 @@ public without sharing class BusinessInsuranceRaterService
      * Además, se encarga de crear el ámbito y las vías de contacto para ese cliente
      *
      * @author rlopez
-     * 
+     *
      * @change nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
      */
     private static Account createLead(Request formData)
@@ -303,7 +303,7 @@ public without sharing class BusinessInsuranceRaterService
         Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
         BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
         String lastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName);
-        if(String.isBlank(lastName))
+        if(String.isBlank(lastName) )
         {
             lastName = 'Desconocido';
         }
@@ -325,21 +325,27 @@ public without sharing class BusinessInsuranceRaterService
         // nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
         // Preparamos el external id con los campos webEmail y webPhone si estan informados
         string externalid = '';
-        if( String.isNotBlank(formData.webEmail)) externalid = formData.webEmail;
-        if( String.isNotBlank(formData.webPhone)) externalid += formData.webPhone;
+        if( String.isNotBlank(formData.webEmail) )
+            externalid = formData.webEmail;
+        if( String.isNotBlank(formData.webPhone) )
+            externalid += formData.webPhone;
 
         // Si alguno de ellos no esta en blanco hacemos upsert
-        if( String.isNotBlank(externalid) ) {
+        if( String.isNotBlank(externalid) )
+        {
             accountToCreate.LeadWebId__c = externalid;
-            
+
             //System.Debug('---------------- external id: ' + externalid);
             Database.UpsertResult result = Database.upsert(accountToCreate, Schema.Account.LeadWebId__c);
             // En caso de que sea actualizacion la consideramos duplicado por ha sido en muy poco tiempo y
             // no le ha dado tiempo a indexar la busqueda inicial por DNI, Email, Phone
-            if( !result.isCreated() ) {
+            if( !result.isCreated() )
+            {
                 throw new BusinessInsuranceRaterServiceException(DUPLICATE_REQUEST_STATUSCODE, 'Error on DML DUPLICATE_VALUE operation: duplicate value found with Web Form Data');
             }
-        } else {
+        }
+        else
+        {
             insert accountToCreate;
         }
 
@@ -625,7 +631,7 @@ public without sharing class BusinessInsuranceRaterService
 
             Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
                 formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now()
-            );
+                );
 
             //Creamos ContactRequest para cualquiera de los pasos
             ContactRequest contactRequestToCreate = new ContactRequest(

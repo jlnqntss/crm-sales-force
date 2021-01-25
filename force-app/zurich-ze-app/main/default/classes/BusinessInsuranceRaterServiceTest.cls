@@ -531,8 +531,8 @@ public with sharing class BusinessInsuranceRaterServiceTest
      * @date 11/12/2020
      */
     /*@isTest
-    static void test_processFormData_empty_webEmail_ko()
-    {
+       static void test_processFormData_empty_webEmail_ko()
+       {
         String emailFromJSON = 'newemail@fakeemail.com.invalid';
         String phoneFromJSON = '123456789';
 
@@ -571,7 +571,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             System.assertEquals(true, ex.getMessage().contains('WebEmail field is empty'), 'Error message should contain \'WebEmail field is empty\'');
         }
         Test.stopTest();
-    }*/
+       }*/
 
     /**
      * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-02
@@ -944,18 +944,18 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
 
         Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-03', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
-        
+
         //Modificamos la fecha de bestTimeFrom para que sea una fecha no válida
         List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name =: BusinessInsuranceUtil.ZE_BUSINESS_HOURS];
         System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
 
         Datetime notWithinDatetime = System.now();
-        while(BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime))
+        while(BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime) )
         {
             notWithinDatetime = notWithinDatetime.addDays(1);
         }
 
-        jsonInformation.put('bestTimeFrom', TestDataFactory.datetimeToISOString(notWithinDatetime));
+        jsonInformation.put('bestTimeFrom', TestDataFactory.datetimeToISOString(notWithinDatetime) );
 
         BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
             JSON.serialize(jsonInformation),
@@ -1097,11 +1097,11 @@ public with sharing class BusinessInsuranceRaterServiceTest
         jsonInformation.put('doNotCreateCallback', true);
 
         Test.startTest();
-            BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
-                JSON.serialize(jsonInformation),
-                BusinessInsuranceRaterService.Request.class
-                );
-            BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
         Test.stopTest();
 
         //Comprobamos que se ha generado un Contact Request

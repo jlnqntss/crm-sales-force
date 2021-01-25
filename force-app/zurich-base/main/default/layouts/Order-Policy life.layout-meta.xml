@@ -139,6 +139,10 @@
                 <behavior>Edit</behavior>
                 <field>ExcessAmount__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>receiveMarketing__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

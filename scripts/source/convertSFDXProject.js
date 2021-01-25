@@ -28,9 +28,13 @@ function convertSFDXProject(targetDirectory, tmpDirectory) {
         }
       );
       console.log("Copying package.xml");
-      moveSync(`${tmpDirectory}/package.xml`, `${tmpDirectory}/${dir.path}/package.xml`, {
-        overwrite: true
-      });
+      moveSync(
+        `${tmpDirectory}/package.xml`,
+        `${tmpDirectory}/${dir.path}/package.xml`,
+        {
+          overwrite: true
+        }
+      );
     }
 
     mergedirs(`${tmpDirectory}/${dir.path}`, `${targetDirectory}`, "overwrite");

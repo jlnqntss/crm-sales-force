@@ -35,7 +35,7 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)
     {
-        List<Contact> leads = (List<Contact>) scope; 
+        List<Contact> leads = (List<Contact>) scope;
         List<Contact> deleteLeads = new List<Contact>();
         List<Contact> subscribersToUpdate = new List<Contact>();
 
@@ -74,26 +74,26 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
                         lead.Nationality__c = null;
                         lead.YearExpiryDate__c = null;
                         lead.Abandoned_Lead__c = false;
-                    
+
                         subscribersToUpdate.add(lead);
                     }
-                    else 
+                    else
                     {
-                        deleteLeads.add(lead);            
+                        deleteLeads.add(lead);
                     }
 
                 }
-                
-                if ( deleteLeads!= null && !deleteLeads.isEmpty())
+
+                if ( deleteLeads != null && !deleteLeads.isEmpty() )
                 {
                     delete deleteLeads;
                 }
 
-                if ( subscribersToUpdate!= null && !subscribersToUpdate.isEmpty())
+                if ( subscribersToUpdate != null && !subscribersToUpdate.isEmpty() )
                 {
                     update subscribersToUpdate;
                 }
-                
+
             }
         }
         catch (Exception e)

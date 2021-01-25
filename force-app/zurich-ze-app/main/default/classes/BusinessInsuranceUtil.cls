@@ -9,7 +9,7 @@ public class BusinessInsuranceUtil
     /**
      * Método que comprueba si la fecha solicitada se encuentra dentro
      * del horario de atención.
-     * 
+     *
      * Devuelve la misma fecha si se encuentra dentro del horario o
      * la siguiente hora hábil si se encuentra fuera
      *
@@ -27,10 +27,10 @@ public class BusinessInsuranceUtil
 
         //Recuperamos la configuración del horario de atención de Zurich Empresas
         List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name=:ZE_BUSINESS_HOURS];
-        if(businessHoursList != null && !businessHoursList.isEmpty())
+        if(businessHoursList != null && !businessHoursList.isEmpty() )
         {
             Id zeBusinessHoursId = businessHoursList.get(0).Id;
-            result = ( BusinessHours.isWithin(zeBusinessHoursId, requestedDatetime) ? requestedDatetime : BusinessHours.nextStartDate(zeBusinessHoursId, requestedDatetime));
+            result = ( BusinessHours.isWithin(zeBusinessHoursId, requestedDatetime) ? requestedDatetime : BusinessHours.nextStartDate(zeBusinessHoursId, requestedDatetime) );
         }
         else
         {

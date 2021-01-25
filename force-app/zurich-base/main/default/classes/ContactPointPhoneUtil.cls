@@ -195,32 +195,32 @@ public class ContactPointPhoneUtil
         String formattedPhone = null;
 
         // Teléfono está vacío
-        if(String.isBlank(telephoneNumber))
+        if(String.isBlank(telephoneNumber) )
         {
             formattedPhone = null;
         }
         // Teléfono no está vacío y no tiene prefijo informado
-        else if(String.isBlank(areaCode) && String.isNotBlank(telephoneNumber))
+        else if(String.isBlank(areaCode) && String.isNotBlank(telephoneNumber) )
         {
             formattedPhone = telephoneNumber;
         }
         // Teléfono y prefijo informados
-        else if(String.isNotBlank(areaCode) && String.isNotBlank(telephoneNumber))
+        else if(String.isNotBlank(areaCode) && String.isNotBlank(telephoneNumber) )
         {
             // Teléfono ya tiene el prefijo informado
-            if(telephoneNumber.startsWith('+'))
+            if(telephoneNumber.startsWith('+') )
             {
                 formattedPhone = telephoneNumber;
             }
-            else 
+            else
             {
                 // Prefijo comienza con un '+'. No hace falta añadirlo
-                if(areaCode.startsWith('+'))
+                if(areaCode.startsWith('+') )
                 {
                     formattedPhone = areaCode + telephoneNumber;
                 }
                 // Prefijo no comienza con un '+'. Hace falta añadirlo
-                else 
+                else
                 {
                     formattedPhone = '+' + areaCode + telephoneNumber;
                 }

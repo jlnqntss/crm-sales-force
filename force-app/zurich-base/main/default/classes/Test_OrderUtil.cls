@@ -431,7 +431,7 @@ public with sharing class Test_OrderUtil
         Test.stopTest();
     }
 
-      /** nts (nbizkarra)
+    /** nts (nbizkarra)
      * @description Insert a new policy and check that is has been associated to the owner of the task
      * @date 07/01/2021
      */
@@ -447,8 +447,8 @@ public with sharing class Test_OrderUtil
             CustomerInterest__c = Label.Interested,
             RecordTypeId = recordTypeId,
             WhoId = cont.id
-        );
-        
+            );
+
         //New policy to process
         Order newpolicy = new Order(
             EffectiveDate = Date.valueOf('1990-01-02'),
@@ -469,7 +469,7 @@ public with sharing class Test_OrderUtil
         Test.startTest();
 
         OrderUtil.upsertPolicy(newpolicy);
-     
+
         Order policy = ExternalRequestUtil.ordersToUpdateList.get(newpolicy.PolicyNum__c);
         //Check if policy has been related to the task
         System.assertEquals(policy.id, task.WhatId);

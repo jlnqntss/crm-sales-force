@@ -113,7 +113,7 @@ public class BusinessInsuranceCallbackServiceTest
     /**
      * Comprueba que al insertar un CallMeBack con una fecha fuera del horario de atención,
      * se crea con la próxima hora hábil
-     * 
+     *
      * @author rlopez
      * @date 14/01/2020
      */
@@ -130,7 +130,7 @@ public class BusinessInsuranceCallbackServiceTest
         System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
 
         Datetime notWithinDatetime = System.now();
-        while(BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime))
+        while(BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime) )
         {
             notWithinDatetime = notWithinDatetime.addDays(1);
         }
