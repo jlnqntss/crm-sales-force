@@ -30,6 +30,7 @@ public without sharing class CaseHandler implements ITrigger
     public void beforeInsert(List<SObject> newList)
     {
         CaseUtil.assignContactToCase(newList);
+        CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
     }
 
     /**
