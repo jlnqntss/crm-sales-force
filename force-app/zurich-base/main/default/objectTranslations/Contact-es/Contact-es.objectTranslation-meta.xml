@@ -44,10 +44,6 @@
             <label><!-- Fields --></label>
             <section>Fields</section>
         </sections>
-        <sections>
-            <label><!-- Other information --></label>
-            <section>Other information</section>
-        </sections>
     </layouts>
     <recordTypes>
         <description><!-- Record type for business contacts --></description>
