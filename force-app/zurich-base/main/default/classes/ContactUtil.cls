@@ -141,9 +141,17 @@ global without sharing class ContactUtil
                 if( !String.isBlank(incomingContact.sourceCountry__c) )
                 {
                     // nts (agonzalezisasi) - 08/dic/2021 - Force to find the contact by Country and Partner
-                    emailBirthDateLECountryCode = emailBirthDateLECode + incomingContact.sourceCountry__c + 
-                            incomingContact.Partner__c;
+                    emailBirthDateLECountryCode = emailBirthDateLECode + incomingContact.sourceCountry__c +
+                                                  incomingContact.Partner__c;
                 }
+            } // nts (nbizkarra) - 11/ene/2021 - If email is empty, create matchcode with sourcecountry+mobilephone
+            else if ( String.isBlank(incomingContact.Email) && !String.isBlank(incomingContact.MobilePhone)
+                      && !String.isBlank(incomingContact.sourceCountry__c) && null != incomingContact.Birthdate )
+            {
+                emailBirthDateCode = incomingContact.SourceCountry__c + incomingContact.MobilePhone + String.valueOfGmt(incomingContact.Birthdate);
+                emailBirthDateLECode = emailBirthDateCode + legalEntity;
+                emailBirthDateLECountryCode = emailBirthDateLECode + incomingContact.sourceCountry__c + incomingContact.Partner__c;
+
             }
 
             System.debug( '>>> ExternalRequestUtil.mapContacts ' + ExternalRequestUtil.mapContacts );
@@ -178,6 +186,12 @@ global without sharing class ContactUtil
                         //         );
                         //     }
                         // }
+                        // nts (nbizkarra) - 11/ene/2021 - avoid overwritting existing email in salesforce's contact when incoming is empty
+                        if( String.isBlank(incomingContact.Email) && !String.isBlank(alreadyInSFContact.Email) )
+                        {
+
+                            incomingContact.Email = alreadyInSFContact.Email;
+                        }
                         incomingContact.CustomerNum__c = alreadyInSFContact.CustomerNum__c;
                         ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
                     }
@@ -223,7 +237,7 @@ global without sharing class ContactUtil
                     }
                     else
                     {
-                        // todo: always will be the same country
+                        // todo:  always will be the same country
                         // if ( incomingContact.sourceCountry__c == alreadyInSFContact.sourceCountry__c ) {
                         incomingContact.Id = alreadyInSFContact.Id;
                         // } else {
@@ -280,17 +294,17 @@ global without sharing class ContactUtil
                     // // The master account is updated
                     // // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
                     // {
-                        accountItem.put(customerNumField, customerNumberOnly);
-                        // Populate the Id field only if the account has the same customer number
-                        if ( alreadyInSFContact.Account.get(customerNumField) == customerNumberOnly )
-                        {
-                            ExternalRequestUtil.AccountMastersToUpdate.put( (String) accountItem.get(customerNumField), accountItem );
-                        }
-                        else
-                        {
-                            accountItem.Id = alreadyInSFContact.AccountId;
-                            ExternalRequestUtil.mastersToUpdateById.put( (String) accountItem.get(customerNumField), accountItem );
-                        }
+                    accountItem.put(customerNumField, customerNumberOnly);
+                    // Populate the Id field only if the account has the same customer number
+                    if ( alreadyInSFContact.Account.get(customerNumField) == customerNumberOnly )
+                    {
+                        ExternalRequestUtil.AccountMastersToUpdate.put( (String) accountItem.get(customerNumField), accountItem );
+                    }
+                    else
+                    {
+                        accountItem.Id = alreadyInSFContact.AccountId;
+                        ExternalRequestUtil.mastersToUpdateById.put( (String) accountItem.get(customerNumField), accountItem );
+                    }
                     // }
                 }
 
@@ -472,7 +486,6 @@ global without sharing class ContactUtil
                     quote.AccountId = alreadyInSFContact.AccountId;
                     quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
                 }
-
             } // NOT FOUND
             else
             {

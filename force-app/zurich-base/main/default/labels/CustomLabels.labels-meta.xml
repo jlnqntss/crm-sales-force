@@ -342,6 +342,22 @@
         <value>Insured Person</value>
     </labels>
     <labels>
+        <fullName>Interaction</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Interaction</shortDescription>
+        <value>Interaction</value>
+    </labels>
+    <labels>
+        <fullName>Interested</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Interested</shortDescription>
+        <value>Interested</value>
+    </labels>
+    <labels>
         <fullName>JsonIncorrecto</fullName>
         <categories>WebService Parser</categories>
         <language>en_US</language>
@@ -420,6 +436,14 @@
         <protected>false</protected>
         <shortDescription>Master</shortDescription>
         <value>Master</value>
+    </labels>
+    <labels>
+        <fullName>NoBundle</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>No bundle</shortDescription>
+        <value>No bundle</value>
     </labels>
     <labels>
         <fullName>NombreAtributoVacio</fullName>
@@ -710,6 +734,14 @@ Related fields: [{3}]</value>
         <protected>true</protected>
         <shortDescription>URLNoValida</shortDescription>
         <value>URL no válida</value>
+    </labels>
+    <labels>
+        <fullName>Valid</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Valid</shortDescription>
+        <value>Valid</value>
     </labels>
     <labels>
         <fullName>ValorListaNoValido</fullName>

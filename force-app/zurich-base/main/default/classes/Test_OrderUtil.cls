@@ -430,4 +430,50 @@ public with sharing class Test_OrderUtil
 
         Test.stopTest();
     }
+
+    /** nts (nbizkarra)
+     * @description Insert a new policy and check that is has been associated to the owner of the task
+     * @date 07/01/2021
+     */
+    @IsTest
+    static void test_relateCallToPolicy()
+    {
+        Contact cont = [SELECT ID FROM CONTACT WHERE CustomerNum__c = 'GI-3123'];
+        Id recordTypeId= Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get(Label.Interaction).getRecordTypeId();
+
+        //Create new task associated  to existing customer
+        Task task = new Task(
+            Klinc_CallResult__c = Label.Valid,
+            CustomerInterest__c = Label.Interested,
+            RecordTypeId = recordTypeId,
+            WhoId = cont.id
+            );
+
+        //New policy to process
+        Order newpolicy = new Order(
+            EffectiveDate = Date.valueOf('1990-01-02'),
+            CustomerNum__c = 'GI-3123',
+            PolicyNum__c = '8989',
+            Status = 'Sync',
+            PolicyContractStartDate__c = Date.valueOf('2020-05-02'),
+            LegalEntity__c = Label.GeneralInsurance,
+            PolicyStatus__c = Label.PolicyStatusActive,
+            RecordTypeId = SystemUtil.getOrderRecordTypeIdByName(Label.PolicyGI)
+            );
+
+        // Initialize all the lists and parameters used in util classes
+        ExternalRequestUtil.emptyStaticVariables();
+        Externalrequestutil.mapContacts = SystemUtil.contactsSelector(new Set<String> {'GI-3123'});
+        Externalrequestutil.mapPolicies = SystemUtil.policySelector( new Set<String> {'8989'} );
+
+        Test.startTest();
+
+        OrderUtil.upsertPolicy(newpolicy);
+
+        Order policy = ExternalRequestUtil.ordersToUpdateList.get(newpolicy.PolicyNum__c);
+        //Check if policy has been related to the task
+        System.assertEquals(policy.id, task.WhatId);
+
+        Test.stopTest();
+    }
 }

@@ -26,7 +26,7 @@
                 <componentInstanceProperties>
                     <name>label</name>
                     <type>decorator</type>
-                    <value>Phone</value>
+                    <value>Teléfono</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>scrollable</name>

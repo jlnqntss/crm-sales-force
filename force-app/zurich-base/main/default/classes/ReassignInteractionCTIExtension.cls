@@ -85,6 +85,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 changeOwnerFromQueueToUser(interactionTask);
             }
 
+            System.debug(interactionTask);
             upsert interactionTask;
 
             return interactionTask.Id;

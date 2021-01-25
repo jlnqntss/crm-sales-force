@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Intermediary__c</fullName>
+    <description>OCS. Muestra el intermediario del registro relacionado, si lo hubiera</description>
+    <externalId>false</externalId>
+    <formula>IF(NOT(ISBLANK(PolicyId__c)),HYPERLINK(&apos;/lightning/r/Account/&apos;&amp;PolicyId__r.IntermediaryId__c&amp;&apos;/view&apos;,PolicyId__r.IntermediaryId__r.Name,&apos;_self&apos;),
+IF(NOT(ISBLANK(ClaimId__c)),HYPERLINK(&apos;/lightning/r/Account/&apos;&amp;ClaimId__r.Policy__r.IntermediaryId__c&amp;&apos;/view&apos;,ClaimId__r.Policy__r.IntermediaryId__r.Name,&apos;_self&apos;),
+IF(NOT(ISBLANK(OfferId__c)),HYPERLINK(&apos;/lightning/r/Account/&apos;&amp;OfferId__r.IntermediaryId__c&amp;&apos;/view&apos;,OfferId__r.IntermediaryId__r.Name,&apos;_self&apos;),
+IF(OR(Account.RecordTypeId=&apos;0121x000001IJ0f&apos;,Account.RecordTypeId=&apos;0121x000001IJ0g&apos;),
+HYPERLINK(&apos;/lightning/r/Account/&apos;&amp;AccountId&amp;&apos;/view&apos;,Account.Name,&apos;_self&apos;),&apos;&apos;))))</formula>
+    <label>Intermediary</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -18,8 +18,9 @@ public without sharing class BusinessInsuranceRaterService
     public static final String LASTSTEP_FIELD = 'lastStep';
     public static final String INVALID_FIELD_STATUSCODE = 'INVALID_FIELD';
     public static final String INVALID_BUSINESS_CODE_STATUSCODE = 'INVALID_BUSINESS_CODE';
+    public static final String DUPLICATE_REQUEST_STATUSCODE = 'DUPLICATE_LEAD_REQUEST';
 
-    public static final String QUEUE_NAME = 'ZurichEmpresas';
+    public static final String QUEUE_NAME = 'Voz_ZurichEmpresas';
     public static final String ZURICH_LEGAL_ENTITY = '001';
     public static final String SPANISH_PHONE_PREFIX = '+34';
     public static final String PROFILE_NAME = 'ZE User';
@@ -33,13 +34,13 @@ public without sharing class BusinessInsuranceRaterService
 
     public static Account processFormData(Request formData)
     {
-        if( String.isBlank(formData.webEmail) )
-        {
+        /*if( String.isBlank(formData.webEmail) )
+           {
             throw new BusinessInsuranceRaterServiceException(
                       INVALID_FIELD_STATUSCODE,
                       'WebEmail field is empty'
                       );
-        }
+           }*/
 
         //0. Inicializamos scopeSettings
         initScopeSettings(formData);
@@ -293,15 +294,22 @@ public without sharing class BusinessInsuranceRaterService
      * Además, se encarga de crear el ámbito y las vías de contacto para ese cliente
      *
      * @author rlopez
+     *
+     * @change nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
      */
     private static Account createLead(Request formData)
     {
         Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
         BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
+        String lastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName);
+        if(String.isBlank(lastName) )
+        {
+            lastName = 'Desconocido';
+        }
         Account accountToCreate = new Account(
             FirstName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.firstName : ''),
-            LastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName),
+            LastName = lastName,
             Family__c = accountInformation.family,
             CommercialActivity__c = accountInformation.commercialActivity,
             AnnualRevenue = accountInformation.annualRevenue,
@@ -313,7 +321,33 @@ public without sharing class BusinessInsuranceRaterService
             RecordTypeId = leadRecordTypeId,
             LegalEntity__c = ZURICH_LEGAL_ENTITY
             );
-        insert accountToCreate;
+
+        // nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
+        // Preparamos el external id con los campos webEmail y webPhone si estan informados
+        string externalid = '';
+        if( String.isNotBlank(formData.webEmail) )
+            externalid = formData.webEmail;
+        if( String.isNotBlank(formData.webPhone) )
+            externalid += formData.webPhone;
+
+        // Si alguno de ellos no esta en blanco hacemos upsert
+        if( String.isNotBlank(externalid) )
+        {
+            accountToCreate.LeadWebId__c = externalid;
+
+            //System.Debug('---------------- external id: ' + externalid);
+            Database.UpsertResult result = Database.upsert(accountToCreate, Schema.Account.LeadWebId__c);
+            // En caso de que sea actualizacion la consideramos duplicado por ha sido en muy poco tiempo y
+            // no le ha dado tiempo a indexar la busqueda inicial por DNI, Email, Phone
+            if( !result.isCreated() )
+            {
+                throw new BusinessInsuranceRaterServiceException(DUPLICATE_REQUEST_STATUSCODE, 'Error on DML DUPLICATE_VALUE operation: duplicate value found with Web Form Data');
+            }
+        }
+        else
+        {
+            insert accountToCreate;
+        }
 
         Account createdLead = [SELECT Id, PersonContactId, Name FROM Account WHERE Id =: accountToCreate.Id LIMIT 1];
 
@@ -595,12 +629,16 @@ public without sharing class BusinessInsuranceRaterService
             List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
             genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
 
+            Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
+                formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now()
+                );
+
             //Creamos ContactRequest para cualquiera de los pasos
             ContactRequest contactRequestToCreate = new ContactRequest(
                 GenesysCloudQueueId__c = (!genesysQueue.isEmpty() ? genesysQueue.get(0).Id : null),
                 OwnerId = currentAdvisorId,
                 PreferredChannel = (String.isBlank(formData.webPhone) ? 'Email' : 'Phone'),
-                PreferredContactDatetime__c = ( String.isNotBlank(formData.bestTimeFrom) ? Datetime.valueOf( JSON.deserialize(formData.bestTimeFrom, Datetime.class) ) : System.now() ),
+                PreferredContactDatetime__c = preferredContactDatetime,
                 PreferredPhone = formData.webPhone,
                 RequestReason = 'Offer',
                 Status = 'New',
@@ -1075,7 +1113,7 @@ public without sharing class BusinessInsuranceRaterService
             }
         }
 
-        public String timeStamp {
+        public Datetime timeStamp {
             get;
             set {
                 setRequiredFields('Request' + 'timeStamp');
@@ -1124,14 +1162,14 @@ public without sharing class BusinessInsuranceRaterService
                 status = value;
             }
         }
-        public String bestTimeFrom {
+        public Datetime bestTimeFrom {
             get;
             set {
                 setRequiredFields('Request' + 'bestTimeFrom');
                 bestTimeFrom = value;
             }
         }
-        public String bestTimeUntil {
+        public Datetime bestTimeUntil {
             get;
             set {
                 setRequiredFields('Request' + 'bestTimeUntil');

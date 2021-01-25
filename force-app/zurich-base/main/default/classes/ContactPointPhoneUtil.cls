@@ -113,7 +113,7 @@ public class ContactPointPhoneUtil
                         Scope__c relatedScope = relatedScopesMap.get(key);
                         if(relatedScope != null)
                         {
-                            relatedScope.PrimaryPhone__c = newContactPointPhone.TelephoneNumber;
+                            relatedScope.PrimaryPhone__c = formatPhoneNumber(newContactPointPhone.AreaCode, newContactPointPhone.TelephoneNumber);
                             scopesToUpdate.add(relatedScope);
                         }
                     }
@@ -148,7 +148,7 @@ public class ContactPointPhoneUtil
                         Scope__c relatedScope = relatedScopesMap.get(key);
                         if(relatedScope != null)
                         {
-                            relatedScope.PrimaryPhone__c = newContactPointPhone.TelephoneNumber;
+                            relatedScope.PrimaryPhone__c = formatPhoneNumber(newContactPointPhone.AreaCode, newContactPointPhone.TelephoneNumber);
                             scopesToUpdate.add(relatedScope);
                         }
                     }
@@ -181,6 +181,53 @@ public class ContactPointPhoneUtil
         {
             GenerateScopeUtil.generateScopeEvents('ParentId', null, cppToGenerateScope);
         }
+    }
+
+    /**
+     * Formatear el número de teléfono para añadir el prefijo cuando sea necesario y este informado
+     *
+     * @author adelgado
+     * @date 18/01/2021
+     */
+    @testVisible
+    private static String formatPhoneNumber(String areaCode, String telephoneNumber)
+    {
+        String formattedPhone = null;
+
+        // Teléfono está vacío
+        if(String.isBlank(telephoneNumber) )
+        {
+            formattedPhone = null;
+        }
+        // Teléfono no está vacío y no tiene prefijo informado
+        else if(String.isBlank(areaCode) && String.isNotBlank(telephoneNumber) )
+        {
+            formattedPhone = telephoneNumber;
+        }
+        // Teléfono y prefijo informados
+        else if(String.isNotBlank(areaCode) && String.isNotBlank(telephoneNumber) )
+        {
+            // Teléfono ya tiene el prefijo informado
+            if(telephoneNumber.startsWith('+') )
+            {
+                formattedPhone = telephoneNumber;
+            }
+            else
+            {
+                // Prefijo comienza con un '+'. No hace falta añadirlo
+                if(areaCode.startsWith('+') )
+                {
+                    formattedPhone = areaCode + telephoneNumber;
+                }
+                // Prefijo no comienza con un '+'. Hace falta añadirlo
+                else
+                {
+                    formattedPhone = '+' + areaCode + telephoneNumber;
+                }
+            }
+        }
+
+        return formattedPhone;
     }
 
     /**
