@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PolicyType__c</fullName>
+    <description>OCS Generated Field for Genesys Routing</description>
+    <externalId>false</externalId>
+    <formula>IF(
+   ProductId__r.CommercialCode__c = &quot;6100&quot;, &apos;PROPAPER&apos;,
+   CASE
+   (
+      ProductId__r.TechnicalCode__c ,
+      &apos;00515&apos;,  IF( CONTAINS(&quot;99999:00001:00004:00005:00006:00001:00002:00003&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
+      &apos;00516&apos;,  IF( CONTAINS(&quot;99999:00001&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
+      &apos;00517&apos;,  IF( CONTAINS(&quot;99998:99999:00001:00002&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
+      &apos;00580&apos;,  IF( CONTAINS(&quot;00001:00002:00003:00004&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
+      &apos;00589&apos;,  IF( CONTAINS(&quot;00001&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
+      &apos;00591&apos;,  IF( CONTAINS(&quot;99999:00001&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
+      &apos;00598&apos;,  IF( CONTAINS(&quot;99999:00001&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
+      ProductId__r.GroupDescription__c
+  )
+)</formula>
+    <label>Policy Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
