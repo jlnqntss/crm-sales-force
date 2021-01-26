@@ -17,12 +17,15 @@ public without sharing class GenesysInteractionsService
     static final String SCOPE_CODE_KLINC = 'klinc';
     @TestVisible
     static final String SCOPE_CODE_CSM = 'csm';
+    @TestVisible
+    static final String SCOPE_CODE_CCS = 'ccs';
     static final Map<String, String> SCOPE_NAMES_BY_CODE = new Map<String, String>
     {
         SCOPE_CODE_ALL  => 'General',
         SCOPE_CODE_ZE => 'Zurich Empresas',
         SCOPE_CODE_KLINC => 'Klinc',
-        SCOPE_CODE_CSM => 'csm'
+        SCOPE_CODE_CSM => 'csm',
+        SCOPE_CODE_CCS => 'ccs'
     };
 
     //#region Métodos públicos
@@ -45,18 +48,23 @@ public without sharing class GenesysInteractionsService
         }
 
         // 2 - Comprobar si se trata de un mediador y buscarlo
-        if( request.scope == SCOPE_CODE_CSM )
+        if( request.scope == SCOPE_CODE_CSM)
         {
-            findIntermediary(request);
+            findPeopleByScope(request, 'intermediaries');
         }
-        // 3 - Resto de scopes
+        // 3 - Comprobar si se trata de un cliente final y buscarlo
+        else if( request.scope == SCOPE_CODE_CCS )
+        {
+            findPeopleByScope(request, 'customers');
+        }
+        // 4 - Resto de scopes
         else //FIXME: Refactorizar cuando se modifique el flow de ZE / ZE Orange para aceptar la estructura Agent
         {
-            // 3.2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
+            // 4.2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
             findBestAgentFor(request);
         }
 
-        // 4 - Se una tarea como registro de la interacción en cola
+        // 5 - Se una tarea como registro de la interacción en cola
         createOnQueueInteraction(request);
 
         return request;
@@ -248,7 +256,7 @@ public without sharing class GenesysInteractionsService
     public static SearchResult findPeopleBy(SearchRequest request)
     {
         // 1 - Comprobar que la request tiene informados todos los campos requeridos
-        if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) || String.isBlank(request.scope) || String.isBlank(request.legalEntity) )
+        if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) || String.isBlank(request.scope) || String.isBlank(request.legalEntity))
         {
             throw new GenesysPeopleServiceException(MISSING_FIELDS_REQUIRED);
         }
@@ -338,6 +346,9 @@ public without sharing class GenesysInteractionsService
             results.screenPopRecordId = customer.Id;
             results.totalPolicies = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
+
+            results.policies = findActivePolicies(customer.Id);
+            results.claims = findOpenedClaims(customer.Id);
         }
 
         return results;
@@ -450,24 +461,63 @@ public without sharing class GenesysInteractionsService
     }
 
     /**
-     * Busca el mediador a partir de su ANI
+     * Buscar a partir del ANI y scope
      *
      * @author adelgado
      * @date 26/11/2020
      */
-    public static Interaction findIntermediary(Interaction request)
+    public static Interaction findPeopleByScope(Interaction request, String filterBy)
     {
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.searchType = 'phone';
-        searchRequest.filterBy = 'intermediaries';
+        searchRequest.filterBy = filterBy;
         searchRequest.value = request.fromId;
         searchRequest.scope = request.scope;
+        searchRequest.legalEntity = request.legalEntity;
 
-        request.caller = findIntermediariesBy(searchRequest);
+        request.caller = findPeopleBy(searchRequest);
 
         request.screenPopRecordId = request.caller.screenPopRecordId;
 
         return request;
+    }
+
+    /**
+     * Obtener las pólizas activas a partir de un Id de cliente
+     *
+     * @author adelgado
+     * @date 20/01/2021
+     */
+    private static ActivePolicies findActivePolicies(Id customerId)
+    {
+        List<Policy__c> policies = new PoliciesSelector
+        (
+            new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
+        )
+        .selectByHolder(customerId);
+
+        return new ActivePolicies(policies);
+    }
+
+    /**
+     * Obtener los siniestros abiertos a partir de un Id de cliente
+     *
+     * @author adelgado
+     * @date 20/01/2021
+     */
+    private static OpenedClaims findOpenedClaims(Id customerId)
+    {
+        List<Claim__c> claims = new ClaimsSelector
+        (
+            new Set<String> 
+            {
+                'Id', 'Name', 'OwnerId', 'Owner.Email', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
+                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c'
+            }
+        )
+        .selectByHolder(customerId);
+
+        return new OpenedClaims(claims);
     }
 
     //#endregion
@@ -488,6 +538,21 @@ public without sharing class GenesysInteractionsService
         public String queueId { get; set; }
         public String lookFor { get; set; }
         public String scope { get; set; }
+        public String legalEntity 
+        { 
+            get
+            {
+                if(String.isBlank(legalEntity))
+                {
+                    return SCOPE_CODE_ALL;
+                }
+                else 
+                {
+                    return legalEntity;
+                }
+            } 
+            set; 
+        }
 
         public String screenPopRecordId { get; set; }
         public String customerId { get; set; }
@@ -545,6 +610,8 @@ public without sharing class GenesysInteractionsService
         public Integer totalPolicies;
         public Integer totalQuotes;
         public Agent[] bestAgents;
+        public ActivePolicies policies;
+        public OpenedClaims claims;
 
         public override String toString()
         {
@@ -571,6 +638,11 @@ public without sharing class GenesysInteractionsService
             this.individualsManager = individualsManager;
             this.administrationManager = administrationManager;
         }
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
     }
 
     /**
@@ -591,6 +663,203 @@ public without sharing class GenesysInteractionsService
             this.hasOpenWork = hasOpenWork;
             this.isForIndividuals = isForIndividuals;
             this.isForAdministrative = isForAdministrative;
+        }
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa la información de las pólizas activas en el CRM
+     *
+     * @author adelgado
+     */
+    public class ActivePolicies
+    {
+        public Integer total;
+        public Map<String, List<ActivePolicy>> byPartner;
+        public Map<String, List<ActivePolicy>> bySector;
+        public Map<String, List<ActivePolicy>> byIntermediary;
+        public Map<String, List<ActivePolicy>> byType;
+
+        public ActivePolicies (List<Policy__c> policies)
+        {
+            byPartner = new Map<String, List<ActivePolicy>>();
+            bySector = new Map<String, List<ActivePolicy>>();
+            byIntermediary = new Map<String, List<ActivePolicy>>();
+            byType = new Map<String, List<ActivePolicy>>();
+
+            this.total = policies.size();
+
+            for(Policy__c policy: policies)
+            {
+                ActivePolicy activePolicy = new ActivePolicy(policy);
+
+                if(String.isNotBlank(policy.Partner__r.PartnerSFCode__c))
+                {
+                    if(!byPartner.containsKey(policy.Partner__r.PartnerSFCode__c))
+                    {
+                        byPartner.put(policy.Partner__r.PartnerSFCode__c, new List<ActivePolicy>());
+                    }
+
+                    byPartner.get(policy.Partner__r.PartnerSFCode__c).add(activePolicy);
+                }
+
+                if(String.isNotBlank(policy.Partner__r.PartnerSector__c))
+                {
+                    if(!bySector.containsKey(policy.Partner__r.PartnerSector__c))
+                    {
+                        bySector.put(policy.Partner__r.PartnerSector__c , new List<ActivePolicy>());
+                    }
+
+                    bySector.get(policy.Partner__r.PartnerSector__c).add(activePolicy);
+                }
+
+                if(String.isNotBlank(policy.Intermediary_Code__c))
+                {
+                    if(!byIntermediary.containsKey(policy.Intermediary_Code__c))
+                    {
+                        byIntermediary.put(policy.Intermediary_Code__c, new List<ActivePolicy>());
+                    }
+
+                    byIntermediary.get(policy.Intermediary_Code__c).add(activePolicy);
+                }
+
+                String type = String.isNotBlank(policy.PolicyType__c) ? policy.PolicyType__c :policy.ProductId__r.GroupDescription__c;
+
+                if(String.isNotBlank(type))
+                {
+                    if(!byType.containsKey(type))
+                    {
+                        byType.put(type, new List<ActivePolicy>());
+                    }
+
+                    byType.get(type).add(activePolicy);
+                }
+            }
+        }
+      
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa la información de una póliza activa en el CRM
+     *
+     * @author adelgado
+     */
+    public class ActivePolicy
+    {
+        public String destinationCode;
+        public String id;
+        public String policyCode;
+        public String type;
+        
+        public ActivePolicy(Policy__c policy)
+        {
+            this.destinationCode = policy.Partner__r.PartnerSFCode__c;
+            this.id = policy.id;
+            this.policyCode = policy.Name;
+            this.type = String.isNotBlank(policy.PolicyType__c) ? policy.PolicyType__c : policy.ProductId__r.GroupDescription__c;
+        }
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa la información de los siniestros abiertos en el CRM
+     *
+     * @author adelgado
+     */
+    public class OpenedClaims
+    {
+        public Integer total;
+        public Map<String, List<OpenedClaim>> byOwner;
+        public Map<String, List<OpenedClaim>> byType;
+        public Boolean hasMultipleTypes;
+        public Boolean hasDifferentOwners;
+
+        public OpenedClaims (List<Claim__c> claims)
+        {
+            byOwner = new Map<String, List<OpenedClaim>>();
+            byType = new Map<String, List<OpenedClaim>>();
+
+            Set<String> claimTypes = new Set<String>();
+            Set<String> claimOwners = new Set<String>();
+            
+            for(Claim__c claim: claims)
+            {
+                claimTypes.add(claim.ClaimType__c);
+                claimOwners.add(claim.OwnerId);
+
+                OpenedClaim openedClaim = new OpenedClaim(claim);
+
+                /*if(String.isNotBlank(claim.))
+                {
+                    if(!byOwner.containsKey(claim.))
+                    {
+                        byOwner.put(claim., new List<OpenedClaim>());
+                    }
+
+                    byOwner.get(claim.).add(openedClaim);
+                }*/
+
+                String type = String.isNotBlank(claim.Policy__r.PolicyType__c) ? claim.Policy__r.PolicyType__c : claim.Policy__r.ProductId__r.GroupDescription__c;
+
+                if(String.isNotBlank(type))
+                {
+                    if(!byType.containsKey(type))
+                    {
+                        byType.put(type, new List<OpenedClaim>());
+                    }
+
+                    byType.get(type).add(openedClaim);
+                }
+            }
+
+            this.total = claims.size();
+            this.hasMultipleTypes = claimTypes.size() > 1;
+            this.hasDifferentOwners = !this.hasMultipleTypes && claimOwners.size() > 1;
+            
+        }
+      
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa la información de un siniestro abierto en una póliza en el CRM
+     *
+     * @author adelgado
+     */
+    public class OpenedClaim
+    {
+        public String id;
+        public String ownerTeam;
+        public String ownerFullname;
+        public String policyType;      
+        public String status;      
+        public String carRegistration;      
+        public String claimNumber;    
+        
+        public OpenedClaim(Claim__c claim)
+        {
+            this.id = claim.id;
+            //this.ownerTeam = claim.;
+            this.ownerFullname = claim.Owner.Email;
+            this.policyType = String.isNotBlank(claim.Policy__r.PolicyType__c) ? claim.Policy__r.PolicyType__c : claim.Policy__r.ProductId__r.GroupDescription__c;
+            this.status = claim.Status__c;
+            this.carRegistration = claim.InsuredObject__r.RegistrationNumber__c;
+            this.claimNumber = claim.Name;
         }
 
         public override String toString()

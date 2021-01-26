@@ -1814,6 +1814,22 @@ public class TestDataFactory
                     );
                 }
             }
+            when 'Partner' {
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    Integer phoneNumber = (Math.random() * 1000000000).intValue();
+                    accounts.add(
+                        new Account(
+                            Name = 'partnerName' + i,
+                            INFOBusinessCode__c = String.valueOf(phoneNumber).leftPad(10, '0'),
+                            Phone = String.valueOf(phoneNumber),
+                            RecordTypeId = recordTypeId,
+                            PartnerSector__c = 'Sector' + i,
+                            PartnerSFCode__c = 'Code' + i
+                        )
+                    );
+                }
+            }
             when 'Customer' { // PersonalAccount
                 for (Integer i = 0; i < numRecords; i++)
                 {
@@ -2616,6 +2632,88 @@ public class TestDataFactory
         }
 
         return policies;
+    }
+
+    /**
+     * Genera Asset relacionadas con pólizas
+     **
+     * @param List<Policy__c> policies lista de pólizas para las que hay que generar un listado de registros
+     * @param Integer numRecords número de registros a generar POR CADA PÓLIZA
+     */
+    public static List<Asset> generateInsuredObjectsForEachPolicy(String recordTypeName, List<Policy__c> policies, Integer numRecords)
+    {
+        List<Asset> insuredObjects = new List<Asset>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        Schema.RecordTypeInfo insuredObjectTypeInfo = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(recordTypeName);
+        Id recordTypeId;
+        if(insuredObjectTypeInfo != null)
+        {
+            recordTypeId = insuredObjectTypeInfo.getRecordTypeId();
+        }
+
+        for(Policy__c relatedPolicy: policies)
+        {
+            for(Integer i=0; i<numRecords; i++)
+            {
+                Integer insuredObjectNumber = (Math.random() * 1000000000).intValue();
+                insuredObjects.add(
+                    new Asset(
+                        Name = String.valueOf(insuredObjectNumber),
+                        AccountId = relatedPolicy.PolicyHolder__c,
+                        INFOInsuredObjectCode__c = String.valueOf(insuredObjectNumber),
+                        RegistrationNumber__c = 'RegistrationNumber' + i,
+                        PolicyId__c = relatedPolicy.Id,
+                        RecordTypeId = recordTypeId
+                    )
+                );
+            }
+        }
+
+        return insuredObjects;
+    }
+
+    /**
+     * Genera Asset relacionadas con pólizas
+     **
+     * @param List<Policy__c> policies lista de pólizas para las que hay que generar un listado de registros
+     * @param List<Asset> insuredObjects lista de objetos asegurados para las que hay que generar un listado de registros
+     * @param Integer numRecords número de registros a generar POR CADA PÓLIZA-OBJETO ASEGURADO
+     */
+    public static List<Claim__c> generateClaimsForEachPolicyInsuredObject(List<Policy__c> policies, List<Asset> insuredObjects, Integer numRecords)
+    {
+        List<Claim__c> claims = new List<Claim__c>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Policy__c relatedPolicy: policies)
+        {
+            for(Asset relatedInsuredObject: insuredObjects)
+            {
+                for(Integer i=0; i<numRecords; i++)
+                {
+                    Integer claimNumber = (Math.random() * 1000000000).intValue();
+                    claims.add(
+                        new Claim__c(
+                            Name = String.valueOf(claimNumber),
+                            PolicyHolder__c = relatedPolicy.PolicyHolder__c,
+                            Policy__c = relatedPolicy.Id,
+                            InsuredObject__c = relatedInsuredObject.Id,
+                            INFOClaimNumber__c = String.valueOf(claimNumber)
+                        )
+                    );
+                }
+            }
+        }
+
+        return claims;
     }
 
     /**

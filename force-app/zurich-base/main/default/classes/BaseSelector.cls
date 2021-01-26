@@ -45,7 +45,7 @@ public virtual class BaseSelector
                     //Comprobamos que los campos existen en los campos del objeto, si alguno no existe lo eliminamos del Set
                     for(String field: fieldsToQuery)
                     {
-                        if( !currentTypeFields.containsKey(field) )
+                        if( !field.contains('.') && !currentTypeFields.containsKey(field) )
                         {
                             fieldsToQuery.remove(field);
                         }
