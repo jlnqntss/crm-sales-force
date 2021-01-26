@@ -195,7 +195,7 @@
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <description>número de emails coincidentes dentro de SF</description>
         <name>n</name>
