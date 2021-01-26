@@ -2625,7 +2625,7 @@ public class TestDataFactory
                     new Policy__c(
                         Name = String.valueOf(policyNumber),
                         PolicyHolder__c = relatedAccount.Id,
-                        InfoPolicyNumber__c = String.valueOf(policyNumber)
+                        InfoPolicyNumber__c = String.valueOf(policyNumber).leftPad(14, '0')
                     )
                 );
             }

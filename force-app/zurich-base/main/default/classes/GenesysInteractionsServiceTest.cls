@@ -53,7 +53,7 @@ public without sharing class GenesysInteractionsServiceTest
         //se crea 1 póliza para cada cuenta
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 10);
         insert policies;
-        policies.get(0).InfoPolicyNumber__c = '666777111333';
+        policies.get(0).InfoPolicyNumber__c = '00666777111333';
         update policies.get(0);
 
         //se crea 1 objeto asegurado para cada póliza
@@ -713,7 +713,7 @@ public without sharing class GenesysInteractionsServiceTest
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
 
         searchRequest.searchType = 'policy_code';
-        searchRequest.value = '666777111333';
+        searchRequest.value = '00666777111333';
         searchRequest.filterBy  = 'customers';
         searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
         searchRequest.legalEntity  = 'gi';
