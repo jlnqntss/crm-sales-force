@@ -264,27 +264,31 @@ public class CaseUtil
         {
             for(Case caso : newList)
             {
-                //Solo se hace algo si llegó relleno el campo del Email-To-Case
-                if(!String.isBlank(caso.SuppliedEmail))
+                //Esta comparación se hace para que no afecte a KLINC
+                if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId())
                 {
-                    //Utilizar el email del SuppliedEmail
-                    List<String> emailsToSearch = new List<String>();
-                    emailsToSearch.add(caso.SuppliedEmail);
-
-                    //Utilizar el scope del caso
-                    AccountSearchService.Scope scope = new AccountSearchService.Scope();
-                    scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
-
-                    //Utilizar el AccountSearchService
-                    List<Account> matchedAccounts = new List<Account>();
-                    matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, scope);
-
-                    //Solo se continua si se ha encontrado un único cliente; si hay más de uno no se sabría por cuál decidir
-                    if(matchedAccounts.size() == 1)
+                    //Solo se hace algo si llegó relleno el campo del Email-To-Case
+                    if(!String.isBlank(caso.SuppliedEmail))
                     {
-                        //Se asigna al caso la cuenta y el contacto
-                        caso.AccountId = matchedAccounts[0].Id;
-                        caso.ContactId = matchedAccounts[0].PersonContactId;
+                        //Utilizar el email del SuppliedEmail
+                        List<String> emailsToSearch = new List<String>();
+                        emailsToSearch.add(caso.SuppliedEmail);
+
+                        //Utilizar el scope del caso
+                        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+                        scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
+
+                        //Utilizar el AccountSearchService
+                        List<Account> matchedAccounts = new List<Account>();
+                        matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, scope);
+
+                        //Solo se continua si se ha encontrado un único cliente; si hay más de uno no se sabría por cuál decidir
+                        if(matchedAccounts.size() == 1)
+                        {
+                            //Se asigna al caso la cuenta y el contacto
+                            caso.AccountId = matchedAccounts[0].Id;
+                            caso.ContactId = matchedAccounts[0].PersonContactId;
+                        }
                     }
                 }
             }

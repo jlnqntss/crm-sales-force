@@ -33,7 +33,7 @@ public class CaseUtilTest {
         Test.startTest();
          //Crear caso
          List<Case> cases = new List<Case>();
-         Case caso = new Case(SuppliedEmail = emailsToSearch[0]);
+         Case caso = new Case(SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId());
          cases.add(caso);
          //insertarlo
          insert cases;
@@ -79,7 +79,7 @@ public class CaseUtilTest {
         Test.startTest();
          //Crear caso
          List<Case> cases = new List<Case>();
-         Case caso = new Case(SuppliedEmail = emailsToSearch[0]);
+         Case caso = new Case(SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId());
          cases.add(caso);
          //insertarlo
          insert cases;
@@ -107,7 +107,7 @@ public class CaseUtilTest {
         Test.startTest();
          //Crear caso
          List<Case> cases = new List<Case>();
-         Case caso = new Case(SuppliedEmail = 'noexistoentrelosemailscreados@nts-solutions.com');
+         Case caso = new Case(SuppliedEmail = 'noexistoentrelosemailscreados@nts-solutions.com', RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId());
          cases.add(caso);
          //insertarlo
          insert cases;
