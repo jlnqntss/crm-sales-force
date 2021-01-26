@@ -4,10 +4,10 @@
     <description>OCS Generated Field for Genesys Routing</description>
     <externalId>false</externalId>
     <formula>IF(
-   ProductId__r.CommercialCode__c = &quot;6100&quot;, &apos;PYMES&apos;,
+   ProductId__r.CommercialCode__c = &quot;6100&quot;, &apos;PROPAPER&apos;,
    CASE
-   ( 
-      ProductId__r.TechnicalCode__c , 
+   (
+      ProductId__r.TechnicalCode__c ,
       &apos;00515&apos;,  IF( CONTAINS(&quot;99999:00001:00004:00005:00006:00001:00002:00003&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
       &apos;00516&apos;,  IF( CONTAINS(&quot;99999:00001&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
       &apos;00517&apos;,  IF( CONTAINS(&quot;99998:99999:00001:00002&quot;, ProductId__r.CommercialCode__c), &quot;PYMES&quot;, ProductId__r.GroupDescription__c ),
