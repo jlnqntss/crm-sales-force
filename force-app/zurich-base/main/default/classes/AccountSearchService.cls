@@ -8,12 +8,14 @@ public with sharing class AccountSearchService
     public static final String SCOPE_CODE_ZE = 'ze';
     public static final String SCOPE_CODE_KLINC = 'klinc';
     public static final String SCOPE_CODE_CSM = 'csm';
+    public static final String SCOPE_CODE_CCS = 'ccs';
     private static final Map<String, String> SCOPE_NAMES_BY_CODE = new Map<String, String>
     {
         SCOPE_CODE_ALL  => 'General',
         SCOPE_CODE_ZE => 'Zurich Empresas',
         SCOPE_CODE_KLINC => 'Klinc',
-        SCOPE_CODE_CSM => 'csm'
+        SCOPE_CODE_CSM => 'csm',
+        SCOPE_CODE_CCS => 'ccs'
     };
     static final String INVALID_SCOPE = 'Invalid scope. Please, try with all, ze or klinc.';
     public class Scope
