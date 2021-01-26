@@ -53,11 +53,9 @@ public with sharing class ClaimsSelector extends BaseSelector
         {
             String query = String.format(
                 'SELECT {0} FROM Claim__c ' +
-                'WHERE Status__c != \'T\' AND InsuredObject__r.RegistrationNumber__c = : plateNumber ',
+                'WHERE Status__c != {1} AND InsuredObject__r.RegistrationNumber__c = : plateNumber ',
                 new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
+                String.join(new List<String> (this.fieldsToQuery), ','), '\'T\''});
             return (List<Claim__c>) Database.query(query);
         }
         else
@@ -81,11 +79,10 @@ public with sharing class ClaimsSelector extends BaseSelector
         {
             String query = String.format(
                 'SELECT {0} FROM Claim__c ' +
-                'WHERE Status__c != \'T\' AND PolicyHolder__c = : policyHolder AND (Policy__r.EndDate__c = null OR Policy__r.EndDate__c >= TODAY)',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
+                'WHERE Status__c != {1} AND PolicyHolder__c = : policyHolder AND (Policy__r.EndDate__c = null OR Policy__r.EndDate__c >= TODAY)',
+                new List<String> {String.join(new List<String> (this.fieldsToQuery), ','), '\'T\''}
                 );
+
             return (List<Claim__c>) Database.query(query);
         }
         else
