@@ -25,4 +25,22 @@ public class OpportunityUtil
             GenerateScopeUtil.generateScopeEvents('AccountId', 'BusinessCode__c', optysToGenerateScope);
         }
     }
+
+    /**
+     * Evitar modificar la etapa de la oferta de INFO cuando se actualiza a través de la integración
+     *
+     * @author adelgado
+     * @date 26/01/2021
+     */
+    public static void detectOpportunityStageChange(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
+    {
+        for(Opportunity opty : newList)
+        {   
+            if(opty.StageName != oldMap.get(opty.Id).StageName && String.isNotBlank(opty.InfoQuoteNumber__c) && UserInfo.getName() == 'Integrator')
+            {
+                opty.StageName = oldMap.get(opty.Id).StageName;
+            }
+        }
+
+    }
 }

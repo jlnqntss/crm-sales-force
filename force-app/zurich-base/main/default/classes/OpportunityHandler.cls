@@ -37,7 +37,9 @@ public class OpportunityHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        OpportunityUtil.detectOpportunityStageChange(newList, (Map<Id, Opportunity>) oldMap);
+    }
 
     /**
      * beforeDelete

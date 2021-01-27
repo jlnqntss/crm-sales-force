@@ -248,4 +248,51 @@ public class CaseUtil
             }
         }
     }
+
+
+    /**
+     * Método que asocia el ContactId y el AccountId del caso dependiendo del SuppliedEmail
+     * Esto solamente funcionará para los Email-To-Case
+     * Se hace uso del AccountSearchService dado que se necesita usar SOSL en los
+     * ContactPointEmail ya que hacen querys no selectivas por campos no indexados
+     * @date 25/01/2021
+     **/
+    public static void assignAccountAndContactFromSuppliedEmail(List<Case> newList)
+    {
+        //No se ejecuta bulkificado, sino solo en aquellas ocasiones que entra un Email-To-Case (no es bulk)
+        if(newList.size() == 1)
+        {
+            for(Case caso : newList)
+            {
+                //Esta comparación se hace para que no afecte a KLINC
+                if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId())
+                {
+                    //Solo se hace algo si llegó relleno el campo del Email-To-Case
+                    if(!String.isBlank(caso.SuppliedEmail))
+                    {
+                        //Utilizar el email del SuppliedEmail
+                        List<String> emailsToSearch = new List<String>();
+                        emailsToSearch.add(caso.SuppliedEmail);
+
+                        //Utilizar el scope del caso
+                        AccountSearchService.Scope scope = new AccountSearchService.Scope();
+                        scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
+
+                        //Utilizar el AccountSearchService
+                        List<Account> matchedAccounts = new List<Account>();
+                        matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, scope);
+
+                        //Solo se continua si se ha encontrado un único cliente; si hay más de uno no se sabría por cuál decidir
+                        if(matchedAccounts.size() == 1)
+                        {
+                            //Se asigna al caso la cuenta y el contacto
+                            caso.AccountId = matchedAccounts[0].Id;
+                            caso.ContactId = matchedAccounts[0].PersonContactId;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
