@@ -4,7 +4,7 @@
     <description>OCS Generated Field for Genesys Routing</description>
     <externalId>false</externalId>
     <formula>IF(
-   ProductId__r.CommercialCode__c = &quot;6100&quot;, &apos;PROPAPER&apos;,
+   CommercialStructureCode__c = &quot;6100&quot;, &apos;PROPAPER&apos;,
    CASE
    (
       ProductId__r.TechnicalCode__c ,
