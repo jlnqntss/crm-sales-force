@@ -295,6 +295,85 @@ public without sharing class GenesysInteractionsService
     }
 
     /**
+     * Obtener el detalle de una póliza activa a partir de su código
+     *
+     * @author adelgado
+     * @date 20/01/2021
+     */
+    public static ActivePolicy findActivePolicy(String policyCode)
+    {
+        // 1 - Comprobar que se ha recibido un número de póliza
+        if ( String.isBlank(policyCode) )
+        {
+            throw new GenesysPoliciesServiceException(MISSING_FIELDS_REQUIRED);
+        }
+
+        // 2 - Recuperar la póliza a partir del número recibido
+        List<Policy__c> policies = new PoliciesSelector
+        (
+            new Set<String> 
+            {
+                'Id', 'Name', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSFCode__c'
+            }
+        )
+        .selectByNumber(policyCode);
+
+        // 3 - Devolver la información de la póliza si se ha obtenido un único resultado
+        if(policies != null && !policies.isEmpty() && policies.size() == 1)
+        {
+            return new ActivePolicy(policies[0]);
+        }
+
+        return new ActivePolicy();
+    }
+
+    /**
+     * Obtener el detalle de un siniestro abierto 
+     *
+     * @author adelgado
+     * @date 20/01/2021
+     */
+    public static OpenedClaim findOpenedClaim(SearchRequest request)
+    {
+        // 1 - Comprobar que la request tiene informados todos los campos requeridos
+        if ( String.isBlank(request.searchType) || String.isBlank(request.searchTerm) )
+        {
+            throw new GenesysClaimsServiceException(MISSING_FIELDS_REQUIRED);
+        }
+
+        List<Claim__c> claims = new List<Claim__c>();
+
+        Set<String> fields = new Set<String> 
+        {
+            'Id', 'Name', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
+            'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
+            'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
+
+        };
+
+        // 2 - Realizar la búsqueda de siniestro en base a los filtros definidos en la request
+        switch on request.searchType
+        {
+            when 'claim_number'
+            {
+                claims = new ClaimsSelector(fields).selectByNumber(request.searchTerm);
+            }
+            when 'car_registration'
+            {
+                claims = new ClaimsSelector(fields).selectByPlate(request.searchTerm);
+            }
+        }
+
+        // 3 - Devolver la información del siniestro si se ha obtenido un único resultado
+        if(claims != null && !claims.isEmpty() && claims.size() == 1)
+        {
+            return new OpenedClaim(claims[0]);
+        }
+
+        return new OpenedClaim();
+    }
+
+    /**
      * Lanza una búsqueda con la configuración determinada por request
      *
      * @author adelgado
@@ -513,8 +592,9 @@ public without sharing class GenesysInteractionsService
         (
             new Set<String> 
             {
-                'Id', 'Name', 'OwnerId', 'Owner.Email', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
-                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c'
+                'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
+                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
+                'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
             }
         )
         .selectByHolder(customerId);
@@ -581,6 +661,7 @@ public without sharing class GenesysInteractionsService
         public String value;
         public String scope;
         public String legalEntity;
+        public String searchTerm;
 
         public SearchRequest() {}
         public SearchRequest(Map<String, String> paramsByName)
@@ -590,6 +671,7 @@ public without sharing class GenesysInteractionsService
             this.value = paramsByName.get('value');
             this.scope = paramsByName.get('scope');
             this.legalEntity = paramsByName.get('legalEntity');
+            this.searchTerm = paramsByName.get('searchTerm');
         }
 
         public override String toString()
@@ -761,6 +843,7 @@ public without sharing class GenesysInteractionsService
         public String policyCode;
         public String type;
         
+        public ActivePolicy(){}
         public ActivePolicy(Policy__c policy)
         {
             this.destinationCode = policy.Partner__r.PartnerSFCode__c;
@@ -803,15 +886,15 @@ public without sharing class GenesysInteractionsService
 
                 OpenedClaim openedClaim = new OpenedClaim(claim);
 
-                /*if(String.isNotBlank(claim.))
+                if(String.isNotBlank(claim.ClaimOwnerTeamCode__c))
                 {
-                    if(!byOwner.containsKey(claim.))
+                    if(!byOwner.containsKey(claim.ClaimOwnerTeamCode__c))
                     {
-                        byOwner.put(claim., new List<OpenedClaim>());
+                        byOwner.put(claim.ClaimOwnerTeamCode__c, new List<OpenedClaim>());
                     }
 
-                    byOwner.get(claim.).add(openedClaim);
-                }*/
+                    byOwner.get(claim.ClaimOwnerTeamCode__c).add(openedClaim);
+                }
 
                 String type = String.isNotBlank(claim.Policy__r.PolicyType__c) ? claim.Policy__r.PolicyType__c : claim.Policy__r.ProductId__r.GroupDescription__c;
 
@@ -848,16 +931,19 @@ public without sharing class GenesysInteractionsService
         public String id;
         public String ownerTeam;
         public String ownerFullname;
+        public String ownerNationalId;
         public String policyType;      
         public String status;      
         public String carRegistration;      
         public String claimNumber;    
         
+        public OpenedClaim(){}
         public OpenedClaim(Claim__c claim)
         {
             this.id = claim.id;
-            //this.ownerTeam = claim.;
-            this.ownerFullname = claim.Owner.Email;
+            this.ownerTeam = claim.ClaimOwnerTeamCode__c;
+            this.ownerFullname = String.join(new List<String>{claim.ClaimOwnerFirstName__c, claim.ClaimOwnerFirstName__c, claim.ClaimOwnerFirstName__c}, ' ').toUpperCase();
+            this.ownerNationalId = claim.ClaimOwnerNationalId__c;
             this.policyType = String.isNotBlank(claim.Policy__r.PolicyType__c) ? claim.Policy__r.PolicyType__c : claim.Policy__r.ProductId__r.GroupDescription__c;
             this.status = claim.Status__c;
             this.carRegistration = claim.InsuredObject__r.RegistrationNumber__c;
@@ -875,4 +961,10 @@ public without sharing class GenesysInteractionsService
 
     @TestVisible
     class GenesysPeopleServiceException extends Exception {}
+
+    @TestVisible
+    class GenesysPoliciesServiceException extends Exception {}
+
+    @TestVisible
+    class GenesysClaimsServiceException extends Exception {}
 }
