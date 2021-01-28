@@ -46,7 +46,7 @@ public with sharing class FindCustomerByPhoneActionTest
         List<FindCustomerByPhoneAction.FindCustomerByPhoneActionRequest> requests = new List<FindCustomerByPhoneAction.FindCustomerByPhoneActionRequest>();
         FindCustomerByPhoneAction.FindCustomerByPhoneActionRequest customerInformation = new FindCustomerByPhoneAction.FindCustomerByPhoneActionRequest();
         customerInformation.phone = contactPointPhoneToSearch.get(0).TelephoneNumber;
-        customerInformation.scope = 'ze';
+        customerInformation.scope = AccountSearchService.SCOPE_CODE_ZE;
 
         requests.add(customerInformation);
 
@@ -72,7 +72,7 @@ public with sharing class FindCustomerByPhoneActionTest
         List<FindCustomerByPhoneAction.FindCustomerByPhoneActionRequest> requests = new List<FindCustomerByPhoneAction.FindCustomerByPhoneActionRequest>();
         FindCustomerByPhoneAction.FindCustomerByPhoneActionRequest customerInformation = new FindCustomerByPhoneAction.FindCustomerByPhoneActionRequest();
         customerInformation.phone = 'fakephone';
-        customerInformation.scope = 'ze';
+        customerInformation.scope = AccountSearchService.SCOPE_CODE_ZE;
 
         requests.add(customerInformation);
 
