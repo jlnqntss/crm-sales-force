@@ -1,4 +1,5 @@
 import { LightningElement, api, track, wire } from "lwc";
+import getLogoUrl from "@salesforce/apex/PreferenceCentreController.getLogoUrl";
 import getAllCampaigns from "@salesforce/apex/PreferenceCentreController.getAllCampaigns";
 import getLabelTranslation from "@salesforce/apex/PreferenceCentreController.getLabelTranslation";
 import processRequest from "@salesforce/apex/PreferenceCentreController.processRequest";
@@ -22,6 +23,17 @@ export default class preferenceCentre extends LightningElement {
     EmailOptOutButtonLabel: "",
     PreferenceCentreSaveLabel: ""
   };
+
+  // Default value for when no logo static resources are found
+  @track zurichLogoUrl =
+    "https://klinc.com/-/media/Project/Zurich/Klinc/en/zurich-klinc-logo.svg";
+
+  // Get the logo url by contact country
+  @wire(getLogoUrl, { hashedId: "$hash" }) wiredLogoResult(result) {
+    if (result.data) {
+      this.zurichLogoUrl = result.data;
+    }
+  }
 
   @wire(getAllCampaigns, { hashedId: "$hash", language: "$language" })
   wiredResult(result) {
