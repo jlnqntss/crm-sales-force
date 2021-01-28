@@ -67,7 +67,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Asignado</stringValue>
+                <stringValue>Respondido</stringValue>
             </value>
         </inputAssignments>
         <object>Case</object>

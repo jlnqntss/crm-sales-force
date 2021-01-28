@@ -39,8 +39,28 @@
             </connector>
             <label>Si</label>
         </rules>
+        <rules>
+            <name>No</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Tipo_de_escalado</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Externo</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateCaseExternalScaled</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
     </decisions>
     <description>Si el agente aprieta una quick action en el layout se le da a elegir el modo de escalado: interno o externo</description>
+    <formulas>
+        <name>referenceId</name>
+        <dataType>String</dataType>
+        <expression>&quot;ref:_&quot; &amp; LEFT({!$Organization.Id},5) &amp; SUBSTITUTE(RIGHT({!$Organization.Id},10), &quot;0&quot;, &quot;&quot; )&amp; &quot;._&quot; &amp; LEFT({!recordId},5) &amp; SUBSTITUTE(Left(RIGHT({!recordId},10), 5), &quot;0&quot;, &quot;&quot;) &amp; RIGHT({!recordId},5) &amp; &quot;:ref&quot;</expression>
+    </formulas>
     <interviewLabel>Case Scaled Internal {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Scaled</label>
     <processMetadataValues>
@@ -164,6 +184,33 @@
             <field>PendingBy__c</field>
             <value>
                 <stringValue>Supervisor</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Pendiente</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>UpdateCaseExternalScaled</name>
+        <label>Actualizar Caso Escalado Externo</label>
+        <locationX>685</locationX>
+        <locationY>326</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <stringValue>Other areas Zurich</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
