@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Owner National ID Type --></label>
+    <name>ClaimOwnerNationalIdType__c</name>
+    <picklistValues>
+        <masterLabel>C</masterLabel>
+        <translation>CIF</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>E</masterLabel>
+        <translation>CEE Business</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>N</masterLabel>
+        <translation>NIF</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>P</masterLabel>
+        <translation>Passport</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>R</masterLabel>
+        <translation>Residence Permit</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>S</masterLabel>
+        <translation>Nod-identifiable</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TW</masterLabel>
+        <translation><!-- TW --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TZ</masterLabel>
+        <translation><!-- TZ --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>UA</masterLabel>
+        <translation><!-- UA --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>UG</masterLabel>
+        <translation><!-- UG --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>US</masterLabel>
+        <translation><!-- US --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>UY</masterLabel>
+        <translation><!-- UY --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>UZ</masterLabel>
+        <translation><!-- UZ --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VA</masterLabel>
+        <translation><!-- VA --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VC</masterLabel>
+        <translation><!-- VC --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VE</masterLabel>
+        <translation><!-- VE --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VG</masterLabel>
+        <translation><!-- VG --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VI</masterLabel>
+        <translation><!-- VI --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VN</masterLabel>
+        <translation><!-- VN --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>VU</masterLabel>
+        <translation><!-- VU --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>WF</masterLabel>
+        <translation><!-- WF --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>WS</masterLabel>
+        <translation><!-- WS --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>X</masterLabel>
+        <translation>Ext. Business</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>YE</masterLabel>
+        <translation><!-- YE --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>YT</masterLabel>
+        <translation><!-- YT --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ZA</masterLabel>
+        <translation><!-- ZA --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ZM</masterLabel>
+        <translation><!-- ZM --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ZW</masterLabel>
+        <translation><!-- ZW --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

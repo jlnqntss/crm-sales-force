@@ -33,7 +33,7 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^11.0.0",
     "@salesforce/eslint-config-lwc": "^0.8.0",
-    "@salesforce/sfdx-lwc-jest": "^0.10.2",
+    "@salesforce/sfdx-lwc-jest": "0.10.2",
     "eslint": "^7.15.0",
     "fs-extra": "^9.0.1",
     "husky": "^4.3.6",

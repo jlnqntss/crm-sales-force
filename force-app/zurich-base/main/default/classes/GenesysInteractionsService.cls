@@ -90,6 +90,7 @@ public without sharing class GenesysInteractionsService
             RecordTypeId = interactionRecordTypeId,
             WhoId = interactionLog.customerId,
             TaskSubtype = 'Call',
+            Type = 'Call',
             ANI__c = interactionLog.fromId,
             DNIS__c = interactionLog.toId
         );
@@ -590,7 +591,7 @@ public without sharing class GenesysInteractionsService
     {
         List<Claim__c> claims = new ClaimsSelector
         (
-            new Set<String> 
+            new Set<String>
             {
                 'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
@@ -620,20 +621,20 @@ public without sharing class GenesysInteractionsService
         public String queueId { get; set; }
         public String lookFor { get; set; }
         public String scope { get; set; }
-        public String legalEntity 
-        { 
+        public String legalEntity
+        {
             get
             {
                 if(String.isBlank(legalEntity))
                 {
                     return SCOPE_CODE_ALL;
                 }
-                else 
+                else
                 {
                     return legalEntity;
                 }
-            } 
-            set; 
+            }
+            set;
         }
 
         public String screenPopRecordId { get; set; }
@@ -824,7 +825,7 @@ public without sharing class GenesysInteractionsService
                 }
             }
         }
-      
+
         public override String toString()
         {
             return JSON.serialize(this);
@@ -878,7 +879,7 @@ public without sharing class GenesysInteractionsService
 
             Set<String> claimTypes = new Set<String>();
             Set<String> claimOwners = new Set<String>();
-            
+
             for(Claim__c claim: claims)
             {
                 claimTypes.add(claim.ClaimType__c);
@@ -912,9 +913,9 @@ public without sharing class GenesysInteractionsService
             this.total = claims.size();
             this.hasMultipleTypes = claimTypes.size() > 1;
             this.hasDifferentOwners = !this.hasMultipleTypes && claimOwners.size() > 1;
-            
+
         }
-      
+
         public override String toString()
         {
             return JSON.serialize(this);
