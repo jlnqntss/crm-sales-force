@@ -136,6 +136,12 @@
             <targetReference>Borrar_listado</targetReference>
         </connector>
         <inputAssignments>
+            <field>GenesysCloudQueueId__c</field>
+            <value>
+                <elementReference>ColaGenesys.recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>PreferredChannel</field>
             <value>
                 <stringValue>Phone</stringValue>
@@ -154,6 +160,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>RequestDescription</field>
+            <value>
+                <elementReference>Comentarios</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status</field>
             <value>
                 <stringValue>New</stringValue>
@@ -165,36 +177,9 @@
                 <elementReference>recordId</elementReference>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>WhoId</field>
-            <value>
-                <elementReference>Recuperar_Caso.ContactId</elementReference>
-            </value>
-        </inputAssignments>
         <object>ContactRequest</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordLookups>
-        <name>Recuperar_Caso</name>
-        <label>Recuperar Caso</label>
-        <locationX>776</locationX>
-        <locationY>206</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Recuperar_CR_relacionadas</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Case</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordLookups>
         <name>Recuperar_CR_relacionadas</name>
         <label>Recuperar CR relacionadas</label>
@@ -210,13 +195,6 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>PreferredContactDatetime__c</field>
-            <operator>GreaterThan</operator>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -268,10 +246,41 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Comentarios</name>
+            <fieldText>Comentarios</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>ColaGenesys</name>
+            <extensionName>flowruntime:lookup</extensionName>
+            <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>value</name>
+                <name>fieldApiName</name>
                 <value>
-                    <elementReference>Recuperar_Caso.SuppliedPhone</elementReference>
+                    <stringValue>GenesysCloudQueueId__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Cola de Genesys</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectApiName</name>
+                <value>
+                    <stringValue>ContactRequest</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -284,7 +293,7 @@
         <locationX>650</locationX>
         <locationY>48</locationY>
         <connector>
-            <targetReference>Recuperar_Caso</targetReference>
+            <targetReference>Recuperar_CR_relacionadas</targetReference>
         </connector>
     </start>
     <status>Active</status>
