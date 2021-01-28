@@ -11,6 +11,10 @@
     <layouts>
         <layout>Claim Layout</layout>
         <sections>
+            <label><!-- Claim Owner Information --></label>
+            <section>Claim Owner Information</section>
+        </sections>
+        <sections>
             <label><!-- Custom Links --></label>
             <section>Custom Links</section>
         </sections>
