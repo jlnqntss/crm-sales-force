@@ -12,11 +12,6 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>General</fullName>
-                <default>false</default>
-                <label>General</label>
-            </value>
-            <value>
                 <fullName>ZE</fullName>
                 <default>false</default>
                 <label>Zurich Empresas</label>
@@ -25,6 +20,11 @@
                 <fullName>ZEO</fullName>
                 <default>false</default>
                 <label>Zurich Empresas Orange</label>
+            </value>
+            <value>
+                <fullName>Z</fullName>
+                <default>false</default>
+                <label>General</label>
             </value>
         </valueSetDefinition>
     </valueSet>
