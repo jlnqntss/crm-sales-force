@@ -1024,7 +1024,7 @@ public without sharing class GenesysInteractionsServiceTest
                 policies[i].Intermediary_Code__c = '0001112223';
                 policies[i].ProductId__c = products[0].Id;
             }
-            else 
+            else
             {
                 policies[i].Partner__c = partners[1].Id;
                 policies[i].Intermediary_Code__c = '0001112224';
@@ -1101,7 +1101,7 @@ public without sharing class GenesysInteractionsServiceTest
             {
                 policies[i].ProductId__c = products[0].Id;
             }
-            else 
+            else
             {
                 policies[i].ProductId__c = products[1].Id;
             }
@@ -1110,7 +1110,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         //se crea 1 siniestro para cada póliza-objeto asegurado
         List<Claim__c> claimsToInsert = new List<Claim__c>();
-        
+
         for(Integer i = 0; i< Policies.size(); i++)
         {
             claimsToInsert = TestDataFactory.generateClaimsForEachPolicyInsuredObject(policies, policies[i].PolicyNumbers__r, 1);
@@ -1119,9 +1119,9 @@ public without sharing class GenesysInteractionsServiceTest
 
         List<Claim__c> claims = new ClaimsSelector
         (
-            new Set<String> 
+            new Set<String>
             {
-                'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
+                'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c',
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
             }
@@ -1263,4 +1263,111 @@ public without sharing class GenesysInteractionsServiceTest
     }
 
     // #endregion
+
+    // #region search Task queue tests
+    @future
+    private static void byPassMixedDMLOperation()
+    {
+        //Crear Cola por si acaso en la Org no estan creadas aún (Se ven en los test)
+        List<Group> queue = TestDataFactory.generateQueueGroups(1);
+        insert queue;
+        List<QueueSObject> queueType = TestDataFactory.generateQueueSObject(queue[0].Id, 'Task', 1);
+        insert queueType;
+    }
+
+    /**
+     * Prueba que si existe en SF una cola con el mismo nombre que en Genesys
+     * Se asigna a dicha cola la TASK
+     * @date 28/01/2021
+     */
+    @IsTest
+    static void test_searchQueueTaskId_ok()
+    {
+        Test.startTest();
+            //En el stopTest finaliza el future
+            byPassMixedDMLOperation();
+        Test.stopTest();
+
+        //Cola de Genesys
+        List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
+        queues = TestDataFactory.generateGenesysQueues(1);
+        queues[0].Name = 'queue0'; //Debe llamarse igual que la cola de SF
+        insert queues;
+
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.queueId = queues[0].purecloud__PureCloud_Queue_ID__c; //Cola en genesys que existe en SF con el mismo nombre
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        System.assertEquals(queues[0].Name, expectedTasks[0].Owner.Name, 'El OwnerID de la task debería ser la cola en SF con mismo nombre que en Genesys');
+    }
+
+    /**
+     * Prueba que si no existe en SF una cola con el mismo nombre que en Genesys
+     * Se asigna a la cola Missed Calls
+     * Este test también sirve para detectar si está desplegada dicha cola en el entorno
+     * Así peta con el despliegue
+     * @date 28/01/2021
+     */
+    @IsTest
+    static void test_searchQueueTaskId_ko_NoSFQueue()
+    {
+        //Cola de Genesys
+        List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
+        queues = TestDataFactory.generateGenesysQueues(1);
+        insert queues;
+
+        QueueSobject missedCalls = [SELECT QueueId, Queue.Name, SobjectType FROM QueueSobject WHERE SobjectType = 'Task' AND Queue.Name = 'Missed Calls' LIMIT 1];
+
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.queueId = queues[0].purecloud__PureCloud_Queue_ID__c; //Cola en genesys que NO existe en SF con el mismo nombre
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        //Como la cola NO existe en SF, debe ponerse Missed Calls
+        System.assertEquals(missedCalls.QueueId, expectedTasks[0].OwnerId, 'La cola para Tasks -Missed Calls- debe existir previamente en la Org');
+    }
+
+    /**
+     * Prueba que si no se recibe el parámetro QueueId
+     * Se asigna a la cola Missed Calls
+     * Este test también sirve para detectar si está desplegada dicha cola en el entorno
+     * Así peta con el despliegue
+     * @date 28/01/2021
+     */
+    @IsTest
+    static void test_searchQueueTaskId_ko_QueueNull()
+    {
+        QueueSobject missedCalls = [SELECT QueueId, Queue.Name, SobjectType FROM QueueSobject WHERE SobjectType = 'Task' AND Queue.Name = 'Missed Calls' LIMIT 1];
+
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        //Como no ha llegao el parámetro queueId, debe ponerse Missed Calls
+        System.assertEquals(missedCalls.QueueId, expectedTasks[0].OwnerId, 'La cola para Tasks -Missed Calls- debe existir previamente en la Org');
+    }
+    // #endregion
+
 }

@@ -10,6 +10,11 @@ public without sharing class GenesysInteractionsService
     static final String SEARCHTYPE_NOT_DEFINED = 'searchType value not defined';
 
     @TestVisible
+    static final String NO_QUEUE_MISSED_CALLS = 'There is no task queue Missed Calls';
+    @TestVisible
+    static final String TASK_QUEUE = 'Missed Calls';
+
+    @TestVisible
     static final String SCOPE_CODE_ALL = 'all';
     @TestVisible
     static final String SCOPE_CODE_ZE = 'ze';
@@ -77,6 +82,14 @@ public without sharing class GenesysInteractionsService
      */
     public static String createOnQueueInteraction(Interaction interactionLog)
     {
+        Id queueTaskId = null;
+        //Encontrar Cola para Task -> Si no existe -> Missed Calls -> si no existe -> ErrorLog
+        try{
+            queueTaskId = searchQueueTaskId(interactionLog.queueId);
+        }catch(Exception e){ //No se para la ejecución por faltar el OwnerId, solo se registra
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, e.getMessage(), 'GenesysInteractionsService.createOnQueueInteraction', e.getStackTraceString());
+        }
+
         Id interactionRecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName()
                                      .get('Interaction')
                                      .getRecordTypeId();
@@ -94,6 +107,12 @@ public without sharing class GenesysInteractionsService
             ANI__c = interactionLog.fromId,
             DNIS__c = interactionLog.toId
         );
+
+        //No se puede insertar una Task con OwnerId a null
+        if(queueTaskId != null)
+        {
+            interactionTask.OwnerId = queueTaskId;
+        }
 
         if(interactionLog.screenPopRecordId != null && Id.valueOf(interactionLog.screenPopRecordId).getSobjectType() != Contact.SobjectType)
         {
@@ -312,7 +331,7 @@ public without sharing class GenesysInteractionsService
         // 2 - Recuperar la póliza a partir del número recibido
         List<Policy__c> policies = new PoliciesSelector
         (
-            new Set<String> 
+            new Set<String>
             {
                 'Id', 'Name', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSFCode__c'
             }
@@ -329,7 +348,7 @@ public without sharing class GenesysInteractionsService
     }
 
     /**
-     * Obtener el detalle de un siniestro abierto 
+     * Obtener el detalle de un siniestro abierto
      *
      * @author adelgado
      * @date 20/01/2021
@@ -344,9 +363,9 @@ public without sharing class GenesysInteractionsService
 
         List<Claim__c> claims = new List<Claim__c>();
 
-        Set<String> fields = new Set<String> 
+        Set<String> fields = new Set<String>
         {
-            'Id', 'Name', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
+            'Id', 'Name', 'Status__c', 'InsuredObject__r.RegistrationNumber__c',
             'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
             'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
 
@@ -593,14 +612,76 @@ public without sharing class GenesysInteractionsService
         (
             new Set<String>
             {
-                'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
-                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
+                'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c',
+                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
             }
         )
         .selectByHolder(customerId);
 
         return new OpenedClaims(claims);
+    }
+
+    /**
+     * Busca si existe una Cola que permita objeto Task que tenga el mismo nombre
+     * en Genesys.
+     * Si no existe, o queueID ha venido vacío, se asignará a 'Missed Calls'
+     * Si no existe esa cola se registra error y se devuelve null.
+     * @date 28/01/2021
+     */
+    @TestVisible
+    private static Id searchQueueTaskId(String genesysQueueId)
+    {
+        Id queueId = null; //Si todo va mal, se devolverá a null
+        String queueName = null;
+
+        //1º Construir mapa con las colas de Genesys Id <-> Nombre
+        Map<String,String> mapGenesysQueueIdName = new Map<String,String>();
+        List<purecloud__PureCloud_Queue__c> genesysQueues = new List<purecloud__PureCloud_Queue__c>();
+        genesysQueues = [SELECT Id, Name, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c];
+        for(purecloud__PureCloud_Queue__c gQueue: genesysQueues)
+        {
+            mapGenesysQueueIdName.put(gQueue.purecloud__PureCloud_Queue_ID__c, gQueue.Name);
+        }
+
+        //2º Construir mapa de colas para TASK Nombre <-> Id
+        Map<String,Id> mapTaskQueueNameId = new Map<String,Id>();
+        List<QueueSobject> taskQueues = new List<QueueSobject>();
+        taskQueues = [SELECT QueueId, Queue.Name, SobjectType FROM QueueSobject WHERE SobjectType = 'Task'];
+        for(QueueSobject tQueue: taskQueues)
+        {
+            mapTaskQueueNameId.put(tQueue.Queue.Name, tQueue.QueueId);
+        }
+
+        //3º Si existe la cola con mismo nombre en Genesys
+        if(genesysQueueId != null && mapGenesysQueueIdName.containsKey(genesysQueueId))
+        {   //Si existe la cola con mismo nombre en SF
+            queueName = mapGenesysQueueIdName.get(genesysQueueId);
+            if(mapTaskQueueNameId.containsKey(queueName))
+            {
+                queueId = mapTaskQueueNameId.get(queueName);
+            }
+            else{//4º Sino existe en SF, se asigna 'Missed_Calls'
+                if(mapTaskQueueNameId.containsKey(TASK_QUEUE))
+                {
+                    queueId = mapTaskQueueNameId.get(TASK_QUEUE);
+                }
+            }
+        }
+        else{//4º Si viene vacío o no existe en Genesys, se asigna 'Missed_Calls'
+            if(mapTaskQueueNameId.containsKey(TASK_QUEUE))
+            {
+                queueId = mapTaskQueueNameId.get(TASK_QUEUE);
+            }
+        }
+
+        //5º Si tampoco existe Missed_Calls, se devuelve null y queda sin asignar.
+        if(queueId == null)
+        {   //Se avisa de la falta de dicha cola con un ErrorLog pero no se para la ejecución
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_WARNING, NO_QUEUE_MISSED_CALLS, 'GenesysInteractionsService.searchQueueTaskId');
+        }
+
+        return queueId;
     }
 
     //#endregion
@@ -843,7 +924,7 @@ public without sharing class GenesysInteractionsService
         public String id;
         public String policyCode;
         public String type;
-        
+
         public ActivePolicy(){}
         public ActivePolicy(Policy__c policy)
         {
@@ -933,11 +1014,11 @@ public without sharing class GenesysInteractionsService
         public String ownerTeam;
         public String ownerFullname;
         public String ownerNationalId;
-        public String policyType;      
-        public String status;      
-        public String carRegistration;      
-        public String claimNumber;    
-        
+        public String policyType;
+        public String status;
+        public String carRegistration;
+        public String claimNumber;
+
         public OpenedClaim(){}
         public OpenedClaim(Claim__c claim)
         {
