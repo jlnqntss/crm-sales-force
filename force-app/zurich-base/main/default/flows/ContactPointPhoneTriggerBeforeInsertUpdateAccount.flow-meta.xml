@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
+    <assignments>
+        <description>se rellena la cuenta con la que tenga el ámbito</description>
+        <name>AssignAccount</name>
+        <label>Rellenar cuenta</label>
+        <locationX>209</locationX>
+        <locationY>312</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ParentId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ScopeId__r.AccountId__c</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <description>se rellena el campo parent (cuenta) con la cuenta que tenga el ámbito, solo si está vacío</description>
+    <interviewLabel>ContactPointPhone Trigger - Before insert/update Account {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>ContactPointPhone Trigger - Before insert/update Account</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>75</locationX>
+        <locationY>33</locationY>
+        <connector>
+            <targetReference>AssignAccount</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ScopeId__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ParentId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>ContactPointPhone</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
