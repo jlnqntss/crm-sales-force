@@ -852,14 +852,14 @@ public class Test_ExternalRequestUtil
         listExternalRequest.add(ExtReq);
 
         Test.startTest();
-        // todo: revisar
-        // gpacho 2020-09-16 COMENTADO PARA SUBIDA A PRO - HAY PROBLEMAS CON LA CLASE MOCK
         ExternalRequestUtil.processExternalRequests(listExternalRequest);
         Test.stopTest();
 
-        Order newQuote=[SELECT Id, ContactId__r.CustomerNum__c FROM Order WHERE QuoteEntry__c= :PARTNER_PREFIX + '-9090'];
-        //check if the quote has been asigned to the existing lead (matchcode)
-        System.assertEquals(lead.CustomerNum__c, newQuote.ContactId__r.CustomerNum__c);
+        Order newQuote=[SELECT Id, ContactId__c FROM Order WHERE QuoteEntry__c= :PARTNER_PREFIX + '-9090'];
+
+        //comprobar que la quote ha sido asignada al contacto existente
+        System.assertEquals(lead.Id, newQuote.ContactId__c);
+
     }
 
 /**
