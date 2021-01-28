@@ -227,35 +227,16 @@ global without sharing class ContactUtil
                         ExternalRequestUtil.mastersToUpdateById.put( customerNumberOnly, accountItem );
                     }
 
-                    // If there is a quote, and the contact is not a lead, the relationship between the
-                    // quote and the contact is set but the contact is NOT updated
+                    // nts (nbizkarra) - 27/01/2021 - Fix: si el contacto que llega es "Activo" actualizar cuenta y contacto de SF
+                    incomingContact.Id = alreadyInSFContact.Id;
+                    ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
+
                     if (quote != null)
                     {
-                        //Si se pasa la quote como parametro, solo se relaciona con el cliente, no se actualiza el cliente
                         quote.ContactId__c = alreadyInSFContact.Id;
                         quote.AccountId = alreadyInSFContact.AccountId;
                     }
-                    else
-                    {
-                        // todo:  always will be the same country
-                        // if ( incomingContact.sourceCountry__c == alreadyInSFContact.sourceCountry__c ) {
-                        incomingContact.Id = alreadyInSFContact.Id;
-                        // } else {
-                        //   if (!String.isBlank(incomingContact.MasterPolicyNum__c)) {
-                        //       //Asociar partner when the client is new
-                        //       AccountUtil.associatePartner(
-                        //         incomingContact,
-                        //         ExternalRequestUtil.mapPartners,
-                        //         ExternalRequestUtil.contactsToUpdateWithPartner,
-                        //         ExternalRequestUtil.partnersToUpdateList,
-                        //         ExternalRequestUtil.recordOwner
-                        //       );
-                        //   }
-                        // }
-                        incomingContact.AccountId = alreadyInSFContact.AccountId;
-                        incomingContact.OwnerId = ExternalRequestUtil.recordOwner.id;
-                        ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
-                    }
+
                 }
             } // EMAIL - BIRTHDATE - LEGALENTITY
             else if ( ExternalRequestUtil.mapContactsEmailBirthDateLE.containsKey( emailBirthDateLECode ) )
