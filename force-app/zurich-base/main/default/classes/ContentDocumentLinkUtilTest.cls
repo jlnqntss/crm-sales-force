@@ -23,9 +23,6 @@ private with sharing class ContentDocumentLinkUtilTest
     @isTest
     static void test_email2case_hegeo_ok()
     {
-        String csvContent = [SELECT Body FROM StaticResource WHERE Name = 'testcsvemail' ].Body.toString();
-        System.debug('csvContent: ' + csvContent);
-
         Case relatedCase = new Case();
         insert relatedCase;
 
@@ -39,6 +36,10 @@ private with sharing class ContentDocumentLinkUtilTest
 
         emailMessage.HtmlBody = 'The CSV is attached.';
         insert emailMessage;
+
+        String csvContent = 'Incidence,App,\n';
+        csvContent += 'Fake Name <from@fakeemail.com.invalid>\n';
+        csvContent += 'Fake Name <to@fakeemail.com.invalid>';
 
         ContentVersion newVersion = new ContentVersion();
         newVersion.Title = 'HEGEO-CLASIFICACION';
@@ -56,8 +57,14 @@ private with sharing class ContentDocumentLinkUtilTest
         Test.stopTest();
 
         EmailMessage updatedEmailMessage = [SELECT Id, FromAddress, ToAddress FROM EmailMessage WHERE Id =: emailMessage.Id];
+        System.debug('updatedEmailMessage: ' + updatedEmailMessage);
         System.assertEquals(true, updatedEmailMessage != null, 'EmailMessage found');
         System.assertEquals(true, updatedEmailMessage.FromAddress == 'from@fakeemail.com.invalid', 'FromAddress is the same');
-        System.assertEquals(true, updatedEmailMessage.ToAddress == 'to@fakeemail.com.invalid', 'ToAddress is the same'); 
+        System.assertEquals(true, updatedEmailMessage.ToAddress == 'to@fakeemail.com.invalid', 'ToAddress is the same');
+
+        Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c FROM Case WHERE Id =: relatedCase.Id];
+        System.assertEquals(true, updatedCase != null, 'Case found');
+        System.assertEquals(true, updatedCase.Type == 'Incidence', 'Type is incidence');
+        System.assertEquals(true, updatedCase.Subtype__c == 'App', 'Subtype is app');
     }
 }

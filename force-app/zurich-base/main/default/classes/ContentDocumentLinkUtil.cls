@@ -5,9 +5,15 @@
  */
 public class ContentDocumentLinkUtil
 {
-    public static final Integer CASE_FIELDS_CSV_INDEX = 0;
-    public static final Integer FROM_ADDRESS_CSV_INDEX = 1;
-    public static final Integer TO_ADDRESS_CSV_INDEX = 2;
+    public static Integer CASE_FIELDS_CSV_INDEX = 0;
+    public static Integer FROM_ADDRESS_CSV_INDEX = 1;
+    public static Integer TO_ADDRESS_CSV_INDEX = 2;
+
+    public static String SEPARATOR = ',';
+
+    public static List<String> CASE_FIELDS = new List<String>();
+
+    public static Robot_Hegeo_Setting__mdt currentSettings = new Robot_Hegeo_Setting__mdt();
 
     public static Map<Id, EmailMessage> relatedEmailMessages = new Map<Id, EmailMessage>();
     public static Map<Id, Case> relatedCases = new Map<Id, Case>();
@@ -19,6 +25,26 @@ public class ContentDocumentLinkUtil
 
     public static List<EmailMessage> emailMessagesToUpdate = new List<EmailMessage>();
     public static List<Case> casesToUpdate = new List<Case>();
+
+    private static void initSettings()
+    {
+        List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c
+            FROM Robot_Hegeo_Setting__mdt
+        ];
+
+        if(!robotHegeoSettings.isEmpty())
+        {
+            CASE_FIELDS_CSV_INDEX = Integer.valueOf(robotHegeoSettings.get(0).CaseFieldsIndex__c);
+            FROM_ADDRESS_CSV_INDEX = Integer.valueOf(robotHegeoSettings.get(0).FromAddressIndex__c);
+            TO_ADDRESS_CSV_INDEX = Integer.valueOf(robotHegeoSettings.get(0).ToAddressIndex__c);
+
+            SEPARATOR = robotHegeoSettings.get(0).Separator__c;
+
+            CASE_FIELDS = robotHegeoSettings.get(0).CaseFields__c.split(SEPARATOR);
+        }
+    }
+
     /**
      * Método que recupera los EmailMessages en los que viene adjunto el documento
      *
@@ -27,6 +53,7 @@ public class ContentDocumentLinkUtil
      */
     public static void getRelatedEmailMessages(List<ContentDocumentLink> newList, Map<Id, ContentDocumentLink> oldMap)
     {
+        initSettings();
         Map<Id, ContentDocumentLink> linkedEntityToDocumentMap = new Map<Id, ContentDocumentLink>();
 
         for(ContentDocumentLink docLink: newList)
@@ -84,55 +111,78 @@ public class ContentDocumentLinkUtil
     {
         if(relatedEmailMessages.containsKey(docInformation.LinkedEntityId))
         {
+            //1. Actualizamos fromAddress y toAddress del EmailMessage
             EmailMessage relatedEmail = relatedEmailMessages.get(docInformation.LinkedEntityId);
 
-            String csvAsString = contentDocumentInformationMap.get(docInformation.Id).ContentDocument.LatestPublishedVersion.VersionData.toString();
-            List<String> csvFileLines = csvAsString.split('\n');
-            /*for(Integer i=0; i < csvFileLines.size(); i++){
-                System.debug('csvFileLines' + i + ': ' + csvFileLines[i]);
-            }*/
+            ContentDocumentLink contentDocumentInformation = contentDocumentInformationMap.get(docInformation.Id);
 
-            String fromAddress = '';
-            String toAddress = '';
-
-            if(String.isNotBlank(csvFileLines.get(FROM_ADDRESS_CSV_INDEX)))
+            if(contentDocumentInformation != null && contentDocumentInformation.ContentDocument != null
+            && contentDocumentInformation.ContentDocument.LatestPublishedVersion != null
+            && contentDocumentInformation.ContentDocument.LatestPublishedVersion.VersionData != null)
             {
-                String fromAddressFromCSV = csvFileLines.get(FROM_ADDRESS_CSV_INDEX).trim();
-                fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length()-1).substringAfter('<');
-            }
+                String csvAsString = contentDocumentInformationMap.get(docInformation.Id).ContentDocument.LatestPublishedVersion.VersionData.toString();
+                List<String> csvFileLines = csvAsString.split('\n');
+                /*for(Integer i=0; i < csvFileLines.size(); i++){
+                    System.debug('csvFileLines' + i + ': ' + csvFileLines[i]);
+                }*/
 
-            if(String.isNotBlank(csvFileLines.get(TO_ADDRESS_CSV_INDEX)))
-            {
-                String toAddressFromCSV = csvFileLines.get(TO_ADDRESS_CSV_INDEX).trim();
-                toAddress = toAddressFromCSV.substring(0,toAddressFromCSV.length()-1).substringAfter('<');
-            }
+                String fromAddress = '';
+                String toAddress = '';
 
-            if(String.isNotBlank(fromAddress))
-            {
-                relatedEmail.FromAddress = fromAddress;
-            }
-
-            if(String.isNotBlank(toAddress))
-            {
-                relatedEmail.ToAddress = toAddress;
-            }
-
-            if(relatedEmail.FromAddress != fromAddress || relatedEmail.ToAddress != toAddress)
-            {
-                emailMessagesToUpdate.add(relatedEmail);
-            }
-
-            if(relatedEmail.ParentId != null && relatedCases.containsKey(relatedEmail.ParentId))
-            {
-                Case relatedCase = relatedCases.get(relatedEmail.ParentId);
-                //TODO: Modificar campos del caso
-                List<String> types = csvFileLines.get(CASE_FIELDS_CSV_INDEX).trim().split(',');
-                if(String.isNotBlank(types.get(0)))
+                if(String.isNotBlank(csvFileLines.get(FROM_ADDRESS_CSV_INDEX)))
                 {
-                    relatedCase.Type = types.get(0);
+                    String fromAddressFromCSV = csvFileLines.get(FROM_ADDRESS_CSV_INDEX).trim();
+                    fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length()-1).substringAfter('<');
+                    System.debug('from: ' + fromAddress);
                 }
 
-                casesToUpdate.add(relatedCase);
+                if(String.isNotBlank(csvFileLines.get(TO_ADDRESS_CSV_INDEX)))
+                {
+                    String toAddressFromCSV = csvFileLines.get(TO_ADDRESS_CSV_INDEX).trim();
+                    toAddress = toAddressFromCSV.substring(0,toAddressFromCSV.length()-1).substringAfter('<');
+                    System.debug('to: ' + toAddress);
+                }
+
+                if(String.isNotBlank(fromAddress))
+                {
+                    relatedEmail.FromAddress = fromAddress;
+                }
+
+                if(String.isNotBlank(toAddress))
+                {
+                    relatedEmail.ToAddress = toAddress;
+                }
+
+                emailMessagesToUpdate.add(relatedEmail);
+
+                //2. Actualizamos los campos correspondientes al caso
+                if(relatedEmail.ParentId != null && relatedCases.containsKey(relatedEmail.ParentId))
+                {
+                    Case relatedCase = relatedCases.get(relatedEmail.ParentId);
+                    List<String> types = csvFileLines.get(CASE_FIELDS_CSV_INDEX).trim().split(SEPARATOR);
+
+                    if (!types.isEmpty()) 
+                    {
+                        Map<String, String> caseFieldsMap = new Map<String, String>{
+                            'Id' => relatedCases.get(relatedEmail.ParentId).Id
+                        };
+
+                        for(Integer i=0; i<CASE_FIELDS.size(); i++)
+                        {
+                            if(i<types.size() && String.isNotBlank(types.get(i)))
+                            {
+                                System.debug('types.get(i): ' + types.get(i));
+                                caseFieldsMap.put(CASE_FIELDS.get(i), types.get(i));
+                            }
+                        }
+
+                        System.debug('caseFieldsMap: ' + caseFieldsMap);
+
+                        casesToUpdate.add((Case) JSON.deserialize(
+                            JSON.serialize(caseFieldsMap), Case.class)
+                        );
+                    }
+                }
             }
         }
     }
