@@ -862,7 +862,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Opportunity.InfoQuoteNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -897,7 +897,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Opportunity.LegalEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>
