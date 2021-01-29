@@ -17,7 +17,7 @@
 **/et4ae5__*
 
 # Ignore Pure Cloud Namespace
-**/purecloud__*
+#**/purecloud__*
 
 # Ignore Standard Profiles
 Chatter External User.profile-meta.xml

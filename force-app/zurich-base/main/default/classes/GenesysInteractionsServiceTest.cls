@@ -1291,7 +1291,7 @@ public without sharing class GenesysInteractionsServiceTest
         //Cola de Genesys
         List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
         queues = TestDataFactory.generateGenesysQueues(1);
-        queues[0].Name = 'queue0'; //Debe llamarse igual que la cola de SF
+        queues[0].SalesforceQueueName__c = 'queue0'; //Debe llamarse igual que la cola de SF
         insert queues;
 
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -1306,7 +1306,7 @@ public without sharing class GenesysInteractionsServiceTest
         GenesysInteractionsService.initInteraction(testInteractionLog);
 
         List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
-        System.assertEquals(queues[0].Name, expectedTasks[0].Owner.Name, 'El OwnerID de la task debería ser la cola en SF con mismo nombre que en Genesys');
+        System.assertEquals(queues[0].SalesforceQueueName__c, expectedTasks[0].Owner.Name, 'El OwnerID de la task debería ser la cola en SF con mismo nombre que en Genesys');
     }
 
     /**
@@ -1322,7 +1322,7 @@ public without sharing class GenesysInteractionsServiceTest
         //Cola de Genesys
         List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
         queues = TestDataFactory.generateGenesysQueues(1);
-        insert queues;
+        insert queues; //No va a encontrar la cola porque SalesforceQueueName__c va a estar vacío
 
         QueueSobject missedCalls = [SELECT QueueId, Queue.Name, SobjectType FROM QueueSobject WHERE SobjectType = 'Task' AND Queue.Name = 'Missed Calls' LIMIT 1];
 

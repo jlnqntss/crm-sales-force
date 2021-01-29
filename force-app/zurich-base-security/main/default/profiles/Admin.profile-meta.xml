@@ -11389,6 +11389,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>purecloud__PureCloud_Queue__c.SalesforceQueueName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>purecloud__PureCloud_Queue__c.purecloud__PureCloud_Division_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>

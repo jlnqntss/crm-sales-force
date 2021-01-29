@@ -638,10 +638,10 @@ public without sharing class GenesysInteractionsService
         //1º Construir mapa con las colas de Genesys Id <-> Nombre
         Map<String,String> mapGenesysQueueIdName = new Map<String,String>();
         List<purecloud__PureCloud_Queue__c> genesysQueues = new List<purecloud__PureCloud_Queue__c>();
-        genesysQueues = [SELECT Id, Name, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c];
+        genesysQueues = [SELECT Id, Name, purecloud__PureCloud_Queue_ID__c, SalesforceQueueName__c FROM purecloud__PureCloud_Queue__c];
         for(purecloud__PureCloud_Queue__c gQueue: genesysQueues)
         {
-            mapGenesysQueueIdName.put(gQueue.purecloud__PureCloud_Queue_ID__c, gQueue.Name);
+            mapGenesysQueueIdName.put(gQueue.purecloud__PureCloud_Queue_ID__c, gQueue.SalesforceQueueName__c);
         }
 
         //2º Construir mapa de colas para TASK Nombre <-> Id
