@@ -21,4 +21,9 @@
         <default>false</default>
         <label>Call</label>
     </standardValue>
+    <standardValue>
+        <fullName>Scaled Case</fullName>
+        <default>false</default>
+        <label>Scaled Case</label>
+    </standardValue>
 </StandardValueSet>
