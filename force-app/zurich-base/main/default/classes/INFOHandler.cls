@@ -514,7 +514,7 @@ public class INFOHandler implements ISystem
                                 externalIdValues.add(sObj.get(externalIdField));
                             }
                             
-                            Database.DeleteResult[] resultList = Database.delete(new RecordsSelector(globalDescribe.get(objectName)).selectByExternalId(externalIdField, externalIdValues));
+                            Database.DeleteResult[] resultList = Database.delete(new Query(globalDescribe.get(objectName)).addConditionIn(externalIdField, externalIdValues).run());
 
                             for(Integer i = 0; i < externalRequestList.size(); i++)
                             {
