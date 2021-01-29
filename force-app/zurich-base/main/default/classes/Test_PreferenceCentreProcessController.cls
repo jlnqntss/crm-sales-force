@@ -70,4 +70,29 @@ public with sharing class Test_PreferenceCentreProcessController
         System.assertNotEquals(null, scope, 'The scope should not be null');
         
     }
+
+    /**
+     * Test the getContactData method
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 27/01/2021
+     */
+    @isTest
+    static void test_getContactData()
+    {
+        Contact c = new Contact(
+            LastName = 'test1'
+        );
+        insert c;
+
+        List<Contact> contacts = [SELECT Id, HashedId__c FROM Contact WHERE Id = :c.Id];
+        System.assertEquals(1, contacts.size(), 'There should be 1 contact');
+
+        Contact contactToFind = null;
+        Test.startTest();
+        contactToFind = PreferenceCentreProcessController.getContactData(contacts[0].HashedId__c);
+        Test.stopTest();
+
+        System.assertNotEquals(null, contactToFind, 'The contact should be found by hashedId');
+    }
 }

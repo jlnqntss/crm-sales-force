@@ -202,5 +202,92 @@ private class WS_GenesysAPIServiceTest
         System.assertEquals(400, RestContext.response.statusCode);
     }
 
+    /**
+     * Valida la entrada al GET para el recurso /people
+     **
+     * @author adelgado
+     * @date 27/01/2021
+     */
+    @isTest
+    static void test_doGet_people_OK()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/people';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('scope', 'ccs');
+        request.addParameter('searchType', 'document');
+        request.addParameter('filterBy', 'customers');
+        request.addParameter('value', '77788899F');
+        request.addParameter('legalEntity', 'gi');
+
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(200, RestContext.response.statusCode);
+    }
+
+    /**
+     * Valida la entrada al GET para el recurso /policies
+     **
+     * @author adelgado
+     * @date 27/01/2021
+     */
+    @isTest
+    static void test_doGet_policies_OK()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/policies';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('', '54456465');
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(200, RestContext.response.statusCode);
+    }
+
+    /**
+     * Valida la entrada al GET para el recurso /claims
+     **
+     * @author adelgado
+     * @date 27/01/2021
+     */
+    @isTest
+    static void test_doGet_claims_OK()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/claims';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('searchType', 'claim_number');
+        request.addParameter('searchTerm', '3435HTR');
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(200, RestContext.response.statusCode);
+    }
+
     // #endregion
 }

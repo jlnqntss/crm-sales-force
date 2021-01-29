@@ -14,6 +14,10 @@ public with sharing class PreferenceCentreController {
   // }
   //#endregion
 
+  // Name of the static resource for the normal logo
+  @testvisible
+  private static final string ZURICH_LOGO_RESOURCE = 'zurich_klinc_logo'; 
+
   //#Region public classes
 
   public class CampaignStatus {
@@ -47,36 +51,61 @@ public with sharing class PreferenceCentreController {
   }
 
   /**
+   * Get the logo url for the Country of the Contact given the contact hash
+   * 
+   * @author nts (agonzalezisasi)
+   * @date 26/12/2021
+   * @param {String hashedId} the hash id representing the contact
+   * @return {string} the url of the logo as a static resource
+   */
+  @AuraEnabled(cacheable=true)
+  public static string getLogoUrl(String hashedId)
+  {
+    string result = null;
+    
+    string country_logo = null;
+
+    // Get the contact to get the country
+    Contact contact = getContactData(hashedId);
+    if( contact != null && String.isNotBlank(contact.SourceCountry__c) ) {  // If found
+        // Search for the zurich logos for klinc
+        
+        // get the name of the logo for that country. example: zurich_klinc_logo_germany
+        country_logo = ZURICH_LOGO_RESOURCE + '_' + contact.SourceCountry__c.toLowerCase();
+    }
+
+    Pagereference page = PageReference.forResource(
+        country_logo != null ? country_logo : ZURICH_LOGO_RESOURCE
+    );
+    if( page != null ) {
+        result = page.getUrl();
+        if( result.contains('?') ) {
+            result = result.subString(0, result.indexOf('?'));
+        }
+        result = Url.getSalesforceBaseUrl().toExternalForm() + result;
+    }
+
+    return result;
+  }
+
+  /**
    * @Description: Metodo que obtiene la información del contacto a través del hashedId
    *
    * @Author: Enara Etxaniz
+   * 
+   * @change nts (agonzalezisasi) - 27/01/2021 - Use the PreferenceCentreProcessController class to see the contacts
    **/
   public static Contact getContactData(String hashedId) {
-    System.debug('hashedId:' + hashedId);
+    //System.debug('hashedId:' + hashedId);
     Contact contact = new Contact();
-    try {
-      if (!String.isBlank(hashedId)) {
-        //Se localiza el hash recibido de la url en Contacto
-        List<Contact> c = [
-          SELECT
-            Id,
-            Name,
-            LegalEntity__c,
-            HasOptedOutOfEmail,
-            SourceCountry__c,
-            HashedId__c
-          FROM Contact
-          WHERE HashedId__c = :hashedId
-        ];
 
-        if (c.size() > 0) {
-          contact = c[0];
-        }
-      } else {
-        ErrorLogUtil.commitError( ' ', 'El hashedId es vacío', 'PreferenceCentreController' );
-      }
-    } catch (Exception e) {
-      ErrorLogUtil.commitError( e, 'PreferenceCentreProcessController: HashedId: ' + hashedId );
+    Contact c = PreferenceCentreProcessController.getContactData(hashedId);
+    if( c != null ) {
+      contact = c;
+    } else {
+      ErrorLogUtil.commitError( 
+        ErrorLogUtil.ERROR_LEVEL_WARNING, 'Contact not found with hash id: ' + hashedId, 'PreferenceCentreController' 
+      );
     }
 
     return contact;

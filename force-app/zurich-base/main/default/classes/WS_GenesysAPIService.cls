@@ -28,6 +28,22 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                         GenesysInteractionsService.findPeopleBy(new GenesysInteractionsService.SearchRequest(RestContext.request.params) ).toString()
                     );
                 }
+                // 2 - GET /policies: Procesa búsqueda de pólizas
+                when 'policies' {
+                    GenesysInteractionsService.version =  WS_BaseAPIService.version;
+                    response.statusCode = 200;
+                    response.responseBody = Blob.valueOf(
+                        GenesysInteractionsService.findActivePolicy(RestContext.request.requestURI.substringAfterLast('/')).toString()
+                    );
+                }
+                // 3 - GET /claims: Procesa búsqueda de siniestros
+                when 'claims' {
+                    GenesysInteractionsService.version =  WS_BaseAPIService.version;
+                    response.statusCode = 200;
+                    response.responseBody = Blob.valueOf(
+                        GenesysInteractionsService.findOpenedClaim(new GenesysInteractionsService.SearchRequest(RestContext.request.params) ).toString()
+                    );
+                }
             }
         }
         catch (WS_BaseAPIService.ApiException apiError)

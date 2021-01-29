@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <description>Buscamos si existe algún cliente con ese número de teléfono</description>
+        <name>FindCustomerByPhone</name>
+        <label>Find Customer By Phone</label>
+        <locationX>1040</locationX>
+        <locationY>398</locationY>
+        <actionName>FindCustomerByPhoneAction</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>CustomerFoundByPhoneDecision</targetReference>
+        </connector>
+        <inputParameters>
+            <name>phone</name>
+            <value>
+                <elementReference>phone</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>scope</name>
+            <value>
+                <elementReference>ScopeCodeZE</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <description>Utiliza un Aura para ir al email o tarea</description>
         <name>RedirectToEmailMessage</name>
         <label>Abrir el Email en una pestaña</label>
@@ -36,6 +61,22 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
+        <description>Utiliza un Aura para ir al contacto</description>
+        <name>RedirectToRecordFound</name>
+        <label>Ir a ficha del registro encontrado</label>
+        <locationX>842</locationX>
+        <locationY>638</locationY>
+        <actionName>c:RedirectToRecordAction</actionName>
+        <actionType>component</actionType>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>FindCustomerByPhone.customerId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <description>Utiliza un Aura para ir al email o tarea</description>
         <name>RedirectToRelatedRecord</name>
         <label>Abrir subpestaña con registro relacionado</label>
@@ -62,8 +103,8 @@
         <description>Almacenamos el valor del WebName recuperado</description>
         <name>SaveWebName</name>
         <label>Guardar WebName</label>
-        <locationX>842</locationX>
-        <locationY>638</locationY>
+        <locationX>1106</locationX>
+        <locationY>878</locationY>
         <assignmentItems>
             <assignToReference>WebName</assignToReference>
             <operator>Assign</operator>
@@ -106,6 +147,14 @@
             <targetReference>OpenCreateLeadFlowFromRecordId</targetReference>
         </connector>
     </assignments>
+    <constants>
+        <description>Código de Scope de Zurich Empresas</description>
+        <name>ScopeCodeZE</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>ze</stringValue>
+        </value>
+    </constants>
     <decisions>
         <name>ContactRequestFoundByIdDecision</name>
         <label>¿Hemos encontrado ContactRequest?</label>
@@ -134,8 +183,8 @@
     <decisions>
         <name>ContactRequestFoundDecision</name>
         <label>¿Hemos encontrado ContactRequest?</label>
-        <locationX>974</locationX>
-        <locationY>518</locationY>
+        <locationX>1238</locationX>
+        <locationY>758</locationY>
         <defaultConnector>
             <targetReference>OpenCreateLeadFlow</targetReference>
         </defaultConnector>
@@ -157,12 +206,38 @@
         </rules>
     </decisions>
     <decisions>
-        <name>HasEmailIdDecision</name>
-        <label>¿Hay Email Id?</label>
-        <locationX>776</locationX>
-        <locationY>278</locationY>
+        <description>Comprobamos si hemos encontrado algún cliente con el número de teléfono recibido</description>
+        <name>CustomerFoundByPhoneDecision</name>
+        <label>¿Hemos encontrado cliente?</label>
+        <locationX>1040</locationX>
+        <locationY>518</locationY>
         <defaultConnector>
             <targetReference>FindContactRequest</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>CustomerFoundByPhone</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FindCustomerByPhone.customerId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RedirectToRecordFound</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>HasEmailIdDecision</name>
+        <label>¿Hay Email Id?</label>
+        <locationX>809</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>FindCustomerByPhone</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -184,7 +259,7 @@
     <decisions>
         <name>HasRecordIdDecision</name>
         <label>¿Hay Record Id?</label>
-        <locationX>479</locationX>
+        <locationX>495</locationX>
         <locationY>158</locationY>
         <defaultConnector>
             <targetReference>HasEmailIdDecision</targetReference>
@@ -237,8 +312,8 @@
         <description>Busca el registro de ContactRequest que ha podido lanzar este Flow para recuperar el campo WebName__c</description>
         <name>FindContactRequest</name>
         <label>Buscar ContactRequest por Teléfono</label>
-        <locationX>974</locationX>
-        <locationY>398</locationY>
+        <locationX>1238</locationX>
+        <locationY>638</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ContactRequestFoundDecision</targetReference>
@@ -303,7 +378,7 @@
     </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>353</locationX>
+        <locationX>369</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>HasRecordIdDecision</targetReference>
@@ -314,8 +389,8 @@
         <description>Llamada al Flow de Creación de Leads para que muestre el formulario al agente</description>
         <name>OpenCreateLeadFlow</name>
         <label>Abrir Flow de Creación de Leads</label>
-        <locationX>974</locationX>
-        <locationY>854</locationY>
+        <locationX>1238</locationX>
+        <locationY>1094</locationY>
         <flowName>ZECreateLead</flowName>
         <inputAssignments>
             <name>InputPhone</name>

@@ -23,6 +23,9 @@ public without sharing class GenesysInteractionsServiceTest
         intermediaries.get(0).Phone = '111555777';
         update intermediaries.get(0);
 
+        List<Account> partners = TestDataFactory.generateAccounts('001', 'Partner', 10);
+        insert partners;
+
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
         insert contactPointPhones;
         //Actualizar con los datos usados en los test
@@ -50,8 +53,12 @@ public without sharing class GenesysInteractionsServiceTest
         //se crea 1 póliza para cada cuenta
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 10);
         insert policies;
-        policies.get(0).InfoPolicyNumber__c = '666777111333';
+        policies.get(0).InfoPolicyNumber__c = '00666777111333';
         update policies.get(0);
+
+        //se crea 1 objeto asegurado para cada póliza
+        List<Asset> insuredObjects = TestDataFactory.generateInsuredObjectsForEachPolicy('Motor', policies, 10);
+        insert insuredObjects;
 
         List<Task> tasks = TestDataFactory.generateInteractionTasks(10);
         insert tasks;
@@ -706,7 +713,7 @@ public without sharing class GenesysInteractionsServiceTest
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
 
         searchRequest.searchType = 'policy_code';
-        searchRequest.value = '666777111333';
+        searchRequest.value = '00666777111333';
         searchRequest.filterBy  = 'customers';
         searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
         searchRequest.legalEntity  = 'gi';
@@ -973,6 +980,287 @@ public without sharing class GenesysInteractionsServiceTest
 
     }
 
+    /**
+     * Valida la generación de la estructura ActivePolicies a partir de una lista de pólizas
+     **
+     * @author adelgado
+     * @date 21/01/2021
+     */
+    @IsTest
+    static void test_findActivePolicies()
+    {
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+        Id partnerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner').getRecordTypeId();
+
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+        List<Account> partners = [SELECT Id, PartnerSFCode__c FROM Account WHERE RecordTypeId = :partnerRecordTypeId LIMIT 2];
+
+        List<Product2> products = new List<Product2>
+        {
+            new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'Group 1'
+            ),
+            new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'Group 2'
+            )
+        };
+        insert products;
+
+        List<Policy__c> policies = new PoliciesSelector
+        (
+            new Set<String> {'Id'}
+        )
+        .selectByHolder(customer.get(0).Id);
+
+        for(Integer i = 0; i < policies.size(); i++)
+        {
+            if(i < 5)
+            {
+                policies[i].Partner__c = partners[0].Id;
+                policies[i].Intermediary_Code__c = '0001112223';
+                policies[i].ProductId__c = products[0].Id;
+            }
+            else 
+            {
+                policies[i].Partner__c = partners[1].Id;
+                policies[i].Intermediary_Code__c = '0001112224';
+                policies[i].ProductId__c = products[1].Id;
+            }
+        }
+        update policies;
+
+        List<Policy__c> policiesUpdated = new PoliciesSelector
+        (
+            new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
+        )
+        .selectByHolder(customer.get(0).Id);
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.ActivePolicies activePolicies = new GenesysInteractionsService.ActivePolicies(policiesUpdated);
+
+        Test.stopTest();
+
+        // Then
+
+        System.assertEquals(10, activePolicies.total, 'No se ha informado correctamente el número total de pólizas');
+
+        System.assertEquals(2, activePolicies.byPartner.size(), 'No se ha informado correctamente el listado de pólizas por partner');
+        System.assertEquals(2, activePolicies.bySector.size(), 'No se ha informado correctamente el listado de pólizas por sector de partner');
+        System.assertEquals(2, activePolicies.byIntermediary.size(), 'No se ha informado correctamente el listado de pólizas por intermediario');
+        System.assertEquals(2, activePolicies.byType.size(), 'No se ha informado correctamente el listado de pólizas por tipo o ramo');
+
+        System.assertEquals(5, activePolicies.byIntermediary.get('0001112223').size(), 'No se ha informado correctamente el listado de pólizas por intermediario');
+        System.assertEquals(5, activePolicies.byIntermediary.get('0001112224').size(), 'No se ha informado correctamente el listado de pólizas por intermediario');
+        System.assertEquals(5, activePolicies.byType.get('Group 1').size(), 'No se ha informado correctamente el listado de pólizas por tipo o ramo');
+        System.assertEquals(5, activePolicies.byType.get('Group 2').size(), 'No se ha informado correctamente el listado de pólizas por tipo o ramo');
+
+        System.assertEquals(policies.get(0).Id, activePolicies.byType.get('Group 1').get(0).id, 'No se ha informado correctamente el id de la póliza');
+        System.assertEquals(policies.get(5).Id, activePolicies.byType.get('Group 2').get(0).id, 'No se ha informado correctamente el id de la póliza');
+
+    }
+
+    /**
+     * Valida la generación de la estructura OpenedClaims a partir de una lista de siniestros
+     **
+     * @author adelgado
+     * @date 22/01/2021
+     */
+    @IsTest
+    static void test_findOpenedClaims()
+    {
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+
+        List<Product2> products = new List<Product2>
+        {
+            new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'Group 1'
+            ),
+            new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'Group 2'
+            )
+        };
+        insert products;
+
+        for(Integer i = 0; i < policies.size(); i++)
+        {
+            if(i < 5)
+            {
+                policies[i].ProductId__c = products[0].Id;
+            }
+            else 
+            {
+                policies[i].ProductId__c = products[1].Id;
+            }
+        }
+        update policies;
+
+        //se crea 1 siniestro para cada póliza-objeto asegurado
+        List<Claim__c> claimsToInsert = new List<Claim__c>();
+        
+        for(Integer i = 0; i< Policies.size(); i++)
+        {
+            claimsToInsert = TestDataFactory.generateClaimsForEachPolicyInsuredObject(policies, policies[i].PolicyNumbers__r, 1);
+        }
+        insert claimsToInsert;
+
+        List<Claim__c> claims = new ClaimsSelector
+        (
+            new Set<String> 
+            {
+                'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
+                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
+                'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
+            }
+        )
+        .selectByHolder(customer.get(0).Id);
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.OpenedClaims openedClaims = new GenesysInteractionsService.OpenedClaims(claims);
+
+        Test.stopTest();
+
+        // Then
+
+        System.assertEquals(100, openedClaims.total, 'No se ha informado correctamente el número total de pólizas');
+
+        //System.assertEquals(2, openedClaims.byOwner.size(), 'No se ha informado correctamente el listado de siniestros por destino preferido');
+        System.assertEquals(2, openedClaims.byType.size(), 'No se ha informado correctamente el listado de siniestros por tipo de póliza');
+        System.assertEquals(false, openedClaims.hasMultipleTypes, 'No se ha informado correctamente el indicador de varios tipos de siniestro');
+        System.assertEquals(false, openedClaims.hasDifferentOwners, 'No se ha informado correctamente el indicador de varios propietarios de los siniestros');
+
+        System.assertEquals('Group 1', openedClaims.byType.get('Group 1').get(0).policyType, 'No se ha informado correctamente el tipo de póliza del siniestro');
+        System.assertEquals('Group 2', openedClaims.byType.get('Group 2').get(0).policyType, 'No se ha informado correctamente el tipo de póliza del siniestro');
+    }
+
+    /**
+     * Valida la búsqueda de pólizas activas a partir de un código de póliza
+     * @author adelgado
+     * @date 27/01/2021
+     */
+    @IsTest
+    static void test_findActivePolicy()
+    {
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+
+        List<Policy__c> policies = new PoliciesSelector
+        (
+            new Set<String> {'Id', 'Name'}
+        )
+        .selectByHolder(customer.get(0).Id);
+
+        policies[0].InfoPolicyNumber__c = '11122233344455';
+        update policies[0];
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.ActivePolicy activePolicy = GenesysInteractionsService.findActivePolicy('11122233344455');
+
+        Test.stopTest();
+
+        // Then
+
+        System.assert(activePolicy != null, 'No se ha obtenido la póliza');
+        System.assertEquals(policies[0].Id, activePolicy.id, 'No se ha obtenido correctamente el id de la póliza');
+        System.assertEquals(policies[0].Name, activePolicy.policyCode, 'No se ha obtenido correctamente el código de la póliza');
+
+    }
+
+    /**
+     * Valida la búsqueda de siniestros abiertos a partir de un código de siniestro
+     * @author adelgado
+     * @date 27/01/2021
+     */
+    @IsTest
+    static void test_findOpenedClaim_claim_number()
+    {
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c>{policies[0]}, policies[0].PolicyNumbers__r, 1);
+        claims[0].INFOClaimNumber__c = '111222333444';
+        insert claims;
+
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+        searchRequest.searchType = 'claim_number';
+        searchRequest.searchTerm  = '111222333444';
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.OpenedClaim openedClaim = GenesysInteractionsService.findOpenedClaim(searchRequest);
+
+        Test.stopTest();
+
+        // Then
+
+        System.assert(openedClaim != null, 'No se ha obtenido el siniestro');
+
+        System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
+        System.assertEquals(claims[0].Name, openedClaim.claimNumber, 'No se ha obtenido correctamente el código del siniestro');
+
+    }
+
+    /**
+     * Valida la búsqueda de siniestros abiertos a partir de una matrícula
+     * @author adelgado
+     * @date 27/01/2021
+     */
+    @IsTest
+    static void test_findOpenedClaim_car_registration()
+    {
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c>{policies[0]}, policies[0].PolicyNumbers__r, 1);
+        insert claims;
+
+        policies[0].PolicyNumbers__r[0].RegistrationNumber__c = '05874HTR';
+        update policies[0].PolicyNumbers__r[0];
+
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+        searchRequest.searchType = 'car_registration';
+        searchRequest.searchTerm  = '05874HTR';
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.OpenedClaim openedClaim = GenesysInteractionsService.findOpenedClaim(searchRequest);
+
+        Test.stopTest();
+
+        // Then
+
+        System.assert(openedClaim != null, 'No se ha obtenido el siniestro');
+
+        System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
+        System.assertEquals(policies[0].PolicyNumbers__r[0].RegistrationNumber__c, openedClaim.carRegistration, 'No se ha obtenido correctamente la matrícula del coche del siniestro');
+
+    }
 
     // #endregion
 }

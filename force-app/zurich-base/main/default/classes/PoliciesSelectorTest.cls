@@ -112,4 +112,34 @@ private with sharing class PoliciesSelectorTest
             System.assertEquals(true, opportunityIds.contains(matched.OpportunityName__c), 'Set should contain the OpportunityName__c');
         }
     }
+
+    @IsTest
+    static void test_selectByHolder_selectByNumber()
+    {
+        Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer');
+        Id rtId = accountRecordTypeInfo.getRecordTypeId();
+        Account customer = [SELECT Id FROM Account WHERE RecordTypeId = : rtId LIMIT 1];
+        System.assertEquals(true, customer != null, '[0] Customer should NOT be null');
+
+        // Comprobar obtiene pólizas por tomador
+        List<Policy__c> policies = new List<Policy__c> (new PoliciesSelector(
+            new Set<String> {'Id', 'Policy_Holder__c', 'EndDate__c', 'InfoPolicyNumber__c'}).selectByHolder(customer.Id));
+        System.assertEquals(true, !policies.isEmpty() && policies.size() > 1, '[1] Policies should NOT be empty and greater than one');
+
+        // Actualizar la fecha expiración de una póliza y comprobar que NO recupera esa póliza
+        Integer policiesCount = policies.size();
+        Policy__c policyToUpdate = policies.get(0);
+        policyToUpdate.EndDate__c = Date.today().addDays(-1);
+        update policyToUpdate;
+
+        // Comprobar obtiene pólizas por tomador ACTIVAS
+        policies = new List<Policy__c> (new PoliciesSelector(
+            new Set<String> {'Id', 'Policy_Holder__c', 'EndDate__c', 'InfoPolicyNumber__c'}).selectByHolder(customer.Id));
+        System.assertEquals(true, !policies.isEmpty() && policies.size() == policiesCount - 1, '[2] Policies should NOT be empty');
+
+        // Comprobar obtiene pólizas por num póliza
+        policies = new List<Policy__c> (new PoliciesSelector(
+            new Set<String> {'Id', 'Policy_Holder__c', 'EndDate__c', 'InfoPolicyNumber__c'}).selectByNumber(policies.get(0).InfoPolicyNumber__c));
+        System.assertEquals(true, !policies.isEmpty() && policies.size() == 1, '[2] Policies should be just one');
+    }
 }
