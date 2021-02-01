@@ -1,5 +1,5 @@
 @isTest(SeeAllData = false)
-public without sharing class GenesysInteractionsServiceTest
+private without sharing class GenesysInteractionsServiceTest
 {
     /**
      * creación de registros necesarios
@@ -1011,10 +1011,10 @@ public without sharing class GenesysInteractionsServiceTest
         insert products;
 
         List<Policy__c> policies = new PoliciesSelector
-        (
-            new Set<String> {'Id'}
-        )
-        .selectByHolder(customer.get(0).Id);
+                                   (
+            new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
+                                   )
+                                   .selectByHolder(customer.get(0).Id);
 
         for(Integer i = 0; i < policies.size(); i++)
         {
@@ -1034,10 +1034,10 @@ public without sharing class GenesysInteractionsServiceTest
         update policies;
 
         List<Policy__c> policiesUpdated = new PoliciesSelector
-        (
+                                          (
             new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
-        )
-        .selectByHolder(customer.get(0).Id);
+                                          )
+                                          .selectByHolder(customer.get(0).Id);
 
         // Test
         Test.startTest();
@@ -1111,22 +1111,20 @@ public without sharing class GenesysInteractionsServiceTest
         //se crea 1 siniestro para cada póliza-objeto asegurado
         List<Claim__c> claimsToInsert = new List<Claim__c>();
 
-        for(Integer i = 0; i< Policies.size(); i++)
+        for(Integer i = 0; i < Policies.size(); i++)
         {
             claimsToInsert = TestDataFactory.generateClaimsForEachPolicyInsuredObject(policies, policies[i].PolicyNumbers__r, 1);
         }
         insert claimsToInsert;
 
-        List<Claim__c> claims = new ClaimsSelector
-        (
-            new Set<String>
-            {
-                'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c',
-                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
-                'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
-            }
-        )
-        .selectByHolder(customer.get(0).Id);
+        List<Claim__c> claims = new ClaimsSelector( new Set<String>
+        {
+            'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c',
+            'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
+            'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
+            'Policy__r.Intermediary_Code__c',
+            'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
+        } ).selectByHolder(customer.get(0).Id);
 
         // Test
         Test.startTest();
@@ -1161,10 +1159,10 @@ public without sharing class GenesysInteractionsServiceTest
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
 
         List<Policy__c> policies = new PoliciesSelector
-        (
-            new Set<String> {'Id', 'Name'}
-        )
-        .selectByHolder(customer.get(0).Id);
+                                   (
+            new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
+                                   )
+                                   .selectByHolder(customer.get(0).Id);
 
         policies[0].InfoPolicyNumber__c = '11122233344455';
         update policies[0];
@@ -1178,7 +1176,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
 
-        System.assert(activePolicy != null, 'No se ha obtenido la póliza');
+        System.assert (activePolicy != null, 'No se ha obtenido la póliza');
         System.assertEquals(policies[0].Id, activePolicy.id, 'No se ha obtenido correctamente el id de la póliza');
         System.assertEquals(policies[0].Name, activePolicy.policyCode, 'No se ha obtenido correctamente el código de la póliza');
 
@@ -1198,7 +1196,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
 
-        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c>{policies[0]}, policies[0].PolicyNumbers__r, 1);
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
         claims[0].INFOClaimNumber__c = '111222333444';
         insert claims;
 
@@ -1215,7 +1213,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
 
-        System.assert(openedClaim != null, 'No se ha obtenido el siniestro');
+        System.assert (openedClaim != null, 'No se ha obtenido el siniestro');
 
         System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
         System.assertEquals(claims[0].Name, openedClaim.claimNumber, 'No se ha obtenido correctamente el código del siniestro');
@@ -1234,9 +1232,9 @@ public without sharing class GenesysInteractionsServiceTest
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
 
-        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+        List<Policy__c> policies = [SELECT Name, PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
 
-        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c>{policies[0]}, policies[0].PolicyNumbers__r, 1);
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
         insert claims;
 
         policies[0].PolicyNumbers__r[0].RegistrationNumber__c = '05874HTR';
@@ -1255,7 +1253,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
 
-        System.assert(openedClaim != null, 'No se ha obtenido el siniestro');
+        System.assert (openedClaim != null, 'No se ha obtenido el siniestro');
 
         System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
         System.assertEquals(policies[0].PolicyNumbers__r[0].RegistrationNumber__c, openedClaim.carRegistration, 'No se ha obtenido correctamente la matrícula del coche del siniestro');
@@ -1284,8 +1282,8 @@ public without sharing class GenesysInteractionsServiceTest
     static void test_searchQueueTaskId_ok()
     {
         Test.startTest();
-            //En el stopTest finaliza el future
-            byPassMixedDMLOperation();
+        //En el stopTest finaliza el future
+        byPassMixedDMLOperation();
         Test.stopTest();
 
         //Cola de Genesys

@@ -55,7 +55,7 @@ public abstract class RecordsSelector
      */
     public void setFields(List<Schema.SobjectField> fieldsToQuery)
     {
-        if(fieldsToQuery != null && !fieldsToQuery.isEmpty())
+        if(fieldsToQuery != null && !fieldsToQuery.isEmpty() )
         {
             baseQuery.selectFields(fieldsToQuery);
         }

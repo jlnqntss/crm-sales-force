@@ -21,55 +21,68 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class QuerySearch 
+public class QuerySearch
 {
     public static final String VERSION = '1.2.0';
 
     public QuerySearch() {}
 
-    public QuerySearch find(String text) {
-        return find(new SearchExpression(text));
+    public QuerySearch find(String text)
+    {
+        return find(new SearchExpression(text) );
     }
 
-    public QuerySearch find(SearchExpression expression) {
-        if (this.searchExpression == null) {
+    public QuerySearch find(SearchExpression expression)
+    {
+        if (this.searchExpression == null)
+        {
             this.searchExpression = expression;
-        } else {
+        }
+        else
+        {
             this.searchExpression = doAnd(this.searchExpression, expression);
         }
 
         return this;
     }
 
-    public static SearchExpression doAnd(SearchExpression left, SearchExpression right) {
+    public static SearchExpression doAnd(SearchExpression left, SearchExpression right)
+    {
         return left.doAnd(right);
     }
 
-    public static SearchExpression doAnd(SearchExpression left, String right) {
+    public static SearchExpression doAnd(SearchExpression left, String right)
+    {
         return left.doAnd(right);
     }
 
-    public static SearchExpression doAnd(String left, SearchExpression right) {
+    public static SearchExpression doAnd(String left, SearchExpression right)
+    {
         return new SearchExpression(left).doAnd(right);
     }
 
-    public static SearchExpression doAnd(String left, String right) {
+    public static SearchExpression doAnd(String left, String right)
+    {
         return new SearchExpression(left).doAnd(right);
     }
 
-    public static SearchExpression doOr(SearchExpression left, SearchExpression right) {
+    public static SearchExpression doOr(SearchExpression left, SearchExpression right)
+    {
         return left.doOr(right);
     }
 
-    public static SearchExpression doOr(SearchExpression left, String right) {
+    public static SearchExpression doOr(SearchExpression left, String right)
+    {
         return left.doOr(right);
     }
 
-    public static SearchExpression doOr(String left, SearchExpression right) {
+    public static SearchExpression doOr(String left, SearchExpression right)
+    {
         return new SearchExpression(left).doOr(right);
     }
 
-    public static SearchExpression doOr(String left, String right) {
+    public static SearchExpression doOr(String left, String right)
+    {
         return new SearchExpression(left).doOr(right);
     }
 
@@ -79,208 +92,264 @@ public class QuerySearch
     public final static String PHONE_FIELDS = 'PHONE FIELDS';
     public final static String SIDEBAR_FIELDS = 'SIDEBAR FIELDS';
 
-    public QuerySearch inAllFields() {
+    public QuerySearch inAllFields()
+    {
         this.searchGroup = ALL_FIELDS;
         return this;
     }
 
-    public QuerySearch inEmailFields() {
+    public QuerySearch inEmailFields()
+    {
         this.searchGroup = EMAIL_FIELDS;
         return this;
     }
 
-    public QuerySearch inNameFields() {
+    public QuerySearch inNameFields()
+    {
         this.searchGroup = NAME_FIELDS;
         return this;
     }
 
-    public QuerySearch inPhoneFields() {
+    public QuerySearch inPhoneFields()
+    {
         this.searchGroup = PHONE_FIELDS;
         return this;
     }
 
-    public QuerySearch inSidebarFields() {
+    public QuerySearch inSidebarFields()
+    {
         this.searchGroup = SIDEBAR_FIELDS;
         return this;
     }
 
-    public QuerySearch returning(String sobjectName) {
-        returningList.add(new Query(sobjectName));
+    public QuerySearch returning(String sobjectName)
+    {
+        returningList.add(new Query(sobjectName) );
         return this;
     }
 
-    public QuerySearch setLimit(Integer n) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).setLimit(n);
+    public QuerySearch setLimit(Integer n)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).setLimit(n);
         }
         return this;
     }
 
-    public QuerySearch orderBy(String fieldName, String direction) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).orderBy(fieldName, direction);
+    public QuerySearch orderBy(String fieldName, String direction)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).orderBy(fieldName, direction);
         }
         return this;
     }
 
-    public QuerySearch addConditionEq(String lhs, Object rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionEq(lhs, rhs);
-        }
-        return this;
-    }
-
-    public QuerySearch addConditionEq(Schema.SObjectField lhs, Object rhs) {
-        if (returningList.size() > 0) {
+    public QuerySearch addConditionEq(String lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
             returningList.get(returningList.size() - 1).addConditionEq(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionNotEq(String lhs, Object rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionNotEq(lhs, rhs);
+    public QuerySearch addConditionEq(Schema.SObjectField lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionEq(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionNotEq(Schema.SObjectField lhs, Object rhs) {
-        if (returningList.size() > 0 ){
-            returningList.get(returningList.size()-1).addConditionNotEq(lhs, rhs);
+    public QuerySearch addConditionNotEq(String lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionNotEq(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionLike(String lhs, Object rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionNotEq(lhs, rhs);
+    public QuerySearch addConditionNotEq(Schema.SObjectField lhs, Object rhs)
+    {
+        if (returningList.size() > 0 )
+        {
+            returningList.get(returningList.size() - 1).addConditionNotEq(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionLike(Schema.SObjectField lhs, Object rhs) {
-        if (returningList.size() > 0){
-            returningList.get(returningList.size()-1).addConditionLike(lhs, rhs);
+    public QuerySearch addConditionLike(String lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionNotEq(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionIn(String lhs, Object rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionIn(lhs, rhs);
+    public QuerySearch addConditionLike(Schema.SObjectField lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionLike(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionIn(Schema.SObjectField lhs, Object rhs) {
-        if (returningList.size() > 0){
-            returningList.get(returningList.size()-1).addConditionIn(lhs, rhs);
+    public QuerySearch addConditionIn(String lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionIn(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionNotIn(String lhs, Object rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionNotIn(lhs, rhs);
+    public QuerySearch addConditionIn(Schema.SObjectField lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionIn(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionNotIn(Schema.SObjectField lhs, Object rhs) {
-        if (returningList.size() > 0){
-            returningList.get(returningList.size()-1).addConditionNotIn(lhs, rhs);
+    public QuerySearch addConditionNotIn(String lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionNotIn(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionLt(String lhs, Object rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionLt(lhs, rhs);
+    public QuerySearch addConditionNotIn(Schema.SObjectField lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionNotIn(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionLt(Schema.SObjectField lhs, Object rhs) {
-        if (returningList.size() > 0){
-            returningList.get(returningList.size()-1).addConditionLt(lhs, rhs);
+    public QuerySearch addConditionLt(String lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionLt(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionLe(String lhs, Object rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionLe(lhs, rhs);
+    public QuerySearch addConditionLt(Schema.SObjectField lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionLt(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionLe(Schema.SObjectField lhs, Object rhs) {
-        if (returningList.size() > 0){
-            returningList.get(returningList.size()-1).addConditionLe(lhs, rhs);
+    public QuerySearch addConditionLe(String lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionLe(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionGt(String lhs, Object rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionGt(lhs, rhs);
+    public QuerySearch addConditionLe(Schema.SObjectField lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionLe(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionGt(Schema.SObjectField lhs, Object rhs) {
-        if (returningList.size() > 0){
-            returningList.get(returningList.size()-1).addConditionGt(lhs, rhs);
+    public QuerySearch addConditionGt(String lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionGt(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionGe(String lhs, Object rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionGe(lhs, rhs);
+    public QuerySearch addConditionGt(Schema.SObjectField lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionGt(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionGe(Schema.SObjectField lhs, Object rhs) {
-        if (returningList.size() > 0){
-            returningList.get(returningList.size()-1).addConditionGe(lhs, rhs);
+    public QuerySearch addConditionGe(String lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionGe(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionIncludes(String lhs, String rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionIncludes(lhs, rhs);
+    public QuerySearch addConditionGe(Schema.SObjectField lhs, Object rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionGe(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionIncludes(Schema.SObjectField lhs, String rhs) {
-        if (returningList.size() > 0){
-            returningList.get(returningList.size()-1).addConditionIncludes(lhs, rhs);
+    public QuerySearch addConditionIncludes(String lhs, String rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionIncludes(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionExcludes(String lhs, String rhs) {
-        if (returningList.size() > 0) {
-            returningList.get(returningList.size()-1).addConditionExcludes(lhs, rhs);
+    public QuerySearch addConditionIncludes(Schema.SObjectField lhs, String rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionIncludes(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch addConditionExcludes(Schema.SObjectField lhs, String rhs) {
-        if (returningList.size() > 0){
-            returningList.get(returningList.size()-1).addConditionExcludes(lhs, rhs);
+    public QuerySearch addConditionExcludes(String lhs, String rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionExcludes(lhs, rhs);
         }
         return this;
     }
 
-    public QuerySearch selectFields(Set<String> fields) {
-        if (returningList.isEmpty()) {
-            throw new QueryException('Cannot select fields without specifiying ' + 
-                    'a returning sObject');
+    public QuerySearch addConditionExcludes(Schema.SObjectField lhs, String rhs)
+    {
+        if (returningList.size() > 0)
+        {
+            returningList.get(returningList.size() - 1).addConditionExcludes(lhs, rhs);
+        }
+        return this;
+    }
+
+    public QuerySearch selectFields(Set<String> fields)
+    {
+        if (returningList.isEmpty() )
+        {
+            throw new QueryException('Cannot select fields without specifiying ' +
+                                     'a returning sObject');
         }
 
         Query q = returningList[returningList.size() - 1];
@@ -289,47 +358,59 @@ public class QuerySearch
         return this;
     }
 
-    public QuerySearch selectFields(List<String> fields) {
-        return selectFields(new Set<String>(fields));
+    public QuerySearch selectFields(List<String> fields)
+    {
+        return selectFields(new Set<String>(fields) );
     }
 
-    public QuerySearch selectFields(String fields) {
-        if (fields.contains(',')) {
+    public QuerySearch selectFields(String fields)
+    {
+        if (fields.contains(',') )
+        {
             // parse the fieldNames separated by ','
-            return selectFields(new Set<String>(fields.split(', *')));
-        } else {
+            return selectFields(new Set<String>(fields.split(', *') ) );
+        }
+        else
+        {
             return selectField(fields);
         }
     }
 
-    public QuerySearch selectField(String field) {
-        return selectFields(new Set<String>{field});
+    public QuerySearch selectField(String field)
+    {
+        return selectFields(new Set<String> {field});
     }
 
-    public String toSearchString() {
+    public String toSearchString()
+    {
         return formSearchString();
     }
 
-    public List<List<SObject>> run() {
-        return Search.query(formSearchString());
+    public List<List<SObject> > run()
+    {
+        return Search.query(formSearchString() );
     }
 
     private String searchGroup;
     private SearchExpression searchExpression;
     private List<Query> returningList = new List<Query>();
 
-    private String formSearchString() {
+    private String formSearchString()
+    {
         String result = 'FIND {' + searchExpression.expression + '}';
 
-        if (searchGroup != null) {
+        if (searchGroup != null)
+        {
             result += ' IN ' + searchGroup;
         }
 
-        if (!returningList.isEmpty()) {
+        if (!returningList.isEmpty() )
+        {
             result += ' RETURNING ';
         }
 
-        for (Query returning : returningList) {
+        for (Query returning : returningList)
+        {
             final String sobjectName = returning.getSObjectType().getDescribe().getName();
             result += sobjectName;
 
@@ -350,30 +431,36 @@ public class QuerySearch
         return result;
     }
 
-    public class SearchExpression {
-        public SearchExpression(String text) {
+    public class SearchExpression
+    {
+        public SearchExpression(String text)
+        {
             this.expression = '"' + text + '"';
         }
 
-        public SearchExpression doAnd(String other) {
-            return doAnd(new SearchExpression(other));
+        public SearchExpression doAnd(String other)
+        {
+            return doAnd(new SearchExpression(other) );
         }
 
-        public SearchExpression doAnd(SearchExpression other) {
+        public SearchExpression doAnd(SearchExpression other)
+        {
             SearchExpression newExpression = new SearchExpression();
             newExpression.expression = '(' +
-                    this.expression + ') AND (' + other.expression + ')';
+                                       this.expression + ') AND (' + other.expression + ')';
             return newExpression;
         }
 
-        public SearchExpression doOr(String other) {
-            return doOr(new SearchExpression(other));
+        public SearchExpression doOr(String other)
+        {
+            return doOr(new SearchExpression(other) );
         }
 
-        public SearchExpression doOr(SearchExpression other) {
+        public SearchExpression doOr(SearchExpression other)
+        {
             SearchExpression newExpression = new SearchExpression();
             newExpression.expression = '(' +
-                    this.expression + ') OR (' + other.expression + ')';
+                                       this.expression + ') OR (' + other.expression + ')';
             return newExpression;
         }
 
