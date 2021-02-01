@@ -1117,19 +1117,11 @@ private without sharing class GenesysInteractionsServiceTest
         }
         insert claimsToInsert;
 
-        List<Claim__c> claims = new ClaimsSelector( new Set<String>
-        {
-            'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c',
-            'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
-            'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
-            'Policy__r.Intermediary_Code__c',
-            'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
-        } ).selectByHolder(customer.get(0).Id);
 
         // Test
         Test.startTest();
 
-        GenesysInteractionsService.OpenedClaims openedClaims = new GenesysInteractionsService.OpenedClaims(claims);
+        GenesysInteractionsService.OpenedClaims openedClaims = GenesysInteractionsService.findOpenedClaims(customer.get(0).Id);
 
         Test.stopTest();
 
@@ -1137,9 +1129,11 @@ private without sharing class GenesysInteractionsServiceTest
 
         System.assertEquals(100, openedClaims.total, 'No se ha informado correctamente el número total de pólizas');
 
+        System.debug(JSON.serialize(openedClaims) );
+
         //System.assertEquals(2, openedClaims.byOwner.size(), 'No se ha informado correctamente el listado de siniestros por destino preferido');
         System.assertEquals(2, openedClaims.byType.size(), 'No se ha informado correctamente el listado de siniestros por tipo de póliza');
-        System.assertEquals(false, openedClaims.hasMultipleTypes, 'No se ha informado correctamente el indicador de varios tipos de siniestro');
+        System.assertEquals(true, openedClaims.hasMultipleTypes, 'No se ha informado correctamente el indicador de varios tipos de siniestro');
         System.assertEquals(false, openedClaims.hasDifferentOwners, 'No se ha informado correctamente el indicador de varios propietarios de los siniestros');
 
         System.assertEquals('Group 1', openedClaims.byType.get('Group 1').get(0).policyType, 'No se ha informado correctamente el tipo de póliza del siniestro');

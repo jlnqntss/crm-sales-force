@@ -608,6 +608,7 @@ public without sharing class GenesysInteractionsService
      * @author adelgado
      * @date 20/01/2021
      */
+    @testVisible
     private static OpenedClaims findOpenedClaims(Id customerId)
     {
         List<Claim__c> claims = new ClaimsSelector
@@ -880,7 +881,7 @@ public without sharing class GenesysInteractionsService
         {
             get
             {
-                return this.byType.keySet().size() > 1;
+                return this.byType.size() > 1;
             }
         }
 
@@ -891,7 +892,7 @@ public without sharing class GenesysInteractionsService
         {
             get
             {
-                return this.byPartner.keySet().size() > 1;
+                return this.byPartner.size() > 1;
             }
         }
 
@@ -902,7 +903,7 @@ public without sharing class GenesysInteractionsService
         {
             get
             {
-                return this.byIntermediary.keySet().size() > 1;
+                return this.byIntermediary.size() > 1;
             }
         }
 
@@ -1032,14 +1033,14 @@ public without sharing class GenesysInteractionsService
         {
             get
             {
-                return this.byType.keySet().size() > 1;
+                return this.byType.size() > 1;
             }
         }
         public Boolean hasDifferentOwners
         {
             get
             {
-                return !this.hasMultipleTypes && this.byOwner.keySet().size() > 1;
+                return !this.hasMultipleTypes && this.byOwner.size() > 1;
             }
         }
 
