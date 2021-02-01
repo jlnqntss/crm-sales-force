@@ -16,4 +16,8 @@
         <masterLabel>Other</masterLabel>
         <translation>Otro</translation>
     </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Scaled Case</masterLabel>
+        <translation>Caso Escalado</translation>
+    </valueTranslation>
 </StandardValueSetTranslation>
