@@ -1120,7 +1120,7 @@ private without sharing class GenesysInteractionsServiceTest
         List<Claim__c> claims = new ClaimsSelector( new Set<String>
         {
             'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c',
-            'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
+            'Policy__r.Name', 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
             'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
             'Policy__r.Intermediary_Code__c',
             'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
