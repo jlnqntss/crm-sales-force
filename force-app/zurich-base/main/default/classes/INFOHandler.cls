@@ -507,14 +507,14 @@ public class INFOHandler implements ISystem
                         }
                         else if(action == 'DELETE')
                         {
-                            Set<Object> externalIdValues = new Set<Object>();
+                            Set<String> externalIdValues = new Set<String>(); //Query.apex no permite sObject
 
                             for(sObject sObj : recordList)
                             {
-                                externalIdValues.add(sObj.get(externalIdField));
+                                externalIdValues.add((String) sObj.get(externalIdField));
                             }
                             
-                            Database.DeleteResult[] resultList = Database.delete(new RecordsSelector(globalDescribe.get(objectName)).selectByExternalId(externalIdField, externalIdValues));
+                            Database.DeleteResult[] resultList = Database.delete(new Query(globalDescribe.get(objectName)).addConditionIn(externalIdField, externalIdValues).run());
 
                             for(Integer i = 0; i < externalRequestList.size(); i++)
                             {
