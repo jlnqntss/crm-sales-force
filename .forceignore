@@ -64,3 +64,6 @@ force-app/zurich-base/main/default/customMetadata/AdminSetup.AdminSetup.md-meta.
 force-app/zurich-base/main/default/customMetadata/ErrorManagementSetting.Klinc_errores.md-meta.xml
 #force-app/zurich-base/main/default/customMetadata/Scope_Setting.*
 force-app/zurich-base/main/default/flows/ZEEmailRoute.flow-meta.xml
+
+# Ignore ListViews
+*.listView-meta.xml
