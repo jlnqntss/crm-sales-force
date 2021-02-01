@@ -21,7 +21,7 @@ public class ContentDocumentLinkUtil
     public static Map<Id, ContentDocumentLink> emailToDocumentMap = new Map<Id, ContentDocumentLink>();
     public static Map<Id, EmailMessage> documentToEmailMap = new Map<Id, EmailMessage>();
 
-    public static Map<Id,ContentDocumentLink> contentDocumentInformationMap = new Map<Id,ContentDocumentLink>();
+    public static Map<Id,ContentDocument> contentDocumentInformationMap = new Map<Id,ContentDocument>();
 
     public static List<EmailMessage> emailMessagesToUpdate = new List<EmailMessage>();
     public static List<Case> casesToUpdate = new List<Case>();
@@ -53,6 +53,8 @@ public class ContentDocumentLinkUtil
      */
     public static void getRelatedEmailMessages(List<ContentDocumentLink> newList, Map<Id, ContentDocumentLink> oldMap)
     {
+        System.debug('getRelatedEmailMessages');
+
         initSettings();
         Map<Id, ContentDocumentLink> linkedEntityToDocumentMap = new Map<Id, ContentDocumentLink>();
 
@@ -86,9 +88,23 @@ public class ContentDocumentLinkUtil
             /*List<ContentVersion> contentVersionList = [SELECT Id, Title, VersionData, ContentDocumentId, FirstPublishLocationId FROM ContentVersion WHERE ContentDocumentId IN: contentDocumentIds];// AND Title = 'HEGEO-CLASIFICACION'
             LatestPublishedVersionId AND ContentDocument.Title = 'HEGEO-CLASIFICACION'*/ 
 
-            contentDocumentInformationMap = new Map<Id,ContentDocumentLink>(
-                [SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData, ContentDocument.LatestPublishedVersion.FirstPublishLocationId FROM ContentDocumentLink WHERE ContentDocumentId IN: contentDocumentIds]
-            );
+            /*contentDocumentInformationMap = new Map<Id,ContentDocumentLink>(
+                [SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.FileExtension, ContentDocument.FileType, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData, ContentDocument.LatestPublishedVersion.FirstPublishLocationId FROM ContentDocumentLink WHERE ContentDocument.Id IN: contentDocumentIds]
+            );*/
+
+            Map<Id, ContentDocument> contentDocuments = new Map<Id, ContentDocument>([
+                SELECT Id, Title, LatestPublishedVersion.VersionData 
+                FROM ContentDocument
+                WHERE Title = 'HEGEO-CLASIFICACION' AND FileExtension = 'csv' AND Id IN: contentDocumentIds
+            ]);
+
+            for(ContentDocumentLink cdl: newList)
+            {
+                if(contentDocuments.containsKey(cdl.ContentDocumentId))
+                {
+                    contentDocumentInformationMap.put(cdl.Id, contentDocuments.get(cdl.ContentDocumentId));
+                }
+            }
 
             relatedCases = new Map<Id, Case>(
                 [SELECT Id FROM Case WHERE Id IN: caseToEmailMap.keySet()]
@@ -102,25 +118,23 @@ public class ContentDocumentLinkUtil
         {
             if(contentDocumentInformationMap.containsKey(docLink.Id))
             {
-                setEmailAddresses(docLink);
+                setRelatedEmailMessageAndCase(docLink);
             }
         }
     }
 
-    private static void setEmailAddresses(ContentDocumentLink docInformation)
+    private static void setRelatedEmailMessageAndCase(ContentDocumentLink docInformation)
     {
-        if(relatedEmailMessages.containsKey(docInformation.LinkedEntityId))
+        
+        if(contentDocumentInformationMap.containsKey(docInformation.Id) && contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion != null 
+        && contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion.VersionData != null)
         {
-            //1. Actualizamos fromAddress y toAddress del EmailMessage
-            EmailMessage relatedEmail = relatedEmailMessages.get(docInformation.LinkedEntityId);
-
-            ContentDocumentLink contentDocumentInformation = contentDocumentInformationMap.get(docInformation.Id);
-
-            if(contentDocumentInformation != null && contentDocumentInformation.ContentDocument != null
-            && contentDocumentInformation.ContentDocument.LatestPublishedVersion != null
-            && contentDocumentInformation.ContentDocument.LatestPublishedVersion.VersionData != null)
+            if(relatedEmailMessages.containsKey(docInformation.LinkedEntityId))
             {
-                String csvAsString = contentDocumentInformationMap.get(docInformation.Id).ContentDocument.LatestPublishedVersion.VersionData.toString();
+                //1. Actualizamos fromAddress y toAddress del EmailMessage
+                EmailMessage relatedEmail = relatedEmailMessages.get(docInformation.LinkedEntityId);
+
+                String csvAsString = contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion.VersionData.toString();
                 List<String> csvFileLines = csvAsString.split('\n');
                 /*for(Integer i=0; i < csvFileLines.size(); i++){
                     System.debug('csvFileLines' + i + ': ' + csvFileLines[i]);
@@ -129,58 +143,70 @@ public class ContentDocumentLinkUtil
                 String fromAddress = '';
                 String toAddress = '';
 
-                if(String.isNotBlank(csvFileLines.get(FROM_ADDRESS_CSV_INDEX)))
+                if(csvFileLines.size() > 2)
                 {
-                    String fromAddressFromCSV = csvFileLines.get(FROM_ADDRESS_CSV_INDEX).trim();
-                    fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length()-1).substringAfter('<');
-                    System.debug('from: ' + fromAddress);
-                }
-
-                if(String.isNotBlank(csvFileLines.get(TO_ADDRESS_CSV_INDEX)))
-                {
-                    String toAddressFromCSV = csvFileLines.get(TO_ADDRESS_CSV_INDEX).trim();
-                    toAddress = toAddressFromCSV.substring(0,toAddressFromCSV.length()-1).substringAfter('<');
-                    System.debug('to: ' + toAddress);
-                }
-
-                if(String.isNotBlank(fromAddress))
-                {
-                    relatedEmail.FromAddress = fromAddress;
-                }
-
-                if(String.isNotBlank(toAddress))
-                {
-                    relatedEmail.ToAddress = toAddress;
-                }
-
-                emailMessagesToUpdate.add(relatedEmail);
-
-                //2. Actualizamos los campos correspondientes al caso
-                if(relatedEmail.ParentId != null && relatedCases.containsKey(relatedEmail.ParentId))
-                {
-                    Case relatedCase = relatedCases.get(relatedEmail.ParentId);
-                    List<String> types = csvFileLines.get(CASE_FIELDS_CSV_INDEX).trim().split(SEPARATOR);
-
-                    if (!types.isEmpty()) 
+                    if(String.isNotBlank(csvFileLines.get(FROM_ADDRESS_CSV_INDEX)))
                     {
-                        Map<String, String> caseFieldsMap = new Map<String, String>{
-                            'Id' => relatedCases.get(relatedEmail.ParentId).Id
-                        };
-
-                        for(Integer i=0; i<CASE_FIELDS.size(); i++)
+                        String fromAddressFromCSV = csvFileLines.get(FROM_ADDRESS_CSV_INDEX).trim();
+                        if(fromAddressFromCSV.contains('<'))
                         {
-                            if(i<types.size() && String.isNotBlank(types.get(i)))
-                            {
-                                System.debug('types.get(i): ' + types.get(i));
-                                caseFieldsMap.put(CASE_FIELDS.get(i), types.get(i));
-                            }
+                            fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length()-1).substringAfter('<');
                         }
+                        System.debug('from: ' + fromAddress);
+                    }
 
-                        System.debug('caseFieldsMap: ' + caseFieldsMap);
+                    if(String.isNotBlank(csvFileLines.get(TO_ADDRESS_CSV_INDEX)))
+                    {
+                        String toAddressFromCSV = csvFileLines.get(TO_ADDRESS_CSV_INDEX).trim();
+                        if(toAddress.contains('<'))
+                        {
+                            toAddress = toAddressFromCSV.substring(0,toAddressFromCSV.length()-1).substringAfter('<');
+                        }
+                        System.debug('to: ' + toAddress);
+                    }
 
-                        casesToUpdate.add((Case) JSON.deserialize(
-                            JSON.serialize(caseFieldsMap), Case.class)
-                        );
+                    if(String.isNotBlank(fromAddress))
+                    {
+                        relatedEmail.FromAddress = fromAddress;
+                    }
+
+                    if(String.isNotBlank(toAddress))
+                    {
+                        relatedEmail.ToAddress = toAddress;
+                    }
+
+                    emailMessagesToUpdate.add(relatedEmail);
+
+                    //2. Actualizamos los campos correspondientes al caso
+                    if(relatedEmail.ParentId != null && relatedCases.containsKey(relatedEmail.ParentId))
+                    {
+                        Case relatedCase = relatedCases.get(relatedEmail.ParentId);
+                        List<String> types = csvFileLines.get(CASE_FIELDS_CSV_INDEX).trim().split(SEPARATOR);
+
+                        System.debug('types: ' + types);
+                        System.debug('types.isEmpty(): ' + types.isEmpty());
+
+                        if (!types.isEmpty()) 
+                        {
+                            Map<String, String> caseFieldsMap = new Map<String, String>{
+                                'Id' => relatedCases.get(relatedEmail.ParentId).Id
+                            };
+
+                            for(Integer i=0; i<CASE_FIELDS.size(); i++)
+                            {
+                                if(i<types.size() && String.isNotBlank(types.get(i)))
+                                {
+                                    System.debug('types.get(i): ' + types.get(i));
+                                    caseFieldsMap.put(CASE_FIELDS.get(i), types.get(i));
+                                }
+                            }
+
+                            System.debug('caseFieldsMap: ' + caseFieldsMap);
+
+                            casesToUpdate.add((Case) JSON.deserialize(
+                                JSON.serialize(caseFieldsMap), Case.class)
+                            );
+                        }
                     }
                 }
             }
