@@ -1010,11 +1010,25 @@ private without sharing class GenesysInteractionsServiceTest
         };
         insert products;
 
-        List<Policy__c> policies = new PoliciesSelector
-                                   (
-            new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
-                                   )
-                                   .selectByHolder(customer.get(0).Id);
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
+        (
+            new List<Schema.SobjectField>
+            {
+                Policy__c.Id, 
+                Policy__c.Name, 
+                Policy__c.Intermediary_Code__c, 
+                Policy__c.PolicyType__c
+            },
+            new List<String>
+            {
+                'ProductId__r.GroupDescription__c', 
+                'Partner__r.PartnerSector__c', 
+                'Partner__r.PartnerSFCode__c'
+            }
+        );
+
+        List<Policy__c> policies = new PoliciesSelector().selectByHolder(customer.get(0).Id);
 
         for(Integer i = 0; i < policies.size(); i++)
         {
@@ -1033,16 +1047,10 @@ private without sharing class GenesysInteractionsServiceTest
         }
         update policies;
 
-        List<Policy__c> policiesUpdated = new PoliciesSelector
-                                          (
-            new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
-                                          )
-                                          .selectByHolder(customer.get(0).Id);
-
         // Test
         Test.startTest();
 
-        GenesysInteractionsService.ActivePolicies activePolicies = new GenesysInteractionsService.ActivePolicies(policiesUpdated);
+        GenesysInteractionsService.ActivePolicies activePolicies = GenesysInteractionsService.findActivePolicies(customer.get(0).Id, null, null);
 
         Test.stopTest();
 
@@ -1117,15 +1125,6 @@ private without sharing class GenesysInteractionsServiceTest
         }
         insert claimsToInsert;
 
-        List<Claim__c> claims = new ClaimsSelector( new Set<String>
-        {
-            'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c',
-            'Policy__r.Name', 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
-            'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
-            'Policy__r.Intermediary_Code__c',
-            'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
-        } ).selectByHolder(customer.get(0).Id);
-
         // Test
         Test.startTest();
 
@@ -1136,8 +1135,6 @@ private without sharing class GenesysInteractionsServiceTest
         // Then
 
         System.assertEquals(100, openedClaims.total, 'No se ha informado correctamente el número total de pólizas');
-
-        System.debug(JSON.serialize(openedClaims) );
 
         //System.assertEquals(2, openedClaims.byOwner.size(), 'No se ha informado correctamente el listado de siniestros por destino preferido');
         System.assertEquals(2, openedClaims.byType.size(), 'No se ha informado correctamente el listado de siniestros por tipo de póliza');
@@ -1160,11 +1157,17 @@ private without sharing class GenesysInteractionsServiceTest
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
 
-        List<Policy__c> policies = new PoliciesSelector
-                                   (
-            new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
-                                   )
-                                   .selectByHolder(customer.get(0).Id);
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Policy__c.Id, 
+                Policy__c.Name
+            }
+        );
+
+        List<Policy__c> policies = policiesSelector.selectByHolder(customer.get(0).Id);
 
         policies[0].InfoPolicyNumber__c = '11122233344455';
         update policies[0];
