@@ -1129,7 +1129,7 @@ private without sharing class GenesysInteractionsServiceTest
         // Test
         Test.startTest();
 
-        GenesysInteractionsService.OpenedClaims openedClaims = new GenesysInteractionsService.OpenedClaims(claims);
+        GenesysInteractionsService.OpenedClaims openedClaims = GenesysInteractionsService.findOpenedClaims(customer.get(0).Id);
 
         Test.stopTest();
 
@@ -1137,9 +1137,11 @@ private without sharing class GenesysInteractionsServiceTest
 
         System.assertEquals(100, openedClaims.total, 'No se ha informado correctamente el número total de pólizas');
 
+        System.debug(JSON.serialize(openedClaims) );
+
         //System.assertEquals(2, openedClaims.byOwner.size(), 'No se ha informado correctamente el listado de siniestros por destino preferido');
         System.assertEquals(2, openedClaims.byType.size(), 'No se ha informado correctamente el listado de siniestros por tipo de póliza');
-        System.assertEquals(false, openedClaims.hasMultipleTypes, 'No se ha informado correctamente el indicador de varios tipos de siniestro');
+        System.assertEquals(true, openedClaims.hasMultipleTypes, 'No se ha informado correctamente el indicador de varios tipos de siniestro');
         System.assertEquals(false, openedClaims.hasDifferentOwners, 'No se ha informado correctamente el indicador de varios propietarios de los siniestros');
 
         System.assertEquals('Group 1', openedClaims.byType.get('Group 1').get(0).policyType, 'No se ha informado correctamente el tipo de póliza del siniestro');
