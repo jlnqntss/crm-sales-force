@@ -335,6 +335,10 @@
             <fieldText>Fecha y hora de preferencia</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;La fecha y hora introducida debe ser posterior a la actual.&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Fecha_y_hora_de_preferencia} &gt; {!$Flow.CurrentDateTime}</formulaExpression>
+            </validationRule>
         </fields>
         <fields>
             <name>Telefono</name>
@@ -344,6 +348,12 @@
                 <name>required</name>
                 <value>
                     <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Teléfono</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
