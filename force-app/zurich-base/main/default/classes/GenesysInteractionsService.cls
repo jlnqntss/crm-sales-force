@@ -314,7 +314,7 @@ public without sharing class GenesysInteractionsService
         (
             new Set<String> 
             {
-                'Id', 'Name', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSFCode__c'
+                'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'
             }
         )
         .selectByNumber(policyCode);
@@ -347,7 +347,9 @@ public without sharing class GenesysInteractionsService
         Set<String> fields = new Set<String> 
         {
             'Id', 'Name', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
-            'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
+            'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
+            'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
+            'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
             'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
 
         };
@@ -594,7 +596,9 @@ public without sharing class GenesysInteractionsService
             new Set<String>
             {
                 'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
-                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
+                'Policy__r.Name', 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
+                'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
+                'Policy__r.Intermediary_Code__c',
                 'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
             }
         )
@@ -757,72 +761,139 @@ public without sharing class GenesysInteractionsService
     }
 
     /**
-     * Representa la información de las pólizas activas en el CRM
+     * Representa la información de las pólizas activas en el CRM. Ofrece las pólizas ordenadas por partner, sector, intermediario y tipo
+     * A nivel de integración, la representación JSON incluye todos los parámetros, incluido los atributos privados, para que sistemas como
+     * Genesys puedan procesar la información
      *
      * @author adelgado
      */
     public class ActivePolicies
     {
-        public Integer total;
-        public Map<String, List<ActivePolicy>> byPartner;
-        public Map<String, List<ActivePolicy>> bySector;
-        public Map<String, List<ActivePolicy>> byIntermediary;
-        public Map<String, List<ActivePolicy>> byType;
+        public Map<String, List<ActivePolicy>> byPartner { get; private set;}
+        public Map<String, List<ActivePolicy>> bySector { get; private set;}
+        public Map<String, List<ActivePolicy>> byIntermediary { get; private set;}
+        public Map<String, List<ActivePolicy>> byType { get; private set;}
+
+        /**
+         * Representa la póliza preferente de cara al enrutamiento - una póliza preferente se considera bajo los casos siguientes:
+         * - El cliente tiene una única póliza
+         * - El cliente tiene varias pólizas, todas del mismo partner y tipo
+         */
+        public ActivePolicy preferredPolicy
+        {
+            get
+            {
+                if(total != 1 || hasMultipleTypes && hasMultiplePartners)
+                {
+                    return null;
+                }
+
+                return  this.policies[0];
+            }
+        }
+
+        /**
+         * Determina si existen pólizas de múltiples tipos
+         */
+        public Boolean hasMultipleTypes
+        {
+            get
+            {
+                return this.byType.keySet().size() > 1;
+            }
+        }
+
+        /**
+         * Determina si existen pólizas de múltiples partners
+         */
+        public Boolean hasMultiplePartners
+        {
+            get
+            {
+                return this.byPartner.keySet().size() > 1;
+            }
+        }
+
+        /**
+         * Determina si existen pólizas de múltiples intermediarios
+         */
+        public Boolean hasMultipleIntermediaries
+        {
+            get
+            {
+                return this.byIntermediary.keySet().size() > 1;
+            }
+        }
+
+         /**
+         * Devuelve el total de pólizas
+         */
+        public Integer total
+        {
+            get
+            {
+                return this.policies.size();
+            }
+        }
+
+        private List<ActivePolicy> policies;
 
         public ActivePolicies (List<Policy__c> policies)
         {
-            byPartner = new Map<String, List<ActivePolicy>>();
-            bySector = new Map<String, List<ActivePolicy>>();
-            byIntermediary = new Map<String, List<ActivePolicy>>();
-            byType = new Map<String, List<ActivePolicy>>();
-
-            this.total = policies.size();
+            this.policies = new List<ActivePolicy> ();
+            this.byPartner = new Map<String, List<ActivePolicy>>();
+            this.bySector = new Map<String, List<ActivePolicy>>();
+            this.byIntermediary = new Map<String, List<ActivePolicy>>();
+            this.byType = new Map<String, List<ActivePolicy>>();
 
             for(Policy__c policy: policies)
             {
-                ActivePolicy activePolicy = new ActivePolicy(policy);
+                this.add(new ActivePolicy(policy));
+            }
+        }
 
-                if(String.isNotBlank(policy.Partner__r.PartnerSFCode__c))
+        public void add(ActivePolicy policy)
+        {
+            this.policies.add(policy);
+
+            if(String.isNotBlank(policy.partnerName))
+            {
+                if(!byPartner.containsKey(policy.partnerName))
                 {
-                    if(!byPartner.containsKey(policy.Partner__r.PartnerSFCode__c))
-                    {
-                        byPartner.put(policy.Partner__r.PartnerSFCode__c, new List<ActivePolicy>());
-                    }
-
-                    byPartner.get(policy.Partner__r.PartnerSFCode__c).add(activePolicy);
+                    byPartner.put(policy.partnerName, new List<ActivePolicy>());
                 }
 
-                if(String.isNotBlank(policy.Partner__r.PartnerSector__c))
-                {
-                    if(!bySector.containsKey(policy.Partner__r.PartnerSector__c))
-                    {
-                        bySector.put(policy.Partner__r.PartnerSector__c , new List<ActivePolicy>());
-                    }
+                byPartner.get(policy.partnerName).add(policy);
+            }
 
-                    bySector.get(policy.Partner__r.PartnerSector__c).add(activePolicy);
+            if(String.isNotBlank(policy.partnerSector))
+            {
+                if(!bySector.containsKey(policy.partnerSector))
+                {
+                    bySector.put(policy.partnerSector, new List<ActivePolicy>());
                 }
 
-                if(String.isNotBlank(policy.Intermediary_Code__c))
-                {
-                    if(!byIntermediary.containsKey(policy.Intermediary_Code__c))
-                    {
-                        byIntermediary.put(policy.Intermediary_Code__c, new List<ActivePolicy>());
-                    }
+                bySector.get(policy.partnerSector).add(policy);
+            }
 
-                    byIntermediary.get(policy.Intermediary_Code__c).add(activePolicy);
+            if(String.isNotBlank(policy.intermediaryCode))
+            {
+                if(!byIntermediary.containsKey(policy.intermediaryCode))
+                {
+                    byIntermediary.put(policy.intermediaryCode, new List<ActivePolicy>());
                 }
 
-                String type = String.isNotBlank(policy.PolicyType__c) ? policy.PolicyType__c :policy.ProductId__r.GroupDescription__c;
+                byIntermediary.get(policy.intermediaryCode).add(policy);
+            }
 
-                if(String.isNotBlank(type))
+            if(String.isNotBlank(policy.type))
+            {
+                if(!byType.containsKey(policy.type))
                 {
-                    if(!byType.containsKey(type))
-                    {
-                        byType.put(type, new List<ActivePolicy>());
-                    }
-
-                    byType.get(type).add(activePolicy);
+                    byType.put(policy.type, new List<ActivePolicy>());
                 }
+
+                byType.get(policy.type).add(policy);
             }
         }
 
@@ -843,6 +914,10 @@ public without sharing class GenesysInteractionsService
         public String id;
         public String policyCode;
         public String type;
+        public String partnerName;
+        public String partnerSector;
+        public String intermediaryCode;
+        public String intermediaryChannel;
         
         public ActivePolicy(){}
         public ActivePolicy(Policy__c policy)
@@ -851,6 +926,10 @@ public without sharing class GenesysInteractionsService
             this.id = policy.id;
             this.policyCode = policy.Name;
             this.type = String.isNotBlank(policy.PolicyType__c) ? policy.PolicyType__c : policy.ProductId__r.GroupDescription__c;
+            this.partnerName = policy.Partner__r.PartnerSFCode__c;  // FIXME: El nombre del partner no es el SF Code
+            this.partnerSector = policy.Partner__r.PartnerSector__c;
+            this.intermediaryCode = policy.Intermediary_Code__c;
+            this.intermediaryChannel = policy.Intermediary_Code__c; // FIXME: El Canal de intermediación no es el Code; Por qué el Intermediary_Code tiene una _?
         }
 
         public override String toString()
@@ -866,54 +945,81 @@ public without sharing class GenesysInteractionsService
      */
     public class OpenedClaims
     {
-        public Integer total;
         public Map<String, List<OpenedClaim>> byOwner;
         public Map<String, List<OpenedClaim>> byType;
-        public Boolean hasMultipleTypes;
-        public Boolean hasDifferentOwners;
+        public Boolean hasMultipleTypes
+        {
+            get
+            {
+                return this.byType.keySet().size() > 1;
+            }
+        }
+        public Boolean hasDifferentOwners
+        {
+            get
+            {
+                return !this.hasMultipleTypes && this.byOwner.keySet().size() > 1;
+            }
+        }
+
+        public Integer total
+        {
+           get
+           {
+                return this.claims.size();
+           }
+        }
+
+        public OpenedClaim preferredClaim
+        {
+            get
+            {
+                if(total != 1 || hasDifferentOwners)
+                {
+                    return null;
+                }
+
+                return preferredClaim;
+            }
+        }
+
+        private List<OpenedClaim> claims;
 
         public OpenedClaims (List<Claim__c> claims)
         {
+            this.claims = new List<OpenedClaim>();
             byOwner = new Map<String, List<OpenedClaim>>();
             byType = new Map<String, List<OpenedClaim>>();
 
-            Set<String> claimTypes = new Set<String>();
-            Set<String> claimOwners = new Set<String>();
-
             for(Claim__c claim: claims)
             {
-                claimTypes.add(claim.ClaimType__c);
-                claimOwners.add(claim.OwnerId);
+                this.add(new OpenedClaim(claim));
+            }
+        }
 
-                OpenedClaim openedClaim = new OpenedClaim(claim);
+        public void add(OpenedClaim claim)
+        {
+            this.claims.add(claim);
 
-                if(String.isNotBlank(claim.ClaimOwnerTeamCode__c))
+            if(String.isNotBlank(claim.ownerTeam))
+            {
+                if(!byOwner.containsKey(claim.ownerTeam))
                 {
-                    if(!byOwner.containsKey(claim.ClaimOwnerTeamCode__c))
-                    {
-                        byOwner.put(claim.ClaimOwnerTeamCode__c, new List<OpenedClaim>());
-                    }
-
-                    byOwner.get(claim.ClaimOwnerTeamCode__c).add(openedClaim);
+                    byOwner.put(claim.ownerTeam, new List<OpenedClaim>());
                 }
 
-                String type = String.isNotBlank(claim.Policy__r.PolicyType__c) ? claim.Policy__r.PolicyType__c : claim.Policy__r.ProductId__r.GroupDescription__c;
-
-                if(String.isNotBlank(type))
-                {
-                    if(!byType.containsKey(type))
-                    {
-                        byType.put(type, new List<OpenedClaim>());
-                    }
-
-                    byType.get(type).add(openedClaim);
-                }
+                byOwner.get(claim.ownerTeam).add(claim);
             }
 
-            this.total = claims.size();
-            this.hasMultipleTypes = claimTypes.size() > 1;
-            this.hasDifferentOwners = !this.hasMultipleTypes && claimOwners.size() > 1;
+            if(String.isNotBlank(claim.policyType))
+            {
+                if(!byType.containsKey(claim.policyType))
+                {
+                    byType.put(claim.policyType, new List<OpenedClaim>());
+                }
 
+                byType.get(claim.policyType).add(claim);
+            }
         }
 
         public override String toString()
@@ -932,23 +1038,30 @@ public without sharing class GenesysInteractionsService
         public String id;
         public String ownerTeam;
         public String ownerFullname;
-        public String ownerNationalId;
-        public String policyType;      
+        public String ownerNationalId;    
         public String status;      
         public String carRegistration;      
-        public String claimNumber;    
+        public String claimNumber;
+        public ActivePolicy policy;
+        public String policyType
+        {
+            get
+            {
+                return policy != null? policy.type:'';
+            }
+        }
         
-        public OpenedClaim(){}
+        public OpenedClaim() {}
         public OpenedClaim(Claim__c claim)
         {
             this.id = claim.id;
             this.ownerTeam = claim.ClaimOwnerTeamCode__c;
             this.ownerFullname = String.join(new List<String>{claim.ClaimOwnerFirstName__c, claim.ClaimOwnerFirstName__c, claim.ClaimOwnerFirstName__c}, ' ').toUpperCase();
             this.ownerNationalId = claim.ClaimOwnerNationalId__c;
-            this.policyType = String.isNotBlank(claim.Policy__r.PolicyType__c) ? claim.Policy__r.PolicyType__c : claim.Policy__r.ProductId__r.GroupDescription__c;
             this.status = claim.Status__c;
             this.carRegistration = claim.InsuredObject__r.RegistrationNumber__c;
             this.claimNumber = claim.Name;
+            this.policy = new ActivePolicy(claim.Policy__r);
         }
 
         public override String toString()
