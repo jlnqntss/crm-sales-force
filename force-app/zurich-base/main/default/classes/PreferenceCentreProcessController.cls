@@ -52,6 +52,32 @@ public without sharing class PreferenceCentreProcessController
     }
 
     /**
+     * Get the contact by the hashedId
+     * Executes the select with permission to see the contacts. Selector not used because of the permissions issue.
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 27/01/2021
+     */
+    public static Contact getContactData(String hashedId) 
+    {
+        Contact contact = null;
+
+        if( String.isNotBlank(hashedId) ) {
+            List<Contact> contacts = [
+                SELECT Id, Name, LegalEntity__c, HasOptedOutOfEmail, SourceCountry__c, HashedId__c
+                FROM Contact
+                WHERE HashedId__c = :hashedId
+            ];
+
+            if( !contacts.isEmpty() ) {
+                contact = contacts[0];
+            }
+        }
+
+        return contact;
+    }
+
+    /**
      * This method executes the select with permission to see the scopes. Selector not used because of the permissions
      * issue.
      * 
