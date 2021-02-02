@@ -24,6 +24,7 @@ private with sharing class ContentDocumentLinkUtilTest
     static void test_email2case_hegeo_ok()
     {
         Case relatedCase = new Case();
+        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -37,7 +38,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.HtmlBody = 'The CSV is attached.';
         insert emailMessage;
 
-        String csvContent = 'Incidence,App,\n';
+        String csvContent = '3;20;;1;;;0;;;;\n';
         csvContent += 'Fake Name <from@fakeemail.com.invalid>\n';
         csvContent += 'Fake Name <to@fakeemail.com.invalid>';
 
@@ -63,8 +64,8 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c FROM Case WHERE Id =: relatedCase.Id];
         System.assertEquals(true, updatedCase != null, 'Case found');
-        System.assertEquals(true, updatedCase.Type == 'Incidence', 'Type is incidence');
-        System.assertEquals(true, updatedCase.Subtype__c == 'App', 'Subtype is app');
+        System.assertEquals(true, updatedCase.Type == 'Administración', 'Type is Administración');
+        System.assertEquals(true, updatedCase.Subtype__c == 'Anulación póliza', 'Subtype is Anulación póliza');
     }
 
     /**
@@ -79,7 +80,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Case relatedCase = new Case();
         insert relatedCase;
 
-        String csvContent = 'Incidence,App,\n';
+        String csvContent = 'Incidence;App;;;;;;\n';
         csvContent += 'Fake Name <from@fakeemail.com.invalid>\n';
         csvContent += 'Fake Name <to@fakeemail.com.invalid>';
 
@@ -114,9 +115,10 @@ private with sharing class ContentDocumentLinkUtilTest
      * @date 28/01/2021
      */
     @isTest
-    static void test_email2case_without_CSV_ok()
+    static void test_email2case_empty_CSV_ok()
     {
         Case relatedCase = new Case();
+        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -130,9 +132,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.HtmlBody = 'The CSV is attached.';
         insert emailMessage;
 
-        String csvContent = 'Incidence,App,\n';
-        csvContent += 'Fake Name <from@fakeemail.com.invalid>\n';
-        csvContent += 'Fake Name <to@fakeemail.com.invalid>';
+        String csvContent = '\n';
 
         ContentVersion newVersion = new ContentVersion();
         newVersion.Title = 'HEGEO-CLASIFICACION';
@@ -151,12 +151,41 @@ private with sharing class ContentDocumentLinkUtilTest
 
         EmailMessage updatedEmailMessage = [SELECT Id, FromAddress, ToAddress FROM EmailMessage WHERE Id =: emailMessage.Id];
         System.assertEquals(true, updatedEmailMessage != null, 'EmailMessage found');
-        System.assertEquals(true, updatedEmailMessage.FromAddress == 'from@fakeemail.com.invalid', 'FromAddress is the same');
-        System.assertEquals(true, updatedEmailMessage.ToAddress == 'to@fakeemail.com.invalid', 'ToAddress is the same');
+        System.assertEquals(true, updatedEmailMessage.FromAddress != 'from@fakeemail.com.invalid', 'FromAddress is the same');
+        System.assertEquals(true, updatedEmailMessage.ToAddress != 'to@fakeemail.com.invalid', 'ToAddress is the same');
 
         Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c FROM Case WHERE Id =: relatedCase.Id];
+        System.debug('updatedCase: ' + updatedCase);
         System.assertEquals(true, updatedCase != null, 'Case found');
-        System.assertEquals(true, updatedCase.Type == 'Incidence', 'Type is incidence');
-        System.assertEquals(true, updatedCase.Subtype__c == 'App', 'Subtype is app');
+        System.assertEquals(true, updatedCase.Type == 'No definido', 'Type is undefined');
+        System.assertEquals(true, updatedCase.Subtype__c == 'No definido', 'Subtype is undefined');
+    }
+
+    /**
+     * Comprueba que el CSV se procesa correctamente aunque
+     * no haya valores en la primera línea para tipificar el caso
+     * pero si con valores en los emails
+     *
+     * @author rlopez
+     * @date 02/02/2021
+     */
+    @isTest
+    static void test_process_hegeoCSV_firstLine_empty_ok()
+    {
+        //TODO
+    }
+
+    /**
+     * Comprueba que el CSV se procesa correctamente aunque
+     * existan valores de tipificación incorrectos, y comprueba
+     * que se genera un ErrorLog especificando esos valores
+     *
+     * @author rlopez
+     * @date 02/02/2021
+     */
+    @isTest
+    static void test_process_hegeoCSV_invalidValues_ok()
+    {
+        //TODO:
     }
 }

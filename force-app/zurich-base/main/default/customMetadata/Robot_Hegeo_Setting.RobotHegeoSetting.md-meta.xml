@@ -8,15 +8,31 @@
     </values>
     <values>
         <field>CaseFields__c</field>
-        <value xsi:type="xsd:string">Type,Subtype__c,TypeN3__c</value>
+        <value xsi:type="xsd:string">Type,Subtype__c,TypeN3__c,HegeoProductGroupCode__c,HegeoOfferId__c,HegeoPrePolicyId__c,HegeoPolicyId__c,HegeoReceiptNumber__c,HegeoClaimId__c,AccountId</value>
+    </values>
+    <values>
+        <field>CaseRecordTypeNames__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>DocumentTitle__c</field>
+        <value xsi:type="xsd:string">HEGEO-CLASIFICACION</value>
+    </values>
+    <values>
+        <field>FileExtension__c</field>
+        <value xsi:type="xsd:string">csv</value>
     </values>
     <values>
         <field>FromAddressIndex__c</field>
         <value xsi:type="xsd:double">1.0</value>
     </values>
     <values>
+        <field>IsActive__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
         <field>Separator__c</field>
-        <value xsi:type="xsd:string">,</value>
+        <value xsi:type="xsd:string">;</value>
     </values>
     <values>
         <field>ToAddressIndex__c</field>
