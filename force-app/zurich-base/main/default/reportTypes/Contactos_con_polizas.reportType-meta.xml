@@ -913,6 +913,16 @@
             <field>Step__c</field>
             <table>Contact.Pedidos__r</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>InsuredObjectName__c</field>
+            <table>Contact.Pedidos__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>SourceCountry__c</field>
+            <table>Contact.Pedidos__r</table>
+        </columns>
         <masterLabel>Quotes y Pólizas</masterLabel>
     </sections>
 </ReportType>
