@@ -5,8 +5,43 @@ public abstract class RecordsSelector
     public Query baseQuery;
 
     public enum Scope { ALL, Z, ZE, ZEO }
+    static Map<String, Scope> scopesByCode
+    {
+        get
+        {
+            if (scopesByCode == null)
+            {
+                scopesByCode = new Map<String, Scope>
+                {
+                    'ALL'   => Scope.ALL,
+                    'Z'     => Scope.Z,
+                    'ZE'    => Scope.ZE,
+                    'ZEO'   => Scope.ZEO
+                };
+            }
+            return scopesByCode;
+        }
+        private set;
+    }
 
     public enum LegalEntity { ALL, GI, LIFE }
+    static Map<String, LegalEntity> legalEntitiesByCode
+    {
+        get
+        {
+            if (legalEntitiesByCode == null)
+            {
+                legalEntitiesByCode = new Map<String, LegalEntity>
+                {
+                    'ALL'   => LegalEntity.ALL,
+                    'GI'    => LegalEntity.GI,
+                    'LIFE'  => LegalEntity.LIFE
+                };
+            }
+            return legalEntitiesByCode;
+        }
+        private set;
+    }
 
     // #region Constructor
 
@@ -18,6 +53,16 @@ public abstract class RecordsSelector
     // #endregion
 
     // #Region Methods
+
+    public static Scope getScope(String scope)
+    {
+        return String.isBlank(scope) ? null : scopesByCode.get(scope.toUpperCase());
+    }
+
+    public static LegalEntity getLegalEntity(String legalEntity)
+    {
+        return String.isBlank(legalEntity) ? null : legalEntitiesByCode.get(legalEntity.toUpperCase());
+    }
 
     /**
      * Aplica un límite a los resultados obtenidos en la SOQL realizada por el selector
@@ -51,14 +96,17 @@ public abstract class RecordsSelector
      * Indicar los campos del objeto que se desean obtener en la SOQL realizada por el selector
      *
      * @author adelgado
-     * @param  fieldsToQuery Campos a recuperar
+     * @param  fields Campos a recuperar
      */
-    public void setFields(List<Schema.SobjectField> fieldsToQuery)
+    public void setFields(Schema.SobjectField[] fields, String[] relationshipFields) 
     {
-        if(fieldsToQuery != null && !fieldsToQuery.isEmpty() )
-        {
-            baseQuery.selectFields(fieldsToQuery);
-        }
+        this.setFields(fields);
+        this.baseQuery.selectFields(relationshipFields);
+    }
+
+    public void setFields(Schema.SobjectField[] fields) 
+    {
+        this.baseQuery.selectFields(fields);
     }
 
     // #endregion

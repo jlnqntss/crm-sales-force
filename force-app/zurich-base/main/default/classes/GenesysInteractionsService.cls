@@ -329,14 +329,25 @@ public without sharing class GenesysInteractionsService
         }
 
         // 2 - Recuperar la póliza a partir del número recibido
-        List<Policy__c> policies = new PoliciesSelector
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
         (
-            new Set<String>
+            new List<Schema.SobjectField>
             {
-                'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'
+                Policy__c.Id, 
+                Policy__c.Name, 
+                Policy__c.Intermediary_Code__c, 
+                Policy__c.PolicyType__c
+            },
+            new List<String>
+            {
+                'ProductId__r.GroupDescription__c', 
+                'Partner__r.PartnerSector__c', 
+                'Partner__r.PartnerSFCode__c'
             }
-        )
-        .selectByNumber(policyCode);
+        );
+
+        List<Policy__c> policies = policiesSelector.selectByNumber(policyCode);
 
         // 3 - Devolver la información de la póliza si se ha obtenido un único resultado
         if(policies != null && !policies.isEmpty() && policies.size() == 1)
@@ -450,7 +461,7 @@ public without sharing class GenesysInteractionsService
             results.totalPolicies = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
 
-            results.policies = findActivePolicies(customer.Id);
+            results.policies = findActivePolicies(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
             results.claims = findOpenedClaims(customer.Id);
         }
 
@@ -591,13 +602,31 @@ public without sharing class GenesysInteractionsService
      * @author adelgado
      * @date 20/01/2021
      */
-    private static ActivePolicies findActivePolicies(Id customerId)
+    @testVisible
+    private static ActivePolicies findActivePolicies(Id customerId, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
-        List<Policy__c> policies = new PoliciesSelector
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
         (
-            new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
-        )
-        .selectByHolder(customerId);
+            new List<Schema.SobjectField>
+            {
+                Policy__c.Id, 
+                Policy__c.Name, 
+                Policy__c.Intermediary_Code__c, 
+                Policy__c.PolicyType__c
+            },
+            new List<String>
+            {
+                'ProductId__r.GroupDescription__c', 
+                'Partner__r.PartnerSector__c', 
+                'Partner__r.PartnerSFCode__c'
+            }
+        );
+
+        policiesSelector.setScope(scope);
+        policiesSelector.setLegalEntity(legalEntity);
+
+        List<Policy__c> policies = policiesSelector.selectByHolder(customerId);
 
         return new ActivePolicies(policies);
     }

@@ -114,9 +114,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(requestInformationObject.offers.size(), risks.size(), 'There should be the same insured objects than offers');
 
         //Comprobamos que no se ha generado póliza
-        List<Policy__c> policies = new PoliciesSelector(
-            new Set<String> {'Id'}
-            ).selectByOpportunityName(offersIds);
+        List<Policy__c> policies = new PoliciesSelector().selectByOpportunityName(offersIds);
         System.assertEquals(true, policies.isEmpty(), 'List should be empty');
 
         //Comprobamos que se ha generado un Contact Request
@@ -221,9 +219,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(true, risks.isEmpty(), 'List should NOT be empty');
 
         //Comprobamos que no se ha generado póliza
-        List<Policy__c> policies = new PoliciesSelector(
-            new Set<String> {'Id'}
-            ).selectByOpportunityName(offersIds);
+        List<Policy__c> policies = new PoliciesSelector().selectByOpportunityName(offersIds);
         System.assertEquals(true, policies.isEmpty(), 'List should be empty');
 
         //Comprobamos que se ha generado un Contact Request
@@ -411,9 +407,17 @@ public with sharing class BusinessInsuranceRaterServiceTest
             }
         }
 
-        List<Policy__c> policiesCreated = new PoliciesSelector(
-            new Set<String> {'Id', 'InfoPolicyNumber__c', 'OpportunityName__c'}
-            ).selectByHolderAndNumber(existingAccounts.get(0).Id, policyNumbers);
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Policy__c.Id, 
+                Policy__c.InfoPolicyNumber__c, 
+                Policy__c.OpportunityName__c
+            }
+        );
+        List<Policy__c> policiesCreated = policiesSelector.selectByHolderAndNumber(existingAccounts.get(0).Id, policyNumbers);
         System.assertEquals(false, policiesCreated.isEmpty(), 'List should NOT be empty');
 
         for(Policy__c policy: policiesCreated)
@@ -839,9 +843,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(true, risks.isEmpty(), 'List should NOT be empty');
 
         //Comprobamos que no se ha generado póliza
-        List<Policy__c> policies = new PoliciesSelector(
-            new Set<String> {'Id'}
-            ).selectByOpportunityName(offersIds);
+        List<Policy__c> policies = new PoliciesSelector().selectByOpportunityName(offersIds);
         System.assertEquals(true, policies.isEmpty(), 'List should be empty');
 
         //Comprobamos que se ha generado un Contact Request
