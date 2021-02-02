@@ -191,6 +191,10 @@
         <translation><!-- Pago de franquicia --></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Partnership</masterLabel>
+        <translation><!-- Partnership --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Precio de mi seguro</masterLabel>
         <translation><!-- Precio de mi seguro --></translation>
     </picklistValues>
