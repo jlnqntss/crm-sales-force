@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Auto_response_W2C_Klinc_DE</fullName>
+        <description>Auto response W2C Klinc DE</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply.klinc@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>GI_DE_Templates/Web_to_case_response_HTML_DE</template>
+    </alerts>
+    <alerts>
+        <fullName>Auto_response_W2C_Klinc_ES</fullName>
+        <description>Auto response W2C Klinc ES</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply.klinc@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>GI_FR_Templates/Web_to_case_response_HTML</template>
+    </alerts>
+    <alerts>
+        <fullName>Auto_response_W2C_Klinc_FR</fullName>
+        <description>Auto response W2C Klinc FR</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply.klinc@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Web_to_case_response_HTML_France</template>
+    </alerts>
+    <alerts>
+        <fullName>Auto_response_W2C_Klinc_Orange</fullName>
+        <description>Auto response W2C Klinc Orange</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply.klinc@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Life_Orange_Templates/Web_to_case_response_Orange_HTML</template>
+    </alerts>
     <fieldUpdates>
         <fullName>Change_status_Assigned</fullName>
         <field>Status</field>
@@ -8,6 +56,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Status_closed</fullName>
@@ -17,7 +66,60 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
+    <rules>
+        <fullName>Auto response W2C Klinc DE</fullName>
+        <actions>
+            <name>Auto_response_W2C_Klinc_DE</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <description>KLINC: Sends auto response email to Web2Case Germany, triggered when email provided in the form and the customer&apos;s email associated to the case are different.</description>
+        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),SourceCountry__c = &quot;Germany&quot;,Owner:Queue.QueueName = &quot;Customer Care - Germany&quot;,
+ !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email  
+,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Auto response W2C Klinc ES</fullName>
+        <actions>
+            <name>Auto_response_W2C_Klinc_ES</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <description>KLINC: Sends auto response email to Web2Case Spain, triggered when email provided in the form and the customer&apos;s email associated to the case are different.</description>
+        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),  OR(ISBLANK(Partner__c ), ISNULL(Partner__c ) ),Owner:Queue.QueueName = &quot;Customer Care&quot;,
+ !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email 
+,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Auto response W2C Klinc FR</fullName>
+        <actions>
+            <name>Auto_response_W2C_Klinc_FR</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <description>KLINC: Sends auto response email to Web2Case France, triggered when email provided in the form and the customer&apos;s email associated to the case are different.</description>
+        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),SourceCountry__c = &quot;France&quot;,Owner:Queue.QueueName = &quot;Customer Care - France&quot;,
+ !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email 
+,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Auto response W2C Klinc Orange</fullName>
+        <actions>
+            <name>Auto_response_W2C_Klinc_Orange</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <description>KLINC: Sends auto response email to Web2Case Orange, triggered when email provided in the form and the customer&apos;s email associated to the case are different.</description>
+        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;), Partner__c = &quot;Orange Seguros&quot;,Owner:Queue.QueueName = &quot;Customer Care - Orange&quot;,
+ !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email  
+,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
     <rules>
         <fullName>Case closed</fullName>
         <active>true</active>
@@ -29,7 +131,7 @@
         <criteriaItems>
             <field>Case.RecordTypeId</field>
             <operation>equals</operation>
-            <value>Claim,Enquiry</value>
+            <value>Consulta,Siniestro</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
         <workflowTimeTriggers>
@@ -49,16 +151,7 @@
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
-        <formula>AND(  ISCHANGED(OwnerId),  
-      OR(  OwnerId= $User.Id,  
-           AND( LEFT(PRIORVALUE(OwnerId ),3) = &apos;00G&apos;, 
-                LEFT(OwnerId ,3) = &apos;005&apos; 
-           ) 
-      ),
-      OR( RecordType.DeveloperName = &apos;Claim&apos;,
-          RecordType.DeveloperName = &apos;Enquiry&apos;
-      )
-)</formula>
+        <formula>AND(  ISCHANGED(OwnerId),         OR(  OwnerId= $User.Id,              AND( LEFT(PRIORVALUE(OwnerId ),3) = &apos;00G&apos;,                  LEFT(OwnerId ,3) = &apos;005&apos;             )        ),       OR( RecordType.DeveloperName = &apos;Claim&apos;,           RecordType.DeveloperName = &apos;Enquiry&apos;       ) )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
 </Workflow>

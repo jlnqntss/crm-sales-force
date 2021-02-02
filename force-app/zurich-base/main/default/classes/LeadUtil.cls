@@ -93,6 +93,16 @@ public class LeadUtil
 
                             contact.HasOptedOutOfEmail = false;
                             contact.IsSubscriber__c = true;
+                            // nts (nbizkarra) - 01/Feb/2021 - Actualizar el nombre y apellido del contacto si es nulo o "Unknown"
+                            if( String.isNotBlank(subscriber.FirstName) && (String.isBlank(contact.FirstName) || contact.FirstName.equalsIgnoreCase('Unknown') ) ){
+
+                                contact.FirstName = subscriber.FirstName;
+                            }
+                            if( String.isNotBlank(subscriber.LastName) && (String.isBlank(contact.LastName) || contact.LastName.equalsIgnoreCase('Unknown') )){
+                                
+                                contact.LastName = subscriber.LastName;
+                            }
+                            
                             contactsToUpdate.put(contact.CustomerNum__c, contact);
                             GI_found = true;
                         }
@@ -105,6 +115,15 @@ public class LeadUtil
 
                             contact.HasOptedOutOfEmail = false;
                             contact.IsSubscriber__c = true;
+                             // nts (nbizkarra) - 01/Feb/2021 - Actualizar el nombre y apellido del contacto si es nulo o "Unknown"
+                             if( String.isNotBlank(subscriber.FirstName) && (String.isBlank(contact.FirstName) || contact.FirstName.equalsIgnoreCase('Unknown') ) ){
+
+                                contact.FirstName = subscriber.FirstName;
+                            }
+                            if( String.isNotBlank(subscriber.LastName) && ( String.isBlank(contact.LastName) || contact.LastName.equalsIgnoreCase('Unknown') )){
+                                
+                                contact.LastName = subscriber.LastName;
+                            }
                             contactsToUpdate.put(contact.CustomerNum__c, contact);
                             Life_found = true;
                         }

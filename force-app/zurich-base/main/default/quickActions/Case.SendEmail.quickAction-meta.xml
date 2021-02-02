@@ -2,8 +2,8 @@
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>SendEmail</description>
     <fieldOverrides>
-        <field>ToIds</field>
-        <formula>Case.ContactId</formula>
+        <field>ToAddress</field>
+        <formula>Case.SuppliedEmail</formula>
     </fieldOverrides>
     <fieldOverrides>
         <field>ValidatedFromAddress</field>
