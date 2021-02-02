@@ -76,7 +76,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>ClaimOwnerNationalIdType__c</field>
+                <field>ClaimOwnerNationalId__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -90,10 +90,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ClaimOwnerLastname__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ClaimOwnerNationalId__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -157,7 +153,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0E000001cMmm</masterLabel>
+        <masterLabel>00h0E000000T8F1</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
