@@ -153,7 +153,86 @@ private with sharing class PoliciesSelectorTest
 
         // Comprobar obtiene pólizas por num póliza
         List<Policy__c> policiesByNumber = new PoliciesSelector().selectByNumber(policies.get(0).InfoPolicyNumber__c);
-        System.debug('Entra' + policiesByNumber);
         System.assertEquals(true, !policiesByNumber.isEmpty() && policiesByNumber.size() == 1, '[2] Policies should be just one');
+    }
+
+    @IsTest
+    static void test_selectByHolder_setScope()
+    {
+        Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer');
+        Id rtId = accountRecordTypeInfo.getRecordTypeId();
+        Account customer = [SELECT Id FROM Account WHERE RecordTypeId = : rtId LIMIT 1];
+        System.assertEquals(true, customer != null, '[0] Customer should NOT be null');
+
+        // Comprobar obtiene pólizas por tomador
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Policy__c.Id, 
+                Policy__c.PolicyHolder__c,
+                Policy__c.EndDate__c,
+                Policy__c.InfoPolicyNumber__c
+            }
+        );
+
+        List<Policy__c> policies = policiesSelector.selectByHolder(customer.Id);
+
+        System.assertEquals(true, !policies.isEmpty() && policies.size() > 1, '[1] Policies should NOT be empty and greater than one');
+
+        // Actualizar la fecha expiración de una póliza y comprobar que NO recupera esa póliza
+        Integer policiesCount = policies.size();
+        Policy__c policyToUpdate = policies.get(0);
+        policyToUpdate.EndDate__c = Date.today().addDays(-1);
+        policyToUpdate.Scope__c = 'Z';
+        update policyToUpdate;
+
+        // Comprobar obtiene pólizas por tomador ACTIVAS
+        policiesSelector = new PoliciesSelector();
+        policiesSelector.setScope(RecordsSelector.Scope.Z);
+        List<Policy__c> policiesByHolder = policiesSelector.selectByHolder(customer.Id);
+        System.assertEquals(true, !policiesByHolder.isEmpty() && policiesByHolder.size() == policiesCount - 1, '[2] Policies should NOT be empty');
+
+    }
+
+    @IsTest
+    static void test_selectByHolder_setLegalEntity()
+    {
+        Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer');
+        Id rtId = accountRecordTypeInfo.getRecordTypeId();
+        Account customer = [SELECT Id FROM Account WHERE RecordTypeId = : rtId LIMIT 1];
+        System.assertEquals(true, customer != null, '[0] Customer should NOT be null');
+
+        // Comprobar obtiene pólizas por tomador
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Policy__c.Id, 
+                Policy__c.PolicyHolder__c,
+                Policy__c.EndDate__c,
+                Policy__c.InfoPolicyNumber__c
+            }
+        );
+
+        List<Policy__c> policies = policiesSelector.selectByHolder(customer.Id);
+
+        System.assertEquals(true, !policies.isEmpty() && policies.size() > 1, '[1] Policies should NOT be empty and greater than one');
+
+        // Actualizar la fecha expiración de una póliza y comprobar que NO recupera esa póliza
+        Integer policiesCount = policies.size();
+        Policy__c policyToUpdate = policies.get(0);
+        policyToUpdate.EndDate__c = Date.today().addDays(-1);
+        policyToUpdate.LegalEntity__c = '001';
+        update policyToUpdate;
+
+        // Comprobar obtiene pólizas por tomador ACTIVAS
+        policiesSelector = new PoliciesSelector();
+        policiesSelector.setLegalEntity(RecordsSelector.LegalEntity.GI);
+        List<Policy__c> policiesByHolder = policiesSelector.selectByHolder(customer.Id);
+        System.assertEquals(true, !policiesByHolder.isEmpty() && policiesByHolder.size() == policiesCount - 1, '[2] Policies should NOT be empty');
+
     }
 }
