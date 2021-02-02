@@ -93,6 +93,10 @@
                 <field>Policy__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>CustomerFoundBy__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Required</behavior>
                 <field>LegalEntity__c</field>
             </layoutItems>
