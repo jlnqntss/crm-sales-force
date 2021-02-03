@@ -20,7 +20,6 @@ public without sharing class BusinessInsuranceRaterService
     public static final String INVALID_BUSINESS_CODE_STATUSCODE = 'INVALID_BUSINESS_CODE';
     public static final String DUPLICATE_REQUEST_STATUSCODE = 'DUPLICATE_LEAD_REQUEST';
 
-    public static final String QUEUE_NAME = 'Voz_ZurichEmpresas';
     public static final String ZURICH_LEGAL_ENTITY = '001';
     public static final String SPANISH_PHONE_PREFIX = '+34';
     public static final String PROFILE_NAME = 'ZE User';
@@ -90,7 +89,7 @@ public without sharing class BusinessInsuranceRaterService
     {
         accSearchServiceScope.scope = AccountSearchService.SCOPE_CODE_ZE;
         List<Scope_Setting__mdt> scopeSettingsList = [
-            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c, GenesysCloudQueueName__c
             FROM Scope_Setting__mdt
         ];
 
@@ -626,8 +625,13 @@ public without sharing class BusinessInsuranceRaterService
             manageCampaignAssignment(offersToCreate, formData.webPhone);
 
             //OPCIONAL - puede que no requiera funcionar con genesys
+            String queueName = 'Voz_ZurichEmpresas';
+            if(currentScopeSettings != null && String.isNotBlank(currentScopeSettings.GenesysCloudQueueName__c))
+            {
+                queueName = currentScopeSettings.GenesysCloudQueueName__c;
+            }
             List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
-            genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
+            genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :queueName];
 
             Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
                 formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now()
