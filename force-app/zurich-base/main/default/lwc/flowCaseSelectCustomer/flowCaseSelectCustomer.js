@@ -1,10 +1,7 @@
-import { LightningElement, api, track, wire } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
-import { getRecord } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getAccountsInfo from '@salesforce/apex/LWCCaseSelectCustomerController.getAccountsInfo';
-
-const FIELDS = ['Account.Name'];
-const OPTIONAL_FIELDS = ['Account.RecordType.Name'];
 
 export default class FlowCaseSelectCustomer extends LightningElement {
 
@@ -17,9 +14,11 @@ export default class FlowCaseSelectCustomer extends LightningElement {
         //Apex
         getAccountsInfo({ idsToFind: idsList })
             .then((result) => {
-                if(result != undefined){ //1º comprobar que no es undefined
-                    for(var account of result){
-                        var option = {
+                var account;
+                var option;
+                if(result !== undefined){ //1º comprobar que no es undefined
+                    for(account of result){
+                        option = {
                             label: account.Name +' ('+account.RecordType.Name+')',
                             value: account.Id
                         };
@@ -49,19 +48,26 @@ export default class FlowCaseSelectCustomer extends LightningElement {
     @api
     get accountIdsList(){
         return this._accountIdsList;
-    };
+    }
     set accountIdsList(value){
         this._accountIdsList = value;
         //Actualizar las opciones cada vez que se actualiza la lista recibida:
         this.handleGetAccountsInfo(value);
-
     }
-    @api accountIdSelected = ''; //Salida que se manda al flow
+
+    _accountIdSelected = '';
+    @api //Salida que se manda al flow
+    get accountIdSelected(){
+        return this._accountIdSelected;
+    }
+    set accountIdSelected(value){
+        this._accountIdSelected = value;
+    }
 
     //Hook to Flow's Validation engine
     @api
     validate() {
-        if(this.accountIdSelected != '') {
+        if(this.accountIdSelected !== '') {
             return { isValid: true };
             }
 
@@ -74,14 +80,14 @@ export default class FlowCaseSelectCustomer extends LightningElement {
 
     //Sirve para borrar lo que seleccionó el usuario, y al retroceder en el flow al darle a 'NO', que tenga que seleccionar algo de nuevo
     connectedCallback(){
-        this.accountIdSelected = '';
+        this._accountIdSelected = '';
         const attributeChangeEvent = new FlowAttributeChangeEvent('selectedAccountId', '');
         this.dispatchEvent(attributeChangeEvent);
     }
 
     //Cada vez que se cambia la selección, se envía al Flow el Id de cuenta seleccionado
     handleChange(event) {
-        this.accountIdSelected = event.detail.value; //Id de la cuenta
+        this._accountIdSelected = event.detail.value; //Id de la cuenta
         //Devolver el valor al flow
         const attributeChangeEvent = new FlowAttributeChangeEvent('selectedAccountId', this.accountIdSelected);
         this.dispatchEvent(attributeChangeEvent);
