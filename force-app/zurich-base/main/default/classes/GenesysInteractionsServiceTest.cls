@@ -1128,7 +1128,7 @@ private without sharing class GenesysInteractionsServiceTest
         // Test
         Test.startTest();
 
-        GenesysInteractionsService.OpenedClaims openedClaims = GenesysInteractionsService.findOpenedClaims(customer.get(0).Id);
+        GenesysInteractionsService.OpenedClaims openedClaims = GenesysInteractionsService.findOpenedClaims(customer.get(0).Id, null, null);
 
         Test.stopTest();
 
