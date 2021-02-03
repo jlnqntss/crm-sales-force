@@ -9,6 +9,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private final static String TASK_SUBTYPE_EMAIL = 'Email';
     private final static String TASK_STATUS_ASSIGNED = 'Asignada';
     private final static String TASK_STATUS_CLOSED = 'Cerrada';
+    private final static String TASK_RECORDTYPE_ID_INTERACTION = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
 
     /**
      * Identifica una tarea a través del parámetro data.interaction.id y devuelve dicha tarea modificando el usuario Asignado
@@ -78,7 +79,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
                 interactionTask.Status = TASK_STATUS_ASSIGNED;
                 interactionTask.CallObject = interactionId;
-                interactionTask.RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
                 interactionTask.OwnerId = UserInfo.getUserId();
             }
             else if(eventName == 'interactionDisconnected')
@@ -108,6 +108,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
     /**
      * Crea la tarea solventando las deficiencias en el formato de Genesys con respecto al Id.
+     * Asigna siempre el Tipo de registro Interaction
      *
      * @author jmartinezpisson
      * @date 17/11/2020
@@ -150,6 +151,9 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         {
             interactionTask.WhoId = whoId;
         }
+
+
+        interactionTask.RecordTypeId = TASK_RECORDTYPE_ID_INTERACTION;
 
         return interactionTask;
     }
