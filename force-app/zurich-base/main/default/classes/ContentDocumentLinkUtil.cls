@@ -33,6 +33,7 @@ public without sharing class ContentDocumentLinkUtil
 
     private static void initSettings()
     {
+        //Cargamos los settings generales
         List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
             SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c
             FROM Robot_Hegeo_Setting__mdt
@@ -61,6 +62,7 @@ public without sharing class ContentDocumentLinkUtil
             fileExtension = robotHegeoSettings.get(0).FileExtension__c;
         }
 
+        //Cargamos el mapeo de campos de tipificación del caso
         List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
             SELECT Id, Level__c, SourceValue__c, SalesforceValue__c
             FROM Robot_Hegeo_Field_Mapping__mdt
@@ -116,6 +118,8 @@ public without sharing class ContentDocumentLinkUtil
                 [SELECT Id, Subject, CreatedDate, ParentId FROM EmailMessage WHERE Id IN: linkedEntityToDocumentMap.keySet() AND Parent.RecordTypeId IN: caseRecordTypeIds]
             );
 
+            System.debug('relatedEmailMessages: ' + relatedEmailMessages);
+
             if(!relatedEmailMessages.isEmpty())
             {
                 Set<Id> contentDocumentIds = new Set<Id>();
@@ -140,6 +144,10 @@ public without sharing class ContentDocumentLinkUtil
                     [SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.FileExtension, ContentDocument.FileType, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData, ContentDocument.LatestPublishedVersion.FirstPublishLocationId FROM ContentDocumentLink WHERE ContentDocument.Id IN: contentDocumentIds]
                 );*/
 
+                System.debug('documentTitle: ' + documentTitle);
+                System.debug('fileExtension: ' + fileExtension);
+                System.debug('contentDocumentIds: ' + contentDocumentIds);
+
                 Map<Id, ContentDocument> contentDocuments = new Map<Id, ContentDocument>([
                     SELECT Id, Title, LatestPublishedVersion.VersionData 
                     FROM ContentDocument
@@ -157,12 +165,15 @@ public without sharing class ContentDocumentLinkUtil
                 relatedCases = new Map<Id, Case>(
                     [SELECT Id FROM Case WHERE Id IN: caseToEmailMap.keySet()]
                 );
+
+                System.debug('relatedCases: ' + relatedCases);
             }
         }
     }
 
-    public static void setFromAndToEmailAddresses(List<ContentDocumentLink> newList, Map<Id, ContentDocumentLink> oldMap)
+    public static void processHegeoCSV(List<ContentDocumentLink> newList, Map<Id, ContentDocumentLink> oldMap)
     {
+        System.debug('contentDocumentInformationMap: ' + contentDocumentInformationMap);
         for(ContentDocumentLink docLink: newList)
         {
             if(contentDocumentInformationMap.containsKey(docLink.Id))
@@ -174,6 +185,8 @@ public without sharing class ContentDocumentLinkUtil
 
     private static void setRelatedEmailMessageAndCase(ContentDocumentLink docInformation)
     {
+        System.debug('setRelatedEmailMessageAndCase');
+        System.debug(docInformation);
         //Solo procesamos si hemos encontrado información relacionada con el ContentDocument
         if( contentDocumentInformationMap.containsKey(docInformation.Id) && contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion != null 
             && contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion.VersionData != null )

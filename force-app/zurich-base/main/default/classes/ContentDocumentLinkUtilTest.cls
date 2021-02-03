@@ -7,10 +7,30 @@
 @isTest(SeeAllData=false)
 private with sharing class ContentDocumentLinkUtilTest
 {
+    public static final String FAKE_FROM_ADDRESS = 'from@fakeemail.com.invalid';
+    public static final String FAKE_TO_ADDRESS = 'to@fakeemail.com.invalid';
+    //Type;Subtype__c;TypeN3__c;HegeoProductGroupCode__c;HegeoOfferId__c;HegeoPrePolicyId__c;HegeoPolicyId__c;HegeoReceiptNumber__c;HegeoClaimId__c;AccountId
+    
     @TestSetup
     public static void createScenario()
     {
-        
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 10);
+        insert accounts;
+
+        List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
+        insert scopes;
+
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachScope(scopes, 'Qualification', System.today(), 1);
+        insert opportunities;
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachOpportunity(opportunities, 1);
+        insert policies;
+
+        List<Asset> insuredObjects = TestDataFactory.generateInsuredObjectsForEachPolicy('Address', policies, 1);
+        insert insuredObjects;
+
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(policies, insuredObjects, 1);
+        insert claims;
     }
 
     /**
@@ -23,6 +43,33 @@ private with sharing class ContentDocumentLinkUtilTest
     @isTest
     static void test_email2case_hegeo_ok()
     {
+        //Cargamos los metadatos de configuración
+        List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c
+            FROM Robot_Hegeo_Setting__mdt
+        ];
+        System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
+
+        //Cargamos los valores del mapeo de tipificación
+        List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
+            SELECT Id, Level__c, SourceValue__c, SalesforceValue__c
+            FROM Robot_Hegeo_Field_Mapping__mdt
+        ];
+        System.assertEquals(false, robotHegeoFieldsMapping.isEmpty(), 'List should not be empty');
+
+        Map<String, String> caseTypesMap = new Map<String, String>();
+        for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
+        {
+            caseTypesMap.put(fieldMapping.SourceValue__c, fieldMapping.SalesforceValue__c);
+        }
+
+        //Creamos una oferta para comprobar que el caso queda relacionado en el Case Trigger Hegeo - Before update
+        Opportunity relatedOffer = [SELECT Id, InfoQuoteNumber__c FROM Opportunity WHERE InfoQuoteNumber__c != null LIMIT 1];
+
+        Policy__c relatedPolicy = [SELECT Id, InfoPolicyNumber__c FROM Policy__c WHERE OpportunityName__c =: relatedOffer.Id LIMIT 1];
+
+        Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
+
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
         insert relatedCase;
@@ -38,15 +85,21 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.HtmlBody = 'The CSV is attached.';
         insert emailMessage;
 
-        String csvContent = '3;20;;1;;;0;;;;\n';
-        csvContent += 'Fake Name <from@fakeemail.com.invalid>\n';
-        csvContent += 'Fake Name <to@fakeemail.com.invalid>';
+        String caseTypeValue = '3';
+        String caseSubtypeValue = '20';
+        String receiptNumber = '123456789';
+
+        String csvContent = ''+caseTypeValue+';'+caseSubtypeValue+';;1;'+relatedOffer.InfoQuoteNumber__c+';;'+relatedPolicy.InfoPolicyNumber__c+';'+receiptNumber+';'+relatedClaim.InfoClaimNumber__c+';;\n';
+        csvContent += 'Fake Name <'+FAKE_FROM_ADDRESS+'>\n';
+        csvContent += 'Fake Name <'+FAKE_TO_ADDRESS+'>';
 
         ContentVersion newVersion = new ContentVersion();
-        newVersion.Title = 'HEGEO-CLASIFICACION';
-        newVersion.PathOnClient = 'HEGEO-CLASIFICACION.csv';
+        newVersion.Title = robotHegeoSettings.get(0).DocumentTitle__c;
+        newVersion.PathOnClient = robotHegeoSettings.get(0).DocumentTitle__c + '.' + robotHegeoSettings.get(0).FileExtension__c;
         newVersion.VersionData = Blob.valueof(csvContent);
         insert newVersion;
+
+        System.debug('newVerion: ' + newVersion);
 
         newVersion = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id =: newVersion.Id];
 
@@ -59,13 +112,18 @@ private with sharing class ContentDocumentLinkUtilTest
 
         EmailMessage updatedEmailMessage = [SELECT Id, FromAddress, ToAddress FROM EmailMessage WHERE Id =: emailMessage.Id];
         System.assertEquals(true, updatedEmailMessage != null, 'EmailMessage found');
-        System.assertEquals(true, updatedEmailMessage.FromAddress == 'from@fakeemail.com.invalid', 'FromAddress is the same');
-        System.assertEquals(true, updatedEmailMessage.ToAddress == 'to@fakeemail.com.invalid', 'ToAddress is the same');
+        System.assertEquals(FAKE_FROM_ADDRESS, updatedEmailMessage.FromAddress, 'FromAddress is the same');
+        System.assertEquals(FAKE_TO_ADDRESS, updatedEmailMessage.ToAddress, 'ToAddress is the same');
 
-        Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c FROM Case WHERE Id =: relatedCase.Id];
+        Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c, OfferId__c, PolicyId__c, ClaimId__c, HegeoReceiptNumber__c FROM Case WHERE Id =: relatedCase.Id];
         System.assertEquals(true, updatedCase != null, 'Case found');
-        System.assertEquals(true, updatedCase.Type == 'Administración', 'Type is Administración');
-        System.assertEquals(true, updatedCase.Subtype__c == 'Anulación póliza', 'Subtype is Anulación póliza');
+        System.assertEquals(caseTypesMap.get(caseTypeValue), updatedCase.Type, 'Type successfully saved');
+        System.assertEquals(caseTypesMap.get(caseSubtypeValue), updatedCase.Subtype__c, 'Subtype successfully saved');
+
+        System.assertEquals(relatedOffer.Id, updatedCase.OfferId__c, 'Offer successfully related');
+        System.assertEquals(relatedPolicy.Id, updatedCase.PolicyId__c, 'Policy successfully related');
+        System.assertEquals(relatedClaim.Id, updatedCase.ClaimId__c, 'Claim successfully related');
+        System.assertEquals(receiptNumber, updatedCase.HegeoReceiptNumber__c, 'HegeoReceiptNumber__c successfully saved');
     }
 
     /**
@@ -80,7 +138,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Case relatedCase = new Case();
         insert relatedCase;
 
-        String csvContent = 'Incidence;App;;;;;;\n';
+        String csvContent = '3;20;;;1;;2;3;4;;\n';
         csvContent += 'Fake Name <from@fakeemail.com.invalid>\n';
         csvContent += 'Fake Name <to@fakeemail.com.invalid>';
 
@@ -187,5 +245,82 @@ private with sharing class ContentDocumentLinkUtilTest
     static void test_process_hegeoCSV_invalidValues_ok()
     {
         //TODO:
+
+    }
+
+    /**
+     * Test que comprueba que si el documento adjunto no tiene el nombre 
+     * correcto, la información del CSV no se procesa
+     *
+     * @author rlopez
+     * @date 02/02/2021
+     */
+    @isTest
+    static void test_process_hegeoCSV_invalid_documentTitle_ok()
+    {
+        //Creamos una oferta para comprobar que el caso queda relacionado en el Case Trigger Hegeo - Before update
+        Opportunity relatedOffer = new Opportunity();
+        relatedOffer.InfoQuoteNumber__c = '1';
+        relatedOffer.Name = 'Test Opportunity Name';
+        relatedOffer.StageName = 'Closed Won';
+        relatedOffer.CloseDate = System.today();
+        insert relatedOffer;
+
+        Policy__c relatedPolicy = new Policy__c();
+        relatedPolicy.InfoPolicyNumber__c = '2';
+        insert relatedPolicy;
+
+        Claim__c relatedClaim = new Claim__c();
+        relatedClaim.InfoClaimNumber__c = '4';
+        insert relatedClaim;
+
+        Case relatedCase = new Case();
+        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        insert relatedCase;
+
+        EmailMessage emailMessage = new EmailMessage();
+        emailMessage.Status = '3'; // email was sent
+        emailMessage.ParentId = relatedCase.Id; 
+        emailMessage.FromAddress = 'rlopez@nts-solutions.com'; // from address
+        emailMessage.FromName = 'Ruben Lopez'; // from name
+        emailMessage.ToAddress = 'email2case@fakeemail.com.invalid';
+        emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
+
+        emailMessage.HtmlBody = 'The CSV is attached.';
+        insert emailMessage;
+
+        String csvContent = '3;20;;;1;;2;3;4;;\n';
+        csvContent += 'Fake Name <from@fakeemail.com.invalid>\n';
+        csvContent += 'Fake Name <to@fakeemail.com.invalid>';
+
+        ContentVersion newVersion = new ContentVersion();
+        newVersion.Title = 'Invalid Document Title';
+        newVersion.PathOnClient = 'Invalid Document Title.csv';
+        newVersion.VersionData = Blob.valueof(csvContent);
+        insert newVersion;
+
+        newVersion = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id =: newVersion.Id];
+
+        ContentDocumentLink newLink = new ContentDocumentLink();
+        newLink.ContentDocumentId = newVersion.ContentDocumentId;
+        newLink.LinkedEntityId = emailMessage.Id;
+        Test.startTest();
+        insert newLink;
+        Test.stopTest();
+
+        EmailMessage updatedEmailMessage = [SELECT Id, FromAddress, ToAddress FROM EmailMessage WHERE Id =: emailMessage.Id];
+        System.assertEquals(true, updatedEmailMessage != null, 'EmailMessage found');
+        System.assertEquals(true, updatedEmailMessage.FromAddress != 'from@fakeemail.com.invalid', 'FromAddress is not the one from CSV file');
+        System.assertEquals(true, updatedEmailMessage.ToAddress != 'to@fakeemail.com.invalid', 'ToAddress is not the one from CSV file');
+
+        Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c, OfferId__c, PolicyId__c, ClaimId__c, HegeoReceiptNumber__c FROM Case WHERE Id =: relatedCase.Id];
+        System.assertEquals(true, updatedCase != null, 'Case found');
+        System.assertEquals(true, updatedCase.Type != 'Administración', 'Type is not the one from CSV file');
+        System.assertEquals(true, updatedCase.Subtype__c != 'Anulación póliza', 'Subtype is is not the one from CSV file');
+
+        System.assertEquals(null, updatedCase.OfferId__c, 'Offer successfully related');
+        System.assertEquals(null, updatedCase.PolicyId__c, 'Policy successfully related');
+        System.assertEquals(null, updatedCase.ClaimId__c, 'Claim successfully related');
+        System.assertEquals(null, updatedCase.HegeoReceiptNumber__c, 'HegeoReceiptNumber__c was not saved');
     }
 }

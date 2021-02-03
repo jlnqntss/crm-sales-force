@@ -59,7 +59,7 @@ public without sharing class ContentDocumentLinkHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
-        ContentDocumentLinkUtil.setFromAndToEmailAddresses((List<ContentDocumentLink>) newList, null);
+        ContentDocumentLinkUtil.processHegeoCSV((List<ContentDocumentLink>) newList, null);
     }
 
     /**
