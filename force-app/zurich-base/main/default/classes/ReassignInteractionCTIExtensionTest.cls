@@ -25,6 +25,12 @@ public without sharing class ReassignInteractionCTIExtensionTest
             tasks[0].Status,
             'Se debería haber actualizado el status de la tarea'
             );
+
+        System.assertEquals(
+            Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId(),
+            tasks[0].RecordTypeId,
+            'El tipo de registro de la tarea actualizada no es Interacción'
+            );
     }
 
     /**
@@ -283,9 +289,9 @@ public without sharing class ReassignInteractionCTIExtensionTest
         Integer i = 0;
         for(Opportunity o: updatedOffer)
         {
-            System.assertEquals(scopes[0].Id, o.ScopeId__c, 'ScopeId - '+ i);
-            System.assertEquals(accounts[0].Id, o.AccountId, 'AccountId - '+ i);
-            System.assertEquals(UserInfo.getUserId(), o.OwnerId, 'OwnerId - '+ i);
+            System.assertEquals(scopes[0].Id, o.ScopeId__c, 'ScopeId - ' + i);
+            System.assertEquals(accounts[0].Id, o.AccountId, 'AccountId - ' + i);
+            System.assertEquals(UserInfo.getUserId(), o.OwnerId, 'OwnerId - ' + i);
             i++;
         }
     }
@@ -328,9 +334,9 @@ public without sharing class ReassignInteractionCTIExtensionTest
         Integer i = 0;
         for(Opportunity o: updatedOffer)
         {
-            System.assertEquals(scopes[0].Id, o.ScopeId__c, 'ScopeId - '+ i);
-            System.assertEquals(accounts[0].Id, o.AccountId, 'AccountId - '+ i);
-            System.assertEquals(integratorId, o.OwnerId, 'El Offer, al no estar relacionado con la Task, no debería haberse modificado su OwnerId - '+ i);
+            System.assertEquals(scopes[0].Id, o.ScopeId__c, 'ScopeId - ' + i);
+            System.assertEquals(accounts[0].Id, o.AccountId, 'AccountId - ' + i);
+            System.assertEquals(integratorId, o.OwnerId, 'El Offer, al no estar relacionado con la Task, no debería haberse modificado su OwnerId - ' + i);
             i++;
         }
     }
@@ -371,13 +377,14 @@ public without sharing class ReassignInteractionCTIExtensionTest
         Integer i = 0;
         for(Opportunity o: updatedOffer)
         {
-            System.assertEquals(accounts[0].Id, o.AccountId, 'AccountId - '+ i);
+            System.assertEquals(accounts[0].Id, o.AccountId, 'AccountId - ' + i);
             if(o.Id == selectedOppId)
             {
-                System.assertEquals(UserInfo.getUserId(), o.OwnerId, 'El OwnerId de la Offer seleccionada sí cambia - '+ i);
+                System.assertEquals(UserInfo.getUserId(), o.OwnerId, 'El OwnerId de la Offer seleccionada sí cambia - ' + i);
             }
-            else{
-                System.assertEquals(integratorId, o.OwnerId, 'El OwnerId del resto de Offers se mantiene en Integrator porque no están en el mismo scope que la principal - '+ i);
+            else
+            {
+                System.assertEquals(integratorId, o.OwnerId, 'El OwnerId del resto de Offers se mantiene en Integrator porque no están en el mismo scope que la principal - ' + i);
             }
             i++;
         }
