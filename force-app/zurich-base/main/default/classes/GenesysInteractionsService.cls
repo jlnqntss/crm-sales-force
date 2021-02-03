@@ -372,28 +372,41 @@ public without sharing class GenesysInteractionsService
             throw new GenesysClaimsServiceException(MISSING_FIELDS_REQUIRED);
         }
 
+        // 2 - Realizar la búsqueda de siniestro en base a los filtros definidos en la request
+        ClaimsSelector claimsSelector = new ClaimsSelector();
+        claimsSelector.setFields
+        (
+            new List<Schema.SobjectField>
+            {
+                Claim__c.Id, 
+                Claim__c.Name, 
+                Claim__c.Status__c, 
+                Claim__c.ClaimOwnerTeamCode__c,
+                Claim__c.ClaimOwnerNationalId__c,
+                Claim__c.ClaimOwnerName__c,
+                Claim__c.ClaimOwnerFirstName__c,
+                Claim__c.ClaimOwnerLastName__c
+            },
+            new List<String>
+            {
+                'InsuredObject__r.RegistrationNumber__c', 
+                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
+                'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
+                'Policy__r.Intermediary_Code__c', 'Policy__r.Name'
+            }
+        );
+        
         List<Claim__c> claims = new List<Claim__c>();
 
-        Set<String> fields = new Set<String>
-        {
-            'Id', 'Name', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
-            'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
-            'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
-            'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
-            'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
-
-        };
-
-        // 2 - Realizar la búsqueda de siniestro en base a los filtros definidos en la request
         switch on request.searchType
         {
             when 'claim_number'
             {
-                claims = new ClaimsSelector(fields).selectByNumber(request.searchTerm);
+                claims = claimsSelector.selectByNumber(request.searchTerm);
             }
             when 'car_registration'
             {
-                claims = new ClaimsSelector(fields).selectByPlate(request.searchTerm);
+                claims = claimsSelector.selectByPlate(request.searchTerm);
             }
         }
 
@@ -462,7 +475,7 @@ public without sharing class GenesysInteractionsService
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
 
             results.policies = findActivePolicies(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
-            results.claims = findOpenedClaims(customer.Id);
+            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
         }
 
         return results;
@@ -638,20 +651,37 @@ public without sharing class GenesysInteractionsService
      * @date 20/01/2021
      */
     @testVisible
-    private static OpenedClaims findOpenedClaims(Id customerId)
+    private static OpenedClaims findOpenedClaims(Id customerId, RecordsSelector.Scope Scope, RecordsSelector.LegalEntity legalEntity)
     {
-        List<Claim__c> claims = new ClaimsSelector
+        ClaimsSelector claimsSelector = new ClaimsSelector();
+        claimsSelector.setFields
         (
-            new Set<String>
+            new List<Schema.SobjectField>
             {
-                'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
-                'Policy__r.Name', 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
+                Claim__c.Id, 
+                Claim__c.Name, 
+                Claim__c.Status__c, 
+                Claim__c.OwnerId, 
+                Claim__c.ClaimType__c, 
+                Claim__c.ClaimOwnerTeamCode__c,
+                Claim__c.ClaimOwnerNationalId__c,
+                Claim__c.ClaimOwnerName__c,
+                Claim__c.ClaimOwnerFirstName__c,
+                Claim__c.ClaimOwnerLastName__c
+            },
+            new List<String>
+            {
+                'InsuredObject__r.RegistrationNumber__c', 
+                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
-                'Policy__r.Intermediary_Code__c',
-                'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
+                'Policy__r.Intermediary_Code__c', 'Policy__r.Name'
             }
-        )
-        .selectByHolder(customerId);
+        );
+
+        claimsSelector.setScope(scope);
+        claimsSelector.setLegalEntity(legalEntity);
+
+        List<Claim__c> claims = claimsSelector.selectByHolder(customerId);
 
         return new OpenedClaims(claims);
     }
