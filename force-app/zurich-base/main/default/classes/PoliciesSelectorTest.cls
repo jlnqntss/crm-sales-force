@@ -185,7 +185,7 @@ private with sharing class PoliciesSelectorTest
         Integer policiesCount = policies.size();
         Policy__c policyToUpdate = policies.get(0);
         policyToUpdate.EndDate__c = Date.today().addDays(-1);
-        policyToUpdate.Scope__c = 'Z';
+        policyToUpdate.Scope__c = RecordsSelector.Scope.Z.name();
         policyToUpdate.InfoPolicyNumber__c = '00111222333444';
         update policyToUpdate;
 
