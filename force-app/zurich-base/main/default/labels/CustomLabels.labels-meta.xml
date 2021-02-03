@@ -720,6 +720,14 @@ Related fields: [{3}]</value>
         <value>Integrator</value>
     </labels>
     <labels>
+        <fullName>RobotHegeoInvalidType</fullName>
+        <categories>Robot Hegeo</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Robot Hegeo Invalid Type</shortDescription>
+        <value>Tipo de nivel {0} no reconocido para campo {1}</value>
+    </labels>
+    <labels>
         <fullName>TelefonoNoValido</fullName>
         <categories>WebService Parser</categories>
         <language>en_US</language>

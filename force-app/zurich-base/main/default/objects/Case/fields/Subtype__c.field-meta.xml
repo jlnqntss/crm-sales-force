@@ -349,25 +349,37 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <valueName>Como renuevo mi seguro</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <valueName>Cuando me avisan</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <valueName>El precio de mi renovacion</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Como contrato mi seguro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Coberturas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Documentacion necesaria</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Precio de mi seguro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Franquicia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Nuevo dispositivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
             <controllingFieldValue>Siniestro</controllingFieldValue>
             <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
             <valueName>Otros</valueName>
         </valueSettings>
         <valueSettings>
@@ -407,6 +419,18 @@
             <valueName>Cancelacion</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <valueName>Como renuevo mi seguro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <valueName>Cuando me avisan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <valueName>El precio de mi renovacion</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>No definido</controllingFieldValue>
             <controllingFieldValue>Venta</controllingFieldValue>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>
@@ -417,6 +441,22 @@
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
             <controllingFieldValue>Calidad</controllingFieldValue>
             <valueName>No definido</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>App</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Contratacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Validacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Pago</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
@@ -507,30 +547,6 @@
             <valueName>Tareas administrativas</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
-            <valueName>Como contrato mi seguro</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
-            <valueName>Coberturas</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
-            <valueName>Documentacion necesaria</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
-            <valueName>Precio de mi seguro</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
-            <valueName>Franquicia</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
-            <valueName>Nuevo dispositivo</valueName>
-        </valueSettings>
-        <valueSettings>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
             <valueName>Descargar App</valueName>
         </valueSettings>
@@ -601,22 +617,6 @@
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
             <valueName>Cambio de intermediario</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>App</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Contratacion</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Validacion</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Pago</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Calidad</controllingFieldValue>

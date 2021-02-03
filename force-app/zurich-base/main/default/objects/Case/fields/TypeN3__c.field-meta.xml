@@ -301,14 +301,11 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
-            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
-            <controllingFieldValue>Retención</controllingFieldValue>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
             <controllingFieldValue>Campañas Proactiva</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <controllingFieldValue>Campañas Reactivo</controllingFieldValue>
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
@@ -325,23 +322,14 @@
             <controllingFieldValue>Modificación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Envíos</controllingFieldValue>
+            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
+            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
+            <controllingFieldValue>Retención</controllingFieldValue>
             <valueName>Undefined</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
-            <valueName>Complaints</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
-            <valueName>Claims</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
-            <valueName>Suggestion</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
-            <valueName>Congratulations</valueName>
+            <controllingFieldValue>Campañas Proactiva</controllingFieldValue>
+            <valueName>CTL surveys</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Recobro reactivo</controllingFieldValue>
@@ -358,38 +346,6 @@
         <valueSettings>
             <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <valueName>Rule 57</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Campañas Proactiva</controllingFieldValue>
-            <valueName>CTL surveys</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <valueName>With offer (Recruitment support)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <valueName>No offer</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <valueName>New offer (Support recruitment)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>With offer (Management skills)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>New offer (Competences management)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
-            <valueName>Regular</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
-            <valueName>Urgent</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias</controllingFieldValue>
@@ -438,6 +394,34 @@
         <valueSettings>
             <controllingFieldValue>Incidencias</controllingFieldValue>
             <valueName>Proteo client</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>With offer (Recruitment support)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>No offer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>New offer (Support recruitment)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>With offer (Management skills)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>New offer (Competences management)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <valueName>Regular</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <valueName>Urgent</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
@@ -550,6 +534,22 @@
         <valueSettings>
             <controllingFieldValue>Envíos</controllingFieldValue>
             <valueName>Certificate</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
+            <valueName>Complaints</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
+            <valueName>Claims</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
+            <valueName>Suggestion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
+            <valueName>Congratulations</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
