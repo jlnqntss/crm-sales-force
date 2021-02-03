@@ -126,7 +126,7 @@ private with sharing class ScopesSelectorTest
         System.assertEquals(false, createdScopes.isEmpty(), 'List should NOT be empty');
 
         //Actualizamos el Scope de uno de ellos
-        createdScopes.get(0).Scope__c = 'ZEO';
+        createdScopes.get(0).Scope__c = RecordsSelector.Scope.ZEO.name();
         update createdScopes;
 
         Set<Id> scopesIds = new Set<Id>();
@@ -140,7 +140,7 @@ private with sharing class ScopesSelectorTest
         Test.startTest();
         List<Scope__c> matchedRecords = new ScopesSelector(
             new Set<String> {'Id'}
-            ).selectByAccountIdAndScope(accountsIds, 'ZEO');
+            ).selectByAccountIdAndScope(accountsIds, RecordsSelector.Scope.ZEO);
         Test.stopTest();
 
         System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
@@ -157,7 +157,7 @@ private with sharing class ScopesSelectorTest
         Set<Id> accountsIds = new Set<Id>();
 
         Test.startTest();
-        List<Scope__c> matchedRecords = new ScopesSelector().selectByAccountIdAndScope(accountsIds, 'ZE');
+        List<Scope__c> matchedRecords = new ScopesSelector().selectByAccountIdAndScope(accountsIds, RecordsSelector.Scope.ZE);
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');

@@ -48,13 +48,9 @@ public with sharing class ClaimsSelector extends RecordsSelector
     {
         switch on legalEntity 
         {
-            when GI
+            when GI, LIFE
             {
-                this.baseQuery.addConditionEq(Claim__c.LegalEntity__c, '001');
-            }
-            when LIFE
-            {
-                this.baseQuery.addConditionEq(Claim__c.LegalEntity__c, '005');
+                this.baseQuery.addConditionEq(Claim__c.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity));
             }
         }
 

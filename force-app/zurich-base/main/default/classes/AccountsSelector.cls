@@ -1,6 +1,77 @@
-public with sharing class AccountsSelector
+public with sharing class AccountsSelector extends RecordsSelector
 {
-    public Set<Id> recordTypeIds;
+    public RecordsSelector.Scope relatedRecordsScope;
+
+    //#region Contructores
+
+    public AccountsSelector()
+    {
+        super(Account.getSObjectType());
+    }
+
+    //#endregion
+
+    /**
+     * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
+     * @author adelgado
+     * @date 02/02/2021
+     * @param  scope  Scope a aplicar en el filtro
+     * @return        Instancia de AccountsSelector con el filtro de scope aplicado
+     */
+    public AccountsSelector setScope(RecordsSelector.Scope scope)
+    {
+        Map<String, Schema.RecordTypeInfo> accountRecordTypeInfosByDeveloperName = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName();
+
+        String customerRecordType = accountRecordTypeInfosByDeveloperName.get('Customer').getRecordTypeId();
+        String businessRecordType = accountRecordTypeInfosByDeveloperName.get('BusinessCustomer').getRecordTypeId();
+        String leadRecordType = accountRecordTypeInfosByDeveloperName.get('Lead').getRecordTypeId();
+
+        switch on scope 
+        {
+            when ALL
+            {
+                this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, businessRecordType, leadRecordType});
+            }
+            when Z 
+            {
+                this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, businessRecordType});
+
+                this.relatedRecordsScope = RecordsSelector.Scope.Z;
+            }
+            when ZE  
+            {
+                this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, leadRecordType});
+
+                this.relatedRecordsScope = RecordsSelector.Scope.ZE;
+            }
+            when ZEO
+            {
+                this.relatedRecordsScope = RecordsSelector.Scope.ZEO;
+            }
+        }
+
+        return this;
+    }
+
+    /**
+     * Aplicar el filtro de entidad legal a los registros obtenidos en la búsqueda
+     * @author adelgado
+     * @date 28/01/2021
+     * @param  legalEntity  Entidad legal a aplicar en el filtro
+     * @return              Instancia de AccountsSelector con el filtro de entidad legal aplicado
+     */
+    public AccountsSelector setLegalEntity(RecordsSelector.LegalEntity legalEntity)
+    {
+        switch on legalEntity 
+        {
+            when GI, LIFE
+            {
+                this.baseQuery.addConditionEq(Account.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity));
+            }
+        }
+
+        return this;
+    }
 
     /**
      * Busca cuentas a partir de un listado de DNIs
@@ -10,66 +81,33 @@ public with sharing class AccountsSelector
      * @change 25/11/2020 adelgado Cambio para hacer la query dinámica en base a los parámetros recibidos
      * @param  nationalIds          Listado de DNIs. Válido cualquier formato
      * @param  nationalIdType       Tipo de documento a buscar
-     * @param  legalEntity          Entidad legal en la que buscar
      * @return                      Listado de cuentas sobre los que se ha realizado match
      */
-    public List<Account> findByNationalId(List<String> nationalIds, String nationalIdType, String legalEntity)
+    public List<Account> findByNationalId(List<String> nationalIds, String nationalIdType)
     {
-        String query = 'SELECT Id, Name, PersonContactId, NationalId__c, NumPolicies__pc, NumQuotes__pc FROM Account WHERE RecordTypeId IN: recordTypeIds AND NationalId__c IN : nationalIds';
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id, 
+                Account.Name, 
+                Account.PersonContactId, 
+                Account.NationalId__c, 
+                Account.NumPolicies__pc, 
+                Account.NumQuotes__pc
+            }
+        );
+
+        this.baseQuery.addConditionIn(Account.NationalId__c, nationalIds);
+
+        //String query = 'SELECT Id, Name, PersonContactId, NationalId__c, NumPolicies__pc, NumQuotes__pc FROM Account WHERE RecordTypeId IN: recordTypeIds AND NationalId__c IN : nationalIds';
 
         if(!String.isBlank(nationalIdType))
         {
-            query += '  AND NationalIdType__c =: nationalIdType';
+            this.baseQuery.addConditionEq(Account.NationalIdType__c, nationalIdType);
         }
 
-        if(!String.isBlank(legalEntity))
-        {
-            query += '  AND LegalEntity__c =: legalEntity';
-        }
-
-
-        return Database.query(query);
-    }
-
-    /**
-     * Instancia AccountsSelector inicializando la variable recordTypeIds con los IDs
-     * de los tipos de registro que se utilizan en el Scope indicado com parámetro
-     *
-     * @author rlopez
-     * @date 06/11/2020
-     * @param  scope    Contexto en el que se utilizarán las búsqueda de contacto (ZE, OCS, ...)
-     * @return          Instancia de AccountsSelector con la variable recordTypeIds inicializada
-     */
-    public AccountsSelector applyScope(String scope)
-    {
-        Map<ID, Schema.RecordTypeInfo> recordTypeInfosById = Schema.SObjectType.Account.getRecordTypeInfosById();
-        Map<String, Schema.RecordTypeInfo> recordTypeInfosByDeveloperName = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName();
-
-        //Por defecto añadimos todos los recordTypeIds, y en los distintos scopes controlamos cuales se utilizan
-        this.recordTypeIds = recordTypeInfosById.keySet();
-
-        // Rellenamos el recordTypeIds con los Ids de cada scope
-        switch on scope.toLowerCase() {
-            when 'zurich empresas' {
-                this.recordTypeIds = new Set<Id>();
-                for (String recordTypeName: recordTypeInfosByDeveloperName.keySet()) {
-                    if(recordTypeName == 'Customer' || recordTypeName == 'Lead')
-                    {
-                        this.recordTypeIds.add(recordTypeInfosByDeveloperName.get(recordTypeName).getRecordTypeId());
-                    }
-                }
-            }
-            when 'klink' {
-
-            }
-            when 'csm'
-            {
-                this.recordTypeIds = new Set<Id>();
-                this.recordTypeIds.add(Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId());
-            }
-        }
-
-        return this;
+        return (List<Account>) this.baseQuery.run();
     }
 
     /**
@@ -80,9 +118,24 @@ public with sharing class AccountsSelector
      */
     public List<Account> findByPhoneNumber(List<String> phones)
     {
-        Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByPhoneNumber(phones);
+        Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByPhoneNumber(phones, relatedRecordsScope);
 
-        return [SELECT Id, Name, PersonContactId, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id, 
+                Account.Name, 
+                Account.PersonContactId, 
+                Account.NationalId__c, 
+                Account.NumPolicies__pc, 
+                Account.NumQuotes__pc
+            }
+        );
+
+        return (List<Account>) this.baseQuery.byId( matchedRecordIds).run();
+
+        //return [SELECT Id, Name, PersonContactId, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
     }
 
     /**
@@ -93,9 +146,24 @@ public with sharing class AccountsSelector
      */
     public List<Account> findByEmail(List<String> emails)
     {
-        Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByEmail(emails);
+        Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByEmail(emails, relatedRecordsScope);
 
-        return [SELECT Id, Name, PersonContactId, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id, 
+                Account.Name, 
+                Account.PersonContactId, 
+                Account.NationalId__c, 
+                Account.NumPolicies__pc, 
+                Account.NumQuotes__pc
+            }
+        );
+
+        return (List<Account>) this.baseQuery.byId( matchedRecordIds).run();
+
+        //return [SELECT Id, Name, PersonContactId, NumPolicies__pc, NumQuotes__pc FROM Account WHERE (Id IN :matchedRecordIds) AND RecordTypeId IN :this.recordTypeIds];
     }
 
     /**
@@ -110,12 +178,34 @@ public with sharing class AccountsSelector
             for (Integer i = 0; i < policyNumbers.size(); i++)
             {
                 // rellenar con 0 hasta completar 14 digitos
-                if(policyNumbers.get(i) != null && policyNumbers.get(i).length() < 14)
+                if(policyNumbers.get(i) != null)
                 {
                     policyNumbers.set(i, policyNumbers.get(i).leftPad(14, '0'));
                 }
             }
-            return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT PolicyHolder__c FROM Policy__c WHERE InfoPolicyNumber__c IN :policyNumbers) AND RecordTypeId IN :this.recordTypeIds];
+
+            this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+                {
+                    Account.Id, 
+                    Account.Name, 
+                    Account.PersonContactId, 
+                    Account.NationalId__c, 
+                    Account.NumPolicies__pc, 
+                    Account.NumQuotes__pc
+                }
+            );
+
+            this.baseQuery.lookup
+            (
+                'Id', 
+                new Query('Policy__c').selectField(Policy__c.PolicyHolder__c).addConditionIn(Policy__c.InfoPolicyNumber__c, policyNumbers)
+            );
+           
+            return (List<Account>) this.baseQuery.run();
+
+            //return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT PolicyHolder__c FROM Policy__c WHERE InfoPolicyNumber__c IN :policyNumbers) AND RecordTypeId IN :this.recordTypeIds];
         }
         else
         {
@@ -136,12 +226,34 @@ public with sharing class AccountsSelector
             for (Integer i = 0; i < quoteNumbers.size(); i++)
             {
                 // rellenar con 0 hasta completar 14 digitos
-                if(quoteNumbers.get(i) != null && quoteNumbers.get(i).length() < 14)
+                if(quoteNumbers.get(i) != null)
                 {
                     quoteNumbers.set(i, quoteNumbers.get(i).leftPad(14, '0'));
                 }
             }
-            return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT AccountId FROM Opportunity WHERE InfoQuoteNumber__c IN :quoteNumbers) AND RecordTypeId IN :this.recordTypeIds];
+
+            this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+                {
+                    Account.Id, 
+                    Account.Name, 
+                    Account.PersonContactId, 
+                    Account.NationalId__c, 
+                    Account.NumPolicies__pc, 
+                    Account.NumQuotes__pc
+                }
+            );
+
+            this.baseQuery.lookup
+            (
+                'Id', 
+                new Query('Opportunity').selectField(Opportunity.AccountId).addConditionIn(Opportunity.InfoQuoteNumber__c, quoteNumbers)
+            );
+           
+            return (List<Account>) this.baseQuery.run();
+
+            //return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT AccountId FROM Opportunity WHERE InfoQuoteNumber__c IN :quoteNumbers) AND RecordTypeId IN :this.recordTypeIds];
         }
         else
         {
@@ -167,7 +279,26 @@ public with sharing class AccountsSelector
             }
         }
 
-        return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE Id IN :recordIds AND RecordTypeId IN :this.recordTypeIds];
+        String intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id, 
+                Account.TerritorialDirectionCode__c, 
+                Account.ChannelZoneCode__c, 
+                Account.ZoneCode__c, 
+                Account.CsmIndividualsManager__c, 
+                Account.CsmAdministrationManager__c
+            }
+        );
+
+        this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
+        
+        return (List<Account>) this.baseQuery.byId(recordIds).run();
+
+        //return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE Id IN :recordIds AND RecordTypeId IN :this.recordTypeIds];
     }
 
     /**
@@ -187,7 +318,27 @@ public with sharing class AccountsSelector
 
             }
 
-            return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE INFOIntermediaryCode__c IN :paddedCodes AND RecordTypeId IN :this.recordTypeIds];
+            String intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+
+            this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+                {
+                    Account.Id, 
+                    Account.TerritorialDirectionCode__c, 
+                    Account.ChannelZoneCode__c, 
+                    Account.ZoneCode__c, 
+                    Account.CsmIndividualsManager__c, 
+                    Account.CsmAdministrationManager__c
+                }
+            );
+            
+            this.baseQuery.addConditionEq(Account.INFOIntermediaryCode__c, paddedCodes);
+            this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
+            
+            return (List<Account>) this.baseQuery.run();
+
+            //return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE INFOIntermediaryCode__c IN :paddedCodes AND RecordTypeId IN :this.recordTypeIds];
         }
         else
         {
@@ -222,7 +373,7 @@ public with sharing class AccountsSelector
      * @param selectFields: campos de la query.
      * @return Listado de cuentas
      */
-    public static List<Account> selectById(Set<Id> accountIds, Set<String> selectFields)
+    public List<Account> selectById(Set<Id> accountIds)
     {
         //Devolver lista vacía
         if ( accountIds == null || accountIds.isEmpty() )
@@ -230,8 +381,8 @@ public with sharing class AccountsSelector
             return new List<Account>();
         }
 
-        String query = String.format('SELECT {0} FROM Account WHERE Id IN :accountIds', new List<String> {String.join(new List<String> (selectFields), ',')});
+        //String query = String.format('SELECT {0} FROM Account WHERE Id IN :accountIds', new List<String> {String.join(new List<String> (selectFields), ',')});
 
-        return (List<Account>) Database.query(query);
+        return (List<Account>) this.baseQuery.byId(accountIds).run();
     }
 }

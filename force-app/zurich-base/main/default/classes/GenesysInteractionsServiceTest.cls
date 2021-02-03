@@ -47,7 +47,7 @@ private without sharing class GenesysInteractionsServiceTest
         insert intermediaryCases;
 
         //Se crea 1 opp para cada cuenta
-        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1);
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, RecordsSelector.Scope.Z.name(), 'New', System.today().addDays(10), 1);
         insert opportunities;
 
         //se crea 1 póliza para cada cuenta
@@ -85,7 +85,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '123456789';
         testInteractionLog.interactionType = 'Outbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toId]).keySet();
@@ -136,7 +136,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '123456789';
         testInteractionLog.interactionType = 'Outbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toId]).keySet();
@@ -182,7 +182,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '123456789';
         testInteractionLog.interactionType = 'Inbound';
         testInteractionLog.lookFor = 'Case';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_CSM;
+        testInteractionLog.filterBy = 'Intermediaries';
 
         // SOSL - Resultados de búsqueda
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
@@ -197,7 +197,7 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Account> expectedAccounts = AccountsSelector.selectById(recordIds, new Set<String> {'Id'});
+        List<Account> expectedAccounts = new AccountsSelector().selectById(recordIds);
         List<Task> expectedTasks = [SELECT AccountId, Owner.Email, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
 
         System.assertEquals(expectedAccounts[0].Id, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de mediador');
@@ -234,7 +234,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '4000';
         testInteractionLog.interactionType = 'Inbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         delete [SELECT Id FROM Opportunity];
 
@@ -277,7 +277,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.interactionType = 'Inbound';
         testInteractionLog.lookFor = 'Outbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
@@ -318,7 +318,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '123456789';
         testInteractionLog.interactionType = 'Outbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toId]).keySet();
@@ -360,7 +360,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '4000';
         testInteractionLog.interactionType = 'Inbound';
         testInteractionLog.lookFor = 'Case';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
@@ -401,7 +401,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '123456789';
         testInteractionLog.interactionType = 'Outbound';
         testInteractionLog.lookFor = 'Case';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.toid]).keySet();
@@ -444,7 +444,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.interactionType = 'Inbound';
         testInteractionLog.lookFor = 'Outbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.fromId]).keySet();
@@ -485,7 +485,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = 'nescudero@nts-solutions.com';
         testInteractionLog.interactionType = 'Outbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.toId]).keySet();
@@ -528,7 +528,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.interactionType = 'Inbound';
         testInteractionLog.lookFor = 'Outbound';
         testInteractionLog.lookFor = 'Case';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.fromId]).keySet();
@@ -569,7 +569,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = 'nescudero@nts-solutions.com';
         testInteractionLog.interactionType = 'Outbound';
         testInteractionLog.lookFor = 'Case';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointEmail> ([SELECT Id FROM ContactPointEmail WHERE EmailAddress = : testInteractionLog.toId]).keySet();
@@ -611,7 +611,6 @@ private without sharing class GenesysInteractionsServiceTest
         searchRequest.searchType = 'phone';
         searchRequest.value = '123456789';
         searchRequest.filterBy  = 'customers';
-        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
         searchRequest.legalEntity  = 'gi';
 
         // SOSL - Resultados de búsqueda
@@ -647,7 +646,6 @@ private without sharing class GenesysInteractionsServiceTest
         searchRequest.searchType = 'email';
         searchRequest.value = 'nescudero@nts-solutions.com';
         searchRequest.filterBy  = 'customers';
-        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
         searchRequest.legalEntity  = 'gi';
 
         // SOSL - Resultados de búsqueda
@@ -683,7 +681,6 @@ private without sharing class GenesysInteractionsServiceTest
         searchRequest.searchType = 'document';
         searchRequest.value = '777888111Y';
         searchRequest.filterBy  = 'customers';
-        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
         searchRequest.legalEntity  = 'gi';
 
         // Test
@@ -715,7 +712,7 @@ private without sharing class GenesysInteractionsServiceTest
         searchRequest.searchType = 'policy_code';
         searchRequest.value = '00666777111333';
         searchRequest.filterBy  = 'customers';
-        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        searchRequest.scope = RecordsSelector.Scope.Z.name();
         searchRequest.legalEntity  = 'gi';
 
         // Test
@@ -747,7 +744,7 @@ private without sharing class GenesysInteractionsServiceTest
         searchRequest.searchType = 'phone';
         searchRequest.value = '111555777';
         searchRequest.filterBy  = 'intermediaries';
-        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        searchRequest.scope = RecordsSelector.Scope.Z.name();
         searchRequest.legalEntity  = 'all';
 
         // SOSL - Resultados de búsqueda
@@ -763,7 +760,7 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Account> expectedAccounts = AccountsSelector.selectById(recordIds, new Set<String> {'Id'});
+        List<Account> expectedAccounts = new AccountsSelector().selectById(recordIds);
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
@@ -784,7 +781,7 @@ private without sharing class GenesysInteractionsServiceTest
         searchRequest.searchType = 'intermediary_code';
         searchRequest.value = '999888777';
         searchRequest.filterBy  = 'intermediaries';
-        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        searchRequest.scope = RecordsSelector.Scope.Z.name();
         searchRequest.legalEntity  = 'all';
 
         // Test
@@ -850,7 +847,7 @@ private without sharing class GenesysInteractionsServiceTest
         searchRequest.searchType = 'tttttttt';
         searchRequest.value = '999888777';
         searchRequest.filterBy  = 'tttttt';
-        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        searchRequest.scope = RecordsSelector.Scope.Z.name();
         searchRequest.legalEntity  = 'all';
 
         // Test
@@ -889,7 +886,7 @@ private without sharing class GenesysInteractionsServiceTest
         searchRequest.searchType = 'tttttttt';
         searchRequest.value = '999888777';
         searchRequest.filterBy  = 'customers';
-        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        searchRequest.scope = RecordsSelector.Scope.Z.name();
         searchRequest.legalEntity  = 'all';
 
         // Test
@@ -928,7 +925,7 @@ private without sharing class GenesysInteractionsServiceTest
         searchRequest.searchType = 'tttttttt';
         searchRequest.value = '999888777';
         searchRequest.filterBy  = 'intermediaries';
-        searchRequest.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        searchRequest.scope = RecordsSelector.Scope.Z.name();
         searchRequest.legalEntity  = 'all';
 
         // Test
@@ -1303,7 +1300,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '123456789';
         testInteractionLog.interactionType = 'Outbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
         testInteractionLog.queueId = queues[0].purecloud__PureCloud_Queue_ID__c; //Cola en genesys que existe en SF con el mismo nombre
 
         GenesysInteractionsService.initInteraction(testInteractionLog);
@@ -1335,7 +1332,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '123456789';
         testInteractionLog.interactionType = 'Outbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
         testInteractionLog.queueId = queues[0].purecloud__PureCloud_Queue_ID__c; //Cola en genesys que NO existe en SF con el mismo nombre
 
         GenesysInteractionsService.initInteraction(testInteractionLog);
@@ -1363,7 +1360,7 @@ private without sharing class GenesysInteractionsServiceTest
         testInteractionLog.toId = '123456789';
         testInteractionLog.interactionType = 'Outbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         GenesysInteractionsService.initInteraction(testInteractionLog);
 

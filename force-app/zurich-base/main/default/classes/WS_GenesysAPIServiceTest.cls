@@ -30,7 +30,7 @@ private class WS_GenesysAPIServiceTest
         insert cases;
 
         //Se crea 1 opp para cada cuenta
-        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1);
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, RecordsSelector.Scope.Z.name(), 'New', System.today().addDays(10), 1);
         insert opportunities;
 
         List<Task> tasks = TestDataFactory.generateInteractionTasks(10);
@@ -53,7 +53,7 @@ private class WS_GenesysAPIServiceTest
         testInteractionLog.toId = '4000';
         testInteractionLog.interactionType = 'Inbound';
         testInteractionLog.lookFor = 'Opportunity';
-        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.scope = RecordsSelector.Scope.Z.name();
 
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();

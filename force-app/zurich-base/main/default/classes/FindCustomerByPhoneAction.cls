@@ -22,10 +22,7 @@ global with sharing class FindCustomerByPhoneAction {
 
             if(String.isNotBlank(request.phone) && String.isNotBlank(request.scope))
             {
-                AccountSearchService.Scope accSearchServiceScope = new AccountSearchService.Scope();
-                accSearchServiceScope.scope = request.scope;
-
-                List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String>{request.phone}, accSearchServiceScope);
+                List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String>{request.phone}, RecordsSelector.getScope(request.scope), null);
 
                 if(customers != null && !customers.isEmpty())
                 {

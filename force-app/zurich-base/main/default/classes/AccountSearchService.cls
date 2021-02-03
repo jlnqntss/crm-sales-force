@@ -3,81 +3,49 @@
  */
 public with sharing class AccountSearchService
 {
-
-    public static final String SCOPE_CODE_ALL = 'all';
-    public static final String SCOPE_CODE_ZE = 'ze';
-    public static final String SCOPE_CODE_KLINC = 'klinc';
-    public static final String SCOPE_CODE_CSM = 'csm';
-    public static final String SCOPE_CODE_CCS = 'ccs';
-    private static final Map<String, String> SCOPE_NAMES_BY_CODE = new Map<String, String>
-    {
-        SCOPE_CODE_ALL  => 'General',
-        SCOPE_CODE_ZE => 'Zurich Empresas',
-        SCOPE_CODE_KLINC => 'Klinc',
-        SCOPE_CODE_CSM => 'csm',
-        SCOPE_CODE_CCS => 'ccs'
-    };
-    static final String INVALID_SCOPE = 'Invalid scope. Please, try with all, ze or klinc.';
-    public class Scope
-    {
-        public String all
-        {
-            get {
-                return SCOPE_NAMES_BY_CODE.get('all');
-            }
-        }
-        public String scope
-        {
-            get {
-                if(scope == null)
-                {
-                    return all;
-                }
-                else
-                {
-                    return scope;
-                }
-            }
-            set
-            {
-                if(value == null)
-                {
-                    scope = all;
-                }
-                else if( SCOPE_NAMES_BY_CODE.containsKey(value) )
-                {
-                    scope = SCOPE_NAMES_BY_CODE.get(value);
-                }
-                else
-                {
-                    throw new AccountSearchServiceException(INVALID_SCOPE);
-                }
-            }
-        }
-    }
-
     /**
      * Busca y encuentra clientes a través del número de teléfono, aplicando Scope de visibilidad dado.
      * @param phones : String[] - Listado de teléfonos. Los teléfonos se esperan en formato E164
      * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @return Devuelve el listado de clientes encontrado
      */
-    public static Account[] findCustomersByPhoneNumber(String[] phones, AccountSearchService.Scope scope)
+    public static Account[] findCustomersByPhoneNumber(String[] phones, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
-        String scopeToApply = scope.scope;
+        //String scopeToApply = scope.scope;
         Set<Id> accountIds = new Set<Id>();
-        List<Contact> contacts = new ContactsSelector().applyScope(scopeToApply).findByPhoneNumber(phones);
+
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setScope(scope);
+        List<Contact> contacts = contactsSelector.findByPhoneNumber(phones);
         for(Contact contact: contacts)
         {
             accountIds.add(contact.AccountId);
         }
-        List<Account> accounts = new AccountsSelector().applyScope(scopeToApply).findByPhoneNumber(phones);
+
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(scope);
+        List<Account> accounts = accountsSelector.findByPhoneNumber(phones);
         for(Account account: accounts)
         {
             accountIds.add(account.Id);
         }
 
-        return AccountsSelector.selectById(accountIds, new Set<String> {'Id', 'NumPolicies__pc', 'NumQuotes__pc', 'Name', 'PersonContactId'});
+        accountsSelector = new AccountsSelector();
+        accountsSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.NumPolicies__pc,
+                Account.NumQuotes__pc,
+                Account.Name,
+                Account.PersonContactId
+            }
+        );
+
+        accountsSelector.setLegalEntity(legalEntity);
+        
+        return accountsSelector.selectById(accountIds);
     }
 
     /**
@@ -86,22 +54,43 @@ public with sharing class AccountSearchService
      * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @return Devuelve el listado de clientes encontrado
      */
-    public static Account[] findCustomersByEmail(String[] emails, AccountSearchService.Scope scope)
+    public static Account[] findCustomersByEmail(String[] emails, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
-        String scopeToApply = scope.scope;
+        //String scopeToApply = scope.scope;
         Set<Id> accountIds = new Set<Id>();
-        List<Contact> contacts = new ContactsSelector().applyScope(scopeToApply).findByEmail(emails);
+
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setScope(scope);
+        List<Contact> contacts = contactsSelector.findByEmail(emails);
         for(Contact contact: contacts)
         {
             accountIds.add(contact.AccountId);
         }
-        List<Account> accounts = new AccountsSelector().applyScope(scopeToApply).findByEmail(emails);
+
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(scope);
+        List<Account> accounts = accountsSelector.findByEmail(emails);
         for(Account account: accounts)
         {
             accountIds.add(account.Id);
         }
 
-        return AccountsSelector.selectById(accountIds, new Set<String> {'Id', 'NumPolicies__pc', 'NumQuotes__pc', 'Name', 'PersonContactId'});
+        accountsSelector = new AccountsSelector();
+        accountsSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.NumPolicies__pc,
+                Account.NumQuotes__pc,
+                Account.Name,
+                Account.PersonContactId
+            }
+        );
+
+        accountsSelector.setLegalEntity(legalEntity);
+        
+        return accountsSelector.selectById(accountIds);
     }
 
     /**
@@ -112,10 +101,14 @@ public with sharing class AccountSearchService
      * @param  legalEntity          Entidad legal en la que buscar
      * @return Devuelve el listado de clientes encontrado
      */
-    public static Account[] findCustomersByDocumentId(String[] documentIds, String documentType, AccountSearchService.Scope scope, String legalEntity)
+    public static Account[] findCustomersByDocumentId(String[] documentIds, String documentType, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
-        String scopeToApply = scope.scope;
-        return new AccountsSelector().applyScope(scopeToApply).findByNationalId(documentIds, documentType, legalEntity);
+        //String scopeToApply = scope.scope;
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(scope);
+        accountsSelector.setLegalEntity(legalEntity);
+
+        return accountsSelector.findByNationalId(documentIds, documentType);
     }
 
     /**
@@ -124,10 +117,13 @@ public with sharing class AccountSearchService
      * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @return Devuelve el listado de clientes encontrado
      */
-    public static Account[] findCustomersByPolicyNumber(String[] policyNumbers, AccountSearchService.Scope scope)
+    public static Account[] findCustomersByPolicyNumber(String[] policyNumbers, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
-        String scopeToApply = scope.scope;
-        return new AccountsSelector().applyScope(scopeToApply).findByPolicyNumber(policyNumbers);
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(scope);
+        accountsSelector.setLegalEntity(legalEntity);
+
+        return accountsSelector.findByPolicyNumber(policyNumbers);
     }
 
     /**
@@ -136,10 +132,13 @@ public with sharing class AccountSearchService
      * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @return Devuelve el listado de clientes encontrado
      */
-    public static Account[] findCustomersByQuoteNumber(String[] quoteNumbers, AccountSearchService.Scope scope)
+    public static Account[] findCustomersByQuoteNumber(String[] quoteNumbers, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
-        String scopeToApply = scope.scope;
-        return new AccountsSelector().applyScope(scopeToApply).findByQuoteNumber(quoteNumbers);
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(scope);
+        accountsSelector.setLegalEntity(legalEntity);
+
+        return accountsSelector.findByQuoteNumber(quoteNumbers);
     }
 
     /**
@@ -148,10 +147,9 @@ public with sharing class AccountSearchService
      * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @return Devuelve el listado de mediadores encontrado
      */
-    public static Account[] findIntermediariesByPhoneNumber(String[] phones, AccountSearchService.Scope scope)
+    public static Account[] findIntermediariesByPhoneNumber(String[] phones)
     {
-        String scopeToApply = scope.scope;
-        return new AccountsSelector().applyScope(scopeToApply).findByIntermediaryPhoneNumber(phones);
+        return new AccountsSelector().findByIntermediaryPhoneNumber(phones);
     }
 
     /**
@@ -160,10 +158,9 @@ public with sharing class AccountSearchService
      * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @return Devuelve el listado de mediadores encontrado
      */
-    public static Account[] findIntermediariesByCode(String[] codes, AccountSearchService.Scope scope)
+    public static Account[] findIntermediariesByCode(String[] codes)
     {
-        String scopeToApply = scope.scope;
-        return new AccountsSelector().applyScope(scopeToApply).findByIntermediaryCode(codes);
+        return new AccountsSelector().findByIntermediaryCode(codes);
     }
 
     @TestVisible
