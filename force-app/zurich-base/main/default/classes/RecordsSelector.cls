@@ -25,20 +25,35 @@ public abstract class RecordsSelector
     }
 
     public enum LegalEntity { ALL, GI, LIFE }
-    static Map<String, LegalEntity> legalEntitiesByCode
+    static Map<LegalEntity, String> legalEntitiesByCode
     {
         get
         {
             if (legalEntitiesByCode == null)
             {
-                legalEntitiesByCode = new Map<String, LegalEntity>
+                legalEntitiesByCode = new Map<LegalEntity, String>
                 {
-                    'ALL'   => LegalEntity.ALL,
-                    'GI'    => LegalEntity.GI,
-                    'LIFE'  => LegalEntity.LIFE
+                    LegalEntity.GI    => '001',
+                    LegalEntity.LIFE  => '005'
                 };
             }
             return legalEntitiesByCode;
+        }
+        private set;
+    }
+    static Map<String, LegalEntity> legalEntitiesByStringCode
+    {
+        get
+        {
+            if (legalEntitiesByStringCode == null)
+            {
+                legalEntitiesByStringCode = new Map<String, LegalEntity>
+                {
+                    LegalEntity.GI.name()    => LegalEntity.GI,
+                    LegalEntity.LIFE.name()  => LegalEntity.LIFE
+                };
+            }
+            return legalEntitiesByStringCode;
         }
         private set;
     }
@@ -56,12 +71,17 @@ public abstract class RecordsSelector
 
     public static Scope getScope(String scope)
     {
-        return String.isBlank(scope) ? null : scopesByCode.get(scope.toUpperCase());
+        return String.isBlank(scope) || !scopesByCode.containsKey(scope.toUpperCase()) ? scopesByCode.get('ALL') : scopesByCode.get(scope.toUpperCase());
+    }
+
+    public static String getLegalEntity(LegalEntity legalEntity)
+    {
+        return legalEntity == null || !legalEntitiesByCode.containsKey(legalEntity) ? null : legalEntitiesByCode.get(legalEntity);
     }
 
     public static LegalEntity getLegalEntity(String legalEntity)
     {
-        return String.isBlank(legalEntity) ? null : legalEntitiesByCode.get(legalEntity.toUpperCase());
+        return String.isBlank(legalEntity) || !legalEntitiesByStringCode.containsKey(legalEntity.toUpperCase()) ? null : legalEntitiesByStringCode.get(legalEntity.toUpperCase());
     }
 
     /**

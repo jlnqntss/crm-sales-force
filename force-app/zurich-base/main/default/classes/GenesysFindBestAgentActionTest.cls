@@ -30,7 +30,7 @@ public class GenesysFindBestAgentActionTest
         insert cases;
 
         //Se crea 1 opp para cada cuenta
-        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1);
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, RecordsSelector.Scope.Z.name(), 'New', System.today().addDays(10), 1);
         insert opportunities;
 
         List<Task> tasks = TestDataFactory.generateInteractionTasks(10);
@@ -45,7 +45,7 @@ public class GenesysFindBestAgentActionTest
         GenesysFindBestAgentAction.FindBestAgentRequest request = new GenesysFindBestAgentAction.FindBestAgentRequest();
         request.interactionType = 'Inbound'; //buscará por fromId
         request.lookFor = 'Opportunity';
-        request.scope = GenesysInteractionsService.SCOPE_CODE_ALL; //Opp.Scope__c = 'General'
+        request.scope = RecordsSelector.Scope.Z.name();
         request.fromId = 'nescudero@nts-solutions.com'; //coincide con contactPointEmail.EmailAddress
         requests.add(request);
 
@@ -71,7 +71,7 @@ public class GenesysFindBestAgentActionTest
         GenesysFindBestAgentAction.FindBestAgentRequest request = new GenesysFindBestAgentAction.FindBestAgentRequest();
         request.interactionType = 'Inbound';
         request.lookFor = 'Opportunity';
-        request.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        request.scope = RecordsSelector.Scope.Z.name();
         request.fromId = 'noexisto@nnoexisto.com';
         requests.add(request);
 

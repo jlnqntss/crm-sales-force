@@ -24,12 +24,10 @@ public class BusinessInsuranceCreateLeadActionTest
         Test.stopTest();
 
         // Comprobamos que se ha generado correctamente toda la información
-        AccountSearchService.Scope accSearchServiceScope = new AccountSearchService.Scope();
-        accSearchServiceScope.scope = AccountSearchService.SCOPE_CODE_ZE;
-        List<Account> createdLeads = AccountSearchService.findCustomersByDocumentId(new List<String>{leadInformation.nationalIdentifier}, 'N', accSearchServiceScope, '001');
+        List<Account> createdLeads = AccountSearchService.findCustomersByDocumentId(new List<String>{leadInformation.nationalIdentifier}, 'N', RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.GI);
         System.assertEquals(false, createdLeads.isEmpty(), 'List should NOT be empty');
 
-        List<Scope__c> createdScopes = new ScopesSelector().selectByAccountIdAndScope(new Set<Id>{createdLeads.get(0).Id}, AccountSearchService.SCOPE_CODE_ZE);
+        List<Scope__c> createdScopes = new ScopesSelector().selectByAccountIdAndScope(new Set<Id>{createdLeads.get(0).Id}, RecordsSelector.Scope.ZE);
         System.assertEquals(false, createdScopes.isEmpty(), 'List should NOT be empty');
 
         List<ContactPointEmail> createdContactPointEmails = new ContactPointEmailsSelector().selectByScopeIdAndEmailAddress(new Set<Id>{createdScopes.get(0).Id}, leadInformation.email);

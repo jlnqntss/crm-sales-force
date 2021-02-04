@@ -39,8 +39,9 @@ private with sharing class ContactsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Contact> matchedRecords = new ContactsSelector().applyScope('all').findByPhoneNumber(new List<String> { telephoneNumberToSearch });
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Contact> matchedRecords = contactsSelector.findByPhoneNumber(new List<String> { telephoneNumberToSearch });
 
         Test.stopTest();
 
@@ -80,8 +81,9 @@ private with sharing class ContactsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Contact> matchedRecords = new ContactsSelector().applyScope('all').findByEmail(new List<String> { emailToSearch } );
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Contact> matchedRecords = contactsSelector.findByEmail(new List<String> { emailToSearch } );
 
         Test.stopTest();
 
@@ -115,18 +117,22 @@ private with sharing class ContactsSelectorTest
         // SOSL - Resultados de búsqueda
         Set<Id> recordIds = new Set<Id>();
 
-        for(ContactPointEmail contactPoint : [SELECT Id, ParentId, ContactId__c FROM ContactPointEmail WHERE EmailAddress =: emailToSearch])
+        List<ContactPointEmail> contactPointEmails = [SELECT Id, ParentId, ContactId__c FROM ContactPointEmail WHERE EmailAddress =: emailToSearch];
+        for(ContactPointEmail contactPoint : contactPointEmails)
         {
             recordIds.add(contactPoint.ParentId);
             recordIds.add(contactPoint.Id);
+            contactPoint.Scope__c = RecordsSelector.Scope.ZE.name();
         }
+        update contactPointEmails;
 
         Test.setFixedSearchResults( new List<Id>(recordIds) );
 
         // Test
         Test.startTest();
-
-        List<Contact> matchedRecords = new ContactsSelector().applyScope('ze').findByEmail(new List<String> { emailToSearch } );
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setScope(RecordsSelector.Scope.ZE);
+        List<Contact> matchedRecords = contactsSelector.findByEmail(new List<String> { emailToSearch } );
 
         Test.stopTest();
 
