@@ -52,15 +52,29 @@ private with sharing class ContentDocumentLinkUtilTest
 
         //Cargamos los valores del mapeo de tipificación
         List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
-            SELECT Id
+            SELECT Id, Type__c, Subtype__c, TypeN3__c, SourceType__c, SourceSubtype__c
             FROM Robot_Hegeo_Field_Mapping__mdt
         ];
         System.assertEquals(false, robotHegeoFieldsMapping.isEmpty(), 'List should not be empty');
 
-        Map<String, String> caseTypesMap = new Map<String, String>();
+        Map<String, Map<String, String>> caseTypesMap = new Map<String, Map<String, String>>();
         for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
         {
-            //caseTypesMap.put(fieldMapping.SourceValue__c, fieldMapping.SalesforceValue__c);
+            Map<String, String> typeValuesMap = new Map<String, String>();
+            if(String.isNotBlank(fieldMapping.Type__c))
+            {
+                typeValuesMap.put('Type', fieldMapping.Type__c);
+            }
+            if(String.isNotBlank(fieldMapping.Subtype__c))
+            {
+                typeValuesMap.put('Subtype__c', fieldMapping.Subtype__c);
+            }
+            if(String.isNotBlank(fieldMapping.TypeN3__c))
+            {
+                typeValuesMap.put('TypeN3__c', fieldMapping.TypeN3__c);
+            }
+
+            caseTypesMap.put(fieldMapping.SourceType__c + fieldMapping.SourceSubtype__c, typeValuesMap);
         }
 
         //Creamos una oferta para comprobar que el caso queda relacionado en el Case Trigger Hegeo - Before update
@@ -85,8 +99,9 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.HtmlBody = 'The CSV is attached.';
         insert emailMessage;
 
-        String caseTypeValue = '3';
-        String caseSubtypeValue = '20';
+        String caseTypeValue = '1';
+        String caseSubtypeValue = '6';
+        String caseTypeCombination = caseTypeValue + caseSubtypeValue;
         String receiptNumber = '123456789';
 
         String csvContent = ''+caseTypeValue+';'+caseSubtypeValue+';;1;'+relatedOffer.InfoQuoteNumber__c+';;'+relatedPolicy.InfoPolicyNumber__c+';'+receiptNumber+';'+relatedClaim.InfoClaimNumber__c+';;\n';
@@ -117,8 +132,8 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c, OfferId__c, PolicyId__c, ClaimId__c, HegeoReceiptNumber__c FROM Case WHERE Id =: relatedCase.Id];
         System.assertEquals(true, updatedCase != null, 'Case found');
-        System.assertEquals(caseTypesMap.get(caseTypeValue), updatedCase.Type, 'Type successfully saved');
-        System.assertEquals(caseTypesMap.get(caseSubtypeValue), updatedCase.Subtype__c, 'Subtype successfully saved');
+        System.assertEquals(caseTypesMap.get(caseTypeCombination).get('Type').toLowerCase(), updatedCase.Type.toLowerCase(), 'Type successfully saved');
+        System.assertEquals(caseTypesMap.get(caseTypeCombination).get('Subtype__c').toLowerCase(), updatedCase.Subtype__c.toLowerCase(), 'Subtype successfully saved');
 
         System.assertEquals(relatedOffer.Id, updatedCase.OfferId__c, 'Offer successfully related');
         System.assertEquals(relatedPolicy.Id, updatedCase.PolicyId__c, 'Policy successfully related');

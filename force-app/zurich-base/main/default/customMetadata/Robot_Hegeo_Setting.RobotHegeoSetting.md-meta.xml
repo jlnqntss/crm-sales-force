@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>CaseFields__c</field>
-        <value xsi:type="xsd:string">Type,Subtype__c,TypeN3__c,HegeoProductGroupCode__c,HegeoOfferId__c,HegeoPrePolicyId__c,HegeoPolicyId__c,HegeoReceiptNumber__c,HegeoClaimId__c,AccountId</value>
+        <value xsi:type="xsd:string">Type,Subtype__c,TypeN3__c,HegeoProductGroupCode__c,HegeoOfferId__c,HegeoPrePolicyId__c,HegeoPolicyId__c,HegeoReceiptNumber__c,HegeoClaimId__c,HegeoIntermediaryId__c</value>
     </values>
     <values>
         <field>CaseRecordTypeNames__c</field>

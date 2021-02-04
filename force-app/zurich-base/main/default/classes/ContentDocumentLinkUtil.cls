@@ -64,42 +64,30 @@ public without sharing class ContentDocumentLinkUtil
 
         //Cargamos el mapeo de campos de tipificación del caso
         List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
-            SELECT Id
+            SELECT Id, SourceType__c, SourceSubtype__c, Type__c, Subtype__c, TypeN3__c
             FROM Robot_Hegeo_Field_Mapping__mdt
         ];
 
         if(!robotHegeoFieldsMapping.isEmpty())
         {
-            /*for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
+            for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
             {
-                Map<String, String> myMap = new Map<String, String>();
-                if(String.isNotBlank(fieldMapping.Type))
+                Map<String, String> typeValuesMap = new Map<String, String>();
+                if(String.isNotBlank(fieldMapping.Type__c))
                 {
-                    myMap.put('Type', fieldMapping.Type);
+                    typeValuesMap.put('Type', fieldMapping.Type__c);
                 }
-                if(String.isNotBlank(fieldMapping.Subtype))
+                if(String.isNotBlank(fieldMapping.Subtype__c))
                 {
-                    myMap.put('Subtype__c', fieldMapping.Subtype);
+                    typeValuesMap.put('Subtype__c', fieldMapping.Subtype__c);
                 }
-                if(String.isNotBlank(fieldMapping.TypeN3))
+                if(String.isNotBlank(fieldMapping.TypeN3__c))
                 {
-                    myMap.put('TypeN3__c', fieldMapping.TypeN3__c);
+                    typeValuesMap.put('TypeN3__c', fieldMapping.TypeN3__c);
                 }
 
-                caseTypesMapping.put(fieldMapping.SourceType + '-' + fieldMapping.SourceSubtype, myMap);
-
-
-
-
-                Map<String, String> valuesMap = new Map<String, String>();
-                if(caseTypesMapping.containsKey(fieldMapping.Level__c))
-                {
-                    valuesMap = caseTypesMapping.get(fieldMapping.Level__c);
-                }
-                
-                valuesMap.put(fieldMapping.SourceValue__c, fieldMapping.SalesforceValue__c);
-                caseTypesMapping.put(fieldMapping.Level__c, valuesMap);
-            }*/
+                caseTypesMapping.put(fieldMapping.SourceType__c + fieldMapping.SourceSubtype__c, typeValuesMap);
+            }
 
             System.debug('caseTypesMapping: ' + caseTypesMapping);
         }
@@ -275,62 +263,43 @@ public without sharing class ContentDocumentLinkUtil
                         System.debug('types.size(): ' + types.size());
                         System.debug('types.isEmpty(): ' + types.isEmpty());
 
-                        if (!types.isEmpty()) 
+                        if (!types.isEmpty() && types.size() > 2) 
                         {
                             //Incluimos el Id del caso para deserializar
                             Map<String, String> caseFieldsMap = new Map<String, String>{
                                 'Id' => relatedCases.get(relatedEmail.ParentId).Id
                             };
 
-                            if(types.size() >= caseFieldsList.size())
-                            {
-                                //Extraemos la combinación de los tipos de casos (3 primeras posiciones del listado de valores)
-                                String combination = '';
-                                for(Integer i=0; i<caseFieldsList.size()-1; i++)
-                                {
-                                    combination += caseFieldsList.get(i);
-                                }
+                            //Extraemos la combinación de los tipos de casos (2 primeras posiciones del listado de valores)
+                            String combination = types.get(0) + types.get(1);
 
-                                //caseFieldsMap.putAll(get(combination))
+                            //caseFieldsMap.putAll(get(combination))
+                            if(caseTypesMapping.containsKey(combination))
+                            {
+                                caseFieldsMap.putAll(caseTypesMapping.get(combination));
+                            }
+                            else
+                            {
+                                ErrorLogUtil.commitError(
+                                    'warning',
+                                    //String.format(Label.RobotHegeoInvalidType, new List<String>{value, caseFieldsList.get(i)}),
+                                    'La combinación de valores no existe',
+                                    'ContentDocumentLinkUtil'
+                                );    
                             }
 
                             //Recorremos la lista ordenada de campos a tipificar, 
                             //así podemos acceder directamente por posición al valor recibido
-                            for(Integer i=0; i<caseFieldsList.size(); i++)
+                            for(Integer i=3; i<caseFieldsList.size(); i++)
                             {
                                 //Este if controla que no falle la ejecución si recibimos menos valores de los esperados
                                 //o si el valor viene vacio
                                 if(i<types.size() && String.isNotBlank(types.get(i)))
                                 {
                                     String value = types.get(i);
-                                    
-                                    //Sí el campo que estamos iterando corresponde con alguno de los campos
-                                    //de tipificación (Type, Subtype o TypeN3), necesitamos "traducir" el valor recibido
-                                    if(caseTypesMapping.containsKey(caseFieldsList.get(i)))
-                                    {
-                                        if(caseTypesMapping.get(caseFieldsList.get(i)).containsKey(value))
-                                        {
-                                            value = caseTypesMapping.get(caseFieldsList.get(i)).get(value);
-                                            System.debug('types.get('+i+'): ' + value);
-                                            caseFieldsMap.put(caseFieldsList.get(i), value);
-                                        }
-                                        else
-                                        {
-                                            //Si hemos llegado a este punto, hemos recibido un valor en el CSV
-                                            //que no se corresponde con ninguno de los esperados y no se puede traducir
-                                            ErrorLogUtil.commitError(
-                                                'warning',
-                                                String.format(Label.RobotHegeoInvalidType, new List<String>{value, caseFieldsList.get(i)}),
-                                                'ContentDocumentLinkUtil'
-                                            );
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //En este caso no hace falta traducir el valor y se incluye directamente
-                                        System.debug('types.get('+i+'): ' + value);
-                                        caseFieldsMap.put(caseFieldsList.get(i), value);
-                                    }
+                                    //En este caso no hace falta traducir el valor y se incluye directamente
+                                    System.debug('types.get('+i+'): ' + value);
+                                    caseFieldsMap.put(caseFieldsList.get(i), value);
                                 }
                             }
 
