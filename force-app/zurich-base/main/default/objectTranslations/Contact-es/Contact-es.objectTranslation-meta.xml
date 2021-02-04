@@ -46,8 +46,13 @@
         </sections>
     </layouts>
     <recordTypes>
+        <description><!-- Destinado a agentes y mediadores pertenecientes a Intermediarios --></description>
+        <label>Agente/Mediador</label>
+        <name>AgentMediator</name>
+    </recordTypes>
+    <recordTypes>
         <description><!-- Record type for business contacts --></description>
-        <label><!-- Contact --></label>
+        <label>Contacto</label>
         <name>Contact</name>
     </recordTypes>
     <recordTypes>
