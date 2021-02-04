@@ -59,6 +59,16 @@
                 <default>false</default>
                 <label>PACK MOBILE LOVER</label>
             </value>
+            <value>
+                <fullName>TechLover Paket</fullName>
+                <default>false</default>
+                <label>TechLover Paket</label>
+            </value>
+            <value>
+                <fullName>Friends&amp;Family Paket</fullName>
+                <default>false</default>
+                <label>Friends&amp;Family Paket</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

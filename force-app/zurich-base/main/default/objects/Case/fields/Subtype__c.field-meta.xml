@@ -347,6 +347,11 @@
                 <default>false</default>
                 <label>Incidencias</label>
             </value>
+            <value>
+                <fullName>Partnership</fullName>
+                <default>false</default>
+                <label>Partnership</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
@@ -547,6 +552,37 @@
             <valueName>Tareas administrativas</valueName>
         </valueSettings>
         <valueSettings>
+<<<<<<< HEAD
+=======
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Como contrato mi seguro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Coberturas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Documentacion necesaria</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Precio de mi seguro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Franquicia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Nuevo dispositivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Partnership</valueName>
+        </valueSettings>
+        <valueSettings>
+>>>>>>> 7cd2e734fe9721a8eb9a10c54db690fc03f04bd2
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
             <valueName>Descargar App</valueName>
         </valueSettings>

@@ -22,103 +22,107 @@
  * SOFTWARE.
  */
 @isTest
-public class QuerySearchTest 
+public class QuerySearchTest
 {
     @isTest
-    static void simpleTest() {
+    static void simpleTest()
+    {
         QuerySearch qs = new QuerySearch()
-            .find('ABC')
-            .inNameFields()
-            .returning('Account')
-            .selectFields('Name, Phone');
+                         .find('ABC')
+                         .inNameFields()
+                         .returning('Account')
+                         .selectFields('Name, Phone');
 
         String str = qs.toSearchString();
 
         System.assertEquals(getFindClause(str), '"ABC"');
 
         Account acc = new Account(Name = 'ABC Ltd',
-                Phone = '+61 410 000 000');
+                                  Phone = '+61 410 000 000');
         insert acc;
 
-        Test.setFixedSearchResults(new List<Id>{acc.Id});
+        Test.setFixedSearchResults(new List<Id> {acc.Id});
 
         List<Account> accounts = qs.run()[0];
 
-        System.assert(!accounts.isEmpty());
+        System.assert (!accounts.isEmpty() );
         System.assertEquals(accounts[0].Id, acc.Id);
         System.assertEquals(accounts[0].Name, 'ABC Ltd');
         System.assertEquals(accounts[0].Phone, '+61 410 000 000');
     }
     @isTest
-    static void limitTest() {
+    static void limitTest()
+    {
         Account acc0 = new Account(Name = 'Account 0',Phone = '+61 410 000 000');
         Account acc1 = new Account(Name = 'Account 0',Phone = '+61 410 000 000');
         Account acc2 = new Account(Name = 'Account 0',Phone = '+61 410 000 000');
 
-        insert new List<Account>{acc0, acc1, acc2};
+        insert new List<Account> {acc0, acc1, acc2};
         QuerySearch qs = new QuerySearch()
-            .find('Account')
-            .inNameFields()
-            .returning('Account')
-            .selectFields('Name, Phone')
-            .setLimit(2);
+                         .find('Account')
+                         .inNameFields()
+                         .returning('Account')
+                         .selectFields('Name, Phone')
+                         .setLimit(2);
 
         String str = qs.toSearchString();
-		Test.setFixedSearchResults(new List<Id>{acc0.Id, acc1.Id, acc2.Id});
+        Test.setFixedSearchResults(new List<Id> {acc0.Id, acc1.Id, acc2.Id});
         List<Account> accounts = qs.run()[0];
         System.assertEquals(accounts.size(), 2);
     }
 
     @isTest
-    static void runIdOrderTest() {
+    static void runIdOrderTest()
+    {
         Account acc1 = new Account(Name = 'Account 1', Rating = '1');
         Account acc2 = new Account(Name = 'Account 2', Rating = '9');
         Account acc3 = new Account(Name = 'Account 3', Rating = '5');
 
-        insert new List<Account>{acc1, acc2, acc3};
+        insert new List<Account> {acc1, acc2, acc3};
 
         List<Account> accounts;
-		Test.setFixedSearchResults(new List<Id>{acc1.Id, acc2.Id, acc3.Id});
+        Test.setFixedSearchResults(new List<Id> {acc1.Id, acc2.Id, acc3.Id});
 
         accounts = new QuerySearch()
-            .find('Account')
-            .inNameFields()
-            .returning('Account')
-            .selectFields('Name, Rating')
-            .orderBy('Rating', 'DESC')
-            .run()[0];
-	
+                   .find('Account')
+                   .inNameFields()
+                   .returning('Account')
+                   .selectFields('Name, Rating')
+                   .orderBy('Rating', 'DESC')
+                   .run()[0];
+
         System.assertEquals(accounts.get(0).Name, 'Account 2');
         System.assertEquals(accounts.get(1).Name, 'Account 3');
         System.assertEquals(accounts.get(2).Name, 'Account 1');
     }
 
     @isTest
-    static void findClauseTest() {
+    static void findClauseTest()
+    {
         String str;
 
         str = new QuerySearch()
-            .find('ABC')
-            .find('CBA')
-            .toSearchString();
+              .find('ABC')
+              .find('CBA')
+              .toSearchString();
 
         System.assertEquals(getFindClause(str), '("ABC") AND ("CBA")');
 
         str = new QuerySearch()
-            .find(QuerySearch.doAnd('ABC', 'CBA'))
-            .toSearchString();
+              .find(QuerySearch.doAnd('ABC', 'CBA') )
+              .toSearchString();
 
         System.assertEquals(getFindClause(str), '("ABC") AND ("CBA")');
 
         str = new QuerySearch()
-            .find(QuerySearch.doOr('ABC', 'CBA'))
-            .toSearchString();
+              .find(QuerySearch.doOr('ABC', 'CBA') )
+              .toSearchString();
 
         System.assertEquals(getFindClause(str), '("ABC") OR ("CBA")');
 
         str = new QuerySearch()
-            .find(QuerySearch.doOr(QuerySearch.doAnd('ABC', 'BCA'), 'CBA'))
-            .toSearchString();
+              .find(QuerySearch.doOr(QuerySearch.doAnd('ABC', 'BCA'), 'CBA') )
+              .toSearchString();
 
         System.assertEquals(getFindClause(str), '(("ABC") AND ("BCA")) OR ("CBA")');
     }
@@ -128,9 +132,10 @@ public class QuerySearchTest
      * need an extra step to test the FIND clause.
      * https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_testing_SOSL.htm
      */
-    private static String getFindClause(String searchString) {
+    private static String getFindClause(String searchString)
+    {
         Matcher m = Pattern.compile('FIND \\{(.*)\\}.*').matcher(searchString);
-        System.assert(m.matches());
+        System.assert (m.matches() );
         return m.group(1);
     }
 }

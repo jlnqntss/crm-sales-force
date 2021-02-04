@@ -439,7 +439,7 @@ public class INFOHandler implements ISystem
             when 'PARTNER' 
             {
                 Account partnerRecord = (Account) tf.transform(PARTNER, 'Account', recordValuesMap);
-                partnerRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner').getRecordTypeId();
+                partnerRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PartnerOCS').getRecordTypeId();
                 addRecordToMap(externalRequest, PARTNER, 'Account', partnerRecord);
             }
             // Mediador
