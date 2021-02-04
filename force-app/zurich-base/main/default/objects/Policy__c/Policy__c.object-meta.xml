@@ -144,7 +144,7 @@
     <compactLayoutAssignment>PolicyDefault</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Destinado a almacenar la información de las pólizas provenientes de INFO</description>
-    <enableActivities>false</enableActivities>
+    <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>

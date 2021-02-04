@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>RelatedToRuleOnlyCase</fullName>
-    <active>true</active>
-    <description>Los usuarios de OCS únicamente podrán vincular Actividades a Casos.</description>
-    <errorConditionFormula>RecordType.DeveloperName = &quot;Activity&quot; &amp;&amp; LEFT(WhatId, 3) &lt;&gt; &apos;500&apos; &amp;&amp; $Profile.Id = &apos;00e0E000000QWX6&apos;</errorConditionFormula>
-    <errorDisplayField>WhatId</errorDisplayField>
-    <errorMessage>[VR Tarea] Solo está permitido vincular actividades a los registros de Caso.</errorMessage>
-</ValidationRule>
