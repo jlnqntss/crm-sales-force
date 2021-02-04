@@ -4,7 +4,5 @@
     <permissionSets>Acceso_App_OCS</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
-    <permissionSets>Gestion_CS</permissionSets>
-    <permissionSets>Gestion_Informes</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
