@@ -2,29 +2,61 @@
  * @description       :
  * @author            : Enara Etxaniz
  * @group             :
- * @last modified on  : 10-14-2020
- * @last modified by  : Enara Etxaniz
+ * @last modified on  : 01-02-2021
+ * @last modified by  : nts (agonzalezisasi)
  * Modifications Log
- * Ver   Date         Author          Modification
- * 1.0   10-08-2020   Enara Etxaniz   Initial Version
+ * Ver   Date         Author                Modification
+ * 1.0   10-08-2020   Enara Etxaniz         Initial Version 
+ * 2.0   01-02-2021   nts (agonzalezisasi)  Refactorized the class for the new requirements
+ *
  **/
 @isTest
 private class OpenIDConnectRegHandlerTest
 {
+    static final string IAM_ROLE_A = 'IAM_ROLE_A';
+    static final string IAM_ROLE_B = 'IAM_ROLE_B';
+    static final string IAM_ROLE_ADMIN = 'IAM_ROLE_ADMIN';
+
+    @TestSetup
+    static void makeData(){
+        // Create Groups
+        List<Group> groups = new List<Group>();
+        groups.add(new Group(Name='TestGroupA', DeveloperName='TestGroupA'));
+        groups.add(new Group(Name='TestGroupB', DeveloperName='TestGroupB'));
+        insert groups;
+
+        // Create Permission Set Groups
+        List<PermissionSetGroup> psGroups = new List<PermissionSetGroup>();
+        psGroups.add(new PermissionSetGroup(
+            MasterLabel= 'TestPermissionSetGroupA',
+            DeveloperName= 'TestPermissionSetGroupA'
+        ));
+        psGroups.add(new PermissionSetGroup(
+            MasterLabel= 'TestPermissionSetGroupB',
+            DeveloperName= 'TestPermissionSetGroupB'
+        ));
+        insert psGroups;
+
+        // Create Roles
+        List<UserRole> roles = new List<UserRole>();
+        roles.add(new UserRole(
+            Name= 'TestRoleA',
+            DeveloperName= 'TestRoleA'
+        ));
+        insert roles;
+    }
+
     /**
-     * @description Test de cración y actualización de usuario de manera exitosa loas datos de entrada se encuentran en Auth.UserData
-     * Almacena la información del usuario: UserData(identifier, firstName, lastName, fullName, email, link, userName, locale, provider, siteLoginUrl, attributeMap)
-     * @author rpolvera
-     * @date 05/06/2020
+     * Creates the structure of Auth Data with the IAM roles
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 01/02/2021
+     * @param {string role_names} a list of roles separated by coma
+     * @return {Auth.UserData} the auth user data structure
      */
-    @isTest
-    static void testCreateAndUpdateUser()
+    static Auth.UserData getSampleDataIAM(string role_names)
     {
-        Public_Group_Mapping__mdt mapping = [SELECT External_role_name__c
-                                             FROM Public_Group_Mapping__mdt
-                                             WHERE Salesforce_group_name__c = 'KLINC_CustomerCare_GI_France' LIMIT 1];
-        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
-        Auth.UserData sampleData = new Auth.UserData(
+        Auth.UserData sampleDataIAM = new Auth.UserData(
             'testId',
             'testFirst',
             'testLast',
@@ -35,38 +67,177 @@ private class OpenIDConnectRegHandlerTest
             UserInfo.getLocale(),
             'facebook',
             null,
-            new Map<String, String> {'roles' => '{crm=[' + mapping.External_role_name__c + ']}'});
-        User u = handler.createUser(null, sampleData);
-        System.assertEquals('testuserlong@zurich-es.com', u.userName);
-        System.assertEquals('testuser@example.org', u.email);
-        System.assertEquals('testLast', u.lastName);
-        System.assertEquals('testFirst', u.firstName);
+            new Map<String, String> {});
+        if( role_names != null )
+            sampleDataIAM.attributeMap.put(
+                OpenIDConnectRegHandler.AUTH_DATA_MAP_NAME,
+                '{crm=[' + role_names + ']}'
+            );
 
-        //insert(u);
-        String uid = u.id;
+        return sampleDataIAM;
+    }
 
-        sampleData = new Auth.UserData(
-            'testNewId',
-            'testNewFirst',
-            'testNewLast',
-            'testNewFirst testNewLast',
-            'testnewuser@example.org',
-            null,
-            'testnewuserlong',
-            UserInfo.getLocale(),
-            'facebook',
-            null,
-            new Map<String, String> {'roles' => '{crm=[' + mapping.External_role_name__c + ']}'});
-        handler.updateUser(uid, null, sampleData);
-        User updatedUser = [SELECT userName, email, firstName, lastName, alias FROM user WHERE id=:uid];
-        System.assertEquals('testnewuserlong@zurich-es.com', updatedUser.userName);
-        System.assertEquals('testnewuser@example.org', updatedUser.email);
-        System.assertEquals('testNewLast', updatedUser.lastName);
-        System.assertEquals('testNewFirst', updatedUser.firstName);
+    /**
+     * Creates a list of AuthMapping__mdt to simulate the metadata configuration given a list of roles
+     * separated by coma.
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 01/02/2021
+     * @param {OpenIdConnectRegHandler handler} reference to the object OpenIdConnectRegHandler
+     * @param {string roles} the list of roles separated by coma
+     * @return {Auth.UserData} the auth user data structure
+     * 
+     */
+    static Auth.UserData mockAuthData(OpenIDConnectRegHandler handler, string roles)
+    {
+        if( String.isBlank(roles) ) throw new OpenIDConnectRegHandler.RegHandlerException('No role specified for the test');
 
-        // GroupMember groupMemberItem = [SELECT GroupId FROM GroupMember WHERE userOrGroupId = :uid LIMIT 1];
-        // Group groupItem = [SELECT DeveloperName FROM Group WHERE Id = :groupMemberItem.GroupId LIMIT 1];
-        // System.assertEquals(groupItem.DeveloperName, 'KLINC_CustomerCare_GI_France');
+        handler.testListAuthMappings = new List<AuthMapping__mdt>();
+
+        // IAM_ROLE_A
+        if( roles != null && roles.contains(IAM_ROLE_A)) {
+            // PROFILES
+            // Get one profile except admin
+            List<Profile> profiles = [
+                SELECT Id, Name FROM Profile 
+                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS
+                LIMIT 1
+            ];
+            System.assertEquals(1, profiles.size(), 'There should be 1 profile');
+            handler.testListAuthMappings.add(new AuthMapping__mdt(
+                Label= 'TestProfile',
+                DeveloperName= 'TestProfile',
+                Role_Name__c= IAM_ROLE_A,
+                Permission__c= profiles[0].Name,
+                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PROFILE,
+                Order__c= 1
+            ));
+
+            // GROUPS
+            handler.testListAuthMappings.add(new AuthMapping__mdt(
+                Label= 'TestGroupA',
+                DeveloperName= 'TestGroupA',
+                Role_Name__c= IAM_ROLE_A,
+                Permission__c= 'TestGroupA',
+                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PUBLIC_GROUP,
+                Order__c= 1
+            ));
+
+             //PERMISSION SET GROUPS
+            handler.testListAuthMappings.add(new AuthMapping__mdt(
+                Label= 'TestPermissionSetGroupA',
+                DeveloperName= 'TestPermissionSetGroupA',
+                Role_Name__c= IAM_ROLE_A,
+                Permission__c= 'TestPermissionSetGroupA',
+                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PERMISSION_SET_GROUP,
+                Order__c= 1
+            ));
+
+            // Call Center
+            List<CallCenter> callCenters = [SELECT Id, InternalName FROM CallCenter LIMIT 1];
+            if( !callCenters.isEmpty() ) {
+                handler.testListAuthMappings.add(new AuthMapping__mdt(
+                    Label= 'TestCallCenter',
+                    DeveloperName= 'TestCallCenter',
+                    Role_Name__c= IAM_ROLE_A,
+                    Permission__c= callCenters[0].InternalName,
+                    Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_CALL_CENTER,
+                    Order__c= 1
+                )); 
+            }
+
+            // Role
+            handler.testListAuthMappings.add(new AuthMapping__mdt(
+                Label= 'TestRoleA',
+                DeveloperName= 'TestRoleA',
+                Role_Name__c= IAM_ROLE_A,
+                Permission__c= 'TestRoleA',
+                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_ROLE,
+                Order__c= 1
+            ));
+        }
+
+        // ROLE_ADMIN - Must be first because in the select there is the order field
+        if( roles != null && roles.contains(IAM_ROLE_ADMIN)) {
+            // Profile Admin
+            handler.testListAuthMappings.add(new AuthMapping__mdt(
+                Label= 'TestProfileAdmin',
+                DeveloperName= 'TestProfileAdmin',
+                Role_Name__c= IAM_ROLE_ADMIN,
+                Permission__c= OpenIDConnectRegHandler.PROFILE_ADMIN,
+                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PROFILE,
+                Order__c= 0
+            ));
+        }
+
+        // IAM_ROLE_B
+        if( roles != null && roles.contains(IAM_ROLE_B)) {
+            // PROFILES
+            // Get one profile except admin
+            List<Profile> profiles = [
+                SELECT Id, Name FROM Profile 
+                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS
+                LIMIT 1
+            ];
+            System.assertEquals(1, profiles.size(), 'There should be 1 profile');
+            handler.testListAuthMappings.add(new AuthMapping__mdt(
+                Label= 'TestProfileB',
+                DeveloperName= 'TestProfileB',
+                Role_Name__c= IAM_ROLE_B,
+                Permission__c= profiles[0].Name,
+                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PROFILE,
+                Order__c= 2
+            ));
+            // GROUPS
+            handler.testListAuthMappings.add(new AuthMapping__mdt(
+                Label= 'TestGroupB',
+                DeveloperName= 'TestGroupB',
+                Role_Name__c= IAM_ROLE_B,
+                Permission__c= 'TestGroupB',
+                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PUBLIC_GROUP,
+                Order__c= 2
+            ));
+            //PERMISSION SETS
+            handler.testListAuthMappings.add(new AuthMapping__mdt(
+                Label= 'TestPermissionSetGroupB',
+                DeveloperName= 'TestPermissionSetGroupB',
+                Role_Name__c= IAM_ROLE_B,
+                Permission__c= 'TestPermissionSetGroupB',
+                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PERMISSION_SET_GROUP,
+                Order__c= 1
+            ));
+            // NO Call center
+            // NO SF Role
+        }
+
+        // return de data structure from IAM
+        return getSampleDataIAM(roles);
+    }
+
+    /**
+     * @description Test de cración y actualización de usuario de manera exitosa loas datos de entrada se encuentran en Auth.UserData
+     * Almacena la información del usuario: UserData(identifier, firstName, lastName, fullName, email, link, userName, locale, provider, siteLoginUrl, attributeMap)
+     * @author rpolvera
+     * @date 05/06/2020 
+     */
+    @isTest
+    static void testCreateAndUpdateUser()
+    {        
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        User createdUser = [SELECT userName, email, firstName, lastName, alias FROM user WHERE id=:u.Id];
+        System.assertEquals('testuserlong@zurich-es.com', createdUser.userName);
+        System.assertEquals('testuser@example.org', createdUser.email);
+        System.assertEquals('testLast', createdUser.lastName);
+        System.assertEquals('testFirst', createdUser.firstName);
+
+        // test update user on create
+        handler.createUser(null, sampleDataIAM);
     }
 
     /**
@@ -79,20 +250,12 @@ private class OpenIDConnectRegHandlerTest
     {
         try
         {
+            Auth.UserData sampleDataIAM = getSampleDataIAM(null);
             OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
-            Auth.UserData sampleData = new Auth.UserData(
-                'testId',
-                'testFirst',
-                'testLast',
-                'testFirst testLast',
-                'testuser@example.org',
-                null,
-                'testuserlong',
-                UserInfo.getLocale(),
-                'facebook',
-                null,
-                new Map<String, String> {});
-            User u = handler.createUser(null, sampleData);
+            
+            Test.startTest();
+            User u = handler.createUser(null, sampleDataIAM);
+            Test.stopTest();
         }
         catch (Exception e)
         {
@@ -108,90 +271,154 @@ private class OpenIDConnectRegHandlerTest
     @isTest
     static void testFailCreateUserNoValidProfile()
     {
-        try
-        {
-            OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
-            Auth.UserData sampleData = new Auth.UserData(
-                'testId',
-                'testFirst',
-                'testLast',
-                'testFirst testLast',
-                'testuser@example.org',
-                null,
-                'testuserlong',
-                UserInfo.getLocale(),
-                'facebook',
-                null,
-                new Map<String, String> {'roles' => '{crm=[testFailProfile]}'});
-            User u = handler.createUser(null, sampleData);
-        }
-        catch (Exception e)
-        {
+        Auth.UserData sampleDataIAM = getSampleDataIAM('testFailProfile');
+
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        
+        Test.startTest();
+        try {
+            User u = handler.createUser(null, sampleDataIAM);
+        } catch (Exception e) {
             System.assertEquals( 'OpenIDConnectRegHandler.RegHandlerException', e.getTypeName() );
         }
-    }
-
-    @isTest
-    static void testGetProfileId()
-    {
-        List<Profile_mapping__mdt> mappings = [SELECT External_profile_name__c FROM Profile_mapping__mdt];
-        if( !mappings.isEmpty() ) {
-            OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
-            ID profileId = handler.getProfileId(new List<String> {mappings[0].External_profile_name__c});
-        }
+        Test.stopTest();
     }
 
     /**
-     * Test the creation and update of users with one of the roles for OCS
-     * 
-     * @author nts (agonzalezisasi)
-     * @date 17/12/2020
+     * Test creating a user with ROL A and then changing same data and to ROL B
      */
     @isTest
-    static void testCreateAndUpdateUser_ocs()
+    static void testUpdateUser()
     {
-        String rol_name = 'ZE_Suscriptor';
-
         OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
-        Auth.UserData sampleData = new Auth.UserData(
-            'testId',
-            'testFirst',
-            'testLast',
-            'testFirst testLast',
-            'testuser@example.org',
-            null,
-            'testuserlong',
-            UserInfo.getLocale(),
-            'facebook',
-            null,
-            new Map<String, String> {'roles' => '{crm=[' + rol_name + ']}'});
-        User u = handler.createUser(null, sampleData);
-        System.assertEquals('testuserlong@zurich-es.com', u.userName);
-        System.assertEquals('testuser@example.org', u.email);
-        System.assertEquals('testLast', u.lastName);
-        System.assertEquals('testFirst', u.firstName);
 
-        //insert(u);
-        String uid = u.id;
+        // Create User for Rol A
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+        User u = handler.createUser(null, sampleDataIAM);
 
-        sampleData = new Auth.UserData(
-            'testNewId',
-            'testNewFirst',
-            'testNewLast',
-            'testNewFirst testNewLast',
-            'testnewuser@example.org',
-            null,
-            'testnewuserlong',
-            UserInfo.getLocale(),
-            'facebook',
-            null,
-            new Map<String, String> {'roles' => '{crm=[' + rol_name + ']}'});
-        handler.updateUser(uid, null, sampleData);
-        User updatedUser = [SELECT userName, email, firstName, lastName, alias, Profile.Name FROM user WHERE id=:uid];
+        // Update User for Rol B
+        sampleDataIAM = mockAuthData(handler, IAM_ROLE_B);
+        sampleDataIAM.email = 'testnewuser@example.org';
+        sampleDataIAM.username = 'testnewuserlong';
+
+        Test.startTest();
+        handler.updateUser(u.Id, null, sampleDataIAM);
+        Test.stopTest();
+
+        // Check the user info
+        User updatedUser = [SELECT userName, email, firstName, lastName, alias, UserRoleId, CallCenterId FROM user WHERE id=:u.Id];
         System.assertEquals('testnewuserlong@zurich-es.com', updatedUser.userName);
         System.assertEquals('testnewuser@example.org', updatedUser.email);
-        System.assertEquals('testNewLast', updatedUser.lastName);
-        System.assertEquals('testNewFirst', updatedUser.firstName);
-        System.assertEquals('ZE User', updatedUser.Profile.Name);
+        // Role
+        System.assertEquals(null, updatedUser.UserRoleId, 'The UserRoleId should be null');
+        // CallCenter
+        System.assertEquals(null, updatedUser.CallCenterId, 'The CallCenterId should be null');
+
+        // Create a list of group names
+        List<string> groupNames = new List<string>();
+        for(GroupMember gm: [SELECT groupId, group.developername FROM GroupMember WHERE userOrGroupId = :updatedUser.Id]) {
+            groupNames.add(gm.Group.developername);
+        }
+        // Check each group
+        System.assertEquals(false, groupNames.contains('TestGroupA'));
+        System.assertEquals(true, groupNames.contains('TestGroupB'));
+
+        // Create a list of Permission Set Group names
+        List<string> psgroupNames = new List<string>();
+        for(PermissionSetAssignment psa: [SELECT PermissionSetGroupId, PermissionSetGroup.DeveloperName FROM PermissionSetAssignment WHERE AssigneeId = :updatedUser.Id]) {
+            psgroupNames.add(psa.PermissionSetGroup.DeveloperName);
+        }
+        // Check each group
+        System.assertEquals(false, psgroupNames.contains('TestPermissionSetGroupA'));
+        System.assertEquals(true, psgroupNames.contains('TestPermissionSetGroupB'));
+    }
+
+    /**
+     * Test creation of a user with the Admin Profile and another profile to check if the Admin profile is selected
+     */
+    @isTest
+    static void testCreateAdminMultiRole()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A + ',' + IAM_ROLE_ADMIN);
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        User createdUser = [SELECT userName, Profile.Name FROM user WHERE id=:u.Id];
+        System.assertEquals(true, OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS.contains(createdUser.Profile.Name));
+    }
+
+    /**
+     * Test that with multiple ROLES from IAM, multiple Groups are asigned
+     */
+    @isTest
+    static void testGroupsMultiRol()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A + ',' + IAM_ROLE_B);
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        // Check that the new created user has all the groups
+        
+        // Create a list of group names
+        List<string> groupNames = new List<string>();
+        for(GroupMember gm: [SELECT groupId, group.developername FROM GroupMember WHERE userOrGroupId = :u.Id]) {
+            groupNames.add(gm.Group.developername);
+        }
+        // Check each group
+        System.assertEquals(true, groupNames.contains('TestGroupA'));
+        System.assertEquals(true, groupNames.contains('TestGroupB'));
+    }
+
+    /**
+     * Test the assignment of permission set groups with multiple roles
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 28/01/2021
+     */
+    @isTest
+    static void testPermissionSetGroupMultiRole()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A + ',' + IAM_ROLE_B);
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        // Get the list of group names
+        List<string> groupNames = new List<string>();
+        for(PermissionSetAssignment psa: [SELECT PermissionSetGroupId, PermissionSetGroup.DeveloperName FROM PermissionSetAssignment WHERE AssigneeId = :u.Id]) {
+            groupNames.add(psa.PermissionSetGroup.DeveloperName);
+        }
+        // Check each group
+        System.assertEquals(true, groupNames.contains('TestPermissionSetGroupA'), 'The group A should be assigned');
+        System.assertEquals(true, groupNames.contains('TestPermissionSetGroupB'), 'The group B should be assigned');
+    }
+
+    /**
+     * Test the assignment of a CallCenter to the user
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 28/01/2021
+     */
+    @isTest
+    static void testCallCenter()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        User createdUser = [SELECT userName, CallCenterId FROM user WHERE id=:u.Id];
+        // Commented because it may not exist and cant be created for testing in the setup method
+        //System.assertNotEquals(null, createdUser.CallCenterId, 'The call center id should not be null');
     }
 }

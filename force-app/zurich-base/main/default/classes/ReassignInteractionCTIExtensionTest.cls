@@ -18,7 +18,7 @@ public without sharing class ReassignInteractionCTIExtensionTest
             );
         Test.stopTest();
 
-        List<Task> tasks = [SELECT Status FROM Task];
+        List<Task> tasks = [SELECT Status, RecordTypeId FROM Task];
 
         System.assertEquals(
             'Asignada',
