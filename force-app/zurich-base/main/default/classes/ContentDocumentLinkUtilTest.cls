@@ -52,7 +52,7 @@ private with sharing class ContentDocumentLinkUtilTest
 
         //Cargamos los valores del mapeo de tipificación
         List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
-            SELECT Id, Level__c, SourceValue__c, SalesforceValue__c
+            SELECT Id
             FROM Robot_Hegeo_Field_Mapping__mdt
         ];
         System.assertEquals(false, robotHegeoFieldsMapping.isEmpty(), 'List should not be empty');
@@ -60,7 +60,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Map<String, String> caseTypesMap = new Map<String, String>();
         for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
         {
-            caseTypesMap.put(fieldMapping.SourceValue__c, fieldMapping.SalesforceValue__c);
+            //caseTypesMap.put(fieldMapping.SourceValue__c, fieldMapping.SalesforceValue__c);
         }
 
         //Creamos una oferta para comprobar que el caso queda relacionado en el Case Trigger Hegeo - Before update

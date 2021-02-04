@@ -64,14 +64,33 @@ public without sharing class ContentDocumentLinkUtil
 
         //Cargamos el mapeo de campos de tipificación del caso
         List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
-            SELECT Id, Level__c, SourceValue__c, SalesforceValue__c
+            SELECT Id
             FROM Robot_Hegeo_Field_Mapping__mdt
         ];
 
         if(!robotHegeoFieldsMapping.isEmpty())
         {
-            for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
+            /*for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
             {
+                Map<String, String> myMap = new Map<String, String>();
+                if(String.isNotBlank(fieldMapping.Type))
+                {
+                    myMap.put('Type', fieldMapping.Type);
+                }
+                if(String.isNotBlank(fieldMapping.Subtype))
+                {
+                    myMap.put('Subtype__c', fieldMapping.Subtype);
+                }
+                if(String.isNotBlank(fieldMapping.TypeN3))
+                {
+                    myMap.put('TypeN3__c', fieldMapping.TypeN3__c);
+                }
+
+                caseTypesMapping.put(fieldMapping.SourceType + '-' + fieldMapping.SourceSubtype, myMap);
+
+
+
+
                 Map<String, String> valuesMap = new Map<String, String>();
                 if(caseTypesMapping.containsKey(fieldMapping.Level__c))
                 {
@@ -80,7 +99,7 @@ public without sharing class ContentDocumentLinkUtil
                 
                 valuesMap.put(fieldMapping.SourceValue__c, fieldMapping.SalesforceValue__c);
                 caseTypesMapping.put(fieldMapping.Level__c, valuesMap);
-            }
+            }*/
 
             System.debug('caseTypesMapping: ' + caseTypesMapping);
         }
@@ -262,6 +281,18 @@ public without sharing class ContentDocumentLinkUtil
                             Map<String, String> caseFieldsMap = new Map<String, String>{
                                 'Id' => relatedCases.get(relatedEmail.ParentId).Id
                             };
+
+                            if(types.size() >= caseFieldsList.size())
+                            {
+                                //Extraemos la combinación de los tipos de casos (3 primeras posiciones del listado de valores)
+                                String combination = '';
+                                for(Integer i=0; i<caseFieldsList.size()-1; i++)
+                                {
+                                    combination += caseFieldsList.get(i);
+                                }
+
+                                //caseFieldsMap.putAll(get(combination))
+                            }
 
                             //Recorremos la lista ordenada de campos a tipificar, 
                             //así podemos acceder directamente por posición al valor recibido
