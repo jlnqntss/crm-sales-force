@@ -31,6 +31,12 @@ public with sharing class BusinessInsuranceRaterServiceTest
         businessInsuranceCampaigns.get(4).Name = 'ZEO_Legit Leads';
         businessInsuranceCampaigns.get(5).Name = 'ZEO_Quoted Leads';
         insert businessInsuranceCampaigns;
+
+        //Insertamos las colas de Genesys correspondientes
+        List<purecloud__PureCloud_Queue__c> genesysCloudQueues = TestDataFactory.generateGenesysQueues(2);
+        genesysCloudQueues.get(0).Name = 'Voz_ZurichEmpresas';
+        genesysCloudQueues.get(1).Name = 'Voz_ZurichEmpresas_Orange';
+        insert genesysCloudQueues;
     }
 
     /**
@@ -777,7 +783,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
         }
 
         List<Scope_Setting__mdt> scopeSettingsList = [
-            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c, GenesysCloudQueueName__c
             FROM Scope_Setting__mdt WHERE Scope__c = 'ZEO'
         ];
         System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
@@ -840,15 +846,20 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         //Comprobamos que no se han generado objetos asegurados
         List<Asset> risks = [SELECT Id FROM Asset WHERE OfferId__c IN: offersCreated];
-        System.assertEquals(true, risks.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(true, risks.isEmpty(), 'List should be empty');
 
         //Comprobamos que no se ha generado póliza
         List<Policy__c> policies = new PoliciesSelector().selectByOpportunityName(offersIds);
         System.assertEquals(true, policies.isEmpty(), 'List should be empty');
 
         //Comprobamos que se ha generado un Contact Request
-        List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest WHERE WhatId IN: offersIds];
+        List<ContactRequest> contactRequests = [SELECT Id, GenesysCloudQueueId__c FROM ContactRequest WHERE WhatId IN: offersIds];
         System.assertEquals(false, contactRequests.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(true, contactRequests.get(0).GenesysCloudQueueId__c != null, 'Genesys Cloud Queue relation is not empty');
+
+        List<purecloud__PureCloud_Queue__c> genesysQueue = [SELECT Id, Name FROM purecloud__PureCloud_Queue__c WHERE Id =: contactRequests.get(0).GenesysCloudQueueId__c];
+        System.assertEquals(false, genesysQueue.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(scopeSettingsList.get(0).GenesysCloudQueueName__c, genesysQueue.get(0).Name, 'Queue name is the same');
 
         //Comprobamos que se ha generado un CampaignMember para el cliente en la campaña correspondiente
         List<Campaign> campaigns = new CampaignsSelector().selectByName(new Set<String> {'ZEO_App Submitted Leads'});
