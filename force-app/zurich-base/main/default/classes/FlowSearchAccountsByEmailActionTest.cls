@@ -47,7 +47,7 @@ private class FlowSearchAccountsByEmailActionTest {
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}) );
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(recordIds) );
 
         List<String> ids = matchedRecords[0].AccountIds;
         for(String accountId : ids)

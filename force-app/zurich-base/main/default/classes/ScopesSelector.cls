@@ -75,13 +75,15 @@ public with sharing class ScopesSelector extends BaseSelector
      * @param  scope    Valor del Scope a buscar
      * @return          Listado de scopes sobre los que se ha realizado match
      */
-    public List<Scope__c> selectByAccountIdAndScope(Set<Id> ids, String scope)
+    public List<Scope__c> selectByAccountIdAndScope(Set<Id> ids, RecordsSelector.Scope scope)
     {
         if(ids != null)
         {
+            String scopeToFilter = scope.name();
+
             String query = String.format(
                 'SELECT {0} FROM Scope__c ' +
-                'WHERE AccountId__c IN : ids AND Scope__c = : scope',
+                'WHERE AccountId__c IN : ids AND Scope__c = : scopeToFilter',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
             }

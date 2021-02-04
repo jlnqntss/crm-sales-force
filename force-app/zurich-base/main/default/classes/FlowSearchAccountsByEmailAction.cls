@@ -14,14 +14,14 @@ public class FlowSearchAccountsByEmailAction {
             AccountEmailRequest request = accountEmailRequests[0];
 
             //Preparamos la información recibida para pasársela al AccountSearchService
-            AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            scope.scope = null; //FIXME: Cambiar esto por request.caseScope cuando se haya refactorizado AccountSearchService y la picklist de caso coincidan en valores
+            //AccountSearchService.Scope scope = new AccountSearchService.Scope();
+            //scope.scope = null; //FIXME: Cambiar esto por request.caseScope cuando se haya refactorizado AccountSearchService y la picklist de caso coincidan en valores
             List<String> emailsToSearch = new List<String>();
             emailsToSearch.add(request.caseEmail);
 
             //Utilizamos el AccountSearchService que usa SOSL para querys no selectivas
             List<Account> matchedAccounts = new List<Account>();
-            matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, scope);
+            matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
 
             //La salida para el flow se necesita en una lista de Strings:
             List<String> listIds = new List<String>();
