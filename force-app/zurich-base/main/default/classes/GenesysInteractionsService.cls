@@ -517,7 +517,20 @@ public without sharing class GenesysInteractionsService
         Set<Agent> bestAgents = new Set<Agent>();
 
         // 1 - Obtener los gestores de los casos abiertos asociados al mediador
-        for(Case openCase : new CasesSelector().findOpenByAccount(new List<String>{intermediary.intermediaryId}))
+        CasesSelector casesSelector = new CasesSelector();
+        casesSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Case.OwnerId
+            },
+            new List<String>
+            {
+                'Owner.Email'
+            }
+        );
+
+        for(Case openCase : casesSelector.findOpenByAccount(new List<String>{intermediary.intermediaryId}))
         {
             bestAgents.add
             (
