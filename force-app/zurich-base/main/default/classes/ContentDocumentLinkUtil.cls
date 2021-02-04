@@ -227,6 +227,11 @@ public without sharing class ContentDocumentLinkUtil
                         }
                     }
 
+                    if(String.isNotBlank(fromAddress))
+                    {
+                        relatedEmail.FromAddress = fromAddress;
+                    }
+
                     //Extraemos el email toAddress
                     if(String.isNotBlank(csvFileLines.get(TO_ADDRESS_CSV_INDEX)))
                     {
@@ -239,11 +244,6 @@ public without sharing class ContentDocumentLinkUtil
                         {
                             toAddress = toAddressToCSV;
                         }
-                    }
-
-                    if(String.isNotBlank(fromAddress))
-                    {
-                        relatedEmail.FromAddress = fromAddress;
                     }
 
                     if(String.isNotBlank(toAddress))
