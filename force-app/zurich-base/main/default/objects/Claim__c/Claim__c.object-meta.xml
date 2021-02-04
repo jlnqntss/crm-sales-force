@@ -144,7 +144,7 @@
     <compactLayoutAssignment>ClaimDefault</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>OCS</description>
-    <enableActivities>true</enableActivities>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
