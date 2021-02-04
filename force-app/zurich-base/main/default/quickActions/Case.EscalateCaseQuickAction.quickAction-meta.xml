@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Lanza el Flow CaseScaled para decidir entre escalado Interno o Externo</description>
+    <flowDefinition>CaseScaled</flowDefinition>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <standardLabel>Escalate</standardLabel>
+    <type>Flow</type>
+</QuickAction>

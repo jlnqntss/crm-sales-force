@@ -1,16 +1,65 @@
-public with sharing class PoliciesSelector extends BaseSelector
+public with sharing class PoliciesSelector extends RecordsSelector
 {
     //#region Contructores
-    public PoliciesSelector()
-    {}
 
-    public PoliciesSelector(Set<String> fieldsToQuery)
+    public PoliciesSelector()
     {
-        this();
-        this.sObjectToQuery = 'Policy__c';
-        this.fieldsToQuery = fieldsToQuery;
+        super(Policy__c.getSObjectType());
     }
+
     //#endregion
+
+    /**
+     * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
+     * @author adelgado
+     * @date 28/01/2021
+     * @param  scope  Scope a aplicar en el filtro
+     * @return        Instancia de PoliciesSelector con el filtro de scope aplicado
+     */
+    public PoliciesSelector setScope(RecordsSelector.Scope scope)
+    {
+        switch on scope 
+        {
+            when Z 
+            {
+                this.baseQuery.addConditionEq(Policy__c.Scope__c, 'Z');
+            }
+            when ZE  
+            {
+                this.baseQuery.addConditionEq(Policy__c.Scope__c, 'ZE');
+            }
+            when ZEO
+            {
+                this.baseQuery.addConditionEq(Policy__c.Scope__c, 'ZEO');
+            }
+        }
+
+        return this;
+    }
+
+    /**
+     * Aplicar el filtro de entidad legal a los registros obtenidos en la búsqueda
+     * @author adelgado
+     * @date 28/01/2021
+     * @param  legalEntity  Entidad legal a aplicar en el filtro
+     * @return              Instancia de PoliciesSelector con el filtro de entidad legal aplicado
+     */
+    public PoliciesSelector setLegalEntity(RecordsSelector.LegalEntity legalEntity)
+    {
+        switch on legalEntity 
+        {
+            when GI
+            {
+                this.baseQuery.addConditionEq(Policy__c.LegalEntity__c, '001');
+            }
+            when LIFE
+            {
+                this.baseQuery.addConditionEq(Policy__c.LegalEntity__c, '005');
+            }
+        }
+
+        return this;
+    }
 
     /**
      * Busca pólizas a partir de PolicyHolder y InfoPolicyNumber__c
@@ -25,14 +74,9 @@ public with sharing class PoliciesSelector extends BaseSelector
     {
         if(policyHolder != null && policyNumbers != null)
         {
-            String query = String.format(
-                'SELECT {0} FROM Policy__c ' +
-                'WHERE PolicyHolder__c = : policyHolder AND InfoPolicyNumber__c IN : policyNumbers ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<Policy__c>) Database.query(query);
+            this.baseQuery.addConditionEq(Policy__c.PolicyHolder__c, policyHolder).addConditionIn(Policy__c.InfoPolicyNumber__c, policyNumbers);
+
+            return (List<Policy__c>) this.baseQuery.run();
         }
         else
         {
@@ -52,14 +96,9 @@ public with sharing class PoliciesSelector extends BaseSelector
     {
         if(offers != null)
         {
-            String query = String.format(
-                'SELECT {0} FROM Policy__c ' +
-                'WHERE OpportunityName__c IN : offers ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<Policy__c>) Database.query(query);
+            this.baseQuery.addConditionIn(Policy__c.OpportunityName__c, offers);
+
+            return (List<Policy__c>) this.baseQuery.run();
         }
         else
         {
@@ -79,15 +118,15 @@ public with sharing class PoliciesSelector extends BaseSelector
     {
         if(policyHolder != null)
         {
-            // Tener en cuenta que la póliza esté activa
-            String query = String.format(
-                'SELECT {0} FROM Policy__c ' +
-                'WHERE PolicyHolder__c = : policyHolder AND (EndDate__c = null OR EndDate__c >= TODAY) ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<Policy__c>) Database.query(query);
+            Query.Condition condition = Query.doOr
+            (
+                Query.conditionEq(Policy__c.EndDate__c, null),
+                Query.conditionGe(Policy__c.EndDate__c, Query.TODAY)
+            );
+
+            this.baseQuery.addConditionEq(Policy__c.PolicyHolder__c, policyHolder).addCondition(condition);
+
+            return (List<Policy__c>) this.baseQuery.run();
         }
         else
         {
@@ -108,19 +147,9 @@ public with sharing class PoliciesSelector extends BaseSelector
     {
         if(String.isNotBlank(policyNumber))
         {
-            if(policyNumber.length() > 14) // completar con 0 por la izquierda hasta 14 digitos
-            {
-                policyNumber = policyNumber.leftPad(14, '0');
-            }
+            this.baseQuery.addConditionEq(Policy__c.InfoPolicyNumber__c, policyNumber.leftPad(14, '0'));
 
-            String query = String.format(
-                'SELECT {0} FROM Policy__c ' +
-                'WHERE InfoPolicyNumber__c = : policyNumber ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<Policy__c>) Database.query(query);
+            return (List<Policy__c>) this.baseQuery.run();
         }
         else
         {

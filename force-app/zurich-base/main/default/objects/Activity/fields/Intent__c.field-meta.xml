@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Intent__c</fullName>
+    <description>Identifica la intención del cliente recogida en el NLU de pregunta abierta. Sólo vendrá informado si la llamada llega a través de dicho NLU</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Identifies the customer&apos;s intent collected on the NLU IVR. Applies only if the incoming call comes from the IVR.</inlineHelpText>
+    <label>Intent</label>
+    <required>false</required>
+    <type>TextArea</type>
+</CustomField>

@@ -1,5 +1,5 @@
 @isTest(SeeAllData = false)
-public without sharing class GenesysInteractionsServiceTest
+private without sharing class GenesysInteractionsServiceTest
 {
     /**
      * creación de registros necesarios
@@ -1010,11 +1010,25 @@ public without sharing class GenesysInteractionsServiceTest
         };
         insert products;
 
-        List<Policy__c> policies = new PoliciesSelector
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
         (
-            new Set<String> {'Id'}
-        )
-        .selectByHolder(customer.get(0).Id);
+            new List<Schema.SobjectField>
+            {
+                Policy__c.Id, 
+                Policy__c.Name, 
+                Policy__c.Intermediary_Code__c, 
+                Policy__c.PolicyType__c
+            },
+            new List<String>
+            {
+                'ProductId__r.GroupDescription__c', 
+                'Partner__r.PartnerSector__c', 
+                'Partner__r.PartnerSFCode__c'
+            }
+        );
+
+        List<Policy__c> policies = new PoliciesSelector().selectByHolder(customer.get(0).Id);
 
         for(Integer i = 0; i < policies.size(); i++)
         {
@@ -1024,7 +1038,7 @@ public without sharing class GenesysInteractionsServiceTest
                 policies[i].Intermediary_Code__c = '0001112223';
                 policies[i].ProductId__c = products[0].Id;
             }
-            else 
+            else
             {
                 policies[i].Partner__c = partners[1].Id;
                 policies[i].Intermediary_Code__c = '0001112224';
@@ -1033,16 +1047,10 @@ public without sharing class GenesysInteractionsServiceTest
         }
         update policies;
 
-        List<Policy__c> policiesUpdated = new PoliciesSelector
-        (
-            new Set<String> {'Id', 'Name', 'Intermediary_Code__c', 'PolicyType__c', 'ProductId__r.GroupDescription__c', 'Partner__r.PartnerSector__c', 'Partner__r.PartnerSFCode__c'}
-        )
-        .selectByHolder(customer.get(0).Id);
-
         // Test
         Test.startTest();
 
-        GenesysInteractionsService.ActivePolicies activePolicies = new GenesysInteractionsService.ActivePolicies(policiesUpdated);
+        GenesysInteractionsService.ActivePolicies activePolicies = GenesysInteractionsService.findActivePolicies(customer.get(0).Id, null, null);
 
         Test.stopTest();
 
@@ -1101,7 +1109,7 @@ public without sharing class GenesysInteractionsServiceTest
             {
                 policies[i].ProductId__c = products[0].Id;
             }
-            else 
+            else
             {
                 policies[i].ProductId__c = products[1].Id;
             }
@@ -1110,28 +1118,17 @@ public without sharing class GenesysInteractionsServiceTest
 
         //se crea 1 siniestro para cada póliza-objeto asegurado
         List<Claim__c> claimsToInsert = new List<Claim__c>();
-        
-        for(Integer i = 0; i< Policies.size(); i++)
+
+        for(Integer i = 0; i < Policies.size(); i++)
         {
             claimsToInsert = TestDataFactory.generateClaimsForEachPolicyInsuredObject(policies, policies[i].PolicyNumbers__r, 1);
         }
         insert claimsToInsert;
 
-        List<Claim__c> claims = new ClaimsSelector
-        (
-            new Set<String> 
-            {
-                'Id', 'Name', 'OwnerId', 'ClaimType__c', 'Status__c', 'InsuredObject__r.RegistrationNumber__c', 
-                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
-                'ClaimOwnerTeamCode__c', 'ClaimOwnerNationalId__c', 'ClaimOwnerName__c', 'ClaimOwnerFirstName__c', 'ClaimOwnerLastName__c'
-            }
-        )
-        .selectByHolder(customer.get(0).Id);
-
         // Test
         Test.startTest();
 
-        GenesysInteractionsService.OpenedClaims openedClaims = new GenesysInteractionsService.OpenedClaims(claims);
+        GenesysInteractionsService.OpenedClaims openedClaims = GenesysInteractionsService.findOpenedClaims(customer.get(0).Id, null, null);
 
         Test.stopTest();
 
@@ -1141,7 +1138,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         //System.assertEquals(2, openedClaims.byOwner.size(), 'No se ha informado correctamente el listado de siniestros por destino preferido');
         System.assertEquals(2, openedClaims.byType.size(), 'No se ha informado correctamente el listado de siniestros por tipo de póliza');
-        System.assertEquals(false, openedClaims.hasMultipleTypes, 'No se ha informado correctamente el indicador de varios tipos de siniestro');
+        System.assertEquals(true, openedClaims.hasMultipleTypes, 'No se ha informado correctamente el indicador de varios tipos de siniestro');
         System.assertEquals(false, openedClaims.hasDifferentOwners, 'No se ha informado correctamente el indicador de varios propietarios de los siniestros');
 
         System.assertEquals('Group 1', openedClaims.byType.get('Group 1').get(0).policyType, 'No se ha informado correctamente el tipo de póliza del siniestro');
@@ -1160,11 +1157,17 @@ public without sharing class GenesysInteractionsServiceTest
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
 
-        List<Policy__c> policies = new PoliciesSelector
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
         (
-            new Set<String> {'Id', 'Name'}
-        )
-        .selectByHolder(customer.get(0).Id);
+            new List<Schema.SObjectField>
+            {
+                Policy__c.Id, 
+                Policy__c.Name
+            }
+        );
+
+        List<Policy__c> policies = policiesSelector.selectByHolder(customer.get(0).Id);
 
         policies[0].InfoPolicyNumber__c = '11122233344455';
         update policies[0];
@@ -1178,7 +1181,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
 
-        System.assert(activePolicy != null, 'No se ha obtenido la póliza');
+        System.assert (activePolicy != null, 'No se ha obtenido la póliza');
         System.assertEquals(policies[0].Id, activePolicy.id, 'No se ha obtenido correctamente el id de la póliza');
         System.assertEquals(policies[0].Name, activePolicy.policyCode, 'No se ha obtenido correctamente el código de la póliza');
 
@@ -1198,7 +1201,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
 
-        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c>{policies[0]}, policies[0].PolicyNumbers__r, 1);
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
         claims[0].INFOClaimNumber__c = '111222333444';
         insert claims;
 
@@ -1215,7 +1218,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
 
-        System.assert(openedClaim != null, 'No se ha obtenido el siniestro');
+        System.assert (openedClaim != null, 'No se ha obtenido el siniestro');
 
         System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
         System.assertEquals(claims[0].Name, openedClaim.claimNumber, 'No se ha obtenido correctamente el código del siniestro');
@@ -1234,9 +1237,9 @@ public without sharing class GenesysInteractionsServiceTest
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
 
-        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+        List<Policy__c> policies = [SELECT Name, PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
 
-        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c>{policies[0]}, policies[0].PolicyNumbers__r, 1);
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
         insert claims;
 
         policies[0].PolicyNumbers__r[0].RegistrationNumber__c = '05874HTR';
@@ -1255,7 +1258,7 @@ public without sharing class GenesysInteractionsServiceTest
 
         // Then
 
-        System.assert(openedClaim != null, 'No se ha obtenido el siniestro');
+        System.assert (openedClaim != null, 'No se ha obtenido el siniestro');
 
         System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
         System.assertEquals(policies[0].PolicyNumbers__r[0].RegistrationNumber__c, openedClaim.carRegistration, 'No se ha obtenido correctamente la matrícula del coche del siniestro');
@@ -1263,4 +1266,111 @@ public without sharing class GenesysInteractionsServiceTest
     }
 
     // #endregion
+
+    // #region search Task queue tests
+    @future
+    private static void byPassMixedDMLOperation()
+    {
+        //Crear Cola por si acaso en la Org no estan creadas aún (Se ven en los test)
+        List<Group> queue = TestDataFactory.generateQueueGroups(1);
+        insert queue;
+        List<QueueSObject> queueType = TestDataFactory.generateQueueSObject(queue[0].Id, 'Task', 1);
+        insert queueType;
+    }
+
+    /**
+     * Prueba que si existe en SF una cola con el mismo nombre que en Genesys
+     * Se asigna a dicha cola la TASK
+     * @date 28/01/2021
+     */
+    @IsTest
+    static void test_searchQueueTaskId_ok()
+    {
+        Test.startTest();
+        //En el stopTest finaliza el future
+        byPassMixedDMLOperation();
+        Test.stopTest();
+
+        //Cola de Genesys
+        List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
+        queues = TestDataFactory.generateGenesysQueues(1);
+        queues[0].SalesforceQueueName__c = 'queue0'; //Debe llamarse igual que la cola de SF
+        insert queues;
+
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.queueId = queues[0].purecloud__PureCloud_Queue_ID__c; //Cola en genesys que existe en SF con el mismo nombre
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        System.assertEquals(queues[0].SalesforceQueueName__c, expectedTasks[0].Owner.Name, 'El OwnerID de la task debería ser la cola en SF con mismo nombre que en Genesys');
+    }
+
+    /**
+     * Prueba que si no existe en SF una cola con el mismo nombre que en Genesys
+     * Se asigna a la cola Missed Calls
+     * Este test también sirve para detectar si está desplegada dicha cola en el entorno
+     * Así peta con el despliegue
+     * @date 28/01/2021
+     */
+    @IsTest
+    static void test_searchQueueTaskId_ko_NoSFQueue()
+    {
+        //Cola de Genesys
+        List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
+        queues = TestDataFactory.generateGenesysQueues(1);
+        insert queues; //No va a encontrar la cola porque SalesforceQueueName__c va a estar vacío
+
+        QueueSobject missedCalls = [SELECT QueueId, Queue.Name, SobjectType FROM QueueSobject WHERE SobjectType = 'Task' AND Queue.Name = 'Missed Calls' LIMIT 1];
+
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+        testInteractionLog.queueId = queues[0].purecloud__PureCloud_Queue_ID__c; //Cola en genesys que NO existe en SF con el mismo nombre
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        //Como la cola NO existe en SF, debe ponerse Missed Calls
+        System.assertEquals(missedCalls.QueueId, expectedTasks[0].OwnerId, 'La cola para Tasks -Missed Calls- debe existir previamente en la Org');
+    }
+
+    /**
+     * Prueba que si no se recibe el parámetro QueueId
+     * Se asigna a la cola Missed Calls
+     * Este test también sirve para detectar si está desplegada dicha cola en el entorno
+     * Así peta con el despliegue
+     * @date 28/01/2021
+     */
+    @IsTest
+    static void test_searchQueueTaskId_ko_QueueNull()
+    {
+        QueueSobject missedCalls = [SELECT QueueId, Queue.Name, SobjectType FROM QueueSobject WHERE SobjectType = 'Task' AND Queue.Name = 'Missed Calls' LIMIT 1];
+
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+        testInteractionLog.fromId = '4000';
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '123456789';
+        testInteractionLog.interactionType = 'Outbound';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = GenesysInteractionsService.SCOPE_CODE_ALL;
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        //Como no ha llegao el parámetro queueId, debe ponerse Missed Calls
+        System.assertEquals(missedCalls.QueueId, expectedTasks[0].OwnerId, 'La cola para Tasks -Missed Calls- debe existir previamente en la Org');
+    }
+    // #endregion
+
 }

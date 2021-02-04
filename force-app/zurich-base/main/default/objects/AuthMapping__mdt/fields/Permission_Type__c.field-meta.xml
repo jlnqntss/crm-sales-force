@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Permission_Type__c</fullName>
+    <description>What type of permission in Salesforce is the Permission name referencing to</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Permission Type</label>
+    <required>true</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Profile</fullName>
+                <default>true</default>
+                <label>Profile</label>
+            </value>
+            <value>
+                <fullName>PublicGroup</fullName>
+                <default>false</default>
+                <label>PublicGroup</label>
+            </value>
+            <value>
+                <fullName>CallCenter</fullName>
+                <default>false</default>
+                <label>CallCenter</label>
+            </value>
+            <value>
+                <fullName>PermissionSetGroup</fullName>
+                <default>false</default>
+                <label>PermissionSetGroup</label>
+            </value>
+            <value>
+                <fullName>Role</fullName>
+                <default>false</default>
+                <label>Role</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

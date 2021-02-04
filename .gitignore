@@ -39,3 +39,6 @@ $RECYCLE.BIN/
 *.iml
 .idea/
 IlluminatedCloud/
+
+# Salesforce- Ignorar ListViews / Vistas de Lista
+*.listView-meta.xml

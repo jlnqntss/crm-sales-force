@@ -32,6 +32,7 @@ public with sharing class Test_CaseUtil
             FirstName = 'Edu',
             LastName = 'Sanchez',
             CustomerNum__c = 'GI-3123',
+            MobilePhone = '123456789',
             LegalEntity__c = Label.GeneralInsurance,
             RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerGI),
             sourceCountry__c = 'Spain'
@@ -293,14 +294,15 @@ public with sharing class Test_CaseUtil
     }
 
     /**
-     * Method that tests if the case received from email has a contact assigned and the case from Web has a policy assigned
+     * Method that tests if the case1 received from web has a contact assigned and the case2  has a policy assigned
+     * *
      * */
     @IsTest
-    static void test_EmailToCaseAssignContact()
+    static void test_CaseAssignContact()
     {
         Case caso1 = new Case(
             LegalEntity__c = Label.GeneralInsurance,
-            Origin = 'Email',
+            Origin = 'Web',
             Status = 'New',
             SuppliedEmail = 'edu@test.com',
             sourceCountry__c = 'Spain'
@@ -397,6 +399,71 @@ public with sharing class Test_CaseUtil
         delete case2;
         cases = [SELECT Id FROM Case WHERE Id = :case2.Id];
         System.assertEquals( true, cases.isEmpty() );
+        Test.stopTest();
+    }
+
+    /**
+     * Method that tests if the case received from Web has a contact assigned, found by phone 
+     * 
+     * @author nts (nbizkarra)
+     * @date 26/01/2021
+     * */
+    @IsTest
+    static void test_WebToCaseAssignContactByPhone()
+    {
+        Case caso1 = new Case(
+            LegalEntity__c = Label.GeneralInsurance,
+            Origin = 'Web',
+            Status = 'New',
+            SuppliedEmail = 'nora@test.com', // email that doesn't exist
+            SuppliedPhone = '123456789',
+            sourceCountry__c = 'Spain'
+            );
+        insert caso1;
+
+
+        Test.startTest();
+
+        caso1 = [
+            SELECT id, ContactId
+            FROM Case
+            WHERE SuppliedEmail = 'nora@test.com'
+        ];
+ 
+        System.assert (caso1.ContactId != null);
+        Test.stopTest();
+    }
+
+    /**
+     * Method that tests if the case received from email2case has a contact assigned 
+     * @author nts (nbizkarra)
+     * @date 26/01/2021
+     * */
+    @IsTest
+    static void test_Email2CaseAssignContact()
+    {
+        Case caso1 = new Case(
+            LegalEntity__c = Label.GeneralInsurance,
+            Origin = 'Email',
+            Status = 'New',
+            CustomerFoundBy__c = null,
+            SuppliedEmail = 'edu@test.com',
+            sourceCountry__c = 'Spain',
+            RecordTypeId =  Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Enquiry').getRecordTypeId() 
+            );
+        upsert caso1;
+        update caso1;
+
+        Test.startTest();
+
+        caso1 = [
+            SELECT id, ContactId
+            FROM Case
+            WHERE SuppliedEmail = 'edu@test.com'
+        ];
+
+        System.assert (caso1.ContactId != null);
+  
         Test.stopTest();
     }
 }

@@ -16,8 +16,8 @@
 
   <script>
     (function () {
-      var hashId = "{!$CurrentPage.parameters.Hash}";
-      var language = "{!$CurrentPage.parameters.Language}";
+      var hashId = "{!JSENCODE($CurrentPage.parameters.Hash)}";
+      var language = "{!JSENCODE($CurrentPage.parameters.Language)}";
 
       var lightningEndPointURI = window.location.href.split("?")[0];
       if (

@@ -70,7 +70,9 @@ public without sharing class CaseHandler implements ITrigger
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        CaseUtil.assignContactToCaseEmail((List<Case>) newList);
+    }
 
     /**
      * afterDelete

@@ -42,6 +42,21 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>CustomerFoundBy__c</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy Number</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>LegalEntity__c</picklist>
         <values>
             <fullName>General Insurance</fullName>

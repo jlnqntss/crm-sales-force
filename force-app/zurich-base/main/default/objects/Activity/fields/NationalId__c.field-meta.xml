@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NationalId__c</fullName>
+    <description>Informa el Id. de documento (NIF) recogido en la IVR., Vacío si la llamada no lo ha informado a través de la IVR.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Informs the customer&apos;s National Identifier collected within the IVR. Empty if not collected.</inlineHelpText>
+    <label>NIF</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
