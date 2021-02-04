@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
     <sharingCriteriaRules>
+        <fullName>AgentMediator</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>AgentMediator</label>
+        <sharedTo>
+            <group>Read</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Agent/Mediator</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>AgentMediator_Z_GI_ES</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>AgentMediator_Z_GI_ES</label>
+        <sharedTo>
+            <group>Write_Z_ES</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Agent/Mediator</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Contact_GI</fullName>
         <accessLevel>Read</accessLevel>
         <label>Contact_GI</label>
