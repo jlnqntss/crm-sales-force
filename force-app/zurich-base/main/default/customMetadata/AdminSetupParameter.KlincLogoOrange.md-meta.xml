@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>KlincLogoOrange</label>
+    <protected>false</protected>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">The logo in the preference center for contacts with Orange Seguros in the Partner__c field. &quot;KlincLogo&quot; and &quot;Orange Seguros&quot; in the KeyName are used by the controller class. The value references an static resource.</value>
+    </values>
+    <values>
+        <field>KeyName__c</field>
+        <value xsi:type="xsd:string">KlincLogoOrange Seguros</value>
+    </values>
+    <values>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">zurich_klinc_logo</value>
+    </values>
+</CustomMetadata>

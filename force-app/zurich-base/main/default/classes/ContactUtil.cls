@@ -135,7 +135,8 @@ global without sharing class ContactUtil
 
             if ( !String.isBlank(incomingContact.Email) && null != incomingContact.Birthdate )
             {
-                emailBirthDateCode = incomingContact.Email + String.valueOfGmt(incomingContact.Birthdate);
+                // nts (nbizkarra) - 02/feb/2021 - El email siempre en minúsculas, sino no detecta duplicado por matchcode
+                emailBirthDateCode = incomingContact.Email.toLowerCase() + String.valueOfGmt(incomingContact.Birthdate);
                 emailBirthDateLECode = emailBirthDateCode + legalEntity;
 
                 if( !String.isBlank(incomingContact.sourceCountry__c) )

@@ -25,8 +25,7 @@ export default class preferenceCentre extends LightningElement {
   };
 
   // Default value for when no logo static resources are found
-  @track zurichLogoUrl =
-    "https://klinc.com/-/media/Project/Zurich/Klinc/en/zurich-klinc-logo.svg";
+  @track zurichLogoUrl = "";
 
   // Get the logo url by contact country
   @wire(getLogoUrl, { hashedId: "$hash" }) wiredLogoResult(result) {

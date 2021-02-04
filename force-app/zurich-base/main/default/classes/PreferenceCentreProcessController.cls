@@ -64,7 +64,7 @@ public without sharing class PreferenceCentreProcessController
 
         if( String.isNotBlank(hashedId) ) {
             List<Contact> contacts = [
-                SELECT Id, Name, LegalEntity__c, HasOptedOutOfEmail, SourceCountry__c, HashedId__c
+                SELECT Id, Name, LegalEntity__c, HasOptedOutOfEmail, SourceCountry__c, HashedId__c, Partner__c
                 FROM Contact
                 WHERE HashedId__c = :hashedId
             ];
