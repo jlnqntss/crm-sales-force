@@ -742,11 +742,11 @@ public class Test_PreferenceCentreController
     }
 
     /**
-     * Test the getLogoUrl for coverage. No assert is included to avoid errors in the class
-     * because there is no logo in the static resources
+     * Test the getLogoUrl for default value. No assert is included to avoid errors in the class
+     * if there are no logos in the static resources
      * 
      * @author nts (agonzalezisasi)
-     * @date 27/01/2021
+     * @date 03/02/2021
      */
     @isTest
     static void test_getLogoUrl()
@@ -755,7 +755,60 @@ public class Test_PreferenceCentreController
             SELECT Id, HashedId__c, SourceCountry__c FROM Contact WHERE HashedId__c != null LIMIT 1
         ];
         System.assertEquals(1, contacts.size(), 'There should be 1 contact');
+        contacts[0].SourceCountry__c = 'Spain';
+        update contacts;
+
+        string resource_url = null;
+        Test.startTest();
+        resource_url = PreferenceCentreController.getLogoUrl(contacts[0].HashedId__c);
+        Test.stopTest();
+
+        // not checking the assert to avoid errors if the static resources dont exist
+        //System.assertNotEquals(null, resource_url, 'The resource url should not be null');
+        //System.assertEquals(true, resource_url.contains(PreferenceCentreController.ZURICH_LOGO_RESOURCE));
+    }
+    /**
+     * Test the getLogoUrl for SourceCountry__c in Conctact. No assert is included to avoid errors in the class
+     * if there are no logos in the static resources
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 27/01/2021
+     */
+    @isTest
+    static void test_getLogoUrlCountry()
+    {
+        List<Contact> contacts = [
+            SELECT Id, HashedId__c, SourceCountry__c FROM Contact WHERE HashedId__c != null LIMIT 1
+        ];
+        System.assertEquals(1, contacts.size(), 'There should be 1 contact');
         contacts[0].SourceCountry__c = 'Germany';
+        update contacts;
+
+        string resource_url = null;
+        Test.startTest();
+        resource_url = PreferenceCentreController.getLogoUrl(contacts[0].HashedId__c);
+        Test.stopTest();
+
+        // not checking the assert to avoid errors if the static resources dont exist
+        //System.assertNotEquals(null, resource_url, 'The resource url should not be null');
+        //System.assertEquals(true, resource_url.contains(PreferenceCentreController.ZURICH_LOGO_RESOURCE));
+    }
+
+    /**
+     * Test the getLogoUrl for Partner__c in Contact. No assert is included to avoid errors in the class
+     * if there are no logos in the static resources
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 03/02/2021
+     */
+    @isTest
+    static void test_getLogoUrlPartner()
+    {
+        List<Contact> contacts = [
+            SELECT Id, HashedId__c, Partner__c FROM Contact WHERE HashedId__c != null LIMIT 1
+        ];
+        System.assertEquals(1, contacts.size(), 'There should be 1 contact');
+        contacts[0].Partner__c = 'Orange Seguros';
         update contacts;
 
         string resource_url = null;

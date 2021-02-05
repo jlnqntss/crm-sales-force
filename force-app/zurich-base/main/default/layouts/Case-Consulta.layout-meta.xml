@@ -46,6 +46,10 @@
                 <field>SuppliedName</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Form_type__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>SuppliedEmail</field>
             </layoutItems>
@@ -91,6 +95,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Policy__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>CustomerFoundBy__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>

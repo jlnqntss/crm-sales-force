@@ -45,8 +45,10 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Account> matchedRecords = new AccountsSelector().applyScope('ZE').findByNationalId(new List<String> { nationalId }, 'N', '001');
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ZE);
+        accountsSelector.setlegalEntity(RecordsSelector.LegalEntity.GI);
+        List<Account> matchedRecords = accountsSelector.findByNationalId(new List<String> { nationalId }, 'N');
 
         Test.stopTest();
 
@@ -70,8 +72,10 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Account> matchedRecords = new AccountsSelector().applyScope('ZE').findByNationalId(new List<String> { nationalId }, 'N', '001');
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ZE);
+        accountsSelector.setlegalEntity(RecordsSelector.LegalEntity.GI);
+        List<Account> matchedRecords = accountsSelector.findByNationalId(new List<String> { nationalId }, 'N');
 
         Test.stopTest();
 
@@ -99,8 +103,10 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Account> matchedRecords = new AccountsSelector().applyScope('ZE').findByNationalId(new List<String> { nationalId }, '', '001');
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ZE);
+        accountsSelector.setlegalEntity(RecordsSelector.LegalEntity.GI);
+        List<Account> matchedRecords = accountsSelector.findByNationalId(new List<String> { nationalId }, '');
 
         Test.stopTest();
 
@@ -133,8 +139,10 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Account> matchedRecords = new AccountsSelector().applyScope('ZE').findByNationalId(listDNI, 'N', '001');
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ZE);
+        accountsSelector.setlegalEntity(RecordsSelector.LegalEntity.GI);
+        List<Account> matchedRecords = accountsSelector.findByNationalId(listDNI, 'N');
 
         Test.stopTest();
 
@@ -163,8 +171,9 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByPhoneNumber(telephoneNumberToSearch);
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByPhoneNumber(telephoneNumberToSearch);
 
         Test.stopTest();
 
@@ -172,7 +181,7 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}) );
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(recordIds));
 
         for(Account record : matchedRecords)
         {
@@ -185,7 +194,9 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByPhoneNumber( new List<String>() );
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByPhoneNumber( new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista de teléfonos
@@ -208,8 +219,9 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByEmail(emailsToSearch);
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByEmail(emailsToSearch);
 
         Test.stopTest();
 
@@ -217,7 +229,7 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(recordIds, new Set<String> {'Id'}) );
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(recordIds) );
 
         for(Account record : matchedRecords)
         {
@@ -230,7 +242,9 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByEmail( new List<String>() );
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByEmail( new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -259,8 +273,9 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByPolicyNumber(policyNumbers);
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByPolicyNumber(policyNumbers);
 
         Test.stopTest();
 
@@ -279,7 +294,9 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByPolicyNumber( new List<String>() );
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByPolicyNumber( new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -311,8 +328,9 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByQuoteNumber(quoteNumbers);
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByQuoteNumber(quoteNumbers);
 
         Test.stopTest();
 
@@ -331,7 +349,9 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByQuoteNumber( new List<String>() );
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByQuoteNumber( new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -356,7 +376,7 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByIntermediaryPhoneNumber(phoneNumbers);
+        List<Account> matchedRecords = new AccountsSelector().findByIntermediaryPhoneNumber(phoneNumbers);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -374,7 +394,7 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = new AccountsSelector().applyScope('all').findByIntermediaryPhoneNumber( new List<String>() );
+        List<Account> matchedRecords = new AccountsSelector().findByIntermediaryPhoneNumber( new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -398,7 +418,7 @@ private with sharing class AccountsSelectorTest
 
         // Test
         Test.startTest();
-        List<Account> matchedRecords = new AccountsSelector().applyScope('csm').findByIntermediaryCode(codes);
+        List<Account> matchedRecords = new AccountsSelector().findByIntermediaryCode(codes);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -416,7 +436,7 @@ private with sharing class AccountsSelectorTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = new AccountsSelector().applyScope('csm').findByIntermediaryCode( new List<String>() );
+        List<Account> matchedRecords = new AccountsSelector().findByIntermediaryCode( new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -455,7 +475,7 @@ private with sharing class AccountsSelectorTest
     {
         Test.startTest();
 
-        List<Account> selectedAccounts = AccountsSelector.selectById(new Set<Id>(), new Set<String> {'Id'});
+        List<Account> selectedAccounts = new AccountsSelector().selectById(new Set<Id>());
 
         Test.stopTest();
 
@@ -471,7 +491,7 @@ private with sharing class AccountsSelectorTest
         // Test
         Test.startTest();
 
-        Map<Id, Account> selectedAccountsById = new Map<Id, Account>(AccountsSelector.selectById(accountIds, new Set<String> {'Id'}) );
+        Map<Id, Account> selectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(accountIds));
 
         Test.stopTest();
 

@@ -79,7 +79,9 @@ private class EmailToOpportunityServiceTest
         System.assertEquals(true, String.isNotEmpty(emailMessagesCreated.get(0).RelatedToId), 'RelatedToId field should be not empty');
 
         //Recuperamos el Contacto para la dirección de email
-        List<Contact> contactsByEmail = new ContactsSelector().applyScope('all').findByEmail(new List<String> { EMAIL_SOPORTE });
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Contact> contactsByEmail = contactsSelector.findByEmail(new List<String> { EMAIL_SOPORTE });
         System.assertEquals(false, contactsByEmail.isEmpty(), 'List shoudnt be empty');
 
         //Comprobamos que se ha creado un EmailMessageRelation entre el contacto y el EmailMessage creado
@@ -163,7 +165,9 @@ private class EmailToOpportunityServiceTest
         System.assertEquals(1, emailMessagesCreated.size(), 'There should be an EmailMessage');
 
         //Recuperamos el Contacto para la dirección de email
-        List<Contact> contactsByEmail = new ContactsSelector().applyScope('all').findByEmail(new List<String> { EMAIL_SOPORTE });
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Contact> contactsByEmail = contactsSelector.findByEmail(new List<String> { EMAIL_SOPORTE });
         System.assertEquals(false, contactsByEmail.isEmpty(), 'List shoudnt be empty');
 
         //Comprobamos que se ha creado un EmailMessageRelation entre el contacto y el EmailMessage creado

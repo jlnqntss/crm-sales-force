@@ -1,15 +1,61 @@
-public with sharing class ClaimsSelector extends BaseSelector
+public with sharing class ClaimsSelector extends RecordsSelector
 {
     //#region Contructores
-    public ClaimsSelector() {}
 
-    public ClaimsSelector(Set<String> fieldsToQuery)
+    public ClaimsSelector()
     {
-        this();
-        this.sObjectToQuery = 'Claim__c';
-        this.fieldsToQuery = fieldsToQuery;
+        super(Claim__c.getSObjectType());
     }
+   
     //#endregion
+
+    /**
+     * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
+     * @author adelgado
+     * @date 28/01/2021
+     * @param  scope  Scope a aplicar en el filtro
+     * @return        Instancia de ClaimsSelector con el filtro de scope aplicado
+     */
+    public ClaimsSelector setScope(RecordsSelector.Scope scope)
+    {
+        switch on scope 
+        {
+            when Z 
+            {
+                this.baseQuery.addConditionEq(Claim__c.Scope__c, 'Z');
+            }
+            when ZE  
+            {
+                this.baseQuery.addConditionEq(Claim__c.Scope__c, 'ZE');
+            }
+            when ZEO
+            {
+                this.baseQuery.addConditionEq(Claim__c.Scope__c, 'ZEO');
+            }
+        }
+
+        return this;
+    }
+
+    /**
+     * Aplicar el filtro de entidad legal a los registros obtenidos en la búsqueda
+     * @author adelgado
+     * @date 28/01/2021
+     * @param  legalEntity  Entidad legal a aplicar en el filtro
+     * @return              Instancia de ClaimsSelector con el filtro de entidad legal aplicado
+     */
+    public ClaimsSelector setLegalEntity(RecordsSelector.LegalEntity legalEntity)
+    {
+        switch on legalEntity 
+        {
+            when GI, LIFE
+            {
+                this.baseQuery.addConditionEq(Claim__c.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity));
+            }
+        }
+
+        return this;
+    }
 
     /**
      * Busca siniestros a partir de número de siniestro en INFO
@@ -23,14 +69,9 @@ public with sharing class ClaimsSelector extends BaseSelector
     {
         if(String.isNotBlank(claimNumber))
         {
-            String query = String.format(
-                'SELECT {0} FROM Claim__c ' +
-                'WHERE INFOClaimNumber__c = : claimNumber ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<Claim__c>) Database.query(query);
+            this.baseQuery.addConditionEq(Claim__c.INFOClaimNumber__c, claimNumber);
+
+            return (List<Claim__c>) this.baseQuery.run();
         }
         else
         {
@@ -51,12 +92,9 @@ public with sharing class ClaimsSelector extends BaseSelector
     {
         if(String.isNotBlank(plateNumber))
         {
-            String query = String.format(
-                'SELECT {0} FROM Claim__c ' +
-                'WHERE Status__c != {1} AND InsuredObject__r.RegistrationNumber__c = : plateNumber ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ','), '\'T\''});
-            return (List<Claim__c>) Database.query(query);
+            this.baseQuery.addConditionNotEq(Claim__c.Status__c, 'T').addConditionEq('InsuredObject__r.RegistrationNumber__c', plateNumber);
+
+            return (List<Claim__c>) this.baseQuery.run();
         }
         else
         {
@@ -77,13 +115,15 @@ public with sharing class ClaimsSelector extends BaseSelector
     {
         if(policyHolder != null)
         {
-            String query = String.format(
-                'SELECT {0} FROM Claim__c ' +
-                'WHERE Status__c != {1} AND PolicyHolder__c = : policyHolder AND (Policy__r.EndDate__c = null OR Policy__r.EndDate__c >= TODAY)',
-                new List<String> {String.join(new List<String> (this.fieldsToQuery), ','), '\'T\''}
-                );
+            Query.Condition condition = Query.doOr
+            (
+                Query.conditionEq('Policy__r.EndDate__c', null),
+                Query.conditionGe('Policy__r.EndDate__c', Query.TODAY)
+            );
 
-            return (List<Claim__c>) Database.query(query);
+            this.baseQuery.addConditionNotEq(Claim__c.Status__c, 'T').addConditionEq(Claim__c.PolicyHolder__c, policyHolder);
+
+            return (List<Claim__c>) this.baseQuery.run();
         }
         else
         {

@@ -137,17 +137,13 @@ public class CaseUtil
     };
 
     /**
-     * Método que asocia el contacto o la póliza en los casos creados por email-to-case y web-to-case
+     * Método que asocia el contacto o la póliza en los casos creados por web-to-case
      * y setea la traduccion del tipo y subtipo del caso dependiendo del pais
      * @author nbizkarra
      * @date 1/09/2020
      **/
     public static void assignContactToCase(List<Case> newList)
     {
-        Map<String, Contact> mapContacts = new Map<String, Contact>();
-        Map<String, Order> mapPolicies = new Map<String, Order>();
-        SET<String> keys = new Set<String>();
-
         if (newList != null)
         {
             // nts (agonzalezisasi) - 11/ene/2020 - fix Multipartner
@@ -169,9 +165,10 @@ public class CaseUtil
             }
 
             for (Case caso : newList)
-            {
-                if ( !String.isBlank(caso.Origin) && ( caso.Origin.equals('Web') || caso.Origin.equals('Email') ) )
-                {
+            {   // Solo para casos de web, email to case no tiene rellenos los campos entidad legal y país hasta el afterinsert ( relleno por Workflows)
+                // se podría filtrar por tipo de registro si se añade el campo al formulario 
+                if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Web')  )
+                { 
                     //Si se ha informado el número de póliza, buscar la póliza y asignar el cliente correspondiente
                     if (caso.PolicyNum__c != null)
                     {
@@ -205,21 +202,47 @@ public class CaseUtil
                             caso.ContactId = policies[0].ContactId__c;
                             caso.Policy__c = policies[0].Id;
                             caso.LegalEntity__c = policies[0].LegalEntity__c;
+                            caso.CustomerFoundBy__c = 'Policy Number';
                         }
                     }
-                    else
+                    // nts (nbizkarra) - 25/Ene/2021 - Buscar por email, entidad legal, pais cuando Poliza nula o no encontrada
+                    if ( String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
+                    && caso.Policy__c == null)
                     {
                         //Si no se ha informado el número de poliza asignar cliente por mail y entidad legal (Solo si hay 1 cliente con ese mail)
                         List<Contact> contactoSF = [
                             SELECT id FROM Contact
                             WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
+                            AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                            AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife 
+                                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
                         ];
-
+                        
                         if (contactoSF != null && contactoSF.size() == 1)
                         {
                             caso.ContactId = contactoSF.get(0).id;
+                            caso.CustomerFoundBy__c = 'Email';
                         }
                     }
+
+                    // nts (nbizkarra) - 25/Ene/2021 - Buscar cliente por teléfono si no se ha encontrado por póliza o email (solo si encuentra 1)
+                        if ( String.isNotBlank(caso.SuppliedPhone) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
+                            && caso.Policy__c == null && caso.ContactId == null)
+                        {
+                            List<Contact> contactoSF = [
+                                SELECT id FROM Contact
+                                WHERE MobilePhone = :caso.SuppliedPhone AND LegalEntity__c = :caso.LegalEntity__c 
+                                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c  
+                                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife 
+                                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
+                            ];
+
+                            if (contactoSF != null && contactoSF.size() == 1)
+                            {
+                                caso.ContactId = contactoSF.get(0).id;
+                                caso.CustomerFoundBy__c = 'Phone';
+                            }
+                        }
 
                     //Si el caso es de la web de francia, asignar traducción del tipo y subtipo para la respuesta automática
                     if ( caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c) )
@@ -249,6 +272,60 @@ public class CaseUtil
         }
     }
 
+    /**
+     * Método que asocia el contacto en los casos creados por email-to-case de Klinc
+     * Ejecutado en afterInsert porque hasta entonces no se dispone de la entidad legal, pais y partner
+     * @author nbizkarra
+     * @date 26/01/2021
+     **/
+    public static void assignContactToCaseEmail(List<Case> newList)
+    {
+        List<Case> updateCases = new List<Case>();
+
+        if (newList != null)
+        { 
+            for (Case caso : newList)
+            {   
+                if ( !checkRecursive.SetOfIDs.contains(caso.ID) )
+                {
+                    checkRecursive.SetOfIDs.add(caso.ID);
+                    //System.debug('>>>>>> TEST: ' + caso.Origin + caso.CustomerFoundBy__c +caso.SuppliedEmail+ caso.LegalEntity__c+caso.SourceCountry__c) ;
+           
+
+                    //System.debug('>>>>>> TEST record type: ' +  caso.RecordTypeId );
+
+                    if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Email') && String.isBlank(caso.CustomerFoundBy__c) &&
+                        String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c) 
+                        && caso.RecordTypeId ==  Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Enquiry').getRecordTypeId() )
+                    {
+                        List<Contact> contactoSF = [
+                                SELECT id FROM Contact
+                                WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
+                                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife 
+                                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
+                        ];
+                        //Asignar contacto solo si encuentra 1
+                        if (contactoSF != null && contactoSF.size() == 1)
+                        {
+                            Case caseToUpdate = new Case();
+                            caseToUpdate.id = caso.id;
+                            caseToUpdate.ContactId = contactoSF.get(0).id;
+                            caseToUpdate.CustomerFoundBy__c = 'Email';
+                            updateCases.add(caseToUpdate);
+                        }
+                    }
+
+                }
+            }
+            
+            if ( updateCases != null && !updateCases.isEmpty() )
+            {
+                upsert updateCases;
+            }
+        }      
+    }
+
 
     /**
      * Método que asocia el ContactId y el AccountId del caso dependiendo del SuppliedEmail
@@ -275,12 +352,12 @@ public class CaseUtil
                         emailsToSearch.add(caso.SuppliedEmail);
 
                         //Utilizar el scope del caso
-                        AccountSearchService.Scope scope = new AccountSearchService.Scope();
-                        scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
+                        //AccountSearchService.Scope scope = new AccountSearchService.Scope();
+                        //scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
 
                         //Utilizar el AccountSearchService
                         List<Account> matchedAccounts = new List<Account>();
-                        matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, scope);
+                        matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
 
                         //Solo se continua si se ha encontrado un único cliente; si hay más de uno no se sabría por cuál decidir
                         if(matchedAccounts.size() == 1)
@@ -294,5 +371,4 @@ public class CaseUtil
             }
         }
     }
-
 }

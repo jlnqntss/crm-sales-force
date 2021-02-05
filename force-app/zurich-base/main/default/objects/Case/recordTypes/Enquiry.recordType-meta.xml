@@ -6,6 +6,13 @@
     <compactLayoutAssignment>SiniestroConsulta</compactLayoutAssignment>
     <label>Consulta</label>
     <picklistValues>
+        <picklist>Form_type__c</picklist>
+        <values>
+            <fullName>Review</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>CallCenter__c</picklist>
         <values>
             <fullName>CC Service</fullName>
@@ -38,6 +45,21 @@
         <picklist>CloseResult__c</picklist>
         <values>
             <fullName>No Realizado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CustomerFoundBy__c</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy Number</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -348,6 +370,10 @@
         </values>
         <values>
             <fullName>Pago de franquicia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partnership</fullName>
             <default>false</default>
         </values>
         <values>

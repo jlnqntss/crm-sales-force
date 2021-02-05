@@ -2,10 +2,42 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
-        <name>Asignacion_lista</name>
-        <label>Asignacion lista</label>
-        <locationX>1130</locationX>
-        <locationY>730</locationY>
+        <name>Asignaci_n_Overdue</name>
+        <label>Asignación Overdue</label>
+        <locationX>1352</locationX>
+        <locationY>718</locationY>
+        <assignmentItems>
+            <assignToReference>OverdueCRCount</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_CR</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignaci_n_Subsequent</name>
+        <label>Asignación Subsequent</label>
+        <locationX>1237</locationX>
+        <locationY>713</locationY>
+        <assignmentItems>
+            <assignToReference>SubsequentCRCount</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_CR</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignacion_proxima</name>
+        <label>Asignacion proxima</label>
+        <locationX>1110</locationX>
+        <locationY>709</locationY>
         <assignmentItems>
             <assignToReference>ListaCR</assignToReference>
             <operator>Add</operator>
@@ -15,6 +47,13 @@
         </assignmentItems>
         <assignmentItems>
             <assignToReference>ClosestCRCount</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SubsequentCRCount</assignToReference>
             <operator>Add</operator>
             <value>
                 <numberValue>1.0</numberValue>
@@ -32,6 +71,27 @@
         <assignmentItems>
             <assignToReference>ListaCR</assignToReference>
             <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ClosestCRCount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>OverdueCRCount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SubsequentCRCount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>ClosestCRCount</assignToReference>
@@ -63,18 +123,18 @@
     <decisions>
         <name>Es_proxima</name>
         <label>Es próxima?</label>
-        <locationX>1125</locationX>
-        <locationY>565</locationY>
+        <locationX>1202</locationX>
+        <locationY>499</locationY>
         <defaultConnector>
-            <targetReference>Loop_CR</targetReference>
+            <targetReference>Asignaci_n_Overdue</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <defaultConnectorLabel>Anterior</defaultConnectorLabel>
         <rules>
-            <name>Si</name>
+            <name>Proxima</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>Loop_CR.PreferredContactDatetime__c</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
+                <operator>GreaterThan</operator>
                 <rightValue>
                     <elementReference>$Flow.CurrentDateTime</elementReference>
                 </rightValue>
@@ -87,9 +147,24 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Asignacion_lista</targetReference>
+                <targetReference>Asignacion_proxima</targetReference>
             </connector>
-            <label>Si</label>
+            <label>Proxima</label>
+        </rules>
+        <rules>
+            <name>Posterior</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_CR.PreferredContactDatetime__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDateTime</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignaci_n_Subsequent</targetReference>
+            </connector>
+            <label>Posterior</label>
         </rules>
     </decisions>
     <interviewLabel>Callback {!$Flow.CurrentDateTime}</interviewLabel>
@@ -216,13 +291,38 @@
         </connector>
         <fields>
             <name>Intro</name>
-            <fieldText>&lt;p&gt;Existen {!CRCount} callbacks asociados a este caso. Los más próximos son los siguientes:&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;Existen {!CRCount} callbacks asociados a este registro.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>Nombre</name>
-            <fieldText>&lt;p&gt;{!ListaCR}&lt;/p&gt;</fieldText>
+            <name>ExistenProximos</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Callbacks vencidos: {!OverdueCRCount}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Callbacks pendientes: {!SubsequentCRCount}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>CRCount</leftValueReference>
+                    <operator>GreaterThan</operator>
+                    <rightValue>
+                        <numberValue>0.0</numberValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Nombre</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Los más próximos son los siguientes:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;{!ListaCR}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>ClosestCRCount</leftValueReference>
+                    <operator>GreaterThan</operator>
+                    <rightValue>
+                        <numberValue>0.0</numberValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>NewCallback</name>
@@ -235,6 +335,10 @@
             <fieldText>Fecha y hora de preferencia</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;La fecha y hora introducida debe ser posterior a la actual.&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Fecha_y_hora_de_preferencia} &gt; {!$Flow.CurrentDateTime}</formulaExpression>
+            </validationRule>
         </fields>
         <fields>
             <name>Telefono</name>
@@ -244,6 +348,12 @@
                 <name>required</name>
                 <value>
                     <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Teléfono</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -287,7 +397,7 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>650</locationX>
@@ -334,10 +444,32 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>OverdueCRCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
         <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SubsequentCRCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
     </variables>
 </Flow>

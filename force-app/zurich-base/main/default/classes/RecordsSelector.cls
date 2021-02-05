@@ -1,133 +1,132 @@
-public with sharing class RecordsSelector 
+public abstract class RecordsSelector
 {
     // #Region Properties
 
-    private Set<String> recordFieldsToQuery
+    public Query baseQuery;
+
+    public enum Scope { ALL, Z, ZE, ZEO }
+    static Map<String, Scope> scopesByCode
     {
         get
         {
-            if(recordFieldsToQuery == null)
+            if (scopesByCode == null)
             {
-                recordFieldsToQuery = new Set<String> {'Id'};
+                scopesByCode = new Map<String, Scope>
+                {
+                    'ALL'   => Scope.ALL,
+                    'Z'     => Scope.Z,
+                    'ZE'    => Scope.ZE,
+                    'ZEO'   => Scope.ZEO
+                };
             }
-
-            return recordFieldsToQuery;
+            return scopesByCode;
         }
-        set;
+        private set;
     }
 
-    private Schema.SObjectType sObjectType;
-    @testVisible
-    private String baseQuery
+    public enum LegalEntity { ALL, GI, LIFE }
+    static Map<LegalEntity, String> legalEntitiesByCode
     {
         get
         {
-            String fieldsToQuery = String.join(new List<String> (recordFieldsToQuery), ',');
-
-            return 'SELECT ' + fieldsToQuery + ' FROM ' + sObjectType.getDescribe().getName();
-        }
-    }
-
-    private Integer recordsLimit = 0;
-    @testVisible
-    private String limitCondition
-    {
-        get
-        {
-            if(recordsLimit > 0)
+            if (legalEntitiesByCode == null)
             {
-                return 'LIMIT ' + recordsLimit;
+                legalEntitiesByCode = new Map<LegalEntity, String>
+                {
+                    LegalEntity.GI    => '001',
+                    LegalEntity.LIFE  => '005'
+                };
             }
-
-            return '';
+            return legalEntitiesByCode;
         }
+        private set;
+    }
+    static Map<String, LegalEntity> legalEntitiesByStringCode
+    {
+        get
+        {
+            if (legalEntitiesByStringCode == null)
+            {
+                legalEntitiesByStringCode = new Map<String, LegalEntity>
+                {
+                    LegalEntity.GI.name()    => LegalEntity.GI,
+                    LegalEntity.LIFE.name()  => LegalEntity.LIFE
+                };
+            }
+            return legalEntitiesByStringCode;
+        }
+        private set;
     }
 
     // #region Constructor
 
-    public RecordsSelector(Schema.SObjectType sObjectType)
+    public RecordsSelector(Schema.SObjectType objectType)
     {
-        this.sObjectType = sObjectType;
-    }
-
-    /**
-     * Constructor de RecordsSelector para establecer campos a recuperar
-     *
-     * @author adelgado
-     * @param  sObjectFields   Campos a recuperar
-     */
-    public RecordsSelector(Schema.SObjectType sObjectType, List<Schema.SObjectField> recordFields)
-    {
-        this.sObjectType = sObjectType;
-
-        recordFieldsToQuery.clear();
-
-        for(Schema.SObjectField recordField : recordFields)
-        {
-            recordFieldsToQuery.add(recordField + '');
-        }
+        this.baseQuery = new Query(objectType);
     }
 
     // #endregion
+
+    // #Region Methods
+
+    public static Scope getScope(String scope)
+    {
+        return String.isBlank(scope) || !scopesByCode.containsKey(scope.toUpperCase()) ? scopesByCode.get('ALL') : scopesByCode.get(scope.toUpperCase());
+    }
+
+    public static String getLegalEntity(LegalEntity legalEntity)
+    {
+        return legalEntity == null || !legalEntitiesByCode.containsKey(legalEntity) ? null : legalEntitiesByCode.get(legalEntity);
+    }
+
+    public static LegalEntity getLegalEntity(String legalEntity)
+    {
+        return String.isBlank(legalEntity) || !legalEntitiesByStringCode.containsKey(legalEntity.toUpperCase()) ? null : legalEntitiesByStringCode.get(legalEntity.toUpperCase());
+    }
 
     /**
      * Aplica un límite a los resultados obtenidos en la SOQL realizada por el selector
      *
      * @author adelgado
      * @param  recordsLimit Número máximo de registros
-     * @return Instancia de RecordsSelector
      */
-    public RecordsSelector setLimit(Integer recordsLimit)
+    public void setLimit(Integer recordsLimit)
     {
         if(recordsLimit != null && recordsLimit > 0)
         {
-            this.recordsLimit = recordsLimit;
+            baseQuery.setLimit(recordsLimit);
         }
-
-        return this;
     }
 
-    // #region Selectors
-
     /**
-     * Recupera una lista de registros a partir de un campo externalId y una lista de valores
+     * Aplica un offset a los resultados obtenidos en la SOQL realizada por el selector
      *
      * @author adelgado
-     * @param  fieldname Campo externalId
-     * @param  values Set de valores a incluir en la búsqueda
-     * @return Listado de external request recuperadas. Si no se recibe ningún origen se devuelve una lista vacía
+     * @param  offset Offset a aplicar
      */
-    public List<sObject> selectByExternalId(Schema.sObjectField fieldname, Set<Object> values)
+    public void setOffset(Integer offset)
     {
-        if( fieldname == null || values == null || values.isEmpty() )
+        if(offset != null && offset > 0)
         {
-            return new List<sObject>();
+            baseQuery.setOffset(offset);
         }
+    }
 
-        List<String> textValuesToSelect = new List<String>();
-        Schema.DisplayType fieldDisplayType = fieldname.getDescribe().getType();
+    /**
+     * Indicar los campos del objeto que se desean obtener en la SOQL realizada por el selector
+     *
+     * @author adelgado
+     * @param  fields Campos a recuperar
+     */
+    public void setFields(Schema.SobjectField[] fields, String[] relationshipFields) 
+    {
+        this.setFields(fields);
+        this.baseQuery.selectFields(relationshipFields);
+    }
 
-        switch on fieldDisplayType
-        {
-            when STRING, EMAIL
-            {
-                for(Object obj: values)
-                {
-                    textValuesToSelect.add('\'' + obj + '\'');
-                }
-            }
-            when else
-            {
-               //
-            }
-        }
-
-        return Database.query( String.format('{0} {1} {2}', new List<String>
-        {
-            baseQuery,
-            'WHERE ' + fieldname + ' IN ' + (textValuesToSelect.isEmpty() ? new List<Object>(values) : textValuesToSelect),
-            limitCondition
-        }) );
+    public void setFields(Schema.SobjectField[] fields) 
+    {
+        this.baseQuery.selectFields(fields);
     }
 
     // #endregion

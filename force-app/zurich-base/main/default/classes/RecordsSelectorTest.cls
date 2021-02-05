@@ -1,92 +1,80 @@
 @isTest
 private class RecordsSelectorTest
 {
-    @TestSetup
-    static void makeData()
+    @testSetup
+    public static void createScenario()
     {
-        List<Policy__c> policiesToInstert = new List<Policy__c>();
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
+        insert accounts;
 
-        for(Integer i = 0; i < 10; i++)
-        {
-            policiesToInstert.add
-            (
-                new Policy__c
-                (
-                    InfoPolicyNumber__c = 'Policy' + i
-                )
-            );
-        }
-        insert policiesToInstert;
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 10);
+        insert policies;
     }
 
-    /**
-     * Test origen nulo
-     *
-     * @author adelgado
-     * @date 29/10/2020
-     */
-    @isTest
-    static void test_selectByExternalId_null()
+    @IsTest
+    static void test_setLimit()
     {
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+
         Test.startTest();
-        List<sObject> selectedsObjects = new RecordsSelector( Schema.getGlobalDescribe().get('Policy__c') ).selectByExternalId(null, null);
+        policiesSelector.setLimit(1);
         Test.stopTest();
 
-        System.assertEquals(true, selectedsObjects.isEmpty(), 'Se han obtenido registros erróneos');
+        System.assertEquals('SELECT id FROM Policy__c LIMIT 1', policiesSelector.baseQuery.toQueryString(), 'No se ha generado la query correctamente');
     }
 
-    /**
-     * Test origen correcto
-     *
-     * @author adelgado
-     * @date 29/10/2020
-     */
-    @isTest
-    static void test_selectByExternalId_ok()
+    @IsTest
+    static void test_setOffset()
     {
-        Set<Object> externalIdValues = new Set<Object>();
-
-        for(Integer i = 0; i < 10; i++)
-        {
-            externalIdValues.add('Policy' + i);
-        }
+        PoliciesSelector policiesSelector = new PoliciesSelector();
 
         Test.startTest();
-        List<sObject> selectedsObjects = new RecordsSelector
-                                         (
-            Schema.getGlobalDescribe().get('Policy__c'),
-            new List<Schema.SObjectField> {Policy__c.Name}
-                                         ).selectByExternalId(Policy__c.InfoPolicyNumber__c, externalIdValues);
+        policiesSelector.setOffset(1);
         Test.stopTest();
 
-        System.assertEquals(10, selectedsObjects.size(), 'No se han obtenido registros');
+        System.assertEquals('SELECT id FROM Policy__c OFFSET 1', policiesSelector.baseQuery.toQueryString(), 'No se ha generado la query correctamente');
     }
 
-    /**
-     * Test origen correcto con límite de registros
-     *
-     * @author adelgado
-     * @date 29/10/2020
-     */
-    @isTest
-    static void test_selectByExternalId_ok_limit()
+    @IsTest
+    static void test_setFields_NoRelationshipFields()
     {
-        Set<Object> externalIdValues = new Set<Object>();
-
-        for(Integer i = 0; i < 10; i++)
-        {
-            externalIdValues.add('Policy' + i);
-        }
+        PoliciesSelector policiesSelector = new PoliciesSelector();
 
         Test.startTest();
-        List<sObject> selectedsObjects = new RecordsSelector
-                                         (
-            Schema.getGlobalDescribe().get('Policy__c'),
-            new List<Schema.SObjectField> {Policy__c.Name}
-                                         ).setLimit(1).selectByExternalId(Policy__c.InfoPolicyNumber__c, externalIdValues);
+        policiesSelector.setFields
+        (
+          new List<Schema.SObjectField>
+          {
+            Policy__c.Id,
+            Policy__c.Name
+          }
+        );
         Test.stopTest();
 
-        System.assertEquals(1, selectedsObjects.size(), 'No se han obtenido registros');
+        System.assertEquals('SELECT id, name FROM Policy__c', policiesSelector.baseQuery.toQueryString(), 'No se ha generado la query correctamente');
+    }
+
+    @IsTest
+    static void test_setFields_relationshipFields()
+    {
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+
+        Test.startTest();
+        policiesSelector.setFields
+        (
+          new List<Schema.SObjectField>
+          {
+            Policy__c.Id,
+            Policy__c.Name
+          },
+          new List<String>
+          {
+            'AccountId__r.Name'
+          }
+        );
+        Test.stopTest();
+
+        System.assertEquals('SELECT id, name, accountid__r.name FROM Policy__c', policiesSelector.baseQuery.toQueryString(), 'No se ha generado la query correctamente');
     }
 
 }

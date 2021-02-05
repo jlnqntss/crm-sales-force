@@ -1,5 +1,62 @@
-public with sharing class CasesSelector
+public with sharing class CasesSelector extends RecordsSelector
 {
+    //#region Contructores
+
+    public CasesSelector()
+    {
+        super(Case.getSObjectType());
+    }
+
+    //#endregion
+
+    /**
+     * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
+     * @author adelgado
+     * @date 28/01/2021
+     * @param  scope  Scope a aplicar en el filtro
+     * @return        Instancia de CasesSelector con el filtro de scope aplicado
+     */
+    public CasesSelector setScope(RecordsSelector.Scope scope)
+    {
+        switch on scope 
+        {
+            when Z 
+            {
+                this.baseQuery.addConditionEq(Case.Scope__c, 'Z');
+            }
+            when ZE  
+            {
+                this.baseQuery.addConditionEq(Case.Scope__c, 'ZE');
+            }
+            when ZEO
+            {
+                this.baseQuery.addConditionEq(Case.Scope__c, 'ZEO');
+            }
+        }
+
+        return this;
+    }
+
+    /**
+     * Aplicar el filtro de entidad legal a los registros obtenidos en la búsqueda
+     * @author adelgado
+     * @date 28/01/2021
+     * @param  legalEntity  Entidad legal a aplicar en el filtro
+     * @return              Instancia de CasesSelector con el filtro de entidad legal aplicado
+     */
+    public CasesSelector setLegalEntity(RecordsSelector.LegalEntity legalEntity)
+    {
+        switch on legalEntity 
+        {
+            when GI, LIFE
+            {
+                this.baseQuery.addConditionEq(Case.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity));
+            }
+        }
+
+        return this;
+    }
+
     /**
      * Busca casos abiertos ordenados por fecha de creación a partir de una lista de ids de cuentas
      * @author adelgado
@@ -11,7 +68,9 @@ public with sharing class CasesSelector
     {
         if(accountIds != null && !accountIds.isEmpty() )
         {
-            return [SELECT OwnerId, Owner.Email FROM Case WHERE isClosed = FALSE AND AccountId IN : accountIds ORDER BY CreatedDate DESC];
+            this.baseQuery.addConditionEq(Case.isClosed, false).addConditionIn(Case.AccountId, accountIds).orderBy('CreatedDate', 'DESC');
+
+            return (List<Case>) this.baseQuery.run();
         }
         else
         {
