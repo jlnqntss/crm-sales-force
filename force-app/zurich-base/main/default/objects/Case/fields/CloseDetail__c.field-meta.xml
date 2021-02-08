@@ -15,11 +15,6 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Sin INFO</fullName>
-                <default>false</default>
-                <label>Sin INFO</label>
-            </value>
-            <value>
                 <fullName>No autoservicio</fullName>
                 <default>false</default>
                 <label>No autoservicio</label>
@@ -28,11 +23,6 @@
                 <fullName>Caída sistema</fullName>
                 <default>false</default>
                 <label>Caída sistema</label>
-            </value>
-            <value>
-                <fullName>No accesible</fullName>
-                <default>false</default>
-                <label>No accesible</label>
             </value>
             <value>
                 <fullName>Descuentos</fullName>
@@ -45,34 +35,9 @@
                 <label>Usos / Actividad</label>
             </value>
             <value>
-                <fullName>Conductores agravados</fullName>
-                <default>false</default>
-                <label>Conductores agravados</label>
-            </value>
-            <value>
-                <fullName>SINCO</fullName>
-                <default>false</default>
-                <label>SINCO</label>
-            </value>
-            <value>
-                <fullName>Cambio de tomador</fullName>
-                <default>false</default>
-                <label>Cambio de tomador</label>
-            </value>
-            <value>
                 <fullName>Oferta no accesible</fullName>
                 <default>false</default>
                 <label>Oferta no accesible</label>
-            </value>
-            <value>
-                <fullName>Gestión Compet</fullName>
-                <default>false</default>
-                <label>Gestión Compet</label>
-            </value>
-            <value>
-                <fullName>Encias</fullName>
-                <default>false</default>
-                <label>Encias</label>
             </value>
             <value>
                 <fullName>Falta de datos</fullName>
@@ -80,44 +45,9 @@
                 <label>Falta de datos</label>
             </value>
             <value>
-                <fullName>Garantías</fullName>
-                <default>false</default>
-                <label>Garantías</label>
-            </value>
-            <value>
-                <fullName>Fechas</fullName>
-                <default>false</default>
-                <label>Fechas</label>
-            </value>
-            <value>
-                <fullName>Datos personales</fullName>
-                <default>false</default>
-                <label>Datos personales</label>
-            </value>
-            <value>
                 <fullName>Desaparición riesgo</fullName>
                 <default>false</default>
                 <label>Desaparición riesgo</label>
-            </value>
-            <value>
-                <fullName>Precio</fullName>
-                <default>false</default>
-                <label>Precio</label>
-            </value>
-            <value>
-                <fullName>Fuera plazo</fullName>
-                <default>false</default>
-                <label>Fuera plazo</label>
-            </value>
-            <value>
-                <fullName>Descuento</fullName>
-                <default>false</default>
-                <label>Descuento</label>
-            </value>
-            <value>
-                <fullName>Argumentario</fullName>
-                <default>false</default>
-                <label>Argumentario</label>
             </value>
             <value>
                 <fullName>Reemplazo</fullName>
@@ -125,24 +55,9 @@
                 <label>Reemplazo</label>
             </value>
             <value>
-                <fullName>Modificación garantías</fullName>
-                <default>false</default>
-                <label>Modificación garantías</label>
-            </value>
-            <value>
                 <fullName>Saneamiento</fullName>
                 <default>false</default>
                 <label>Saneamiento</label>
-            </value>
-            <value>
-                <fullName>Cambio canal distribución</fullName>
-                <default>false</default>
-                <label>Cambio canal distribución</label>
-            </value>
-            <value>
-                <fullName>Coberturas</fullName>
-                <default>false</default>
-                <label>Coberturas</label>
             </value>
             <value>
                 <fullName>Insatisfacción siniestros</fullName>
@@ -150,44 +65,9 @@
                 <label>Insatisfacción siniestros</label>
             </value>
             <value>
-                <fullName>Insatisfacción procesos</fullName>
-                <default>false</default>
-                <label>Insatisfacción procesos</label>
-            </value>
-            <value>
-                <fullName>No facilita datos</fullName>
-                <default>false</default>
-                <label>No facilita datos</label>
-            </value>
-            <value>
-                <fullName>No es cliente</fullName>
-                <default>false</default>
-                <label>No es cliente</label>
-            </value>
-            <value>
                 <fullName>Vida</fullName>
                 <default>false</default>
                 <label>Vida</label>
-            </value>
-            <value>
-                <fullName>Empresa</fullName>
-                <default>false</default>
-                <label>Empresa</label>
-            </value>
-            <value>
-                <fullName>Póliza anulada</fullName>
-                <default>false</default>
-                <label>Póliza anulada</label>
-            </value>
-            <value>
-                <fullName>Campaña</fullName>
-                <default>false</default>
-                <label>Campaña</label>
-            </value>
-            <value>
-                <fullName>Insatisfacción atención</fullName>
-                <default>false</default>
-                <label>Insatisfacción atención</label>
             </value>
             <value>
                 <fullName>Insatisfacción mediador</fullName>
@@ -260,11 +140,6 @@
                 <label>Gestión incorrecta</label>
             </value>
             <value>
-                <fullName>Extorno</fullName>
-                <default>false</default>
-                <label>Extorno</label>
-            </value>
-            <value>
                 <fullName>Falta aviso</fullName>
                 <default>false</default>
                 <label>Falta aviso</label>
@@ -313,16 +188,6 @@
                 <fullName>Tiempo de espera</fullName>
                 <default>false</default>
                 <label>Tiempo de espera</label>
-            </value>
-            <value>
-                <fullName>Accesos 902</fullName>
-                <default>false</default>
-                <label>Accesos 902</label>
-            </value>
-            <value>
-                <fullName>Gestión incorrecta comercialización</fullName>
-                <default>false</default>
-                <label>Gestión incorrecta comercialización</label>
             </value>
             <value>
                 <fullName>Atención empleado</fullName>
@@ -425,10 +290,130 @@
                 <label>Denegación anulación</label>
             </value>
             <value>
+                <fullName>Accesos 902</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Accesos 902</label>
+            </value>
+            <value>
+                <fullName>Argumentario</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Argumentario</label>
+            </value>
+            <value>
+                <fullName>Cambio canal distribución</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Cambio canal distribución</label>
+            </value>
+            <value>
+                <fullName>Cambio de tomador</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Cambio de tomador</label>
+            </value>
+            <value>
+                <fullName>Campaña</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Campaña</label>
+            </value>
+            <value>
+                <fullName>Coberturas</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Coberturas</label>
+            </value>
+            <value>
+                <fullName>Conductores agravados</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Conductores agravados</label>
+            </value>
+            <value>
+                <fullName>Datos personales</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Datos personales</label>
+            </value>
+            <value>
+                <fullName>Descuento</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Descuento</label>
+            </value>
+            <value>
                 <fullName>Detalle Cierre</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Detalle Cierre</label>
+            </value>
+            <value>
+                <fullName>Empresa</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Empresa</label>
+            </value>
+            <value>
+                <fullName>Encias</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Encias</label>
+            </value>
+            <value>
+                <fullName>Extorno</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Extorno</label>
+            </value>
+            <value>
+                <fullName>Fechas</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Fechas</label>
+            </value>
+            <value>
+                <fullName>Fuera plazo</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Fuera plazo</label>
+            </value>
+            <value>
+                <fullName>Garantías</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Garantías</label>
+            </value>
+            <value>
+                <fullName>Gestión Compet</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Gestión Compet</label>
+            </value>
+            <value>
+                <fullName>Gestión incorrecta comercialización</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Gestión incorrecta comercialización</label>
+            </value>
+            <value>
+                <fullName>Insatisfacción atención</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Insatisfacción atención</label>
+            </value>
+            <value>
+                <fullName>Insatisfacción procesos</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Insatisfacción procesos</label>
+            </value>
+            <value>
+                <fullName>Modificación garantías</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Modificación garantías</label>
             </value>
             <value>
                 <fullName>No Realizado</fullName>
@@ -441,6 +426,24 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>No Realizado -Pol. Seguridad</label>
+            </value>
+            <value>
+                <fullName>No accesible</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>No accesible</label>
+            </value>
+            <value>
+                <fullName>No es cliente</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>No es cliente</label>
+            </value>
+            <value>
+                <fullName>No facilita datos</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>No facilita datos</label>
             </value>
             <value>
                 <fullName>No realizado - Cliente no interesa</fullName>
@@ -467,6 +470,18 @@
                 <label>No realizado - Rechazo técnico</label>
             </value>
             <value>
+                <fullName>Precio</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Precio</label>
+            </value>
+            <value>
+                <fullName>Póliza anulada</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Póliza anulada</label>
+            </value>
+            <value>
                 <fullName>Realizado</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -483,6 +498,18 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Realizado - Sin impacto en prima</label>
+            </value>
+            <value>
+                <fullName>SINCO</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>SINCO</label>
+            </value>
+            <value>
+                <fullName>Sin INFO</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Sin INFO</label>
             </value>
             <value>
                 <fullName>definidos</fullName>
@@ -601,56 +628,16 @@
             <valueName>Sin motivo / No informado</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Con Oferta</controllingFieldValue>
             <controllingFieldValue>Generación Oferta</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
             <valueName>No autoservicio</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Con Oferta</controllingFieldValue>
             <controllingFieldValue>Generación Oferta</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
             <valueName>Caída sistema</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Descuentos</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Usos / Actividad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Bonificación (Sinco/Inbonus…)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Matrícula (anteriormente asegurada/mal rendimiento)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Vehículo (Valor/accesorios/antigüedad…)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Cambio personas (Tomador/prop./conductor)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Retroactividad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Garantías/capitales (franquicias, robo en motos, RC Hogar…)</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Emisión</controllingFieldValue>
@@ -741,6 +728,46 @@
         <valueSettings>
             <controllingFieldValue>Multas</controllingFieldValue>
             <valueName>Matrícula asegurada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Descuentos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Usos / Actividad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Bonificación (Sinco/Inbonus…)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Matrícula (anteriormente asegurada/mal rendimiento)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Vehículo (Valor/accesorios/antigüedad…)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Cambio personas (Tomador/prop./conductor)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Retroactividad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Garantías/capitales (franquicias, robo en motos, RC Hogar…)</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Fallo registro identificado</controllingFieldValue>

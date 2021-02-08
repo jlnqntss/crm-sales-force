@@ -283,16 +283,6 @@
                 <label>Envíos</label>
             </value>
             <value>
-                <fullName>Quejas y reclamaciones</fullName>
-                <default>false</default>
-                <label>Quejas y reclamaciones</label>
-            </value>
-            <value>
-                <fullName>Sugerencias /felicitaciones</fullName>
-                <default>false</default>
-                <label>Sugerencias /felicitaciones</label>
-            </value>
-            <value>
                 <fullName>Retención</fullName>
                 <default>false</default>
                 <label>Retención</label>
@@ -308,11 +298,6 @@
                 <label>Recobro proactivo</label>
             </value>
             <value>
-                <fullName>Campañas Proactiva</fullName>
-                <default>false</default>
-                <label>Campañas Proactiva</label>
-            </value>
-            <value>
                 <fullName>Gestión de recibos</fullName>
                 <default>false</default>
                 <label>Gestión de recibos</label>
@@ -323,24 +308,9 @@
                 <label>Recobro reactivo</label>
             </value>
             <value>
-                <fullName>Campañas Reactivo</fullName>
-                <default>false</default>
-                <label>Campañas Reactivo</label>
-            </value>
-            <value>
-                <fullName>Tareas administrativas</fullName>
-                <default>false</default>
-                <label>Tareas administrativas</label>
-            </value>
-            <value>
                 <fullName>Cambio de intermediario</fullName>
                 <default>false</default>
                 <label>Cambio de intermediario</label>
-            </value>
-            <value>
-                <fullName>Verificación Riesgo</fullName>
-                <default>false</default>
-                <label>Verificación Riesgo</label>
             </value>
             <value>
                 <fullName>Incidencias</fullName>

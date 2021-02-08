@@ -40,11 +40,6 @@
                 <label>Realizado - Sin impacto en prima</label>
             </value>
             <value>
-                <fullName>No realizado - Derivado mediación</fullName>
-                <default>false</default>
-                <label>No realizado - Derivado mediación</label>
-            </value>
-            <value>
                 <fullName>No realizado - No procede</fullName>
                 <default>false</default>
                 <label>No realizado - No procede</label>
@@ -123,6 +118,12 @@
                 <fullName>Realizado - Nueva Póliza</fullName>
                 <default>false</default>
                 <label>Realizado - Nueva Póliza</label>
+            </value>
+            <value>
+                <fullName>No realizado - Derivado mediación</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>No realizado - Derivado mediación</label>
             </value>
             <value>
                 <fullName>definidos</fullName>
