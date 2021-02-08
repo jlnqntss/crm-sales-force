@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OldAccountId__c</fullName>
+    <description>This field is used to control the change of account from lead to the client when it comes from INFO. This way we can do a merge of accounts. This merge will be done in a batch (Batch_MergeLeadsWithClients)</description>
+    <externalId>false</externalId>
+    <label>OldAccountId</label>
+    <length>40</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

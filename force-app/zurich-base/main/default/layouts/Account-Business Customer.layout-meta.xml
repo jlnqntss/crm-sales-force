@@ -178,6 +178,10 @@
     </platformActionList>
     <quickActionList/>
     <relatedLists>
+        <fields>FULL_NAME</fields>
+        <relatedList>RelatedContactList</relatedList>
+    </relatedLists>
+    <relatedLists>
         <fields>CONTACT.FULL_NAME</fields>
         <fields>ACCCONRELATION.ROLES</fields>
         <fields>CONTACT.EMAIL</fields>
