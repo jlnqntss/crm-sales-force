@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CaseTypeFieldsMetadata__c</fullName>
+    <description>Campos correspondientes al metadato de mapeo para la tipificación de los casos</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Case Type Fields Metadata</label>
+    <required>false</required>
+    <type>TextArea</type>
+</CustomField>

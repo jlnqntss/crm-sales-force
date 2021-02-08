@@ -15,6 +15,10 @@
         <value xsi:type="xsd:string">OCSInquiry</value>
     </values>
     <values>
+        <field>CaseTypeFieldsMetadata__c</field>
+        <value xsi:type="xsd:string">Type__c, Subtype__c, TypeN3__c</value>
+    </values>
+    <values>
         <field>DocumentTitle__c</field>
         <value xsi:type="xsd:string">HEGEO-CLASIFICACION</value>
     </values>

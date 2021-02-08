@@ -2,6 +2,19 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
+        <name>UpdateAccountLookupWithAccountFound</name>
+        <label>Update Account Lookup With Account Found</label>
+        <locationX>149</locationX>
+        <locationY>2845</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SearchRelatedIntermediary.Id</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>UpdateClaimLookupWithClaimFound</name>
         <label>Update Claim Lookup With Claim Found</label>
         <locationX>193</locationX>
@@ -13,6 +26,9 @@
                 <elementReference>SearchRelatedClaim.Id</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>HegeoIntermediaryIdHasChanged</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>UpdateOfferLookupWithHegeoOfferId</name>
@@ -63,10 +79,35 @@
         </connector>
     </assignments>
     <decisions>
+        <name>AccountFound</name>
+        <label>Account Found?</label>
+        <locationX>281</locationX>
+        <locationY>2725</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>AccountFoundYes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SearchRelatedIntermediary</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateAccountLookupWithAccountFound</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>ClaimFound</name>
         <label>Claim Found?</label>
         <locationX>325</locationX>
         <locationY>2053</locationY>
+        <defaultConnector>
+            <targetReference>HegeoIntermediaryIdHasChanged</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>ClaimFoundYes</name>
@@ -89,6 +130,9 @@
         <label>Hegeo ClaimId Has Changed?</label>
         <locationX>479</locationX>
         <locationY>1813</locationY>
+        <defaultConnector>
+            <targetReference>HegeoIntermediaryIdHasChanged</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>HegeoClaimIdHasChangedYes</name>
@@ -109,6 +153,35 @@
             </conditions>
             <connector>
                 <targetReference>SearchRelatedClaim</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>HegeoIntermediaryIdHasChanged</name>
+        <label>Hegeo IntermediaryId Has Changed?</label>
+        <locationX>479</locationX>
+        <locationY>2485</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>HegeoIntermediaryIdHasChangedYes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.HegeoIntermediaryId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.HegeoIntermediaryId__c</leftValueReference>
+                <operator>WasSet</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SearchRelatedIntermediary</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -330,6 +403,28 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>SearchRelatedIntermediary</name>
+        <label>Search Related Intermediary</label>
+        <locationX>281</locationX>
+        <locationY>2605</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AccountFound</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>INFOIntermediaryCode__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.HegeoIntermediaryId__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>SearchRelatedOfferWithOfferId</name>
         <label>Search Related Offer With OfferId</label>
         <locationX>622</locationX>
@@ -402,7 +497,7 @@
         <connector>
             <targetReference>HegeoPrePolicyIdHasChanged</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3 OR 4 OR 5)</filterLogic>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6)</filterLogic>
         <filters>
             <field>RecordTypeId</field>
             <operator>EqualTo</operator>
@@ -433,6 +528,13 @@
         </filters>
         <filters>
             <field>HegeoClaimId__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>HegeoIntermediaryId__c</field>
             <operator>IsNull</operator>
             <value>
                 <booleanValue>false</booleanValue>
