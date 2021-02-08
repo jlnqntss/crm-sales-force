@@ -14,25 +14,6 @@ public without sharing class GenesysInteractionsService
     @TestVisible
     static final String TASK_QUEUE = 'Missed Calls';
 
-    @TestVisible
-    static final String SCOPE_CODE_ALL = 'all';
-    @TestVisible
-    static final String SCOPE_CODE_ZE = 'ze';
-    @TestVisible
-    static final String SCOPE_CODE_KLINC = 'klinc';
-    @TestVisible
-    static final String SCOPE_CODE_CSM = 'csm';
-    @TestVisible
-    static final String SCOPE_CODE_CCS = 'ccs';
-    static final Map<String, String> SCOPE_NAMES_BY_CODE = new Map<String, String>
-    {
-        SCOPE_CODE_ALL  => 'General',
-        SCOPE_CODE_ZE => 'Zurich Empresas',
-        SCOPE_CODE_KLINC => 'Klinc',
-        SCOPE_CODE_CSM => 'csm',
-        SCOPE_CODE_CCS => 'ccs'
-    };
-
     //#region Métodos públicos
 
     /**
@@ -53,17 +34,17 @@ public without sharing class GenesysInteractionsService
         }
 
         // 2 - Comprobar si se trata de un mediador y buscarlo
-        if( request.scope == SCOPE_CODE_CSM)
+        if( String.isNotblank(request.filterBy) && request.filterBy.equalsIgnoreCase('intermediaries') )
         {
             findPeopleByScope(request, 'intermediaries');
         }
         // 3 - Comprobar si se trata de un cliente final y buscarlo
-        else if( request.scope == SCOPE_CODE_CCS )
+        else if( String.isNotblank(request.filterBy) && request.filterBy.equalsIgnoreCase('customers')  )
         {
             findPeopleByScope(request, 'customers');
         }
         // 4 - Resto de scopes
-        else //FIXME: Refactorizar cuando se modifique el flow de ZE / ZE Orange para aceptar la estructura Agent
+        else if( String.isEmpty(request.filterBy) )
         {
             // 4.2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
             findBestAgentFor(request);
@@ -175,7 +156,7 @@ public without sharing class GenesysInteractionsService
                                                    FROM Opportunity
                                                    WHERE isClosed = FALSE
                                                                     AND (AccountId IN :relatedIds OR ContactId__c IN :relatedIds)
-                                                                    AND Scope__c = :SCOPE_NAMES_BY_CODE.get(scope)
+                                                                    AND Scope__c = :scope
                                                                                    ORDER BY CreatedDate DESC];
 
                 searchResults.relatedRecords = (List<SObject>) opportunities;
@@ -214,12 +195,15 @@ public without sharing class GenesysInteractionsService
     {
         Set<Id> matchedPersonIds = new Set<Id>();
 
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setScope(RecordsSelector.Scope.ALL);
+
         if (searchFor.contains('@') )
         {
-            return new ContactsSelector().applyScope('all').findByEmail(new List<String> { searchFor });
+            return contactsSelector.findByEmail(new List<String> { searchFor });
         }
 
-        return new ContactsSelector().applyScope('all').findByPhoneNumber(new List<String> { searchFor });
+        return contactsSelector.findByPhoneNumber(new List<String> { searchFor });
     }
 
     /**
@@ -278,7 +262,7 @@ public without sharing class GenesysInteractionsService
     public static SearchResult findPeopleBy(SearchRequest request)
     {
         // 1 - Comprobar que la request tiene informados todos los campos requeridos
-        if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) || String.isBlank(request.scope) || String.isBlank(request.legalEntity))
+        if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) )
         {
             throw new GenesysPeopleServiceException(MISSING_FIELDS_REQUIRED);
         }
@@ -431,30 +415,30 @@ public without sharing class GenesysInteractionsService
         SearchResult results = new SearchResult();
         List<Account> accounts = new List<Account>();
 
-        AccountSearchService.Scope scope = new AccountSearchService.Scope();
-        scope.scope = request.scope;
+        RecordsSelector.Scope scope = RecordsSelector.getScope(request.scope);
+        RecordsSelector.LegalEntity legalEntity = RecordsSelector.getLegalEntity(request.legalEntity);
 
         switch on request.searchType
         {
             when 'phone'
             {
-                accounts = AccountSearchService.findCustomersByPhoneNumber( new List<String>{request.value}, scope );
+                accounts = AccountSearchService.findCustomersByPhoneNumber( new List<String>{request.value}, scope, legalEntity );
             }
             when 'email'
             {
-                accounts = AccountSearchService.findCustomersByEmail( new List<String>{request.value}, scope );
+                accounts = AccountSearchService.findCustomersByEmail( new List<String>{request.value}, scope, legalEntity );
             }
             when 'document'
             {
-                accounts = AccountSearchService.findCustomersByDocumentId( new List<String>{request.value}, null, scope, null );
+                accounts = AccountSearchService.findCustomersByDocumentId( new List<String>{request.value}, null, scope, legalEntity );
             }
             when 'policy_code'
             {
-                accounts = AccountSearchService.findCustomersByPolicyNumber( new List<String>{request.value}, scope );
+                accounts = AccountSearchService.findCustomersByPolicyNumber( new List<String>{request.value}, scope, legalEntity );
 
                 if(accounts == null || accounts.isEmpty())
                 {
-                    accounts = AccountSearchService.findCustomersByQuoteNumber( new List<String>{request.value}, scope );
+                    accounts = AccountSearchService.findCustomersByQuoteNumber( new List<String>{request.value}, scope, legalEntity );
                 }
             }
             /*when 'case_number'
@@ -493,18 +477,15 @@ public without sharing class GenesysInteractionsService
         SearchResult results = new SearchResult();
         List<Account> accounts = new List<Account>();
 
-        AccountSearchService.Scope scope = new AccountSearchService.Scope();
-        scope.scope = request.scope;
-
         switch on request.searchType
         {
             when 'phone'
             {
-                accounts = AccountSearchService.findIntermediariesByPhoneNumber( new List<String>{request.value}, scope );
+                accounts = AccountSearchService.findIntermediariesByPhoneNumber( new List<String>{request.value} );
             }
             when 'intermediary_code'
             {
-                accounts = AccountSearchService.findIntermediariesByCode( new List<String>{request.value}, scope );
+                accounts = AccountSearchService.findIntermediariesByCode( new List<String>{request.value} );
             }
             when else
             {
@@ -536,7 +517,20 @@ public without sharing class GenesysInteractionsService
         Set<Agent> bestAgents = new Set<Agent>();
 
         // 1 - Obtener los gestores de los casos abiertos asociados al mediador
-        for(Case openCase : new CasesSelector().findOpenByAccount(new List<String>{intermediary.intermediaryId}))
+        CasesSelector casesSelector = new CasesSelector();
+        casesSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Case.OwnerId
+            },
+            new List<String>
+            {
+                'Owner.Email'
+            }
+        );
+
+        for(Case openCase : casesSelector.findOpenByAccount(new List<String>{intermediary.intermediaryId}))
         {
             bestAgents.add
             (
@@ -765,14 +759,28 @@ public without sharing class GenesysInteractionsService
         public String toId { get; set; }
         public String queueId { get; set; }
         public String lookFor { get; set; }
-        public String scope { get; set; }
+        public String scope 
+        {
+            get
+            {
+                if(String.isBlank(scope))
+                {
+                    return RecordsSelector.Scope.ALL.name();
+                }
+                else
+                {
+                    return scope;
+                }
+            }
+            set;
+        }
         public String legalEntity
         {
             get
             {
                 if(String.isBlank(legalEntity))
                 {
-                    return SCOPE_CODE_ALL;
+                    return RecordsSelector.LegalEntity.ALL.name();
                 }
                 else
                 {
@@ -781,6 +789,7 @@ public without sharing class GenesysInteractionsService
             }
             set;
         }
+        public String filterBy;
 
         public String screenPopRecordId { get; set; }
         public String customerId { get; set; }
@@ -805,8 +814,36 @@ public without sharing class GenesysInteractionsService
         public String filterBy;
         public String lookFor;
         public String value;
-        public String scope;
-        public String legalEntity;
+        public String scope
+        {
+            get
+            {
+                if(String.isBlank(scope))
+                {
+                    return RecordsSelector.Scope.ALL.name();
+                }
+                else
+                {
+                    return scope;
+                }
+            }
+            set;
+        }
+        public String legalEntity
+        {
+            get
+            {
+                if(String.isBlank(legalEntity))
+                {
+                    return RecordsSelector.LegalEntity.ALL.name();
+                }
+                else
+                {
+                    return legalEntity;
+                }
+            }
+            set;
+        }
         public String searchTerm;
 
         public SearchRequest() {}

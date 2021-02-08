@@ -8,11 +8,6 @@
         <quickActionLayoutColumns>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>CaseNumber</field>
-                <uiBehavior>Readonly</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
                 <field>AccountId</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
@@ -28,18 +23,6 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>Subject</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>Description</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-        </quickActionLayoutColumns>
-        <quickActionLayoutColumns>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
                 <field>Status</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
@@ -48,6 +31,8 @@
                 <field>PendingBy__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+        <quickActionLayoutColumns>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>Type</field>
@@ -61,6 +46,11 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>TypeN3__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Object__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>

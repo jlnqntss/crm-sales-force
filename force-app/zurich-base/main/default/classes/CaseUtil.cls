@@ -214,6 +214,8 @@ public class CaseUtil
                             SELECT id FROM Contact
                             WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
                             AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                            AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife 
+                                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
                         ];
                         
                         if (contactoSF != null && contactoSF.size() == 1)
@@ -230,7 +232,9 @@ public class CaseUtil
                             List<Contact> contactoSF = [
                                 SELECT id FROM Contact
                                 WHERE MobilePhone = :caso.SuppliedPhone AND LegalEntity__c = :caso.LegalEntity__c 
-                                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c  
+                                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife 
+                                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
                             ];
 
                             if (contactoSF != null && contactoSF.size() == 1)
@@ -298,6 +302,8 @@ public class CaseUtil
                                 SELECT id FROM Contact
                                 WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
                                 AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife 
+                                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
                         ];
                         //Asignar contacto solo si encuentra 1
                         if (contactoSF != null && contactoSF.size() == 1)
@@ -346,12 +352,12 @@ public class CaseUtil
                         emailsToSearch.add(caso.SuppliedEmail);
 
                         //Utilizar el scope del caso
-                        AccountSearchService.Scope scope = new AccountSearchService.Scope();
-                        scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
+                        //AccountSearchService.Scope scope = new AccountSearchService.Scope();
+                        //scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
 
                         //Utilizar el AccountSearchService
                         List<Account> matchedAccounts = new List<Account>();
-                        matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, scope);
+                        matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
 
                         //Solo se continua si se ha encontrado un único cliente; si hay más de uno no se sabría por cuál decidir
                         if(matchedAccounts.size() == 1)

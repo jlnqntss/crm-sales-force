@@ -7,6 +7,10 @@
         <value xsi:type="xsd:string">3200012491</value>
     </values>
     <values>
+        <field>GenesysCloudQueueName__c</field>
+        <value xsi:type="xsd:string">Voz_ZurichEmpresas</value>
+    </values>
+    <values>
         <field>SandboxBusinessCode__c</field>
         <value xsi:type="xsd:string">3200012491</value>
     </values>

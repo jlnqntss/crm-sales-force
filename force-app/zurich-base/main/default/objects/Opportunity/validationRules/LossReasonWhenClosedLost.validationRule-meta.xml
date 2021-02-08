@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LossReasonWhenClosedLost</fullName>
+    <active>true</active>
+    <description>[VR Oferta] Motivo de Pérdida es obligatorio cuando es Cerrada Perdida</description>
+    <errorConditionFormula>ISPICKVAL(StageName,&quot;Closed Lost&quot;) &amp;&amp;
+ISBLANK(TEXT(Loss_Reason__c)) &amp;&amp;
+$Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
+$Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
+$Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;</errorConditionFormula>
+    <errorDisplayField>Loss_Reason__c</errorDisplayField>
+    <errorMessage>[VR Oferta] Motivo de Pérdida es obligatorio cuando es Cerrada Perdida</errorMessage>
+</ValidationRule>

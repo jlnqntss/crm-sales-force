@@ -245,6 +245,19 @@
                     <value>Account.Update</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>BusinessCustomer</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Customer</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -270,6 +283,67 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>BusinessCustomer</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Customer</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>createQuickActionName</name>
+                    <value>NewAccount</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>lookupFieldName</name>
+                    <value>Case.AccountId</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>updateQuickActionName</name>
+                    <value>Account.UpdateIntermediary</value>
+                </componentInstanceProperties>
+                <componentName>console:relatedRecord</componentName>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Intermediary</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>createQuickActionName</name>
+                    <value>NewAccount</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>lookupFieldName</name>
+                    <value>Case.MediatedCustomer__c</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>updateQuickActionName</name>
+                    <value>Account.Update</value>
+                </componentInstanceProperties>
+                <componentName>console:relatedRecord</componentName>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Intermediary</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>

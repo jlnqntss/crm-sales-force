@@ -1,7 +1,5 @@
 public without sharing class BusinessInsuranceRaterService
 {
-    public static AccountSearchService.Scope accSearchServiceScope = new AccountSearchService.Scope();
-
     public static List<Business_Quotes_Field__mdt> stepMetadataList = new List<Business_Quotes_Field__mdt>();
     public static Map<String, Scope_Setting__mdt> scopeSettings = new Map<String, Scope_Setting__mdt>();
     public static Set<String> requiredFieldsMetadataSet = new Set<String>();
@@ -21,7 +19,6 @@ public without sharing class BusinessInsuranceRaterService
     public static final String DUPLICATE_REQUEST_STATUSCODE = 'DUPLICATE_LEAD_REQUEST';
 
     public static final String QUEUE_NAME = 'Voz_ZurichEmpresas';
-    public static final String ZURICH_LEGAL_ENTITY = '001';
     public static final String SPANISH_PHONE_PREFIX = '+34';
     public static final String PROFILE_NAME = 'ZE User';
 
@@ -88,9 +85,8 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static void initScopeSettings(Request formData)
     {
-        accSearchServiceScope.scope = AccountSearchService.SCOPE_CODE_ZE;
         List<Scope_Setting__mdt> scopeSettingsList = [
-            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c, GenesysCloudQueueName__c
             FROM Scope_Setting__mdt
         ];
 
@@ -129,19 +125,19 @@ public without sharing class BusinessInsuranceRaterService
         if( String.isNotBlank(accountInfo.nationalIdentifier) )
         {
             //Sí tenemos DNI
-            customers = AccountSearchService.findCustomersByDocumentId(new List<String> {accountInfo.nationalIdentifier}, 'N', accSearchServiceScope, ZURICH_LEGAL_ENTITY);
+            customers = AccountSearchService.findCustomersByDocumentId(new List<String> {accountInfo.nationalIdentifier}, 'N', RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.GI);
         }
 
         if( customers.isEmpty() && String.isNotBlank(formData.webEmail) )
         {
             //Buscamos por Email
-            customers = AccountSearchService.findCustomersByEmail(new List<String> {formData.webEmail}, accSearchServiceScope);
+            customers = AccountSearchService.findCustomersByEmail(new List<String> {formData.webEmail}, RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.GI);
         }
 
         if( customers.isEmpty() && String.isNotBlank(formData.webPhone) )
         {
             //Buscamos por Telefono
-            customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {formData.webPhone}, accSearchServiceScope);
+            customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {formData.webPhone}, RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.GI);
         }
 
         if( customers.isEmpty() )
@@ -179,7 +175,7 @@ public without sharing class BusinessInsuranceRaterService
 
         List<Scope__c> scopesByAccountAndScope = new ScopesSelector(
             new Set<String> {'Id', 'AccountId__c', 'Scope__c', 'HasOptedOutOfEmail__c', 'Contactable__c', 'LastContactableModifiedDate__c'}
-            ).selectByAccountIdAndScope(new Set<Id> {relatedAccount.Id}, scope);
+            ).selectByAccountIdAndScope(new Set<Id> {relatedAccount.Id}, RecordsSelector.getScope(scope));
 
         if( scopesByAccountAndScope.isEmpty() )
         {
@@ -319,7 +315,7 @@ public without sharing class BusinessInsuranceRaterService
             NationalId__c = accountInformation.nationalIdentifier,
             NationalIdType__c = (String.isBlank(accountInformation.nationalIdentifier) ? '' : 'N'),
             RecordTypeId = leadRecordTypeId,
-            LegalEntity__c = ZURICH_LEGAL_ENTITY
+            LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI)
             );
 
         // nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
@@ -502,7 +498,7 @@ public without sharing class BusinessInsuranceRaterService
                             PaymentChannelSucc__c = offer.paymentChannelSucc,
                             ValidationErrors__c = offer.validationErrors,
                             ProductId__c = (productCodesToProductMap.containsKey(productCodes) && productCodesToProductMap.get(productCodes) != null ? productCodesToProductMap.get(productCodes).Id : null),
-                            LegalEntity__c = ZURICH_LEGAL_ENTITY
+                            LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI)
                             )
                         );
 
@@ -599,7 +595,7 @@ public without sharing class BusinessInsuranceRaterService
                                         TypeOfWindows__c = risk.typeOfWindows,
                                         Safe__c = risk.strongbox,
                                         recordTypeId = addressRecordTypeId,
-                                        LegalEntity__c = ZURICH_LEGAL_ENTITY
+                                        LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI)
                                         )
                                     );
                             }
@@ -626,8 +622,13 @@ public without sharing class BusinessInsuranceRaterService
             manageCampaignAssignment(offersToCreate, formData.webPhone);
 
             //OPCIONAL - puede que no requiera funcionar con genesys
+            String queueName = 'Voz_ZurichEmpresas';
+            if(currentScopeSettings != null && String.isNotBlank(currentScopeSettings.GenesysCloudQueueName__c))
+            {
+                queueName = currentScopeSettings.GenesysCloudQueueName__c;
+            }
             List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
-            genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
+            genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :queueName];
 
             Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
                 formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now()
@@ -730,13 +731,13 @@ public without sharing class BusinessInsuranceRaterService
                 if( String.isNotBlank(managerInformation.email) )
                 {
                     //Buscamos por Email
-                    managers = AccountSearchService.findCustomersByEmail(new List<String> {managerInformation.email}, accSearchServiceScope);
+                    managers = AccountSearchService.findCustomersByEmail(new List<String> {managerInformation.email}, RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.GI);
                 }
 
                 if( managers.isEmpty() && String.isNotBlank(managerInformation.phone) )
                 {
                     //Buscamos por Telefono
-                    managers = AccountSearchService.findCustomersByEmail(new List<String> {managerInformation.phone}, accSearchServiceScope);
+                    managers = AccountSearchService.findCustomersByEmail(new List<String> {managerInformation.phone}, RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.GI);
                 }
 
                 if( managers.isEmpty() )
@@ -965,7 +966,7 @@ public without sharing class BusinessInsuranceRaterService
             {
                 relations.add(
                     new Relationship__c(
-                        LegalEntity__c = ZURICH_LEGAL_ENTITY,
+                        LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
                         PolicyId__c = policy.Id,
                         PrimaryAccountId__c = currentManager.Id,
                         RecordTypeId = policyRelationshipRecordTypeId,

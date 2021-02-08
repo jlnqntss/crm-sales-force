@@ -18,11 +18,44 @@
         </value>
     </choices>
     <decisions>
+        <description>en nuevo o cerrado no se puede escalar</description>
+        <name>El_caso_es_Nuevo_o_Cerrado</name>
+        <label>¿El caso es Nuevo o Cerrado?</label>
+        <locationX>445</locationX>
+        <locationY>197</locationY>
+        <defaultConnector>
+            <targetReference>Escalado</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SiEsNuevoCerrado</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Caso.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Nuevo</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Caso.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Aviso_Estado_Nuevo_o_Cerrado</targetReference>
+            </connector>
+            <label>Si Es Nuevo/Cerrado</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Depende de lo que ha escogido el usuario</description>
         <name>El_escalado_es_interno</name>
         <label>¿El escalado es interno?</label>
-        <locationX>460</locationX>
-        <locationY>223</locationY>
+        <locationX>590</locationX>
+        <locationY>482</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si</name>
@@ -35,7 +68,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Record_Type_Activity</targetReference>
+                <targetReference>Tiene_el_ManagerId_relleno</targetReference>
             </connector>
             <label>Si</label>
         </rules>
@@ -53,6 +86,32 @@
                 <targetReference>UpdateCaseExternalScaled</targetReference>
             </connector>
             <label>No</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Si el campo ManagerId del User está vacío , no se puede escalar internamente</description>
+        <name>Tiene_el_ManagerId_relleno</name>
+        <label>¿Tiene el ManagerId relleno?</label>
+        <locationX>272</locationX>
+        <locationY>494</locationY>
+        <defaultConnector>
+            <targetReference>Record_Type_Activity</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>ManagerId_Vacio</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$User.ManagerId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Aviso_No_Supervisor</targetReference>
+            </connector>
+            <label>ManagerId Vacío</label>
         </rules>
     </decisions>
     <description>Si el agente aprieta una quick action en el layout se le da a elegir el modo de escalado: interno o externo</description>
@@ -86,8 +145,8 @@
         <description>Se crea una actividad asignada al supervisor y de tipo escalado</description>
         <name>Crear_Activity_Task</name>
         <label>Crear Activity Task</label>
-        <locationX>249</locationX>
-        <locationY>491</locationY>
+        <locationX>378</locationX>
+        <locationY>759</locationY>
         <connector>
             <targetReference>Actualizar_Caso</targetReference>
         </connector>
@@ -131,11 +190,33 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <description>Conseguir el caso que se está intentando escalar para hacer comprobaciones: si el caso está en new o closed no se puede escalar</description>
+        <name>Caso</name>
+        <label>Caso</label>
+        <locationX>449</locationX>
+        <locationY>60</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>El_caso_es_Nuevo_o_Cerrado</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Se necesita una query para conseguir el Id del record type de task</description>
         <name>Record_Type_Activity</name>
         <label>Record Type Activity</label>
-        <locationX>256</locationX>
-        <locationY>333</locationY>
+        <locationX>381</locationX>
+        <locationY>633</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Crear_Activity_Task</targetReference>
@@ -170,8 +251,8 @@
         <description>se actualiza el caso desde el que se apretó la quick action</description>
         <name>Actualizar_Caso</name>
         <label>Actualizar Caso</label>
-        <locationX>245</locationX>
-        <locationY>619</locationY>
+        <locationX>375</locationX>
+        <locationY>878</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -197,8 +278,8 @@
     <recordUpdates>
         <name>UpdateCaseExternalScaled</name>
         <label>Actualizar Caso Escalado Externo</label>
-        <locationX>685</locationX>
-        <locationY>326</locationY>
+        <locationX>815</locationX>
+        <locationY>585</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -223,11 +304,43 @@
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
+        <name>Aviso_Estado_Nuevo_o_Cerrado</name>
+        <label>Aviso: Estado Nuevo o Cerrado</label>
+        <locationX>213</locationX>
+        <locationY>204</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>TXTEstadoNuevoCerrado</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px; color: rgb(10, 0, 157);&quot;&gt;No se puede Escalar un caso cuando tiene estado Nuevo o Cerrado.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Aviso_No_Supervisor</name>
+        <label>Aviso: No Supervisor</label>
+        <locationX>50</locationX>
+        <locationY>487</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>TXTNoSupervisor</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(4, 0, 147); font-size: 14px;&quot;&gt;No puede Escalar Internamente porque no tiene un Supervisor asignado a su Usuario.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <description>Primera pantalla donde se elige entre escalado interno o externo</description>
         <name>Escalado</name>
         <label>Escalado</label>
-        <locationX>466</locationX>
-        <locationY>68</locationY>
+        <locationX>593</locationX>
+        <locationY>362</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -247,10 +360,10 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>76</locationX>
-        <locationY>54</locationY>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
         <connector>
-            <targetReference>Escalado</targetReference>
+            <targetReference>Caso</targetReference>
         </connector>
     </start>
     <status>Active</status>

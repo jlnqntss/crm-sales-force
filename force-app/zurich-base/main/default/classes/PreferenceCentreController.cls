@@ -17,6 +17,7 @@ public with sharing class PreferenceCentreController {
   // Name of the static resource for the normal logo
   @testvisible
   private static final string ZURICH_LOGO_RESOURCE = 'zurich_klinc_logo'; 
+  private static final string CONFIG_LOGO_KEY = 'KlincLogo';
 
   //#Region public classes
 
@@ -63,26 +64,58 @@ public with sharing class PreferenceCentreController {
   {
     string result = null;
     
-    string country_logo = null;
+    string other_logo = null;
+    string logo = null;
+
+    // Get all the configured logos
+    Map<string, string> mapLogos = new Map<string, string>();
+    List<AdminSetupParameter__mdt> settings = [
+        SELECT KeyName__c, Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c LIKE :CONFIG_LOGO_KEY + '%'
+    ];
+    // put it in a map
+    for(Integer i=0,j=settings.size();i<j;i++) {
+        mapLogos.put(settings[i].KeyName__c, settings[i].Value__c);
+    }
 
     // Get the contact to get the country
     Contact contact = getContactData(hashedId);
-    if( contact != null && String.isNotBlank(contact.SourceCountry__c) ) {  // If found
-        // Search for the zurich logos for klinc
-        
-        // get the name of the logo for that country. example: zurich_klinc_logo_germany
-        country_logo = ZURICH_LOGO_RESOURCE + '_' + contact.SourceCountry__c.toLowerCase();
+    if( contact != null ) {  // If found
+        string keyToSearch = null;
+        if( String.isNotBlank(contact.Partner__c) ) { // logos for PARTNERS
+            // get the name of the logo for that partner. example: "KlincLogoOrange Seguros"
+            keyToSearch = CONFIG_LOGO_KEY + contact.Partner__c;
+        } else if(String.isNotBlank(contact.SourceCountry__c)) { // logos for COUNTRIES
+            // get the name of the logo for that country. example: "KlincLogoGermany"
+            keyToSearch = CONFIG_LOGO_KEY + contact.SourceCountry__c;
+        }
+
+        if( keyToSearch != null ) {
+          if( mapLogos.containsKey(keyToSearch) ) {
+            other_logo = mapLogos.get(keyToSearch);
+          }
+        }
     }
 
-    Pagereference page = PageReference.forResource(
-        country_logo != null ? country_logo : ZURICH_LOGO_RESOURCE
-    );
-    if( page != null ) {
-        result = page.getUrl();
-        if( result.contains('?') ) {
-            result = result.subString(0, result.indexOf('?'));
+    // check if the is a country logo
+    if( other_logo != null ) {
+        logo = other_logo;
+    } else { // if there is not
+        // check the default logo
+        if( mapLogos.containsKey(CONFIG_LOGO_KEY) ) {
+            logo = mapLogos.get(CONFIG_LOGO_KEY);
+        }    
+    }
+
+    // if there is a logo, get the static resouce
+    if( logo != null ) {
+        Pagereference page = PageReference.forResource(logo);
+        if( page != null ) {
+            result = page.getUrl();
+            if( result.contains('?') ) {
+                result = result.subString(0, result.indexOf('?'));
+            }
+            result = Url.getSalesforceBaseUrl().toExternalForm() + result;
         }
-        result = Url.getSalesforceBaseUrl().toExternalForm() + result;
     }
 
     return result;
