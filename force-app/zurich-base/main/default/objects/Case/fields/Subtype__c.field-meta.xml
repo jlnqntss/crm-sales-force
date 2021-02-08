@@ -552,8 +552,6 @@
             <valueName>Tareas administrativas</valueName>
         </valueSettings>
         <valueSettings>
-<<<<<<< HEAD
-=======
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
             <valueName>Como contrato mi seguro</valueName>
         </valueSettings>
@@ -582,7 +580,6 @@
             <valueName>Partnership</valueName>
         </valueSettings>
         <valueSettings>
->>>>>>> 7cd2e734fe9721a8eb9a10c54db690fc03f04bd2
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
             <valueName>Descargar App</valueName>
         </valueSettings>
