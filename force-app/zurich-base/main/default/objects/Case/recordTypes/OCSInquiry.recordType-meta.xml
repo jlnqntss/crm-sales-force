@@ -201,7 +201,7 @@
     <picklistValues>
         <picklist>CloseDetail__c</picklist>
         <values>
-            <fullName>Accesos 902</fullName>
+            <fullName>Agravación riesgo</fullName>
             <default>false</default>
         </values>
         <values>
@@ -213,23 +213,23 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Argumentario</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Atención empleado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cambio canal distribución</fullName>
+            <fullName>Atención mediador</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cambio de tomador</fullName>
+            <fullName>Bonificación %28Sinco%2FInbonus%E2%80%A6%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Campaña</fullName>
+            <fullName>Cambio de Condiciones</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambio personas %28Tomador%2Fprop%2E%2Fconductor%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -237,15 +237,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Coberturas</fullName>
+            <fullName>Coberturas %2F Servicio %E2%80%93 Mejor oferta competencia</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Cobro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Conductores agravados</fullName>
             <default>false</default>
         </values>
         <values>
@@ -257,7 +253,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Datos personales</fullName>
+            <fullName>Denegación anulación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -273,23 +269,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Descuento</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Descuentos</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Documentación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Empresa</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Encias</fullName>
             <default>false</default>
         </values>
         <values>
@@ -305,10 +289,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Extorno</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Falta aviso</fullName>
             <default>false</default>
         </values>
@@ -317,19 +297,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Fechas</fullName>
+            <fullName>Garantías%2Fcapitales %28franquicias%2C robo en motos%2C RC Hogar%E2%80%A6%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Fuera plazo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Garantías</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión Compet</fullName>
+            <fullName>Gestión Competencias</fullName>
             <default>false</default>
         </values>
         <values>
@@ -337,7 +309,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión incorrecta comercialización</fullName>
+            <fullName>Impago</fullName>
             <default>false</default>
         </values>
         <values>
@@ -345,7 +317,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Insatisfacción atención</fullName>
+            <fullName>Insatisfacción Atención CC</fullName>
             <default>false</default>
         </values>
         <values>
@@ -353,11 +325,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Insatisfacción procesos</fullName>
+            <fullName>Insatisfacción siniestros</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Insatisfacción siniestros</fullName>
+            <fullName>Llegada a término</fullName>
             <default>false</default>
         </values>
         <values>
@@ -365,7 +337,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Modificación garantías</fullName>
+            <fullName>Matrícula %28anteriormente asegurada%2Fmal rendimiento%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Matrícula asegurada</fullName>
             <default>false</default>
         </values>
         <values>
@@ -373,19 +349,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>No accesible</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>No autoservicio</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No es cliente</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No facilita datos</fullName>
             <default>false</default>
         </values>
         <values>
@@ -397,15 +361,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Precio</fullName>
+            <fullName>Precio - Mejor oferta competencia</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Promo %2F Regalo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Póliza anulada</fullName>
             <default>false</default>
         </values>
         <values>
@@ -421,7 +381,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>SINCO</fullName>
+            <fullName>Retroactividad</fullName>
             <default>false</default>
         </values>
         <values>
@@ -429,7 +389,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Sin INFO</fullName>
+            <fullName>Sin efecto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sin motivo %2F No informado</fullName>
             <default>false</default>
         </values>
         <values>
@@ -449,12 +413,24 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Vehículo %28Valor%2Faccesorios%2Fantigüedad%E2%80%A6%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Vida</fullName>
             <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
         <picklist>CloseResult__c</picklist>
+        <values>
+            <fullName>Derivado - Norma 57%2FAJ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Derivado - Otras Áreas</fullName>
+            <default>false</default>
+        </values>
         <values>
             <fullName>No Realizado</fullName>
             <default>false</default>
@@ -464,15 +440,27 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>No Retenido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - Caída Sistema</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>No realizado - Cliente no interesa</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No realizado - Derivado mediación</fullName>
+            <fullName>No realizado - Derivado otras áreas</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>No realizado - No procede</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No realizado - Otros</fullName>
             <default>false</default>
         </values>
         <values>
@@ -488,7 +476,35 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Realizado - Nueva Póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Pago Tarjeta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Pago Transferencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Reenvío Recibo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Rehabilitación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Retroactividad</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Realizado - Sin impacto en prima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retenido</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -550,7 +566,35 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Carta verde</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Certificados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comisiones</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación mediadores</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documento seguro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Duplicado de Cartera</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Estado gestión</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Factura mediador</fullName>
             <default>false</default>
         </values>
         <values>
@@ -562,11 +606,31 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Informe de Comisiones</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Mi Zurich</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Modelo 347 %2F DEC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>N57 %2F Asesoría Jurídica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Normativa</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Parte DDA</fullName>
             <default>false</default>
         </values>
         <values>
@@ -615,6 +679,10 @@
         </values>
         <values>
             <fullName>Soporte navegación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suplemento póliza</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -786,15 +854,27 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Campañas Proactiva</fullName>
+            <fullName>Campaña</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Campañas Reactivo</fullName>
+            <fullName>Devolución de recibo liquidado mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Embargo Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Embargo Mediador</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Envíos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Felicitación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -810,6 +890,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Incidencias Mi Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Información</fullName>
             <default>false</default>
         </values>
@@ -822,7 +906,11 @@
             <default>true</default>
         </values>
         <values>
-            <fullName>Quejas y reclamaciones</fullName>
+            <fullName>Queja</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reclamación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -858,28 +946,16 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Sugerencias %2Ffelicitaciones</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Tareas administrativas</fullName>
+            <fullName>Sugerencia</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Validación%2F emisión</fullName>
             <default>false</default>
         </values>
-        <values>
-            <fullName>Verificación Riesgo</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
-        <values>
-            <fullName>Calidad</fullName>
-            <default>false</default>
-        </values>
         <values>
             <fullName>Campañas</fullName>
             <default>false</default>
@@ -905,10 +981,6 @@
             <default>true</default>
         </values>
         <values>
-            <fullName>Tareas</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Venta</fullName>
             <default>false</default>
         </values>
@@ -916,231 +988,195 @@
     <picklistValues>
         <picklist>TypeN3__c</picklist>
         <values>
-            <fullName>Activation failure</fullName>
+            <fullName>Anotación Embargo</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Annulment</fullName>
+            <fullName>Anulación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Bank data</fullName>
+            <fullName>Bloqueo %2F Desbloqueo</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>CTL surveys</fullName>
+            <fullName>Bloqueo usuario%2Fcontraseña</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cancellation due to change of mediator</fullName>
+            <fullName>Cambio Idioma en póliza</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Capital decrease</fullName>
+            <fullName>Cambio Tomador</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Capital expansion</fullName>
+            <fullName>Cambio datos Riesgo</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Card payment</fullName>
+            <fullName>Cambio de Actividad</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Certificate</fullName>
+            <fullName>Cambio de Riesgo</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Change taker</fullName>
+            <fullName>Cambio de Roles</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Claims</fullName>
+            <fullName>Campaña</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Complaints</fullName>
+            <fullName>Cartera</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Congratulations</fullName>
+            <fullName>Clausulado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>DDA part</fullName>
+            <fullName>Comisiones</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Dates</fullName>
+            <fullName>Con Oferta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Decrease in guarantees</fullName>
+            <fullName>Conductor</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Digital signature</fullName>
+            <fullName>Datos Bancarios</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Fines</fullName>
+            <fullName>Datos Personales</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>General information</fullName>
+            <fullName>Devolución</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Green card</fullName>
+            <fullName>Emisión</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Incl%2E%2FModif driver %28Main-2º%29</fullName>
+            <fullName>Emisión de Factura Electrónica</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Inconsistency</fullName>
+            <fullName>Fallo activación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Insured management</fullName>
+            <fullName>Fallo registro NO identificado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Issue</fullName>
+            <fullName>Fallo registro identificado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Language change in policy</fullName>
+            <fullName>Fechas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Navigation</fullName>
+            <fullName>Firma digital</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>New offer %28Competences management%29</fullName>
+            <fullName>Forma de Pago</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>New offer %28Support recruitment%29</fullName>
+            <fullName>Garantías %2F Capitales</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No offer</fullName>
+            <fullName>Generación Oferta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Offer %28Modification%29</fullName>
+            <fullName>General</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Offer %28Shipping%29</fullName>
+            <fullName>Inconsistencia</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Payments</fullName>
+            <fullName>Infraseguro</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Personal information</fullName>
+            <fullName>Levantamiento de Embargo</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Policy</fullName>
+            <fullName>Modificación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Policy supplement</fullName>
+            <fullName>Multas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Proteo client</fullName>
+            <fullName>Navegación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Receipt</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Record failure NOT identified</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Record failure identified</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Regular</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Regularization</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Resend receipt</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Return</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Risk change</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Rule 57</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Secure document</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Suggestion</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Transfer payment</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Undefined</fullName>
+            <fullName>No definido</fullName>
             <default>true</default>
         </values>
         <values>
-            <fullName>Underinsurance</fullName>
+            <fullName>Nueva Producción</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Urgent</fullName>
+            <fullName>Oferta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>User %2F password lock</fullName>
+            <fullName>Pagos</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Warranty extension</fullName>
+            <fullName>Queja</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Way to pay</fullName>
+            <fullName>Recibo</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Web</fullName>
+            <fullName>Reclamación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>With offer %28Management skills%29</fullName>
+            <fullName>Regularización</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>With offer %28Recruitment support%29</fullName>
+            <fullName>Rehabilitación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retención</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sin Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zona Zurich</fullName>
             <default>false</default>
         </values>
     </picklistValues>
