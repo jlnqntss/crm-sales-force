@@ -23,7 +23,7 @@ OR( ISBLANK(ContactId ) , SuppliedEmail = Contact.Email ) )</formula>
             <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;), Partner__c = &quot;Orange Seguros&quot;,Owner:Queue.QueueName = &quot;Customer Care - Orange&quot;,
 OR( ISBLANK(ContactId ) , SuppliedEmail = Contact.Email ) )</formula>
             <notifyCcRecipients>false</notifyCcRecipients>
-            <senderEmail>noreply.klinc@zurich.com</senderEmail>
+            <senderEmail>noreply.orangeseguros@zurich.com</senderEmail>
             <senderName>Orange Seguros by Zurich</senderName>
             <template>Life_Orange_Templates/Web_to_case_response_Orange_HTML</template>
         </ruleEntry>
@@ -79,7 +79,7 @@ OR( ISBLANK(ContactId ) , SuppliedEmail = Contact.Email ) )</formula>
                 <value>Customer Care - Orange</value>
             </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
-            <senderEmail>noreply.klinc@zurich.com</senderEmail>
+            <senderEmail>noreply.orangeseguros@zurich.com</senderEmail>
             <senderName>Orange Seguros by Zurich</senderName>
             <template>Life_Orange_Templates/Email_to_case_response_Orange_HTML</template>
         </ruleEntry>
