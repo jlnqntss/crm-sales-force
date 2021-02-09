@@ -213,7 +213,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                     Database.rollback(sp); 
                     // System.Debug('----------------------- Exception');
                     // System.Debug(ex);
-                    ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ex.getMessage() + ': ' + ex.getStackTraceString(), CLASS_NAME);
+                    ErrorLogUtil.commitError(ex, CLASS_NAME, offers[0].Id);
                 }
 
                 // System.debug('----------------------------  DML limit after: ' + Limits.getDmlStatements());
