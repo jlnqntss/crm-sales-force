@@ -171,7 +171,7 @@
         <field>ContactPointPhone.IsPrimary</field>
         <readable>true</readable>
     </fieldPermissions>
-        <fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>ContactRequest.GenesysCloudQueueId__c</field>
         <readable>true</readable>
@@ -270,7 +270,7 @@
     <label>Gestión CS</label>
     <objectPermissions>
         <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
+        <allowDelete>false</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
@@ -353,10 +353,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>EmailSingle</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ManageCases</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
