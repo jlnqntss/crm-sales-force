@@ -105,6 +105,71 @@
                 <label>GDPR</label>
             </value>
             <value>
+                <fullName>Carta verde</fullName>
+                <default>false</default>
+                <label>Carta verde</label>
+            </value>
+            <value>
+                <fullName>Certificados</fullName>
+                <default>false</default>
+                <label>Certificados</label>
+            </value>
+            <value>
+                <fullName>Comisiones</fullName>
+                <default>false</default>
+                <label>Comisiones</label>
+            </value>
+            <value>
+                <fullName>Documentación mediadores</fullName>
+                <default>false</default>
+                <label>Documentación mediadores</label>
+            </value>
+            <value>
+                <fullName>Documento seguro</fullName>
+                <default>false</default>
+                <label>Documento seguro</label>
+            </value>
+            <value>
+                <fullName>Duplicado de Cartera</fullName>
+                <default>false</default>
+                <label>Duplicado de Cartera</label>
+            </value>
+            <value>
+                <fullName>Factura mediador</fullName>
+                <default>false</default>
+                <label>Factura mediador</label>
+            </value>
+            <value>
+                <fullName>Informe de Comisiones</fullName>
+                <default>false</default>
+                <label>Informe de Comisiones</label>
+            </value>
+            <value>
+                <fullName>Modelo 347 / DEC</fullName>
+                <default>false</default>
+                <label>Modelo 347 / DEC</label>
+            </value>
+            <value>
+                <fullName>N57 / Asesoría Jurídica</fullName>
+                <default>false</default>
+                <label>N57 / Asesoría Jurídica</label>
+            </value>
+            <value>
+                <fullName>Normativa</fullName>
+                <default>false</default>
+                <label>Normativa</label>
+            </value>
+            <value>
+                <fullName>Parte DDA</fullName>
+                <default>false</default>
+                <label>Parte DDA</label>
+            </value>
+            <value>
+                <fullName>Suplemento póliza</fullName>
+                <default>false</default>
+                <label>Suplemento póliza</label>
+            </value>
+            <value>
                 <fullName>definidos</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -124,279 +189,221 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Bono</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Mi Zurich</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
-            <controllingFieldValue>No offer</controllingFieldValue>
-            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
-            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
-            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Oferta</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Póliza Viaje</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Recibo</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Póliza</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Productos</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Estado gestión</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Garantías/capitales asegurados</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Precio renovación póliza</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Riesgo asegurado</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Recibo -Estado</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Recibo – Importe</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Recibo - Fecha</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Peritación</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Siniestros</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Soporte navegación</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>GDPR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Carta verde</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Certificados</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Comisiones</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Documentación mediadores</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Documento seguro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Duplicado de Cartera</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Factura mediador</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Informe de Comisiones</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Modelo 347 / DEC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>N57 / Asesoría Jurídica</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Normativa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Parte DDA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Suplemento póliza</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

@@ -4,7 +4,7 @@
         <fullName>Case automatic response</fullName>
         <active>true</active>
         <ruleEntry>
-            <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),SourceCountry__c = &quot;France&quot;,Owner:Queue.QueueName = &quot;Customer Care - France&quot;, 
+            <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),SourceCountry__c = &quot;France&quot;,ISPICKVAL (Form_type__c, &quot;&quot;),Owner:Queue.QueueName = &quot;Customer Care - France&quot;, 
   OR( ISBLANK(ContactId ) ,  SuppliedEmail =  Contact.Email ) )</formula>
             <notifyCcRecipients>false</notifyCcRecipients>
             <senderEmail>noreply.klinc@zurich.com</senderEmail>

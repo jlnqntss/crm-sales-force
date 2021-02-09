@@ -10,7 +10,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        <controllingField>TypeN3__c</controllingField>
+        <controllingField>Subtype__c</controllingField>
         <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
@@ -40,11 +40,6 @@
                 <label>Realizado - Sin impacto en prima</label>
             </value>
             <value>
-                <fullName>No realizado - Derivado mediación</fullName>
-                <default>false</default>
-                <label>No realizado - Derivado mediación</label>
-            </value>
-            <value>
                 <fullName>No realizado - No procede</fullName>
                 <default>false</default>
                 <label>No realizado - No procede</label>
@@ -58,6 +53,77 @@
                 <fullName>No realizado - Cliente no interesa</fullName>
                 <default>false</default>
                 <label>No realizado - Cliente no interesa</label>
+            </value>
+            <value>
+                <fullName>No realizado - Otros</fullName>
+                <default>false</default>
+                <label>No realizado - Otros</label>
+            </value>
+            <value>
+                <fullName>No realizado - Caída Sistema</fullName>
+                <default>false</default>
+                <label>No realizado - Caída Sistema</label>
+            </value>
+            <value>
+                <fullName>No realizado - Derivado otras áreas</fullName>
+                <default>false</default>
+                <label>No realizado - Derivado otras áreas</label>
+            </value>
+            <value>
+                <fullName>Retenido</fullName>
+                <default>false</default>
+                <label>Retenido</label>
+            </value>
+            <value>
+                <fullName>No Retenido</fullName>
+                <default>false</default>
+                <label>No Retenido</label>
+            </value>
+            <value>
+                <fullName>Realizado - Reenvío Recibo</fullName>
+                <default>false</default>
+                <label>Realizado - Reenvío Recibo</label>
+            </value>
+            <value>
+                <fullName>Realizado - Pago Tarjeta</fullName>
+                <default>false</default>
+                <label>Realizado - Pago Tarjeta</label>
+            </value>
+            <value>
+                <fullName>Realizado - Pago Transferencia</fullName>
+                <default>false</default>
+                <label>Realizado - Pago Transferencia</label>
+            </value>
+            <value>
+                <fullName>Derivado - Norma 57/AJ</fullName>
+                <default>false</default>
+                <label>Derivado - Norma 57/AJ</label>
+            </value>
+            <value>
+                <fullName>Derivado - Otras Áreas</fullName>
+                <default>false</default>
+                <label>Derivado - Otras Áreas</label>
+            </value>
+            <value>
+                <fullName>Realizado - Rehabilitación</fullName>
+                <default>false</default>
+                <label>Realizado - Rehabilitación</label>
+            </value>
+            <value>
+                <fullName>Realizado - Retroactividad</fullName>
+                <default>false</default>
+                <label>Realizado - Retroactividad</label>
+            </value>
+            <value>
+                <fullName>Realizado - Nueva Póliza</fullName>
+                <default>false</default>
+                <label>Realizado - Nueva Póliza</label>
+            </value>
+            <value>
+                <fullName>No realizado - Derivado mediación</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>No realizado - Derivado mediación</label>
             </value>
             <value>
                 <fullName>definidos</fullName>
@@ -79,304 +145,162 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>Suggestion</controllingFieldValue>
-            <controllingFieldValue>Congratulations</controllingFieldValue>
-            <controllingFieldValue>Resend receipt</controllingFieldValue>
-            <controllingFieldValue>Cancellation due to change of mediator</controllingFieldValue>
-            <controllingFieldValue>Card payment</controllingFieldValue>
-            <controllingFieldValue>Change taker</controllingFieldValue>
-            <controllingFieldValue>Transfer payment</controllingFieldValue>
-            <controllingFieldValue>Risk change</controllingFieldValue>
-            <controllingFieldValue>Rule 57</controllingFieldValue>
-            <controllingFieldValue>Dates</controllingFieldValue>
-            <controllingFieldValue>CTL surveys</controllingFieldValue>
-            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
-            <controllingFieldValue>Warranty extension</controllingFieldValue>
-            <controllingFieldValue>Decrease in guarantees</controllingFieldValue>
-            <controllingFieldValue>Capital expansion</controllingFieldValue>
-            <controllingFieldValue>Capital decrease</controllingFieldValue>
-            <controllingFieldValue>Incl./Modif driver (Main-2º)</controllingFieldValue>
-            <controllingFieldValue>Undefined</controllingFieldValue>
-            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
-            <controllingFieldValue>No offer</controllingFieldValue>
-            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
-            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
-            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
-            <controllingFieldValue>Regular</controllingFieldValue>
-            <controllingFieldValue>Urgent</controllingFieldValue>
-            <controllingFieldValue>Annulment</controllingFieldValue>
-            <controllingFieldValue>Way to pay</controllingFieldValue>
-            <controllingFieldValue>Bank data</controllingFieldValue>
-            <controllingFieldValue>Return</controllingFieldValue>
-            <controllingFieldValue>Insured management</controllingFieldValue>
-            <controllingFieldValue>Personal information</controllingFieldValue>
-            <controllingFieldValue>Language change in policy</controllingFieldValue>
-            <controllingFieldValue>Regularization</controllingFieldValue>
-            <controllingFieldValue>Underinsurance</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Policy</controllingFieldValue>
-            <controllingFieldValue>Offer (Shipping)</controllingFieldValue>
-            <controllingFieldValue>Green card</controllingFieldValue>
-            <controllingFieldValue>Secure document</controllingFieldValue>
-            <controllingFieldValue>Receipt</controllingFieldValue>
-            <controllingFieldValue>DDA part</controllingFieldValue>
-            <controllingFieldValue>Policy supplement</controllingFieldValue>
-            <controllingFieldValue>Certificate</controllingFieldValue>
-            <controllingFieldValue>Complaints</controllingFieldValue>
-            <controllingFieldValue>Claims</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Fines</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
+            <controllingFieldValue>Embargo Cliente</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>Realizado</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>Suggestion</controllingFieldValue>
-            <controllingFieldValue>Congratulations</controllingFieldValue>
-            <controllingFieldValue>Resend receipt</controllingFieldValue>
-            <controllingFieldValue>Cancellation due to change of mediator</controllingFieldValue>
-            <controllingFieldValue>Card payment</controllingFieldValue>
-            <controllingFieldValue>Change taker</controllingFieldValue>
-            <controllingFieldValue>Transfer payment</controllingFieldValue>
-            <controllingFieldValue>Risk change</controllingFieldValue>
-            <controllingFieldValue>Rule 57</controllingFieldValue>
-            <controllingFieldValue>Dates</controllingFieldValue>
-            <controllingFieldValue>CTL surveys</controllingFieldValue>
-            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
-            <controllingFieldValue>Warranty extension</controllingFieldValue>
-            <controllingFieldValue>Decrease in guarantees</controllingFieldValue>
-            <controllingFieldValue>Capital expansion</controllingFieldValue>
-            <controllingFieldValue>Capital decrease</controllingFieldValue>
-            <controllingFieldValue>Incl./Modif driver (Main-2º)</controllingFieldValue>
-            <controllingFieldValue>Undefined</controllingFieldValue>
-            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
-            <controllingFieldValue>No offer</controllingFieldValue>
-            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
-            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
-            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
-            <controllingFieldValue>Regular</controllingFieldValue>
-            <controllingFieldValue>Urgent</controllingFieldValue>
-            <controllingFieldValue>Annulment</controllingFieldValue>
-            <controllingFieldValue>Way to pay</controllingFieldValue>
-            <controllingFieldValue>Bank data</controllingFieldValue>
-            <controllingFieldValue>Return</controllingFieldValue>
-            <controllingFieldValue>Insured management</controllingFieldValue>
-            <controllingFieldValue>Personal information</controllingFieldValue>
-            <controllingFieldValue>Language change in policy</controllingFieldValue>
-            <controllingFieldValue>Regularization</controllingFieldValue>
-            <controllingFieldValue>Underinsurance</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Policy</controllingFieldValue>
-            <controllingFieldValue>Offer (Shipping)</controllingFieldValue>
-            <controllingFieldValue>Green card</controllingFieldValue>
-            <controllingFieldValue>Secure document</controllingFieldValue>
-            <controllingFieldValue>Receipt</controllingFieldValue>
-            <controllingFieldValue>DDA part</controllingFieldValue>
-            <controllingFieldValue>Policy supplement</controllingFieldValue>
-            <controllingFieldValue>Certificate</controllingFieldValue>
-            <controllingFieldValue>Complaints</controllingFieldValue>
-            <controllingFieldValue>Claims</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Fines</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
+            <controllingFieldValue>Embargo Cliente</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Rehabilitación</controllingFieldValue>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>No Realizado</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Record failure NOT identified</controllingFieldValue>
-            <controllingFieldValue>Navigation</controllingFieldValue>
-            <controllingFieldValue>User / password lock</controllingFieldValue>
-            <controllingFieldValue>Inconsistency</controllingFieldValue>
-            <controllingFieldValue>Digital signature</controllingFieldValue>
-            <controllingFieldValue>Activation failure</controllingFieldValue>
-            <controllingFieldValue>Proteo client</controllingFieldValue>
-            <controllingFieldValue>Suggestion</controllingFieldValue>
-            <controllingFieldValue>Congratulations</controllingFieldValue>
-            <controllingFieldValue>Resend receipt</controllingFieldValue>
-            <controllingFieldValue>Cancellation due to change of mediator</controllingFieldValue>
-            <controllingFieldValue>Card payment</controllingFieldValue>
-            <controllingFieldValue>Change taker</controllingFieldValue>
-            <controllingFieldValue>Transfer payment</controllingFieldValue>
-            <controllingFieldValue>Risk change</controllingFieldValue>
-            <controllingFieldValue>Rule 57</controllingFieldValue>
-            <controllingFieldValue>Dates</controllingFieldValue>
-            <controllingFieldValue>CTL surveys</controllingFieldValue>
-            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
-            <controllingFieldValue>Warranty extension</controllingFieldValue>
-            <controllingFieldValue>Decrease in guarantees</controllingFieldValue>
-            <controllingFieldValue>Capital expansion</controllingFieldValue>
-            <controllingFieldValue>Capital decrease</controllingFieldValue>
-            <controllingFieldValue>Incl./Modif driver (Main-2º)</controllingFieldValue>
-            <controllingFieldValue>Undefined</controllingFieldValue>
-            <controllingFieldValue>With offer (Recruitment support)</controllingFieldValue>
-            <controllingFieldValue>No offer</controllingFieldValue>
-            <controllingFieldValue>New offer (Support recruitment)</controllingFieldValue>
-            <controllingFieldValue>With offer (Management skills)</controllingFieldValue>
-            <controllingFieldValue>New offer (Competences management)</controllingFieldValue>
-            <controllingFieldValue>Regular</controllingFieldValue>
-            <controllingFieldValue>Urgent</controllingFieldValue>
-            <controllingFieldValue>Annulment</controllingFieldValue>
-            <controllingFieldValue>Way to pay</controllingFieldValue>
-            <controllingFieldValue>Bank data</controllingFieldValue>
-            <controllingFieldValue>Return</controllingFieldValue>
-            <controllingFieldValue>Insured management</controllingFieldValue>
-            <controllingFieldValue>Personal information</controllingFieldValue>
-            <controllingFieldValue>Language change in policy</controllingFieldValue>
-            <controllingFieldValue>Regularization</controllingFieldValue>
-            <controllingFieldValue>Underinsurance</controllingFieldValue>
-            <controllingFieldValue>General information</controllingFieldValue>
-            <controllingFieldValue>Policy</controllingFieldValue>
-            <controllingFieldValue>Offer (Shipping)</controllingFieldValue>
-            <controllingFieldValue>Green card</controllingFieldValue>
-            <controllingFieldValue>Secure document</controllingFieldValue>
-            <controllingFieldValue>Receipt</controllingFieldValue>
-            <controllingFieldValue>DDA part</controllingFieldValue>
-            <controllingFieldValue>Policy supplement</controllingFieldValue>
-            <controllingFieldValue>Certificate</controllingFieldValue>
-            <controllingFieldValue>Complaints</controllingFieldValue>
-            <controllingFieldValue>Claims</controllingFieldValue>
-            <controllingFieldValue>Issue</controllingFieldValue>
-            <controllingFieldValue>Web</controllingFieldValue>
-            <controllingFieldValue>Payments</controllingFieldValue>
-            <controllingFieldValue>Fines</controllingFieldValue>
-            <controllingFieldValue>Record failure identified</controllingFieldValue>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
+            <controllingFieldValue>Embargo Cliente</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>No Realizado -Pol. Seguridad</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Change taker</controllingFieldValue>
-            <controllingFieldValue>Risk change</controllingFieldValue>
-            <controllingFieldValue>Dates</controllingFieldValue>
-            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
-            <controllingFieldValue>Warranty extension</controllingFieldValue>
-            <controllingFieldValue>Decrease in guarantees</controllingFieldValue>
-            <controllingFieldValue>Capital expansion</controllingFieldValue>
-            <controllingFieldValue>Capital decrease</controllingFieldValue>
-            <controllingFieldValue>Incl./Modif driver (Main-2º)</controllingFieldValue>
-            <controllingFieldValue>Way to pay</controllingFieldValue>
-            <controllingFieldValue>Bank data</controllingFieldValue>
-            <controllingFieldValue>Return</controllingFieldValue>
-            <controllingFieldValue>Insured management</controllingFieldValue>
-            <controllingFieldValue>Personal information</controllingFieldValue>
-            <controllingFieldValue>Language change in policy</controllingFieldValue>
-            <controllingFieldValue>Regularization</controllingFieldValue>
-            <controllingFieldValue>Underinsurance</controllingFieldValue>
+            <controllingFieldValue>Rehabilitación</controllingFieldValue>
+            <valueName>Realizado - Rehabilitación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rehabilitación</controllingFieldValue>
+            <valueName>Realizado - Retroactividad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rehabilitación</controllingFieldValue>
+            <valueName>Realizado - Nueva Póliza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>Realizado - Impacto en prima</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Change taker</controllingFieldValue>
-            <controllingFieldValue>Risk change</controllingFieldValue>
-            <controllingFieldValue>Dates</controllingFieldValue>
-            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
-            <controllingFieldValue>Warranty extension</controllingFieldValue>
-            <controllingFieldValue>Decrease in guarantees</controllingFieldValue>
-            <controllingFieldValue>Capital expansion</controllingFieldValue>
-            <controllingFieldValue>Capital decrease</controllingFieldValue>
-            <controllingFieldValue>Incl./Modif driver (Main-2º)</controllingFieldValue>
-            <controllingFieldValue>Way to pay</controllingFieldValue>
-            <controllingFieldValue>Bank data</controllingFieldValue>
-            <controllingFieldValue>Return</controllingFieldValue>
-            <controllingFieldValue>Insured management</controllingFieldValue>
-            <controllingFieldValue>Personal information</controllingFieldValue>
-            <controllingFieldValue>Language change in policy</controllingFieldValue>
-            <controllingFieldValue>Regularization</controllingFieldValue>
-            <controllingFieldValue>Underinsurance</controllingFieldValue>
+            <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>Realizado - Sin impacto en prima</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Change taker</controllingFieldValue>
-            <controllingFieldValue>Risk change</controllingFieldValue>
-            <controllingFieldValue>Dates</controllingFieldValue>
-            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
-            <controllingFieldValue>Warranty extension</controllingFieldValue>
-            <controllingFieldValue>Decrease in guarantees</controllingFieldValue>
-            <controllingFieldValue>Capital expansion</controllingFieldValue>
-            <controllingFieldValue>Capital decrease</controllingFieldValue>
-            <controllingFieldValue>Incl./Modif driver (Main-2º)</controllingFieldValue>
-            <controllingFieldValue>Way to pay</controllingFieldValue>
-            <controllingFieldValue>Bank data</controllingFieldValue>
-            <controllingFieldValue>Return</controllingFieldValue>
-            <controllingFieldValue>Insured management</controllingFieldValue>
-            <controllingFieldValue>Personal information</controllingFieldValue>
-            <controllingFieldValue>Language change in policy</controllingFieldValue>
-            <controllingFieldValue>Regularization</controllingFieldValue>
-            <controllingFieldValue>Underinsurance</controllingFieldValue>
-            <valueName>No realizado - Derivado mediación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Change taker</controllingFieldValue>
-            <controllingFieldValue>Risk change</controllingFieldValue>
-            <controllingFieldValue>Dates</controllingFieldValue>
-            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
-            <controllingFieldValue>Warranty extension</controllingFieldValue>
-            <controllingFieldValue>Decrease in guarantees</controllingFieldValue>
-            <controllingFieldValue>Capital expansion</controllingFieldValue>
-            <controllingFieldValue>Capital decrease</controllingFieldValue>
-            <controllingFieldValue>Incl./Modif driver (Main-2º)</controllingFieldValue>
-            <controllingFieldValue>Way to pay</controllingFieldValue>
-            <controllingFieldValue>Bank data</controllingFieldValue>
-            <controllingFieldValue>Return</controllingFieldValue>
-            <controllingFieldValue>Insured management</controllingFieldValue>
-            <controllingFieldValue>Personal information</controllingFieldValue>
-            <controllingFieldValue>Language change in policy</controllingFieldValue>
-            <controllingFieldValue>Regularization</controllingFieldValue>
-            <controllingFieldValue>Underinsurance</controllingFieldValue>
+            <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>No realizado - No procede</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Change taker</controllingFieldValue>
-            <controllingFieldValue>Risk change</controllingFieldValue>
-            <controllingFieldValue>Dates</controllingFieldValue>
-            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
-            <controllingFieldValue>Warranty extension</controllingFieldValue>
-            <controllingFieldValue>Decrease in guarantees</controllingFieldValue>
-            <controllingFieldValue>Capital expansion</controllingFieldValue>
-            <controllingFieldValue>Capital decrease</controllingFieldValue>
-            <controllingFieldValue>Incl./Modif driver (Main-2º)</controllingFieldValue>
-            <controllingFieldValue>Way to pay</controllingFieldValue>
-            <controllingFieldValue>Bank data</controllingFieldValue>
-            <controllingFieldValue>Return</controllingFieldValue>
-            <controllingFieldValue>Insured management</controllingFieldValue>
-            <controllingFieldValue>Personal information</controllingFieldValue>
-            <controllingFieldValue>Language change in policy</controllingFieldValue>
-            <controllingFieldValue>Regularization</controllingFieldValue>
-            <controllingFieldValue>Underinsurance</controllingFieldValue>
+            <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>No realizado - Rechazo técnico</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Change taker</controllingFieldValue>
-            <controllingFieldValue>Risk change</controllingFieldValue>
-            <controllingFieldValue>Dates</controllingFieldValue>
-            <controllingFieldValue>Offer (Modification)</controllingFieldValue>
-            <controllingFieldValue>Warranty extension</controllingFieldValue>
-            <controllingFieldValue>Decrease in guarantees</controllingFieldValue>
-            <controllingFieldValue>Capital expansion</controllingFieldValue>
-            <controllingFieldValue>Capital decrease</controllingFieldValue>
-            <controllingFieldValue>Incl./Modif driver (Main-2º)</controllingFieldValue>
-            <controllingFieldValue>Way to pay</controllingFieldValue>
-            <controllingFieldValue>Bank data</controllingFieldValue>
-            <controllingFieldValue>Return</controllingFieldValue>
-            <controllingFieldValue>Insured management</controllingFieldValue>
-            <controllingFieldValue>Personal information</controllingFieldValue>
-            <controllingFieldValue>Language change in policy</controllingFieldValue>
-            <controllingFieldValue>Regularization</controllingFieldValue>
-            <controllingFieldValue>Underinsurance</controllingFieldValue>
+            <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>No realizado - Cliente no interesa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>No realizado - Otros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>No realizado - Caída Sistema</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>No realizado - Derivado otras áreas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención</controllingFieldValue>
+            <valueName>Retenido</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención</controllingFieldValue>
+            <valueName>No Retenido</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Realizado - Reenvío Recibo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Realizado - Pago Tarjeta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Realizado - Pago Transferencia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Derivado - Norma 57/AJ</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Derivado - Otras Áreas</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
