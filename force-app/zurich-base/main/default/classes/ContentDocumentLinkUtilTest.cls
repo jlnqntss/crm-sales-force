@@ -87,6 +87,7 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -152,6 +153,7 @@ private with sharing class ContentDocumentLinkUtilTest
     static void test_createDocument_not_linked_with_emailMessage_ok()
     {
         Case relatedCase = new Case();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         String csvContent = '3;20;;;1;;2;3;4;;\n';
@@ -250,6 +252,7 @@ private with sharing class ContentDocumentLinkUtilTest
     {
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -351,6 +354,7 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -470,6 +474,7 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -583,6 +588,7 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -647,6 +653,7 @@ private with sharing class ContentDocumentLinkUtilTest
     static void test_update_delete_contentDocumentLink_ok()
     {
         Case relatedCase = new Case();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         String csvContent = '3;20;;;1;;2;3;4;;\n';
@@ -730,6 +737,7 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -841,6 +849,7 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -953,6 +962,7 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
@@ -1064,6 +1074,7 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
         EmailMessage emailMessage = new EmailMessage();
