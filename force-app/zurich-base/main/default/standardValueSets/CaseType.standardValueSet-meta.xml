@@ -67,18 +67,8 @@
         <label>Campañas</label>
     </standardValue>
     <standardValue>
-        <fullName>Tareas</fullName>
-        <default>false</default>
-        <label>Tareas</label>
-    </standardValue>
-    <standardValue>
         <fullName>Gestión Mediador</fullName>
         <default>false</default>
         <label>Gestión Mediador</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Calidad</fullName>
-        <default>false</default>
-        <label>Calidad</label>
     </standardValue>
 </StandardValueSet>
