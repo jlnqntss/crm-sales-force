@@ -497,14 +497,7 @@
         <connector>
             <targetReference>HegeoPrePolicyIdHasChanged</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6)</filterLogic>
-        <filters>
-            <field>RecordTypeId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>0120E000001fNamQAE</stringValue>
-            </value>
-        </filters>
+        <filterLogic>1 OR 2 OR 3 OR 4 OR 5</filterLogic>
         <filters>
             <field>HegeoOfferId__c</field>
             <operator>IsNull</operator>
