@@ -41,7 +41,7 @@
         <criteriaItems>
             <field>LegalEntity__c</field>
             <operation>equals</operation>
-            <value>Zurich</value>
+            <value>001</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
