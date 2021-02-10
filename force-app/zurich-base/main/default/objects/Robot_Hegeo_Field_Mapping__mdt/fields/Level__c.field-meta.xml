@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Level__c</fullName>
+    <description>Correspondiente a los diferentes campos para cada tipo en Salesforce</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Level</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Type</fullName>
+                <default>true</default>
+                <label>Type</label>
+            </value>
+            <value>
+                <fullName>Subtype__c</fullName>
+                <default>false</default>
+                <label>Subtype__c</label>
+            </value>
+            <value>
+                <fullName>TypeN3__c</fullName>
+                <default>false</default>
+                <label>TypeN3__c</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

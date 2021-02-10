@@ -812,5 +812,21 @@
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <valueName>Rehabilitación</valueName>
         </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
+            <valueName>Complaints</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Quejas y reclamaciones</controllingFieldValue>
+            <valueName>Claims</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
+            <valueName>Suggestion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sugerencias /felicitaciones</controllingFieldValue>
+            <valueName>Congratulations</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>
