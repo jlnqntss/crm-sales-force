@@ -45,9 +45,9 @@ public class FlowSearchAccountsByEmailAction {
         @InvocableVariable(label='Supplied Email'  description='Email del caso' required=true)
         public String caseEmail;
 
-        @InvocableVariable(label='Scope' description='Scope del caso' required=true)
-        public String caseScope;
-
+        //202102 ya no es relevante usar el Scope del caso, se va a buscar en Scope.All
+        //@InvocableVariable(label='Scope' description='Scope del caso' required=true)
+        //public String caseScope;
     }
 
     public class AccountEmailResult

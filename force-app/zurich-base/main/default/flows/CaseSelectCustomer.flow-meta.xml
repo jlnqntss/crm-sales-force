@@ -15,12 +15,6 @@
             <targetReference>LogError</targetReference>
         </faultConnector>
         <inputParameters>
-            <name>caseScope</name>
-            <value>
-                <elementReference>Case.Scope__c</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>caseEmail</name>
             <value>
                 <elementReference>Case.SuppliedEmail</elementReference>
