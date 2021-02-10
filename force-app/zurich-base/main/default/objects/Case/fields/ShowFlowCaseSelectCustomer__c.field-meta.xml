@@ -3,7 +3,7 @@
     <fullName>ShowFlowCaseSelectCustomer__c</fullName>
     <description>Si está relleno el Email-to-case y vacía la cuenta, se muestra el flow para elegir el customer (OCS)</description>
     <externalId>false</externalId>
-    <formula>IF(SuppliedEmail != NULL &amp;&amp; AccountId  == NULL, TRUE, FALSE)</formula>
+    <formula>IF(SuppliedEmail != NULL &amp;&amp; AccountId == NULL &amp;&amp; RecordType.DeveloperName == &apos;OCSInquiry&apos;, TRUE, FALSE)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Show Flow Case Select Customer</label>
     <trackHistory>false</trackHistory>
