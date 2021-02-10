@@ -12,18 +12,18 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Other areas Third parties</masterLabel>
-        <translation>Incidencia Sistemas</translation>
+        <translation>Otras áreas Terceros</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Other areas Zurich</masterLabel>
-        <translation>Supervisor</translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>Supervisor</masterLabel>
         <translation>Otras áreas Zurich</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Supervisor</masterLabel>
+        <translation>Supervisor</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Systems Incidence</masterLabel>
-        <translation>Otras áreas Terceros</translation>
+        <translation>Incidencia Sistemas</translation>
     </picklistValues>
 </CustomFieldTranslation>
