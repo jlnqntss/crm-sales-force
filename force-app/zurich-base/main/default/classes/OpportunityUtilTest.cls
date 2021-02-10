@@ -108,4 +108,39 @@ private class OpportunityUtilTest
             System.assertEquals('Test', opty.StageName, 'No se actualizado la etapa de la oferta');
         }
     }
+
+    /**
+     * Test detection of the change of the AccountId of the offer
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 04/02/2021
+     */
+    @isTest
+    static void test_detectOpportunityAccountChange_ok()
+    {
+        // Get 10 accounts
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 10];
+        System.assertEquals(10, accounts.size(), 'There should be 10 accounts');
+        // Get 10 offers
+        List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1);
+        insert optys;
+        // Create new 10 accounts
+        List<Account> accountsOther = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 10);
+        insert accountsOther;
+        // Change the offers AccountId to the new accounts
+        for(Integer i=0,j=optys.size();i<j;i++) {
+            optys[i].AccountId = accountsOther[i].Id;
+        }
+
+        // do the update 
+        Test.startTest();
+        update optys;
+        Test.stopTest();
+
+        // Check that the OldAccountId__c field is not null
+        List<Opportunity> optysUpdated = [
+            SELECT Id, OldAccountId__c FROM Opportunity WHERE Id IN :optys AND OldAccountId__c != null
+        ];
+        System.assertEquals(10, optysUpdated.size(), 'There should be 10 offers updated');
+    }
 }

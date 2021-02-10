@@ -43,4 +43,24 @@ public class OpportunityUtil
         }
 
     }
+
+    /**
+     * Detect a change in the AccountId field of the offer
+     * In a batch we will check if the old account is a lead and if so we will merge the lead with the client that is
+     * coming from INFO (ocs-920)
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 03/02/2021
+     * @trigger beforeUpdate
+     */
+    public static void detectOpportunityAccountChange(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
+    {
+        for(Integer i=0,j=newList.size();i<j;i++) {
+            Opportunity o = newList[i];
+
+            if( o.AccountId != oldMap.get(o.Id).AccountId ) {
+                o.OldAccountId__c = oldMap.get(o.Id).AccountId;
+            }
+        }
+    }
 }
