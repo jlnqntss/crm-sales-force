@@ -38,7 +38,6 @@ private class FlowSearchAccountsByEmailActionTest {
         List<FlowSearchAccountsByEmailAction.AccountEmailRequest> accountEmailRequests = new List<FlowSearchAccountsByEmailAction.AccountEmailRequest>();
         FlowSearchAccountsByEmailAction.AccountEmailRequest accountRequest = new FlowSearchAccountsByEmailAction.AccountEmailRequest();
         accountRequest.caseEmail = emailsToSearch[0]; //un email que esté dentro de los que encuentra la SOSL
-        accountRequest.caseScope = null;//null equivale a todo el scope
         accountEmailRequests.add(accountRequest);
         List<FlowSearchAccountsByEmailAction.AccountEmailResult> matchedRecords = FlowSearchAccountsByEmailAction.execute(accountEmailRequests);
         Test.stopTest();
@@ -67,7 +66,6 @@ private class FlowSearchAccountsByEmailActionTest {
         List<FlowSearchAccountsByEmailAction.AccountEmailRequest> accountEmailRequests = new List<FlowSearchAccountsByEmailAction.AccountEmailRequest>();
         FlowSearchAccountsByEmailAction.AccountEmailRequest accountRequest = new FlowSearchAccountsByEmailAction.AccountEmailRequest();
         accountRequest.caseEmail = 'noexisteesteemail@entrelosbuscados.com'; //email que no existe en lo que devuelve el SOSL
-        accountRequest.caseScope = null;//null equivale a todo el scope
         accountEmailRequests.add(accountRequest);
         List<FlowSearchAccountsByEmailAction.AccountEmailResult> matchedRecords = FlowSearchAccountsByEmailAction.execute(accountEmailRequests);
         Test.stopTest();
