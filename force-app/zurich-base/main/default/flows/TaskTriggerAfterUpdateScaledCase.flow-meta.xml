@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>sirve para que le aparezca al agente que llevaba el caso un aviso en la campanita</description>
+        <name>Notificar_Agente</name>
+        <label>Notificar Agente</label>
+        <locationX>925</locationX>
+        <locationY>526</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>CustomNotification.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>NotificationBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>NotificationTitle</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>NotificationRecipients</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderId</name>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>Caso.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <apiVersion>50.0</apiVersion>
+    <assignments>
+        <name>AssignRecipients</name>
+        <label>Assign Recipients</label>
+        <locationX>787</locationX>
+        <locationY>526</locationY>
+        <assignmentItems>
+            <assignToReference>NotificationRecipients</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Caso.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Notificar_Agente</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Se_ha_Cerrado_la_Activity</name>
         <label>¿Se ha Cerrado la Activity?</label>
@@ -24,6 +85,16 @@
             <label>Si</label>
         </rules>
     </decisions>
+    <formulas>
+        <name>NotificationBody</name>
+        <dataType>String</dataType>
+        <expression>&apos;Escalado Interno finalizado en el Caso &apos;+ {!Caso.CaseNumber}</expression>
+    </formulas>
+    <formulas>
+        <name>NotificationTitle</name>
+        <dataType>String</dataType>
+        <expression>&apos;Escalado Interno finalizado en el Caso &apos; + {!Caso.CaseNumber}</expression>
+    </formulas>
     <interviewLabel>Task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After update Scaled Case</label>
     <processMetadataValues>
@@ -45,11 +116,56 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Caso</name>
+        <label>Caso</label>
+        <locationX>631</locationX>
+        <locationY>529</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AssignRecipients</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>CustomNotification</name>
+        <label>Custom Notification</label>
+        <locationX>501</locationX>
+        <locationY>496</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Caso</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>InternalScaledCaseCompleted</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>UpdateCase</name>
         <label>Actualizar Caso</label>
         <locationX>529</locationX>
         <locationY>314</locationY>
+        <connector>
+            <targetReference>CustomNotification</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -98,4 +214,12 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <description>Es el Task-&gt;Case-&gt;OwnerId</description>
+        <name>NotificationRecipients</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
 </Flow>
