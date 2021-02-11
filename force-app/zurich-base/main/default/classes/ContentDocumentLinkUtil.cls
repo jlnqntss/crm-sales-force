@@ -111,57 +111,64 @@ public without sharing class ContentDocumentLinkUtil
 
             if(isActiveTrigger)
             {
-                Map<Id, ContentDocumentLink> linkedEntityToDocumentMap = new Map<Id, ContentDocumentLink>();
-
-                for(ContentDocumentLink docLink: newList)
+                try
                 {
-                    linkedEntityToDocumentMap.put(docLink.LinkedEntityId, docLink);
-                }
+                    Map<Id, ContentDocumentLink> linkedEntityToDocumentMap = new Map<Id, ContentDocumentLink>();
 
-                //Recuperamos los emails en los que hemos recibido los documentos adjuntos
-                Set<Id> caseRecordTypeIds = new Set<Id>();
-                for(String recordTypeName: caseRecordTypeNames)
-                {
-                    caseRecordTypeIds.add(Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeName).getRecordTypeId());
-                }
-                relatedEmailMessages = new Map<Id, EmailMessage>(
-                    [SELECT Id, Subject, CreatedDate, ParentId FROM EmailMessage WHERE Id IN: linkedEntityToDocumentMap.keySet() AND Parent.RecordTypeId IN: caseRecordTypeIds]
-                );
-
-                if(!relatedEmailMessages.isEmpty())
-                {
-                    Set<Id> contentDocumentIds = new Set<Id>();
-                    for(EmailMessage relatedEmail: relatedEmailMessages.values())
+                    for(ContentDocumentLink docLink: newList)
                     {
-                        if(linkedEntityToDocumentMap.containsKey(relatedEmail.Id))
-                        {
-                            //Es Email
-                            emailToDocumentMap.put(relatedEmail.Id, linkedEntityToDocumentMap.get(relatedEmail.Id));
-                            caseToEmailMap.put(relatedEmail.ParentId, relatedEmail);
-
-                            documentToEmailMap.put(linkedEntityToDocumentMap.get(relatedEmail.Id).Id, relatedEmail);
-
-                            contentDocumentIds.add(linkedEntityToDocumentMap.get(relatedEmail.Id).ContentDocumentId);
-                        }
+                        linkedEntityToDocumentMap.put(docLink.LinkedEntityId, docLink);
                     }
 
-                    Map<Id, ContentDocument> contentDocuments = new Map<Id, ContentDocument>([
-                        SELECT Id, Title, LatestPublishedVersion.VersionData 
-                        FROM ContentDocument
-                        WHERE Title =: documentTitle AND FileExtension =: fileExtension AND Id IN: contentDocumentIds
-                    ]);
-
-                    for(ContentDocumentLink cdl: newList)
+                    //Recuperamos los emails en los que hemos recibido los documentos adjuntos
+                    Set<Id> caseRecordTypeIds = new Set<Id>();
+                    for(String recordTypeName: caseRecordTypeNames)
                     {
-                        if(contentDocuments.containsKey(cdl.ContentDocumentId))
-                        {
-                            contentDocumentInformationMap.put(cdl.Id, contentDocuments.get(cdl.ContentDocumentId));
-                        }
+                        caseRecordTypeIds.add(Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeName).getRecordTypeId());
                     }
-
-                    relatedCases = new Map<Id, Case>(
-                        [SELECT Id FROM Case WHERE Id IN: caseToEmailMap.keySet()]
+                    relatedEmailMessages = new Map<Id, EmailMessage>(
+                        [SELECT Id, Subject, CreatedDate, ParentId FROM EmailMessage WHERE Id IN: linkedEntityToDocumentMap.keySet() AND Parent.RecordTypeId IN: caseRecordTypeIds]
                     );
+
+                    if(!relatedEmailMessages.isEmpty())
+                    {
+                        Set<Id> contentDocumentIds = new Set<Id>();
+                        for(EmailMessage relatedEmail: relatedEmailMessages.values())
+                        {
+                            if(linkedEntityToDocumentMap.containsKey(relatedEmail.Id))
+                            {
+                                //Es Email
+                                emailToDocumentMap.put(relatedEmail.Id, linkedEntityToDocumentMap.get(relatedEmail.Id));
+                                caseToEmailMap.put(relatedEmail.ParentId, relatedEmail);
+
+                                documentToEmailMap.put(linkedEntityToDocumentMap.get(relatedEmail.Id).Id, relatedEmail);
+
+                                contentDocumentIds.add(linkedEntityToDocumentMap.get(relatedEmail.Id).ContentDocumentId);
+                            }
+                        }
+
+                        Map<Id, ContentDocument> contentDocuments = new Map<Id, ContentDocument>([
+                            SELECT Id, Title, LatestPublishedVersion.VersionData 
+                            FROM ContentDocument
+                            WHERE Title =: documentTitle AND FileExtension =: fileExtension AND Id IN: contentDocumentIds
+                        ]);
+
+                        for(ContentDocumentLink cdl: newList)
+                        {
+                            if(contentDocuments.containsKey(cdl.ContentDocumentId))
+                            {
+                                contentDocumentInformationMap.put(cdl.Id, contentDocuments.get(cdl.ContentDocumentId));
+                            }
+                        }
+
+                        relatedCases = new Map<Id, Case>(
+                            [SELECT Id FROM Case WHERE Id IN: caseToEmailMap.keySet()]
+                        );
+                    }
+                }
+                catch(Exception ex)
+                {
+                    ErrorLogUtil.commitError(ex,'ContentDocumentLinkUtil', 'getRelatedEmailMessages');
                 }
             }
         }
@@ -180,122 +187,133 @@ public without sharing class ContentDocumentLinkUtil
 
     private static void setRelatedEmailMessageAndCase(ContentDocumentLink docInformation)
     {
-        //Solo procesamos si hemos encontrado información relacionada con el ContentDocument
-        if( contentDocumentInformationMap.containsKey(docInformation.Id) && contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion != null 
-            && contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion.VersionData != null )
+        try 
         {
-            if(relatedEmailMessages.containsKey(docInformation.LinkedEntityId))
+            //Solo procesamos si hemos encontrado información relacionada con el ContentDocument
+            if( contentDocumentInformationMap.containsKey(docInformation.Id) && contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion != null 
+                && contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion.VersionData != null )
             {
-                //1. Actualizamos fromAddress y toAddress del EmailMessage
-                EmailMessage relatedEmail = relatedEmailMessages.get(docInformation.LinkedEntityId);
-
-                //Recuperamos los datos del csv y dividimos por cada línea que contiene el documento
-                String csvAsString = contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion.VersionData.toString();
-                List<String> csvFileLines = csvAsString.split('\n');
-
-                String fromAddress = '';
-                String toAddress = '';
-
-                //Si existen más de 2 líneas (0: tipificación del caso, 1: from, 2: to)
-                if(csvFileLines.size() > 2)
+                if(relatedEmailMessages.containsKey(docInformation.LinkedEntityId))
                 {
-                    //Extraemos el email fromAddress
-                    if(String.isNotBlank(csvFileLines.get(FROM_ADDRESS_CSV_INDEX)))
-                    {
-                        String fromAddressFromCSV = csvFileLines.get(FROM_ADDRESS_CSV_INDEX).trim();
-                        if(fromAddressFromCSV.contains('<'))
-                        {
-                            fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length()-1).substringAfter('<');
-                        }
-                        else
-                        {
-                            fromAddress = fromAddressFromCSV;
-                        }
-                    }
+                    //1. Actualizamos fromAddress y toAddress del EmailMessage
+                    EmailMessage relatedEmail = relatedEmailMessages.get(docInformation.LinkedEntityId);
 
-                    if(String.isNotBlank(fromAddress))
-                    {
-                        relatedEmail.FromAddress = fromAddress;
-                    }
+                    //Recuperamos los datos del csv y dividimos por cada línea que contiene el documento
+                    String csvAsString = contentDocumentInformationMap.get(docInformation.Id).LatestPublishedVersion.VersionData.toString();
+                    List<String> csvFileLines = csvAsString.split('\n');
 
-                    //Extraemos el email toAddress
-                    List<String> toAddressList = new List<String>();
-                    if(String.isNotBlank(csvFileLines.get(TO_ADDRESS_CSV_INDEX)))
+                    String fromAddress = '';
+                    String toAddress = '';
+
+                    //Si existen más de 2 líneas (0: tipificación del caso, 1: from, 2: to)
+                    if(csvFileLines.size() > 2)
                     {
-                        List<String> toAddressListFromCSV = csvFileLines.get(TO_ADDRESS_CSV_INDEX).split(',');
-                        for(String toAddressFromCSV: toAddressListFromCSV)
+                        //Extraemos el email fromAddress
+                        if(String.isNotBlank(csvFileLines.get(FROM_ADDRESS_CSV_INDEX)))
                         {
-                            if(toAddressFromCSV.contains('<'))
+                            String fromAddressFromCSV = csvFileLines.get(FROM_ADDRESS_CSV_INDEX).trim();
+                            if(fromAddressFromCSV.contains('<'))
                             {
-                                toAddressList.add(toAddressFromCSV.trim().substring(0,toAddressFromCSV.length()-1).substringAfter('<'));
+                                fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length()-1).substringAfter('<');
                             }
-                            else 
+                            else
                             {
-                                toAddressList.add(toAddressFromCSV.trim());
+                                fromAddress = fromAddressFromCSV;
                             }
                         }
-                    }
 
-                    if(toAddressList != null && !toAddressList.isEmpty())
-                    {
-                        relatedEmail.ToAddress = toAddressList.toString();
-                    }
-
-                    emailMessagesToUpdate.add(relatedEmail);
-
-                    //2. Actualizamos los campos correspondientes al caso
-                    if(relatedEmail.ParentId != null && relatedCases.containsKey(relatedEmail.ParentId))
-                    {
-                        //Dividimos la información de la tipificación del caso por el separador configurado
-                        List<String> types = csvFileLines.get(CASE_FIELDS_CSV_INDEX).trim().split(csvSeparator);
-
-                        if (!types.isEmpty() && types.size() >= caseTypeFieldsMetadataList.size()) 
+                        if(String.isNotBlank(fromAddress))
                         {
-                            //Incluimos el Id del caso para deserializar
-                            Map<String, String> caseFieldsMap = new Map<String, String>{
-                                'Id' => relatedCases.get(relatedEmail.ParentId).Id
-                            };
+                            relatedEmail.FromAddress = fromAddress;
+                        }
 
-                            //Extraemos la combinación de los tipos de casos (2 primeras posiciones del listado de valores)
-                            String typeAndSubtypeCombination = types.get(0) + types.get(1);
-
-                            //caseFieldsMap.putAll(get(typeAndSubtypeCombination))
-                            if(caseTypesMapping.containsKey(typeAndSubtypeCombination))
+                        //Extraemos el email toAddress
+                        List<String> toAddressList = new List<String>();
+                        if(String.isNotBlank(csvFileLines.get(TO_ADDRESS_CSV_INDEX)))
+                        {
+                            List<String> toAddressListFromCSV = csvFileLines.get(TO_ADDRESS_CSV_INDEX).split(',');
+                            for(String toAddressFromCSV: toAddressListFromCSV)
                             {
-                                caseFieldsMap.putAll(caseTypesMapping.get(typeAndSubtypeCombination));
+                                if(toAddressFromCSV.contains('<'))
+                                {
+                                    toAddressList.add(toAddressFromCSV.trim().substring(0,toAddressFromCSV.length()-1).substringAfter('<'));
+                                }
+                                else 
+                                {
+                                    toAddressList.add(toAddressFromCSV.trim());
+                                }
+                            }
+                        }
+
+                        if(toAddressList != null && !toAddressList.isEmpty())
+                        {
+                            relatedEmail.ToAddress = toAddressList.toString();
+                        }
+
+                        emailMessagesToUpdate.add(relatedEmail);
+
+                        //2. Actualizamos los campos correspondientes al caso
+                        if(relatedEmail.ParentId != null && relatedCases.containsKey(relatedEmail.ParentId))
+                        {
+                            //Dividimos la información de la tipificación del caso por el separador configurado
+                            List<String> types = csvFileLines.get(CASE_FIELDS_CSV_INDEX).trim().split(csvSeparator);
+
+                            if (!types.isEmpty() && types.size() >= caseTypeFieldsMetadataList.size()) 
+                            {
+                                //Incluimos el Id del caso para deserializar
+                                Map<String, String> caseFieldsMap = new Map<String, String>{
+                                    'Id' => relatedCases.get(relatedEmail.ParentId).Id
+                                };
+
+                                //Extraemos la combinación de los tipos de casos (2 primeras posiciones del listado de valores)
+                                String typeAndSubtypeCombination = types.get(0) + types.get(1);
+
+                                //caseFieldsMap.putAll(get(typeAndSubtypeCombination))
+                                if(caseTypesMapping.containsKey(typeAndSubtypeCombination))
+                                {
+                                    caseFieldsMap.putAll(caseTypesMapping.get(typeAndSubtypeCombination));
+                                }
+                                else
+                                {
+                                    ErrorLogUtil.commitError(
+                                        'warning',
+                                        'La combinación de valores '+ typeAndSubtypeCombination +' no existe. EmailMessage Id: ' + relatedEmail.Id,
+                                        'ContentDocumentLinkUtil'
+                                    );    
+                                }
+
+                                //Recorremos la lista ordenada de campos a tipificar, 
+                                //así podemos acceder directamente por posición al valor recibido
+                                for(Integer i=caseTypeFieldsMetadataList.size(); i<caseFieldsList.size(); i++)
+                                {
+                                    //Este if controla que no falle la ejecución si recibimos menos valores de los esperados
+                                    //o si el valor viene vacio
+                                    if(i<types.size() && String.isNotBlank(types.get(i)))
+                                    {
+                                        String value = types.get(i);
+                                        //En este caso no hace falta traducir el valor y se incluye directamente
+                                        caseFieldsMap.put(caseFieldsList.get(i), value);
+                                    }
+                                }
+
+                                casesToUpdate.add((Case) JSON.deserialize(
+                                    JSON.serialize(caseFieldsMap), Case.class)
+                                );
                             }
                             else
                             {
                                 ErrorLogUtil.commitError(
                                     'warning',
-                                    'La combinación de valores '+ typeAndSubtypeCombination +' no existe. EmailMessage Id: ' + relatedEmail.Id,
+                                    'La información correspondiente a la tipificación de los casos está vacia o es menor de lo esperado. EmailMessage Id: ' + relatedEmail.Id,
                                     'ContentDocumentLinkUtil'
-                                );    
+                                );
                             }
-
-                            //Recorremos la lista ordenada de campos a tipificar, 
-                            //así podemos acceder directamente por posición al valor recibido
-                            for(Integer i=caseTypeFieldsMetadataList.size(); i<caseFieldsList.size(); i++)
-                            {
-                                //Este if controla que no falle la ejecución si recibimos menos valores de los esperados
-                                //o si el valor viene vacio
-                                if(i<types.size() && String.isNotBlank(types.get(i)))
-                                {
-                                    String value = types.get(i);
-                                    //En este caso no hace falta traducir el valor y se incluye directamente
-                                    caseFieldsMap.put(caseFieldsList.get(i), value);
-                                }
-                            }
-
-                            casesToUpdate.add((Case) JSON.deserialize(
-                                JSON.serialize(caseFieldsMap), Case.class)
-                            );
                         }
                         else
                         {
                             ErrorLogUtil.commitError(
                                 'warning',
-                                'La información correspondiente a la tipificación de los casos está vacia o es menor de lo esperado. EmailMessage Id: ' + relatedEmail.Id,
+                                'No existe caso relacionado con el email para procesar la información. EmailMessage Id: ' + relatedEmail.Id,
                                 'ContentDocumentLinkUtil'
                             );
                         }
@@ -304,20 +322,16 @@ public without sharing class ContentDocumentLinkUtil
                     {
                         ErrorLogUtil.commitError(
                             'warning',
-                            'No existe caso relacionado con el email para procesar la información. EmailMessage Id: ' + relatedEmail.Id,
+                            'El documento adjunto cumplía las condiciones establecidas para ser procesado, pero tiene menos información de la esperada para procesar. EmailMessage Id: ' + relatedEmail.Id,
                             'ContentDocumentLinkUtil'
                         );
                     }
                 }
-                else
-                {
-                    ErrorLogUtil.commitError(
-                        'warning',
-                        'El documento adjunto cumplía las condiciones establecidas para ser procesado, pero tiene menos información de la esperada para procesar. EmailMessage Id: ' + relatedEmail.Id,
-                        'ContentDocumentLinkUtil'
-                    );
-                }
             }
+        }
+        catch(Exception ex)
+        {
+            ErrorLogUtil.commitError(ex, 'ContentDocumentLinkUtil.setRelatedEmailMessageAndCase', docInformation.LinkedEntityId);
         }
     }
 
@@ -325,12 +339,24 @@ public without sharing class ContentDocumentLinkUtil
     {
         if(!emailMessagesToUpdate.isEmpty())
         {
-            update emailMessagesToUpdate;
+            try {
+                update emailMessagesToUpdate;   
+            }
+            catch(Exception ex)
+            {
+                ErrorLogUtil.commitError(ex,'ContentDocumentLinkUtil', 'updateRelatedRecords - emailMessagesToUpdate');
+            }
         }
 
         if(!casesToUpdate.isEmpty())
         {
-            update casesToUpdate;
+            try {
+                update casesToUpdate; 
+            }
+            catch(Exception ex)
+            {
+                ErrorLogUtil.commitError(ex,'ContentDocumentLinkUtil', 'updateRelatedRecords - casesToUpdate');
+            }
         }
     }
 }
