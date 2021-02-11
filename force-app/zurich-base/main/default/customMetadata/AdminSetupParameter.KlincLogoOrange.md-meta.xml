@@ -12,6 +12,6 @@
     </values>
     <values>
         <field>Value__c</field>
-        <value xsi:type="xsd:string">zurich_klinc_logo</value>
+        <value xsi:type="xsd:string">zurich_klinc_logo_orange</value>
     </values>
 </CustomMetadata>
