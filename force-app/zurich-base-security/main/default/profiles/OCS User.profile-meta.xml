@@ -11490,6 +11490,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-OCS Contact</layout>
+        <recordType>Contact.AgentMediator</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-OCS Contact</layout>
         <recordType>Contact.Contact</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -13506,8 +13510,14 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <recordType>Contact.Contact</recordType>
+        <personAccountDefault>true</personAccountDefault>
+        <recordType>Contact.AgentMediator</recordType>
         <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.Contact</recordType>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
