@@ -11,6 +11,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     private static final string USERNAME_SERVER = '@zurich-es.com';
     private static final string EMAIL_ENCODING = 'UTF-8';
     private static final string TIMEZONE = 'Europe/Paris';
+    private static final string LANGUAGE_SPANISH = 'es';
+    private static final Boolean SERVICE_CLOUD_USER = true;
     // Text to be used in the field AuthMapping__mdt.Permission__c to reference Aministrator profile
     @testvisible
     private static final string PROFILE_ADMIN = 'SystemAdmin';
@@ -104,7 +106,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         u.profileId                   = profileId;
         u.alias                       = data.username.left(8);
         u.CommunityNickname           = data.username;
-        u.languagelocalekey           = UserInfo.getLanguage();
+        u.languagelocalekey           = LANGUAGE_SPANISH; //UserInfo.getLanguage();
+        u.UserPermissionsSupportUser  = SERVICE_CLOUD_USER;
         u.localesidkey                = UserInfo.getLocale();
         u.emailEncodingKey            = EMAIL_ENCODING;
         u.timeZoneSidKey              = TIMEZONE;        
