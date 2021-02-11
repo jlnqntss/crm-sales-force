@@ -211,14 +211,18 @@ public without sharing class ContentDocumentLinkUtil
                         //Extraemos el email fromAddress
                         if(String.isNotBlank(csvFileLines.get(FROM_ADDRESS_CSV_INDEX)))
                         {
-                            String fromAddressFromCSV = csvFileLines.get(FROM_ADDRESS_CSV_INDEX).trim();
-                            if(fromAddressFromCSV.contains('<'))
+                            List<String> fromAddressLineValues = csvFileLines.get(FROM_ADDRESS_CSV_INDEX).split(csvSeparator);
+                            if(fromAddressLineValues != null && !fromAddressLineValues.isEmpty())
                             {
-                                fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length()-1).substringAfter('<');
-                            }
-                            else
-                            {
-                                fromAddress = fromAddressFromCSV;
+                                String fromAddressFromCSV = fromAddressLineValues.get(0).trim();
+                                if(fromAddressFromCSV.contains('<'))
+                                {
+                                    fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length()-1).substringAfter('<');
+                                }
+                                else
+                                {
+                                    fromAddress = fromAddressFromCSV;
+                                }
                             }
                         }
 
@@ -231,16 +235,20 @@ public without sharing class ContentDocumentLinkUtil
                         List<String> toAddressList = new List<String>();
                         if(String.isNotBlank(csvFileLines.get(TO_ADDRESS_CSV_INDEX)))
                         {
-                            List<String> toAddressListFromCSV = csvFileLines.get(TO_ADDRESS_CSV_INDEX).split(',');
-                            for(String toAddressFromCSV: toAddressListFromCSV)
+                            List<String> toAddressLineValues = csvFileLines.get(TO_ADDRESS_CSV_INDEX).split(csvSeparator);
+                            if(toAddressLineValues != null && !toAddressLineValues.isEmpty())
                             {
-                                if(toAddressFromCSV.contains('<'))
+                                List<String> toAddressListFromCSV = toAddressLineValues.get(0).split(',');
+                                for(String toAddressFromCSV: toAddressListFromCSV)
                                 {
-                                    toAddressList.add(toAddressFromCSV.trim().substring(0,toAddressFromCSV.length()-1).substringAfter('<'));
-                                }
-                                else 
-                                {
-                                    toAddressList.add(toAddressFromCSV.trim());
+                                    if(toAddressFromCSV.contains('<'))
+                                    {
+                                        toAddressList.add(toAddressFromCSV.trim().substring(0,toAddressFromCSV.length()-1).substringAfter('<'));
+                                    }
+                                    else 
+                                    {
+                                        toAddressList.add(toAddressFromCSV.trim());
+                                    }
                                 }
                             }
                         }
