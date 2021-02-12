@@ -318,15 +318,15 @@ public without sharing class GenesysInteractionsService
         (
             new List<Schema.SobjectField>
             {
-                Policy__c.Id, 
-                Policy__c.Name, 
-                Policy__c.Intermediary_Code__c, 
+                Policy__c.Id,
+                Policy__c.Name,
+                Policy__c.Intermediary_Code__c,
                 Policy__c.PolicyType__c
             },
             new List<String>
             {
-                'ProductId__r.GroupDescription__c', 
-                'Partner__r.PartnerSector__c', 
+                'ProductId__r.GroupDescription__c',
+                'Partner__r.PartnerSector__c',
                 'Partner__r.PartnerSFCode__c'
             }
         );
@@ -362,9 +362,9 @@ public without sharing class GenesysInteractionsService
         (
             new List<Schema.SobjectField>
             {
-                Claim__c.Id, 
-                Claim__c.Name, 
-                Claim__c.Status__c, 
+                Claim__c.Id,
+                Claim__c.Name,
+                Claim__c.Status__c,
                 Claim__c.ClaimOwnerTeamCode__c,
                 Claim__c.ClaimOwnerNationalId__c,
                 Claim__c.ClaimOwnerName__c,
@@ -373,13 +373,13 @@ public without sharing class GenesysInteractionsService
             },
             new List<String>
             {
-                'InsuredObject__r.RegistrationNumber__c', 
-                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
+                'InsuredObject__r.RegistrationNumber__c',
+                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
                 'Policy__r.Intermediary_Code__c', 'Policy__r.Name'
             }
         );
-        
+
         List<Claim__c> claims = new List<Claim__c>();
 
         switch on request.searchType
@@ -499,6 +499,7 @@ public without sharing class GenesysInteractionsService
 
             results.screenPopRecordId = intermediary.Id;
             results.territoryCode = intermediary.ZoneCode__c;
+            results.phone = String.isBlank(intermediary.MainMobilePhone__c)? intermediary.Phone : intermediary.MainMobilePhone__c;
 
             results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c));
         }
@@ -617,15 +618,15 @@ public without sharing class GenesysInteractionsService
         (
             new List<Schema.SobjectField>
             {
-                Policy__c.Id, 
-                Policy__c.Name, 
-                Policy__c.Intermediary_Code__c, 
+                Policy__c.Id,
+                Policy__c.Name,
+                Policy__c.Intermediary_Code__c,
                 Policy__c.PolicyType__c
             },
             new List<String>
             {
-                'ProductId__r.GroupDescription__c', 
-                'Partner__r.PartnerSector__c', 
+                'ProductId__r.GroupDescription__c',
+                'Partner__r.PartnerSector__c',
                 'Partner__r.PartnerSFCode__c'
             }
         );
@@ -652,11 +653,11 @@ public without sharing class GenesysInteractionsService
         (
             new List<Schema.SobjectField>
             {
-                Claim__c.Id, 
-                Claim__c.Name, 
-                Claim__c.Status__c, 
-                Claim__c.OwnerId, 
-                Claim__c.ClaimType__c, 
+                Claim__c.Id,
+                Claim__c.Name,
+                Claim__c.Status__c,
+                Claim__c.OwnerId,
+                Claim__c.ClaimType__c,
                 Claim__c.ClaimOwnerTeamCode__c,
                 Claim__c.ClaimOwnerNationalId__c,
                 Claim__c.ClaimOwnerName__c,
@@ -665,8 +666,8 @@ public without sharing class GenesysInteractionsService
             },
             new List<String>
             {
-                'InsuredObject__r.RegistrationNumber__c', 
-                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c', 
+                'InsuredObject__r.RegistrationNumber__c',
+                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
                 'Policy__r.Intermediary_Code__c', 'Policy__r.Name'
             }
@@ -759,7 +760,7 @@ public without sharing class GenesysInteractionsService
         public String toId { get; set; }
         public String queueId { get; set; }
         public String lookFor { get; set; }
-        public String scope 
+        public String scope
         {
             get
             {
@@ -873,6 +874,7 @@ public without sharing class GenesysInteractionsService
         public transient List<Contact> names;
         public transient List<SObject> relatedRecords;
         public String screenPopRecordId;
+        public String phone;
         public String territoryCode;
         public Integer totalPolicies;
         public Integer totalQuotes;
@@ -1096,7 +1098,7 @@ public without sharing class GenesysInteractionsService
         public String partnerSector;
         public String intermediaryCode;
         public String intermediaryChannel;
-        
+
         public ActivePolicy(){}
         public ActivePolicy(Policy__c policy)
         {
@@ -1216,9 +1218,9 @@ public without sharing class GenesysInteractionsService
         public String id;
         public String ownerTeam;
         public String ownerFullname;
-        public String ownerNationalId;    
-        public String status;      
-        public String carRegistration;      
+        public String ownerNationalId;
+        public String status;
+        public String carRegistration;
         public String claimNumber;
         public ActivePolicy policy;
         public String policyType
@@ -1228,7 +1230,7 @@ public without sharing class GenesysInteractionsService
                 return policy != null? policy.type:'';
             }
         }
-        
+
         public OpenedClaim() {}
         public OpenedClaim(Claim__c claim)
         {
