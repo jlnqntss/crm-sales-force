@@ -4,7 +4,7 @@
         <description>Se buscar al mejor gestor posible para el correo electrónico, en base al cliente al que pertenece al email y sus casos abiertos</description>
         <name>FindOwnerIdAction</name>
         <label>Buscar Gestor Preferente</label>
-        <locationX>940</locationX>
+        <locationX>1290</locationX>
         <locationY>324</locationY>
         <actionName>GenesysFindBestAgentAction</actionName>
         <actionType>apex</actionType>
@@ -44,7 +44,7 @@
         <description>Llamada al Apex invocable que contiene la llamada al Genesys Cloud RoutingWork</description>
         <name>RouteEmailAction</name>
         <label>Enrutar Email a Flow Mediadores en Genesys Cloud</label>
-        <locationX>951</locationX>
+        <locationX>1301</locationX>
         <locationY>577</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
@@ -110,7 +110,7 @@
     <assignments>
         <name>AdminChoice</name>
         <label>Decisión Admin</label>
-        <locationX>50</locationX>
+        <locationX>400</locationX>
         <locationY>639</locationY>
         <assignmentItems>
             <assignToReference>GenesysId</assignToReference>
@@ -127,7 +127,7 @@
         <description>Agregar Skills al listado de skills y asignar Cola de Genesys dependiendo del buzón de entrada de email-to-case</description>
         <name>DefaultChoice</name>
         <label>Decisión por defecto</label>
-        <locationX>343</locationX>
+        <locationX>693</locationX>
         <locationY>98</locationY>
         <assignmentItems>
             <assignToReference>GenesysId</assignToReference>
@@ -141,16 +141,48 @@
         </connector>
     </assignments>
     <assignments>
+        <name>DTBCNAdmChoice</name>
+        <label>Decisión DTBCN Adm</label>
+        <locationX>276</locationX>
+        <locationY>183</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Email_CSM_ADM_DTBCN</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Agregar Skills al listado de skills y a la Cola Genesys dependiendo del buzón de entrada de email-to-case</description>
-        <name>DTBCNChoice</name>
-        <label>Decisión DTBCN</label>
-        <locationX>337</locationX>
+        <name>DTBCNPartChoice</name>
+        <label>Decisión DTBCN Part</label>
+        <locationX>687</locationX>
         <locationY>238</locationY>
         <assignmentItems>
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_CSM_DTBCN</stringValue>
+                <stringValue>Email_CSM_PART_DTBCN</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>DTBILAdmChoice</name>
+        <label>Decisión DTBIL Adm</label>
+        <locationX>50</locationX>
+        <locationY>487</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Email_CSM_ADM_DTBIL</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -159,15 +191,31 @@
     </assignments>
     <assignments>
         <description>Agregar Skills al listado de skills y Cola Genesys dependiendo del buzón de entrada de email-to-case</description>
-        <name>DTBILChoice</name>
-        <label>Decisión DTBIL</label>
-        <locationX>339</locationX>
+        <name>DTBILPartChoice</name>
+        <label>Decisión DTBIL Part</label>
+        <locationX>689</locationX>
         <locationY>351</locationY>
         <assignmentItems>
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_CSM_DTBIL</stringValue>
+                <stringValue>Email_CSM_PART_DTBIL</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>DTMADAdmChoice</name>
+        <label>Decisión DTMAD Adm</label>
+        <locationX>216</locationX>
+        <locationY>71</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Email_CSM_ADM_DTMAD</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -176,15 +224,31 @@
     </assignments>
     <assignments>
         <description>Asignar la Cola Genesys dependiendo del buzón de entrada email-to-case</description>
-        <name>DTMADChoice</name>
-        <label>Decisión DTMAD</label>
-        <locationX>282</locationX>
+        <name>DTMADPartChoice</name>
+        <label>Decisión DTMAD Part</label>
+        <locationX>632</locationX>
         <locationY>493</locationY>
         <assignmentItems>
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_CSM_DTMAD</stringValue>
+                <stringValue>Email_CSM_PART_DTMAD</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>DTSEVAdmChoice</name>
+        <label>Decisión DTSEV Adm</label>
+        <locationX>178</locationX>
+        <locationY>568</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Email_CSM_ADM_DTSEV</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -193,15 +257,31 @@
     </assignments>
     <assignments>
         <description>Asignar Cola Genesys dependiendo del buzón de entrada email-to-case</description>
-        <name>DTSEVChoice</name>
-        <label>Decisión DTSEV</label>
-        <locationX>283</locationX>
+        <name>DTSEVPartChoice</name>
+        <label>Decisión DTSEV Part</label>
+        <locationX>633</locationX>
         <locationY>624</locationY>
         <assignmentItems>
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_CSM_DTSEV</stringValue>
+                <stringValue>Email_CSM_PART_DTSEV</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>RouteEmailAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>DTVALAdmChoice</name>
+        <label>Decisión DTVAL Adm</label>
+        <locationX>110</locationX>
+        <locationY>343</locationY>
+        <assignmentItems>
+            <assignToReference>GenesysId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Email_CSM_ADM_DTVAL</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -210,15 +290,15 @@
     </assignments>
     <assignments>
         <description>Asignar Cola Genesys dependiendo del buzón de entrada email-to-case</description>
-        <name>DTVALChoice</name>
-        <label>Decisión DTVAL</label>
-        <locationX>280</locationX>
+        <name>DTVALPartChoice</name>
+        <label>Decisión DTVAL Part</label>
+        <locationX>630</locationX>
         <locationY>734</locationY>
         <assignmentItems>
             <assignToReference>GenesysId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_CSM_DTVAL</stringValue>
+                <stringValue>Email_CSM_PART_DTVAL</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -228,7 +308,7 @@
     <assignments>
         <name>ParticularesChoice</name>
         <label>Decisión Particulares</label>
-        <locationX>156</locationX>
+        <locationX>506</locationX>
         <locationY>569</locationY>
         <assignmentItems>
             <assignToReference>GenesysId</assignToReference>
@@ -245,22 +325,15 @@
         <description>Dependiendo del ToAddress , del Email-To-Case por donde entra el email, se pueden asignar las skills que se requerirán o el flow al que redirigir</description>
         <name>InboxChoice</name>
         <label>Decidir según buzón de entrada</label>
-        <locationX>107</locationX>
+        <locationX>457</locationX>
         <locationY>218</locationY>
         <defaultConnector>
             <targetReference>DefaultChoice</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>DTBCN</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>administracion.dtbcn</stringValue>
-                </rightValue>
-            </conditions>
+            <name>DTBCNPart</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EmailMessage.ToAddress</leftValueReference>
                 <operator>StartsWith</operator>
@@ -269,20 +342,13 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>DTBCNChoice</targetReference>
+                <targetReference>DTBCNPartChoice</targetReference>
             </connector>
-            <label>DTBCN</label>
+            <label>DTBCN Part</label>
         </rules>
         <rules>
-            <name>DTBIL</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>administracion.dtbil</stringValue>
-                </rightValue>
-            </conditions>
+            <name>DTBILPart</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EmailMessage.ToAddress</leftValueReference>
                 <operator>StartsWith</operator>
@@ -291,20 +357,13 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>DTBILChoice</targetReference>
+                <targetReference>DTBILPartChoice</targetReference>
             </connector>
-            <label>DTBIL</label>
+            <label>DTBIL Part</label>
         </rules>
         <rules>
-            <name>DTMAD</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>administracion.dtmad</stringValue>
-                </rightValue>
-            </conditions>
+            <name>DTMADPart</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EmailMessage.ToAddress</leftValueReference>
                 <operator>StartsWith</operator>
@@ -313,20 +372,13 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>DTMADChoice</targetReference>
+                <targetReference>DTMADPartChoice</targetReference>
             </connector>
-            <label>DTMAD</label>
+            <label>DTMAD Part</label>
         </rules>
         <rules>
-            <name>DTSEV</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>administracion.dtsev</stringValue>
-                </rightValue>
-            </conditions>
+            <name>DTSEVPart</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EmailMessage.ToAddress</leftValueReference>
                 <operator>StartsWith</operator>
@@ -335,20 +387,13 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>DTSEVChoice</targetReference>
+                <targetReference>DTSEVPartChoice</targetReference>
             </connector>
-            <label>DTSEV</label>
+            <label>DTSEV Part</label>
         </rules>
         <rules>
-            <name>DTVAL</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>administracion.dtval</stringValue>
-                </rightValue>
-            </conditions>
+            <name>DTVALPart</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EmailMessage.ToAddress</leftValueReference>
                 <operator>StartsWith</operator>
@@ -357,9 +402,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>DTVALChoice</targetReference>
+                <targetReference>DTVALPartChoice</targetReference>
             </connector>
-            <label>DTVAL</label>
+            <label>DTVAL Part</label>
         </rules>
         <rules>
             <name>Particulares</name>
@@ -390,6 +435,81 @@
                 <targetReference>AdminChoice</targetReference>
             </connector>
             <label>Administración</label>
+        </rules>
+        <rules>
+            <name>DTBCNAdm</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>administracion.dtbcn</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DTBCNAdmChoice</targetReference>
+            </connector>
+            <label>DTBCN Adm</label>
+        </rules>
+        <rules>
+            <name>DTBILAdm</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>administracion.dtbil</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DTBILAdmChoice</targetReference>
+            </connector>
+            <label>DTBIL Adm</label>
+        </rules>
+        <rules>
+            <name>DTMADAdm</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>administracion.dtmad</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DTMADAdmChoice</targetReference>
+            </connector>
+            <label>DTMAD Adm</label>
+        </rules>
+        <rules>
+            <name>DTSEVAdm</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>administracion.dtsev</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DTSEVAdmChoice</targetReference>
+            </connector>
+            <label>DTSEV Adm</label>
+        </rules>
+        <rules>
+            <name>DTVALAdm</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailMessage.ToAddress</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>administracion.dtval</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DTVALAdmChoice</targetReference>
+            </connector>
+            <label>DTVAL Adm</label>
         </rules>
     </decisions>
     <description>Realiza el enrutamiento de correos electrónicos del buzón de Mediadores</description>
@@ -427,7 +547,7 @@
         <description>Deja un registro de log del error producido</description>
         <name>LogError</name>
         <label>Registrar error</label>
-        <locationX>1188</locationX>
+        <locationX>1538</locationX>
         <locationY>387</locationY>
         <inputAssignments>
             <field>Level__c</field>
@@ -457,7 +577,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <start>
-        <locationX>814</locationX>
+        <locationX>1164</locationX>
         <locationY>166</locationY>
         <connector>
             <targetReference>FindOwnerIdAction</targetReference>
