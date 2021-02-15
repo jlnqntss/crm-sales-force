@@ -388,8 +388,10 @@ private with sharing class ContentDocumentLinkUtilTest
         String receiptNumber = '123456789';
 
         String csvContent = ''+caseTypeValue+';'+caseSubtypeValue+';;;;;;;;\n';
-        csvContent += 'Fake Name <'+FAKE_FROM_ADDRESS+'>\n';
-        csvContent += 'Fake Name <'+FAKE_TO_ADDRESS+'>';
+        csvContent += FAKE_FROM_ADDRESS+'\n';
+        csvContent += FAKE_TO_ADDRESS+'\n';
+        csvContent += FAKE_CC_ADDRESS+'\n';
+        csvContent += FAKE_BCC_ADDRESS;
 
         ContentVersion newVersion = new ContentVersion();
         newVersion.Title = robotHegeoSettings.get(0).DocumentTitle__c;
