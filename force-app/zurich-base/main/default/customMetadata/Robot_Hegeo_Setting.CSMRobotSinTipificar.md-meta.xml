@@ -3,6 +3,14 @@
     <label>CSM Robot Sin Tipificar</label>
     <protected>false</protected>
     <values>
+        <field>BCCAddressIndex__c</field>
+        <value xsi:type="xsd:string">4</value>
+    </values>
+    <values>
+        <field>CCAddressIndex__c</field>
+        <value xsi:type="xsd:string">3</value>
+    </values>
+    <values>
         <field>CaseFieldsIndex__c</field>
         <value xsi:type="xsd:double">0.0</value>
     </values>
