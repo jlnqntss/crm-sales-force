@@ -26,19 +26,19 @@ public with sharing class AccountsSelector extends RecordsSelector
         String businessRecordType = accountRecordTypeInfosByDeveloperName.get('BusinessCustomer').getRecordTypeId();
         String leadRecordType = accountRecordTypeInfosByDeveloperName.get('Lead').getRecordTypeId();
 
-        switch on scope 
+        switch on scope
         {
             when ALL
             {
                 this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, businessRecordType, leadRecordType});
             }
-            when Z 
+            when Z
             {
                 this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, businessRecordType});
 
                 this.relatedRecordsScope = RecordsSelector.Scope.Z;
             }
-            when ZE  
+            when ZE
             {
                 this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, leadRecordType});
 
@@ -62,7 +62,7 @@ public with sharing class AccountsSelector extends RecordsSelector
      */
     public AccountsSelector setLegalEntity(RecordsSelector.LegalEntity legalEntity)
     {
-        switch on legalEntity 
+        switch on legalEntity
         {
             when GI, LIFE
             {
@@ -89,12 +89,14 @@ public with sharing class AccountsSelector extends RecordsSelector
         (
             new List<Schema.SObjectField>
             {
-                Account.Id, 
-                Account.Name, 
-                Account.PersonContactId, 
-                Account.NationalId__c, 
-                Account.NumPolicies__pc, 
-                Account.NumQuotes__pc
+                Account.Id,
+                Account.Name,
+                Account.PersonContactId,
+                Account.NationalId__c,
+                Account.NumPolicies__pc,
+                Account.NumQuotes__pc,
+                Account.MainMobilePhone__c,
+                Account.Phone
             }
         );
 
@@ -124,12 +126,14 @@ public with sharing class AccountsSelector extends RecordsSelector
         (
             new List<Schema.SObjectField>
             {
-                Account.Id, 
-                Account.Name, 
-                Account.PersonContactId, 
-                Account.NationalId__c, 
-                Account.NumPolicies__pc, 
-                Account.NumQuotes__pc
+                Account.Id,
+                Account.Name,
+                Account.PersonContactId,
+                Account.NationalId__c,
+                Account.NumPolicies__pc,
+                Account.NumQuotes__pc,
+                Account.MainMobilePhone__c,
+                Account.Phone
             }
         );
 
@@ -152,12 +156,14 @@ public with sharing class AccountsSelector extends RecordsSelector
         (
             new List<Schema.SObjectField>
             {
-                Account.Id, 
-                Account.Name, 
-                Account.PersonContactId, 
-                Account.NationalId__c, 
-                Account.NumPolicies__pc, 
-                Account.NumQuotes__pc
+                Account.Id,
+                Account.Name,
+                Account.PersonContactId,
+                Account.NationalId__c,
+                Account.NumPolicies__pc,
+                Account.NumQuotes__pc,
+                Account.MainMobilePhone__c,
+                Account.Phone
             }
         );
 
@@ -188,21 +194,23 @@ public with sharing class AccountsSelector extends RecordsSelector
             (
                 new List<Schema.SObjectField>
                 {
-                    Account.Id, 
-                    Account.Name, 
-                    Account.PersonContactId, 
-                    Account.NationalId__c, 
-                    Account.NumPolicies__pc, 
-                    Account.NumQuotes__pc
+                    Account.Id,
+                    Account.Name,
+                    Account.PersonContactId,
+                    Account.NationalId__c,
+                    Account.NumPolicies__pc,
+                    Account.NumQuotes__pc,
+                    Account.MainMobilePhone__c,
+                    Account.Phone
                 }
             );
 
             this.baseQuery.lookup
             (
-                'Id', 
+                'Id',
                 new Query('Policy__c').selectField(Policy__c.PolicyHolder__c).addConditionIn(Policy__c.InfoPolicyNumber__c, policyNumbers)
             );
-           
+
             return (List<Account>) this.baseQuery.run();
 
             //return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT PolicyHolder__c FROM Policy__c WHERE InfoPolicyNumber__c IN :policyNumbers) AND RecordTypeId IN :this.recordTypeIds];
@@ -236,21 +244,23 @@ public with sharing class AccountsSelector extends RecordsSelector
             (
                 new List<Schema.SObjectField>
                 {
-                    Account.Id, 
-                    Account.Name, 
-                    Account.PersonContactId, 
-                    Account.NationalId__c, 
-                    Account.NumPolicies__pc, 
-                    Account.NumQuotes__pc
+                    Account.Id,
+                    Account.Name,
+                    Account.PersonContactId,
+                    Account.NationalId__c,
+                    Account.NumPolicies__pc,
+                    Account.NumQuotes__pc,
+                    Account.MainMobilePhone__c,
+                    Account.Phone
                 }
             );
 
             this.baseQuery.lookup
             (
-                'Id', 
+                'Id',
                 new Query('Opportunity').selectField(Opportunity.AccountId).addConditionIn(Opportunity.InfoQuoteNumber__c, quoteNumbers)
             );
-           
+
             return (List<Account>) this.baseQuery.run();
 
             //return [SELECT Id, NumPolicies__pc, NumQuotes__pc FROM Account WHERE Id IN (SELECT AccountId FROM Opportunity WHERE InfoQuoteNumber__c IN :quoteNumbers) AND RecordTypeId IN :this.recordTypeIds];
@@ -285,17 +295,19 @@ public with sharing class AccountsSelector extends RecordsSelector
         (
             new List<Schema.SObjectField>
             {
-                Account.Id, 
-                Account.TerritorialDirectionCode__c, 
-                Account.ChannelZoneCode__c, 
-                Account.ZoneCode__c, 
-                Account.CsmIndividualsManager__c, 
-                Account.CsmAdministrationManager__c
+                Account.Id,
+                Account.TerritorialDirectionCode__c,
+                Account.ChannelZoneCode__c,
+                Account.ZoneCode__c,
+                Account.CsmIndividualsManager__c,
+                Account.CsmAdministrationManager__c,
+                Account.MainMobilePhone__c,
+                Account.Phone
             }
         );
 
         this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
-        
+
         return (List<Account>) this.baseQuery.byId(recordIds).run();
 
         //return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE Id IN :recordIds AND RecordTypeId IN :this.recordTypeIds];
@@ -324,18 +336,20 @@ public with sharing class AccountsSelector extends RecordsSelector
             (
                 new List<Schema.SObjectField>
                 {
-                    Account.Id, 
-                    Account.TerritorialDirectionCode__c, 
-                    Account.ChannelZoneCode__c, 
-                    Account.ZoneCode__c, 
-                    Account.CsmIndividualsManager__c, 
-                    Account.CsmAdministrationManager__c
+                    Account.Id,
+                    Account.TerritorialDirectionCode__c,
+                    Account.ChannelZoneCode__c,
+                    Account.ZoneCode__c,
+                    Account.CsmIndividualsManager__c,
+                    Account.CsmAdministrationManager__c,
+                    Account.MainMobilePhone__c,
+                    Account.Phone
                 }
             );
-            
+
             this.baseQuery.addConditionEq(Account.INFOIntermediaryCode__c, paddedCodes);
             this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
-            
+
             return (List<Account>) this.baseQuery.run();
 
             //return [SELECT TerritorialDirectionCode__c, ChannelZoneCode__c, ZoneCode__c, CsmIndividualsManager__c, CsmAdministrationManager__c FROM Account WHERE INFOIntermediaryCode__c IN :paddedCodes AND RecordTypeId IN :this.recordTypeIds];
