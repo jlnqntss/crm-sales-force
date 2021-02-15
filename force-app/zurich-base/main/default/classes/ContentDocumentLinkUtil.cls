@@ -111,7 +111,7 @@ public without sharing class ContentDocumentLinkUtil
      */
     public static void getRelatedEmailMessages(List<ContentDocumentLink> newList, Map<Id, ContentDocumentLink> oldMap)
     {
-        if(newList != null && !newList.isEmpty())
+        if(newList != null && !newList.isEmpty() && oldMap == null)
         {       
             initSettings();
 
@@ -203,11 +203,14 @@ public without sharing class ContentDocumentLinkUtil
 
     public static void processHegeoCSV(List<ContentDocumentLink> newList, Map<Id, ContentDocumentLink> oldMap)
     {
-        for(ContentDocumentLink docLink: newList)
+        if(oldMap == null)
         {
-            if(mapHegeoInformation.containsKey(docLink.Id))
+            for(ContentDocumentLink docLink: newList)
             {
-                setRelatedEmailMessageAndCase(docLink);
+                if(mapHegeoInformation.containsKey(docLink.Id))
+                {
+                    setRelatedEmailMessageAndCase(docLink);
+                }
             }
         }
     }
