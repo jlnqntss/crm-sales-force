@@ -21,6 +21,7 @@ private without sharing class GenesysInteractionsServiceTest
         //Actualizar con los datos usados en los test
         intermediaries.get(0).INFOIntermediaryCode__c = '0999888777';
         intermediaries.get(0).Phone = '111555777';
+        intermediaries.get(0).MainMobilePhone__c = '666018472';//202102: Añadido phone para mandar SMS a los intermediarios
         update intermediaries.get(0);
 
         List<Account> partners = TestDataFactory.generateAccounts('001', 'Partner', 10);
@@ -760,10 +761,21 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Account> expectedAccounts = new AccountsSelector().selectById(recordIds);
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.MainMobilePhone__c,
+                Account.Phone
+            }
+        );
+        List<Account> expectedAccounts = accountsSelector.selectById(recordIds);
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
+        System.assertEquals(expectedAccounts.get(0).MainMobilePhone__c, result.phone, 'Debería haber devuelto el MainMobilePhone');
     }
 
     /**
@@ -793,10 +805,11 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
-        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE RecordTypeId = : intermediaryRecordTypeId AND InfoIntermediaryCode__c = : searchRequest.value.leftPad(10, '0')];
+        List<Account> expectedAccounts = [SELECT Id, Phone, MainMobilePhone__c FROM Account WHERE RecordTypeId = : intermediaryRecordTypeId AND InfoIntermediaryCode__c = : searchRequest.value.leftPad(10, '0')];
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
+        System.assertEquals(expectedAccounts.get(0).MainMobilePhone__c, result.phone, 'Debería haber devuelto el MainMobilePhone');
     }
 
     /**
@@ -1012,15 +1025,15 @@ private without sharing class GenesysInteractionsServiceTest
         (
             new List<Schema.SobjectField>
             {
-                Policy__c.Id, 
-                Policy__c.Name, 
-                Policy__c.Intermediary_Code__c, 
+                Policy__c.Id,
+                Policy__c.Name,
+                Policy__c.Intermediary_Code__c,
                 Policy__c.PolicyType__c
             },
             new List<String>
             {
-                'ProductId__r.GroupDescription__c', 
-                'Partner__r.PartnerSector__c', 
+                'ProductId__r.GroupDescription__c',
+                'Partner__r.PartnerSector__c',
                 'Partner__r.PartnerSFCode__c'
             }
         );
@@ -1159,7 +1172,7 @@ private without sharing class GenesysInteractionsServiceTest
         (
             new List<Schema.SObjectField>
             {
-                Policy__c.Id, 
+                Policy__c.Id,
                 Policy__c.Name
             }
         );
