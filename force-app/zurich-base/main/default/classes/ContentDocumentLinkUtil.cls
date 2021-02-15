@@ -463,7 +463,11 @@ public without sharing class ContentDocumentLinkUtil
                         }
                         else
                         {
-                            System.debug('setRelatedEmailMessageAndCase - No ha pasado la validación: ' + relatedHegeoInformation);    
+                            ErrorLogUtil.commitError(
+                                'warning',
+                                'El EmailMessage no cumplía los requisitos del metadato para ser procesado: título o extensión del documento adjunto o tipo de registro del caso relacionado. EmailMessage Id: ' + relatedHegeoInformation.relatedEmail.Id,
+                                'ContentDocumentLinkUtil'
+                            );  
                         }
                     }
                 }
