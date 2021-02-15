@@ -258,11 +258,13 @@
     <relatedLists>
         <fields>OPPORTUNITY.NAME</fields>
         <fields>ProductId__c</fields>
+        <fields>ScopeId__c</fields>
         <fields>OPPORTUNITY.STAGE_NAME</fields>
+        <fields>OPPORTUNITY.AMOUNT</fields>
         <fields>OPPORTUNITY.CLOSE_DATE</fields>
-        <fields>BusinessName__c</fields>
-        <fields>IntermediaryName__c</fields>
         <relatedList>RelatedOpportunityList</relatedList>
+        <sortField>OPPORTUNITY.CLOSE_DATE</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
