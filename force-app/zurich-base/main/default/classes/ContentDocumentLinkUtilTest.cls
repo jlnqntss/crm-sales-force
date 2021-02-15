@@ -9,6 +9,8 @@ private with sharing class ContentDocumentLinkUtilTest
 {
     public static final String FAKE_FROM_ADDRESS = 'from@fakeemail.com.invalid';
     public static final String FAKE_TO_ADDRESS = 'to@fakeemail.com.invalid';
+    public static final String FAKE_CC_ADDRESS = 'cc@fakeemail.com.invalid';
+    public static final String FAKE_BCC_ADDRESS = 'bcc@fakeemail.com.invalid';
     //Type;Subtype__c;TypeN3__c;HegeoProductGroupCode__c;HegeoOfferId__c;HegeoPrePolicyId__c;HegeoPolicyId__c;HegeoReceiptNumber__c;HegeoClaimId__c;AccountId
     
     @TestSetup
@@ -45,7 +47,7 @@ private with sharing class ContentDocumentLinkUtilTest
     {
         //Cargamos los metadatos de configuración
         List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
-            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
             FROM Robot_Hegeo_Setting__mdt
         ];
         System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
@@ -95,7 +97,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.ParentId = relatedCase.Id; 
         emailMessage.FromAddress = 'rlopez@nts-solutions.com'; // from address
         emailMessage.FromName = 'Ruben Lopez'; // from name
-        emailMessage.ToAddress = 'email2case@fakeemail.com.invalid';
+        emailMessage.ToAddress = robotHegeoSettings.get(0).RoutingAddresses__c.split(',').get(0);
         emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
 
         emailMessage.HtmlBody = 'The CSV is attached.';
@@ -108,7 +110,9 @@ private with sharing class ContentDocumentLinkUtilTest
 
         String csvContent = ''+caseTypeValue+';'+caseSubtypeValue+';;1;'+relatedOffer.InfoQuoteNumber__c+';;'+relatedPolicy.InfoPolicyNumber__c+';'+receiptNumber+';'+relatedClaim.InfoClaimNumber__c+';'+relatedIntermediary.INFOIntermediaryCode__c+'\n';
         csvContent += 'Fake Name <'+FAKE_FROM_ADDRESS+'>\n';
-        csvContent += 'Fake Name <'+FAKE_TO_ADDRESS+'>';
+        csvContent += 'Fake Name <'+FAKE_TO_ADDRESS+'>\n';
+        csvContent += 'Fake Name <'+FAKE_CC_ADDRESS+'>\n';
+        csvContent += 'Fake Name <'+FAKE_BCC_ADDRESS+'>';
 
         ContentVersion newVersion = new ContentVersion();
         newVersion.Title = robotHegeoSettings.get(0).DocumentTitle__c;
@@ -125,10 +129,12 @@ private with sharing class ContentDocumentLinkUtilTest
         insert newLink;
         Test.stopTest();
 
-        EmailMessage updatedEmailMessage = [SELECT Id, FromAddress, ToAddress FROM EmailMessage WHERE Id =: emailMessage.Id];
+        EmailMessage updatedEmailMessage = [SELECT Id, FromAddress, ToAddress, CcAddress, BccAddress FROM EmailMessage WHERE Id =: emailMessage.Id];
         System.assertEquals(true, updatedEmailMessage != null, 'EmailMessage found');
         System.assertEquals(FAKE_FROM_ADDRESS, updatedEmailMessage.FromAddress, 'FromAddress is the same');
-        System.assertEquals(true, updatedEmailMessage.ToAddress.contains(FAKE_TO_ADDRESS), 'ToAddress is the same');
+        System.assertEquals(true, updatedEmailMessage.ToAddress.contains(FAKE_TO_ADDRESS), 'ToAddress contains the email from CSV');
+        System.assertEquals(true, updatedEmailMessage.CcAddress.contains(FAKE_CC_ADDRESS), 'CCAddress contains the email from CSV');
+        System.assertEquals(true, updatedEmailMessage.BccAddress.contains(FAKE_BCC_ADDRESS), 'BCCAddress contains the email from CSV');
 
         Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c, OfferId__c, PolicyId__c, ClaimId__c, HegeoReceiptNumber__c, AccountId FROM Case WHERE Id =: relatedCase.Id];
         System.assertEquals(true, updatedCase != null, 'Case found');
@@ -250,6 +256,13 @@ private with sharing class ContentDocumentLinkUtilTest
     @isTest
     static void test_process_empty_CSV_robotHegeo_ok()
     {
+        //Cargamos los metadatos de configuración
+        List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
+            FROM Robot_Hegeo_Setting__mdt
+        ];
+        System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
+
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
@@ -260,7 +273,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.ParentId = relatedCase.Id; 
         emailMessage.FromAddress = 'rlopez@nts-solutions.com'; // from address
         emailMessage.FromName = 'Ruben Lopez'; // from name
-        emailMessage.ToAddress = 'email2case@fakeemail.com.invalid';
+        emailMessage.ToAddress = robotHegeoSettings.get(0).RoutingAddresses__c.split(',').get(0);
         emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
 
         emailMessage.HtmlBody = 'The CSV is attached.';
@@ -293,7 +306,7 @@ private with sharing class ContentDocumentLinkUtilTest
         System.assertEquals(true, updatedCase.Type == 'No definido', 'Type is undefined');
         System.assertEquals(true, updatedCase.Subtype__c == 'No definido', 'Subtype is undefined');
 
-        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
+        List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c];
         System.assertEquals(false, errorLogs.isEmpty(), 'There are error logs created');
     }
 
@@ -310,7 +323,7 @@ private with sharing class ContentDocumentLinkUtilTest
     {
         //Cargamos los metadatos de configuración
         List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
-            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
             FROM Robot_Hegeo_Setting__mdt
         ];
         System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
@@ -362,7 +375,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.ParentId = relatedCase.Id; 
         emailMessage.FromAddress = 'rlopez@nts-solutions.com'; // from address
         emailMessage.FromName = 'Ruben Lopez'; // from name
-        emailMessage.ToAddress = 'email2case@fakeemail.com.invalid';
+        emailMessage.ToAddress = robotHegeoSettings.get(0).RoutingAddresses__c.split(',').get(0);
         emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
 
         emailMessage.HtmlBody = 'The CSV is attached.';
@@ -375,8 +388,10 @@ private with sharing class ContentDocumentLinkUtilTest
         String receiptNumber = '123456789';
 
         String csvContent = ''+caseTypeValue+';'+caseSubtypeValue+';;;;;;;;\n';
-        csvContent += 'Fake Name <'+FAKE_FROM_ADDRESS+'>\n';
-        csvContent += 'Fake Name <'+FAKE_TO_ADDRESS+'>';
+        csvContent += FAKE_FROM_ADDRESS+'\n';
+        csvContent += FAKE_TO_ADDRESS+'\n';
+        csvContent += FAKE_CC_ADDRESS+'\n';
+        csvContent += FAKE_BCC_ADDRESS;
 
         ContentVersion newVersion = new ContentVersion();
         newVersion.Title = robotHegeoSettings.get(0).DocumentTitle__c;
@@ -430,7 +445,7 @@ private with sharing class ContentDocumentLinkUtilTest
     {
         //Cargamos los metadatos de configuración
         List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
-            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
             FROM Robot_Hegeo_Setting__mdt
         ];
         System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
@@ -482,7 +497,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.ParentId = relatedCase.Id; 
         emailMessage.FromAddress = 'rlopez@nts-solutions.com'; // from address
         emailMessage.FromName = 'Ruben Lopez'; // from name
-        emailMessage.ToAddress = 'email2case@fakeemail.com.invalid';
+        emailMessage.ToAddress = robotHegeoSettings.get(0).RoutingAddresses__c.split(',').get(0);
         emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
 
         emailMessage.HtmlBody = 'The CSV is attached.';
@@ -695,7 +710,7 @@ private with sharing class ContentDocumentLinkUtilTest
     {
         //Cargamos los metadatos de configuración
         List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
-            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
             FROM Robot_Hegeo_Setting__mdt
         ];
         System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
@@ -745,7 +760,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.ParentId = relatedCase.Id; 
         emailMessage.FromAddress = 'rlopez@nts-solutions.com'; // from address
         emailMessage.FromName = 'Ruben Lopez'; // from name
-        emailMessage.ToAddress = 'email2case@fakeemail.com.invalid';
+        emailMessage.ToAddress = robotHegeoSettings.get(0).RoutingAddresses__c.split(',').get(0);
         emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
 
         emailMessage.HtmlBody = 'The CSV is attached.';
@@ -807,7 +822,7 @@ private with sharing class ContentDocumentLinkUtilTest
     {
         //Cargamos los metadatos de configuración
         List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
-            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
             FROM Robot_Hegeo_Setting__mdt
         ];
         System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
@@ -857,7 +872,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.ParentId = relatedCase.Id; 
         emailMessage.FromAddress = 'rlopez@nts-solutions.com'; // from address
         emailMessage.FromName = 'Ruben Lopez'; // from name
-        emailMessage.ToAddress = 'email2case@fakeemail.com.invalid';
+        emailMessage.ToAddress = robotHegeoSettings.get(0).RoutingAddresses__c.split(',').get(0);
         emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
 
         emailMessage.HtmlBody = 'The CSV is attached.';
@@ -916,11 +931,11 @@ private with sharing class ContentDocumentLinkUtilTest
      * @date 05/02/2021
      */
     @isTest
-    static void test_process_hegeoCSV_insuficient_values_ok()
+    static void test_process_hegeoCSV_insufficient_values_ok()
     {
         //Cargamos los metadatos de configuración
         List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
-            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
             FROM Robot_Hegeo_Setting__mdt
         ];
         System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
@@ -970,7 +985,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.ParentId = relatedCase.Id; 
         emailMessage.FromAddress = 'rlopez@nts-solutions.com'; // from address
         emailMessage.FromName = 'Ruben Lopez'; // from name
-        emailMessage.ToAddress = 'email2case@fakeemail.com.invalid';
+        emailMessage.ToAddress = robotHegeoSettings.get(0).RoutingAddresses__c.split(',').get(0);
         emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
 
         emailMessage.HtmlBody = 'The CSV is attached.';
@@ -1032,7 +1047,7 @@ private with sharing class ContentDocumentLinkUtilTest
     {
         //Cargamos los metadatos de configuración
         List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
-            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
             FROM Robot_Hegeo_Setting__mdt
         ];
         System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
@@ -1082,7 +1097,7 @@ private with sharing class ContentDocumentLinkUtilTest
         emailMessage.ParentId = relatedCase.Id; 
         emailMessage.FromAddress = 'rlopez@nts-solutions.com'; // from address
         emailMessage.FromName = 'Ruben Lopez'; // from name
-        emailMessage.ToAddress = 'email2case@fakeemail.com.invalid';
+        emailMessage.ToAddress = robotHegeoSettings.get(0).RoutingAddresses__c.split(',').get(0);
         emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
 
         emailMessage.HtmlBody = 'The CSV is attached.';
