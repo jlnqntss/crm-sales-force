@@ -3,11 +3,35 @@
     <fullName>Status__c</fullName>
     <description>Muestra el campo Estado de la relación correspondiente</description>
     <externalId>false</externalId>
-    <formula>CASE( RecordType.DeveloperName ,
-&quot;Policy&quot; ,  TEXT(PolicyId__r.PolicyStatus__c) ,
-&quot;Offer&quot; ,  TEXT(OpportunityId__r.StageName) ,
-&quot;Claim&quot; ,  TEXT(ClaimId__r.Status__c) ,
-&quot;&quot;)</formula>
+    <formula>CASE( RecordType.DeveloperName 
+,&quot;Policy&quot; 
+,CASE (TEXT(PolicyId__r.PolicyStatus__c)
+,&quot;A&quot;, &quot;Anulada&quot;
+,&quot;P&quot;, &quot;Pendiente&quot;
+,&quot;S&quot;, &quot;Suspendida&quot;
+,&quot;V&quot;, &quot;Vigor&quot;
+,&quot;0&quot;, &quot;Modelo&quot;
+,&quot;1&quot;, &quot;Formalizada&quot;
+,&quot;2&quot;, &quot;Vigor Oferta&quot;
+,&quot;3&quot;, &quot;Pendiente Oferta&quot;
+,&quot;4&quot;, &quot;Caducada&quot;
+,&quot;&quot;)  
+,&quot;Offer&quot; 
+,CASE (TEXT(OpportunityId__r.StageName) 
+,&quot;App Submitted&quot;, &quot;App Submitted&quot;
+,&quot;Closed Lost&quot;, &quot;Cerrada Perdida&quot;
+,&quot;Closed Won&quot;, &quot;Cerrada Ganada&quot;
+,&quot;Legit Lead&quot;, &quot;Legit Lead&quot;
+,&quot;Quoted&quot;, &quot;Quoted&quot;
+,&quot;&quot;) 
+,&quot;Claim&quot; 
+,CASE (TEXT(ClaimId__r.Status__c)
+,&quot;A&quot;, &quot;Pte de aprobación&quot;
+,&quot;P&quot;, &quot;Pendiente&quot;
+,&quot;R&quot;, &quot;Rehabilitado&quot;
+,&quot;T&quot;, &quot;Terminado&quot;
+,&quot;&quot;) 
+,&quot;&quot;)</formula>
     <label>Status</label>
     <required>false</required>
     <trackTrending>false</trackTrending>
