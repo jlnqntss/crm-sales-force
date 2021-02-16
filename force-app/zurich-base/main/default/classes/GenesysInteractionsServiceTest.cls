@@ -22,6 +22,7 @@ private without sharing class GenesysInteractionsServiceTest
         intermediaries.get(0).INFOIntermediaryCode__c = '0999888777';
         intermediaries.get(0).Phone = '111555777';
         intermediaries.get(0).MainMobilePhone__c = '666018472';//202102: Añadido phone para mandar SMS a los intermediarios
+        intermediaries.get(0).MainEmail__c = 'intermediario@email.com';//202102: Añadido email para los intermediarios
         update intermediaries.get(0);
 
         List<Account> partners = TestDataFactory.generateAccounts('001', 'Partner', 10);
@@ -768,7 +769,8 @@ private without sharing class GenesysInteractionsServiceTest
             {
                 Account.Id,
                 Account.MainMobilePhone__c,
-                Account.Phone
+                Account.Phone,
+                Account.MainEmail__c
             }
         );
         List<Account> expectedAccounts = accountsSelector.selectById(recordIds);
@@ -776,6 +778,7 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).MainMobilePhone__c, result.phone, 'Debería haber devuelto el MainMobilePhone');
+        System.assertEquals(expectedAccounts.get(0).MainEmail__c, result.email, 'Debería haber devuelto el MainEmail');
     }
 
     /**
@@ -805,11 +808,12 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
-        List<Account> expectedAccounts = [SELECT Id, Phone, MainMobilePhone__c FROM Account WHERE RecordTypeId = : intermediaryRecordTypeId AND InfoIntermediaryCode__c = : searchRequest.value.leftPad(10, '0')];
+        List<Account> expectedAccounts = [SELECT Id, Phone, MainMobilePhone__c, MainEmail__c FROM Account WHERE RecordTypeId = : intermediaryRecordTypeId AND InfoIntermediaryCode__c = : searchRequest.value.leftPad(10, '0')];
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).MainMobilePhone__c, result.phone, 'Debería haber devuelto el MainMobilePhone');
+        System.assertEquals(expectedAccounts.get(0).MainEmail__c, result.email, 'Debería haber devuelto el MainEmail');
     }
 
     /**

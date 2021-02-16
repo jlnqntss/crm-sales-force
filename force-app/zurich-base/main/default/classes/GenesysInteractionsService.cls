@@ -500,6 +500,7 @@ public without sharing class GenesysInteractionsService
             results.screenPopRecordId = intermediary.Id;
             results.territoryCode = intermediary.ZoneCode__c;
             results.phone = String.isBlank(intermediary.MainMobilePhone__c)? intermediary.Phone : intermediary.MainMobilePhone__c;
+            results.email = intermediary.MainEmail__c;
 
             results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c));
         }
@@ -875,6 +876,7 @@ public without sharing class GenesysInteractionsService
         public transient List<SObject> relatedRecords;
         public String screenPopRecordId;
         public String phone;
+        public String email;
         public String territoryCode;
         public Integer totalPolicies;
         public Integer totalQuotes;
