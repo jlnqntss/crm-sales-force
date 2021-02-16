@@ -1221,6 +1221,70 @@ public class TestDataFactory
     }
 
     /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad Note
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author nts (agonzalezisasi)
+     * @date 15/02/2021
+     */
+    public static List<Map<String, Object> > getINFONoteJson(
+        Integer totalItems
+        )
+    {
+        return buildINFONoteJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFONoteJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        // From Metadata Robot_Hegeo_Field_Mapping__mdt
+        String tipo = '1';
+        String subtype = '5';
+        String typeN3 = '';
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO SINIESTRO*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                    'note_fec_alta' => '2021-02-15',
+                    'note_usuario' => 'noteUser',               
+                    'note_desc_aviso' => 'case subject',
+                    'note_texto' => 'case description',
+                    'note_cod_oferta' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'note_cod_poliza_incompleta' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'note_num_recibo' => '1234',
+                    'note_cod_siniestro' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'note_cod_poliza' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'note_producto_tecnico' => '',
+                    'note_producto_comercial' => '',
+                    'note_intermediario' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'note_cod_tarea' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'note_indicador_tarea' => '', 
+                    'note_cod_agrupacion_TA' => '',
+                    'note_desc_grupo' => '',
+                    'note_desc_tipo_envio' => tipo, 
+                    'note_desc_subtipo' => subtype, 
+                    'note_desc_nivel_division' => typeN3,
+                    'note_cod_agrupacion' => ''
+            }
+                );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
      * Generar registros de ExternalRequest__c a partir de los JSON de prueba
      **
      * @param String Origen
@@ -1518,6 +1582,24 @@ public class TestDataFactory
                             Payload__c = JSON.serialize(payload),
                             ContentFormat__c = 'JSON',
                             recordTypeId = infoRecordTypeId
+                            )
+                        );
+                }
+            }
+            when 'NOTE' {
+                for (
+                    Map<String, Object> payload : getINFONoteJson(numRecords)
+                    )
+                {
+                    externalRequestList.add(
+                        new ExternalRequest__c(
+                            Origin__c = origin,
+                            Entity__c = 'NOTE',
+                            Action__c = 'UPSERT',
+                            Payload__c = JSON.serialize(payload),
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId,
+                            NumRetry__c = 2
                             )
                         );
                 }
