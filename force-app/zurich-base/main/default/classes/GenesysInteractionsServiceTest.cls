@@ -22,6 +22,7 @@ private without sharing class GenesysInteractionsServiceTest
         intermediaries.get(0).INFOIntermediaryCode__c = '0999888777';
         intermediaries.get(0).Phone = '111555777';
         intermediaries.get(0).MainMobilePhone__c = '666018472';//202102: Añadido phone para mandar SMS a los intermediarios
+        intermediaries.get(0).MainEmail__c = 'intermediario@email.com';//202102: Añadido email para los intermediarios
         update intermediaries.get(0);
 
         List<Account> partners = TestDataFactory.generateAccounts('001', 'Partner', 10);
@@ -768,7 +769,8 @@ private without sharing class GenesysInteractionsServiceTest
             {
                 Account.Id,
                 Account.MainMobilePhone__c,
-                Account.Phone
+                Account.Phone,
+                Account.MainEmail__c
             }
         );
         List<Account> expectedAccounts = accountsSelector.selectById(recordIds);
@@ -776,6 +778,7 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).MainMobilePhone__c, result.phone, 'Debería haber devuelto el MainMobilePhone');
+        System.assertEquals(expectedAccounts.get(0).MainEmail__c, result.email, 'Debería haber devuelto el MainEmail');
     }
 
     /**
@@ -805,11 +808,12 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
-        List<Account> expectedAccounts = [SELECT Id, Phone, MainMobilePhone__c FROM Account WHERE RecordTypeId = : intermediaryRecordTypeId AND InfoIntermediaryCode__c = : searchRequest.value.leftPad(10, '0')];
+        List<Account> expectedAccounts = [SELECT Id, Phone, MainMobilePhone__c, MainEmail__c FROM Account WHERE RecordTypeId = : intermediaryRecordTypeId AND InfoIntermediaryCode__c = : searchRequest.value.leftPad(10, '0')];
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).MainMobilePhone__c, result.phone, 'Debería haber devuelto el MainMobilePhone');
+        System.assertEquals(expectedAccounts.get(0).MainEmail__c, result.email, 'Debería haber devuelto el MainEmail');
     }
 
     /**
@@ -1004,6 +1008,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
         List<Account> partners = [SELECT Id, PartnerSFCode__c FROM Account WHERE RecordTypeId = :partnerRecordTypeId LIMIT 2];
+        List<Account> intermediary = [SELECT Id, MainMobilePhone__c, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
 
         List<Product2> products = new List<Product2>
         {
@@ -1047,12 +1052,14 @@ private without sharing class GenesysInteractionsServiceTest
                 policies[i].Partner__c = partners[0].Id;
                 policies[i].Intermediary_Code__c = '0001112223';
                 policies[i].ProductId__c = products[0].Id;
+                policies[i].IntermediaryId__c = intermediary[0].Id;
             }
             else
             {
                 policies[i].Partner__c = partners[1].Id;
                 policies[i].Intermediary_Code__c = '0001112224';
                 policies[i].ProductId__c = products[1].Id;
+                policies[i].IntermediaryId__c = intermediary[0].Id;
             }
         }
         update policies;
@@ -1081,6 +1088,8 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(policies.get(0).Id, activePolicies.byType.get('Group 1').get(0).id, 'No se ha informado correctamente el id de la póliza');
         System.assertEquals(policies.get(5).Id, activePolicies.byType.get('Group 2').get(0).id, 'No se ha informado correctamente el id de la póliza');
 
+        System.assertEquals(intermediary[0].MainMobilePhone__c, activePolicies.byIntermediary.get('0001112224').get(0).intermediaryPhone, 'No se ha informado correctamente el teléfono del intermediario de la póliza');
+        System.assertEquals(intermediary[0].MainEmail__c, activePolicies.byIntermediary.get('0001112224').get(0).intermediaryEmail, 'No se ha informado correctamente el email del intermediario de la póliza');
     }
 
     /**
@@ -1166,6 +1175,7 @@ private without sharing class GenesysInteractionsServiceTest
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+        List<Account> intermediary = [SELECT Id, MainMobilePhone__c, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
 
         PoliciesSelector policiesSelector = new PoliciesSelector();
         policiesSelector.setFields
@@ -1174,12 +1184,19 @@ private without sharing class GenesysInteractionsServiceTest
             {
                 Policy__c.Id,
                 Policy__c.Name
+            },
+            new List<String>
+            {
+                'IntermediaryId__r.MainMobilePhone__c',
+                'IntermediaryId__r.Phone',
+                'IntermediaryId__r.MainEmail__c'
             }
         );
 
         List<Policy__c> policies = policiesSelector.selectByHolder(customer.get(0).Id);
 
         policies[0].InfoPolicyNumber__c = '11122233344455';
+        policies[0].IntermediaryId__c = intermediary[0].Id;
         update policies[0];
 
         // Test
@@ -1195,6 +1212,8 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(policies[0].Id, activePolicy.id, 'No se ha obtenido correctamente el id de la póliza');
         System.assertEquals(policies[0].Name, activePolicy.policyCode, 'No se ha obtenido correctamente el código de la póliza');
 
+        System.assertEquals(intermediary[0].MainMobilePhone__c, activePolicy.intermediaryPhone, 'No se ha informado correctamente el teléfono del intermediario de la póliza');
+        System.assertEquals(intermediary[0].MainEmail__c, activePolicy.intermediaryEmail, 'No se ha informado correctamente el email del intermediario de la póliza');
     }
 
     /**
