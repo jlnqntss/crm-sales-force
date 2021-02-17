@@ -3,6 +3,10 @@
     <label>ORANGE OUTBOUND</label>
     <protected>false</protected>
     <values>
+        <field>AvailableForLeadCreationFlow__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>BusinessCode__c</field>
         <value xsi:type="xsd:string">3200012518</value>
     </values>
