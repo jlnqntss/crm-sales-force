@@ -8860,6 +8860,41 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>SurveyResponse__c.Answer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SurveyResponse__c.LongAnswer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SurveyResponse__c.QuestionId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SurveyResponse__c.QuestionType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.ANI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.CaseId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.InteractionId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.ANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11959,6 +11994,12 @@
         <layout>Special_Condition__c-Special Condition Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>SurveyResponse__c-Survey Response Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Survey__c-Survey Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Task-Activity</layout>
         <recordType>Task.Activity</recordType>
     </layoutAssignments>
@@ -12812,6 +12853,24 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>StreamingChannel</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>SurveyResponse__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Survey__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
