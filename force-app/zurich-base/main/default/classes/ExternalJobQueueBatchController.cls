@@ -17,12 +17,28 @@ public class ExternalJobQueueBatchController
 
             if( queuedJobs.isEmpty() && executingJobs.isEmpty() )
             {
-                System.enqueueJob( new ExternalJobQueueJob('INFO') );
+                System.enqueueJob( new ExternalJobQueueJob(Transformer.ORIGIN_NAME_INFO) );
             }
         }
         catch (Exception e)
         {
             ErrorLogUtil.commitError(e, 'ExternalJobQueueBatchController', 'checkExternalJobQueueBatch');
+        }
+    }
+
+    public static void checkExternalJobPriorityQueueBatch()
+    {
+        try
+        {
+            List<AsyncApexJob> executingJobs = new AsyncApexJobsSelector().selectByClassName(new Set<String> {'ExternalJobPriorityQueueBatch'});
+
+            if( executingJobs.isEmpty() ) {
+                database.executeBatch(new ExternalJobPriorityQueueBatch(Transformer.ORIGIN_NAME_INFO), 200);
+            }
+        }
+        catch (Exception e)
+        {
+            ErrorLogUtil.commitError(e, 'ExternalJobQueueBatchController', 'checkExternalJobQueueBatchPriority');
         }
     }
 
@@ -71,12 +87,19 @@ public class ExternalJobQueueBatchController
 
                     List<Map<String, String> > chunkList = chunkIdRange(firstId, lastId, chunksize);
 
+                    // avoid the priority entities in the queries
+                    String priorityEntities = '';
+                    if( INFOHandler.PRIORITY_ENTITIES != null && !INFOHandler.PRIORITY_ENTITIES.isEmpty() ) {
+                        priorityEntities = ' AND Entity__c NOT IN ' + INFOHandler.PriorityEntitiesToString;
+                    }
                     for(Map<String, String> chunk : chunkList)
                     {
-                        queries.add
-                        (
-                            'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Id >= \'' + chunk.get('first') + '\' AND Id <= \'' + chunk.get('last') + '\' AND Processed__c = false'
-                        );
+                        String q = 'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\'';
+                        q += ' AND Id >= \'' + chunk.get('first') + '\' AND Id <= \'' + chunk.get('last') + '\'';
+                        q += ' AND Processed__c = false';
+                        q += priorityEntities;
+
+                        queries.add(q);
                     }
                 }
 
