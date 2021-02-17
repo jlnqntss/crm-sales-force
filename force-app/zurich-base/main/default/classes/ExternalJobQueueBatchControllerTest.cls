@@ -43,9 +43,16 @@ private class ExternalJobQueueBatchControllerTest
         List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC');
 
         System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
+        // Check query text
+        String q = 'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Id >= \'' + ( (String) firstPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Id <= \'' + ( (String) lastPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Processed__c = false';
+        String priorityEntities = '';
+        if( INFOHandler.PRIORITY_ENTITIES != null && !INFOHandler.PRIORITY_ENTITIES.isEmpty() ) {
+            priorityEntities = ' AND Entity__c NOT IN ' + INFOHandler.PriorityEntitiesToString;
+        }
+        q += priorityEntities;
         System.assertEquals
         (
-            'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Id >= \'' + ( (String) firstPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Id <= \'' + ( (String) lastPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Processed__c = false',
+            q,
             queries.get(0),
             'No se ha generado la query correctamente'
         );
@@ -73,9 +80,16 @@ private class ExternalJobQueueBatchControllerTest
         List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC');
 
         System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
+        // Check query text
+        String q = 'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Id >= \'' + ( (String) firstPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Id <= \'' + ( (String) lastPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Processed__c = false';
+        String priorityEntities = '';
+        if( INFOHandler.PRIORITY_ENTITIES != null && !INFOHandler.PRIORITY_ENTITIES.isEmpty() ) {
+            priorityEntities = ' AND Entity__c NOT IN ' + INFOHandler.PriorityEntitiesToString;
+        }
+        q += priorityEntities;
         System.assertEquals
         (
-            'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Id >= \'' + ( (String) firstPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Id <= \'' + ( (String) lastPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Processed__c = false',
+            q,
             queries.get(0),
             'No se ha generado la query correctamente'
         );

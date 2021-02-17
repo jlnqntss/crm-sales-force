@@ -92,6 +92,11 @@ private class INFOHandlerTest
             TestDataFactory.generateExternalRequest('INFO', 'INTERMEDIARY', 10)
             );
 
+        //Note
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest('INFO', 'NOTE', 10)
+            );
+
         insert externalRequestList;
     }
 
@@ -228,6 +233,11 @@ private class INFOHandlerTest
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(),
             'No se ha generado correctamente el mapa de registros de account'
             );
+        System.assertEquals(
+                10,
+                INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(),
+                'No se ha generado correctamente el mapa de registros de Case'
+                );
     }
 
     @isTest
@@ -278,6 +288,7 @@ private class INFOHandlerTest
         System.assertEquals(0, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de policy relationship');
         System.assertEquals(10, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
         System.assertEquals(10, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy relationship');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(), 'No se ha generado correctamente el mapa de registros de Case');
     }
 
     @isTest
@@ -305,7 +316,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            160,
+            170,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -336,7 +347,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            160,
+            170,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -374,6 +385,7 @@ private class INFOHandlerTest
         List<Asset> insObjList = [SELECT Id FROM Asset];
         List<Claim__c> claimList = [SELECT Id FROM Claim__c];
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
+        List<Case> caseList = [SELECT Id FROM Case];
 
         System.assertEquals(
             40,
@@ -435,6 +447,11 @@ private class INFOHandlerTest
         //     relaList.size(),
         //     'No se han insertado todos los registros de relaciones'
         //     );
+        System.assertEquals(
+            10,
+            caseList.size(),
+            'No se han insertado todos los registros de Case'
+            );
     }
 
     @isTest
@@ -469,7 +486,7 @@ private class INFOHandlerTest
 
         for(ExternalRequest__c externalRequest : externalRequestListUpserted)
         {
-            if(externalRequest.Entity__c == 'POLICY' || externalRequest.Entity__c == 'POLICY_RELATIONSHIP')
+            if(externalRequest.Entity__c == 'POLICY' || externalRequest.Entity__c == 'POLICY_RELATIONSHIP' || externalRequest.Entity__c == 'NOTE')
             {
                 externalRequest.Processed__C = false;
                 externalRequest.Action__C = 'DELETE';
@@ -496,6 +513,7 @@ private class INFOHandlerTest
         List<Asset> insObjList = [SELECT Id FROM Asset];
         List<Claim__c> claimList = [SELECT Id FROM Claim__c];
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
+        List<Case> caseList = [SELECT Id FROM Case];
 
         System.assertEquals(40, accountList.size(), 'No se han insertado todos los registros de cuenta');
         System.assertEquals(20, contactList.size(), 'No se han insertado todos los registros de contacto');
@@ -509,6 +527,7 @@ private class INFOHandlerTest
         // FIXME: System.assertEquals(10, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
         // FIXME: System.assertEquals(10, claimList.size(), 'No se han insertado todos los registros de siniestro');
         // FIXME: System.assertEquals(20, relaList.size(), 'No se han borrado todos los registros de relaciones');
+        System.assertEquals(0, caseList.size(), 'No se han borrado todos los registros de Case');
 
     }
 
@@ -549,7 +568,7 @@ private class INFOHandlerTest
         ];
 
         System.assertEquals(
-            160,
+            170,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
@@ -595,7 +614,7 @@ private class INFOHandlerTest
         List<ExternalRequestError__c> errors = [SELECT Id FROM ExternalRequestError__c];
 
         System.assertEquals(
-            160,
+            170,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
