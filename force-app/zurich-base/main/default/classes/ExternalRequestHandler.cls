@@ -84,9 +84,29 @@ public class ExternalRequestHandler implements ITrigger
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
     {
-        if( !Test.isRunningTest() )
-        {
-            ExternalJobQueueBatchController.checkExternalJobQueueBatch();
+        // Check if there are any External Request of Origin INFO (not Priority) and if any of type priority (NOTE)
+        Boolean anyPriorityEntities = false;
+        Boolean anyInfoNotPriority = false;
+
+        List<ExternalRequest__c> newRequest = (List<ExternalRequest__c>)newMap.values();
+        Integer i = 0;
+        Integer j = newRequest.size();
+        while( i<j && (!anyInfoNotPriority || !anyPriorityEntities) ) {
+            if( newRequest[i].Origin__c == Transformer.ORIGIN_NAME_INFO ) {
+                if( INFOHandler.PRIORITY_ENTITIES.contains(newRequest[i].Entity__c)) {
+                    anyPriorityEntities = true;
+                } else {
+                    anyInfoNotPriority = true;
+                }
+            }
+            i++;
         }
+            
+        if( anyInfoNotPriority && !Test.isRunningTest() )
+            ExternalJobQueueBatchController.checkExternalJobQueueBatch();
+
+        if( anyPriorityEntities && !Test.isRunningTest() )
+            ExternalJobQueueBatchController.checkExternalJobPriorityQueueBatch();
+    
     }
 }

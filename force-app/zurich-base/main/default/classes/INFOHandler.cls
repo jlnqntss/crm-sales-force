@@ -37,7 +37,11 @@ public class INFOHandler implements ISystem
     public static final String CLAIM_RELATIONSHIP = 'CLAIM_RELATIONSHIP';
     public static final String PARTNER = 'PARTNER';
     public static final String INTERMEDIARY = 'INTERMEDIARY';
+    public static final String NOTE = 'NOTE';
 
+    public static final List<String> PRIORITY_ENTITIES =  new List<String>{NOTE};
+    public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
+    
     // Orden de DML sobre entidades
     private static List<String> entityOrder = new List<String> 
     {
@@ -53,7 +57,8 @@ public class INFOHandler implements ISystem
         CLAIM, // 10
         QUOTE_RELATIONSHIP, // 11
         POLICY_RELATIONSHIP, // 12
-        CLAIM_RELATIONSHIP // 13
+        CLAIM_RELATIONSHIP, // 13
+        NOTE // 14
     };
 
     public static final String SOBJECT_ACCOUNT = 'Account';
@@ -68,6 +73,7 @@ public class INFOHandler implements ISystem
     public static final String SOBJECT_ASSET = 'Asset';
     public static final String SOBJECT_CLAIM = 'Claim__c';
     public static final String SOBJECT_RELATIONSHIP = 'Relationship__c';
+    public static final String SOBJECT_CASE = 'Case';
 
     // Orden de DML sobre SObjects
     private static List<String> sObjectOrder = new List<String> 
@@ -83,7 +89,8 @@ public class INFOHandler implements ISystem
         SOBJECT_POLICY,
         SOBJECT_ASSET,
         SOBJECT_CLAIM,
-        SOBJECT_RELATIONSHIP
+        SOBJECT_RELATIONSHIP,
+        SOBJECT_CASE
     };
 
     /**
@@ -448,6 +455,34 @@ public class INFOHandler implements ISystem
                 Account intermRecord = (Account) tf.transform(INTERMEDIARY, 'Account', recordValuesMap);
                 intermRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
                 addRecordToMap(externalRequest, INTERMEDIARY, 'Account', intermRecord);
+            }
+            // Note
+            when 'NOTE'
+            {
+                // Normal transformation of fields
+                Case caseRecord = (Case) tf.transform(NOTE, SOBJECT_CASE, recordValuesMap);
+                // Assign the RecordType
+                caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+                // Get the Type, Subytype and TypeN3 from the HEGEO fields metadata configuration
+                if( recordValuesMap.containsKey('NOTE_DESC_TIPO_ENVIO') && 
+                    recordValuesMap.containsKey('NOTE_DESC_SUBTIPO') ) {
+                        String infoType = (String)recordValuesMap.get('NOTE_DESC_TIPO_ENVIO');
+                        String infoSubtype = (String)recordValuesMap.get('NOTE_DESC_SUBTIPO');
+
+                    List<Robot_Hegeo_Field_Mapping__mdt> hegeoFieldConfig = [
+                        SELECT Type__c, Subtype__c, TypeN3__c
+                        FROM Robot_Hegeo_Field_Mapping__mdt
+                        WHERE SourceType__c = :infoType AND SourceSubtype__c = :infoSubtype
+                    ];
+                    // if any, get the first one...
+                    if( !hegeoFieldConfig.isEmpty() ) {
+                        caseRecord.Type = hegeoFieldConfig[0].Type__c;
+                        caseRecord.SubType__c = hegeoFieldConfig[0].Subtype__c;
+                        caseRecord.TypeN3__c = hegeoFieldConfig[0].TypeN3__c;
+                    }
+                }
+
+                addRecordToMap(externalRequest, NOTE, SOBJECT_CASE, caseRecord);
             }
             when else
             {
