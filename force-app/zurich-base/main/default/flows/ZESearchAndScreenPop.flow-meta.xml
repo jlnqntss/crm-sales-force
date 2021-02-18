@@ -399,6 +399,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>InputScope</name>
+            <value>
+                <elementReference>scopeName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>InputWebName</name>
             <value>
                 <elementReference>WebName</elementReference>
@@ -416,6 +422,12 @@
             <name>InputPhone</name>
             <value>
                 <elementReference>phone</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>InputScope</name>
+            <value>
+                <elementReference>scopeName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -442,6 +454,13 @@
     <variables>
         <description>email o tarea relacionado con recordid</description>
         <name>relatedrecordid</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>scopeName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

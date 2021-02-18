@@ -5,7 +5,7 @@
         <name>CreateLead</name>
         <label>Create Lead</label>
         <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationY>614</locationY>
         <actionName>BusinessInsuranceCreateLeadAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -63,7 +63,7 @@
         <name>GoToLead</name>
         <label>Go to Lead</label>
         <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationY>734</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -75,6 +75,15 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
+    <choices>
+        <description>Valor por defecto del ámbito seleccionado en la picklist</description>
+        <name>DefaultScope</name>
+        <choiceText>&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!DefaultScopeChoiceLabel}&lt;/span&gt;</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>DefaultScopeChoiceValue</elementReference>
+        </value>
+    </choices>
     <choices>
         <name>EmptyCommercialActivity</name>
         <choiceText>Desconocido</choiceText>
@@ -98,6 +107,48 @@
             <stringValue>3200012539</stringValue>
         </value>
     </choices>
+    <constants>
+        <description>Valor constante del label de Zurich Empresas</description>
+        <name>ScopeZELabel</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Zurich Empresas</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Valor constante del value (Business Code) de Zurich Empresas</description>
+        <name>ScopeZEValue</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3200012491</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <description>Comprueba si hemos recibido el Business Code en la variable de InputScope</description>
+        <name>ScopeNameIsEmpty</name>
+        <label>ScopeName is empty?</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>GetDefaultScope</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>ScopeNameIsEmptyYes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>InputScope</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AccountInformation</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <description>Muestra un formulario para introducir los datos para generar un Lead, sus vías de contacto y ámbito</description>
     <dynamicChoiceSets>
         <description>Lista de valores de actividad comercial</description>
@@ -108,6 +159,41 @@
         <picklistField>CommercialActivity__c</picklistField>
         <picklistObject>Account</picklistObject>
     </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <description>Valores de ámbito disponibles para la creación de nuevos Lead, recuperados directamente del metadato de Scope Settings</description>
+        <name>ScopePicklist</name>
+        <dataType>String</dataType>
+        <displayField>Scope_Name__c</displayField>
+        <filterLogic>1 AND 2</filterLogic>
+        <filters>
+            <field>AvailableForLeadCreationFlow__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>BusinessCode__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>DefaultScope</elementReference>
+            </value>
+        </filters>
+        <object>Scope_Setting__mdt</object>
+        <valueField>BusinessCode__c</valueField>
+    </dynamicChoiceSets>
+    <formulas>
+        <description>Fórmula que calcula el valor por defecto del ámbito en caso de recibir un Business Code valido por parametro, en caso de no encontrar ningún ámbito marcará Zurich Empresas por defecto</description>
+        <name>DefaultScopeChoiceLabel</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!GetDefaultScope.BusinessCode__c}), {!ScopeZELabel}, {!GetDefaultScope.Scope_Name__c})</expression>
+    </formulas>
+    <formulas>
+        <description>Fórmula que calcula el valor por defecto del ámbito en caso de recibir un Business Code valido por parametro, en caso de no encontrar ningún ámbito marcará Zurich Empresas por defecto</description>
+        <name>DefaultScopeChoiceValue</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!GetDefaultScope.BusinessCode__c}), {!ScopeZEValue}, {!GetDefaultScope.BusinessCode__c})</expression>
+    </formulas>
     <formulas>
         <description>Formula que genera un email falso a partir del valor de InputPhone</description>
         <name>FakeEmail</name>
@@ -135,13 +221,35 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordLookups>
+        <description>Recuperamos la información del Scope a partir del Business Code recibido</description>
+        <name>GetDefaultScope</name>
+        <label>Get Default Scope</label>
+        <locationX>264</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AccountInformation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>BusinessCode__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>InputScope</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Scope_Setting__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <description>Ventana para introducir los datos del cliente (lead) a crear</description>
         <name>AccountInformation</name>
         <label>Introduce datos del cliente</label>
         <locationX>176</locationX>
-        <locationY>158</locationY>
+        <locationY>494</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -234,9 +342,10 @@
         </fields>
         <fields>
             <name>Scope</name>
-            <choiceReferences>ScopeZEChoice</choiceReferences>
-            <choiceReferences>ScopeZEOChoice</choiceReferences>
+            <choiceReferences>DefaultScope</choiceReferences>
+            <choiceReferences>ScopePicklist</choiceReferences>
             <dataType>String</dataType>
+            <defaultSelectedChoiceReference>DefaultScope</defaultSelectedChoiceReference>
             <fieldText>Ámbito</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
@@ -248,7 +357,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>AccountInformation</targetReference>
+            <targetReference>ScopeNameIsEmpty</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -263,6 +372,13 @@
     <variables>
         <description>Valor del teléfono recibido para añadir al formulario</description>
         <name>InputPhone</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>InputScope</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AvailableForLeadCreationFlow__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Marca si el registro de scope está disponible para seleccionar en el flow de creación de leads. Si está marcada a true, aparecerá en la picklist de ámbito.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Is Available For Lead Creation Flow</label>
+    <type>Checkbox</type>
+</CustomField>
