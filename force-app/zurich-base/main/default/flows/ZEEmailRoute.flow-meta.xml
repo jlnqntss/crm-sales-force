@@ -35,7 +35,7 @@
         <inputParameters>
             <name>scope</name>
             <value>
-                <stringValue>ze</stringValue>
+                <elementReference>Scope</elementReference>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -60,7 +60,7 @@
         <inputParameters>
             <name>flowId</name>
             <value>
-                <stringValue>3826817b-5144-4547-a340-2facbd6d76ad</stringValue>
+                <elementReference>FlowId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -101,7 +101,67 @@
         </inputParameters>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
+    <constants>
+        <description>Dirección de correo de Zurich Empresas</description>
+        <name>ZEEmailAddress</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>info.zurichempresas@zurich.com</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>ID Flow de Genesys para Zurich Empresas</description>
+        <name>ZEFlowId</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>49b5ec44-fa87-4f24-9767-5b91eff67c94</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Dirección de correo de Orange</description>
+        <name>ZEOEmailAddress</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>info.orangeseguros@zurich.com</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>ID Flow de Genesys para Orange</description>
+        <name>ZEOFlowId</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>90419fc5-0749-472f-b54d-fafef07b5a71</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Valor API del scope de Orange</description>
+        <name>ZEOScopeValue</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>zeo</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Valor API del scope de Zurich Empresas</description>
+        <name>ZEScopeValue</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>ze</stringValue>
+        </value>
+    </constants>
     <description>Realiza el enrutamiento de correos electrónicos del buzón de Zurich Empresas</description>
+    <formulas>
+        <description>FlowId de Genesys al que hay que enrutar el Email</description>
+        <name>FlowId</name>
+        <dataType>String</dataType>
+        <expression>IF(CONTAINS({!EmailMessage.ToAddress}, {!ZEOEmailAddress}), {!ZEOFlowId}, {!ZEFlowId})</expression>
+    </formulas>
+    <formulas>
+        <description>Ámbito sobre el que buscar el best agent</description>
+        <name>Scope</name>
+        <dataType>String</dataType>
+        <expression>IF(CONTAINS({!EmailMessage.ToAddress}, {!ZEOEmailAddress}), {!ZEOScopeValue}, {!ZEScopeValue})</expression>
+    </formulas>
     <formulas>
         <description>URL de la ficha a abrir con el correo enrutado</description>
         <name>ScreenPopURL</name>
