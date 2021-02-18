@@ -429,6 +429,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GenesysSurveysService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>INFOHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
