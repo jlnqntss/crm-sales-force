@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CaseId__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Se obtiene del Task.WhatId si está relacionado con un caso</description>
+    <externalId>false</externalId>
+    <label>Case</label>
+    <referenceTo>Case</referenceTo>
+    <relationshipLabel>Surveys</relationshipLabel>
+    <relationshipName>Surveys</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
