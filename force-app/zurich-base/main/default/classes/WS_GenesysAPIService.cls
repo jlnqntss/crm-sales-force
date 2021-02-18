@@ -109,6 +109,12 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                         response.statusCode = 200;
                         response.responseBody = Blob.valueOf(interaction.toString() );
                     }
+                }// POST /surveys: Upsert de encuestas y sus respuestas
+                when 'surveys' {
+                    GenesysSurveysService.version =  WS_BaseAPIService.version;
+                    GenesysSurveysService.initSurvey((GenesysSurveysService.Survey) JSON.deserialize(request.requestBody.toString(), GenesysSurveysService.Survey.class));
+                    response.statusCode = 200;
+                    //response.responseBody = Blob.valueOf(''); //El body se devuelve vacío si ha ido bien
                 }
             }
         }

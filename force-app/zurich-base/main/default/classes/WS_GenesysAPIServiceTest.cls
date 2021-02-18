@@ -34,6 +34,7 @@ private class WS_GenesysAPIServiceTest
         insert opportunities;
 
         List<Task> tasks = TestDataFactory.generateInteractionTasks(10);
+        tasks.get(0).WhatId = cases.get(0).Id; //Una task relacionada con un caso para los tests de DoPost_Survey
         insert tasks;
     }
 
@@ -289,5 +290,117 @@ private class WS_GenesysAPIServiceTest
         System.assertEquals(200, RestContext.response.statusCode);
     }
 
+    // #endregion
+
+    // #region Test POST Surveys
+
+    @isTest
+    static void test_doPost_surveys_ok()
+    {
+        GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
+
+        survey.fromId = '123456789';
+        survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
+        survey.questionId = 'questionId0';
+        survey.questionType = 'avr';
+        survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
+        'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
+        'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate'+
+        'velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim'+
+        'qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi';
+
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/surveys';
+        request.httpMethod = 'POST';
+        request.addHeader('Content-Type', 'application/json');
+        request.requestBody = Blob.valueOf(JSON.serialize(survey));
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doPost();
+        Test.stopTest();
+
+        // Then
+        List<Survey__c> createdSurvey = [SELECT Id, CaseId__c FROM Survey__c];
+        List<SurveyResponse__c> createdResponse = [SELECT Id, Answer__c, LongAnswer__c FROM SurveyResponse__c];
+
+        System.assertEquals(200, response.statusCode, 'Debería haer devuelto un 200-OK');
+        System.assertEquals(1,createdSurvey.size(), 'Se debería haber creado 1 survey');
+        System.assertEquals(1,createdResponse.size(), 'Se debería haber creado 1 survey response');
+        System.assertNotEquals(null,createdSurvey[0].CaseId__c, 'Se debería haber enlazado con un Caso');//Es el caso que se añadió en CreateScenario()
+        System.assertEquals(254,createdResponse[0].Answer__c.length(), 'El campo Answer debería tener el máximo de caracteres rellenos por el String.abbreviate(254)');
+        System.assertEquals(survey.answer,createdResponse[0].LongAnswer__c, 'El campo LongAnswer debería contener la respuesta completa');
+    }
+
+    @isTest
+    static void test_doPost_surveys_ko_invalidInput()
+    {
+        GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
+
+        survey.fromId = '123456789';
+        survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
+        survey.questionId = 'questionId0';
+        survey.questionType = 'invalidInput';//solo permite ivr y avr de inputs
+        //Falta answer que es campo obligatorio
+
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/surveys';
+        request.httpMethod = 'POST';
+        request.addHeader('Content-Type', 'application/json');
+        request.requestBody = Blob.valueOf(JSON.serialize(survey));
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doPost();
+        Test.stopTest();
+
+        // Then
+        List<Survey__c> createdSurvey = [SELECT Id, CaseId__c FROM Survey__c];
+        List<SurveyResponse__c> createdResponse = [SELECT Id, Answer__c, LongAnswer__c FROM SurveyResponse__c];
+
+        System.assertEquals(500, response.statusCode, 'Debería haer devuelto un 500');
+        System.assertEquals(0,createdSurvey.size(), 'Se debería haber creado 0 survey');
+        System.assertEquals(0,createdResponse.size(), 'Se debería haber creado 0 survey response');
+    }
+
+    @isTest
+    static void test_doPost_surveys_ko_noExistTask()
+    {
+        GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
+
+        survey.fromId = '123456789';
+        survey.interactionId = 'noExisteTaskConEsteCallObject';//Va a fallar porque no existe una task con este CallObject
+        survey.questionId = 'questionId0';
+        survey.questionType = 'ivr';
+        survey.answer = '10';
+
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/surveys';
+        request.httpMethod = 'POST';
+        request.addHeader('Content-Type', 'application/json');
+        request.requestBody = Blob.valueOf(JSON.serialize(survey));
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doPost();
+        Test.stopTest();
+
+        // Then
+        List<Survey__c> createdSurvey = [SELECT Id, CaseId__c FROM Survey__c];
+        List<SurveyResponse__c> createdResponse = [SELECT Id, Answer__c, LongAnswer__c FROM SurveyResponse__c];
+
+        System.assertEquals(500, response.statusCode, 'Debería haer devuelto un 500');
+        System.assertEquals(0,createdSurvey.size(), 'Se debería haber creado 0 survey');
+        System.assertEquals(0,createdResponse.size(), 'Se debería haber creado 0 survey response');
+    }
     // #endregion
 }
