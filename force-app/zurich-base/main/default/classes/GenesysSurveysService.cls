@@ -3,11 +3,9 @@ public without sharing class GenesysSurveysService {
     public static Integer version { get; set; }
 
     @TestVisible
-    static final String SURVEY_MISSING_FIELDS_REQUIRED = 'Survey: some required fields are missing';
+    static final String MISSING_FIELDS_REQUIRED = 'Survey: some required fields are missing';
     @TestVisible
-    static final String RESPONSE_MISSING_FIELDS_REQUIRED = 'Response: some required fields are missing';
-    @TestVisible
-    static final String INTERACTION_NO_EXIST = 'The survey cannot be created because the interaction does not exist';
+    static final String INTERACTION_NO_EXIST = 'The survey cannot be created because the interaction task does not exist';
 
     /**
      * Sirve a WS_GenesysAPIService
@@ -25,15 +23,15 @@ public without sharing class GenesysSurveysService {
         interactionTask = searchInteractionTask(request);
 
         //3º-Formar lista de respuestas
-        List<SurveyResponse__c> surveyResponses = new List<SurveyResponse__c>();
-        surveyResponses = createSurveyResponses(request);
+        SurveyResponse__c surveyResponse = new SurveyResponse__c();
+        surveyResponse = createSurveyResponse(request);
 
         //4º-Formar encuesta
         Survey__c survey = new Survey__c();
         survey = createSurvey(request, interactionTask);
 
         //5º-Upsert
-        upsertSurvey(survey, surveyResponses);
+        upsertSurvey(survey, surveyResponse);
     }
 
     /**
@@ -42,20 +40,9 @@ public without sharing class GenesysSurveysService {
      */
     public static void checkMissingFields(Survey request)
     {
-        if(String.isBlank(request.interactionId) || String.isBlank(request.fromId))
+        if(String.isBlank(request.interactionId) || String.isBlank(request.fromId) || String.isBlank(request.questionId) || String.isBlank(request.questionType) || String.isBlank(request.answer))
         {
-            throw new GenesysSurveysServiceException(SURVEY_MISSING_FIELDS_REQUIRED);
-        }
-
-        if(request.answers != null && request.answers.size()>0)
-        {
-            for(SurveyResponse response: request.answers)
-            {
-                if(String.isBlank(response.questionId) || String.isBlank(response.questionType) || String.isBlank(response.answer))
-                {
-                    throw new GenesysSurveysServiceException(RESPONSE_MISSING_FIELDS_REQUIRED);
-                }
-            }
+            throw new GenesysSurveysServiceException(MISSING_FIELDS_REQUIRED);
         }
     }
 
@@ -74,7 +61,6 @@ public without sharing class GenesysSurveysService {
         if(existingInteractionTasks.isEmpty())
         {
             throw new GenesysSurveysServiceException(INTERACTION_NO_EXIST);
-
         }else{
             interactionTask = existingInteractionTasks[0];
         }
@@ -83,32 +69,23 @@ public without sharing class GenesysSurveysService {
     }
 
     /**
-     * Formar una lista de registros SurveyResponse__c a partir de las SurveyResponse
+     * Formar una SurveyResponse__c a partir de las SurveyResponse
      * @date 17/02/2021
      */
-    public static List<SurveyResponse__c> createSurveyResponses(Survey request)
+    public static SurveyResponse__c createSurveyResponse(Survey request)
     {
-        List<SurveyResponse__c> surveyResponses = new List<SurveyResponse__c>();
+        SurveyResponse__c surveyResponse = new SurveyResponse__c();
 
-        //si vienen respuestas..
-        if(request.answers != null && request.answers.size()>0)
-        {
-            //Crear una Survey con el ExternalId relleno como referencia del Master-Detail
-            Survey__c surveyReference = new Survey__c(InteractionId__c = request.interactionId);
+        //Crear una Survey con el ExternalId relleno como referencia del Master-Detail
+        Survey__c surveyReference = new Survey__c(InteractionId__c = request.interactionId);
 
-            for(SurveyResponse response: request.answers)
-            {
-                SurveyResponse__c surveyResponse = new SurveyResponse__c();
-                surveyResponse.SurveyId__r = surveyReference; //Master-Detail
-                surveyResponse.QuestionId__c = response.questionId; //ExternalId
-                surveyResponse.QuestionType__c = response.questionType;
-                surveyResponse.Answer__c = response.answer.abbreviate(254);
-                surveyResponse.LongAnswer__c = response.answer.abbreviate(130999);
-                surveyResponses.add(surveyResponse);
-            }
-        }
+        surveyResponse.SurveyId__r = surveyReference; //Master-Detail
+        surveyResponse.QuestionId__c = request.questionId; //ExternalId
+        surveyResponse.QuestionType__c = request.questionType;
+        surveyResponse.Answer__c = request.answer.abbreviate(254);
+        surveyResponse.LongAnswer__c = request.answer.abbreviate(130999);
 
-        return surveyResponses;
+        return surveyResponse;
     }
 
      /**
@@ -118,7 +95,7 @@ public without sharing class GenesysSurveysService {
     public static Survey__c createSurvey(Survey request, Task interactionTask)
     {
         Survey__c survey = new Survey__c();
-        survey.InteractionId__c = request.interactionId;
+        survey.InteractionId__c = request.interactionId; //ExternalId
         survey.ANI__c = request.fromId;
 
         //Solo si la task estaba relacionada con un caso
@@ -134,7 +111,7 @@ public without sharing class GenesysSurveysService {
      * Configurar y ejecutar la DML de upsert
      * @date 17/02/2021
      */
-    public static void upsertSurvey(Survey__c survey, List<SurveyResponse__c> surveyResponses)
+    public static void upsertSurvey(Survey__c survey, SurveyResponse__c surveyResponse)
     {
         Schema.SObjectField surveyExternalId = Survey__c.Fields.InteractionId__c;
         Schema.SObjectField responseExternalId = SurveyResponse__c.Fields.QuestionId__c;
@@ -145,13 +122,10 @@ public without sharing class GenesysSurveysService {
             throw new GenesysSurveysServiceException(surveyResult.getErrors()[0].getMessage());
         }
 
-        Database.UpsertResult[] responseResults = Database.upsert(surveyResponses, responseExternalId, false);
-        for (Integer j = 0; j < responseResults.size(); j++)
+        Database.UpsertResult responseResult = Database.upsert(surveyResponse, responseExternalId, false);
+        if (!responseResult.isSuccess())
         {
-            if (!responseResults[j].isSuccess())
-            {
-                throw new GenesysSurveysServiceException(responseResults[j].getErrors()[0].getMessage());
-            }
+            throw new GenesysSurveysServiceException(responseResult.getErrors()[0].getMessage());
         }
     }
 
@@ -163,20 +137,6 @@ public without sharing class GenesysSurveysService {
     {
         public String interactionId { get; set; }
         public String fromId { get; set; }
-        public SurveyResponse[] answers { get; set; }
-
-        public override String toString()
-        {
-            return JSON.serialize(this);
-        }
-    }
-
-    /**
-     * Representa una respuesta de una Survey de Genesys Cloud
-     * @date 17/02/2021
-     */
-    public class SurveyResponse
-    {
         public String questionId { get; set; }
         public String questionType { get; set; }
         public String answer { get; set; } //32k caracteres
