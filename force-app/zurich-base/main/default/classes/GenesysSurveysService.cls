@@ -3,7 +3,9 @@ public without sharing class GenesysSurveysService {
     public static Integer version { get; set; }
 
     @TestVisible
-    static final String MISSING_FIELDS_REQUIRED = 'Survey: some required fields are missing';
+    static final String SURVEY_MISSING_FIELDS_REQUIRED = 'Survey: some required fields are missing';
+    @TestVisible
+    static final String RESPONSE_MISSING_FIELDS_REQUIRED = 'SurveyResponse: some required fields are missing';
     @TestVisible
     static final String INTERACTION_NO_EXIST = 'The survey cannot be created because the interaction task does not exist';
 
@@ -22,9 +24,12 @@ public without sharing class GenesysSurveysService {
         Task interactionTask = new Task();
         interactionTask = searchInteractionTask(request);
 
-        //3º-Formar lista de respuestas
+        //3º-Formar respuesta (si ha venido)
         SurveyResponse__c surveyResponse = new SurveyResponse__c();
-        surveyResponse = createSurveyResponse(request);
+        if(String.isNotBlank(request.questionId))
+        {
+            surveyResponse = createSurveyResponse(request);
+        }
 
         //4º-Formar encuesta
         Survey__c survey = new Survey__c();
@@ -40,9 +45,16 @@ public without sharing class GenesysSurveysService {
      */
     public static void checkMissingFields(Survey request)
     {
-        if(String.isBlank(request.interactionId) || String.isBlank(request.fromId) || String.isBlank(request.questionId) || String.isBlank(request.questionType) || String.isBlank(request.answer))
+        //Obligatorios son interactionId y fromId
+        if(String.isBlank(request.interactionId) || String.isBlank(request.fromId))
         {
-            throw new GenesysSurveysServiceException(MISSING_FIELDS_REQUIRED);
+            throw new GenesysSurveysServiceException(SURVEY_MISSING_FIELDS_REQUIRED);
+        }
+
+        //Devolver error si se pasó un Id de respuesta pero venían vacios los otros parámetros
+        if(String.isNotBlank(request.questionId) && (String.isBlank(request.questionType) || String.isBlank(request.answer)))
+        {
+            throw new GenesysSurveysServiceException(RESPONSE_MISSING_FIELDS_REQUIRED);
         }
     }
 
@@ -114,18 +126,21 @@ public without sharing class GenesysSurveysService {
     public static void upsertSurvey(Survey__c survey, SurveyResponse__c surveyResponse)
     {
         Schema.SObjectField surveyExternalId = Survey__c.Fields.InteractionId__c;
-        Schema.SObjectField responseExternalId = SurveyResponse__c.Fields.QuestionId__c;
-
         Database.UpsertResult surveyResult = Database.upsert(survey, surveyExternalId, false);
         if (!surveyResult.isSuccess())
         {
             throw new GenesysSurveysServiceException(surveyResult.getErrors()[0].getMessage());
         }
 
-        Database.UpsertResult responseResult = Database.upsert(surveyResponse, responseExternalId, false);
-        if (!responseResult.isSuccess())
+        //Si no viene respuesta, se crea solamente la encuesta y nada más
+        if(surveyResponse.QuestionId__c != null)
         {
-            throw new GenesysSurveysServiceException(responseResult.getErrors()[0].getMessage());
+            Schema.SObjectField responseExternalId = SurveyResponse__c.Fields.QuestionId__c;
+            Database.UpsertResult responseResult = Database.upsert(surveyResponse, responseExternalId, false);
+            if (!responseResult.isSuccess())
+            {
+                throw new GenesysSurveysServiceException(responseResult.getErrors()[0].getMessage());
+            }
         }
     }
 
