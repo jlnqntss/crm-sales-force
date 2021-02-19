@@ -51,7 +51,7 @@ private without sharing class GenesysSurveysServiceTest {
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
-        survey.fromId = '123456789';
+        //survey.fromId = '123456789';
         survey.interactionId = 'NoExisteLaTask';//va a fallar porque debería tener lo mismo que Task.CallObject
         survey.questionId = 'questionId0';
         survey.questionType = 'invalidInput';
@@ -212,9 +212,6 @@ private without sharing class GenesysSurveysServiceTest {
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
-        survey.questionType = 'avr';
-        survey.answer = '10';
 
         Test.startTest();
             Task interactionTask = GenesysSurveysService.searchInteractionTask(survey);
