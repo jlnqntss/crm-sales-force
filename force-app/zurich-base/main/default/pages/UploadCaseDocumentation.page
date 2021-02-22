@@ -1,0 +1,45 @@
+<apex:page>
+  <apex:slds />
+  <apex:includeLightning />
+  <div id="lightningvf">
+    <div
+      id="skeleton"
+      class="slds-grid_frame slds-theme_shade slds-spinner_container slds-is-fixed"
+    >
+      <div role="status" class="slds-spinner slds-spinner_medium">
+        <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var hashId = "{!JSENCODE($CurrentPage.parameters.Hash)}";
+      var language = "{!JSENCODE($CurrentPage.parameters.Language)}";
+
+      var lightningEndPointURI = window.location.href.split("?")[0];
+      if (
+        lightningEndPointURI.length > 0 &&
+        lightningEndPointURI.substr(-1) == "/"
+      ) {
+        lightningEndPointURI = lightningEndPointURI.slice(0, -1);
+      }
+      $Lightning.use(
+        "c:UploadCaseDocumentationApp",
+        function () {
+          $Lightning.createComponent(
+            "c:UploadCaseDocumentation",
+            { hash: hashId, language: language },
+            "lightningvf",
+            function (cmp) {
+              document.getElementById("skeleton").remove();
+            }
+          );
+        },
+        lightningEndPointURI
+      );
+    })();
+  </script>
+</apex:page>
