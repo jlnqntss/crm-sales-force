@@ -98,4 +98,20 @@
         <field>WS_Source_IBA__c</field>
         <value xsi:type="xsd:string">IBA_SP</value>
     </values>
+    <values>
+        <field>ZEGenesysCloudFlowId__c</field>
+        <value xsi:type="xsd:string">49b5ec44-fa87-4f24-9767-5b91eff67c94</value>
+    </values>
+    <values>
+        <field>ZEInboundEmailAddress__c</field>
+        <value xsi:type="xsd:string">info.zurichempresas@zurich.com</value>
+    </values>
+    <values>
+        <field>ZEOGenesysCloudFlowId__c</field>
+        <value xsi:type="xsd:string">90419fc5-0749-472f-b54d-fafef07b5a71</value>
+    </values>
+    <values>
+        <field>ZEOInboundEmailAddress__c</field>
+        <value xsi:type="xsd:string">info.orangeseguros@zurich.com</value>
+    </values>
 </CustomMetadata>
