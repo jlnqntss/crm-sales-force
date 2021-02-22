@@ -98,22 +98,6 @@
                 <behavior>Required</behavior>
                 <field>WS_Source_IBA_EMEA__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>ZEGenesysCloudFlowId__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>ZEOGenesysCloudFlowId__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>ZEInboundEmailAddress__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>ZEOInboundEmailAddress__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
