@@ -44,6 +44,13 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                         GenesysInteractionsService.findOpenedClaim(new GenesysInteractionsService.SearchRequest(RestContext.request.params) ).toString()
                     );
                 }
+                when 'digitalcustomer' {
+                    GenesysInteractionsService.version =  WS_BaseAPIService.version;
+                    response.statusCode = 200;
+                    response.responseBody = Blob.valueOf(
+                        GenesysInteractionsService.findDigitalCustomer(new GenesysInteractionsService.DigitalCustomer(RestContext.request.params)).toString()
+                    );
+                }
             }
         }
         catch (WS_BaseAPIService.ApiException apiError)
