@@ -756,6 +756,47 @@ public without sharing class GenesysInteractionsService
         return queueId;
     }
 
+    /**
+     * Obtener true o false dependiendo de si el Customer es Digital (KLINC)
+     * @date 23/02/2021
+     */
+    public static DigitalCustomer findDigitalCustomer(DigitalCustomer request)
+    {
+        // 1 - Comprobar que la request tiene informados todos los campos requeridos
+        if (String.isBlank(request.searchType) || String.isBlank(request.value))
+        {
+            throw new GenesysInteractionsServiceException(MISSING_FIELDS_REQUIRED);
+        }
+
+        // 2 - Realizar la búsqueda de siniestro en base a los filtros definidos en la request
+        List<Order> klincPolicies = new List<Order>();
+        switch on request.searchType {
+            when 'phone'
+            {
+                klincPolicies = DigitalCustomerSearchService.findPoliciesByCustomerPhone(request.value);
+            }
+            when 'document'
+            {
+                klincPolicies = DigitalCustomerSearchService.findPoliciesByCustomerDocument(request.value);
+            }
+            when 'email'
+            {
+                klincPolicies = DigitalCustomerSearchService.findPoliciesByCustomerEmail(request.value);
+            }
+        }
+
+        // 3 - Si tiene al menos 1 póliza, es de Klinc
+        if(klincPolicies != null && !klincPolicies.isEmpty() && klincPolicies.size() > 0)
+        {
+            request.isDigitalCustomer = true;
+            return request;
+        }
+
+        //Si no tiene pólizas activas no se sabe si es de Klinc
+        request.isDigitalCustomer = false;
+        return request;
+    }
+
     //#endregion
 
     //#region Inner Classes
@@ -1260,6 +1301,28 @@ public without sharing class GenesysInteractionsService
             this.carRegistration = claim.InsuredObject__r.RegistrationNumber__c;
             this.claimNumber = claim.Name;
             this.policy = new ActivePolicy(claim.Policy__r);
+        }
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa si un Customer es Digital (KLINC)
+     */
+    public class DigitalCustomer
+    {
+        public Boolean isDigitalCustomer;
+        public String searchType;
+        public String value;
+
+        public DigitalCustomer() {}
+        public DigitalCustomer(Map<String, String> paramsByName)
+        {
+            this.searchType = paramsByName.get('searchType');
+            this.value = paramsByName.get('value');
         }
 
         public override String toString()

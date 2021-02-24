@@ -403,4 +403,69 @@ private class WS_GenesysAPIServiceTest
         System.assertEquals(0,createdResponse.size(), 'Se debería haber creado 0 survey response');
     }
     // #endregion
+
+    @isTest
+    static void test_doGet_digitalcustomer_ok()
+    {
+        //Creación de registros del modelo de datos de KLINC
+        Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
+        insert newMaster;
+        Contact customer = new Contact(
+            Email = 'edu@test.com',
+            MobilePhone = '675887723',
+            DNI__c = '05289654W',
+            Birthdate = Date.valueOf('1990-01-01'),
+            FirstName = 'Edu',
+            LastName = 'Sanchez',
+            CustomerNum__c = 'GI-3123',
+            LegalEntity__c = Label.GeneralInsurance,
+            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerGI),
+            AccountId = newMaster.Id
+            );
+        insert customer;
+        //Generar 10 orders para que las querys devuelvan un listado
+        List<Order> orders = TestDataFactory.generateOrdersKlinc(newMaster.Id, customer.Id, customer.CustomerNum__c, Label.PolicyGI, 10);
+        insert orders;
+        //FIN Creación de registros del modelo de datos de KLINC
+
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/digitalcustomer';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('searchType', 'document');
+        request.addParameter('value', customer.DNI__c);
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(200, RestContext.response.statusCode);
+    }
+
+    @isTest
+    static void test_doGet_digitalcustomer_ko()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/digitalcustomer';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('searchType', 'document');
+        //request.addParameter('value', customer.DNI__c); Va a fallar porque falta un parámetro obligatorio
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(500, RestContext.response.statusCode);
+    }
 }
