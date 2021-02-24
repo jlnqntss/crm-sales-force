@@ -302,7 +302,7 @@ private class WS_GenesysAPIServiceTest
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
         survey.questionId = 'questionId0';
-        survey.questionType = 'avr';
+        survey.questionType = 'ivr';
         survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
         'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
         'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate'+
@@ -343,7 +343,7 @@ private class WS_GenesysAPIServiceTest
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
         survey.questionId = 'questionId0';
-        survey.questionType = 'invalidInput';//solo permite ivr y avr de inputs
+        survey.questionType = 'invalidInput';//solo permite ivr y asr de inputs
         //Falta answer que es campo obligatorio
 
         RestResponse response = new RestResponse();

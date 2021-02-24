@@ -24,7 +24,7 @@ private without sharing class GenesysSurveysServiceTest {
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
         survey.questionId = 'questionId0';
-        survey.questionType = 'avr';
+        survey.questionType = 'ivr';
         survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
         'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
         'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate'+
@@ -82,7 +82,7 @@ private without sharing class GenesysSurveysServiceTest {
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
         survey.questionId = 'questionId0';
-        survey.questionType = 'avr';
+        survey.questionType = 'ivr';
         survey.answer = '10';
 
         GenesysSurveysService.GenesysSurveysServiceException expectedError;
@@ -110,7 +110,7 @@ private without sharing class GenesysSurveysServiceTest {
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
         survey.questionId = 'questionId0';
-        survey.questionType = 'avr';
+        survey.questionType = 'ivr';
         //Va a fallar porque falta el parámetro answer que es obligatorio
 
         GenesysSurveysService.GenesysSurveysServiceException expectedError;
@@ -138,7 +138,7 @@ private without sharing class GenesysSurveysServiceTest {
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
         survey.questionId = 'questionId0';
-        survey.questionType = 'avr';
+        survey.questionType = 'ivr';
         survey.answer = '10';
 
         Test.startTest();
@@ -159,7 +159,7 @@ private without sharing class GenesysSurveysServiceTest {
         survey.fromId = '123456789';
         survey.interactionId = 'NoExisteLaTask';//va a fallar porque debería tener lo mismo que Task.CallObject
         survey.questionId = 'questionId0';
-        survey.questionType = 'avr';
+        survey.questionType = 'ivr';
         survey.answer = '10';
 
         GenesysSurveysService.GenesysSurveysServiceException expectedError;
@@ -189,7 +189,7 @@ private without sharing class GenesysSurveysServiceTest {
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
         survey.questionId = 'questionId0';
-        survey.questionType = 'avr';
+        survey.questionType = 'ivr';
         survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
         'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
         'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate'+
