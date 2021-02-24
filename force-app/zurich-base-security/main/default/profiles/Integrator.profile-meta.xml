@@ -4981,6 +4981,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.DocumentationHashId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.HegeoClaimId__c</field>
         <readable>true</readable>
     </fieldPermissions>

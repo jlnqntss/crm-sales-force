@@ -22,7 +22,7 @@ export default class FileUploadExample extends LightningElement {
     this.myRecordId = this.hash;
     console.log("this.myRecordId: " + this.myRecordId);
     getCase({
-      caseId: this.myRecordId
+      hashId: this.myRecordId
     })
       .then(function (caseResult) {
         console.log(caseResult);
@@ -67,7 +67,7 @@ export default class FileUploadExample extends LightningElement {
     console.log("handleUploadFinished");
     // Get the list of uploaded files
     const uploadedFiles = event.detail.files;
-    var currentCaseId = this.myRecordId;
+    var currentCaseId = this.currentCase.Id;
 
     this.getBase64(uploadedFiles[0])
       .then(function (result) {

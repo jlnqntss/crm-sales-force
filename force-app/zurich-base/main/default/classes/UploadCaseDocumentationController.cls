@@ -48,11 +48,11 @@ public without sharing class UploadCaseDocumentationController
     }
 
     @AuraEnabled
-    public static Case getCase(Id caseId)
+    public static Case getCase(String hashId)
     {
-        if(caseId != null)
+        if( String.isNotBlank(hashId) )
         {
-            Case caseFromUrl = [SELECT Id, Subject, CaseNumber, Status, CreatedDate FROM Case WHERE Id =: caseId];
+            Case caseFromUrl = [SELECT Id, Subject, CaseNumber, Status, CreatedDate FROM Case WHERE DocumentationHashId__c =: hashId];
             if(caseFromUrl != null)
             {
                 return caseFromUrl;
