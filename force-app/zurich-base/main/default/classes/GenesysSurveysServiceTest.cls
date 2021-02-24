@@ -23,7 +23,10 @@ private without sharing class GenesysSurveysServiceTest {
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
+        survey.callOriginQueueId = 'genesys_call_queue_id';
+        survey.surveyFlowId = 'genesys_survey_flow_name';
+        survey.numberOfQuestions = 5;
+        survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
         survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
         'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
@@ -81,7 +84,10 @@ private without sharing class GenesysSurveysServiceTest {
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
+        survey.callOriginQueueId = 'genesys_call_queue_id';
+        survey.surveyFlowId = 'genesys_survey_flow_name';
+        survey.numberOfQuestions = 5;
+        survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
         survey.answer = '10';
 
@@ -109,7 +115,7 @@ private without sharing class GenesysSurveysServiceTest {
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
+        survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
         //Va a fallar porque falta el parámetro answer que es obligatorio
 
@@ -137,7 +143,7 @@ private without sharing class GenesysSurveysServiceTest {
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
+        survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
         survey.answer = '10';
 
@@ -158,7 +164,7 @@ private without sharing class GenesysSurveysServiceTest {
 
         survey.fromId = '123456789';
         survey.interactionId = 'NoExisteLaTask';//va a fallar porque debería tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
+        survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
         survey.answer = '10';
 
@@ -188,7 +194,7 @@ private without sharing class GenesysSurveysServiceTest {
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
+        survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
         survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
         'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
@@ -222,4 +228,29 @@ private without sharing class GenesysSurveysServiceTest {
         System.assertEquals(interactionTask.WhatId, surveySF.CaseId__c, 'Se debería haber enlazado con un Caso');//Es el caso que se añadió en CreateScenario()
     }
 
+    @isTest
+    static void test_firstInsertOfSurvey_ok()
+    {
+        GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
+
+        survey.fromId = '123456789';
+        survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
+        survey.callOriginQueueId = 'genesys_call_queue_id';
+        survey.surveyFlowId = 'genesys_survey_flow_name';
+        survey.numberOfQuestions = 5;
+
+        Test.startTest();
+        GenesysSurveysService.initSurvey(survey);
+        Test.stopTest();
+
+        // Then
+        List<Survey__c> createdSurvey = [SELECT Id, CaseId__c FROM Survey__c];
+        List<SurveyResponse__c> createdResponse = [SELECT Id, Answer__c, QuestionType__c FROM SurveyResponse__c];
+
+        System.assertEquals(1,createdSurvey.size(), 'Se debería haber creado 1 survey');
+        System.assertEquals(5,createdResponse.size(), 'Se debería haber creado 5 survey response artificiales');
+        System.assertNotEquals(null,createdSurvey[0].CaseId__c, 'Se debería haber enlazado con un Caso');//Es el caso que se añadió en CreateScenario()
+        System.assertEquals(null,createdResponse[0].Answer__c, 'El campo Answer de la respuesta artificial debería estar vacío');
+        System.assertEquals('ivr',createdResponse[0].QuestionType__c, 'El campo tipo de respuesta se crea con el valor ivr');
+    }
 }

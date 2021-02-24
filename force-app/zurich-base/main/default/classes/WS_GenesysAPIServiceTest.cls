@@ -301,7 +301,10 @@ private class WS_GenesysAPIServiceTest
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
+        survey.callOriginQueueId = 'genesys_call_queue_id';
+        survey.surveyFlowId = 'genesys_survey_flow_name';
+        survey.numberOfQuestions = 5;
+        survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
         survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
         'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
@@ -342,7 +345,10 @@ private class WS_GenesysAPIServiceTest
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
+        survey.callOriginQueueId = 'genesys_call_queue_id';
+        survey.surveyFlowId = 'genesys_survey_flow_name';
+        survey.numberOfQuestions = 5;
+        survey.questionId = '123456789-1';
         survey.questionType = 'invalidInput';//solo permite ivr y asr de inputs
         //Falta answer que es campo obligatorio
 
@@ -376,9 +382,9 @@ private class WS_GenesysAPIServiceTest
 
         survey.fromId = '123456789';
         survey.interactionId = 'noExisteTaskConEsteCallObject';//Va a fallar porque no existe una task con este CallObject
-        survey.questionId = 'questionId0';
-        survey.questionType = 'ivr';
-        survey.answer = '10';
+        survey.callOriginQueueId = 'genesys_call_queue_id';
+        survey.surveyFlowId = 'genesys_survey_flow_name';
+        survey.numberOfQuestions = 5;
 
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
