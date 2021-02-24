@@ -3,6 +3,7 @@
 >
   <aura:attribute name="recordId" type="String" />
   <aura:attribute name="openAsSubtab" type="Boolean" />
+  <aura:attribute name="focus" type="Boolean" default="true" />
 
   <!-- BODY -->
   <lightning:workspaceAPI aura:id="workspace" />

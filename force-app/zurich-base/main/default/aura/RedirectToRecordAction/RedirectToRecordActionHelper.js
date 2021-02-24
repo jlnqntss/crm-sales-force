@@ -4,17 +4,32 @@
    * @author jmartinezpisson
    * @param {Id} recordId Id. de registro de Salesforce
    */
-  redirectTo: function (recordId) {
+  redirectTo: function (recordId, workspaceAPI, focus) {
     var redirectEvent = $A.get("e.force:navigateToSObject");
 
     if (window.sforce && window.sforce.one) {
       sforce.one.navigateToSObject(recordId);
     } else if (redirectEvent) {
-      redirectEvent
-        .setParams({
-          recordId: recordId
+      return workspaceAPI
+        .isConsoleNavigation()
+        .then(function (isConsole) {
+          if (!isConsole) {
+            throw "Not in Console";
+          }
+
+          return workspaceAPI.openTab({
+            focus: focus,
+            recordId: recordId
+          });
         })
-        .fire();
+        .catch(function (error) {
+          redirectEvent
+            .setParams({
+              recordId: recordId,
+              isredirect: focus
+            })
+            .fire();
+        });
     }
 
     return Promise.resolve();
@@ -24,7 +39,7 @@
    * @author jmartinezpisson
    * @param {Id} recordId Id. de registro de Salesforce
    */
-  openAsSubtab: function (recordId, workspaceAPI) {
+  openAsSubtab: function (recordId, workspaceAPI, focus) {
     var helper = this;
 
     if (window.sforce && window.sforce.one) {
@@ -38,6 +53,7 @@
 
         return workspaceAPI.openSubtab({
           parentTabId: focusedTabId,
+          focus: focus,
           recordId: recordId
         });
       })
