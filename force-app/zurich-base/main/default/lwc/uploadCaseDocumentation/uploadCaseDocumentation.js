@@ -1,14 +1,24 @@
-import { LightningElement, api, track } from "lwc";
+import { LightningElement, api, track, wire } from "lwc";
 import saveFile from "@salesforce/apex/UploadCaseDocumentationController.saveFile";
 import getCase from "@salesforce/apex/UploadCaseDocumentationController.getCase";
-import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import ZURICH_LOGO from "@salesforce/resourceUrl/zurich_ze_logo";
 export default class FileUploadExample extends LightningElement {
+  zurichLogoUrl = ZURICH_LOGO;
   @api hash;
   @track myRecordId;
-  @track isCaseClosed;
+  @track disableFileInput;
+  @track currentCase;
+  @track caseError;
+  @track isLoading;
+  @track showCase;
+  @track caseStatusStyle = "slds-theme_success";
+
+  @track messageContent;
 
   connectedCallback() {
     var that = this;
+    this.isLoading = true;
+    this.showCase = false;
     this.myRecordId = this.hash;
     console.log("this.myRecordId: " + this.myRecordId);
     getCase({
@@ -16,10 +26,34 @@ export default class FileUploadExample extends LightningElement {
     })
       .then(function (caseResult) {
         console.log(caseResult);
-        that.isCaseClosed = caseResult.Status == "Cerrado";
+        that.showCase = true;
+        that.isLoading = false;
+        that.currentCase = caseResult;
+
+        if (caseResult.Status == "Cerrado") {
+          that.caseStatusStyle = "slds-theme_error";
+          that.disableFileInput = true;
+          that.messageContent = {
+            class: "slds-theme_warning",
+            icon: "utility:warning",
+            title: "Warning",
+            message: "No se puede adjuntar documentación en un caso cerrado."
+          };
+        }
       })
       .catch(function (err) {
-        console.error(err);
+        console.log(err);
+
+        that.isLoading = false;
+        that.disableFileInput = true;
+
+        that.error = err;
+        that.messageContent = {
+          class: "slds-theme_error",
+          icon: "utility:error",
+          title: "Error",
+          message: "Ha habido un problema al cargar el caso."
+        };
       });
   }
 
@@ -28,6 +62,7 @@ export default class FileUploadExample extends LightningElement {
   }
 
   handleFilesChange(event) {
+    this.isLoading = true;
     var that = this;
     console.log("handleUploadFinished");
     // Get the list of uploaded files
@@ -44,23 +79,36 @@ export default class FileUploadExample extends LightningElement {
         })
           .then(function () {
             console.log("Success");
+            that.isLoading = false;
+
+            that.messageContent = {
+              class: "slds-theme_success",
+              icon: "utility:success",
+              title: "Success",
+              message: "Documentación adjuntada correctamente."
+            };
+
+            setTimeout(function () {
+              that.messageContent = undefined;
+            }, 6000);
+
             // Get the snackbar DIV
-            var divblock = that.template.querySelector('[data-id="snackbar"]');
+            /*var divblock = that.template.querySelector('[data-id="snackbar"]');
             if (divblock) {
               divblock.className = "show";
               setTimeout(function () {
                 divblock.className = "notshow";
               }, 3000);
-            }
+            }*/
           })
           .catch(function (err) {
             console.log(err);
-            that.showToast("Error en la subida del documento", err);
+            that.isLoading = false;
           });
       })
       .catch(function (err) {
         console.log(err);
-        that.showToast("Error en la subida del documento 2", err);
+        that.isLoading = false;
       });
   }
 
@@ -77,13 +125,5 @@ export default class FileUploadExample extends LightningElement {
       };
       reader.onerror = (error) => reject(error);
     });
-  }
-
-  showToast(title, message) {
-    const event = new ShowToastEvent({
-      title: title,
-      message: message
-    });
-    this.dispatchEvent(event);
   }
 }

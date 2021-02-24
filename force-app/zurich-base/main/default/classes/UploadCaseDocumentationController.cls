@@ -1,15 +1,12 @@
 /**
- * Class that is invoked by the LWC PreferenceCentreZE.
+ * Class that is invoked by the LWC UploadCaseDocumentation.
  *
- * The client (Personal Account -> Scope) arrives through the unsubscribe link to the site.
+ * The client (Personal Account -> Case) arrives through the case documentation link (email or SMS) to the site.
  *
- * From there, the client can subscribe or unsubscribe from
- * device and mobility communications or life communications.
+ * From there, the client can upload documentation directly to the specified case, only if the case is still open.
  *
- * This Class started from a copy of PreferenceCentreController class developed for Klinc
- *
- * @author nts (agonzalezisasi)
- * @date 15/12/2020
+ * @author nts (rlopez)
+ * @date 23/02/2021
  *
  */
 public without sharing class UploadCaseDocumentationController
@@ -28,7 +25,6 @@ public without sharing class UploadCaseDocumentationController
             base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
 
             ContentVersion cv = new ContentVersion();
-            //cv.ContentDocumentId = contentDocumentId;
             cv.VersionData = EncodingUtil.base64Decode(base64Data);
             cv.Title = fileName;
             cv.PathOnClient = filename;
@@ -56,7 +52,7 @@ public without sharing class UploadCaseDocumentationController
     {
         if(caseId != null)
         {
-            Case caseFromUrl = [SELECT Id, Status FROM Case WHERE Id =: caseId];
+            Case caseFromUrl = [SELECT Id, Subject, CaseNumber, Status, CreatedDate FROM Case WHERE Id =: caseId];
             if(caseFromUrl != null)
             {
                 return caseFromUrl;
@@ -75,13 +71,11 @@ public without sharing class UploadCaseDocumentationController
     /**
      * This method get the labels for the lwc page.
      *
-     * @author Enara Etxaniz
+     * @author Rubén López
      */
     @AuraEnabled(cacheable=true)
     public static String getLabels()
     {
-        System.debug('- - - - - UploadCaseDocumentationController.getLabels - - - - - ');
-
         AppLabels labels = new AppLabels();
 
         labels.PreferenceCentreTitleLabel = Label.PreferenceCentreTitle;
@@ -102,7 +96,7 @@ public without sharing class UploadCaseDocumentationController
     /**
      * Helper class for the labels used by the lwc
      *
-     * @author nts (agonzalezisasi)
+     * @author nts (rlopez)
      */
     public class AppLabels
     {

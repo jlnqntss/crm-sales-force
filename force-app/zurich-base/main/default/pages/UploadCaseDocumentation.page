@@ -1,6 +1,9 @@
 <apex:page>
   <apex:slds />
   <apex:includeLightning />
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
   <div id="lightningvf">
     <div
       id="skeleton"
@@ -17,7 +20,6 @@
   <script>
     (function () {
       var hashId = "{!JSENCODE($CurrentPage.parameters.Hash)}";
-      var language = "{!JSENCODE($CurrentPage.parameters.Language)}";
 
       var lightningEndPointURI = window.location.href.split("?")[0];
       if (
@@ -31,7 +33,7 @@
         function () {
           $Lightning.createComponent(
             "c:UploadCaseDocumentation",
-            { hash: hashId, language: language },
+            { hash: hashId },
             "lightningvf",
             function (cmp) {
               document.getElementById("skeleton").remove();
