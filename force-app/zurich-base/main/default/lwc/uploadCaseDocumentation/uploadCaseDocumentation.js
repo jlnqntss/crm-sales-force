@@ -126,4 +126,17 @@ export default class FileUploadExample extends LightningElement {
       reader.onerror = (error) => reject(error);
     });
   }
+
+  get toastClassName() {
+    if (this.messageContent != null) {
+      if (this.messageContent.class.indexOf("success") > -1) {
+        return "show";
+      } else {
+        return "";
+      }
+    } else {
+      return "notshow";
+    }
+    //return this.messageContent != null ? 'show': 'notshow';
+  }
 }

@@ -39,6 +39,24 @@
     <lightning-layout horizontal-align="space" vertical-align="center">
       <lightning-layout-item flexibility="auto" padding="around-small">
         <div class="slds-p-around_medium lgc-bg">
+          <div
+            data-id="snackbar"
+            class={toastClassName}
+            if:true={messageContent}
+          >
+            <p
+              style="padding: 10px; margin: 10px 0px; border-radius: 2px"
+              class={messageContent.class}
+            >
+              <lightning-icon
+                icon-name={messageContent.icon}
+                alternative-text={messageContent.title}
+                title={messageContent.title}
+                variant="inverse"
+              ></lightning-icon>
+              <b style="padding: 10px">{messageContent.message}</b>
+            </p>
+          </div>
           <div class="case-information" if:true={showCase}>
             <div class="slds-text-heading_large">
               Solicitud de documentación
@@ -51,13 +69,6 @@
                 title={currentCase.Subject}
                 icon-name="standard:case"
               >
-                <p style="padding: 10px">
-                  <b>Estado actual: </b
-                  ><lightning-badge
-                    label={currentCase.Status}
-                    class={caseStatusStyle}
-                  ></lightning-badge>
-                </p>
                 <p style="padding: 10px">
                   <b>Fecha de creación: </b
                   ><lightning-formatted-date-time
@@ -73,6 +84,13 @@
                   >
                   </lightning-formatted-date-time>
                 </p>
+                <p style="padding: 10px">
+                  <b>Estado actual: </b
+                  ><lightning-badge
+                    label={currentCase.Status}
+                    class={caseStatusStyle}
+                  ></lightning-badge>
+                </p>
               </lightning-card>
             </div>
           </div>
@@ -84,20 +102,6 @@
             multiple
           >
           </lightning-input>
-          <div if:true={messageContent}>
-            <p
-              style="padding: 10px; margin: 10px 0px; border-radius: 5px"
-              class={messageContent.class}
-            >
-              <lightning-icon
-                icon-name={messageContent.icon}
-                alternative-text={messageContent.title}
-                title={messageContent.title}
-                variant="inverse"
-              ></lightning-icon>
-              <b>{messageContent.message}</b>
-            </p>
-          </div>
         </div>
       </lightning-layout-item>
     </lightning-layout>
