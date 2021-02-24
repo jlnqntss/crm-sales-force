@@ -294,4 +294,127 @@ private class GenesysCloudTest
     }
 
     //#endregion
+
+    //#region SMSService
+
+    @isTest
+    static void test_GenesysCloudSMSService_send_ok()
+    {
+        String body = '{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75"}';
+        Integer code = 202; //Se va a probar un retorno bueno
+
+        //Set MOCK
+        GenesysCloud.SMSService.mock = new GenesysCloudMocks(body, code);
+
+        //montar SMS de prueba
+        GenesysCloud.SmsData message = new GenesysCloud.SmsData();
+        message.fromAddress = '+13178723000';
+        message.toAddress = '+15557655942';
+        message.textBody = 'hellow sms world';
+
+        Test.startTest();
+        GenesysCloud.SmsData updatedCallback = (GenesysCloud.SmsData) GenesysCloud.SMSService.send(message);
+        Test.stopTest();
+
+        System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', updatedCallback.smsId); //ID que devuelve el mock
+    }
+
+    @isTest
+    static void test_GenesysCloudSMSService_send_ko()
+    {
+        String body = '';
+        Integer code = 400; //Se va a probar un retorno malo
+
+        GenesysCloud.SMSService.mock = new GenesysCloudMocks(body, code);
+
+        GenesysCloud.SmsData message = new GenesysCloud.SmsData();
+
+        Test.startTest();
+        try {
+            GenesysCloud.SmsData updatedCallback = (GenesysCloud.SmsData) GenesysCloud.SMSService.send(message);
+        } catch(GenesysCloud.SMSServiceException e) {
+            Boolean expectedExceptionThrown =  e.getMessage().contains(GenesysCloud.ERROR_RESPONSE_SDK) ? true : false;
+            System.AssertEquals(expectedExceptionThrown, true);
+        }
+        Test.stopTest();
+    }
+
+    @isTest
+    static void test_GenesysCloudSMSService_sendList_ok()
+    {
+        String body = '{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75"}';
+        Integer code = 202; //Se va a probar un retorno bueno
+
+        //Set MOCK
+        GenesysCloud.SMSService.mock = new GenesysCloudMocks(body, code);
+
+        //montar SMSs de prueba
+        List<GenesysCloud.SmsData> messages = new List<GenesysCloud.SmsData>();
+        GenesysCloud.SmsData message = new GenesysCloud.SmsData();
+        message.fromAddress = '+13178723000';
+        message.toAddress = '+15557655942';
+        message.textBody = 'hellow sms world';
+        messages.add(message);
+        messages.add( message.clone() );
+
+        // Test
+        Test.startTest();
+        GenesysCloud.SMSService.send( messages, new SMSAssertCallback() );//El assert está en SMSAssertCallback
+        Test.stopTest();
+    }
+
+    @isTest
+    static void test_GenesysCloudSMSService_sendList_ko()
+    {
+        // When
+        String body = '';
+        Integer code = 400; //Se va a probar un retorno malo
+
+        //Set MOCK
+        GenesysCloud.SMSService.mock = new GenesysCloudMocks(body, code);
+
+        //montar SMSs de prueba
+        List<GenesysCloud.SmsData> messages = new List<GenesysCloud.SmsData>();
+        GenesysCloud.SmsData message = new GenesysCloud.SmsData();
+        messages.add(message);
+        for(Integer i=0;i<50;i++) {
+            messages.add( message.clone() );
+        }
+
+        // Test
+        Test.startTest();
+        GenesysCloud.SMSService.send( messages, new SMSAssertCallback() );//El assert está en SMSAssertCallback
+        Test.stopTest();
+    }
+
+    class SMSAssertCallback implements GenesysCloud.IAPICallback
+    {
+        public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
+        {
+            for(Object result : results) {
+                GenesysCloud.SmsData message = (GenesysCloud.SmsData) result;
+
+                System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', message.smsId);
+            }
+        }
+
+        public void onError(Exception error)
+        {
+            System.assertEquals(true, error instanceof GenesysCloud.SMSServiceException);
+        }
+    }
+
+    //#endregion
+
+    @isTest
+    static void test_GenesysCloudValidateResponse_ko()
+    {
+        Test.startTest();
+        try {
+            GenesysCloud.validateResponse(null, null);
+        } catch (Exception error) {
+            System.assertEquals(true, error instanceof GenesysCloud.GenesysCloudException);
+        }
+        Test.stopTest();
+    }
 }
