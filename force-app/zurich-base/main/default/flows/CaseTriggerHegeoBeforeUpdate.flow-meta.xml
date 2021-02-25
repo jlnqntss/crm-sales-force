@@ -5,7 +5,7 @@
         <name>UpdateAccountLookupWithAccountFound</name>
         <label>Update Account Lookup With Account Found</label>
         <locationX>149</locationX>
-        <locationY>2845</locationY>
+        <locationY>2903</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -18,7 +18,7 @@
         <name>UpdateClaimLookupWithClaimFound</name>
         <label>Update Claim Lookup With Claim Found</label>
         <locationX>193</locationX>
-        <locationY>2173</locationY>
+        <locationY>2231</locationY>
         <assignmentItems>
             <assignToReference>$Record.ClaimId__c</assignToReference>
             <operator>Assign</operator>
@@ -34,7 +34,7 @@
         <name>UpdateOfferLookupWithHegeoOfferId</name>
         <label>Update Offer Lookup With HegeoOfferId</label>
         <locationX>490</locationX>
-        <locationY>733</locationY>
+        <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.OfferId__c</assignToReference>
             <operator>Assign</operator>
@@ -50,7 +50,7 @@
         <name>UpdateOfferLookupWithHegeoPrePolicyId</name>
         <label>Update Offer Lookup With HegeoPrePolicyId</label>
         <locationX>50</locationX>
-        <locationY>613</locationY>
+        <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>$Record.OfferId__c</assignToReference>
             <operator>Assign</operator>
@@ -66,7 +66,7 @@
         <name>UpdatePolicyLookupWithPolicyFound</name>
         <label>Update Policy Lookup With Policy Found</label>
         <locationX>193</locationX>
-        <locationY>1501</locationY>
+        <locationY>1559</locationY>
         <assignmentItems>
             <assignToReference>$Record.PolicyId__c</assignToReference>
             <operator>Assign</operator>
@@ -82,7 +82,7 @@
         <name>AccountFound</name>
         <label>Account Found?</label>
         <locationX>281</locationX>
-        <locationY>2725</locationY>
+        <locationY>2783</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>AccountFoundYes</name>
@@ -104,7 +104,7 @@
         <name>ClaimFound</name>
         <label>Claim Found?</label>
         <locationX>325</locationX>
-        <locationY>2053</locationY>
+        <locationY>2111</locationY>
         <defaultConnector>
             <targetReference>HegeoIntermediaryIdHasChanged</targetReference>
         </defaultConnector>
@@ -129,7 +129,7 @@
         <name>HegeoClaimIdHasChanged</name>
         <label>Hegeo ClaimId Has Changed?</label>
         <locationX>479</locationX>
-        <locationY>1813</locationY>
+        <locationY>1871</locationY>
         <defaultConnector>
             <targetReference>HegeoIntermediaryIdHasChanged</targetReference>
         </defaultConnector>
@@ -146,9 +146,9 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record.HegeoClaimId__c</leftValueReference>
-                <operator>WasSet</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <elementReference>$Record__Prior.HegeoClaimId__c</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -161,7 +161,7 @@
         <name>HegeoIntermediaryIdHasChanged</name>
         <label>Hegeo IntermediaryId Has Changed?</label>
         <locationX>479</locationX>
-        <locationY>2485</locationY>
+        <locationY>2543</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>HegeoIntermediaryIdHasChangedYes</name>
@@ -175,9 +175,9 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record.HegeoIntermediaryId__c</leftValueReference>
-                <operator>WasSet</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <elementReference>$Record__Prior.HegeoIntermediaryId__c</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -190,7 +190,7 @@
         <name>HegeoOfferIdHasChanged</name>
         <label>Hegeo Offer Id Has Changed?</label>
         <locationX>776</locationX>
-        <locationY>373</locationY>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>HegeoPolicyIdHasChanged</targetReference>
         </defaultConnector>
@@ -207,9 +207,9 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record.HegeoOfferId__c</leftValueReference>
-                <operator>WasSet</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <elementReference>$Record__Prior.HegeoOfferId__c</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -222,7 +222,7 @@
         <name>HegeoOfferIdOfferFound</name>
         <label>HegeoOfferId Offer Found?</label>
         <locationX>622</locationX>
-        <locationY>613</locationY>
+        <locationY>671</locationY>
         <defaultConnector>
             <targetReference>HegeoPolicyIdHasChanged</targetReference>
         </defaultConnector>
@@ -247,7 +247,7 @@
         <name>HegeoPolicyIdHasChanged</name>
         <label>HegeoPolicyId Has Changed?</label>
         <locationX>479</locationX>
-        <locationY>1141</locationY>
+        <locationY>1199</locationY>
         <defaultConnector>
             <targetReference>HegeoClaimIdHasChanged</targetReference>
         </defaultConnector>
@@ -264,9 +264,9 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record.HegeoPolicyId__c</leftValueReference>
-                <operator>WasSet</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <elementReference>$Record__Prior.HegeoPolicyId__c</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -280,7 +280,7 @@
         <name>HegeoPrePolicyIdHasChanged</name>
         <label>Hegeo PrePolicyId has changed?</label>
         <locationX>479</locationX>
-        <locationY>253</locationY>
+        <locationY>311</locationY>
         <defaultConnector>
             <targetReference>HegeoOfferIdHasChanged</targetReference>
         </defaultConnector>
@@ -297,9 +297,9 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record.HegeoPrePolicyId__c</leftValueReference>
-                <operator>WasSet</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <elementReference>$Record__Prior.HegeoPrePolicyId__c</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -312,7 +312,7 @@
         <name>HegeoPrePolicyOfferFound</name>
         <label>HegeoPrePolicy Offer Found?</label>
         <locationX>182</locationX>
-        <locationY>493</locationY>
+        <locationY>551</locationY>
         <defaultConnector>
             <targetReference>HegeoPolicyIdHasChanged</targetReference>
         </defaultConnector>
@@ -337,7 +337,7 @@
         <name>PolicyFound</name>
         <label>Policy Found?</label>
         <locationX>325</locationX>
-        <locationY>1381</locationY>
+        <locationY>1439</locationY>
         <defaultConnector>
             <targetReference>HegeoClaimIdHasChanged</targetReference>
         </defaultConnector>
@@ -384,7 +384,7 @@
         <name>SearchRelatedClaim</name>
         <label>Search Related Claim</label>
         <locationX>325</locationX>
-        <locationY>1933</locationY>
+        <locationY>1991</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ClaimFound</targetReference>
@@ -406,7 +406,7 @@
         <name>SearchRelatedIntermediary</name>
         <label>Search Related Intermediary</label>
         <locationX>281</locationX>
-        <locationY>2605</locationY>
+        <locationY>2663</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AccountFound</targetReference>
@@ -428,7 +428,7 @@
         <name>SearchRelatedOfferWithOfferId</name>
         <label>Search Related Offer With OfferId</label>
         <locationX>622</locationX>
-        <locationY>493</locationY>
+        <locationY>551</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>HegeoOfferIdOfferFound</targetReference>
@@ -451,7 +451,7 @@
         <name>SearchRelatedOfferWithPrePolicyId</name>
         <label>Search Related Offer With PrePolicyId</label>
         <locationX>182</locationX>
-        <locationY>373</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>HegeoPrePolicyOfferFound</targetReference>
@@ -473,7 +473,7 @@
         <name>SearchRelatedPolicy</name>
         <label>Search Related Policy</label>
         <locationX>325</locationX>
-        <locationY>1261</locationY>
+        <locationY>1319</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>PolicyFound</targetReference>
