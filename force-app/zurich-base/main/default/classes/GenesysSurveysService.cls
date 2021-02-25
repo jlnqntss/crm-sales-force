@@ -37,6 +37,10 @@ public without sharing class GenesysSurveysService {
 
         //5º-Upsert
         upsertSurvey(survey, surveyResponse);
+
+        //6º Si la Survey aún no tiene respuestas creadas, se crean unas vacías
+        //Esto sirve para que entren en el TriggerAfter y se procese la cabecera
+        firstInsertOfSurvey(survey);
     }
 
     /**
@@ -46,13 +50,13 @@ public without sharing class GenesysSurveysService {
     public static void checkMissingFields(Survey request)
     {
         //Obligatorios son interactionId y fromId
-        if(String.isBlank(request.interactionId) || String.isBlank(request.fromId))
+        if(String.isBlank(request.interactionId) || String.isBlank(request.fromId) || String.isBlank(request.callOriginQueueId) || String.isBlank(request.surveyFlowId) || request.numberOfQuestions == null)
         {
             throw new GenesysSurveysServiceException(SURVEY_MISSING_FIELDS_REQUIRED);
         }
 
-        //Devolver error si se pasó un Id de respuesta pero venían vacios los otros parámetros
-        if(String.isNotBlank(request.questionId) && (String.isBlank(request.questionType) || String.isBlank(request.answer)))
+        //Devolver error si se pasó un Id de respuesta pero venían vacios los otros parámetros. La asnwer puede ser null si se queda en silencio/no responde
+        if(String.isNotBlank(request.questionId) && (String.isBlank(request.questionType)))
         {
             throw new GenesysSurveysServiceException(RESPONSE_MISSING_FIELDS_REQUIRED);
         }
@@ -94,8 +98,11 @@ public without sharing class GenesysSurveysService {
         surveyResponse.SurveyId__r = surveyReference; //Master-Detail
         surveyResponse.QuestionId__c = request.questionId; //ExternalId
         surveyResponse.QuestionType__c = request.questionType;
-        surveyResponse.Answer__c = request.answer.abbreviate(254);
-        surveyResponse.LongAnswer__c = request.answer.abbreviate(130999);
+        if(request.answer != null)
+        {
+            surveyResponse.Answer__c = request.answer.abbreviate(254);
+            surveyResponse.LongAnswer__c = request.answer.abbreviate(130999);
+        }
 
         return surveyResponse;
     }
@@ -109,6 +116,9 @@ public without sharing class GenesysSurveysService {
         Survey__c survey = new Survey__c();
         survey.InteractionId__c = request.interactionId; //ExternalId
         survey.ANI__c = request.fromId;
+        survey.CallOriginQueueId__c = request.callOriginQueueId;
+        survey.SurveyFlowId__c = request.surveyFlowId;
+        survey.NumberOfQuestions__c = request.numberOfQuestions;
 
         //Solo si la task estaba relacionada con un caso
         if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
@@ -144,6 +154,52 @@ public without sharing class GenesysSurveysService {
         }
     }
 
+     /**
+     * Si la Survey aún no tiene respuestas creadas, se crean unas vacías
+     * Esto sirve para que entren en el TriggerAfter y se procese la cabecera
+     * @date 24/02/2021
+     */
+    public static void firstInsertOfSurvey(Survey__c survey)
+    {
+        List<SurveyResponse__c> responsesToInsert = new List<SurveyResponse__c>();
+
+        //1º comprobar si la survey tiene respuestas ya creadas
+        List<SurveyResponse__c> surveyresponses = new List<SurveyResponse__c>();
+        surveyresponses = [SELECT Id FROM SurveyResponse__c WHERE SurveyId__c = :survey.Id];
+
+        //2º Si la encuesta aún no tiene respuestas, hay que crear unas artificiales
+        if(surveyresponses.size() == 0)
+        {
+            Survey__c surveyReference = new Survey__c(InteractionId__c = survey.InteractionId__c);
+
+            //3º se van creando con Id: SurveyId-1, SurveyId-2, SurveyId-3...
+            for(Integer i = 1; i <= survey.NumberOfQuestions__c; i++)
+            {
+                SurveyResponse__c surveyResponse = new SurveyResponse__c();
+                surveyResponse.SurveyId__r = surveyReference; //Master-Detail
+                surveyResponse.QuestionId__c = survey.InteractionId__c + '-' + i; //ExternalId
+                surveyResponse.QuestionType__c = 'ivr';
+                surveyResponse.Answer__c = '';
+                surveyResponse.LongAnswer__c = '';
+                responsesToInsert.add(surveyResponse);
+            }
+        }
+
+        //4º insertar las respuestas temporales
+        if(responsesToInsert.size()>0)
+        {
+            Schema.SObjectField responseExternalId = SurveyResponse__c.Fields.QuestionId__c;
+            Database.UpsertResult[] responseResults = Database.upsert(responsesToInsert, responseExternalId, false);
+            for(Integer index = 0; index < responseResults.size(); index++)
+            {
+                if (!responseResults[index].isSuccess())
+                {
+                    throw new GenesysSurveysServiceException('[firstInsertOfSurvey] '+responseResults[index].getErrors()[0].getMessage());
+                }
+            }
+        }
+    }
+
     /**
      * Representa una Survey de Genesys Cloud
      * @date 17/02/2021
@@ -152,6 +208,9 @@ public without sharing class GenesysSurveysService {
     {
         public String interactionId { get; set; }
         public String fromId { get; set; }
+        public String callOriginQueueId { get; set; }
+        public String surveyFlowId { get; set; }
+        public Integer numberOfQuestions { get; set; }
         public String questionId { get; set; }
         public String questionType { get; set; }
         public String answer { get; set; } //32k caracteres
