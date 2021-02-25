@@ -740,6 +740,8 @@ public class TestDataFactory
 
         Schema.DescribeFieldResult objectTypeFieldResult = Asset.ObjectType__c.getDescribe();
 		List<Schema.PicklistEntry> objectTypeValues = objectTypeFieldResult.getPicklistValues();
+        String objectType = 
+            objectTypeValues[Integer.valueof( (Math.random() * objectTypeValues.size() - 1) )].getValue();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
 
@@ -751,9 +753,7 @@ public class TestDataFactory
                 'id_unico_riesgo_asegurado' => String.valueOf(i + 1).leftPad(9, '0'),
                 'oferta_id' => '',
                 'poliza_id' => '',
-                'objeto_tipo' => objectTypeValues[
-                    Integer.valueof( (Math.random() * objectTypeValues.size() - 1) )
-                                ].getValue(),
+                'objeto_tipo' => objectType,
                 'objeto_secuencia' => '',
                 'vehiculo_marca' => 'Test',
                 'vehiculo_modelo' => 'Test',
