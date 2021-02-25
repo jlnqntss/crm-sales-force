@@ -6,10 +6,12 @@ public class GenesysCloud
     private static final String ERROR_RESPONSE_SDK = 'response from genesys cloud SDK: ';
     @TestVisible
     private static final String ERROR_VALIDATE_RESPONSE = 'Service is a required parameter to validate a response';
+    private static final String ASYNC_METHOD_SMS = 'sms';
     public static final String SERVICE_ROUTING = 'RoutingService';
     public static final String SERVICE_CALLBACKS = 'CallbacksService';
+    public static final String SERVICE_SMS = 'SMSService';
 
-    public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS }
+    public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS, SERVICE_SMS }
 
     public class GenesysCloudException extends Exception {}
 
@@ -44,6 +46,22 @@ public class GenesysCloud
             }
 
             return CallbacksService;
+        }
+        private set;
+    }
+    /**
+     * Getter de solo lectura que devuelve la instancia Singleton de SMSService
+     */
+    public static GenesysCloud.SMSService SMSService
+    {
+        get
+        {
+            if(SMSService == null)
+            {
+                SMSService = new GenesysCloud.SMSService();
+            }
+
+            return SMSService;
         }
         private set;
     }
@@ -136,6 +154,13 @@ public class GenesysCloud
                         results.add(CallbacksService.create( (Callback) request ) );
                     }
                 }
+                else if(this.method == ASYNC_METHOD_SMS )
+                {
+                    for(IAPIRequest request: this.requests)
+                    {
+                        results.add(SMSService.send( (SmsData) request ));
+                    }
+                }
                 else
                 {
                     throw new RoutingServiceException('No method defined');
@@ -153,7 +178,6 @@ public class GenesysCloud
                     this.callback.onError(error);
                 }
             }
-
         }
     }
 
@@ -180,9 +204,10 @@ public class GenesysCloud
 
 
     /**
-     * Comprueba si la respuesta ha sido un 200, sino lanza Exception
+     * Comprueba si la respuesta ha sido un 200 o 202, sino lanza Exception
      * @param response HttpResponse del SDK
      */
+    @testvisible
     private static void validateResponse(HttpResponse response, GenesysCloudServices service)
     {
         if(service == null)
@@ -200,6 +225,12 @@ public class GenesysCloud
                 if(response == null || response.getStatusCode() != 202)
                 {
                     throw new GenesysCloud.CallbacksServiceException(response);
+                }
+            }
+            when SERVICE_SMS {
+                if(response == null || response.getStatusCode() != 202)
+                {
+                    throw new GenesysCloud.SMSServiceException(response);
                 }
             }
         }
@@ -248,10 +279,10 @@ public class GenesysCloud
          * @author jmartinezpisson
          * @param {RoutingWork[]} works Trabajos a enrutar en Genesys como enails o tareas de BackOffice
          */
-        public void route(RoutingWork[] works)
-        {
-            route(works, null);
-        }
+        // public void route(RoutingWork[] works)
+        // {
+        //     route(works, null);
+        // }
 
         /**
          * Método público que realiza una solicitud al SDK para enrutar un listado de RoutingWork de forma asíncrona
@@ -272,6 +303,7 @@ public class GenesysCloud
          */
         public String getIdFromResponse(HttpResponse response)
         {
+            String result = '';
             //Devolver el ID solamente si el body lo contiene
             String responseBody = response.getBody();
             if(responseBody != null && responseBody.contains('\"id\"') )
@@ -279,12 +311,12 @@ public class GenesysCloud
                 Map<String, Object> deserializedBody = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
                 if(deserializedBody.containsKey('id') )
                 {
-                    return (String) deserializedBody.get('id');
+                    result = (String) deserializedBody.get('id');
                 }
             }
 
             //Si no se encuentra el id no se puede devolver
-            return '';
+            return result;
         }
     }
 
@@ -421,15 +453,12 @@ public class GenesysCloud
         public Integer statusCode;
         public RoutingServiceException(HttpResponse response)
         {
-            if(response == null)
-            {
-                this.setMessage(ERROR_IN_RESPONSE);
-            }
-            else
-            {
-                this.setMessage(ERROR_RESPONSE_SDK + response.getStatusCode()+ ' ' + response.getStatus() + ' ' +response.getBody());
+            String message = ERROR_IN_RESPONSE;
+            if(response != null) {
+                message = ERROR_RESPONSE_SDK + response.getStatusCode()+ ' ' + response.getStatus() + ' ' +response.getBody();
                 this.statusCode = response.getStatusCode();
             }
+            this.setMessage(message);
         }
     }
 
@@ -481,10 +510,10 @@ public class GenesysCloud
          * @author jmartinezpisson
          * @param {Callback[]} callbacks tareas a crear en Genesys
          */
-        public void create(Callback[] callbacks)
-        {
-            create(callbacks, null);
-        }
+        // public void create(Callback[] callbacks)
+        // {
+        //     create(callbacks, null);
+        // }
 
         /**
          * Método público que realiza una solicitud al SDK para crear un listado de Callbacks de forma asíncrona
@@ -506,17 +535,18 @@ public class GenesysCloud
          */
         public String getIdFromResponse(HttpResponse response)
         {
+            String result = '';
             //Devolver el ID solamente si el body lo contiene
             String responseBody = response.getBody();
             if(responseBody != null && String.isNotBlank(responseBody))
             {
                 Map<String, Object> deserializedBody = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
                 Map<String, Object> deserializedConversation = (Map<String, Object>)deserializedBody.get('conversation');
-                return (String)deserializedConversation.get('id');
+                result = (String)deserializedConversation.get('id');
             }
 
             //Si no se encuentra el id no se puede devolver
-            return '';
+            return result;
         }
     }
 
@@ -610,15 +640,139 @@ public class GenesysCloud
         public Integer statusCode;
         public CallbacksServiceException(HttpResponse response)
         {
-            if(response == null)
-            {
-                this.setMessage(ERROR_IN_RESPONSE);
-            }
-            else
-            {
-                this.setMessage(ERROR_RESPONSE_SDK + response.getStatusCode()+ ' ' + response.getStatus() + ' ' +response.getBody());
+            String message = ERROR_IN_RESPONSE;
+            if(response != null) {
+                message = ERROR_RESPONSE_SDK + response.getStatusCode()+ ' ' + response.getStatus() + ' ' +response.getBody();
                 this.statusCode = response.getStatusCode();
             }
+            this.setMessage(message);
+        }
+    }
+
+    //#endregion
+
+    //#region Módulo SMSService
+
+    /**
+     * SMSService ofrece la capa de envio de mensajes SMS de Genesys Cloud.
+     */
+    public class SMSService
+    {
+        public HttpCalloutMock mock = null;
+
+        /**
+         * Método público que realiza una solicitud al SDK para enviar un mensaje sms forma síncrona.
+         * 
+         * @param {SMSData} message Mensaje a enviar a traves de Genesys
+         * @return Devuelve el mensaje enviado con el identificador de objeto de Genesys Cloud.
+         */
+        public SmsData send(SmsData message)
+        {
+            HttpResponse response = null;
+
+            //Setear el mock para que funcionen los tests
+            if (Test.isRunningTest() && mock != null)
+            {
+                HttpRequest req = new HttpRequest();
+                req.setMethod('POST');
+                req.setEndpoint('/api/v2/conversations/messages/agentless' );
+                req.setBody(message.toJSON() );
+                response = mock.respond(req);
+            }
+            else //POST
+            {
+                response = purecloud.sdk.Rest.post('/api/v2/conversations/messages/agentless', message.toJSON() );
+            }
+
+            validateResponse(response, GenesysCloudServices.SERVICE_SMS);
+            // Campos interesantes de la respuesta al envio del SMS
+            //System.debug(response.getBody());
+            message.smsId = getFieldFromResponse(response, 'id');
+            message.conversationId = getFieldFromResponse(response, 'conversationId');
+            return message;
+        }
+
+        /**
+         * Método público que realiza una solicitud al SDK para enviar mensajes sms de forma asíncrona
+         *
+         * @author jmartinezpisson
+         * @param {SmsData[]} dataList Mensajes sms a enviar desde Genesys
+         * @param callback Callback a ejecutar finalizados los callouts
+         */
+        public void send(SmsData[] messages, IAPICallback callback)
+        {
+            asynchronousCallout(ASYNC_METHOD_SMS, messages, callback);
+        }
+
+        /**
+         * Devuelve el interacitionID si lo encuentra
+         * @param response httpResponse del SDK
+         * @return el Id o vacío
+         */
+        public String getFieldFromResponse(HttpResponse response, string field)
+        {
+            String result = '';
+            //Devolver el ID solamente si el body lo contiene
+            String responseBody = response.getBody();
+            if(responseBody != null && responseBody.contains('\"' + field + '\"') )
+            {
+                Map<String, Object> deserializedBody = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
+                if(deserializedBody.containsKey(field) )
+                {
+                    result = (String) deserializedBody.get(field);
+                }
+            }
+
+            //Si no se encuentra el id no se puede devolver
+            return result;
+        }
+    }
+    
+    /**
+     * Clase pública que representa un mensaje SMS a enviar.
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 22/02/2021
+     */
+    public class SmsData implements IAPIRequest
+    {
+        // Identificador del mensaje en genesys
+        public transient String smsId;
+        // Identificador de la conversacion en genesys
+        public transient String conversationId;
+        // El dia y hora en el que el mensaje fue enviado. Representado en formato ISO-8601: yyyy-MM-ddTHH:mm:ss[.mmm]Z
+        public transient String timestamp;
+
+        // Numero de telefono movil al que se le envia la notificacion. E.164 format: +13175555555 o +34234234234.
+        public String toAddress;
+        // Numero de telefono movil desde el que se envia la notificacion (Zurich)
+        public String fromAddress;
+        // Tipo de mensaje. Actualmente (22/02/2021) SMS es el unico tipo soportado. 
+        // Valores validos: sms, facebook, twitter, line, whatsapp, webmessaging.
+        public String toAddressMessengerType = 'sms';
+        // El texto a enviar en el mensaje
+        public String textBody;
+
+        public String toJSON() 
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Clase Exception específica para los errores del SMSService que vengan de la respuesta del SDK
+     */
+    public class SMSServiceException extends Exception
+    {
+        public Integer statusCode;
+        public SMSServiceException(HttpResponse response)
+        {
+            String message = ERROR_IN_RESPONSE;
+            if(response != null) {
+                message = ERROR_RESPONSE_SDK + response.getStatusCode()+ ' ' + response.getStatus() + ' ' +response.getBody();
+                this.statusCode = response.getStatusCode();
+            }
+            this.setMessage(message);
         }
     }
 

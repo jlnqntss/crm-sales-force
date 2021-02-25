@@ -17,9 +17,9 @@
                 <label>ivr</label>
             </value>
             <value>
-                <fullName>avr</fullName>
+                <fullName>asr</fullName>
                 <default>false</default>
-                <label>avr</label>
+                <label>asr</label>
             </value>
         </valueSetDefinition>
     </valueSet>

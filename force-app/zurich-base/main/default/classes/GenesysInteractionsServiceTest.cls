@@ -1402,4 +1402,55 @@ private without sharing class GenesysInteractionsServiceTest
     }
     // #endregion
 
+    @isTest
+    static void test_findDigitalCustomer_ok()
+    {
+        //Creación de registros del modelo de datos de KLINC
+        Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
+        insert newMaster;
+        Contact customer = new Contact(
+            Email = 'edu@test.com',
+            MobilePhone = '675887723',
+            DNI__c = '05289654W',
+            Birthdate = Date.valueOf('1990-01-01'),
+            FirstName = 'Edu',
+            LastName = 'Sanchez',
+            CustomerNum__c = 'GI-3123',
+            LegalEntity__c = Label.GeneralInsurance,
+            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerGI),
+            AccountId = newMaster.Id
+            );
+        insert customer;
+        //Generar 10 orders para que las querys devuelvan un listado
+        List<Order> orders = TestDataFactory.generateOrdersKlinc(newMaster.Id, customer.Id, customer.CustomerNum__c, Label.PolicyGI, 10);
+        insert orders;
+        //FIN Creación de registros del modelo de datos de KLINC
+
+        GenesysInteractionsService.DigitalCustomer request = new GenesysInteractionsService.DigitalCustomer();
+        request.searchType = 'document';
+        request.value  = customer.DNI__c;
+
+        Test.startTest();
+        GenesysInteractionsService.DigitalCustomer digitalcustomer = GenesysInteractionsService.findDigitalCustomer(request);
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(true, digitalcustomer.isDigitalCustomer, 'Debería haber devuelto que isDigitalCustomer es true');
+    }
+
+    @isTest
+    static void test_findDigitalCustomer_ko()
+    {
+        GenesysInteractionsService.DigitalCustomer request = new GenesysInteractionsService.DigitalCustomer();
+        request.searchType = 'document';
+        request.value  = 'noexisteDNI';
+
+        Test.startTest();
+        GenesysInteractionsService.DigitalCustomer digitalcustomer = GenesysInteractionsService.findDigitalCustomer(request);
+        Test.stopTest();
+
+        // Then
+        //Como no existen Orders(KlincPolicy) ni Customer(ContactKlinc) pues se devuelve a false el parámetro
+        System.assertEquals(false, digitalcustomer.isDigitalCustomer, 'Debería haber devuelto que isDigitalCustomer es false');
+    }
 }

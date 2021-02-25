@@ -301,8 +301,11 @@ private class WS_GenesysAPIServiceTest
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
-        survey.questionType = 'avr';
+        survey.callOriginQueueId = 'genesys_call_queue_id';
+        survey.surveyFlowId = 'genesys_survey_flow_name';
+        survey.numberOfQuestions = 5;
+        survey.questionId = '123456789-1';
+        survey.questionType = 'ivr';
         survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
         'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
         'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate'+
@@ -342,8 +345,11 @@ private class WS_GenesysAPIServiceTest
 
         survey.fromId = '123456789';
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
-        survey.questionId = 'questionId0';
-        survey.questionType = 'invalidInput';//solo permite ivr y avr de inputs
+        survey.callOriginQueueId = 'genesys_call_queue_id';
+        survey.surveyFlowId = 'genesys_survey_flow_name';
+        survey.numberOfQuestions = 5;
+        survey.questionId = '123456789-1';
+        survey.questionType = 'invalidInput';//solo permite ivr y asr de inputs
         //Falta answer que es campo obligatorio
 
         RestResponse response = new RestResponse();
@@ -376,9 +382,9 @@ private class WS_GenesysAPIServiceTest
 
         survey.fromId = '123456789';
         survey.interactionId = 'noExisteTaskConEsteCallObject';//Va a fallar porque no existe una task con este CallObject
-        survey.questionId = 'questionId0';
-        survey.questionType = 'ivr';
-        survey.answer = '10';
+        survey.callOriginQueueId = 'genesys_call_queue_id';
+        survey.surveyFlowId = 'genesys_survey_flow_name';
+        survey.numberOfQuestions = 5;
 
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -403,4 +409,69 @@ private class WS_GenesysAPIServiceTest
         System.assertEquals(0,createdResponse.size(), 'Se debería haber creado 0 survey response');
     }
     // #endregion
+
+    @isTest
+    static void test_doGet_digitalcustomer_ok()
+    {
+        //Creación de registros del modelo de datos de KLINC
+        Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
+        insert newMaster;
+        Contact customer = new Contact(
+            Email = 'edu@test.com',
+            MobilePhone = '675887723',
+            DNI__c = '05289654W',
+            Birthdate = Date.valueOf('1990-01-01'),
+            FirstName = 'Edu',
+            LastName = 'Sanchez',
+            CustomerNum__c = 'GI-3123',
+            LegalEntity__c = Label.GeneralInsurance,
+            RecordTypeId = SystemUtil.getContactRecordTypeIdByName(Label.CustomerGI),
+            AccountId = newMaster.Id
+            );
+        insert customer;
+        //Generar 10 orders para que las querys devuelvan un listado
+        List<Order> orders = TestDataFactory.generateOrdersKlinc(newMaster.Id, customer.Id, customer.CustomerNum__c, Label.PolicyGI, 10);
+        insert orders;
+        //FIN Creación de registros del modelo de datos de KLINC
+
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/digitalcustomer';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('searchType', 'document');
+        request.addParameter('value', customer.DNI__c);
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(200, RestContext.response.statusCode);
+    }
+
+    @isTest
+    static void test_doGet_digitalcustomer_ko()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/digitalcustomer';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('searchType', 'document');
+        //request.addParameter('value', customer.DNI__c); Va a fallar porque falta un parámetro obligatorio
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(500, RestContext.response.statusCode);
+    }
 }

@@ -1258,7 +1258,7 @@ public class TestDataFactory
             jsonElementsList.add(
                 new Map<String, Object> {
                     'note_fec_alta' => '2021-02-15',
-                    'note_usuario' => 'noteUser',               
+                    'note_usuario' => 'noteUser',
                     'note_desc_aviso' => 'case subject',
                     'note_texto' => 'case description',
                     'note_cod_oferta' => String.valueOf(i + 1).leftPad(9, '0'),
@@ -1270,11 +1270,11 @@ public class TestDataFactory
                     'note_producto_comercial' => '',
                     'note_intermediario' => String.valueOf(i + 1).leftPad(9, '0'),
                     'note_cod_tarea' => String.valueOf(i + 1).leftPad(9, '0'),
-                    'note_indicador_tarea' => '', 
+                    'note_indicador_tarea' => '',
                     'note_cod_agrupacion_TA' => '',
                     'note_desc_grupo' => '',
-                    'note_desc_tipo_envio' => tipo, 
-                    'note_desc_subtipo' => subtype, 
+                    'note_desc_tipo_envio' => tipo,
+                    'note_desc_subtipo' => subtype,
                     'note_desc_nivel_division' => typeN3,
                     'note_cod_agrupacion' => ''
             }
@@ -3039,5 +3039,49 @@ public class TestDataFactory
             );
         }
         return genesysQueues;
+    }
+
+    /**
+     * Genera Orders de Klinc para OrdersSelector
+     **
+     * @param Id accountId
+     * @param Id contactId
+     * @param String customerNum el que tiene el contacto
+     * @param String recordTypeName por ejemplo GI como el RT de su contacto
+     * @param Integer numRecords número de registros a generar
+     *
+     * @return List<Order> listado de orders generados
+     * @date 23/02/2021
+     */
+    public static List<Order> generateOrdersKlinc(Id accountId, Id contactId, String customerNum, String recordTypeName, Integer numRecords)
+    {
+        List<Order> orders = new List<Order>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        Id rtId = SystemUtil.getOrderRecordTypeIdByName(recordTypeName);
+        for(Integer i=0; i<numRecords; i++)
+        {
+            String email = 'testuser'+i+'@nts-solutions.com.invalid';
+            orders.add(
+                new Order(
+                    EffectiveDate = Date.valueOf('1994-01-01'),
+                    PolicyContractStartDate__c = Date.valueOf('2020-05-02'),
+                    CustomerNum__c = customerNum,
+                    LegalEntity__c = Label.GeneralInsurance,
+                    RecordTypeId = rtId, //Importante PolicyGI o PolicyLife
+                    Status = 'Sync',
+                    AccountId = accountId,
+                    ContactId__c = contactId, //Importante
+                    PolicyStatus__c = Label.PolicyStatusActive, //Importante
+                    PolicyNum__c = '8989'+i //debe ser único
+                )
+            );
+        }
+
+        return orders;
     }
 }

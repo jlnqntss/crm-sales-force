@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>ZE Genesys Cloud Flow Id</label>
+    <protected>false</protected>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">Valor de Genesys Flow Id para el enrutamiento de emails de zurich empresas</value>
+    </values>
+    <values>
+        <field>KeyName__c</field>
+        <value xsi:type="xsd:string">ZEGenesysCloudFlowId</value>
+    </values>
+    <values>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">1ffff9a7-3b2a-4e9f-84e7-d472ecf67d3e</value>
+    </values>
+</CustomMetadata>

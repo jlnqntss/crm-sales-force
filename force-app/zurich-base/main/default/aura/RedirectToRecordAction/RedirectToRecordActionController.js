@@ -7,13 +7,20 @@
       if (component.get("v.openAsSubtab")) {
         helper.openAsSubtab(
           component.get("v.recordId"),
-          component.find("workspace")
+          component.find("workspace"),
+          component.get("v.focus")
         );
 
         return resolve();
       }
 
-      return resolve(helper.redirectTo(component.get("v.recordId")));
+      return resolve(
+        helper.redirectTo(
+          component.get("v.recordId"),
+          component.find("workspace"),
+          component.get("v.focus")
+        )
+      );
     });
   }
 });
