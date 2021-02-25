@@ -1,4 +1,9 @@
-<apex:page>
+<apex:page
+  showHeader="false"
+  sidebar="false"
+  lightningStylesheets="true"
+  standardStylesheets="false"
+>
   <apex:slds />
   <apex:includeLightning />
   <head>

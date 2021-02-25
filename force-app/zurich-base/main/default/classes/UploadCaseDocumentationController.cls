@@ -68,6 +68,19 @@ public without sharing class UploadCaseDocumentationController
         }
     }
 
+    @AuraEnabled
+    public static void publishErrorEvent(String errorMessage, String jsFunction, String caseId)
+    {
+        try
+        {
+            ErrorLogUtil.commitError(new UploadCaseDocumentationControllerException(errorMessage), jsFunction, caseId);
+        }
+        catch(Exception e)
+        {
+            throw new AuraHandledException( e.getMessage() );
+        }
+    }
+
     /**
      * This method get the labels for the lwc page.
      *
@@ -120,4 +133,7 @@ public without sharing class UploadCaseDocumentationController
         }
     }
     //#endregion
+
+    public class UploadCaseDocumentationControllerException extends Exception
+    {}
 }

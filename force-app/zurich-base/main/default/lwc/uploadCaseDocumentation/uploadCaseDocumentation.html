@@ -5,31 +5,6 @@
         <img src={zurichLogoUrl} class="logo" alt="Zurich - Companies" />
       </a>
     </div>
-    <!--div data-id="snackbar" style="margin:auto;" class="notshow">
-			<div class="slds-notify_container slds-is-relative">
-			<div
-				class="slds-notify slds-notify_toast slds-theme_success"
-				role="status"
-			>
-				<span class="slds-assistive-text">success</span>
-				<span
-				class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top"
-				title="Description of icon when needed"
-				>
-				<svg class="slds-icon slds-icon_small" aria-hidden="true">
-					<use
-					xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#success"
-					></use>
-				</svg>
-				</span>
-				<div class="slds-notify__content">
-				<h2 class="slds-text-heading_small">
-					Account <a href="#">ACME - 100</a> widgets was created.
-				</h2>
-				</div>
-			</div>
-			</div>
-		</div-->
     <div if:true={isLoading}>
       <lightning-spinner
         alternative-text="Loading"
@@ -45,7 +20,7 @@
             if:true={messageContent}
           >
             <p
-              style="padding: 10px; margin: 10px 0px; border-radius: 2px"
+              style="padding: 10px; border-radius: 2px"
               class={messageContent.class}
             >
               <lightning-icon
@@ -102,6 +77,11 @@
             multiple
           >
           </lightning-input>
+          <lightning-helptext
+            content="Tamaño máximo de subida: 4MB."
+            icon-variant="warning"
+            class="slds-m-left_xx-small"
+          ></lightning-helptext>
         </div>
       </lightning-layout-item>
     </lightning-layout>

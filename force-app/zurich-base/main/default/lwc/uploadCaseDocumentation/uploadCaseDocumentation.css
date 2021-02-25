@@ -9,8 +9,12 @@
 }
 
 .show {
-  position: fixed;
+  position: absolute;
   top: 30px;
+  left: 0;
+  right: 0;
+  max-width: 400px;
+  margin: auto;
   text-align: center;
   z-index: 1;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 5.5s;

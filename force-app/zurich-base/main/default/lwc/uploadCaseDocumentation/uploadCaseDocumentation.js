@@ -1,11 +1,11 @@
 import { LightningElement, api, track, wire } from "lwc";
 import saveFile from "@salesforce/apex/UploadCaseDocumentationController.saveFile";
 import getCase from "@salesforce/apex/UploadCaseDocumentationController.getCase";
+import publishErrorEvent from "@salesforce/apex/UploadCaseDocumentationController.publishErrorEvent";
 import ZURICH_LOGO from "@salesforce/resourceUrl/zurich_ze_logo";
 export default class FileUploadExample extends LightningElement {
   zurichLogoUrl = ZURICH_LOGO;
   @api hash;
-  @track myRecordId;
   @track disableFileInput;
   @track currentCase;
   @track caseError;
@@ -19,10 +19,8 @@ export default class FileUploadExample extends LightningElement {
     var that = this;
     this.isLoading = true;
     this.showCase = false;
-    this.myRecordId = this.hash;
-    console.log("this.myRecordId: " + this.myRecordId);
     getCase({
-      hashId: this.myRecordId
+      hashId: this.hash
     })
       .then(function (caseResult) {
         console.log(caseResult);
@@ -33,12 +31,12 @@ export default class FileUploadExample extends LightningElement {
         if (caseResult.Status == "Cerrado") {
           that.caseStatusStyle = "slds-theme_error";
           that.disableFileInput = true;
-          that.messageContent = {
-            class: "slds-theme_warning",
-            icon: "utility:warning",
-            title: "Warning",
-            message: "No se puede adjuntar documentación en un caso cerrado."
-          };
+          that.showToast(
+            that,
+            "No se puede adjuntar documentación en un caso cerrado.",
+            "warning",
+            false
+          );
         }
       })
       .catch(function (err) {
@@ -48,12 +46,12 @@ export default class FileUploadExample extends LightningElement {
         that.disableFileInput = true;
 
         that.error = err;
-        that.messageContent = {
-          class: "slds-theme_error",
-          icon: "utility:error",
-          title: "Error",
-          message: "Ha habido un problema al cargar el caso."
-        };
+        that.showToast(
+          that,
+          "Ha habido un problema al cargar el caso.",
+          "error",
+          false
+        );
       });
   }
 
@@ -69,47 +67,53 @@ export default class FileUploadExample extends LightningElement {
     const uploadedFiles = event.detail.files;
     var currentCaseId = this.currentCase.Id;
 
-    this.getBase64(uploadedFiles[0])
-      .then(function (result) {
-        console.log("result: " + result);
-        saveFile({
-          parentId: currentCaseId,
-          fileName: uploadedFiles[0].name,
-          base64Data: result
-        })
-          .then(function () {
-            console.log("Success");
-            that.isLoading = false;
-
-            that.messageContent = {
-              class: "slds-theme_success",
-              icon: "utility:success",
-              title: "Success",
-              message: "Documentación adjuntada correctamente."
-            };
-
-            setTimeout(function () {
-              that.messageContent = undefined;
-            }, 6000);
-
-            // Get the snackbar DIV
-            /*var divblock = that.template.querySelector('[data-id="snackbar"]');
-            if (divblock) {
-              divblock.className = "show";
-              setTimeout(function () {
-                divblock.className = "notshow";
-              }, 3000);
-            }*/
+    if (uploadedFiles[0].size >= 4194304) {
+      that.isLoading = false;
+      that.showToast(
+        that,
+        "El archivo tiene un tamaño superior al máximo permitido",
+        "error",
+        true
+      );
+      //TODO: Publicar un error event con el problema
+      console.log("Size: " + uploadedFiles[0].size);
+      //publishErrorEvent('El archivo tiene un tamaño superior al máximo permitido. Bytes: ' + uploadedFiles[0].size, 'handleFilesChange', that.currentCase.Id);
+    } else {
+      this.getBase64(uploadedFiles[0])
+        .then(function (result) {
+          console.log("result: " + result);
+          saveFile({
+            parentId: currentCaseId,
+            fileName: uploadedFiles[0].name,
+            base64Data: result
           })
-          .catch(function (err) {
-            console.log(err);
-            that.isLoading = false;
-          });
-      })
-      .catch(function (err) {
-        console.log(err);
-        that.isLoading = false;
-      });
+            .then(function () {
+              console.log("Success");
+              that.isLoading = false;
+              that.showToast(
+                that,
+                "Documentación adjuntada correctamente.",
+                "success",
+                true
+              );
+            })
+            .catch(function (err) {
+              console.log(err);
+              that.isLoading = false;
+
+              that.showToast(
+                that,
+                "Ha habido un problema al subir el archivo",
+                "error",
+                true
+              );
+            });
+        })
+        .catch(function (err) {
+          console.log(err);
+          that.isLoading = false;
+        });
+    }
   }
 
   getBase64(file) {
@@ -127,16 +131,27 @@ export default class FileUploadExample extends LightningElement {
     });
   }
 
+  showToast(context, message, type, transition) {
+    context.messageContent = {
+      class: "slds-theme_" + type,
+      icon: "utility:" + type,
+      title: type,
+      message: message,
+      transition: transition
+    };
+  }
+
   get toastClassName() {
     if (this.messageContent != null) {
-      if (this.messageContent.class.indexOf("success") > -1) {
-        return "show";
-      } else {
-        return "";
+      if (this.messageContent.transition) {
+        var that = this;
+        setTimeout(function () {
+          that.messageContent = undefined;
+        }, 6000);
       }
+      return this.messageContent.transition ? "show" : "";
     } else {
       return "notshow";
     }
-    //return this.messageContent != null ? 'show': 'notshow';
   }
 }
