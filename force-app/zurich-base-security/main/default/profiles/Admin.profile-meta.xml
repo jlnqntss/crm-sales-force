@@ -7135,6 +7135,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.CommercialProductCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.CommercialStructureCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7356,6 +7361,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.TechnicalCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.TechnicalProductCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
