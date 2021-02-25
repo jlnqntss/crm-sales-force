@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Asset - CDNUMPOL_POLIZA</label>
+    <label>Info - Asset - Vehiculo</label>
     <protected>false</protected>
     <values>
         <field>OriginEntity__c</field>
         <value xsi:type="xsd:string">INSURED_OBJECT</value>
     </values>
     <values>
-        <field>OriginField__c</field>
-        <value xsi:type="xsd:string">POLIZA_ID</value>
+        <field>OriginKey__c</field>
+        <value xsi:type="xsd:string">0000000003</value>
     </values>
     <values>
         <field>Origin__c</field>
         <value xsi:type="xsd:string">INFO</value>
     </values>
     <values>
-        <field>SalesforceEntity__c</field>
-        <value xsi:type="xsd:string">Asset</value>
-    </values>
-    <values>
-        <field>SalesforceField__c</field>
-        <value xsi:type="xsd:string">PolicyId__c:Policy__c-&gt;InfoPolicyNumber__c</value>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">Motor</value>
     </values>
 </CustomMetadata>

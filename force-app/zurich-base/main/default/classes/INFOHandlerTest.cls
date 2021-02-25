@@ -14,100 +14,125 @@ private class INFOHandlerTest
 
         //Personas físicas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NATURAL_ACCOUNT', 10)
             );
 
         //Personas jurídicas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'LEGAL_ACCOUNT', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'LEGAL_ACCOUNT', 10)
             );
 
         //Vías de contacto postal
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'CONTACT_POINT_ADDRESS', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONTACT_POINT_ADDRESS', 10)
             );
 
         //Vías de contacto telefónico
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'CONTACT_POINT_PHONE', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONTACT_POINT_PHONE', 10)
             );
 
         //Vías de contacto email
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'CONTACT_POINT_EMAIL', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONTACT_POINT_EMAIL', 10)
             );
 
         //Productos
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'PRODUCT', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'PRODUCT', 10)
             );
 
         //Ofertas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'QUOTE', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'QUOTE', 10)
             );
 
         //Opciones ofertas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'QUOTE_OPTION', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'QUOTE_OPTION', 10)
             );
 
         //Pólizas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'POLICY', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'POLICY', 10)
             );
 
         //Objetos asegurados
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'INSURED_OBJECT', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INSURED_OBJECT', 10)
             );
 
         //Siniestros
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'CLAIM', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CLAIM', 10)
             );
 
         //Roles póliza
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'POLICY_RELATIONSHIP', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'POLICY_RELATIONSHIP', 10)
             );
 
         //Roles oferta
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'QUOTE_RELATIONSHIP', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'QUOTE_RELATIONSHIP', 10)
             );
 
         //Roles siniestro
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'CLAIM_RELATIONSHIP', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CLAIM_RELATIONSHIP', 10)
             );
 
         //Partner
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'PARTNER', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'PARTNER', 10)
             );
 
         //Mediador
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'INTERMEDIARY', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY', 10)
             );
 
         //Note
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest('INFO', 'NOTE', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NOTE', 10)
             );
 
         insert externalRequestList;
     }
 
+    /**
+     * Crea datos de prueba en el mapa de equivalencias por entidad para usarlo en los Test
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 25/02/2021
+     * 
+     * @param {Map<String, Map<String, String>>} mapa de equivalencias por Entidad (debera estar inicializado)
+     */
+    static void createEquivalenceSettigs(Map<String, Map<String, String>> mapEquivalences)
+    {
+        // Ejemplo de equivalencia: INSURED_OBJECT => (0000000057 => Boat)
+
+        // Recuperamos un RecordType de Asset para usarlo como valor en la equivalencia
+        Map<String, Schema.RecordTypeInfo> recordTypes =  Schema.SObjectType.Asset.getRecordTypeInfosByName();
+        RecordTypeInfo rt = recordTypes.values()[0];
+        
+        // Recuperamos los valores de la picklist ObjectType__c para usarlos como clave en la equivalencia
+        Schema.DescribeFieldResult objectTypeFieldResult = Asset.ObjectType__c.getDescribe();
+        List<Schema.PicklistEntry> objectTypeValues = objectTypeFieldResult.getPicklistValues();
+        mapEquivalences.put(INFOHandler.INSURED_OBJECT, new Map<String, String>());
+        for(Schema.PicklistEntry pe: objectTypeValues) {
+            mapEquivalences.get(INFOHandler.INSURED_OBJECT).put(pe.value, rt.developername);
+        }   
+    }
+
     @isTest
     static void test_prepare()
     {
-        Transformer transformer = new Transformer('INFO');
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
         Set<String> objects = new Set<String>();
 
-        for ( Transformer__mdt setting : TransformerSelector.selectMetadataByOrigin('INFO') )
+        for ( Transformer__mdt setting : TransformerSelector.selectMetadataByOrigin(INFOHandler.HANDLER_ORIGIN) )
         {
             objects.add(setting.OriginEntity__c);
         }
@@ -116,7 +141,7 @@ private class INFOHandlerTest
                                                                                     { ExternalRequest__c.Entity__c,
                                                                                       ExternalRequest__c.Action__c,
                                                                                       ExternalRequest__c.Payload__c,
-                                                                                      ExternalRequest__c.ContentFormat__c}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.ContentFormat__c}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
         Test.startTest();
         INFOHandler.prepare(transformer, externalRequestList);
@@ -137,7 +162,7 @@ private class INFOHandlerTest
     @isTest
     static void test_process_upsert_OK()
     {
-        Transformer transformer = new Transformer('INFO');
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -146,7 +171,12 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
                                                                                       ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
+
+        
+        // Configuracion de los metadatos para el Test
+        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
+        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
 
         Test.startTest();
         INFOHandler.prepare(transformer, externalRequestList);
@@ -198,11 +228,12 @@ private class INFOHandlerTest
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(),
             'No se ha generado correctamente el mapa de registros de policy'
             );
-        // FIXME: System.assertEquals(
-        //     10,
-        //     INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(),
-        //     'No se ha generado correctamente el mapa de registros de asset'
-        //     );
+        // FIXME: 
+        System.assertEquals(
+            10,
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(),
+            'No se ha generado correctamente el mapa de registros de asset'
+            );
         System.assertEquals(
             10,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(),
@@ -243,7 +274,7 @@ private class INFOHandlerTest
     @isTest
     static void test_process_delete_OK()
     {
-        Transformer transformer = new Transformer('INFO');
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -252,17 +283,21 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
                                                                                       ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
         for(ExternalRequest__c externalRequest : externalRequestList)
         {
-            if(externalRequest.Entity__c == 'POLICY' || externalRequest.Entity__c == 'POLICY_RELATIONSHIP')
+            if(externalRequest.Entity__c == INFOHandler.POLICY || externalRequest.Entity__c == INFOHandler.POLICY_RELATIONSHIP)
             {
                 externalRequest.Processed__C = false;
                 externalRequest.Action__C = 'DELETE';
             }
         }
         update externalRequestList;
+
+        // Configuracion de los metadatos para el Test
+        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
+        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
 
         Test.startTest();
         INFOHandler.prepare(transformer, externalRequestList);
@@ -277,7 +312,8 @@ private class INFOHandlerTest
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(), 'No se ha generado correctamente el mapa de registros de quote');
-        // FIXME: System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
+        
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de quote relationship');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de claim relationship');
@@ -294,7 +330,7 @@ private class INFOHandlerTest
     @isTest
     static void test_process_ERROR_NoEntity()
     {
-        Transformer transformer = new Transformer('INFO');
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -303,7 +339,7 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
                                                                                       ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
         for (ExternalRequest__c externalRequest : externalRequestList)
         {
@@ -325,7 +361,7 @@ private class INFOHandlerTest
     @isTest
     static void test_process_ERROR_NoPayload()
     {
-        Transformer transformer = new Transformer('INFO');
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -334,7 +370,7 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
                                                                                       ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
         for (ExternalRequest__c externalRequest : externalRequestList)
         {
@@ -356,7 +392,7 @@ private class INFOHandlerTest
     @isTest
     static void test_persists_upsert_OK()
     {
-        Transformer transformer = new Transformer('INFO');
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -365,7 +401,11 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
                                                                                       ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
+
+        // Configuracion de los metadatos para el Test
+        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
+        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
 
         Test.startTest();
         INFOHandler.prepare(transformer, externalRequestList);
@@ -432,16 +472,16 @@ private class INFOHandlerTest
             policyList.size(),
             'No se han insertado todos los registros de póliza'
             );
-        // FIXME: System.assertEquals(
-        //     10,
-        //     insObjList.size(),
-        //     'No se han insertado todos los registros de objeto asegurado'
-        //     );
-        // FIXME: System.assertEquals(
-        //     10,
-        //     claimList.size(),
-        //     'No se han insertado todos los registros de siniestro'
-        //     );
+        System.assertEquals(
+            10,
+            insObjList.size(),
+            'No se han insertado todos los registros de objeto asegurado'
+            );
+        System.assertEquals(
+            10,
+            claimList.size(),
+            'No se han insertado todos los registros de siniestro'
+            );
         // FIXME: System.assertEquals(
         //     30,
         //     relaList.size(),
@@ -457,7 +497,7 @@ private class INFOHandlerTest
     @isTest
     static void test_persists_delete_OK()
     {
-        Transformer transformer = new Transformer('INFO');
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -466,7 +506,7 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
                                                                                       ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
         INFOHandler.prepare(transformer, externalRequestList);
         INFOHandler.process(externalRequestList);
@@ -480,13 +520,15 @@ private class INFOHandlerTest
                                                                                               ExternalRequest__c.ContentFormat__c,
                                                                                               ExternalRequest__c.NumRetry__c,
                                                                                               ExternalRequest__c.Origin__c,
-                                                                                              ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                              ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
         List<ExternalRequest__c> externalRequestToDelete = new List<ExternalRequest__c>();
 
         for(ExternalRequest__c externalRequest : externalRequestListUpserted)
         {
-            if(externalRequest.Entity__c == 'POLICY' || externalRequest.Entity__c == 'POLICY_RELATIONSHIP' || externalRequest.Entity__c == 'NOTE')
+            if(externalRequest.Entity__c == INFOHandler.POLICY || 
+                externalRequest.Entity__c == INFOHandler.POLICY_RELATIONSHIP || 
+                externalRequest.Entity__c == INFOHandler.NOTE)
             {
                 externalRequest.Processed__C = false;
                 externalRequest.Action__C = 'DELETE';
@@ -494,6 +536,10 @@ private class INFOHandlerTest
             }
         }
         update externalRequestToDelete;
+
+        // Configuracion de los metadatos para el Test
+        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
+        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
 
         Test.startTest();
         INFOHandler.prepare(transformer, externalRequestToDelete);
@@ -524,8 +570,8 @@ private class INFOHandlerTest
         System.assertEquals(10, oppList.size(), 'No se han insertado todos los registros de oferta');
         System.assertEquals(10, quoteList.size(), 'No se han insertado todos los registros de opciones de oferta');
         System.assertEquals(0, policyList.size(), 'No se han borrado todos los registros de póliza');
-        // FIXME: System.assertEquals(10, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
-        // FIXME: System.assertEquals(10, claimList.size(), 'No se han insertado todos los registros de siniestro');
+        System.assertEquals(10, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
+        System.assertEquals(10, claimList.size(), 'No se han insertado todos los registros de siniestro');
         // FIXME: System.assertEquals(20, relaList.size(), 'No se han borrado todos los registros de relaciones');
         System.assertEquals(0, caseList.size(), 'No se han borrado todos los registros de Case');
 
@@ -534,7 +580,7 @@ private class INFOHandlerTest
     @isTest
     static void test_manageResult_OK()
     {
-        Transformer transformer = new Transformer('INFO');
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -543,7 +589,11 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
                                                                                       ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
+
+        // Configuracion de los metadatos para el Test
+        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
+        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
 
         Test.startTest();
         INFOHandler.prepare(transformer, externalRequestList);
@@ -559,12 +609,12 @@ private class INFOHandlerTest
                                                                                              ExternalRequest__c.ContentFormat__c,
                                                                                              ExternalRequest__c.NumRetry__c,
                                                                                              ExternalRequest__c.Origin__c,
-                                                                                             ExternalRequest__c.CreatedDate}).selectProcessedByOrigin(new Set<String> {'INFO'});
+                                                                                             ExternalRequest__c.CreatedDate}).selectProcessedByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
         List<ExternalRequestError__c> externalRequestErrors = [
             SELECT Id
             FROM ExternalRequestError__c
-            WHERE Origin__c = 'INFO'
+            WHERE Origin__c = :INFOHandler.HANDLER_ORIGIN
         ];
 
         System.assertEquals(
@@ -572,17 +622,18 @@ private class INFOHandlerTest
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
-        // FIXME: System.assertEquals(
-        //     0,
-        //     externalRequestErrors.size(),
-        //     'Se han insertado external request erróneas en la entidad External Request Error'
-        //     );
+        // FIXME: 
+        System.assertEquals(
+            0,
+            externalRequestErrors.size(),
+            'Se han insertado external request erróneas en la entidad External Request Error'
+            );
     }
 
     @isTest
     static void test_manageResult_ERROR()
     {
-        Transformer transformer = new Transformer('INFO');
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
         List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
                                                                                     { ExternalRequest__c.Entity__c,
@@ -591,9 +642,13 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.ContentFormat__c,
                                                                                       ExternalRequest__c.NumRetry__c,
                                                                                       ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {'INFO'});
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
         externalRequestList.get(0).Payload__c = null;
+
+        // Configuracion de los metadatos para el Test
+        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
+        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
 
         Test.startTest();
         INFOHandler.prepare(transformer, externalRequestList);
@@ -609,7 +664,7 @@ private class INFOHandlerTest
                                                                                              ExternalRequest__c.ContentFormat__c,
                                                                                              ExternalRequest__c.NumRetry__c,
                                                                                              ExternalRequest__c.Origin__c,
-                                                                                             ExternalRequest__c.CreatedDate}).selectProcessedByOrigin(new Set<String> {'INFO'});
+                                                                                             ExternalRequest__c.CreatedDate}).selectProcessedByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
         List<ExternalRequestError__c> errors = [SELECT Id FROM ExternalRequestError__c];
 
@@ -618,10 +673,11 @@ private class INFOHandlerTest
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
-        // FIXME: System.assertEquals(
-        //     1,
-        //     errors.size(),
-        //     'No se han generado los errores correctamente'
-        //     );
+        // FIXME: 
+        System.assertEquals(
+            1,
+            errors.size(),
+            'No se han generado los errores correctamente'
+            );
     }
 }
