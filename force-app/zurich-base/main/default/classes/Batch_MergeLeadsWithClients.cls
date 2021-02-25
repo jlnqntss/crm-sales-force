@@ -15,6 +15,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
     private static final string ERROR_SCOPE_TOO_BIG = 'The batch can only process 1 Offer at a time!';
     @testvisible
     private static final string LEAD_RECORDTYPE_DEVELOPERNAME = 'Lead';
+    private static final string CONTACT_RECORDTYPE_DEVELOPERNAME = 'Contact';
     private static final string ACCOUNT_NAME = 'Account';
     private static final string PERSON_ACCOUNT_FIELD_EXTENSION = '__pc'; // lowercase
     private static final string PERSON_ACCOUNT_LASTNAME = 'lastname'; // lowercase
@@ -186,6 +187,10 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
 
                             // check if 
                             if( !isPersonAccount ) {
+                                // On testing, is found...
+                                // List<Contact> cs = [SELECT Id FROM Contact WHERE AccountId = :leadAccount.Id];
+                                // System.assertEquals(1, cs.size(),'deberia haber un contacto para el lead');
+                                
                                 // System.debug('Recordtype NOT PersonAccount');
                                 // Convert the lead account into a normal account
                                 Account leadConversion = new Account(
@@ -193,6 +198,20 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                                     RecordTypeId= account.RecordTypeId
                                 );
                                 update leadConversion;  //! 1 DML 
+            
+                                // On testing, after the update, for some reason the contact is not found...
+                                // After changing to normal account, update the contact of the lead with the RecordType and LegalEntity                                
+                                List<Contact> leadContacts = [
+                                    SELECT Id, RecordTypeId, LegalEntity__c FROM Contact
+                                    WHERE AccountId = :leadAccount.Id AND RecordTypeId = null
+                                ];
+                                String rtId = Schema.SObjectType.Contact.getRecordTypeInfosByName().get(CONTACT_RECORDTYPE_DEVELOPERNAME).getRecordTypeId();
+                                if( !leadContacts.isEmpty() ) {                                    
+                                    leadContacts[0].RecordTypeId = rtId;
+                                    leadContacts[0].LegalEntity__c = account.LegalEntity__c;
+
+                                    update leadContacts[0]; //! 1 DML
+                                }
                             }
             
                             // Do the merge
