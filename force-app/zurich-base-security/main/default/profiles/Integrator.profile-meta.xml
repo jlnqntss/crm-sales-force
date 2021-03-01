@@ -569,6 +569,18 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SurveyResponseHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SurveyResponseUtil</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SurveyResponseUtilTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SystemUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -5417,6 +5429,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contact.CompanyName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.ContactType__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7102,6 +7119,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.CommercialProductCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.CommercialStructureCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7313,6 +7335,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.TechnicalCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.TechnicalProductCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

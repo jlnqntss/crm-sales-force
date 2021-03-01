@@ -15,6 +15,15 @@ public class INFOHandler implements ISystem
     private static List<ExternalRequest__c> externalRequestResultList = new List<ExternalRequest__c>();
 
     private static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+    // Si se da un Insured Object, guardara los valores del picklist ObjectType__c que representan las equivalencias
+    // entre el codigo de objeto (INFO) y el campo Name en Salesforce
+    private static Map<String, String> mapInsuredObjectTypeToName = null;
+    // Guardara las equivalencias configuradas en los metadatos entre el Origen INFO. 
+    // Para cada Entidad se guarda una pareja de valores de equivalencia entre el origen y SF
+    // Por ejemplo para Insured Object (Asset), a partir del ObjectType determina el RecordType
+    private static Map<String, Map<String, String>> mapEquivalencesByEntity = null;
+    @testvisible
+    private static Map<String, Map<String, String>> mapEquivalencesByEntityTest = null;
 
     // CUSTOM METATDATA
     @testVisible
@@ -23,6 +32,8 @@ public class INFOHandler implements ISystem
     private static Map<String, Map<String, String>> externalIdByEntity = new Map<String, Map<String, String>>();
     @testVisible
     private static Integer maxRetries;
+
+    public static final String HANDLER_ORIGIN = 'INFO';
 
     public static final String ACCOUNT = 'ACCOUNT';
     public static final String CONTACT_POINT = 'CONTACT_POINT';
@@ -93,6 +104,8 @@ public class INFOHandler implements ISystem
         SOBJECT_CASE
     };
 
+    private class INFOHandlerException extends Exception {}
+
     /**
      * Obtiene la información necesaria para poder procesar las external request pendientes
      **
@@ -162,7 +175,7 @@ public class INFOHandler implements ISystem
             }
             catch (Exception e)
             {
-                System.debug('[INFOHandler] process() - ' + e.getMessage());
+                // System.debug('[INFOHandler] process() - ' + e.getMessage());
                 setExternalRequest(externalRequest, true, 'KO', e.getMessage() + '\n' + e.getStackTraceString(), false);
                 //ErrorLogUtil.commitError(e, 'INFOHandler', 'process');
             }
@@ -197,7 +210,7 @@ public class INFOHandler implements ISystem
         }
         catch (Exception e)
         {
-            System.debug('[INFOHandler] persists() - ' + e.getMessage());
+            // System.debug('[INFOHandler] persists() - ' + e.getMessage());
             ErrorLogUtil.commitError(e, 'INFOHandler', 'persists');
         }
     }
@@ -253,7 +266,7 @@ public class INFOHandler implements ISystem
                     }
                     catch ( Exception e )
                     {
-                        System.debug('[INFOHandler] manageResult() - ' + e.getMessage());
+                        // System.debug('[INFOHandler] manageResult() - ' + e.getMessage());
                         ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
                     }
                 }
@@ -267,7 +280,7 @@ public class INFOHandler implements ISystem
         }
         catch ( Exception e )
         {
-            System.debug('[INFOHandler] manageResult() - ' + e.getMessage());
+            // System.debug('[INFOHandler] manageResult() - ' + e.getMessage());
             ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
         }
     }
@@ -393,7 +406,7 @@ public class INFOHandler implements ISystem
             when 'QUOTE' 
             {
                 Opportunity quoteRecord = (Opportunity) tf.transform(QUOTE, 'Opportunity', recordValuesMap);
-                quoteRecord.StageName = 'Open';
+                //quoteRecord.StageName = 'Open'; //20210225 movido a trigger before insert
                 addRecordToMap(externalRequest, QUOTE, 'Opportunity', quoteRecord); 
             }
             // Opción oferta
@@ -411,8 +424,31 @@ public class INFOHandler implements ISystem
             // Objeto asegurado
             when 'INSURED_OBJECT' 
             {
+                // System.debug('-------------- insued object');
                 Asset insObjRecord = (Asset) tf.transform(INSURED_OBJECT, 'Asset', recordValuesMap);
-                insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(insObjRecord.ObjectType__c.trim()).getRecordTypeId();
+                // System.debug('objectType: ' + insObjRecord.ObjectType__c);
+                // Recuperamos la etiqueta con el nombre a partir del codigo de tipo de objeto
+                if( mapInsuredObjectTypeToName == null ) {
+                    // System.debug('creating Name map...');
+                    mapInsuredObjectTypeToName = new Map<String, String>();
+                    
+                    Schema.DescribeFieldResult fieldResult = Asset.ObjectType__c.getDescribe();
+                    List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+                    for(Schema.PicklistEntry p : ple) {
+                        mapInsuredObjectTypeToName.put(p.getValue(), p.getLabel());
+                    }
+                }
+                insObjRecord.Name = insObjRecord.ObjectType__c.trim();
+                if( mapInsuredObjectTypeToName.containsKey(insObjRecord.Name) ) {
+                    insObjRecord.Name = mapInsuredObjectTypeToName.get(insObjRecord.Name);
+                }
+                // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
+                String recordTypeDevName = getEquivalence(HANDLER_ORIGIN, 'INSURED_OBJECT', insObjRecord.ObjectType__c.trim());
+                // System.debug('RT name: ' + recordTypeDevName);
+                if( String.isBlank(recordTypeDevName) ) {
+                    throw new INFOHandlerException('RecordType equivalence not found for the following Object Type: ' + insObjRecord.ObjectType__c.trim());
+                }
+                insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(recordTypeDevName).getRecordTypeId();
                 addRecordToMap(externalRequest, INSURED_OBJECT, 'Asset', insObjRecord); 
             }
             // Siniestro
@@ -641,4 +677,52 @@ public class INFOHandler implements ISystem
         }   
     }
 
+    /**
+     * Recupera las equivalencias configuradas en los metadatos para una Entidad
+     *
+     * @author nts (agonzalezisasi)
+     * @date 24/02/2021
+     * @param {String} nombre del origen de los datos
+     * @param {String} nombre de la entidad en el origen
+     * @param {String} valor clave en la entidad de origen
+     * @return {Strig} valor equivalente para utilizar en Salesforce
+     */
+    private static String getEquivalence(String origin, String entity, String originKey)
+    {
+        // System.debug('get equivalence ' + entity + ': ' + originKey);
+        String result = '';
+        if( mapEquivalencesByEntity == null ) {
+            mapEquivalencesByEntity = new Map<String, Map<String, String>>();
+        }
+
+        if( !mapEquivalencesByEntity.containsKey(entity) ) {
+            // System.debug('creating equivalence map...');
+            List<TransformerEquivalences__mdt> settigs = [
+                SELECT Id, OriginKey__c, Value__c
+                FROM TransformerEquivalences__mdt
+                WHERE Origin__c = :origin AND OriginEntity__c = :entity
+            ];
+
+            for(TransformerEquivalences__mdt te: settigs) {
+                if( mapEquivalencesByEntity.containsKey(entity) ) {
+                    mapEquivalencesByEntity.get(entity).put(te.OriginKey__c, te.Value__c);
+                } else {
+                    mapEquivalencesByEntity.put(entity, new Map<String, String>{
+                        te.OriginKey__c => te.Value__c
+                    });
+                }
+            }
+        }
+
+        if( Test.isRunningTest() && mapEquivalencesByEntityTest != null ) {
+            mapEquivalencesByEntity = mapEquivalencesByEntityTest;
+        }
+
+        if( mapEquivalencesByEntity.containsKey(entity) && mapEquivalencesByEntity.get(entity).containsKey(originKey) ) {
+            result = mapEquivalencesByEntity.get(entity).get(originKey);
+        }
+        // System.debug('result: ' + result);
+
+        return result;
+    }
 }

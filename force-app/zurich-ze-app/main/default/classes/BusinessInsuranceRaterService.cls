@@ -175,7 +175,7 @@ public without sharing class BusinessInsuranceRaterService
 
         List<Scope__c> scopesByAccountAndScope = new ScopesSelector(
             new Set<String> {'Id', 'AccountId__c', 'Scope__c', 'HasOptedOutOfEmail__c', 'Contactable__c', 'LastContactableModifiedDate__c'}
-            ).selectByAccountIdAndScope(new Set<Id> {relatedAccount.Id}, RecordsSelector.getScope(scope));
+            ).selectByAccountIdAndScope( new Set<Id> {relatedAccount.Id}, RecordsSelector.getScope(scope) );
 
         if( scopesByAccountAndScope.isEmpty() )
         {
@@ -299,7 +299,7 @@ public without sharing class BusinessInsuranceRaterService
         Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
         BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
         String lastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName);
-        if(String.isBlank(lastName) )
+        if( String.isBlank(lastName) )
         {
             lastName = 'Desconocido';
         }
@@ -401,7 +401,8 @@ public without sharing class BusinessInsuranceRaterService
             AccountId__c = relatedAccount.Id,
             HasOptedOutOfEmail__c = false,
             Contactable__c = true,
-            LastContactableModifiedDate__c = System.now()
+            LastContactableModifiedDate__c = System.now(),
+            LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI)
             );
         insert scopeForRelatedAccount;
 
@@ -498,7 +499,8 @@ public without sharing class BusinessInsuranceRaterService
                             PaymentChannelSucc__c = offer.paymentChannelSucc,
                             ValidationErrors__c = offer.validationErrors,
                             ProductId__c = (productCodesToProductMap.containsKey(productCodes) && productCodesToProductMap.get(productCodes) != null ? productCodesToProductMap.get(productCodes).Id : null),
-                            LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI)
+                            LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
+                            OperationCode__c = offer.operationCode
                             )
                         );
 
@@ -623,7 +625,7 @@ public without sharing class BusinessInsuranceRaterService
 
             //OPCIONAL - puede que no requiera funcionar con genesys
             String queueName = 'Voz_ZurichEmpresas';
-            if(currentScopeSettings != null && String.isNotBlank(currentScopeSettings.GenesysCloudQueueName__c))
+            if( currentScopeSettings != null && String.isNotBlank(currentScopeSettings.GenesysCloudQueueName__c) )
             {
                 queueName = currentScopeSettings.GenesysCloudQueueName__c;
             }
@@ -1191,6 +1193,13 @@ public without sharing class BusinessInsuranceRaterService
                 manager = value;
             }
         }
+        public Boolean legalAuth {
+            get;
+            set {
+                setRequiredFields('Request' + 'legalAuth');
+                legalAuth = value;
+            }
+        }
         public List<Offer> offers {
             get;
             set {
@@ -1443,6 +1452,20 @@ public without sharing class BusinessInsuranceRaterService
             set {
                 setRequiredFields('Offer' + 'validationErrors');
                 validationErrors = value;
+            }
+        }
+        public Double firstReceipt {
+            get;
+            set {
+                setRequiredFields('Offer' + 'firstReceipt');
+                firstReceipt = value;
+            }
+        }
+        public Double nextReceipts {
+            get;
+            set {
+                setRequiredFields('Offer' + 'nextReceipts');
+                nextReceipts = value;
             }
         }
         public OfferRiskInformation offerRiskInformation {
@@ -1698,6 +1721,13 @@ public without sharing class BusinessInsuranceRaterService
             set {
                 setRequiredFields('OfferRiskInformation' + 'strongbox');
                 strongbox = value;
+            }
+        }
+        public Integer capacity {
+            get;
+            set {
+                setRequiredFields('OfferRiskInformation' + 'capacity');
+                capacity = value;
             }
         }
     }

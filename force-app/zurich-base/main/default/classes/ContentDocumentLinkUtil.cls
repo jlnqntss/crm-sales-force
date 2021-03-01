@@ -7,7 +7,7 @@ public without sharing class ContentDocumentLinkUtil
 {
     public static Map<String, Robot_Hegeo_Setting__mdt> robotHegeoSettingsMap = new Map<String, Robot_Hegeo_Setting__mdt>();
 
-    public static Map<String, Map<String, String>> caseTypesMapping = new Map<String, Map<String, String>>();
+    public static Map<String, Map<String, String> > caseTypesMapping = new Map<String, Map<String, String> >();
     public static Set<String> caseRecordTypeNames = new Set<String>();
     public static Set<String> documentTitles = new Set<String>();
     public static Set<String> fileExtensions = new Set<String>();
@@ -28,30 +28,30 @@ public without sharing class ContentDocumentLinkUtil
             WHERE IsActive__c = true
         ];
 
-        if(!robotHegeoSettings.isEmpty())
+        if( !robotHegeoSettings.isEmpty() )
         {
-            for (Robot_Hegeo_Setting__mdt setting: robotHegeoSettings) 
+            for (Robot_Hegeo_Setting__mdt setting: robotHegeoSettings)
             {
                 if (setting.RoutingAddresses__c != null)
                 {
-                    List<String> routingAddresses = setting.RoutingAddresses__c.split(',');    
+                    List<String> routingAddresses = setting.RoutingAddresses__c.split(',');
                     for(String emailAddress: routingAddresses)
                     {
                         robotHegeoSettingsMap.put(emailAddress, setting);
                     }
-                }    
+                }
 
                 if(setting.CaseRecordTypeNames__c != null)
                 {
-                    caseRecordTypeNames.addAll(setting.CaseRecordTypeNames__c.split(','));
+                    caseRecordTypeNames.addAll( setting.CaseRecordTypeNames__c.split(',') );
                 }
 
-                if(String.isNotBlank(setting.DocumentTitle__c))
+                if( String.isNotBlank(setting.DocumentTitle__c) )
                 {
                     documentTitles.add(setting.DocumentTitle__c);
                 }
 
-                if(String.isNotBlank(setting.FileExtension__c))
+                if( String.isNotBlank(setting.FileExtension__c) )
                 {
                     fileExtensions.add(setting.FileExtension__c);
                 }
@@ -63,7 +63,7 @@ public without sharing class ContentDocumentLinkUtil
                 'warning',
                 'No se ha recuperado ningún metadato configurado para el procesamiento de CSV del Robot HEGEO (Robot_Hegeo_Setting__mdt)',
                 'ContentDocumentLinkUtil'
-            );
+                );
         }
 
         //Cargamos el mapeo de campos de tipificación del caso
@@ -72,20 +72,20 @@ public without sharing class ContentDocumentLinkUtil
             FROM Robot_Hegeo_Field_Mapping__mdt
         ];
 
-        if(!robotHegeoFieldsMapping.isEmpty())
+        if( !robotHegeoFieldsMapping.isEmpty() )
         {
             for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
             {
                 Map<String, String> typeValuesMap = new Map<String, String>();
-                if(String.isNotBlank(fieldMapping.Type__c))
+                if( String.isNotBlank(fieldMapping.Type__c) )
                 {
                     typeValuesMap.put('Type', fieldMapping.Type__c);
                 }
-                if(String.isNotBlank(fieldMapping.Subtype__c))
+                if( String.isNotBlank(fieldMapping.Subtype__c) )
                 {
                     typeValuesMap.put('Subtype__c', fieldMapping.Subtype__c);
                 }
-                if(String.isNotBlank(fieldMapping.TypeN3__c))
+                if( String.isNotBlank(fieldMapping.TypeN3__c) )
                 {
                     typeValuesMap.put('TypeN3__c', fieldMapping.TypeN3__c);
                 }
@@ -99,7 +99,7 @@ public without sharing class ContentDocumentLinkUtil
                 'warning',
                 'No se ha recuperado ningún metadato configurado para la tipificación de casos del Robot HEGEO (Robot_Hegeo_Field_Mapping__mdt)',
                 'ContentDocumentLinkUtil'
-            );
+                );
         }
     }
 
@@ -112,10 +112,10 @@ public without sharing class ContentDocumentLinkUtil
     public static void getRelatedEmailMessages(List<ContentDocumentLink> newList, Map<Id, ContentDocumentLink> oldMap)
     {
         if(newList != null && !newList.isEmpty() && oldMap == null)
-        {       
+        {
             initSettings();
 
-            if(!robotHegeoSettingsMap.isEmpty())
+            if( !robotHegeoSettingsMap.isEmpty() )
             {
                 try
                 {
@@ -132,27 +132,27 @@ public without sharing class ContentDocumentLinkUtil
                     Set<Id> caseRecordTypeIds = new Set<Id>();
                     for(String recordTypeName: caseRecordTypeNames)
                     {
-                        caseRecordTypeIds.add(Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeName).getRecordTypeId());
+                        caseRecordTypeIds.add( Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeName).getRecordTypeId() );
                     }
 
                     Map<Id, EmailMessage> relatedEmailMessages = new Map<Id, EmailMessage>([
-                        SELECT Id, Subject, ToAddress, CreatedDate, ParentId, Parent.RecordTypeId 
-                        FROM EmailMessage WHERE Id IN: linkedEntityToDocumentMap.keySet() 
-                        AND Parent.RecordTypeId IN: caseRecordTypeIds AND ToAddress IN: robotHegeoSettingsMap.keySet()
-                    ]);
+                                                                                               SELECT Id, Subject, ToAddress, CreatedDate, ParentId, Parent.RecordTypeId
+                                                                                               FROM EmailMessage WHERE Id IN: linkedEntityToDocumentMap.keySet()
+                                                                                               AND Parent.RecordTypeId IN: caseRecordTypeIds AND ToAddress IN: robotHegeoSettingsMap.keySet()
+                                                                                           ]);
 
-                    if(!relatedEmailMessages.isEmpty())
+                    if( !relatedEmailMessages.isEmpty() )
                     {
                         //Necesitamos la información de los tipos de registro de caso para almacenar el DeveloperName
                         Map<Id, Schema.RecordTypeInfo> caseRecordTypesById = Schema.SObjectType.Case.getRecordTypeInfosById();
-                        
+
                         //Almacenamos los ids de los documentos relacionados
-                        //con ContentDocumentLink y EmailMessage 
+                        //con ContentDocumentLink y EmailMessage
                         //para recuperar el contenido del CSV
                         Set<Id> contentDocumentIds = new Set<Id>();
                         for(ContentDocumentLink docLink: newList)
                         {
-                            if(relatedEmailMessages.containsKey(docLink.LinkedEntityId))
+                            if( relatedEmailMessages.containsKey(docLink.LinkedEntityId) )
                             {
                                 //Existe email para ContentDocumentLink
                                 contentDocumentIds.add(docLink.ContentDocumentId);
@@ -172,16 +172,16 @@ public without sharing class ContentDocumentLinkUtil
                         //Recuperamos el contenido del CSV y aprovechamos para filtrar unicamente
                         //por el título y extensión especificados en los metadatos
                         Map<Id, ContentDocument> contentDocuments = new Map<Id, ContentDocument>([
-                            SELECT Id, Title, FileExtension, LatestPublishedVersion.VersionData 
-                            FROM ContentDocument
-                            WHERE Title IN: documentTitles AND FileExtension IN: fileExtensions AND Id IN: contentDocumentIds
-                        ]);
+                                                                                                     SELECT Id, Title, FileExtension, LatestPublishedVersion.VersionData
+                                                                                                     FROM ContentDocument
+                                                                                                     WHERE Title IN: documentTitles AND FileExtension IN: fileExtensions AND Id IN: contentDocumentIds
+                                                                                                 ]);
 
                         //Actualizamos la información almacenada
-                        for(Id docLinkId: mapHegeoInformation.keySet())
+                        for( Id docLinkId: mapHegeoInformation.keySet() )
                         {
                             HegeoInformation hegeoInfo = mapHegeoInformation.get(docLinkId);
-                            if(contentDocuments.containsKey(hegeoInfo.contentDocumentId))
+                            if( contentDocuments.containsKey(hegeoInfo.contentDocumentId) )
                             {
                                 ContentDocument contentDoc = contentDocuments.get(hegeoInfo.contentDocumentId);
                                 hegeoInfo.versionData = contentDoc.LatestPublishedVersion.VersionData.toString();
@@ -207,7 +207,7 @@ public without sharing class ContentDocumentLinkUtil
         {
             for(ContentDocumentLink docLink: newList)
             {
-                if(mapHegeoInformation.containsKey(docLink.Id))
+                if( mapHegeoInformation.containsKey(docLink.Id) )
                 {
                     setRelatedEmailMessageAndCase(docLink);
                 }
@@ -217,20 +217,20 @@ public without sharing class ContentDocumentLinkUtil
 
     private static void setRelatedEmailMessageAndCase(ContentDocumentLink docInformation)
     {
-        try 
+        try
         {
             //Validamos si la información cumple con los requerimientos establecidos en los metadatos
-            if(mapHegeoInformation.containsKey(docInformation.Id))
+            if( mapHegeoInformation.containsKey(docInformation.Id) )
             {
                 HegeoInformation relatedHegeoInformation = mapHegeoInformation.get(docInformation.Id);
                 List<String> relatedEmailToAddressList = relatedHegeoInformation.relatedEmail.ToAddress.split(',');
-                if(!relatedEmailToAddressList.isEmpty())
+                if( !relatedEmailToAddressList.isEmpty() )
                 {
                     //Primero, comprobamos y recuperamos la información del buzón correspondiente
                     Robot_Hegeo_Setting__mdt relatedEmailSettings;
                     for(String toAddressEmail: relatedEmailToAddressList)
                     {
-                        if(robotHegeoSettingsMap.containsKey(toAddressEmail))
+                        if( robotHegeoSettingsMap.containsKey(toAddressEmail) )
                         {
                             relatedEmailSettings = robotHegeoSettingsMap.get(toAddressEmail);
                         }
@@ -243,7 +243,7 @@ public without sharing class ContentDocumentLinkUtil
                         if( relatedHegeoInformation.isValidDocumentTitle(relatedEmailSettings) &&
                             relatedHegeoInformation.isValidFileExtension(relatedEmailSettings) &&
                             relatedHegeoInformation.isValidRecordType(relatedEmailSettings)
-                        )
+                            )
                         {
                             //Inicialiamos variables con datos necesarios para el procesamiento del CSV
                             EmailMessage relatedEmail = relatedHegeoInformation.relatedEmail;
@@ -253,7 +253,7 @@ public without sharing class ContentDocumentLinkUtil
                             Integer toAddressCSVIndex = Integer.valueOf(relatedEmailSettings.ToAddressIndex__c);
                             Integer ccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.CCAddressIndex__c);
                             Integer bccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.BCCAddressIndex__c);
-                            
+
                             List<String> caseTypeFieldsMetadataList = new List<String>();
                             if(relatedEmailSettings.CaseTypeFieldsMetadata__c != null)
                             {
@@ -263,7 +263,7 @@ public without sharing class ContentDocumentLinkUtil
                             List<String> caseFieldsList = new List<String>();
                             if(relatedEmailSettings.CaseFields__c != null)
                             {
-                                caseFieldsList = relatedEmailSettings.CaseFields__c.split(',');   
+                                caseFieldsList = relatedEmailSettings.CaseFields__c.split(',');
                             }
 
                             //Recuperamos los datos del csv y dividimos por cada línea que contiene el documento
@@ -276,15 +276,15 @@ public without sharing class ContentDocumentLinkUtil
                             if(csvFileLines.size() > 2)
                             {
                                 //Extraemos el email fromAddress
-                                if(String.isNotBlank(csvFileLines.get(fromAddressCSVIndex)))
+                                if( String.isNotBlank( csvFileLines.get(fromAddressCSVIndex) ) )
                                 {
                                     List<String> fromAddressLineValues = csvFileLines.get(fromAddressCSVIndex).split(csvSeparator);
-                                    if(fromAddressLineValues != null && !fromAddressLineValues.isEmpty())
+                                    if( fromAddressLineValues != null && !fromAddressLineValues.isEmpty() )
                                     {
                                         String fromAddressFromCSV = fromAddressLineValues.get(0).trim();
-                                        if(fromAddressFromCSV.contains('<'))
+                                        if( fromAddressFromCSV.contains('<') )
                                         {
-                                            fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length()-1).substringAfter('<');
+                                            fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length() - 1).substringAfter('<');
                                         }
                                         else
                                         {
@@ -293,103 +293,101 @@ public without sharing class ContentDocumentLinkUtil
                                     }
                                 }
 
-                                if(String.isNotBlank(fromAddress))
+                                if( String.isNotBlank(fromAddress) )
                                 {
                                     relatedEmail.FromAddress = fromAddress;
                                 }
 
                                 //Extraemos el email toAddress
                                 List<String> toAddressList = new List<String>();
-                                if(String.isNotBlank(csvFileLines.get(toAddressCSVIndex)))
+                                if( String.isNotBlank( csvFileLines.get(toAddressCSVIndex) ) )
                                 {
                                     List<String> toAddressLineValues = csvFileLines.get(toAddressCSVIndex).split(csvSeparator);
-                                    if(toAddressLineValues != null && !toAddressLineValues.isEmpty())
+                                    if( toAddressLineValues != null && !toAddressLineValues.isEmpty() )
                                     {
                                         List<String> toAddressListFromCSV = toAddressLineValues.get(0).split(',');
                                         for(String toAddressFromCSV: toAddressListFromCSV)
                                         {
-                                            if(toAddressFromCSV.contains('<'))
+                                            String trimmedToAddressFromCSV = toAddressFromCSV.trim();
+                                            if( trimmedToAddressFromCSV.contains('<') )
                                             {
-                                                toAddressList.add(toAddressFromCSV.trim().substring(0,toAddressFromCSV.length()-1).substringAfter('<'));
+                                                toAddressList.add( trimmedToAddressFromCSV.substring(0,trimmedToAddressFromCSV.length() - 1).substringAfter('<') );
                                             }
-                                            else 
+                                            else
                                             {
-                                                toAddressList.add(toAddressFromCSV.trim());
+                                                toAddressList.add(trimmedToAddressFromCSV);
                                             }
                                         }
                                     }
                                 }
 
-                                if(toAddressList != null && !toAddressList.isEmpty())
+                                if( toAddressList != null && !toAddressList.isEmpty() )
                                 {
-                                    relatedEmail.ToAddress = toAddressList.toString();
+                                    relatedEmail.ToAddress = String.join(toAddressList, ',');
                                 }
 
                                 //Extraemos el email ccAddress
                                 if (csvFileLines.size() > 3)
                                 {
-                                    //Existe línea CC Address    
+                                    //Existe línea CC Address
                                     List<String> ccAddressList = new List<String>();
-                                    if(String.isNotBlank(csvFileLines.get(ccAddressCSVIndex)))
+                                    if( String.isNotBlank( csvFileLines.get(ccAddressCSVIndex) ) )
                                     {
                                         List<String> ccAddressLineValues = csvFileLines.get(ccAddressCSVIndex).split(csvSeparator);
-                                        if(ccAddressLineValues != null && !ccAddressLineValues.isEmpty())
+                                        if( ccAddressLineValues != null && !ccAddressLineValues.isEmpty() )
                                         {
                                             List<String> ccAddressListFromCSV = ccAddressLineValues.get(0).split(',');
                                             for(String ccAddressFromCSV: ccAddressListFromCSV)
                                             {
-                                                if(ccAddressFromCSV.contains('<'))
+                                                String trimmedCcAddressFromCSV = ccAddressFromCSV.trim();
+                                                if( trimmedCcAddressFromCSV.contains('<') )
                                                 {
-                                                    ccAddressList.add(ccAddressFromCSV.trim().substring(0,ccAddressFromCSV.length()-1).substringAfter('<'));
+                                                    ccAddressList.add( trimmedCcAddressFromCSV.substring(0,trimmedCcAddressFromCSV.length() - 1).substringAfter('<') );
                                                 }
-                                                else 
+                                                else
                                                 {
-                                                    ccAddressList.add(ccAddressFromCSV.trim());
+                                                    ccAddressList.add(trimmedCcAddressFromCSV);
                                                 }
                                             }
                                         }
                                     }
 
-                                    if(ccAddressList != null && !ccAddressList.isEmpty())
+                                    if( ccAddressList != null && !ccAddressList.isEmpty() )
                                     {
-                                        relatedEmail.ccAddress = ccAddressList.toString();
+                                        relatedEmail.ccAddress = String.join(ccAddressList, ',');
                                     }
                                 }
 
                                 //Extraemos el email ccAddress
                                 if (csvFileLines.size() > 4)
                                 {
-                                    //Existe línea BCC Address    
+                                    //Existe línea BCC Address
                                     List<String> bccAddressList = new List<String>();
-                                    if(String.isNotBlank(csvFileLines.get(bccAddressCSVIndex)))
+                                    if( String.isNotBlank( csvFileLines.get(bccAddressCSVIndex) ) )
                                     {
                                         List<String> bccAddressLineValues = csvFileLines.get(bccAddressCSVIndex).split(csvSeparator);
-                                        if(bccAddressLineValues != null && !bccAddressLineValues.isEmpty())
+                                        if( bccAddressLineValues != null && !bccAddressLineValues.isEmpty() )
                                         {
                                             List<String> bccAddressListFromCSV = bccAddressLineValues.get(0).split(',');
                                             for(String bccAddressFromCSV: bccAddressListFromCSV)
                                             {
-                                                if(bccAddressFromCSV.contains('<'))
+                                                String trimmedBccAddressFromCSV = bccAddressFromCSV.trim();
+                                                if( trimmedBccAddressFromCSV.contains('<') )
                                                 {
-                                                    bccAddressList.add(bccAddressFromCSV.trim().substring(0,bccAddressFromCSV.length()-1).substringAfter('<'));
+                                                    bccAddressList.add( trimmedBccAddressFromCSV.substring(0,trimmedBccAddressFromCSV.length() - 1).substringAfter('<') );
                                                 }
-                                                else 
+                                                else
                                                 {
-                                                    bccAddressList.add(bccAddressFromCSV.trim());
+                                                    bccAddressList.add(trimmedBccAddressFromCSV);
                                                 }
                                             }
                                         }
                                     }
 
-                                    if(bccAddressList != null && !bccAddressList.isEmpty())
+                                    if( bccAddressList != null && !bccAddressList.isEmpty() )
                                     {
-                                        relatedEmail.BccAddress = bccAddressList.toString();
+                                        relatedEmail.BccAddress = String.join(bccAddressList, ',');
                                     }
-                                }
-
-                                if(toAddressList != null && !toAddressList.isEmpty())
-                                {
-                                    relatedEmail.ToAddress = toAddressList.toString();
                                 }
 
                                 emailMessagesToUpdate.add(relatedEmail);
@@ -398,44 +396,44 @@ public without sharing class ContentDocumentLinkUtil
                                 if(relatedEmail.ParentId != null)
                                 {
                                     //Dividimos la información de la tipificación del caso por el separador configurado
-                                    List<String> types = csvFileLines.get(Integer.valueOf(relatedEmailSettings.CaseFieldsIndex__c)).trim().split(csvSeparator);
-                                    if (!types.isEmpty() && types.size() >= caseTypeFieldsMetadataList.size()) 
+                                    List<String> types = csvFileLines.get( Integer.valueOf(relatedEmailSettings.CaseFieldsIndex__c) ).trim().split(csvSeparator);
+                                    if ( !types.isEmpty() && types.size() >= caseTypeFieldsMetadataList.size() )
                                     {
                                         //Incluimos el Id del caso para deserializar
-                                        Map<String, String> caseFieldsMap = new Map<String, String>{
+                                        Map<String, String> caseFieldsMap = new Map<String, String> {
                                             'Id' => relatedEmail.ParentId
                                         };
 
                                         //Extraemos la combinación de los tipos de casos (2 primeras posiciones del listado de valores)
                                         String typeAndSubtypeCombination = types.get(0) + types.get(1);
-                                        if(caseTypesMapping.containsKey(typeAndSubtypeCombination))
+                                        if( caseTypesMapping.containsKey(typeAndSubtypeCombination) )
                                         {
-                                            caseFieldsMap.putAll(caseTypesMapping.get(typeAndSubtypeCombination));
+                                            caseFieldsMap.putAll( caseTypesMapping.get(typeAndSubtypeCombination) );
                                         }
                                         else
                                         {
                                             ErrorLogUtil.commitError(
                                                 'warning',
-                                                'La combinación de valores '+ typeAndSubtypeCombination +' no existe. EmailMessage Id: ' + relatedEmail.Id,
+                                                'La combinación de valores ' + typeAndSubtypeCombination + ' no existe. EmailMessage Id: ' + relatedEmail.Id,
                                                 'ContentDocumentLinkUtil'
-                                            );    
+                                                );
                                         }
 
-                                        //Recorremos la lista ordenada de campos a tipificar, 
+                                        //Recorremos la lista ordenada de campos a tipificar,
                                         //así podemos acceder directamente por posición al valor recibido
-                                        for(Integer i=caseTypeFieldsMetadataList.size(); i<caseFieldsList.size(); i++)
+                                        for(Integer i=caseTypeFieldsMetadataList.size(); i < caseFieldsList.size(); i++)
                                         {
                                             //Este if controla que no falle la ejecución si recibimos menos valores de los esperados
                                             //o si el valor viene vacio
-                                            if(i<types.size() && String.isNotBlank(types.get(i)))
+                                            if( i < types.size() && String.isNotBlank( types.get(i) ) )
                                             {
-                                                caseFieldsMap.put(caseFieldsList.get(i), types.get(i));
+                                                caseFieldsMap.put( caseFieldsList.get(i), types.get(i) );
                                             }
                                         }
 
-                                        casesToUpdate.add((Case) JSON.deserialize(
-                                            JSON.serialize(caseFieldsMap), Case.class)
-                                        );
+                                        casesToUpdate.add( (Case) JSON.deserialize(
+                                                               JSON.serialize(caseFieldsMap), Case.class)
+                                                            );
                                     }
                                     else
                                     {
@@ -443,7 +441,7 @@ public without sharing class ContentDocumentLinkUtil
                                             'warning',
                                             'La información correspondiente a la tipificación de los casos está vacia o es menor de lo esperado. EmailMessage Id: ' + relatedEmail.Id,
                                             'ContentDocumentLinkUtil'
-                                        );
+                                            );
                                     }
                                 }
                                 else
@@ -452,7 +450,7 @@ public without sharing class ContentDocumentLinkUtil
                                         'warning',
                                         'No existe caso relacionado con el email para procesar la información. EmailMessage Id: ' + relatedEmail.Id,
                                         'ContentDocumentLinkUtil'
-                                    );
+                                        );
                                 }
                             }
                             else
@@ -461,7 +459,7 @@ public without sharing class ContentDocumentLinkUtil
                                     'warning',
                                     'El documento adjunto cumplía las condiciones establecidas para ser procesado, pero tiene menos información de la esperada para procesar. EmailMessage Id: ' + relatedEmail.Id,
                                     'ContentDocumentLinkUtil'
-                                );
+                                    );
                             }
                         }
                         else
@@ -470,7 +468,7 @@ public without sharing class ContentDocumentLinkUtil
                                 'warning',
                                 'El EmailMessage no cumplía los requisitos del metadato para ser procesado: título o extensión del documento adjunto o tipo de registro del caso relacionado. EmailMessage Id: ' + relatedHegeoInformation.relatedEmail.Id,
                                 'ContentDocumentLinkUtil'
-                            );  
+                                );
                         }
                     }
                 }
@@ -484,10 +482,11 @@ public without sharing class ContentDocumentLinkUtil
 
     public static void updateRelatedRecords()
     {
-        if(!emailMessagesToUpdate.isEmpty())
+        if( !emailMessagesToUpdate.isEmpty() )
         {
-            try {
-                update emailMessagesToUpdate;   
+            try
+            {
+                update emailMessagesToUpdate;
             }
             catch(Exception ex)
             {
@@ -495,10 +494,11 @@ public without sharing class ContentDocumentLinkUtil
             }
         }
 
-        if(!casesToUpdate.isEmpty())
+        if( !casesToUpdate.isEmpty() )
         {
-            try {
-                update casesToUpdate; 
+            try
+            {
+                update casesToUpdate;
             }
             catch(Exception ex)
             {
@@ -508,7 +508,7 @@ public without sharing class ContentDocumentLinkUtil
     }
 
     /**
-     * 
+     *
      *
      * @author rlopez
      */

@@ -1,6 +1,6 @@
-public class OpportunityHandler implements ITrigger
+public class SurveyResponseHandler implements ITrigger
 {
-    public OpportunityHandler()
+    public SurveyResponseHandler()
     {}
 
     /**
@@ -19,7 +19,9 @@ public class OpportunityHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        SurveyResponseUtil.initMapOfResponses((List<SurveyResponse__c>) newList, (Map<Id, SurveyResponse__c>) oldMap);
+    }
 
     /**
      * beforeInsert
@@ -28,9 +30,7 @@ public class OpportunityHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
-    {
-        OpportunityUtil.setStageNameOpen(newList);
-    }
+    {}
 
     /**
      * beforeUpdate
@@ -39,11 +39,7 @@ public class OpportunityHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-        OpportunityUtil.revertStageNameNull((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
-        //OpportunityUtil.detectOpportunityStageChange(newList, (Map<Id, Opportunity>) oldMap); //20210225 sustituido por before insert
-        OpportunityUtil.detectOpportunityAccountChange((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
-    }
+    {}
 
     /**
      * beforeDelete
@@ -63,7 +59,7 @@ public class OpportunityHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
-        OpportunityUtil.generateScope(newList);
+        SurveyResponseUtil.processAnswers();
     }
 
     /**
@@ -74,7 +70,7 @@ public class OpportunityHandler implements ITrigger
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        OpportunityUtil.generateScope(newList);
+        SurveyResponseUtil.processAnswers();
     }
 
     /**
@@ -93,5 +89,7 @@ public class OpportunityHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {}
+    {
+        SurveyResponseUtil.updateParentSurveys();
+    }
 }

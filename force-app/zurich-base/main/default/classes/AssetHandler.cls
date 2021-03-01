@@ -1,6 +1,6 @@
-public class OpportunityHandler implements ITrigger
+public class AssetHandler implements ITrigger
 {
-    public OpportunityHandler()
+    public AssetHandler()
     {}
 
     /**
@@ -28,9 +28,7 @@ public class OpportunityHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
-    {
-        OpportunityUtil.setStageNameOpen(newList);
-    }
+    {}
 
     /**
      * beforeUpdate
@@ -39,11 +37,7 @@ public class OpportunityHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-        OpportunityUtil.revertStageNameNull((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
-        //OpportunityUtil.detectOpportunityStageChange(newList, (Map<Id, Opportunity>) oldMap); //20210225 sustituido por before insert
-        OpportunityUtil.detectOpportunityAccountChange((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
-    }
+    {}
 
     /**
      * beforeDelete
@@ -63,7 +57,7 @@ public class OpportunityHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
-        OpportunityUtil.generateScope(newList);
+        AssetUtil.generateScope(newList);
     }
 
     /**
@@ -74,7 +68,7 @@ public class OpportunityHandler implements ITrigger
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        OpportunityUtil.generateScope(newList);
+        AssetUtil.generateScope(newList);
     }
 
     /**

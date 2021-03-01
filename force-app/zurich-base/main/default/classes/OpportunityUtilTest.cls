@@ -47,7 +47,7 @@ private class OpportunityUtilTest
      *
      * @author adelgado
      * @date 26/01/2021
-     */
+     *//*
     @isTest
     static void test_detectOpportunityStageChange_integratorUser()
     {
@@ -64,7 +64,7 @@ private class OpportunityUtilTest
         User integrator = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator' LIMIT 1];
 
         Test.startTest();
-        System.runAs(integrator) 
+        System.runAs(integrator)
         {
             update optys;
         }
@@ -76,14 +76,14 @@ private class OpportunityUtilTest
         {
             System.assertEquals('New', opty.StageName, 'Se ha actualizado la etapa de la oferta y no deberia');
         }
-    }
+    }*/
 
     /**
      * Test que comprueba que no se modifica la etapa de la oferta cuando el usuario no es Integrator
      *
      * @author adelgado
      * @date 26/01/2021
-     */
+     *//*
     @isTest
     static void test_detectOpportunityStageChange_otherUser()
     {
@@ -107,11 +107,11 @@ private class OpportunityUtilTest
         {
             System.assertEquals('Test', opty.StageName, 'No se actualizado la etapa de la oferta');
         }
-    }
+    }*/
 
     /**
      * Test detection of the change of the AccountId of the offer
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 04/02/2021
      */
@@ -132,7 +132,7 @@ private class OpportunityUtilTest
             optys[i].AccountId = accountsOther[i].Id;
         }
 
-        // do the update 
+        // do the update
         Test.startTest();
         update optys;
         Test.stopTest();
@@ -142,5 +142,119 @@ private class OpportunityUtilTest
             SELECT Id, OldAccountId__c FROM Opportunity WHERE Id IN :optys AND OldAccountId__c != null
         ];
         System.assertEquals(10, optysUpdated.size(), 'There should be 10 offers updated');
+    }
+
+    /**
+     * Comprueba si una oferta se inserta con Stage a null, se cambia a Open
+     * @date 25/02/2021
+     */
+    @isTest
+    static void test_setStageNameOpen_ok()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+        List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 2);
+        for(Integer i = 0; i < optys.size(); i++)
+        {
+            optys[i].InfoQuoteNumber__c = String.valueOf(i);
+        }
+
+        Test.startTest();
+        insert optys;
+        Test.stopTest();
+
+        List<Opportunity> optysInserted = [SELECT Id, StageName FROM Opportunity];
+
+        for(Opportunity opty : optysInserted)
+        {
+            System.assertEquals('Open', opty.StageName, 'Se debería haber cambiado el Stage de null a Open');
+        }
+    }
+
+    /**
+     * Comprueba si una oferta se inserta con Stage a distinto de null, no se machaca con Open
+     * @date 25/02/2021
+     */
+    @isTest
+    static void test_setStageNameOpen_ko()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+        List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Quoted', System.today().addDays(10), 2);
+        for(Integer i = 0; i < optys.size(); i++)
+        {
+            optys[i].InfoQuoteNumber__c = String.valueOf(i);
+        }
+
+        Test.startTest();
+        insert optys;
+        Test.stopTest();
+
+        List<Opportunity> optysInserted = [SELECT Id, StageName FROM Opportunity];
+
+        for(Opportunity opty : optysInserted)
+        {
+            System.assertEquals('Quoted', opty.StageName, 'No se debería haber machacado el Stage');
+        }
+    }
+
+    /**
+     * Comprueba si una oferta se actualiza con Stage a null, se cambia a lo anterior
+     * @date 25/02/2021
+     */
+    @isTest
+    static void test_revertStageNameNull_ok()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+        List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Quoted', System.today().addDays(10), 2);
+        for(Integer i = 0; i < optys.size(); i++)
+        {
+            optys[i].InfoQuoteNumber__c = String.valueOf(i);
+        }
+        insert optys;
+
+        Test.startTest();
+        for(Integer j = 0; j < optys.size(); j++)
+        {
+            optys[j].StageName = null;
+        }
+        update optys;
+        Test.stopTest();
+
+        List<Opportunity> optysUpdated = [SELECT Id, StageName FROM Opportunity];
+
+        for(Opportunity opty : optysUpdated)
+        {
+            System.assertEquals('Quoted', opty.StageName, 'Se debería haber cambiado el Stage de null a lo que tuviese anteriormente');
+        }
+    }
+
+    /**
+     * Comprueba si una oferta se actualiza con Stage válido a otro válido, no se revierte
+     * @date 25/02/2021
+     */
+    @isTest
+    static void test_revertStageNameNull_ko()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+        List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Open', System.today().addDays(10), 2);
+        for(Integer i = 0; i < optys.size(); i++)
+        {
+            optys[i].InfoQuoteNumber__c = String.valueOf(i);
+        }
+        insert optys;
+
+        Test.startTest();
+        for(Integer j = 0; j < optys.size(); j++)
+        {
+            optys[j].StageName = 'Quoted';
+        }
+        update optys;
+        Test.stopTest();
+
+        List<Opportunity> optysUpdated = [SELECT Id, StageName FROM Opportunity];
+
+        for(Opportunity opty : optysUpdated)
+        {
+            System.assertEquals('Quoted', opty.StageName, 'Se debería haber mantenido el cambio en el Stage, ya que no se está cambiando a null');
+        }
     }
 }
