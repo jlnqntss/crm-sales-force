@@ -170,6 +170,11 @@
                 <label>Suplemento póliza</label>
             </value>
             <value>
+                <fullName>Vida</fullName>
+                <default>false</default>
+                <label>Vida</label>
+            </value>
+            <value>
                 <fullName>definidos</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -404,6 +409,13 @@
             <controllingFieldValue>No definido</controllingFieldValue>
             <controllingFieldValue>Pagos</controllingFieldValue>
             <valueName>Suplemento póliza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>No definido</controllingFieldValue>
+            <controllingFieldValue>Pagos</controllingFieldValue>
+            <valueName>Vida</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

@@ -734,6 +734,10 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Conductor</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>Cambio de Riesgo</valueName>
         </valueSettings>
         <valueSettings>
