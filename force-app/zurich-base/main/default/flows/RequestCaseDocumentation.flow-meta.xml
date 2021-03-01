@@ -3,8 +3,8 @@
     <actionCalls>
         <name>EnviarEmailConEnlace</name>
         <label>Enviar email con enlace</label>
-        <locationX>94</locationX>
-        <locationY>1094</locationY>
+        <locationX>50</locationX>
+        <locationY>1214</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <connector>
@@ -33,7 +33,7 @@
         <name>GenerarHashId</name>
         <label>Generar Hash Id</label>
         <locationX>314</locationX>
-        <locationY>734</locationY>
+        <locationY>854</locationY>
         <actionName>GenerateHashIdAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -46,6 +46,29 @@
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>SendSMS</name>
+        <label>Send SMS</label>
+        <locationX>314</locationX>
+        <locationY>1214</locationY>
+        <actionName>GenesysCloudSendSMSAction</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>RegistrarActividad</targetReference>
+        </connector>
+        <inputParameters>
+            <name>SMSText</name>
+            <value>
+                <elementReference>HashURL</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>toNumber</name>
+            <value>
+                <elementReference>InsertPhone.value</elementReference>
+            </value>
+        </inputParameters>
     </actionCalls>
     <apiVersion>51.0</apiVersion>
     <choices>
@@ -68,7 +91,7 @@
         <name>OpcionSeleccionada</name>
         <label>Opción seleccionada?</label>
         <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationY>518</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>OpcionSeleccionadaEmail</name>
@@ -105,7 +128,7 @@
         <name>OpcionSeleccionada_0</name>
         <label>Opción seleccionada?</label>
         <locationX>314</locationX>
-        <locationY>974</locationY>
+        <locationY>1094</locationY>
         <defaultConnector>
             <targetReference>RegistrarActividad</targetReference>
         </defaultConnector>
@@ -136,11 +159,17 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>RegistrarActividad</targetReference>
+                <targetReference>SendSMS</targetReference>
             </connector>
             <label>SMS</label>
         </rules>
     </decisions>
+    <formulas>
+        <description>Email que aparecerá por defecto en el input en caso de seleccionar enviar por email</description>
+        <name>DefaultEmail</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!GetCaseRelatedContactInformation.SuppliedEmail}), {!GetRelatedScope.PrimaryEmail__c}, {!GetCaseRelatedContactInformation.SuppliedEmail})</expression>
+    </formulas>
     <formulas>
         <name>HashURL</name>
         <dataType>String</dataType>
@@ -171,7 +200,7 @@
         <name>RegistrarActividad</name>
         <label>Registrar Actividad</label>
         <locationX>314</locationX>
-        <locationY>1310</locationY>
+        <locationY>1430</locationY>
         <inputAssignments>
             <field>Body</field>
             <value>
@@ -188,20 +217,45 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <description>Recuperamos el AccountId del caso para después recuperar la información de contacto del scope de la cuenta</description>
+        <name>GetCaseRelatedContactInformation</name>
+        <label>Get Case Related Contact Information</label>
+        <locationX>314</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetRelatedScope</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ScopeId__c</queriedFields>
+        <queriedFields>SuppliedEmail</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>GetRelatedScope</name>
         <label>Get Related Scope</label>
         <locationX>314</locationX>
-        <locationY>158</locationY>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>NotifyUser</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>AccountId__c</field>
+            <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>AccountId</elementReference>
+                <elementReference>GetCaseRelatedContactInformation.ScopeId__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -215,7 +269,7 @@
         <name>ActualizarDocumentationHashId</name>
         <label>Actualizar Documentation Hash Id</label>
         <locationX>314</locationX>
-        <locationY>854</locationY>
+        <locationY>974</locationY>
         <connector>
             <targetReference>OpcionSeleccionada_0</targetReference>
         </connector>
@@ -240,7 +294,7 @@
         <name>InsertEmailScreen</name>
         <label>¿A qué dirección enviamos el enlace?</label>
         <locationX>50</locationX>
-        <locationY>518</locationY>
+        <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -254,7 +308,7 @@
             <inputParameters>
                 <name>value</name>
                 <value>
-                    <elementReference>GetRelatedScope.PrimaryEmail__c</elementReference>
+                    <elementReference>DefaultEmail</elementReference>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -267,7 +321,7 @@
         <name>InsertPhoneScreen</name>
         <label>¿A qué número de teléfono enviamos el SMS?</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -294,7 +348,7 @@
         <name>NotifyUser</name>
         <label>Selecciona como notificar el usuario</label>
         <locationX>314</locationX>
-        <locationY>278</locationY>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -317,7 +371,7 @@
         <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>GetRelatedScope</targetReference>
+            <targetReference>GetCaseRelatedContactInformation</targetReference>
         </connector>
     </start>
     <status>Active</status>
