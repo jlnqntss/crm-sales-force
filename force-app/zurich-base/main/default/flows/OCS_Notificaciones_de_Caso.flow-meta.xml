@@ -13,7 +13,6 @@
         <locationY>200</locationY>
         <actionName>Case.Cierre_de_caso</actionName>
         <actionType>emailAlert</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -37,7 +36,6 @@
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_1_event_0_postWaitExecutionAssignment</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -61,7 +59,6 @@
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_1_event_1_postWaitExecutionAssignment</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -85,7 +82,6 @@
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_1_event_2_postWaitExecutionAssignment</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -109,7 +105,6 @@
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_1_event_3_postWaitExecutionAssignment</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -133,7 +128,6 @@
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_3_event_0_postWaitExecutionAssignment</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -141,7 +135,7 @@
             </value>
         </inputParameters>
     </actionCalls>
-    <apiVersion>51.0</apiVersion>
+    <apiVersion>50.0</apiVersion>
     <assignments>
         <name>myWaitAssignment_myWait_myRule_1</name>
         <label>myWaitAssignment_myWait_myRule_1</label>
@@ -1064,7 +1058,7 @@
         </rules>
     </decisions>
     <description>Aquellos casos que estén pendientes de mediador o cliente, cada 72 horas remitirán un email recordatorio de la gestión pendiente.</description>
-    <interviewLabel>OCS_Notificaciones_de_Caso-6_InterviewLabel</interviewLabel>
+    <interviewLabel>OCS_Notificaciones_de_Caso-7_InterviewLabel</interviewLabel>
     <label>OCS - Notificaciones de Caso</label>
     <processMetadataValues>
         <name>ObjectType</name>
