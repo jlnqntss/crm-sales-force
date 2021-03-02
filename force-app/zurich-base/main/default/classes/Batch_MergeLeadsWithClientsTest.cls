@@ -45,6 +45,12 @@ public class Batch_MergeLeadsWithClientsTest
         List<Account> clientAccounts = TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_CUSTOMER, 1);
         clientAccounts.addAll(TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_BUSINESS, 1));
         insert clientAccounts;
+
+        // create contact points for the accounts
+        insert TestDataFactory.generateContactPointAddressesFromAccounts(clientAccounts, 1);
+        insert TestDataFactory.generateContactPointPhonesFromAccounts(clientAccounts, 1);
+        insert TestDataFactory.generateContactPointEmailsFromAccounts(clientAccounts, 1);
+
         // create 2 cases for those clients
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(clientAccounts, 2);
         insert cases;
