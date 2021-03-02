@@ -34,6 +34,13 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
     private List<string> fieldsToMergePerson;
     private List<string> fieldsToMergeNotPerson;
     private List<string> LeadFieldsToKeep;
+
+    // Account related childs to be update to the master account before the merge. Inlcuding the parent field
+    private static final Map<String, String> mapRelatedObjects = new Map<String, String> {
+        'ContactPointEmails' => 'ParentId',
+        'ContactPointPhones' => 'ParentId',
+        'ContactPointAddresses' => 'ParentId'
+    };
     
 
     global Batch_MergeLeadsWithClients()
@@ -158,7 +165,12 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                         Account leadAccount = leadAccounts[0];
 
                         // Get the query for the other account
-                        String accountQuery = 'SELECT ' + String.join(fieldsToMerge, ',') + ' FROM Account';
+                        String accountQuery = 'SELECT ' + String.join(fieldsToMerge, ',');
+                        // fix: Get the ContactPoints of the account to reparent them before merging
+                        for( String s: mapRelatedObjects.keySet() ) {
+                            accountQuery += ',(SELECT Id, ' + mapRelatedObjects.get(s) + ' FROM ' + s + ')';
+                        }
+                        accountQuery += ' FROM Account';
                         accountQuery += ' WHERE Id = \'' + offerAccountId + '\'';
 
                         // Get the other account
@@ -211,6 +223,18 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                                     leadContacts[0].LegalEntity__c = account.LegalEntity__c;
 
                                     update leadContacts[0]; //! 1 DML
+                                }
+                            }
+
+                            // Fix: re-parent the contact points. For some reason the merge does not do it
+                            for(String s: mapRelatedObjects.keySet()) {
+                                List<SObject> contactPoints = account.getSObjects(s);
+                                if( contactPoints != null && !contactPoints.isEmpty() ) {
+                                    for( SObject o: contactPoints ) {
+                                        o.put(mapRelatedObjects.get(s), leadAccount.Id);
+                                        //System.debug(o);
+                                    }
+                                    update contactPoints; //! 3 DML. One per ContactPoint (email, phone, address)
                                 }
                             }
             
