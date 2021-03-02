@@ -4227,6 +4227,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Asset.Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Asset.City__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7237,6 +7242,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.FirstReceipt__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.GeneralLiabilityLimit__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7287,6 +7297,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.LegalAuth__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.LegalEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7298,6 +7313,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.NetPremium__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.NextReceipts__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

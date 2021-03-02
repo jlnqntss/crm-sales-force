@@ -500,7 +500,10 @@ public without sharing class BusinessInsuranceRaterService
                             ValidationErrors__c = offer.validationErrors,
                             ProductId__c = (productCodesToProductMap.containsKey(productCodes) && productCodesToProductMap.get(productCodes) != null ? productCodesToProductMap.get(productCodes).Id : null),
                             LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
-                            OperationCode__c = offer.operationCode
+                            OperationCode__c = offer.operationCode,
+                            FirstReceipt__c = offer.firstReceipt,
+                            NextReceipts__c = offer.nextReceipts,
+                            LegalAuth__c = formData.legalAuth
                             )
                         );
 
@@ -597,7 +600,8 @@ public without sharing class BusinessInsuranceRaterService
                                         TypeOfWindows__c = risk.typeOfWindows,
                                         Safe__c = risk.strongbox,
                                         recordTypeId = addressRecordTypeId,
-                                        LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI)
+                                        LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
+                                        Capacity__c = risk.capacity
                                         )
                                     );
                             }
