@@ -707,6 +707,10 @@
             <fullName>Suplemento póliza</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Vida</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Origin</picklist>
