@@ -64,6 +64,7 @@ public without sharing class EmailToOpportunityService
             emailMessage.Incoming = true;
             emailMessage.ToAddress = String.join(inboundEmail.toAddresses, ',');
             emailMessage.HtmlBody = inboundEmail.htmlBody;
+            emailMessage.TextBody = inboundEmail.plainTextBody;
             emailMessage.MessageIdentifier = inboundEmail.messageId;
             emailMessage.ThreadIdentifier = threadId;
 

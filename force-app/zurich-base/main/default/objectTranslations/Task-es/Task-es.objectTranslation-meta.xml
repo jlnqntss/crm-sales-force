@@ -7,8 +7,12 @@
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label><!-- Fields --></label>
+            <label>Campos</label>
             <section>Fields</section>
+        </sections>
+        <sections>
+            <label>Información del sistema</label>
+            <section>System Information</section>
         </sections>
     </layouts>
     <layouts>
@@ -18,8 +22,24 @@
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label><!-- Fields --></label>
+            <label>Campos</label>
             <section>Fields</section>
+        </sections>
+        <sections>
+            <label>Información de IVR</label>
+            <section>IVR Information</section>
+        </sections>
+        <sections>
+            <label><!-- Información adicional --></label>
+            <section>Información adicional</section>
+        </sections>
+        <sections>
+            <label>Información de Interacción</label>
+            <section>Interaction Information</section>
+        </sections>
+        <sections>
+            <label>Información del sistema</label>
+            <section>System Information</section>
         </sections>
     </layouts>
     <layouts>
