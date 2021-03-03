@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <assignments>
+        <name>Desmarcar_Stopped</name>
+        <label>Desmarcar Stopped</label>
+        <locationX>1057</locationX>
+        <locationY>420</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.IsStopped</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Marcar_Stopped</name>
+        <label>Marcar Stopped</label>
+        <locationX>813</locationX>
+        <locationY>418</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.IsStopped</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>Cambio_a_Pendiente_de_Cliente</name>
+        <label>¿Cambió a Pendiente de Cliente?</label>
+        <locationX>920</locationX>
+        <locationY>153</locationY>
+        <defaultConnector>
+            <targetReference>Desmarcar_Stopped</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No es pendiente cliente</defaultConnectorLabel>
+        <rules>
+            <name>Si_es_pendiente_cliente</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PendingBy__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Client</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Marcar_Stopped</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Si es pendiente cliente</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Es_RT_OCSInquiry</name>
+        <label>¿Es RT OCSInquiry?</label>
+        <locationX>500</locationX>
+        <locationY>152</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_es_OCSInquiry</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Se_han_modificado_los_campos</targetReference>
+            </connector>
+            <label>Si es OCSInquiry</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Se_han_modificado_los_campos</name>
+        <label>¿Se han modificado los campos?</label>
+        <locationX>706</locationX>
+        <locationY>157</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_se_modificaron</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PendingBy__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record__Prior.PendingBy__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Cambio_a_Pendiente_de_Cliente</targetReference>
+            </connector>
+            <label>Si se modificaron</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Case Trigger - Before update Stopped {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Trigger - Before update Stopped</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Es_RT_OCSInquiry</targetReference>
+        </connector>
+        <object>Case</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
