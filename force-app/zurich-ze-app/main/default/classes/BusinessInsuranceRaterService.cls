@@ -503,7 +503,7 @@ public without sharing class BusinessInsuranceRaterService
                             OperationCode__c = offer.operationCode,
                             FirstReceipt__c = offer.firstReceipt,
                             NextReceipts__c = offer.nextReceipts,
-                            LegalAuth__c = formData.legalAuth
+                            LegalAuth__c = (formData.legalAuth != null ? formData.legalAuth : false)
                             )
                         );
 
