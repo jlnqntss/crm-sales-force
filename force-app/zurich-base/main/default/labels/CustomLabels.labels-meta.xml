@@ -49,6 +49,14 @@
         <value>Booleano no válido</value>
     </labels>
     <labels>
+        <fullName>CTIExtraButtonsTitle</fullName>
+        <categories>CTIExtraButtons</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CTIExtraButtonsTitle</shortDescription>
+        <value>Phone Actions</value>
+    </labels>
+    <labels>
         <fullName>CampaignCheckbox</fullName>
         <categories>PreferenceCentre</categories>
         <language>es</language>
@@ -750,5 +758,45 @@ Related fields: [{3}]</value>
         <protected>true</protected>
         <shortDescription>ValorListaNoValido</shortDescription>
         <value>Valor de lista de selección no válido</value>
+    </labels>
+    <labels>
+        <fullName>callRecordingButtonStart</fullName>
+        <categories>callRecordingButton</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>callRecordingButtonStart</shortDescription>
+        <value>Start Recording</value>
+    </labels>
+    <labels>
+        <fullName>callRecordingButtonStop</fullName>
+        <categories>callRecordingButton</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>callRecordingButtonStop</shortDescription>
+        <value>Stop Recording</value>
+    </labels>
+    <labels>
+        <fullName>sendSurveyButtonLabel</fullName>
+        <categories>sendSurveyButton</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>sendSurveyButtonLabel</shortDescription>
+        <value>Send Survey</value>
+    </labels>
+    <labels>
+        <fullName>sendSurveyToastMessageSuccess</fullName>
+        <categories>sendSurveyButton</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>sendSurveyToastMessageSuccess</shortDescription>
+        <value>Survey successfully sent to customer</value>
+    </labels>
+    <labels>
+        <fullName>sendSurveyToastTitleSuccess</fullName>
+        <categories>sendSurveyButton</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>sendSurveyToastTitleSuccess</shortDescription>
+        <value>Survey Sent!</value>
     </labels>
 </CustomLabels>
