@@ -166,9 +166,9 @@ public class CaseUtil
 
             for (Case caso : newList)
             {   // Solo para casos de web, email to case no tiene rellenos los campos entidad legal y país hasta el afterinsert ( relleno por Workflows)
-                // se podría filtrar por tipo de registro si se añade el campo al formulario 
+                // se podría filtrar por tipo de registro si se añade el campo al formulario
                 if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Web')  )
-                { 
+                {
                     //Si se ha informado el número de póliza, buscar la póliza y asignar el cliente correspondiente
                     if (caso.PolicyNum__c != null)
                     {
@@ -214,10 +214,10 @@ public class CaseUtil
                             SELECT id FROM Contact
                             WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
                             AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
-                            AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife 
+                            AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
                                 OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
                         ];
-                        
+
                         if (contactoSF != null && contactoSF.size() == 1)
                         {
                             caso.ContactId = contactoSF.get(0).id;
@@ -231,9 +231,9 @@ public class CaseUtil
                         {
                             List<Contact> contactoSF = [
                                 SELECT id FROM Contact
-                                WHERE MobilePhone = :caso.SuppliedPhone AND LegalEntity__c = :caso.LegalEntity__c 
-                                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c  
-                                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife 
+                                WHERE MobilePhone = :caso.SuppliedPhone AND LegalEntity__c = :caso.LegalEntity__c
+                                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
                                 OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
                             ];
 
@@ -283,26 +283,26 @@ public class CaseUtil
         List<Case> updateCases = new List<Case>();
 
         if (newList != null)
-        { 
+        {
             for (Case caso : newList)
-            {   
+            {
                 if ( !checkRecursive.SetOfIDs.contains(caso.ID) )
                 {
                     checkRecursive.SetOfIDs.add(caso.ID);
                     //System.debug('>>>>>> TEST: ' + caso.Origin + caso.CustomerFoundBy__c +caso.SuppliedEmail+ caso.LegalEntity__c+caso.SourceCountry__c) ;
-           
+
 
                     //System.debug('>>>>>> TEST record type: ' +  caso.RecordTypeId );
 
                     if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Email') && String.isBlank(caso.CustomerFoundBy__c) &&
-                        String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c) 
+                        String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
                         && caso.RecordTypeId ==  Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Enquiry').getRecordTypeId() )
                     {
                         List<Contact> contactoSF = [
                                 SELECT id FROM Contact
                                 WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
                                 AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
-                                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife 
+                                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
                                 OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
                         ];
                         //Asignar contacto solo si encuentra 1
@@ -318,12 +318,12 @@ public class CaseUtil
 
                 }
             }
-            
+
             if ( updateCases != null && !updateCases.isEmpty() )
             {
                 upsert updateCases;
             }
-        }      
+        }
     }
 
 
@@ -367,6 +367,65 @@ public class CaseUtil
                             caso.ContactId = matchedAccounts[0].PersonContactId;
                         }
                     }
+                }
+            }
+        }
+    }
+
+    /**BEFOREUPDATE
+     * IMPORTANTE: la modificación del CaseMilestone no puede ser después de la actualización del caso
+     * porque el caso ya se ha salido del entitlement process y salta el siguiente error:
+     * "You can’t change the completion date on a milestone that’s already exited an entitlement process.: Completion Date"
+     * Por eso tiene que ser modificado en el before
+     * @date 25/01/2021
+     **/
+    public static void markMilestonesCompletedWhenClose(List<Case> newList, Map<Id,Case> oldMap)
+    {
+        List<Case> updatedCases = new List<Case>();
+        List<CaseMilestone> caseMilestoneList = new List<CaseMilestone>();
+        List<CaseMilestone> caseMilestoneListToUpdate = new List<CaseMilestone>();
+        Case oldCase = new Case();
+        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+
+        //Almacenar los casos que cumplen las condiciones
+        for(Case caso : newList)
+        {
+            //Esta comparación se hace para que no afecte a KLINC
+            if(caso.RecordTypeId == rtOCSInquiryId)
+            {
+                oldCase =  oldMap.get(caso.Id);
+                //Solo se hace algo si se cerró el caso
+                if(oldCase.Status != caso.Status && caso.Status == 'Cerrado' && caso.SlaExitDate == null)
+                {
+                    updatedCases.add(caso);
+                }
+            }
+        }
+
+        //Si hay casos a los que hay que completarles el Milestone:
+        if(!updatedCases.isEmpty())
+        {
+            //Recoger los milestones del tipo requerido
+            caseMilestoneList = [SELECT Id, CaseId, CompletionDate FROM CaseMilestone WHERE CaseId IN :updatedCases AND MilestoneType.Name = 'Cierre Caso'];
+
+            if(!caseMilestoneList.isEmpty())
+            {
+                for(CaseMilestone cm : caseMilestoneList)
+                {
+                    //Evitar actualizar un milestone ya completado
+                    if (cm.CompletionDate == null)
+                    {
+                        cm.CompletionDate = System.now(); //Marcarlo como completado
+                        caseMilestoneListToUpdate.add(cm);
+                    }
+                }
+                //Updatear ANTES el milestone que el caso para evitar el error de salida del EntitlementProcess
+                if(!caseMilestoneListToUpdate.isEmpty())
+                {
+                    //Evitar ids duplicados en la lista a actualziar
+                    Map<Id, CaseMilestone> caseMilestoneDuplicates = new Map<Id, CaseMilestone>();
+                    caseMilestoneDuplicates.putAll(caseMilestoneListToUpdate);
+                    update caseMilestoneDuplicates.values();
                 }
             }
         }
