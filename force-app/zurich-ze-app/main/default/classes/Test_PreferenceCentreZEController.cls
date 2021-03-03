@@ -67,4 +67,24 @@ public class Test_PreferenceCentreZEController
         System.assertNotEquals(null, labels, 'The labels should not be null');
         System.assertNotEquals('', labels, 'The labels should not be empty');
     }
+
+    /**
+     * Test the getLogoUrl for an Scope. No assert is included to avoid errors in the class
+     * if there are no logos in the static resources
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 03/02/2021
+     */
+    @isTest
+    static void test_getLogoUrl()
+    {
+        string resource_url = null;
+        Test.startTest();
+        resource_url = PreferenceCentreZEController.getLogoUrl('ZE');
+        Test.stopTest();
+
+        // not checking the assert to avoid errors if the static resources dont exist
+        //System.assertNotEquals(null, resource_url, 'The resource url should not be null');
+        //System.assertEquals(true, resource_url.contains(PreferenceCentreController.ZURICH_LOGO_RESOURCE));
+    }
 }

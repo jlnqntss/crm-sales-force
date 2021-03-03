@@ -16,8 +16,52 @@ public with sharing class PreferenceCentreZEController {
     //#Region public classes
     
     // Constants
-    private static final Boolean showDebug = true;
     private static final String UNSUBSCRIBED_SOURCE = 'Centro de preferencias';
+    private static final String CONFIG_LOGO_KEY = 'PreferenceLogo';
+    private static final String DEFAULT_LOGO_RESOURCE = 'zurich_ze_logo';
+
+    /**
+     * Get the logo url for the given scope
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 02/03/2021
+     * @param {String scope} the scope
+     * @return {string} the url of the logo as a static resource
+     */
+    @AuraEnabled(cacheable=true)
+    public static String getLogoUrl( String scope )
+    {
+        String result = null;
+        String logoResource = DEFAULT_LOGO_RESOURCE;
+
+        // if there is an scope...
+        if( String.isNotBlank(scope)) {
+            // Get the key name composed by a fixed part (PreferenceLogo) and another part dependant from the scope
+            String logoConfig = CONFIG_LOGO_KEY + scope.toUpperCase();
+
+            // Get the name of the static resource configured for that scope
+            List<AdminSetupParameter__mdt> settings = [
+                SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :logoConfig
+            ];
+            if( !settings.isEmpty() ) {
+                logoResource = settings[0].Value__c;
+            }
+        }
+
+        // if there is a logo, get the static resouce
+        if( String.isNotBlank(logoResource) ) {
+            Pagereference page = PageReference.forResource(logoResource);
+            if( page != null ) {
+                result = page.getUrl();
+                if( result.contains('?') ) {
+                    result = result.subString(0, result.indexOf('?'));
+                }
+                result = Url.getSalesforceBaseUrl().toExternalForm() + result;
+            }
+        }
+
+        return result;
+    }
   
     /**
      * Get the order from the user to unsubscribe him from the Scope, represented by the hash id
@@ -27,16 +71,16 @@ public with sharing class PreferenceCentreZEController {
     @AuraEnabled
     public static void processRequest( String hashedId, Boolean hasOptedOutOfEmail ) 
     {
-        System.debug('- - - - - PreferenceCentreZEController.processRequest - - - - - ');
+        // System.debug('- - - - - PreferenceCentreZEController.processRequest - - - - - ');
       
-        if( showDebug ) System.Debug('processRequest#hashedId: ' + hashedId);
-        if( showDebug ) System.Debug('processRequest#hasOptedOutOfEmail: ' + hasOptedOutOfEmail);
+        // System.Debug('processRequest#hashedId: ' + hashedId);
+        // System.Debug('processRequest#hasOptedOutOfEmail: ' + hasOptedOutOfEmail);
     
         // Ahora se intenta actualizar las preferencias del cliente
         if( String.isNotBlank(hashedId) ) {
             Scope__c scope = PreferenceCentreProcessController.getScopeData(hashedId);
     
-            if( showDebug ) System.Debug('scope:' + scope);
+            // System.Debug('scope:' + scope);
     
             if (scope != null) {
                 // Se comprueba si la suscripción a comunicaciones ha cambiado
@@ -66,7 +110,7 @@ public with sharing class PreferenceCentreZEController {
     @AuraEnabled(cacheable=true)
     public static String getLabels() 
     {
-        System.debug('- - - - - PreferenceCentreZEController.getLabels - - - - - ');
+        // System.debug('- - - - - PreferenceCentreZEController.getLabels - - - - - ');
 
         AppLabels labels = new AppLabels();
 
