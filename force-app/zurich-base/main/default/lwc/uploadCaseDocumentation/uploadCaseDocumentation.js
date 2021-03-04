@@ -1,4 +1,4 @@
-import { LightningElement, api, track, wire } from "lwc";
+import { LightningElement, api, track } from "lwc";
 import saveFile from "@salesforce/apex/UploadCaseDocumentationController.saveFile";
 import getCase from "@salesforce/apex/UploadCaseDocumentationController.getCase";
 import ZURICH_LOGO from "@salesforce/resourceUrl/zurich_ze_logo";
@@ -69,17 +69,13 @@ export default class UploadCaseDocumentation extends LightningElement {
       });
   }
 
-  get acceptedFormats() {
-    return [".pdf", ".png"];
-  }
-
   handleFilesChange(event) {
-    this.isLoading = true;
     var that = this;
+    var currentCaseId = this.currentCase.Id;
+    this.isLoading = true;
     console.log("handleUploadFinished");
     // Get the list of uploaded files
     const uploadedFiles = event.detail.files;
-    var currentCaseId = this.currentCase.Id;
 
     if (uploadedFiles[0].size >= 4194304) {
       that.isLoading = false;
@@ -154,16 +150,17 @@ export default class UploadCaseDocumentation extends LightningElement {
   }
 
   get toastClassName() {
+    var that = this;
     if (this.messageContent != null) {
       if (this.messageContent.transition) {
-        var that = this;
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
         setTimeout(function () {
           that.messageContent = undefined;
         }, 6000);
       }
       return this.messageContent.transition ? "show" : "";
-    } else {
-      return "notshow";
     }
+
+    return "notshow";
   }
 }
