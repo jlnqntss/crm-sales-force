@@ -912,7 +912,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencias</fullName>
+            <fullName>Incidencias %28Cliente%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencias %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1199,6 +1203,10 @@
         </values>
         <values>
             <fullName>Sin Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Validación%2F emisión</fullName>
             <default>false</default>
         </values>
         <values>

@@ -1,15 +1,26 @@
 @isTest
-public class CaseUtilTest {
+private class CaseUtilTest
+{
 
     @TestSetup
     public static void createScenario()
     {
         //Importante usar el RT Customer porque es personal account y se necesita que esté relleno PersonContactId
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
-        insert accounts;
+        List<Account> createdAccounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
+        insert createdAccounts;
 
-        List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 1);
+        List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(createdAccounts, 1);
         insert contactPointEmails;
+
+        //Crear cuenta Entitlement Holder
+        Account cuentaHolder = new Account(Name = 'Entitlement Holder');
+        insert cuentaHolder;
+
+        //Recuperar los EntitlementProcess existentes. tienen que existir!!
+        List<SlaProcess> slas = [SELECT Name, ID FROM SlaProcess];
+        //Crear al menos el Entitlement Default usado en el flow CaseTriggerBeforeEntitlement encargado de su asignación
+        Entitlement e = new Entitlement(AccountId = cuentaHolder.Id, Name = 'Default', SlaProcessId = slas[0].Id);
+        insert e;
     }
 
     /**
@@ -31,12 +42,12 @@ public class CaseUtilTest {
         Test.setFixedSearchResults( new List<Id>(recordIds) ); //Importante
 
         Test.startTest();
-         //Crear caso
-         List<Case> cases = new List<Case>();
-         Case caso = new Case(SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId());
-         cases.add(caso);
-         //insertarlo
-         insert cases;
+        //Crear caso
+        List<Case> cases = new List<Case>();
+        Case caso = new Case( SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() );
+        cases.add(caso);
+        //insertarlo
+        insert cases;
         Test.stopTest();
 
         //Recuperar de nuevo los test insertados
@@ -77,12 +88,12 @@ public class CaseUtilTest {
         Test.setFixedSearchResults( new List<Id>(recordIds) ); //Importante
 
         Test.startTest();
-         //Crear caso
-         List<Case> cases = new List<Case>();
-         Case caso = new Case(SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId());
-         cases.add(caso);
-         //insertarlo
-         insert cases;
+        //Crear caso
+        List<Case> cases = new List<Case>();
+        Case caso = new Case( SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() );
+        cases.add(caso);
+        //insertarlo
+        insert cases;
         Test.stopTest();
 
         //Recuperar de nuevo los test insertados
@@ -105,12 +116,12 @@ public class CaseUtilTest {
     static void test_assignAccountAndContactFromSuppliedEmail_ko_NoExists()
     {
         Test.startTest();
-         //Crear caso
-         List<Case> cases = new List<Case>();
-         Case caso = new Case(SuppliedEmail = 'noexistoentrelosemailscreados@nts-solutions.com', RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId());
-         cases.add(caso);
-         //insertarlo
-         insert cases;
+        //Crear caso
+        List<Case> cases = new List<Case>();
+        Case caso = new Case( SuppliedEmail = 'noexistoentrelosemailscreados@nts-solutions.com', RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() );
+        cases.add(caso);
+        //insertarlo
+        insert cases;
         Test.stopTest();
 
         //Recuperar de nuevo los test insertados
@@ -122,6 +133,117 @@ public class CaseUtilTest {
         {
             System.assertEquals(true, String.isBlank(record.AccountId), 'La cuenta del caso debe estar vacía');
             System.assertEquals(true, String.isBlank(record.ContactId), 'El contacto del caso debe estar vacío');
+        }
+    }
+
+    /**
+     * IMPORTANTE: este test depende de que esté activo el flow CaseTriggerBeforeEntitlement
+     * porque es el encargado de asignar al caso un entitlement, y debido a eso se generan
+     * los CaseMilestones
+     * IMPORTANTE2: este test depende de que existan EntitlementProcess en el sistema
+     * @date 03/03/2021
+     */
+    @isTest
+    static void test_markMilestonesCompletedWhenClose_ok()
+    {
+        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+
+        //Crear caso
+        List<Case> cases = new List<Case>();
+        for(Integer i = 0; i < 3; i++)
+        {   //Importante, el RT OcsInquiry y que el caso no tenga cuenta para qe el flow le asigne el Entitlement Default
+            Case caso = new Case(RecordTypeId = rtOCSInquiryId, SuppliedEmail='no@existe.com');
+            cases.add(caso);
+        }
+        insert cases;
+
+        List<Entitlement> ents = [SELECT Id FROM Entitlement];
+        System.assertEquals(false, ents.isEmpty(),'deberían existir entitlements, al menos el Default');
+
+        List<Case> casesEnt = [SELECT Id, EntitlementId FROM Case];
+        System.assertEquals(false, casesEnt.isEmpty(),'los casos deberían haberse insertado');
+        System.assertEquals(ents[0].Id, casesEnt[0].EntitlementId,'los casos deberían tener entitlement asociado');
+
+        //Comprobar que los milestones no están completados
+        List<CaseMilestone> milestonesCreated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
+        System.assertEquals(false, milestonesCreated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        for(CaseMilestone cm: milestonesCreated)
+        {
+            System.assertEquals(false, cm.isCompleted, 'el milestone no debería estar completado aún');
+        }
+
+        Test.startTest();
+        //Actualizar caso
+        for(Case c: cases)
+        {
+            c.Status = 'Asignado';
+        }
+        update cases;
+        for(Case c: cases)
+        {
+            c.Status = 'Cerrado';
+        }                                          //No se puede pasar a close directamente
+        update cases;
+        Test.stopTest();
+
+        List<CaseMilestone> milestonesUpdated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
+        System.assertEquals(false, milestonesUpdated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        for(CaseMilestone cmilestone: milestonesUpdated)
+        {
+            System.assertEquals(true, cmilestone.isCompleted, 'el milestone debería estar completado ya');
+        }
+    }
+
+    /**
+     * IMPORTANTE: este test depende de que esté activo el flow CaseTriggerBeforeEntitlement
+     * porque es el encargado de asignar al caso un entitlement, y debido a eso se generan
+     * los CaseMilestones
+     * IMPORTANTE2: este test depende de que existan EntitlementProcess en el sistema
+     * @date 03/03/2021
+     */
+    @isTest
+    static void test_markMilestonesCompletedWhenClose_ko()
+    {
+        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+
+        //Crear caso
+        List<Case> cases = new List<Case>();
+        for(Integer i = 0; i < 3; i++)
+        {   //Importante, el RT OcsInquiry y que el caso no tenga cuenta para qe el flow le asigne el Entitlement Default
+            Case caso = new Case(RecordTypeId = rtOCSInquiryId, SuppliedEmail='no@existe.com');
+            cases.add(caso);
+        }
+        insert cases;
+
+        List<Entitlement> ents = [SELECT Id FROM Entitlement];
+        System.assertEquals(false, ents.isEmpty(),'deberían existir entitlements, al menos el Default');
+
+        List<Case> casesEnt = [SELECT Id, EntitlementId FROM Case];
+        System.assertEquals(false, casesEnt.isEmpty(),'los casos deberían haberse insertado');
+        System.assertEquals(ents[0].Id, casesEnt[0].EntitlementId,'los casos deberían tener entitlement asociado');
+
+        //Comprobar que los milestones no están completados
+        List<CaseMilestone> milestonesCreated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
+        System.assertEquals(false, milestonesCreated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        for(CaseMilestone cm: milestonesCreated)
+        {
+            System.assertEquals(false, cm.isCompleted, 'el milestone no debería estar completado aún');
+        }
+
+        Test.startTest();
+        //Actualizar caso
+        for(Case c: cases)
+        {
+            c.Status = 'Asignado';
+        }
+        update cases;
+        Test.stopTest();
+
+        List<CaseMilestone> milestonesUpdated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
+        System.assertEquals(false, milestonesUpdated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        for(CaseMilestone cmilestone: milestonesUpdated)
+        {
+            System.assertEquals(false, cmilestone.isCompleted, 'el milestone no debería estar completado porque el caso aún no se cerró');
         }
     }
 }
