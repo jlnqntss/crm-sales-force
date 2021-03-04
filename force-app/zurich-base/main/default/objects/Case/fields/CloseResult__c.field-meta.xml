@@ -145,30 +145,15 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>Queja</controllingFieldValue>
-            <controllingFieldValue>Reclamación</controllingFieldValue>
-            <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
-            <controllingFieldValue>Embargo Cliente</controllingFieldValue>
-            <controllingFieldValue>Sugerencia</controllingFieldValue>
-            <controllingFieldValue>Felicitación</controllingFieldValue>
-            <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
-            <controllingFieldValue>Campaña</controllingFieldValue>
-            <controllingFieldValue>Incidencias</controllingFieldValue>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
-            <controllingFieldValue>Reemplazo</controllingFieldValue>
-            <controllingFieldValue>Saneamiento</controllingFieldValue>
-            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
-            <controllingFieldValue>Anulación</controllingFieldValue>
-            <controllingFieldValue>Información</controllingFieldValue>
-            <controllingFieldValue>Envíos</controllingFieldValue>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
-            <valueName>Realizado</valueName>
-        </valueSettings>
-        <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
@@ -177,26 +162,55 @@
             <controllingFieldValue>Felicitación</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
-            <controllingFieldValue>Incidencias</controllingFieldValue>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
-            <controllingFieldValue>Reemplazo</controllingFieldValue>
-            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Envíos</controllingFieldValue>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
-            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
-            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>No Realizado</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <valueName>Realizado - Reenvío Recibo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <valueName>Realizado - Pago Tarjeta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <valueName>Realizado - Pago Transferencia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <valueName>Derivado - Norma 57/AJ</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <valueName>Derivado - Otras Áreas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
@@ -205,19 +219,38 @@
             <controllingFieldValue>Felicitación</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
-            <controllingFieldValue>Incidencias</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos</controllingFieldValue>
+            <valueName>Realizado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <controllingFieldValue>Apoyo Captación</controllingFieldValue>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Validación/ emisión</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
+            <controllingFieldValue>Embargo Cliente</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Envíos</controllingFieldValue>
-            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
-            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>No Realizado -Pol. Seguridad</valueName>
         </valueSettings>
         <valueSettings>
@@ -271,36 +304,6 @@
         <valueSettings>
             <controllingFieldValue>Retención</controllingFieldValue>
             <valueName>No Retenido</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
-            <valueName>Realizado - Reenvío Recibo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
-            <valueName>Realizado - Pago Tarjeta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
-            <valueName>Realizado - Pago Transferencia</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
-            <valueName>Derivado - Norma 57/AJ</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
-            <valueName>Derivado - Otras Áreas</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
