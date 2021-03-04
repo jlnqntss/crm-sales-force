@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from "lwc";
+import { LightningElement, track } from "lwc";
 import callRecordingStart from "@salesforce/label/c.callRecordingButtonStart";
 import callRecordingStop from "@salesforce/label/c.callRecordingButtonStop";
 
@@ -14,12 +14,12 @@ export default class CallRecordingButton extends LightningElement {
   totalMilliseconds = 0;
 
   handleClick() {
+    var parentThis = this;
     this.isSelected = !this.isSelected;
     this.template.querySelector(`[data-id="record-button"]`).blur();
 
     if (this.isSelected) {
-      //start
-      var parentThis = this;
+      // eslint-disable-next-line @lwc/lwc/no-async-operation
       this.timeIntervalInstance = setInterval(function () {
         // Time calculations for hours, minutes, seconds and milliseconds
         var minutes = Math.floor(
