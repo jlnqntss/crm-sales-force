@@ -6706,6 +6706,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Event.MiEquipo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Event.PhoneNumber__c</field>
         <readable>true</readable>
@@ -9303,6 +9308,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.NationalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.MiEquipo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
