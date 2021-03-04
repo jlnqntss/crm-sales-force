@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>StatusRuleCantGoFromNewToClosed</fullName>
-    <active>false</active>
+    <active>true</active>
     <errorConditionFormula>RecordType.DeveloperName = &quot;Interaction&quot; &amp;&amp; ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Nueva&quot;) &amp;&amp; ISPICKVAL(Status,&quot;Cerrada&quot;)</errorConditionFormula>
     <errorMessage>[VR Tarea] Una interacción en estado NUEVA no puede pasar a CERRADA</errorMessage>
 </ValidationRule>

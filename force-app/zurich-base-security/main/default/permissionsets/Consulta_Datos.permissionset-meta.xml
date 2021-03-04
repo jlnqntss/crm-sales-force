@@ -1023,7 +1023,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.MilestoneStatusIcon</field>
+        <field>Case.MilestoneStatusIcon</field>        
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MiEquipo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
