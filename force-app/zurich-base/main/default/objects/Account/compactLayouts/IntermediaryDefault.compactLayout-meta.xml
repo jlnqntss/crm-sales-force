@@ -4,7 +4,9 @@
     <fields>Name</fields>
     <fields>INFOIntermediaryCode__c</fields>
     <fields>IntermediaryDescription__c</fields>
-    <fields>MainEmail__c</fields>
+    <fields>SegmentDescription__c</fields>
+    <fields>Class__c</fields>
     <fields>TerritorialDirection__c</fields>
+    <fields>BusinessManagerName__c</fields>
     <label>Intermediary Default</label>
 </CompactLayout>
