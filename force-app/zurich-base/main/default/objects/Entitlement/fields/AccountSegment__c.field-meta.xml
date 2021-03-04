@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AccountSegment__c</fullName>
+    <description>OCS. Campo que coincidirá con el Segmento de la cuenta asociada al caso al que se quiera asignar el Entitlement</description>
+    <externalId>false</externalId>
+    <label>Account Segment</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
