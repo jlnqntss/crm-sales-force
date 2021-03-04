@@ -1,9 +1,28 @@
 import { LightningElement, api, track, wire } from "lwc";
 import saveFile from "@salesforce/apex/UploadCaseDocumentationController.saveFile";
 import getCase from "@salesforce/apex/UploadCaseDocumentationController.getCase";
-import publishErrorEvent from "@salesforce/apex/UploadCaseDocumentationController.publishErrorEvent";
 import ZURICH_LOGO from "@salesforce/resourceUrl/zurich_ze_logo";
-export default class FileUploadExample extends LightningElement {
+import solicitudDocumentacionCaso from "@salesforce/label/c.solicitudDocumentacionCaso";
+import fechaCreacionCaso from "@salesforce/label/c.fechaCreacionCaso";
+import estadoActualCaso from "@salesforce/label/c.estadoActualCaso";
+import tamanoMaximoSubidaDocumentacion from "@salesforce/label/c.tamanoMaximoSubidaDocumentacion";
+import errorDocumentacionCasoCerrado from "@salesforce/label/c.errorDocumentacionCasoCerrado";
+import errorCargandoCaso from "@salesforce/label/c.errorCargandoCaso";
+import documentacionAdjuntadaCorrectamente from "@salesforce/label/c.documentacionAdjuntadaCorrectamente";
+import errorSubiendoDocumentacion from "@salesforce/label/c.errorSubiendoDocumentacion";
+
+export default class UploadCaseDocumentation extends LightningElement {
+  labels = {
+    solicitudDocumentacionCaso,
+    fechaCreacionCaso,
+    estadoActualCaso,
+    tamanoMaximoSubidaDocumentacion,
+    errorDocumentacionCasoCerrado,
+    errorCargandoCaso,
+    documentacionAdjuntadaCorrectamente,
+    errorSubiendoDocumentacion
+  };
+
   zurichLogoUrl = ZURICH_LOGO;
   @api hash;
   @track disableFileInput;
@@ -33,7 +52,7 @@ export default class FileUploadExample extends LightningElement {
           that.disableFileInput = true;
           that.showToast(
             that,
-            "No se puede adjuntar documentación en un caso cerrado.",
+            that.labels.errorDocumentacionCasoCerrado,
             "warning",
             false
           );
@@ -46,12 +65,7 @@ export default class FileUploadExample extends LightningElement {
         that.disableFileInput = true;
 
         that.error = err;
-        that.showToast(
-          that,
-          "Ha habido un problema al cargar el caso.",
-          "error",
-          false
-        );
+        that.showToast(that, that.labels.errorCargandoCaso, "error", false);
       });
   }
 
@@ -71,13 +85,11 @@ export default class FileUploadExample extends LightningElement {
       that.isLoading = false;
       that.showToast(
         that,
-        "El archivo tiene un tamaño superior al máximo permitido",
+        that.labels.tamanoMaximoSubidaDocumentacion,
         "error",
         true
       );
       //TODO: Publicar un error event con el problema
-      console.log("Size: " + uploadedFiles[0].size);
-      //publishErrorEvent('El archivo tiene un tamaño superior al máximo permitido. Bytes: ' + uploadedFiles[0].size, 'handleFilesChange', that.currentCase.Id);
     } else {
       this.getBase64(uploadedFiles[0])
         .then(function (result) {
@@ -92,7 +104,7 @@ export default class FileUploadExample extends LightningElement {
               that.isLoading = false;
               that.showToast(
                 that,
-                "Documentación adjuntada correctamente.",
+                that.labels.documentacionAdjuntadaCorrectamente,
                 "success",
                 true
               );
@@ -103,7 +115,7 @@ export default class FileUploadExample extends LightningElement {
 
               that.showToast(
                 that,
-                "Ha habido un problema al subir el archivo",
+                that.labels.errorSubiendoDocumentacion,
                 "error",
                 true
               );

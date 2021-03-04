@@ -13,7 +13,7 @@
     </div>
     <lightning-layout horizontal-align="space" vertical-align="center">
       <lightning-layout-item flexibility="auto" padding="around-small">
-        <div class="slds-p-around_medium lgc-bg">
+        <div class="slds-p-around_medium lgc-bg" style="margin-bottom: 80px">
           <div
             data-id="snackbar"
             class={toastClassName}
@@ -33,11 +33,9 @@
             </p>
           </div>
           <div class="case-information" if:true={showCase}>
-            <div class="slds-text-heading_large">
-              Solicitud de documentación
-            </div>
-            <div class="slds-text-heading_large">
-              para el caso: <b>{currentCase.CaseNumber}</b>
+            <div class="slds-text-heading_large" style="max-width: 400px">
+              {labels.solicitudDocumentacionCaso}
+              <b>{currentCase.CaseNumber}</b>
             </div>
             <div style="margin: 10px 0px">
               <lightning-card
@@ -45,8 +43,8 @@
                 icon-name="standard:case"
               >
                 <p style="padding: 10px">
-                  <b>Fecha de creación: </b
-                  ><lightning-formatted-date-time
+                  <b style="padding-right: 5px">{labels.fechaCreacionCaso}</b>
+                  <lightning-formatted-date-time
                     value={currentCase.CreatedDate}
                     year="numeric"
                     month="numeric"
@@ -60,7 +58,7 @@
                   </lightning-formatted-date-time>
                 </p>
                 <p style="padding: 10px">
-                  <b>Estado actual: </b
+                  <b style="padding-right: 5px">{labels.estadoActualCaso}</b
                   ><lightning-badge
                     label={currentCase.Status}
                     class={caseStatusStyle}
@@ -78,7 +76,7 @@
           >
           </lightning-input>
           <lightning-helptext
-            content="Tamaño máximo de subida: 4MB."
+            content={labels.tamanoMaximoSubidaDocumentacion}
             icon-variant="warning"
             class="slds-m-left_xx-small"
           ></lightning-helptext>

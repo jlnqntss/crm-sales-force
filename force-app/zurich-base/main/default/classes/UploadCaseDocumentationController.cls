@@ -13,10 +13,6 @@ public without sharing class UploadCaseDocumentationController
 {
     //#Region public classes
 
-    // Constants
-    private static final Boolean showDebug = true;
-    private static final String UNSUBSCRIBED_SOURCE = 'Centro de preferencias';
-
     @AuraEnabled
     public static Id saveFile(Id parentId, String fileName, String base64Data)
     {
@@ -43,6 +39,7 @@ public without sharing class UploadCaseDocumentationController
         }
         catch (Exception e)
         {
+            ErrorLogUtil.commitError(e, 'UploadCaseDocumentationController', parentId);
             throw new AuraHandledException( e.getMessage() );
         }
     }
@@ -52,87 +49,23 @@ public without sharing class UploadCaseDocumentationController
     {
         if( String.isNotBlank(hashId) )
         {
-            Case caseFromUrl = [SELECT Id, Subject, CaseNumber, Status, CreatedDate FROM Case WHERE DocumentationHashId__c =: hashId];
-            if(caseFromUrl != null)
+            List<Case> caseFromUrl = [SELECT Id, Subject, CaseNumber, Status, CreatedDate FROM Case WHERE DocumentationHashId__c =: hashId LIMIT 1];
+            if( caseFromUrl != null && !caseFromUrl.isEmpty() )
             {
-                return caseFromUrl;
+                return caseFromUrl.get(0);
             }
             else
             {
+                ErrorLogUtil.commitError('warning', 'El Id especificado no pertenece a un caso.', 'UploadCaseDocumentationController');
                 throw new AuraHandledException('El Id especificado no pertenece a un caso.');
             }
         }
         else
         {
+            ErrorLogUtil.commitError('warning', 'El Id del Caso está vacío.', 'UploadCaseDocumentationController');
             throw new AuraHandledException('El Id del Caso está vacío.');
         }
     }
-
-    @AuraEnabled
-    public static void publishErrorEvent(String errorMessage, String jsFunction, String caseId)
-    {
-        try
-        {
-            ErrorLogUtil.commitError(new UploadCaseDocumentationControllerException(errorMessage), jsFunction, caseId);
-        }
-        catch(Exception e)
-        {
-            throw new AuraHandledException( e.getMessage() );
-        }
-    }
-
-    /**
-     * This method get the labels for the lwc page.
-     *
-     * @author Rubén López
-     */
-    @AuraEnabled(cacheable=true)
-    public static String getLabels()
-    {
-        AppLabels labels = new AppLabels();
-
-        labels.PreferenceCentreTitleLabel = Label.PreferenceCentreTitle;
-        labels.PreferenceCentreSubtitleLabel = Label.PreferenceCentreSubtitle;
-        labels.EmailOptOutCheckboxLabel = Label.EmailOptOutCheckboxOCS;
-        labels.EmailOptOutTextLabel = Label.EmailOptOutTextOCS;
-        labels.EmailOptOutButtonLabel = Label.EmailOptOutButton;
-        labels.PreferenceCentreSaveLabel = Label.PreferenceCentreSave;
-        labels.PreferenceCentreRedirect = Label.PreferenceCentreRedirect;
-
-        return JSON.serialize(labels);
-    }
-
-    //#endregion
-
-    //#Region private classes
-
-    /**
-     * Helper class for the labels used by the lwc
-     *
-     * @author nts (rlopez)
-     */
-    public class AppLabels
-    {
-        String PreferenceCentreTitleLabel;
-        String PreferenceCentreSubtitleLabel;
-        String EmailOptOutCheckboxLabel;
-        String EmailOptOutTextLabel;
-        String EmailOptOutButtonLabel;
-        String PreferenceCentreSaveLabel;
-        String PreferenceCentreRedirect;
-
-        public AppLabels()
-        {
-            PreferenceCentreTitleLabel = 'label not found';
-            PreferenceCentreSubtitleLabel = 'label not found';
-            EmailOptOutCheckboxLabel = 'label not found';
-            EmailOptOutTextLabel = 'label not found';
-            EmailOptOutButtonLabel = 'label not found';
-            PreferenceCentreSaveLabel = 'label not found';
-            PreferenceCentreRedirect = '';
-        }
-    }
-    //#endregion
 
     public class UploadCaseDocumentationControllerException extends Exception
     {}

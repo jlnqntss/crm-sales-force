@@ -22,14 +22,19 @@ public class GenesysCloudSendSMSAction
 
             SendSMSRequest request = sendSMSActionRequests[0];
 
-            if( String.isNotBlank(request.toNumber) && String.isNotBlank(request.SMSText) && String.isNotBlank(genesysSmsNumber) )
+            if( String.isNotBlank(request.toNumber) && String.isNotBlank(request.smsText) && String.isNotBlank(genesysSmsNumber) )
             {
-                sendAsync( request.toSMS(genesysSmsNumber) );
+                Map<GenesysCloud.SmsData, String> caseIdByGenesysSms = new Map<GenesysCloud.SmsData, String>();
+                GenesysCloud.SmsData currentSms = request.toSMS(genesysSmsNumber);
+                caseIdByGenesysSms.put(currentSms, request.relatedCaseId);
+                sendAsync( caseIdByGenesysSms );
             }
             else
             {
                 //Alguno de los campos estaba incompleto
-                throw new GenesysCloudSendSMSActionException('The genesys queue does not exists.');
+                throw new GenesysCloudSendSMSActionException(
+                          'Missing fields sending SMS. toNumber: ' + request.toNumber + ', smsText: ' + request.smsText + ', genesysSMSNumber: ' + genesysSmsNumber
+                          );
             }
         }
 
@@ -54,7 +59,9 @@ public class GenesysCloudSendSMSAction
         @InvocableVariable(label = 'To Number' description='Número de teléfono al que enviar el SMS')
         public String toNumber;
         @InvocableVariable(label = 'SMS Text' description='Contenido del SMS')
-        public String SMSText;
+        public String smsText;
+        @InvocableVariable(label = 'Related Case' description='Caso al que quedará relacionado el SMS')
+        public String relatedCaseId;
 
         /**
          * @return Devuelve un correo en el formato GenesysCloud.Email utilizando los datos dados por el email
@@ -65,7 +72,7 @@ public class GenesysCloudSendSMSAction
 
             sms.toAddress = addPrefixToPhone(this.toNumber);
             sms.fromAddress = fromNumber;
-            sms.textBody = this.SMSText;
+            sms.textBody = this.smsText;
 
             return sms;
         }
@@ -83,34 +90,31 @@ public class GenesysCloudSendSMSAction
         }
     }
 
-    private static void sendAsync( GenesysCloud.SmsData sms )
+    private static void sendAsync( Map<GenesysCloud.SmsData, String> smsMap )
     {
-        Map<GenesysCloud.SmsData, String> smsMessageIdsByGenesysSmsData = new Map<GenesysCloud.SmsData, String>();
-        smsMessageIdsByGenesysSmsData.put(sms, 'xxx');
-        // GenesysCloud.UpdateSmsMessageCallback retorno = new GenesysCloud.UpdateSmsMessageCallback(smsMessageIdsByGenesysSmsData);
-        GenesysCloud.SMSService.send(new List<GenesysCloud.SmsData> {sms}, null );
+        GenesysCloud.SMSService.send( new List<GenesysCloud.SmsData> ( smsMap.keySet() ), new UpdateSmsMessageCallback(smsMap) );
     }
 
-    private class UpdateSmsMessageCallback implements GenesysCloud.IAPICallback
+    public class UpdateSmsMessageCallback implements GenesysCloud.IAPICallback
     {
-        Map<GenesysCloud.SmsData, String> smsMessageIdsByGenesysSmsData;
+        Map<GenesysCloud.SmsData, String> smsCaseIdsByGenesysSmsData;
 
-        public UpdateSmsMessageCallback(Map<GenesysCloud.SmsData, String> smsMessageIdsByGenesysSmsData)
+        public UpdateSmsMessageCallback(Map<GenesysCloud.SmsData, String> smsCaseIdsByGenesysSmsData)
         {
-            this.smsMessageIdsByGenesysSmsData = smsMessageIdsByGenesysSmsData;
+            this.smsCaseIdsByGenesysSmsData = smsCaseIdsByGenesysSmsData;
         }
 
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
             System.debug('----------------- callback.onSucess');
-            // List<EmailMessage> smsMessages = new List<EmailMessage>();
+            List<Task> smsTasks = new List<Task>();
 
             for(Object result : results)
             {
                 GenesysCloud.SmsData sms = (GenesysCloud.SmsData) result;
                 System.debug(sms);
-                Id relatedSmsMessageId = smsMessageIdsByGenesysSmsData.get(sms);
-                System.debug('relatedSmsMessageId: ' + relatedSmsMessageId);
+                Id relatedSmsCaseId = smsCaseIdsByGenesysSmsData.get(sms);
+                System.debug('relatedCaseId: ' + relatedSmsCaseId);
 
                 // if(String.isNotEmpty(relatedSmsMessageId) ) {
                 // emailMessages.add(new EmailMessage(
@@ -118,9 +122,25 @@ public class GenesysCloudSendSMSAction
                 //     GenesysInteractionId__c = sms.interactionId
                 // ));
                 // }
+
+                smsTasks.add(
+                    new Task(
+                        CallType = 'Outbound',
+                        Channel__c = 'Phone',
+                        CallObject = sms.smsId,
+                        Description = sms.textBody,
+                        OwnerId = UserInfo.getUserId(),
+                        PhoneNumber__c = sms.toAddress,
+                        Priority = 'Normal',
+                        Status = 'Cerrada',
+                        Subject = 'Request Documentation by SMS',
+                        Type = 'Other',
+                        WhatId = relatedSmsCaseId
+                        )
+                    );
             }
 
-            // update emailMessages;
+            insert smsTasks;
         }
 
         public void onError(Exception error)

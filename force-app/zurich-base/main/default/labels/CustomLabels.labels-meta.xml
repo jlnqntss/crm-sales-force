@@ -751,4 +751,68 @@ Related fields: [{3}]</value>
         <shortDescription>ValorListaNoValido</shortDescription>
         <value>Valor de lista de selección no válido</value>
     </labels>
+    <labels>
+        <fullName>documentacionAdjuntadaCorrectamente</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>documentacionAdjuntadaCorrectamente</shortDescription>
+        <value>Documentación adjuntada correctamente.</value>
+    </labels>
+    <labels>
+        <fullName>errorCargandoCaso</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>errorCargandoCaso</shortDescription>
+        <value>Ha habido un problema al cargar el caso.</value>
+    </labels>
+    <labels>
+        <fullName>errorDocumentacionCasoCerrado</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>errorDocumentacionCasoCerrado</shortDescription>
+        <value>No se puede adjuntar documentación en un caso cerrado.</value>
+    </labels>
+    <labels>
+        <fullName>errorSubiendoDocumentacion</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>errorSubiendoDocumentacion</shortDescription>
+        <value>Ha habido un problema al subir el archivo</value>
+    </labels>
+    <labels>
+        <fullName>estadoActualCaso</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>estadoActualCaso</shortDescription>
+        <value>Estado actual:</value>
+    </labels>
+    <labels>
+        <fullName>fechaCreacionCaso</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>fechaCreacionCaso</shortDescription>
+        <value>Fecha de creación:</value>
+    </labels>
+    <labels>
+        <fullName>solicitudDocumentacionCaso</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>solicitudDocumentacionCaso</shortDescription>
+        <value>Solicitud de documentación para el caso:</value>
+    </labels>
+    <labels>
+        <fullName>tamanoMaximoSubidaDocumentacion</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>tamañoMaximoSubidaDocumentacion</shortDescription>
+        <value>Tamaño máximo de subida: 4MB.</value>
+    </labels>
 </CustomLabels>
