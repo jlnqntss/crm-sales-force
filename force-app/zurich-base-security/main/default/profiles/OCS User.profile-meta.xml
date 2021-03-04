@@ -393,6 +393,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GenerateHashIdAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenerateHashIdActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>GenesysCloud</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -415,6 +423,14 @@
     <classAccesses>
         <apexClass>GenesysCloudRouteEmailActionTest</apexClass>
         <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysCloudSendSMSAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysCloudSendSMSActionTest</apexClass>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>GenesysCloudTest</apexClass>
