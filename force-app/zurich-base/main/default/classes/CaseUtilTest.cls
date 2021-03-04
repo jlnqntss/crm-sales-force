@@ -1,5 +1,6 @@
 @isTest
-private class CaseUtilTest {
+private class CaseUtilTest
+{
 
     @TestSetup
     public static void createScenario()
@@ -41,12 +42,12 @@ private class CaseUtilTest {
         Test.setFixedSearchResults( new List<Id>(recordIds) ); //Importante
 
         Test.startTest();
-         //Crear caso
-         List<Case> cases = new List<Case>();
-         Case caso = new Case(SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId());
-         cases.add(caso);
-         //insertarlo
-         insert cases;
+        //Crear caso
+        List<Case> cases = new List<Case>();
+        Case caso = new Case( SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() );
+        cases.add(caso);
+        //insertarlo
+        insert cases;
         Test.stopTest();
 
         //Recuperar de nuevo los test insertados
@@ -87,12 +88,12 @@ private class CaseUtilTest {
         Test.setFixedSearchResults( new List<Id>(recordIds) ); //Importante
 
         Test.startTest();
-         //Crear caso
-         List<Case> cases = new List<Case>();
-         Case caso = new Case(SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId());
-         cases.add(caso);
-         //insertarlo
-         insert cases;
+        //Crear caso
+        List<Case> cases = new List<Case>();
+        Case caso = new Case( SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() );
+        cases.add(caso);
+        //insertarlo
+        insert cases;
         Test.stopTest();
 
         //Recuperar de nuevo los test insertados
@@ -115,12 +116,12 @@ private class CaseUtilTest {
     static void test_assignAccountAndContactFromSuppliedEmail_ko_NoExists()
     {
         Test.startTest();
-         //Crear caso
-         List<Case> cases = new List<Case>();
-         Case caso = new Case(SuppliedEmail = 'noexistoentrelosemailscreados@nts-solutions.com', RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId());
-         cases.add(caso);
-         //insertarlo
-         insert cases;
+        //Crear caso
+        List<Case> cases = new List<Case>();
+        Case caso = new Case( SuppliedEmail = 'noexistoentrelosemailscreados@nts-solutions.com', RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() );
+        cases.add(caso);
+        //insertarlo
+        insert cases;
         Test.stopTest();
 
         //Recuperar de nuevo los test insertados
@@ -149,7 +150,7 @@ private class CaseUtilTest {
 
         //Crear caso
         List<Case> cases = new List<Case>();
-        for(Integer i = 0; i<3; i++)
+        for(Integer i = 0; i < 3; i++)
         {   //Importante, el RT OcsInquiry y que el caso no tenga cuenta para qe el flow le asigne el Entitlement Default
             Case caso = new Case(RecordTypeId = rtOCSInquiryId, SuppliedEmail='no@existe.com');
             cases.add(caso);
@@ -172,11 +173,17 @@ private class CaseUtilTest {
         }
 
         Test.startTest();
-         //Actualizar caso
-         for(Case c: cases){c.Status = 'Asignado';}
-         update cases;
-         for(Case c: cases){c.Status = 'Cerrado';} //No se puede pasar a close directamente
-         update cases;
+        //Actualizar caso
+        for(Case c: cases)
+        {
+            c.Status = 'Asignado';
+        }
+        update cases;
+        for(Case c: cases)
+        {
+            c.Status = 'Cerrado';
+        }                                          //No se puede pasar a close directamente
+        update cases;
         Test.stopTest();
 
         List<CaseMilestone> milestonesUpdated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
@@ -201,7 +208,7 @@ private class CaseUtilTest {
 
         //Crear caso
         List<Case> cases = new List<Case>();
-        for(Integer i = 0; i<3; i++)
+        for(Integer i = 0; i < 3; i++)
         {   //Importante, el RT OcsInquiry y que el caso no tenga cuenta para qe el flow le asigne el Entitlement Default
             Case caso = new Case(RecordTypeId = rtOCSInquiryId, SuppliedEmail='no@existe.com');
             cases.add(caso);
@@ -224,9 +231,12 @@ private class CaseUtilTest {
         }
 
         Test.startTest();
-         //Actualizar caso
-         for(Case c: cases){c.Status = 'Asignado';}
-         update cases;
+        //Actualizar caso
+        for(Case c: cases)
+        {
+            c.Status = 'Asignado';
+        }
+        update cases;
         Test.stopTest();
 
         List<CaseMilestone> milestonesUpdated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
