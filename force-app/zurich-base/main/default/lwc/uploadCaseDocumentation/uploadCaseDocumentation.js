@@ -47,7 +47,7 @@ export default class UploadCaseDocumentation extends LightningElement {
         that.isLoading = false;
         that.currentCase = caseResult;
 
-        if (caseResult.Status == "Cerrado") {
+        if (caseResult.Status === "Cerrado") {
           that.caseStatusStyle = "slds-theme_error";
           that.disableFileInput = true;
           that.showToast(
