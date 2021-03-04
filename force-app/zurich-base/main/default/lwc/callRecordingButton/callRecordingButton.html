@@ -1,0 +1,15 @@
+<template>
+  <lightning-button-stateful
+    data-id="record-button"
+    label-when-off={label.callRecordingStart}
+    label-when-on={timeVal}
+    label-when-hover={label.callRecordingStop}
+    icon-name-when-off="utility:play"
+    icon-name-when-on="utility:record"
+    icon-name-when-hover="utility:stop"
+    selected={isSelected}
+    onclick={handleClick}
+    variant="brand"
+  >
+  </lightning-button-stateful>
+</template>

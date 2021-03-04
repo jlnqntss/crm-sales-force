@@ -11,6 +11,10 @@
             <section>Fields</section>
         </sections>
         <sections>
+            <label>Robot Hegeo Information</label>
+            <section>Información robot tipificador</section>
+        </sections>
+        <sections>
             <label><!-- Relaciones --></label>
             <section>Relaciones</section>
         </sections>
@@ -39,12 +43,28 @@
         </sections>
     </layouts>
     <quickActions>
+        <label><!-- Escalar --></label>
+        <name>EscalateCaseQuickAction</name>
+    </quickActions>
+    <quickActions>
         <label><!-- NewChildCase --></label>
         <name>NewChildCase</name>
     </quickActions>
     <quickActions>
+        <label><!-- Nueva actividad --></label>
+        <name>NuevaActividad</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Request Documentation --></label>
+        <name>RequestDocumentation</name>
+    </quickActions>
+    <quickActions>
         <label><!-- Email --></label>
         <name>SendEmail</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Update --></label>
+        <name>UpdateOCS</name>
     </quickActions>
     <recordTypes>
         <label>Claim</label>
@@ -59,6 +79,14 @@
         <label><!-- OCS Inquiry --></label>
         <name>OCSInquiry</name>
     </recordTypes>
+    <validationRules>
+        <errorMessage><!-- [VR Caso] No se pueden editar los casos cerrados --></errorMessage>
+        <name>CloseCaseBlocked</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Caso] N1 N2 N3 no pueden modificarse tras cerrar el caso --></errorMessage>
+        <name>N1N2N3DoNotChangeClosed</name>
+    </validationRules>
     <validationRules>
         <errorMessage><!-- [VR Caso] Es obligatorio cumplimentar &quot;Pendiente de&quot; si el estado es &quot;Pendiente&quot; --></errorMessage>
         <name>PendingRulePendingByRequired</name>
