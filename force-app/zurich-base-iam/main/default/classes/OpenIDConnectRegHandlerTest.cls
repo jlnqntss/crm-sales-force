@@ -6,7 +6,7 @@
  * @last modified by  : nts (agonzalezisasi)
  * Modifications Log
  * Ver   Date         Author                Modification
- * 1.0   10-08-2020   Enara Etxaniz         Initial Version 
+ * 1.0   10-08-2020   Enara Etxaniz         Initial Version
  * 2.0   01-02-2021   nts (agonzalezisasi)  Refactorized the class for the new requirements
  *
  **/
@@ -18,37 +18,38 @@ private class OpenIDConnectRegHandlerTest
     static final string IAM_ROLE_ADMIN = 'IAM_ROLE_ADMIN';
 
     @TestSetup
-    static void makeData(){
+    static void makeData()
+    {
         // Create Groups
         List<Group> groups = new List<Group>();
-        groups.add(new Group(Name='TestGroupA', DeveloperName='TestGroupA'));
-        groups.add(new Group(Name='TestGroupB', DeveloperName='TestGroupB'));
+        groups.add( new Group(Name='TestGroupA', DeveloperName='TestGroupA') );
+        groups.add( new Group(Name='TestGroupB', DeveloperName='TestGroupB') );
         insert groups;
 
         // Create Permission Set Groups
         List<PermissionSetGroup> psGroups = new List<PermissionSetGroup>();
-        psGroups.add(new PermissionSetGroup(
-            MasterLabel= 'TestPermissionSetGroupA',
-            DeveloperName= 'TestPermissionSetGroupA'
-        ));
-        psGroups.add(new PermissionSetGroup(
-            MasterLabel= 'TestPermissionSetGroupB',
-            DeveloperName= 'TestPermissionSetGroupB'
-        ));
+        psGroups.add( new PermissionSetGroup(
+                          MasterLabel= 'TestPermissionSetGroupA',
+                          DeveloperName= 'TestPermissionSetGroupA'
+                          ) );
+        psGroups.add( new PermissionSetGroup(
+                          MasterLabel= 'TestPermissionSetGroupB',
+                          DeveloperName= 'TestPermissionSetGroupB'
+                          ) );
         insert psGroups;
 
         // Create Roles
         List<UserRole> roles = new List<UserRole>();
-        roles.add(new UserRole(
-            Name= 'TestRoleA',
-            DeveloperName= 'TestRoleA'
-        ));
+        roles.add( new UserRole(
+                       Name= 'TestRoleA',
+                       DeveloperName= 'TestRoleA'
+                       ) );
         insert roles;
     }
 
     /**
      * Creates the structure of Auth Data with the IAM roles
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 01/02/2021
      * @param {string role_names} a list of roles separated by coma
@@ -72,7 +73,7 @@ private class OpenIDConnectRegHandlerTest
             sampleDataIAM.attributeMap.put(
                 OpenIDConnectRegHandler.AUTH_DATA_MAP_NAME,
                 '{crm=[' + role_names + ']}'
-            );
+                );
 
         return sampleDataIAM;
     }
@@ -80,132 +81,137 @@ private class OpenIDConnectRegHandlerTest
     /**
      * Creates a list of AuthMapping__mdt to simulate the metadata configuration given a list of roles
      * separated by coma.
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 01/02/2021
      * @param {OpenIdConnectRegHandler handler} reference to the object OpenIdConnectRegHandler
      * @param {string roles} the list of roles separated by coma
      * @return {Auth.UserData} the auth user data structure
-     * 
+     *
      */
     static Auth.UserData mockAuthData(OpenIDConnectRegHandler handler, string roles)
     {
-        if( String.isBlank(roles) ) throw new OpenIDConnectRegHandler.RegHandlerException('No role specified for the test');
+        if( String.isBlank(roles) )
+            throw new OpenIDConnectRegHandler.RegHandlerException('No role specified for the test');
 
         handler.testListAuthMappings = new List<AuthMapping__mdt>();
 
         // IAM_ROLE_A
-        if( roles != null && roles.contains(IAM_ROLE_A)) {
+        if( roles != null && roles.contains(IAM_ROLE_A) )
+        {
             // PROFILES
             // Get one profile except admin
             List<Profile> profiles = [
-                SELECT Id, Name FROM Profile 
-                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS
+                SELECT Id, Name FROM Profile
+                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS ORDER BY Name ASC
                 LIMIT 1
             ];
             System.assertEquals(1, profiles.size(), 'There should be 1 profile');
-            handler.testListAuthMappings.add(new AuthMapping__mdt(
-                Label= 'TestProfile',
-                DeveloperName= 'TestProfile',
-                Role_Name__c= IAM_ROLE_A,
-                Permission__c= profiles[0].Name,
-                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PROFILE,
-                Order__c= 1
-            ));
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                  Label= 'TestProfile',
+                                                  DeveloperName= 'TestProfile',
+                                                  Role_Name__c= IAM_ROLE_A,
+                                                  Permission__c= profiles[0].Name,
+                                                  Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PROFILE,
+                                                  Order__c= 1
+                                                  ) );
 
             // GROUPS
-            handler.testListAuthMappings.add(new AuthMapping__mdt(
-                Label= 'TestGroupA',
-                DeveloperName= 'TestGroupA',
-                Role_Name__c= IAM_ROLE_A,
-                Permission__c= 'TestGroupA',
-                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PUBLIC_GROUP,
-                Order__c= 1
-            ));
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                  Label= 'TestGroupA',
+                                                  DeveloperName= 'TestGroupA',
+                                                  Role_Name__c= IAM_ROLE_A,
+                                                  Permission__c= 'TestGroupA',
+                                                  Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PUBLIC_GROUP,
+                                                  Order__c= 1
+                                                  ) );
 
-             //PERMISSION SET GROUPS
-            handler.testListAuthMappings.add(new AuthMapping__mdt(
-                Label= 'TestPermissionSetGroupA',
-                DeveloperName= 'TestPermissionSetGroupA',
-                Role_Name__c= IAM_ROLE_A,
-                Permission__c= 'TestPermissionSetGroupA',
-                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PERMISSION_SET_GROUP,
-                Order__c= 1
-            ));
+            //PERMISSION SET GROUPS
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                  Label= 'TestPermissionSetGroupA',
+                                                  DeveloperName= 'TestPermissionSetGroupA',
+                                                  Role_Name__c= IAM_ROLE_A,
+                                                  Permission__c= 'TestPermissionSetGroupA',
+                                                  Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PERMISSION_SET_GROUP,
+                                                  Order__c= 1
+                                                  ) );
 
             // Call Center
             List<CallCenter> callCenters = [SELECT Id, InternalName FROM CallCenter LIMIT 1];
-            if( !callCenters.isEmpty() ) {
-                handler.testListAuthMappings.add(new AuthMapping__mdt(
-                    Label= 'TestCallCenter',
-                    DeveloperName= 'TestCallCenter',
-                    Role_Name__c= IAM_ROLE_A,
-                    Permission__c= callCenters[0].InternalName,
-                    Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_CALL_CENTER,
-                    Order__c= 1
-                )); 
+            if( !callCenters.isEmpty() )
+            {
+                handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                      Label= 'TestCallCenter',
+                                                      DeveloperName= 'TestCallCenter',
+                                                      Role_Name__c= IAM_ROLE_A,
+                                                      Permission__c= callCenters[0].InternalName,
+                                                      Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_CALL_CENTER,
+                                                      Order__c= 1
+                                                      ) );
             }
 
             // Role
-            handler.testListAuthMappings.add(new AuthMapping__mdt(
-                Label= 'TestRoleA',
-                DeveloperName= 'TestRoleA',
-                Role_Name__c= IAM_ROLE_A,
-                Permission__c= 'TestRoleA',
-                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_ROLE,
-                Order__c= 1
-            ));
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                  Label= 'TestRoleA',
+                                                  DeveloperName= 'TestRoleA',
+                                                  Role_Name__c= IAM_ROLE_A,
+                                                  Permission__c= 'TestRoleA',
+                                                  Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_ROLE,
+                                                  Order__c= 1
+                                                  ) );
         }
 
         // ROLE_ADMIN - Must be first because in the select there is the order field
-        if( roles != null && roles.contains(IAM_ROLE_ADMIN)) {
+        if( roles != null && roles.contains(IAM_ROLE_ADMIN) )
+        {
             // Profile Admin
-            handler.testListAuthMappings.add(new AuthMapping__mdt(
-                Label= 'TestProfileAdmin',
-                DeveloperName= 'TestProfileAdmin',
-                Role_Name__c= IAM_ROLE_ADMIN,
-                Permission__c= OpenIDConnectRegHandler.PROFILE_ADMIN,
-                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PROFILE,
-                Order__c= 0
-            ));
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                  Label= 'TestProfileAdmin',
+                                                  DeveloperName= 'TestProfileAdmin',
+                                                  Role_Name__c= IAM_ROLE_ADMIN,
+                                                  Permission__c= OpenIDConnectRegHandler.PROFILE_ADMIN,
+                                                  Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PROFILE,
+                                                  Order__c= 0
+                                                  ) );
         }
 
         // IAM_ROLE_B
-        if( roles != null && roles.contains(IAM_ROLE_B)) {
+        if( roles != null && roles.contains(IAM_ROLE_B) )
+        {
             // PROFILES
             // Get one profile except admin
             List<Profile> profiles = [
-                SELECT Id, Name FROM Profile 
-                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS
+                SELECT Id, Name FROM Profile
+                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS ORDER BY Name ASC
                 LIMIT 1
             ];
             System.assertEquals(1, profiles.size(), 'There should be 1 profile');
-            handler.testListAuthMappings.add(new AuthMapping__mdt(
-                Label= 'TestProfileB',
-                DeveloperName= 'TestProfileB',
-                Role_Name__c= IAM_ROLE_B,
-                Permission__c= profiles[0].Name,
-                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PROFILE,
-                Order__c= 2
-            ));
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                  Label= 'TestProfileB',
+                                                  DeveloperName= 'TestProfileB',
+                                                  Role_Name__c= IAM_ROLE_B,
+                                                  Permission__c= profiles[0].Name,
+                                                  Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PROFILE,
+                                                  Order__c= 2
+                                                  ) );
             // GROUPS
-            handler.testListAuthMappings.add(new AuthMapping__mdt(
-                Label= 'TestGroupB',
-                DeveloperName= 'TestGroupB',
-                Role_Name__c= IAM_ROLE_B,
-                Permission__c= 'TestGroupB',
-                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PUBLIC_GROUP,
-                Order__c= 2
-            ));
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                  Label= 'TestGroupB',
+                                                  DeveloperName= 'TestGroupB',
+                                                  Role_Name__c= IAM_ROLE_B,
+                                                  Permission__c= 'TestGroupB',
+                                                  Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PUBLIC_GROUP,
+                                                  Order__c= 2
+                                                  ) );
             //PERMISSION SETS
-            handler.testListAuthMappings.add(new AuthMapping__mdt(
-                Label= 'TestPermissionSetGroupB',
-                DeveloperName= 'TestPermissionSetGroupB',
-                Role_Name__c= IAM_ROLE_B,
-                Permission__c= 'TestPermissionSetGroupB',
-                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PERMISSION_SET_GROUP,
-                Order__c= 1
-            ));
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                  Label= 'TestPermissionSetGroupB',
+                                                  DeveloperName= 'TestPermissionSetGroupB',
+                                                  Role_Name__c= IAM_ROLE_B,
+                                                  Permission__c= 'TestPermissionSetGroupB',
+                                                  Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_PERMISSION_SET_GROUP,
+                                                  Order__c= 1
+                                                  ) );
             // NO Call center
             // NO SF Role
         }
@@ -218,11 +224,11 @@ private class OpenIDConnectRegHandlerTest
      * @description Test de cración y actualización de usuario de manera exitosa loas datos de entrada se encuentran en Auth.UserData
      * Almacena la información del usuario: UserData(identifier, firstName, lastName, fullName, email, link, userName, locale, provider, siteLoginUrl, attributeMap)
      * @author rpolvera
-     * @date 05/06/2020 
+     * @date 05/06/2020
      */
     @isTest
     static void testCreateAndUpdateUser()
-    {        
+    {
         OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
         Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
 
@@ -252,7 +258,7 @@ private class OpenIDConnectRegHandlerTest
         {
             Auth.UserData sampleDataIAM = getSampleDataIAM(null);
             OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
-            
+
             Test.startTest();
             User u = handler.createUser(null, sampleDataIAM);
             Test.stopTest();
@@ -274,11 +280,14 @@ private class OpenIDConnectRegHandlerTest
         Auth.UserData sampleDataIAM = getSampleDataIAM('testFailProfile');
 
         OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
-        
+
         Test.startTest();
-        try {
+        try
+        {
             User u = handler.createUser(null, sampleDataIAM);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.assertEquals( 'OpenIDConnectRegHandler.RegHandlerException', e.getTypeName() );
         }
         Test.stopTest();
@@ -316,21 +325,23 @@ private class OpenIDConnectRegHandlerTest
 
         // Create a list of group names
         List<string> groupNames = new List<string>();
-        for(GroupMember gm: [SELECT groupId, group.developername FROM GroupMember WHERE userOrGroupId = :updatedUser.Id]) {
+        for(GroupMember gm: [SELECT groupId, group.developername FROM GroupMember WHERE userOrGroupId = :updatedUser.Id])
+        {
             groupNames.add(gm.Group.developername);
         }
         // Check each group
-        System.assertEquals(false, groupNames.contains('TestGroupA'));
-        System.assertEquals(true, groupNames.contains('TestGroupB'));
+        System.assertEquals( false, groupNames.contains('TestGroupA') );
+        System.assertEquals( true, groupNames.contains('TestGroupB') );
 
         // Create a list of Permission Set Group names
         List<string> psgroupNames = new List<string>();
-        for(PermissionSetAssignment psa: [SELECT PermissionSetGroupId, PermissionSetGroup.DeveloperName FROM PermissionSetAssignment WHERE AssigneeId = :updatedUser.Id]) {
+        for(PermissionSetAssignment psa: [SELECT PermissionSetGroupId, PermissionSetGroup.DeveloperName FROM PermissionSetAssignment WHERE AssigneeId = :updatedUser.Id])
+        {
             psgroupNames.add(psa.PermissionSetGroup.DeveloperName);
         }
         // Check each group
-        System.assertEquals(false, psgroupNames.contains('TestPermissionSetGroupA'));
-        System.assertEquals(true, psgroupNames.contains('TestPermissionSetGroupB'));
+        System.assertEquals( false, psgroupNames.contains('TestPermissionSetGroupA') );
+        System.assertEquals( true, psgroupNames.contains('TestPermissionSetGroupB') );
     }
 
     /**
@@ -347,7 +358,7 @@ private class OpenIDConnectRegHandlerTest
         Test.stopTest();
 
         User createdUser = [SELECT userName, Profile.Name FROM user WHERE id=:u.Id];
-        System.assertEquals(true, OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS.contains(createdUser.Profile.Name));
+        System.assertEquals( true, OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS.contains(createdUser.Profile.Name) );
     }
 
     /**
@@ -364,20 +375,21 @@ private class OpenIDConnectRegHandlerTest
         Test.stopTest();
 
         // Check that the new created user has all the groups
-        
+
         // Create a list of group names
         List<string> groupNames = new List<string>();
-        for(GroupMember gm: [SELECT groupId, group.developername FROM GroupMember WHERE userOrGroupId = :u.Id]) {
+        for(GroupMember gm: [SELECT groupId, group.developername FROM GroupMember WHERE userOrGroupId = :u.Id])
+        {
             groupNames.add(gm.Group.developername);
         }
         // Check each group
-        System.assertEquals(true, groupNames.contains('TestGroupA'));
-        System.assertEquals(true, groupNames.contains('TestGroupB'));
+        System.assertEquals( true, groupNames.contains('TestGroupA') );
+        System.assertEquals( true, groupNames.contains('TestGroupB') );
     }
 
     /**
      * Test the assignment of permission set groups with multiple roles
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 28/01/2021
      */
@@ -393,7 +405,8 @@ private class OpenIDConnectRegHandlerTest
 
         // Get the list of group names
         List<string> groupNames = new List<string>();
-        for(PermissionSetAssignment psa: [SELECT PermissionSetGroupId, PermissionSetGroup.DeveloperName FROM PermissionSetAssignment WHERE AssigneeId = :u.Id]) {
+        for(PermissionSetAssignment psa: [SELECT PermissionSetGroupId, PermissionSetGroup.DeveloperName FROM PermissionSetAssignment WHERE AssigneeId = :u.Id])
+        {
             groupNames.add(psa.PermissionSetGroup.DeveloperName);
         }
         // Check each group
@@ -403,7 +416,7 @@ private class OpenIDConnectRegHandlerTest
 
     /**
      * Test the assignment of a CallCenter to the user
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 28/01/2021
      */

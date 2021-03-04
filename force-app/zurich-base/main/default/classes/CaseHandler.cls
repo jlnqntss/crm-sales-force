@@ -41,7 +41,7 @@ public without sharing class CaseHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        CaseUtil.markMilestonesCompletedWhenClose((List<Case>) newList, (Map<Id,Case>) oldMap);
+        CaseUtil.markMilestonesCompletedWhenClose( (List<Case>) newList, (Map<Id,Case>) oldMap );
     }
 
     /**
@@ -73,7 +73,7 @@ public without sharing class CaseHandler implements ITrigger
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        CaseUtil.assignContactToCaseEmail((List<Case>) newList);
+        CaseUtil.assignContactToCaseEmail( (List<Case>) newList );
     }
 
     /**
