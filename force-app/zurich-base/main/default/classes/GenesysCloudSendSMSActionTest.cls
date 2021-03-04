@@ -73,11 +73,10 @@ public class GenesysCloudSendSMSActionTest
         callback.onSuccess(new List<Object> {currentSms}, null);
         Test.stopTest();
 
-        List<Task> createdTasks = [SELECT Id, PhoneNumber__c, Description, CallObject FROM Task WHERE WhatId =: relatedCase.Id];
+        List<Task> createdTasks = [SELECT Id, PhoneNumber__c, Description FROM Task WHERE WhatId =: relatedCase.Id];
         System.assertEquals(false, createdTasks.isEmpty(), 'List is not empty');
         System.assertEquals(true, createdTasks.get(0).PhoneNumber__c.contains(sms.toNumber), 'PhoneNumber is the same');
         System.assertEquals(true, createdTasks.get(0).Description.contains(sms.smsText), 'Content is the same');
-        System.assertEquals(true, String.isNotBlank(createdTasks.get(0).CallObject), 'Call Object is not blank');
     }
 
     @isTest
