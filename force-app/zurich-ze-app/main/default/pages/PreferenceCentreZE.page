@@ -18,6 +18,7 @@
     (function () {
       var hashId = "{!JSENCODE($CurrentPage.parameters.Hash)}";
       var language = "{!JSENCODE($CurrentPage.parameters.Language)}";
+      var scope = "{!JSENCODE($CurrentPage.parameters.scope)}";
 
       var lightningEndPointURI = window.location.href.split("?")[0];
       if (
@@ -31,7 +32,7 @@
         function () {
           $Lightning.createComponent(
             "c:PreferenceCentreZE",
-            { hash: hashId, language: language },
+            { hash: hashId, language: language, scope: scope },
             "lightningvf",
             function (cmp) {
               document.getElementById("skeleton").remove();

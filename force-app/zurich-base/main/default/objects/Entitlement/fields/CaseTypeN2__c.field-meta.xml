@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CaseTypeN2__c</fullName>
+    <description>OCS. Campo que coincidirá con el Nivel 2 de tipología del caso al que se quiera asignar el Entitlement</description>
+    <externalId>false</externalId>
+    <label>Case Type N2</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

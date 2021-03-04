@@ -84,6 +84,10 @@
                 <behavior>Edit</behavior>
                 <field>IssuedOnline__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LegalAuth__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -180,6 +184,10 @@
                 <behavior>Edit</behavior>
                 <field>QuoteLink__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>FirstReceipt__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -193,6 +201,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>GeneralLiabilityLimit__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>NextReceipts__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
