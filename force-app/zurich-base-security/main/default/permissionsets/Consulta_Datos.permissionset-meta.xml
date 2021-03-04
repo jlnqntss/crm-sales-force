@@ -1023,7 +1023,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.MilestoneStatusIcon</field>        
+        <field>Case.MilestoneStatusIcon</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1664,6 +1664,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Event.Intent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Event.MiEquipo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2349,6 +2354,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.Intent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.MiEquipo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
