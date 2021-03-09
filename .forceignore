@@ -68,5 +68,8 @@ force-app/zurich-base/main/default/customMetadata/ErrorManagementSetting.Klinc_e
 #force-app/zurich-base/main/default/customMetadata/Scope_Setting.*
 #force-app/zurich-base/main/default/flows/ZEEmailRoute.flow-meta.xml
 
+# Entitlement Process. Fallan al redesplegar
+**/entitlementProcesses/**
+
 # Ignore ListViews
 *.listView-meta.xml
