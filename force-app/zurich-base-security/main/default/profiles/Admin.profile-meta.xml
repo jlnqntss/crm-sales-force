@@ -4233,6 +4233,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Asset.DeviceBrandName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Asset.Building_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4363,6 +4368,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Asset.DeviceModel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Asset.ObjectSequential__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4434,6 +4444,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Asset.RegistrationNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Asset.BoatRegistrationNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
