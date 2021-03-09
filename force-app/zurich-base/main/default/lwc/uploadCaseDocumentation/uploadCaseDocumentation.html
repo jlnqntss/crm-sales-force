@@ -67,7 +67,7 @@
               </lightning-card>
             </div>
           </div>
-          <lightning-input
+          <!--lightning-input
             type="file"
             label="Attachment"
             onchange={handleFilesChange}
@@ -79,7 +79,55 @@
             content={labels.tamanoMaximoSubidaDocumentacion}
             icon-variant="warning"
             class="slds-m-left_xx-small"
-          ></lightning-helptext>
+          ></lightning-helptext-->
+
+          <!-- #region FILE INPUT -->
+          <p>Filepicker llamada a web service</p>
+          <lightning-layout-item
+            flexibility="auto"
+            padding="around-small"
+            size="12"
+          >
+            <lightning-input
+              class="files-field"
+              type="file"
+              label="Attached Files"
+              name="attachedFiles"
+              accept="image/png, image/jpeg, image/jpg, .pdf"
+              onchange={handleFileUpload}
+              multiple
+            ></lightning-input>
+            <h1 class="slds-text-heading_xx-small">
+              <strong class="files-info">{labelFilesToAddInfo}</strong>
+            </h1>
+            <lightning-pill-container
+              class="pill-container-field"
+              if:true={hasFiles}
+              items={filesToPill}
+              onitemremove={handlePillRemove}
+            ></lightning-pill-container>
+          </lightning-layout-item>
+          <lightning-button
+            class="slds-p-horizontal_x-small save-button"
+            label="Start Upload"
+            name="save"
+            title="submit"
+            onclick={clickSubmit}
+            variant="Brand"
+          ></lightning-button>
+
+          <p>Filepicker estándar SF</p>
+          <lightning-file-upload
+            label="Attach receipt"
+            name="fileUploader"
+            record-id={currentCase.Id}
+            file-field-name="Guest_Record_fileupload__c"
+            file-field-value={currentCase.Id}
+            onuploadfinished={handleFilesChangeStandard}
+            multiple
+            if:true={currentCase}
+          >
+          </lightning-file-upload>
         </div>
       </lightning-layout-item>
     </lightning-layout>
