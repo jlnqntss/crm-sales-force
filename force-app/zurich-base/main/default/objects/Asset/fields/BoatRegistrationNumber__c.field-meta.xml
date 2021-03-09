@@ -3,7 +3,7 @@
     <fullName>BoatRegistrationNumber__c</fullName>
     <description>(OCS): Contiene el número de matrícula del embarcación asegurado</description>
     <externalId>false</externalId>
-    <label>BoatRegistrationNumber</label>
+    <label>Boat Registration Number</label>
     <length>255</length>
     <required>false</required>
     <trackHistory>false</trackHistory>

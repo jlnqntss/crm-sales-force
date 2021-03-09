@@ -3,7 +3,7 @@
     <fullName>DeviceModel__c</fullName>
     <description>(OCS): Contiene el modelo del dispositivo asegurado</description>
     <externalId>false</externalId>
-    <label>DeviceModel</label>
+    <label>Device Model</label>
     <length>255</length>
     <required>false</required>
     <trackHistory>false</trackHistory>
