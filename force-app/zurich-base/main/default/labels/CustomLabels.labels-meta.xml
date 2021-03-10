@@ -760,6 +760,14 @@ Related fields: [{3}]</value>
         <value>Valor de lista de selección no válido</value>
     </labels>
     <labels>
+        <fullName>adjuntaDocumento</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>adjuntaDocumento</shortDescription>
+        <value>Adjunta aquí el documento</value>
+    </labels>
+    <labels>
         <fullName>callRecordingButtonStart</fullName>
         <categories>callRecordingButton</categories>
         <language>en_US</language>
@@ -813,7 +821,7 @@ Related fields: [{3}]</value>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>errorCargandoCaso</shortDescription>
-        <value>Ha habido un problema al cargar el caso.</value>
+        <value>Ha habido un error al cargar el documento. Disculpa las molestias y por favor, vuelve a cargarlo.</value>
     </labels>
     <labels>
         <fullName>errorDocumentacionCasoCerrado</fullName>
@@ -821,7 +829,7 @@ Related fields: [{3}]</value>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>errorDocumentacionCasoCerrado</shortDescription>
-        <value>No se puede adjuntar documentación en un caso cerrado.</value>
+        <value>Este enlace ha caducado. Si aun tienes esta gestión pendiente de realizar, contáctanos de nuevo por favor.</value>
     </labels>
     <labels>
         <fullName>errorSubiendoDocumentacion</fullName>
@@ -861,6 +869,6 @@ Related fields: [{3}]</value>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>tamañoMaximoSubidaDocumentacion</shortDescription>
-        <value>Tamaño máximo de subida: 4MB.</value>
+        <value>Tamaño máximo del archivo: 20MB</value>
     </labels>
 </CustomLabels>
