@@ -543,6 +543,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Asset.BoatRegistrationNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Asset.BrandName__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -579,6 +584,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Asset.Description</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Asset.DeviceBrandName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Asset.DeviceModel__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
