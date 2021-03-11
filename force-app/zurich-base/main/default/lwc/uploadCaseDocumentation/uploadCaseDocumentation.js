@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from "lwc";
+import { LightningElement, track } from "lwc";
 import getCase from "@salesforce/apex/UploadCaseDocumentationController.getCase";
 import ZURICH_LOGO from "@salesforce/resourceUrl/zurich_ze_logo";
 import solicitudDocumentacionCaso from "@salesforce/label/c.solicitudDocumentacionCaso";
@@ -48,9 +48,9 @@ export default class UploadCaseDocumentation extends LightningElement {
   @track showCase;
 
   connectedCallback() {
+    var that = this;
     const param = "Hash";
     this.hash = this.getUrlParamValue(window.location.href, param);
-    var that = this;
     this.isLoading = true;
     this.showCase = false;
     getCase({
@@ -73,7 +73,7 @@ export default class UploadCaseDocumentation extends LightningElement {
           that.dispatchEvent(event);
         }
       })
-      .catch(function (err) {
+      .catch(function () {
         that.isLoading = false;
         that.disableFileInput = true;
 
