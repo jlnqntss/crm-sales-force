@@ -14,37 +14,6 @@ public without sharing class UploadCaseDocumentationController
     //#Region public classes
 
     @AuraEnabled
-    public static Id saveFile(Id parentId, String fileName, String base64Data)
-    {
-        try
-        {
-            base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
-
-            ContentVersion cv = new ContentVersion();
-            cv.VersionData = EncodingUtil.base64Decode(base64Data);
-            cv.Title = fileName;
-            cv.PathOnClient = filename;
-
-            insert cv;
-
-            ContentVersion createdContentVersion = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id];
-            ContentDocumentLink cdl = new ContentDocumentLink();
-            cdl.ContentDocumentId = createdContentVersion.ContentDocumentId;
-            cdl.LinkedEntityId = parentId;
-            cdl.ShareType = 'V';
-
-            insert cdl;
-
-            return cv.Id;
-        }
-        catch (Exception e)
-        {
-            ErrorLogUtil.commitError(e, 'UploadCaseDocumentationController', parentId);
-            throw new AuraHandledException( e.getMessage() );
-        }
-    }
-
-    @AuraEnabled
     public static Case getCase(String hashId)
     {
         if( String.isNotBlank(hashId) )

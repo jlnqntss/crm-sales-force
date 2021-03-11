@@ -21,67 +21,6 @@ public with sharing class UploadCaseDocumentationControllerTest
     }
 
     /**
-     * Comprueba que se crea correctamente el documento relacionado con un caso
-     **
-     * @author rlopez
-     * @date 03/03/2021
-     */
-    @isTest
-    static void test_upload_case_documentation_saveFile_ok()
-    {
-        Case relatedCase = [SELECT Id FROM Case LIMIT 1];
-        System.assertEquals(true, relatedCase != null, 'Case exists');
-
-        String documentFileName = 'Test Document File Name';
-        Blob documentContent = Blob.valueof('Test Document File Content');
-        String base64DocumentContent = EncodingUtil.base64Encode(documentContent);
-
-        Test.startTest();
-        Id contentVersionCreatedId = UploadCaseDocumentationController.saveFile(relatedCase.Id, documentFileName, base64DocumentContent);
-        Test.stopTest();
-
-        List<ContentVersion> contentVersions = [SELECT Id, Title, VersionData FROM ContentVersion WHERE Id =: contentVersionCreatedId];
-        System.assertEquals(false, contentVersions.isEmpty(), 'List is not empty');
-        System.assertEquals(documentFileName, contentVersions.get(0).Title, 'Title is the same');
-        System.assertEquals(base64DocumentContent, EncodingUtil.base64Encode(contentVersions.get(0).VersionData), 'VersionData is the same');
-
-        List<ContentDocumentLink> contentLinks = [SELECT Id FROM ContentDocumentLink WHERE LinkedEntityId =: relatedCase.Id];
-        System.assertEquals(false, contentLinks.isEmpty(), 'There are content links related with the case');
-    }
-
-    /**
-     * Comprueba que no se crea correctamente el documento relacionado con el caso
-     **
-     * @author rlopez
-     * @date 03/03/2021
-     */
-    @isTest
-    static void test_upload_case_documentation_saveFile_ko()
-    {
-        Case relatedCase = [SELECT Id FROM Case LIMIT 1];
-        System.assertEquals(true, relatedCase != null, 'Case exists');
-
-        String documentFileName = 'Test Document File Name';
-
-        Test.startTest();
-        try
-        {
-            Id contentVersionCreatedId = UploadCaseDocumentationController.saveFile(relatedCase.Id, documentFileName, '');
-        }
-        catch (Exception ex)
-        {
-            System.assertEquals(true, ex.getTypeName().contains('AuraHandledException'), 'AuraException sent to the component');
-        }
-        Test.stopTest();
-
-        List<ContentDocumentLink> contentLinks = [SELECT Id FROM ContentDocumentLink WHERE LinkedEntityId =: relatedCase.Id];
-        System.assertEquals(true, contentLinks.isEmpty(), 'There are not ContentLinks created for related case');
-
-        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
-        System.assertEquals(false, errorLogs.isEmpty(), 'List is not empty');
-    }
-
-    /**
      * Comprueba que se recupera correctamente la información del caso
      **
      * @author rlopez

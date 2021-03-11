@@ -1,5 +1,4 @@
-import { LightningElement, api, track } from "lwc";
-import saveFile from "@salesforce/apex/UploadCaseDocumentationController.saveFile";
+import { LightningElement, track } from "lwc";
 import getCase from "@salesforce/apex/UploadCaseDocumentationController.getCase";
 import ZURICH_LOGO from "@salesforce/resourceUrl/zurich_ze_logo";
 import solicitudDocumentacionCaso from "@salesforce/label/c.solicitudDocumentacionCaso";
@@ -10,6 +9,16 @@ import errorDocumentacionCasoCerrado from "@salesforce/label/c.errorDocumentacio
 import errorCargandoCaso from "@salesforce/label/c.errorCargandoCaso";
 import documentacionAdjuntadaCorrectamente from "@salesforce/label/c.documentacionAdjuntadaCorrectamente";
 import errorSubiendoDocumentacion from "@salesforce/label/c.errorSubiendoDocumentacion";
+import adjuntaDocumento from "@salesforce/label/c.adjuntaDocumento";
+import proteccionDatosTitle from "@salesforce/label/c.proteccionDatosTitle";
+import proteccionDatosValue from "@salesforce/label/c.proteccionDatosValue";
+import avisoLegalTitle from "@salesforce/label/c.avisoLegalTitle";
+import avisoLegalValue from "@salesforce/label/c.avisoLegalValue";
+import accesibilidadTitle from "@salesforce/label/c.accesibilidadTitle";
+import accesibilidadValue from "@salesforce/label/c.accesibilidadValue";
+import zurichSegurosDerechosReservados from "@salesforce/label/c.zurichSegurosDerechosReservados";
+
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 export default class UploadCaseDocumentation extends LightningElement {
   labels = {
@@ -20,22 +29,28 @@ export default class UploadCaseDocumentation extends LightningElement {
     errorDocumentacionCasoCerrado,
     errorCargandoCaso,
     documentacionAdjuntadaCorrectamente,
-    errorSubiendoDocumentacion
+    errorSubiendoDocumentacion,
+    adjuntaDocumento,
+    proteccionDatosTitle,
+    proteccionDatosValue,
+    avisoLegalTitle,
+    avisoLegalValue,
+    accesibilidadTitle,
+    accesibilidadValue,
+    zurichSegurosDerechosReservados
   };
 
   zurichLogoUrl = ZURICH_LOGO;
-  @api hash;
+  @track hash;
   @track disableFileInput;
   @track currentCase;
-  @track caseError;
   @track isLoading;
   @track showCase;
-  @track caseStatusStyle = "slds-theme_success";
-
-  @track messageContent;
 
   connectedCallback() {
     var that = this;
+    const param = "Hash";
+    this.hash = this.getUrlParamValue(window.location.href, param);
     this.isLoading = true;
     this.showCase = false;
     getCase({
@@ -48,119 +63,35 @@ export default class UploadCaseDocumentation extends LightningElement {
         that.currentCase = caseResult;
 
         if (caseResult.Status === "Cerrado") {
-          that.caseStatusStyle = "slds-theme_error";
           that.disableFileInput = true;
-          that.showToast(
-            that,
-            that.labels.errorDocumentacionCasoCerrado,
-            "warning",
-            false
-          );
+
+          const event = new ShowToastEvent({
+            message: that.labels.errorDocumentacionCasoCerrado,
+            variant: "warning",
+            mode: "sticky"
+          });
+          that.dispatchEvent(event);
         }
       })
-      .catch(function (err) {
-        console.log(err);
-
+      .catch(function () {
         that.isLoading = false;
         that.disableFileInput = true;
 
-        that.error = err;
-        that.showToast(that, that.labels.errorCargandoCaso, "error", false);
+        //that.showToast(that, that.labels.errorCargandoCaso, "error", false);
+        const event = new ShowToastEvent({
+          message: that.labels.errorCargandoCaso,
+          variant: "error",
+          mode: "sticky"
+        });
+        that.dispatchEvent(event);
       });
   }
 
-  handleFilesChange(event) {
-    var that = this;
-    var currentCaseId = this.currentCase.Id;
-    this.isLoading = true;
-    console.log("handleUploadFinished");
-    // Get the list of uploaded files
-    const uploadedFiles = event.detail.files;
-
-    if (uploadedFiles[0].size >= 4194304) {
-      that.isLoading = false;
-      that.showToast(
-        that,
-        that.labels.tamanoMaximoSubidaDocumentacion,
-        "error",
-        true
-      );
-      //TODO: Publicar un error event con el problema
-    } else {
-      this.getBase64(uploadedFiles[0])
-        .then(function (result) {
-          console.log("result: " + result);
-          saveFile({
-            parentId: currentCaseId,
-            fileName: uploadedFiles[0].name,
-            base64Data: result
-          })
-            .then(function () {
-              console.log("Success");
-              that.isLoading = false;
-              that.showToast(
-                that,
-                that.labels.documentacionAdjuntadaCorrectamente,
-                "success",
-                true
-              );
-            })
-            .catch(function (err) {
-              console.log(err);
-              that.isLoading = false;
-
-              that.showToast(
-                that,
-                that.labels.errorSubiendoDocumentacion,
-                "error",
-                true
-              );
-            });
-        })
-        .catch(function (err) {
-          console.log(err);
-          that.isLoading = false;
-        });
-    }
+  getUrlParamValue(url, key) {
+    return new URL(url).searchParams.get(key);
   }
 
-  getBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        let encoded = reader.result.toString().replace(/^data:(.*,)?/, "");
-        if (encoded.length % 4 > 0) {
-          encoded += "=".repeat(4 - (encoded.length % 4));
-        }
-        resolve(encoded);
-      };
-      reader.onerror = (error) => reject(error);
-    });
-  }
-
-  showToast(context, message, type, transition) {
-    context.messageContent = {
-      class: "slds-theme_" + type,
-      icon: "utility:" + type,
-      title: type,
-      message: message,
-      transition: transition
-    };
-  }
-
-  get toastClassName() {
-    var that = this;
-    if (this.messageContent != null) {
-      if (this.messageContent.transition) {
-        // eslint-disable-next-line @lwc/lwc/no-async-operation
-        setTimeout(function () {
-          that.messageContent = undefined;
-        }, 6000);
-      }
-      return this.messageContent.transition ? "show" : "";
-    }
-
-    return "notshow";
+  handleFilesChangeStandard() {
+    //Mostrar otra notificación de confirmación?
   }
 }

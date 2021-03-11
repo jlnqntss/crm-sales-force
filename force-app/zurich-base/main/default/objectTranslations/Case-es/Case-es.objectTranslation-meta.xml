@@ -43,6 +43,10 @@
         <name>NewChildCase</name>
     </quickActions>
     <quickActions>
+        <label>Solicitar Documentación</label>
+        <name>RequestDocumentation</name>
+    </quickActions>
+    <quickActions>
         <label><!-- Email --></label>
         <name>SendEmail</name>
     </quickActions>
