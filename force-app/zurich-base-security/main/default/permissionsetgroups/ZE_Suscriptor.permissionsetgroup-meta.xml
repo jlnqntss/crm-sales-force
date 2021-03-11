@@ -6,5 +6,6 @@
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_Captacion</permissionSets>
     <permissionSets>Gestion_Captacion_Avanzada</permissionSets>
+    <permissionSets>Gestion_Informes</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
