@@ -2,13 +2,21 @@
   <div class="c-container">
     <div class="header">
       <a href="https://www.zurich.es/">
-        <img src={zurichLogoUrl} class="logo" alt="Zurich - Companies" />
+        <img
+          src={zurichLogoUrl}
+          class="logo"
+          alt="Zurich Empresas Logo"
+          title="Zurich Empresas Logo"
+          aria-label="Zurich Empresas Logo"
+        />
       </a>
     </div>
     <div if:true={isLoading}>
       <lightning-spinner
-        alternative-text="Loading"
+        alternative-text="Cargando"
         size="medium"
+        title="Cargando"
+        aria-label="Cargando"
       ></lightning-spinner>
     </div>
     <lightning-layout horizontal-align="space" vertical-align="center">
@@ -38,6 +46,8 @@
                 content={labels.tamanoMaximoSubidaDocumentacion}
                 icon-variant="warning"
                 class="slds-m-left_xx-small"
+                title={labels.tamanoMaximoSubidaDocumentacion}
+                aria-label={labels.tamanoMaximoSubidaDocumentacion}
               ></lightning-helptext>
             </div>
             <lightning-file-upload
@@ -48,6 +58,8 @@
               onuploadfinished={handleFilesChangeStandard}
               multiple
               disabled={disableFileInput}
+              title={labels.adjuntaDocumento}
+              aria-label={labels.adjuntaDocumento}
             >
             </lightning-file-upload>
           </div>
@@ -60,53 +72,43 @@
           <div class="legal">
             <a
               href="https://www.zurich.es/proteccion-datos"
-              title="protección de datos Zurich Seguros"
+              title={labels.proteccionDatosTitle}
+              aria-label={labels.proteccionDatosTitle}
               target="_blank"
             >
-              Protección datos
+              {labels.proteccionDatosValue}
             </a>
           </div>
 
           <div class="legal">
             <a
               href="https://www.zurich.es/aviso-legal"
-              title="aviso legal Zurich Seguros"
+              title={labels.avisoLegalTitle}
+              aria-label={labels.avisoLegalTitle}
               target="_blank"
             >
-              Aviso legal
-            </a>
-          </div>
-
-          <div class="legal">
-            <a
-              href="https://www.zurich.es/politica-de-cookies"
-              title="política de cookies Zurich Seguros"
-              target="_blank"
-            >
-              Política cookies
+              {labels.avisoLegalValue}
             </a>
           </div>
 
           <div class="legal">
             <a
               href="https://www.zurich.es/accesibilidad"
-              title="accesibilidad Zurich Seguros"
+              title={labels.accesibilidadTitle}
+              aria-label={labels.accesibilidadTitle}
               target="_blank"
             >
-              Accesibilidad
+              {labels.accesibilidadValue}
             </a>
           </div>
-
-          <div class="legal">
-            <a
-              href="https://www.zurich.es/mapa-web"
-              title="mapa del sitio web Zurich Seguros"
-              target="_blank"
-            >
-              Mapa web
-            </a>
+          <div
+            class="legal copyright"
+            title={labels.zurichSegurosDerechosReservados}
+            aria-label={labels.zurichSegurosDerechosReservados}
+            format=""
+          >
+            {labels.zurichSegurosDerechosReservados}
           </div>
-          <div class="legal copyright" format="">© Zurich</div>
         </div>
       </div>
     </footer>

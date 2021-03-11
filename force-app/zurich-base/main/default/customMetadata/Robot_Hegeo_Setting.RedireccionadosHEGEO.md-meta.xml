@@ -44,7 +44,7 @@
     </values>
     <values>
         <field>RoutingAddresses__c</field>
-        <value xsi:type="xsd:string">soporte-ocs+redireccionados-hegeo@nts-solutions.com</value>
+        <value xsi:type="xsd:string">esz.redirigidos.hegeo@zurich.com</value>
     </values>
     <values>
         <field>Separator__c</field>

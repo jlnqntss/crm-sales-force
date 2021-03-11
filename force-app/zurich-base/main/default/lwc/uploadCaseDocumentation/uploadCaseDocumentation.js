@@ -10,6 +10,14 @@ import errorCargandoCaso from "@salesforce/label/c.errorCargandoCaso";
 import documentacionAdjuntadaCorrectamente from "@salesforce/label/c.documentacionAdjuntadaCorrectamente";
 import errorSubiendoDocumentacion from "@salesforce/label/c.errorSubiendoDocumentacion";
 import adjuntaDocumento from "@salesforce/label/c.adjuntaDocumento";
+import proteccionDatosTitle from "@salesforce/label/c.proteccionDatosTitle";
+import proteccionDatosValue from "@salesforce/label/c.proteccionDatosValue";
+import avisoLegalTitle from "@salesforce/label/c.avisoLegalTitle";
+import avisoLegalValue from "@salesforce/label/c.avisoLegalValue";
+import accesibilidadTitle from "@salesforce/label/c.accesibilidadTitle";
+import accesibilidadValue from "@salesforce/label/c.accesibilidadValue";
+import zurichSegurosDerechosReservados from "@salesforce/label/c.zurichSegurosDerechosReservados";
+
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 export default class UploadCaseDocumentation extends LightningElement {
@@ -22,7 +30,14 @@ export default class UploadCaseDocumentation extends LightningElement {
     errorCargandoCaso,
     documentacionAdjuntadaCorrectamente,
     errorSubiendoDocumentacion,
-    adjuntaDocumento
+    adjuntaDocumento,
+    proteccionDatosTitle,
+    proteccionDatosValue,
+    avisoLegalTitle,
+    avisoLegalValue,
+    accesibilidadTitle,
+    accesibilidadValue,
+    zurichSegurosDerechosReservados
   };
 
   zurichLogoUrl = ZURICH_LOGO;

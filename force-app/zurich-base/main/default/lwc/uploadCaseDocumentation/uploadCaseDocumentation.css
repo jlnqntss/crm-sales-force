@@ -23,8 +23,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #a89f96;
-  color: white;
+  background-color: #dad2bd;
   text-align: center;
 }
 
@@ -37,7 +36,6 @@
 .legal {
   float: left;
   font-size: 13px;
-  color: #ffffff;
   font-weight: normal;
   line-height: 33px;
   margin: auto 40px auto 0;
@@ -47,5 +45,15 @@
 
 .legal a {
   cursor: pointer;
-  color: #ffffff;
+  color: #23366f;
+}
+
+/* unvisited link */
+.legal a:link {
+  color: #23366f;
+}
+
+/* mouse over link */
+.legal a:hover {
+  color: #2167ae;
 }

@@ -871,4 +871,60 @@ Related fields: [{3}]</value>
         <shortDescription>tamañoMaximoSubidaDocumentacion</shortDescription>
         <value>Tamaño máximo del archivo: 20MB</value>
     </labels>
+    <labels>
+        <fullName>accesibilidadTitle</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>accesibilidadTitle</shortDescription>
+        <value>Accesibilidad Zurich Seguros</value>
+    </labels>
+    <labels>
+        <fullName>accesibilidadValue</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>accesibilidadValue</shortDescription>
+        <value>Accesibilidad</value>
+    </labels>
+    <labels>
+        <fullName>avisoLegalTitle</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>avisoLegalTitle</shortDescription>
+        <value>Aviso legal Zurich Seguros</value>
+    </labels>
+    <labels>
+        <fullName>avisoLegalValue</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>avisoLegalValue</shortDescription>
+        <value>Aviso legal</value>
+    </labels>
+	<labels>
+        <fullName>proteccionDatosTitle</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>protecciónDatosTitle</shortDescription>
+        <value>Protección de datos Zurich Seguros</value>
+    </labels>
+    <labels>
+        <fullName>proteccionDatosValue</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>protecciónDatosValue</shortDescription>
+        <value>Protección datos</value>
+    </labels>
+	<labels>
+        <fullName>zurichSegurosDerechosReservados</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>zurichSegurosDerechosReservados</shortDescription>
+        <value>2021 Zurich Seguros. Todos los derechos reservados.</value>
+    </labels>
 </CustomLabels>
