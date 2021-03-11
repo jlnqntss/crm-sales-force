@@ -30,6 +30,51 @@ global without sharing class ContactUtil
         return CustomerNum;
     }
 
+    /**
+     * Método que crea el matchcode en base a la información recibida del contacto
+     * @param Contacto recibido
+     * @author nbizkarra
+     * @return Matchcode generado
+     * @date 10/03/2021
+     **/
+    public static String createMatchcode( Contact incomingContact )
+    {
+        String matchcode = '';
+
+         //Si tiene email y fecha de nacimiento: MATCHCODE = email +  birthdate
+         if ( !String.isBlank(incomingContact.Email) && null != incomingContact.Birthdate && !String.isBlank(incomingContact.sourceCountry__c)  )
+         {
+             matchcode = incomingContact.Email.toLowerCase() + String.valueOfGmt(incomingContact.Birthdate);            
+
+         } // Si no tiene email y tiene fecha de nacimiento y teléfono : MATCHCODE = sourcecountry + mobilephone +  birthdate
+         else if ( String.isBlank(incomingContact.Email) && !String.isBlank(incomingContact.MobilePhone)
+                   && !String.isBlank(incomingContact.sourceCountry__c) && null != incomingContact.Birthdate )
+         {
+             matchcode = incomingContact.SourceCountry__c + incomingContact.MobilePhone + String.valueOfGmt(incomingContact.Birthdate);
+
+         } // Sin fecha de nacimiento, con email y telefono: MATCHCODE = email + sourcecountry + mobilephone
+         else if (  incomingContact.Birthdate == null && !String.isBlank(incomingContact.Email) 
+                     && !String.isBlank(incomingContact.MobilePhone) && !String.isBlank(incomingContact.sourceCountry__c) )
+         {
+             matchcode = incomingContact.Email.toLowerCase() + incomingContact.SourceCountry__c + incomingContact.MobilePhone ;
+
+         } // Sin fecha de nacimiento, sin telefono, con email:  MATCHCODE = email 
+         else if (  incomingContact.Birthdate == null && !String.isBlank(incomingContact.Email) 
+                     && String.isBlank(incomingContact.MobilePhone) && !String.isBlank(incomingContact.sourceCountry__c) )
+         {
+             matchcode = incomingContact.Email.toLowerCase() ;
+
+         } // Sin fecha de nacimiento, con telefono, sin email:  MATCHCODE =  sourcecountry + mobilephone
+         else if (  incomingContact.Birthdate == null && String.isBlank(incomingContact.Email) 
+                     && !String.isBlank(incomingContact.MobilePhone) && !String.isBlank(incomingContact.sourceCountry__c) )
+         {
+             matchcode = incomingContact.SourceCountry__c + incomingContact.MobilePhone;
+
+         }
+
+        return matchcode;
+    }
+
 
     // EMEA
     public static Order upsertContact(Contact incomingContact, Order quote)
@@ -129,42 +174,23 @@ global without sharing class ContactUtil
         else // BY MATCH CODE ------------------------------------------------------------------------------------------
         // Generate codes to match
         {
-            String emailBirthDateLECountryCode = '';
-            String emailBirthDateLECode = '';
-            String emailBirthDateCode = '';
+            String matchcode_LECountyPartner = '';
+            String matchcode = '';
 
-            if ( !String.isBlank(incomingContact.Email) && null != incomingContact.Birthdate )
-            {
-                // nts (nbizkarra) - 02/feb/2021 - El email siempre en minúsculas, sino no detecta duplicado por matchcode
-                emailBirthDateCode = incomingContact.Email.toLowerCase() + String.valueOfGmt(incomingContact.Birthdate);
-                emailBirthDateLECode = emailBirthDateCode + legalEntity;
-
-                if( !String.isBlank(incomingContact.sourceCountry__c) )
-                {
-                    // nts (agonzalezisasi) - 08/dic/2021 - Force to find the contact by Country and Partner
-                    emailBirthDateLECountryCode = emailBirthDateLECode + incomingContact.sourceCountry__c +
-                                                  incomingContact.Partner__c;
-                }
-            } // nts (nbizkarra) - 11/ene/2021 - If email is empty, create matchcode with sourcecountry+mobilephone
-            else if ( String.isBlank(incomingContact.Email) && !String.isBlank(incomingContact.MobilePhone)
-                      && !String.isBlank(incomingContact.sourceCountry__c) && null != incomingContact.Birthdate )
-            {
-                emailBirthDateCode = incomingContact.SourceCountry__c + incomingContact.MobilePhone + String.valueOfGmt(incomingContact.Birthdate);
-                emailBirthDateLECode = emailBirthDateCode + legalEntity;
-                emailBirthDateLECountryCode = emailBirthDateLECode + incomingContact.sourceCountry__c + incomingContact.Partner__c;
-
-            }
-
+            matchcode = createMatchcode(  incomingContact );
+            matchcode_LECountyPartner = matchcode + legalEntity + incomingContact.sourceCountry__c + incomingContact.Partner__c;
+           
+            System.debug( '>>> MATCHCODE: ' + matchcode );
             System.debug( '>>> ExternalRequestUtil.mapContacts ' + ExternalRequestUtil.mapContacts );
             System.debug( '>>> ExternalRequestUtil.recordsToProcess ' + ExternalRequestUtil.recordsToProcess );
             System.debug( '>>> ExternalRequestUtil.actualRequest ' + ExternalRequestUtil.actualRequest );
 
-            // EMAIL - BIRTHDATE - LEGALENTITY - COUNTRY + PARTNER
-            if ( ExternalRequestUtil.mapContactsEmailBirthDateLECountry.containsKey( emailBirthDateLECountryCode ) )
+            // MATCHCODE - LEGALENTITY - COUNTRY + PARTNER : Contact found
+            if ( ExternalRequestUtil.mapContactsEmailBirthDateLECountry.containsKey( matchcode_LECountyPartner ) )
             {
                 // If contact exists with a different customer number
-                System.debug('>>> Contact found by MC1');
-                alreadyInSFContact = ExternalRequestUtil.mapContactsEmailBirthDateLECountry.get( emailBirthDateLECountryCode );
+                System.debug('>>> Contact found by Matchcode + LE + COUNTRY + PARTNER');
+                alreadyInSFContact = ExternalRequestUtil.mapContactsEmailBirthDateLECountry.get( matchcode_LECountyPartner );
 
                 if ( incomingContact.status__c == 'Lead' )
                 {
@@ -172,44 +198,37 @@ global without sharing class ContactUtil
                     if( alreadyInSFContact.status__c == 'Lead' )
                     {
                         // Update the lead but keep the existing Customer Number
-                        // todo: always will be the same country
-                        // if ( incomingContact.sourceCountry__c == alreadyInSFContact.sourceCountry__c ) {
                         incomingContact.Id = alreadyInSFContact.Id;
-                        // } else {
-                        //     if (!String.isBlank(incomingContact.MasterPolicyNum__c)) {
-                        //         //Asociar partner cuando el cliente es nuevo
-                        //         AccountUtil.associatePartner(
-                        //             incomingContact,
-                        //             ExternalRequestUtil.mapPartners,
-                        //             ExternalRequestUtil.contactsToUpdateWithPartner,
-                        //             ExternalRequestUtil.partnersToUpdateList,
-                        //             ExternalRequestUtil.recordOwner
-                        //         );
-                        //     }
-                        // }
                         // nts (nbizkarra) - 11/ene/2021 - avoid overwritting existing email in salesforce's contact when incoming is empty
                         if( String.isBlank(incomingContact.Email) && !String.isBlank(alreadyInSFContact.Email) )
                         {
-
                             incomingContact.Email = alreadyInSFContact.Email;
                         }
+                        if( String.isBlank(incomingContact.MobilePhone) && !String.isBlank(alreadyInSFContact.MobilePhone) )
+                        {
+                            incomingContact.MobilePhone = alreadyInSFContact.MobilePhone;
+                        }
+                        if( incomingContact.Birthdate == null && alreadyInSFContact.Birthdate != null )
+                        {
+                            incomingContact.Birthdate = alreadyInSFContact.Birthdate;
+                        }
+
                         incomingContact.CustomerNum__c = alreadyInSFContact.CustomerNum__c;
                         ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
                     }
 
                     if( quote != null )
                     {
-                        quote.AccountId = alreadyInSFContact.AccountId;
-                        quote.ContactId__c = alreadyInSFContact.Id;
-                        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-                        // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
-                        quote.CustomerNum__c = (String) alreadyInSFContact.Account.get(customerNumField);
+                    quote.AccountId = alreadyInSFContact.AccountId;
+                    quote.ContactId__c = alreadyInSFContact.Id;
+                    // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                    // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
+                    quote.CustomerNum__c = (String) alreadyInSFContact.Account.get(customerNumField);
                     }
-                }
-                else if( incomingContact.status__c == 'Activo' )
+                   
+                } // Sobreescribir información si es un cliente activo y en Salesforce es un lead
+                else if( incomingContact.status__c == 'Activo' && alreadyInSFContact.status__c == 'Lead')
                 {
-                    //&& (alreadyInSFContact.status__c == 'Lead' || alreadyInSFContact.status__c == 'Activo') ) {
-
                     incomingContact.AccountId = alreadyInSFContact.AccountId;
 
                     Account accountItem = new Account();
@@ -232,15 +251,24 @@ global without sharing class ContactUtil
                     incomingContact.Id = alreadyInSFContact.Id;
                     ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
 
-                    if (quote != null)
+                    if( quote != null )
                     {
-                        quote.ContactId__c = alreadyInSFContact.Id;
-                        quote.AccountId = alreadyInSFContact.AccountId;
+                    quote.AccountId = alreadyInSFContact.AccountId;
+                    quote.ContactId__c = alreadyInSFContact.Id;
+                    // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                    // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
+                    quote.CustomerNum__c = (String) alreadyInSFContact.Account.get(customerNumField);
                     }
 
+                } // Crear nuevo contacto y cuenta si es un cliente activo y el registro encontrado en Salesforce también
+                else if( incomingContact.status__c == 'Activo' && alreadyInSFContact.status__c == 'Activo' ){
+
+                    createContactAndMaster(  incomingContact,  customerNumField,  customerNumberOnly,  quote );
                 }
+
+
             } // EMAIL - BIRTHDATE - LEGALENTITY
-            else if ( ExternalRequestUtil.mapContactsEmailBirthDateLE.containsKey( emailBirthDateLECode ) )
+          /*  else if ( ExternalRequestUtil.mapContactsEmailBirthDateLE.containsKey( emailBirthDateLECode ) )
             {
                 // If the contact exists in another country
                 System.debug('>>> Contact found by MC2');
@@ -315,23 +343,26 @@ global without sharing class ContactUtil
                     quote.CustomerNum__c = customerNumberOnly;
                     quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
                 }
-            } // EMAIL - BIRTHDATE
-            else if ( ExternalRequestUtil.mapContactsEmailBirthDate.containsKey( emailBirthDateCode ) )
+            } */ // ONLY MATCHCODE (DIFFERENT LEGAL ENTITY - COUNTRY OR PARTNER) : Associate contact to existing master
+            else if ( ExternalRequestUtil.mapContactsEmailBirthDate.containsKey( matchcode ) )
             {
-                // If the contact exists with a different legal entity
-                System.debug('>>> Contact found by MC3');
-                alreadyInSFContact = ExternalRequestUtil.mapContactsEmailBirthDate.get( emailBirthDateCode );
+                
+                System.debug('>>> Contact found by MATCHCODE (different LE, COUNTRY or PARTNER');
+                alreadyInSFContact = ExternalRequestUtil.mapContactsEmailBirthDate.get( matchcode );
 
                 incomingContact.AccountId = alreadyInSFContact.AccountId;
 
                 Account accountItem = new Account();
-                accountItem.Name = incomingContact.FirstName + ' ' + incomingContact.LastName;
 
                 // The master account doesn't have the customer number
                 // Account.Customer_Num__c / Customer_Num_EMEA__c / Customer_Num_Partner__c
                 if( String.isBlank( (String) alreadyInSFContact.Account.get(customerNumField) ) )
                 {
                     // The master account is updated
+                    if (incomingContact.Status__c == 'Activo')
+                    {
+                        accountItem.Name = incomingContact.FirstName + ' ' + incomingContact.LastName;
+                    }
                     // Account.Customer_Num__c / Customer_Num_EMEA__c / Customer_Num_Partner__c
                     accountItem.put(customerNumField, customerNumberOnly);
                     accountItem.Id = alreadyInSFContact.AccountId;
@@ -343,6 +374,7 @@ global without sharing class ContactUtil
                     if (incomingContact.Status__c == 'Activo')
                     {
                         // The master account is updated
+                        accountItem.Name = incomingContact.FirstName + ' ' + incomingContact.LastName;
                         // Account.Customer_Num__c / Customer_Num_EMEA__c / Customer_Num_Partner__c
                         accountItem.put(customerNumField, customerNumberOnly);
                         // Populate the Id field only if the account has the same customer number
@@ -471,62 +503,73 @@ global without sharing class ContactUtil
             } // NOT FOUND
             else
             {
-                // The contact doesn't exist
-                System.debug('>>> The contact does not exist');
-
-                // Master (account) creation
-                Account accountItem = new Account();
-                accountItem.name = incomingContact.FirstName + ' ' + incomingContact.LastName;
-                accountItem.recordTypeId = SystemUtil.getAccountRecordTypeIdByName( Label.Master );
-                accountItem.ownerId = ExternalRequestUtil.recordOwner.id;
-                // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-                // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
-                accountItem.put( customerNumField, customerNumberOnly );
-                if( ExternalRequestUtil.isIBAMultiPartner && incomingContact.Partner__c != null )
-                {
-                    accountItem.Partner__c = incomingContact.Partner__c;
-                }
-                ExternalRequestUtil.AccountMastersToUpdate.put( customerNumberOnly, accountItem );
-
-                // Relation: Master - Contact
-                incomingContact.Account = new Account();
-                // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
-                incomingContact.Account.put( customerNumField, customerNumberOnly );
-
-                incomingContact.OwnerId = ExternalRequestUtil.recordOwner.id;
-                ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
-
-                if( !String.isBlank(incomingContact.MasterPolicyNum__c) )
-                {
-                    //Asociar partner cuando el cliente es nuevo
-                    AccountUtil.associatePartner(
-                        incomingContact,
-                        ExternalRequestUtil.mapPartners,
-                        ExternalRequestUtil.contactsToUpdateWithPartner,
-                        ExternalRequestUtil.partnersToUpdateList,
-                        ExternalRequestUtil.recordOwner
-                        );
-                }
-
-                // Relation: Quote - Contact - Master
-                if (quote != null)
-                {
-                    quote.CustomerNum__c = customerNumberOnly;
-                    quote.Account = new Account();
-                    // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
-                    quote.Account.put(customerNumField, customerNumberOnly);
-                    quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
-                }
+                createContactAndMaster(  incomingContact,  customerNumField,  customerNumberOnly,  quote );
             }
         }
         return quote;
     }
 
     /**
+     * Método que crea un contacto nuevo y un master nuevo
+     * @author nbizkarra
+     * @date 10/03/2021
+     **/
+    public static void createContactAndMaster( Contact incomingContact, String customerNumField, String customerNumberOnly, Order quote )
+    {
+        // The contact doesn't exist
+        System.debug('>>> The contact does not exist');
+
+        // Master (account) creation
+        Account accountItem = new Account();
+        accountItem.name = incomingContact.FirstName + ' ' + incomingContact.LastName;
+        accountItem.recordTypeId = SystemUtil.getAccountRecordTypeIdByName( Label.Master );
+        accountItem.ownerId = ExternalRequestUtil.recordOwner.id;
+        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+        // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
+        accountItem.put( customerNumField, customerNumberOnly );
+        if( ExternalRequestUtil.isIBAMultiPartner && incomingContact.Partner__c != null )
+        {
+            accountItem.Partner__c = incomingContact.Partner__c;
+        }
+        ExternalRequestUtil.AccountMastersToUpdate.put( customerNumberOnly, accountItem );
+
+        // Relation: Master - Contact
+        incomingContact.Account = new Account();
+        // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
+        incomingContact.Account.put( customerNumField, customerNumberOnly );
+
+        incomingContact.OwnerId = ExternalRequestUtil.recordOwner.id;
+        ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
+
+        if( !String.isBlank(incomingContact.MasterPolicyNum__c) )
+        {
+            //Asociar partner cuando el cliente es nuevo
+            AccountUtil.associatePartner(
+                incomingContact,
+                ExternalRequestUtil.mapPartners,
+                ExternalRequestUtil.contactsToUpdateWithPartner,
+                ExternalRequestUtil.partnersToUpdateList,
+                ExternalRequestUtil.recordOwner
+                );
+        }
+
+        // Relation: Quote - Contact - Master
+        if (quote != null)
+        {
+            quote.CustomerNum__c = customerNumberOnly;
+            quote.Account = new Account();
+            // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
+            quote.Account.put(customerNumField, customerNumberOnly);
+            quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
+        }
+
+    }
+
+    /**
      * Método que actualiza la información común de un cliente de la entidad contraria a través de un trigger (after insert, after update)
      * @author nbizkarra
      * @date 01/04/2020
-     **/
+     **//*
     public static void updateCustomerInfo( List<Contact> newList, Map<Id, Contact> oldMap )
     {
         System.debug('- - - - - ContactUtil.updateCustomerInfo - - - - -');
@@ -689,7 +732,7 @@ global without sharing class ContactUtil
         {
             upsert updateContacts;
         }
-    }
+    }*/
 
     /**
      * Método que setea en la cuenta el número total de contactos. Este campo se usa en un campo fórmula del contacto
