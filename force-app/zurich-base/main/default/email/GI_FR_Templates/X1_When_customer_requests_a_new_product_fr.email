@@ -308,11 +308,9 @@
 
               <p>Bonjour,</p>
 <p>Merci pour votre message et votre confiance.</p>
-<p>Nous travaillons chaque jour pour ajouter de nouveaux appareils et catégories de produits à notre catalogue.</p>
-<p>Nous avons fait part de votre demande à notre équipe technique, afin qu'elle puisse analyser la possibilité d'ajouter le modèle indiqué. Des vérifications seront effectuées auprès de la marque en question. C’est pourquoi cette gestion peut prendre un certain temps et nous ne pouvons vous confirmer de date approximative de mise à jour.</p>
-<p>Nous vous recommandons de consulter régulièrement notre catalogue via ce lien <a href="https://klinc.fr/assurance/smartphones/">enlace</a></p>
-<p>Veuillez noter que les polices doivent correspondre à l'appareil exact.</p>
-<p>Si vous avez d’autres questions, n'hésitez pas à nous contacter..</p>
+<p>Nous avons fait part de votre demande à notre équipe technique, afin qu'elle puisse analyser la possibilité d'ajouter le modèle indiqué à notre catalogue. Si votre demande est acceptée, le modèle en question sera disponible dans notre <a href="https://klinc.fr/assurance/smartphones/?IDFR=default">catalogue</a> dès vendredi.</p>
+<p>Veuillez noter que le modèle sélectionné lors de la souscription doit correspondre exactement au modèle de votre appareil.</p>
+<p>Si vous avez d’autres questions, n'hésitez pas à nous contacter.</p>
               &nbsp;
             </td><td width="20">
              </td></tr></table>
@@ -331,6 +329,38 @@
     </tr>
 </table></td></tr></table></td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 0px;"></td></tr></table></td></tr></table></td></tr></table>
                             <!-- FIN BODY -->
+ <!-- TEXT 2 -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+                                <tr>
+                                    <td>
+                                        <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff" style="width:100%; max-width:560px;" class="container">
+                                            <tr>
+                                                <td width="20"></td>
+                                                <td bgcolor="#ffffff" align="left" width="500" style="font-family:Verdana, Geneva, sans-serif, 'Raleway'; font-size:15px; line-height:22px; text-align:left; color:#00bfb3; font-weight:700;">Tout ira bien, tout ira Klinc 😉  </td>
+                                                <td width="20"></td>
+                                            </tr>
+           <tr>
+                                                <td width="20"></td>
+                                                <td bgcolor="#ffffff" align="left" width="500" style="font-family:Verdana, Geneva, sans-serif, 'Raleway'; font-size:15px; line-height:22px; text-align:left; color:#029ee2; font-weight:700;">Équipe Klinc</td>
+                                                <td width="20"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- WHITE SPACE -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+                                <tr>
+                                    <td>
+                                        <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff" width="100%" style="width:100%; max-width:560px;" class="container">
+                                            <tr>
+                                                <td bgcolor="#ffffff" align="left" height="35" width="100%" style="width:100%"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
 
                             <!-- INICIO FOOTER -->
                             <table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- BLOCK APP's -->
