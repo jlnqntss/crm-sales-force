@@ -23,7 +23,7 @@
         <accessLevel>Edit</accessLevel>
         <label>Cases CC GI Germany</label>
         <sharedTo>
-            <group>KLINC_Customer_Care_GI_Germany</group>
+            <group>KLINC_CustomerCare_GI_Germany</group>
         </sharedTo>
         <criteriaItems>
             <field>SourceCountry__c</field>
