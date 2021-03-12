@@ -2,6 +2,7 @@
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>AgentMediator</fullName>
     <active>true</active>
+    <compactLayoutAssignment>AgentMediator</compactLayoutAssignment>
     <description>Destinado a agentes y mediadores pertenecientes a Intermediarios</description>
     <label>Agent/Mediator</label>
     <picklistValues>
