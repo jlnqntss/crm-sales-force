@@ -25,6 +25,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         String customerRecordType = accountRecordTypeInfosByDeveloperName.get('Customer').getRecordTypeId();
         String businessRecordType = accountRecordTypeInfosByDeveloperName.get('BusinessCustomer').getRecordTypeId();
         String leadRecordType = accountRecordTypeInfosByDeveloperName.get('Lead').getRecordTypeId();
+        String partnerOCSRecordType = accountRecordTypeInfosByDeveloperName.get('PartnerOCS').getRecordTypeId();
 
         switch on scope
         {
@@ -40,12 +41,14 @@ public with sharing class AccountsSelector extends RecordsSelector
             }
             when ZE
             {
-                this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, leadRecordType});
+                this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, leadRecordType, businessRecordType, partnerOCSRecordType});
 
                 this.relatedRecordsScope = RecordsSelector.Scope.ZE;
             }
             when ZEO
             {
+                this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, leadRecordType, businessRecordType, partnerOCSRecordType});
+                
                 this.relatedRecordsScope = RecordsSelector.Scope.ZEO;
             }
         }
