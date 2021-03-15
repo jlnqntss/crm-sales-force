@@ -4,6 +4,7 @@
     <fields>Subject</fields>
     <fields>Type</fields>
     <fields>WhatId</fields>
+    <fields>CallRecording__c</fields>
     <fields>OwnerId</fields>
     <fields>ActivityDate</fields>
     <label>OCS Interaction</label>
