@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>HegeoProductGroupCode__c</fullName>
     <externalId>false</externalId>
-    <label>Hegeo Product Group Code</label>
+    <label>Robot Product Group Code</label>
     <length>255</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
