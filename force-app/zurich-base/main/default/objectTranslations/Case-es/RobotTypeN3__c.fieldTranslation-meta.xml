@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Robot Tercer Nivel (N3)</label>
+    <name>RobotTypeN3__c</name>
+</CustomFieldTranslation>
