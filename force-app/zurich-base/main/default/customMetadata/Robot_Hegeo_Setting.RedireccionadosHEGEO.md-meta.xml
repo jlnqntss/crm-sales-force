@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>CaseFields__c</field>
-        <value xsi:type="xsd:string">Type,Subtype__c,TypeN3__c,HegeoProductGroupCode__c,HegeoOfferId__c,HegeoPrePolicyId__c,HegeoPolicyId__c,HegeoReceiptNumber__c,HegeoClaimId__c,HegeoIntermediaryId__c</value>
+        <value xsi:type="xsd:string">RobotTypeN1__c,RobotTypeN2__c,RobotTypeN3__c,HegeoProductGroupCode__c,HegeoOfferId__c,HegeoPrePolicyId__c,HegeoPolicyId__c,HegeoReceiptNumber__c,HegeoClaimId__c,HegeoIntermediaryId__c</value>
     </values>
     <values>
         <field>CaseRecordTypeNames__c</field>
@@ -24,7 +24,7 @@
     </values>
     <values>
         <field>CaseTypeFieldsMetadata__c</field>
-        <value xsi:type="xsd:string">Type__c,Subtype__c,TypeN3__c</value>
+        <value xsi:type="xsd:string">RobotTypeN1__c,RobotTypeN2__c,RobotTypeN3__c</value>
     </values>
     <values>
         <field>DocumentTitle__c</field>
