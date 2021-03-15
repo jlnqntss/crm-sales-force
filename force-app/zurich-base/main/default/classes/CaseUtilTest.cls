@@ -152,7 +152,7 @@ private class CaseUtilTest
         List<Case> cases = new List<Case>();
         for(Integer i = 0; i < 3; i++)
         {   //Importante, el RT OcsInquiry y que el caso no tenga cuenta para qe el flow le asigne el Entitlement Default
-            Case caso = new Case(RecordTypeId = rtOCSInquiryId, SuppliedEmail='no@existe.com');
+            Case caso = new Case(RecordTypeId = rtOCSInquiryId);
             cases.add(caso);
         }
         insert cases;
