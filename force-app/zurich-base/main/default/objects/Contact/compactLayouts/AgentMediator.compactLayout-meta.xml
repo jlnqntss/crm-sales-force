@@ -3,6 +3,7 @@
     <fullName>AgentMediator</fullName>
     <fields>Name</fields>
     <fields>Title</fields>
+    <fields>Phone</fields>
     <fields>MobilePhone</fields>
     <fields>Email</fields>
     <fields>AccountId</fields>
