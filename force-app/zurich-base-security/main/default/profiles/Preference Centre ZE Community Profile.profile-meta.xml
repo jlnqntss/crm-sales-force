@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Preference Centre ZE Profile Community</fullName>
+    <fullName>Preference Centre ZE Community Profile</fullName>
     <applicationVisibilities>
         <application>Klinc</application>
         <default>false</default>
