@@ -148,6 +148,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contact.Phone</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.Scope__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -365,5 +370,9 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewCaseInteraction</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EmailTemplateManagement</name>
     </userPermissions>
 </PermissionSet>
