@@ -38,7 +38,7 @@
                 <componentName>force:detailPanel</componentName>
             </componentInstance>
         </itemInstances>
-        <name>Facet-63df7d05-5f02-489e-9a7b-de8ded22101e</name>
+        <name>Facet-b6158c1b-4636-46a4-9911-6e371a157ee7</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -67,59 +67,55 @@
                 <componentName>force:relatedListSingleContainer</componentName>
             </componentInstance>
         </itemInstances>
-        <name>Facet-b1644a24-0e8c-4282-bb46-b56355254472</name>
+        <name>Facet-ddeacd44-a0ac-422f-878f-f0260a141fd3</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-63df7d05-5f02-489e-9a7b-de8ded22101e</value>
+                    <name>active</name>
+                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>label</name>
+                    <name>body</name>
+                    <value>Facet-b6158c1b-4636-46a4-9911-6e371a157ee7</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
                     <value>Datos personales</value>
                 </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>name</name>
-                    <value>accordionSection1</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:accordionSection</componentName>
+                <componentName>flexipage:tab</componentName>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-b1644a24-0e8c-4282-bb46-b56355254472</value>
+                    <name>active</name>
+                    <value>true</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>label</name>
+                    <name>body</name>
+                    <value>Facet-ddeacd44-a0ac-422f-878f-f0260a141fd3</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
                     <value>Historial del intermediario</value>
                 </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>name</name>
-                    <value>accordionSection2</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:accordionSection</componentName>
+                <componentName>flexipage:tab</componentName>
             </componentInstance>
         </itemInstances>
-        <name>Facet-a8b35b98-7a4d-4fea-82a6-e36414f2d76d</name>
+        <name>Facet-df2dfc94-e8dc-4e94-96fa-900448b13632</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>accordionSections</name>
-                    <value>Facet-a8b35b98-7a4d-4fea-82a6-e36414f2d76d</value>
+                    <name>tabs</name>
+                    <value>Facet-df2dfc94-e8dc-4e94-96fa-900448b13632</value>
                 </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>defaultSectionName</name>
-                    <value>accordionSection2</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:accordion</componentName>
+                <componentName>flexipage:tabset</componentName>
             </componentInstance>
         </itemInstances>
         <name>main</name>
@@ -142,7 +138,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>rowsToDisplay</name>
-                    <value>20</value>
+                    <value>10</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>showActionBar</name>

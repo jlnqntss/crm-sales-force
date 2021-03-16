@@ -326,10 +326,10 @@
     </relatedLists>
     <relatedLists>
         <fields>FULL_NAME</fields>
+        <fields>CONTACT.TITLE</fields>
         <fields>CONTACT.EMAIL</fields>
         <fields>CONTACT.PHONE3</fields>
         <fields>CONTACT.PHONE1</fields>
-        <fields>CONTACT.TITLE</fields>
         <relatedList>RelatedContactList</relatedList>
     </relatedLists>
     <relatedObjects>ParentId</relatedObjects>
