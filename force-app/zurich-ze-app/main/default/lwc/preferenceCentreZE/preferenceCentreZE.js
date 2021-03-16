@@ -6,9 +6,8 @@ import getLogoUrl from "@salesforce/apex/PreferenceCentreZEController.getLogoUrl
 export default class preferenceCentre extends LightningElement {
   // expose the static resource url for use in the template
   @track zurichLogoUrl = "";
-
   @api hash;
-  @api scope;
+  @track scope;
   @track scopeHash;
   @track _isCheckedHasOptedOutOfEmail = false;
   @track clickedButtonLabel;
@@ -25,11 +24,11 @@ export default class preferenceCentre extends LightningElement {
   };
 
   // Get the logo url by the scope parameter
-  @wire(getLogoUrl, { scope: "$scope" }) wiredLogoResult(result) {
+  /*@wire(getLogoUrl, { scope: this.scope }) wiredLogoResult(result) {
     if (result.data) {
       this.zurichLogoUrl = result.data;
     }
-  }
+  }*/
 
   @wire(getLabels)
   getLabels({ error, data }) {
@@ -41,7 +40,20 @@ export default class preferenceCentre extends LightningElement {
   }
 
   connectedCallback() {
-    this.scopeHash = this.hash;
+    var that = this;
+
+    this.scopeHash = this.getUrlParamValue(window.location.href, "Hash");
+    this.scope = this.getUrlParamValue(window.location.href, "scope");
+
+    getLogoUrl({
+      scope: this.scope
+    })
+      .then(function (result) {
+        that.zurichLogoUrl = result;
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
   }
 
   /*
@@ -69,5 +81,9 @@ export default class preferenceCentre extends LightningElement {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  getUrlParamValue(url, key) {
+    return new URL(url).searchParams.get(key);
   }
 }
