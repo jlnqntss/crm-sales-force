@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Robot Número Recibo</label>
-    <name>HegeoReceiptNumber__c</name>
+    <label><!-- Robot Claim Id --></label>
+    <name>HegeoClaimId__c</name>
 </CustomFieldTranslation>
