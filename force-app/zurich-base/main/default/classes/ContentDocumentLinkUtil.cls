@@ -77,17 +77,21 @@ public without sharing class ContentDocumentLinkUtil
             for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
             {
                 Map<String, String> typeValuesMap = new Map<String, String>();
+
                 if( String.isNotBlank(fieldMapping.Type__c) )
                 {
                     typeValuesMap.put('Type', fieldMapping.Type__c);
+                    typeValuesMap.put('RobotTypeN1__c', fieldMapping.Type__c);
                 }
                 if( String.isNotBlank(fieldMapping.Subtype__c) )
                 {
                     typeValuesMap.put('Subtype__c', fieldMapping.Subtype__c);
+                    typeValuesMap.put('RobotTypeN2__c', fieldMapping.Subtype__c);
                 }
                 if( String.isNotBlank(fieldMapping.TypeN3__c) )
                 {
                     typeValuesMap.put('TypeN3__c', fieldMapping.TypeN3__c);
+                    typeValuesMap.put('RobotTypeN3__c', fieldMapping.TypeN3__c);
                 }
 
                 caseTypesMapping.put(fieldMapping.SourceType__c + fieldMapping.SourceSubtype__c, typeValuesMap);
@@ -135,11 +139,13 @@ public without sharing class ContentDocumentLinkUtil
                         caseRecordTypeIds.add( Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeName).getRecordTypeId() );
                     }
 
-                    Map<Id, EmailMessage> relatedEmailMessages = new Map<Id, EmailMessage>([
-                                                                                               SELECT Id, Subject, ToAddress, CreatedDate, ParentId, Parent.RecordTypeId
-                                                                                               FROM EmailMessage WHERE Id IN: linkedEntityToDocumentMap.keySet()
-                                                                                               AND Parent.RecordTypeId IN: caseRecordTypeIds AND ToAddress IN: robotHegeoSettingsMap.keySet()
-                                                                                           ]);
+                    Map<Id, EmailMessage> relatedEmailMessages = new Map<Id, EmailMessage>(
+                        [
+                            SELECT Id, Subject, ToAddress, CreatedDate, ParentId, Parent.RecordTypeId
+                            FROM EmailMessage WHERE Id IN: linkedEntityToDocumentMap.keySet()
+                            AND Parent.RecordTypeId IN: caseRecordTypeIds AND ToAddress IN: robotHegeoSettingsMap.keySet()
+                        ]
+                        );
 
                     if( !relatedEmailMessages.isEmpty() )
                     {
@@ -171,11 +177,13 @@ public without sharing class ContentDocumentLinkUtil
 
                         //Recuperamos el contenido del CSV y aprovechamos para filtrar unicamente
                         //por el título y extensión especificados en los metadatos
-                        Map<Id, ContentDocument> contentDocuments = new Map<Id, ContentDocument>([
-                                                                                                     SELECT Id, Title, FileExtension, LatestPublishedVersion.VersionData
-                                                                                                     FROM ContentDocument
-                                                                                                     WHERE Title IN: documentTitles AND FileExtension IN: fileExtensions AND Id IN: contentDocumentIds
-                                                                                                 ]);
+                        Map<Id, ContentDocument> contentDocuments = new Map<Id, ContentDocument>(
+                            [
+                                SELECT Id, Title, FileExtension, LatestPublishedVersion.VersionData
+                                FROM ContentDocument
+                                WHERE Title IN: documentTitles AND FileExtension IN: fileExtensions AND Id IN: contentDocumentIds
+                            ]
+                            );
 
                         //Actualizamos la información almacenada
                         for( Id docLinkId: mapHegeoInformation.keySet() )
@@ -358,7 +366,7 @@ public without sharing class ContentDocumentLinkUtil
                                     }
                                 }
 
-                                //Extraemos el email ccAddress
+                                //Extraemos el email bccAddress
                                 if (csvFileLines.size() > 4)
                                 {
                                     //Existe línea BCC Address
@@ -421,19 +429,21 @@ public without sharing class ContentDocumentLinkUtil
 
                                         //Recorremos la lista ordenada de campos a tipificar,
                                         //así podemos acceder directamente por posición al valor recibido
-                                        for(Integer i=caseTypeFieldsMetadataList.size(); i < caseFieldsList.size(); i++)
+                                        for(Integer i=0; i < caseFieldsList.size(); i++)
                                         {
-                                            //Este if controla que no falle la ejecución si recibimos menos valores de los esperados
-                                            //o si el valor viene vacio
-                                            if( i < types.size() && String.isNotBlank( types.get(i) ) )
+                                            //Este if controla que no falle la ejecución si recibimos menos valores de los esperados,
+                                            //si el valor viene vacio o si ya se ha incluido ese campo en el mapa a deserializar
+                                            if( i < types.size() && String.isNotBlank( types.get(i) ) && !caseFieldsMap.containsKey( caseFieldsList.get(i) ) )
                                             {
                                                 caseFieldsMap.put( caseFieldsList.get(i), types.get(i) );
                                             }
                                         }
 
-                                        casesToUpdate.add( (Case) JSON.deserialize(
-                                                               JSON.serialize(caseFieldsMap), Case.class)
-                                                            );
+                                        casesToUpdate.add(
+                                            (Case) JSON.deserialize(
+                                                JSON.serialize(caseFieldsMap), Case.class
+                                                )
+                                            );
                                     }
                                     else
                                     {

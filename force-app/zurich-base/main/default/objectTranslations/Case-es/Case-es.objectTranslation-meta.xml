@@ -11,6 +11,10 @@
             <section>Fields</section>
         </sections>
         <sections>
+            <label><!-- Información robot tipificador --></label>
+            <section>Información robot tipificador</section>
+        </sections>
+        <sections>
             <label><!-- Relaciones --></label>
             <section>Relaciones</section>
         </sections>
