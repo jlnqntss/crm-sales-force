@@ -43,8 +43,6 @@ export default class preferenceCentre extends LightningElement {
   }
 
   connectedCallback() {
-    var that = this;
-
     if (this.hash != null) {
       //Visualforce
       this.scopeHash = this.hash;
@@ -58,8 +56,8 @@ export default class preferenceCentre extends LightningElement {
     getLogoUrl({
       scope: this.currentScope
     })
-      .then(function (result) {
-        that.zurichLogoUrl = result;
+      .then((result) => {
+        this.zurichLogoUrl = result;
       })
       .catch(function (err) {
         console.log(err);
@@ -77,7 +75,6 @@ export default class preferenceCentre extends LightningElement {
     Event: user clicks save changes button
   */
   handleClick(event) {
-    var that = this;
     this.clickedButtonLabel = event.target.label;
     this.isLoading = true;
 
@@ -85,16 +82,16 @@ export default class preferenceCentre extends LightningElement {
       hashedId: this.scopeHash,
       hasOptedOutOfEmail: this._isCheckedHasOptedOutOfEmail
     })
-      .then(function () {
-        if (that.label.PreferenceCentreRedirect !== "") {
-          window.location.replace(that.label.PreferenceCentreRedirect);
+      .then(() => {
+        if (this.label.PreferenceCentreRedirect !== "") {
+          window.location.replace(this.label.PreferenceCentreRedirect);
         }
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.error(error);
       })
-      .finally(function () {
-        that.isLoading = false;
+      .finally(() => {
+        this.isLoading = false;
       });
   }
 
