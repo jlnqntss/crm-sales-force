@@ -48,7 +48,6 @@ export default class UploadCaseDocumentation extends LightningElement {
   @track showCase;
 
   connectedCallback() {
-    var that = this;
     const param = "Hash";
     this.hash = this.getUrlParamValue(window.location.href, param);
     this.isLoading = true;
@@ -56,34 +55,33 @@ export default class UploadCaseDocumentation extends LightningElement {
     getCase({
       hashId: this.hash
     })
-      .then(function (caseResult) {
+      .then((caseResult) => {
         console.log(caseResult);
-        that.showCase = true;
-        that.isLoading = false;
-        that.currentCase = caseResult;
+        this.showCase = true;
+        this.isLoading = false;
+        this.currentCase = caseResult;
 
         if (caseResult.Status === "Cerrado") {
-          that.disableFileInput = true;
+          this.disableFileInput = true;
 
           const event = new ShowToastEvent({
-            message: that.labels.errorDocumentacionCasoCerrado,
+            message: this.labels.errorDocumentacionCasoCerrado,
             variant: "warning",
             mode: "sticky"
           });
-          that.dispatchEvent(event);
+          this.dispatchEvent(event);
         }
       })
-      .catch(function () {
-        that.isLoading = false;
-        that.disableFileInput = true;
+      .catch(() => {
+        this.isLoading = false;
+        this.disableFileInput = true;
 
-        //that.showToast(that, that.labels.errorCargandoCaso, "error", false);
         const event = new ShowToastEvent({
-          message: that.labels.errorCargandoCaso,
+          message: this.labels.errorCargandoCaso,
           variant: "error",
           mode: "sticky"
         });
-        that.dispatchEvent(event);
+        this.dispatchEvent(event);
       });
   }
 

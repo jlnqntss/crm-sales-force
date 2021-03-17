@@ -927,4 +927,12 @@ Related fields: [{3}]</value>
         <shortDescription>zurichSegurosDerechosReservados</shortDescription>
         <value>2021 Zurich Seguros. Todos los derechos reservados.</value>
     </labels>
+    <labels>
+        <fullName>solicitudDocumentacionSms</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>solicitudDocumentaciónSms</shortDescription>
+        <value>Solicitud de documentación por SMS</value>
+    </labels>
 </CustomLabels>
