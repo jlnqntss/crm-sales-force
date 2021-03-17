@@ -9,6 +9,7 @@ export default class preferenceCentre extends LightningElement {
   @api hash;
   @api scope;
   @track scopeHash;
+  @track currentScope;
   @track _isCheckedHasOptedOutOfEmail = false;
   @track clickedButtonLabel;
 
@@ -47,14 +48,15 @@ export default class preferenceCentre extends LightningElement {
     if (this.hash != null) {
       //Visualforce
       this.scopeHash = this.hash;
+      this.currentScope = this.scope;
     } else {
       //Community
       this.scopeHash = this.getUrlParamValue(window.location.href, "Hash");
-      this.scope = this.getUrlParamValue(window.location.href, "scope");
+      this.currentScope = this.getUrlParamValue(window.location.href, "scope");
     }
 
     getLogoUrl({
-      scope: this.scope
+      scope: this.currentScope
     })
       .then(function (result) {
         that.zurichLogoUrl = result;
@@ -88,7 +90,7 @@ export default class preferenceCentre extends LightningElement {
           window.location.replace(that.label.PreferenceCentreRedirect);
         }
       })
-      .catch(function () {
+      .catch(function (error) {
         console.error(error);
       })
       .finally(function () {
