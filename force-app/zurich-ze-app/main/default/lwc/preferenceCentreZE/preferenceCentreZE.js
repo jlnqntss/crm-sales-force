@@ -7,10 +7,12 @@ export default class preferenceCentre extends LightningElement {
   // expose the static resource url for use in the template
   @track zurichLogoUrl = "";
   @api hash;
-  @track scope;
+  @api scope;
   @track scopeHash;
   @track _isCheckedHasOptedOutOfEmail = false;
   @track clickedButtonLabel;
+
+  isLoading = false;
 
   @track label = {
     PreferenceCentreTitleLabel: "",
@@ -42,8 +44,14 @@ export default class preferenceCentre extends LightningElement {
   connectedCallback() {
     var that = this;
 
-    this.scopeHash = this.getUrlParamValue(window.location.href, "Hash");
-    this.scope = this.getUrlParamValue(window.location.href, "scope");
+    if (this.hash != null) {
+      //Visualforce
+      this.scopeHash = this.hash;
+    } else {
+      //Community
+      this.scopeHash = this.getUrlParamValue(window.location.href, "Hash");
+      this.scope = this.getUrlParamValue(window.location.href, "scope");
+    }
 
     getLogoUrl({
       scope: this.scope
@@ -67,20 +75,25 @@ export default class preferenceCentre extends LightningElement {
     Event: user clicks save changes button
   */
   handleClick(event) {
+    var that = this;
     this.clickedButtonLabel = event.target.label;
+    this.isLoading = true;
 
-    try {
-      processRequest({
-        hashedId: this.scopeHash,
-        hasOptedOutOfEmail: this._isCheckedHasOptedOutOfEmail
+    processRequest({
+      hashedId: this.scopeHash,
+      hasOptedOutOfEmail: this._isCheckedHasOptedOutOfEmail
+    })
+      .then(function () {
+        if (that.label.PreferenceCentreRedirect !== "") {
+          window.location.replace(that.label.PreferenceCentreRedirect);
+        }
+      })
+      .catch(function () {
+        console.error(error);
+      })
+      .finally(function () {
+        that.isLoading = false;
       });
-
-      if (this.label.PreferenceCentreRedirect !== "") {
-        window.location.replace(this.label.PreferenceCentreRedirect);
-      }
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   getUrlParamValue(url, key) {
