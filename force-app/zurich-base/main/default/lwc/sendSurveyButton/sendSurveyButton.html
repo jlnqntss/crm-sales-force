@@ -1,11 +1,12 @@
 <template>
   <lightning-button
     variant="brand"
-    label={sendSurveyLabel}
-    title={sendSurveyLabel}
-    alternative-text={sendSurveyLabel}
+    label={label.sendSurveyLabel}
+    title={label.sendSurveyLabel}
+    alternative-text={label.sendSurveyLabel}
     icon-name="utility:survey"
     onclick={sendSurvey}
+    disabled={isDisabled}
   >
   </lightning-button>
 </template>
