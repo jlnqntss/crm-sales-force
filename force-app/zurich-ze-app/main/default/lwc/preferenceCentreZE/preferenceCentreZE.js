@@ -6,12 +6,14 @@ import getLogoUrl from "@salesforce/apex/PreferenceCentreZEController.getLogoUrl
 export default class preferenceCentre extends LightningElement {
   // expose the static resource url for use in the template
   @track zurichLogoUrl = "";
-
   @api hash;
   @api scope;
   @track scopeHash;
+  @track currentScope;
   @track _isCheckedHasOptedOutOfEmail = false;
   @track clickedButtonLabel;
+
+  isLoading = false;
 
   @track label = {
     PreferenceCentreTitleLabel: "",
@@ -25,11 +27,11 @@ export default class preferenceCentre extends LightningElement {
   };
 
   // Get the logo url by the scope parameter
-  @wire(getLogoUrl, { scope: "$scope" }) wiredLogoResult(result) {
+  /*@wire(getLogoUrl, { scope: this.scope }) wiredLogoResult(result) {
     if (result.data) {
       this.zurichLogoUrl = result.data;
     }
-  }
+  }*/
 
   @wire(getLabels)
   getLabels({ error, data }) {
@@ -41,7 +43,25 @@ export default class preferenceCentre extends LightningElement {
   }
 
   connectedCallback() {
-    this.scopeHash = this.hash;
+    if (this.hash != null) {
+      //Visualforce
+      this.scopeHash = this.hash;
+      this.currentScope = this.scope;
+    } else {
+      //Community
+      this.scopeHash = this.getUrlParamValue(window.location.href, "Hash");
+      this.currentScope = this.getUrlParamValue(window.location.href, "scope");
+    }
+
+    getLogoUrl({
+      scope: this.currentScope
+    })
+      .then((result) => {
+        this.zurichLogoUrl = result;
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
   }
 
   /*
@@ -56,18 +76,26 @@ export default class preferenceCentre extends LightningElement {
   */
   handleClick(event) {
     this.clickedButtonLabel = event.target.label;
+    this.isLoading = true;
 
-    try {
-      processRequest({
-        hashedId: this.scopeHash,
-        hasOptedOutOfEmail: this._isCheckedHasOptedOutOfEmail
+    processRequest({
+      hashedId: this.scopeHash,
+      hasOptedOutOfEmail: this._isCheckedHasOptedOutOfEmail
+    })
+      .then(() => {
+        if (this.label.PreferenceCentreRedirect !== "") {
+          window.location.replace(this.label.PreferenceCentreRedirect);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        this.isLoading = false;
       });
+  }
 
-      if (this.label.PreferenceCentreRedirect !== "") {
-        window.location.replace(this.label.PreferenceCentreRedirect);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  getUrlParamValue(url, key) {
+    return new URL(url).searchParams.get(key);
   }
 }

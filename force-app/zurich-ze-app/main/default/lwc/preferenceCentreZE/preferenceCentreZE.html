@@ -9,6 +9,12 @@
 -->
 <template>
   <lightning-card>
+    <div class="exampleHolder" if:true={isLoading}>
+      <lightning-spinner
+        alternative-text="Cargando"
+        size="medium"
+      ></lightning-spinner>
+    </div>
     <div class="container-body">
       <div class="container-general">
         <div class="slds-is-relative slds-scope" id="preferences">

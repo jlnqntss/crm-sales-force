@@ -27,7 +27,8 @@ p {
 }
 
 .container-general {
-  width: 900px !important;
+  /*rlopez 16/03/2020: comentado para mejorar el aspecto en Community y en movil*/
+  /*width: 900px !important;*/
   margin: auto;
 }
 
@@ -407,4 +408,15 @@ button.slds-button {
   .text {
     padding: 10px 20px;
   }
+
+  /*rlopez 16/03/2020: añadido para mejorar el aspecto en Community*/
+  button.slds-button {
+    width: 100%;
+    padding: 0px;
+  }
+}
+
+/*rlopez 16/03/2020: añadido para mejorar el aspecto en Community*/
+:host {
+  --sds-c-card-color-background: #f3f3f3;
 }
