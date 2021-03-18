@@ -2,6 +2,8 @@ public without sharing class ContentVersionUtil
 {
     public static Map<String, Case> hashToCaseMap;
     public static List<ContentDocumentLink> contentDocumentLinksToCreate;
+    public static List<Task> tasksToCreate;
+    public static List<Case> casesToUpdate;
 
     /**
      * Recupera todos los casos relacionados con los ContentVersion que se están insertando.
@@ -17,6 +19,8 @@ public without sharing class ContentVersionUtil
         //Inicializamos variables
         hashToCaseMap = new Map<String, Case>();
         contentDocumentLinksToCreate = new List<ContentDocumentLink>();
+        tasksToCreate = new List<Task>();
+        casesToUpdate = new List<Case>();
 
         //Solo continuamos si se tratan de nuevos ContentVersion
         if(newList != null && !newList.isEmpty() && oldMap == null)
@@ -34,7 +38,7 @@ public without sharing class ContentVersionUtil
             if( !hashToContentVersion.isEmpty() )
             {
                 //Recuperamos los casos relacionados con ese hash para crear el ContentDocumentLink y relacionar el documento con el caso
-                List<Case> relatedCases = [SELECT Id, OwnerId, DocumentationHashId__c FROM Case WHERE DocumentationHashId__c IN: hashToContentVersion.keySet()];
+                List<Case> relatedCases = [SELECT Id, Status, DocumentationHashId__c FROM Case WHERE DocumentationHashId__c IN: hashToContentVersion.keySet()];
                 if( !relatedCases.isEmpty() )
                 {
                     for(Case related: relatedCases)
@@ -68,6 +72,22 @@ public without sharing class ContentVersionUtil
                             ContentDocumentId = version.ContentDocumentId
                             )
                         );
+
+                    Case relatedCase = hashToCaseMap.get(version.Guest_Record_fileupload__c);
+                    relatedCase.Status = 'Respondido';
+                    casesToUpdate.add(relatedCase);
+
+                    tasksToCreate.add(
+                        new Task(
+                            RecordTypeId = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Activity').getRecordTypeId(),
+                            Priority = 'Normal',
+                            Status = 'Cerrada',
+                            Subject = Label.documentacionAnadida,
+                            Description = 'Archivo añadido: ' + Url.getOrgDomainUrl().toExternalForm() + '/' + version.ContentDocumentId,
+                            Type = 'Other',
+                            WhatId = hashToCaseMap.get(version.Guest_Record_fileupload__c).Id
+                            )
+                        );
                 }
             }
         }
@@ -81,16 +101,26 @@ public without sharing class ContentVersionUtil
      */
     public static void insertRelatedRecords()
     {
-        if( contentDocumentLinksToCreate != null && !contentDocumentLinksToCreate.isEmpty() )
+        try
         {
-            try
+            if( tasksToCreate != null && !tasksToCreate.isEmpty() )
+            {
+                insert tasksToCreate;
+            }
+
+            if( casesToUpdate != null && !casesToUpdate.isEmpty() )
+            {
+                update casesToUpdate;
+            }
+
+            if( contentDocumentLinksToCreate != null && !contentDocumentLinksToCreate.isEmpty() )
             {
                 insert contentDocumentLinksToCreate;
             }
-            catch (Exception ex)
-            {
-                ErrorLogUtil.commitError(ex,'ContentVersionUtil', 'insertRelatedRecords');
-            }
+        }
+        catch (Exception ex)
+        {
+            ErrorLogUtil.commitError(ex, 'ContentVersionUtil', 'insertRelatedRecords');
         }
     }
 }

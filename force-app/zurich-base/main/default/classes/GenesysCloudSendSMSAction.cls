@@ -133,7 +133,7 @@ public class GenesysCloudSendSMSAction
                         PhoneNumber__c = sms.toAddress,
                         Priority = 'Normal',
                         Status = 'Cerrada',
-                        Subject = 'Request Documentation by SMS',
+                        Subject = Label.solicitudDocumentacionSms,
                         Type = 'Other',
                         WhatId = relatedSmsCaseId
                         )

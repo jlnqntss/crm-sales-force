@@ -37,6 +37,7 @@ private with sharing class ContentVersionUtilTest
 
         String docHashId = SystemUtil.generateHash(relatedCase.Id);
         relatedCase.DocumentationHashId__c = docHashId;
+        relatedCase.Status = 'Asignado';
         update relatedCase;
 
         Test.startTest();
@@ -57,5 +58,13 @@ private with sharing class ContentVersionUtilTest
         ContentVersion createdContentVersion = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id];
         System.assertEquals(true, createdContentVersion != null, 'CreatedContentVersion is not null');
         System.assertEquals(createdContentVersion.ContentDocumentId, relatedContentDocumentLink.get(0).ContentDocumentId, 'ContentDocumentIds are the same');
+
+        Case updatedCase = [SELECT Id, Status FROM Case WHERE Id =: relatedCase.Id];
+        System.assertEquals(true, updatedCase != null, 'Case exists');
+        System.assertEquals('Respondido', updatedCase.Status, 'Case status has changed');
+
+        List<Task> createdTasks = [SELECT Id, Description FROM Task WHERE WhatId =: updatedCase.Id AND Subject =: Label.documentacionAnadida];
+        System.assertEquals(false, createdTasks.isEmpty(), 'List is not empty');
+        System.assertEquals(true, createdTasks.get(0).Description.contains(createdContentVersion.ContentDocumentId), 'Task contains ContentDocumentId');
     }
 }

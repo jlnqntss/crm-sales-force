@@ -311,7 +311,7 @@ public without sharing class BusinessInsuranceRaterService
             AnnualRevenue = accountInformation.annualRevenue,
             NumberOfEmployees = accountInformation.numberOfEmployees,
             TradeName__c = accountInformation.tradeName,
-            CompanyName__pc = accountInformation.companyName,
+            //CompanyName__pc = accountInformation.companyName,
             NationalId__c = accountInformation.nationalIdentifier,
             NationalIdType__c = (String.isBlank(accountInformation.nationalIdentifier) ? '' : 'N'),
             RecordTypeId = leadRecordTypeId,
@@ -373,7 +373,7 @@ public without sharing class BusinessInsuranceRaterService
             accountToUpdate.AnnualRevenue = formData.accountInformation.annualRevenue;
             accountToUpdate.NumberOfEmployees = formData.accountInformation.numberOfEmployees;
             accountToUpdate.TradeName__c = formData.accountInformation.tradeName;
-            accountToUpdate.CompanyName__pc = formData.accountInformation.companyName;
+            //accountToUpdate.CompanyName__pc = formData.accountInformation.companyName;
 
             update accountToUpdate;
 
@@ -383,7 +383,7 @@ public without sharing class BusinessInsuranceRaterService
             customer.AnnualRevenue = formData.accountInformation.annualRevenue;
             customer.NumberOfEmployees = formData.accountInformation.numberOfEmployees;
             customer.TradeName__c = formData.accountInformation.tradeName;
-            customer.CompanyName__pc = formData.accountInformation.companyName;
+            //customer.CompanyName__pc = formData.accountInformation.companyName;
         }
     }
 
