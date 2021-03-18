@@ -1223,6 +1223,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Claim__c.GroupDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Claim__c.INFOClaimLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
