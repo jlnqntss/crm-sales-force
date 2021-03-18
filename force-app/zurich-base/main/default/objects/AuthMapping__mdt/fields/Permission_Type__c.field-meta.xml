@@ -36,6 +36,11 @@
                 <default>false</default>
                 <label>Role</label>
             </value>
+            <value>
+                <fullName>Department</fullName>
+                <default>false</default>
+                <label>Department</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

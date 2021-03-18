@@ -159,6 +159,16 @@ private class OpenIDConnectRegHandlerTest
                                                   Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_ROLE,
                                                   Order__c= 1
                                                   ) );
+
+            // Department
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                Label= 'TestDeptA',
+                                                DeveloperName= 'TestdeptA',
+                                                Role_Name__c= IAM_ROLE_A,
+                                                Permission__c= 'TestDeptA',
+                                                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_DEPARTMENT,
+                                                Order__c= 1
+                                                ) );
         }
 
         // ROLE_ADMIN - Must be first because in the select there is the order field
@@ -214,6 +224,7 @@ private class OpenIDConnectRegHandlerTest
                                                   ) );
             // NO Call center
             // NO SF Role
+            // NO Department
         }
 
         // return de data structure from IAM
@@ -433,5 +444,57 @@ private class OpenIDConnectRegHandlerTest
         User createdUser = [SELECT userName, CallCenterId FROM user WHERE id=:u.Id];
         // Commented because it may not exist and cant be created for testing in the setup method
         //System.assertNotEquals(null, createdUser.CallCenterId, 'The call center id should not be null');
+    }
+
+    /**
+     * Test the assignment of a Department and signature to the user
+     *
+     * @author nts (agonzalezisasi)
+     * @date 18/03/2021
+     */
+    @isTest
+    static void testDeptAndSignature()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        handler.testSignatureContent = '{0} {1} Zurich Seguros';
+        handler.testSignatureFields = 'firstname,lastname'; // list of User fields separated by comma and without spaces
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        User createdUser = [SELECT userName, Department, Signature FROM user WHERE id=:u.Id];
+        System.assertEquals('TestDeptA', createdUser.Department, 'The department of the user should be TestDeptA');
+        System.assertEquals('testFirst testLast Zurich Seguros', createdUser.Signature, 'The signature is not correct');
+    }
+
+    /**
+     * Test error in the assignment of a signature to the user
+     *
+     * @author nts (agonzalezisasi)
+     * @date 18/03/2021
+     */
+    @isTest
+    static void testDeptAndSignature_ko()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        handler.testSignatureContent = '{0} {1} Zurich Seguros';
+        handler.testSignatureFields = 'incorrectField'; // list of User fields separated by comma and without spaces
+
+        String result = '';
+        Test.startTest();
+        try {
+            User u = handler.createUser(null, sampleDataIAM);
+        } catch( Exception ex ) {
+            result = ex.getMessage();
+        }
+        Test.stopTest();
+
+        List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(1, errors.size(), 'There should be 1 error log');
     }
 }
