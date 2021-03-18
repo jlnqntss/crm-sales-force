@@ -941,6 +941,6 @@ Related fields: [{3}]</value>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>documentaciónAñadida</shortDescription>
-        <value>Documentación añadida</value>
+        <value>Documentación subida por cliente</value>
     </labels>
 </CustomLabels>
