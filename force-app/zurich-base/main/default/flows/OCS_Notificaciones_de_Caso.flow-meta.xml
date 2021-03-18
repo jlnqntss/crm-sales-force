@@ -93,14 +93,14 @@
         <processMetadataValues>
             <name>emailAlertSelection</name>
             <value>
-                <stringValue>Cierre_de_caso</stringValue>
+                <stringValue>Cierre_de_caso_automatico</stringValue>
             </value>
         </processMetadataValues>
         <name>myWaitEvent_myWait_myRule_1_event_3_SA2</name>
-        <label>Notificación Cierre</label>
+        <label>Notificación cierre automático</label>
         <locationX>100</locationX>
         <locationY>300</locationY>
-        <actionName>Case.Cierre_de_caso</actionName>
+        <actionName>Case.Cierre_de_caso_automatico</actionName>
         <actionType>emailAlert</actionType>
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_1_event_3_postWaitExecutionAssignment</targetReference>
@@ -1306,7 +1306,7 @@
         </rules>
     </decisions>
     <description>Aquellos casos que estén pendientes de mediador o cliente, cada 72 horas remitirán un email recordatorio de la gestión pendiente.</description>
-    <interviewLabel>OCS_Notificaciones_de_Caso-2_InterviewLabel</interviewLabel>
+    <interviewLabel>OCS_Notificaciones_de_Caso-4_InterviewLabel</interviewLabel>
     <label>OCS - Notificaciones de Caso</label>
     <processMetadataValues>
         <name>ObjectType</name>

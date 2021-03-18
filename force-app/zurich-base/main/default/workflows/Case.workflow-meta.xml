@@ -48,7 +48,7 @@
         <senderType>OrgWideEmailAddress</senderType>
         <template>Life_Orange_Templates/Web_to_case_response_Orange_HTML</template>
     </alerts>
-        <alerts>
+    <alerts>
         <fullName>Apertura_de_caso</fullName>
         <description>Apertura de caso</description>
         <protected>false</protected>
@@ -58,7 +58,7 @@
         </recipients>
         <senderType>CurrentUser</senderType>
         <template>OneCustomerService/Caso_abierto_1614260292183</template>
-    </alerts>
+    </alerts>    
     <alerts>
         <fullName>Caso_pendiente</fullName>
         <description>Caso pendiente</description>
@@ -81,6 +81,18 @@
         <senderAddress>soporte-klinc@nts-solutions.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>OneCustomerService/Caso_cerrado_1614260137980</template>
+    </alerts>
+    <alerts>
+        <fullName>Cierre_de_caso_automatico</fullName>
+        <description>Cierre de caso automático</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>soporte-klinc@nts-solutions.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Caso_cerrado_sin_finalizar_1615309685093</template>
     </alerts>
     <fieldUpdates>
         <fullName>Change_status_Assigned</fullName>

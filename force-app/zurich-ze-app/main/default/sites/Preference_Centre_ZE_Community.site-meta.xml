@@ -19,7 +19,7 @@
     <genericErrorPage>Exception</genericErrorPage>
     <inMaintenancePage>InMaintenance</inMaintenancePage>
     <indexPage>CommunitiesLanding</indexPage>
-    <masterLabel>Upload Case Documentation</masterLabel>
+    <masterLabel>Preference Centre ZE Community</masterLabel>
     <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
     <requireHttps>true</requireHttps>
     <selfRegPage>CommunitiesSelfReg</selfRegPage>
@@ -27,5 +27,5 @@
     <siteGuestRecordDefaultOwner>adminklinc@zurich-es.com</siteGuestRecordDefaultOwner>
     <siteType>ChatterNetwork</siteType>
     <subdomain>zurich-es</subdomain>
-    <urlPathPrefix>uploadcasedocs</urlPathPrefix>
+    <urlPathPrefix>zeunsubscribe</urlPathPrefix>
 </CustomSite>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>OpenNotification__c</fullName>
-    <description>OCS. Con el fin de poder enviar notificaciones desde PB/Workflows con tiempo inferior a una hora, se establece esta formula que marcaría la hora en fecha de cierre -55 mins</description>
+    <description>OCS. Con el fin de poder enviar notificaciones desde PB/Workflows con tiempo inferior a una hora, se establece esta formula que marcaría la hora en fecha de appertura -55 mins</description>
     <externalId>false</externalId>
-    <formula>CreatedDate - 55 *(1/24/60)</formula>
+    <formula>CreatedDate - 45 *(1/24/60)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Open Notification</label>
     <required>false</required>
