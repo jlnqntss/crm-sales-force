@@ -28,6 +28,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     private static final string PERMISSION_TYPE_CALL_CENTER = 'CallCenter';
     @testvisible
     private static final string PERMISSION_TYPE_ROLE = 'Role';
+    @testvisible
+    private static final string PERMISSION_TYPE_DEPARTMENT = 'Department';
 
     @testvisible
     private static final string AUTH_DATA_MAP_NAME = 'roles';
@@ -35,6 +37,10 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
     private static final string ERROR_PARSE_ROLES = 'Error al parsear el usuario. Para más ayuda, póngase en contacto con su administrador.';
     private static final string ERROR_NO_PROFILE = 'No PROFILE found in the configuration for the given list of rols: ';
+
+    private static final String CONFIG_API_SIGNATURE_CONTENT = 'IAMUserSignatureContent';
+    private static final String CONFIG_API_SIGNATURE_FIELDS = 'IAMUserSignatureFields';
+
 
     // nts (agonzalezisasi) - 17/12/2020 - Include OCS Roles and correct System Admin for languages
     @testvisible
@@ -50,6 +56,10 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
     @testvisible
     private List<AuthMapping__mdt> testListAuthMappings;
+    @testvisible
+    private String testSignatureContent;
+    @testvisible
+    private String testSignatureFields;
 
     /**
      * @Description Método ejecutado cuando el id de federación del usuario que intenta conectar no se corresponde con el de Salesforce.
@@ -85,6 +95,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_PERMISSION_SET_GROUP, null);
         mapAuthData.put(PERMISSION_TYPE_CALL_CENTER, null);
         mapAuthData.put(PERMISSION_TYPE_ROLE, null);
+        mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
         // fill the map with the configuration
         getAuthData( roleNameList, mapAuthData );
 
@@ -96,6 +107,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
         // GET CALL CENTER ID
         Id callcenterId               = getCallCenterFromRoles(mapAuthData.get(PERMISSION_TYPE_CALL_CENTER));
+
+        // GET Department
+        String department             = getDepartmentFromRoles(mapAuthData.get(PERMISSION_TYPE_DEPARTMENT));
 
         // NEW USER
         u                             = new User();
@@ -115,8 +129,13 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             u.UserRoleId              = roleId;
         if( callcenterId != null )
             u.CallCenterId            = callcenterId;
+        u.Department                  = department;
 
         insert u;
+
+        String signature              = getSignature(u.Id);
+        if( String.isNotBlank(signature) )
+            update new User( Id= u.Id, Signature= signature );
 
         // GROUPS
         // Obtener los ids de los grupos públicos en salesforce
@@ -158,6 +177,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_PERMISSION_SET_GROUP, null);
         mapAuthData.put(PERMISSION_TYPE_CALL_CENTER, null);
         mapAuthData.put(PERMISSION_TYPE_ROLE, null);
+        mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
         getAuthData( roleNameList, mapAuthData );
 
         // Get PROFILE ID
@@ -169,14 +189,20 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         // GET CALL CENTER ID
         Id callcenterId               = getCallCenterFromRoles(mapAuthData.get(PERMISSION_TYPE_CALL_CENTER));
 
+        // GET Department
+        String department             = getDepartmentFromRoles(mapAuthData.get(PERMISSION_TYPE_DEPARTMENT));
+
+        // GET Signature
+        String signature              = getSignature(userId);
+
         // UPDATE USER
         User u = [
-            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId
+            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature
             FROM User WHERE Id =: userId LIMIT 1
         ];
 
         // Se comprueban los valores, se determina si ha habido cambios
-        modified = (u.firstName != data.firstName || u.lastName != data.lastName || 
+        modified = (u.firstName != data.firstName || u.lastName != data.lastName || u.Department != department || u.Signature != signature ||
                     u.userName != data.username + USERNAME_SERVER || u.profileId != profileId || u.CallCenterId != callcenterId ||
                     u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email);
 
@@ -195,6 +221,10 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                 u.UserRoleId        = roleId;
             if( u.CallCenterId != callcenterId )
                 u.CallCenterId      = callcenterId;
+            if( u.Department != department )
+                u.Department = department;
+            if( u.Signature != signature )
+                u.Signature = signature;
 
             update(u);
         }
@@ -363,6 +393,26 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             if( roles != null && !roles.isEmpty() ) {
                 result = roles[0].Id;
             }
+        }
+
+        return result;
+    }
+
+    /**
+     * Get the department configured for the given list of roles.
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/03/2021
+     * @param {List<String> deptNames} A list of deptarments
+     * @return {string}: The deptartment
+     */
+    private String getDepartmentFromRoles(List<String> deptNames ) 
+    {
+        String result = null;
+
+        if( deptNames != null && !deptNames.isEmpty() ) {
+            // because of the order in the query, the first one should be the best one
+            result = deptNames[0];
         }
 
         return result;
@@ -557,6 +607,49 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
     }
+
+    /**
+     * Get the configured text for the signature
+     * 
+     */
+     private String getSignature(ID userId) 
+     {
+        String result = '';
+
+        try {
+            String config_firma = '';
+            String config_fields = '';
+            List<AdminSetupParameter__mdt> config = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :CONFIG_API_SIGNATURE_CONTENT];
+            if( !config.isEmpty() )
+                config_firma = config[0].Value__c;
+            config = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :CONFIG_API_SIGNATURE_FIELDS];
+            if( !config.isEmpty() )
+                config_fields = config[0].Value__c;
+
+            // to avoid problems, for testing we overwrite the configuration parameters
+            if( Test.isRunningTest() ) {
+                config_firma = this.testSignatureContent;
+                config_fields = this.testSignatureFields;
+            }
+
+            List<String> listValues = new List<String>();
+            if( String.IsNotBlank(config_fields) ) {
+                List<User> userList = Database.query('SELECT ' + config_fields + ' FROM User WHERE Id = :userId');
+                if( !userList.isEmpty() ) {
+                    List<String> listFields = config_fields.split(',');
+                    for(String s: listFields) {
+                        listValues.add((String)userList[0].get(s));
+                    }
+                }
+            }
+
+            result = String.format(config_firma, listValues);
+        } catch( Exception ex ) {
+            ErrorLogUtil.commitError(ex, CLASS_NAME);
+        }
+
+        return result;
+     }
 
     /**
      * @Description Excepción personalizada para oncluir el mensaje de error en la pantalla de lógin.

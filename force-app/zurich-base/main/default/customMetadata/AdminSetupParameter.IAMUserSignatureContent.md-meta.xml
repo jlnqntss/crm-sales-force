@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>IAMUserSignatureContent</label>
+    <protected>false</protected>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">A plain text or html that will be copied to the users signature. if {n} is included it will try to get the field from the configured IAMUserSignatureFields admin setup parameter.</value>
+    </values>
+    <values>
+        <field>KeyName__c</field>
+        <value xsi:type="xsd:string">IAMUserSignatureContent</value>
+    </values>
+    <values>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">&lt;div style=\&quot;font-family: Arial, sans-serif;\&quot;&gt;&lt;b&gt;{0} {1}&lt;/b&gt;\n\r{2}\n\r\n\r&lt;span style=\&quot;color: #003399\&quot;&gt;&lt;b&gt;Zurich Seguros&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;</value>
+    </values>
+</CustomMetadata>
