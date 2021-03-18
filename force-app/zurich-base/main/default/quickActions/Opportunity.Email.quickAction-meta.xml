@@ -6,10 +6,10 @@
     </fieldOverrides>
     <fieldOverrides>
         <field>ValidatedFromAddress</field>
-        <formula>IF( 
-   ISPICKVAL(Opportunity.ScopeId__r.Scope__c, &apos;ZE&apos;), &apos;info.zurichempresas@zurich.com&apos;,
-  IF(ISPICKVAL(Opportunity.ScopeId__r.Scope__c, &apos;ZEO&apos;), &apos;info.orangeseguros@zurich.com&apos;,
-  &apos;&apos;)
+        <formula>IF(
+ISPICKVAL(Opportunity.Scope__c, &quot;ZE&quot;), &quot;info.zurichempresas@zurich.com&quot;,
+IF(ISPICKVAL(Opportunity.Scope__c, &quot;ZEO&quot;), &quot;info.orangeseguros@zurich.com&quot;,
+&apos;&apos;)
 )</formula>
     </fieldOverrides>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>

@@ -935,4 +935,12 @@ Related fields: [{3}]</value>
         <shortDescription>solicitudDocumentaciónSms</shortDescription>
         <value>Solicitud de documentación por SMS</value>
     </labels>
+    <labels>
+        <fullName>documentacionAnadida</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>documentaciónAñadida</shortDescription>
+        <value>Documentación añadida</value>
+    </labels>
 </CustomLabels>
