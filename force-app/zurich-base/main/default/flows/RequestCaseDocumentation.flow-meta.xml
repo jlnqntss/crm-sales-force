@@ -386,6 +386,12 @@
                     <elementReference>GetRelatedScope.PrimaryPhone__c</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Móvil</stringValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
