@@ -702,6 +702,53 @@ public class Test_ContactUtil
         Test.stopTest();
     }
 
+    /**
+     * Test para el método de creación de matchcode
+     *
+     * @author nts (nbizkarra)
+     * @date 10/03/2021
+     */
+    @isTest
+    static void test_createMatchcode()
+    {
+        String matchcode;
+        Contact contacto = new Contact(
+            Email = 'test@test.com',
+            MobilePhone = '456456456',
+            Birthdate = Date.valueOf('1990-01-01'),
+            CustomerNum__c = 'LIFE-7897',
+            LegalEntity__c = Label.LifeInsurance,
+            sourceCountry__c = 'Spain'
+            );
+
+        //Matchcode: email+birthdate
+        matchcode = ContactUtil.createMatchcode( contacto );
+        System.assertEquals(contacto.Email + contacto.Birthdate, matchcode);
+
+        //Matchcode: mobilephone+birthdate
+        contacto.Email = null; 
+        matchcode = ContactUtil.createMatchcode( contacto );
+        System.assertEquals(contacto.sourceCountry__c +contacto.MobilePhone + contacto.Birthdate, matchcode);
+
+        //Matchcode: email+mobilephone
+        contacto.Email = 'test@test.com';
+        contacto.Birthdate = null;
+        matchcode = ContactUtil.createMatchcode( contacto );
+        System.assertEquals( contacto.Email + contacto.sourceCountry__c +contacto.MobilePhone , matchcode);
+
+        //Matchcode: email
+        contacto.MobilePhone = null;
+        matchcode = ContactUtil.createMatchcode( contacto );
+        System.assertEquals( contacto.Email  , matchcode);
+
+        //Matchcode: phone
+        contacto.MobilePhone = '456456456';
+        contacto.Email = null;
+        matchcode = ContactUtil.createMatchcode( contacto );
+        System.assertEquals( contacto.sourceCountry__c + contacto.MobilePhone  , matchcode);
+        
+    }
+
     /*
        @isTest
        static void test_ContactTrigger()
