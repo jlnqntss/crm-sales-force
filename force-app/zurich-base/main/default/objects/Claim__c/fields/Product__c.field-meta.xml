@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Product__c</fullName>
+    <businessStatus>DeprecateCandidate</businessStatus>
     <deleteConstraint>SetNull</deleteConstraint>
-    <description>(OCS). Puntero al nombre del producto de la póliza</description>
+    <description>(OCS). Puntero al nombre del producto de la póliza (obsoleto)</description>
     <externalId>false</externalId>
     <label>Product</label>
     <referenceTo>Product2</referenceTo>
