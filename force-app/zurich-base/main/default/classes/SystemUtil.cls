@@ -937,9 +937,9 @@ public without sharing class SystemUtil
     public static void contactsSelectorMatchCode(
         SET<String> emails,
         SET<String> mobiles,
-        Map<String, Contact> mapEmailBirthLECountry,
+        Map<String, Contact> matchcodeLECountryPartnerMap,
         Map<String, Contact> mapEmailBirthLE,
-        Map<String, Contact> mapEmailBirth,
+        Map<String, Contact> matchcodeMap,
         Map<String, List<Contact> > mapSubscribers
         )
     {
@@ -981,10 +981,15 @@ public without sharing class SystemUtil
             Account.CustomerNum_Partner__c,
             SourceCountry__c,
             IsSubscriber__c,
-            Partner__c
+            Partner__c,
+            LastModifiedDate 
             FROM Contact
-            WHERE Email IN :emails
-            OR MobilePhone IN:mobiles
+            WHERE (Email IN :emails
+            OR MobilePhone IN:mobiles)
+            AND 
+            (RecordType.DeveloperName=:Label.LeadLife OR RecordType.DeveloperName=:Label.LeadGI
+            OR RecordType.DeveloperName=:Label.CustomerLife OR RecordType.DeveloperName=:Label.CustomerGI)
+            
         ];
 
         String legalEntityName;
@@ -993,33 +998,56 @@ public without sharing class SystemUtil
         {
             legalEntityName = legalIdentityByLabel.get(con.LegalEntity__c);
 
-            matchCode = con.Email + String.valueOfGmt(con.Birthdate);
-            if( mapEmailBirth != null )
-                mapEmailBirth.put(matchCode, con);
+            //Rellenar el mapa con matchcode: EMAIL + BIRTHDATE
+            if( !String.isBlank(con.Email) && con.Birthdate!=null ){
 
-            matchCode += legalEntityName;
-            if( mapEmailBirthLE != null)
-                mapEmailBirthLE.put(matchCode, con);
+                matchCode = con.Email + String.valueOfGmt(con.Birthdate);
+                addMatchcodeToMap( matchcodeMap,  matchcode,  con);
+                
+                matchCode += legalEntityName + con.SourceCountry__c + con.Partner__c;
+                addMatchcodeToMap( matchcodeLECountryPartnerMap,  matchcode,  con);
 
-            // EMEA + PARTNER
-            // nts (agonzalezisasi) - 08/dic/2021 - Force to find the contact by Country and Partner
-            matchCode += con.SourceCountry__c + con.Partner__c;
-            if( mapEmailBirthLECountry != null )
-                mapEmailBirthLECountry.put(matchCode, con);
+            }
+            
+            //Rellenar el mapa con matchcode: MOBILEPHONE + BIRTHDATE
+            if( !String.isBlank(con.MobilePhone) && con.Birthdate!=null ){
 
-            // nts (nbizkarra) - 11/ene/2021 - build matchcode with sourceCountry + mobilephone
-            matchCode = con.SourceCountry__c + con.MobilePhone + String.valueOfGmt(con.Birthdate);
-            if( mapEmailBirth != null )
-                mapEmailBirth.put(matchCode, con);
+                matchCode = con.SourceCountry__c + con.MobilePhone + String.valueOfGmt(con.Birthdate);
+                addMatchcodeToMap( matchcodeMap,  matchcode,  con);
 
-            matchCode += legalEntityName;
-            if( mapEmailBirthLE != null)
-                mapEmailBirthLE.put(matchCode, con);
+                matchCode += legalEntityName + con.SourceCountry__c + con.Partner__c;
+                addMatchcodeToMap( matchcodeLECountryPartnerMap,  matchcode,  con);
+            }
 
-            matchCode += con.SourceCountry__c + con.Partner__c;
-            if( mapEmailBirthLECountry != null )
-                mapEmailBirthLECountry.put(matchCode, con);
+            //Rellenar el mapa con matchcode: EMAIL + MOBILEPHONE 
+            if( !String.isBlank(con.MobilePhone) && !String.isBlank(con.Email) ){
 
+                matchCode = con.Email + con.SourceCountry__c + con.MobilePhone;
+                addMatchcodeToMap( matchcodeMap,  matchcode,  con);
+
+                matchCode += legalEntityName + con.SourceCountry__c + con.Partner__c;
+                addMatchcodeToMap( matchcodeLECountryPartnerMap,  matchcode,  con);
+            }
+           
+            //Rellenar el mapa con matchcode: EMAIL  (excluyendo subscribers)
+            if(  !String.isBlank(con.Email) && con.CustomerNum__c != null ){
+
+                matchCode = con.Email;
+                addMatchcodeToMap( matchcodeMap,  matchcode,  con);
+
+                matchCode += legalEntityName + con.SourceCountry__c + con.Partner__c;
+                addMatchcodeToMap( matchcodeLECountryPartnerMap,  matchcode,  con);
+            }
+   
+            //Rellenar el mapa con matchcode: MOBILEPHONE  
+            if(  !String.isBlank(con.MobilePhone) ){
+
+                matchCode = con.SourceCountry__c + con.MobilePhone;
+                addMatchcodeToMap( matchcodeMap,  matchcode,  con);
+
+                matchCode += legalEntityName + con.SourceCountry__c + con.Partner__c;
+                addMatchcodeToMap( matchcodeLECountryPartnerMap,  matchcode,  con);
+            }
 
             // nts (nbizkarra) - 17/11/2020 - get subscribed contacts by email
             // Subscribers from lead
@@ -1038,6 +1066,39 @@ public without sharing class SystemUtil
                 }
             }
         }
+    }
+
+     /**
+     * Método que añade el contacto al mapa de matchcodes
+     ** Si existen múltiples contactos con el mismo matchcode, se escoge el cliente frente a un lead
+     ** y si hay varios leads se escogerá el que tenga última modificación más reciente
+     * @author nbizkarra
+     * @date 10/03/2021
+     **/
+    public static void addMatchcodeToMap(Map<String, Contact> matchcodeMap, String matchcode, Contact con)
+    {
+        if( matchcodeMap != null ){
+
+            if( matchcodeMap.containsKey(matchCode)){
+
+                Contact contactInMap = matchcodeMap.get(matchCode);
+                //Si es cliente, se sobreescribe el registro en el mapa
+                if( con.status__c == 'Activo'){
+
+                    matchcodeMap.put(matchCode, con);
+
+                // Si es lead y es más reciente, se sobreescribe el registro en el mapa
+                } else if ( con.status__c == 'Lead' && contactInMap.status__c == 'Lead' && (con.LastModifiedDate  > contactInMap.LastModifiedDate) ){
+
+                    matchcodeMap.put(matchCode, con);
+                }
+
+            }else{
+                matchcodeMap.put(matchCode, con);
+            }
+            
+        }
+
     }
 
     /**
