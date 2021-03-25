@@ -868,7 +868,14 @@ public without sharing class GenesysInteractionsService
         public String searchType;
         public String filterBy;
         public String lookFor;
-        public String value;
+        public String value
+        {
+            get
+            {
+                return cleanTerm(value, searchType);
+            }
+            set;
+        }
         public String scope
         {
             get
@@ -899,7 +906,14 @@ public without sharing class GenesysInteractionsService
             }
             set;
         }
-        public String searchTerm;
+        public String searchTerm 
+        {
+            get
+            {
+                return cleanTerm(searchTerm, searchType);
+            }
+            set;
+        }
 
         public SearchRequest() {}
         public SearchRequest(Map<String, String> paramsByName)
@@ -915,6 +929,24 @@ public without sharing class GenesysInteractionsService
         public override String toString()
         {
             return JSON.serialize(this);
+        }
+
+        /**
+         * Removes the whitespaces and converts characters to uppercase in the term parameter
+         * 
+         * @author nts (agonzalezisasi)
+         */
+        private String cleanTerm(String term, String type)
+        {
+            String result = term;
+
+            switch on type {
+                when 'document', 'car_registration' {
+                    result = result.deleteWhitespace().toUpperCase();        
+                }
+            }
+
+            return result;
         }
     }
 

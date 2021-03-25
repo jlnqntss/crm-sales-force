@@ -16,6 +16,7 @@ private class OpenIDConnectRegHandlerTest
     static final string IAM_ROLE_A = 'IAM_ROLE_A';
     static final string IAM_ROLE_B = 'IAM_ROLE_B';
     static final string IAM_ROLE_ADMIN = 'IAM_ROLE_ADMIN';
+    static final string IAM_ROLE_A_NAME = 'TestRoleA';
 
     @TestSetup
     static void makeData()
@@ -41,8 +42,8 @@ private class OpenIDConnectRegHandlerTest
         // Create Roles
         List<UserRole> roles = new List<UserRole>();
         roles.add( new UserRole(
-                       Name= 'TestRoleA',
-                       DeveloperName= 'TestRoleA'
+                       Name= IAM_ROLE_A_NAME,
+                       DeveloperName= IAM_ROLE_A_NAME
                        ) );
         insert roles;
     }
@@ -152,10 +153,10 @@ private class OpenIDConnectRegHandlerTest
 
             // Role
             handler.testListAuthMappings.add( new AuthMapping__mdt(
-                                                  Label= 'TestRoleA',
-                                                  DeveloperName= 'TestRoleA',
+                                                  Label= IAM_ROLE_A_NAME,
+                                                  DeveloperName= IAM_ROLE_A_NAME,
                                                   Role_Name__c= IAM_ROLE_A,
-                                                  Permission__c= 'TestRoleA',
+                                                  Permission__c= IAM_ROLE_A_NAME,
                                                   Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_ROLE,
                                                   Order__c= 1
                                                   ) );
@@ -167,6 +168,16 @@ private class OpenIDConnectRegHandlerTest
                                                 Role_Name__c= IAM_ROLE_A,
                                                 Permission__c= 'TestDeptA',
                                                 Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_DEPARTMENT,
+                                                Order__c= 1
+                                                ) );
+            
+            // Signature
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                Label= 'TestSignaA',
+                                                DeveloperName= 'TestSignaA',
+                                                Role_Name__c= IAM_ROLE_A,
+                                                Permission__c= 'TestSignaA',
+                                                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_SIGNATURE,
                                                 Order__c= 1
                                                 ) );
         }
@@ -225,6 +236,7 @@ private class OpenIDConnectRegHandlerTest
             // NO Call center
             // NO SF Role
             // NO Department
+            // NO Signature
         }
 
         // return de data structure from IAM
@@ -497,4 +509,49 @@ private class OpenIDConnectRegHandlerTest
         List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
         System.assertEquals(1, errors.size(), 'There should be 1 error log');
     }
+
+    /**
+     * Test that without IAM Role with Signature the field Signature of the user is empty in the creation
+     *
+     * @author nts (agonzalezisasi)
+     * @date 25/03/2021
+     */
+    @isTest
+    static void testNoSignatureCreate()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B);
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        User createdUser = [SELECT Signature FROM user WHERE id=:u.Id];
+        System.assertEquals(null, createdUser.Signature, 'The signature should be empty');
+    }    
+
+    /**
+     * Test that without IAM Role with Signature the field Signature of the user doenst change in the update
+     *
+     * @author nts (agonzalezisasi)
+     * @date 25/03/2021
+     */
+    @isTest
+    static void testNoSignatureUpdate()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B);
+
+        String textSignature = 'My signature';
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        u.Signature = textSignature;
+        update u;
+        handler.updateUser(u.Id, null, sampleDataIAM);
+        Test.stopTest();
+
+        User createdUser = [SELECT Signature FROM user WHERE id=:u.Id];
+        System.assertEquals(textSignature, createdUser.Signature, 'The signature should not change');
+    }    
 }
