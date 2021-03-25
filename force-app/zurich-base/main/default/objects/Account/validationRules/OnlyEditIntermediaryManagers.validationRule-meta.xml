@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OnlyEditIntermediaryManagers</fullName>
+    <active>true</active>
+    <description>Comprueba que no se edite ningún campo distinto a los de Manager</description>
+    <errorConditionFormula>AND(
+OR(
+ISCHANGED(Name),
+ISCHANGED(OwnerId),
+ISCHANGED(RecordTypeId)),
+RecordType.DeveloperName = &apos;Intermediary&apos;,
+$Profile.Name = &apos;OCS User&apos;)</errorConditionFormula>
+    <errorMessage>[VR Cuenta] No tienes permisos para modificar estos datos</errorMessage>
+</ValidationRule>
