@@ -75,6 +75,7 @@ public without sharing class ContentVersionUtil
 
                     Case relatedCase = hashToCaseMap.get(version.Guest_Record_fileupload__c);
                     relatedCase.Status = 'Respondido';
+                    relatedCase.PendingBy__c = null;
                     casesToUpdate.add(relatedCase);
 
                     tasksToCreate.add(

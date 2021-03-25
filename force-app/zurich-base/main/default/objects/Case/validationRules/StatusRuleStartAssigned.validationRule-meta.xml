@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusRuleStartAssigned</fullName>
+    <active>true</active>
+    <description>El caso creado por el gestor manualmente solo puede ser creado en estado asignado</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp;
+ISNEW() &amp;&amp; NOT(ISPICKVAL(Status, &quot;Asignado&quot;)) &amp;&amp;
+$Profile.Name = &apos;OCS User&apos;</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>[VR Caso] El caso solo puede ser creado en estado asignado</errorMessage>
+</ValidationRule>

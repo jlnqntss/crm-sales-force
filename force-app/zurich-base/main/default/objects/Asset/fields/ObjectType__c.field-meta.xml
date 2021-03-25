@@ -14,7 +14,7 @@
             <value>
                 <fullName>0000000057</fullName>
                 <default>false</default>
-                <label>EMBARCACION</label>
+                <label>EMBARCACIONES RECREO</label>
             </value>
             <value>
                 <fullName>0000000044</fullName>
@@ -34,17 +34,17 @@
             <value>
                 <fullName>0000000018</fullName>
                 <default>false</default>
-                <label>VIVIENDA</label>
+                <label>VIVIENDA PARA HOGAR</label>
             </value>
             <value>
                 <fullName>0000000003</fullName>
                 <default>false</default>
-                <label>VEHICULO</label>
+                <label>VEHICULO AUTOMOVIL</label>
             </value>
             <value>
                 <fullName>0000000050</fullName>
                 <default>false</default>
-                <label>BIEN ASEG</label>
+                <label>BIEN ASEGURADO</label>
             </value>
             <value>
                 <fullName>0000000041</fullName>
@@ -54,22 +54,22 @@
             <value>
                 <fullName>0000000011</fullName>
                 <default>false</default>
-                <label>MAQUINA</label>
+                <label>MAQUINARIA</label>
             </value>
             <value>
                 <fullName>0000000039</fullName>
                 <default>false</default>
-                <label>RESP. CIVIL.</label>
+                <label>RESP.CIVIL EMPRESAS Y PROFESIONALES</label>
             </value>
             <value>
                 <fullName>0000000055</fullName>
                 <default>false</default>
-                <label>INCENDIOS</label>
+                <label>INCENDIOS PARTICULARES</label>
             </value>
             <value>
                 <fullName>0000000058</fullName>
                 <default>false</default>
-                <label>RESP CIVIL</label>
+                <label>RESPONSABILIDAD CIVIL</label>
             </value>
             <value>
                 <fullName>0000000060</fullName>
@@ -84,7 +84,7 @@
             <value>
                 <fullName>0000000052</fullName>
                 <default>false</default>
-                <label>RETIRADA CARNET</label>
+                <label>RETIRADA CARNET CONDUCIR</label>
             </value>
             <value>
                 <fullName>Address</fullName>

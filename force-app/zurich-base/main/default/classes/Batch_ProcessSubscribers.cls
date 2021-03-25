@@ -31,7 +31,7 @@ global class Batch_ProcessSubscribers implements Database.Batchable<sObject>, Da
 
     global void execute(SchedulableContext SC)
     {
-        Database.executeBatch(new Batch_ProcessSubscribers(query), 200);
+        Database.executeBatch(new Batch_ProcessSubscribers(query), 1);
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)

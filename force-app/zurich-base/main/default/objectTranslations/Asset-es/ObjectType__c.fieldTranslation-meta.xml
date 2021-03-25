@@ -3,16 +3,8 @@
     <label>Tipo de objeto</label>
     <name>ObjectType__c</name>
     <picklistValues>
-        <masterLabel>BIEN ASEG</masterLabel>
-        <translation><!-- BIEN ASEG --></translation>
-    </picklistValues>
-    <picklistValues>
         <masterLabel>COMERCIOS_SERVICIOS</masterLabel>
         <translation><!-- COMERCIOS_SERVICIOS --></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>EMBARCACION</masterLabel>
-        <translation><!-- EMBARCACION --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>EMPRESA</masterLabel>
@@ -21,13 +13,5 @@
     <picklistValues>
         <masterLabel>PERSONA ACCIDENTES</masterLabel>
         <translation><!-- PERSONA ACCIDENTES --></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>VEHICULO</masterLabel>
-        <translation><!-- VEHICULO --></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>VIVIENDA</masterLabel>
-        <translation><!-- VIVIENDA --></translation>
     </picklistValues>
 </CustomFieldTranslation>
