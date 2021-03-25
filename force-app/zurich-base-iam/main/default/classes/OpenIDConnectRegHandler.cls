@@ -30,6 +30,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     private static final string PERMISSION_TYPE_ROLE = 'Role';
     @testvisible
     private static final string PERMISSION_TYPE_DEPARTMENT = 'Department';
+    @testvisible
+    private static final string PERMISSION_TYPE_SIGNATURE = 'Signature';
 
     @testvisible
     private static final string AUTH_DATA_MAP_NAME = 'roles';
@@ -38,8 +40,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     private static final string ERROR_PARSE_ROLES = 'Error al parsear el usuario. Para más ayuda, póngase en contacto con su administrador.';
     private static final string ERROR_NO_PROFILE = 'No PROFILE found in the configuration for the given list of rols: ';
 
-    private static final String CONFIG_API_SIGNATURE_CONTENT = 'IAMUserSignatureContent';
-    private static final String CONFIG_API_SIGNATURE_FIELDS = 'IAMUserSignatureFields';
+    private static final String CONFIG_API_SIGNATURE_CONTENT = 'Content';
+    private static final String CONFIG_API_SIGNATURE_FIELDS = 'Fields';
 
 
     // nts (agonzalezisasi) - 17/12/2020 - Include OCS Roles and correct System Admin for languages
@@ -96,6 +98,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_CALL_CENTER, null);
         mapAuthData.put(PERMISSION_TYPE_ROLE, null);
         mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
+        mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
         // fill the map with the configuration
         getAuthData( roleNameList, mapAuthData );
 
@@ -133,7 +136,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
         insert u;
 
-        String signature              = getSignature(u.Id);
+        String signature              = getSignature(u.Id, mapAuthData.get(PERMISSION_TYPE_SIGNATURE));
         if( String.isNotBlank(signature) )
             update new User( Id= u.Id, Signature= signature );
 
@@ -193,7 +196,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         String department             = getDepartmentFromRoles(mapAuthData.get(PERMISSION_TYPE_DEPARTMENT));
 
         // GET Signature
-        String signature              = getSignature(userId);
+        String signature              = getSignature(userId, mapAuthData.get(PERMISSION_TYPE_SIGNATURE));
 
         // UPDATE USER
         User u = [
@@ -202,7 +205,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         ];
 
         // Se comprueban los valores, se determina si ha habido cambios
-        modified = (u.firstName != data.firstName || u.lastName != data.lastName || u.Department != department || u.Signature != signature ||
+        modified = (u.firstName != data.firstName || u.lastName != data.lastName || u.Department != department ||
                     u.userName != data.username + USERNAME_SERVER || u.profileId != profileId || u.CallCenterId != callcenterId ||
                     u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email);
 
@@ -223,7 +226,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                 u.CallCenterId      = callcenterId;
             if( u.Department != department )
                 u.Department = department;
-            if( u.Signature != signature )
+            if( String.isNotBlank(signature) && u.Signature != signature )
                 u.Signature = signature;
 
             update(u);
@@ -610,42 +613,67 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
     /**
      * Get the configured text for the signature
-     * 
+     * Example:
+     *     Text: {0} {1}<br/>{2}<br/><br/>Zurich Seguros
+     *     Fields: FirstName,LastName,Department
+     *     Field values: John,Doe,Marketing
+     *     Result: John Doe<br/>Marketing<br/><br/>Zurich Seguros
+     *  
+     * @author nts (agonzalezisasi)
      */
-     private String getSignature(ID userId) 
+     private String getSignature(ID userId, List<String> signatureSettings) 
      {
         String result = '';
 
-        try {
-            String config_firma = '';
-            String config_fields = '';
-            List<AdminSetupParameter__mdt> config = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :CONFIG_API_SIGNATURE_CONTENT];
-            if( !config.isEmpty() )
-                config_firma = config[0].Value__c;
-            config = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :CONFIG_API_SIGNATURE_FIELDS];
-            if( !config.isEmpty() )
-                config_fields = config[0].Value__c;
+        if( signatureSettings != null && !signatureSettings.isEmpty() ) {
+            try {
+                // First get the api name of the admin setup parameter "prefix" for the signature that, because the order, the first one should be good
+                String signatureName = signatureSettings[0];
+                // Get the name of the parameters in the metadata, concatenating the signature name with the text "Content" and "Fields"
+                // Example: IAMUserSignature + Content = IAMUserSignatureContent / IAMUserSignature + Fields = IAMUserSignatureFields
+                String configContent = signatureName + CONFIG_API_SIGNATURE_CONTENT;
+                String configFields = signatureName + CONFIG_API_SIGNATURE_FIELDS;
 
-            // to avoid problems, for testing we overwrite the configuration parameters
-            if( Test.isRunningTest() ) {
-                config_firma = this.testSignatureContent;
-                config_fields = this.testSignatureFields;
-            }
+                // Get Text for the Signature from the metadata configuration
+                String config_firma = '';                
+                List<AdminSetupParameter__mdt> config = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :configContent];
+                if( !config.isEmpty() )
+                    config_firma = config[0].Value__c;
+                // Get the fields of the User sobject to be included in the Signature from the metadata configuration
+                String config_fields = '';
+                config = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :configFields];
+                if( !config.isEmpty() )
+                    config_fields = config[0].Value__c;
 
-            List<String> listValues = new List<String>();
-            if( String.IsNotBlank(config_fields) ) {
-                List<User> userList = Database.query('SELECT ' + config_fields + ' FROM User WHERE Id = :userId');
-                if( !userList.isEmpty() ) {
-                    List<String> listFields = config_fields.split(',');
-                    for(String s: listFields) {
-                        listValues.add((String)userList[0].get(s));
+                // For the Testing, to avoid problems, we overwrite the configuration parameters
+                if( Test.isRunningTest() ) {
+                    config_firma = this.testSignatureContent;
+                    config_fields = this.testSignatureFields;
+                }
+
+                // Get values of the fields from the User sobject an put them in a list of strings
+                List<String> listValues = new List<String>();
+                if( String.IsNotBlank(config_fields) ) {
+                    // soql to get the info
+                    List<User> userList = Database.query('SELECT ' + config_fields + ' FROM User WHERE Id = :userId');
+                    // if not empty
+                    if( !userList.isEmpty() ) {
+                        // for each configured field, get the value
+                        List<String> listFields = config_fields.split(',');
+                        for(String s: listFields) {
+                            String fieldText = '';
+                            if( userList[0].get(s) != null )
+                                fieldText = (String)userList[0].get(s);
+                            listValues.add(fieldText);
+                        }
                     }
                 }
-            }
 
-            result = String.format(config_firma, listValues);
-        } catch( Exception ex ) {
-            ErrorLogUtil.commitError(ex, CLASS_NAME);
+                // Put the values of the User fields in the slots ({n}) of the configured text
+                result = String.format(config_firma, listValues);
+            } catch( Exception ex ) {
+                ErrorLogUtil.commitError(ex, CLASS_NAME);
+            }
         }
 
         return result;
