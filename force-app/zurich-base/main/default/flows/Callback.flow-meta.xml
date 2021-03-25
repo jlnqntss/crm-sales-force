@@ -4,8 +4,8 @@
     <assignments>
         <name>Asignaci_n_Overdue</name>
         <label>Asignación Overdue</label>
-        <locationX>1352</locationX>
-        <locationY>718</locationY>
+        <locationX>1388</locationX>
+        <locationY>572</locationY>
         <assignmentItems>
             <assignToReference>OverdueCRCount</assignToReference>
             <operator>Add</operator>
@@ -14,19 +14,51 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Loop_CR</targetReference>
+            <targetReference>Asignacion_Listado_Vencidas</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Asignaci_n_Subsequent</name>
         <label>Asignación Subsequent</label>
-        <locationX>1237</locationX>
-        <locationY>713</locationY>
+        <locationX>1273</locationX>
+        <locationY>567</locationY>
         <assignmentItems>
             <assignToReference>SubsequentCRCount</assignToReference>
             <operator>Add</operator>
             <value>
                 <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Asignacion_Listado</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignacion_Listado</name>
+        <label>Asignación Listado</label>
+        <locationX>1214</locationX>
+        <locationY>743</locationY>
+        <assignmentItems>
+            <assignToReference>ListaCR</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;li&gt;&lt;a href=&quot;/lightning/r/ContactRequest/{!Loop_CR.Id}/view?ws=%2Flightning%2Fr%2FCase%2F{!recordId}%2Fview&quot; target=&quot;_self&quot;&gt;{!Loop_CR.WebName__c}&lt;/a&gt; - {!Loop_CR.PreferredContactDatetime__c} - ☎ {!Loop_CR.PreferredPhone} &lt;br/&gt;{!Loop_CR.RequestDescription}&lt;/li&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_CR</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignacion_Listado_Vencidas</name>
+        <label>Asignación Listado Vencidas</label>
+        <locationX>1322</locationX>
+        <locationY>843</locationY>
+        <assignmentItems>
+            <assignToReference>ListaCRVencida</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;li&gt;&lt;a href=&quot;/lightning/r/ContactRequest/{!Loop_CR.Id}/view?ws=%2Flightning%2Fr%2FCase%2F{!recordId}%2Fview&quot; target=&quot;_self&quot;&gt;{!Loop_CR.WebName__c}&lt;/a&gt; - {!Loop_CR.PreferredContactDatetime__c} - ☎ {!Loop_CR.PreferredPhone} &lt;br/&gt;{!Loop_CR.RequestDescription}&lt;/li&gt;</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -36,15 +68,8 @@
     <assignments>
         <name>Asignacion_proxima</name>
         <label>Asignacion proxima</label>
-        <locationX>1110</locationX>
-        <locationY>709</locationY>
-        <assignmentItems>
-            <assignToReference>ListaCR</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&lt;li&gt;&lt;a href=&quot;/lightning/r/ContactRequest/{!Loop_CR.Id}/view?ws=%2Flightning%2Fr%2FCase%2F{!recordId}%2Fview&quot; target=&quot;_self&quot;&gt;{!Loop_CR.Name}&lt;/a&gt; - {!Loop_CR.PreferredContactDatetime__c} - ☎ {!Loop_CR.PreferredPhone}&lt;/li&gt;</stringValue>
-            </value>
-        </assignmentItems>
+        <locationX>1146</locationX>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>ClosestCRCount</assignToReference>
             <operator>Add</operator>
@@ -60,7 +85,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Loop_CR</targetReference>
+            <targetReference>Asignacion_Listado</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -100,6 +125,10 @@
                 <numberValue>0.0</numberValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListaCRVencida</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
         <connector>
             <targetReference>Recuperar_CR_relacionadas</targetReference>
         </connector>
@@ -123,8 +152,8 @@
     <decisions>
         <name>Es_proxima</name>
         <label>Es próxima?</label>
-        <locationX>1202</locationX>
-        <locationY>499</locationY>
+        <locationX>1238</locationX>
+        <locationY>353</locationY>
         <defaultConnector>
             <targetReference>Asignaci_n_Overdue</targetReference>
         </defaultConnector>
@@ -137,13 +166,6 @@
                 <operator>GreaterThan</operator>
                 <rightValue>
                     <elementReference>$Flow.CurrentDateTime</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>ClosestCRCount</leftValueReference>
-                <operator>LessThan</operator>
-                <rightValue>
-                    <numberValue>3.0</numberValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -295,8 +317,38 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
+            <name>CallbacksVencidosTitulo</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); font-size: 16px;&quot;&gt;Callbacks Vencidos&lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt; ({!OverdueCRCount} registros)&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>CRCount</leftValueReference>
+                    <operator>GreaterThan</operator>
+                    <rightValue>
+                        <numberValue>0.0</numberValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
             <name>ExistenProximos</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Callbacks vencidos: {!OverdueCRCount}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Callbacks pendientes: {!SubsequentCRCount}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;{!ListaCRVencida}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>OverdueCRCount</leftValueReference>
+                    <operator>GreaterThan</operator>
+                    <rightValue>
+                        <numberValue>0.0</numberValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>CallbacksProximosTitulo</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255); font-size: 16px;&quot;&gt;Callbacks Pendientes &lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;({!SubsequentCRCount} registros)&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -311,12 +363,12 @@
         </fields>
         <fields>
             <name>Nombre</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Los más próximos son los siguientes:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;{!ListaCR}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;{!ListaCR}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>ClosestCRCount</leftValueReference>
+                    <leftValueReference>SubsequentCRCount</leftValueReference>
                     <operator>GreaterThan</operator>
                     <rightValue>
                         <numberValue>0.0</numberValue>
@@ -326,75 +378,109 @@
         </fields>
         <fields>
             <name>NewCallback</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Nuevo Callback&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px; color: rgb(62, 62, 60);&quot;&gt;Nuevo Callback&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>Fecha_y_hora_de_preferencia</name>
-            <dataType>DateTime</dataType>
-            <fieldText>Fecha y hora de preferencia</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-            <validationRule>
-                <errorMessage>&lt;p&gt;La fecha y hora introducida debe ser posterior a la actual.&lt;/p&gt;</errorMessage>
-                <formulaExpression>{!Fecha_y_hora_de_preferencia} &gt; {!$Flow.CurrentDateTime}</formulaExpression>
-            </validationRule>
-        </fields>
-        <fields>
-            <name>Telefono</name>
-            <extensionName>flowruntime:phone</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>required</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Teléfono</stringValue>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <fields>
-            <name>Comentarios</name>
-            <fieldText>Comentarios</fieldText>
-            <fieldType>LargeTextArea</fieldType>
+            <name>Callback_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Callback_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>NombreCR</name>
+                    <dataType>String</dataType>
+                    <fieldText>Nombre</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>false</isRequired>
+                </fields>
+                <fields>
+                    <name>Fecha_y_hora_de_preferencia</name>
+                    <dataType>DateTime</dataType>
+                    <fieldText>Fecha y hora de preferencia</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>true</isRequired>
+                    <validationRule>
+                        <errorMessage>&lt;p&gt;La fecha y hora introducida debe ser posterior a la actual.&lt;/p&gt;</errorMessage>
+                        <formulaExpression>{!Fecha_y_hora_de_preferencia} &gt; {!$Flow.CurrentDateTime}</formulaExpression>
+                    </validationRule>
+                </fields>
+                <fields>
+                    <name>Comentarios</name>
+                    <fieldText>Comentarios</fieldText>
+                    <fieldType>LargeTextArea</fieldType>
+                    <isRequired>false</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Callback_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Telefono</name>
+                    <extensionName>flowruntime:phone</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>required</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Teléfono</stringValue>
+                        </value>
+                    </inputParameters>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>ColaGenesys</name>
+                    <extensionName>flowruntime:lookup</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldApiName</name>
+                        <value>
+                            <stringValue>GenesysCloudQueueId__c</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Cola de Genesys</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>objectApiName</name>
+                        <value>
+                            <stringValue>ContactRequest</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>required</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
             <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>ColaGenesys</name>
-            <extensionName>flowruntime:lookup</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>fieldApiName</name>
-                <value>
-                    <stringValue>GenesysCloudQueueId__c</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Cola de Genesys</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>objectApiName</name>
-                <value>
-                    <stringValue>ContactRequest</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>required</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -440,6 +526,20 @@
         <name>ListaCR</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ListaCRVencida</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ListaCRVencidas</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
