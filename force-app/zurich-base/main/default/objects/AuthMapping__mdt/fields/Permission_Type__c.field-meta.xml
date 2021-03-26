@@ -41,6 +41,11 @@
                 <default>false</default>
                 <label>Department</label>
             </value>
+            <value>
+                <fullName>Signature</fullName>
+                <default>false</default>
+                <label>Signature</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
