@@ -289,6 +289,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Fallecimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Falta aviso</fullName>
             <default>false</default>
         </values>
@@ -472,6 +476,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Realizado - Con extorno</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Realizado - Impacto en prima</fullName>
             <default>false</default>
         </values>
@@ -497,6 +505,10 @@
         </values>
         <values>
             <fullName>Realizado - Retroactividad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Sin extorno</fullName>
             <default>false</default>
         </values>
         <values>
