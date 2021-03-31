@@ -1,0 +1,50 @@
+<template>
+  <lightning-card title="Genesys Cloud Service Testing">
+    <div class="slds-p-around_small">
+      <lightning-card title="Operations" variant="narrow">
+        <lightning-button
+          label="Authorize"
+          onclick={authorize}
+          variant="brand"
+          slot="actions"
+        >
+        </lightning-button>
+        <div class="slds-form slds-form_inline">
+          <lightning-input name="phone" label="Phone Number"></lightning-input>
+          <lightning-button-group>
+            <lightning-button
+              label="Transfer"
+              onclick={transfer}
+            ></lightning-button>
+            <lightning-button
+              label="Consult"
+              onclick={consult}
+              variant="brand"
+            ></lightning-button>
+            <lightning-button
+              label="Conference"
+              onclick={conference}
+              variant="neutral"
+            ></lightning-button>
+          </lightning-button-group>
+        </div>
+      </lightning-card>
+
+      <lightning-card title="Log" variant="narrow">
+        <lightning-button
+          slot="actions"
+          variant="destructive"
+          label="Clear"
+          onclick={clearLog}
+        >
+        </lightning-button>
+
+        <div class="slds-p-around_small">
+          <template for:each={logs} for:item="log">
+            <div key={log.id}>{log.message}</div>
+          </template>
+        </div>
+      </lightning-card>
+    </div>
+  </lightning-card>
+</template>

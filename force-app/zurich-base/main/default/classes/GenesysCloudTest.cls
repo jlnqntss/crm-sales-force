@@ -330,9 +330,12 @@ private class GenesysCloudTest
         GenesysCloud.SmsData message = new GenesysCloud.SmsData();
 
         Test.startTest();
-        try {
+        try
+        {
             GenesysCloud.SmsData updatedCallback = (GenesysCloud.SmsData) GenesysCloud.SMSService.send(message);
-        } catch(GenesysCloud.SMSServiceException e) {
+        }
+        catch(GenesysCloud.SMSServiceException e)
+        {
             Boolean expectedExceptionThrown =  e.getMessage().contains(GenesysCloud.ERROR_RESPONSE_SDK) ? true : false;
             System.AssertEquals(expectedExceptionThrown, true);
         }
@@ -377,7 +380,8 @@ private class GenesysCloudTest
         List<GenesysCloud.SmsData> messages = new List<GenesysCloud.SmsData>();
         GenesysCloud.SmsData message = new GenesysCloud.SmsData();
         messages.add(message);
-        for(Integer i=0;i<50;i++) {
+        for(Integer i=0; i < 50; i++)
+        {
             messages.add( message.clone() );
         }
 
@@ -391,7 +395,8 @@ private class GenesysCloudTest
     {
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
-            for(Object result : results) {
+            for(Object result : results)
+            {
                 GenesysCloud.SmsData message = (GenesysCloud.SmsData) result;
 
                 System.assertEquals('7e131fcf-1639-45b2-89e5-9c3787b5dc75', message.smsId);
@@ -406,13 +411,90 @@ private class GenesysCloudTest
 
     //#endregion
 
+    //#region CallsService
+
+    @isTest
+    static void test_CallsService_getActive_ok()
+    {
+        // When
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+
+        // Respuesta al getActive
+        String conversationId = '9d720887-910f-402d-b102-946c2c273992';
+
+        responsesMock.addActiveConversationsMockResponse(conversationId);
+
+
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        // Test
+        Test.startTest();
+
+        GenesysCloud.Call[] activeCalls = GenesysCloud.CallsService.getActive();
+
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(1, activeCalls.size(), 'No se han devuelto llamadas');
+        System.assertEquals(conversationId, activeCalls[0].id, 'No se han devuelto llamadas');
+    }
+
+    @isTest
+    static void test_CallsService_getActive_ko()
+    {
+        // When
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+
+        // Respuesta al getActive
+        String conversationId = '9d720887-910f-402d-b102-946c2c273992';
+
+        responsesMock.addRawMockResponse(
+            'api/v2/conversations/calls',
+            new GenesysCloudConversationsAPIMock.APIResponse(
+                404,
+                new Map<String, Object>
+        {
+            'message' => 'Not Found'
+        }
+                )
+            );
+
+        // Test
+        Test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+        GenesysCloud.GenesysCloudException expectedError;
+
+        try
+        {
+
+            GenesysCloud.Call[] activeCalls = GenesysCloud.CallsService.getActive();
+        }
+        catch (GenesysCloud.GenesysCloudException error)
+        {
+            expectedError = error;
+        }
+
+
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(null, expectedError, 'No se ha emitido excepción');
+        System.assertEquals(true, expectedError.getMessage().contains('Not Found'), 'El mensaje no coincide');
+    }
+
+    //#endregion
+
     @isTest
     static void test_GenesysCloudValidateResponse_ko()
     {
         Test.startTest();
-        try {
+        try
+        {
             GenesysCloud.validateResponse(null, null);
-        } catch (Exception error) {
+        }
+        catch (Exception error)
+        {
             System.assertEquals(true, error instanceof GenesysCloud.GenesysCloudException);
         }
         Test.stopTest();

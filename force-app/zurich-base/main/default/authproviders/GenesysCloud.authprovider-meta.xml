@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authorizeUrl>https://login.mypurecloud.ie/oauth/authorize</authorizeUrl>
+    <consumerKey>a4b7cfe1-ccf8-4a64-8304-b83aa10dfdd7</consumerKey>
+    <consumerSecret>fm74Lcd1FH3WG/ctdA30mnylM76yHqk1HpFRGp09TvNfaltEpnFqzuXjFgxuTDEi</consumerSecret>
+    <defaultScopes>openid</defaultScopes>
+    <executionUser>adminklinc@zurich-es.com.deva</executionUser>
+    <friendlyName>Genesys Cloud</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <providerType>OpenIdConnect</providerType>
+    <registrationHandler>AutocreatedRegHandler1617108713316</registrationHandler>
+    <sendAccessTokenInHeader>true</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>true</sendClientCredentialsInHeader>
+    <sendSecretInApis>true</sendSecretInApis>
+    <tokenUrl>https://login.mypurecloud.ie/oauth/token</tokenUrl>
+    <userInfoUrl>https://api.mypurecloud.ie/api/v2/users/me</userInfoUrl>
+</AuthProvider>

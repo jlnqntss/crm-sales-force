@@ -135,7 +135,7 @@ public with sharing class Test_OrderUtil
         //Check if the quote has been created
         //Order createdQuote = ExternalRequestUtil.ordersToUpdateList.get(quote.QuoteEntry__c);
         Order createdQuote = ExternalRequestUtil.quotesToUpdateList.get(quote.QuoteEntry__c);
-        System.assert (createdQuote != null);
+        System.assert (createdQuote != null;
 
         Test.stopTest();
     }
@@ -147,6 +147,7 @@ public with sharing class Test_OrderUtil
     @IsTest
     static void test_SummaryTotalPolicies()
     {
+        // When
         Contact c = [
             SELECT id, NumPolicies__c
             FROM Contact
@@ -168,6 +169,7 @@ public with sharing class Test_OrderUtil
         policy.ContactId__c = c.id;
         insert policy;
 
+        // Then
         Test.startTest();
 
         c = [
@@ -175,12 +177,15 @@ public with sharing class Test_OrderUtil
             FROM Contact
             WHERE CustomerNum__c = 'GI-3123'
         ];
+
+        Test.stopTest();
+
+        // Then
         System.assert (
             c.NumPolicies__c == 1,
             'Test_OrderUtil: Error al crear rollup summary total policies'
-            );
+        );
 
-        Test.stopTest();
     }
 
     /**
