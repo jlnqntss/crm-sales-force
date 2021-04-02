@@ -92,4 +92,23 @@ export default class UploadCaseDocumentation extends LightningElement {
   handleFilesChangeStandard() {
     //Mostrar otra notificación de confirmación?
   }
+  get acceptedFormats() {
+    return [
+      ".jpg",
+      ".jpeg",
+      ".bmp",
+      ".tif",
+      ".tiff",
+      ".doc",
+      ".txt",
+      ".pdf",
+      ".xls",
+      ".docx",
+      ".xlsx",
+      ".png",
+      ".htm",
+      ".html",
+      ".gif"
+    ];
+  }
 }

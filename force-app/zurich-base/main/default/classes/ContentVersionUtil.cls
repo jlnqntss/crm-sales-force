@@ -108,12 +108,26 @@ public without sharing class ContentVersionUtil
             {
                 insert tasksToCreate;
             }
+        }
+        catch (Exception ex)
+        {
+            ErrorLogUtil.commitError(ex, 'ContentVersionUtil', 'insertRelatedRecords');
+        }
 
+        try
+        {
             if( casesToUpdate != null && !casesToUpdate.isEmpty() )
             {
                 update casesToUpdate;
             }
+        }
+        catch (Exception ex)
+        {
+            ErrorLogUtil.commitError(ex, 'ContentVersionUtil', 'insertRelatedRecords');
+        }
 
+        try
+        {
             if( contentDocumentLinksToCreate != null && !contentDocumentLinksToCreate.isEmpty() )
             {
                 insert contentDocumentLinksToCreate;
