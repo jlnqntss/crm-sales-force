@@ -120,6 +120,16 @@
                 <label>Realizado - Nueva Póliza</label>
             </value>
             <value>
+                <fullName>Realizado - Con extorno</fullName>
+                <default>false</default>
+                <label>Realizado - Con extorno</label>
+            </value>
+            <value>
+                <fullName>Realizado - Sin extorno</fullName>
+                <default>false</default>
+                <label>Realizado - Sin extorno</label>
+            </value>
+            <value>
                 <fullName>No realizado - Derivado mediación</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -264,6 +274,14 @@
         <valueSettings>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <valueName>Realizado - Nueva Póliza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Realizado - Con extorno</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Realizado - Sin extorno</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>

@@ -80,7 +80,9 @@ async function main() {
       mkdirSync(`${deployDir}`, { recursive: true });
       // 1.2 - Convierte el proyecto a formato Metadata API y  valida contra el entorno
       convertSFDXProject(`${deployDir}`, `${tmpDir}`);
+    }
 
+    if (whatToExecute == 0 || whatToExecute == 1 || whatToExecute == 4) {
       // 2.1 - Crear carpeta profiles
       mkdirSync(`${tmpProfile}`, { recursive: true });
 
@@ -127,11 +129,11 @@ async function main() {
         "------------------------------------------------------------------ Lanzando DEPLOY => " +
           `${username}`
       );
-      exec(`sfdx force:org:open -u ${username}`, { stdio: "inherit" });
+      //exec(`sfdx force:org:open -u ${username}`, { stdio: "inherit" });
 
       // DEPLOY
       // 4 - Valida contra el entorno --checkonly
-      await exec(
+      exec(
         `sfdx force:mdapi:deploy --deploydir "${deployDir}" ${checkOnly} --testlevel RunLocalTests --targetusername ${username} --wait 10`,
         {
           stdio: "inherit"

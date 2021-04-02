@@ -290,6 +290,11 @@
                 <label>Denegación anulación</label>
             </value>
             <value>
+                <fullName>Fallecimiento</fullName>
+                <default>false</default>
+                <label>Fallecimiento</label>
+            </value>
+            <value>
                 <fullName>Accesos 902</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -626,6 +631,10 @@
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
             <valueName>Sin motivo / No informado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Fallecimiento</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Con Oferta</controllingFieldValue>

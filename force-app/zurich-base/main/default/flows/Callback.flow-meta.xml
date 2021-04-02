@@ -269,6 +269,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>WebName__c</field>
+            <value>
+                <elementReference>NombreCR</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>WhatId</field>
             <value>
                 <elementReference>recordId</elementReference>

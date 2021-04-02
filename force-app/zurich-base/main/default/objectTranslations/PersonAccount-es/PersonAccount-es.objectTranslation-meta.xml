@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <layouts>
+        <layout>Formato de cuenta personal</layout>
+        <sections>
+            <label>Descripción</label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label>GDPR</label>
+            <section>GDPR Status</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>ZE Customer</layout>
+        <sections>
+            <label><!-- Additional information --></label>
+            <section>Additional information</section>
+        </sections>
+        <sections>
+            <label><!-- GDPR Status --></label>
+            <section>GDPR Status</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <description><!-- Tipo de registro para clientes físicos --></description>
+        <label>Cliente</label>
+        <name>Customer</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Cuenta personal usada para el alta de Leads desde la web de ZE. --></description>
+        <label><!-- Lead --></label>
+        <name>Lead</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Cuenta personal --></label>
+        <name>PersonAccount</name>
+    </recordTypes>
+</CustomObjectTranslation>

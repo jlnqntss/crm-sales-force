@@ -135,7 +135,7 @@
     </quickActions>
     <recordTypes>
         <description>Tipo de registro para la cuenta padre o &quot;golden record&quot;</description>
-        <label><!-- Business Customer --></label>
+        <label>Cliente Empresarial</label>
         <name>BusinessCustomer</name>
     </recordTypes>
     <recordTypes>
