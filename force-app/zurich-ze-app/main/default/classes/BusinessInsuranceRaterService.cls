@@ -1229,7 +1229,13 @@ public without sharing class BusinessInsuranceRaterService
             }
         }
         public String lastName {
-            get;
+            get {
+                // nts (agonzalezisasi) - 06/04/2020 - OCS-1606 [ZE] Incidencia - Completar LastName cuando se detecte vacío
+                if( String.isBlank(lastName) ) {
+                    return '.';
+                }
+                return lastName;
+            }
             set {
                 setRequiredFields('AccountInformation' + 'lastName');
                 lastName = value;

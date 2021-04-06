@@ -104,6 +104,8 @@ public class INFOHandler implements ISystem
         SOBJECT_CASE
     };
 
+    private static final String NOTE_CASE_ORIGIN = 'NoteINFO';
+
     private class INFOHandlerException extends Exception {}
 
     /**
@@ -497,6 +499,8 @@ public class INFOHandler implements ISystem
             {
                 // Normal transformation of fields
                 Case caseRecord = (Case) tf.transform(NOTE, SOBJECT_CASE, recordValuesMap);
+                // Assign the Case Origin to "Nota INFO"
+                caseRecord.Origin = NOTE_CASE_ORIGIN;
                 // Assign the RecordType
                 caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
                 // Get the Type, Subytype and TypeN3 from the HEGEO fields metadata configuration
