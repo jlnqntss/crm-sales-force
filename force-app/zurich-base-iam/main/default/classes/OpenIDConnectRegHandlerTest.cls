@@ -465,7 +465,7 @@ private class OpenIDConnectRegHandlerTest
      * @date 18/03/2021
      */
     @isTest
-    static void testDeptAndSignature()
+    static void testSignatureAndDept()
     {
         OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
         Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
@@ -489,7 +489,7 @@ private class OpenIDConnectRegHandlerTest
      * @date 18/03/2021
      */
     @isTest
-    static void testDeptAndSignature_ko()
+    static void testSignature_ko()
     {
         OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
         Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
@@ -517,7 +517,7 @@ private class OpenIDConnectRegHandlerTest
      * @date 25/03/2021
      */
     @isTest
-    static void testNoSignatureCreate()
+    static void testSignatureNotCreated()
     {
         OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
         Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B);
@@ -531,13 +531,41 @@ private class OpenIDConnectRegHandlerTest
     }    
 
     /**
-     * Test that without IAM Role with Signature the field Signature of the user doenst change in the update
+     * Test that with IAM Role with Signature if the configured signature change, the users signature change too
+     *
+     * @author nts (agonzalezisasi)
+     * @date 03/04/2021
+     */
+    @isTest
+    static void testSignatureUpdate()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        handler.testSignatureContent = '{0} {1} Zurich Seguros';
+        handler.testSignatureFields = 'firstname,lastname'; // list of User fields separated by comma and without spaces
+
+        Test.startTest();
+        // Insert user with some signature content
+        User u = handler.createUser(null, sampleDataIAM);
+
+        // Update the configured signature content
+        handler.testSignatureContent = 'Klinc seguros';
+        handler.updateUser(u.Id, null, sampleDataIAM);
+        Test.stopTest();
+
+        User createdUser = [SELECT Signature FROM user WHERE id=:u.Id];
+        System.assertEquals('Klinc seguros', createdUser.Signature, 'The signature should have changed');
+    }  
+
+    /**
+     * Test that without IAM Role with Signature the field Signature of the user doesnt change in the update
      *
      * @author nts (agonzalezisasi)
      * @date 25/03/2021
      */
     @isTest
-    static void testNoSignatureUpdate()
+    static void testSignatureNotUpdated()
     {
         OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
         Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B);

@@ -181,6 +181,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_CALL_CENTER, null);
         mapAuthData.put(PERMISSION_TYPE_ROLE, null);
         mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
+        mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
         getAuthData( roleNameList, mapAuthData );
 
         // Get PROFILE ID
@@ -207,7 +208,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         // Se comprueban los valores, se determina si ha habido cambios
         modified = (u.firstName != data.firstName || u.lastName != data.lastName || u.Department != department ||
                     u.userName != data.username + USERNAME_SERVER || u.profileId != profileId || u.CallCenterId != callcenterId ||
-                    u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email);
+                    u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email ||
+                    (String.isNotBlank(signature) && signature != u.Signature));
 
         if (modified)
         {
