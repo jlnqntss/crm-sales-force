@@ -16,4 +16,9 @@
         <default>false</default>
         <label>Web</label>
     </standardValue>
+    <standardValue>
+        <fullName>NoteINFO</fullName>
+        <default>false</default>
+        <label>Nota INFO</label>
+    </standardValue>
 </StandardValueSet>
