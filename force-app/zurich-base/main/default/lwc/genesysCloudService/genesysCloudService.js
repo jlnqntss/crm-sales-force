@@ -5,6 +5,9 @@ import {
   subscribe
 } from "lightning/messageService";
 import genesysCloudChannel from "@salesforce/messageChannel/purecloud__ClientEvent__c";
+import conferenceTo from "@salesforce/apex/GenesysCloudLightningController.conferenceTo";
+import isAuthorized from "@salesforce/apex/GenesysCloudLightningController.isAuthorized";
+import authorize from "@salesforce/apex/GenesysCloudLightningController.authorize";
 
 const messageContext = createMessageContext();
 const state = {
@@ -42,7 +45,6 @@ export default {
     return state.logs;
   },
   transfer(phoneNumber) {
-    console.log("state.currentInteractionId: " + state.currentInteractionId);
     return publishMessage({
       type: "PureCloud.Interaction.updateState",
       data: {
@@ -68,25 +70,18 @@ export default {
       }
     });
   },
-  conference(phoneNumber) {
-    publishMessage({
-      type: "PureCloud.Interaction.updateState",
-      data: {
-        action: "consultTransfer",
-        id: state.currentInteractionId,
-        participantContext: {
-          transferTarget: encodeURIComponent(phoneNumber),
-          transferTargetType: "address"
-        }
-      }
+  conference(phoneNumber, uuiData) {
+    return conferenceTo({
+      toAddress: phoneNumber,
+      uuiData: uuiData
     });
+  },
+  isAuthorized() {
+    return isAuthorized();
+  },
+  async authorize() {
+    var authorizeURL = await authorize();
 
-    return publishMessage({
-      type: "PureCloud.Interaction.updateState",
-      data: {
-        action: "pickup",
-        id: state.currentInteractionId
-      }
-    });
+    window.open(authorizeURL);
   }
 };
