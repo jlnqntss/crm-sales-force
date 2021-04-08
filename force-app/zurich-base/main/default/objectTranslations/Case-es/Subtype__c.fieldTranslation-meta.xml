@@ -87,10 +87,6 @@
         <translation><!-- Denegación de cobertura --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Denegación de cobertura (borrar)</masterLabel>
-        <translation><!-- Denegación de cobertura (borrar) --></translation>
-    </picklistValues>
-    <picklistValues>
         <masterLabel>Desactivar FMI</masterLabel>
         <translation><!-- Desactivar FMI --></translation>
     </picklistValues>
@@ -201,10 +197,6 @@
     <picklistValues>
         <masterLabel>Problema con la reparación</masterLabel>
         <translation><!-- Problema con la reparación --></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>Problema con la reparación (borrar)</masterLabel>
-        <translation><!-- Problema con la reparación (borrar) --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Quejas y reclamaciones</masterLabel>

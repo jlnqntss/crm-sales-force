@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- Añadimos estos nuevos META para su correcta visualizacion en WINDOWS PHONE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <!-- Fin nuevos META -->
+
+    <title>Zurich - Klinc</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Raleway');
+    </style>
+
+    <!-- outlook 2013 fix begin -->
+    <!--[if gte mso 15]>
+
+    <style type="text/css" media="all">
+
+         /* Outlook 2013 Height Fix */
+
+         body { font-size: 0; line-height: 0; }
+
+         tr { font-size:1px; mso-line-height-alt:0; mso-margin-top-alt:1px; }
+
+    </style>
+
+<![endif]-->
+    <!-- outlook 2013 fix end -->
+
+
+    <style type="text/css">
+        [style*="Raleway"] {
+            font-family: 'Raleway', Verdana, sans-serif !important
+        }
+
+        .normal-tipo {
+            font-family: Verdana, Geneva, sans-serif !important;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        div,
+        p,
+        a,
+        li,
+        td {
+            -webkit-text-size-adjust: none;
+        }
+
+        table {
+            border-collapse: collapse !important;
+        }
+
+        .gradient-cta {
+            background: -moz-linear-gradient(left, #00bfb3 0%, #009edf 100%);
+            background: -webkit-linear-gradient(left, #00bfb3 0%, #009edf 100%);
+            background: linear-gradient(to left, #00bfb3 0%, #009edf 100%);
+            background: -ms-linear-gradient(left, #00bfb3 0%, #009edf 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00bfb3', endColorstr='#009edf', GradientType=1);
+        }
+
+
+        @media only screen and (max-width: 560px) {
+            .container {
+                width: 95% !important;
+            }
+
+            .align-center {
+                margin: 0 auto;
+            }
+
+            center {
+                min-width: 0 !important;
+            }
+
+            .remove-mobile {
+                width: 0px !important;
+                display: none !important;
+                height: 0px !important;
+            }
+
+            .remove-height {
+                height: auto !important;
+            }
+
+            .destination-box-table {
+                width: 100% !important;
+            }
+
+            .destination-box {
+                width: 100% !important;
+                display: inline-block !important;
+            }
+          
+            .responsive-td {
+                width: 100% !important;
+                display: inline-block !important;
+            }
+
+            .scale-img {
+                display: block;
+                width: 100% !important;
+                height: auto !important;
+                border: 0 !important;
+            }
+          
+            img {
+                display: block;
+                width: 100% !important;
+                height: auto !important;
+                border: 0 !important;
+            }
+
+            .text-center {
+                text-align: center !important;
+            }
+
+            .text-footer {
+                font-size: 27px !important;
+            }
+
+        }
+
+        @media only screen and (max-width: 450px) {
+            .destination-box-vertical {
+                width: 100% !important;
+                display: inline-block !important;
+            }
+
+            .table-center {
+                margin: 0 auto !important;
+            }
+
+            .remove-mobile2 {
+                width: 0px !important;
+                display: none !important;
+                height: 0px !important;
+            }
+
+            .text-center-vertical {
+                text-align: center !important;
+            }
+        }
+    </style>
+</head>
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="padding:0; margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:100%;">
+  <div style="max-width:1px;"><custom name="opencounter" type="tracking"/></div>
+
+    <!-- EMAIL WRAPPER -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" class="body">
+        <tr>
+            <td style="text-align: center; vertical-align: top; font-size: 0;">
+                <!--[if (gte mso 9)|(IE)]>
+        <table width="560" align="center" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td>
+<![endif]-->
+                <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" class="destination-box" width="560">
+                    <tr>
+                        <td style="text-align: center; vertical-align: top; font-size: 0;">
+                            <!-- INIT CONTENT -->
+
+
+                            <!-- INIT HEADER -->
+                            <table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- INIT HEADER -->
+<!-- WHITE SPACE -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" width="100%" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="20" width="100%" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- BLOCK VIEW ONLINE-->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ebebeb" align="center" style="font-family:Verdana, Geneva, sans-serif, 'Raleway'; font-size: 10px; line-height: 14px; font-weight: 400; color: #000000;">
+                        <span style="display:none !important; color:#ebebeb; line-height:0px;">
+                            <br></span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- WHITE SPACE -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" width="100%" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="20" width="100%" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- WHITE SPACE -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff" width="100%" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ffffff" align="left" height="16" width="100%" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- BLOCK LOGO -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ffffff" align="left" width="560" class="destination-box">
+                        <table border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td>
+                                    <a href="https://klinc.com/" title="" target="_blank">
+                                        <img src="http://image.informa.zurich.es/lib/fe2e11717d64047d7c1373/m/1/fabedfaf-ebf2-4835-8b9e-708602f73b57.png" border="0" width="241" alt="" style="border: 0px; display: block; margin:0 auto; max-width:241px;">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- WHITE SPACE -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff" width="100%" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ffffff" align="left" height="16" width="100%" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!-- FIN HEADER --></td></tr></table>
+                            <!-- FIN HEADER -->
+
+                            <!-- INICIO BODY -->
+                            <table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;"><table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- BLOCK FULL IMG --><table align="center" bgcolor="#ebebeb" border="0" cellpadding="0" cellspacing="0" width="100%">
+ 
+  <tr>
+   <td>
+    <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="container" style="width:100%; max-width:560px;">
+     
+      <tr>
+       <td height="14">
+        <div align="center">
+         <a alias="" conversion="false" data-linkto="https://" href="https://klinc.com/contratar-seguro/moviles/?utm_source=salesforce&utm_medium=email&utm_campaign=xsell_generico_8dto" title=""><img alt="" data-assetid="75865" height="300" src="https://c.eu31.content.force.com/file-asset-public/Logo_Klinc?oid=00D5I000000DH2H" style="display: block; margin: 0px auto; max-width: 560px; padding: 0px; text-align: center; height: 300px; width: 560px; border: 0px;" width="560"></a></div></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- WHITE SPACE -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff" width="100%" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ffffff" align="left" height="20" width="100%" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- TEXT 2 --><table align="center" bgcolor="#ebebeb" border="0" cellpadding="0" cellspacing="0" width="100%">
+ 
+  <tr>
+   <td>
+    <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="container" style="width:100%; max-width:560px;">
+     
+      <tr>
+       <td width="20">
+       </td><td align="left" bgcolor="#ffffff" style="font-family:Verdana, Geneva, sans-serif, 'Raleway'; font-size:15px; line-height:22px; text-align:left; color:#555555" width="500">
+
+        <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="container" style="width:100%; max-width:560px;">
+     
+            <tr>
+             <td width="20">
+             </td><td align="left" bgcolor="#ffffff" style="font-family:Verdana, Geneva, sans-serif, 'Raleway'; font-size:15px; line-height:22px; text-align:left; color:#555555" width="500">
+              <br>
+
+              <p>Hola,</p>
+<p>En caso de robo, deber&aacute;s aportar denuncia hecha a la autoridad competente donde detalle los hechos acontecidos, <strong>la marca y modelo del dispositivo</strong> y el <strong>n&uacute;mero de IMEI y/o n&uacute;mero de serie.</strong></p>
+<p>Si en el momento de realizar la denuncia no tuviste en cuenta informar de estos datos deber&aacute;s realizar una ampliaci&oacute;n de la misma y aportarnos este documento.</p>
+<p>Si tienes otra pregunta no dudes en contactarnos.</p>
+              &nbsp;
+            </td><td width="20">
+             </td></tr></table>
+
+  
+        &nbsp;</td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- WHITE SPACE -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff" width="100%" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ffffff" align="left" height="20" width="100%" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table></td></tr></table></td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 0px;"></td></tr></table></td></tr></table></td></tr></table>
+                            <!-- FIN BODY -->
+
+                            <!-- INICIO FOOTER -->
+                            <table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- BLOCK APP's -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#003B9E" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#003B9E" align="left" height="25" style="width:100%"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td bgcolor="#003B9E" align="left" style="font-family:Verdana, Geneva, sans-serif, 'Raleway'; font-size:15px; line-height:18px; text-align:center; color:#ffffff">Descarga nuestra <b>App</b></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#003B9E" align="left" height="10" style="width:100%"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td>
+                                    <a href="https://apps.apple.com/es/app/zurich-klinc-seguros-on-demand/id1396435306" title="App Store" target="_blank">
+                                        <img src="http://image.informa.zurich.es/lib/fe2e11717d64047d7c1373/m/1/a269e786-f288-4364-938b-793c8b6b80fd.png" border="0" width="114" alt="App Store" style="border: 0px; display: block; margin:0 auto; max-width: 114px;">
+                                    </a>
+                                </td>
+                                <td width="20"></td>
+                                <td>
+                                    <a href="https://play.google.com/store/apps/details?id=com.zurich.klinc&hl=es_419" title="Play Store" target="_blank">
+                                        <img src="http://image.informa.zurich.es/lib/fe2e11717d64047d7c1373/m/1/f3e1b873-5c11-4a61-86fc-878c9f3df595.png" border="0" width="114" alt="Play Store" style="border: 0px; display: block; margin:0 auto; max-width: 114px;">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#003B9E" align="left" height="25" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- BLOCK RSS -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="30" style="width:100%"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td bgcolor="#ebebeb" align="left" style="font-family:Verdana, Geneva, sans-serif, 'Raleway'; font-size:13px; line-height:18px; text-align:center; color:#555555">Síguenos</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="10" style="width:100%"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td>
+                                    <a href="https://www.instagram.com/zurichklinc/" title="Instagram" target="_blank">
+                                        <img src="http://image.informa.zurich.es/lib/fe2e11717d64047d7c1373/m/1/ea1f32b8-f771-42bf-8629-9ca100040286.png" border="0" width="21" alt="App Store" style="border: 0px; display: block; margin:0 auto; max-width: 21px;">
+                                    </a>
+                                </td>
+                                <td width="10"></td>
+                                <td>
+                                    <a href="https://www.facebook.com/KlincES" title="Facebook" target="_blank">
+                                        <img src="http://image.informa.zurich.es/lib/fe2e11717d64047d7c1373/m/1/9b993d6c-4a1a-407b-bcef-f096bba1bbdc.png" border="0" width="18" alt="App Store" style="border: 0px; display: block; margin:0 auto; max-width: 18px;">
+                                    </a>
+                                </td>
+                                <td width="10"></td>
+                                <td>
+                                    <a href="https://twitter.com/KlincSpain" title="Twitter" target="_blank">
+                                        <img src="http://image.informa.zurich.es/lib/fe2e11717d64047d7c1373/m/1/45270324-353e-4336-b514-338bca72bd5d.png" border="0" width="18" alt="App Store" style="border: 0px; display: block; margin:0 auto; max-width: 18px;">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- SEPARATOR -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="15" style="width:100%"></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="1" style="width:100%">
+                        <hr size="1" color="#d2e6e5" width="90%">
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="15" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- BLOCK COPYRIGHT + UNSUBSCRIBE -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td width="20"></td>
+                    <td bgcolor="#ebebeb" align="left" width="520" style="font-family:Verdana, Geneva, sans-serif, 'Raleway'; font-size:11px; line-height:14px; text-align:center; color:#555555">
+                        Copyright © KLINC, All rights reserved.<br><br>
+                    </td>
+                    <td width="20"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- SEPARATOR FOOTER -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="15" style="width:100%"></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="1" style="width:100%">
+                        <hr size="1" color="#d2e6e5" width="90%">
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="15" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table></td></tr></table>
+                            <table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- BLOCK ADDRESS -->
+
+
+<!-- WHITE SPACE -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb">
+    <tr>
+        <td>
+            <table border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ebebeb" width="100%" style="width:100%; max-width:560px;" class="container">
+                <tr>
+                    <td bgcolor="#ebebeb" align="left" height="40" width="100%" style="width:100%"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table></td></tr></table>
+                            
+                            <!-- FIN FOOTER-->
+
+
+                            <!-- END CONTENT -->
+                        </td>
+                    </tr>
+                </table>
+                <!-- [if (gte mso 9) | (IE)]>
+     </td>
+    </tr>
+   </table>
+<![endif]-->
+            </td>
+        </tr>
+    </table>
+
+
+</body>
+
+</html>

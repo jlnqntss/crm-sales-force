@@ -31,18 +31,42 @@
             </criteriaItems>
         </ruleEntry>
         <ruleEntry>
-            <assignedTo>Customer_Care</assignedTo>
+            <assignedTo>Customer_Care_ICP_Spain</assignedTo>
             <assignedToType>Queue</assignedToType>
-            <booleanFilter>1 OR 2</booleanFilter>
+            <booleanFilter>1 AND 2 AND 3 AND (4 OR 5)</booleanFilter>
             <criteriaItems>
-                <field>Case.Origin</field>
+                <field>Case.SourceCountry__c</field>
                 <operation>equals</operation>
-                <value>Web</value>
+                <value>Spain</value>
             </criteriaItems>
             <criteriaItems>
-                <field>Case.Origin</field>
+                <field>Case.Type</field>
                 <operation>equals</operation>
-                <value>Email</value>
+                <value>Siniestro</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.LegalEntity__c</field>
+                <operation>equals</operation>
+                <value>General Insurance</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Subtype__c</field>
+                <operation>contains</operation>
+                <value>Documentacion - Factura Dispositivo,Documentacion - Fotos Dispositivo,Documentacion - Bloqueo IMEI Dispositivo,Documentacion - Denuncia Dispositivo,Documentacion Otros Dispositivo,Pago de franquicia Dispositivo,Desactivar FMI Dispositivo</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Subtype__c</field>
+                <operation>contains</operation>
+                <value>Denegacion de cobertura Dispositivo,Dudas sobre recogida/entrega Dispositivo,Problemas con el transportista Dispositivo,Reparacion incorrecta Dispositivo,Retraso en la reparacion Dispositivo,Otros Dispositivo</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Care</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.SourceCountry__c</field>
+                <operation>equals</operation>
+                <value>Spain</value>
             </criteriaItems>
         </ruleEntry>
     </assignmentRule>
