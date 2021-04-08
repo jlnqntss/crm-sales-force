@@ -392,10 +392,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Bloqueo de IMEI</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Coberturas</fullName>
             <default>false</default>
         </values>
@@ -428,10 +424,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Estado de mi siniestro</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Franquicia</fullName>
             <default>false</default>
         </values>
@@ -449,14 +441,6 @@
         </values>
         <values>
             <fullName>Precio de mi seguro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Problema con la reparacion</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recogida%2FEntrega</fullName>
             <default>false</default>
         </values>
         <values>
