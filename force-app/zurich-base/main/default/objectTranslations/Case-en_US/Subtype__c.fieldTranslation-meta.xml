@@ -15,24 +15,20 @@
         <translation>App</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Backoffice</masterLabel>
-        <translation><!-- Backoffice --></translation>
+        <masterLabel>Asistencia en Viaje</masterLabel>
+        <translation>Travel assistance</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Bloqueo de IMEI</masterLabel>
-        <translation>Block IMEI</translation>
+        <masterLabel>Backoffice</masterLabel>
+        <translation><!-- Backoffice --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Cambio de intermediario</masterLabel>
         <translation><!-- Cambio de intermediario --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Campañas Proactiva</masterLabel>
-        <translation><!-- Campañas Proactiva --></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>Campañas Reactivo</masterLabel>
-        <translation><!-- Campañas Reactivo --></translation>
+        <masterLabel>Campaña</masterLabel>
+        <translation><!-- Campaña --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Cancelacion</masterLabel>
@@ -75,6 +71,18 @@
         <translation>When will I be informed?</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Cómo abro un siniestro de Dispositivo</masterLabel>
+        <translation>How do I open a device claim?</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cómo abro un siniestro de Movilidad</masterLabel>
+        <translation>How do I open a mobility claim?</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cómo abro un siniestro de Vida</masterLabel>
+        <translation>How do I open a life claim?</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Datos de pago</masterLabel>
         <translation>Payment information</translation>
     </picklistValues>
@@ -87,36 +95,132 @@
         <translation>Denial of cover</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Denegación de cobertura (borrar)</masterLabel>
-        <translation><!-- Denegación de cobertura (borrar) --></translation>
+        <masterLabel>Denegación de cobertura Dispositivo</masterLabel>
+        <translation>Denial of device cover</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Denegación de cobertura Movilidad</masterLabel>
+        <translation>Denial of mobility cover</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Denegación de cobertura Vida</masterLabel>
+        <translation>Denial of life cover</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Desactivar FMI</masterLabel>
         <translation>Deactivate FMI</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Desactivar FMI Dispositivo</masterLabel>
+        <translation>Deactivate device FMI</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Descargar App</masterLabel>
         <translation>Download app</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Documentación incorrecta</masterLabel>
-        <translation>Incorrect policy documents</translation>
+        <masterLabel>Devolución de recibo liquidado mediador</masterLabel>
+        <translation><!-- Devolución de recibo liquidado mediador --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Bloqueo IMEI</masterLabel>
+        <translation>Documentation – IMEI Blockage</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Bloqueo IMEI Dispositivo</masterLabel>
+        <translation>Documentation – Device IMEI Blockage</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Denuncia</masterLabel>
+        <translation>Documentation – Complaint</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Denuncia Dispositivo</masterLabel>
+        <translation>Documentation – Device Complaint</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Denuncia Movilidad</masterLabel>
+        <translation>Documentation – Mobility Complaint</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Factura</masterLabel>
+        <translation>Documentation - Invoice</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Factura Dispositivo</masterLabel>
+        <translation>Documentation - Device Invoice</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Factura Movilidad</masterLabel>
+        <translation>Documentation - Mobility Invoice</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Fotos</masterLabel>
+        <translation>Documentation - Photos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Fotos Dispositivo</masterLabel>
+        <translation>Documentation - Device Photos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación - Fotos Movilidad</masterLabel>
+        <translation>Documentation - Mobility Photos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación Otros</masterLabel>
+        <translation><!-- Documentación Otros --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación Otros Dispositivo</masterLabel>
+        <translation>Documentation Others Device</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación Otros Movilidad</masterLabel>
+        <translation>Documentation Others Mobility</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentación Otros Vida</masterLabel>
+        <translation>Documentation Others Life</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Documentación necesaria</masterLabel>
-        <translation>Documents required</translation>
+        <translation><!-- Documentación necesaria --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Dudas sobre recogida/entrega</masterLabel>
+        <translation>Doubts about collection/delivery</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Dudas sobre recogida/entrega Dispositivo</masterLabel>
+        <translation>Doubts about device collection/delivery</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Dudas sobre recogida/entrega Movilidad</masterLabel>
+        <translation>Doubts about mobility collection/delivery</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>El precio de mi renovacion</masterLabel>
         <translation>My rate on renewal</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Embargo Cliente</masterLabel>
+        <translation><!-- Embargo Cliente --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Embargo Mediador</masterLabel>
+        <translation><!-- Embargo Mediador --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Envíos</masterLabel>
         <translation><!-- Envíos --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Estado de mi siniestro</masterLabel>
-        <translation>Status of my claim</translation>
+        <masterLabel>Escalable</masterLabel>
+        <translation>Scalable</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Felicitación</masterLabel>
+        <translation><!-- Felicitación --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Franquicia</masterLabel>
@@ -131,8 +235,32 @@
         <translation><!-- Gestión de recibos --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Incidencias</masterLabel>
-        <translation><!-- Incidencias --></translation>
+        <masterLabel>Incidencias (Cliente)</masterLabel>
+        <translation><!-- Incidencias (Cliente) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Incidencias (Mediador)</masterLabel>
+        <translation><!-- Incidencias (Mediador) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Incidencias Mi Zurich</masterLabel>
+        <translation><!-- Incidencias Mi Zurich --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Indemnización de mi vehiculo</masterLabel>
+        <translation>Compensation of my vehicle</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Indemnización de mi vehiculo Movilidad</masterLabel>
+        <translation>Compensation of my vehicle</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Indemnización por mis lesiones</masterLabel>
+        <translation>Compensation for my injuries</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Indemnización por mis lesiones Movilidad</masterLabel>
+        <translation>Compensation for my injuries</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Información</masterLabel>
@@ -183,28 +311,60 @@
         <translation>Others</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Otros Dispositivo</masterLabel>
+        <translation>Others devices</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Otros Movilidad</masterLabel>
+        <translation>Others mobility</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Otros Vida</masterLabel>
+        <translation>Others life</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Pago</masterLabel>
         <translation>Payment</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Pago de Franquicia Movilidad</masterLabel>
+        <translation>Payment of the mobility excess fee</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Pago de franquicia</masterLabel>
         <translation>Payment of the excess fee</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Pago de franquicia Dispositivo</masterLabel>
+        <translation>Payment of the device excess fee</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Partnership</masterLabel>
+        <translation><!-- Partnership --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Precio de mi seguro</masterLabel>
         <translation>My rate</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Problema con la reparación</masterLabel>
-        <translation>Problem with repair</translation>
+        <masterLabel>Problemas con el transportista</masterLabel>
+        <translation>Problems with the carrier</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Problema con la reparación (borrar)</masterLabel>
-        <translation><!-- Problema con la reparación (borrar) --></translation>
+        <masterLabel>Problemas con el transportista Dispositivo</masterLabel>
+        <translation>Problems with the device carrier</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Quejas y reclamaciones</masterLabel>
-        <translation><!-- Quejas y reclamaciones --></translation>
+        <masterLabel>Problemas con el transportista Movilidad</masterLabel>
+        <translation>Problems with the mobility carrier</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Queja</masterLabel>
+        <translation><!-- Queja --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Reclamación</masterLabel>
+        <translation><!-- Reclamación --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Recobro indirecto</masterLabel>
@@ -219,10 +379,6 @@
         <translation><!-- Recobro reactivo --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Recogida/Entrega</masterLabel>
-        <translation>Collection/delivery</translation>
-    </picklistValues>
-    <picklistValues>
         <masterLabel>Reemplazo</masterLabel>
         <translation><!-- Reemplazo --></translation>
     </picklistValues>
@@ -231,16 +387,52 @@
         <translation><!-- Rehabilitación --></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Resolucion de mi siniestro</masterLabel>
-        <translation>Resolving my claim</translation>
+        <masterLabel>Rehuse daños</masterLabel>
+        <translation>Refuse damage</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Rehuse daños Movilidad</masterLabel>
+        <translation>Refuse damage</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Reparación incorrecta</masterLabel>
+        <translation>Incorrect repair</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Reparación incorrecta Dispositivo</masterLabel>
+        <translation>Incorrect device repair</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Reparación incorrecta Movilidad</masterLabel>
+        <translation>Incorrect mobility repair</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Retención</masterLabel>
         <translation><!-- Retención --></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Retraso en la reparación</masterLabel>
+        <translation>Delayed repair</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Retraso en la reparación Dispositivo</masterLabel>
+        <translation>Delayed device repair</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Retraso en la reparación Movilidad</masterLabel>
+        <translation>Delayed mobility repair</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Revocación Saneamiento</masterLabel>
         <translation><!-- Revocación Saneamiento --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SWAP - experiencia</masterLabel>
+        <translation><!-- SWAP - experiencia --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SWAP - incidencias</masterLabel>
+        <translation><!-- SWAP - incidencias --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Saneamiento</masterLabel>
@@ -251,23 +443,15 @@
         <translation>Request invoice</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Sugerencias /felicitaciones</masterLabel>
-        <translation><!-- Sugerencias /felicitaciones --></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>Tareas administrativas</masterLabel>
-        <translation><!-- Tareas administrativas --></translation>
+        <masterLabel>Sugerencia</masterLabel>
+        <translation><!-- Sugerencia --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Validación</masterLabel>
-        <translation>Validation</translation>
+        <translation><!-- Validación --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Validación/ emisión</masterLabel>
         <translation><!-- Validación/ emisión --></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>Verificación Riesgo</masterLabel>
-        <translation><!-- Verificación Riesgo --></translation>
     </picklistValues>
 </CustomFieldTranslation>

@@ -388,11 +388,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Backoffice</fullName>
+            <fullName>Asistencia en Viaje</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Bloqueo de IMEI</fullName>
+            <fullName>Backoffice</fullName>
             <default>false</default>
         </values>
         <values>
@@ -405,6 +405,18 @@
         </values>
         <values>
             <fullName>Como abro un siniestro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Como abro un siniestro de Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Como abro un siniestro de Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Como abro un siniestro de Vida</fullName>
             <default>false</default>
         </values>
         <values>
@@ -448,7 +460,23 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Denegacion de cobertura Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegacion de cobertura Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegacion de cobertura Vida</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Desactivar FMI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desactivar FMI Dispositivo</fullName>
             <default>false</default>
         </values>
         <values>
@@ -456,11 +484,79 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Documentacion - Bloqueo IMEI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Bloqueo IMEI Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Denuncia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Denuncia Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Denuncia Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Factura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Factura Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Factura Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Fotos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Fotos Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion - Fotos Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion Otros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion Otros Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion Otros Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentacion Otros Vida</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Documentacion necesaria</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Documentación incorrecta</fullName>
+            <fullName>Dudas sobre recogida%2Fentrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dudas sobre recogida%2Fentrega Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dudas sobre recogida%2Fentrega Movilidad</fullName>
             <default>false</default>
         </values>
         <values>
@@ -468,11 +564,27 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Estado de mi siniestro</fullName>
+            <fullName>Escalable</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Franquicia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indemnizacion de mi vehiculo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indemnizacion de mi vehiculo Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indemnizacion por mis lesiones</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indemnizacion por mis lesiones Movilidad</fullName>
             <default>false</default>
         </values>
         <values>
@@ -512,11 +624,31 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Otros Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros Vida</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Pago</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Pago de Franquicia Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Pago de franquicia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pago de franquicia Dispositivo</fullName>
             <default>false</default>
         </values>
         <values>
@@ -528,15 +660,55 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Problema con la reparacion</fullName>
+            <fullName>Problemas con el transportista</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Recogida%2FEntrega</fullName>
+            <fullName>Problemas con el transportista Dispositivo</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Resolucion de mi siniestro</fullName>
+            <fullName>Problemas con el transportista Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rehuse daños</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rehuse daños Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reparacion incorrecta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reparacion incorrecta Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reparacion incorrecta Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso en la reparacion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso en la reparacion Dispositivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso en la reparacion Movilidad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SWAP - experiencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SWAP - incidencias</fullName>
             <default>false</default>
         </values>
         <values>

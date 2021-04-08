@@ -10,8 +10,8 @@
  **/
 public with sharing class PreferenceCentreController {
   //#Region Constructor
-  // public PreferenceCentreController() {
-  // }
+  public PreferenceCentreController() {
+  }
   //#endregion
 
   // Name of the static resource for the normal logo
@@ -47,8 +47,8 @@ public with sharing class PreferenceCentreController {
       this.contactSubscribed = contactSubscribed;
     }
 
-    // public CampaignStatus() {
-    // }
+    public CampaignStatus() {
+    }
   }
 
   /**

@@ -19,6 +19,29 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Cases_CC_GI_France_ICP</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cases CC GI France ICP</label>
+        <sharedTo>
+            <group>KLINC_CustomerCare_GI_France_ICP</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>France</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Type</field>
+            <operation>equals</operation>
+            <value>Siniestro</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Cases_CC_GI_Germany</fullName>
         <accessLevel>Edit</accessLevel>
         <label>Cases CC GI Germany</label>
@@ -37,6 +60,29 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Cases_CC_GI_Germany_ICP</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cases CC GI Germany ICP</label>
+        <sharedTo>
+            <group>KLINC_CustomerCare_GI_Germany_ICP</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Germany</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Type</field>
+            <operation>equals</operation>
+            <value>Siniestro</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Cases_CC_GI_Spain</fullName>
         <accessLevel>Edit</accessLevel>
         <label>Cases CC GI Spain</label>
@@ -52,6 +98,29 @@
             <field>LegalEntity__c</field>
             <operation>equals</operation>
             <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cases_CC_GI_Spain_ICP</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cases CC GI Spain ICP</label>
+        <sharedTo>
+            <group>KLINC_CustomerCare_GI_Spain_ICP</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Spain</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Type</field>
+            <operation>equals</operation>
+            <value>Siniestro</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>

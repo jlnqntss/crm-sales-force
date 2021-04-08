@@ -99,6 +99,24 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Contacts_GI_Spain_ICP</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Contacts_GI_Spain_ICP</label>
+        <sharedTo>
+            <group>KLINC_CustomerCare_GI_Spain_ICP</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>SourceCountry__c</field>
+            <operation>equals</operation>
+            <value>Spain</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>General Insurance</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Contacts_Life_Orange</fullName>
         <accessLevel>Read</accessLevel>
         <label>Contacts Life Orange</label>
