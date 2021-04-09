@@ -180,6 +180,16 @@ private class OpenIDConnectRegHandlerTest
                                                 Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_SIGNATURE,
                                                 Order__c= 1
                                                 ) );
+
+            // Title
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                                                Label= 'TestTitleA',
+                                                DeveloperName= 'TestTitleA',
+                                                Role_Name__c= IAM_ROLE_A,
+                                                Permission__c= 'TestTitleA',
+                                                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_TITLE,
+                                                Order__c= 1
+                                                ) );
         }
 
         // ROLE_ADMIN - Must be first because in the select there is the order field
@@ -237,6 +247,7 @@ private class OpenIDConnectRegHandlerTest
             // NO SF Role
             // NO Department
             // NO Signature
+            // NO Title
         }
 
         // return de data structure from IAM
@@ -582,4 +593,57 @@ private class OpenIDConnectRegHandlerTest
         User createdUser = [SELECT Signature FROM user WHERE id=:u.Id];
         System.assertEquals(textSignature, createdUser.Signature, 'The signature should not change');
     }    
+
+    
+    /**
+     * Test the assignment of a Title to the user
+     *
+     * @author nts (agonzalezisasi)
+     * @date 09/04/2021
+     */
+    @isTest
+    static void testTitleInsert()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        User createdUser = [SELECT userName, Title FROM user WHERE id=:u.Id];
+        System.assertEquals('TestTitleA', createdUser.Title, 'The title of the user should be TestTitleA');
+    }
+
+    /**
+     * Test the update of a Title to the user
+     *
+     * @author nts (agonzalezisasi)
+     * @date 09/04/2021
+     */
+    @isTest
+    static void testTitleUpdate()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+
+        // Add a second title with higher order (put first in the list) so the process can find a change in the title
+        handler.testListAuthMappings.add(0, new AuthMapping__mdt(
+                                                Label= 'TestTitleA2',
+                                                DeveloperName= 'TestTitleA2',
+                                                Role_Name__c= IAM_ROLE_A,
+                                                Permission__c= 'TestTitleA2',
+                                                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_TITLE,
+                                                Order__c= 0
+                                                ) );
+        handler.updateUser(u.Id, null, sampleDataIAM);
+        
+        Test.stopTest();
+
+        User updatedUser = [SELECT userName, Title FROM user WHERE id=:u.Id];
+        System.assertEquals('TestTitleA2', updatedUser.Title, 'The title of the user should be TestTitleA2');
+    }
 }

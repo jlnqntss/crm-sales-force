@@ -32,6 +32,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     private static final string PERMISSION_TYPE_DEPARTMENT = 'Department';
     @testvisible
     private static final string PERMISSION_TYPE_SIGNATURE = 'Signature';
+    @testvisible
+    private static final string PERMISSION_TYPE_TITLE = 'Title';
 
     @testvisible
     private static final string AUTH_DATA_MAP_NAME = 'roles';
@@ -99,6 +101,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_ROLE, null);
         mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
         mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
+        mapAuthData.put(PERMISSION_TYPE_TITLE, null);
         // fill the map with the configuration
         getAuthData( roleNameList, mapAuthData );
 
@@ -113,6 +116,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
         // GET Department
         String department             = getDepartmentFromRoles(mapAuthData.get(PERMISSION_TYPE_DEPARTMENT));
+
+        // GET Title
+        String title                  = getTitleFromRoles(mapAuthData.get(PERMISSION_TYPE_TITLE));
 
         // NEW USER
         u                             = new User();
@@ -132,7 +138,10 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             u.UserRoleId              = roleId;
         if( callcenterId != null )
             u.CallCenterId            = callcenterId;
-        u.Department                  = department;
+        if( String.isNotBlank(department) )
+            u.Department              = department;
+        if( String.isNotBlank(title) )
+            u.Title                   = title;
 
         insert u;
 
@@ -182,6 +191,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_ROLE, null);
         mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
         mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
+        mapAuthData.put(PERMISSION_TYPE_TITLE, null);
         getAuthData( roleNameList, mapAuthData );
 
         // Get PROFILE ID
@@ -199,9 +209,12 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         // GET Signature
         String signature              = getSignature(userId, mapAuthData.get(PERMISSION_TYPE_SIGNATURE));
 
+        // GET Title
+        String title                  = getTitleFromRoles(mapAuthData.get(PERMISSION_TYPE_TITLE));
+
         // UPDATE USER
         User u = [
-            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature
+            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title
             FROM User WHERE Id =: userId LIMIT 1
         ];
 
@@ -209,7 +222,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         modified = (u.firstName != data.firstName || u.lastName != data.lastName || u.Department != department ||
                     u.userName != data.username + USERNAME_SERVER || u.profileId != profileId || u.CallCenterId != callcenterId ||
                     u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email ||
-                    (String.isNotBlank(signature) && signature != u.Signature));
+                    (String.isNotBlank(signature) && signature != u.Signature) ||
+                    u.Title != title
+                );
 
         if (modified)
         {
@@ -230,6 +245,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                 u.Department = department;
             if( String.isNotBlank(signature) && u.Signature != signature )
                 u.Signature = signature;
+            if( u.Title != title )
+                u.Title = title;
 
             update(u);
         }
@@ -418,6 +435,26 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         if( deptNames != null && !deptNames.isEmpty() ) {
             // because of the order in the query, the first one should be the best one
             result = deptNames[0];
+        }
+
+        return result;
+    }
+
+    /**
+     * Get the title configured for the given list of roles.
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 09/04/2021
+     * @param {List<String> titleNames} A list of titles
+     * @return {string}: The title
+     */
+    private String getTitleFromRoles(List<String> titleNames ) 
+    {
+        String result = null;
+
+        if( titleNames != null && !titleNames.isEmpty() ) {
+            // because of the order in the query, the first one should be the best one
+            result = titleNames[0];
         }
 
         return result;
