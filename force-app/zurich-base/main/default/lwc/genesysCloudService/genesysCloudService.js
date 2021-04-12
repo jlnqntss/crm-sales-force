@@ -8,6 +8,7 @@ import genesysCloudChannel from "@salesforce/messageChannel/purecloud__ClientEve
 import conferenceTo from "@salesforce/apex/GenesysCloudLightningController.conferenceTo";
 import isAuthorized from "@salesforce/apex/GenesysCloudLightningController.isAuthorized";
 import authorize from "@salesforce/apex/GenesysCloudLightningController.authorize";
+import getActiveCalls from "@salesforce/apex/GenesysCloudLightningController.getActiveCalls";
 
 const messageContext = createMessageContext();
 const state = {
@@ -70,11 +71,15 @@ export default {
       }
     });
   },
-  conference(phoneNumber, uuiData) {
+  conference(phoneNumber, attributesByName, fallbackToUUI) {
     return conferenceTo({
       toAddress: phoneNumber,
-      uuiData: uuiData
+      attributesByName: attributesByName,
+      fallbackToUUI: fallbackToUUI
     });
+  },
+  getActiveCalls() {
+    return getActiveCalls();
   },
   isAuthorized() {
     return isAuthorized();

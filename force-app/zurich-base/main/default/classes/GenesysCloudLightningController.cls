@@ -41,14 +41,33 @@ public with sharing class GenesysCloudLightningController
      * @author jmartinezpisson
      * @date 31/03/2021
      * @param  toAddress Número de teléfono destino al que conferenciar
-     * @param  uuiData   Texto a enviar como datos de la llamada. Viajarán como UUI y como la clave uuiData dentro del Participant de Genesys Cloud
+     * @param attributesByName Mapa clave-valor de los atributos a transferir al conferenciado.
+     * @param  fallbackToUUI Envía los atributos a través del UUI como valores separados por pipe.
      */
     @AuraEnabled
-    public static void conferenceTo(String toAddress, String uuiData)
+    public static void conferenceTo(String toAddress, Map<String,String> attributesByName, Boolean fallbackToUUI)
     {
         try
         {
-            GenesysCloud.CallsService.conferenceTo(toAddress, uuiData);
+            GenesysCloud.CallsService.conferenceTo(toAddress, attributesByName, fallbackToUUI);
+        }
+        catch(Exception error)
+        {
+            throw new AuraHandledException(error.getMessage() );
+        }
+    }
+
+    /**
+     * @description Obtiene las llamadas activas para el usuario logado en Genesys
+     * @author jmartinezpisson
+     * @date 31/03/2021
+     */
+    @AuraEnabled
+    public static GenesysCloud.Call[] getActiveCalls()
+    {
+        try
+        {
+            return GenesysCloud.CallsService.getActive();
         }
         catch(Exception error)
         {

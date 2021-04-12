@@ -16,19 +16,30 @@ export default class TestGenesysCloudService extends LightningElement {
   }
 
   consult() {
-    genesysCloud.conference(
-      this.template.querySelector("lightning-input").value
-    );
+    genesysCloud.consult(this.template.querySelector("lightning-input").value);
   }
 
   transfer() {
     genesysCloud.transfer(this.template.querySelector("lightning-input").value);
   }
 
+  async startRecording() {
+    var activeCalls = await genesysCloud.getActiveCalls();
+
+    if (activeCalls.length) {
+      genesysCloud.conference(
+        this.template.querySelector("lightning-input").value,
+        {
+          parentConversationId: activeCalls[0].id
+        },
+        true
+      );
+    }
+  }
+
   conference() {
     genesysCloud.conference(
-      this.template.querySelector("lightning-input").value,
-      "Mi llamada"
+      this.template.querySelector("lightning-input").value
     );
   }
 

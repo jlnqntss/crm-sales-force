@@ -44,9 +44,9 @@ export default class CallRecordingButton extends LightningElement {
   /**
    * Event. The user tries to start/stop the recording
    */
-  handleRecordingClick() {
+  async handleRecordingClick() {
     try {
-      genesysCloud.consult(this.recordingPhoneNumber);
+      await this.startRecording();
       this.isDisabled = true;
       //console.log('start recording...');
 
@@ -65,6 +65,27 @@ export default class CallRecordingButton extends LightningElement {
       console.error(error);
       this.showMessage(error, "error");
     }
+  }
+
+  /**
+   * Starts the recording
+   *
+   * @author nts (rlopez)
+   */
+  async startRecording() {
+    var activeCalls = await genesysCloud.getActiveCalls();
+
+    if (!activeCalls.length) {
+      return Promise.resolve();
+    }
+
+    return genesysCloud.conference(
+      this.recordingPhoneNumber,
+      {
+        parentConversationId: activeCalls[0].id
+      },
+      true
+    );
   }
 
   /**
