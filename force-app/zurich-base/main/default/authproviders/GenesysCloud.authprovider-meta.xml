@@ -4,11 +4,11 @@
     <consumerKey>a4b7cfe1-ccf8-4a64-8304-b83aa10dfdd7</consumerKey>
     <consumerSecret>fm74Lcd1FH3WG/ctdA30mnylM76yHqk1HpFRGp09TvNfaltEpnFqzuXjFgxuTDEi</consumerSecret>
     <defaultScopes>openid</defaultScopes>
-    <executionUser>adminklinc@zurich-es.com.deva</executionUser>
+    <executionUser>adminklinc@zurich-es.com.devf</executionUser>
     <friendlyName>Genesys Cloud</friendlyName>
     <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
     <providerType>OpenIdConnect</providerType>
-    <registrationHandler>AutocreatedRegHandler1617108713316</registrationHandler>
+    <registrationHandler>GenesysCloudRegHandler</registrationHandler>
     <sendAccessTokenInHeader>true</sendAccessTokenInHeader>
     <sendClientCredentialsInHeader>true</sendClientCredentialsInHeader>
     <sendSecretInApis>true</sendSecretInApis>

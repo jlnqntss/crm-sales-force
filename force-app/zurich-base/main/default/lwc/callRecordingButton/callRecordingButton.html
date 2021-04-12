@@ -1,15 +1,26 @@
 <template>
-  <lightning-button-stateful
-    data-id="record-button"
-    label-when-off={label.callRecordingStart}
-    label-when-on={timeVal}
-    label-when-hover={label.callRecordingStop}
-    icon-name-when-off="utility:play"
-    icon-name-when-on="utility:record"
-    icon-name-when-hover="utility:stop"
-    selected={isSelected}
-    onclick={handleClick}
-    variant="brand"
+  <template if:false={hideRecordButton}>
+    <lightning-button-stateful
+      data-id="record-button"
+      label-when-off={labelWhenOff}
+      label-when-on={timeVal}
+      label-when-hover={labelWhenHover}
+      icon-name-when-off="utility:play"
+      icon-name-when-on="utility:record"
+      icon-name-when-hover="utility:stop"
+      selected={isSelected}
+      onclick={handleRecordingClick}
+      variant={buttonColor}
+    >
+    </lightning-button-stateful>
+  </template>
+  <lightning-button
+    variant={buttonColor}
+    onclick={handleRecordingClick}
+    disabled={isDisabled}
+    label={label.callRecordingStart}
+    data-id="start-recording"
+    icon-name="utility:record"
   >
-  </lightning-button-stateful>
+  </lightning-button>
 </template>

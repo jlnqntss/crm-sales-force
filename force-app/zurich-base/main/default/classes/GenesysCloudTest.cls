@@ -479,7 +479,7 @@ private class GenesysCloudTest
         Test.stopTest();
 
         // Then
-        System.assertEquals(null, expectedError, 'No se ha emitido excepción');
+        System.assertNotEquals(null, expectedError, 'No se ha emitido excepción');
         System.assertEquals(true, expectedError.getMessage().contains('Not Found'), 'El mensaje no coincide');
     }
 
