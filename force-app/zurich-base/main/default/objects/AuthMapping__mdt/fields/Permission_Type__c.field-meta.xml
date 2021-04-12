@@ -46,6 +46,11 @@
                 <default>false</default>
                 <label>Signature</label>
             </value>
+            <value>
+                <fullName>Title</fullName>
+                <default>false</default>
+                <label>Title</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
