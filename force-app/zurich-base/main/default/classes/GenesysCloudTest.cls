@@ -483,6 +483,63 @@ private class GenesysCloudTest
         System.assertEquals(true, expectedError.getMessage().contains('Not Found'), 'El mensaje no coincide');
     }
 
+    @isTest
+    static void test_CallsService_ConferenceTo()
+    {
+        // Respuesta al getActive
+        String conversationId = '9d720887-910f-402d-b102-946c2c273992';
+        Map<String, String> attributes = new Map<String, String>{
+            'parentConversationId' => conversationId
+        };
+
+        // Mock
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addActiveConversationsMockResponse(conversationId);
+        responsesMock.addParticipantMockResponse(conversationId);
+        responsesMock.addUUIDMockResponse();
+        responsesMock.addConsultMockResponse();
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        Test.startTest();
+
+        GenesysCloud.CallsService.conferenceTo('+349999999', attributes, true);
+
+        Test.stopTest();
+
+        // no hay asserts porque no devuelve nada el metodo
+
+        // Para cobertura
+        GenesysCloud.ConsultTransferDestination destination = new GenesysCloud.ConsultTransferDestination();
+        String json = destination.toJSON();
+    }
+
+    @isTest
+    static void test_CallsService_getCall()
+    {
+        // Respuesta al getActive
+        String interactionId = '30136822-029b-4582-a171-25297a793326';
+        String conversationId = '9d720887-910f-402d-b102-946c2c273992';
+
+        // Mock
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addCallMockResponse(interactionId, conversationId);
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        Test.startTest();
+
+        GenesysCloud.Call c = GenesysCloud.CallsService.get(interactionId);
+
+        Test.stopTest();
+
+        System.assertNotEquals(null, c, 'La llamada deberia existir');
+        // para cobertura
+        String json = c.toJSON();
+        System.assertNotEquals(null, c.participants, 'Deberia haber participantes');
+        System.assertNotEquals(true, c.participants.isEmpty(), 'Deberia haber algun participante');
+        GenesysCloud.Participant p = c.participants[0];
+        json = p.toJSON();
+    }
+
     //#endregion
 
     @isTest

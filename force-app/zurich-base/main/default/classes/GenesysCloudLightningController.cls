@@ -4,6 +4,10 @@
 public with sharing class GenesysCloudLightningController
 {
     private final static String GENESYS_CLOUD_NAMED_CREDENTIAL = 'GenesysCloud';
+
+    @testvisible
+    private static ExternalDataUserAuth testExternalDataUserAuth = null;
+
     /**
      * Verifica si el usuario está autorizado en la Named Credential de usuario de Genesys Cloud
      * @author jmartinezpisson
@@ -13,6 +17,10 @@ public with sharing class GenesysCloudLightningController
     public static Boolean isAuthorized()
     {
         List<ExternalDataUserAuth> userAuths = [SELECT Id FROM ExternalDataUserAuth WHERE ExternalDataSourceId IN (SELECT Id FROM NamedCredential WHERE DeveloperName = :GENESYS_CLOUD_NAMED_CREDENTIAL)  AND UserId = :UserInfo.getUserId()];
+
+        if( Test.isRunningTest() ) {
+            userAuths.add(testExternalDataUserAuth);
+        }
 
         return userAuths.isEmpty();
     }

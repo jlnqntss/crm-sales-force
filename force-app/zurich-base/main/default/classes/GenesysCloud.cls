@@ -974,7 +974,7 @@ public class GenesysCloud
         @auraEnabled
         public Map<String, String> attributes;
 
-        String toJSON()
+        public String toJSON()
         {
             return JSON.serialize(this, true);
         }
