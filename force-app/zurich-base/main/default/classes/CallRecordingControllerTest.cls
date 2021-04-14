@@ -42,6 +42,8 @@ public class CallRecordingControllerTest
     @isTest
     static void test_getRecordingPhoneNumber_ko()
     {
+        CallRecordingController.testListRecordingPhoneNumber = new List<AdminSetupParameter__mdt>();
+
         Test.startTest();
         String recordingPhoneNumberResult = CallRecordingController.getRecordingPhoneNumber();
         Test.stopTest();

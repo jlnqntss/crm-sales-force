@@ -15,9 +15,7 @@ public without sharing class CallRecordingController
         String genesysRecordingNumber = '';
         List<AdminSetupParameter__mdt> settings = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = 'GenesysRecordingNumber'];
         if( Test.isRunningTest() ) {
-            if( testListRecordingPhoneNumber != null ) {
-                settings = testListRecordingPhoneNumber;
-            }
+            settings = testListRecordingPhoneNumber;
         }
         if( settings != null && !settings.isEmpty() ) {
             genesysRecordingNumber = settings[0].Value__c;
