@@ -461,6 +461,7 @@ public without sharing class GenesysInteractionsService
         {
             Account customer = accounts.get(0);
             results.screenPopRecordId = customer.Id;
+            results.nationalId = customer.NationalId__c;
             results.totalPolicies = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
 
@@ -507,6 +508,7 @@ public without sharing class GenesysInteractionsService
             results.territoryCode = intermediary.ZoneCode__c;
             results.phone = String.isBlank(intermediary.MainMobilePhone__c)? intermediary.Phone : intermediary.MainMobilePhone__c;
             results.email = intermediary.MainEmail__c;
+            results.nationalId = intermediary.NationalId__c; 
 
             results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c));
         }
@@ -968,6 +970,7 @@ public without sharing class GenesysInteractionsService
         public Agent[] bestAgents;
         public ActivePolicies policies;
         public OpenedClaims claims;
+        public String nationalId;
 
         public override String toString()
         {
