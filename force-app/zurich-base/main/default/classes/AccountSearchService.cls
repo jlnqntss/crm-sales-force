@@ -39,7 +39,8 @@ public with sharing class AccountSearchService
                 Account.NumPolicies__pc,
                 Account.NumQuotes__pc,
                 Account.Name,
-                Account.PersonContactId
+                Account.PersonContactId,
+                Account.NationalId__c
             }
         );
 
@@ -84,7 +85,8 @@ public with sharing class AccountSearchService
                 Account.NumPolicies__pc,
                 Account.NumQuotes__pc,
                 Account.Name,
-                Account.PersonContactId
+                Account.PersonContactId,
+                Account.NationalId__c
             }
         );
 

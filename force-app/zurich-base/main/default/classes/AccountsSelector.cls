@@ -100,7 +100,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.NumQuotes__pc,
                 Account.MainMobilePhone__c,
                 Account.Phone,
-                Account.MainEmail__c
+                Account.MainEmail__c,
+                Account.NationalId__c
             }
         );
 
@@ -138,7 +139,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.NumQuotes__pc,
                 Account.MainMobilePhone__c,
                 Account.Phone,
-                Account.MainEmail__c
+                Account.MainEmail__c,
+                Account.NationalId__c
             }
         );
 
@@ -169,7 +171,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.NumQuotes__pc,
                 Account.MainMobilePhone__c,
                 Account.Phone,
-                Account.MainEmail__c
+                Account.MainEmail__c,
+                Account.NationalId__c
             }
         );
 
@@ -208,7 +211,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                     Account.NumQuotes__pc,
                     Account.MainMobilePhone__c,
                     Account.Phone,
-                    Account.MainEmail__c
+                    Account.MainEmail__c,
+                    Account.NationalId__c
                 }
             );
 
@@ -259,7 +263,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                     Account.NumQuotes__pc,
                     Account.MainMobilePhone__c,
                     Account.Phone,
-                    Account.MainEmail__c
+                    Account.MainEmail__c,
+                    Account.NationalId__c
                 }
             );
 
@@ -311,7 +316,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.CsmAdministrationManager__c,
                 Account.MainMobilePhone__c,
                 Account.Phone,
-                Account.MainEmail__c
+                Account.MainEmail__c,
+                Account.NationalId__c
             }
         );
 
@@ -353,7 +359,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                     Account.CsmAdministrationManager__c,
                     Account.MainMobilePhone__c,
                     Account.Phone,
-                    Account.MainEmail__c
+                    Account.MainEmail__c,
+                    Account.NationalId__c
                 }
             );
 
