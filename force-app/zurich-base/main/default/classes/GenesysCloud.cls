@@ -13,7 +13,18 @@ public class GenesysCloud
 
     public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS, SERVICE_SMS }
 
-    public class GenesysCloudException extends Exception {}
+    public class GenesysCloudException extends Exception
+    {
+        public GenesysCloudException(HttpResponse response)
+        {
+            this.setMessage(String.format('{0}: {1} \n{2}',new List<String>
+            {
+                response.getStatusCode() + '',
+                response.getStatus(),
+                response.getBody()
+            }) );
+        }
+    }
 
     //#region Módulos
 
@@ -49,6 +60,7 @@ public class GenesysCloud
         }
         private set;
     }
+
     /**
      * Getter de solo lectura que devuelve la instancia Singleton de SMSService
      */
@@ -62,6 +74,23 @@ public class GenesysCloud
             }
 
             return SMSService;
+        }
+        private set;
+    }
+
+    /**
+     * Getter de solo lectura que devuelve la instancia Singleton de CallbacksService
+     */
+    public static GenesysCloud.CallsService CallsService
+    {
+        get
+        {
+            if(CallsService == null)
+            {
+                CallsService = new GenesysCloud.CallsService();
+            }
+
+            return CallsService;
         }
         private set;
     }
@@ -158,7 +187,7 @@ public class GenesysCloud
                 {
                     for(IAPIRequest request: this.requests)
                     {
-                        results.add(SMSService.send( (SmsData) request ));
+                        results.add(SMSService.send( (SmsData) request ) );
                     }
                 }
                 else
@@ -214,7 +243,8 @@ public class GenesysCloud
         {
             throw new GenesysCloud.GenesysCloudException(ERROR_VALIDATE_RESPONSE);
         }
-        switch on service {
+        switch on service
+        {
             when SERVICE_ROUTING {
                 if(response == null || response.getStatusCode() != 200)
                 {
@@ -234,6 +264,22 @@ public class GenesysCloud
                 }
             }
         }
+    }
+
+    /**
+     * Comprueba si la respuesta ha sido un 200 o 202, sino lanza Exception
+     * @param response HttpResponse del SDK
+     */
+    private static HttpResponse validateResponse(HttpResponse responseToValidate)
+    {
+
+        System.debug(responseToValidate);
+        if(responseToValidate.getStatusCode() > 202)
+        {
+            throw new GenesysCloud.GenesysCloudException(responseToValidate);
+        }
+
+        return responseToValidate;
     }
 
     //#region Módulo RoutingService
@@ -272,17 +318,6 @@ public class GenesysCloud
             work.interactionId = getIdFromResponse(response);
             return work;
         }
-
-        /**
-         * Método público que realiza una solicitud al SDK para enrutar un listado de RoutingWork de forma asíncrona
-         *
-         * @author jmartinezpisson
-         * @param {RoutingWork[]} works Trabajos a enrutar en Genesys como enails o tareas de BackOffice
-         */
-        // public void route(RoutingWork[] works)
-        // {
-        //     route(works, null);
-        // }
 
         /**
          * Método público que realiza una solicitud al SDK para enrutar un listado de RoutingWork de forma asíncrona
@@ -454,8 +489,9 @@ public class GenesysCloud
         public RoutingServiceException(HttpResponse response)
         {
             String message = ERROR_IN_RESPONSE;
-            if(response != null) {
-                message = ERROR_RESPONSE_SDK + response.getStatusCode()+ ' ' + response.getStatus() + ' ' +response.getBody();
+            if(response != null)
+            {
+                message = ERROR_RESPONSE_SDK + response.getStatusCode() + ' ' + response.getStatus() + ' ' + response.getBody();
                 this.statusCode = response.getStatusCode();
             }
             this.setMessage(message);
@@ -491,7 +527,7 @@ public class GenesysCloud
                 HttpRequest req = new HttpRequest();
                 req.setMethod('POST');
                 req.setEndpoint('/api/v2/conversations/callbacks');
-                req.setBody(callback.toJSON());
+                req.setBody(callback.toJSON() );
                 response = mock.respond(req);
             }
             else //POST
@@ -503,17 +539,6 @@ public class GenesysCloud
             callback.genesysId = getIdFromResponse(response);
             return callback;
         }
-
-        /**
-         * Método público que realiza una solicitud al SDK para crear un listado de Callbacks de forma asíncrona
-         *
-         * @author jmartinezpisson
-         * @param {Callback[]} callbacks tareas a crear en Genesys
-         */
-        // public void create(Callback[] callbacks)
-        // {
-        //     create(callbacks, null);
-        // }
 
         /**
          * Método público que realiza una solicitud al SDK para crear un listado de Callbacks de forma asíncrona
@@ -538,11 +563,11 @@ public class GenesysCloud
             String result = '';
             //Devolver el ID solamente si el body lo contiene
             String responseBody = response.getBody();
-            if(responseBody != null && String.isNotBlank(responseBody))
+            if(responseBody != null && String.isNotBlank(responseBody) )
             {
                 Map<String, Object> deserializedBody = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
-                Map<String, Object> deserializedConversation = (Map<String, Object>)deserializedBody.get('conversation');
-                result = (String)deserializedConversation.get('id');
+                Map<String, Object> deserializedConversation = (Map<String, Object>) deserializedBody.get('conversation');
+                result = (String) deserializedConversation.get('id');
             }
 
             //Si no se encuentra el id no se puede devolver
@@ -566,7 +591,7 @@ public class GenesysCloud
             get;
             set
             {
-                if(String.isNotEmpty(value))
+                if(String.isNotEmpty(value) )
                 {
                     routingData = null;
                 }
@@ -641,8 +666,9 @@ public class GenesysCloud
         public CallbacksServiceException(HttpResponse response)
         {
             String message = ERROR_IN_RESPONSE;
-            if(response != null) {
-                message = ERROR_RESPONSE_SDK + response.getStatusCode()+ ' ' + response.getStatus() + ' ' +response.getBody();
+            if(response != null)
+            {
+                message = ERROR_RESPONSE_SDK + response.getStatusCode() + ' ' + response.getStatus() + ' ' + response.getBody();
                 this.statusCode = response.getStatusCode();
             }
             this.setMessage(message);
@@ -662,7 +688,7 @@ public class GenesysCloud
 
         /**
          * Método público que realiza una solicitud al SDK para enviar un mensaje sms forma síncrona.
-         * 
+         *
          * @param {SMSData} message Mensaje a enviar a traves de Genesys
          * @return Devuelve el mensaje enviado con el identificador de objeto de Genesys Cloud.
          */
@@ -727,10 +753,10 @@ public class GenesysCloud
             return result;
         }
     }
-    
+
     /**
      * Clase pública que representa un mensaje SMS a enviar.
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 22/02/2021
      */
@@ -747,13 +773,13 @@ public class GenesysCloud
         public String toAddress;
         // Numero de telefono movil desde el que se envia la notificacion (Zurich)
         public String fromAddress;
-        // Tipo de mensaje. Actualmente (22/02/2021) SMS es el unico tipo soportado. 
+        // Tipo de mensaje. Actualmente (22/02/2021) SMS es el unico tipo soportado.
         // Valores validos: sms, facebook, twitter, line, whatsapp, webmessaging.
         public String toAddressMessengerType = 'sms';
         // El texto a enviar en el mensaje
         public String textBody;
 
-        public String toJSON() 
+        public String toJSON()
         {
             return JSON.serialize(this);
         }
@@ -768,8 +794,9 @@ public class GenesysCloud
         public SMSServiceException(HttpResponse response)
         {
             String message = ERROR_IN_RESPONSE;
-            if(response != null) {
-                message = ERROR_RESPONSE_SDK + response.getStatusCode()+ ' ' + response.getStatus() + ' ' +response.getBody();
+            if(response != null)
+            {
+                message = ERROR_RESPONSE_SDK + response.getStatusCode() + ' ' + response.getStatus() + ' ' + response.getBody();
                 this.statusCode = response.getStatusCode();
             }
             this.setMessage(message);
@@ -777,4 +804,332 @@ public class GenesysCloud
     }
 
     //#endregion
+
+    //#region Módulo CallsService
+
+    /**
+     * Clase de servicio de llamadas de Genesys Cloud
+     */
+    public class CallsService
+    {
+        /**
+         * @description getActive description
+         * @return   return description
+         */
+        public Call[] getActive()
+        {
+            HttpResponse response = new GenesysCloudNamedUserAPI().get('/api/v2/conversations/calls');
+            ActiveCalls activeCalls = (ActiveCalls) JSON.deserialize(response.getBody(), ActiveCalls.class);
+
+            return activeCalls.entities;
+        }
+
+        /**
+         * @description get description
+         * @param  interactionId interactionId description
+         * @return               return description
+         */
+        public Call get(String interactionId)
+        {
+            HttpResponse response = new GenesysCloudNamedUserAPI().get('/api/v2/conversations/calls/' + interactionId);
+
+            return (Call) JSON.deserialize(response.getBody(), Call.class);
+        }
+
+        /**
+         * @description consult description
+         * @param  consult consult description
+         */
+        public void consult(ConsultTransfer consult)
+        {
+            HttpResponse response = new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + '/participants/' + consult.participantId + '/consult', consult.toJSON() );
+        }
+
+        /**
+         * @description setParticipantData description
+         * @param  conversationId conversationId description
+         * @param  participantId  participantId description
+         * @param  attributes     attributes description
+         */
+        public void setParticipantData(String conversationId, String participantId, Map<String, String> attributes)
+        {
+            HttpResponse response = new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + '/participants/' + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
+            {
+                'attributes' => attributes
+            }) );
+        }
+
+        /**
+         * @description setUUIData description
+         * @param  conversationId conversationId description
+         * @param  participantId  participantId description
+         * @param  uuiData        uuiData description
+         */
+        public void setUUIData(String conversationId, String participantId, String communicationId, String uuiData)
+        {
+            HttpResponse response = new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + '/participants/' + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
+            {
+                'uuiData' => uuiData
+            }) );
+        }
+
+        /**
+         * Conferencia la llamada activa del usuario actual al número identificado
+         *
+         * @author jmartinezpisson
+         * @date 31/03/2021
+         * @param {String} addressTo Número al que conferenciar
+         * @param {Map<String, String>} attributeValuesByKey Mapa de clave-valor a transferir como información del partipante
+         * @param {Boolean} fallbackToUUI Habilita el paso de los atributos como los valores separados por un pipe (|) utilizando el UUI
+         */
+        public void conferenceTo(String addressTo, Map<String, String> attributesByName, Boolean fallbackToUUI)
+        {
+            // 1 - Se obtiene la llamada activa y se elige el participante destino de la conferencia
+            GenesysCloud.Call[] activeCalls = this.getActive();
+            String currentConversationId = activeCalls[0].id;
+            GenesysCloud.Participant targetParticipant = activeCalls[0].participants[1];
+
+            // 2 - Preparamos la información a transferir. Utilizamos el participantData y el UUI para tener un fallback de los datos a enviar.
+            if(attributesByName != null && !attributesByName.isEmpty())
+            {
+                this.setParticipantData(currentConversationId, targetParticipant.id, attributesByName);
+
+                if(fallbackToUUI) {
+                    this.setUUIData(currentConversationId, targetParticipant.id, targetParticipant.peer, String.join(attributesByName.values(), '|'));
+                }
+            }
+
+            // 3 - Generamos la llamada de consulta
+            GenesysCloud.ConsultTransfer consultTransfer = new GenesysCloud.ConsultTransfer();
+
+            consultTransfer.conversationId = currentConversationId;
+            consultTransfer.participantId = targetParticipant.id;
+            consultTransfer.speakTo = 'BOTH';
+            consultTransfer.destination = new GenesysCloud.ConsultTransferDestination();
+            consultTransfer.destination.address = addressTo;
+
+            this.consult(consultTransfer);
+        }
+    }
+
+
+    /**
+     * Representa la respuesta del servicio Web de llamadas activas
+     * https://developer.mypurecloud.com/api/rest/v2/conversations/#get-api-v2-conversations-calls
+     *
+     * @author jmartinezpisson
+     * @date 31/03/2021
+     */
+    public class ActiveCalls
+    {
+        @auraEnabled
+        public Call[] entities;
+    }
+
+    /**
+     * Representa la estructura de llamada de Genesys Cloud
+     * https://developer.mypurecloud.com/api/rest/v2/conversations/#get-api-v2-conversations-calls--conversationId
+     *
+     * @author jmartinezpisson
+     * @date 31/03/2021
+     */
+    public class Call implements IAPIRequest
+    {
+        @auraEnabled
+        public String id;
+
+        @auraEnabled
+        public Participant[] participants;
+
+
+        public String toJSON()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa la estructura de un participante en una llamada en Genesys Cloud
+     * https://developer.mypurecloud.com/api/rest/v2/conversations/#get-api-v2-conversations-calls--conversationId
+     *
+     * @author jmartinezpisson
+     * @date 31/03/2021
+     */
+    public class Participant
+    {
+        public transient String conversationId;
+        
+        @auraEnabled
+        public String id;
+        
+        @auraEnabled
+        public String address;
+
+        @auraEnabled
+        public UserParticipant user;
+
+        @auraEnabled
+        public String peer;
+
+        @auraEnabled
+        public Map<String, String> attributes;
+
+        public String toJSON()
+        {
+            return JSON.serialize(this, true);
+        }
+    }
+
+    /**
+     * Representa la estructura de un participante de tipo usuario en una llamada en Genesys Cloud
+     * https://developer.mypurecloud.com/api/rest/v2/conversations/#get-api-v2-conversations-calls--conversationId
+     *
+     * @author jmartinezpisson
+     * @date 31/03/2021
+     */
+    public class UserParticipant
+    {
+        @auraEnabled
+        public String id;
+
+        @auraEnabled
+        public String selfUri;
+
+    }
+
+    /**
+     * Representa una petición al servicio de consulta sobre llamada de Genesys Cloud
+     * https://developer.mypurecloud.com/api/rest/v2/conversations/#post-api-v2-conversations-calls--conversationId--participants--participantId--consult
+     *
+     * @author jmartinezpisson
+     * @date 31/03/2021
+     */
+    public class ConsultTransfer implements IAPIRequest
+    {
+        public transient String conversationId;
+        public transient String participantId;
+        public String speakTo;
+        public ConsultTransferDestination destination;
+
+        public String toJSON()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa el destino de la petición al servicio de consulta sobre llamada de Genesys Cloud
+     * https://developer.mypurecloud.com/api/rest/v2/conversations/#post-api-v2-conversations-calls--conversationId--participants--participantId--consult
+     *
+     * @author jmartinezpisson
+     * @date 31/03/2021
+     */
+    public class ConsultTransferDestination
+    {
+        public String address;
+        public String name;
+        public String userId;
+        public String queueId;
+
+        public String toJSON()
+        {
+            return JSON.serialize(this, true);
+        }
+    }
+
+    //#endregion
+
+    private class GenesysCloudNamedUserAPI
+    {
+        HttpRequest request;
+
+        private void prepare(String path,  String body, Map<String, String> headers)
+        {
+            request = new HttpRequest();
+
+            request.setEndpoint('callout:GenesysCloud' + path);
+
+            if(headers != null)
+            {
+                for(String key : headers.keySet() )
+                {
+                    request.setHeader(key, headers.get(key) );
+                }
+            }
+
+            if(String.isNotBlank(body) )
+            {
+                request.setBody(body);
+            }
+        }
+
+        private HttpResponse send()
+        {
+            return validateResponse(new Http().send(this.request) );
+        }
+
+        public HttpResponse get(String url)
+        {
+            return get(url, new Map<String, String>
+            {
+                'Content-Type' => 'application/json'
+            });
+        }
+
+        public HttpResponse get(String url, Map<String, String> headers)
+        {
+            prepare(url, null, headers);
+            request.setMethod('GET');
+
+            return send();
+        }
+
+        public HttpResponse post(String url, String body)
+        {
+            return post(url, body, new Map<String, String>
+            {
+                'Content-Type' => 'application/json'
+            });
+        }
+
+        public HttpResponse post(String url, String body, Map<String, String> headers)
+        {
+            prepare(url, body, headers);
+            request.setMethod('POST');
+
+            return send();
+        }
+
+        public HttpResponse patch(String url, String body)
+        {
+            return patch(url, body, new Map<String, String>
+            {
+                'Content-Type' => 'application/json'
+            });
+        }
+
+        public HttpResponse patch(String url, String body, Map<String, String> headers)
+        {
+            prepare(url, body, headers);
+            request.setMethod('PATCH');
+
+            return send();
+        }
+
+        public HttpResponse put(String url, String body)
+        {
+            return put(url, body, new Map<String, String>
+            {
+                'Content-Type' => 'application/json'
+            });
+        }
+
+        public HttpResponse put(String url, String body, Map<String, String> headers)
+        {
+            prepare(url, body, headers);
+            request.setMethod('PUT');
+
+            return send();
+        }
+    }
 }
