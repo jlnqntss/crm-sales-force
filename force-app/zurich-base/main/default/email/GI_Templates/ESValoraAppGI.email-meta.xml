@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email para la valoración de la app Klinc</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Valoración App - Contact Center</name>
+    <style>none</style>
+    <subject>Valora nuestra app</subject>
+    <textOnly>Zurich - Klinc
+
+Si tienes un iPhone/iPad,
+valóranos haciendo click aquí:
+
+Si tienes un Android,
+valóranos haciendo click aquí:
+
+Síguenos
+
+Copyright © KLINC, All rights reserved.
+
+Si no deseas recibir más comunicaciones comerciales, por favor pincha en el siguiente
+link</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
