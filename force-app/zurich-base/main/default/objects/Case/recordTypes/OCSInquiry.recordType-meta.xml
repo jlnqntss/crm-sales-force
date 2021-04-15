@@ -949,7 +949,7 @@
         </values>
         <values>
             <fullName>No definido</fullName>
-            <default>true</default>
+            <default>false</default>
         </values>
         <values>
             <fullName>Queja</fullName>
@@ -1021,10 +1021,6 @@
         <values>
             <fullName>Gestión Servicios</fullName>
             <default>false</default>
-        </values>
-        <values>
-            <fullName>No definido</fullName>
-            <default>true</default>
         </values>
         <values>
             <fullName>Venta</fullName>
@@ -1179,7 +1175,7 @@
         </values>
         <values>
             <fullName>No definido</fullName>
-            <default>true</default>
+            <default>false</default>
         </values>
         <values>
             <fullName>Nueva Producción</fullName>
