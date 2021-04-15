@@ -199,6 +199,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>HegeoClaimId__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>HegeoReceiptNumber__c</field>
             </layoutItems>
         </layoutColumns>

@@ -303,8 +303,8 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c FROM Case WHERE Id =: relatedCase.Id];
         System.assertEquals(true, updatedCase != null, 'Case found');
-        System.assertEquals(true, updatedCase.Type == 'No definido', 'Type is undefined');
-        System.assertEquals(true, updatedCase.Subtype__c == 'No definido', 'Subtype is undefined');
+        System.assertEquals(true, updatedCase.Type == null, 'Type is undefined');
+        System.assertEquals(true, updatedCase.Subtype__c == null, 'Subtype is undefined');
 
         List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c];
         System.assertEquals(false, errorLogs.isEmpty(), 'There are error logs created');
@@ -419,8 +419,8 @@ private with sharing class ContentDocumentLinkUtilTest
         //Comprobamos que el caso no tiene actualizado ninguno de los campos a actualizar
         Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c, OfferId__c, PolicyId__c, ClaimId__c, HegeoReceiptNumber__c, AccountId FROM Case WHERE Id =: relatedCase.Id];
         System.assertEquals(true, updatedCase != null, 'Case found');
-        System.assertEquals('No definido', updatedCase.Type, 'Type is undefined');
-        System.assertEquals('No definido', updatedCase.Subtype__c, 'Subtype is undefined');
+        System.assertEquals(null, updatedCase.Type, 'Type is undefined');
+        System.assertEquals(null, updatedCase.Subtype__c, 'Subtype is undefined');
         
         System.assertEquals(null, updatedCase.OfferId__c, 'There is not related offer');
         System.assertEquals(null, updatedCase.PolicyId__c, 'There is not related policy');
@@ -540,8 +540,8 @@ private with sharing class ContentDocumentLinkUtilTest
         //Comprobamos que el caso no tiene actualizados los campos de tipificación (Type, Subtype, TypeN3)
         Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c, OfferId__c, PolicyId__c, ClaimId__c, HegeoReceiptNumber__c, AccountId FROM Case WHERE Id =: relatedCase.Id];
         System.assertEquals(true, updatedCase != null, 'Case found');
-        System.assertEquals('No definido', updatedCase.Type, 'Type is undefined');
-        System.assertEquals('No definido', updatedCase.Subtype__c, 'Subtype is undefined');
+        System.assertEquals(null, updatedCase.Type, 'Type is undefined');
+        System.assertEquals(null, updatedCase.Subtype__c, 'Subtype is undefined');
         
         //Comprobamos que la oferta y el siniestro no están relacionados, ya que no existen en el sistema
         System.assertEquals(null, updatedCase.OfferId__c, 'There is not related offer');
@@ -648,8 +648,8 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c, OfferId__c, PolicyId__c, ClaimId__c, HegeoReceiptNumber__c, AccountId FROM Case WHERE Id =: relatedCase.Id];
         System.assertEquals(true, updatedCase != null, 'Case found');
-        System.assertEquals('No definido', updatedCase.Type, 'Type is undefined');
-        System.assertEquals('No definido', updatedCase.Subtype__c, 'Subtype is undefined');
+        System.assertEquals(null, updatedCase.Type, 'Type is undefined');
+        System.assertEquals(null, updatedCase.Subtype__c, 'Subtype is undefined');
         
         System.assertEquals(null, updatedCase.OfferId__c, 'There is not related offer');
         System.assertEquals(null, updatedCase.ClaimId__c, 'There is not related claim');
@@ -1022,8 +1022,8 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Case updatedCase = [SELECT Id, Type, Subtype__c, TypeN3__c, OfferId__c, PolicyId__c, ClaimId__c, HegeoReceiptNumber__c, AccountId FROM Case WHERE Id =: relatedCase.Id];
         System.assertEquals(true, updatedCase != null, 'Case found');
-        System.assertEquals('No definido', updatedCase.Type, 'Type is undefined');
-        System.assertEquals('No definido', updatedCase.Subtype__c, 'Subtype is undefined');
+        System.assertEquals(null, updatedCase.Type, 'Type is undefined');
+        System.assertEquals(null, updatedCase.Subtype__c, 'Subtype is undefined');
 
         System.assertEquals(null, updatedCase.OfferId__c, 'Offer successfully related');
         System.assertEquals(null, updatedCase.PolicyId__c, 'Policy successfully related');

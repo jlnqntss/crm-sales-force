@@ -361,6 +361,14 @@
         <name>ValorListaNoValido</name>
     </customLabels>
     <customLabels>
+        <label>Iniciar grabación</label>
+        <name>callRecordingButtonStart</name>
+    </customLabels>
+    <customLabels>
+        <label>Detener grabación</label>
+        <name>callRecordingButtonStop</name>
+    </customLabels>
+    <customLabels>
         <label><!-- AB Test From Name A Exception --></label>
         <name>et4ae5__ABTestFromNameAException</name>
     </customLabels>
@@ -5487,6 +5495,18 @@
     <customLabels>
         <label><!-- Dont show this again --></label>
         <name>lightningbuddy__Dont_show_this_again</name>
+    </customLabels>
+    <customLabels>
+        <label>Lanzar encuesta</label>
+        <name>sendSurveyButtonLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>Encuesta enviada correctamente al cliente</label>
+        <name>sendSurveyToastMessageSuccess</name>
+    </customLabels>
+    <customLabels>
+        <label>Encuesta enviada</label>
+        <name>sendSurveyToastTitleSuccess</name>
     </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
