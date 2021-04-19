@@ -766,12 +766,12 @@ private without sharing class GenesysInteractionsServiceTest
         accountsSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Account.Id,
-                Account.MainMobilePhone__c,
-                Account.Phone,
-                Account.MainEmail__c
-            }
+        {
+            Account.Id,
+            Account.MainMobilePhone__c,
+            Account.Phone,
+            Account.MainEmail__c
+        }
         );
         List<Account> expectedAccounts = accountsSelector.selectById(recordIds);
 
@@ -1029,18 +1029,18 @@ private without sharing class GenesysInteractionsServiceTest
         policiesSelector.setFields
         (
             new List<Schema.SobjectField>
-            {
-                Policy__c.Id,
-                Policy__c.Name,
-                Policy__c.Intermediary_Code__c,
-                Policy__c.PolicyType__c
-            },
+        {
+            Policy__c.Id,
+            Policy__c.Name,
+            Policy__c.Intermediary_Code__c,
+            Policy__c.PolicyType__c
+        },
             new List<String>
-            {
-                'ProductId__r.GroupDescription__c',
-                'Partner__r.PartnerSector__c',
-                'Partner__r.PartnerSFCode__c'
-            }
+        {
+            'ProductId__r.GroupDescription__c',
+            'Partner__r.PartnerSector__c',
+            'Partner__r.PartnerSFCode__c'
+        }
         );
 
         List<Policy__c> policies = new PoliciesSelector().selectByHolder(customer.get(0).Id);
@@ -1181,16 +1181,16 @@ private without sharing class GenesysInteractionsServiceTest
         policiesSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Policy__c.Id,
-                Policy__c.Name
-            },
+        {
+            Policy__c.Id,
+            Policy__c.Name
+        },
             new List<String>
-            {
-                'IntermediaryId__r.MainMobilePhone__c',
-                'IntermediaryId__r.Phone',
-                'IntermediaryId__r.MainEmail__c'
-            }
+        {
+            'IntermediaryId__r.MainMobilePhone__c',
+            'IntermediaryId__r.Phone',
+            'IntermediaryId__r.MainEmail__c'
+        }
         );
 
         List<Policy__c> policies = policiesSelector.selectByHolder(customer.get(0).Id);
@@ -1222,7 +1222,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 27/01/2021
      */
     @IsTest
-    static void test_findOpenedClaim_claim_number()
+    static void test_findOpenedClaim_correctNumber()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
@@ -1231,12 +1231,12 @@ private without sharing class GenesysInteractionsServiceTest
         List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
 
         List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
-        claims[0].INFOClaimNumber__c = '111222333444';
+        claims[0].INFOClaimNumber__c = '0000044444';
         insert claims;
 
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
         searchRequest.searchType = 'claim_number';
-        searchRequest.searchTerm  = '111222333444';
+        searchRequest.searchTerm  = '0000044444';
 
         // Test
         Test.startTest();
@@ -1252,6 +1252,82 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
         System.assertEquals(claims[0].Name, openedClaim.claimNumber, 'No se ha obtenido correctamente el código del siniestro');
 
+    }
+
+    /**
+     * Valida la búsqueda de siniestros abiertos utilzando un código de siniestro sin 0s
+     * @author jmartinezpisson
+     * @date 15/04/2021
+     */
+    @IsTest
+    static void test_findOpenedClaim_claim_number_noPad()
+    {
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
+        claims[0].INFOClaimNumber__c = '0000044444';
+        insert claims;
+
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+        searchRequest.searchType = 'claim_number';
+        searchRequest.searchTerm  = '44444';
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.OpenedClaim openedClaim = GenesysInteractionsService.findOpenedClaim(searchRequest);
+
+        Test.stopTest();
+
+        // Then
+
+        System.assert (openedClaim != null, 'No se ha obtenido el siniestro');
+
+        System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
+        System.assertEquals(claims[0].Name, openedClaim.claimNumber, 'No se ha obtenido correctamente el código del siniestro');
+    }
+
+
+    /**
+     * Valida la búsqueda de siniestros abiertos utilzando un código con espacios pero sin necesidad
+     * de padding
+     * @author jmartinezpisson
+     * @date 15/04/2021
+     */
+    @IsTest
+    static void test_findOpenedClaim_claim_number_malformedNumber()
+    {
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
+        claims[0].INFOClaimNumber__c = '0000044444'; // Claim Number con 20 dígitos
+        insert claims;
+
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+        searchRequest.searchType = 'claim_number';
+        searchRequest.searchTerm  = ' 000 00 44 444'; // Claim Number a buscar con espacios
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.OpenedClaim openedClaim = GenesysInteractionsService.findOpenedClaim(searchRequest);
+
+        Test.stopTest();
+
+        // Then
+
+        System.assert (openedClaim != null, 'No se ha obtenido el siniestro');
+
+        System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
+        System.assertEquals(claims[0].Name, openedClaim.claimNumber, 'No se ha obtenido correctamente el código del siniestro');
     }
 
     /**
