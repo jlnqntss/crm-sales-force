@@ -3540,6 +3540,14 @@
         <apexClass>sf_GsPilotV1__GettingStartedPostInstallTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>CallRecordingController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SendSurveyButtonController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <custom>true</custom>
     <customSettingAccesses>
         <enabled>true</enabled>
