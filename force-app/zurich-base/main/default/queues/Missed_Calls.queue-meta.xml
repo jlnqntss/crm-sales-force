@@ -2,6 +2,12 @@
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
     <doesSendEmailToMembers>false</doesSendEmailToMembers>
     <name>Missed Calls</name>
+    <queueMembers>
+        <publicGroups>
+            <publicGroup>Write_ZE_GI_ES</publicGroup>
+            <publicGroup>Write_ZEO_GI_ES</publicGroup>
+        </publicGroups>
+    </queueMembers>
     <queueSobject>
         <sobjectType>Task</sobjectType>
     </queueSobject>
