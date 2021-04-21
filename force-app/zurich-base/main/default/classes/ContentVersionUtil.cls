@@ -86,7 +86,8 @@ public without sharing class ContentVersionUtil
                             Subject = Label.documentacionAnadida,
                             Description = 'Archivo añadido: ' + Url.getOrgDomainUrl().toExternalForm() + '/' + version.ContentDocumentId,
                             Type = 'Other',
-                            WhatId = hashToCaseMap.get(version.Guest_Record_fileupload__c).Id
+                            WhatId = hashToCaseMap.get(version.Guest_Record_fileupload__c).Id,
+                            ActivityDate = System.today()
                             )
                         );
                 }
