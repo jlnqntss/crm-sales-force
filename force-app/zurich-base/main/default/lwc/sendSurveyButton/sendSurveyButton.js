@@ -7,26 +7,70 @@ import genesysCloud from "c/genesysCloudService";
 import getPollPhoneNumber from "@salesforce/apex/SendSurveyButtonController.getTransferPollPhoneNumber";
 
 export default class SendSurveyButton extends LightningElement {
+  // #region Propiedades y atributos internos
   label = {
     sendSurveyLabel,
     sendSurveyToastTitleSuccess,
     sendSurveyToastMessageSuccess
   };
 
-  @track isDisabled = true;
+  @track
   pollPhoneNumber;
 
-  @track logs = [];
-  connectedCallback() {
-    getPollPhoneNumber().then((result) => {
-      if (result) {
-        this.isDisabled = false;
-      }
+  @track
+  isOnCall = false;
 
-      this.pollPhoneNumber = result;
-    });
+  /**
+   * Variable interna para poder realizar un bind del handler handleCTIMessage
+   */
+  ctiMessageHandler = null;
+
+  get isDisabled() {
+    return !this.pollPhoneNumber || !this.isOnCall;
   }
 
+  //#endregion
+
+  //#region Handlers del Ciclo de Vida LWC
+
+  /**
+   * Obtiene el número de teléfono a encuestar
+   * Configura el API de Genesys Cloud para escuchar cambios en la telefonía
+   *
+   * @author rlopez
+   * @modified jmartinezpisson
+   */
+  connectedCallback() {
+    getPollPhoneNumber().then((result) => {
+      this.pollPhoneNumber = result || "1000";
+    });
+
+    this.ctiMessageHandler = this.handleCTIMessage.bind(this);
+    genesysCloud.addListener(this.ctiMessageHandler);
+  }
+
+  /**
+   * Elimina el listener sobre el API de Genesys Cloud
+   *
+   * @author jmartinezpisson
+   */
+  disconnectedCallback() {
+    genesysCloud.removeListener(this.ctiMessageHandler);
+    this.ctiMessageHandler = null;
+  }
+
+  //#endregion
+
+  //#region Métodos privados
+
+  /**
+   * Gestiona los mensajes CTI emitidos por el API JS GenesysCloudService
+   * Con cada cambio sobre el estado de las llamadas, se verifica si el conector
+   * tiene llamadas activas
+   *
+   * @author jmartinezpisson
+   * @param {*} message Mensajes en el formato del Embedded Framework de Genesys
+   */
   sendSurvey() {
     genesysCloud.transfer(this.pollPhoneNumber);
     const event = new ShowToastEvent({
@@ -36,4 +80,20 @@ export default class SendSurveyButton extends LightningElement {
     });
     this.dispatchEvent(event);
   }
+
+  /**
+   * Gestiona los mensajes CTI emitidos por el API JS GenesysCloudService
+   * Con cada cambio sobre el estado de las llamadas, se verifica si el conector
+   * tiene llamadas activas
+   *
+   * @author jmartinezpisson
+   * @param {*} message Mensajes
+   */
+  handleCTIMessage(message) {
+    if (message.type === "Interaction") {
+      this.isOnCall = genesysCloud.isOnCall();
+    }
+  }
+
+  //#endregion
 }
