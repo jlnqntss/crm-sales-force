@@ -22,6 +22,16 @@
             <operation>equals</operation>
             <value>Zurich</value>
         </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Customer_GI</fullName>
@@ -44,6 +54,16 @@
             <field>RecordTypeId</field>
             <operation>equals</operation>
             <value>Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
