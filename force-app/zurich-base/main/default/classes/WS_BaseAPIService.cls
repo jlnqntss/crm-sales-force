@@ -141,10 +141,21 @@ abstract global without sharing class WS_BaseAPIService
          */
         public ApiException(String statusCode, String message)
         {
+            this(statusCode, message, true);
+        }
+
+        /**
+         * Constructor. Creado para el WS BusinessInsuranceAPIService, para que no registre log
+         *
+         * @author nts (agonzalezisasi)
+         * date 21/04/2021
+         */
+        public ApiException(String statusCode, String message, Boolean logError)
+        {
             this.setMessage(message);
             this.statusCode = statusCode;
 
-            ErrorLogUtil.commitError(this);
+            if( logError ) ErrorLogUtil.commitError(this);
         }
 
 
@@ -157,7 +168,18 @@ abstract global without sharing class WS_BaseAPIService
          */
         public ApiException(DmlException dmlError)
         {
-            this( API_DML_KO, buildDMLMessage(dmLError) );
+            this( dmlError, true );
+        }
+
+        /**
+         * Constructor. Creado para el WS BusinessInsuranceAPIService, para que no registre log
+         *
+         * @author nts (agonzalezisasi)
+         * date 21/04/2021
+         */
+        public ApiException(DmlException dmlError, Boolean logError)
+        {
+            this( API_DML_KO, buildDMLMessage(dmLError), logError );
         }
 
         /**

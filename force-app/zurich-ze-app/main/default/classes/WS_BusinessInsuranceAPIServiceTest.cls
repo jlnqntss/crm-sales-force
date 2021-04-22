@@ -368,7 +368,7 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
 
         System.assertEquals(200, response.statusCode,'Response statusCode should be 200');
 
-        List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
+        List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c WHERE Level__c = 'error'];
         System.assertEquals(true, errors.isEmpty(),'List of errors should be empty');
         List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest];
         System.assertEquals(1, contactRequests.size(), 'Debería haberse insertado un contact request');
