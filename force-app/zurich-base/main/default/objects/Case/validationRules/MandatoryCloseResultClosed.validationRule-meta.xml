@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MandatoryCloseResultClosed</fullName>
+    <active>true</active>
+    <description>[VR Caso] El campo close result es obligatorio en el cierre del caso</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp;
+ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp;
+$Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
+$Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
+$Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos; &amp;&amp;
+ISBLANK(TEXT(CloseResult__c))</errorConditionFormula>
+    <errorDisplayField>CloseResult__c</errorDisplayField>
+    <errorMessage>[VR Caso] Es obligatorio informar el Resultado de cierre antes de cerrar el caso</errorMessage>
+</ValidationRule>
