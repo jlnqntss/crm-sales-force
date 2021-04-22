@@ -1256,7 +1256,7 @@ public without sharing class GenesysInteractionsService
                     return null;
                 }
 
-                return preferredClaim;
+                return this.claims[0];
             }
         }
 
