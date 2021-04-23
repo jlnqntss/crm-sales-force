@@ -569,8 +569,8 @@ public without sharing class SystemUtil
             Account.CustomerNum_EMEA__c,
             Account.CustomerNum_Partner__c,
             SourceCountry__c,
-            (Select id, WhatId, OwnerId from Tasks where RecordType.DeveloperName =: Label.Interaction and Klinc_CallResult__c=: Label.Valid and
-                                                                                                                                CustomerInterest__c =: Label.Interested and CreatedDate >= :startDate )
+            (Select id, WhatId, OwnerId from Tasks where RecordType.DeveloperName =: Label.Interaction and CallDisposition=: Label.Valid 
+                and CreatedDate >= :startDate )
             FROM Contact
             WHERE CustomerNum__c IN :keys
         ];
