@@ -940,11 +940,14 @@ public without sharing class GenesysInteractionsService
          */
         private String cleanTerm(String term, String type)
         {
-            String result = term;
+            String result = String.isEmpty(term)? '':term;
 
             switch on type {
                 when 'document', 'car_registration' {
                     result = result.deleteWhitespace().toUpperCase();        
+                }
+                when 'claim_number' {
+                    result = result.deleteWhitespace().toUpperCase().leftPad(10, '0');
                 }
             }
 
@@ -1253,7 +1256,7 @@ public without sharing class GenesysInteractionsService
                     return null;
                 }
 
-                return preferredClaim;
+                return this.claims[0];
             }
         }
 

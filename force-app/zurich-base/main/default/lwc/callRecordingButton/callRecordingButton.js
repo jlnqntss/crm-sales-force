@@ -14,6 +14,8 @@ export default class CallRecordingButton extends LightningElement {
     callRecordingStop
   };
 
+  ctiMessageHandler = null;
+
   isSelected = false;
   hideRecordButton = true;
   @track timeVal = "00:00";
@@ -25,20 +27,28 @@ export default class CallRecordingButton extends LightningElement {
 
   buttonColor = this.BUTTON_VARIANT_NORMAL;
 
-  isDisabled = true;
-  recordingPhoneNumber;
+  @track isOnCall = false;
+  @track recordingPhoneNumber;
+
+  get isDisabled() {
+    return !this.recordingPhoneNumber && !this.isOnCall;
+  }
 
   /**
    * Event. Starts the lwc
    */
   connectedCallback() {
     getRecordingPhoneNumber().then((result) => {
-      if (result) {
-        this.isDisabled = false;
-      }
-
       this.recordingPhoneNumber = result;
     });
+
+    this.ctiMessageHandler = this.handleCTIMessage.bind(this);
+    genesysCloud.addListener(this.ctiMessageHandler);
+  }
+
+  disconnectedCallback() {
+    genesysCloud.removeListener(this.ctiMessageHandler);
+    this.ctiMessageHandler = null;
   }
 
   /**
@@ -47,23 +57,11 @@ export default class CallRecordingButton extends LightningElement {
   async handleRecordingClick() {
     try {
       await this.startRecording();
-      this.isDisabled = true;
-      //console.log('start recording...');
-
-      //this.isSelected = !this.isSelected;
-      // this.template.querySelector(`[data-id="record-button"]`).blur();
-      // if (this.isSelected) {
-      //     //genesysCloud.consult(this.pollPhoneNumber);
-      //     // ui change: Recording...
-      //     this.uiRecordingState();
-      // } else {
-      //     this.uiInitialState();
-      // }
     } catch (error) {
-      // this.uiInitialState();
-      this.isDisabled = false;
-      console.error(error);
-      this.showMessage(error, "error");
+      this.showMessage(
+        error.body ? error.body.message : error.message,
+        "error"
+      );
     }
   }
 
@@ -89,43 +87,6 @@ export default class CallRecordingButton extends LightningElement {
   }
 
   /**
-   * Starts the recording timer
-   *
-   * @author nts (rlopez)
-   * @param {*} parentThis represents the lwc itself for global variable access
-   */
-  startTimer(parentThis) {
-    parentThis.totalMilliseconds = 0;
-    // eslint-disable-next-line @lwc/lwc/no-async-operation
-    parentThis.timeIntervalInstance = setInterval(function () {
-      // Time calculations for hours, minutes, seconds and milliseconds
-      var minutes = Math.floor(
-        (parentThis.totalMilliseconds % (1000 * 60 * 60)) / (1000 * 60)
-      );
-      var seconds = Math.floor(
-        (parentThis.totalMilliseconds % (1000 * 60)) / 1000
-      );
-
-      // Output the result in the timeVal variable
-      parentThis.timeVal =
-        (minutes + "").padStart(2, "0") + ":" + (seconds + "").padStart(2, "0");
-
-      parentThis.totalMilliseconds += 100;
-    }, 100);
-  }
-
-  /**
-   * Stops the recording timer
-   *
-   * @param {*} parentThis
-   */
-  stopTimer(parentThis) {
-    parentThis.timeVal = "00:00";
-    parentThis.totalMilliseconds = 0;
-    clearInterval(parentThis.timeIntervalInstance);
-  }
-
-  /**
    * Show a message to the user
    *
    * @param {*} text the text to show in the popup
@@ -133,7 +94,7 @@ export default class CallRecordingButton extends LightningElement {
    */
   showMessage(text, type) {
     const event = new ShowToastEvent({
-      title: "Call Recording",
+      title: "Encontramos un problema al iniciar la grabación",
       message: text,
       variant: type
     });
@@ -157,5 +118,11 @@ export default class CallRecordingButton extends LightningElement {
     this.stopTimer(this);
     this.labelWhenOff = this.label.callRecordingStart;
     this.buttonColor = this.BUTTON_VARIANT_NORMAL;
+  }
+
+  handleCTIMessage(message) {
+    if (message.type === "Interaction") {
+      this.isOnCall = genesysCloud.isOnCall();
+    }
   }
 }

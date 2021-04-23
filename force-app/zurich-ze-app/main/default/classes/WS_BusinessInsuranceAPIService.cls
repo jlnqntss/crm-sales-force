@@ -11,6 +11,8 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
      * en función del paso en el que se encuentre
      * @author rlopez
      * @date 30/10/2020
+     *
+     * @change 21/04/2021 - nts (agonzalezisasi) - Se traslada al final la traza de la peticion para que informe tambien del resultado del proceso
      */
     @HttpPost
     global static void doPost() {
@@ -18,11 +20,11 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
         RestResponse response = RestContext.response;
         response.addHeader('Content-Type', 'application/json');
 
-        if(!Test.isRunningTest() && request.requestBody != null)
-        {
-            //Log para registrar el JSON recibido
-            ErrorLogUtil.commitError('warning', 'New webform request', 'WS_BusinessInsuranceAPIService', request.requestBody.toString());
-        }
+        // Para la traza de la peticion, inicialmente presuponemos que ira bien
+        String requestResultType = 'warning';
+        String requestResult = 'OK.200';
+        String requestResultErrorMessage;
+        String requestResultErrorStackTrace;
 
         Savepoint sp = Database.setSavepoint();
         try
@@ -86,6 +88,10 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiError);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
+            
+            // informaremos del error en la traza de la peticion
+            requestResultErrorMessage = apiError.getMessage();
+            requestResultErrorStackTrace = apiError.getStackTraceString();
         }
         catch (DmlException dmlError)
         {
@@ -93,9 +99,13 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             response.statusCode = 500;
 
-            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(dmlError);
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(dmlError, false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
+            
+            // informaremos del error en la traza de la peticion
+            requestResultErrorMessage = dmlError.getMessage();
+            requestResultErrorStackTrace = dmlError.getStackTraceString();
         }
         catch (BusinessInsuranceRaterService.BusinessInsuranceRaterServiceException serviceException)
         {
@@ -103,9 +113,13 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             response.statusCode = 400;
 
-            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(serviceException.statusCode, serviceException.getMessage());
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(serviceException.statusCode, serviceException.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
+            
+            // informaremos del error en la traza de la peticion
+            requestResultErrorMessage = serviceException.getMessage();
+            requestResultErrorStackTrace = serviceException.getStackTraceString();
         }
         catch (BusinessInsuranceCallbackService.BusinessInsuranceCallbackServiceException serviceException)
         {
@@ -113,9 +127,13 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             response.statusCode = 400;
 
-            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(serviceException.statusCode, serviceException.getMessage());
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(serviceException.statusCode, serviceException.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
+            
+            // informaremos del error en la traza de la peticion
+            requestResultErrorMessage = serviceException.getMessage();
+            requestResultErrorStackTrace = serviceException.getStackTraceString();
         }
         catch (JSONException jsonException)
         {
@@ -123,9 +141,13 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             response.statusCode = 400;
 
-            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_JSON_KO, jsonException.getMessage());
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_JSON_KO, jsonException.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
+            
+            // informaremos del error en la traza de la peticion
+            requestResultErrorMessage = jsonException.getMessage();
+            requestResultErrorStackTrace = jsonException.getStackTraceString();
         }
         catch (Exception genericError)
         {
@@ -133,9 +155,24 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             response.statusCode = 500;
 
-            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage());
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_GENERIC_KO, genericError.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
+
+            // informaremos del error en la traza de la peticion
+            requestResultErrorMessage = genericError.getMessage();
+            requestResultErrorStackTrace = genericError.getStackTraceString();
+        }
+        finally
+        {
+            // Traza de la peticion con el resultado
+            String stackTraceText = request.requestBody?.toString();
+            if( String.isNotBlank(requestResultErrorMessage) ) {
+                requestResultType = 'error';
+                requestResult = 'KO.' + response.statusCode + '.' + requestResultErrorMessage;
+                stackTraceText += '\n' + requestResultErrorStackTrace;
+            }
+            ErrorLogUtil.commitError(requestResultType, 'New webform request: ' + requestResult, 'WS_BusinessInsuranceAPIService', stackTraceText);
         }
     }
 

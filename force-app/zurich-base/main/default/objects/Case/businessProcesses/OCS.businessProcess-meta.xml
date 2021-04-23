@@ -12,10 +12,6 @@
         <default>false</default>
     </values>
     <values>
-        <fullName>Nuevo</fullName>
-        <default>false</default>
-    </values>
-    <values>
         <fullName>Pendiente</fullName>
         <default>false</default>
     </values>

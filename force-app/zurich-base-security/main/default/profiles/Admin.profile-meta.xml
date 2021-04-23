@@ -5137,6 +5137,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MiCaso__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.MilestoneStatus</field>
         <readable>true</readable>
@@ -5357,6 +5362,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MiCentro__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.ClaimOwnerFirstname__c</field>
         <readable>true</readable>
@@ -5464,6 +5474,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Claim__c.ProductName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.AssistanceCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.AssistanceCompany__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

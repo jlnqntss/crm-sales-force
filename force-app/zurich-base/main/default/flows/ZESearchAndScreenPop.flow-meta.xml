@@ -39,6 +39,12 @@
                 <elementReference>relatedrecordid</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>focus</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
@@ -58,6 +64,12 @@
                 <elementReference>recordid</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>focus</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
@@ -72,6 +84,12 @@
             <name>recordId</name>
             <value>
                 <elementReference>FindCustomerByPhone.customerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>focus</name>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -92,6 +110,12 @@
         </inputParameters>
         <inputParameters>
             <name>openAsSubtab</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>focus</name>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
