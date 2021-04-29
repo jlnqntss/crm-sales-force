@@ -12,65 +12,97 @@
     <layouts>
         <layout>Policy GI</layout>
         <sections>
-            <label><!-- Campos --></label>
-            <section>Campos</section>
+            <label></label>
+            <section>General</section>
         </sections>
         <sections>
-            <label><!-- Vínculos personalizados --></label>
+            <label></label>
+            <section>Marketing</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Multiproduct</section>
+        </sections>
+        <sections>
+            <label></label>
             <section>Vínculos personalizados</section>
         </sections>
     </layouts>
     <layouts>
         <layout>Policy life</layout>
         <sections>
-            <label><!-- Campos --></label>
-            <section>Campos</section>
+            <label></label>
+            <section>General</section>
         </sections>
         <sections>
-            <label><!-- Vínculos personalizados --></label>
+            <label></label>
+            <section>Life Insurance</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Marketing</section>
+        </sections>
+        <sections>
+            <label></label>
             <section>Vínculos personalizados</section>
         </sections>
     </layouts>
     <layouts>
         <layout>Quote GI</layout>
         <sections>
-            <label><!-- Campos --></label>
-            <section>Campos</section>
+            <label></label>
+            <section>General</section>
         </sections>
         <sections>
-            <label><!-- Vínculos personalizados --></label>
+            <label></label>
+            <section>Marketing</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Multiproduct</section>
+        </sections>
+        <sections>
+            <label></label>
             <section>Vínculos personalizados</section>
         </sections>
     </layouts>
     <layouts>
         <layout>Quote life</layout>
         <sections>
-            <label><!-- Campos --></label>
-            <section>Campos</section>
+            <label></label>
+            <section>General</section>
         </sections>
         <sections>
-            <label><!-- Vínculos personalizados --></label>
+            <label></label>
+            <section>Life Insurance</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Marketing</section>
+        </sections>
+        <sections>
+            <label></label>
             <section>Vínculos personalizados</section>
         </sections>
     </layouts>
     <recordTypes>
-        <label><!-- Póliza GI --></label>
+        <label></label>
         <name>PolicyGI</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Póliza vida --></label>
+        <label></label>
         <name>PolicyLife</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Quote GI --></label>
+        <label></label>
         <name>QuoteGI</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Quote vida --></label>
+        <label></label>
         <name>QuoteLife</name>
     </recordTypes>
     <validationRules>
-        <errorMessage><!-- The field Policy Number can not be filled if the recordtype is not changed to Policy type. --></errorMessage>
+        <errorMessage></errorMessage>
         <name>Convert_Lead_to_Policy</name>
     </validationRules>
 </CustomObjectTranslation>
