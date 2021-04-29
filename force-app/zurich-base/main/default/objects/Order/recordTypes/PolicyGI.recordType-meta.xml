@@ -140,6 +140,13 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>MultiproductOption__c</picklist>
+        <values>
+            <fullName>PREMIUM OWN MOBILITY BICICLETA ELECTRICA</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>PaymentFrequency__c</picklist>
         <values>
             <fullName>TBD</fullName>
@@ -183,6 +190,13 @@
         <picklist>Status</picklist>
         <values>
             <fullName>Activated</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TransportType__c</picklist>
+        <values>
+            <fullName>SEGWAY</fullName>
             <default>false</default>
         </values>
     </picklistValues>

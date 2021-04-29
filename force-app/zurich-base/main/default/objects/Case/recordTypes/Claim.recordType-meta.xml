@@ -28,6 +28,13 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>ClaimHandlingType__c</picklist>
+        <values>
+            <fullName>Manual</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>ClaimStatusTPA__c</picklist>
         <values>
             <fullName>2%2E5 Fraud</fullName>

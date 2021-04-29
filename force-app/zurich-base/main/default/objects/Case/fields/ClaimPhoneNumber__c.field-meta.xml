@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClaimPhoneNumber__c</fullName>
+    <description>KLINC: Indica el teléfono del siniestro</description>
+    <externalId>false</externalId>
+    <label>Claim Phone Number</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Phone</type>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Opción de Multiproducto</label>
+    <name>MultiproductOption__c</name>
+    <picklistValues>
+        <masterLabel>PREMIUM OWN MOBILITY BICICLETA ELECTRICA</masterLabel>
+        <translation><!-- PREMIUM OWN MOBILITY BICICLETA ELECTRICA --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

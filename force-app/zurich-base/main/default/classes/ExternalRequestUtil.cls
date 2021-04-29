@@ -538,7 +538,7 @@ global without sharing class ExternalRequestUtil {
                   sameProd.add(orderItem.itemModel__c);
               }
 
-          } else {    // Life insurance, category: insured person
+          } else if (orderItem.TransportType__c == null) {    // Life insurance, category: insured person
               orderItem.category__c = Label.InsuredPerson;
               productsToSearch.add(orderItem.category__c);
               // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
