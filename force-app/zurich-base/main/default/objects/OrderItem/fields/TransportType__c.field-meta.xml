@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TransportType__c</fullName>
+    <description>KLINC: Indica el producto de movilidad escogido</description>
+    <externalId>false</externalId>
+    <label>Transport Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ELECTRIC BIKE</fullName>
+                <default>false</default>
+                <label>ELECTRIC BIKE</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

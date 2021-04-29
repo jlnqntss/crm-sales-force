@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tipo de transporte</label>
+    <name>TransportType__c</name>
+    <picklistValues>
+        <masterLabel>ELECTRIC BIKE</masterLabel>
+        <translation><!-- ELECTRIC BIKE --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

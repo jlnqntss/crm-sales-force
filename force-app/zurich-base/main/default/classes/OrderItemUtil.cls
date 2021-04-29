@@ -77,6 +77,11 @@ public class OrderItemUtil
                         //GI insurance
                         productSF = mapProducts.get(item.itemModel__c);
                     }
+                     // nts (nbizkarra) - 27/abr/2021 - Multiproduct
+                    else if (item.TransportType__c != null){
+                        
+                        productSF = mapProducts.get(item.TransportType__c);
+                    }
                     else
                     {
                         //life insurance: category: insured person
@@ -98,6 +103,12 @@ public class OrderItemUtil
                         {
                             //GI insurance
                             pricebookRef = new PricebookEntry( ProductID__c = item.itemModel__c );
+                        }
+                        // nts (nbizkarra) - 27/abr/2021 - Multiproduct
+                        else if (item.TransportType__c != null){
+                            
+                            pricebookRef = new PricebookEntry( ProductID__c = item.TransportType__c );
+
                         }
                         else if (item.Category__c != null)
                         {
@@ -152,6 +163,11 @@ public class OrderItemUtil
         if (item.itemModel__c != null)
         {
             productID = item.itemModel__c;
+        }
+        // nts (nbizkarra) - 27/abr/2021 - Multiproduct
+        else if (item.TransportType__c != null){
+                        
+            productID = item.TransportType__c;
         }
         else if (item.Category__c != null)
         {
