@@ -1251,7 +1251,7 @@ public without sharing class GenesysInteractionsService
         {
             get
             {
-                if(total != 1 || hasDifferentOwners)
+                if(total == 0 || (total != 1 && hasDifferentOwners))
                 {
                     return null;
                 }
