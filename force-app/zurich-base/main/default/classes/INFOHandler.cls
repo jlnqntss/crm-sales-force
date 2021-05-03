@@ -324,6 +324,8 @@ public class INFOHandler implements ISystem
                         accountRecord.LastName = (recordValuesMap.containsKey('CLIENTE_APELLIDO1') ? (String) recordValuesMap.get('CLIENTE_APELLIDO1'): null) + ' ' +
                                                     (recordValuesMap.containsKey('CLIENTE_APELLIDO2') ? (String) recordValuesMap.get('CLIENTE_APELLIDO2') : null);
                         accountRecord.LegalEntity__pc = recordValuesMap.containsKey('CLIENTE_ENTIDAD_LEGAL') ? (String) recordValuesMap.get('CLIENTE_ENTIDAD_LEGAL') : null;
+                        // 30.04.2021 - nts (agonzalezisasi) - ocs 1729 visibilidad GDRP
+                        accountRecord.LegalEntity__c = accountRecord.LegalEntity__pc;
                         accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
                         addRecordToMap(externalRequest, ACCOUNT, 'Account', accountRecord);                                  
