@@ -1008,7 +1008,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
         List<Account> partners = [SELECT Id, PartnerSFCode__c FROM Account WHERE RecordTypeId = :partnerRecordTypeId LIMIT 2];
-        List<Account> intermediary = [SELECT Id, MainMobilePhone__c, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
+        List<Account> intermediary = [SELECT Id, MainMobilePhone__c, Phone, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
 
         List<Product2> products = new List<Product2>
         {
@@ -1088,7 +1088,7 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(policies.get(0).Id, activePolicies.byType.get('Group 1').get(0).id, 'No se ha informado correctamente el id de la póliza');
         System.assertEquals(policies.get(5).Id, activePolicies.byType.get('Group 2').get(0).id, 'No se ha informado correctamente el id de la póliza');
 
-        System.assertEquals(intermediary[0].MainMobilePhone__c, activePolicies.byIntermediary.get('0001112224').get(0).intermediaryPhone, 'No se ha informado correctamente el teléfono del intermediario de la póliza');
+        System.assertEquals(intermediary[0].Phone, activePolicies.byIntermediary.get('0001112224').get(0).intermediaryPhone, 'No se ha informado correctamente el teléfono del intermediario de la póliza');
         System.assertEquals(intermediary[0].MainEmail__c, activePolicies.byIntermediary.get('0001112224').get(0).intermediaryEmail, 'No se ha informado correctamente el email del intermediario de la póliza');
     }
 
@@ -1175,7 +1175,7 @@ private without sharing class GenesysInteractionsServiceTest
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
-        List<Account> intermediary = [SELECT Id, MainMobilePhone__c, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
+        List<Account> intermediary = [SELECT Id, Phone, MainEmail__c, Channel__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
 
         PoliciesSelector policiesSelector = new PoliciesSelector();
         policiesSelector.setFields
@@ -1189,7 +1189,8 @@ private without sharing class GenesysInteractionsServiceTest
         {
             'IntermediaryId__r.MainMobilePhone__c',
             'IntermediaryId__r.Phone',
-            'IntermediaryId__r.MainEmail__c'
+            'IntermediaryId__r.MainEmail__c',
+            'IntermediaryId__r.Channel__c'
         }
         );
 
@@ -1212,7 +1213,7 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(policies[0].Id, activePolicy.id, 'No se ha obtenido correctamente el id de la póliza');
         System.assertEquals(policies[0].Name, activePolicy.policyCode, 'No se ha obtenido correctamente el código de la póliza');
 
-        System.assertEquals(intermediary[0].MainMobilePhone__c, activePolicy.intermediaryPhone, 'No se ha informado correctamente el teléfono del intermediario de la póliza');
+        System.assertEquals(intermediary[0].Phone, activePolicy.intermediaryPhone, 'No se ha informado correctamente el teléfono del intermediario de la póliza');
         System.assertEquals(intermediary[0].MainEmail__c, activePolicy.intermediaryEmail, 'No se ha informado correctamente el email del intermediario de la póliza');
     }
 
