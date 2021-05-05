@@ -2707,7 +2707,8 @@ public class TestDataFactory
                     new Policy__c(
                         Name = String.valueOf(policyNumber),
                         PolicyHolder__c = relatedAccount.Id,
-                        InfoPolicyNumber__c = String.valueOf(policyNumber).leftPad(14, '0')
+                        InfoPolicyNumber__c = String.valueOf(policyNumber).leftPad(14, '0'),
+                        PolicyStatus__c= 'V'
                     )
                 );
             }
@@ -2963,7 +2964,8 @@ public class TestDataFactory
                         Name = String.valueOf(policyNumber),
                         PolicyHolder__c = relatedOpportunity.AccountId,
                         InfoPolicyNumber__c = String.valueOf(policyNumber).leftPad(14, '0'),
-                        OpportunityName__c = relatedOpportunity.Id
+                        OpportunityName__c = relatedOpportunity.Id,
+                        PolicyStatus__c = 'V'
                     )
                 );
             }
