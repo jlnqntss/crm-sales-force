@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>AttributeName__c</field>
-        <value xsi:type="xsd:string">IBAN</value>
+        <value xsi:type="xsd:string">iban</value>
     </values>
     <values>
         <field>Duplicate__c</field>
