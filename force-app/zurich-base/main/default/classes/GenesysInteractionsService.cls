@@ -328,6 +328,7 @@ public without sharing class GenesysInteractionsService
                 'ProductId__r.GroupDescription__c',
                 'Partner__r.PartnerSector__c',
                 'Partner__r.PartnerSFCode__c',
+                'Partner__r.Name',
                 'IntermediaryId__r.MainMobilePhone__c',
                 'IntermediaryId__r.Phone',
                 'IntermediaryId__r.MainEmail__c',
@@ -380,10 +381,12 @@ public without sharing class GenesysInteractionsService
                 'InsuredObject__r.RegistrationNumber__c',
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
+                'Policy__r.Partner__r.Name',
                 'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
-                'Policy__r.IntermediaryId__r.MainEmail__c'
+                'Policy__r.IntermediaryId__r.MainEmail__c',
+                'Policy__r.IntermediaryId__r.Channel__c'
             }
         );
 
@@ -684,10 +687,12 @@ public without sharing class GenesysInteractionsService
                 'InsuredObject__r.RegistrationNumber__c',
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
+                'Policy__r.Partner__r.Name',
                 'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
-                'Policy__r.IntermediaryId__r.MainEmail__c'
+                'Policy__r.IntermediaryId__r.MainEmail__c',
+                'Policy__r.IntermediaryId__r.Channel__c'
             }
         );
 
