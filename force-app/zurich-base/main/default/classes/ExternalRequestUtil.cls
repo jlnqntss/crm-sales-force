@@ -562,7 +562,15 @@ global without sharing class ExternalRequestUtil {
 
           if( incomingOrder.Bundle__c.equals(Label.NoBundle)  || incomingOrder.Bundle__c == null){
           
-            deviceName = orderItemList.get(0).itemModel__c;
+            // No Bundle: check if it is multiproduct (Transport type)
+            if (orderItemList.get(0).itemModel__c != null)
+            {
+              deviceName = orderItemList.get(0).itemModel__c;
+            }
+            else if (orderItemList.get(0).TransportType__c != null){
+
+              deviceName = orderItemList.get(0).TransportType__c;
+            }
   
           }else{ //If it is a bundle, fill it with bundle name
             

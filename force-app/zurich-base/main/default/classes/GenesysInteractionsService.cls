@@ -328,9 +328,11 @@ public without sharing class GenesysInteractionsService
                 'ProductId__r.GroupDescription__c',
                 'Partner__r.PartnerSector__c',
                 'Partner__r.PartnerSFCode__c',
+                'Partner__r.Name',
                 'IntermediaryId__r.MainMobilePhone__c',
                 'IntermediaryId__r.Phone',
-                'IntermediaryId__r.MainEmail__c'
+                'IntermediaryId__r.MainEmail__c',
+                'IntermediaryId__r.Channel__c'
             }
         );
 
@@ -379,10 +381,12 @@ public without sharing class GenesysInteractionsService
                 'InsuredObject__r.RegistrationNumber__c',
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
+                'Policy__r.Partner__r.Name',
                 'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
-                'Policy__r.IntermediaryId__r.MainEmail__c'
+                'Policy__r.IntermediaryId__r.MainEmail__c',
+                'Policy__r.IntermediaryId__r.Channel__c'
             }
         );
 
@@ -639,7 +643,9 @@ public without sharing class GenesysInteractionsService
                 'Partner__r.PartnerSFCode__c',
                 'IntermediaryId__r.MainMobilePhone__c',
                 'IntermediaryId__r.Phone',
-                'IntermediaryId__r.MainEmail__c'
+                'IntermediaryId__r.MainEmail__c',
+                'IntermediaryId__r.Channel__c',
+                'Partner__r.Name'
             }
         );
 
@@ -681,10 +687,12 @@ public without sharing class GenesysInteractionsService
                 'InsuredObject__r.RegistrationNumber__c',
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
+                'Policy__r.Partner__r.Name',
                 'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
-                'Policy__r.IntermediaryId__r.MainEmail__c'
+                'Policy__r.IntermediaryId__r.MainEmail__c',
+                'Policy__r.IntermediaryId__r.Channel__c'
             }
         );
 
@@ -1201,12 +1209,12 @@ public without sharing class GenesysInteractionsService
             this.id = policy.id;
             this.policyCode = policy.Name;
             this.type = String.isNotBlank(policy.PolicyType__c) ? policy.PolicyType__c : policy.ProductId__r.GroupDescription__c;
-            this.partnerName = policy.Partner__r.PartnerSFCode__c;  // FIXME: El nombre del partner no es el SF Code
+            this.partnerName = policy.Partner__r.Name;
             this.partnerSector = policy.Partner__r.PartnerSector__c;
             this.intermediaryCode = policy.Intermediary_Code__c;
-            this.intermediaryChannel = policy.Intermediary_Code__c; // FIXME: El Canal de intermediación no es el Code; Por qué el Intermediary_Code tiene una _?
+            this.intermediaryChannel = policy.IntermediaryId__r.Channel__c;
             this.intermediaryEmail = policy.IntermediaryId__r.MainEmail__c;
-            this.intermediaryPhone = String.isBlank(policy.IntermediaryId__r.MainMobilePhone__c)? policy.IntermediaryId__r.Phone : policy.IntermediaryId__r.MainMobilePhone__c;
+            this.intermediaryPhone = String.isBlank(policy.IntermediaryId__r.Phone)? policy.IntermediaryId__r.MainMobilePhone__c : policy.IntermediaryId__r.Phone;
         }
 
         public override String toString()

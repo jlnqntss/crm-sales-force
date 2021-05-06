@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>AttributeName__c</field>
-        <value xsi:type="xsd:string">Padlock receipt</value>
+        <value xsi:type="xsd:string">padlockReceiptAccepted</value>
     </values>
     <values>
         <field>Duplicate__c</field>

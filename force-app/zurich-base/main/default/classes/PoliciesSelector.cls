@@ -109,18 +109,14 @@ public with sharing class PoliciesSelector extends RecordsSelector
      * @date 20/01/2021
      * @param Id policyHolder  Id de la cuenta a la que pertenece la póliza
      * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
+     * 
+     * @change OCS-1512 - 04/05/2021 - nts (agonzalezisasi) - La condicion de poliza activa se cambia de fechas a Estado igual a V
      */
     public List<Policy__c> selectByHolder(Id policyHolder)
     {
         if(policyHolder != null)
         {
-            Query.Condition condition = Query.doOr
-            (
-                Query.conditionEq(Policy__c.EndDate__c, null),
-                Query.conditionGe(Policy__c.EndDate__c, Query.TODAY)
-            );
-
-            this.baseQuery.addConditionEq(Policy__c.PolicyHolder__c, policyHolder).addCondition(condition);
+            this.baseQuery.addConditionEq(Policy__c.PolicyHolder__c, policyHolder).addConditionEq(Policy__c.PolicyStatus__c, 'V');
 
             return (List<Policy__c>) this.baseQuery.run();
         }

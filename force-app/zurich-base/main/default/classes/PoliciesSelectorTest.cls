@@ -144,7 +144,8 @@ private with sharing class PoliciesSelectorTest
         // Actualizar la fecha expiración de una póliza y comprobar que NO recupera esa póliza
         Integer policiesCount = policies.size();
         Policy__c policyToUpdate = policies.get(0);
-        policyToUpdate.EndDate__c = Date.today().addDays(-1);
+        // policyToUpdate.EndDate__c = Date.today().addDays(-1);
+        policyToUpdate.PolicyStatus__c = 'P';
         update policyToUpdate;
 
         // Comprobar obtiene pólizas por tomador ACTIVAS

@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>AttributeName__c</field>
-        <value xsi:type="xsd:string">Transport type</value>
+        <value xsi:type="xsd:string">transportType</value>
     </values>
     <values>
         <field>Duplicate__c</field>
