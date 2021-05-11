@@ -25,7 +25,7 @@ private without sharing class GenesysInteractionsServiceTest
         intermediaries.get(0).MainEmail__c = 'intermediario@email.com';//202102: Añadido email para los intermediarios
         update intermediaries.get(0);
 
-        List<Account> partners = TestDataFactory.generateAccounts('001', 'Partner', 10);
+        List<Account> partners = TestDataFactory.generateAccounts('001', 'PartnerOCS', 10);
         insert partners;
 
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
@@ -1004,7 +1004,7 @@ private without sharing class GenesysInteractionsServiceTest
     static void test_findActivePolicies()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
-        Id partnerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner').getRecordTypeId();
+        Id partnerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PartnerOCS').getRecordTypeId(); 
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
         List<Account> partners = [SELECT Id, PartnerSFCode__c FROM Account WHERE RecordTypeId = :partnerRecordTypeId LIMIT 2];

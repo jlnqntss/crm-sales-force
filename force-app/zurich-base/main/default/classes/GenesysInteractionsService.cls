@@ -1362,7 +1362,14 @@ public without sharing class GenesysInteractionsService
     {
         public Boolean isDigitalCustomer;
         public String searchType;
-        public String value;
+        public String value 
+        {
+            get
+            {
+                return cleanTerm(value, searchType);
+            }
+            set;
+        }
 
         public DigitalCustomer() {}
         public DigitalCustomer(Map<String, String> paramsByName)
@@ -1374,6 +1381,24 @@ public without sharing class GenesysInteractionsService
         public override String toString()
         {
             return JSON.serialize(this);
+        }
+
+        /**
+         * Removes the whitespaces and converts characters to uppercase in the term parameter
+         * 
+         * @author nts (agonzalezisasi)
+         */
+        private String cleanTerm(String term, String type)
+        {
+            String result = String.isEmpty(term)? '':term;
+
+            switch on type {
+                when 'document' {
+                    result = result.deleteWhitespace().toUpperCase();        
+                }
+            }
+
+            return result;
         }
     }
 
