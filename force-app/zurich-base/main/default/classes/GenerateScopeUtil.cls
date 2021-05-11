@@ -1,5 +1,10 @@
 public class GenerateScopeUtil
 {
+    private static final String HANDLE_TYPE_SCOPE_ACCOUNT = 'SCOPE_ACCOUNT';
+    private static final String HANDLE_TYPE_SCOPE_OTHER = 'SCOPE_OTHER';
+    private static final String HANDLE_TYPE_PARTNER_POLICY = 'PARTNER_POLICY';
+    private static final String CLASS_NAME = 'GenerateScopeUtil';
+
     /**
      * Controlar el número de eventos a procesar (200) y marcar cual ha sido el último evento procesado
      * @author adelgado
@@ -52,7 +57,8 @@ public class GenerateScopeUtil
                         AccountId__c = String.isNotBlank(accountField) ? (String) record.get(accountField) : null,
                         RelatedId__c = record.Id,
                         ObjectType__c = record.getSObjectType().getDescribe().getName(),
-                        BusinessCode__c = String.isNotBlank(businessCodeField) ? (String) record.get(businessCodeField) : null
+                        BusinessCode__c = String.isNotBlank(businessCodeField) ? (String) record.get(businessCodeField) : null,
+                        HandleType__c = HANDLE_TYPE_SCOPE_ACCOUNT
                     )
                 );
             }
@@ -62,7 +68,7 @@ public class GenerateScopeUtil
         }
         catch (Exception e)
         {
-            ErrorLogUtil.commitError(e, 'GenerateScopeUtil', 'generateScopeEvents');
+            ErrorLogUtil.commitError(e, CLASS_NAME, 'generateScopeEvents');
         }
 
         return null;
@@ -98,18 +104,49 @@ public class GenerateScopeUtil
                         BusinessCode__c = null,
                         ReferenceObjectName__c = referenceObjectName,
                         ReferenceFieldName__c = referenceFieldName,
-                        RelatedFieldName__c = relatedFieldName
+                        RelatedFieldName__c = relatedFieldName,
+                        HandleType__c = HANDLE_TYPE_SCOPE_OTHER
                 ));
             }
 
             return EventBus.publish(generateScopeEvents);
 
         } catch (Exception e) {
-            ErrorLogUtil.commitError(e, 'GenerateScopeUtil', 'generateScopeEvents');
+            ErrorLogUtil.commitError(e, CLASS_NAME, 'generateScopeEvents');
         }
 
         return null;
 
+    }
+
+    public static Database.SaveResult[] generatePartnerEvents(
+        String businessCodeField, String relatedFieldName, 
+        String referenceObjectName, String referenceFieldName,
+        List<SObject> records)
+    {
+        List<GenerateScopeEvent__e> generateScopeEvents = new List<GenerateScopeEvent__e>();
+
+        try {
+            for(SObject record : records) {
+                generateScopeEvents.add (
+                    new GenerateScopeEvent__e (
+                        RelatedId__c = record.Id,
+                        BusinessCode__c = String.isNotBlank(businessCodeField) ? (String) record.get(businessCodeField) : null,
+                        ObjectType__c = record.getSObjectType().getDescribe().getName(),
+                        ReferenceObjectName__c = referenceObjectName,
+                        ReferenceFieldName__c = referenceFieldName,
+                        RelatedFieldName__c = relatedFieldName,
+                        HandleType__c = HANDLE_TYPE_PARTNER_POLICY
+                ));
+            }
+
+            return EventBus.publish(generateScopeEvents);
+
+        } catch (Exception e) {
+            ErrorLogUtil.commitError(e, CLASS_NAME, 'generateScopeEvents');
+        }
+
+        return null;
     }
 
     /**
@@ -127,13 +164,16 @@ public class GenerateScopeUtil
     {
         List<GenerateScopeEvent__e> eventsAccount = new List<GenerateScopeEvent__e>();
         List<GenerateScopeEvent__e> eventsAlternative = new List<GenerateScopeEvent__e>();
+        List<GenerateScopeEvent__e> eventsPartner = new List<GenerateScopeEvent__e>();
 
         for(GenerateScopeEvent__e event : events) {
-            if( event.ReferenceObjectName__c != null ) {
+            if( event.HandleType__c == HANDLE_TYPE_SCOPE_ACCOUNT ) {
+                eventsAccount.add(event);
+            } else if( event.HandleType__c == HANDLE_TYPE_SCOPE_OTHER ) {
                 if( String.isNotBlank(event.AccountId__c))
                     eventsAlternative.add(event);
-            } else {
-                eventsAccount.add(event);
+            } else if( event.HandleType__c == HANDLE_TYPE_PARTNER_POLICY ) {
+                eventsPartner.add(event);
             }
         }
 
@@ -143,6 +183,10 @@ public class GenerateScopeUtil
 
         if( !eventsAlternative.isEmpty() ) {
             handleEventsAlternativeSObjects(eventsAlternative);
+        }
+
+        if( !eventsPartner.isEmpty() ) {
+            handleEventsPartner(eventsPartner);
         }
     }
 
@@ -334,7 +378,7 @@ public class GenerateScopeUtil
         }
         catch (Exception e)
         {
-            ErrorLogUtil.commitError(e, 'GenerateScopeUtil', 'generateScopeEvents');
+            ErrorLogUtil.commitError(e, CLASS_NAME, 'generateScopeEvents');
         }
 
     }
@@ -482,7 +526,153 @@ public class GenerateScopeUtil
 
         if( !generatedErrors.isEmpty() ) {
             for(Integer i=0,j=generatedErrors.size();i<j;i++) {
-                ErrorLogUtil.commitError(generatedErrors[i], 'GenerateScopeUtil', 'handleEventsAlternativeSObjects');
+                ErrorLogUtil.commitError(generatedErrors[i], CLASS_NAME, 'handleEventsAlternativeSObjects');
+            }
+        }
+    }
+
+    @testvisible
+    private static void handleEventsPartner(List<GenerateScopeEvent__e> events) 
+    {
+        
+        List<Exception> generatedErrors = new List<Exception>();
+        // Para que el proceso sea generico nos guardamos todas las referencias en mapas por el TIPO DE OBJETO
+        Map<String, String> mapReferenceObjectNameByObjectType = new Map<String, String>(); // nombre del objeto referenciado
+        Map<String, String> mapReferenceObjectFieldByObjectType = new Map<String, String>(); // nombre del campo del objeto referenciado
+        Map<String, String> mapRelatedFieldNameByObjectType = new Map<String, String>(); // nombre del campo del objeto destino
+        Map<String, Set<String>> mapReferenceIdsByObjectTypes = new Map<String, Set<String>>(); // lista de ids del objeto referenciado
+        Map<String, Map<String, ID>> mapReferenceObjectByObjectTypes = new Map<String, Map<String, Id>>(); // lista de objetos referenciados, tras las queries bulk
+        Map<String, List<SObject>> mapSObjectsToUpdate = new Map<String, List<SObject>>(); // lista de objetos a actualizar
+
+        // 1. Clasificamos las listas ids referenciados de los eventos por su tipo de objeto para hacer luego
+        // las consultas. Ej: Claim__c => lista de ids de poliza
+        for(Integer i=0,j=events.size(); i<j; i++) {
+            GenerateScopeEvent__e event = events[i];
+
+            if( String.isNotBlank(event.BusinessCode__c) && String.isNotBlank(event.ReferenceObjectName__c) &&
+                String.isNotBlank(event.ReferenceFieldName__c) && String.isNotBlank(event.RelatedFieldName__c)) {
+                // Para cada tipo de objeto (Claim__c, Asset) guardamos la lista de ids a los objetos referenciados (Policy__c, etc.)
+                if( mapReferenceIdsByObjectTypes.containsKey(event.ObjectType__c) ) {
+                    mapReferenceIdsByObjectTypes.get(event.ObjectType__c).add(event.BusinessCode__c);
+                } else {
+                    mapReferenceIdsByObjectTypes.put(event.ObjectType__c, new Set<String>{event.BusinessCode__c});
+                }
+            
+                // Para cada tipo de objeto (Claim__c, Asset) guardamos el nombre del objeto referenciado (Policy__c, etc.)
+                if( !mapReferenceObjectNameByObjectType.containsKey(event.ObjectType__c)) {
+                    mapReferenceObjectNameByObjectType.put(event.ObjectType__c, event.ReferenceObjectName__c);
+                }
+                // Para cada tipo de objeto (Claim__c, Asset) guardamos el nombre del campo del objeto referenciado (Scope__c de Policy__c, etc.)
+                if( !mapReferenceObjectFieldByObjectType.containsKey(event.ObjectType__c)) {
+                    mapReferenceObjectFieldByObjectType.put(event.ObjectType__c, event.ReferenceFieldName__c);
+                }
+                // Para cada tipo de objeto (Claim__c, Asset) guardamos el nombre del campo en ese objeto (Scope__c de Claim__c, etc.)
+                if( !mapRelatedFieldNameByObjectType.containsKey(event.ObjectType__c) ) {
+                    mapRelatedFieldNameByObjectType.put(event.ObjectType__c, event.RelatedFieldName__c);
+                }
+            }
+        }
+
+        // 2. Por cada Tipo de Objeto, recuperamos la lista de SObjects referenciados y lo clasificamos de nuevo
+        // por tipo de objecto. Ej: Claim__c => mapa id de poliza => poliza (con el campo Scope__c)
+        for(String objectType: mapReferenceIdsByObjectTypes.keySet()) {
+            if( mapReferenceObjectNameByObjectType.containsKey(objectType) && 
+                mapReferenceObjectFieldByObjectType.containsKey(objectType) &&
+                mapReferenceIdsByObjectTypes.containsKey(objectType) ) {
+
+                try {
+                    // A continuacion comprobamos que las referencias a los SObject y sus campos existen.
+                    // Lo hacemos aqui para que solo se haga una vez por tipo de Objeto
+
+                    // Comprobamos que el Objeto destino existe
+                    if( !Schema.getGlobalDescribe().containsKey(objectType) ) {
+                        throw new GenerateScopeException('The Object doesnt exist: ' + objectType);
+                    }
+                    // Comprobamos que el campo del objeto destino existe
+                    String relatedFieldName = mapRelatedFieldNameByObjectType.get(objectType);
+                    if( !Schema.getGlobalDescribe().get(objectType).getDescribe().fields.getMap().containsKey(relatedFieldName) ) {
+                        throw new GenerateScopeException('The referenced Field Name doesnt exist: ' + objectType + '.' + relatedFieldName);
+                    }
+                    
+                    // Recuperamos el nombre del objeto referenciado. Ej: para Claim seria Policy__c
+                    String refObjectName = mapReferenceObjectNameByObjectType.get(objectType); // Ej. Policy__c
+                    if( !Schema.getGlobalDescribe().containsKey(refObjectName) ) {
+                        throw new GenerateScopeException('The referenced Object doesnt exist: ' + refObjectName);
+                    }
+                    // Recuperamos el nombre del campo del objeto referenciado. Ej: para Claim seria Scope__c de Policy__c
+                    String refObjectFieldName = mapReferenceObjectFieldByObjectType.get(objectType); // Ej. Scope__c
+                    if( !Schema.getGlobalDescribe().get(refObjectName).getDescribe().fields.getMap().containsKey(refObjectFieldName) ) {
+                        throw new GenerateScopeException('The referenced Field Name doesnt exist: ' + refObjectName + '.' + refObjectFieldName);
+                    }
+                    
+                    // Pasamos a realizar las consultas
+                    // Recuperamos los ids de los eventos
+                    Set<String> ids = mapReferenceIdsByObjectTypes.get(objectType);
+                    String query = 'SELECT Id, ' + refObjectFieldName + ' FROM ' + refObjectName + ' WHERE ' + refObjectFieldName + ' IN :ids';
+                    List<SObject> lista = Database.query(query);
+
+                    // Convertimos la lista en un mapa que nos da el ID a partir del codigo
+                    Map<String, ID> mapCodeToId = new Map<String, ID>();
+                    for(SObject o: lista) {
+                        mapCodeToId.put((String)o.get(refObjectFieldName), (ID)o.get('Id'));
+                    }
+                    // lo guardamos en un mapa de polizas por id categorizado por ObjectType
+                    mapReferenceObjectByObjectTypes.put(objectType, mapCodeToId);
+                } catch( Exception ex ) {
+                    generatedErrors.add(ex);
+                }
+            }
+        }
+
+        // 3. Por cada evento, miramos si su id de objeto referenciado existe y tiene Scope
+        // Si lo hay, lo añadimos a una lista de objetos a actualizar, clasificados en un mapa por tipo de objeto
+        // Ej: Claim__c => lista de Claims(id, Scope__c) a actualizar
+        for(Integer i=0,j=events.size(); i<j; i++) {
+
+            GenerateScopeEvent__e event = events[i];
+            String objectType = event.ObjectType__c;
+            String code = event.BusinessCode__c;
+            SObject obj = null;
+
+            if( mapReferenceObjectByObjectTypes.containsKey(objectType) ) {
+                if( mapReferenceObjectByObjectTypes.get(objectType).containsKey(code) &&
+                    mapRelatedFieldNameByObjectType.containsKey(objectType) &&
+                    mapReferenceObjectFieldByObjectType.containsKey(objectType)) 
+                {
+                    // Recupera el campo a actualizar
+                    String relatedFieldName = mapRelatedFieldNameByObjectType.get(objectType); // Ej: Scope__c de Claim__c
+                    // Recupera el campo del objeto referenciado
+                    String refObjectFieldName = mapReferenceObjectFieldByObjectType.get(objectType);  // Ej: Scope__c de Policy__c
+                    // Recupera el objeto referenciado. Ej: Policy__c para los Claims
+                    ID referenceObjectId = mapReferenceObjectByObjectTypes.get(objectType).get(code);
+
+                    // Inicializa un objeto a actualizar del tipo correspondiente. Ej: new Claim__c(Id=xxx,Scope__c=xxxx)
+                    obj = (SObject)Type.forName(objectType).newInstance();
+                    // establece el campo Id para el update
+                    obj.put('Id', event.relatedId__c);
+                    // y establece el campo del objeto referenciado al campo correspondiente. Ej: Claim__c.Scope__c = Policy__c.Scope__c
+                    obj.put(relatedFieldName, referenceObjectId);
+                }
+            }
+
+            if( obj != null ) {
+                if( mapSObjectsToUpdate.containsKey(objectType) ) {
+                    mapSObjectsToUpdate.get(objectType).add(obj);
+                } else {
+                    mapSObjectsToUpdate.put(objectType, new List<SObject>{obj});
+                }
+            }
+
+        }
+
+        // 4. Por cada tipo de objeto de evento, actualizamos los objetos con el Scope
+        for( String key: mapSObjectsToUpdate.keySet() ) {
+            update mapSObjectsToUpdate.get(key);
+        }
+
+        if( !generatedErrors.isEmpty() ) {
+            for(Integer i=0,j=generatedErrors.size();i<j;i++) {
+                ErrorLogUtil.commitError(generatedErrors[i], CLASS_NAME, 'handleEventsPartner');
             }
         }
     }

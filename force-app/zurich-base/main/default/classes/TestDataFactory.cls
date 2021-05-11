@@ -1896,7 +1896,7 @@ public class TestDataFactory
                     );
                 }
             }
-            when 'Partner' {
+            when 'PartnerOCS' {
                 for (Integer i = 0; i < numRecords; i++)
                 {
                     Integer phoneNumber = (Math.random() * 1000000000).intValue();
