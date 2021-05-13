@@ -86,7 +86,7 @@ public without sharing class BusinessInsuranceRaterService
     private static void initScopeSettings(Request formData)
     {
         List<Scope_Setting__mdt> scopeSettingsList = [
-            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c, GenesysCloudQueueName__c
+            SELECT Id, Label, BusinessCode__c, Scope__c, Scope_Name__c, GenesysCloudQueueName__c
             FROM Scope_Setting__mdt
         ];
 
@@ -484,7 +484,7 @@ public without sharing class BusinessInsuranceRaterService
                             ResultingPolicyNumber__c = offer.policyNumber,
                             EffectiveDate__c = offer.effectiveDate,
                             BusinessCode__c = (String.isNotBlank(offer.businessCode) ? offer.businessCode : formData.businessCode),
-                            BusinessName__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Scope_Name__c) ? currentScopeSettings.Scope_Name__c : 'Zurich Empresas'),
+                            BusinessName__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Label) ? currentScopeSettings.Label : 'ZURICH EMPRESAS DIGITAL'),
                             CloseDate = System.today(),
                             ExpirationDate__c = System.today().addDays(15),
                             CommercialProductCode__c = offer.commercialPC,
@@ -1331,7 +1331,7 @@ public without sharing class BusinessInsuranceRaterService
             get;
             set {
                 setRequiredFields('Manager' + 'phone');
-                phone = value;
+                phone =  String.isNotBlank(value) ? addPrefixToPhone(value) : value;
             }
         }
     }
