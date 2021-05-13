@@ -14,6 +14,9 @@ public class ExternalJobQueueBatchController
         {
             List<AsyncApexJob> queuedJobs = new AsyncApexJobsSelector().selectByClassName(new Set<String> {'ExternalJobQueueJob'});
             List<AsyncApexJob> executingJobs = new AsyncApexJobsSelector().selectByClassName(new Set<String> {'ExternalJobQueueBatch'});
+            
+            // COMMENT ME - 11/05/2021 - nts (agonzalezisasi) - linea de debug para comprobar el encadenamiento de batches
+            //ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_WARNING, 'checkExternalJobQueueBatch. queuedJobs: ' + queuedJobs.size() + ' executingJobs: ' + executingJobs.size(), 'checkExternalJobQueueBatch');
 
             if( queuedJobs.isEmpty() && executingJobs.isEmpty() )
             {

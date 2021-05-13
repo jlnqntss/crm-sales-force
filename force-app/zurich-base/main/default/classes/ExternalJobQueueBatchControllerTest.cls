@@ -95,4 +95,29 @@ private class ExternalJobQueueBatchControllerTest
         );
 
     }
+
+     /**
+     * Método test que válida que se encola un nuevo trabajo de procesamiento de externalRequest de tipo Nota
+     * y que hace uso de cola prioritaria
+     **
+     * @author nts (agonzalezisasi)
+     * @date 11/05/2021
+     */
+    @isTest
+    static void test_checkExternalJobPriorityQueueBatch()
+    {
+        List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest('INFO', 'NOTE', 10)
+        );
+        insert externalRequestList;
+
+        Test.startTest();
+        ExternalJobQueueBatchController.checkExternalJobPriorityQueueBatch();
+        List<AsyncApexJob> executingBatch = new AsyncApexJobsSelector().selectByClassName(new Set<String> {'ExternalJobPriorityQueueBatch'});
+        Test.stopTest();
+
+        System.assertEquals(1, executingBatch.size(), 'No se ha encolado el trabajo de cola prioritaria');
+
+    }
 }
