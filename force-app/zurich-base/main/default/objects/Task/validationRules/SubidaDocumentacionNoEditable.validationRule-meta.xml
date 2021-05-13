@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SubidaDocumentacionNoEditable</fullName>
+    <active>true</active>
+    <description>Previene la edición de las tareas generadas automáticamente con la subida de documentación del portal</description>
+    <errorConditionFormula>PRIORVALUE(Subject) = &quot;Documentación subida por cliente&quot; &amp;&amp; RecordType.DeveloperName = &quot;Activity&quot; &amp;&amp; $Profile.Name = &quot;OCS User&quot;</errorConditionFormula>
+    <errorMessage>[VR Tarea] No tienes permiso para editar este tipo de tarea.</errorMessage>
+</ValidationRule>
