@@ -1907,7 +1907,8 @@ public class TestDataFactory
                             Phone = String.valueOf(phoneNumber),
                             RecordTypeId = recordTypeId,
                             PartnerSector__c = 'Sector' + i,
-                            PartnerSFCode__c = 'Code' + i
+                            PartnerSFCode__c = 'Code' + i,
+                            GrandparentBusinessName__c = 'grandparentName' + i
                         )
                     );
                 }
