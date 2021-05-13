@@ -55,4 +55,10 @@
         <label>Respondido</label>
         <closed>false</closed>
     </standardValue>
+    <standardValue>
+        <fullName>Combinado</fullName>
+        <default>false</default>
+        <label>Combinado</label>
+        <closed>true</closed>
+    </standardValue>
 </StandardValueSet>
