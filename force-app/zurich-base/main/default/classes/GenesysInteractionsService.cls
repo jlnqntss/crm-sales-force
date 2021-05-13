@@ -328,11 +328,12 @@ public without sharing class GenesysInteractionsService
                 'ProductId__r.GroupDescription__c',
                 'Partner__r.PartnerSector__c',
                 'Partner__r.PartnerSFCode__c',
-                'Partner__r.Name',
+                'Partner__r.GrandparentBusinessName__c',
                 'IntermediaryId__r.MainMobilePhone__c',
                 'IntermediaryId__r.Phone',
                 'IntermediaryId__r.MainEmail__c',
-                'IntermediaryId__r.Channel__c'
+                'IntermediaryId__r.Channel__c',
+                'IntermediaryId__r.Segment__c'
             }
         );
 
@@ -381,12 +382,13 @@ public without sharing class GenesysInteractionsService
                 'InsuredObject__r.RegistrationNumber__c',
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
-                'Policy__r.Partner__r.Name',
+                'Policy__r.Partner__r.GrandparentBusinessName__c',
                 'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
                 'Policy__r.IntermediaryId__r.MainEmail__c',
-                'Policy__r.IntermediaryId__r.Channel__c'
+                'Policy__r.IntermediaryId__r.Channel__c',
+                'Policy__r.IntermediaryId__r.Segment__c'
             }
         );
 
@@ -645,7 +647,8 @@ public without sharing class GenesysInteractionsService
                 'IntermediaryId__r.Phone',
                 'IntermediaryId__r.MainEmail__c',
                 'IntermediaryId__r.Channel__c',
-                'Partner__r.Name'
+                'IntermediaryId__r.Segment__c',
+                'Partner__r.GrandparentBusinessName__c'
             }
         );
 
@@ -687,12 +690,13 @@ public without sharing class GenesysInteractionsService
                 'InsuredObject__r.RegistrationNumber__c',
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
-                'Policy__r.Partner__r.Name',
+                'Policy__r.Partner__r.GrandparentBusinessName__c',
                 'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
                 'Policy__r.IntermediaryId__r.MainEmail__c',
-                'Policy__r.IntermediaryId__r.Channel__c'
+                'Policy__r.IntermediaryId__r.Channel__c',
+                'Policy__r.IntermediaryId__r.Segment__c'
             }
         );
 
@@ -1201,6 +1205,7 @@ public without sharing class GenesysInteractionsService
         public String intermediaryChannel;
         public String intermediaryPhone;
         public String intermediaryEmail;
+        public String intermediarySegment;
 
         public ActivePolicy(){}
         public ActivePolicy(Policy__c policy)
@@ -1209,10 +1214,11 @@ public without sharing class GenesysInteractionsService
             this.id = policy.id;
             this.policyCode = policy.Name;
             this.type = String.isNotBlank(policy.PolicyType__c) ? policy.PolicyType__c : policy.ProductId__r.GroupDescription__c;
-            this.partnerName = policy.Partner__r.Name;
+            this.partnerName = policy.Partner__r.GrandparentBusinessName__c;
             this.partnerSector = policy.Partner__r.PartnerSector__c;
             this.intermediaryCode = policy.Intermediary_Code__c;
             this.intermediaryChannel = policy.IntermediaryId__r.Channel__c;
+            this.intermediarySegment = policy.IntermediaryId__r.Segment__c;
             this.intermediaryEmail = policy.IntermediaryId__r.MainEmail__c;
             this.intermediaryPhone = String.isBlank(policy.IntermediaryId__r.Phone)? policy.IntermediaryId__r.MainMobilePhone__c : policy.IntermediaryId__r.Phone;
         }
