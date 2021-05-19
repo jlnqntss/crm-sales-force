@@ -3,6 +3,6 @@
     <fullName>SubidaDocumentacionNoEditable</fullName>
     <active>true</active>
     <description>Previene la edición de las tareas generadas automáticamente con la subida de documentación del portal</description>
-    <errorConditionFormula>PRIORVALUE(Subject) = &quot;Documentación subida por cliente&quot; &amp;&amp; RecordType.DeveloperName = &quot;Activity&quot; &amp;&amp; $Profile.Name = &quot;OCS User&quot;</errorConditionFormula>
+    <errorConditionFormula>(PRIORVALUE(Subject) = &quot;Documentación subida por cliente&quot; || PRIORVALUE(Subject) = &quot;Solicitud de documentación por SMS&quot;)&amp;&amp; RecordType.DeveloperName = &quot;Activity&quot; &amp;&amp; $Profile.Name = &quot;OCS User&quot;</errorConditionFormula>
     <errorMessage>[VR Tarea] No tienes permiso para editar este tipo de tarea.</errorMessage>
 </ValidationRule>
