@@ -106,15 +106,15 @@ public class GenesysCloudSendSMSAction
 
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
-            System.debug('----------------- callback.onSucess');
+            // System.debug('----------------- callback.onSucess');
             List<Task> smsTasks = new List<Task>();
 
             for(Object result : results)
             {
                 GenesysCloud.SmsData sms = (GenesysCloud.SmsData) result;
-                System.debug(sms);
+                // System.debug(sms);
                 Id relatedSmsCaseId = smsCaseIdsByGenesysSmsData.get(sms);
-                System.debug('relatedCaseId: ' + relatedSmsCaseId);
+                // System.debug('relatedCaseId: ' + relatedSmsCaseId);
 
                 // if(String.isNotEmpty(relatedSmsMessageId) ) {
                 // emailMessages.add(new EmailMessage(
@@ -135,7 +135,8 @@ public class GenesysCloudSendSMSAction
                         Status = 'Cerrada',
                         Subject = Label.solicitudDocumentacionSms,
                         Type = 'Other',
-                        WhatId = relatedSmsCaseId
+                        WhatId = relatedSmsCaseId,
+                        ActivityDate = System.today()
                         )
                     );
             }

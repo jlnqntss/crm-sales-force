@@ -85,24 +85,6 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>IsPersonAccount_GI</fullName>
-        <accessLevel>Read</accessLevel>
-        <accountSettings>
-            <caseAccessLevel>None</caseAccessLevel>
-            <contactAccessLevel>None</contactAccessLevel>
-            <opportunityAccessLevel>None</opportunityAccessLevel>
-        </accountSettings>
-        <label>IsPersonAccount_GI</label>
-        <sharedTo>
-            <group>Read_GI</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>IsPersonAccount</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>Lead_GI</fullName>
         <accessLevel>Read</accessLevel>
         <accountSettings>
@@ -273,6 +255,16 @@
             <field>RecordTypeId</field>
             <operation>equals</operation>
             <value>Lead,Customer,Business Customer</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
         </criteriaItems>
     </sharingCriteriaRules>
 </SharingRules>
