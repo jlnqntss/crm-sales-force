@@ -9,7 +9,6 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
@@ -21,6 +20,26 @@
                 <fullName>CC</fullName>
                 <default>false</default>
                 <label>CC</label>
+            </value>
+            <value>
+                <fullName>CD</fullName>
+                <default>false</default>
+                <label>CD</label>
+            </value>
+            <value>
+                <fullName>CO</fullName>
+                <default>false</default>
+                <label>CO</label>
+            </value>
+            <value>
+                <fullName>IN</fullName>
+                <default>false</default>
+                <label>IN</label>
+            </value>
+            <value>
+                <fullName>RA</fullName>
+                <default>false</default>
+                <label>RA</label>
             </value>
         </valueSetDefinition>
     </valueSet>

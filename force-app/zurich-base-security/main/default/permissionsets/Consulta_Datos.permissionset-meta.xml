@@ -2782,6 +2782,10 @@
         <object>purecloud__PureCloud_Queue__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <pageAccesses>
+        <apexPage>OpenInfoLaunch</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
     <recordTypeVisibilities>
         <recordType>Asset.Address</recordType>
         <visible>true</visible>
