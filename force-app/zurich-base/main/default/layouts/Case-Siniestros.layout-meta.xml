@@ -124,6 +124,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>CustomerOrigin__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>SuppliedEmail</field>
             </layoutItems>
             <layoutItems>

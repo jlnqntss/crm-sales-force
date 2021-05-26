@@ -60,6 +60,13 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>ClaimHandlingType__c</picklist>
+        <values>
+            <fullName>Manual</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>ClaimStatusTPA__c</picklist>
         <values>
             <fullName>0%2E1 Under Analysis</fullName>
@@ -532,6 +539,25 @@
         </values>
         <values>
             <fullName>Policy Number</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CustomerOrigin__c</picklist>
+        <values>
+            <fullName>Life Fitbit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Motor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SPAM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Xiaomi</fullName>
             <default>false</default>
         </values>
     </picklistValues>

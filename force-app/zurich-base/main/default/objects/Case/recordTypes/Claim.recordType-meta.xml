@@ -211,6 +211,25 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>CustomerOrigin__c</picklist>
+        <values>
+            <fullName>Life Fitbit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Motor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SPAM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Xiaomi</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Form_type__c</picklist>
         <values>
             <fullName>Review</fullName>
