@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Policy_Renewal_Date__c</fullName>
+    <description>OCS. Para Medallia. Fecha de renovación (vencimiento + 1)</description>
+    <externalId>false</externalId>
+    <formula>CaseId__r.PolicyId__r.EndDate__c + 1</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Policy_Renewal_Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

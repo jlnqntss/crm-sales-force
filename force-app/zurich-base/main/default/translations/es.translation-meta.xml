@@ -5508,6 +5508,10 @@
         <label>Encuesta enviada</label>
         <name>sendSurveyToastTitleSuccess</name>
     </customLabels>
+    <customLabels>
+        <label>Acciones</label>
+        <name>CTIExtraButtonsTitle</name>
+    </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
         <name>Configure_Call_Center_Settings</name>

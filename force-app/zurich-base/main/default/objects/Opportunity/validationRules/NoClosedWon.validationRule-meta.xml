@@ -6,7 +6,12 @@
     <errorConditionFormula>ISPICKVAL(StageName,&quot;Closed Won&quot;) &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
-$Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;</errorConditionFormula>
+$Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos; &amp;&amp;
+$User.Username &lt;&gt; &apos;israel.catala@zurich-es.com&apos; &amp;&amp;
+$User.Username &lt;&gt; &apos;agustin.zapata@zurich-es.com&apos; &amp;&amp;
+$User.Username &lt;&gt; &apos;j.tomegarcia@zurich-es.com&apos; &amp;&amp;
+$User.Username &lt;&gt; &apos;julio.fabeiro@zurich-es.com&apos; &amp;&amp;
+$User.Username &lt;&gt; &apos;francisco.orta@zurich-es.com&apos;</errorConditionFormula>
     <errorDisplayField>StageName</errorDisplayField>
     <errorMessage>[VR Oferta] No se puede cambiar la oferta a Cerrada Ganada</errorMessage>
 </ValidationRule>

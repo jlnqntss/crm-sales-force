@@ -8,8 +8,12 @@
 		||
 		TEXT(Order.Bundle__c) == &quot;No bundle&quot;
 	),
-	CASE
-	(
+        IF( !ISBLANK(TEXT(TransportType__c))
+          ,
+         &quot;multiproduct&quot;
+          ,
+          CASE
+	  ( 
 		TEXT(Category__c),
 		&quot;Laptop&quot;, &quot;ordenadores&quot;,
 		&quot;Smartphone&quot;,&quot;moviles&quot;,
@@ -21,7 +25,9 @@
 		&quot;Game Console&quot;,&quot;consolas&quot;,
 		&quot;ELECTRIC BIKE&quot;,&quot;bicicletas&quot;,
 		&quot;moviles&quot;
-	),
+	  )
+        )
+	,
 	&quot;packs&quot;
 )</formula>
     <label>Categoria UTM</label>

@@ -119,7 +119,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
     global Database.QueryLocator start(Database.BatchableContext BC)
     {
         if ( String.isBlank(query) ) {
-            query = 'SELECT Id, AccountId, OldAccountId__c, Account.RecordType.DeveloperName FROM Opportunity WHERE OldAccountId__c != null';
+            query = 'SELECT Id, AccountId, OldAccountId__c, Account.RecordType.DeveloperName FROM Opportunity WHERE AccountId != null AND OldAccountId__c != null';
         }
 
         return Database.getQueryLocator(query);
