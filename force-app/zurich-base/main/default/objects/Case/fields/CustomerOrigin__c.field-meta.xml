@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CustomerOrigin__c</fullName>
+    <description>KLINC. Permite identificar ciertas tipologías de clientes</description>
+    <externalId>false</externalId>
+    <label>Customer Origin</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Xiaomi</fullName>
+                <default>false</default>
+                <label>Xiaomi</label>
+            </value>
+            <value>
+                <fullName>Motor</fullName>
+                <default>false</default>
+                <label>Motor</label>
+            </value>
+            <value>
+                <fullName>Life Fitbit</fullName>
+                <default>false</default>
+                <label>Life Fitbit</label>
+            </value>
+            <value>
+                <fullName>SPAM</fullName>
+                <default>false</default>
+                <label>SPAM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
