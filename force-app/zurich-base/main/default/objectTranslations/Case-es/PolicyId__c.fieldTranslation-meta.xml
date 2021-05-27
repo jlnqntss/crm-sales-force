@@ -2,5 +2,5 @@
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Póliza</label>
     <name>PolicyId__c</name>
-    <relationshipLabel><!-- Cases --></relationshipLabel>
+    <relationshipLabel>Casos</relationshipLabel>
 </CustomFieldTranslation>
