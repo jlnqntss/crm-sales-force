@@ -11674,6 +11674,10 @@
         <recordType>ExternalRequest__c.INFO</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ExternalRequest__c-Formato External request</layout>
+        <recordType>ExternalRequest__c.INFOProcessed</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>FeedItem-Feed Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -13641,6 +13645,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>ExternalRequest__c.INFO</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>ExternalRequest__c.INFOProcessed</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

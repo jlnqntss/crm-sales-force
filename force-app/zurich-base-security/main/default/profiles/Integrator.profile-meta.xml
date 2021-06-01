@@ -12164,6 +12164,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ExternalRequest__c-Formato External request</layout>
+        <recordType>ExternalRequest__c.INFOProcessed</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ExternalRequest__c-Formato External request</layout>
         <recordType>ExternalRequest__c.GENERIC</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -14173,6 +14177,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>ExternalRequest__c.INFO</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>ExternalRequest__c.INFOProcessed</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

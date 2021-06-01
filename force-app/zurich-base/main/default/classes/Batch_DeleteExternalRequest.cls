@@ -20,16 +20,41 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
     }
 
     /**
-     * @author adelgado
-     * Borrado de registros de ExternalRequest__c
-     * @date 03/12/2020
+     * Programacion del borrado de registros de ExternalRequest__c para el recordtype de Klinc
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 01/06/2021
      */
-    global static String scheduleExternalRequestClear()
+    public static String scheduleExternalRequestClearKlinc()
     {
-        return scheduleExternalRequestClear(null, null, null);
+        AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
+        Integer days = adminSetup.NumberDaysDeleteRequests__c.intValue();
+        
+        Id recordTypeId = 
+				Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByName().get('GENERIC').getRecordTypeId();
+
+        String query = 'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + recordTypeId + '\' AND CreatedDate < LAST_N_DAYS:' + days;
+        return scheduleExternalRequestClear('Delete Old External Requests Klinc', '0 0 22 * * ?', query);
     }
 
-    global static String scheduleExternalRequestClear(String jobName, String timeExpression, String query)
+    /**
+     * Programacion del borrado de registros de ExternalRequest__c para el recordtype de Ocs
+     * 
+     * @author adelgado
+     * @date 03/12/2020
+     */
+    public static String scheduleExternalRequestClearOcs()
+    {
+        Integer days = 15;
+        
+        Id recordTypeId = 
+				Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByName().get('INFOProcessed').getRecordTypeId();
+
+        String query = 'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + recordTypeId + '\' AND CreatedDate < LAST_N_DAYS:' + days + ' LIMIT 50000000';
+        return scheduleExternalRequestClear('OCS_Clear_External_Request', '0 0 02 * * ?', query);
+    }
+
+    private static String scheduleExternalRequestClear(String jobName, String timeExpression, String query)
     {
         if ( String.isBlank(query) )
         {
@@ -49,12 +74,12 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
      * Borrado de registros de ExternalRequestError__c
      * @date 03/12/2020
      */
-    global static String scheduleExternalRequestErrorClear()
+    public static String scheduleExternalRequestErrorClear()
     {
         return scheduleExternalRequestErrorClear(null, null, null);
     }
 
-    global static String scheduleExternalRequestErrorClear(String jobName, String timeExpression, String query)
+    private static String scheduleExternalRequestErrorClear(String jobName, String timeExpression, String query)
     {
         if ( String.isBlank(query) )
         {
@@ -64,7 +89,7 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
         return System.schedule
                (
             String.isBlank(jobName) ? 'Borrado de registros de external request error' : jobName,
-            String.isBlank(timeExpression) ? '0 0 03 * * ?' : timeExpression,
+            String.isBlank(timeExpression) ? '0 0 04 * * ?' : timeExpression,
             new Batch_DeleteExternalRequest(query)
                );
     }
