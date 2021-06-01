@@ -627,6 +627,8 @@ public class INFOHandler implements ISystem
      * @param error Error que se ha producido al procesar la external request
      * @param sumRetry Indica si hay que sumar un reinteto
      * @return void
+     * 
+     * @change 31/05/2021 - nts (agonzalezisasi) - Al marcar la external request como procesada se cambia tambien el record type
      */
     private static void setExternalRequest(ExternalRequest__c externalRequest, Boolean processed, String processResult, String error, Boolean sumRetry)
     {
@@ -646,6 +648,10 @@ public class INFOHandler implements ISystem
             else 
             {
                 externalRequest.Processed__c = processed;
+            }
+            if( externalRequest.Processed__c ) {
+                Id recordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByName().get('INFOProcessed').getRecordTypeId();
+                externalRequest.RecordTypeId = recordTypeId;
             }
 
             // 3 - Si se marca la external request como procesada se indica la fecha de procesamiento

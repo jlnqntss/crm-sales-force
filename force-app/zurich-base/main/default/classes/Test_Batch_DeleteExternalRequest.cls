@@ -191,10 +191,20 @@ private class Test_Batch_DeleteExternalRequest
      * @date 03/12/2020
      */
     @isTest
-    static void testBatch_scheduleExternalRequestClear_Params()
+    static void testBatch_scheduleExternalRequestClearOcs_Params()
     {
         Test.startTest();
-        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClear('Test_scheduleExternalRequestClear', null, 'SELECT Id FROM ExternalRequest__c');
+        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearOcs();
+        Test.stopTest();
+
+        System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
+    }
+
+    @isTest
+    static void testBatch_scheduleExternalRequestClearKlinc_Params()
+    {
+        Test.startTest();
+        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearKlinc();
         Test.stopTest();
 
         System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
@@ -210,7 +220,7 @@ private class Test_Batch_DeleteExternalRequest
     static void testBatch_scheduleExternalRequestErrorClear_Params()
     {
         Test.startTest();
-        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestErrorClear('Test_scheduleExternalRequestErrorClear', null, 'SELECT Id FROM ExternalRequestError__c');
+        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestErrorClear();
         Test.stopTest();
 
         System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
