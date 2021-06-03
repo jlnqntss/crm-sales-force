@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestringirProductosZE</fullName>
+    <active>true</active>
+    <description>Los usuarios con perfil ZE User no podrán seleccionar productos no pertenecientes a ZE</description>
+    <errorConditionFormula>AND(
+$Profile.Name = &apos;ZE User&apos;,NOT(
+OR(
+ProductId__r.INFO_Product_Number__c = &quot;00800-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00215-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00541-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00215-00003&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00847-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00886-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00845-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00674-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00483-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00481-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00526-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00516-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00515-00001&quot;
+)))</errorConditionFormula>
+    <errorDisplayField>ProductId__c</errorDisplayField>
+    <errorMessage>[VR Offer] Su perfil no permite la selección de este producto</errorMessage>
+</ValidationRule>
