@@ -61,6 +61,8 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
             query = SystemUtil.getOldExternalRequests();
         }
 
+        if( String.isNotBlank(jobName) && Test.isRunningTest() ) jobName += ' Test';
+
         return System.schedule
                (
             String.isBlank(jobName) ? 'Borrado de registros de external request' : jobName,
@@ -85,6 +87,8 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
         {
             query = SystemUtil.getOldExternalRequestErrors();
         }
+
+        if( String.isNotBlank(jobName) && Test.isRunningTest() ) jobName += ' Test';
 
         return System.schedule
                (
