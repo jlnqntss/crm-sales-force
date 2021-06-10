@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
+        <fullName>Apertura_de_caso</fullName>
+        <description>Apertura de caso</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Caso_abierto_1614260292183</template>
+    </alerts>
+    <alerts>
         <fullName>Auto_response_W2C_Klinc_DE</fullName>
         <description>Auto response W2C Klinc DE</description>
         <protected>false</protected>
@@ -49,17 +61,6 @@
         <template>Life_Orange_Templates/Web_to_case_response_Orange_HTML</template>
     </alerts>
     <alerts>
-        <fullName>Apertura_de_caso</fullName>
-        <description>Apertura de caso</description>
-        <protected>false</protected>
-        <recipients>
-            <field>SuppliedEmail</field>
-            <type>email</type>
-        </recipients>
-        <senderType>CurrentUser</senderType>
-        <template>OneCustomerService/Caso_abierto_1614260292183</template>
-    </alerts>    
-    <alerts>
         <fullName>Caso_pendiente</fullName>
         <description>Caso pendiente</description>
         <protected>false</protected>
@@ -67,7 +68,8 @@
             <field>SuppliedEmail</field>
             <type>email</type>
         </recipients>
-        <senderType>CurrentUser</senderType>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
         <template>OneCustomerService/General_1614253232658</template>
     </alerts>
     <alerts>
@@ -78,7 +80,7 @@
             <field>SuppliedEmail</field>
             <type>email</type>
         </recipients>
-        <senderAddress>soporte-klinc@nts-solutions.com</senderAddress>
+        <senderAddress>no.responder@zurich.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>OneCustomerService/Caso_cerrado_1614260137980</template>
     </alerts>
@@ -90,7 +92,7 @@
             <field>SuppliedEmail</field>
             <type>email</type>
         </recipients>
-        <senderAddress>soporte-klinc@nts-solutions.com</senderAddress>
+        <senderAddress>no.responder@zurich.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>OneCustomerService/Caso_cerrado_sin_finalizar_1615309685093</template>
     </alerts>
