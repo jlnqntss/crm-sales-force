@@ -1,15 +1,17 @@
-public with sharing class OpportunitiesSelector extends BaseSelector
+public with sharing class OpportunitiesSelector extends RecordsSelector
 {
     //#region Contructores
     public OpportunitiesSelector()
-    {}
-
-    public OpportunitiesSelector(Set<String> fieldsToQuery)
     {
-        this();
-        this.sObjectToQuery = 'Opportunity';
-        this.fieldsToQuery = fieldsToQuery;
+        super(Opportunity.getSObjectType());
     }
+
+    // public OpportunitiesSelector(Set<String> fieldsToQuery)
+    // {
+    //     this();
+    //     this.sObjectToQuery = 'Opportunity';
+    //     this.fieldsToQuery = fieldsToQuery;
+    // }
     //#endregion
 
     /**
@@ -24,22 +26,40 @@ public with sharing class OpportunitiesSelector extends BaseSelector
      */
     public List<Opportunity> selectByAccountIdAndScopes(Id accountId, Set<Id> scopeIds)
     {
-        if(accountId != null && scopeIds != null)
-        {
-            String query = String.format(
-                'SELECT {0} FROM Opportunity ' +
-                'WHERE AccountId = : accountId AND ScopeId__c IN : scopeIds ' +
-                'ORDER BY createdDate DESC ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<Opportunity>) Database.query(query);
+        List<Opportunity> result = new List<Opportunity>();
+
+        if( accountId != null && scopeIds != null ) {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Opportunity.Id,
+                Opportunity.AccountId,
+                Opportunity.ScopeId__c,
+                Opportunity.OwnerId
+            })
+            .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
+            .addCondition(Query.conditionIn(Opportunity.ScopeId__c, scopeIds))
+            .orderBy(Opportunity.CreatedDate.getDescribe().getName(), 'DESC');
+
+            result = (List<Opportunity>) this.baseQuery.run();
         }
-        else
-        {
-            return new List<Opportunity>();
-        }
+
+        return result;
+
+        // if(accountId != null && scopeIds != null)
+        // {
+        //     String query = String.format(
+        //         'SELECT {0} FROM Opportunity ' +
+        //         'WHERE AccountId = : accountId AND ScopeId__c IN : scopeIds ' +
+        //         'ORDER BY createdDate DESC ',
+        //         new List<String> {
+        //         String.join(new List<String> (this.fieldsToQuery), ',')
+        //     }
+        //         );
+        //     return (List<Opportunity>) Database.query(query);
+        // }
+        // else
+        // {
+        //     return new List<Opportunity>();
+        // }
     }
 
     /**
@@ -56,21 +76,65 @@ public with sharing class OpportunitiesSelector extends BaseSelector
      */
     public List<Opportunity> selectByAccountIdScopesAndOwnerProfile(Id accountId, Set<Id> scopeIds, Set<String> ownerProfileNames)
     {
-        if(accountId != null && scopeIds != null && ownerProfileNames != null)
-        {
-            String query = String.format(
-                'SELECT {0} FROM Opportunity ' +
-                'WHERE AccountId = : accountId AND ScopeId__c IN : scopeIds AND Owner.Profile.Name IN : ownerProfileNames ' +
-                'ORDER BY createdDate DESC ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<Opportunity>) Database.query(query);
+        List<Opportunity> result = new List<Opportunity>();
+
+        if(accountId != null && scopeIds != null && ownerProfileNames != null) {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Opportunity.Id,
+                Opportunity.AccountId,
+                Opportunity.ScopeId__c,
+                Opportunity.OwnerId
+            })
+            .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
+            .addCondition(Query.conditionIn(Opportunity.ScopeId__c, scopeIds))
+            .addConditionString('Owner.Profile.Name IN (\'' + String.join(new List<String>(ownerProfileNames), '\',\'') + '\')')
+            .orderBy(Opportunity.CreatedDate.getDescribe().getName(), 'DESC');
+
+            result = (List<Opportunity>) this.baseQuery.run();
         }
-        else
-        {
-            return new List<Opportunity>();
-        }
+
+        return result;
+
+        // if(accountId != null && scopeIds != null && ownerProfileNames != null)
+        // {
+        //     String query = String.format(
+        //         'SELECT {0} FROM Opportunity ' +
+        //         'WHERE AccountId = : accountId AND ScopeId__c IN : scopeIds AND Owner.Profile.Name IN : ownerProfileNames ' +
+        //         'ORDER BY createdDate DESC ',
+        //         new List<String> {
+        //         String.join(new List<String> (this.fieldsToQuery), ',')
+        //     }
+        //         );
+        //     return (List<Opportunity>) Database.query(query);
+        // }
+        // else
+        // {
+        //     return new List<Opportunity>();
+        // }
+    }
+
+    /**
+     * Busca Ofertas a partir del Id del cliente, del ambito.
+     * En las ofertas se incluyen tambien los Objetos asegurados (Asset) y las 
+     * Polizas relacionados con la oferta.
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 04/06/2021
+     * @param {Id accountId} id del cliente
+     * @return {List<Opportunity} ofertas encontradas
+     */
+    public List<Opportunity> findByAccountIdAndScope(Id accountId, String scope)
+    {
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Opportunity.Id,
+            Opportunity.InfoQuoteNumber__c,
+            Opportunity.SessionId__c
+        })
+        .addSubquery('Insured_Objects__r', 'Id')
+        .addSubquery('Policies__r', 'Id')
+        .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
+        .addCondition(Query.conditionEq(Opportunity.Scope__c, scope));
+
+        return (List<Opportunity>) this.baseQuery.run();
     }
 }

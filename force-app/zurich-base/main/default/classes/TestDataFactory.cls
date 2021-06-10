@@ -2348,7 +2348,7 @@ public class TestDataFactory
         //Datos comunes
         jsonInformation.put('timeStamp', datetimeToISOString(System.now()));
         jsonInformation.put('webEmail', email);
-        jsonInformation.put('sessionId', Math.random());
+        jsonInformation.put('sessionId', '1234567890'); // Math.random());
         jsonInformation.put('businessCode', businessCode);
         jsonInformation.put('lastStep', lastStep);
 
@@ -2540,7 +2540,7 @@ public class TestDataFactory
     {
         Datetime twoWeeks = System.today().addDays(15);
         return new Map<String, Object>{
-            'policyNumber' => String.valueOf((Math.random() * 10000000).intValue()),
+            'policyNumber' => '000000222',
             'quoteNumberINFO' => '456789456',
             'quoteNumberJRE' => '789989799',
             'operationCode' => 'P1',
@@ -3086,5 +3086,32 @@ public class TestDataFactory
         }
 
         return orders;
+    }
+
+    /**
+     * Genera una lista de ContactRequests con un identificador de Genesys y asociados a una 
+     * cuenta dada.
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 03/06/2021
+     * @param {Id accountId} El id de la cuenta
+     * @param {Integer num} Numero a crear
+     * @return {List<ContactRequest>} la lista creada
+     */
+    public static List<ContactRequest> generateContactRequest(Id accountId, Integer num)
+    {
+        List<ContactRequest> contactReqs = new List<ContactRequest>();
+
+        for (Integer i = 0; i < num; i++) {
+            contactReqs.add(
+                new ContactRequest(
+                    GenesysInteractionId__c= 'b5d554e7-94b7-4fe1-8041-bfd9992a569' + i,
+                    Status= 'New',
+                    WhoId= accountId
+                )
+            );
+        }
+
+        return contactReqs;
     }
 }

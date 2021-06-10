@@ -6,7 +6,8 @@ public without sharing class BusinessInsuranceRaterService
     public static Map<String, String> formattedFieldsMetadataMap = new Map<String, String>();
     public static Set<String> currentRequiredFieldsSet = new Set<String>();
 
-    public static Set<String> contactRequestSteps = new Set<String> {'CRM-01', 'CRM-02', 'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07'};
+    public static Set<String> contactRequestSteps = new Set<String> {'CRM-01', 'CRM-02', 'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07', 'CRM-08'};
+    public static Set<String> campaignMemberSteps = new Set<String> {'CRM-01', 'CRM-02', 'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07'};
     public static Set<String> offersSteps = new Set<String> {'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07', 'CRM-08'};
     public static Set<String> managerSteps = new Set<String> {'CRM-07', 'CRM-08'};
     public static Set<String> legitLeadStageSteps = new Set<String> {'CRM-03'};
@@ -29,8 +30,28 @@ public without sharing class BusinessInsuranceRaterService
     public static ContactPointEmail currentContactPointEmail;
     public static ContactPointPhone currentContactPointPhone;
 
+    // Mapa que relaciona los estados que vienen del formulario con su prioridad (a menor valor mas prioridad).
+    private static final Map<String, Integer> mapPriorities = new Map<String, Integer> {
+        'Completado' => 0,
+        'Telefonico' => 1,
+        'Callmeback' => 2,
+        'Abandono' => 3,
+        'Activo' => 4
+    };
+
+    // Mapa que relaciona los estado que vienen del formulario con los estados del objeto ContactRequest
+    private static final Map<String, String> mapStatusToSF = new Map<String, String> {
+        'Activo' => 'New',
+        'Telefonico' => 'Phone',
+        'Callmeback' => 'Callmeback',
+        'Abandono' => 'Abandoned'
+    };
+
+    private static final String FORM_STATUS_COMPLETED = 'Completado';
+
     public static Account processFormData(Request formData)
     {
+        // System.debug('processFormData INIT LIMIT: Query ' + Limits.getQueries() + ' / DML ' + Limits.getDmlStatements());
         /*if( String.isBlank(formData.webEmail) )
            {
             throw new BusinessInsuranceRaterServiceException(
@@ -74,6 +95,7 @@ public without sharing class BusinessInsuranceRaterService
         //   - Call me back o abandono (ContactRequest)
         manageOffersAndRelatedInformation(formData);
 
+        // System.debug('processFormData END LIMIT: Query ' + Limits.getQueries() + ' / DML ' + Limits.getDmlStatements());
         return currentCustomer;
     }
 
@@ -333,7 +355,7 @@ public without sharing class BusinessInsuranceRaterService
 
             //System.Debug('---------------- external id: ' + externalid);
             Database.UpsertResult result = Database.upsert(accountToCreate, Schema.Account.LeadWebId__c);
-            // En caso de que sea actualizacion la consideramos duplicado por ha sido en muy poco tiempo y
+            // En caso de que sea actualizacion la consideramos duplicado porque ha sido en muy poco tiempo y
             // no le ha dado tiempo a indexar la busqueda inicial por DNI, Email, Phone
             if( !result.isCreated() )
             {
@@ -417,250 +439,428 @@ public without sharing class BusinessInsuranceRaterService
      * En cualquier caso, excepto en el paso CRM-08, se creará un registro ContactRequest
      *
      * @author rlopez
+     * 
+     * @change 02/06/2021 - nts (agonzalezisasi) - SOPZUR-4 Evolutivo Tarificador Web
      */
     private static void manageOffersAndRelatedInformation(Request formData)
     {
-        Id addressRecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get('Address').getRecordTypeId();
-
         Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         List<Opportunity> offersToCreate = new List<Opportunity>();
-        List<Policy__c> policiesToCreate = new List<Policy__c>();
-        List<Asset> risksToCreate = new List<Asset>();
-        List<ContactRequest> contactRequestsToCreate = new List<ContactRequest>();
+        
 
-        Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation> quoteNumberRiskMap = new Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation>();
-        Map<Integer, String> quoteNumberToPolicyNumberMap = new Map<Integer, String>();
-        Map<String, Product2> productCodesToProductMap = new Map<String, Product2>();
-
+        // Offers
         if( offersSteps.contains(formData.lastStep) )
         {
-            List<BusinessInsuranceRaterService.Offer> receivedOffers = formData.offers;
-            if( !receivedOffers.isEmpty() )
-            {
-                productCodesToProductMap = getProductsFromOfferCodes(receivedOffers);
-
-                for(Integer i=0; i < receivedOffers.size(); i++)
-                {
-                    BusinessInsuranceRaterService.Offer offer = receivedOffers.get(i);
-                    String productCodes = offer.commercialPC + offer.technicalPC;
-                    String offerName = offer.quoteNumberINFO;
-                    if( String.isBlank(offerName) )
-                    {
-                        if(productCodesToProductMap.containsKey(productCodes) && productCodesToProductMap.get(productCodes) != null)
-                        {
-                            offerName = productCodesToProductMap.get(productCodes).Name + ' - ' + currentCustomer.Name;
-                        }
-                        else
-                        {
-                            offerName = offer.commercialPC + ' - ' + offer.technicalPC + ' - ' + currentCustomer.Name;
-                        }
-                    }
-
-                    String stageName = 'Legit Lead';
-                    if( offer.netPremium == null && String.isNotBlank(formData.webPhone) )
-                    {
-                        stageName = 'App Submitted';
-                    }
-                    if(offer.netPremium != null)
-                    {
-                        stageName = 'Quoted';
-                    }
-                    if( String.isNotBlank(offer.policyNumber) )
-                    {
-                        stageName = 'Closed Won';
-                    }
-
-                    offersToCreate.add(
-                        new Opportunity(
-                            Name = offerName,
-                            ScopeId__c = currentScope.Id,
-                            Scope__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Scope__c) ? currentScopeSettings.Scope__c : 'ZE'),
-                            InfoQuoteNumber__c = offer.quoteNumberINFO,
-                            StageName = stageName,
-                            OwnerId = currentAdvisorId,
-                            AccountId = currentCustomer.Id,
-                            Language__c = offer.language,
-                            IssuedOnline__c = true,
-                            ResultingPolicyNumber__c = offer.policyNumber,
-                            EffectiveDate__c = offer.effectiveDate,
-                            BusinessCode__c = (String.isNotBlank(offer.businessCode) ? offer.businessCode : formData.businessCode),
-                            BusinessName__c = (currentScopeSettings != null && String.isNotBlank(currentScopeSettings.Label) ? currentScopeSettings.Label : 'ZURICH EMPRESAS DIGITAL'),
-                            CloseDate = System.today(),
-                            ExpirationDate__c = System.today().addDays(15),
-                            CommercialProductCode__c = offer.commercialPC,
-                            TechnicalProductCode__c = offer.technicalPC,
-                            TotalPremium__c = offer.netPremium,
-                            BuildingCapital__c = offer.buildingCapital,
-                            ContentCapital__c = offer.contentCapital,
-                            GeneralLiabilityLimit__c = offer.generalLiabilityLimit,
-                            PaymentType__c = offer.paymentType,
-                            PaymentTypeSucc__c = offer.paymentTypeSucc,
-                            PaymentChannel__c = offer.paymentChannel,
-                            PaymentChannelSucc__c = offer.paymentChannelSucc,
-                            ValidationErrors__c = offer.validationErrors,
-                            ProductId__c = (productCodesToProductMap.containsKey(productCodes) && productCodesToProductMap.get(productCodes) != null ? productCodesToProductMap.get(productCodes).Id : null),
-                            LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
-                            OperationCode__c = offer.operationCode,
-                            FirstReceipt__c = offer.firstReceipt,
-                            NextReceipts__c = offer.nextReceipts,
-                            LegalAuth__c = (formData.legalAuth != null ? formData.legalAuth : false)
-                            )
-                        );
-
-                    if( String.isNotBlank(offer.policyNumber) )
-                    {
-                        quoteNumberToPolicyNumberMap.put(i, offer.policyNumber);
-                    }
-
-                    BusinessInsuranceRaterService.OfferRiskInformation risk = offer.offerRiskInformation;
-                    if(risk != null)
-                    {
-                        quoteNumberRiskMap.put( i, risk);
-                    }
-                }
-
-                if( !offersToCreate.isEmpty() )
-                {
-                    insert offersToCreate;
-
-                    for(Integer i=0; i < offersToCreate.size(); i++)
-                    {
-                        Opportunity offer = offersToCreate.get(i);
-                        //Creamos las polizas
-                        if( quoteNumberToPolicyNumberMap.containsKey(i) )
-                        {
-                            String policyNumber = quoteNumberToPolicyNumberMap.get(i);
-                            policiesToCreate.add(
-                                new Policy__c(
-                                    Name = policyNumber,
-                                    InfoPolicyNumber__c = policyNumber,
-                                    PolicyHolder__c = currentCustomer.Id,
-                                    InfoQuoteNumber__c = offer.InfoQuoteNumber__c,
-                                    BusinessCode__c = offer.BusinessCode__c,
-                                    ScopeId__c = currentScope.Id
-                                    )
-                                );
-                        }
-
-                        //Creamos los riesgos
-                        if( quoteNumberRiskMap.containsKey(i) )
-                        {
-                            BusinessInsuranceRaterService.OfferRiskInformation risk = quoteNumberRiskMap.get(i);
-                            if(risk != null)
-                            {
-                                String riskName = 'Desconocido';
-                                if( String.isNotBlank(risk.propertyStreet) )
-                                {
-                                    riskName = risk.propertyStreet + ', ';
-                                    if( String.isNotBlank(risk.propertyStreetNumber) )
-                                    {
-                                        riskName += risk.propertyStreetNumber;
-                                    }
-                                }
-
-                                risksToCreate.add(
-                                    new Asset(
-                                        Name = riskName,
-                                        INFOInsuredObjectCode__c = (String.isBlank(offer.InfoQuoteNumber__c) ? null : offer.InfoQuoteNumber__c + '01'),
-                                        OfferId__c = offer.Id,
-                                        AccountId = currentCustomer.Id,
-                                        Scope__c = currentScope.Scope__c,
-                                        AddressType__c = risk.propertyStreetType,
-                                        AddressName__c = risk.propertyStreet,
-                                        AddressNumber__c = risk.propertyStreetNumber,
-                                        AddressAdditionalInfo__c = risk.propertyAdditionalInfo,
-                                        PostalCode__c = risk.propertyPostalCode,
-                                        City__c = risk.propertyCity,
-                                        State__c = risk.propertyState,
-                                        Country__c = risk.propertyCountry,
-                                        YearOfConstruction__c = risk.yearOfConstruction,
-                                        Ownership__c = risk.ownership,
-                                        InsuredType__c = risk.insuredType,
-                                        Building_Type__c = risk.buildingType,
-                                        Height__c = risk.height,
-                                        RiskFactor01__c = risk.riskFactor01,
-                                        RiskFactor02__c = risk.riskFactor02,
-                                        RiskFactor03__c = risk.riskFactor03,
-                                        RiskFactor04__c = risk.riskFactor04,
-                                        RiskFactor05__c = risk.riskFactor05,
-                                        RiskFactor06__c = risk.riskFactor06,
-                                        RiskFactor07__c = risk.riskFactor07,
-                                        RiskFactor08__c = risk.riskFactor08,
-                                        RiskFactor09__c = risk.riskFactor09,
-                                        Area__c = risk.area,
-                                        LockType__c = risk.lockType,
-                                        SecurityDoor__c = risk.securityDoor,
-                                        BulletproofDoor__c = risk.bulletproofDoor,
-                                        ConnectedAlarm__c = risk.connectedAlarm,
-                                        FireHydrant__c = risk.fireHydrant,
-                                        X24h_Security__c = risk.surveillance,
-                                        SmokeDetector__c = risk.smokeDetector,
-                                        Sprayer__c = risk.sprayer,
-                                        FireExtinguisher__c = risk.fireExtinguisher,
-                                        TypeOfWindows__c = risk.typeOfWindows,
-                                        Safe__c = risk.strongbox,
-                                        recordTypeId = addressRecordTypeId,
-                                        LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
-                                        Capacity__c = risk.capacity
-                                        )
-                                    );
-                            }
-                        }
-                    }
-
-                    if( !policiesToCreate.isEmpty() )
-                    {
-                        insert policiesToCreate;
-                        createRelationPolicyManager(policiesToCreate);
-                    }
-
-                    if( !risksToCreate.isEmpty() )
-                    {
-                        insert risksToCreate;
-                    }
-                }
-            }
+            checkOffers(formData, offersToCreate, currentScopeSettings);
         }
 
-        if( contactRequestSteps.contains(formData.lastStep) && formData.doNotCreateCallback == false )
-        {
-            //Crear Campaign Member
-            manageCampaignAssignment(offersToCreate, formData.webPhone);
-
-            //OPCIONAL - puede que no requiera funcionar con genesys
-            String queueName = 'Voz_ZurichEmpresas';
-            if( currentScopeSettings != null && String.isNotBlank(currentScopeSettings.GenesysCloudQueueName__c) )
-            {
-                queueName = currentScopeSettings.GenesysCloudQueueName__c;
-            }
-            List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
-            genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :queueName];
-
-            Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
-                formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now()
-                );
-
-            //Creamos ContactRequest para cualquiera de los pasos
-            ContactRequest contactRequestToCreate = new ContactRequest(
-                GenesysCloudQueueId__c = (!genesysQueue.isEmpty() ? genesysQueue.get(0).Id : null),
-                OwnerId = currentAdvisorId,
-                PreferredChannel = (String.isBlank(formData.webPhone) ? 'Email' : 'Phone'),
-                PreferredContactDatetime__c = preferredContactDatetime,
-                PreferredPhone = formData.webPhone,
-                RequestReason = 'Offer',
-                Status = 'New',
-                WebName__c = formData.accountInformation.firstName + ' ' + formData.accountInformation.lastName,
-                WhoId = currentCustomer.PersonContactId//currentCustomer.Id
-                );
-
-            if( !offersToCreate.isEmpty() )
-            {
-                contactRequestToCreate.WhatId = offersToCreate.get(0).Id;
+        if( !formData.doNotCreateCallback ) {
+            if( campaignMemberSteps.contains(formData.lastStep) ) {
+                //Crear Campaign Member 
+                manageCampaignAssignment(offersToCreate, formData.webPhone);
             }
 
-            insert contactRequestToCreate;
+            // Call Me Back
+            if( contactRequestSteps.contains(formData.lastStep) ) {
+                checkCallMeBack(formData, offersToCreate, currentScopeSettings);
+            }
         }
     }
+
+    //#region CallMeBack
+
+    /**
+     * Metodo que gestiona la creacion y cancelacion de CallMeBacks segun lo que viene en el formulario
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 02/06/2021
+     * @param {Request} Los datos del formulario
+     * @param {List<Opportunity>} Lista de las ofertas
+     * @param {Scope_Setting__mdt} Datos de configuracion para el proceso
+     */
+    private static void checkCallMeBack(Request formData, List<Opportunity> offersToCreate, Scope_Setting__mdt currentScopeSettings)
+    {
+        ContactRequest contactReqActual = null;
+
+        // Recuperamos los callmeback que haya programados durante el tiempo en el que el usuario esta
+        // rellenando el flujo
+        List<ContactRequest> contactReqs = new ContactRequestSelector().findByCustomerIdAndContactDatetime(
+            currentCustomer.PersonContactId, System.now()
+        );
+        // Miramos si hay alguno
+        if( !contactReqs.isEmpty() ) {
+            // Si lo hay, le primero deberia ser el mas prioritario y cercano en el tiempo
+            contactReqActual = contactReqs.get(0);
+        }
+        Boolean isCancel = false;
+        Boolean isCreate = false;
+
+        //Si estado Completado -> poner para cancelar
+        if( formData.isFinished ) {
+            isCancel = true;
+        } else { // estado distinto de completado
+            if( contactReqActual == null ) { // No existe callback programado actualmente
+                isCreate = true;
+            } else { // Si existe algun callmeback programado, vemos si hay que sustituirlo...
+                // El del formulario es mas PRIORITARIO? o sino, si es mas CERCANO EN EL TIEMPO
+                if( formData.hasHigherPriority(Integer.valueOf(contactReqActual.Priority__c))
+                    || formData.isCloserInTime(contactReqActual.PreferredContactDatetime__c)) 
+                {
+                    isCreate = true;
+                    isCancel = true;
+                }
+            }
+        }
+        
+        // Si es cancelar y existe alguno
+        if( isCancel && contactReqActual != null ) {
+            cancelCallMeBack(contactReqActual);
+        }
+
+        // Si es crear
+        if( isCreate ) {
+            createCallMeBack(formData, offersToCreate, currentScopeSettings);
+        }
+    }
+
+    /**
+     * Metodo que crea un CallMeBack a traves del objeto ContactRequest
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 02/06/2021
+     * @param {Request} Los datos del formulario
+     * @param {List<Opportunity>} Lista de las ofertas
+     * @param {Scope_Setting__mdt} Datos de configuracion para el proceso
+     */
+    private static void createCallMeBack(Request formData, List<Opportunity> offersToCreate, Scope_Setting__mdt currentScopeSettings)
+    {
+        //OPCIONAL - puede que no requiera funcionar con genesys
+        String queueName = QUEUE_NAME;
+        if( String.isNotBlank(currentScopeSettings?.GenesysCloudQueueName__c) )
+        {
+            queueName = currentScopeSettings.GenesysCloudQueueName__c;
+        }
+        List<purecloud__PureCloud_Queue__c> genesysQueue = [
+            SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :queueName
+        ];
+
+        Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
+            formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now()
+            );
+
+        //Creamos ContactRequest para cualquiera de los pasos
+        ContactRequest contactRequestToCreate = new ContactRequest(
+            GenesysCloudQueueId__c = (!genesysQueue.isEmpty() ? genesysQueue.get(0).Id : null),
+            OwnerId = currentAdvisorId,
+            PreferredChannel = (String.isBlank(formData.webPhone) ? 'Email' : 'Phone'),
+            PreferredContactDatetime__c = preferredContactDatetime,
+            PreferredPhone = formData.webPhone,
+            RequestReason = 'Offer',
+            Status = formData.statusSF,
+            WebName__c = formData.accountInformation.firstName + ' ' + formData.accountInformation.lastName,
+            WhoId = currentCustomer.PersonContactId//currentCustomer.Id
+            );
+
+        if( !offersToCreate.isEmpty() )
+        {
+            contactRequestToCreate.WhatId = offersToCreate.get(0).Id;
+        }
+
+        insert contactRequestToCreate;
+    }
+
+    /**
+     * Solicita la cancelacion de un CallMeBack en Genesys
+     * 
+     * @author nts (agonzalezisasi)
+     * @date  02/06/2021
+     * @param {ContactRequest} El ContactRequest a cancelar
+     */
+    private static void cancelCallMeBack(ContactRequest contactReq)
+    {
+        // Creamos la cancelacion del CallMeBack poniendo el id de genesys
+        GenesysCloud.CallbackCancel callback = new GenesysCloud.CallbackCancel();
+        callback.genesysId = contactReq.GenesysInteractionId__c;
+
+        // Creamos la relacion entre el CallMeBack y el ContactRequest para actualizar el estado 
+        // de este ultimo
+        Map<GenesysCloud.CallbackCancel, String> mapCallbackContactReq = new Map<GenesysCloud.CallbackCancel, String>{
+            callback => contactReq.Id
+        };
+
+        // Solicitamos la cancelacion del CallMeBack a Genesys
+        GenesysCloud.CallbacksService.cancel(
+            new List<GenesysCloud.CallbackCancel>{callback},
+            new UpdateCallbackCancel(mapCallbackContactReq)
+        );
+    }
+
+    /**
+     * Clase Helper que recibe el resultado de la solicitud de cancelacion hecha a Genesys y si ha
+     * ido todo bien actualiza el ContactRequest al estado cancelado
+     */
+    public class UpdateCallbackCancel implements GenesysCloud.IAPICallback
+    {
+        // Mapa de relacion entre el CallMeBack y el ContactRequest
+        Map<GenesysCloud.CallbackCancel, String> contactRequestIdsByCallback;
+
+        // Constructor
+        public UpdateCallbackCancel(Map<GenesysCloud.CallbackCancel, String> contactRequestIdsByCallback)
+        {
+            this.contactRequestIdsByCallback = contactRequestIdsByCallback;
+        }
+
+        // onSuccess Method
+        public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
+        {
+            // System.debug('------------- onSuccess');
+            List<ContactRequest> contactReqToUpdate = new List<ContactRequest>();
+
+            // Por cada peticion
+            for(Object result : results) {
+                // Recuperamos el callmeback que se cancelo
+                GenesysCloud.CallbackCancel callback = (GenesysCloud.CallbackCancel) result;
+                // Obtenemos el Id de la ContactRequest del mapa
+                String contactRequestId = contactRequestIdsByCallback.get(callback);
+
+                // Lo añadimos a la lista de ContactRequest a modificar
+                contactReqToUpdate.add(
+                    new ContactRequest(
+                        Id= contactRequestId,
+                        Status= ContactRequestSelector.STATUS_CANCELLED
+                    )
+                );
+            }
+
+            // Modificamos los ContactRequest para cancelarlos
+            if( !contactReqToUpdate.isEmpty() ) {
+                update contactReqToUpdate;
+            }
+        }
+
+        // onError Method
+        public void onError(Exception error)
+        {
+            // System.debug('------------- onError');
+            ErrorLogUtil.commitError(error);
+        }
+    }
+
+    //endregion
+
+    //#region Offer Creation And Update
+
+    private static void checkOffers(Request formData, List<Opportunity> offersToCreate, Scope_Setting__mdt currentScopeSettings)
+    {
+        if( formData.offers != null && !formData.offers.isEmpty() ) {
+            List<BusinessInsuranceRaterService.Offer> receivedOffers = formData.offers;
+
+            List<Policy__c> policiesToCreate = new List<Policy__c>();
+            List<Asset> risksToCreate = new List<Asset>();
+            //List<ContactRequest> contactRequestsToCreate = new List<ContactRequest>();
+            Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation> quoteNumberRiskMap = new Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation>();
+            Map<Integer, String> quoteNumberToPolicyNumberMap = new Map<Integer, String>();
+
+            // Productos - a partir de los codigos comercial y tecnico
+            Map<String, Product2> productCodesToProductMap = getProductsFromOfferCodes(receivedOffers);
+            String sessionId = formData.sessionId;
+            String scope = (String.isNotBlank(currentScopeSettings?.Scope__c) ? currentScopeSettings.Scope__c : 'ZE');
+
+            List<Opportunity> existingOffers = new OpportunitiesSelector().findByAccountIdAndScope(
+                currentCustomer.Id, scope
+            );
+            // Relacion de ofertas por id externos (INFOQuoteNumber y SessionId__c)
+            Map<String, Opportunity> mapOffersByExternalId = new Map<String, Opportunity>();
+            // Relacion de ofertas que no vienen en el formulario y puede que se tengan que borrar
+            Map<String, Opportunity> mapOffersToDelete = new Map<String, Opportunity>();
+
+            // Relacion de Objetos de riesgo asegurado por su Oferta asociada. Deberia haber uno por oferta
+            Map<Id, Asset> mapRiskByOfferId = new Map<ID, Asset>();
+            // Relacion de Polizas por su Oferta asociada. Deberia haber una por oferta
+            Map<Id, Policy__c> mapPolicyByOfferId = new Map<ID, Policy__c>();
+
+            // Por cada Oferta que hay en Salesforce....
+            for (Opportunity o : existingOffers) {
+                // Miramos cual de los dos id externos tiene, dando prioridad al INFOQuoteNumber
+                if( o.INFOQuoteNumber__c != null ) {
+                    mapOffersByExternalId.put(o.INFOQuoteNumber__c, o);
+                    mapOffersToDelete.put(o.INFOQuoteNumber__c, o);
+                } else if( o.SessionId__c.Contains(sessionId) ) {
+                    mapOffersByExternalId.put(o.SessionId__c, o);
+                    mapOffersToDelete.put(o.SessionId__c, o);
+                }
+
+                // Si hay objetos asegurados en la oferta, cogemos el primero
+                if( o.Insured_Objects__r != null && !o.Insured_Objects__r.isEmpty() ) {
+                    mapRiskByOfferId.put(o.Id, o.Insured_Objects__r.get(0));
+                }
+                // Si hay polizas en la oferta, cogemos la primera
+                if( o.Policies__r != null && !o.Policies__r.isEmpty() ) {
+                    mapPolicyByOfferId.put(o.Id, o.Policies__r.get(0));
+                }
+            }
+
+            // Por cada Oferta que viene del formulario...
+            for(Integer i=0; i < receivedOffers.size(); i++) {
+                BusinessInsuranceRaterService.Offer offer = receivedOffers.get(i);
+
+                // Producto - calculamos el codigo conjunto para la oferta
+                String productCodes = offer.productCodes;// offer.commercialPC + offer.technicalPC;
+                // Producto - miramos si lo conocemos, sino sera nulo
+                Product2 product = productCodesToProductMap?.get(productCodes);
+
+                // Oferta - calculamos el nombre que tendra la oferta
+                String offerName = offer.quoteNumberINFO;
+                if( String.isBlank(offerName) ) {
+                    if( product != null ) {
+                        offerName = product.Name + ' - ' + currentCustomer.Name;
+                    } else {
+                        offerName = offer.commercialPC + ' - ' + offer.technicalPC + ' - ' + currentCustomer.Name;
+                    }
+                }
+
+                // Oferta - calculamos el id externo: SessionId
+                String externalSessionId = sessionId + productCodes;
+                // System.debug('Session Id: ' + externalSessionId);
+
+                // Oferta - calculamos el paso de la oferta: Stage
+                String stageName = 'Legit Lead';
+                if( String.isNotBlank(offer.policyNumber) ) {
+                    stageName = 'Closed Won';
+                } else if(offer.netPremium != null) {
+                    stageName = 'Quoted';
+                } else if( offer.netPremium == null && String.isNotBlank(formData.webPhone) ) {
+                    stageName = 'App Submitted';
+                }
+
+                // Oferta - obtenemos una oferta con todos los datos que vienen del formulario
+                Opportunity sfOffer = offer.toOpportunity();
+
+                // Oferta - a partir del id externo miramos si ya existe en Salesforce
+                if( mapOffersByExternalId.containsKey(sfOffer.INFOQuoteNumber__c) ) {
+                    sfOffer.Id = mapOffersByExternalId.get(sfOffer.INFOQuoteNumber__c).Id;
+                    mapOffersToDelete.remove(sfOffer.INFOQuoteNumber__c);
+                } else if( mapOffersByExternalId.containsKey(externalSessionId) ) {
+                    sfOffer.Id = mapOffersByExternalId.get(externalSessionId).Id;
+                    mapOffersToDelete.remove(externalSessionId);
+                }
+
+                // Oferta - finalmente rellenamos los campos calculados que faltan de la oferta
+                sfOffer.SessionId__c = externalSessionId;
+                sfOffer.Name = offerName;
+                sfOffer.ScopeId__c = currentScope.Id;
+                sfOffer.Scope__c = scope;
+                sfOffer.StageName = stageName;
+                sfOffer.OwnerId = currentAdvisorId;
+                sfOffer.AccountId = currentCustomer.Id;
+                sfOffer.BusinessCode__c = (String.isNotBlank(offer.businessCode) ? offer.businessCode : formData.businessCode);
+                sfOffer.BusinessName__c = (String.isNotBlank(currentScopeSettings?.Label) ? currentScopeSettings.Label : 'ZURICH EMPRESAS DIGITAL');
+                sfOffer.ProductId__c = product?.Id;
+                sfOffer.LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI);
+                sfOffer.LegalAuth__c = (formData.legalAuth != null ? formData.legalAuth : false);
+
+                offersToCreate.add(sfOffer);
+
+                // Poliza
+                if( String.isNotBlank(offer.policyNumber) ) {
+                    quoteNumberToPolicyNumberMap.put(i, offer.policyNumber);
+                }
+
+                // Risk (objeto asegurado)
+                BusinessInsuranceRaterService.OfferRiskInformation risk = offer.offerRiskInformation;
+                if(risk != null) {
+                    quoteNumberRiskMap.put( i, risk);
+                }
+            }
+
+            // Creacion de la oferta
+            if( !offersToCreate.isEmpty() ) {
+
+                // Creamos o actualizamos las ofertas
+                upsert offersToCreate;
+
+                Id addressRecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get('Address').getRecordTypeId();
+
+                // Por cada Oferta insertada o actualizada...
+                for(Integer i=0; i < offersToCreate.size(); i++)
+                {
+                    Opportunity offer = offersToCreate.get(i);
+
+                    // Polizas - si tiene numero de poliza la preparamos para crearla
+                    if( quoteNumberToPolicyNumberMap.containsKey(i) )
+                    {
+                        String policyNumber = quoteNumberToPolicyNumberMap.get(i);
+                        policiesToCreate.add(
+                            new Policy__c(
+                                Id= mapPolicyByOfferId.get(offer.Id)?.Id,
+                                Name = policyNumber,
+                                InfoPolicyNumber__c = policyNumber,
+                                PolicyHolder__c = currentCustomer.Id,
+                                InfoQuoteNumber__c = offer.InfoQuoteNumber__c,
+                                BusinessCode__c = offer.BusinessCode__c,
+                                ScopeId__c = currentScope.Id
+                                )
+                            );
+                    }
+
+                    // Riesgo - si hay riesgo lo preparamos
+                    if( quoteNumberRiskMap.containsKey(i) )
+                    {
+                        BusinessInsuranceRaterService.OfferRiskInformation risk = quoteNumberRiskMap.get(i);
+                        // if(risk != null) {
+                        // Obtenemos un objeto Asset con los datos que hay en el formulario
+                        Asset sfRisk = risk.toAsset();
+                        // Si existe ya un riesgo asegurado de la oferta en un paso anterior le indicamos el id
+                        sfRisk.Id = mapRiskByOfferId.get(offer.Id)?.Id;      
+                        // Rellenamos el resto de campos calculados                  
+                        sfRisk.INFOInsuredObjectCode__c = (String.isBlank(offer.InfoQuoteNumber__c) ? null : offer.InfoQuoteNumber__c + '01');
+                        sfRisk.OfferId__c = offer.Id;
+                        sfRisk.AccountId = currentCustomer.Id;
+                        sfRisk.Scope__c = currentScope.Scope__c;
+                        sfRisk.recordTypeId = addressRecordTypeId;
+                        sfRisk.LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI);
+
+                        risksToCreate.add( sfRisk );
+                        // }
+                    }
+                }
+
+                // Poliza - insercion o actualizacion
+                if( !policiesToCreate.isEmpty() )
+                {
+                    // insert policiesToCreate;
+                    upsert policiesToCreate;
+
+                    // Si existe el manager establecemos la relacion con la poliza
+                    if( currentManager?.Id != null  ) {
+                        createRelationPolicyManager(policiesToCreate);
+                    }
+                }
+
+                // Riesgo - insercion o actualizacion
+                if( !risksToCreate.isEmpty() )
+                {
+                    // insert risksToCreate;
+                    upsert risksToCreate;
+                }
+            }
+
+            // Borrado - Ofertas del id de sesion actual pero que ya no vienen en el formulario
+            if( !mapOffersToDelete.isEmpty() ) {
+                List<Opportunity> offersToDelete = new List<Opportunity>();
+                for (Opportunity o : mapOffersToDelete.values() ) {
+                    if( o.SessionId__c != null && o.SessionId__c.contains(sessionId) ) {
+                        offersToDelete.add(o);
+                    }
+                }
+                if( !offersToDelete.isEmpty() ) {
+                    delete offersToDelete;
+                }
+            }
+        }
+    }
+
+    //#endregion
 
     /**
      * Método encargado de recuperar los productos a partir de los Commercial y Technical Codes de las ofertas
@@ -766,9 +966,9 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static void searchAdvisor()
     {
-        List<Opportunity> existingOffers = new OpportunitiesSelector(
-            new Set<String> {'Id', 'OwnerId'}
-            ).selectByAccountIdScopesAndOwnerProfile(currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String> {PROFILE_NAME});
+        List<Opportunity> existingOffers = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(
+            currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String> {PROFILE_NAME}
+        );
 
         if( existingOffers.isEmpty() )
         {
@@ -966,12 +1166,30 @@ public without sharing class BusinessInsuranceRaterService
     {
         if( !createdPolicies.isEmpty() )
         {
+            // Recuperamos las relaciones que tengan las polizas creadas para ver si ya existe
+            // esa relacion
+            List<Policy__c> policies = [
+                SELECT Id, (SELECT Id FROM Relationships__r WHERE Role__c = 'OCSPAU') 
+                FROM Policy__c
+                WHERE Id IN :createdPolicies
+            ];
+            Map<Id, Policy__c> mapPoliciesById = new Map<Id, Policy__c>(policies);
+
             Id policyRelationshipRecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Policy').getRecordTypeId();
             List<Relationship__c> relations = new List<Relationship__c>();
             for(Policy__c policy: createdPolicies)
             {
+                // Comprobamos si existe la relacion para obtener su Id
+                ID relationId = null;
+                if( mapPoliciesById.containsKey(policy.Id) 
+                    && !mapPoliciesById.get(policy.Id).Relationships__r.isEmpty() ) 
+                {
+                    relationId = mapPoliciesById.get(policy.Id).Relationships__r.get(0).Id;    
+                }
+
                 relations.add(
                     new Relationship__c(
+                        Id= relationId,
                         LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
                         PolicyId__c = policy.Id,
                         PrimaryAccountId__c = currentManager.Id,
@@ -984,7 +1202,7 @@ public without sharing class BusinessInsuranceRaterService
 
             if( !relations.isEmpty() )
             {
-                insert relations;
+                upsert relations;
             }
         }
     }
@@ -1088,6 +1306,7 @@ public without sharing class BusinessInsuranceRaterService
             currentRequiredFieldsSet.add( field.toLowerCase() );
         }
     }
+    
     /**
      *
      *
@@ -1100,6 +1319,8 @@ public without sharing class BusinessInsuranceRaterService
      *
      * @author rlopez
      * @date 15/10/2020
+     * 
+     * @change 02/06/2021 - nts (agonzalezisasi) - Se incluye el campo prioridad
      */
     public class Request
     {
@@ -1210,6 +1431,54 @@ public without sharing class BusinessInsuranceRaterService
                 setRequiredFields('Request' + 'offers');
                 offers = value;
             }
+        }
+
+        // Propiedad que convierte el Status que viene del formulario a un valor numerico
+        // que representa la Prioridad (menor valor + prioridad) a la hora de gestionar
+        // los call me back que pueda haber ya programados para el cliente.
+        // Ver tambien el campo formula Priority__c del objeto ContactRequest
+        public Integer priority {
+            get {
+                Integer result = mapPriorities.get(status);
+                if( result == null ) result = 6; // para un estado desconocido se pone la menor prioridad
+                return result;
+            }
+        }
+
+        // Propiedad que convierte el Status que viene del formulario al valor que tendra
+        // el campo RequestStatus en el objeto ContactRequest
+        // Ver tambien el campo formula Priority__c del objeto ContactRequest
+        public String statusSF {
+            get {
+                String result = mapStatusToSF.get(status);
+                if( result == null ) result = 'New';
+                return result;
+            }
+        }
+
+        // Porpiedad que indica si el formulario llega con el estado Completado (true) o no (false)
+        public Boolean isFinished {
+            get {
+                Boolean result = false;
+                if( this.status != null && this.status.equals(FORM_STATUS_COMPLETED) ) result = true;
+                return result;
+            }
+        }
+    
+        // Determina si la prioridad del estado del formulario es mayor que la indicada
+        // Teniendo en cuenta que 0 es mayor prioridad y 6 la de menor prioridad
+        public Boolean hasHigherPriority( Integer priority ) {
+            return (this.priority < priority);
+        }
+
+        // Determina si la fecha y hora de contacto del formulario es mas cercana en el tiempo
+        // que la fecha y hora indicadas
+        public Boolean isCloserInTime( Datetime contactDatetime ) {
+            Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
+                this.bestTimeFrom != null ? this.bestTimeFrom : System.now()
+            );
+
+            return (preferredContactDatetime < contactDatetime);
         }
     }
 
@@ -1341,6 +1610,8 @@ public without sharing class BusinessInsuranceRaterService
      *
      * @author rlopez
      * @date 15/10/2020
+     * 
+     * @change 04/06/2021 - nts (agonzalezisasi) - se añaden propiedades calculadas a partir de los datos
      */
     public class Offer
     {
@@ -1490,6 +1761,43 @@ public without sharing class BusinessInsuranceRaterService
                 setRequiredFields('Offer' + 'offerRiskInformation');
                 offerRiskInformation = value;
             }
+        }
+    
+        // Propiedad que devuelve los codigos de producto concatenados
+        public String productCodes {
+            get {
+                String result = '';
+                if( commercialPC != null ) result += commercialPC;
+                if( technicalPC != null ) result += technicalPC;
+                return result;
+            }
+        }
+
+        // Metodo que devuelve un Offer (Opportunity) a partir de los datos del formulario
+        public Opportunity toOpportunity() {
+            return new Opportunity(
+                InfoQuoteNumber__c = quoteNumberINFO,
+                Language__c = language,
+                IssuedOnline__c = true,
+                ResultingPolicyNumber__c = policyNumber,
+                EffectiveDate__c = effectiveDate,
+                CloseDate = System.today(),
+                ExpirationDate__c = System.today().addDays(15),
+                CommercialProductCode__c = commercialPC,
+                TechnicalProductCode__c = technicalPC,
+                TotalPremium__c = netPremium,
+                BuildingCapital__c = buildingCapital,
+                ContentCapital__c = contentCapital,
+                GeneralLiabilityLimit__c = generalLiabilityLimit,
+                PaymentType__c = paymentType,
+                PaymentTypeSucc__c = paymentTypeSucc,
+                PaymentChannel__c = paymentChannel,
+                PaymentChannelSucc__c = paymentChannelSucc,
+                ValidationErrors__c = validationErrors,
+                OperationCode__c = operationCode,
+                FirstReceipt__c = firstReceipt,
+                NextReceipts__c = nextReceipts
+            );
         }
     }
 
@@ -1745,6 +2053,64 @@ public without sharing class BusinessInsuranceRaterService
                 setRequiredFields('OfferRiskInformation' + 'capacity');
                 capacity = value;
             }
+        }
+
+        // Propiedad que calcula el nombre del Riesgo a partir de los datos que vienen del 
+        // formulario
+        public String riskName {
+            get {
+                String result = 'Desconocido';
+                if( String.isNotBlank(propertyStreet) ) {
+                    result = propertyStreet + ', ';
+                    if( String.isNotBlank(propertyStreetNumber) ) {
+                        result += propertyStreetNumber;
+                    }
+                }
+
+                return result;
+            }
+        }
+
+        // Metodo que devuelve un objeto de tipo Asset con los datos que vienen del formulario
+        public Asset toAsset() {
+            return new Asset(
+                Name = riskName,
+                AddressType__c = propertyStreetType,
+                AddressName__c = propertyStreet,
+                AddressNumber__c = propertyStreetNumber,
+                AddressAdditionalInfo__c = propertyAdditionalInfo,
+                PostalCode__c = propertyPostalCode,
+                City__c = propertyCity,
+                State__c = propertyState,
+                Country__c = propertyCountry,
+                YearOfConstruction__c = yearOfConstruction,
+                Ownership__c = ownership,
+                InsuredType__c = insuredType,
+                Building_Type__c = buildingType,
+                Height__c = height,
+                RiskFactor01__c = riskFactor01,
+                RiskFactor02__c = riskFactor02,
+                RiskFactor03__c = riskFactor03,
+                RiskFactor04__c = riskFactor04,
+                RiskFactor05__c = riskFactor05,
+                RiskFactor06__c = riskFactor06,
+                RiskFactor07__c = riskFactor07,
+                RiskFactor08__c = riskFactor08,
+                RiskFactor09__c = riskFactor09,
+                Area__c = area,
+                LockType__c = lockType,
+                SecurityDoor__c = securityDoor,
+                BulletproofDoor__c = bulletproofDoor,
+                ConnectedAlarm__c = connectedAlarm,
+                FireHydrant__c = fireHydrant,
+                X24h_Security__c = surveillance,
+                SmokeDetector__c = smokeDetector,
+                Sprayer__c = sprayer,
+                FireExtinguisher__c = fireExtinguisher,
+                TypeOfWindows__c = typeOfWindows,
+                Safe__c = strongbox,
+                Capacity__c = capacity
+            );
         }
     }
 
