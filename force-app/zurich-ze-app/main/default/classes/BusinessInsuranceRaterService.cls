@@ -685,7 +685,7 @@ public without sharing class BusinessInsuranceRaterService
                 if( o.INFOQuoteNumber__c != null ) {
                     mapOffersByExternalId.put(o.INFOQuoteNumber__c, o);
                     mapOffersToDelete.put(o.INFOQuoteNumber__c, o);
-                } else if( o.SessionId__c.Contains(sessionId) ) {
+                } else if( o.SessionId__c != null && o.SessionId__c.Contains(sessionId) ) {
                     mapOffersByExternalId.put(o.SessionId__c, o);
                     mapOffersToDelete.put(o.SessionId__c, o);
                 }
