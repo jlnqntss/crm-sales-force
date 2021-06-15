@@ -8,6 +8,7 @@
     <trackFeedHistory>false</trackFeedHistory>
     <type>Picklist</type>
     <valueSet>
+        <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
@@ -179,11 +180,6 @@
                 <fullName>VD</fullName>
                 <default>false</default>
                 <label>VD</label>
-            </value>
-            <value>
-                <fullName>LE</fullName>
-                <default>false</default>
-                <label>LE</label>
             </value>
         </valueSetDefinition>
     </valueSet>

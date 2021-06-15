@@ -16,6 +16,20 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>Commercial action Layout</layout>
+        <sections>
+            <label><!-- Related To --></label>
+            <section>Related To</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Communication Layout</layout>
+        <sections>
+            <label><!-- Related To --></label>
+            <section>Related To</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>Interaction</layout>
         <sections>
             <label><!-- Custom Links --></label>
@@ -40,6 +54,28 @@
         <sections>
             <label>Información del sistema</label>
             <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Klinc_Interaction</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label><!-- System Information --></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Reminder layout</layout>
+        <sections>
+            <label><!-- Related To --></label>
+            <section>Related To</section>
         </sections>
     </layouts>
     <layouts>
@@ -230,9 +266,33 @@
         <name>Activity</name>
     </recordTypes>
     <recordTypes>
+        <label>Acción comercial</label>
+        <name>CommercialAction</name>
+    </recordTypes>
+    <recordTypes>
+        <label>Comunicación</label>
+        <name>Communication</name>
+    </recordTypes>
+    <recordTypes>
         <label>Interacción</label>
         <name>Interaction</name>
     </recordTypes>
+    <recordTypes>
+        <label>Recordatorio</label>
+        <name>Reminder</name>
+    </recordTypes>
+    <validationRules>
+        <errorMessage><!-- [VR Tarea] Una actividad no puede tener una fecha de vencimiento menor que la fecha actual --></errorMessage>
+        <name>ActivityDateRuleCantBeLessThanToday</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Customer&apos;s interest must be entered. --></errorMessage>
+        <name>KLINC_customerInterest</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Tarea] Solo está permitido vincular actividades a los registros de Caso. --></errorMessage>
+        <name>RelatedToRuleOnlyCase</name>
+    </validationRules>
     <validationRules>
         <errorMessage><!-- [VR Tarea] Una actividad o interacción en estado CERRADA no puede pasar a ningún otro estado --></errorMessage>
         <name>StatusRuleCantGoFromClosed</name>
@@ -248,5 +308,17 @@
     <validationRules>
         <errorMessage><!-- [VR Tarea] Una actividad en estado PLANIFICADA no puede pasar a PENDIENTE --></errorMessage>
         <name>StatusRuleCantGoFromPlannedToPending</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Tarea] Una actividad no puede volver al estado NUEVA --></errorMessage>
+        <name>StatusRuleCantReturnToNew</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Tarea] Una actividad no puede crearse en un estado que no sea NUEVA --></errorMessage>
+        <name>StatusRuleFirstStatusHasToBeNew</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Tarea] No tienes permiso para editar este tipo de tarea. --></errorMessage>
+        <name>SubidaDocumentacionNoEditable</name>
     </validationRules>
 </CustomObjectTranslation>

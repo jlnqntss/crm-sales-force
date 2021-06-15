@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help><!-- Identifies the customer&apos;s intent collected on the NLU IVR. Applies only if the incoming call comes from the IVR. --></help>
+    <label><!-- Intent --></label>
+    <name>Intent__c</name>
+</CustomFieldTranslation>

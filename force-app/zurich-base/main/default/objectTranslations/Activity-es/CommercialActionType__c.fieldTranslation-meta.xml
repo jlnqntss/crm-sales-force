@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tipo de acción comercial</label>
+    <name>CommercialActionType__c</name>
+    <picklistValues>
+        <masterLabel>Campaigns</masterLabel>
+        <translation>Campañas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Operations and tools</masterLabel>
+        <translation>Operativa y herramientas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Others</masterLabel>
+        <translation>Otros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Production</masterLabel>
+        <translation>Producción</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Profitability</masterLabel>
+        <translation>Rentabilidad</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Training</masterLabel>
+        <translation>Formación</translation>
+    </picklistValues>
+</CustomFieldTranslation>
