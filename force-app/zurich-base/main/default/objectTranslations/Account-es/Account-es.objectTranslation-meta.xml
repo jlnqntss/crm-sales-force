@@ -74,6 +74,29 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>Intermediary Group</layout>
+        <sections>
+            <label>Dirección</label>
+            <section>Address</section>
+        </sections>
+        <sections>
+            <label><!-- Campos Comerciales --></label>
+            <section>Campos Comerciales</section>
+        </sections>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Información general</label>
+            <section>Main section</section>
+        </sections>
+        <sections>
+            <label>Información del sistema</label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>Master layout</layout>
         <sections>
             <label><!-- Custom Links --></label>
@@ -125,6 +148,18 @@
             <section>Fields</section>
         </sections>
     </layouts>
+    <layouts>
+        <layout>ZE Customer</layout>
+        <layoutType>PersonAccount</layoutType>
+        <sections>
+            <label><!-- Additional information --></label>
+            <section>Additional information</section>
+        </sections>
+        <sections>
+            <label><!-- GDPR Status --></label>
+            <section>GDPR Status</section>
+        </sections>
+    </layouts>
     <quickActions>
         <label><!-- Child Account --></label>
         <name>Child_Account</name>
@@ -133,6 +168,19 @@
         <label><!-- Update --></label>
         <name>Update</name>
     </quickActions>
+    <quickActions>
+        <label><!-- Update Intermediary --></label>
+        <name>UpdateIntermediary</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Update Partner --></label>
+        <name>UpdatePartner</name>
+    </quickActions>
+    <recordTypes>
+        <description><!-- SDM: Agrupación de mediador a nivel CIF --></description>
+        <label>Agrupación Mediador</label>
+        <name>AgrupacionMediador</name>
+    </recordTypes>
     <recordTypes>
         <description>Tipo de registro para la cuenta padre o &quot;golden record&quot;</description>
         <label>Cliente Empresarial</label>
@@ -160,6 +208,22 @@
         <label>Partner OCS</label>
         <name>PartnerOCS</name>
     </recordTypes>
+    <validationRules>
+        <errorMessage><!-- [VR Cuenta] No tienes permisos para modificar estos datos --></errorMessage>
+        <name>OnlyEditIntermediaryManagers</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Cuenta] Es necesario un formato de email válido --></errorMessage>
+        <name>ValidateAdministrationManagerEmailFormat</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- [VR Cuenta] Es necesario un formato de email válido --></errorMessage>
+        <name>ValidateIndividualsManagerEmailFormat</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- CreateLead --></label>
+        <name>CreateLead</name>
+    </webLinks>
     <webLinks>
         <label><!-- GoogleMaps --></label>
         <name>GoogleMaps</name>

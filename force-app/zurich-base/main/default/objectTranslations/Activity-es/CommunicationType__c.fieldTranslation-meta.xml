@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tipología de comunicación</label>
+    <name>CommunicationType__c</name>
+    <picklistValues>
+        <masterLabel>Campaigns</masterLabel>
+        <translation>Campañas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Operations and tools</masterLabel>
+        <translation>Operativa y herramientas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Other communications</masterLabel>
+        <translation>Formación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Products and services</masterLabel>
+        <translation>Productos y servicios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Training</masterLabel>
+        <translation>Formación</translation>
+    </picklistValues>
+</CustomFieldTranslation>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Responsable de Negocio</fullName>
+        <default>false</default>
+        <label>Responsable de Negocio</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Consultor de Vida</fullName>
+        <default>false</default>
+        <label>Consultor de Vida</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Consultor de Empresas</fullName>
+        <default>false</default>
+        <label>Consultor de Empresas</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Director de Zona</fullName>
+        <default>false</default>
+        <label>Director de Zona</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Director Territorial</fullName>
+        <default>false</default>
+        <label>Director Territorial</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Director de Empresas</fullName>
+        <default>false</default>
+        <label>Director de Empresas</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Director de Vida</fullName>
+        <default>false</default>
+        <label>Director de Vida</label>
+    </standardValue>
+</StandardValueSet>

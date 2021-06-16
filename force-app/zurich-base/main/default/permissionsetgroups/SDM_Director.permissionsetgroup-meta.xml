@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>SDM Director</label>
+    <permissionSets>ConsultaDatosSDM</permissionSets>
+    <permissionSets>GestionCuentaContacto_SDM</permissionSets>
+    <permissionSets>GestionPlanComercial_SDM</permissionSets>
+    <permissionSets>Gestionar_vistaslista</permissionSets>
+    <status>Updated</status>
+</PermissionSetGroup>
