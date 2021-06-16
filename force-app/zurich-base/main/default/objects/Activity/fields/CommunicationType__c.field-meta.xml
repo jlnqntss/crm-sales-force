@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CommunicationType__c</fullName>
+    <description>SDM: Tipología de comunicación</description>
+    <externalId>false</externalId>
+    <label>Communication Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Products and services</fullName>
+                <default>false</default>
+                <label>Products and services</label>
+            </value>
+            <value>
+                <fullName>Operations and tools</fullName>
+                <default>false</default>
+                <label>Operations and tools</label>
+            </value>
+            <value>
+                <fullName>Training</fullName>
+                <default>false</default>
+                <label>Training</label>
+            </value>
+            <value>
+                <fullName>Campaigns</fullName>
+                <default>false</default>
+                <label>Campaigns</label>
+            </value>
+            <value>
+                <fullName>Other communications</fullName>
+                <default>false</default>
+                <label>Other communications</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

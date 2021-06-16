@@ -151,6 +151,12 @@
                 <default>false</default>
                 <label>ZW</label>
             </value>
+            <value>
+                <fullName>T</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>T</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

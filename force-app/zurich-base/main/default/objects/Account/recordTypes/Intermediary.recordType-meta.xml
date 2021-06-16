@@ -3212,10 +3212,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>LE</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>LI</fullName>
             <default>false</default>
         </values>
