@@ -4,16 +4,17 @@
         <name>EnviarEmailConEnlace</name>
         <label>Enviar email con enlace</label>
         <locationX>50</locationX>
-        <locationY>1334</locationY>
+        <locationY>1454</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <connector>
             <targetReference>CreateEmailMessageRecord</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>emailBody</name>
             <value>
-                <elementReference>HashURL</elementReference>
+                <elementReference>MessageBody</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -23,9 +24,15 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>emailSubject</name>
             <value>
-                <stringValue>Adjunte documentación</stringValue>
+                <stringValue>Aquí puedes adjuntarnos la documentación</stringValue>
             </value>
         </inputParameters>
     </actionCalls>
@@ -39,6 +46,7 @@
         <connector>
             <targetReference>ActualizarDocumentationHashId</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -51,9 +59,10 @@
         <name>SendSMS</name>
         <label>Send SMS</label>
         <locationX>314</locationX>
-        <locationY>1334</locationY>
+        <locationY>1454</locationY>
         <actionName>GenesysCloudSendSMSAction</actionName>
         <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>relatedCaseId</name>
             <value>
@@ -138,7 +147,7 @@
         <name>OpcionSeleccionada_0</name>
         <label>Opción seleccionada?</label>
         <locationX>314</locationX>
-        <locationY>1214</locationY>
+        <locationY>1334</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>OpcionSeleccionadaEmail_0</name>
@@ -182,6 +191,11 @@
         <dataType>String</dataType>
         <expression>{!GetSiteUrl.Value__c} + &quot;?language=es&amp;Hash=&quot; + {!GenerarHashId.hashId}</expression>
     </formulas>
+    <formulas>
+        <name>SelectName</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!Get_Related_Account.FirstName}),{!Get_Related_Account.Name},{!Get_Related_Account.FirstName})</expression>
+    </formulas>
     <interviewLabel>Request Case Documentation {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Request Case Documentation</label>
     <processMetadataValues>
@@ -207,7 +221,7 @@
         <name>CreateEmailMessageRecord</name>
         <label>Create EmailMessage Record</label>
         <locationX>50</locationX>
-        <locationY>1454</locationY>
+        <locationY>1574</locationY>
         <inputAssignments>
             <field>FromAddress</field>
             <value>
@@ -217,7 +231,7 @@
         <inputAssignments>
             <field>HtmlBody</field>
             <value>
-                <elementReference>HashURL</elementReference>
+                <elementReference>MessageBody</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -242,6 +256,30 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>Get_Related_Account</name>
+        <label>Get Related Account</label>
+        <locationX>314</locationX>
+        <locationY>1214</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>OpcionSeleccionada_0</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetCaseRelatedContactInformation.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Recuperamos el AccountId del caso para después recuperar la información de contacto del scope de la cuenta</description>
         <name>GetCaseRelatedContactInformation</name>
         <label>Get Case Related Contact Information</label>
@@ -264,6 +302,7 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>ScopeId__c</queriedFields>
         <queriedFields>SuppliedEmail</queriedFields>
+        <queriedFields>AccountId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -297,7 +336,7 @@
         <locationY>1094</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>OpcionSeleccionada_0</targetReference>
+            <targetReference>Get_Related_Account</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -359,6 +398,7 @@
                     <elementReference>DefaultEmail</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -392,6 +432,7 @@
                     <stringValue>Móvil</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -429,6 +470,11 @@
         </connector>
     </start>
     <status>Active</status>
+    <textTemplates>
+        <name>MessageBody</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;img src=&quot;https://zurich-es--c.documentforce.com/servlet/servlet.ImageServer?id=01568000000oq8m&amp;oid=00D5I000000DH2H&amp;lastMod=1624901062000&quot; style=&quot;width: 100%; max-width: 700px;&quot;&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 16px; color: rgb(33, 103, 174); font-family: sans-serif;&quot;&gt;Hola {!SelectName}, &lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 16px; color: rgb(33, 103, 174); font-family: sans-serif;&quot;&gt;Para enviarnos la documentación necesaria sólo debes clicar en el botón de abajo.&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;a href=&quot;{!HashURL}&quot;&gt;&lt;img src=&quot;https://zurich-es--c.documentforce.com/servlet/servlet.ImageServer?id=01568000000oq8r&amp;oid=00D5I000000DH2H&amp;lastMod=1624901098000&quot; style=&quot;width: 220px;&quot;&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(33, 103, 174); font-family: sans-serif;&quot;&gt;Zurich Seguros&lt;/b&gt;&lt;/p&gt;</text>
+    </textTemplates>
     <variables>
         <name>AccountId</name>
         <dataType>String</dataType>
