@@ -8,7 +8,7 @@
         <label>Fields</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Subject</field>
             </layoutItems>
             <layoutItems>
@@ -46,11 +46,11 @@
                 <field>PendingBy__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Origin</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>SourceArea__c</field>
             </layoutItems>
         </layoutColumns>
