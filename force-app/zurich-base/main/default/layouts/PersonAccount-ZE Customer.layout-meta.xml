@@ -263,8 +263,8 @@
         <excludeButtons>MassChangeOwner</excludeButtons>
         <fields>NAME</fields>
         <fields>ProductId__c</fields>
+        <fields>PolicyStatus__c</fields>
         <fields>BusinessName__c</fields>
-        <fields>IntermediaryName__c</fields>
         <fields>TotalPremium__c</fields>
         <relatedList>Policy__c.PolicyHolder__c</relatedList>
     </relatedLists>
