@@ -150,11 +150,12 @@ global without sharing class ScopeUtil {
     if (scopesToSetContatable != null && !scopesToSetContatable.isEmpty()) {
       for (Integer i = 0, j = scopesToSetContatable.size(); i < j; i++) {
         Scope__c s = scopesToSetContatable[i];
-
-        // Contactable is true if Has PrimaryPhone Or has PrimaryEmail and not HasOptedOutOfEmail
-        s.Contactable__c = (String.isNotBlank(s.PrimaryPhone__c) ||
-        (String.isNotBlank(s.PrimaryEmail__c) && !s.HasOPtedOutOfEmail__c));
-        s.LastContactableModifiedDate__c = DateTime.now();
+        if (ScopesToConsider.contains(s.Scope__c)) {
+          // Contactable is true if Has PrimaryPhone Or has PrimaryEmail and not HasOptedOutOfEmail
+          s.Contactable__c = (String.isNotBlank(s.PrimaryPhone__c) ||
+          (String.isNotBlank(s.PrimaryEmail__c) && !s.HasOPtedOutOfEmail__c));
+          s.LastContactableModifiedDate__c = DateTime.now();
+        }
       }
     }
   }
@@ -181,9 +182,7 @@ global without sharing class ScopeUtil {
           Integer j = a.Scope__r.size();
           while (!isContactable && i < j) {
             Scope__c s = a.Scope__r[i];
-            if (ScopesToConsider.contains(s.Scope__c)) {
-              isContactable = s.Contactable__c; // the first true will stop the search
-            }
+            isContactable = s.Contactable__c; // the first true will stop the search
             i++;
           }
           // now check the contacts
