@@ -10,7 +10,6 @@
         <connector>
             <targetReference>CreateEmailMessageRecord</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>emailBody</name>
             <value>
@@ -46,7 +45,6 @@
         <connector>
             <targetReference>ActualizarDocumentationHashId</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -62,7 +60,6 @@
         <locationY>1454</locationY>
         <actionName>GenesysCloudSendSMSAction</actionName>
         <actionType>apex</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>relatedCaseId</name>
             <value>
@@ -398,7 +395,6 @@
                     <elementReference>DefaultEmail</elementReference>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -432,7 +428,6 @@
                     <stringValue>Móvil</stringValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
