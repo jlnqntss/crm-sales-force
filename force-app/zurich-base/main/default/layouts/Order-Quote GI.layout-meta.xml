@@ -47,6 +47,10 @@
                 <behavior>Edit</behavior>
                 <field>Bundle__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>SumInsured__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

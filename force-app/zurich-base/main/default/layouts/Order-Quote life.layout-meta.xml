@@ -43,6 +43,10 @@
                 <behavior>Edit</behavior>
                 <field>QuoteStatus__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>SumInsured__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
