@@ -45,7 +45,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>HomeApplieanceType__c</field>
+                <field>HomeApplianceType__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

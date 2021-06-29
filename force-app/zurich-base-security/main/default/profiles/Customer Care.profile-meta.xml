@@ -7667,7 +7667,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>OrderItem.HomeApplieanceType__c</field>
+        <field>OrderItem.HomeApplianceType__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
