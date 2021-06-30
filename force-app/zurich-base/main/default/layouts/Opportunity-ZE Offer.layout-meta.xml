@@ -321,6 +321,7 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>ProductId__c</fields>
+        <fields>PolicyType__c</fields>
         <fields>TotalPremium__c</fields>
         <fields>LinkINFO__c</fields>
         <relatedList>Policy__c.OpportunityName__c</relatedList>
@@ -332,7 +333,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h5I000000TO55</masterLabel>
+        <masterLabel>00h1x000000Ucw5</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

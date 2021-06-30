@@ -195,10 +195,13 @@ public class GenerateScopeUtil
      * @author adelgado
      * @date 04/12/2020
      * @param events Eventos a procesar
+     * 
+     * @change 15/06/2021 - nts (agonzalezisasi) - fix: para evitar actualizar el mismo objeto
      **/
     private static void handleEventsAccount(List<GenerateScopeEvent__e> events)
     {
         List<SObject> sobjectsToUpdate = new List<SObject>();
+        List<ID> listAddedObjects = new List<ID>(); // lista para evitar modificar el mismo objeto
 
         Map<String, Scope_Setting__mdt> scopeSettingsByCode = new Map<String, Scope_Setting__mdt>();
         List<Scope__c> scopesToInsert = new List<Scope__c>();
@@ -343,8 +346,12 @@ public class GenerateScopeUtil
                         }
                     }
 
-                    // 4.7 - Añadir el SObject a la lista de SObjects a actualizar
-                    sobjectsToUpdate.add(record);
+                    // 4.7 - Añadir el SObject a la lista de SObjects a actualizar, sino lo estaba ya
+                    // fix: para evitar actualizar el mismo objeto
+                    if( !listAddedObjects.contains(record.Id) ) {
+                        sobjectsToUpdate.add(record);
+                        listAddedObjects.add(record.Id);
+                    }
                 }
 
                 sObjectsTypes.add(event.ObjectType__c);
@@ -391,6 +398,8 @@ public class GenerateScopeUtil
      * @date 17/02/2021
      * 
      * @param {List<GenerateScopeEvent__c} lista de eventos
+     * 
+     * @change 15/06/2021 - nts (agonzalezisasi) - fix: para evitar actualizar el mismo objeto
      */
     @testvisible
     private static void handleEventsAlternativeSObjects(List<GenerateScopeEvent__e> events)
@@ -403,6 +412,7 @@ public class GenerateScopeUtil
         Map<String, Set<Id>> mapReferenceIdsByObjectTypes = new Map<String, Set<Id>>(); // lista de ids del objeto referenciado
         Map<String, Map<Id, SObject>> mapReferenceObjectByObjectTypes = new Map<String, Map<Id, SObject>>(); // lista de objetos referenciados, tras las queries bulk
         Map<String, List<SObject>> mapSObjectsToUpdate = new Map<String, List<SObject>>(); // lista de objetos a actualizar
+        List<ID> listAddedObjects = new List<ID>(); // lista que evitara actualizar el mismo objeto en la llamada
 
         // 1. Clasificamos las listas ids referenciados de los eventos por su tipo de objeto para hacer luego
         // las consultas. Ej: Claim__c => lista de ids de poliza
@@ -510,10 +520,14 @@ public class GenerateScopeUtil
             }
 
             if( obj != null ) {
-                if( mapSObjectsToUpdate.containsKey(objectType) ) {
-                    mapSObjectsToUpdate.get(objectType).add(obj);
-                } else {
-                    mapSObjectsToUpdate.put(objectType, new List<SObject>{obj});
+                // fix: para evitar actualizar el mismo objeto
+                if( !listAddedObjects.contains(obj.Id) ) {
+                    if( mapSObjectsToUpdate.containsKey(objectType) ) {
+                        mapSObjectsToUpdate.get(objectType).add(obj);
+                    } else {
+                        mapSObjectsToUpdate.put(objectType, new List<SObject>{obj});
+                    }
+                    listAddedObjects.add(obj.Id);
                 }
             }
 
@@ -531,6 +545,16 @@ public class GenerateScopeUtil
         }
     }
 
+    /**
+     * Procesar los eventos para recuperar el Partner de un objeto (sobject) referenciado mediante su id
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 15/05/2021
+     * 
+     * @param {List<GenerateScopeEvent__c} lista de eventos
+     * 
+     * @change 15/06/2021 - nts (agonzalezisasi) - fix: para evitar actualizar el mismo objeto
+     */
     @testvisible
     private static void handleEventsPartner(List<GenerateScopeEvent__e> events) 
     {
@@ -543,6 +567,7 @@ public class GenerateScopeUtil
         Map<String, Set<String>> mapReferenceIdsByObjectTypes = new Map<String, Set<String>>(); // lista de ids del objeto referenciado
         Map<String, Map<String, ID>> mapReferenceObjectByObjectTypes = new Map<String, Map<String, Id>>(); // lista de objetos referenciados, tras las queries bulk
         Map<String, List<SObject>> mapSObjectsToUpdate = new Map<String, List<SObject>>(); // lista de objetos a actualizar
+        List<ID> listAddedObjects = new List<ID>(); // lista que evitara actualizar el mismo objeto en la llamada
 
         // 1. Clasificamos las listas ids referenciados de los eventos por su tipo de objeto para hacer luego
         // las consultas. Ej: Claim__c => lista de ids de poliza
@@ -656,10 +681,14 @@ public class GenerateScopeUtil
             }
 
             if( obj != null ) {
-                if( mapSObjectsToUpdate.containsKey(objectType) ) {
-                    mapSObjectsToUpdate.get(objectType).add(obj);
-                } else {
-                    mapSObjectsToUpdate.put(objectType, new List<SObject>{obj});
+                // fix: para evitar actualizar el mismo objeto
+                if( !listAddedObjects.contains(obj.Id) ) {
+                    if( mapSObjectsToUpdate.containsKey(objectType) ) {
+                        mapSObjectsToUpdate.get(objectType).add(obj);
+                    } else {
+                        mapSObjectsToUpdate.put(objectType, new List<SObject>{obj});
+                    }
+                    listAddedObjects.add(obj.Id);
                 }
             }
 

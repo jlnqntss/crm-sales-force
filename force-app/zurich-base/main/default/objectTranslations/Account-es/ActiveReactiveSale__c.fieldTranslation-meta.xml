@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Venta activa o reactiva</label>
+    <name>ActiveReactiveSale__c</name>
+    <picklistValues>
+        <masterLabel>Active</masterLabel>
+        <translation>Activa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Reactive</masterLabel>
+        <translation>Reactiva</translation>
+    </picklistValues>
+</CustomFieldTranslation>
