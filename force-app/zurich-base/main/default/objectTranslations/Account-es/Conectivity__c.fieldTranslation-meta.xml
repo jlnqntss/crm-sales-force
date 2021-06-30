@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Conectividad</label>
+    <name>Conectivity__c</name>
+    <picklistValues>
+        <masterLabel>Alta Activos</masterLabel>
+        <translation><!-- Alta Activos --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Alta No Activo</masterLabel>
+        <translation><!-- Alta No Activo --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

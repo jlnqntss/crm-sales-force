@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SDMTaskCreationStatusCannotBeClosed</fullName>
+    <active>true</active>
+    <description>Una tarea no puede crearse en estado &quot;Cerrada&quot;</description>
+    <errorConditionFormula>ISNEW() &amp;&amp; (RecordType.DeveloperName = &quot;Reminder&quot; || 
+RecordType.DeveloperName = &quot;Communication&quot; || RecordType.DeveloperName = &quot;CommercialAction&quot;
+)
+ &amp;&amp; (ISPICKVAL(Status, &quot;Cerrada&quot;))</errorConditionFormula>
+    <errorMessage>Una tarea no puede crearse con estado Cerrada</errorMessage>
+</ValidationRule>
