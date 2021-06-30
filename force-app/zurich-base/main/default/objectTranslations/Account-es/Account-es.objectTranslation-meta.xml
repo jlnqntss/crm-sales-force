@@ -80,16 +80,40 @@
             <section>Address</section>
         </sections>
         <sections>
-            <label><!-- Campos Comerciales --></label>
-            <section>Campos Comerciales</section>
+            <label>Asociación</label>
+            <section>Association</section>
+        </sections>
+        <sections>
+            <label>Desarrollo Comercial</label>
+            <section>Commercial Development</section>
+        </sections>
+        <sections>
+            <label>Conectividad</label>
+            <section>Connectivity</section>
         </sections>
         <sections>
             <label>Links personalizados</label>
             <section>Custom Links</section>
         </sections>
         <sections>
+            <label>Digitalización</label>
+            <section>Digitalisation</section>
+        </sections>
+        <sections>
+            <label>Info Zurich</label>
+            <section>Info Zurich</section>
+        </sections>
+        <sections>
             <label>Información general</label>
             <section>Main section</section>
+        </sections>
+        <sections>
+            <label>Personal</label>
+            <section>Personal</section>
+        </sections>
+        <sections>
+            <label>Estructura</label>
+            <section>Structure</section>
         </sections>
         <sections>
             <label>Información del sistema</label>

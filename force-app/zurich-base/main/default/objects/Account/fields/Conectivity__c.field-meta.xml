@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conectivity__c</fullName>
+    <externalId>false</externalId>
+    <label>Conectivity</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alta No Activo</fullName>
+                <default>false</default>
+                <label>Alta No Activo</label>
+            </value>
+            <value>
+                <fullName>Alta Activos</fullName>
+                <default>false</default>
+                <label>Alta Activos</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
