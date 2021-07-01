@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ratio_Retention__c</fullName>
+    <description>Se calcula con la siguiente fórmula: ([Cartera Renovada] / [Revised baseline])</description>
+    <externalId>false</externalId>
+    <formula>RenewedPortfolio__c /  RevisedBaseline__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Ratio de Retención</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>
