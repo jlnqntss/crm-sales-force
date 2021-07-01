@@ -762,7 +762,7 @@
         </values>
         <values>
             <fullName>Phone</fullName>
-            <default>false</default>
+            <default>true</default>
         </values>
         <values>
             <fullName>Web</fullName>
