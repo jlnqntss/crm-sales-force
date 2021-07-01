@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Intermediary__c</fullName>
+    <externalId>false</externalId>
+    <label>Intermediario</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>KPIs</relationshipLabel>
+    <relationshipName>KPIs</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>true</writeRequiresMasterRead>
+</CustomField>

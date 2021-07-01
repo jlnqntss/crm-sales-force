@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PA_Totaldiscount__c</fullName>
+    <description>Importe Descuento total (pa)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Importe Descuento total (pa)</inlineHelpText>
+    <label>Descuento total (pa)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>3</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>
