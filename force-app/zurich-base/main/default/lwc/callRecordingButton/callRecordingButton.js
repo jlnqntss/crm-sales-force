@@ -31,7 +31,7 @@ export default class CallRecordingButton extends LightningElement {
   @track recordingPhoneNumber;
 
   get isDisabled() {
-    return !this.recordingPhoneNumber && !this.isOnCall;
+    return !this.recordingPhoneNumber || !this.isOnCall;
   }
 
   /**
