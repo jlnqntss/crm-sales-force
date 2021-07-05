@@ -14,7 +14,7 @@
                 <field>OwnerId</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Subject</field>
             </layoutItems>
             <layoutItems>
@@ -44,7 +44,7 @@
                 <field>Priority</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Type</field>
             </layoutItems>
             <layoutItems>

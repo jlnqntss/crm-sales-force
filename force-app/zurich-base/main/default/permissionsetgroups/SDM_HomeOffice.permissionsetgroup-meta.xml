@@ -2,6 +2,7 @@
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>SDM Home Office</label>
     <permissionSets>ConsultaDatosSDM</permissionSets>
+    <permissionSets>Consulta_de_KPI</permissionSets>
     <permissionSets>GestionCuentaContacto_SDM</permissionSets>
     <permissionSets>GestionPlanComercial_SDM</permissionSets>
     <permissionSets>Gestionar_vistaslista</permissionSets>
