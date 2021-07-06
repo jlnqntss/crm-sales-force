@@ -115,12 +115,11 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
     /**
      * Busca Ofertas a partir del Id del cliente, del ambito.
-     * En las ofertas se incluyen tambien los Objetos asegurados (Asset) y las 
-     * Polizas relacionados con la oferta.
      * 
      * @author nts (agonzalezisasi)
      * @date 04/06/2021
      * @param {Id accountId} id del cliente
+     * @param {String scope} ambito
      * @return {List<Opportunity} ofertas encontradas
      */
     public List<Opportunity> findByAccountIdAndScope(Id accountId, String scope)
@@ -130,8 +129,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             Opportunity.InfoQuoteNumber__c,
             Opportunity.SessionId__c
         })
-        .addSubquery('Insured_Objects__r', 'Id')
-        .addSubquery('Policies__r', 'Id')
         .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
         .addCondition(Query.conditionEq(Opportunity.Scope__c, scope));
 

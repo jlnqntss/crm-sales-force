@@ -669,36 +669,21 @@ public without sharing class BusinessInsuranceRaterService
             List<Opportunity> existingOffers = new OpportunitiesSelector().findByAccountIdAndScope(
                 currentCustomer.Id, scope
             );
-            // Relacion de ofertas por id externos (INFOQuoteNumber y SessionId__c)
-            Map<String, Opportunity> mapOffersByExternalId = new Map<String, Opportunity>();
             // Relacion de ofertas que no vienen en el formulario y puede que se tengan que borrar
             Map<String, Opportunity> mapOffersToDelete = new Map<String, Opportunity>();
-
-            // Relacion de Objetos de riesgo asegurado por su Oferta asociada. Deberia haber uno por oferta
-            Map<Id, Asset> mapRiskByOfferId = new Map<ID, Asset>();
-            // Relacion de Polizas por su Oferta asociada. Deberia haber una por oferta
-            Map<Id, Policy__c> mapPolicyByOfferId = new Map<ID, Policy__c>();
 
             // Por cada Oferta que hay en Salesforce....
             for (Opportunity o : existingOffers) {
                 // Miramos cual de los dos id externos tiene, dando prioridad al INFOQuoteNumber
                 if( o.INFOQuoteNumber__c != null ) {
-                    mapOffersByExternalId.put(o.INFOQuoteNumber__c, o);
                     mapOffersToDelete.put(o.INFOQuoteNumber__c, o);
                 } else if( o.SessionId__c != null && o.SessionId__c.Contains(sessionId) ) {
-                    mapOffersByExternalId.put(o.SessionId__c, o);
                     mapOffersToDelete.put(o.SessionId__c, o);
                 }
-
-                // Si hay objetos asegurados en la oferta, cogemos el primero
-                if( o.Insured_Objects__r != null && !o.Insured_Objects__r.isEmpty() ) {
-                    mapRiskByOfferId.put(o.Id, o.Insured_Objects__r.get(0));
-                }
-                // Si hay polizas en la oferta, cogemos la primera
-                if( o.Policies__r != null && !o.Policies__r.isEmpty() ) {
-                    mapPolicyByOfferId.put(o.Id, o.Policies__r.get(0));
-                }
             }
+
+            List<Opportunity> offersBySessionId = new List<Opportunity>();
+            List<Opportunity> offersByQuoteNumber = new List<Opportunity>();
 
             // Por cada Oferta que viene del formulario...
             for(Integer i=0; i < receivedOffers.size(); i++) {
@@ -733,15 +718,13 @@ public without sharing class BusinessInsuranceRaterService
                     stageName = 'App Submitted';
                 }
 
-                // Oferta - obtenemos una oferta con todos los datos que vienen del formulario
+                // Oferta - obtenemos una oferta con todos los datos que vienen del formulario 
                 Opportunity sfOffer = offer.toOpportunity();
 
                 // Oferta - a partir del id externo miramos si ya existe en Salesforce
-                if( mapOffersByExternalId.containsKey(sfOffer.INFOQuoteNumber__c) ) {
-                    sfOffer.Id = mapOffersByExternalId.get(sfOffer.INFOQuoteNumber__c).Id;
+                if( mapOffersToDelete.containsKey(sfOffer.INFOQuoteNumber__c) ) {
                     mapOffersToDelete.remove(sfOffer.INFOQuoteNumber__c);
-                } else if( mapOffersByExternalId.containsKey(externalSessionId) ) {
-                    sfOffer.Id = mapOffersByExternalId.get(externalSessionId).Id;
+                } else if( mapOffersToDelete.containsKey(externalSessionId) ) {
                     mapOffersToDelete.remove(externalSessionId);
                 }
 
@@ -761,6 +744,12 @@ public without sharing class BusinessInsuranceRaterService
 
                 offersToCreate.add(sfOffer);
 
+                if( sfOffer.INFOQuoteNumber__c != null ) {
+                    offersByQuoteNumber.add(sfOffer);
+                } else {
+                    offersBySessionId.add(sfOffer);
+                }
+
                 // Poliza
                 if( String.isNotBlank(offer.policyNumber) ) {
                     quoteNumberToPolicyNumberMap.put(i, offer.policyNumber);
@@ -776,8 +765,10 @@ public without sharing class BusinessInsuranceRaterService
             // Creacion de la oferta
             if( !offersToCreate.isEmpty() ) {
 
-                // Creamos o actualizamos las ofertas
-                upsert offersToCreate;
+                // Creamos o actualizamos las ofertas por id externos
+                // upsert offersToCreate;
+                if( !offersByQuoteNumber.isEmpty() ) upsert offersByQuoteNumber Opportunity.INFOQuoteNumber__c;
+                if( !offersBySessionId.isEmpty() ) upsert offersBySessionId Opportunity.SessionId__c;
 
                 Id addressRecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get('Address').getRecordTypeId();
 
@@ -792,13 +783,13 @@ public without sharing class BusinessInsuranceRaterService
                         String policyNumber = quoteNumberToPolicyNumberMap.get(i);
                         policiesToCreate.add(
                             new Policy__c(
-                                Id= mapPolicyByOfferId.get(offer.Id)?.Id,
                                 Name = policyNumber,
                                 InfoPolicyNumber__c = policyNumber,
                                 PolicyHolder__c = currentCustomer.Id,
                                 InfoQuoteNumber__c = offer.InfoQuoteNumber__c,
                                 BusinessCode__c = offer.BusinessCode__c,
-                                ScopeId__c = currentScope.Id
+                                ScopeId__c = currentScope.Id,
+                                OpportunityName__c= offer.Id
                                 )
                             );
                     }
@@ -807,13 +798,12 @@ public without sharing class BusinessInsuranceRaterService
                     if( quoteNumberRiskMap.containsKey(i) )
                     {
                         BusinessInsuranceRaterService.OfferRiskInformation risk = quoteNumberRiskMap.get(i);
-                        // if(risk != null) {
+                        
                         // Obtenemos un objeto Asset con los datos que hay en el formulario
                         Asset sfRisk = risk.toAsset();
-                        // Si existe ya un riesgo asegurado de la oferta en un paso anterior le indicamos el id
-                        sfRisk.Id = mapRiskByOfferId.get(offer.Id)?.Id;      
-                        // Rellenamos el resto de campos calculados                  
-                        sfRisk.INFOInsuredObjectCode__c = (String.isBlank(offer.InfoQuoteNumber__c) ? null : offer.InfoQuoteNumber__c + '01');
+
+                        // Rellenamos el resto de campos calculados
+                        sfRisk.INFOInsuredObjectCode__c = (String.isBlank(offer.InfoQuoteNumber__c) ? offer.SessionId__c : offer.InfoQuoteNumber__c) + '01';
                         sfRisk.OfferId__c = offer.Id;
                         sfRisk.AccountId = currentCustomer.Id;
                         sfRisk.Scope__c = currentScope.Scope__c;
@@ -821,19 +811,28 @@ public without sharing class BusinessInsuranceRaterService
                         sfRisk.LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI);
 
                         risksToCreate.add( sfRisk );
-                        // }
                     }
                 }
 
                 // Poliza - insercion o actualizacion
                 if( !policiesToCreate.isEmpty() )
                 {
-                    // insert policiesToCreate;
-                    upsert policiesToCreate;
+                    // Actualizamos o insertamos las polizas
+                    List<Database.UpsertResult> results = Database.upsert(policiesToCreate, Policy__c.InfoPolicyNumber__c);
 
                     // Si existe el manager establecemos la relacion con la poliza
                     if( currentManager?.Id != null  ) {
-                        createRelationPolicyManager(policiesToCreate);
+                        // Miramos que polizas han sido creadas
+                        List<Policy__c> createdPolicies = new List<Policy__c>();
+                        for( Database.UpsertResult r: results ) {
+                            if( r.isCreated() ) {
+                                createdPolicies.add(new Policy__c(
+                                    Id= r.Id
+                                ));
+                            }
+                        }
+                        // Y establecemos la relacion
+                        createRelationPolicyManager(createdPolicies);
                     }
                 }
 
@@ -841,7 +840,7 @@ public without sharing class BusinessInsuranceRaterService
                 if( !risksToCreate.isEmpty() )
                 {
                     // insert risksToCreate;
-                    upsert risksToCreate;
+                    upsert risksToCreate INFOInsuredObjectCode__c;
                 }
             }
 
@@ -1164,32 +1163,14 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static void createRelationPolicyManager(List<Policy__c> createdPolicies)
     {
-        if( !createdPolicies.isEmpty() )
+        if( createdPolicies != null && !createdPolicies.isEmpty() )
         {
-            // Recuperamos las relaciones que tengan las polizas creadas para ver si ya existe
-            // esa relacion
-            List<Policy__c> policies = [
-                SELECT Id, (SELECT Id FROM Relationships__r WHERE Role__c = 'OCSPAU') 
-                FROM Policy__c
-                WHERE Id IN :createdPolicies
-            ];
-            Map<Id, Policy__c> mapPoliciesById = new Map<Id, Policy__c>(policies);
-
             Id policyRelationshipRecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Policy').getRecordTypeId();
             List<Relationship__c> relations = new List<Relationship__c>();
             for(Policy__c policy: createdPolicies)
             {
-                // Comprobamos si existe la relacion para obtener su Id
-                ID relationId = null;
-                if( mapPoliciesById.containsKey(policy.Id) 
-                    && !mapPoliciesById.get(policy.Id).Relationships__r.isEmpty() ) 
-                {
-                    relationId = mapPoliciesById.get(policy.Id).Relationships__r.get(0).Id;    
-                }
-
                 relations.add(
                     new Relationship__c(
-                        Id= relationId,
                         LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
                         PolicyId__c = policy.Id,
                         PrimaryAccountId__c = currentManager.Id,
