@@ -193,7 +193,5 @@ private with sharing class OpportunitiesSelectorTest
         Test.stopTest();
 
         System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
-        System.assertEquals(false, offers[0].Insured_Objects__r.isEmpty(), 'There should be same insured object for the offer');
-        System.assertEquals(false, offers[0].Policies__r.isEmpty(), 'There should be same policy for the offer');
     }
 }
