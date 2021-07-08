@@ -1927,6 +1927,18 @@ public class TestDataFactory
                     );
                 }
             }
+            when 'AgrupacionMediador' { // SDM: agrupacion mediadores
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            Name = 'agrupationName' + i,
+                            NationalIdType__c = 'C',
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
             when else {
                 for (Integer i = 0; i < numRecords; i++)
                 {

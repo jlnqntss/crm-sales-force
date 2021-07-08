@@ -1,6 +1,9 @@
 @isTest
 private with sharing class AccountsSelectorTest
 {
+    public static final String INTERMEDIARY_EMAIL = 'intermediary01@invalid.com';
+    public static final String INTERMEDIARY_EMAIL_FIELD = 'MainEmail__c';
+
     @TestSetup
     public static void createScenario()
     {
@@ -22,7 +25,13 @@ private with sharing class AccountsSelectorTest
 
         //Intermediary-> NO tienen ContactPointPhones!!!
         List<Account> intermediaryAccounts = TestDataFactory.generateAccounts('001', 'Intermediary', 10);
+        intermediaryAccounts[0].put(INTERMEDIARY_EMAIL_FIELD, INTERMEDIARY_EMAIL);
         insert intermediaryAccounts;
+
+        List<Account> agrupations = TestDataFactory.generateAccounts(
+            '001', AccountsSelector.RT_NAME_AGRUPATION, 1
+        );
+        insert agrupations;
     }
 
     @isTest
@@ -500,4 +509,57 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(accountIds.size(), selectedAccountsById.keySet().size(), 'Se debería recibir el mismo número de cuentas');
         System.assertEquals(true, selectedAccountsById.keySet().containsAll(accountIds), 'No contiene todos los ids de cuenta');
     }
+
+
+    @isTest
+    static void test_findAgrupatedIntermediries()
+    {
+        Test.startTest();
+        List<Account> agrupated = new AccountsSelector().findAgrupatedIntermediaries();
+        Test.stopTest();
+
+        System.assertEquals(false, agrupated.isEmpty(), 'Deberia haber cuentas de Agrupacion de Intermediarios');
+    }
+
+    /**
+     * Test del metodo que busca un email en los campos dados
+     *
+     * @author nts (agonzalezisasi)
+     * @date 05/07/2021
+     */
+    @isTest
+    static void test_findIntermediariesByEmailInFields()
+    {
+        Test.startTest();
+        List<Account> intermediaries = new AccountsSelector().findIntermediariesByEmailInFields(
+            INTERMEDIARY_EMAIL, new Set<String>{INTERMEDIARY_EMAIL_FIELD}
+        );
+        Test.stopTest();
+
+        System.assertEquals(1, intermediaries.size(), 'Deberia haber 1 Mediador');
+    }
+
+    /**
+     * Test del metodo que busca un email en los campos dados
+     *
+     * @author nts (agonzalezisasi)
+     * @date 05/07/2021
+     */
+    @isTest
+    static void test_findWithFields()
+    {
+        AccountsSelector accSel = new AccountsSelector();
+        List<Account> accounts = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtIntermediaryId];
+        System.assertEquals(false, accounts.isEmpty(), 'Deberia haber cuentas');
+
+        Set<String> fields = new Set<String>{'Name'};
+
+        Test.startTest();
+        accounts = accSel.findWithFields(accounts, fields);
+        Test.stopTest();
+
+        System.assertEquals(false, accounts.isEmpty(), 'Deberia haber cuentas');
+        System.assertEquals(true, String.isNotBlank(accounts[0].Name), 'El nombre de la cuenta no deberia estar vacio');
+    }
+
 }

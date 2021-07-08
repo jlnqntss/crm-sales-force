@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Role__c</fullName>
+    <description>SDM: nombre del rol en los Account Team Member</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Role</label>
+    <required>true</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>TerritoryManager</fullName>
+                <default>true</default>
+                <label>Director Territorial</label>
+            </value>
+            <value>
+                <fullName>Manager</fullName>
+                <default>false</default>
+                <label>Director Zona</label>
+            </value>
+            <value>
+                <fullName>BusinessManager</fullName>
+                <default>false</default>
+                <label>Responsable de Negocio</label>
+            </value>
+            <value>
+                <fullName>LifeManager</fullName>
+                <default>false</default>
+                <label>Director Vida</label>
+            </value>
+            <value>
+                <fullName>EnterpriseManager</fullName>
+                <default>false</default>
+                <label>Director Empresas</label>
+            </value>
+            <value>
+                <fullName>Trainer</fullName>
+                <default>false</default>
+                <label>Formador</label>
+            </value>
+            <value>
+                <fullName>LifeConsultant</fullName>
+                <default>false</default>
+                <label>Consultor Vida</label>
+            </value>
+            <value>
+                <fullName>PYMEConsultant</fullName>
+                <default>false</default>
+                <label>Consultor Empresas</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

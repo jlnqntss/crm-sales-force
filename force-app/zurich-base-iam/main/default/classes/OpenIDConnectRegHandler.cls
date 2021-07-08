@@ -37,6 +37,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
     @testvisible
     private static final string AUTH_DATA_MAP_NAME = 'roles';
+    @testvisible
     private static final string CLASS_NAME = 'OpenIDConnectRegHandler';
 
     private static final string ERROR_PARSE_ROLES = 'Error al parsear el usuario. Para más ayuda, póngase en contacto con su administrador.';
@@ -64,6 +65,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     private String testSignatureContent;
     @testvisible
     private String testSignatureFields;
+    @testvisible
+    private Map<String, STring> testATMSettings;
 
     /**
      * @Description Método ejecutado cuando el id de federación del usuario que intenta conectar no se corresponde con el de Salesforce.
@@ -103,7 +106,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
         mapAuthData.put(PERMISSION_TYPE_TITLE, null);
         // fill the map with the configuration
-        getAuthData( roleNameList, mapAuthData );
+        getAuthData( roleNameList, mapAuthData ); 
 
         // GET PROFILE ID
         Id profileId                  = getProfileIdFromRoles(mapAuthData.get(PERMISSION_TYPE_PROFILE), roleNameList);
@@ -158,6 +161,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         // PERMISSION SETS
         List<Id> permissionSetGroupIdList = getPermissionSetGroupsFromRoles(mapAuthData.get(PERMISSION_TYPE_PERMISSION_SET_GROUP));
         assignPermissionSetGroup(u.Id, permissionSetGroupIdList);
+
+        // ACCOUNT TEAM MEMBERS (SDM)
+        assignAccountTeam(u.Id, u.Email, testATMSettings);
 
         return u;
     }
@@ -645,6 +651,86 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                         insert newAssignments;
                 }
             }        
+        } catch( Exception e ) {
+            ErrorLogUtil.commitError(e, CLASS_NAME);
+        }
+    }
+
+    /**
+     * Assign the AccountTeamMember to the user if the email already exist in one of the Intermediaries fields
+     * Used for SDM (Sales Digital Management) project
+     *
+     * Because is an async method, the test methods cant reach this method, thats why we send the test settings in
+     * the call. For none test call the las parameter will be null
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 28/06/2021
+     * 
+     * @param {Id userId} the user
+     * @param {String email} the email of the user
+     * @param {Map<String, String testSettings} Pair Rol-IntermediaryField. Will be null if is not a test
+     * 
+     *! @future
+     */
+    @future
+    private static void assignAccountTeam(Id userId, String email, Map<String, String> testSettings)
+    {
+        try { 
+            if( String.isNotBlank(email) ) {
+                IntermediarySDM sdm = new IntermediarySDM();
+                
+                // only for Test. Set the settings data for the test
+                if( Test.isRunningTest() && testSettings != null && !testSettings.isEmpty() ) {
+                    sdm.SettingsATM.clear();
+                    for(String key: testSettings.keySet()) {
+                        sdm.SettingsATM.add(
+                            new SDMAccountTeamRole__mdt(
+                                Label= 'testATM' + key,
+                                DeveloperName= 'testATM' + key,
+                                Role__c= key,
+                                IntermediaryField__c= testSettings.get(key),
+                                Status__c= 'Active'
+                        ));
+                    }
+                }
+                // Get the list of Intermediary fields
+                Set<String> fields = sdm.SettingsATMFields;
+                // Get the Intermediary accounts that has the email in any of those fields
+                List<Account> intermediaries = new AccountsSelector().findIntermediariesByEmailInFields(email, fields);
+                // If there are any intermediaries
+                if( intermediaries != null && !intermediaries.isEmpty() ) {
+                    // for DML
+                    List<AccountTeamMember> atmToUpsert = new List<AccountTeamMember>();
+
+                    // For each Intermediary...
+                    for(Account i: intermediaries) {
+                        // Get the the fields of the Account in memory to be sure that we got the fields
+                        Map<String, Object> mapFieldsInMemory = i.getPopulatedFieldsAsMap();
+
+                        // For each rol-intermediary field relation...
+                        for(SDMAccountTeamRole__mdt s: sdm.SettingsATM) {
+                            // Check if the field has been recovered in the soql
+                            if( s.IntermediaryField__c != null && mapFieldsInMemory.containsKey(s.IntermediaryField__c)) {
+                                // Compare the value of the Intermediary for that field with the email of the user
+                                String fieldValue = (String)i.get(s.IntermediaryField__c);
+                                if( fieldValue != null && fieldValue.equalsIgnoreCase(email) ) {
+                                    // ATM to be created
+                                    AccountTeamMember atm = new AccountTeamMember(
+                                        AccountId= i.Id,
+                                        userId= userId,
+                                        TeamMemberRole= s.Role__c,
+                                        AccountAccessLevel= 'Read'
+                                    );
+
+                                    atmToUpsert.add(atm);
+                                }
+                            }
+                        }
+                    }
+
+                    sdm.upsertATMs(atmToUpsert);
+                }
+            }
         } catch( Exception e ) {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }

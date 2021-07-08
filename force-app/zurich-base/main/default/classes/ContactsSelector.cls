@@ -11,6 +11,15 @@ public with sharing class ContactsSelector extends RecordsSelector
 
     //#endregion
 
+    public static final String RT_NAME_CONTACT = 'Contact';
+
+    // Recupera el Id del RecordType de cuentas de tipo CONTACT
+    public ID rtContactId {
+        get {
+            return Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get(RT_NAME_CONTACT)?.getRecordTypeId();
+        }
+    }
+
     /**
      * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
      * @author adelgado
@@ -205,6 +214,32 @@ public with sharing class ContactsSelector extends RecordsSelector
         }
 
         return recordIds;
+    }
+
+    /**
+     * Busca contactos que tengan los emails dados por parametro en el campo Email
+     *
+     * @author nts (agonzalezisasi)
+     * @date 05/07/2021
+     * @param  emails Listado de emails. Válido cualquier formato
+     * @return        Listado de contactos sobre los que se ha realizado match
+     */
+    public List<Contact> findByEmailField(List<String> emails)
+    {
+        List<Contact> result = null;
+
+        if( emails != null && !emails.isEmpty() ) {
+            this.baseQuery.selectFields (
+                new Set<Schema.SObjectField> {
+                    Contact.Id, 
+                    Contact.Email
+                }
+            );
+            this.baseQuery.addConditionIn(Contact.Email, emails);
+
+            result = (List<Contact>) this.baseQuery.run();
+        }
+        return result;
     }
 
 }

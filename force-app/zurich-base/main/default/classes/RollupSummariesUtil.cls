@@ -149,10 +149,10 @@ public class RollupSummariesUtil
             Sobject masterObject = masterRecordsMap.get(masterRecordId1);
             if (masterObject == null)
             {
-                System.Debug(
-                    Logginglevel.WARN,
-                    'No master record found for the Id:' + masterRecordId1
-                    );
+                // System.Debug(
+                //     Logginglevel.WARN,
+                //     'No master record found for the Id:' + masterRecordId1
+                //     );
                 continue;
             }
 
@@ -162,12 +162,12 @@ public class RollupSummariesUtil
                 Object agregateDetail = result.get(alias);
                 if (agregateDetail != null)
                 {
-                    System.Debug(
-                        'Nuevo valor agregado ' +
-                        agregateDetail +
-                        ' para el master ' +
-                        masterRecordId
-                        );
+                    // System.Debug(
+                    //     'Nuevo valor agregado ' +
+                    //     agregateDetail +
+                    //     ' para el master ' +
+                    //     masterRecordId
+                    //     );
 
                     if (
                         IsMultiCurrencyOrg() == true && summaryField.currencyTypeCurrency

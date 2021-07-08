@@ -11,6 +11,26 @@ public with sharing class AccountsSelector extends RecordsSelector
 
     //#endregion
 
+    //#region RECORD TYPES
+    
+    public static final String RT_NAME_AGRUPATION = 'AgrupacionMediador';
+    public static final String RT_NAME_INTERMEDIARY = 'Intermediary';
+
+    // Recupera el Id del RecordType de cuentas de Agrupacion de Mediadores
+    public ID rtAgrupationId {
+        get {
+            return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_AGRUPATION)?.getRecordTypeId();
+        }
+    }
+    // Recupera el Id del RecordType de Mediadores
+    public ID rtIntermediaryId {
+        get {
+            return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_INTERMEDIARY)?.getRecordTypeId();
+        }
+    }
+
+    //#endregion
+
     /**
      * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
      * @author adelgado
@@ -415,5 +435,63 @@ public with sharing class AccountsSelector extends RecordsSelector
         //String query = String.format('SELECT {0} FROM Account WHERE Id IN :accountIds', new List<String> {String.join(new List<String> (selectFields), ',')});
 
         return (List<Account>) this.baseQuery.byId(accountIds).run();
+    }
+
+    /**
+     * Obtiene un listado de cuentas de Agrupacion 
+     */
+    public List<Account> findAgrupatedIntermediaries()
+    {
+        this.baseQuery.selectFields (
+            new List<Schema.SObjectField> {
+                Account.Id,
+                Account.NationalId__c
+            }
+        );
+        this.baseQuery.addConditionEq(Account.RecordTypeId, rtAgrupationId);
+
+        return (List<Account>) this.baseQuery.run();
+    }
+
+    /**
+     * Recupera los Mediadores que tengan el email dado en alguno de los campos de la lista dada.
+     * 
+     * @param {String email} el email a buscar
+     * @param {List<String> fields} la lista de campos donde buscar
+     */
+    public List<Account> findIntermediariesByEmailInFields(String email, Set<String> fields)
+    { 
+        List<Account> result = null;
+
+        if( String.isNotBlank(email) && fields != null & !fields.isEmpty() ) {
+            this.baseQuery.selectFields(fields);
+            String condition = String.join(new List<String>(fields), ' = \'' + email + '\' OR ') + ' = \'' + email + '\'';
+            this.baseQuery.addConditionString(condition);
+            this.baseQuery.addConditionEq(Account.RecordTypeId, this.rtIntermediaryId);
+
+            result = (List<Account>)this.baseQuery.run();
+        }
+        
+        return result;
+    }
+
+    /**
+     * Recupera las cuentas indicadas como parametro pero incluyendo los campos dados
+     *
+     * @param {List<Account> accounts} lista de cuentas
+     * @param {List<String> fields} lista de campos
+     */
+    public List<Account> findWithFields(List<Account> accounts, Set<String> fields)
+    {
+        List<Account> result = null;
+
+        if( accounts != null && !accounts.isEmpty() && fields != null & !fields.isEmpty() ) {
+            this.baseQuery.selectFields(fields);
+            this.baseQuery.addConditionIn(Account.Id, accounts);
+
+            result = (List<Account>)this.baseQuery.run();
+        }
+        
+        return result;
     }
 }
