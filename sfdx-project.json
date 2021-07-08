@@ -21,6 +21,10 @@
       "default": false
     },
     {
+      "path": "force-app/zurich-sdm-app",
+      "default": false
+    },
+    {
       "path": "force-app/zurich-base-security",
       "default": false
     }
