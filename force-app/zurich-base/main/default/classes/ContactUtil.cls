@@ -13,7 +13,7 @@ global without sharing class ContactUtil
      **/
     public static String adaptCustomerNum( String CustomerNum, String LegalEntity )
     {
-        System.debug('- - - - - ContactUtil.adaptCustomerNum - - - - -');
+        // System.debug('- - - - - ContactUtil.adaptCustomerNum - - - - -');
         if ( LegalEntity.equals('GI') || LegalEntity.equals(Label.GeneralInsurance) )
         {
             CustomerNum = 'GI-' + CustomerNum;
@@ -79,7 +79,7 @@ global without sharing class ContactUtil
     // EMEA
     public static Order upsertContact(Contact incomingContact, Order quote)
     {
-        System.debug('- - - - - ContactUtil.upsertContact - - - - -');
+        // System.debug('- - - - - ContactUtil.upsertContact - - - - -');
         String[] customerNumberParts = incomingContact.CustomerNum__c.split('-');
         String legalEntity = '';
         String customerNumberOnly = '';
@@ -128,7 +128,7 @@ global without sharing class ContactUtil
         // BY CUSTOMER NUM -------------------------------------------------------------------------------------------------
         if ( alreadyInSFContact != null )
         {
-            System.debug('>>> Contact found by Customer Number');
+            // System.debug('>>> Contact found by Customer Number');
 
             // If there is a quote, and the contact is a lead, the relationship between the
             // quote and the contact is set and the contact is updated
@@ -180,16 +180,16 @@ global without sharing class ContactUtil
             matchcode = createMatchcode(  incomingContact );
             matchcode_LECountyPartner = matchcode + legalEntity + incomingContact.sourceCountry__c + incomingContact.Partner__c;
            
-            System.debug( '>>> MATCHCODE: ' + matchcode );
-            System.debug( '>>> ExternalRequestUtil.mapContacts ' + ExternalRequestUtil.mapContacts );
-            System.debug( '>>> ExternalRequestUtil.recordsToProcess ' + ExternalRequestUtil.recordsToProcess );
-            System.debug( '>>> ExternalRequestUtil.actualRequest ' + ExternalRequestUtil.actualRequest );
+            // System.debug( '>>> MATCHCODE: ' + matchcode );
+            // System.debug( '>>> ExternalRequestUtil.mapContacts ' + ExternalRequestUtil.mapContacts );
+            // System.debug( '>>> ExternalRequestUtil.recordsToProcess ' + ExternalRequestUtil.recordsToProcess );
+            // System.debug( '>>> ExternalRequestUtil.actualRequest ' + ExternalRequestUtil.actualRequest );
 
             // MATCHCODE - LEGALENTITY - COUNTRY + PARTNER : Contact found
             if ( ExternalRequestUtil.mapContactsEmailBirthDateLECountry.containsKey( matchcode_LECountyPartner ) )
             {
                 // If contact exists with a different customer number
-                System.debug('>>> Contact found by Matchcode + LE + COUNTRY + PARTNER');
+                // System.debug('>>> Contact found by Matchcode + LE + COUNTRY + PARTNER');
                 alreadyInSFContact = ExternalRequestUtil.mapContactsEmailBirthDateLECountry.get( matchcode_LECountyPartner );
 
                 if ( incomingContact.status__c == 'Lead' )
@@ -347,7 +347,7 @@ global without sharing class ContactUtil
             else if ( ExternalRequestUtil.mapContactsEmailBirthDate.containsKey( matchcode ) )
             {
                 
-                System.debug('>>> Contact found by MATCHCODE (different LE, COUNTRY or PARTNER');
+                // System.debug('>>> Contact found by MATCHCODE (different LE, COUNTRY or PARTNER');
                 alreadyInSFContact = ExternalRequestUtil.mapContactsEmailBirthDate.get( matchcode );
 
                 incomingContact.AccountId = alreadyInSFContact.AccountId;
@@ -414,7 +414,7 @@ global without sharing class ContactUtil
             } // SEARCH AMONG SUBSCRIBERS // nts (nbizkarra) - 17/11/2020
             else if ( ExternalRequestUtil.mapSubscribers.containsKey(incomingContact.Email) )
             {
-                System.debug('>>> Contact found in Subscribers');
+                // System.debug('>>> Contact found in Subscribers');
                 List <Contact> listSubscribers = ExternalRequestUtil.mapSubscribers.get(incomingContact.Email);
                 Boolean subscriber_found = false;
 
@@ -428,7 +428,7 @@ global without sharing class ContactUtil
                         )
                     {
 
-                        System.debug('>>> Subscriber found: ' + subscriber);
+                        // System.debug('>>> Subscriber found: ' + subscriber);
                         alreadyInSFContact = subscriber;
                         incomingContact.Id = alreadyInSFContact.Id;
                         ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
@@ -440,7 +440,7 @@ global without sharing class ContactUtil
                 if(subscriber_found == false)
                 {
 
-                    System.debug('>>> Subscribers master found');
+                    // System.debug('>>> Subscribers master found');
 
                     alreadyInSFContact = listSubscribers.get(0);
                     incomingContact.AccountId = alreadyInSFContact.AccountId;
@@ -517,7 +517,7 @@ global without sharing class ContactUtil
     public static void createContactAndMaster( Contact incomingContact, String customerNumField, String customerNumberOnly, Order quote )
     {
         // The contact doesn't exist
-        System.debug('>>> The contact does not exist');
+        // System.debug('>>> The contact does not exist');
 
         // Master (account) creation
         Account accountItem = new Account();
@@ -742,11 +742,11 @@ global without sharing class ContactUtil
      */
     public static void SummaryTotalContacts( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        System.debug('- - - - - ContactUtil.SummaryTotalContacts - - - - -');
+        // System.debug('- - - - - ContactUtil.SummaryTotalContacts - - - - -');
         Set<Id> idSet = new Set<Id>();
         List<Contact> contactOldList = new List<Contact>();
-        System.debug(oldMap);
-        System.debug(oldMap != null);
+        // System.debug(oldMap);
+        // System.debug(oldMap != null);
 
         if (newList != null || oldMap != null)
         {
@@ -764,7 +764,7 @@ global without sharing class ContactUtil
             if (oldMap != null)
             {
                 contactOldList = oldMap.values();
-                System.debug(contactOldList);
+                // System.debug(contactOldList);
                 for (Contact cont : contactOldList)
                 {
                     //list of IDs of the parent record
@@ -775,7 +775,7 @@ global without sharing class ContactUtil
                 }
             }
 
-            System.debug(idSet);
+            // System.debug(idSet);
             if ( !idSet.isEmpty() )
             {
                 // Define the context for the RollupSummariesUtil.summarize() method
@@ -818,7 +818,7 @@ global without sharing class ContactUtil
      */
     public static void generateHashContactId( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        System.debug('- - - - - ContactUtil.generateHashContactId - - - - -');
+        // System.debug('- - - - - ContactUtil.generateHashContactId - - - - -');
         List<Contact> updateContacts = new List<Contact>();
 
         if (newList != null || oldMap != null)
@@ -851,7 +851,7 @@ global without sharing class ContactUtil
      */
     public static void updateQuoteStep4and5( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        System.debug('- - - - - ContactUtil.updateQuoteStep4and5 - - - - -');
+        // System.debug('- - - - - ContactUtil.updateQuoteStep4and5 - - - - -');
         List<Contact> quotes = new List<Contact>();
         Map<ID, Order> quotesToUpdate = new Map<ID, Order>();
         Map<ID, Contact> mapContactos = new Map<ID, Contact>();
