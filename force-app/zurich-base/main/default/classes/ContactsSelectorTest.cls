@@ -147,4 +147,27 @@ private with sharing class ContactsSelectorTest
             System.assertEquals(true, expectedContactsById.containsKey(record.Id), 'Map should contains the record Id');
         }
     }
+
+    @isTest
+    static void test_findByEmailField()
+    {
+        List<Contact> contacts = [SELECT Id, Email FROM Contact];
+        System.assertEquals(10, contacts.size(), 'There should be 10 contactos');
+
+        List<String> emails = new List<String>();
+
+        //List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, ContactsSelector.RT_NAME_CONTACT, 1);
+        for( Integer i=0; i<contacts.size(); i++ ) {
+            String email = 'cto' + i + '@email-invalid.com';
+            contacts[i].Email = email;
+            emails.add(email);
+        }
+        update contacts;
+
+        Test.startTest();
+        contacts = new ContactsSelector().findByEmailField(emails);
+        Test.stopTest();
+
+        System.assertEquals(10, contacts.size(), 'There should be 10 accounts found');
+    }
 }
