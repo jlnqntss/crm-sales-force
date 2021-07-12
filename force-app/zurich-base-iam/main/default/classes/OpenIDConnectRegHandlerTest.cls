@@ -646,4 +646,99 @@ private class OpenIDConnectRegHandlerTest
         User updatedUser = [SELECT userName, Title FROM user WHERE id=:u.Id];
         System.assertEquals('TestTitleA2', updatedUser.Title, 'The title of the user should be TestTitleA2');
     }
+
+    /**
+     * Test the assignement of the AccountTeamMember for new users if they have the email in an Intermediry account
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 28/06/2021
+     */
+    @isTest
+    static void testAssignAccountTeam_ok()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        handler.testATMSettings = new Map<String, String>();
+        handler.testATMSettings.put('TerritoryManager', 'TerritoryManagerEmail__c');
+
+        // Create another user to assign as AccountTeamMember
+        User otherUser = null;
+        List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = 'SDM RN'];
+        if( !profiles.isEmpty() ) {
+            List<User> otherUsers = TestDataFactory.generateUsersByProfile(profiles[0].Id, 1);
+            insert otherUsers;
+            otherUser = otherUsers[0];
+        }
+
+        // SDM, create intermediary account
+        // Because of MIXED-DML error, we have to create the account this way
+        User thisUser = [SELECT Id FROM User WHERE Id = :UserInfo.getUserId()];
+        System.runAs (thisUser) {            
+            // Create the intermediary account
+            List<Account> intermediaries = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+            intermediaries[0].TerritoryManagerEmail__c = sampleDataIAM.email;
+            insert intermediaries;
+
+            // Create AccountTeamMembers for that user and for another user with diefferent roles
+            Schema.DescribeFieldResult atmRolPicklist = AccountTeamMember.TeamMemberRole.getDescribe();
+		    List<Schema.PicklistEntry> atmRolPicklistValues = atmRolPicklist.getPicklistValues();
+            List<AccountTeamMember> otherAtms = new List<AccountTeamMember>();
+            // If there is one rol
+            if( atmRolPicklistValues.size() > 0 ) {
+                otherAtms.add(new AccountTeamMember(
+                    AccountId= intermediaries[0].Id,
+                    UserId= thisUser.Id,
+                    TeamMemberRole= atmRolPicklistValues[0].getValue()
+                ));
+            }
+
+            // If there is a second rol
+            if( atmRolPicklistValues.size() > 1 ) {
+                if( otherUser != null ) {
+                    otherAtms.add(new AccountTeamMember(
+                        AccountId= intermediaries[0].Id,
+                        UserId= otherUser.Id,
+                        TeamMemberRole= atmRolPicklistValues[1].getValue()
+                    ));
+                }
+            }
+            
+            if( !otherAtms.isEmpty() ) insert otherAtms;
+        }
+
+        // Test user Creation
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        // check if the account team member has been created
+        List<AccountTeamMember> atms = [SELECT Id FROM AccountTeamMember];
+        System.assertEquals(false, atms.isEmpty(), 'There should be AccountTeamMembers');
+    }
+
+    /**
+     * Test the Error log creation when the assignement of the AccountTeamMember fails
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 28/06/2021
+     */
+    @isTest
+    static void testAssignAccountTeam_ko()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        // Set the settings incorrectly
+        handler.testATMSettings = new Map<String, String>();
+        handler.testATMSettings.put('TerritoryManagerA', 'InvalidField__c');
+
+        Test.startTest();
+        User u = handler.createUser(null, sampleDataIAM);
+        Test.stopTest();
+
+        // Check that the error log is being created
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c WHERE Source_Class__c = :OpenIDConnectRegHandler.CLASS_NAME];
+        System.assertEquals(false, errorLogs.isEmpty(), 'There should be an error log');
+    }
 }

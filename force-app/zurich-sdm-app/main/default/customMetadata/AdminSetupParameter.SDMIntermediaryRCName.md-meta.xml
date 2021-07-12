@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>SDMIntermediaryRCName</label>
+    <protected>false</protected>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">SDM: nombre del responsable de negocio que si lo tiene un mediador se le eliminaran los equipos de cuenta</value>
+    </values>
+    <values>
+        <field>KeyName__c</field>
+        <value xsi:type="xsd:string">SDMIntermediaryRCName</value>
+    </values>
+    <values>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">60 DT Centralizados</value>
+    </values>
+</CustomMetadata>

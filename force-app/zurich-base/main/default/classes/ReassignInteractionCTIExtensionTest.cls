@@ -1,5 +1,5 @@
 @isTest(SeeAllData = false)
-public without sharing class ReassignInteractionCTIExtensionTest
+private without sharing class ReassignInteractionCTIExtensionTest
 {
     /**
      * Prueba a que se actualiza la tarea existente
@@ -390,4 +390,36 @@ public without sharing class ReassignInteractionCTIExtensionTest
         }
     }
 
+    /**
+     * Prueba la comprobación de ID real
+     * @date 5/7/2021
+     */
+    @isTest
+    static void test_onSaveLog_parseId()
+    {
+        List<Task> interaction = TestDataFactory.generateInteractionTasks(1);
+        insert interaction;
+        Id taskId = interaction[0].Id;
+
+        Test.startTest();
+        ReassignInteractionCTIExtension.onSaveLog(
+            '{"eventName": "interactionChanged", "interaction" : { "id": "'+taskId+'"},  "callLog": {"CallObject": "'+taskId+'", "Id": "'+taskId+'", "Status":"Asignada"}}'
+            );
+        Test.stopTest();
+
+        //Hacer query para recuperar los nuevos valores
+        List<Task> tasks = [SELECT Status, RecordTypeId FROM Task];
+
+        System.assertEquals(
+            'Asignada',
+            tasks[0].Status,
+            'Se debería haber actualizado el status de la tarea'
+            );
+
+        System.assertEquals(
+            Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId(),
+            tasks[0].RecordTypeId,
+            'El tipo de registro de la tarea actualizada no es Interacción'
+            );
+    }
 }
