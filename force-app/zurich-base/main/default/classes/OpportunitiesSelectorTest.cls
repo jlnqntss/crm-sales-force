@@ -12,6 +12,19 @@ private with sharing class OpportunitiesSelectorTest
 
         List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachScope(scopes, 'Qualification', System.today(), 10);
         insert opportunities;
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachOpportunity(opportunities, 1);
+        insert policies;
+
+        Map<ID, Policy__c> mapPoliciesById = new Map<ID, Policy__c>(policies);
+
+        List<Asset> insuredObjects = TestDataFactory.generateInsuredObjectsForEachPolicy('Address', policies, 1);
+        // Cambiamos los asset para que vayan por oferta en vez de por poliza
+        for(Asset a: insuredObjects) {
+            a.OfferId__c = mapPoliciesById.get(a.PolicyId__c).OpportunityName__c;
+            a.PolicyId__c = null;
+        }
+        insert insuredObjects;
     }
 
     @isTest
@@ -27,9 +40,8 @@ private with sharing class OpportunitiesSelectorTest
         }
 
         Test.startTest();
-        List<Opportunity> matchedRecords = new OpportunitiesSelector(
-            new Set<String> {'Id', 'AccountId', 'ScopeId__c'}
-            ).selectByAccountIdAndScopes(existingScopes.get(0).AccountId__c, scopesIds);
+        List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdAndScopes(
+            existingScopes.get(0).AccountId__c, scopesIds);
         Test.stopTest();
 
         System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
@@ -41,20 +53,21 @@ private with sharing class OpportunitiesSelectorTest
         }
     }
 
-    @isTest
-    static void test_selectByAccountIdAndScopes_emptySet_matchedRecords()
-    {
-        List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
-        System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
+    // @isTest
+    // static void test_selectByAccountIdAndScopes_emptySet_matchedRecords()
+    // {
+    //     List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
+    //     System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
 
-        Set<Id> scopesIds = new Set<Id>();
+    //     Set<Id> scopesIds = new Set<Id>();
 
-        Test.startTest();
-        List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdAndScopes(existingScopes.get(0).AccountId__c, scopesIds);
-        Test.stopTest();
+    //     Test.startTest();
+    //     List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdAndScopes(
+    //         existingScopes.get(0).AccountId__c, scopesIds);
+    //     Test.stopTest();
 
-        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-    }
+    //     System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    // }
 
     @isTest
     static void test_selectByAccountIdAndScopes_nullSet_matchedRecords()
@@ -66,22 +79,21 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
 
-    @isTest
-    static void test_selectByAccountIdAndScopes_invalidFields_matchedRecords()
-    {
-        List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
-        System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
+    // @isTest
+    // static void test_selectByAccountIdAndScopes_invalidFields_matchedRecords()
+    // {
+    //     List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
+    //     System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
 
-        Set<Id> scopesIds = new Set<Id>();
+    //     Set<Id> scopesIds = new Set<Id>();
 
-        Test.startTest();
-        List<Opportunity> matchedRecords = new OpportunitiesSelector(
-            new Set<String> {'invalidField'}
-            ).selectByAccountIdAndScopes(existingScopes.get(0).AccountId__c, scopesIds);
-        Test.stopTest();
+    //     Test.startTest();
+    //     // InvalidField
+    //     List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdAndScopes(existingScopes.get(0).AccountId__c, scopesIds);
+    //     Test.stopTest();
 
-        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-    }
+    //     System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    // }
 
     @isTest
     static void test_selectByAccountIdScopesAndOwnerProfile_matchedRecords()
@@ -96,9 +108,8 @@ private with sharing class OpportunitiesSelectorTest
         }
 
         Test.startTest();
-        List<Opportunity> matchedRecords = new OpportunitiesSelector(
-            new Set<String> {'Id', 'AccountId', 'ScopeId__c', 'OwnerId'}
-            ).selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {'System Administrator'});
+        List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(
+            existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {'System Administrator'});
         Test.stopTest();
 
         System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
@@ -132,32 +143,32 @@ private with sharing class OpportunitiesSelectorTest
         }
 
         Test.startTest();
-        List<Opportunity> matchedRecords = new OpportunitiesSelector(
-            new Set<String> {'Id', 'AccountId', 'ScopeId__c'}
-            ).selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {'ZE User'});
+        List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(
+            existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {'ZE User'});
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
 
-    @isTest
-    static void test_selectByAccountIdScopesAndOwnerProfile_emptySet_matchedRecords()
-    {
-        List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
-        System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
+    // @isTest
+    // static void test_selectByAccountIdScopesAndOwnerProfile_emptySet_matchedRecords()
+    // {
+    //     List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
+    //     System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
 
-        Set<Id> scopesIds = new Set<Id>();
-        for(Scope__c scope: existingScopes)
-        {
-            scopesIds.add(scope.Id);
-        }
+    //     Set<Id> scopesIds = new Set<Id>();
+    //     for(Scope__c scope: existingScopes)
+    //     {
+    //         scopesIds.add(scope.Id);
+    //     }
 
-        Test.startTest();
-        List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {});
-        Test.stopTest();
+    //     Test.startTest();
+    //     List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(
+    //         existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {});
+    //     Test.stopTest();
 
-        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-    }
+    //     System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    // }
 
     @isTest
     static void test_selectByAccountIdScopesAndOwnerProfile_nullSet_matchedRecords()
@@ -167,5 +178,20 @@ private with sharing class OpportunitiesSelectorTest
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_findByAccountIdAndScope()
+    {
+        List<Scope__c> existingScopes = [SELECT Id, AccountId__c, Scope__c FROM Scope__c];
+        System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
+
+        Test.startTest();
+        List<Opportunity> offers = new OpportunitiesSelector().findByAccountIdAndScope(
+            existingScopes[0].AccountId__c, existingScopes[0].Scope__c
+        );
+        Test.stopTest();
+
+        System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
     }
 }
