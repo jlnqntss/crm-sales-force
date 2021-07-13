@@ -447,26 +447,31 @@ public with sharing class IntermediarySDM {
                             // Y recuperamos el valor del campo, que deberia ser un email de usuario de Salesforce
                             String fieldValue = (String)i.get(s.IntermediaryField__c);
 
-                            // Si el valor del campo es vacio o con el valor VACANT, y si tiene ATM, se pone el ATM para borrar
+                            // Si el valor del campo es vacio o con el valor VACANT, y si tiene ATMs, se ponen los ATMs para borrar
                             if( String.isBlank(fieldValue) || fieldValue.equalsIgnoreCase(INTERMEDIARY_VACANT) ) {
                                 if( mapAtmByUserId != null && !mapAtmByUserId.values().isEmpty() ) atmsToDelete.addAll(mapAtmByUserId.values());
                             } else {
                                 // Sino, se mira si se corresponde con el email de un Usuario
                                 User u = mapUsersByEmail?.get(fieldValue);
+                                // Si el usuario existe
                                 if( u != null ) {
-                                    AccountTeamMember atmOld = null;
-                                    if( mapAtmByUserId != null && mapAtmByUserId.containsKey(u.Id) ) atmOld = mapAtmByUserId.get(u.Id);
+                                    // Se recoge el ATM para ese usuario (puede que no exista y sea nulo)
+                                    AccountTeamMember atmOld = mapAtmByUserId?.get(u.Id);
 
-                                    AccountTeamMember atm = new AccountTeamMember(
-                                        Id= atmOld?.Id,
-                                        AccountId= i.Id,
-                                        userId= u.Id,
-                                        TeamMemberRole= s.Role__c
-                                    );
+                                    // Si aun no existe...
+                                    if( atmOld == null ) {
+                                        // Como solo deberia haber un ATM por rol y no hay para ese usuario, 
+                                        // se mira si hay otros y si los hay se ponen a borrar. No deja modificar los actuales
+                                        if( mapAtmByUserId != null && !mapAtmByUserId.isEmpty() ) atmsToDelete.addAll(mapAtmByUserId.values());
 
-                                    // Si no existe ATM o si el usuario del ATM actual es diferente, se pone a modificar
-                                    if( atmOld == null || atmOld.UserId != u.Id ) {                                     
-                                        atmsToUpsert.add(atm);       
+                                        AccountTeamMember atm = new AccountTeamMember(
+                                            AccountId= i.Id,
+                                            userId= u.Id,
+                                            TeamMemberRole= s.Role__c,
+                                            AccountAccessLevel= 'Read'
+                                        );
+
+                                        atmsToUpsert.add(atm);
                                     }
                                 }
                             }
@@ -475,8 +480,10 @@ public with sharing class IntermediarySDM {
                 }
             }
 
-            this.upsertATMs(atmsToUpsert);
+            // El orden es importante para que funcionen los casos en los que se cambia el rol de un usuario en un
+            // mismo mediador
             this.deleteATMs(atmsToDelete);
+            this.upsertATMs(atmsToUpsert);
         }
     }
 
@@ -507,31 +514,34 @@ public with sharing class IntermediarySDM {
             }
 
             // Se recuperan los contactos para los emails encontrados
-            findContactByEmail(emailsMediadores);
+            this.findContactByEmail(emailsMediadores);
 
             // Se recuperan los objetos AccountContactRelation para los mediadores dados
             this.findACRsByIntermediaries(intermediariesToProcess);
 
+            // Para cuando hay que crear el Contacto y relacionarlo con un rol
+            Integer position = 0;
             Map<Integer, Contact> mapContactsToInsert = new Map<Integer, Contact>();
             Map<Integer, String> mapRolesForContacts = new Map<Integer, String>();
-            // Map<Integer, AccountContactRelation> mapAcrsToInsert = new Map<Integer, AccountContactRelation>();
-            Integer position = 0;
-            // List<Contact> contactsToInsert = new List<Contact>();
+
+            // Para las DMLs al final            
             List<AccountContactRelation> acrsToUpsert = new List<AccountContactRelation> ();
             List<AccountContactRelation> acrsToDelete = new List<AccountContactRelation> ();
+
             // Por cada mediador...
             for( Account i: intermediariesToProcess ) {
                 // Recuperamos los campos que hay en memoria del objeto Account
                 Map<String, Object> fieldsToValue = i.getPopulatedFieldsAsMap();
                 // Por cada relacion de rol contact - campo mediador
                 for( SDMAccountContactRelation__mdt rel: this.SettingsACR) {
-                    // Recuperamos los ACRs que pudiera haber para el mediador y el rol
-                    // Map<String, AccountContactRelation> mapACRByEmail = this.mapACRsByAccountRolContact?.get(i.Id)?.get(rel.Role__c);
-
                     // ACRs de Contactos para el Mediador
                     Map<ID, AccountContactRelation> mapACRsByContact = this.mapACRsByAccountContact?.get(i.Id);
                     // ACRs de Roles para el Mediador
                     Map<String, AccountContactRelation> mapACRsByRoles = this.mapACRsByAccountRole?.get(i.Id);
+                    // ACR para el rol actual (puede no existir y ser nulo)
+                    AccountContactRelation acrForRol = mapACRsByRoles?.get(rel.Role__c);
+                    // Hara referencia al ACR que se debera borrar su relacion
+                    AccountContactRelation acrToDelete = null;
 
                     // Se mira si tiene valor de email en el campo de mediador actual, sino se borra los ACRs que hubiera
                     String fieldValue = String.valueOf(fieldsToValue.get(rel.IntermediaryField__c));
@@ -540,23 +550,37 @@ public with sharing class IntermediarySDM {
                         Contact contact = mapContactsByEmail?.get(fieldValue);
 
                         if( contact == null ) { // Si no hay contacto, se pone para crear el contacto que creara el ACR
-                            mapContactsToInsert.put(
-                                position, 
-                                    new Contact(
+                            // Si hay ACR se tendra que eliminar la relacion (puede que sea nulo)
+                            acrToDelete = acrForRol;
+
+                            // Se preparan los datos del nuevo contacto
+                            Contact newContact = new Contact(
                                     AccountId= i.Id,
                                     LastName= rel.NameText__c + ' ' + i.Name,
                                     RecordTypeId= new ContactsSelector().rtContactId,
                                     Email= fieldValue
-                                )
                             );
+                            // Si es el principal, se copia tambien el telefono
+                            // todo: poner esta parte en configuracion
+                            if( rel.IntermediaryField__c.equals('MainEmail__c') && fieldsToValue.containsKey('MainMobilePhone__c') ) {
+                                newContact.Phone = String.valueOf(fieldsToValue.get('MainMobilePhone__c'));
+                            }
+                            
+                            // Se preparan los mapas para la nueva relacion entre el contacto, la cuenta y el rol...
+                            // mapa de contacto
+                            mapContactsToInsert.put(position, newContact);
+                            // mapa de rol
                             mapRolesForContacts.put(position, rel.Role__c);
                             position++;
                         } else { // Si hay contacto
-                            // Miramos si ya tienen relacion ACR
+                            // Si ya hay ACR pero no es para el contacto actual se debera eliminar la relacion
+                            if( acrForRol != null && acrForRol.ContactId != contact.Id ) acrToDelete = acrForRol;
+
+                            // Miramos si ya tienen relacion ACR para el contacto
                             AccountContactRelation acr = mapACRsByContact?.get(contact.Id);
                             List<String> roles = acr?.Roles?.split(';');
 
-                            // Si no tiene ACR, o no con ese rol, ponemos a crear o modificar
+                            // Si no tiene ACR, o no con ese rol, ponemos a crear o modificar la relacion
                             if( acr == null || roles == null || !roles.contains(rel.Role__c) ) {
                                 if( roles == null ) roles = new List<String>();
                                 roles.add(rel.Role__c);
@@ -574,20 +598,22 @@ public with sharing class IntermediarySDM {
                             }
                         }
                     } else { //----------------------------------------------------------------------------------------- NO tiene valor
-                        // Tiene relacion (ACR) para este rol?
-                        AccountContactRelation acr = mapACRsByRoles?.get(rel.Role__c);
-                        if( acr != null ) { // si tiene
-                            // quitamos este rol del ACR
-                            List<String> roles = acr.Roles?.split(';');
-                            roles.remove(roles.indexOf(rel.Role__c));
+                        // Si el campo de email esta vacio y hay ACR se debera eliminar la relacion
+                        acrToDelete = acrForRol;
+                    }
 
-                            // Si todavia tiene mas roles => se quita y se pone a modificar
-                            if( !roles.isEmpty() ) {
-                                acr.Roles = String.join(roles, ';');
-                                acrsToUpsert.add(acr);
-                            } else { // Si no tiene mas roles => se pone a borrar
-                                if( !acr.isDirect) acrsToDelete.add(acr);
-                            }
+                    // Si hay que borrar el ACR con el rol actual, por estar el campo de email vacio o por cambio de contacto para el rol
+                    if( acrToDelete != null ) { 
+                        // quitamos este rol del ACR
+                        List<String> roles = acrToDelete.Roles?.split(';');
+                        roles.remove(roles.indexOf(rel.Role__c));
+
+                        // Si todavia tiene mas roles => se quita y se pone a modificar
+                        if( !roles.isEmpty() ) {
+                            acrToDelete.Roles = String.join(roles, ';');
+                            acrsToUpsert.add(acrToDelete);
+                        } else { // Si no tiene mas roles => se pone a borrar
+                            if( !acrToDelete.isDirect) acrsToDelete.add(acrToDelete);
                         }
                     }
                 }
@@ -621,14 +647,14 @@ public with sharing class IntermediarySDM {
                 }
             }
 
-            // Si hay AccountContactRelation para insertar
-            if( !acrsToUpsert.isEmpty() ) {
-                upsert acrsToUpsert;
-            }
-
             // Si hay AccountContactRelation para borrar
             if( !acrsToDelete.isEmpty() ) {
                 delete acrsToDelete;
+            }
+
+            // Si hay AccountContactRelation para insertar
+            if( !acrsToUpsert.isEmpty() ) {
+                upsert acrsToUpsert;
             }
         }
     }
