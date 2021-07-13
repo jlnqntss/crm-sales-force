@@ -213,11 +213,31 @@
     <picklistValues>
         <picklist>CustomerOrigin__c</picklist>
         <values>
+            <fullName>AliExpress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BEIJING DIGITAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dr%2E Frog</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Life Fitbit</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Max Movil</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Motor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Multidevice</fullName>
             <default>false</default>
         </values>
         <values>

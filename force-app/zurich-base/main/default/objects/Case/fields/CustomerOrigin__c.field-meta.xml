@@ -32,6 +32,31 @@
                 <default>false</default>
                 <label>SPAM</label>
             </value>
+            <value>
+                <fullName>Dr. Frog</fullName>
+                <default>false</default>
+                <label>Dr. Frog</label>
+            </value>
+            <value>
+                <fullName>AliExpress</fullName>
+                <default>false</default>
+                <label>AliExpress</label>
+            </value>
+            <value>
+                <fullName>BEIJING DIGITAL</fullName>
+                <default>false</default>
+                <label>BEIJING DIGITAL</label>
+            </value>
+            <value>
+                <fullName>Max Movil</fullName>
+                <default>false</default>
+                <label>Max Movil</label>
+            </value>
+            <value>
+                <fullName>Multidevice</fullName>
+                <default>false</default>
+                <label>Multidevice</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
