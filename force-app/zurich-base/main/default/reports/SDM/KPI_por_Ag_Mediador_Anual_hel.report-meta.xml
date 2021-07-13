@@ -54,10 +54,10 @@
         <chartType>Donut</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>false</expandOthers>
-        <groupingColumn>ACCOUNT.NAME</groupingColumn>
+        <groupingColumn>PARENT.NAME</groupingColumn>
         <legendPosition>Bottom</legendPosition>
         <location>CHART_BOTTOM</location>
-        <showAxisLabels>true</showAxisLabels>
+        <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>true</showTotal>
         <showValues>false</showValues>
@@ -122,12 +122,12 @@
             <operator>equals</operator>
             <value>YTD</value>
         </criteriaItems>
-        <language>en_US</language>
+        <language>es</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>ACCOUNT.NAME</field>
+        <field>PARENT.NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
@@ -135,13 +135,13 @@
         <field>Account.INFOIntermediaryCode__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Report KPI por Mediador (Anual)</name>
+    <name>KPI por Ag. Mediador (Anual)</name>
     <params>
         <name>co</name>
         <value>1</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>organization</scope>
+    <scope>accountteam</scope>
     <showDetails>false</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
