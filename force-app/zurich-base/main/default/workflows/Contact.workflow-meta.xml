@@ -56,11 +56,10 @@
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
-        <booleanFilter>(1 AND 2) OR 3</booleanFilter>
+        <booleanFilter>((1 AND 2) OR 3) AND 4</booleanFilter>
         <criteriaItems>
             <field>Contact.Email</field>
             <operation>notEqual</operation>
-            <value>null</value>
         </criteriaItems>
         <criteriaItems>
             <field>Contact.Bounced__c</field>
@@ -70,7 +69,11 @@
         <criteriaItems>
             <field>Contact.MobilePhone</field>
             <operation>notEqual</operation>
-            <value>null</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Contact.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Customer GI,Customer Life,Lead GI,Lead Life</value>
         </criteriaItems>
         <triggerType>onAllChanges</triggerType>
     </rules>
