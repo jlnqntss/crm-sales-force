@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EstructuraDetalle__c</fullName>
+    <description>Campo que calcula la estructura necesaria para la explotación de datos.</description>
+    <externalId>false</externalId>
+    <formula>IF ( 
+	ISPICKVAL (SegmentoCliente__c , &apos;Particulares&apos;),
+	CASE 
+	( 
+		TRIM(TEXT(ProductGroup__c)),
+		&apos;AUTOS&apos;, &apos;AUTOS&apos;,
+		&apos;HOGAR&apos;, &apos;HOGAR&apos;,
+		&apos;INMUEBLES&apos;, &apos;INMUEBLES&apos;,
+		&apos;ACCIDENTES&apos;, &apos;ACCIDENTES&apos;,
+		&apos;RESTO&apos;
+	), 
+	IF 
+	(
+		ISPICKVAL (SegmentoCliente__c , &apos;Pymes&apos;),
+		CASE 
+		( 
+			TRIM(TEXT(ProductGroup__c)) ,
+			&apos;COMERCIOS&apos;, &apos;COMERCIOS&apos;,
+			&apos;PATRIMONIALES&apos;, &apos;PATRIMONIALES&apos;,
+			&apos;RESP. CIVIL&apos;, &apos;RESP. CIVIL&apos;,
+			&apos;ACCIDENTES&apos;, &apos;ACCIDENTES&apos;,
+			&apos;RESTO&apos;
+		), 
+		IF 
+		(
+			OR ( ISPICKVAL (SegmentoCliente__c , &apos;Corporaciones&apos;), ISPICKVAL (SegmentoCliente__c , &apos;Grandes Empresas&apos;) ),
+			&apos;GRANDES EMPRESAS&apos;,
+			IF 
+			(
+				OR ( ISPICKVAL (LoB__c , &apos;Vida Riesgo Individual&apos;), ISPICKVAL (LoB__c , &apos;Vida Riesgo Colectivo&apos;)),
+				TEXT(LoB__c),
+				&apos;RESTO&apos;
+			)
+		)
+	)
+)</formula>
+    <label>Estructura Detalle</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
