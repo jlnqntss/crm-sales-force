@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TargetKPINumber__c</fullName>
+    <description>SDM: el objetivo de cuantía que se define en el plan para poder comparar con datos reales a futuro</description>
+    <externalId>false</externalId>
+    <label>Target KPI Nº</label>
+    <precision>10</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

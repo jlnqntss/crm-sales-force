@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Actual_KPI__c</fullName>
+    <description>SDM: el resultado de KPI calculado de forma automática para el plan de acción a través de todos los criterios establecidos en el mismo</description>
+    <externalId>false</externalId>
+    <label>Actual KPI</label>
+    <precision>12</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>
