@@ -4295,21 +4295,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AsignacionPlan__c.Agrupacion_mediador__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>AsignacionPlan__c.Asignado__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>AsignacionPlan__c.Mediador__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>AccountContactRelation.EndDate</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -13220,21 +13205,6 @@
         <layout>Alarma__c-Alarma KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>AsignacionPlan__c-Asignación Plan Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AsignacionPlan__c-Asignación Plan Layout</layout>
-        <recordType>AsignacionPlan__c.AsignacionAgrupado</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AsignacionPlan__c-Asignación Plan Layout</layout>
-        <recordType>AsignacionPlan__c.AsignacionMediador</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AsignacionPlan__c-Asignación Plan Layout</layout>
-        <recordType>AsignacionPlan__c.AsignacionRN</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
 	<layout>Event-Event Layout</layout>
         <recordType>Event.SDM_Event</recordType>
     </layoutAssignments>
@@ -14363,15 +14333,6 @@
         <object>Alarma__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>AsignacionPlan__c</object>
-		<viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
 	<objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -15044,21 +15005,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.AgrupacionMediador</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-	<recordTypeVisibilities>
-	<default>false</default>
-        <recordType>AsignacionPlan__c.AsignacionAgrupado</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>true</default>
-        <recordType>AsignacionPlan__c.AsignacionMediador</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>AsignacionPlan__c.AsignacionRN</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
