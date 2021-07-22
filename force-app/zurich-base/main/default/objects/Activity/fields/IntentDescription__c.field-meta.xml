@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IntentDescription__c</fullName>
+    <description>OCS. &quot;Calcula&quot; la descripción de la intención en base a su código</description>
+    <externalId>false</externalId>
+    <formula>CASE(Intent__c,
+&quot;AP_VIDA&quot;,&quot;Apertura siniestro vida&quot;,
+&quot;CONS_VIDA&quot;,&quot;Consulta Siniestro vida&quot;,
+&quot;NN_VID&quot;,&quot;Nueva contratación Vida&quot;,
+&quot;INF_GEN&quot;,&quot;Información   información general&quot;,
+&quot;GEST_VIDA&quot;,&quot;Gestión Póliza  Vida&quot;,
+&quot;ANUL&quot;,&quot;Anulación&quot;,
+&quot;MOD_RIES&quot;,&quot;Cambio de riesgo&quot;,
+&quot;MOD_TOM&quot;,&quot;Cambio Tomador&quot;,
+&quot;MOD_AMP&quot;,&quot;Ampliación garantías / Capitales&quot;,
+&quot;MOD_DIS&quot;,&quot;Disminución garantías / capitales&quot;,
+&quot;MOD_GAR&quot;,&quot;Modficación Garantias o Condiciones&quot;,
+&quot;MOD_IDIO&quot;,&quot;Modificación Cambio Idioma en póliza&quot;,
+&quot;MOD_COND&quot;,&quot;Modificación Conductor&quot;,
+&quot;MOD_BAN&quot;,&quot;Modificación Datos Bancarios&quot;,
+&quot;MOD_DATO&quot;,&quot;Modificación Datos Personales&quot;,
+&quot;MOD_PAG&quot;,&quot;Modificación Forma de Pago&quot;,
+&quot;REHAB&quot;,&quot;Rehabilitación &quot;,
+&quot;REV_SAN&quot;,&quot;Revocación Saneamiento&quot;,
+&quot;ENV_CVER&quot;,&quot;Envíos Carta Verde&quot;,
+&quot;ENV_CERT&quot;,&quot;Envíos certificado&quot;,
+&quot;ENV_DSEG&quot;,&quot;Envíos Documento Seguro&quot;,
+&quot;ENV_OF&quot;,&quot;Envíos Oferta&quot;,
+&quot;ENV_DDA&quot;,&quot;Envíos Parte DDA&quot;,
+&quot;ENV_POL&quot;,&quot;Envíos Póliza&quot;,
+&quot;ENV_REC&quot;,&quot;Envíos Recibo&quot;,
+&quot;ENV_SUP&quot;,&quot;Envíos Suplemento póliza&quot;,
+&quot;INC_MUL&quot;,&quot;Incidencias Multas&quot;,
+&quot;INC_PAGO&quot;,&quot;Incidencias pagos&quot;,
+&quot;INC_WEB&quot;,&quot;Incidencias web&quot;,
+&quot;QUEJA&quot;,&quot;Quejas y reclamaciones Quejas   &quot;,
+&quot;RECLA&quot;,&quot;Quejas y reclamaciones Reclamaciones&quot;,
+&quot;RECO&quot;,&quot;recobro reactivo&quot;,
+&quot;OTROS&quot;,&quot;OTRO&quot;,
+&quot;SUGE&quot;,&quot;Sugerencia&quot;,
+&quot;FELI&quot;,&quot;Felicitaciones&quot;,
+&quot;&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Intent Description</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
