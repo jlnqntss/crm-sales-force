@@ -15,10 +15,10 @@ export default class SendSurveyButton extends LightningElement {
   };
 
   @track
-  pollPhoneNumber;
+  pollPhoneNumber = true;
 
   @track
-  isOnCall = false;
+  isOnCall = true;
 
   /**
    * Variable interna para poder realizar un bind del handler handleCTIMessage
@@ -40,24 +40,24 @@ export default class SendSurveyButton extends LightningElement {
    * @author rlopez
    * @modified jmartinezpisson
    */
-  connectedCallback() {
-    getPollPhoneNumber().then((result) => {
-      this.pollPhoneNumber = result || "1000";
-    });
+  // connectedCallback() {
+  //   getPollPhoneNumber().then((result) => {
+  //     this.pollPhoneNumber = result || "1000";
+  //   });
 
-    this.ctiMessageHandler = this.handleCTIMessage.bind(this);
-    genesysCloud.addListener(this.ctiMessageHandler);
-  }
+  //   this.ctiMessageHandler = this.handleCTIMessage.bind(this);
+  //   genesysCloud.addListener(this.ctiMessageHandler);
+  // }
 
   /**
    * Elimina el listener sobre el API de Genesys Cloud
    *
    * @author jmartinezpisson
    */
-  disconnectedCallback() {
-    genesysCloud.removeListener(this.ctiMessageHandler);
-    this.ctiMessageHandler = null;
-  }
+  // disconnectedCallback() {
+  //   genesysCloud.removeListener(this.ctiMessageHandler);
+  //   this.ctiMessageHandler = null;
+  // }
 
   //#endregion
 
@@ -73,6 +73,14 @@ export default class SendSurveyButton extends LightningElement {
    */
   sendSurvey() {
     genesysCloud.transfer(this.pollPhoneNumber);
+    const navigateToCall = new CustomEvent("redirect", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        utilityBarIcon: "call"
+      }
+    });
+    this.dispatchEvent(navigateToCall);
     const event = new ShowToastEvent({
       title: this.label.sendSurveyToastTitleSuccess,
       message: this.label.sendSurveyToastMessageSuccess,

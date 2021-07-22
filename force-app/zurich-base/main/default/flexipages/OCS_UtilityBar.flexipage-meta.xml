@@ -38,7 +38,7 @@
                     <type>decorator</type>
                     <value>340</value>
                 </componentInstanceProperties>
-                <componentName>cTIExtraButtons</componentName>
+                <componentName>ctiExtraButtonsDispatcher</componentName>
             </componentInstance>
         </itemInstances>
         <itemInstances>
