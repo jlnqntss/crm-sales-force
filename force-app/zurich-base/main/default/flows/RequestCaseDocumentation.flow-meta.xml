@@ -10,7 +10,6 @@
         <connector>
             <targetReference>CreateEmailMessageRecord</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>emailSubject</name>
             <value>
@@ -58,7 +57,6 @@
         <connector>
             <targetReference>ActualizarDocumentationHashId</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -77,7 +75,6 @@
         <connector>
             <targetReference>createTask</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>relatedCaseId</name>
             <value>
@@ -528,7 +525,6 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -568,7 +564,6 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
