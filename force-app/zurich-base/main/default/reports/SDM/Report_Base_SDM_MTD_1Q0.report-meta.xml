@@ -46,6 +46,16 @@
         <masterLabel>Ratio Retencion</masterLabel>
         <scale>2</scale>
     </aggregates>
+    <aggregates>
+        <calculatedFormula>KPI__c.PoliciesPN__c:SUM - KPI__c.PA_PoliciesPN__c:SUM</calculatedFormula>
+        <datatype>number</datatype>
+        <description>Realiza la resta entre Póliza PN y Póliza PN (PA)</description>
+        <developerName>FORMULA5</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Diferencia PN</masterLabel>
+        <scale>2</scale>
+    </aggregates>
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
