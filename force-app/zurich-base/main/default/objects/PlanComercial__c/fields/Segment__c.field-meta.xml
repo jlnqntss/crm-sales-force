@@ -13,27 +13,27 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>01</fullName>
+                <fullName>Particulares</fullName>
                 <default>false</default>
                 <label>Individuals</label>
             </value>
             <value>
-                <fullName>02</fullName>
+                <fullName>PYMEs</fullName>
                 <default>false</default>
                 <label>SMEs</label>
             </value>
             <value>
-                <fullName>03</fullName>
+                <fullName>Grandes empresas</fullName>
                 <default>false</default>
                 <label>Large companies</label>
             </value>
             <value>
-                <fullName>04</fullName>
+                <fullName>Vida riesgo</fullName>
                 <default>false</default>
                 <label>Life risk</label>
             </value>
             <value>
-                <fullName>05</fullName>
+                <fullName>Todos</fullName>
                 <default>false</default>
                 <label>All products</label>
             </value>

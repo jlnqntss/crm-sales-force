@@ -5,6 +5,15 @@
     <description>SDM: usuario, de tipo RN o consultor, al que irá asociado el registro. Se utiliza de cara a que un Director pueda generar planes para los usuarios de los que es responsable.</description>
     <externalId>false</externalId>
     <label>Assigned to</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>User.Profile.Name</field>
+            <operation>equals</operation>
+            <value>SDM RN</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>User</referenceTo>
     <relationshipName>PlanComercial</relationshipName>
     <required>false</required>

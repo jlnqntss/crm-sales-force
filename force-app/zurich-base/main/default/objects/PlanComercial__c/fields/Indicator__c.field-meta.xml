@@ -13,59 +13,59 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>01</fullName>
+                <fullName>PN</fullName>
                 <default>false</default>
-                <label>PN (apes en caso de vida riesgo) - Pte. traducción</label>
+                <label>PN</label>
             </value>
             <value>
-                <fullName>02</fullName>
+                <fullName>PoliciesPN</fullName>
                 <default>false</default>
-                <label>NP policies</label>
+                <label>Pólizas PN</label>
             </value>
             <value>
-                <fullName>03</fullName>
+                <fullName>PoliciesInForce</fullName>
                 <default>false</default>
-                <label>Policies in force</label>
+                <label>Pólizas en vigor</label>
             </value>
             <value>
-                <fullName>04</fullName>
+                <fullName>Portfolio</fullName>
                 <default>false</default>
-                <label>Wallet</label>
+                <label>Cartera</label>
             </value>
             <value>
-                <fullName>05</fullName>
+                <fullName>Ratio_PNIncrease</fullName>
                 <default>false</default>
-                <label>% Crec PN vs pa (apes en caso de vida riesgo) - Pte. traducción</label>
+                <label>% Crec PN vs pa</label>
             </value>
             <value>
-                <fullName>06</fullName>
+                <fullName>Ratio_PoliciesPNIncreas</fullName>
                 <default>false</default>
-                <label>% Crec Pólizas PN vs pa - Pte. traducción</label>
+                <label>% Crec Pólizas PN vs pa</label>
             </value>
             <value>
-                <fullName>07</fullName>
+                <fullName>Ratio_PoliciesInForceIncrease</fullName>
                 <default>false</default>
-                <label>% Crec Pólizas vigor vs pa - Pte. traducción</label>
+                <label>% Crec Pólizas vigor vs pa</label>
             </value>
             <value>
-                <fullName>08</fullName>
+                <fullName>Ratio_PortIncrease</fullName>
                 <default>false</default>
-                <label>% portfolio growth</label>
+                <label>% crecimiento cartera</label>
             </value>
             <value>
-                <fullName>09</fullName>
+                <fullName>Ratio_Claim</fullName>
                 <default>false</default>
-                <label>% Without Total</label>
+                <label>% Sin Total</label>
             </value>
             <value>
-                <fullName>10</fullName>
+                <fullName>Ratio_Retention</fullName>
                 <default>false</default>
                 <label>% Retention Ratio</label>
             </value>
             <value>
-                <fullName>11</fullName>
+                <fullName>Totaldiscount</fullName>
                 <default>false</default>
-                <label>% Total Disc.</label>
+                <label>% Dto. Total</label>
             </value>
         </valueSetDefinition>
     </valueSet>

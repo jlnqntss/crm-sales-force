@@ -14,118 +14,118 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>01</fullName>
+                <fullName>Autos</fullName>
                 <default>false</default>
                 <label>Cars</label>
             </value>
             <value>
-                <fullName>02</fullName>
+                <fullName>Hogar</fullName>
                 <default>false</default>
                 <label>Home</label>
             </value>
             <value>
-                <fullName>03</fullName>
+                <fullName>Inmuebles</fullName>
                 <default>false</default>
                 <label>Estate</label>
             </value>
             <value>
-                <fullName>04</fullName>
+                <fullName>Accidentes</fullName>
                 <default>false</default>
                 <label>Accidents</label>
             </value>
             <value>
-                <fullName>05</fullName>
+                <fullName>Resto Particulares</fullName>
                 <default>false</default>
                 <label>Rest Individuals</label>
             </value>
             <value>
-                <fullName>06</fullName>
+                <fullName>Comercios</fullName>
                 <default>false</default>
                 <label>Commerce</label>
             </value>
             <value>
-                <fullName>07</fullName>
+                <fullName>Patrimoniales</fullName>
                 <default>false</default>
                 <label>Patrimonial</label>
             </value>
             <value>
-                <fullName>08</fullName>
+                <fullName>Resp. Civil</fullName>
                 <default>false</default>
                 <label>Civil liability</label>
             </value>
             <value>
-                <fullName>09</fullName>
+                <fullName>Resto PYMEs</fullName>
                 <default>false</default>
                 <label>Rest of SMEs</label>
             </value>
             <value>
-                <fullName>10</fullName>
+                <fullName>Vida riesgo individual</fullName>
                 <default>false</default>
                 <label>Individual risk life</label>
             </value>
             <value>
-                <fullName>11</fullName>
+                <fullName>Vida riesgo colectivo</fullName>
                 <default>false</default>
                 <label>Collective risk life</label>
             </value>
             <value>
-                <fullName>99</fullName>
+                <fullName>Todos</fullName>
                 <default>false</default>
                 <label>All</label>
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>01</controllingFieldValue>
-            <valueName>01</valueName>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <valueName>Autos</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>01</controllingFieldValue>
-            <valueName>02</valueName>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <valueName>Hogar</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>01</controllingFieldValue>
-            <valueName>03</valueName>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <valueName>Inmuebles</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>01</controllingFieldValue>
-            <controllingFieldValue>02</controllingFieldValue>
-            <valueName>04</valueName>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Accidentes</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>01</controllingFieldValue>
-            <valueName>05</valueName>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <valueName>Resto Particulares</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>01</controllingFieldValue>
-            <controllingFieldValue>02</controllingFieldValue>
-            <controllingFieldValue>03</controllingFieldValue>
-            <controllingFieldValue>04</controllingFieldValue>
-            <controllingFieldValue>05</controllingFieldValue>
-            <valueName>99</valueName>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <controllingFieldValue>Grandes empresas</controllingFieldValue>
+            <controllingFieldValue>Vida riesgo</controllingFieldValue>
+            <controllingFieldValue>Todos</controllingFieldValue>
+            <valueName>Todos</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>02</controllingFieldValue>
-            <valueName>06</valueName>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Comercios</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>02</controllingFieldValue>
-            <valueName>07</valueName>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Patrimoniales</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>02</controllingFieldValue>
-            <valueName>08</valueName>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Resp. Civil</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>02</controllingFieldValue>
-            <valueName>09</valueName>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Resto PYMEs</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>04</controllingFieldValue>
-            <valueName>10</valueName>
+            <controllingFieldValue>Vida riesgo</controllingFieldValue>
+            <valueName>Vida riesgo individual</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>04</controllingFieldValue>
-            <valueName>11</valueName>
+            <controllingFieldValue>Vida riesgo</controllingFieldValue>
+            <valueName>Vida riesgo colectivo</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
