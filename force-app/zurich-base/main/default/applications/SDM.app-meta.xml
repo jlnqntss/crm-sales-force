@@ -66,6 +66,22 @@
         <profile>SDM RN</profile>
     </profileActionOverrides>
     <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_SDM_Director</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_SDM_Director</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
         <actionName>View</actionName>
         <content>Agrupaci_n_Mediador</content>
         <formFactor>Small</formFactor>
@@ -103,7 +119,7 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>Tab</actionName>
-        <content>Home_RN</content>
+        <content>Home_SDM_RN</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>standard-home</pageOrSobjectType>
         <type>Flexipage</type>
@@ -112,6 +128,7 @@
     <tabs>standard-home</tabs>
     <tabs>PlanComercial__c</tabs>
     <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
     <tabs>standard-Task</tabs>
     <tabs>standard-Event</tabs>
     <tabs>standard-report</tabs>
@@ -122,12 +139,19 @@
             <tab>PlanComercial__c</tab>
         </mappings>
         <mappings>
+            <fieldName>ParentId</fieldName>
             <tab>standard-Account</tab>
         </mappings>
         <mappings>
+            <fieldName>AccountId</fieldName>
+            <tab>standard-Contact</tab>
+        </mappings>
+        <mappings>
+            <fieldName>WhoId</fieldName>
             <tab>standard-Event</tab>
         </mappings>
         <mappings>
+            <fieldName>WhoId</fieldName>
             <tab>standard-Task</tab>
         </mappings>
         <mappings>

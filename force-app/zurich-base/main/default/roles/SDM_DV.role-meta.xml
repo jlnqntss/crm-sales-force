@@ -2,9 +2,9 @@
 <Role xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseAccessLevel>None</caseAccessLevel>
     <contactAccessLevel>Read</contactAccessLevel>
-    <description>SDM RN</description>
+    <description>SDM Director Vida</description>
     <mayForecastManagerShare>false</mayForecastManagerShare>
-    <name>SDM RN</name>
+    <name>SDM DV</name>
     <opportunityAccessLevel>None</opportunityAccessLevel>
-    <parentRole>SDM_DT</parentRole>
+    <parentRole>SDMHomeOffice</parentRole>
 </Role>

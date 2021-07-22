@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>Permission__c</field>
-        <value xsi:type="xsd:string">SDM User</value>
+        <value xsi:type="xsd:string">SDM Consultor</value>
     </values>
     <values>
         <field>Role_Name__c</field>
