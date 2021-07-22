@@ -120,7 +120,10 @@
         <name>relatedTabContent</name>
         <type>Facet</type>
     </flexiPageRegions>
-
+    <flexiPageRegions>
+        <name>Facet-7dfc9c87-0c22-431c-8c99-eab31c7126f9</name>
+        <type>Facet</type>
+    </flexiPageRegions>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
