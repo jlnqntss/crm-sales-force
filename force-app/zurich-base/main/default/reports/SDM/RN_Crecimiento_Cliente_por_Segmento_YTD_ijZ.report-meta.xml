@@ -49,10 +49,11 @@
     <aggregates>
         <calculatedFormula>(KPI__c.NCustomers__c:SUM -  KPI__c.PA_NCustomers__c:SUM) / KPI__c.PA_NCustomers__c:SUM</calculatedFormula>
         <datatype>percent</datatype>
+        <description>Informa el crecimiento de clientes</description>
         <developerName>FORMULA5</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% crecimiento clientes</masterLabel>
+        <masterLabel>% crec clientes</masterLabel>
         <scale>2</scale>
     </aggregates>
     <chart>
@@ -60,18 +61,18 @@
         <backgroundColor2>#FFFFFF</backgroundColor2>
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
-            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.PoliciesPN__c</column>
+            <column>FORMULA5</column>
         </chartSummaries>
-        <chartType>VerticalColumn</chartType>
+        <chartType>Donut</chartType>
         <enableHoverLabels>false</enableHoverLabels>
-        <expandOthers>true</expandOthers>
+        <expandOthers>false</expandOthers>
         <groupingColumn>Account.Segment__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
-        <showTotal>false</showTotal>
+        <showTotal>true</showTotal>
         <showValues>false</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
@@ -106,6 +107,12 @@
     </colorRanges>
     <columns>
         <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>KPI__c.EstructuraUnificada__c</field>
+    </columns>
+    <columns>
+        <field>KPI__c.EstructuraDetalle__c</field>
     </columns>
     <columns>
         <field>Account.INFOIntermediaryCode__c</field>
@@ -166,6 +173,8 @@
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PA_NCustomers__c</field>
     </columns>
+    <description>Acumulado YTD
+% crecimiento Segmento Particulares, Pymes, Grandes Empresas, Corporaciones + Agrupaciones de Vida riesgo indiividual y vida riesgo colectivo</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
@@ -221,24 +230,14 @@
         <field>Account.Segment__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>KPI__c.EstructuraUnificada__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>KPI__c.EstructuraDetalle__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <name>RN KPIs por Mediador</name>
+    <name>RN Crecimiento Cliente por Segmento YTD</name>
     <params>
         <name>co</name>
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>accountteam</scope>
-    <showDetails>false</showDetails>
+    <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
