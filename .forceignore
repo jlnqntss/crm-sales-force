@@ -69,7 +69,10 @@ force-app/zurich-base/main/default/customMetadata/ErrorManagementSetting.Klinc_e
 #force-app/zurich-base/main/default/customMetadata/Scope_Setting.*
 #force-app/zurich-base/main/default/flows/ZEEmailRoute.flow-meta.xml
 force-app/zurich-base/main/default/customMetadata/INFO_Link.INFO.md-meta.xml
+
+# Configuracion Genesys por usuario
 force-app/zurich-base/main/default/authproviders/GenesysCloud.authprovider-meta.xml
+force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredentials-meta.xml
 
 # Entitlement Process. Fallan al redesplegar
 **/entitlementProcesses/**
