@@ -130,7 +130,7 @@
                     <criteria>
                         <leftValue>{!Record.AccumulateType__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>02</rightValue>
+                        <rightValue>YTD</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -146,7 +146,7 @@
                     <criteria>
                         <leftValue>{!Record.AccumulateType__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>02</rightValue>
+                        <rightValue>YTD</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -162,7 +162,7 @@
                     <criteria>
                         <leftValue>{!Record.AccumulateType__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>01</rightValue>
+                        <rightValue>Mensual</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>

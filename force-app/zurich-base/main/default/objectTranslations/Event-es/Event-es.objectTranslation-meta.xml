@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <layouts>
+        <layout>Event Layout</layout>
+        <sections>
+            <label><!-- Related To --></label>
+            <section>Related To</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <description>Detalles reunión / visita</description>
+        <label><!-- SDM Event --></label>
+        <name>SDM_Event</name>
+    </recordTypes>
+</CustomObjectTranslation>
