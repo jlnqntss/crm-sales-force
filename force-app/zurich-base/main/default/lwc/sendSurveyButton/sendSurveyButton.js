@@ -15,10 +15,10 @@ export default class SendSurveyButton extends LightningElement {
   };
 
   @track
-  pollPhoneNumber = true;
+  pollPhoneNumber;
 
   @track
-  isOnCall = true;
+  isOnCall = false;
 
   /**
    * Variable interna para poder realizar un bind del handler handleCTIMessage
@@ -40,24 +40,24 @@ export default class SendSurveyButton extends LightningElement {
    * @author rlopez
    * @modified jmartinezpisson
    */
-  // connectedCallback() {
-  //   getPollPhoneNumber().then((result) => {
-  //     this.pollPhoneNumber = result || "1000";
-  //   });
+  connectedCallback() {
+    getPollPhoneNumber().then((result) => {
+      this.pollPhoneNumber = result || "1000";
+    });
 
-  //   this.ctiMessageHandler = this.handleCTIMessage.bind(this);
-  //   genesysCloud.addListener(this.ctiMessageHandler);
-  // }
+    this.ctiMessageHandler = this.handleCTIMessage.bind(this);
+    genesysCloud.addListener(this.ctiMessageHandler);
+  }
 
   /**
    * Elimina el listener sobre el API de Genesys Cloud
    *
    * @author jmartinezpisson
    */
-  // disconnectedCallback() {
-  //   genesysCloud.removeListener(this.ctiMessageHandler);
-  //   this.ctiMessageHandler = null;
-  // }
+  disconnectedCallback() {
+    genesysCloud.removeListener(this.ctiMessageHandler);
+    this.ctiMessageHandler = null;
+  }
 
   //#endregion
 
