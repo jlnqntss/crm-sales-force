@@ -130,7 +130,7 @@
                     <criteria>
                         <leftValue>{!Record.AccumulateType__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>02</rightValue>
+                        <rightValue>YTD</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -146,7 +146,7 @@
                     <criteria>
                         <leftValue>{!Record.AccumulateType__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>02</rightValue>
+                        <rightValue>YTD</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -162,7 +162,7 @@
                     <criteria>
                         <leftValue>{!Record.AccumulateType__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>01</rightValue>
+                        <rightValue>Mensual</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -224,7 +224,7 @@
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>04</rightValue>
+                        <rightValue>Portfolio</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -241,17 +241,17 @@
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>01</rightValue>
+                        <rightValue>PN</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>02</rightValue>
+                        <rightValue>PoliciesPN</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>03</rightValue>
+                        <rightValue>PoliciesInForce</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -268,37 +268,37 @@
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>05</rightValue>
+                        <rightValue>Ratio_PNIncrease</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>06</rightValue>
+                        <rightValue>Ratio_PoliciesPNIncreas</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>07</rightValue>
+                        <rightValue>Ratio_PoliciesInForceIncrease</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>08</rightValue>
+                        <rightValue>Ratio_PortIncrease</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>09</rightValue>
+                        <rightValue>Ratio_Claim</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>10</rightValue>
+                        <rightValue>Ratio_Retention</rightValue>
                     </criteria>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>11</rightValue>
+                        <rightValue>Totaldiscount</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>

@@ -13,12 +13,12 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>01</fullName>
+                <fullName>Mensual</fullName>
                 <default>false</default>
                 <label>Current month</label>
             </value>
             <value>
-                <fullName>02</fullName>
+                <fullName>YTD</fullName>
                 <default>false</default>
                 <label>YTD</label>
             </value>

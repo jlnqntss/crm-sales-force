@@ -141,7 +141,7 @@
         <value>1</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>accountteam</scope>
+    <scope>organization</scope>
     <showDetails>false</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>

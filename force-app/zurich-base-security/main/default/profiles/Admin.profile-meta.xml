@@ -7733,6 +7733,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>KPI__c.EstructuraDetalle__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>KPI__c.EstructuraUnificada__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>KPI__c.LoB__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10274,6 +10284,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Intent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.IntentDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

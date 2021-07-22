@@ -1,0 +1,4 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+  <lightning:utilityBarAPI aura:id="utilitybar" />
+  <c:cTIExtraButtons onredirect="{!c.handleNavigation}" />
+</aura:component>
