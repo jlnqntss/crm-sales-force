@@ -1324,8 +1324,9 @@ public with sharing class BusinessInsuranceRaterServiceTest
 
         // Ponemos el estado Abandono
         jsonInformation.put('status', 'Abandono');
-        // Lo ponemos como mas cercano en el tiempo
-        jsonInformation.put('bestTimeFrom', System.now());
+        // Lo ponemos como mas cercano en el tiempo. 
+        // fix: Se añaden 5 minutos para que si tarda, se tenga en cuenta en la query
+        jsonInformation.put('bestTimeFrom', System.now().addMinutes(5));
 
         //Modificamos Manager antes de procesar información
         Map<String, Object> managerInformation = (Map<String, Object>) jsonInformation.get('manager');
