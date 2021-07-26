@@ -16,7 +16,7 @@
                     <criteria>
                         <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
                         <operator>CONTAINS</operator>
-                        <rightValue>RN</rightValue>
+                        <rightValue>User</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
