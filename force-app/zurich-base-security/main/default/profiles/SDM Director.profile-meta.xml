@@ -17,8 +17,8 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>OCS</application>
-        <default>true</default>
-        <visible>true</visible>
+        <default>false</default>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Relationship_Management</application>
