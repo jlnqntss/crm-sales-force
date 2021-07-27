@@ -165,34 +165,45 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * @date 17/11/2020
      * @param {Object} idToParse Id a tratar
      * @return {Id} Id parseado. null si el valor no era un Id.
-     * @modification 5/72021 error de MALFORMED ID, ahora se comprueba
+     * @modification 5/7/2021 error de MALFORMED ID, ahora se comprueba
      * si es un ID de SF o no
+     * @modification 26/7/2021 error Cannot locate Apex Type for ID
      */
     private static Id parseId(Object idToParse)
     {
         Pattern pattern15 = Pattern.compile('([a-zA-Z0-9]{15})');
         Pattern pattern18 = Pattern.compile('([a-zA-Z0-9]{18})');
 
-        String id = String.valueOf(idToParse);
+        String strId = String.valueOf(idToParse);
 
-        Matcher match15 = pattern15.matcher( id );
-        Matcher match18 = pattern18.matcher( id );
+        try
+        {//Errores a evitar: Invalid id y Cannot locate Apex Type for ID
+            Id checkSObjectFromId = Id.valueOf(strId);
+            checkSObjectFromId.getsObjectType();
+        }
+        catch(Exception ex)
+        {
+            return null;
+        }
+
+        Matcher match15 = pattern15.matcher( strId );
+        Matcher match18 = pattern18.matcher( strId );
 
         if(match15.matches() || match18.matches())
         {
             //Si es de 18 comprobar el checksum
             if(match18.matches())
             {
-                String id15 = id.substring(0,16);
+                String id15 = strId.substring(0,16);
                 String idChecksumCalculated = sfdc15To18(id15);
                 //Si coincide el cálculo del Checksum con el ID, bien
-                if(idChecksumCalculated == id)
+                if(idChecksumCalculated == strId)
                 {
-                    return id;
+                    return strId;
                 }
                 return null;
             }
-            return id;
+            return strId;
         }
 
         return null;
