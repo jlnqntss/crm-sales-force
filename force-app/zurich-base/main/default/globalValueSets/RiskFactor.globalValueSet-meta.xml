@@ -195,6 +195,11 @@
         <default>false</default>
         <label>0039</label>
     </customValue>
+    <customValue>
+        <fullName>0051</fullName>
+        <default>false</default>
+        <label>0051</label>
+    </customValue>
     <masterLabel>Risk Factor</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
