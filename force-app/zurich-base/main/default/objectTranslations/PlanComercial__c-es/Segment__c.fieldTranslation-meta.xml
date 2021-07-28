@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Segmento</label>
+    <name>Segment__c</name>
+    <picklistValues>
+        <masterLabel>All products</masterLabel>
+        <translation>Todos los productos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Individuals</masterLabel>
+        <translation>Particulares</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Large companies</masterLabel>
+        <translation>Grandes emmpresas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Life risk</masterLabel>
+        <translation>Vida riesgo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SMEs</masterLabel>
+        <translation>PYMEs</translation>
+    </picklistValues>
+</CustomFieldTranslation>

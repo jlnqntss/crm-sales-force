@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Plan Comercial</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Planes Comerciales</value>
+    </caseValues>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Plan Comercial Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- KPI Results --></label>
+            <section>KPI Results</section>
+        </sections>
+        <sections>
+            <label><!-- KPI Selection --></label>
+            <section>KPI Selection</section>
+        </sections>
+        <sections>
+            <label><!-- Preferences --></label>
+            <section>Preferences</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Asunto</nameFieldLabel>
+    <validationRules>
+        <errorMessage><!-- Los RN sólo se pueden asignar Planes comerciales a sí mismo. --></errorMessage>
+        <name>AssignedTo_RN</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- El plan comercial debe ir asignado a un usuario de SDM para poder crearse. --></errorMessage>
+        <name>AssignedTo_required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- La fecha de fin no puede estar a pasado --></errorMessage>
+        <name>End_date_mut_be_future</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Se ha excedido el límite de 1 año entre la fecha de inicio y fin. --></errorMessage>
+        <name>Max_length_of_1_year</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- La fecha inicio no puede ser futuro si el KPI real ya ha sido calculado. --></errorMessage>
+        <name>Start_date_blocked</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- La fecha de inicio debe ser inferior a la fecha fin --></errorMessage>
+        <name>Start_date_smaller_than_End_date</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- El KPI objetivo no puede ser modificado si el plan ha finalizado. --></errorMessage>
+        <name>Target_KPI_blocked</name>
+    </validationRules>
+</CustomObjectTranslation>

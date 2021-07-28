@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AssignedTo_RN</fullName>
+    <active>true</active>
+    <description>SDM: un RN sólo puede asignar un Plan Comercial a sí mismo</description>
+    <errorConditionFormula>IF
+(
+  $User.ProfileId = &quot;00e3N000000KnO9&quot;,
+  AssignedTo__r.Id  &lt;&gt;  $User.Id,
+  false
+  
+)</errorConditionFormula>
+    <errorDisplayField>AssignedTo__c</errorDisplayField>
+    <errorMessage>Los RN sólo se pueden asignar Planes comerciales a sí mismo.</errorMessage>
+</ValidationRule>

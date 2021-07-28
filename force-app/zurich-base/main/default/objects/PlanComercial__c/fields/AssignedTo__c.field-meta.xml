@@ -7,10 +7,17 @@
     <label>Assigned to</label>
     <lookupFilter>
         <active>true</active>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <errorMessage>Solo se puede asignar planes comerciales a usuarios de SDM</errorMessage>
         <filterItems>
             <field>User.Profile.Name</field>
             <operation>equals</operation>
             <value>SDM RN</value>
+        </filterItems>
+        <filterItems>
+            <field>User.Profile.Name</field>
+            <operation>equals</operation>
+            <value>SDM Director</value>
         </filterItems>
         <isOptional>false</isOptional>
     </lookupFilter>

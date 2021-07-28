@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Max_length_of_1_year</fullName>
+    <active>true</active>
+    <description>SDM: no debe haber más de una año entre la fecha inicio y fin,</description>
+    <errorConditionFormula>ADDMONTHS(StartDate__c ,12) &lt; EndDate__c</errorConditionFormula>
+    <errorDisplayField>EndDate__c</errorDisplayField>
+    <errorMessage>Se ha excedido el límite de 1 año entre la fecha de inicio y fin.</errorMessage>
+</ValidationRule>

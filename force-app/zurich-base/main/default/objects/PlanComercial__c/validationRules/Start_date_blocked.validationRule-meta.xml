@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Start_date_blocked</fullName>
+    <active>true</active>
+    <description>Si la fecha inicio es a pasado, el KPI real ya habrá sido calculado, y por tanto no podrá pasarse a una fecha futura.</description>
+    <errorConditionFormula>Actual_KPI__c &lt;&gt; null
+&amp;&amp;
+StartDate__c &gt;= TODAY()</errorConditionFormula>
+    <errorDisplayField>StartDate__c</errorDisplayField>
+    <errorMessage>La fecha inicio no puede ser futuro si el KPI real ya ha sido calculado.</errorMessage>
+</ValidationRule>

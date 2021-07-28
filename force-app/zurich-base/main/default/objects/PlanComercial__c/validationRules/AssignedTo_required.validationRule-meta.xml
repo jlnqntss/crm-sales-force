@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AssignedTo_required</fullName>
+    <active>true</active>
+    <description>SDM: los lookup a usuario no se permiten hacerlos obligatorios, y aunque se obligue por formato de página, se incluye esta validación por si acaso.</description>
+    <errorConditionFormula>ISNULL( AssignedTo__c )</errorConditionFormula>
+    <errorDisplayField>AssignedTo__c</errorDisplayField>
+    <errorMessage>El plan comercial debe ir asignado a un usuario de SDM para poder crearse.</errorMessage>
+</ValidationRule>
