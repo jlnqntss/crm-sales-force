@@ -1723,6 +1723,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Event.IntentDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Event.Intent__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2469,6 +2474,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.InboundOutbound__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.IntentDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

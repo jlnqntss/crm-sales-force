@@ -11,15 +11,15 @@
             <targetReference>CreateEmailMessageRecord</targetReference>
         </connector>
         <inputParameters>
-            <name>emailBody</name>
+            <name>emailSubject</name>
             <value>
-                <elementReference>MessageBody</elementReference>
+                <stringValue>Aquí puedes adjuntarnos la documentación</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>emailAddresses</name>
+            <name>emailBody</name>
             <value>
-                <elementReference>InsertEmail.value</elementReference>
+                <elementReference>MessageBody</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -29,9 +29,21 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>emailSubject</name>
+            <name>emailAddresses</name>
             <value>
-                <stringValue>Aquí puedes adjuntarnos la documentación</stringValue>
+                <elementReference>InsertEmail.value</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>no.responder@zurich.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
             </value>
         </inputParameters>
     </actionCalls>
@@ -57,13 +69,22 @@
         <name>SendSMS</name>
         <label>Send SMS</label>
         <locationX>314</locationX>
-        <locationY>1454</locationY>
+        <locationY>1574</locationY>
         <actionName>GenesysCloudSendSMSAction</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>createTask</targetReference>
+        </connector>
         <inputParameters>
             <name>relatedCaseId</name>
             <value>
                 <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderNumber</name>
+            <value>
+                <elementReference>NumeroRemitente.Value__c</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -172,7 +193,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>SendSMS</targetReference>
+                <targetReference>NumeroRemitente</targetReference>
             </connector>
             <label>SMS</label>
         </rules>
@@ -222,7 +243,7 @@
         <inputAssignments>
             <field>FromAddress</field>
             <value>
-                <stringValue>rlopez@nts-solutions.com</stringValue>
+                <stringValue>no.responder@zurich.com</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -244,12 +265,93 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Aquí puedes adjuntarnos la documentación</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>ToAddress</field>
             <value>
                 <elementReference>InsertEmail.value</elementReference>
             </value>
         </inputAssignments>
         <object>EmailMessage</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Se inserta una tarea en el sistema para registrar el envío de SMS.</description>
+        <name>createTask</name>
+        <label>Crear Tarea</label>
+        <locationX>314</locationX>
+        <locationY>1694</locationY>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CallType</field>
+            <value>
+                <stringValue>Outbound</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Channel__c</field>
+            <value>
+                <stringValue>Phone</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>HashURL</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PhoneNumber__c</field>
+            <value>
+                <elementReference>SendSMS</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Priority</field>
+            <value>
+                <stringValue>Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cerrada</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>$Label.solicitudDocumentacionSms</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Other</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
@@ -349,6 +451,28 @@
         <queriedFields>Value__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <description>Recupera la configuración del sistema para obtener el número del remitente de SMS.</description>
+        <name>NumeroRemitente</name>
+        <label>Obtener número de remitente sms</label>
+        <locationX>314</locationX>
+        <locationY>1454</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>SendSMS</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>KeyName__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>GenesysSmsNumber</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AdminSetupParameter__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>ActualizarDocumentationHashId</name>
         <label>Actualizar Documentation Hash Id</label>
@@ -395,6 +519,12 @@
                     <elementReference>DefaultEmail</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -426,6 +556,12 @@
                 <name>label</name>
                 <value>
                     <stringValue>Móvil</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>

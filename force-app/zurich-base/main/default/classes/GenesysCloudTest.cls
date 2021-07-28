@@ -292,6 +292,150 @@ private class GenesysCloudTest
             System.assertEquals(true, error instanceof GenesysCloud.CallbacksServiceException);
         }
     }
+    
+    @isTest
+    static void test_CallBacksService_cancel()
+    {
+        // Id de interaccion generado por Genesys
+        String interactionId = '30136822-029b-4582-a171-25297a793326';
+
+        // Mock
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addCallbackCancelMockResponse(interactionId);
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        GenesysCloud.CallbackCancel cmb = new GenesysCloud.CallbackCancel();
+        cmb.genesysId = interactionId;
+
+        Test.startTest();
+        GenesysCloud.CallbackCancel c = GenesysCloud.CallbacksService.cancel(cmb);
+        Test.stopTest();
+
+        System.assertEquals(interactionId, c.genesysId, 'Deberia ser el mismo interactionId');
+    }
+
+    @isTest
+    static void test_CallBackService_cancelList()
+    {
+        // Id de interaccion generado por Genesys
+        String interactionId = '30136822-029b-4582-a171-25297a793326';
+
+        // Creamos el ContactRequest que provocaria la creacion del call me back en Genesys
+        // Informamos el interactionId directamente aunque se informaria tras llamar a create en Genesys
+        ContactRequest contactRequest = new ContactRequest(
+            GenesysInteractionId__c= interactionId,
+            Status= 'New'
+        );
+        insert contactRequest;
+
+        // Mock
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addCallbackCancelMockResponse(interactionId);
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        // Generamos el objeto de cancelacion del callmeback
+        GenesysCloud.CallbackCancel cmb = new GenesysCloud.CallbackCancel();
+        cmb.genesysId = interactionId;
+
+        // Preparamos el mapa de relacion entre callmeback y los contactRequest
+        Map<GenesysCloud.CallbackCancel, String> callbacks = new Map<GenesysCloud.CallbackCancel, String>();
+        callbacks.put(cmb, contactRequest.Id);
+
+        Test.startTest();
+        GenesysCloud.CallbacksService.cancel(
+            new List<GenesysCloud.CallbackCancel>{cmb},
+            new UpdateCallbackCancel(callbacks)
+        );
+        Test.stopTest();
+
+        // Comprobamos que el callmeback se ha cancelado
+        List<contactRequest> contactRequests = [
+            SELECT Id FROM Contactrequest WHERE Id = :contactRequest.Id AND Status = 'Cancelled'
+        ];
+        System.assertEquals(1, contactRequests.size(), 'Deberia haber un ContactRequest con estado a Cancelado');
+    }
+
+    public class UpdateCallbackCancel implements GenesysCloud.IAPICallback
+    {
+        Map<GenesysCloud.CallbackCancel, String> contactRequestIdsByCallback;
+
+        public UpdateCallbackCancel(Map<GenesysCloud.CallbackCancel, String> contactRequestIdsByCallback)
+        {
+            this.contactRequestIdsByCallback = contactRequestIdsByCallback;
+        }
+
+        public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
+        {
+            // System.debug('------------- onSuccess');
+            List<ContactRequest> contactReqToUpdate = new List<ContactRequest>();
+
+            for(Object result : results) {
+                GenesysCloud.CallbackCancel callback = (GenesysCloud.CallbackCancel) result;
+                String contactRequestId = contactRequestIdsByCallback.get(callback);
+                
+                contactReqToUpdate.add(
+                    new ContactRequest(
+                        Id= contactRequestId,
+                        Status= 'Cancelled'
+                    )
+                );
+                // System.debug('------------- update ContactRequest: ' + contactRequestId);
+            }
+
+            if( !contactReqToUpdate.isEmpty() ) {
+                update contactReqToUpdate;
+            }
+        }
+
+        public void onError(Exception error)
+        {
+            // System.debug('------------- onError');
+            ErrorLogUtil.commitError(error);
+        }
+    }
+
+    @isTest
+    static void test_CallBackService_cancelList_ko()
+    {
+        // Id de interaccion generado por Genesys
+        String interactionId = '30136822-029b-4582-a171-25297a793326';
+
+        // Creamos el ContactRequest que provocaria la creacion del call me back en Genesys
+        // Informamos el interactionId directamente aunque se informaria tras llamar a create en Genesys
+        ContactRequest contactRequest = new ContactRequest(
+            GenesysInteractionId__c= interactionId,
+            Status= 'New'
+        );
+        insert contactRequest;
+
+        // Mock
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addCallbackCancelMockResponseError(interactionId);
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        // Generamos el objeto de cancelacion del callmeback
+        GenesysCloud.CallbackCancel cmb = new GenesysCloud.CallbackCancel();
+        cmb.genesysId = interactionId;
+
+        // Preparamos el mapa de relacion entre callmeback y los contactRequest
+        Map<GenesysCloud.CallbackCancel, String> callbacks = new Map<GenesysCloud.CallbackCancel, String>();
+        callbacks.put(cmb, contactRequest.Id);
+
+        Test.startTest();
+        GenesysCloud.CallbacksService.cancel(
+            new List<GenesysCloud.CallbackCancel>{cmb},
+            new UpdateCallbackCancel(callbacks)
+        );
+        Test.stopTest();
+
+        // Comprobamos que el callmeback se ha cancelado
+        List<contactRequest> contactRequests = [
+            SELECT Id FROM Contactrequest WHERE Id = :contactRequest.Id AND Status = 'Cancelled'
+        ];
+        System.assertEquals(0, contactRequests.size(), 'Deberia NO haber un ContactRequest con estado a Cancelado');
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(1, errorLogs.size(), 'Deberia haber un Log de errores');
+    }
 
     //#endregion
 

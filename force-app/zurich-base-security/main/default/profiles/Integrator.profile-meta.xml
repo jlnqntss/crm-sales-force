@@ -4255,17 +4255,42 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AsignacionPlan__c.Agrupacion_mediador__c</field>
+        <field>Account.TerritoryManagerEmail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AsignacionPlan__c.Asignado__c</field>
+        <field>Account.ManagerEmail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AsignacionPlan__c.Mediador__c</field>
+        <field>Account.BusinessManagerEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LifeManagerEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.EnterpriseManagerEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LifeConsultantEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PYMEConsultantEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryStatus__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6359,6 +6384,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactRequest.Priority__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contract.ActivatedById</field>
         <readable>true</readable>
@@ -7250,6 +7280,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>KPI__c.EstructuraDetalle__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>KPI__c.EstructuraUnificada__c</field>
+        <readable>true</readable>
+    </fieldPermissions>    
+    <fieldPermissions>
+        <editable>true</editable>
         <field>KPI__c.LoB__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7924,6 +7964,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.SessionId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>OpportunityLineItem.Description</field>
         <readable>true</readable>
@@ -8471,6 +8516,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>OrderItem.SourceCountry__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>OrderItem.Subcategory__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12383,6 +12433,81 @@
         <field>ReglaAlarma__c.KPI__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlanComercial__c.Actual_KPI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.AssignedTo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.Completed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.Contact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.EndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.FollowUp__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.Month__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.Notified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlanComercial__c.SentNotifications__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.StartDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlanComercial__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.TargetKPICurrency__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.TargetKPINumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.TargetKPIPercent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>false</enabled>
         <flow>Campaign_Member_Status</flow>
@@ -13088,21 +13213,6 @@
 		</layoutAssignments>
     <layoutAssignments>
         <layout>Alarma__c-Alarma KPI Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AsignacionPlan__c-Asignación Plan Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AsignacionPlan__c-Asignación Plan Layout</layout>
-        <recordType>AsignacionPlan__c.AsignacionAgrupado</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AsignacionPlan__c-Asignación Plan Layout</layout>
-        <recordType>AsignacionPlan__c.AsignacionMediador</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AsignacionPlan__c-Asignación Plan Layout</layout>
-        <recordType>AsignacionPlan__c.AsignacionRN</recordType>
     </layoutAssignments>
     <layoutAssignments>
 	<layout>Event-Event Layout</layout>
@@ -14233,15 +14343,6 @@
         <object>Alarma__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>AsignacionPlan__c</object>
-		<viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
 	<objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -14914,21 +15015,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.AgrupacionMediador</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-	<recordTypeVisibilities>
-	<default>false</default>
-        <recordType>AsignacionPlan__c.AsignacionAgrupado</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>true</default>
-        <recordType>AsignacionPlan__c.AsignacionMediador</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>AsignacionPlan__c.AsignacionRN</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

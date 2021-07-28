@@ -73,6 +73,14 @@ export default class SendSurveyButton extends LightningElement {
    */
   sendSurvey() {
     genesysCloud.transfer(this.pollPhoneNumber);
+    const navigateToCall = new CustomEvent("redirect", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        utilityBarIcon: "call"
+      }
+    });
+    this.dispatchEvent(navigateToCall);
     const event = new ShowToastEvent({
       title: this.label.sendSurveyToastTitleSuccess,
       message: this.label.sendSurveyToastMessageSuccess,

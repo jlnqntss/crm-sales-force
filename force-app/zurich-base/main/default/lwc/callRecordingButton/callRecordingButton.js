@@ -31,7 +31,7 @@ export default class CallRecordingButton extends LightningElement {
   @track recordingPhoneNumber;
 
   get isDisabled() {
-    return !this.recordingPhoneNumber && !this.isOnCall;
+    return !this.recordingPhoneNumber || !this.isOnCall;
   }
 
   /**
@@ -118,6 +118,14 @@ export default class CallRecordingButton extends LightningElement {
     this.stopTimer(this);
     this.labelWhenOff = this.label.callRecordingStart;
     this.buttonColor = this.BUTTON_VARIANT_NORMAL;
+    const navigateToCall = new CustomEvent("redirect", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        utilityBarIcon: "call"
+      }
+    });
+    this.dispatchEvent(navigateToCall);
   }
 
   handleCTIMessage(message) {

@@ -5,6 +5,10 @@
       "default": true
     },
     {
+      "path": "force-app/zurich-sdm-app",
+      "default": false
+    },
+    {
       "path": "force-app/zurich-base-iam",
       "default": false
     },

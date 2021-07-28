@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AssignedTo__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>SDM: usuario, de tipo RN o consultor, al que irá asociado el registro. Se utiliza de cara a que un Director pueda generar planes para los usuarios de los que es responsable.</description>
+    <externalId>false</externalId>
+    <label>Assigned to</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>User.Profile.Name</field>
+            <operation>equals</operation>
+            <value>SDM RN</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>User</referenceTo>
+    <relationshipName>PlanComercial</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

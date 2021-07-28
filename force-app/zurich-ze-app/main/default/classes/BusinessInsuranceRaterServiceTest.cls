@@ -869,59 +869,7 @@ public with sharing class BusinessInsuranceRaterServiceTest
             new Set<String> {'Id'}
             ).selectByCampaignAndContact(campaigns.get(0).Id, new Set<Id> {createdAccount.get(0).PersonContactId});
         System.assertEquals(false, campaignMembers.isEmpty(), 'List should NOT be empty');
-    }
-
-    /**
-     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos en el paso CRM-03
-     **
-     * @author rlopez
-     * @date 26/10/2020
-     */
-    @isTest
-    static void test_offerNumber_alreadyExists_ko()
-    {
-        String emailFromJSON = 'newemail@fakeemail.com.invalid';
-        String phoneFromJSON = '123456789';
-
-        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account WHERE NationalId__c != null];
-        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
-
-        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
-        Set<Id> productIds = new Set<Id>();
-        for(Product2 product: existingProducts)
-        {
-            productIds.add(product.Id);
-        }
-
-        List<Scope_Setting__mdt> scopeSettingsList = [
-            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
-            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
-        ];
-        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
-
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-07', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
-        BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
-            JSON.serialize(jsonInformation),
-            BusinessInsuranceRaterService.Request.class
-            );
-
-        BusinessInsuranceRaterService.processFormData(requestInformationObject);
-
-        Test.startTest();
-        try
-        {
-            BusinessInsuranceRaterService.processFormData(requestInformationObject);
-        }
-        catch (Exception ex)
-        {
-            System.assertEquals(true, ex.getMessage().contains('DUPLICATE_VALUE'), 'Error message should contain \'DUPLICATE_VALUE\'');
-        }
-        Test.stopTest();
-
-        //Comprobamos que se ha generado 1 Contact Request
-        List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest];
-        System.assertEquals(1, contactRequests.size(), 'There should be just 1 Contact Request');
-    }
+    }    
 
     /**
      * Método que comprueba si al pasar una fecha fuera del horario de atención
@@ -1122,4 +1070,465 @@ public with sharing class BusinessInsuranceRaterServiceTest
         System.assertEquals(true, contactRequests.isEmpty(), 'Desde el Flow ZECreateLead no se quiere crear ContactRequest');
     }
 
+    /**
+     * CallMeBack. Al completarse la contratacion comprobamos que se cancela un callmeback previo
+     */
+    @isTest
+    static void test_callmeback_complete_ok()
+    {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+        String managerEmailFromJSON = 'manager@fakeemail.com.invalid';
+        String managerPhoneFromJSON = '987654321';
+
+        // Account
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        // Productos
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts) {
+            productIds.add(product.Id);
+        }
+
+        // Configuracion Scope
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        // Formulario (json) CRM-08
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-08', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, 
+            scopeSettingsList.get(0).BusinessCode__c, existingProducts
+        );
+
+        // Cambiamos el estado a Completado
+        jsonInformation.put('status', 'Completado');
+
+        //Modificamos Manager antes de procesar información
+        Map<String, Object> managerInformation = (Map<String, Object>) jsonInformation.get('manager');
+        managerInformation.put('email', managerEmailFromJSON);
+        managerInformation.put('phone', managerPhoneFromJSON);
+
+        BusinessInsuranceRaterService.Request requestInformationObject = 
+            (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+                JSON.serialize(jsonInformation),
+                BusinessInsuranceRaterService.Request.class
+            );
+
+        // Creamos CallMeBack (ContactRequest) para que se cancelen
+        List<ContactRequest> contactReqs = TestDataFactory.generateContactRequest(
+            existingAccounts[0].PersonContactId, 1
+        );
+        contactReqs[0].PreferredContactDatetime__c = System.now().addMinutes(15);
+        insert contactReqs;
+
+        // Mock Genesys call
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addCallbackCancelMockResponse(contactReqs[0].GenesysInteractionId__c);
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        Test.startTest();
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        Test.stopTest();
+
+        // Comprobamos que el callmeback (ContactRequest) se ha cancelado
+        List<ContactRequest> foundContactReqs = [SELECT Id FROM ContactRequest WHERE Status = 'Cancelled'];
+        System.assertEquals(1, foundContactReqs.size(), 'Deberia haber un ContactRequest cancelado');
+    }
+
+    /**
+     * CallMeBack. Al completarse la contratacion comprobamos que falla al cancelar un callmeback previo
+     */
+    @isTest
+    static void test_callmeback_complete_ko()
+    {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+        String managerEmailFromJSON = 'manager@fakeemail.com.invalid';
+        String managerPhoneFromJSON = '987654321';
+
+        // Account
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        // Productos
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts) {
+            productIds.add(product.Id);
+        }
+
+        // Configuracion Scope
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        // Formulario (json) CRM-08
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-08', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, 
+            scopeSettingsList.get(0).BusinessCode__c, existingProducts
+        );
+
+        // Cambiamos el estado a Completado
+        jsonInformation.put('status', 'Completado');
+
+        //Modificamos Manager antes de procesar información
+        Map<String, Object> managerInformation = (Map<String, Object>) jsonInformation.get('manager');
+        managerInformation.put('email', managerEmailFromJSON);
+        managerInformation.put('phone', managerPhoneFromJSON);
+
+        BusinessInsuranceRaterService.Request requestInformationObject = 
+            (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+                JSON.serialize(jsonInformation),
+                BusinessInsuranceRaterService.Request.class
+            );
+
+        // Creamos CallMeBack (ContactRequest) para que se cancelen
+        List<ContactRequest> contactReqs = TestDataFactory.generateContactRequest(
+            existingAccounts[0].PersonContactId, 1
+        );
+        contactReqs[0].PreferredContactDatetime__c = System.now().addMinutes(15);
+        insert contactReqs;
+
+        // Mock Genesys call con resultado de error
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addCallbackCancelMockResponseError(contactReqs[0].GenesysInteractionId__c);
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        Test.startTest();
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        Test.stopTest();
+        
+        // Comprobamos que se ha generado un error
+        List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(1, errors.size(), 'Deberia haber un Error Log');
+    }
+
+    /**
+     * CallMeBack. Sin estar completado, comprobamos que si viene un estado mas prioritario en el formulario
+     * que el callmeback actualmente programado, se cancela este ultimo y se crea uno nuevo
+     */
+    @isTest
+    static void test_callmeback_priority()
+    {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+        String managerEmailFromJSON = 'manager@fakeemail.com.invalid';
+        String managerPhoneFromJSON = '987654321';
+
+        // Account
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        // Productos
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts) {
+            productIds.add(product.Id);
+        }
+
+        // Configuracion Scope
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        // Formulario (json) CRM-07
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-07', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, 
+            scopeSettingsList.get(0).BusinessCode__c, existingProducts
+        );
+
+        // Cambiamos el estado a Telefonico (de mas prioridad)
+        jsonInformation.put('status', 'Telefonico');
+
+        //Modificamos Manager antes de procesar información
+        Map<String, Object> managerInformation = (Map<String, Object>) jsonInformation.get('manager');
+        managerInformation.put('email', managerEmailFromJSON);
+        managerInformation.put('phone', managerPhoneFromJSON);
+
+        BusinessInsuranceRaterService.Request requestInformationObject = 
+            (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+                JSON.serialize(jsonInformation),
+                BusinessInsuranceRaterService.Request.class
+            );
+
+        // Creamos CallMeBack (ContactRequest) con estado New (menos prioritario)
+        List<ContactRequest> contactReqs = TestDataFactory.generateContactRequest(
+            existingAccounts[0].PersonContactId, 1
+        );
+        contactReqs[0].PreferredContactDatetime__c = System.now().addMinutes(15);
+        insert contactReqs;
+
+        // Mock Genesys call con resultado de error
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addCallbackCancelMockResponse(contactReqs[0].GenesysInteractionId__c);
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        Test.startTest();
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        Test.stopTest();
+        
+        // Comprobamos que el callmeback (ContactRequest) se ha cancelado
+        List<ContactRequest> foundContactReqs = [
+            SELECT Id FROM ContactRequest WHERE Id = :contactReqs[0].Id AND Status = 'Cancelled'
+        ];
+        System.assertEquals(1, foundContactReqs.size(), 'Deberia haber un ContactRequest cancelado');
+        // Comprobamos que hay un callmeback nuevo
+        foundContactReqs = [SELECT Id FROM ContactRequest WHERE Id != :contactReqs[0].Id];
+        System.assertEquals(1, foundContactReqs.size(), 'Deberia haber un ContactRequest adicional nuevo');
+    }
+
+    /**
+     * CallMeBack. Sin estar completado, comprobamos que si viene un estado mas prioritario en el formulario
+     * que el callmeback actualmente programado, se cancela este ultimo y se crea uno nuevo
+     */
+    @isTest
+    static void test_callmeback_closerInTime()
+    {
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+        String managerEmailFromJSON = 'manager@fakeemail.com.invalid';
+        String managerPhoneFromJSON = '987654321';
+
+        // Account
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        // Productos
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        Set<Id> productIds = new Set<Id>();
+        for(Product2 product: existingProducts) {
+            productIds.add(product.Id);
+        }
+
+        // Configuracion Scope
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        // Formulario (json) CRM-07
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-07', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, 
+            scopeSettingsList.get(0).BusinessCode__c, existingProducts
+        );
+
+        // Ponemos el estado Abandono
+        jsonInformation.put('status', 'Abandono');
+        // Lo ponemos como mas cercano en el tiempo. 
+        // fix: Se añaden 5 minutos para que si tarda, se tenga en cuenta en la query
+        jsonInformation.put('bestTimeFrom', System.now().addMinutes(5));
+
+        //Modificamos Manager antes de procesar información
+        Map<String, Object> managerInformation = (Map<String, Object>) jsonInformation.get('manager');
+        managerInformation.put('email', managerEmailFromJSON);
+        managerInformation.put('phone', managerPhoneFromJSON);
+
+        BusinessInsuranceRaterService.Request requestInformationObject = 
+            (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+                JSON.serialize(jsonInformation),
+                BusinessInsuranceRaterService.Request.class
+            );
+
+        // Creamos CallMeBack (ContactRequest) con estado Abandoned y para dentro de 15 minutos
+        List<ContactRequest> contactReqs = TestDataFactory.generateContactRequest(
+            existingAccounts[0].PersonContactId, 1
+        );
+        contactReqs[0].Status = 'Abandoned';
+        contactReqs[0].PreferredContactDatetime__c = System.now().addMinutes(15);
+        insert contactReqs;
+
+        // Mock Genesys call con resultado de error
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addCallbackCancelMockResponse(contactReqs[0].GenesysInteractionId__c);
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        Test.startTest();
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        Test.stopTest();
+        
+        // Comprobamos que el callmeback (ContactRequest) se ha cancelado
+        List<ContactRequest> foundContactReqs = [
+            SELECT Id FROM ContactRequest WHERE Id = :contactReqs[0].Id AND Status = 'Cancelled'
+        ];
+        System.assertEquals(1, foundContactReqs.size(), 'Deberia haber un ContactRequest cancelado');
+        // Comprobamos que hay un callmeback nuevo
+        foundContactReqs = [SELECT Id FROM ContactRequest WHERE Id != :contactReqs[0].Id];
+        System.assertEquals(1, foundContactReqs.size(), 'Deberia haber un ContactRequest adicional nuevo');
+    }
+
+    @isTest
+    static void test_offer_update()
+    {
+        // Account
+        Id personAccountRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null AND RecordTypeId =: personAccountRecordTypeId];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        // Products
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+
+        // Scope
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        // CRM-04
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-04', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+        BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+
+        
+        Test.startTest();
+
+        //CRM-04 -> CRM-05
+        jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-05', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts
+        );
+        requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );        
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+
+        //CRM-05 -> CRM-06
+        jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-06', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts
+        );
+        requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );        
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+
+        //CRM-06 -> CRM-07
+        jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-07', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts
+        );
+        requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );        
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+
+        //CRM-04 -> CRM-08
+        jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-08', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts
+        );
+        requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );        
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+
+        //CRM-08 -> CRM-08
+        jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-08', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts
+        );
+        requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );        
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+
+        Test.stopTest();
+
+        // Comprobar que solo hay una oferta, con una poliza, un riesgo y una relacion
+        List<Opportunity> offers = [
+            SELECT Id, (SELECT id FROM Insured_Objects__r), (SELECT id FROM Policies__r)
+            FROM Opportunity];
+        System.assertEquals(1, offers.size(), 'There should only be 1 offer');
+        System.assertEquals(1, offers[0].Insured_Objects__r.size(), 'There should only be 1 Insured Object');
+        System.assertEquals(1, offers[0].Policies__r.size(), 'Theres should only be 1 Policy');
+    }
+
+    @isTest
+    static void test_offer_delete()
+    {
+        // Account
+        Id personAccountRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+
+        List<Account> existingAccounts = [SELECT Id, NationalId__c, PersonContactId FROM Account WHERE NationalId__c != null AND RecordTypeId =: personAccountRecordTypeId];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+
+        // Products
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+
+        // Scope
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        List<Opportunity> offerOther = TestDataFactory.generateOpportunitiesForEachAccount(
+            new List<Account>{existingAccounts.get(0)}, 'ZE', 'Quoted', System.today().addDays(10), 1
+        );
+        offerOther[0].InfoQuoteNumber__c = '000000111';
+        insert offerOther;
+
+        // CRM-05 - se inserta una oferta
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-05', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, 
+            scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+        BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+        
+        Test.startTest();
+
+        // CRM-06 - cambiamos para que la oferta tenga otro codigo y asi se borre la oferta 
+        // anteriormente insertada
+        jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON(
+            'CRM-06', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, 
+            scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+        requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
+            JSON.serialize(jsonInformation),
+            BusinessInsuranceRaterService.Request.class
+            );
+        requestInformationObject.offers[0].quoteNumberINFO = '456789000';
+        requestInformationObject.offers[0].policyNumber = '000000333';
+
+        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+
+        Test.stopTest();
+
+        // Comprobamos que quedan 2 ofertas. 1 de otra cosa y otra del CRM-06. La del CRM-05 se elimina
+        // por estar en la misma sesion pero ya no aparecer en el formulario
+        List<Opportunity> offers = [
+            SELECT Id, InfoQuoteNumber__c
+            FROM Opportunity WHERE InfoQuoteNumber__c IN ('456789456','456789000','000000111')
+            ORDER BY CreatedDate DESC];
+        System.assertEquals(2, offers.size(), 'There should be 2 offers');
+        System.assertEquals(
+            requestInformationObject.offers[0].quoteNumberINFO, offers[0].InfoQuoteNumber__c, 
+            'The quote number should be the new one');
+        System.assertEquals(
+                offerOther[0].InfoQuoteNumber__c, offers[1].InfoQuoteNumber__c, 
+                'The quote number should be ' + offerOther[0].InfoQuoteNumber__c);
+    }
 }

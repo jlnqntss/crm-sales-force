@@ -7,6 +7,7 @@ public class GenesysCloud
     @TestVisible
     private static final String ERROR_VALIDATE_RESPONSE = 'Service is a required parameter to validate a response';
     private static final String ASYNC_METHOD_SMS = 'sms';
+    private static final String ASYNC_METHOD_CALLBACK_CANCEL = 'cancel';
     public static final String SERVICE_ROUTING = 'RoutingService';
     public static final String SERVICE_CALLBACKS = 'CallbacksService';
     public static final String SERVICE_SMS = 'SMSService';
@@ -190,6 +191,13 @@ public class GenesysCloud
                         results.add(SMSService.send( (SmsData) request ) );
                     }
                 }
+                else if(this.method == ASYNC_METHOD_CALLBACK_CANCEL )
+                {
+                    for(IAPIRequest request: this.requests)
+                    {
+                        results.add(CallbacksService.cancel( (CallbackCancel) request ) );
+                    }
+                }
                 else
                 {
                     throw new RoutingServiceException('No method defined');
@@ -225,7 +233,7 @@ public class GenesysCloud
      * @author jmartinezpisson
      */
     public interface IAPICallback
-    {
+    { 
         void onSuccess(List<Object> results, List<IAPIRequest> requests);
         void onError(Exception error);
     }
@@ -273,7 +281,7 @@ public class GenesysCloud
     private static HttpResponse validateResponse(HttpResponse responseToValidate)
     {
 
-        System.debug(responseToValidate);
+        // System.debug(responseToValidate);
         if(responseToValidate.getStatusCode() > 202)
         {
             throw new GenesysCloud.GenesysCloudException(responseToValidate);
@@ -552,6 +560,34 @@ public class GenesysCloud
             asynchronousCallout('create', callbacks, apexCallback);
         }
 
+        /**
+         * Metodo publico que realiza una solicitud de tipo PATCH a genesys para cancelar un callback de forma 
+         * asincrona
+         * 
+         * @author nts (agonzalezisasi)
+         * @param {CallbackCancel} callback objeto con el id de gensys del callback a cancelar
+         * @return Devuelve el calback creado con el identificador de interaccion de Genesys Cloud
+         */
+        public CallbackCancel cancel(CallbackCancel callback)
+        {
+            HttpResponse response = new GenesysCloud.GenesysCloudNamedUserAPI().patch(
+                '/api/v2/conversations/callbacks/' + callback.genesysId, callback.toJSON()
+            );
+            return callback;
+        }
+
+        /**
+         * Método público que realiza una solicitud de tipo PATCH a genesys para crear un 
+         * listado de Callbacks de forma asíncrona
+         *
+         * @author nts (agonzalezisasi)
+         * @param {CallbackCancel[]} callbacks tareas a crear en Genesys
+         * @param callback Apex Callback a ejecutar finalizados los callouts
+         */
+        public void cancel(CallbackCancel[] callbacks, IAPICallback apexCallback)
+        {
+            asynchronousCallout(ASYNC_METHOD_CALLBACK_CANCEL, callbacks, apexCallback);
+        }
 
         /**
          * Devuelve el interacitionID si lo encuentra
@@ -572,6 +608,23 @@ public class GenesysCloud
 
             //Si no se encuentra el id no se puede devolver
             return result;
+        }
+    }
+
+    /**
+     * Clase que representa una cancelacion de callback de Genesys Cloud
+     * Implemente la interfaz GenesysCloud.IAPIRequest.
+     */
+    public class CallbackCancel implements IAPIRequest
+    {
+        //Identificador del callback en Genesys Cloud
+        public String genesysId;
+        public string state = 'disconnected';
+
+        // Método público que devuelve una serialización a JSON de la propia instancia de la clase para su uso en las llamadas al SDK.
+        public String toJSON()
+        {
+            return JSON.serialize(this);
         }
     }
 

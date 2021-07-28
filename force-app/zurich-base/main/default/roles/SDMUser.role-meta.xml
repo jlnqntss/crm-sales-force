@@ -2,9 +2,9 @@
 <Role xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseAccessLevel>None</caseAccessLevel>
     <contactAccessLevel>Read</contactAccessLevel>
-    <description>SDM User</description>
+    <description>SDM RN</description>
     <mayForecastManagerShare>false</mayForecastManagerShare>
-    <name>SDM User</name>
-    <opportunityAccessLevel>Edit</opportunityAccessLevel>
-    <parentRole>SDMHomeOffice</parentRole>
+    <name>SDM RN</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>SDM_DT</parentRole>
 </Role>
