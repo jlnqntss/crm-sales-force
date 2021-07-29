@@ -494,4 +494,31 @@ public with sharing class AccountsSelector extends RecordsSelector
         
         return result;
     }
+
+    /**
+     * Recupera los mediadores de tipo agrupacion cuyo id lo cumpla una subquery
+     * Ejemplo: SELECT id FROM Account WHERE Id IN (SELECT AccountId FROM contact)
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 28/07/2021
+     * 
+     * @param {Query subquery} subquery con los ids a buscar
+     * @return {List<Account>} lista de agrupaciones de mediador
+     */
+    public List<Account> findAgrupationsBySubquery(Query subquery)
+    {
+        List<Account> result = null;
+
+        if( subquery != null ) {
+            this.baseQuery.selectFields(new Set<String>{
+                'Id', 'NationalId__c'
+            });
+            this.baseQuery.addConditionEq(Account.RecordTypeId, this.rtAgrupationId);
+            this.baseQuery.addConditionIn(Account.Id, subquery);
+
+            result = (List<Account>)this.baseQuery.run();            
+        }
+
+        return result;
+    }
 }
