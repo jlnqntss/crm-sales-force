@@ -13153,6 +13153,10 @@
         <layout>Campaign-Campaign Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Campaign-Telemarketing</layout>
+        <recordType>Campaign.Telemarketing</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>CampaignInfluenceModel-Campaign Influence Model Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -15371,6 +15375,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Asset.Person</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Campaign.Telemarketing</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
