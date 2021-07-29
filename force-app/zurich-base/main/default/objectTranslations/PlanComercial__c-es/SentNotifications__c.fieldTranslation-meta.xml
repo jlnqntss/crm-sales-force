@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Notificaciones enviadas</label>
+    <name>SentNotifications__c</name>
+    <picklistValues>
+        <masterLabel>KPI reached</masterLabel>
+        <translation>KPI alcannzado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Plan closed</masterLabel>
+        <translation>Plan cerrado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Week left</masterLabel>
+        <translation>Falta una semana</translation>
+    </picklistValues>
+</CustomFieldTranslation>
