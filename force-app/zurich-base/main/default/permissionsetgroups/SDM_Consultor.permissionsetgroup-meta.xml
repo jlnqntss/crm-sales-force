@@ -6,5 +6,6 @@
     <permissionSets>Crear_vistaslista</permissionSets>
     <permissionSets>GestionAsignacionMediador_SDM</permissionSets>
     <permissionSets>GestionCuentaContacto_SDM</permissionSets>
+    <permissionSets>SDM_Plan_comercial</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

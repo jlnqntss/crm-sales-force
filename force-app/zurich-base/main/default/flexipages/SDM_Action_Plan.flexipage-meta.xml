@@ -32,6 +32,10 @@
     <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>required</value>
+                </fieldInstanceProperties>
                 <fieldItem>Record.Name</fieldItem>
             </fieldInstance>
         </itemInstances>
@@ -107,11 +111,6 @@
         <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.Status__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.Notified__c</fieldItem>
             </fieldInstance>
         </itemInstances>
         <itemInstances>

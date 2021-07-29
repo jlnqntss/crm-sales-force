@@ -9,7 +9,7 @@
     </layouts>
     <recordTypes>
         <description>Detalles reunión / visita</description>
-        <label><!-- SDM Event --></label>
+        <label>Detalles reunión / visita</label>
         <name>SDM_Event</name>
     </recordTypes>
 </CustomObjectTranslation>
