@@ -3,8 +3,8 @@
     <actionCalls>
         <name>NofityKPIEnded</name>
         <label>Nofity KPI Ended</label>
-        <locationX>384</locationX>
-        <locationY>916</locationY>
+        <locationX>834</locationX>
+        <locationY>806</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -86,12 +86,12 @@
     <actionCalls>
         <name>NotifyWeekLeft</name>
         <label>Notify Week Left</label>
-        <locationX>392</locationX>
-        <locationY>783</locationY>
+        <locationX>376</locationX>
+        <locationY>925</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
-            <targetReference>WeekLeft</targetReference>
+            <targetReference>UpdateSentNotifications</targetReference>
         </connector>
         <inputParameters>
             <name>customNotifTypeId</name>
@@ -170,7 +170,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>NotifyWeekLeft</targetReference>
+                <targetReference>NofityKPIEnded</targetReference>
             </connector>
             <label>End date reached</label>
         </rules>
@@ -294,7 +294,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>NofityKPIEnded</targetReference>
+                <targetReference>NotifyWeekLeft</targetReference>
             </connector>
             <label>Week left</label>
         </rules>
@@ -375,17 +375,17 @@ IF
         <expression>CASE
 (
   {!$Record.Indicator__c},
-  &quot;01&quot;,  {!$Record.TargetKPINumber__c},
-  &quot;02&quot;,  {!$Record.TargetKPINumber__c},
-  &quot;03&quot;,  {!$Record.TargetKPINumber__c},
-  &quot;04&quot;,  {!$Record.TargetKPICurrency__c},
-  &quot;05&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;06&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;07&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;08&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;09&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;10&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;11&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;PN&quot;,  {!$Record.TargetKPINumber__c},
+  &quot;PoliciesPN&quot;,  {!$Record.TargetKPINumber__c},
+  &quot;PoliciesInForce&quot;,  {!$Record.TargetKPINumber__c},
+  &quot;Portfolio&quot;,  {!$Record.TargetKPICurrency__c},
+  &quot;Ratio_PNIncrease&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_PoliciesPNIncreas&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_PoliciesInForceIncrease&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_PortIncrease&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_Claim&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_Retention&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Totaldiscount&quot;,  {!$Record.TargetKPIPercent__c},
   0
 )</expression>
         <scale>2</scale>
@@ -482,21 +482,21 @@ IF
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>BodyKPIReached</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Se ha cumplido la condición que especificaste en el plan de acción con asunto &quot;{!$Record.Name}&quot;, si te gustaría comunicárselo al mediador puedes enviarle un e-mail&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Se ha cumplido la condición que especificaste en el plan de acción con asunto &quot;{!$Record.Name}&quot;, si te gustaría comunicárselo al mediador puedes enviarle un e-mail</text>
     </textTemplates>
     <textTemplates>
         <name>BodyPlanEnded</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;El plan de acción con asunto “{!$Record.Name}” ha llegado a su fecha de vencimiento. Recuerda que puedes ver el detalle de la consecución del objetivo en el propio plan de acción&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>El plan de acción con asunto “{!$Record.Name}” ha llegado a su fecha de vencimiento. Recuerda que puedes ver el detalle de la consecución del objetivo en el propio plan de acción</text>
     </textTemplates>
     <textTemplates>
         <name>BodyWeekLeft</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;El plan de acción con asunto “{!$Record.Name}” finalizará en una semana. Recuerda que puedes modificar la fecha de vencimiento o modificar el objetivo establecido antes de su vencimiento&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>El plan de acción con asunto “{!$Record.Name}” finalizará en una semana. Recuerda que puedes modificar la fecha de vencimiento o modificar el objetivo establecido antes de su vencimiento</text>
     </textTemplates>
     <variables>
         <name>RecipientId</name>
