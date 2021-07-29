@@ -66,6 +66,24 @@ public class TestDataFactorySDM
         return settings;
     }
 
+    /**
+     * Metodo que genera un objeto de tipo configuracion del indicador del plan comercial
+     */
+    public static SDMCommercialPlan__mdt generateSDMSettingsPlan(String indicator, String calcType, string firstField, string secondField)
+    {
+        return new SDMCommercialPlan__mdt(
+                Label= 'testPlanSum',
+                DeveloperName= 'testPlanSum',
+                Indicator__c= indicator,
+                CalculationType__c= calcType,
+                FirstField__c= firstField,
+                SecondField__c= secondField
+        );
+    }
+
+    /**
+     * Metodo que crea los datos de prueba para el mantenimiento de mediadores
+     */
     public static void IntermediarySetupData()
     {
         // Creacion de las Agrupaciones de Mediadores
@@ -118,5 +136,180 @@ public class TestDataFactorySDM
             acr.Roles = 'Other rol';
         }
         update acrs;
+    }
+
+    /**
+     * Metodo que crea los datos de prueba para el calculo del kpi de los planes comerciales
+     */
+    public static void PlanComercialSetupData()
+    {
+        // Creacion de las Agrupaciones de Mediadores
+        List<Account> agrupations = TestDataFactory.generateAccounts(
+            ACCOUNT_LEGAL_ENTITY, AccountsSelector.RT_NAME_AGRUPATION, 1
+        );
+        agrupations[0].NationalId__c = AGRUPATION_CIF;
+        insert agrupations;
+
+        // Creacion de los Mediadores (3)
+        List<Account> intermediaries = TestDataFactory.generateAccounts(
+            ACCOUNT_LEGAL_ENTITY, AccountsSelector.RT_NAME_INTERMEDIARY, 3
+        );
+        for( Integer i=0; i<intermediaries.size(); i++ ) {
+            // Para la agrupacion de mediadores
+            intermediaries[i].NationalId__c = AGRUPATION_CIF;
+            // Para el equipo de cuentas
+            intermediaries[i].put(TERRITORY_FIELD, String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)}));
+            intermediaries[i].IntermediaryStatus__c = 'Active';
+        }
+        insert intermediaries;
+
+        // Creacion de los usuarios para el equipo de cuentas (3)
+        List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = 'SDM RN'];
+        System.assertEquals(1, profiles.size(), 'El perfil SDM RN deberia existir');
+        List<User> users = TestDataFactory.generateUsersByProfile(profiles[0].Id, 3);
+        for( Integer i=0; i<users.size(); i++ ) {
+            users[i].Email = String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)});
+        }
+        insert users;
+
+        // Asignacion de la agrupacion y creacion de los equipos de cuentas
+        IntermediarySDM sdm = new IntermediarySDM();
+        // Preparamos la configuracion para el campo que nos interesa
+        sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
+            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+        );
+        // asignacion de la agrupacion
+        sdm.assignIntermediaryAgrupation(intermediaries);
+        // creacion del equipo de cuenta
+        sdm.assignIntermediaryAccountTeam(intermediaries);
+        // comprobamos que ha ido todo bien
+        String soql = String.format(
+            'SELECT Id FROM Account WHERE Id IN :intermediaries AND ParentId != null AND {0} != null', 
+            new List<String> {TestDataFactorySDM.TERRITORY_FIELD});
+        List<Account> checkIntermediary = Database.query(soql);
+        System.assertEquals(false, checkIntermediary.isEmpty(), 'Deberia haber mediadores con agrupacion y rol');
+
+        // Generacion de los KPIs ---------------------------------------------
+        List<KPI__c> kpis = TestDataFactorySDM.generateKPIs(intermediaries, 2);
+        System.assertEquals(6, kpis.size(), 'Se deberian haber generado 6 KPIs');
+        // Primer mediador => suma [10=10] El segundo KPI no se considera en el filtrado
+        kpis[0].PN__c = 10;
+        kpis[0].ProductGroup__c = 'AUTOS';
+        kpis[1].PN__c = 15;
+        kpis[1].ProductGroup__c = 'HOGAR';
+        // Segundo mediador => ratio [20/50=0,4]
+        kpis[2].TotalLoad__c = 12;
+        kpis[2].Income__c = 20;
+        kpis[2].ProductGroup__c = 'AUTOS';
+        kpis[3].TotalLoad__c = 8;
+        kpis[3].Income__c = 30;
+        kpis[3].ProductGroup__c = 'ACCIDENTES';
+        // Tercer mediador => crecimiento [(140/80)-1=0,75]
+        kpis[4].PoliciesPN__c = 100;
+        kpis[4].PA_PoliciesPN__c = 35;
+        kpis[5].PoliciesPN__c = 40;
+        kpis[5].PA_PoliciesPN__c = 45;
+        insert kpis;
+
+        // Recuperamos los equipos de cuenta para que los usuarios de los mediadores
+        // creen los planes
+        List<AccountTeamMember> atms = [
+            SELECT UserId, AccountId
+            FROM AccountTeamMember
+            WHERE AccountId IN :intermediaries
+        ];
+        System.assertEquals(3, atms.size(), 'Deberia haber 3 registros de ATMs');
+        Map<Id, AccountTeamMember> mapATMs = new Map<Id, AccountTeamMember>();
+        for(AccountTeamMember atm: atms) {
+            mapATMs.put(atm.AccountId, atm);
+        }
+
+        // Generacion de los planes comerciales -------------------------------
+        List<PlanComercial__c> plans = TestDataFactorySDM.generatePlans(intermediaries, 1);
+        System.assertEquals(3, plans.size(), 'Se deberian haber generado 3 planes');
+        User userPlan = new User(
+            Id= mapATMs.get(plans[0].Intermediary__c).UserId
+        );
+        // System.runAs(userPlan) {
+            // Plan del primer mediador
+            plans[0].AssignedTo__c = userPlan.Id;
+            plans[0].Indicator__c = 'PN';
+            plans[0].Intermediary__c = agrupations[0].Id;
+            plans[0].Product__c = 'Autos';
+            // insert plans[0];
+        // }
+        
+        // Plan del segundo mediador
+        userPlan = new User(
+            Id= mapATMs.get(plans[1].Intermediary__c).UserId
+        );
+        // System.runAs(userPlan) {
+            plans[1].AssignedTo__c = userPlan.Id;
+            plans[1].Indicator__c = 'Ratio_Claim';
+            plans[1].Product__c = PlanComercialSDM.ALL_VALUE;
+            // insert plans[1];
+        // }
+
+        // Plan del tercer mediador
+        userPlan = new User(
+            Id= mapATMs.get(plans[2].Intermediary__c).UserId
+        );
+        // System.runAs(userPlan) {
+            plans[2].AssignedTo__c = userPlan.Id;
+            plans[2].Indicator__c = 'Ratio_PoliciesPNIncreas';
+            // insert plans[2];
+        // }
+        insert plans;
+    }
+
+    /**
+     * Metodo que genera KPIs para unos mediadores
+     */
+    public static List<KPI__c> generateKPIs(List<Account> intermediaries, Integer num)
+    {
+        List<KPI__c> kpis = new List<KPI__c>();
+
+        for(Account a: intermediaries) {
+            for(Integer i=0;i<num;i++) {
+                KPI__c kpi = new KPI__c(
+                    Intermediary__c= a.Id,
+                    ProductGroup__c= 'AUTOS',
+                    SegmentoCliente__c= 'Particulares',
+                    Temporalidad__c= 'Mensual'
+                );
+
+                kpis.add(kpi);
+            }
+        }
+
+        return kpis;
+    }
+
+    /**
+     * Metodo que genera Planes comerciales para unos mediadores
+     */
+    public static List<PlanComercial__c> generatePlans(List<Account> intermediaries, Integer num)
+    {
+        List<PlanComercial__c> plans = new List<PlanComercial__c>();
+
+        for(Account a: intermediaries) {
+            for(Integer i=0;i<num;i++) {
+                PlanComercial__c plan = new PlanComercial__c(
+                    StartDate__c= Date.today().addDays(-5),
+                    EndDate__c= Date.today().addDays(30),
+                    SendNotifications__c= '01',
+                    Intermediary__c= a.Id,
+                    Actual_KPI__c= null,
+                    Indicator__c= 'PN',
+                    Product__c= 'Autos',
+                    Segment__c= 'Particulares',
+                    AccumulateType__c= 'Mensual'
+                );
+
+                plans.add(plan);
+            }
+        }
+
+        return plans;
     }
 }

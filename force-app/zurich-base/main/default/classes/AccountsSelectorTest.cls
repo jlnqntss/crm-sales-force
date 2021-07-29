@@ -562,4 +562,36 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(true, String.isNotBlank(accounts[0].Name), 'El nombre de la cuenta no deberia estar vacio');
     }
 
+    /**
+     * Test del metodo que recupera las agrupaciones de mediadores
+     * por una subquery con los ids de las cuentas
+     *
+     * @author nts (agonzalezisasi)
+     * @date 28/07/2021
+     */
+    @isTest
+    static void test_findAgrupationsBySubquery()
+    {
+        AccountsSelector accSel = new AccountsSelector();
+        
+        List<Account> agrupations = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtAgrupationId];
+        System.assertEquals(1, agrupations.size(), 'Deberia haber 1 agrupacion');
+
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(
+            agrupations, ContactsSelector.RT_NAME_CONTACT, 1
+        );
+        insert contacts;
+
+        // Se recupera el id del recordtype de agrupacion de mediadores si no se ha hecho ya
+        Query subquery = new Query(Contact.getSObjectType());
+        subquery.selectField(Contact.AccountId);
+        subquery.addConditionIn(Contact.Id, contacts);
+
+        Test.startTest();
+        List<Account> checkAgrupations = new AccountsSelector().findAgrupationsBySubquery(subquery);
+        Test.stopTest();
+
+        System.assertEquals(1, checkAgrupations.size(), 'Deberia encontrar 1 agrupacion');
+    }
+
 }
