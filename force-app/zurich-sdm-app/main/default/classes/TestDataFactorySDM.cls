@@ -164,13 +164,29 @@ public class TestDataFactorySDM
         insert intermediaries;
 
         // Creacion de los usuarios para el equipo de cuentas (3)
-        List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = 'SDM RN'];
-        System.assertEquals(1, profiles.size(), 'El perfil SDM RN deberia existir');
-        List<User> users = TestDataFactory.generateUsersByProfile(profiles[0].Id, 3);
-        for( Integer i=0; i<users.size(); i++ ) {
-            users[i].Email = String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)});
-        }
-        insert users;
+        // User thisUser = [SELECT Id, ProfileId FROM User WHERE Id = :UserInfo.getUserId()];
+        // System.runAs (thisUser) {
+        //     List<PermissionSetGroup> permGroups = [SELECT Id FROM PermissionSetGroup WHERE developername = 'SDM_RN'];
+        //     System.assertEquals(1, permGroups.size(), 'Deberia haber un permission set group SDM_RN');
+
+            List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = 'SDM RN'];
+            System.assertEquals(1, profiles.size(), 'El perfil SDM RN deberia existir');
+
+            // List<PermissionSetAssignment> newAssignments = new List<PermissionSetAssignment>();
+
+            List<User> users = TestDataFactory.generateUsersByProfile(profiles[0].Id, 3);            
+            for( Integer i=0; i<users.size(); i++ ) {
+                users[i].Email = String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)});
+            }
+            insert users;
+        //     for( Integer i=0; i<users.size(); i++ ) {
+        //         newAssignments.add(new PermissionSetAssignment(
+        //             PermissionSetGroupId = permGroups[0].Id,
+        //             AssigneeId = users[i].Id
+        //         ));
+        //     }
+        //     insert newAssignments;
+        // }
 
         // Asignacion de la agrupacion y creacion de los equipos de cuentas
         IntermediarySDM sdm = new IntermediarySDM();
