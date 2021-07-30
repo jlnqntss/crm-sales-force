@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RobotTypificationFailed__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>OCS - Aparece en el Informe de Tasa de acierto del Robot. Con un Flow-Trigger se activa el check en las ocasiones en las que el Robot tipificó el caso de una forma y el agente luego la cambió</description>
+    <externalId>false</externalId>
+    <label>Robot Typification Failed</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
