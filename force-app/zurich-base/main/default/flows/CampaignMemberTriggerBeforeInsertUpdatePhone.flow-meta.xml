@@ -4,8 +4,8 @@
     <assignments>
         <name>ErrorStatusAssignment</name>
         <label>Asignar Estado erróneo</label>
-        <locationX>407</locationX>
-        <locationY>1031</locationY>
+        <locationX>314</locationX>
+        <locationY>1151</locationY>
         <assignmentItems>
             <assignToReference>$Record.Status</assignToReference>
             <operator>Assign</operator>
@@ -17,8 +17,8 @@
     <assignments>
         <name>PhoneAssignment</name>
         <label>Asignar Phone</label>
-        <locationX>143</locationX>
-        <locationY>1031</locationY>
+        <locationX>50</locationX>
+        <locationY>1151</locationY>
         <assignmentItems>
             <assignToReference>$Record.LeadPhone__c</assignToReference>
             <operator>Assign</operator>
@@ -32,8 +32,8 @@
 Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
         <name>AvailablePhoneDecision</name>
         <label>¿Phone disponible?</label>
-        <locationX>275</locationX>
-        <locationY>911</locationY>
+        <locationX>182</locationX>
+        <locationY>1031</locationY>
         <defaultConnector>
             <targetReference>ErrorStatusAssignment</targetReference>
         </defaultConnector>
@@ -52,7 +52,7 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
                 <leftValueReference>GetScope.PrimaryPhone__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -69,9 +69,38 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
         </rules>
     </decisions>
     <decisions>
+        <name>CampaignTelemarketingDecision</name>
+        <label>¿Campaña Telemarketing?</label>
+        <locationX>380</locationX>
+        <locationY>791</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>YesCampaignTelemarketingOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetCampaign.RecordTypeId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCampaign.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Telemarketing</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetScope</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>HasPhoneDecision</name>
         <label>¿Tiene Phone?</label>
-        <locationX>176</locationX>
+        <locationX>198</locationX>
         <locationY>311</locationY>
         <defaultConnector>
             <targetReference>LeadDecision</targetReference>
@@ -84,7 +113,7 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
                 <leftValueReference>$Record.Phone</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -101,7 +130,7 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
         <description>Se necesita PersonAccounts</description>
         <name>LeadDecision</name>
         <label>¿Es Lead?</label>
-        <locationX>473</locationX>
+        <locationX>611</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -159,7 +188,7 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
     <recordLookups>
         <name>GetAccount</name>
         <label>Cuenta</label>
-        <locationX>275</locationX>
+        <locationX>380</locationX>
         <locationY>551</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -180,11 +209,11 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
     <recordLookups>
         <name>GetCampaign</name>
         <label>Campaña</label>
-        <locationX>275</locationX>
+        <locationX>380</locationX>
         <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>GetScope</targetReference>
+            <targetReference>CampaignTelemarketingDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -201,8 +230,8 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
     <recordLookups>
         <name>GetScope</name>
         <label>Ámbito</label>
-        <locationX>275</locationX>
-        <locationY>791</locationY>
+        <locationX>182</locationX>
+        <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AvailablePhoneDecision</targetReference>
@@ -227,7 +256,7 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>72</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>HasPhoneDecision</targetReference>
