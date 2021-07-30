@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>NofityKPIEnded</name>
+        <label>Nofity KPI Ended</label>
+        <locationX>834</locationX>
+        <locationY>806</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>UpdateSentNotifications</targetReference>
+        </connector>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Notification_type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>BodyPlanEnded</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Plan de acción finalizado</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>RecipientId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <description>Avisa a la persona a la que ha sido asignado el Plan Comercial que ha superado el KPI establecido.</description>
+        <name>NofityKPIReached</name>
+        <label>Nofity KPI Reached</label>
+        <locationX>339</locationX>
+        <locationY>483</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>End_Date_Reached</targetReference>
+        </connector>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Notification_type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>BodyKPIReached</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>¡Objetivo alcanzado!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>RecipientId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>NotifyWeekLeft</name>
+        <label>Notify Week Left</label>
+        <locationX>376</locationX>
+        <locationY>925</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>UpdateSentNotifications</targetReference>
+        </connector>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Notification_type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>BodyWeekLeft</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Queda 1 semana</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>RecipientId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>52.0</apiVersion>
+    <assignments>
+        <description>Asigna el id del receptor de la notificación</description>
+        <name>Assign_Notification</name>
+        <label>Assign Notification</label>
+        <locationX>117</locationX>
+        <locationY>293</locationY>
+        <assignmentItems>
+            <assignToReference>RecipientId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.AssignedTo__r.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>KPIRreached</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Valida se el plan comercial ha llegado a la fecha límite</description>
+        <name>End_Date_Reached</name>
+        <label>End Date Reached</label>
+        <locationX>109</locationX>
+        <locationY>672</locationY>
+        <defaultConnector>
+            <targetReference>WeekLeft</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Fecha fin no alcanzada</defaultConnectorLabel>
+        <rules>
+            <name>EndDateReached</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.EndDate__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>Today</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SentEndReached</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NofityKPIEnded</targetReference>
+            </connector>
+            <label>End date reached</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Valida si ha alcanzado el KPI definido, en cuyo caso enviará una notificación si no ha sido enviado previamente.</description>
+        <name>KPIRreached</name>
+        <label>KPI reached</label>
+        <locationX>112</locationX>
+        <locationY>487</locationY>
+        <defaultConnector>
+            <targetReference>End_Date_Reached</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>KPI_reached</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>TargetKPIReached</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SentKPIReached</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NofityKPIReached</targetReference>
+            </connector>
+            <label>KPI reached</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Valida si va a ser necesario enviar alguna notificación.</description>
+        <name>SendAnynotification</name>
+        <label>Send any notificaction?</label>
+        <locationX>611</locationX>
+        <locationY>151</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>(1 AND 2) OR (3 AND 4) OR (5 AND 6)</conditionLogic>
+            <conditions>
+                <leftValueReference>TargetKPIReached</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SentKPIReached</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.EndDate__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>Today</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SentEndReached</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.EndDate__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>NextWeek</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SentWeekLeft</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Notification_type</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Valida si queda menos de una semana para que finalice el Plan comercial</description>
+        <name>WeekLeft</name>
+        <label>Week Left</label>
+        <locationX>123</locationX>
+        <locationY>911</locationY>
+        <defaultConnector>
+            <targetReference>UpdateSentNotifications</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Week</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.EndDate__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>NextWeek</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SentWeekLeft</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NotifyWeekLeft</targetReference>
+            </connector>
+            <label>Week left</label>
+        </rules>
+    </decisions>
+    <description>SDM: gestiona la lógica de la gestión del envío de notificaciones se los planes comerciales</description>
+    <formulas>
+        <description>Calcula la fecha de hacer 7 días</description>
+        <name>NextWeek</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()+7</expression>
+    </formulas>
+    <formulas>
+        <name>Recipient</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.AssignedTo__r.Id}</expression>
+    </formulas>
+    <formulas>
+        <description>Verdadero si se ha enviado la notificación de que ha llegado la fecha fin el plan</description>
+        <name>SentEndReached</name>
+        <dataType>Boolean</dataType>
+        <expression>INCLUDES( {!$Record.SentNotifications__c},&quot;03&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>Es verdadero si se ha enviado la notificación KPI alcanzado</description>
+        <name>SentKPIReached</name>
+        <dataType>Boolean</dataType>
+        <expression>INCLUDES( {!$Record.SentNotifications__c},&quot;01&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>SentNotificationPicklist</name>
+        <dataType>String</dataType>
+        <expression>IF
+(
+   INCLUDES({!$Record.SentNotifications__c}, &quot;01&quot;) = true, 
+  &quot;01;&quot;,
+  IF 
+  ( 
+    {!NofityKPIReached} = true, 
+    &quot;01;&quot; , 
+    &quot;&quot;
+  )
+)
+&amp;
+IF
+(
+   INCLUDES({!$Record.SentNotifications__c}, &quot;02&quot;) = true, 
+  &quot;02;&quot;,
+  IF 
+  ( 
+    {!NofityKPIEnded} = true, 
+    &quot;02;&quot; , 
+    &quot;&quot;
+  )
+)
+&amp;
+IF
+(
+   INCLUDES({!$Record.SentNotifications__c}, &quot;03&quot;) = true, 
+  &quot;03;&quot;,
+  IF 
+  ( 
+    {!NotifyWeekLeft} = true, 
+    &quot;03;&quot; , 
+    &quot;&quot;
+  )
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Verdadero si se ha enviado notificación de que falta 1 semana para finalizar el KPI</description>
+        <name>SentWeekLeft</name>
+        <dataType>Boolean</dataType>
+        <expression>INCLUDES( {!$Record.SentNotifications__c},&quot;02&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>Unifica en un único campo los campos de los KPI objetivo</description>
+        <name>TargetKPI</name>
+        <dataType>Number</dataType>
+        <expression>CASE
+(
+  {!$Record.Indicator__c},
+  &quot;PN&quot;,  {!$Record.TargetKPINumber__c},
+  &quot;PoliciesPN&quot;,  {!$Record.TargetKPINumber__c},
+  &quot;PoliciesInForce&quot;,  {!$Record.TargetKPINumber__c},
+  &quot;Portfolio&quot;,  {!$Record.TargetKPICurrency__c},
+  &quot;Ratio_PNIncrease&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_PoliciesPNIncreas&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_PoliciesInForceIncrease&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_PortIncrease&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_Claim&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_Retention&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Totaldiscount&quot;,  {!$Record.TargetKPIPercent__c},
+  0
+)</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <description>Valida si se ha alcanzado el KPI</description>
+        <name>TargetKPIReached</name>
+        <dataType>Boolean</dataType>
+        <expression>IF 
+(
+  AND 
+  (
+    ISPICKVAL( {!$Record.SendNotifications__c}, &quot;01&quot;),
+    {!$Record.Actual_KPI__c} &gt;= {!TargetKPI}
+  )
+  ||
+  AND 
+  (
+    ISPICKVAL( {!$Record.SendNotifications__c}, &quot;02&quot;),
+    {!$Record.Actual_KPI__c} &lt;= {!TargetKPI}
+  ),
+  true,
+  false
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Guarda la fecha de hoy</description>
+        <name>Today</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
+    </formulas>
+    <interviewLabel>SDM - Notifications {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SDM - Notifications</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Notification_type</name>
+        <label>Notification type</label>
+        <locationX>433</locationX>
+        <locationY>284</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Notification</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SDMPlanComercial</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>UpdateSentNotifications</name>
+        <label>Update Sent Notifications</label>
+        <locationX>235</locationX>
+        <locationY>1179</locationY>
+        <inputAssignments>
+            <field>SentNotifications__c</field>
+            <value>
+                <elementReference>SentNotificationPicklist</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>199</locationX>
+        <locationY>34</locationY>
+        <connector>
+            <targetReference>SendAnynotification</targetReference>
+        </connector>
+        <object>PlanComercial__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+    <textTemplates>
+        <name>BodyKPIReached</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Se ha cumplido la condición que especificaste en el plan de acción con asunto &quot;{!$Record.Name}&quot;, si te gustaría comunicárselo al mediador puedes enviarle un e-mail</text>
+    </textTemplates>
+    <textTemplates>
+        <name>BodyPlanEnded</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>El plan de acción con asunto “{!$Record.Name}” ha llegado a su fecha de vencimiento. Recuerda que puedes ver el detalle de la consecución del objetivo en el propio plan de acción</text>
+    </textTemplates>
+    <textTemplates>
+        <name>BodyWeekLeft</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>El plan de acción con asunto “{!$Record.Name}” finalizará en una semana. Recuerda que puedes modificar la fecha de vencimiento o modificar el objetivo establecido antes de su vencimiento</text>
+    </textTemplates>
+    <variables>
+        <name>RecipientId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>test</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>User</objectType>
+    </variables>
+</Flow>

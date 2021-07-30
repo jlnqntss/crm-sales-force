@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Indicador</label>
+    <name>Indicator__c</name>
+    <picklistValues>
+        <masterLabel>% Crec PN vs pa</masterLabel>
+        <translation><!-- % Crec PN vs pa --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>% Crec Pólizas PN vs pa</masterLabel>
+        <translation><!-- % Crec Pólizas PN vs pa --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>% Crec Pólizas vigor vs pa</masterLabel>
+        <translation><!-- % Crec Pólizas vigor vs pa --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>% Dto. Total</masterLabel>
+        <translation><!-- % Dto. Total --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>% Retention Ratio</masterLabel>
+        <translation><!-- % Retention Ratio --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>% Sin Total</masterLabel>
+        <translation><!-- % Sin Total --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>% crecimiento cartera</masterLabel>
+        <translation><!-- % crecimiento cartera --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cartera</masterLabel>
+        <translation><!-- Cartera --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PN</masterLabel>
+        <translation><!-- PN --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Pólizas PN</masterLabel>
+        <translation><!-- Pólizas PN --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Pólizas en vigor</masterLabel>
+        <translation><!-- Pólizas en vigor --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

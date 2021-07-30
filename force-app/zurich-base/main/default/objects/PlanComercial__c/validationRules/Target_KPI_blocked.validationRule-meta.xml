@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Target_KPI_blocked</fullName>
+    <active>true</active>
+    <description>SDM: el KPI objetivo no puede ser modificado si el plan ha finalizado.</description>
+    <errorConditionFormula>AND
+(
+OR
+(
+ISCHANGED( TargetKPINumber__c),
+ISCHANGED( TargetKPICurrency__c),
+ISCHANGED( TargetKPIPercent__c)
+),
+Status__c = &quot;Cerrado&quot;
+)</errorConditionFormula>
+    <errorDisplayField>TargetKPINumber__c</errorDisplayField>
+    <errorMessage>El KPI objetivo no puede ser modificado si el plan ha finalizado.</errorMessage>
+</ValidationRule>

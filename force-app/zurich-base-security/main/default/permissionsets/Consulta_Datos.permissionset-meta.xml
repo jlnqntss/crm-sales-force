@@ -1118,6 +1118,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.RobotTypificationFailed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.SlaExitDate</field>
         <readable>true</readable>
     </fieldPermissions>

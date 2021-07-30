@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tipo de acumulado</label>
+    <name>AccumulateType__c</name>
+    <picklistValues>
+        <masterLabel>Current month</masterLabel>
+        <translation>Mes actual</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>YTD</masterLabel>
+        <translation>YTD</translation>
+    </picklistValues>
+</CustomFieldTranslation>

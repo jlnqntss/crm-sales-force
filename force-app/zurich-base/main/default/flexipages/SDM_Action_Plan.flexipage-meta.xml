@@ -32,11 +32,19 @@
     <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>required</value>
+                </fieldInstanceProperties>
                 <fieldItem>Record.Name</fieldItem>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
             <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>required</value>
+                </fieldInstanceProperties>
                 <fieldItem>Record.AssignedTo__c</fieldItem>
             </fieldInstance>
         </itemInstances>
@@ -103,11 +111,6 @@
         <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.Status__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.Notified__c</fieldItem>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -221,10 +224,41 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.TargetKPIPercent__c</fieldItem>
                 <visibilityRule>
+                    <booleanFilter>1 OR 2 OR 3 OR 4 OR 5 OR 6 OR 7</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Portfolio</rightValue>
+                        <rightValue>Ratio_PNIncrease</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Indicator__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ratio_PoliciesPNIncreas</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Indicator__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ratio_PoliciesInForceIncrease</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Indicator__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ratio_PortIncrease</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Indicator__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ratio_Claim</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Indicator__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Ratio_Retention</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Indicator__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Totaldiscount</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -264,41 +298,10 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.TargetKPICurrency__c</fieldItem>
                 <visibilityRule>
-                    <booleanFilter>1 OR 2 OR 3 OR 4 OR 5 OR 6 OR 7</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Ratio_PNIncrease</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Indicator__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Ratio_PoliciesPNIncreas</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Indicator__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Ratio_PoliciesInForceIncrease</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Indicator__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Ratio_PortIncrease</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Indicator__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Ratio_Claim</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Indicator__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Ratio_Retention</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Indicator__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Totaldiscount</rightValue>
+                        <rightValue>Portfolio</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -394,12 +397,79 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>PlanComercial__c.Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>CombinedAttachments</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListComponentOverride</name>
+                    <value>NONE</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>rowsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showActionBar</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentName>force:relatedListSingleContainer</componentName>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>PlanComercial__c.Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>Histories</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListComponentOverride</name>
+                    <value>NONE</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>rowsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showActionBar</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentName>force:relatedListSingleContainer</componentName>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-abb4d131-3dad-49f5-9869-d87a7080b04c</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>body</name>
                     <value>Facet-ce8026a6-39ff-4a5e-8ef1-0efe1d5bb520</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
                     <value>Standard.Tab.detail</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-abb4d131-3dad-49f5-9869-d87a7080b04c</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Standard.Tab.relatedLists</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
             </componentInstance>

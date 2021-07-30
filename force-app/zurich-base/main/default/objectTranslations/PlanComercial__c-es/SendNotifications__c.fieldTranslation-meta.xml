@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Enviar notificación</label>
+    <name>SendNotifications__c</name>
+    <picklistValues>
+        <masterLabel>Above threshold</masterLabel>
+        <translation>Superior al límite</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Below threshold</masterLabel>
+        <translation>Inferior al límite</translation>
+    </picklistValues>
+</CustomFieldTranslation>

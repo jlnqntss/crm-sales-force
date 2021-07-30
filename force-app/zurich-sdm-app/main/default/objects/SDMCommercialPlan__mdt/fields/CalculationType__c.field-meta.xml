@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CalculationType__c</fullName>
+    <description>Define la operación que se va a realizar a la hora de calcular el KPI real</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>CalculationType</label>
+    <required>true</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sum</fullName>
+                <default>true</default>
+                <label>Sum</label>
+            </value>
+            <value>
+                <fullName>Ratio</fullName>
+                <default>false</default>
+                <label>Ratio</label>
+            </value>
+            <value>
+                <fullName>Growth</fullName>
+                <default>false</default>
+                <label>Growth</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
