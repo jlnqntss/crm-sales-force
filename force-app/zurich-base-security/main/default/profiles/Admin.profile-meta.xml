@@ -4118,6 +4118,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.LeadBusinessCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LeadPhone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.LeadWebId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5294,6 +5309,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>CampaignMember.EmailOptOutContact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CampaignMember.LeadPhone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13156,6 +13176,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Campaign-Campaign Layout</layout>
+        <recordType>Default</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Campaign-Telemarketing</layout>
+        <recordType>Campaign.Telemarketing</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CampaignInfluenceModel-Campaign Influence Model Layout</layout>
@@ -14177,7 +14202,7 @@
         <modifyAllRecords>true</modifyAllRecords>
         <object>KPI__c</object>
         <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>    
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -15378,6 +15403,16 @@
         <recordType>Asset.Person</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Campaign.Telemarketing</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Campaign.Default</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>    
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Case.Claim</recordType>

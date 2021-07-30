@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LeadPhone__c</fullName>
+    <description>ZE - Campañas telemarketing. Phone es read-only y se necesita un campo editable desde el Flow</description>
+    <externalId>false</externalId>
+    <label>Lead Phone</label>
+    <required>false</required>
+    <type>Phone</type>
+</CustomField>

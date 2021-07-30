@@ -3,6 +3,21 @@
     <description>Gestión de ofertas y campañas</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.LeadBusinessCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LeadPhone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Asset.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -384,6 +399,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Asset.YearOfconstruction__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CampaignMember.LeadPhone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

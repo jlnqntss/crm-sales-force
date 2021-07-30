@@ -4125,6 +4125,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.LeadBusinessCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LeadPhone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.LeadWebId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5081,6 +5096,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>CampaignMember.EmailOptOutContact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CampaignMember.LeadPhone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7292,7 +7312,7 @@
         <editable>true</editable>
         <field>KPI__c.EstructuraUnificada__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>KPI__c.LoB__c</field>
@@ -7492,7 +7512,7 @@
         <editable>true</editable>
         <field>KPI__c.Totaldiscount__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Label_Translations__mdt.English__c</field>
@@ -12653,7 +12673,12 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Campaign-Campaign Layout</layout>
+        <recordType>Default</recordType>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>Campaign-Telemarketing</layout>
+        <recordType>Campaign.Telemarketing</recordType>
+    </layoutAssignments>   
     <layoutAssignments>
         <layout>CampaignInfluenceModel-Campaign Influence Model Layout</layout>
     </layoutAssignments>
@@ -14014,7 +14039,7 @@
         <object>et4ae5__SupportRequest__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions    >
-    
+
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -14827,6 +14852,16 @@
         <recordType>Asset.Person</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Campaign.Telemarketing</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Campaign.Default</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>    
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Case.Claim</recordType>

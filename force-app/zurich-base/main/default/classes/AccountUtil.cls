@@ -125,10 +125,12 @@ public class AccountUtil
      *
      * @author adelgado
      * @date 07/12/2020
+     * @edit 30/7/2021 ZE Campaña Telemarketing
      */
     public static void generateScope(List<Account> newList)
     {
         List<Account> accountsToGenerateScope = new List<Account>();
+        List<Account> accountsTelemarketingToGenerateScope = new List<Account>();
 
         for(Account account : newList)
         {
@@ -136,11 +138,20 @@ public class AccountUtil
             {
                 accountsToGenerateScope.add(account);
             }
+            else if(String.isNotBlank(account.LeadSource__c) && account.LeadSource__c == 'Telemarketing')
+            {//ZE Campaña Telemarketing
+                accountsTelemarketingToGenerateScope.add(account);
+            }
         }
 
         if( !accountsToGenerateScope.isEmpty() )
         {
             GenerateScopeUtil.generateScopeEvents('Id', null, accountsToGenerateScope);
+        }
+        //ZE Campaña Telemarketing
+        if( !accountsTelemarketingToGenerateScope.isEmpty() )
+        {//BusinessCode: 3200012491
+            GenerateScopeUtil.generateScopeEvents('Id', 'LeadBusinessCode__c', accountsTelemarketingToGenerateScope);
         }
     }
 }
