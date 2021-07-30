@@ -31,6 +31,10 @@
                 <behavior>Readonly</behavior>
                 <field>ScopeId__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LeadPhone__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

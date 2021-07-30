@@ -71,6 +71,14 @@
                 <behavior>Edit</behavior>
                 <field>purecloud__PureCloud_Campaign_Priority__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>StartDate</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>EndDate</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -78,7 +86,7 @@
                 <field>purecloud__PureCloud_Campaign_Schedule__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>purecloud__PureCloud_Campaign_Setting__c</field>
             </layoutItems>
             <layoutItems>
