@@ -3,7 +3,7 @@
     <fullName>LeadSource__c</fullName>
     <description>ZE - Campaña Telemarketing. Sirve para filtrar el registro en el trigger AccountUtil y generar Scope para dichas cuentas. El filtro es &apos;Telemarketing&apos;</description>
     <externalId>false</externalId>
-    <label>Lead Source</label>
+    <label>Lead Telemarketing Source</label>
     <length>255</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
