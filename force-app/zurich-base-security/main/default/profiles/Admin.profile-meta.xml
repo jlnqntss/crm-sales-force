@@ -4118,6 +4118,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.LeadBusinessCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.LeadWebId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5294,6 +5304,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>CampaignMember.EmailOptOutContact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CampaignMember.LeadPhone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14176,7 +14191,7 @@
         <modifyAllRecords>true</modifyAllRecords>
         <object>KPI__c</object>
         <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>    
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
