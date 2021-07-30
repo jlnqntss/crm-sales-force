@@ -164,4 +164,28 @@ public class Test_AccountUtil
         System.assertEquals(20, scopes.size(), 'No se han generado todos los ámbitos necesarios');
 
     }
+
+    /**
+     * Test que comprueba la generación del ámbito correspondiente para cuentas cargadas desde CSV
+     * @date 30/7/2021
+     */
+    @isTest
+    static void test_generateScope_Telemarketing()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Lead', 20);
+
+        for(Integer i = 0; i < accounts.size(); i++)
+        {
+            accounts[i].LeadBusinessCode__c = '3200012491'; //Scope Setting
+            accounts[i].LeadSource__c = 'Telemarketing';
+        }
+
+        Test.startTest();
+        insert accounts;
+        Test.stopTest();
+
+        List<Scope__c> scopes = [SELECT Id, Name FROM Scope__c WHERE AccountId__c IN : accounts];
+
+        System.assertEquals(20, scopes.size(), 'No se han generado todos los ámbitos necesarios');
+    }
 }
