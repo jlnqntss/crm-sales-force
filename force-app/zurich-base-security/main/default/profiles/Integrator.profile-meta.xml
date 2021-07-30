@@ -14853,7 +14853,7 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>Campaign.Telemarketing</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
