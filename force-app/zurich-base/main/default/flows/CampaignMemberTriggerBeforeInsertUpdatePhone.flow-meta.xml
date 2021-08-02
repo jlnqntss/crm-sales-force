@@ -52,7 +52,7 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
                 <leftValueReference>GetScope.PrimaryPhone__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue></stringValue>
+                    <stringValue/>
                 </rightValue>
             </conditions>
             <conditions>
@@ -110,14 +110,14 @@ Si todo bien, asignar PrimaryPhone__c a CampaignMember.Phone</description>
             <name>YesHasPhoneOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Phone</leftValueReference>
+                <leftValueReference>$Record.LeadPhone__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue></stringValue>
+                    <stringValue/>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Phone</leftValueReference>
+                <leftValueReference>$Record.LeadPhone__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
