@@ -6815,6 +6815,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.IdentifiedByANI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.IdentifiedByNIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.InboundOutbound__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6826,6 +6836,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.Location</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.MultiIdentifiedByANI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.MultiIdentifiedByNIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.NoIdentified__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9830,7 +9855,32 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.IdentifiedByANI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.IdentifiedByNIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.InboundOutbound__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.MultiIdentifiedByANI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.MultiIdentifiedByNIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.NoIdentified__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12678,7 +12728,7 @@
     <layoutAssignments>
         <layout>Campaign-Telemarketing</layout>
         <recordType>Campaign.Telemarketing</recordType>
-    </layoutAssignments>   
+    </layoutAssignments>
     <layoutAssignments>
         <layout>CampaignInfluenceModel-Campaign Influence Model Layout</layout>
     </layoutAssignments>
@@ -14861,7 +14911,7 @@
         <default>true</default>
         <recordType>Campaign.Default</recordType>
         <visible>true</visible>
-    </recordTypeVisibilities>    
+    </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Case.Claim</recordType>
