@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>KPI_Fields_blocked</fullName>
+    <active>true</active>
+    <description>Bloquea los campos que se usan para el cálculo del KPI.</description>
+    <errorConditionFormula>(
+  ISCHANGED( Intermediary__c ) 
+ ||  
+  ISCHANGED(  AccumulateType__c ) 
+ ||  
+  ISCHANGED(  Indicator__c ) 
+ ||  
+  ISCHANGED(  Product__c ) 
+ ||  
+  ISCHANGED(  Segment__c )
+)
+&amp;&amp; 
+NOT(ISNULL( Actual_KPI__c ))</errorConditionFormula>
+    <errorMessage>Una vez el KPI real ha sido informado no se pueden modificar los campos que se utilizan para su cálculo: Intermediario, indicador, producto, segmento y tipo de acumulado.</errorMessage>
+</ValidationRule>

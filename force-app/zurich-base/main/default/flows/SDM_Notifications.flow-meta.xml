@@ -3,12 +3,12 @@
     <actionCalls>
         <name>NofityKPIEnded</name>
         <label>Nofity KPI Ended</label>
-        <locationX>834</locationX>
-        <locationY>806</locationY>
+        <locationX>363</locationX>
+        <locationY>713</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
-            <targetReference>UpdateSentNotifications</targetReference>
+            <targetReference>WeekLeft</targetReference>
         </connector>
         <inputParameters>
             <name>customNotifTypeId</name>
@@ -86,8 +86,8 @@
     <actionCalls>
         <name>NotifyWeekLeft</name>
         <label>Notify Week Left</label>
-        <locationX>376</locationX>
-        <locationY>925</locationY>
+        <locationX>362</locationX>
+        <locationY>979</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -146,8 +146,8 @@
         <description>Valida se el plan comercial ha llegado a la fecha límite</description>
         <name>End_Date_Reached</name>
         <label>End Date Reached</label>
-        <locationX>109</locationX>
-        <locationY>672</locationY>
+        <locationX>139</locationX>
+        <locationY>675</locationY>
         <defaultConnector>
             <targetReference>WeekLeft</targetReference>
         </defaultConnector>
@@ -482,7 +482,7 @@ IF
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>BodyKPIReached</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
