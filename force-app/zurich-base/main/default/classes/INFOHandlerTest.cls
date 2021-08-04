@@ -97,15 +97,20 @@ private class INFOHandlerTest
             TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NOTE', 10)
             );
 
+        //Special Condition
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'SPECIAL_CONDITION', 10)
+            );
+
         insert externalRequestList;
     }
 
     /**
      * Crea datos de prueba en el mapa de equivalencias por entidad para usarlo en los Test
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 25/02/2021
-     * 
+     *
      * @param {Map<String, Map<String, String>>} mapa de equivalencias por Entidad (debera estar inicializado)
      */
     static void createEquivalenceSettigs(Map<String, Map<String, String>> mapEquivalences)
@@ -115,14 +120,14 @@ private class INFOHandlerTest
         // Recuperamos un RecordType de Asset para usarlo como valor en la equivalencia
         Map<String, Schema.RecordTypeInfo> recordTypes =  Schema.SObjectType.Asset.getRecordTypeInfosByName();
         RecordTypeInfo rt = recordTypes.values()[0];
-        
+
         // Recuperamos los valores de la picklist ObjectType__c para usarlos como clave en la equivalencia
         Schema.DescribeFieldResult objectTypeFieldResult = Asset.ObjectType__c.getDescribe();
         List<Schema.PicklistEntry> objectTypeValues = objectTypeFieldResult.getPicklistValues();
         mapEquivalences.put(INFOHandler.INSURED_OBJECT, new Map<String, String>());
         for(Schema.PicklistEntry pe: objectTypeValues) {
             mapEquivalences.get(INFOHandler.INSURED_OBJECT).put(pe.value, rt.developername);
-        }   
+        }
     }
 
     @isTest
@@ -173,7 +178,7 @@ private class INFOHandlerTest
                                                                                       ExternalRequest__c.Origin__c,
                                                                                       ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
 
-        
+
         // Configuracion de los metadatos para el Test
         INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
         createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
@@ -228,7 +233,7 @@ private class INFOHandlerTest
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(),
             'No se ha generado correctamente el mapa de registros de policy'
             );
-        // FIXME: 
+        // FIXME:
         System.assertEquals(
             10,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(),
@@ -269,6 +274,11 @@ private class INFOHandlerTest
                 INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(),
                 'No se ha generado correctamente el mapa de registros de Case'
                 );
+        System.assertEquals(
+            10,
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(),
+            'No se ha generado correctamente el mapa de registros de Special_Condition__c'
+            );
     }
 
     @isTest
@@ -312,7 +322,7 @@ private class INFOHandlerTest
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(), 'No se ha generado correctamente el mapa de registros de quote');
-        
+
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de quote relationship');
@@ -325,6 +335,7 @@ private class INFOHandlerTest
         System.assertEquals(10, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
         System.assertEquals(10, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy relationship');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(), 'No se ha generado correctamente el mapa de registros de Case');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(), 'No se ha generado correctamente el mapa de registros de Special_Condition__c');
     }
 
     @isTest
@@ -352,7 +363,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            170,
+            180,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -383,7 +394,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            170,
+            180,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -426,6 +437,7 @@ private class INFOHandlerTest
         List<Claim__c> claimList = [SELECT Id FROM Claim__c];
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
         List<Case> caseList = [SELECT Id FROM Case];
+        List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
 
         System.assertEquals(
             40,
@@ -492,6 +504,11 @@ private class INFOHandlerTest
             caseList.size(),
             'No se han insertado todos los registros de Case'
             );
+        System.assertEquals(
+            10,
+            specialConditionList.size(),
+            'No se han insertado todos los registros de Special_Condition__c'
+            );
     }
 
     @isTest
@@ -526,9 +543,10 @@ private class INFOHandlerTest
 
         for(ExternalRequest__c externalRequest : externalRequestListUpserted)
         {
-            if(externalRequest.Entity__c == INFOHandler.POLICY || 
-                externalRequest.Entity__c == INFOHandler.POLICY_RELATIONSHIP || 
-                externalRequest.Entity__c == INFOHandler.NOTE)
+            if(externalRequest.Entity__c == INFOHandler.POLICY ||
+                externalRequest.Entity__c == INFOHandler.POLICY_RELATIONSHIP ||
+                externalRequest.Entity__c == INFOHandler.NOTE ||
+                externalRequest.Entity__c == INFOHandler.SPECIAL_CONDITION)
             {
                 externalRequest.Processed__C = false;
                 externalRequest.Action__C = 'DELETE';
@@ -560,6 +578,7 @@ private class INFOHandlerTest
         List<Claim__c> claimList = [SELECT Id FROM Claim__c];
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
         List<Case> caseList = [SELECT Id FROM Case];
+        List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
 
         System.assertEquals(40, accountList.size(), 'No se han insertado todos los registros de cuenta');
         System.assertEquals(20, contactList.size(), 'No se han insertado todos los registros de contacto');
@@ -574,6 +593,7 @@ private class INFOHandlerTest
         System.assertEquals(10, claimList.size(), 'No se han insertado todos los registros de siniestro');
         // FIXME: System.assertEquals(20, relaList.size(), 'No se han borrado todos los registros de relaciones');
         System.assertEquals(0, caseList.size(), 'No se han borrado todos los registros de Case');
+        System.assertEquals(0, specialConditionList.size(), 'No se han borrado todos los registros de Special_Condition__c');
 
     }
 
@@ -618,11 +638,11 @@ private class INFOHandlerTest
         ];
 
         System.assertEquals(
-            170,
+            180,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
-        // FIXME: 
+        // FIXME:
         System.assertEquals(
             0,
             externalRequestErrors.size(),
@@ -669,11 +689,11 @@ private class INFOHandlerTest
         List<ExternalRequestError__c> errors = [SELECT Id FROM ExternalRequestError__c];
 
         System.assertEquals(
-            170,
+            180,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
-        // FIXME: 
+        // FIXME:
         System.assertEquals(
             1,
             errors.size(),

@@ -25,7 +25,7 @@ private with sharing class CampaignMemberUtilTest
                     Label='New',
                     IsDefault=false,
                     HasResponded=false,
-                    SortOrder=4
+                    SortOrder=5
                     )
                 );
             newStatuses.add(
@@ -34,7 +34,7 @@ private with sharing class CampaignMemberUtilTest
                     Label='Delete',
                     IsDefault=false,
                     HasResponded=false,
-                    SortOrder=5
+                    SortOrder=6
                     )
                 );
         }

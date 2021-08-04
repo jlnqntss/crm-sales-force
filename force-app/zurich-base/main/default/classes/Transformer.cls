@@ -170,7 +170,7 @@ public class Transformer
 
         return recordsByEntityAndObject;
     }
-    
+
     @TestVisible
     class FieldParser
     {
@@ -214,7 +214,7 @@ public class Transformer
             return null;
         }
     }
-    
+
     @TestVisible
     private FieldParser parser;
     @TestVisible
@@ -224,9 +224,9 @@ public class Transformer
         {
             when 'INFO'
             {
-                return new FieldParser(); 
+                return new FieldParser();
             }
-            when else 
+            when else
             {
                 return null;
             }
@@ -387,7 +387,7 @@ public class Transformer
             {
                 record.put( sfFieldName, parser.parseDatetimeField((String) fieldValue) );
             }
-            when else 
+            when else
             {
                 record.put( sfFieldName, fieldValue );
             }

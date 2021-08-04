@@ -740,7 +740,7 @@ public class TestDataFactory
 
         Schema.DescribeFieldResult objectTypeFieldResult = Asset.ObjectType__c.getDescribe();
 		List<Schema.PicklistEntry> objectTypeValues = objectTypeFieldResult.getPicklistValues();
-        String objectType = 
+        String objectType =
             objectTypeValues[Integer.valueof( (Math.random() * objectTypeValues.size() - 1) )].getValue();
 
         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
@@ -1285,6 +1285,47 @@ public class TestDataFactory
     }
 
     /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad Special_Condition__c
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @date 5/7/2021
+     */
+    public static List<Map<String, Object> > getINFOSpecialConditionJson(Integer totalItems)
+    {
+        return buildINFOSpecialConditionJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOSpecialConditionJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO SPECIAL CONDITION*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                    'id_unico_cond_esp' => String.valueOf(i + 1).leftPad(9, '0'),
+                    'partner_id' => 'Partner' + String.valueOf(i + 1).leftPad(3, '0'), //debe coincidir por ExternalId
+                    'cond_esp_tipo_desc' => 'Test Tipo',
+                    'cond_esp_desc' => 'Test Descripción',
+                    'cond_esp_fecha_inicio' => Date.today(),
+                    'cond_esp_fecha_fin' =>  Date.today().addDays(10)
+            }
+                );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
      * Generar registros de ExternalRequest__c a partir de los JSON de prueba
      **
      * @param String Origen
@@ -1600,6 +1641,24 @@ public class TestDataFactory
                             ContentFormat__c = 'JSON',
                             recordTypeId = infoRecordTypeId,
                             NumRetry__c = 2
+                            )
+                        );
+                }
+            }
+            // Condición Especial Partner
+            when 'SPECIAL_CONDITION' {
+                for (
+                    Map<String, Object> payload : getINFOSpecialConditionJson(numRecords)
+                    )
+                {
+                    externalRequestList.add(
+                        new ExternalRequest__c(
+                            Origin__c = origin,
+                            Entity__c = 'SPECIAL_CONDITION',
+                            Action__c = 'UPSERT',
+                            Payload__c = JSON.serialize(payload),
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
                             )
                         );
                 }
@@ -3101,9 +3160,9 @@ public class TestDataFactory
     }
 
     /**
-     * Genera una lista de ContactRequests con un identificador de Genesys y asociados a una 
+     * Genera una lista de ContactRequests con un identificador de Genesys y asociados a una
      * cuenta dada.
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 03/06/2021
      * @param {Id accountId} El id de la cuenta
