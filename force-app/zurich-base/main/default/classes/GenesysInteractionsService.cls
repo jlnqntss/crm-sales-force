@@ -60,6 +60,7 @@ public without sharing class GenesysInteractionsService
      * WIP: Falta definir qué campos rellenar en la task
      * @author nescudero
      * @date 22/10/2020
+     * @edit 4/8/2021 Añadidas estadísticas con checkbox para informes
      */
     public static String createOnQueueInteraction(Interaction interactionLog)
     {
@@ -108,6 +109,16 @@ public without sharing class GenesysInteractionsService
             {
                 interactionTask.BestAgent__c = agents[0].Id;
             }
+        }
+
+        //20210804: Estadísticas/Informes
+        if(interactionLog.caller != null)
+        {
+            interactionTask.IdentifiedByNIF__c = interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false ? false : true;
+            interactionTask.IdentifiedByANI__c = interactionLog.caller.identifiedByANI == null || interactionLog.caller.identifiedByANI == false ? false : true;
+            interactionTask.NoIdentified__c = interactionLog.caller.noIdentified == null || interactionLog.caller.noIdentified == false ? false : true;
+            interactionTask.MultiIdentifiedByNIF__c = interactionLog.caller.multiIdentifiedByNIF == null || interactionLog.caller.multiIdentifiedByNIF == false ? false : true;
+            interactionTask.MultiIdentifiedByANI__c = interactionLog.caller.multiIdentifiedByANI == null || interactionLog.caller.multiIdentifiedByANI == false ? false : true;
         }
 
         insert interactionTask;
@@ -475,6 +486,28 @@ public without sharing class GenesysInteractionsService
             results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
         }
 
+        //20210804: Estadísticas/Informes
+        if(accounts.size() == 0)
+        {
+            results.noIdentified = true;
+        }
+        else if(accounts.size() == 1 && request.searchType == 'phone')
+        {
+            results.identifiedByANI = true;
+        }
+        else if(accounts.size() > 1 && request.searchType == 'phone')
+        {
+            results.multiIdentifiedByANI = true;
+        }
+        else if(accounts.size() == 1 && request.searchType == 'document')
+        {
+            results.identifiedByNIF = true;
+        }
+        else if(accounts.size() > 1 && request.searchType == 'document')
+        {
+            results.multiIdentifiedByNIF = true;
+        }
+
         return results;
     }
 
@@ -514,9 +547,23 @@ public without sharing class GenesysInteractionsService
             results.territoryCode = intermediary.ZoneCode__c;
             results.phone = String.isBlank(intermediary.MainMobilePhone__c)? intermediary.Phone : intermediary.MainMobilePhone__c;
             results.email = intermediary.MainEmail__c;
-            results.nationalId = intermediary.NationalId__c; 
+            results.nationalId = intermediary.NationalId__c;
 
             results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c));
+        }
+
+        //20210804: Estadísticas/Informes
+        if(accounts.size() == 0)
+        {
+            results.noIdentified = true;
+        }
+        else if(accounts.size() == 1 && request.searchType == 'phone')
+        {
+            results.identifiedByANI = true;
+        }
+        else if(accounts.size() > 1 && request.searchType == 'phone')
+        {
+            results.multiIdentifiedByANI = true;
         }
 
         return results;
@@ -920,7 +967,7 @@ public without sharing class GenesysInteractionsService
             }
             set;
         }
-        public String searchTerm 
+        public String searchTerm
         {
             get
             {
@@ -947,7 +994,7 @@ public without sharing class GenesysInteractionsService
 
         /**
          * Removes the whitespaces and converts characters to uppercase in the term parameter
-         * 
+         *
          * @author nts (agonzalezisasi)
          */
         private String cleanTerm(String term, String type)
@@ -956,7 +1003,7 @@ public without sharing class GenesysInteractionsService
 
             switch on type {
                 when 'document', 'car_registration' {
-                    result = result.deleteWhitespace().toUpperCase();        
+                    result = result.deleteWhitespace().toUpperCase();
                 }
                 when 'claim_number' {
                     result = result.deleteWhitespace().toUpperCase().leftPad(10, '0');
@@ -986,6 +1033,13 @@ public without sharing class GenesysInteractionsService
         public ActivePolicies policies;
         public OpenedClaims claims;
         public String nationalId;
+
+        //20210804: Estadísticas/Informes
+        public Boolean identifiedByNIF;
+        public Boolean identifiedByANI;
+        public Boolean noIdentified;
+        public Boolean multiIdentifiedByNIF;
+        public Boolean multiIdentifiedByANI;
 
         public override String toString()
         {
@@ -1368,7 +1422,7 @@ public without sharing class GenesysInteractionsService
     {
         public Boolean isDigitalCustomer;
         public String searchType;
-        public String value 
+        public String value
         {
             get
             {
@@ -1391,7 +1445,7 @@ public without sharing class GenesysInteractionsService
 
         /**
          * Removes the whitespaces and converts characters to uppercase in the term parameter
-         * 
+         *
          * @author nts (agonzalezisasi)
          */
         private String cleanTerm(String term, String type)
@@ -1400,7 +1454,7 @@ public without sharing class GenesysInteractionsService
 
             switch on type {
                 when 'document' {
-                    result = result.deleteWhitespace().toUpperCase();        
+                    result = result.deleteWhitespace().toUpperCase();
                 }
             }
 
