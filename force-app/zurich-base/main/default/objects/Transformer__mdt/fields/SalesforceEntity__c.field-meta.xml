@@ -80,6 +80,11 @@
                 <default>false</default>
                 <label>Case</label>
             </value>
+            <value>
+                <fullName>Special_Condition__c</fullName>
+                <default>false</default>
+                <label>Partner Special Condition</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
