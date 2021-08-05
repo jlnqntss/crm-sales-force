@@ -1004,7 +1004,7 @@ private without sharing class GenesysInteractionsServiceTest
     static void test_findActivePolicies()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
-        Id partnerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PartnerOCS').getRecordTypeId(); 
+        Id partnerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PartnerOCS').getRecordTypeId();
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
         List<Account> partners = [SELECT Id, PartnerSFCode__c FROM Account WHERE RecordTypeId = :partnerRecordTypeId LIMIT 2];
@@ -1529,5 +1529,135 @@ private without sharing class GenesysInteractionsServiceTest
         // Then
         //Como no existen Orders(KlincPolicy) ni Customer(ContactKlinc) pues se devuelve a false el parámetro
         System.assertEquals(false, digitalcustomer.isDigitalCustomer, 'Debería haber devuelto que isDigitalCustomer es false');
+    }
+
+    /**
+     * Valida la estadística: no identificación ni por ANI ni por NIF
+     * @date 04/08/2021
+     */
+    @IsTest
+    static void test_initInteraction_reportStatistics_noIdentified()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '3829291'; //este nº no se encuentra entre los registros y no va a ser encontrado
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+        testInteractionLog.filterBy  = 'customers';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = 'all';
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        List<Task> expectedTasks = [SELECT NoIdentified__c, IdentifiedByNIF__c, IdentifiedByANI__c, MultiIdentifiedByNIF__c, MultiIdentifiedByANI__c FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        System.assertEquals(false, expectedTasks.isEmpty(), 'No se han generado tareas');
+        System.assertEquals(true, expectedTasks[0].NoIdentified__c, 'Estadística: no ha sido identificado ni por ANI ni por NIF');
+        System.assertEquals(false, expectedTasks[0].IdentifiedByNIF__c, 'Estadística: ha sido identificado por NIF');
+        System.assertEquals(false, expectedTasks[0].IdentifiedByANI__c, 'Estadística: ha sido identificado por ANI');
+        System.assertEquals(false, expectedTasks[0].MultiIdentifiedByNIF__c, 'Estadística: multiples coincidencias por NIF');
+        System.assertEquals(false, expectedTasks[0].MultiIdentifiedByANI__c, 'Estadística: multiples coincidencias por ANI');
+    }
+
+     /**
+     * Valida la estadística: identificación por ANI
+     * @date 04/08/2021
+     */
+    @IsTest
+    static void test_initInteraction_reportStatistics_identifiedByANI()
+    {
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '123456789'; //existe un cliente con este nº y va a ser encontrado
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+        testInteractionLog.filterBy  = 'customers';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = 'all';
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        List<Task> expectedTasks = [SELECT NoIdentified__c, IdentifiedByNIF__c, IdentifiedByANI__c, MultiIdentifiedByNIF__c, MultiIdentifiedByANI__c FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        //System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(false, expectedTasks.isEmpty(), 'No se han generado tareas');
+        System.assertEquals(false, expectedTasks[0].NoIdentified__c, 'Estadística: no ha sido identificado ni por ANI ni por NIF');
+        System.assertEquals(false, expectedTasks[0].IdentifiedByNIF__c, 'Estadística: ha sido identificado por NIF');
+        System.assertEquals(true, expectedTasks[0].IdentifiedByANI__c, 'Estadística: ha sido identificado por ANI');
+        System.assertEquals(false, expectedTasks[0].MultiIdentifiedByNIF__c, 'Estadística: multiples coincidencias por NIF');
+        System.assertEquals(false, expectedTasks[0].MultiIdentifiedByANI__c, 'Estadística: multiples coincidencias por ANI');
+    }
+
+    /**
+     * Valida la estadística: identificación por ANI
+     * @date 04/08/2021
+     */
+    @IsTest
+    static void test_initInteraction_reportStatistics_multipleIdentifiedByANI()
+    {
+        //Crear un 2º cliente con mismo teléfono para que haya multiple coincidencia
+        List<Account> account = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert account;
+        List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(account, 1);
+        insert contactPointPhones;
+        contactPointPhones.get(0).TelephoneNumber = '123456789';
+        update contactPointPhones.get(0);
+
+        // When
+        GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
+
+        testInteractionLog.fromId = '123456789'; //existen varios clientes con este nº y la identifiación no sabrá decidir
+        testInteractionLog.interactionId = '98976-dsa-ad';
+        testInteractionLog.toId = '4000';
+        testInteractionLog.interactionType = 'Inbound';
+        testInteractionLog.filterBy  = 'customers';
+        testInteractionLog.lookFor = 'Opportunity';
+        testInteractionLog.scope = 'all';
+
+        // SOSL - Resultados de búsqueda
+        Set<Id> recordIds = new Map<Id, ContactPointPhone> ([SELECT Id FROM ContactPointPhone WHERE TelephoneNumber = : testInteractionLog.fromId]).keySet();
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.initInteraction(testInteractionLog);
+
+        Test.stopTest();
+
+        // Then
+        List<Task> expectedTasks = [SELECT NoIdentified__c, IdentifiedByNIF__c, IdentifiedByANI__c, MultiIdentifiedByNIF__c, MultiIdentifiedByANI__c FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+
+        //System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
+        System.assertEquals(false, expectedTasks.isEmpty(), 'No se han generado tareas');
+        System.assertEquals(false, expectedTasks[0].NoIdentified__c, 'Estadística: no ha sido identificado ni por ANI ni por NIF');
+        System.assertEquals(false, expectedTasks[0].IdentifiedByNIF__c, 'Estadística: ha sido identificado por NIF');
+        System.assertEquals(false, expectedTasks[0].IdentifiedByANI__c, 'Estadística: ha sido identificado por ANI');
+        System.assertEquals(false, expectedTasks[0].MultiIdentifiedByNIF__c, 'Estadística: multiples coincidencias por NIF');
+        System.assertEquals(true, expectedTasks[0].MultiIdentifiedByANI__c, 'Estadística: multiples coincidencias por ANI');
     }
 }

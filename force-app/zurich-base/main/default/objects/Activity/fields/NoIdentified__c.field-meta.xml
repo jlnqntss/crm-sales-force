@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NoIdentified__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>OCS - Informes: estadística de cuántos clientes no han podido ser identificados ni por ANI__c ni por NationalId__c. False quiere decir que no aplica, no que se haya identificado.</description>
+    <externalId>false</externalId>
+    <label>No Identified</label>
+    <type>Checkbox</type>
+</CustomField>

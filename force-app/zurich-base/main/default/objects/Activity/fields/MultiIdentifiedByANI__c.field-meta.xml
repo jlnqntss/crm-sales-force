@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MultiIdentifiedByANI__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>OCS - Informes: estadística de cuántas veces al intentar identificar por ANI__c han aparecido varios clientes.</description>
+    <externalId>false</externalId>
+    <label>Multi Identified By ANI</label>
+    <type>Checkbox</type>
+</CustomField>
