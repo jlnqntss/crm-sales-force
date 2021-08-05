@@ -5,6 +5,14 @@
         <translation>Email</translation>
     </valueTranslation>
     <valueTranslation>
+        <masterLabel>Massive tasks</masterLabel>
+        <translation>Tareas masivas</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Nota INFO</masterLabel>
+        <translation><!-- Nota INFO --></translation>
+    </valueTranslation>
+    <valueTranslation>
         <masterLabel>Phone</masterLabel>
         <translation>Teléfono</translation>
     </valueTranslation>

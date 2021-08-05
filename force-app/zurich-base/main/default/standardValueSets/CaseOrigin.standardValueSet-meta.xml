@@ -21,4 +21,9 @@
         <default>false</default>
         <label>Nota INFO</label>
     </standardValue>
+    <standardValue>
+        <fullName>MassiveTasks</fullName>
+        <default>false</default>
+        <label>Massive tasks</label>
+    </standardValue>
 </StandardValueSet>
