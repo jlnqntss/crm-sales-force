@@ -15,12 +15,12 @@
         <translation>Cliente final genérico</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>INFO note</masterLabel>
-        <translation>Nota INFO</translation>
-    </picklistValues>
-    <picklistValues>
         <masterLabel>Mediator</masterLabel>
         <translation>Mediador</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Other third parties</masterLabel>
+        <translation>Otros terceros</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Partner</masterLabel>
