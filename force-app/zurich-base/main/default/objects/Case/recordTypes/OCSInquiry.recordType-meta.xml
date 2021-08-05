@@ -757,6 +757,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>MassiveTasks</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>NoteINFO</fullName>
             <default>false</default>
         </values>
