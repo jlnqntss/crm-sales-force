@@ -56,7 +56,7 @@
             <value>
                 <fullName>INFO note</fullName>
                 <default>false</default>
-                <label>INFO note</label>
+                <label>Other third parties</label>
             </value>
         </valueSetDefinition>
     </valueSet>
