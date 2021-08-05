@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <description>SDM:  en función del mes seleccionado y la fecha de creación de registro, calcula la fecha de inicio y fin.</description>
+    <formulas>
+        <description>Fecha fin para el mes que se ha selecionado</description>
+        <name>EndDate</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE
+(
+  TEXT
+  (
+    Year
+    ( 
+      DATEVALUE
+      (
+        {!$Record.CreatedDate}
+      ) 
+    ) + {!NextYear}
+  ) 
+  + &quot;-&quot; +
+  TEXT
+  (
+    {!$Record.Month__c}
+  ) + &quot;-&quot; +
+  CASE
+  (
+    TEXT ( {!$Record.Month__c} ),
+    &quot;01&quot;, &quot;31&quot;,
+    &quot;02&quot;, &quot;28&quot;,
+    &quot;03&quot;, &quot;31&quot;,
+    &quot;04&quot;, &quot;30&quot;,
+    &quot;05&quot;, &quot;31&quot;,
+    &quot;06&quot;, &quot;30&quot;,
+    &quot;07&quot;, &quot;31&quot;,
+    &quot;08&quot;, &quot;31&quot;,
+    &quot;09&quot;, &quot;30&quot;,
+    &quot;10&quot;, &quot;31&quot;,
+    &quot;11&quot;, &quot;30&quot;,
+    &quot;12&quot;, &quot;31&quot;,
+    &quot;28&quot;
+  )
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Calcula si el mes seleccionado ya ha pasa, para saber si el plan comercial hace referencia a este año o el siguiente.</description>
+        <name>NextYear</name>
+        <dataType>Number</dataType>
+        <expression>IF
+(
+  MONTH( DATEVALUE( {!$Record.CreatedDate} ) ) &gt; VALUE(TEXT({!$Record.Month__c})),
+  1,
+  0
+)</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <description>Fecha de inicio del mes selccionado</description>
+        <name>StartDate</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE
+(
+  TEXT
+  (
+    Year
+    ( 
+      DATEVALUE
+      (
+        {!$Record.CreatedDate}
+      ) 
+    ) + {!NextYear}
+  ) 
+  + &quot;-&quot; +
+  TEXT
+  (
+    {!$Record.Month__c}
+  ) +
+  &quot;-01&quot;
+)</expression>
+    </formulas>
+    <interviewLabel>SDM - {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SDM - Dates from month</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_dates</name>
+        <label>Update dates</label>
+        <locationX>579</locationX>
+        <locationY>286</locationY>
+        <inputAssignments>
+            <field>EndDate__c</field>
+            <value>
+                <elementReference>EndDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StartDate__c</field>
+            <value>
+                <elementReference>StartDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>49</locationX>
+        <locationY>49</locationY>
+        <connector>
+            <targetReference>Update_dates</targetReference>
+        </connector>
+        <filterLogic>1 OR 2</filterLogic>
+        <filters>
+            <field>AccumulateType__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Month__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>PlanComercial__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

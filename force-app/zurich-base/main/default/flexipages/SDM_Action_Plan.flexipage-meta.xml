@@ -110,7 +110,7 @@
         </itemInstances>
         <itemInstances>
             <fieldInstance>
-                <fieldItem>Record.Status__c</fieldItem>
+                <fieldItem>Record.Priority__c</fieldItem>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -173,6 +173,11 @@
         <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.Completed__c</fieldItem>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Status__c</fieldItem>
             </fieldInstance>
         </itemInstances>
         <name>Facet-o6g7fsgm4qr</name>

@@ -42,6 +42,10 @@
         <name>End_date_mut_be_future</name>
     </validationRules>
     <validationRules>
+        <errorMessage><!-- Una vez el KPI real ha sido informado no se pueden modificar los campos que se utilizan para su cálculo: Intermediario, indicador, producto, segmento y tipo de acumulado. --></errorMessage>
+        <name>KPI_Fields_blocked</name>
+    </validationRules>
+    <validationRules>
         <errorMessage><!-- Se ha excedido el límite de 1 año entre la fecha de inicio y fin. --></errorMessage>
         <name>Max_length_of_1_year</name>
     </validationRules>

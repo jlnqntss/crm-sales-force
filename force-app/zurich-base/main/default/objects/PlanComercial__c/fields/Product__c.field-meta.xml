@@ -107,6 +107,11 @@
             <valueName>Todos</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Resto</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>PYMEs</controllingFieldValue>
             <valueName>Comercios</valueName>
         </valueSettings>
