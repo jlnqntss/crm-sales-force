@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <description>Borra todas las encuestas de Medalia que tengan el checkbox a true</description>
+    <interviewLabel>Schedule - Delete Records Event - Surveys {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Schedule - Delete Records Event - Surveys</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Inserta un evento que invocará un trigger que hace una query del objeto y condiciones para borrar el máximo de registros posibles</description>
+        <name>Insert_Delete_Records_Event</name>
+        <label>Insert Delete Records Event</label>
+        <locationX>176</locationX>
+        <locationY>276</locationY>
+        <inputAssignments>
+            <field>Criteria__c</field>
+            <value>
+                <stringValue>CanBeRemoved__c = true</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LaunchedCount__c</field>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ObjectName__c</field>
+            <value>
+                <stringValue>Survey__c</stringValue>
+            </value>
+        </inputAssignments>
+        <object>DeleteRecordsEvent__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Insert_Delete_Records_Event</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2021-08-06</startDate>
+            <startTime>13:25:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
