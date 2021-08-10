@@ -9,6 +9,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
+        <controllingField>Indicator__c</controllingField>
         <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
@@ -23,5 +24,30 @@
                 <label>Below threshold</label>
             </value>
         </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Totaldiscount</controllingFieldValue>
+            <controllingFieldValue>PN</controllingFieldValue>
+            <controllingFieldValue>PoliciesPN</controllingFieldValue>
+            <controllingFieldValue>PoliciesInForce</controllingFieldValue>
+            <controllingFieldValue>Portfolio</controllingFieldValue>
+            <controllingFieldValue>Ratio_PNIncrease</controllingFieldValue>
+            <controllingFieldValue>Ratio_PoliciesPNIncreas</controllingFieldValue>
+            <controllingFieldValue>Ratio_PoliciesInForceIncrease</controllingFieldValue>
+            <controllingFieldValue>Ratio_PortIncrease</controllingFieldValue>
+            <controllingFieldValue>Ratio_Claim</controllingFieldValue>
+            <controllingFieldValue>Ratio_Retention</controllingFieldValue>
+            <valueName>01</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Totaldiscount</controllingFieldValue>
+            <controllingFieldValue>PoliciesInForce</controllingFieldValue>
+            <controllingFieldValue>Ratio_PNIncrease</controllingFieldValue>
+            <controllingFieldValue>Ratio_PoliciesPNIncreas</controllingFieldValue>
+            <controllingFieldValue>Ratio_PoliciesInForceIncrease</controllingFieldValue>
+            <controllingFieldValue>Ratio_PortIncrease</controllingFieldValue>
+            <controllingFieldValue>Ratio_Claim</controllingFieldValue>
+            <controllingFieldValue>Ratio_Retention</controllingFieldValue>
+            <valueName>02</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>

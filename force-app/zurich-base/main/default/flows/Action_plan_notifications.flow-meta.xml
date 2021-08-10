@@ -1,0 +1,930 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>customNotifTypeName</name>
+            <value>
+                <stringValue>SDM_Action_plan</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>recipientCategory</name>
+            <value>
+                <stringValue>user</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>recipientType</name>
+            <value>
+                <stringValue>reference</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Send close notification</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>myRule_1_A2</targetReference>
+        </connector>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <stringValue>000000000000000</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>customNotifTypeName</name>
+            <value>
+                <stringValue>SDM_Action_plan</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Plan de acción finalizado</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <stringValue>El plan de acción con asunto “{!myVariable_current.Name}” ha llegado a su fecha de vencimiento. Recuerda que puedes ver el detalle de la consecución del objetivo en el propio plan de acción</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <stringValue>{!myVariable_current.Id}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>recipientIds</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>500.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>myCollection_myRule_1_A1recipientIds</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>customNotifTypeName</name>
+            <value>
+                <stringValue>SDM_Action_plan</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>recipientCategory</name>
+            <value>
+                <stringValue>user</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>recipientType</name>
+            <value>
+                <stringValue>reference</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_5_A1</name>
+        <label>KPI achived</label>
+        <locationX>500</locationX>
+        <locationY>200</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>myRule_5_A2</targetReference>
+        </connector>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <stringValue>000000000000000</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>customNotifTypeName</name>
+            <value>
+                <stringValue>SDM_Action_plan</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>¡KPI alcanzado!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <stringValue>Se ha cumplido la condición que especificaste en el plan de acción con asunto “{!myVariable_current.Name}”, si te gustaría comunicárselo al mediador puedes enviarle un e-mail</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <stringValue>{!myVariable_current.Id}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>recipientIds</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>500.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>myCollection_myRule_5_A1recipientIds</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>52.0</apiVersion>
+    <assignments>
+        <name>myAssignment_myRule_1_A1</name>
+        <label>myAssignment_myRule_1_A1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myCollection_myRule_1_A1recipientIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>myVariable_current.AssignedTo__r.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myRule_1_A1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>myAssignment_myRule_5_A1</name>
+        <label>myAssignment_myRule_5_A1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myCollection_myRule_5_A1recipientIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>myVariable_current.AssignedTo__r.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myRule_5_A1</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision4</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>MultiPicklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>MultiPicklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>MultiPicklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.SentNotifications__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>03</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Date</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Date</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>Date</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Formula</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.EndDate__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>formula_2_myRule_1_0990496716</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.SendNotifications__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.SendNotifications__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>02</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myAssignment_myRule_1_A1</targetReference>
+            </connector>
+            <label>End reached</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision4</name>
+        <label>myDecision4</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_5</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_5</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myAssignment_myRule_5_A1</targetReference>
+            </connector>
+            <label>Nª objective reached</label>
+        </rules>
+    </decisions>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>TODAY()</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_2_myRule_1_0990496716</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>IF( INCLUDES([ActionPlan__c].SentNotifications__c , &quot;01&quot;), &quot;01;&quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES([ActionPlan__c].SentNotifications__c , &quot;02&quot;), &quot;02;&quot;,&quot;&quot;)
+&amp;
+&quot;03&quot;</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_3_myRule_1_A2_9768524434</name>
+        <dataType>String</dataType>
+        <expression>IF( INCLUDES({!myVariable_current.SentNotifications__c} , &quot;01&quot;), &quot;01;&quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES({!myVariable_current.SentNotifications__c} , &quot;02&quot;), &quot;02;&quot;,&quot;&quot;)
+&amp;
+&quot;03&quot;</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>IF( INCLUDES([ActionPlan__c].SentNotifications__c , &quot;02&quot;), &quot;02;&quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES([ActionPlan__c].SentNotifications__c , &quot;03&quot;), &quot;03;&quot;,&quot;&quot;)
+&amp;
+&quot;01&quot;</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_6_myRule_5_A2_2036963698</name>
+        <dataType>String</dataType>
+        <expression>IF( INCLUDES({!myVariable_current.SentNotifications__c} , &quot;02&quot;), &quot;02;&quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES({!myVariable_current.SentNotifications__c} , &quot;03&quot;), &quot;03;&quot;,&quot;&quot;)
+&amp;
+&quot;01&quot;</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>OR
+(
+
+  (
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;01&quot;) 
+    ||
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;02&quot;) 
+    ||
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;03&quot;) 
+  )
+  &amp;&amp;
+  IF
+  (
+    OR 
+    (
+      INCLUDES([ActionPlan__c].SentNotifications__c, &quot;01&quot;) ,
+      ISPICKVAL([ActionPlan__c].SendNotifications__c, &quot;&quot;) 
+    ), 
+    false, 
+    IF
+    (
+      OR
+      (
+        AND
+        (
+          ISPICKVAL([ActionPlan__c].SendNotifications__c, &quot;01&quot;),
+          [ActionPlan__c].TargetKPINumber__c &lt;= [ActionPlan__c].Actual_KPI__c 
+        ),
+        AND
+        (
+          ISPICKVAL([ActionPlan__c].SendNotifications__c, &quot;02&quot;),
+          [ActionPlan__c].TargetKPINumber__c &gt;= [ActionPlan__c].Actual_KPI__c 
+        )
+      ),
+      true,
+      false
+    )
+  ),
+
+
+
+  ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;04&quot;) 
+  &amp;&amp;
+  IF
+  (
+    OR 
+    (
+      INCLUDES([ActionPlan__c].SentNotifications__c, &quot;01&quot;) ,
+      ISPICKVAL([ActionPlan__c].SendNotifications__c, &quot;&quot;) 
+    ), 
+    false, 
+    IF
+    (
+      OR
+      (
+        AND
+        (
+          ISPICKVAL([ActionPlan__c].SendNotifications__c, &quot;01&quot;),
+          [ActionPlan__c].TargetKPICurrency__c &lt;= [ActionPlan__c].Actual_KPI__c 
+        ),
+        AND
+        (
+          ISPICKVAL([ActionPlan__c].SendNotifications__c, &quot;02&quot;),
+          [ActionPlan__c].TargetKPICurrency__c &gt;= [ActionPlan__c].Actual_KPI__c 
+        )
+      ),
+      true,
+      false
+    )
+  ),
+
+
+
+  (
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;05&quot;) 
+    ||
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;06&quot;) 
+    ||
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;07&quot;) 
+    ||
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;08&quot;) 
+    ||
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;09&quot;) 
+    ||
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;10&quot;) 
+    ||
+    ISPICKVAL( [ActionPlan__c].Indicator__c, &quot;11&quot;) 
+  )
+  &amp;&amp;
+  IF
+  (
+    OR 
+    (
+      INCLUDES([ActionPlan__c].SentNotifications__c, &quot;01&quot;) ,
+      ISPICKVAL([ActionPlan__c].SendNotifications__c, &quot;&quot;) 
+    ), 
+    false, 
+    IF
+    (
+      OR
+      (
+        AND
+        (
+          ISPICKVAL([ActionPlan__c].SendNotifications__c, &quot;01&quot;),
+          [ActionPlan__c].TargetKPIPercent__c &lt;= [ActionPlan__c].Actual_KPI__c 
+        ),
+        AND
+        (
+          ISPICKVAL([ActionPlan__c].SendNotifications__c, &quot;02&quot;),
+          [ActionPlan__c].TargetKPIPercent__c &gt;= [ActionPlan__c].Actual_KPI__c 
+        )
+      ),
+      true,
+      false
+    )
+  )
+
+)
+</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_5</name>
+        <dataType>Boolean</dataType>
+        <expression>OR
+(
+
+  (
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;01&quot;) 
+    ||
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;02&quot;) 
+    ||
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;03&quot;) 
+  )
+  &amp;&amp;
+  IF
+  (
+    OR 
+    (
+      INCLUDES({!myVariable_current.SentNotifications__c}, &quot;01&quot;) ,
+      ISPICKVAL({!myVariable_current.SendNotifications__c}, &quot;&quot;) 
+    ), 
+    false, 
+    IF
+    (
+      OR
+      (
+        AND
+        (
+          ISPICKVAL({!myVariable_current.SendNotifications__c}, &quot;01&quot;),
+          {!myVariable_current.TargetKPINumber__c} &lt;= {!myVariable_current.Actual_KPI__c} 
+        ),
+        AND
+        (
+          ISPICKVAL({!myVariable_current.SendNotifications__c}, &quot;02&quot;),
+          {!myVariable_current.TargetKPINumber__c} &gt;= {!myVariable_current.Actual_KPI__c} 
+        )
+      ),
+      true,
+      false
+    )
+  ),
+
+
+
+  ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;04&quot;) 
+  &amp;&amp;
+  IF
+  (
+    OR 
+    (
+      INCLUDES({!myVariable_current.SentNotifications__c}, &quot;01&quot;) ,
+      ISPICKVAL({!myVariable_current.SendNotifications__c}, &quot;&quot;) 
+    ), 
+    false, 
+    IF
+    (
+      OR
+      (
+        AND
+        (
+          ISPICKVAL({!myVariable_current.SendNotifications__c}, &quot;01&quot;),
+          {!myVariable_current.TargetKPICurrency__c} &lt;= {!myVariable_current.Actual_KPI__c} 
+        ),
+        AND
+        (
+          ISPICKVAL({!myVariable_current.SendNotifications__c}, &quot;02&quot;),
+          {!myVariable_current.TargetKPICurrency__c} &gt;= {!myVariable_current.Actual_KPI__c} 
+        )
+      ),
+      true,
+      false
+    )
+  ),
+
+
+
+  (
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;05&quot;) 
+    ||
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;06&quot;) 
+    ||
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;07&quot;) 
+    ||
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;08&quot;) 
+    ||
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;09&quot;) 
+    ||
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;10&quot;) 
+    ||
+    ISPICKVAL( {!myVariable_current.Indicator__c}, &quot;11&quot;) 
+  )
+  &amp;&amp;
+  IF
+  (
+    OR 
+    (
+      INCLUDES({!myVariable_current.SentNotifications__c}, &quot;01&quot;) ,
+      ISPICKVAL({!myVariable_current.SendNotifications__c}, &quot;&quot;) 
+    ), 
+    false, 
+    IF
+    (
+      OR
+      (
+        AND
+        (
+          ISPICKVAL({!myVariable_current.SendNotifications__c}, &quot;01&quot;),
+          {!myVariable_current.TargetKPIPercent__c} &lt;= {!myVariable_current.Actual_KPI__c} 
+        ),
+        AND
+        (
+          ISPICKVAL({!myVariable_current.SendNotifications__c}, &quot;02&quot;),
+          {!myVariable_current.TargetKPIPercent__c} &gt;= {!myVariable_current.Actual_KPI__c} 
+        )
+      ),
+      true,
+      false
+    )
+  )
+
+)</expression>
+    </formulas>
+    <interviewLabel>Action_plan_notifications-4_InterviewLabel</interviewLabel>
+    <label>Action plan notifications</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>ActionPlan__c</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[ActionPlan__c]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_1_A2</name>
+        <label>Mark as notified</label>
+        <locationX>100</locationX>
+        <locationY>300</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>MultiPicklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Sent notifications</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>SentNotifications__c</field>
+            <value>
+                <elementReference>formula_3_myRule_1_A2_9768524434</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ActionPlan__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[ActionPlan__c]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_5_A2</name>
+        <label>Mark as notified</label>
+        <locationX>500</locationX>
+        <locationY>300</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>MultiPicklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Sent notifications</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>SentNotifications__c</field>
+            <value>
+                <elementReference>formula_6_myRule_5_A2_2036963698</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ActionPlan__c</object>
+    </recordUpdates>
+    <startElementReference>myDecision</startElementReference>
+    <status>Obsolete</status>
+    <variables>
+        <name>myCollection_myRule_1_A1recipientIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>myCollection_myRule_5_A1recipientIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>ActionPlan__c</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ActionPlan__c</objectType>
+    </variables>
+</Flow>

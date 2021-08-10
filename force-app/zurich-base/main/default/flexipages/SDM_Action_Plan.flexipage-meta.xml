@@ -100,11 +100,6 @@
     <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
-                <fieldItem>Record.Indicator__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
                 <fieldItem>Record.AccumulateType__c</fieldItem>
             </fieldInstance>
         </itemInstances>
@@ -116,6 +111,11 @@
         <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.SentNotifications__c</fieldItem>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Status__c</fieldItem>
             </fieldInstance>
         </itemInstances>
         <name>Facet-n07io51jyy</name>
@@ -173,11 +173,6 @@
         <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.Completed__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.Status__c</fieldItem>
             </fieldInstance>
         </itemInstances>
         <name>Facet-o6g7fsgm4qr</name>
