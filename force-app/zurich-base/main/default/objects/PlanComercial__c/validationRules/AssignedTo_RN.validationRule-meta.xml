@@ -5,7 +5,7 @@
     <description>SDM: un RN sólo puede asignar un Plan Comercial a sí mismo</description>
     <errorConditionFormula>IF
 (
-  $User.ProfileId = &quot;00e3N000000KnO9&quot;,
+  $Profile.Name = &quot;SDM RN&quot;,
   AssignedTo__r.Id  &lt;&gt;  $User.Id,
   false
   
