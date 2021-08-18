@@ -304,6 +304,68 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
     }
 
     /**
+     * Método que comprueba que se lanza un error si el JSON recibido contiene datos inválidos.
+     * Estos datos son generados a partir de un bot que lanza diariamente una serie de pruebas para comprobar
+     * que la web del tarificador de Zurich Empresas funciona correctamente y sin errores.
+     * Datos inválidos:
+     * --Teléfono:
+     *              600000000
+     *              615462099
+     *              655004026
+     * --Correo:
+     *              test@zurichtest.com
+     * @author rpolvera@nts-solutions.com
+     * @date 17/08/2021
+     */
+    @isTest
+    static void test_doPost_processInformation_bot_testing_offers_ko()
+    {
+        //Preparamos el JSON
+        String emailFromJSON = 'newemail@fakeemail.com.invalid';
+        String phoneFromJSON = '123456789';
+
+        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account WHERE NationalId__c != null];
+        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
+
+        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
+        System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
+
+        List<Scope_Setting__mdt> scopeSettingsList = [
+            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
+            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
+        ];
+        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
+
+        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-08', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
+
+        //Preparamos la request
+        RestRequest request = new RestRequest();
+        RestResponse response = new RestResponse();
+        RestContext.response = response;
+
+        request.requestUri = REQUEST_URI;
+        request.httpMethod = 'POST';
+        request.addHeader('Content-Type', 'application/json');
+
+        //Añadimos un los campos que introducirá el bot para las pruebas del formulario.
+        //Estos campos se encuentran configurados en un metadato.
+        List<String> fakeEmails = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE DeveloperName = 'BusinessRaterEmailsToIgnore']?.Value__c?.split(',');
+        List<String> fakePhones = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE DeveloperName = 'BusinessRaterPhonesToIgnore']?.Value__c?.split(',');
+        jsonInformation.put('webEmail', fakeEmails[0]);
+        jsonInformation.put('webPhone', fakePhones[0]);
+        String invalidRequestInformation = JSON.serialize(jsonInformation);
+
+        request.requestBody = Blob.valueOf(invalidRequestInformation);
+        RestContext.request = request;
+
+        Test.startTest();
+        WS_BusinessInsuranceAPIService.doPost();
+        Test.stopTest();
+
+        System.assertEquals(200, response.statusCode, 'Response statusCode should be 200');
+    }
+
+    /**
      * Método que comprueba que se lanza un error si no recibimos un JSON en el request body
      **
      * @author rlopez
