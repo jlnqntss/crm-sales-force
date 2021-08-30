@@ -308,7 +308,7 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
      * Estos datos son generados a partir de un bot que lanza diariamente una serie de pruebas para comprobar
      * que la web del tarificador de Zurich Empresas funciona correctamente y sin errores.
      * Datos inválidos:
-     * --Teléfono:
+     * --Teléfono: 
      *              600000000
      *              615462099
      *              655004026
@@ -434,6 +434,45 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
         System.assertEquals(true, errors.isEmpty(),'List of errors should be empty');
         List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest];
         System.assertEquals(1, contactRequests.size(), 'Debería haberse insertado un contact request');
+    }
+
+    /**
+     * Método que comprueba que se lanza un error si el JSON recibido contiene datos inválidos.
+     * Estos datos son generados a partir de un bot que lanza diariamente una serie de pruebas para comprobar
+     * que la web del tarificador de Zurich Empresas funciona correctamente y sin errores.
+     * Datos inválidos:
+     * --Teléfono: 
+     *              615462497
+     * @author rpolvera@nts-solutions.com
+     * @date 17/08/2021
+     */
+    @isTest
+    static void test_doPost_bot_testing_ko()
+    {
+        RestRequest request = new RestRequest();
+        RestResponse response = new RestResponse();
+        RestContext.response = response;
+
+        request.requestUri = INTERACTIONS_URI;
+        request.httpMethod = 'POST';
+        request.addHeader('Content-Type', 'application/json');
+        List<String> fakePhones = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE DeveloperName = 'BusinessInsurancePhonesToIgnore']?.Value__c?.split(',');
+        Map<String, Object> jsonRequest = (Map<String, Object>) JSON.deserializeUntyped(INTERACTIONS_REQUEST_WITHOUT_PHONE);
+        jsonRequest.put('phone', fakePhones[0]);
+        request.requestBody = Blob.valueOf(JSON.serialize(jsonRequest));
+        RestContext.request = request;
+
+        //Como no se está creando la cola de purecloud__PureCloud_Queue__c no hace falta
+        //setear el GenesysCloudMock ya que no va a entrar en el ProcessBuilder que enruta
+
+        Test.startTest();
+        WS_BusinessInsuranceAPIService.doPost();
+        Test.stopTest();
+
+        System.assertEquals(200, response.statusCode,'Response statusCode should be 200');
+
+        List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c WHERE Level__c = 'error'];
+        System.assertEquals(true, errors.isEmpty(),'List of errors should be empty');
     }
 
     /**
