@@ -58,8 +58,11 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
                     );
 
                     BusinessInsuranceRaterService.validateReceivedInformation();
-
-                    BusinessInsuranceRaterService.processFormData(requestInformationObject);
+                    // Se comprueban los datos de la solicitud para descartar las pruebas del bot.
+                    if (!BusinessInsuranceRaterService.isBotTestingExecution(requestInformationObject))
+                    {
+                        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+                    }
 
                     response.responseBody = Blob.valueOf('{"status":"success", "sfId":"", "errors":[]}');
                     response.statusCode = 200;
@@ -88,7 +91,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiError);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-            
+
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = apiError.getMessage();
             requestResultErrorStackTrace = apiError.getStackTraceString();
@@ -102,7 +105,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(dmlError, false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-            
+
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = dmlError.getMessage();
             requestResultErrorStackTrace = dmlError.getStackTraceString();
@@ -116,7 +119,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(serviceException.statusCode, serviceException.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-            
+
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = serviceException.getMessage();
             requestResultErrorStackTrace = serviceException.getStackTraceString();
@@ -130,7 +133,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(serviceException.statusCode, serviceException.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-            
+
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = serviceException.getMessage();
             requestResultErrorStackTrace = serviceException.getStackTraceString();
@@ -144,7 +147,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_JSON_KO, jsonException.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-            
+
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = jsonException.getMessage();
             requestResultErrorStackTrace = jsonException.getStackTraceString();

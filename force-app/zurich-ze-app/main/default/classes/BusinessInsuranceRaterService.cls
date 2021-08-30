@@ -439,14 +439,14 @@ public without sharing class BusinessInsuranceRaterService
      * En cualquier caso, excepto en el paso CRM-08, se creará un registro ContactRequest
      *
      * @author rlopez
-     * 
+     *
      * @change 02/06/2021 - nts (agonzalezisasi) - SOPZUR-4 Evolutivo Tarificador Web
      */
     private static void manageOffersAndRelatedInformation(Request formData)
     {
         Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         List<Opportunity> offersToCreate = new List<Opportunity>();
-        
+
 
         // Offers
         if( offersSteps.contains(formData.lastStep) )
@@ -456,7 +456,7 @@ public without sharing class BusinessInsuranceRaterService
 
         if( !formData.doNotCreateCallback ) {
             if( campaignMemberSteps.contains(formData.lastStep) ) {
-                //Crear Campaign Member 
+                //Crear Campaign Member
                 manageCampaignAssignment(offersToCreate, formData.webPhone);
             }
 
@@ -471,7 +471,7 @@ public without sharing class BusinessInsuranceRaterService
 
     /**
      * Metodo que gestiona la creacion y cancelacion de CallMeBacks segun lo que viene en el formulario
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 02/06/2021
      * @param {Request} Los datos del formulario
@@ -504,14 +504,14 @@ public without sharing class BusinessInsuranceRaterService
             } else { // Si existe algun callmeback programado, vemos si hay que sustituirlo...
                 // El del formulario es mas PRIORITARIO? o sino, si es mas CERCANO EN EL TIEMPO
                 if( formData.hasHigherPriority(Integer.valueOf(contactReqActual.Priority__c))
-                    || formData.isCloserInTime(contactReqActual.PreferredContactDatetime__c)) 
+                    || formData.isCloserInTime(contactReqActual.PreferredContactDatetime__c))
                 {
                     isCreate = true;
                     isCancel = true;
                 }
             }
         }
-        
+
         // Si es cancelar y existe alguno
         if( isCancel && contactReqActual != null ) {
             cancelCallMeBack(contactReqActual);
@@ -525,7 +525,7 @@ public without sharing class BusinessInsuranceRaterService
 
     /**
      * Metodo que crea un CallMeBack a traves del objeto ContactRequest
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 02/06/2021
      * @param {Request} Los datos del formulario
@@ -571,7 +571,7 @@ public without sharing class BusinessInsuranceRaterService
 
     /**
      * Solicita la cancelacion de un CallMeBack en Genesys
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date  02/06/2021
      * @param {ContactRequest} El ContactRequest a cancelar
@@ -582,7 +582,7 @@ public without sharing class BusinessInsuranceRaterService
         GenesysCloud.CallbackCancel callback = new GenesysCloud.CallbackCancel();
         callback.genesysId = contactReq.GenesysInteractionId__c;
 
-        // Creamos la relacion entre el CallMeBack y el ContactRequest para actualizar el estado 
+        // Creamos la relacion entre el CallMeBack y el ContactRequest para actualizar el estado
         // de este ultimo
         Map<GenesysCloud.CallbackCancel, String> mapCallbackContactReq = new Map<GenesysCloud.CallbackCancel, String>{
             callback => contactReq.Id
@@ -718,7 +718,7 @@ public without sharing class BusinessInsuranceRaterService
                     stageName = 'App Submitted';
                 }
 
-                // Oferta - obtenemos una oferta con todos los datos que vienen del formulario 
+                // Oferta - obtenemos una oferta con todos los datos que vienen del formulario
                 Opportunity sfOffer = offer.toOpportunity();
 
                 // Oferta - a partir del id externo miramos si ya existe en Salesforce
@@ -798,7 +798,7 @@ public without sharing class BusinessInsuranceRaterService
                     if( quoteNumberRiskMap.containsKey(i) )
                     {
                         BusinessInsuranceRaterService.OfferRiskInformation risk = quoteNumberRiskMap.get(i);
-                        
+
                         // Obtenemos un objeto Asset con los datos que hay en el formulario
                         Asset sfRisk = risk.toAsset();
 
@@ -1280,6 +1280,29 @@ public without sharing class BusinessInsuranceRaterService
         }
     }
 
+    /**
+     * Comprueba los datos de la solicitud, si el teléfono o el correo electrónico se encuentra identificado como inválido retorna verdadero.
+     * Estos datos son generados a partir de un bot que lanza diariamente una serie de pruebas para comprobar
+     * que la web del tarificador de Zurich Empresas funciona correctamente y sin errores.
+     * Datos inválidos:
+     * --Teléfono:
+     *              600000000
+     *              615462099
+     *              655004026
+     * --Correo:
+     *              test@zurichtest.com
+     * @author rpolvera@nts-solutions.com
+     * @date 17/08/2021
+     * @param request Clase contenedora de la información de la soliitud -> BusinessInsuranceRaterService.Request
+     * @return Verdadero si la solicitud ha sido generada por el bot de pruebas, de lo contrario retorna falso.
+     */
+    public static Boolean isBotTestingExecution(BusinessInsuranceRaterService.Request request)
+    {
+        List<String> fakeEmails = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE DeveloperName = 'BusinessRaterEmailsToIgnore']?.Value__c?.split(',');
+        List<String> fakePhones = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE DeveloperName = 'BusinessRaterPhonesToIgnore']?.Value__c?.split(',');
+        return fakeEmails.contains(request.webEmail) || fakePhones.contains(request.webPhone);
+    }
+
     private static void setRequiredFields(String field)
     {
         if ( requiredFieldsMetadataSet.contains( field.toLowerCase() ) )
@@ -1287,7 +1310,7 @@ public without sharing class BusinessInsuranceRaterService
             currentRequiredFieldsSet.add( field.toLowerCase() );
         }
     }
-    
+
     /**
      *
      *
@@ -1300,7 +1323,7 @@ public without sharing class BusinessInsuranceRaterService
      *
      * @author rlopez
      * @date 15/10/2020
-     * 
+     *
      * @change 02/06/2021 - nts (agonzalezisasi) - Se incluye el campo prioridad
      */
     public class Request
@@ -1445,7 +1468,7 @@ public without sharing class BusinessInsuranceRaterService
                 return result;
             }
         }
-    
+
         // Determina si la prioridad del estado del formulario es mayor que la indicada
         // Teniendo en cuenta que 0 es mayor prioridad y 6 la de menor prioridad
         public Boolean hasHigherPriority( Integer priority ) {
@@ -1591,7 +1614,7 @@ public without sharing class BusinessInsuranceRaterService
      *
      * @author rlopez
      * @date 15/10/2020
-     * 
+     *
      * @change 04/06/2021 - nts (agonzalezisasi) - se añaden propiedades calculadas a partir de los datos
      */
     public class Offer
@@ -1743,7 +1766,7 @@ public without sharing class BusinessInsuranceRaterService
                 offerRiskInformation = value;
             }
         }
-    
+
         // Propiedad que devuelve los codigos de producto concatenados
         public String productCodes {
             get {
@@ -2036,7 +2059,7 @@ public without sharing class BusinessInsuranceRaterService
             }
         }
 
-        // Propiedad que calcula el nombre del Riesgo a partir de los datos que vienen del 
+        // Propiedad que calcula el nombre del Riesgo a partir de los datos que vienen del
         // formulario
         public String riskName {
             get {
