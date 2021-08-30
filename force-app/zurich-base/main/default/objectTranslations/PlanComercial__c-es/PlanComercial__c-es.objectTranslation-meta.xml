@@ -12,19 +12,19 @@
     <layouts>
         <layout>Plan Comercial Layout</layout>
         <sections>
-            <label><!-- Custom Links --></label>
+            <label>Vínculos personalizados</label>
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label><!-- KPI Results --></label>
+            <label>Resultados KPI</label>
             <section>KPI Results</section>
         </sections>
         <sections>
-            <label><!-- KPI Selection --></label>
+            <label>Selección KPI</label>
             <section>KPI Selection</section>
         </sections>
         <sections>
-            <label><!-- Preferences --></label>
+            <label>Preferencias</label>
             <section>Preferences</section>
         </sections>
     </layouts>

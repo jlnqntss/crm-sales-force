@@ -50,6 +50,11 @@
         </itemInstances>
         <itemInstances>
             <fieldInstance>
+                <fieldItem>Record.Intermediary__c</fieldItem>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
                 <fieldItem>Record.Description__c</fieldItem>
             </fieldInstance>
         </itemInstances>
@@ -70,6 +75,21 @@
         <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.FollowUp__c</fieldItem>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Priority__c</fieldItem>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Status__c</fieldItem>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Completed__c</fieldItem>
             </fieldInstance>
         </itemInstances>
         <name>Facet-a6577240-4d2f-458f-9ae0-0f288495e28c</name>
@@ -105,17 +125,7 @@
         </itemInstances>
         <itemInstances>
             <fieldInstance>
-                <fieldItem>Record.Priority__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
                 <fieldItem>Record.SentNotifications__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.Status__c</fieldItem>
             </fieldInstance>
         </itemInstances>
         <name>Facet-n07io51jyy</name>
@@ -170,11 +180,6 @@
                 </visibilityRule>
             </fieldInstance>
         </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.Completed__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
         <name>Facet-o6g7fsgm4qr</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -203,11 +208,6 @@
     <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
-                <fieldItem>Record.Intermediary__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
                 <fieldItem>Record.Segment__c</fieldItem>
             </fieldInstance>
         </itemInstances>
@@ -216,6 +216,20 @@
                 <fieldItem>Record.Product__c</fieldItem>
             </fieldInstance>
         </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Indicator__c</fieldItem>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.SendNotifications__c</fieldItem>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-04b289d2-0ff4-465c-9c4e-abd36c4a49e1</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
@@ -306,20 +320,6 @@
                 </visibilityRule>
             </fieldInstance>
         </itemInstances>
-        <name>Facet-04b289d2-0ff4-465c-9c4e-abd36c4a49e1</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.Indicator__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldItem>Record.SendNotifications__c</fieldItem>
-            </fieldInstance>
-        </itemInstances>
         <itemInstances>
             <fieldInstance>
                 <fieldItem>Record.Actual_KPI__c</fieldItem>
@@ -359,7 +359,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>General information</value>
+                    <value>Información general</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
             </componentInstance>
@@ -372,7 +372,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Details</value>
+                    <value>Periodo temporal</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
             </componentInstance>
