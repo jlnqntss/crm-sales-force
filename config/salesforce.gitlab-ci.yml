@@ -126,7 +126,7 @@ before_script:
     #export PATH=./sfdx/$(pwd):$PATH
 
     # Se usa npm para evitar problemas con wget
-    npm install --global sfdx-cli:7.112.1
+    npm install --global sfdx-cli@7.112.1
 
     echo y | sfdx plugins:install sfpowerkit@2.0.4 -f
   }
