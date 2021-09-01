@@ -56,6 +56,8 @@ it.translation-meta.xml
 ja.translation-meta.xml
 pt_BR.translation-meta.xml
 
+**CustomFieldTranslation
+
 # Ignore EmailServices
 **emailservices
 
