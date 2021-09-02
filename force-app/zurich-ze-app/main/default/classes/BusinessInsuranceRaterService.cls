@@ -340,6 +340,8 @@ public without sharing class BusinessInsuranceRaterService
             LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI)
             );
 
+        // nts (agonzalezisasi) - 02/09/2021 - fix bug: SOPZUR-304 APR Registros duplicados al enviar trazas al CRM desde ZE 
+        Boolean isCreated = true;
         // nts (agonzalezisasi) - 19/12/2021 - fix bug: peticiones repetidas que crean Cuentas (leads) repetidas
         // Preparamos el external id con los campos webEmail y webPhone si estan informados
         string externalid = '';
@@ -355,12 +357,7 @@ public without sharing class BusinessInsuranceRaterService
 
             //System.Debug('---------------- external id: ' + externalid);
             Database.UpsertResult result = Database.upsert(accountToCreate, Schema.Account.LeadWebId__c);
-            // En caso de que sea actualizacion la consideramos duplicado porque ha sido en muy poco tiempo y
-            // no le ha dado tiempo a indexar la busqueda inicial por DNI, Email, Phone
-            if( !result.isCreated() )
-            {
-                throw new BusinessInsuranceRaterServiceException(DUPLICATE_REQUEST_STATUSCODE, 'Error on DML DUPLICATE_VALUE operation: duplicate value found with Web Form Data');
-            }
+            isCreated = result.isCreated();
         }
         else
         {
@@ -369,11 +366,14 @@ public without sharing class BusinessInsuranceRaterService
 
         Account createdLead = [SELECT Id, PersonContactId, Name FROM Account WHERE Id =: accountToCreate.Id LIMIT 1];
 
-        //Creamos un Scope para el cliente que acabamos de crear
-        currentScope = createScope(accountToCreate, formData.businessCode);
-
-        //Creamos vías de contacto para ese cliente y ese scope
-        createContactPointsForScope(currentScope, formData.webEmail, formData.webPhone);
+        // nts (rpolvera) - 27/08/2021 - fix bug: SOPZUR-304 APR Registros duplicados al enviar trazas al CRM desde ZE 
+        // Cuando se crea una nueva cuenta es necesario actualizar el scope.
+        if( isCreated ) {            
+            //Creamos un Scope para el cliente que acabamos de crear
+            currentScope = createScope(accountToCreate, formData.businessCode);
+            //Creamos vías de contacto para ese cliente y ese scope
+            createContactPointsForScope(currentScope, formData.webEmail, formData.webPhone);
+        }
 
         return createdLead;
     }
