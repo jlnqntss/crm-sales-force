@@ -73,11 +73,15 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
                         requestInformation,
                         BusinessInsuranceCallbackService.CallMeBack.class
                     );
+                    String callMeBackId='';
                     //Validar que llegan todos los campos necesarios
                     BusinessInsuranceCallbackService.validateRequiredFields(deserializedRequest);
-                    //Insertar un Contact Request que entrará en el Process Builder
-                    String callMeBackId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
-
+                    // Se comprueban los datos de la solicitud para descartar las pruebas del bot.
+                    if (!BusinessInsuranceCallbackService.isBotTestingExecution(deserializedRequest))
+                    {
+                        //Insertar un Contact Request que entrará en el Process Builder
+                        callMeBackId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
+                    }
                     response.responseBody = Blob.valueOf('{"status":"success", "sfId":"'+callMeBackId+'", "errors":[]}');
                     response.statusCode = 200;
                 }
@@ -91,7 +95,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiError);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-
+            
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = apiError.getMessage();
             requestResultErrorStackTrace = apiError.getStackTraceString();
@@ -105,7 +109,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(dmlError, false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-
+            
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = dmlError.getMessage();
             requestResultErrorStackTrace = dmlError.getStackTraceString();
@@ -119,7 +123,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(serviceException.statusCode, serviceException.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-
+            
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = serviceException.getMessage();
             requestResultErrorStackTrace = serviceException.getStackTraceString();
@@ -133,7 +137,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(serviceException.statusCode, serviceException.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-
+            
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = serviceException.getMessage();
             requestResultErrorStackTrace = serviceException.getStackTraceString();
@@ -147,7 +151,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
             WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_JSON_KO, jsonException.getMessage(), false);
             ErrorResponseZE errorFormat = new ErrorResponseZE(apiException);
             response.responseBody = Blob.valueOf(JSON.serialize(errorFormat));
-
+            
             // informaremos del error en la traza de la peticion
             requestResultErrorMessage = jsonException.getMessage();
             requestResultErrorStackTrace = jsonException.getStackTraceString();

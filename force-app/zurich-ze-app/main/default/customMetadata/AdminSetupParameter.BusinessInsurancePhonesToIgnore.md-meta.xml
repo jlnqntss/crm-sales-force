@@ -8,10 +8,10 @@
     </values>
     <values>
         <field>KeyName__c</field>
-        <value xsi:type="xsd:string">BusinessRaterPhonesToIgnore</value>
+        <value xsi:type="xsd:string">BusinessInsurancePhonesToIgnore</value>
     </values>
     <values>
         <field>Value__c</field>
-        <value xsi:type="xsd:string">+34600000000,+34615462099,+34655004026</value>
+        <value xsi:type="xsd:string">+34600000000,+34615462099,+34655004026,+34615462497,600000000,615462099,655004026,615462497</value>
     </values>
 </CustomMetadata>

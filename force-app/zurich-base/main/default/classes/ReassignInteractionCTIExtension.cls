@@ -92,7 +92,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 changeOwnerFromQueueToUser(interactionTask);
             }
 
-            System.debug(interactionTask);
             upsert interactionTask;
 
             return interactionTask.Id;
@@ -100,7 +99,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         catch (Exception e)
         {
             Database.rollback(sp);
-            ErrorLogUtil.commitError(e);
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, e.getMessage(), 'ReassignInteractionCTIExtension', e.getStackTraceString() + ' Payload: ' + data);
         }
 
         return null;
@@ -119,20 +118,26 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     {
         Task interactionTask;
         Id taskId, whatId, whoId;
+        String idField = 'id', wahtIdField = 'whatid', whoIdField = 'whoid';
 
-        if(callLog.containsKey('Id') )
+        for (String key : callLog.keySet())
         {
-            taskId = parseId(callLog.remove('Id') );
-        }
+            String field = key.toLowerCase();
 
-        if(callLog.containsKey('WhatId') )
-        {
-            whatId = parseId(callLog.remove('WhatId') );
-        }
-
-        if(callLog.containsKey('WhoId') )
-        {
-            whoId = parseId(callLog.remove('WhoId') );
+            if(field == idField)
+            {
+                taskId = parseId(callLog.remove(key));
+            }
+    
+            if(field == wahtIdField)
+            {
+                whatId = parseId(callLog.remove(key));
+            }
+    
+            if(field == whoIdField)
+            {
+                whoId = parseId(callLog.remove(key));
+            }
         }
 
         interactionTask = (Task) JSON.deserialize(JSON.serialize(callLog), Task.class);
