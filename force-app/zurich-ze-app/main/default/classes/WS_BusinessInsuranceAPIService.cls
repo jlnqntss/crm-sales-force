@@ -58,8 +58,11 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
                     );
 
                     BusinessInsuranceRaterService.validateReceivedInformation();
-
-                    BusinessInsuranceRaterService.processFormData(requestInformationObject);
+                    // Se comprueban los datos de la solicitud para descartar las pruebas del bot.
+                    if (!BusinessInsuranceRaterService.isBotTestingExecution(requestInformationObject))
+                    {
+                        BusinessInsuranceRaterService.processFormData(requestInformationObject);
+                    }
 
                     response.responseBody = Blob.valueOf('{"status":"success", "sfId":"", "errors":[]}');
                     response.statusCode = 200;
@@ -70,11 +73,15 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
                         requestInformation,
                         BusinessInsuranceCallbackService.CallMeBack.class
                     );
+                    String callMeBackId='';
                     //Validar que llegan todos los campos necesarios
                     BusinessInsuranceCallbackService.validateRequiredFields(deserializedRequest);
-                    //Insertar un Contact Request que entrará en el Process Builder
-                    String callMeBackId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
-
+                    // Se comprueban los datos de la solicitud para descartar las pruebas del bot.
+                    if (!BusinessInsuranceCallbackService.isBotTestingExecution(deserializedRequest))
+                    {
+                        //Insertar un Contact Request que entrará en el Process Builder
+                        callMeBackId = BusinessInsuranceCallbackService.insertCallMeBack(deserializedRequest);
+                    }
                     response.responseBody = Blob.valueOf('{"status":"success", "sfId":"'+callMeBackId+'", "errors":[]}');
                     response.statusCode = 200;
                 }
