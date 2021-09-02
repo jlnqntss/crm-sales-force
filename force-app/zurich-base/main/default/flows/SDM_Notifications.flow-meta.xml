@@ -217,7 +217,7 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
-            <conditionLogic>(1 AND 2) OR (3 AND 4) OR (5 AND 6)</conditionLogic>
+            <conditionLogic>( (1 AND 2) OR (3 AND 4) OR (5 AND 6) ) AND 7</conditionLogic>
             <conditions>
                 <leftValueReference>TargetKPIReached</leftValueReference>
                 <operator>EqualTo</operator>
@@ -255,6 +255,13 @@
             </conditions>
             <conditions>
                 <leftValueReference>SentWeekLeft</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Completed__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -482,7 +489,7 @@ IF
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>BodyKPIReached</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
