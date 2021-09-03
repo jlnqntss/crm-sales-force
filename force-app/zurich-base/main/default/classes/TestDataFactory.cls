@@ -1326,6 +1326,87 @@ public class TestDataFactory
     }
 
     /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad KPI__c (Aplicacion SDM)
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 03/09/2021
+     * 
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     */
+    public static List<Map<String, Object> > getINFOSDMKPIJson(
+        Integer totalItems
+        )
+    {
+        return buildINFOSDMKPIsJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOSDMKPIsJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++) {
+            /* REGISTRO KPI*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                    'ano_calculo' => '2021',
+                    'mes_calculo' => '7',
+                    'intermediario' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0'), // external id del mediador (Account)
+                    'temporalidad' => 'Mensual',
+                    'agrupacion_productos' => 'COMERCIOS',
+                    'lob_agrupado' => 'Non Motor Fleet',
+                    'segmento_cliente_detalle' => 'Pymes',
+                    'cartera_entrada' => 0.0,
+                    'cartera_entrada_pa' => 0.0,
+                    'pn' => 0.0,
+                    'pn_pa' => 0.0,
+                    'suplementos' => 0.0,
+                    'suplementos_pa' => 0.0,
+                    'anulaciones' => 0.0,
+                    'anulaciones_pa' => 0.0,
+                    'cartera' => 0.0,
+                    'cartera_pa' => 0.0,
+                    'ingresos' => 36.62,
+                    'ingresos_pa' => 34.29,
+                    'carga_total' => 0.0,
+                    'carga_total_pa' => 0.0,
+                    'carga_cay' => 0.0,
+                    'carga_cay_pa' => 0.0,
+                    'comision' => 0.0,
+                    'comision_pa' => 0.0,
+                    'revised_baseline' => 0.0,
+                    'cartera_renovada' => 0.0,
+                    'polizas_pn' => 0,
+                    'polizas_pn_pa' => 0,
+                    'polizas_vigor' => 1,
+                    'polizas_vigor_pa' => 1,
+                    'descuento_total' => 0.0,
+                    'descuento_total_pa' => 0.0,
+                    'apes' => 0.0,
+                    'apes_pa' => 0.0,
+                    'derechos_consolidados' => 0.0,
+                    'derechos_consolidados_pa' => 0.0,
+                    'reserva_matematica' => 0.0,
+                    'reserva_matematica_pa' => 0.0,
+                    'clientes' => 1,
+                    'clientes_pa' => 1,
+                    'id_unico_kpi' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0') + '-Non Motor Fleet-COMERCIOS-Pymes-Mensual-2021-7' // La primera parte debe conincidir con el external id del mediador
+                }
+            );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
      * Generar registros de ExternalRequest__c a partir de los JSON de prueba
      **
      * @param String Origen
@@ -1655,6 +1736,24 @@ public class TestDataFactory
                         new ExternalRequest__c(
                             Origin__c = origin,
                             Entity__c = 'SPECIAL_CONDITION',
+                            Action__c = 'UPSERT',
+                            Payload__c = JSON.serialize(payload),
+                            ContentFormat__c = 'JSON',
+                            recordTypeId = infoRecordTypeId
+                            )
+                        );
+                }
+            }
+            // SDM KPIs
+            when 'INTERMEDIARY_KPI' {
+                for (
+                    Map<String, Object> payload : getINFOSDMKPIJson(numRecords)
+                    )
+                {
+                    externalRequestList.add(
+                        new ExternalRequest__c(
+                            Origin__c = origin,
+                            Entity__c = 'INTERMEDIARY_KPI',
                             Action__c = 'UPSERT',
                             Payload__c = JSON.serialize(payload),
                             ContentFormat__c = 'JSON',
