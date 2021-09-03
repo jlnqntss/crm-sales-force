@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>    BLANKVALUE((KPI__c.Portfolio__c:SUM-KPI__c.PA_Portfolio__c:SUM),1)
+    /
+    BLANKVALUE(KPI__c.PA_Portfolio__c:SUM,1)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Crecimiento cartera</description>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% crec cartera</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>KPI__c.Ratio_Claim__c:SUM /KPI__c.Ratio_PA_Claim__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Siniestralidad total</description>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Sin Total</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>    BLANKVALUE((KPI__c.Ratio_TotalDiscount__c:SUM - KPI__c.PA_Totaldiscount__c:SUM),1)
+    /
+    BLANKVALUE(KPI__c.PA_Totaldiscount__c:SUM,1)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Descuento total</description>
+        <developerName>FORMULA3</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Dto Total</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>KPI__c.RenewedPortfolio__c:SUM / KPI__c.RevisedBaseline__c:SUM</calculatedFormula>
+        <datatype>number</datatype>
+        <description>Informa el ratio de retención</description>
+        <developerName>FORMULA4</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Ratio Retención</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>KPI__c.Portfolio__c</column>
+        </chartSummaries>
+        <chartSummaries>
+            <axisBinding>y2</axisBinding>
+            <column>FORMULA2</column>
+        </chartSummaries>
+        <chartType>VerticalColumnGroupedLine</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>KPI__c.CalcYear__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
+        <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>PARENT.NAME</secondaryGroupingColumn>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>Evolución Cartera y Siniestralidad</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>KPI__c.LoB__c</field>
+    </columns>
+    <columns>
+        <field>ADDRESS1_STATE</field>
+    </columns>
+    <columns>
+        <field>Account.BusinessManagerName__c</field>
+    </columns>
+    <columns>
+        <field>Account.LifeConsultant__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Portfolio__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Supplements__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Cancellations__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PoliciesPN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PoliciesInForce__c</field>
+    </columns>
+    <filter>
+        <criteriaItems>
+            <column>KPI__c.Temporalidad__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>YTD</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>PARENT_ID</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>0017Y00001LmqrP</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>KPI__c.CalcYear__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>PARENT.NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Histórico Agrupación Mediador</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>AccountCustomEntity$KPI__c</reportType>
+    <scope>accountteam</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>DUE_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>
