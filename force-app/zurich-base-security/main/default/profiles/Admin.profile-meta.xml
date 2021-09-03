@@ -7993,6 +7993,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>KPI__c.InfoKpiCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Label_Translations__mdt.English__c</field>
         <readable>true</readable>
     </fieldPermissions>

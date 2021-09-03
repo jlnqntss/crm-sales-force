@@ -50,6 +50,7 @@ public class INFOHandler implements ISystem
     public static final String INTERMEDIARY = 'INTERMEDIARY';
     public static final String NOTE = 'NOTE';
     public static final String SPECIAL_CONDITION = 'SPECIAL_CONDITION';
+    public static final String INTERMEDIARY_KPI = 'INTERMEDIARY_KPI';
 
     public static final List<String> PRIORITY_ENTITIES =  new List<String>{NOTE};
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
@@ -71,7 +72,8 @@ public class INFOHandler implements ISystem
         POLICY_RELATIONSHIP, // 12
         CLAIM_RELATIONSHIP, // 13
         NOTE, // 14
-        SPECIAL_CONDITION // 15
+        SPECIAL_CONDITION, // 15
+        INTERMEDIARY_KPI // 16
     };
 
     public static final String SOBJECT_ACCOUNT = 'Account';
@@ -88,6 +90,7 @@ public class INFOHandler implements ISystem
     public static final String SOBJECT_RELATIONSHIP = 'Relationship__c';
     public static final String SOBJECT_CASE = 'Case';
     public static final String SOBJECT_SPECIAL_CONDITION = 'Special_Condition__c';
+    public static final String SOBJECT_KPI = 'KPI__c';
 
     // Orden de DML sobre SObjects
     private static List<String> sObjectOrder = new List<String>
@@ -105,7 +108,8 @@ public class INFOHandler implements ISystem
         SOBJECT_CLAIM,
         SOBJECT_RELATIONSHIP,
         SOBJECT_CASE,
-        SOBJECT_SPECIAL_CONDITION
+        SOBJECT_SPECIAL_CONDITION,
+        SOBJECT_KPI
     };
 
     private static final String NOTE_CASE_ORIGIN = 'NoteINFO';
@@ -534,6 +538,21 @@ public class INFOHandler implements ISystem
             {
                 Special_Condition__c specialConditionRecord = (Special_Condition__c) tf.transform(SPECIAL_CONDITION, 'Special_Condition__c', recordValuesMap);
                 addRecordToMap(externalRequest, SPECIAL_CONDITION, 'Special_Condition__c', specialConditionRecord);
+            }
+            when 'INTERMEDIARY_KPI'
+            {
+                KPI__c intermediaryKpiRecord = (KPI__c) tf.transform(INTERMEDIARY_KPI, 'KPI__c', recordValuesMap);
+                // En principio viene ya como texto desde el Origen
+                // // El Mes de calculo en INFO viene como numero y en Salesforce necesitamos que sea un String
+                // if( recordValuesMap.containsKey('MES_CALCULO') ) {
+                //     intermediaryKpiRecord.CalcMonth__c = String.valueOf(recordValuesMap.get('MES_CALCULO'));
+                // }
+                // // Lo mismo para el Año de calculo
+                // if( recordValuesMap.containsKey('ANO_CALCULO') ) {
+                //     intermediaryKpiRecord.CalcYear__c = String.valueOf(recordValuesMap.get('ANO_CALCULO'));
+                // }
+
+                addRecordToMap(externalRequest, INTERMEDIARY_KPI, 'KPI__c', intermediaryKpiRecord);
             }
             when else
             {

@@ -85,6 +85,11 @@
                 <default>false</default>
                 <label>Partner Special Condition</label>
             </value>
+            <value>
+                <fullName>KPI__c</fullName>
+                <default>false</default>
+                <label>KPI</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

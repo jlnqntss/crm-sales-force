@@ -2250,6 +2250,11 @@
             <field>EstructuraUnificada__c</field>
             <table>Account.Intermediary__r.KPIs__r</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>InfoKpiCode__c</field>
+            <table>Account.Intermediary__r.KPIs__r</table>
+        </columns>
         <masterLabel>KPIs</masterLabel>
     </sections>
 </ReportType>
