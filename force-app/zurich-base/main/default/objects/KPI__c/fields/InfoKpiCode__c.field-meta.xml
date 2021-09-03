@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>InfoKpiCode__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>SDM: campo que hace de id externo para los KPIs de un mediador</description>
+    <externalId>true</externalId>
+    <label>InfoKpiCode</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

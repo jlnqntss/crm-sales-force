@@ -102,6 +102,11 @@ private class INFOHandlerTest
             TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'SPECIAL_CONDITION', 10)
             );
 
+        //SDM KPIs
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY_KPI', 10)
+            );
+
         insert externalRequestList;
     }
 
@@ -279,6 +284,11 @@ private class INFOHandlerTest
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(),
             'No se ha generado correctamente el mapa de registros de Special_Condition__c'
             );
+        System.assertEquals(
+            10,
+            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(),
+            'No se ha generado correctamente el mapa de registros de KPI__c'
+            );
     }
 
     @isTest
@@ -336,6 +346,7 @@ private class INFOHandlerTest
         System.assertEquals(10, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy relationship');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(), 'No se ha generado correctamente el mapa de registros de Case');
         System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(), 'No se ha generado correctamente el mapa de registros de Special_Condition__c');
+        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(), 'No se ha generado correctamente el mapa de registros de KPI__c');
     }
 
     @isTest
@@ -363,7 +374,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            180,
+            190,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -394,7 +405,7 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            180,
+            190,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -438,6 +449,7 @@ private class INFOHandlerTest
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
         List<Case> caseList = [SELECT Id FROM Case];
         List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
+        List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
 
         System.assertEquals(
             40,
@@ -509,6 +521,11 @@ private class INFOHandlerTest
             specialConditionList.size(),
             'No se han insertado todos los registros de Special_Condition__c'
             );
+        System.assertEquals(
+            10,
+            kpiList.size(),
+            'No se han insertado todos los registros de KPI__c'
+            );
     }
 
     @isTest
@@ -546,7 +563,8 @@ private class INFOHandlerTest
             if(externalRequest.Entity__c == INFOHandler.POLICY ||
                 externalRequest.Entity__c == INFOHandler.POLICY_RELATIONSHIP ||
                 externalRequest.Entity__c == INFOHandler.NOTE ||
-                externalRequest.Entity__c == INFOHandler.SPECIAL_CONDITION)
+                externalRequest.Entity__c == INFOHandler.SPECIAL_CONDITION ||
+                externalRequest.Entity__c == INFOHandler.INTERMEDIARY_KPI)
             {
                 externalRequest.Processed__C = false;
                 externalRequest.Action__C = 'DELETE';
@@ -579,6 +597,7 @@ private class INFOHandlerTest
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
         List<Case> caseList = [SELECT Id FROM Case];
         List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
+        List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
 
         System.assertEquals(40, accountList.size(), 'No se han insertado todos los registros de cuenta');
         System.assertEquals(20, contactList.size(), 'No se han insertado todos los registros de contacto');
@@ -594,6 +613,7 @@ private class INFOHandlerTest
         // FIXME: System.assertEquals(20, relaList.size(), 'No se han borrado todos los registros de relaciones');
         System.assertEquals(0, caseList.size(), 'No se han borrado todos los registros de Case');
         System.assertEquals(0, specialConditionList.size(), 'No se han borrado todos los registros de Special_Condition__c');
+        System.assertEquals(0, kpiList.size(), 'No se han borrado todos los registros de KPI__c');
 
     }
 
@@ -638,7 +658,7 @@ private class INFOHandlerTest
         ];
 
         System.assertEquals(
-            180,
+            190,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
@@ -689,7 +709,7 @@ private class INFOHandlerTest
         List<ExternalRequestError__c> errors = [SELECT Id FROM ExternalRequestError__c];
 
         System.assertEquals(
-            180,
+            190,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
