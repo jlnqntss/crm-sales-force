@@ -4304,8 +4304,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.IntermediaryStatus__c</field>
+        <editable>false</editable>
+        <field>Account.StatusIntermediary__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

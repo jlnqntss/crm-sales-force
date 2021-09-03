@@ -22,6 +22,8 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
     private List<SDMAccountContactRelation__mdt> testSettingsACR;
     @testvisible
     private Boolean testUnknownError;
+    @testvisible
+    private Boolean testUnknownErrorFinish;
 
     /**
      * Constructor
@@ -55,7 +57,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
                 'Name',
                 'NationalId__c',
                 'ParentId',
-                'IntermediaryStatus__c',
+                'StatusIntermediary__c',
                 'MainMobilePhone__c'
             };
             
@@ -126,7 +128,27 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
      * Finish. The postprocesing method
      */
     global void finish(Database.BatchableContext BC)
-    {}
+    {
+        try {
+            // System.debug('------ BEFORE => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+
+            if( Test.isRunningTest() && testUnknownErrorFinish != null && testUnknownErrorFinish ) 
+                throw new IntermediarySDMBatchException('Unknown Error in the Finish method');
+
+            // Calculo de los Equipos de Cuenta para las agrupaciones
+            sdm.assignAgrupationAccountTeam(sdm.listAgrupationCIFs);
+
+            // Se comprueba si algun rol se ha inhabilitado para borrar los ATMs que tuviera
+            sdm.removeATMsForInactiveRoles();
+
+            // Finalmente, se envia la notificacion a los usuarios de que la visibilidad de sus mediadores ha cambiado
+            sdm.sendNotification(sdm.listUserIdsToNotify);
+
+            // System.debug('------ AFTER => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+        } catch (Exception e) {
+            ErrorLogUtil.commitError(e, CLASS_NAME);
+        }
+    }
 
     
     //------------------------------------------------------------------------- schedulable methods
