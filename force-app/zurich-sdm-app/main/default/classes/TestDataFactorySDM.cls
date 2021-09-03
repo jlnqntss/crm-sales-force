@@ -100,7 +100,7 @@ public class TestDataFactorySDM
             intermediaries[i].NationalId__c = AGRUPATION_CIF;
             // Para el equipo de cuentas
             intermediaries[i].put(TERRITORY_FIELD, String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)}));
-            intermediaries[i].IntermediaryStatus__c = 'Active';
+            intermediaries[i].Status__c = '001';
             // Para la relacion de contactos
             intermediaries[i].put(MAINEMAIL_FIELD, String.format(MAINEMAIL_EMAIL, new List<String>{String.valueOf(i)}));
         }
@@ -159,7 +159,8 @@ public class TestDataFactorySDM
             intermediaries[i].NationalId__c = AGRUPATION_CIF;
             // Para el equipo de cuentas
             intermediaries[i].put(TERRITORY_FIELD, String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)}));
-            intermediaries[i].IntermediaryStatus__c = 'Active';
+            // Lo marcamos como activo (valores 001 o 002)
+            intermediaries[i].Status__c = '001';
         }
         insert intermediaries;
 
@@ -273,6 +274,7 @@ public class TestDataFactorySDM
         // System.runAs(userPlan) {
             plans[2].AssignedTo__c = userPlan.Id;
             plans[2].Indicator__c = 'Ratio_PoliciesPNIncreas';
+            plans[2].Intermediary__c = null;
             // insert plans[2];
         // }
         insert plans;

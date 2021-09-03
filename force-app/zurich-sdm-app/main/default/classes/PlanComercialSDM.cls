@@ -11,10 +11,13 @@ public with sharing class PlanComercialSDM {
     // Constantes
     @TestVisible
     private static final String CLASS_NAME = 'PlanComercialSDM';
+    // Mensaje de error de indicador del plan no encontrado
     private static final String ERROR_SETTINGS_NO_INDICATOR = 'SDM-Plan Comercial-The following indicator cant be found in the metadata configuration: {0}';
+    // Lista de nombres de los campos de filtrado de los KPI__c
     private static final List<String> KPI_FILTER_FIELDS = new List<String> {
         'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c'
     };
+    // Mapa de equivalencias entre campos del objeto PlanComercial__c y campos del objeto KPI__c
     private static final Map<String, String> mapPlanComercialToKpiFields = new Map<String, String> {
         'Segment__c' => 'EstructuraUnificada__c',
         'Product__c' => 'EstructuraDetalle__c',
@@ -35,18 +38,29 @@ public with sharing class PlanComercialSDM {
     private Map<String, SDMCommercialPlan__mdt> mapSettingsIndicator;
     @TestVisible
     private List<SDMCommercialPlan__mdt> testSettingsIndicator;
-    // Mapa de intermediarios por id de usuario e id de agrupacion
-    Map<Id, Map<Id, Set<Id>>> mapIntermediariesByUserAndAgrupationId;
-    // Lista de todos los mediadores
-    Set<Id> allIntermediaries;
-    // Mapa de Agrupaciones de mediadores por Id de agrupacion
-    private Map<Id, Account> mapAgruptaionsById;
-    // Mapa de lista de KPIs por id de intermediario
+
+
+    // Mapa de todos los mediadores de cada usuario implicado en los planes en cuestion
+    private Map<Id, Set<Id>> mapIntermediariesByUserId;
+    // Mapa de todos los mediadores de cada agrupacion de cada usuario implicado en los planes en cuestion
+    private Map<Id, Map<Id, Set<Id>>> mapIntermediariesByUserIdAndAgrupationId;
+    // Lista de todos los mediadores implicados en los planes en cuestion
+    private Set<Id> allIntermediaries;
+
+    // Mapa de lista de KPIs de cada Mediador implicado en los planes en cuestion
     private Map<Id, List<KPI__c>> mapKPIsByIntermediary;
-    // Id del RecordType AgrupacionMediador del objeto Account
-    Id rtAgrupationId;
+
+
     // Id del RecordType Intermediary del objeto Account
-    Id rtIntermediaryId;
+    public Id rtIntermediaryId {
+        get {
+            if( rtIntermediaryId == null ) {
+                rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+            }
+            return rtIntermediaryId;
+        }
+        set;
+    }
 
     /**
      * Recuperamos de los metadatos de configuracion los tipos de calculos que seran necesarios para cada indicador
@@ -79,51 +93,6 @@ public with sharing class PlanComercialSDM {
     }
 
     /**
-     * Recuperamos los mediadores relacionados con las agrupaciones de mediadores para unos usuarios determinados
-     * El resultado se añade al mapa global de lista de intermediarios por id de usuario
-     * 
-     * @author nts (agonzalezisasi)
-     * @date 26/07/2021
-     * 
-     * @param {Set<Id> agrupatedIds} lista de ids de agrupacion de mediadores (account)
-     * @param {Set<Id> userIds} lista de ids de usuarios de salesforce
-     */
-    private void findIntermediaryByAgrupatedId(Set<Id> agrupatedIds, Set<Id> userIds)
-    {
-        // is hay ids de agrupacion y de usuario
-        if( agrupatedIds != null && !agrupatedIds.isEmpty() && userIds != null && !userIds.isEmpty() ) {
-            // Recuperamos los Equipos de cuenta
-            List<AccountTeamMember> atms = [
-                SELECT Id, UserId, AccountId, Account.ParentId
-                FROM AccountTeamMember
-                WHERE Account.ParentId IN :agrupatedIds
-                AND UserId IN :userIds
-            ];
-
-            // Inicializamos el mapa de lista de intermediarios por agrupacion
-            mapIntermediariesByUserAndAgrupationId = new Map<Id, Map<Id, Set<Id>>>();
-            // Por cada atm encontrado...
-            for(AccountTeamMember atm: atms) {
-                // rellenamos el mapa de lista de mediadores por usuario y agrupacion
-                Map<Id, Set<Id>> mapIntermediaryByAgrupationId = mapIntermediariesByUserAndAgrupationId.get(atm.UserId);
-                if( mapIntermediaryByAgrupationId == null ) {
-                    mapIntermediaryByAgrupationId = new Map<Id, Set<Id>>();
-                    mapIntermediariesByUserAndAgrupationId.put(atm.UserId, mapIntermediaryByAgrupationId);
-                }
-                Set<Id> listIntermediaries = mapIntermediaryByAgrupationId.get(atm.Account.ParentId);
-                if( listIntermediaries == null ) {
-                    listIntermediaries = new Set<Id>();
-                    mapIntermediaryByAgrupationId.put(atm.Account.ParentId, listIntermediaries);
-                }
-                listIntermediaries.add(atm.AccountId);
-
-                // rellenamos la lista de todos los mediadores
-                allIntermediaries.add(atm.AccountId);
-            }
-        }
-    }
-
-    /**
      * Recupera los KPIs para los mediadores dados. El resultado incluira los campos necesarios para luego realizar
      * los calculos.
      * Rellena el mapa global de lista de KPIs por id de mediador
@@ -136,22 +105,24 @@ public with sharing class PlanComercialSDM {
      */
     private void findKPIsByIntermediaries(Set<Id> intermediaries, Set<String> fields)
     {
-        // Recuperamos los KPIs de los mediadores
-        List<KPI__c> kpis = new KPIsSelector().findByIntermediaryIds(new LIst<Id>(intermediaries), fields);
-        
-        // Si se ha encontrado algo...
-        if( kpis != null && !kpis.isEmpty() ) {
-            // A partir de los datos recuperamos generamos un mapa de KPIs por mediador como clave
-            mapKPIsByIntermediary = new Map<Id, List<KPI__c>>();
-            // Por cada KPI recuperado ...
-            for(KPI__c kpi: kpis) {
-                // Lo añadimos al mapa
-                List<KPI__c> tmp = mapKPIsByIntermediary.get(kpi.Intermediary__c);
-                if( tmp == null ) {
-                    tmp = new List<KPI__c>();
-                    mapKPIsByIntermediary.put(kpi.Intermediary__c, tmp);
+        if( intermediaries != null && !intermediaries.isEmpty() && fields != null && !fields.isEmpty() ) {
+            // Recuperamos los KPIs de los mediadores
+            List<KPI__c> kpis = new KPIsSelector().findByIntermediaryIds(new LIst<Id>(intermediaries), fields);
+            
+            // Si se ha encontrado algo...
+            if( kpis != null && !kpis.isEmpty() ) {
+                // A partir de los datos recuperamos generamos un mapa de KPIs por mediador como clave
+                mapKPIsByIntermediary = new Map<Id, List<KPI__c>>();
+                // Por cada KPI recuperado ...
+                for(KPI__c kpi: kpis) {
+                    // Lo añadimos al mapa
+                    List<KPI__c> tmp = mapKPIsByIntermediary.get(kpi.Intermediary__c);
+                    if( tmp == null ) {
+                        tmp = new List<KPI__c>();
+                        mapKPIsByIntermediary.put(kpi.Intermediary__c, tmp);
+                    }
+                    tmp.add(kpi);
                 }
-                tmp.add(kpi);
             }
         }
     }
@@ -241,28 +212,66 @@ public with sharing class PlanComercialSDM {
     }
 
     /**
-     * Recupera los mediadores de agrupacion relacionados con los planes de accion datos y crea un mapa
-     * de mediadores de agrupacion por Id (puede quedar vacio);
+     * Recupera los mediadores relacionados con los usuarios indicados. El resultado generará un mapa de mediadores 
+     * por cada usuario, otro de mediadores por cada agrupacion de cada usuario y un listado de todos los mediadores 
+     * recuperados.
      * 
      * @author nts (agonzalezisasi)
-     * @date 26/07/2021
+     * @date 26/08/2021
      * 
-     * @param {List<PlanComercial> plans} lista de planes comerciales
+     * @param {Set<Id> userIds} listado de ids de usuario
      */
-    private void findAgrupationsByPlan(List<PlanComercial__c> plans)
+    public void findIntermediariesByUserIds(Set<Id> userIds)
     {
-        // Se crea la subquery de planes comerciales que nos dara los mediadores de cada plan
-        Query planQuery = new Query(PlanComercial__c.getSObjectType());
-        planQuery.selectField(PlanComercial__c.Intermediary__c);
-        planQuery.addConditionIn(PlanComercial__c.Id, plans);
+        // Si hay usuarios
+        if( userIds != null && !userIds.isEmpty() ) {
+            // Se recuperan los ATMs que hay para dichos usuarios. Se incluyen los campos del mediador y de la agrupacion
+            // a la que pertenece
+            Id rtId = this.rtIntermediaryId;
+            List<AccountTeamMember> atms = [
+                SELECT id, AccountId, Account.ParentId, UserId
+                FROM AccountTeamMember
+                WHERE Account.RecordTypeId = :rtId
+                AND UserId IN :userIds
+            ];
 
-        // Se recuperan las agrupaciones a partir de los mediadores de los planes
-        List<Account> agrupations = new AccountsSelector().findAgrupationsBySubquery(planQuery);
-        
-        // Si hay agrupaciones...
-        if( agrupations != null ) {
-            // Se genera un mapa de agrupaciones por id
-            mapAgruptaionsById = new Map<Id, Account>(agrupations);
+            // Si se han encontrado ATMs
+            if( !atms.isEmpty() ) {
+                allIntermediaries = new Set<Id>();
+                // Crear un mapa de todos los mediadores de cada usuario
+                mapIntermediariesByUserId = new Map<Id, Set<Id>>();
+                // Crear un mapa de todos los mediadores de cada agrupacion para cada usuario
+                mapIntermediariesByUserIdAndAgrupationId = new Map<Id, Map<Id, Set<Id>>>();
+
+                // Por cada ATM ... rellenaremos los mapas y la lista
+                for(AccountTeamMember atm: atms) {
+                    // Creacion del mapa de lista de mediadores por id de usuario
+                    Set<Id> listIntermediaries = mapIntermediariesByUserId.get(atm.UserId);
+                    if( listIntermediaries == null ) {
+                        listIntermediaries = new Set<Id>();
+                        mapIntermediariesByUserId.put(atm.UserId, listIntermediaries);
+                    }
+                    listIntermediaries.add(atm.AccountId);
+
+                    // Creacion del mapa de lista de mediadores por id de agrupacion y estos a su vez por id de usuario
+                    if( atm.Account.ParentId != null ) {    
+                        Map<Id, Set<Id>> mapIntermediariesByAgrupationId = mapIntermediariesByUserIdAndAgrupationId.get(atm.UserId);
+                        if( mapIntermediariesByAgrupationId == null ) {
+                            mapIntermediariesByAgrupationId = new Map<Id, Set<Id>>();
+                            mapIntermediariesByUserIdAndAgrupationId.put(atm.UserId, mapIntermediariesByAgrupationId);
+                        }
+                        Set<Id> listIntermediaries2 = mapIntermediariesByAgrupationId.get(atm.Account.ParentId);
+                        if( listIntermediaries2 == null ) {
+                            listIntermediaries2 = new Set<Id>();
+                            mapIntermediariesByAgrupationId.put(atm.Account.ParentId, listIntermediaries2);
+                        }
+                        listIntermediaries2.add(atm.AccountId);
+                    }
+
+                    // Añadimos el mediador a la lista de todos los mediadores
+                    allIntermediaries.add(atm.AccountId);
+                }
+            }
         }
     }
 
@@ -296,14 +305,12 @@ public with sharing class PlanComercialSDM {
     public void calculateRealKPI(List<PlanComercial__c> plans) 
     {
         if( plans != null && !plans.isEmpty() ) {
-            // Inicializamos los mapas globales para cada calculo
-            mapIntermediariesByUserAndAgrupationId = null;
-            mapAgruptaionsById = null;
+            // Inicializamos las variables globales para cada calculo
+            allIntermediaries = null;
+            mapIntermediariesByUserId = null;
+            mapIntermediariesByUserIdAndAgrupationId = null;
             mapKPIsByIntermediary = null;
-            allIntermediaries = new Set<Id>();
 
-            // Guardara la lista de ids de agrupaciones de mediadores
-            Set<Id> agrupatedIds = new Set<Id>();     
             // Guardara la lista de ids de usuarios de los planes
             Set<Id> userIds = new Set<Id>();       
             // Guardara la lista de indicadores a recuperar de los KPIs para el calculo
@@ -319,13 +326,10 @@ public with sharing class PlanComercialSDM {
             getSettingsIndicator();
 
             // Se genera un mapa de agrupaciones de mediadores para los planes actuales
-            findAgrupationsByPlan(plans);                        
+            // findAgrupationsByPlan(plans);                        
             
             // Por cada Plan comercial... averiguamos el usuario, los campos y los mediadores a los que hace referencia
             for(PlanComercial__c plan: plans) {
-                // Recuperamos el usuario que ha creado el plan
-                Id userId = getUserIdFromPlan(plan);
-
                 // Recuperamos la configuracion del calculo del indicador que deberia existir
                 SDMCommercialPlan__mdt indicatorSetting = mapSettingsIndicator?.get(plan.Indicator__c);
                 if( indicatorSetting == null ) { // Si no existe la configuracion => reportar error
@@ -335,38 +339,42 @@ public with sharing class PlanComercialSDM {
                     // Incluimos los campos del indicador para recuperarlos con la consulta de kpis
                     kpiFields.add(indicatorSetting.FirstField__c);
                     if( indicatorSetting.SecondField__c != null ) kpiFields.add(indicatorSetting.SecondField__c);
-                    // Intentamos recuperar el Id de agrupacion del mediador a partir de id de mediador informado
-                    // en el plan
-                    Id agrupatedId = mapAgruptaionsById?.get(plan.Intermediary__c)?.Id;
-                    // Si NO es agrupacion...
-                    if( agrupatedId == null ) {
-                        // Lo añadimos a la lista de intermediarios para el usuario
-                        allIntermediaries.add(plan.Intermediary__c);
-                    } else {
-                        // Si SI es una agrupacion, se añade a la lista de agrupaciones y usuarios
-                        agrupatedIds.add(agrupatedId);
-                        userIds.add(userId);
-                    }
+
+                    // Recuperamos el usuario del plan y lo incluimos en la lista de usuarios implicados
+                    Id userId = getUserIdFromPlan(plan);
+                    if( userId != null ) userIds.add(userId);
                 }
             }
 
-            // Recuperamos los mediadores de las Agrupaciones si los hay
-            findIntermediaryByAgrupatedId(agrupatedIds, userIds);
+            // Recuperamos todos los mediadores y agrupaciones relacionados con los usuarios de los planes en cuestion
+            findIntermediariesByUserIds(userIds);
 
-            // Recuperamos los KPIs a partir de los mediadores
+            // Recuperamos todos los KPIs a partir de los mediadores
             findKPIsByIntermediaries(allIntermediaries, kpiFields);
 
+            // Si se han encontrado KPIs...
             if( mapKPIsByIntermediary != null && !mapKPIsByIntermediary.isEmpty() ) {
                 // Ahora si, por cada plan comercial, se realiza el calculo...
                 for(PlanComercial__c plan: plans) {
+                    // Obtenemos de nuevo el usuario relacionado con el plan
                     Id userId = getUserIdFromPlan(plan);
 
-                    // Intentamos recuperar la lista de mediadores por agrupacion para el usuario si los hay...
-                    Map<Id, Set<Id>> mapIntermediaries = mapIntermediariesByUserAndAgrupationId?.get(userId);
-                    // Intentamos recuperar la lista de mediadores para la agrupacion si la hay...
-                    Set<Id> intermediaries = mapIntermediaries?.get(plan.Intermediary__c);
-                    // Si no se ha encontrado nada es directamente un mediador...
-                    if( intermediaries == null ) intermediaries = new Set<Id>{plan.Intermediary__c};
+                    // Obtenemos la lista de mediadores implicados en el plan segun el campo mediador tenga
+                    // uno de los siguientes valores:
+                    // - nulo: todos los mediadores que ve el usuario del plan
+                    // - agrupacion: todos los mediadores de esa agrupacion que ve el usuario del plan
+                    // - mediador: el mediador directamente
+                    Set<Id> intermediaries = null;
+                    if( plan.Intermediary__c == null ) {
+                        intermediaries = mapIntermediariesByUserId?.get(userId);
+                    } else {
+                        // Miramos si el mediador del plan es de Agrupacion (puede no ser y por tanto devolver nulo)
+                        Map<Id, Set<Id>> mapIntermediaries = mapIntermediariesByUserIdAndAgrupationId?.get(userId);
+                        intermediaries = mapIntermediaries?.get(plan.Intermediary__c);
+
+                        // Si la lista es nula significa que no es una agrupacion sino un mediador directamente
+                        if( intermediaries == null ) intermediaries = new Set<Id>{plan.Intermediary__c};
+                    }
 
                     // Si hay mediadores..
                     if( intermediaries != null && !intermediaries.isEmpty() ) {

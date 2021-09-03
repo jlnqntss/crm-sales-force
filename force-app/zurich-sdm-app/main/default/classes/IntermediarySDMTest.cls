@@ -42,6 +42,141 @@ private class IntermediarySDMTest
     }
 
     /**
+     * Test del metodo que calcula la agrupacion de mediadores para una lista de mediadores dada
+     * cuando la agrupacion no existe y se debe crear
+     *
+     * @author nts (agonzalezisasi)
+     * @date 17/08/2021
+     */
+    @isTest
+    static void testAssignIntermediaryAgrupation_not_exist()
+    {
+        ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        List<Account> agrupations = [SELECT Id FROM Account WHERE RecordTypeId = :rtAgrupationId];
+        System.assertEquals(false, agrupations.isEmpty(), 'Deberia haber agrupaciones de mediadores');
+        delete agrupations;
+
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        List<Account> batch1 = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = :rtIntermediaryId];
+        System.assertEquals(10, batch1.size(), 'Deberian existir 10 mediadores');
+        // 0..3 mediadores con CIF 1111 -> ya lo tenian del setup
+        // 4..6 mediadores con CIF 2222
+        for(Integer i=4;i<7;i++) {
+            batch1[i].NationalId__c = '2222';
+        }
+        // 7..9 mediadores con CIF 3333
+        for(Integer i=7;i<10;i++) {
+            batch1[i].NationalId__c = '3333';
+        }
+        update batch1;
+        // Separamos los mediadores en 2 listas para simular 2 pases del batch
+        // en el segundo pase no se deberian crear las agrupaciones porque ya existen
+        List<Account> batch2 = new List<Account>();
+        batch2.add(batch1[8]);
+        batch2.add(batch1[9]);
+        batch1.remove(9);
+        batch1.remove(8);
+
+        Test.startTest();
+        IntermediarySDM sdm = new IntermediarySDM();
+        sdm.assignIntermediaryAgrupation(batch1);
+        sdm.assignIntermediaryAgrupation(batch2);
+        Test.stopTest();
+
+        // Reagrupamos los mediadores en una sola lista para comprobar los resultados
+        batch1.addAll(batch2);
+
+        List<Account> agrpResult = [SELECT Id FROM Account WHERE RecordTypeId = :rtAgrupationId];
+        System.assertEquals(3, agrpResult.size(), 'Deberia haber 3 agrupaciones de mediadores');
+
+        List<Account> result = [SELECT Id FROM Account WHERE Id IN :batch1 AND ParentId != null];
+        System.assertEquals(10, result.size(), 'Deberia haber 10 mediadores con el ParentId de la agrupacion rellenado');
+    }
+
+    /**
+     * Test del metodo que calcula el Equipo de Cuenta (ATM) de la agrupacion de mediadores
+     *
+     * @author nts (agonzalezisasi)
+     * @date 18/08/2021
+     */
+    @isTest
+    static void testAssignAgrupationAccountTeam()
+    {
+        ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        List<Account> intermediaries = [SELECT Id, NationalID__c FROM Account WHERE RecordTypeId = :rtIntermediaryId];
+        System.assertEquals(10, intermediaries.size(), 'Deberian existir 10 mediadores');
+        // 0..3 mediadores con CIF 1111 -> ya esta definido en el setup
+        // 4..6 mediadores con CIF 2222
+        for(Integer i=4;i<7;i++) {
+            intermediaries[i].NationalId__c = '2222';
+        }
+        // 7..9 mediadores con CIF 3333
+        for(Integer i=7;i<10;i++) {
+            intermediaries[i].NationalId__c = '3333';
+        }
+        update intermediaries;
+
+        // Esta es la lista de CIFs para la prueba
+        Set<String> nationalIDs = new Set<String>{'1111','2222','3333'};
+
+        Test.startTest();
+
+        // PRUEBA 1: insertar ATMs
+        IntermediarySDM sdm = new IntermediarySDM();
+        // Preparamos la configuracion para el campo que nos interesa
+        sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
+            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+        );
+        // Se crean las agrupaciones si no existen
+        sdm.assignIntermediaryAgrupation(intermediaries);
+        // Se crean los ATMs de los mediadores
+        sdm.assignIntermediaryAccountTeam(intermediaries);
+        
+        // Se crean los ATMs para la agrupacion
+        sdm.assignAgrupationAccountTeam(nationalIDs);
+
+        // Resultado: comprobamos que se han creado los ATMs de los mediadores para las agrupaciones
+        List<AccountTeamMember> atmsIntermediary = [
+            SELECT Id FROM AccountTeamMember WHERE Account.RecordTypeId = :rtIntermediaryId
+        ];
+        System.assertEquals(10, atmsIntermediary.size(), 'Deberia haber 10 atms para los intermediarios');
+
+        // PRUEBA 2: borrar ATMs
+        // Quitamos algunos ATMs de los mediadores
+        intermediaries[3].put(TestDataFactorySDM.TERRITORY_FIELD, null);
+        intermediaries[5].put(TestDataFactorySDM.TERRITORY_FIELD, null);
+        intermediaries[7].put(TestDataFactorySDM.TERRITORY_FIELD, null);
+        update intermediaries;
+        sdm.assignIntermediaryAccountTeam(intermediaries);
+        // comprobamos que han desaparecido los ATMs de los mediadores
+        atmsIntermediary = [
+            SELECT Id FROM AccountTeamMember WHERE Account.RecordTypeId = :rtIntermediaryId
+        ];
+        System.assertEquals(7, atmsIntermediary.size(), 'Deberia haber 7 atms para los intermediarios');
+        // pero que siguen existiendo los ATMs de las agrupaciones
+        List<AccountTeamMember> atmsAgrupation = [
+            SELECT Id FROM AccountTeamMember WHERE Account.RecordTypeId = :rtAgrupationId
+        ];
+        System.assertEquals(10, atmsAgrupation.size(), 'Deberia haber 10 atms para las agrupaciones');
+
+        // Probamos a asignar los ATMs de las agrupaciones para ver si se borran los ATMs
+        sdm.assignAgrupationAccountTeam(nationalIDs);
+        Test.stopTest();
+
+        // Resultado: comprobamos que ahora ya solo hay 7 ATMs para las agrupaciones tambien
+        List<AccountTeamMember> atms = [
+            SELECT Id FROM AccountTeamMember WHERE Account.RecordTypeId = :rtAgrupationId
+        ];
+        // 10 usuarios para 10 mediadores con 3 agrupaciones
+        System.assertEquals(7, atms.size(), 'Deberia haber 7 atms de agrupacion');
+
+        // Comprobamos las notificaciones a usuarios
+        System.assertNotEquals(null, sdm.listUserIdsToNotify, 'Deberia haber usuarios a notificar');
+        System.assertEquals(10, sdm.listUserIdsToNotify.size(), 'Deberia haber 10 usuarios a notificar');
+    }
+
+    /**
      * Test del metodo que calcula los equipos de cuenta de los mediadores
      *
      * @author nts (agonzalezisasi)
@@ -66,6 +201,10 @@ private class IntermediarySDMTest
 
         List<AccountTeamMember> atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
         System.assertEquals(10, atms.size(), 'Deberia haber 10 ATMs');
+
+        // Comprobamos las notificaciones a usuarios
+        System.assertNotEquals(null, sdm.listUserIdsToNotify, 'Deberia haber usuarios a notificar');
+        System.assertEquals(10, sdm.listUserIdsToNotify.size(), 'Deberia haber 10 usuarios a notificar');
     }
 
     /**
@@ -81,12 +220,12 @@ private class IntermediarySDMTest
         // Seleccionamos un mediador
         String soql = String.format(
             'SELECT Id, {0}, {1}, {2} FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 1',
-            new List<String>{'IntermediaryStatus__c', TestDataFactorySDM.TERRITORY_FIELD, TestDataFactorySDM.RN_FIELD}
+            new List<String>{'StatusIntermediary__c', TestDataFactorySDM.TERRITORY_FIELD, TestDataFactorySDM.RN_FIELD}
         );
         List<Account> intermediaries = Database.QUERY(soql);
         System.assertEquals(1, intermediaries.size(), 'Deberia existir 1 mediador');
-        // Y lo marcamos como inactivo
-        intermediaries[0].IntermediaryStatus__c = 'Inactive';
+        // Y lo marcamos como inactivo (cualquier valor que no sea 001 o 002)
+        intermediaries[0].Status__c = '003';
         update intermediaries;
         
         // Seleccionamos el usuario asociado al email de ese campo para ese mediador
@@ -105,30 +244,32 @@ private class IntermediarySDMTest
         otherUser[1].Email = 'username99@invalid.com';
         insert otherUser;
 
+        IntermediarySDM sdm = new IntermediarySDM();
+        String roleTerritoryLabel = sdm.getATMRoleLabel(TestDataFactorySDM.TERRITORY_ROL);
+        String roleBusinessLabel = sdm.getATMRoleLabel(TestDataFactorySDM.BUSINESS_ROL);
+
         // Creamos el AccountTeamMember para que el metodo lo borre
         List<AccountTeamMember> atmNew = new List<AccountTeamMember>();
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[0].Id,
             UserId= users[0].Id,
-            TeamMemberRole= TestDataFactorySDM.TERRITORY_ROL
+            TeamMemberRole= roleTerritoryLabel
         ));
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[0].Id,
             UserId= otherUser[0].Id,
-            TeamMemberRole= TestDataFactorySDM.TERRITORY_ROL
+            TeamMemberRole= roleTerritoryLabel
         ));
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[0].Id,
             UserId= otherUser[1].Id,
-            TeamMemberRole= TestDataFactorySDM.BUSINESS_ROL
+            TeamMemberRole= roleBusinessLabel
         ));
         insert atmNew;
 
         List<AccountTeamMember> atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
         System.assertEquals(3, atms.size(), 'Deberian existir 3 ATMs');
 
-
-        IntermediarySDM sdm = new IntermediarySDM();
 
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
@@ -142,6 +283,10 @@ private class IntermediarySDMTest
         // Comprobamos que ya no existe el Account Team Member
         atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
         System.assertEquals(true, atms.isEmpty(), 'No deberian existir ATMs');
+
+        // Comprobamos las notificaciones a usuarios
+        System.assertNotEquals(null, sdm.listUserIdsToNotify, 'Deberia haber usuarios a notificar');
+        System.assertEquals(3, sdm.listUserIdsToNotify.size(), 'Deberia haber 3 usuarios a notificar');
     }
 
     /**
@@ -158,7 +303,7 @@ private class IntermediarySDMTest
         // Seleccionamos un mediador
         String soql = String.format(
             'SELECT Id, {0}, {1}, {2} FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 1',
-            new List<String>{'IntermediaryStatus__c', TestDataFactorySDM.TERRITORY_FIELD, TestDataFactorySDM.RN_FIELD}
+            new List<String>{'StatusIntermediary__c', TestDataFactorySDM.TERRITORY_FIELD, TestDataFactorySDM.RN_FIELD}
         );
         List<Account> intermediaries = Database.QUERY(soql);
         System.assertEquals(1, intermediaries.size(), 'Deberia existir 1 mediador');
@@ -182,30 +327,32 @@ private class IntermediarySDMTest
         otherUser[1].Email = 'username99@invalid.com';
         insert otherUser;
 
+        IntermediarySDM sdm = new IntermediarySDM();
+        String roleTerritoryLabel = sdm.getATMRoleLabel(TestDataFactorySDM.TERRITORY_ROL);
+        String roleBusinessLabel = sdm.getATMRoleLabel(TestDataFactorySDM.BUSINESS_ROL);
+
         // Creamos el AccountTeamMember para que el metodo lo borre
         List<AccountTeamMember> atmNew = new List<AccountTeamMember>();
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[0].Id,
             UserId= users[0].Id,
-            TeamMemberRole= TestDataFactorySDM.TERRITORY_ROL
+            TeamMemberRole= roleTerritoryLabel
         ));
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[0].Id,
             UserId= otherUser[0].Id,
-            TeamMemberRole= TestDataFactorySDM.TERRITORY_ROL
+            TeamMemberRole= roleTerritoryLabel
         ));
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[0].Id,
             UserId= otherUser[1].Id,
-            TeamMemberRole= TestDataFactorySDM.BUSINESS_ROL
+            TeamMemberRole= roleBusinessLabel
         ));
         insert atmNew;
 
         List<AccountTeamMember> atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
         System.assertEquals(3, atms.size(), 'Deberian existir 3 ATMs');
 
-
-        IntermediarySDM sdm = new IntermediarySDM();
 
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
@@ -249,17 +396,23 @@ private class IntermediarySDMTest
             mapUserByEmail.put(u.Email, u);
         }
 
+        IntermediarySDM sdm = new IntermediarySDM();
+
+        // Recuperamos el nombre del rol del picklist de configuracion
+        String roleLabel = sdm.getATMRoleLabel(TestDataFactorySDM.TERRITORY_ROL);
+
         // Creamos el AccountTeamMember para que el metodo lo borre
         List<AccountTeamMember> atmNew = new List<AccountTeamMember>();
+        
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[0].Id,
             userId= mapUserByEmail.get((String)intermediaries[0].get(TestDataFactorySDM.TERRITORY_FIELD)).Id,
-            TeamMemberRole= TestDataFactorySDM.TERRITORY_ROL
+            TeamMemberRole= roleLabel
         ));
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[1].Id,
             userId= mapUserByEmail.get((String)intermediaries[1].get(TestDataFactorySDM.TERRITORY_FIELD)).Id,
-            TeamMemberRole= TestDataFactorySDM.TERRITORY_ROL
+            TeamMemberRole= roleLabel
         ));
         insert atmNew;
         List<AccountTeamMember> atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
@@ -270,8 +423,6 @@ private class IntermediarySDMTest
         intermediaries[1].put(TestDataFactorySDM.TERRITORY_FIELD, IntermediarySDM.INTERMEDIARY_VACANT);
         update intermediaries;
 
-
-        IntermediarySDM sdm = new IntermediarySDM();
 
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
@@ -303,9 +454,10 @@ private class IntermediarySDMTest
         System.assertEquals(10, intermediaries.size(), 'Deberian existir 10 mediadores');
 
         IntermediarySDM sdm = new IntermediarySDM();
+        String roleLabelMain = sdm.getACRRoleLabel(TestDataFactorySDM.MAINEMAIL_ROL);
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsACR = TestDataFactorySDM.getSDMSettingsACR(
-            TestDataFactorySDM.MAINEMAIL_ROL, TestDataFactorySDM.MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
+            roleLabelMain, TestDataFactorySDM.MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
         );
         
         Test.startTest();        
@@ -316,7 +468,7 @@ private class IntermediarySDMTest
         List<AccountContactRelation> acrs = [
             SELECT Id, Roles FROM AccountContactRelation 
             WHERE AccountId IN :intermediaries
-            AND Roles includes(:TestDataFactorySDM.MAINEMAIL_ROL)
+            AND Roles includes(:roleLabelMain)
         ];
         System.assertEquals(10, acrs.size(), 'Deberia haber 10 ACRs');
     }
@@ -341,6 +493,7 @@ private class IntermediarySDMTest
         update intermediaries;
 
         IntermediarySDM sdm = new IntermediarySDM();
+        String roleLabelMain = sdm.getACRRoleLabel(TestDataFactorySDM.MAINEMAIL_ROL);
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsACR = TestDataFactorySDM.getSDMSettingsACR(
             TestDataFactorySDM.MAINEMAIL_ROL, TestDataFactorySDM.MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
@@ -351,11 +504,11 @@ private class IntermediarySDMTest
         List<AccountContactRelation> acrs = [SELECT Id, Roles FROM AccountContactRelation];
         System.assertEquals(4, acrs.size(), 'Deberian existir 4 ACRs');
         // A 2 les añadimos el rol nuestro => se deberia quitar solo el rol nuestro
-        acrs[0].Roles += ';' + TestDataFactorySDM.MAINEMAIL_ROL;
-        acrs[1].Roles += ';' + TestDataFactorySDM.MAINEMAIL_ROL;
+        acrs[0].Roles += ';' + roleLabelMain;
+        acrs[1].Roles += ';' + roleLabelMain;
         // A 2 les asignamos solo el rol nuestro => se deberian eliminar
-        acrs[2].Roles = TestDataFactorySDM.MAINEMAIL_ROL; 
-        acrs[3].Roles = TestDataFactorySDM.MAINEMAIL_ROL;
+        acrs[2].Roles = roleLabelMain; 
+        acrs[3].Roles = roleLabelMain;
         update acrs;
         
         Test.startTest();        
@@ -366,10 +519,104 @@ private class IntermediarySDMTest
         acrs = [
             SELECT Id, Roles FROM AccountContactRelation 
             WHERE AccountId IN :intermediaries
-            AND Roles includes(:TestDataFactorySDM.MAINEMAIL_ROL)
+            AND Roles includes(:roleLabelMain)
         ];
         // Debido a que las relaciones directas no se pueden eliminar y por tanto no se puede comprobar esto
         // System.assertEquals(0, acrs.size(), 'Deberia haber 0 ACRs');
     } 
     
+    /**
+     * Test del metodo que envia las notificaciones a los usuarios del cambio de visibilidad del mediador
+     */
+    @isTest
+    static void testSendNotification()
+    {
+        Test.startTest();
+        IntermediarySDM sdm = new IntermediarySDM();
+        sdm.sendNotification(new Set<Id>{UserInfo.getUserId()});
+        Test.stopTest();
+    }
+
+    /**
+     * Test del metodo que elimina los ATMs por estar el mediador inactivo
+     *
+     * @author nts (agonzalezisasi)
+     * @date 29/06/2021
+     */
+    @isTest
+    static void testRemoveATMsForInactiveRoles()
+    {
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        // Seleccionamos un mediador
+        String soql = String.format(
+            'SELECT Id, {0}, {1}, {2} FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 1',
+            new List<String>{'StatusIntermediary__c', TestDataFactorySDM.TERRITORY_FIELD, TestDataFactorySDM.RN_FIELD}
+        );
+        List<Account> intermediaries = Database.QUERY(soql);
+        System.assertEquals(1, intermediaries.size(), 'Deberia existir 1 mediador');
+        
+        // Seleccionamos el usuario asociado al email de ese campo para ese mediador
+        String fieldValue = (String)intermediaries[0].get(TestDataFactorySDM.TERRITORY_FIELD);
+        List<User> users = [SELECT Id, Email, ProfileId FROM User WHERE Email = :fieldValue];
+        System.assertEquals(1, users.size(), 'Deberia existir un usuario con el email de mediador');
+
+        List<User> otherUser = TestDataFactory.generateUsersByProfile(users[0].ProfileId, 2);
+        otherUser[0].Username = 'username98@invalid.com';
+        otherUser[0].LastName = 'User98';
+        otherUser[0].Alias = 'user98';
+        otherUser[0].Email = 'username98@invalid.com';
+        otherUser[1].Username = 'username99@invalid.com';
+        otherUser[1].LastName = 'User99';
+        otherUser[1].Alias = 'user99';
+        otherUser[1].Email = 'username99@invalid.com';
+        insert otherUser;
+
+        IntermediarySDM sdm = new IntermediarySDM();
+        String roleTerritoryLabel = sdm.getATMRoleLabel(TestDataFactorySDM.TERRITORY_ROL);
+        String roleBusinessLabel = sdm.getATMRoleLabel(TestDataFactorySDM.BUSINESS_ROL);
+
+        // Creamos el AccountTeamMember para que el metodo lo borre
+        List<AccountTeamMember> atmNew = new List<AccountTeamMember>();
+        atmNew.add(new AccountTeamMember(
+            AccountId= intermediaries[0].Id,
+            UserId= users[0].Id,
+            TeamMemberRole= roleTerritoryLabel
+        ));
+        atmNew.add(new AccountTeamMember(
+            AccountId= intermediaries[0].Id,
+            UserId= otherUser[0].Id,
+            TeamMemberRole= roleTerritoryLabel
+        ));
+        atmNew.add(new AccountTeamMember(
+            AccountId= intermediaries[0].Id,
+            UserId= otherUser[1].Id,
+            TeamMemberRole= roleBusinessLabel
+        ));
+        insert atmNew;
+
+        List<AccountTeamMember> atms = [SELECT Id,TeamMemberRole FROM AccountTeamMember WHERE AccountId IN :intermediaries];
+        System.assertEquals(3, atms.size(), 'Deberian existir 3 ATMs');
+
+
+        // Preparamos la configuracion para el campo que nos interesa
+        sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
+            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+        );
+        // sdm.testSettingsATM.addAll(TestDataFactorySDM.getSDMSettingsATM(
+        //     TestDataFactorySDM.BUSINESS_ROL, TestDataFactorySDM.BUSINESS_FIELD
+        // ));
+        sdm.testSettingsATM[0].Status__c = IntermediarySDM.ATM_ROL_STATUS_INACTIVE;
+        
+        Test.startTest();        
+        sdm.removeATMsForInactiveRoles();
+        Test.stopTest();
+
+        // Comprobamos que queda un Account Team Member para el rol Business Manager
+        atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
+        System.assertEquals(1, atms.size(), 'Deberia haber 1 ATM');
+
+        // Comprobamos las notificaciones a usuarios
+        System.assertNotEquals(null, sdm.listUserIdsToNotify, 'Deberia haber usuarios a notificar');
+        System.assertEquals(2, sdm.listUserIdsToNotify.size(), 'Deberia haber 2 usuarios a notificar');
+    }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusIntermediary__c</fullName>
+    <description>SDM: Determina el estado de los mediadores a partir del campo Status</description>
+    <externalId>false</externalId>
+    <label>Status Intermediary</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+    <formula>IF(OR(ISPICKVAL(Status__c, '001'),ISPICKVAL(Status__c, '002')),'Active', 'Inactive')</formula>
+</CustomField>
