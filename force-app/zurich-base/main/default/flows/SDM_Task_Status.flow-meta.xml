@@ -39,10 +39,48 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <name>Notify_Task_Owner_0</name>
+        <name>Notify_Task_Owner_0_0</name>
+        <label>Notify Task Owner</label>
+        <locationX>578</locationX>
+        <locationY>636</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_custom_notification_ID_Communication.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <stringValue>La comunicación con asunto {!$Record.Subject} está vencida y se dará por completada en 48 horas</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Cierre de tarea en 48h</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>taskOwnerIds</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Notify_Task_Owner_0_0_0</name>
         <label>Notify Task Owner</label>
         <locationX>1106</locationX>
-        <locationY>636</locationY>
+        <locationY>756</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <inputParameters>
@@ -77,22 +115,22 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <name>Notify_Task_Owner_0_0</name>
+        <name>Notify_Task_Owner_0_0_0_0</name>
         <label>Notify Task Owner</label>
-        <locationX>578</locationX>
-        <locationY>636</locationY>
+        <locationX>1370</locationX>
+        <locationY>756</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
-                <elementReference>Get_custom_notification_ID_Communication.Id</elementReference>
+                <elementReference>Get_custom_notification_ID_0.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>body</name>
             <value>
-                <stringValue>La comunicación con asunto {!$Record.Subject} está vencida y se dará por completada en 48 horas</stringValue>
+                <stringValue>La tarea con el asunto {!$Record.Subject} está vencida y se dará por completada en 48 horas</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -134,7 +172,7 @@
     <assignments>
         <name>Assign_Task_Owner_IDs_0</name>
         <label>Assign Task Owner IDs</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>516</locationY>
         <assignmentItems>
             <assignToReference>taskOwnerIds</assignToReference>
@@ -144,7 +182,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Notify_Task_Owner_0</targetReference>
+            <targetReference>Notification_type</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -166,7 +204,7 @@
     <decisions>
         <name>DueDateToday</name>
         <label>Due Date Today</label>
-        <locationX>842</locationX>
+        <locationX>974</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -251,7 +289,7 @@
         </rules>
         <rules>
             <name>Due_Date_72h_Ago</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ActivityDate</leftValueReference>
                 <operator>EqualTo</operator>
@@ -266,6 +304,13 @@
                     <stringValue>Reminder</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Task_Policy_Follow_up</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Get_custom_notification_ID</targetReference>
             </connector>
@@ -273,7 +318,7 @@
         </rules>
         <rules>
             <name>Notification_After_1_week</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ActivityDate</leftValueReference>
                 <operator>EqualTo</operator>
@@ -288,6 +333,13 @@
                     <stringValue>CommercialAction</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Task_Policy_Follow_up</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Get_custom_notification_ID_0</targetReference>
             </connector>
@@ -295,7 +347,7 @@
         </rules>
         <rules>
             <name>Close_after_9_days</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ActivityDate</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
@@ -310,10 +362,43 @@
                     <stringValue>CommercialAction</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Task_Policy_Follow_up</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Update_status_to_closed_0</targetReference>
             </connector>
             <label>Close after 9 days</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Valida en función del tipo de de registro la notificación que se va a inviar</description>
+        <name>Notification_type</name>
+        <label>Notification type</label>
+        <locationX>1238</locationX>
+        <locationY>636</locationY>
+        <defaultConnector>
+            <targetReference>Notify_Task_Owner_0_0_0_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Seguimiento</defaultConnectorLabel>
+        <rules>
+            <name>AccionComercial</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CommercialAction</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Notify_Task_Owner_0_0_0</targetReference>
+            </connector>
+            <label>Acción comercial</label>
         </rules>
     </decisions>
     <description>Cambio automático de estado de tareas de SDM (Recordatorio, Comunicación, Acción Comercial)</description>
@@ -382,7 +467,7 @@
     <recordLookups>
         <name>Get_custom_notification_ID_0</name>
         <label>Get custom notification ID</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>396</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -437,7 +522,7 @@
     <recordUpdates>
         <name>Update_status_to_closed_0</name>
         <label>Update status to closed</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>396</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -461,7 +546,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>716</locationX>
+        <locationX>848</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>DueDateToday</targetReference>

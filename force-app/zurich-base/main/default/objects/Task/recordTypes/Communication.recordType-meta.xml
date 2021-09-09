@@ -84,6 +84,21 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Follow_up_type__c</picklist>
+        <values>
+            <fullName>Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Póliza</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>InboundOutbound__c</picklist>
         <values>
             <fullName>Inbound</fullName>

@@ -3,6 +3,11 @@
     <description>Permiso de visibilidad sobre objetos y campos de SDM</description>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PlanComercial__c.Intermediary__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PlanComercial__c.Actual_KPI__c</field>
         <readable>false</readable>
     </fieldPermissions>
