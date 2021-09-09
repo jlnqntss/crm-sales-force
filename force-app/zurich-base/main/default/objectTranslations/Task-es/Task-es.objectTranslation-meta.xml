@@ -30,6 +30,17 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>Follow up</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>Interaction</layout>
         <sections>
             <label><!-- Custom Links --></label>
@@ -278,6 +289,10 @@
         <name>Interaction</name>
     </recordTypes>
     <recordTypes>
+        <label>Seguimiento Oferta/Póliza</label>
+        <name>Offer_Policy_Follow_up</name>
+    </recordTypes>
+    <recordTypes>
         <label>Recordatorio</label>
         <name>Reminder</name>
     </recordTypes>
@@ -292,6 +307,10 @@
     <validationRules>
         <errorMessage><!-- [VR Tarea] Solo está permitido vincular actividades a los registros de Caso. --></errorMessage>
         <name>RelatedToRuleOnlyCase</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Una tarea no puede crearse con estado Cerrada --></errorMessage>
+        <name>SDMTaskCreationStatusCannotBeClosed</name>
     </validationRules>
     <validationRules>
         <errorMessage><!-- [VR Tarea] Una actividad o interacción en estado CERRADA no puede pasar a ningún otro estado --></errorMessage>
@@ -321,4 +340,8 @@
         <errorMessage><!-- [VR Tarea] No tienes permiso para editar este tipo de tarea. --></errorMessage>
         <name>SubidaDocumentacionNoEditable</name>
     </validationRules>
+    <webLinks>
+        <label><!-- Clone --></label>
+        <name>Clone</name>
+    </webLinks>
 </CustomObjectTranslation>

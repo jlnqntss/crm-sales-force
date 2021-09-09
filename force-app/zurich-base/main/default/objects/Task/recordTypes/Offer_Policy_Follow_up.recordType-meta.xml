@@ -2,7 +2,6 @@
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Offer_Policy_Follow_up</fullName>
     <active>true</active>
-    <description>Tipo de registro para realizar el seguimiento de las ofertas y pólizas</description>
     <label>Offer/Policy Follow-up</label>
     <picklistValues>
         <picklist>Channel__c</picklist>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Follow_up_type__c</fullName>
+    <description>Se indica la entidad a la que se le va a realizar el seguimiento</description>
+    <externalId>false</externalId>
+    <label>Follow up type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Póliza</fullName>
+                <default>false</default>
+                <label>Póliza</label>
+            </value>
+            <value>
+                <fullName>Oferta</fullName>
+                <default>false</default>
+                <label>Oferta</label>
+            </value>
+            <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <label>Otros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
