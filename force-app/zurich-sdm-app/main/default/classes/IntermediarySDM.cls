@@ -20,7 +20,8 @@ public with sharing class IntermediarySDM {
     private static final String SETUP_RC_FIELD = 'SDMIntermediaryRCField';
     private static final String SETUP_NOTIFICATION_TITLE = 'SDMNotificationTitle';
     private static final String SETUP_NOTIFICATION_BODY = 'SDMNotificationBody';
-    private static final String ACCOUNT_ACCESS_LEVEL = 'Read';
+    private static final String ATM_ACCOUNT_ACCESS_LEVEL = 'Read';
+    private static final String ATM_CONTACT_ACCESS_LEVEL = 'Read';
 
     // CONFIGURACION
     // Relacion entre Rol de equipo de cuenta y campos de Mediador
@@ -587,13 +588,21 @@ public with sharing class IntermediarySDM {
 
                             // Lo metemos tambien en la lista de mediadores a modificar
                             intermediariesToUpdate.add(intermediary);
-                        } else if( i.ParentId == null || i.ParentId != agrupationId) { //---------------- SI existe
+
+                            // Añadimos el CIF a la lista de cifs de agrupacion para que se recalcule el ATM si es
+                            // necesario
+                            this.addNationalId(i.NationalID__c);
+                        } else if( i.ParentId == null || i.ParentId != agrupationId ) { //---------------- SI existe
                             // Si existe la agrupacion y el Mediador no tiene agrupacion o es diferente a la actual, actualizamos
                             // Poner para modificar
                             intermediariesToUpdate.add(new Account(
                                 Id= i.Id,
                                 ParentId= agrupationId
                             ));
+
+                            // Añadimos el CIF a la lista de cifs de agrupacion para que se recalcule el ATM si es
+                            // necesario
+                            this.addNationalId(i.NationalID__c);
                         }
                     }
                 }
@@ -738,7 +747,8 @@ public with sharing class IntermediarySDM {
                                             AccountId= i.Id,
                                             userId= u.Id,
                                             TeamMemberRole= roleLabel,
-                                            AccountAccessLevel= ACCOUNT_ACCESS_LEVEL
+                                            AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL,
+                                            ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
                                         );
 
                                         atmsToUpsert.add(atm);
@@ -761,7 +771,7 @@ public with sharing class IntermediarySDM {
             this.upsertATMs(atmsToUpsert);
         }
 
-        System.debug('ATM: ' + this.listAgrupationCIFs);
+        // System.debug('ATM: ' + this.listAgrupationCIFs);
     }
 
     /**
@@ -1000,7 +1010,7 @@ public with sharing class IntermediarySDM {
      */
     public void assignAgrupationAccountTeam(Set<String> agrupationNationalIDs)
     {
-        System.debug(agrupationNationalIDs);
+        // System.debug(agrupationNationalIDs);
 
         // Si hay CIFs
         if( agrupationNationalIDs != null && !agrupationNationalIDs.isEmpty() ) {
@@ -1089,13 +1099,14 @@ public with sharing class IntermediarySDM {
                         if(userIds == null || !userIds.contains(userId) ) {
                             AccountTeamMember intermediaryAtm = mapExistingInterATMsByNationalIdAndUserId.get(key)?.get(userId);
 
-                            if( intermediaryAtm != null ) {
+                            if( intermediaryAtm != null && intermediaryAtm.Account?.ParentId != null ) {
                                 // Es nuevo
                                 AccountTeamMember newAtm = new AccountTeamMember(
                                     AccountId= intermediaryAtm.Account.ParentId,
                                     UserId= userId,
                                     TeamMemberRole= intermediaryAtm.TeamMemberRole,
-                                    AccountAccessLevel= ACCOUNT_ACCESS_LEVEL
+                                    AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL,
+                                    ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
                                 );
                                 atmsToCreate.add(newAtm);
                                 

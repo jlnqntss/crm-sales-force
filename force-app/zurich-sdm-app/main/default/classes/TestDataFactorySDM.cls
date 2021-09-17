@@ -227,6 +227,13 @@ public class TestDataFactorySDM
         kpis[5].PoliciesPN__c = 40;
         kpis[5].PA_PoliciesPN__c = 45;
         insert kpis;
+        // Añadimos un kpi que este fuera de la fecha de los planes (01/09/2021 a 30/09/2021). No deberia contar
+        kpis = TestDataFactorySDM.generateKPIs(new List<Account>{intermediaries[0]}, 1);
+        kpis[0].PN__c = 13;
+        kpis[0].ProductGroup__c = 'AUTOS';
+        kpis[0].CalcYear__c = '2021'; // mismo que los planes
+        kpis[0].CalcMonth__c = '10'; // no entra en los planes (no deberia contar el kpi)
+        insert kpis;
 
         // Recuperamos los equipos de cuenta para que los usuarios de los mediadores
         // creen los planes
@@ -293,7 +300,9 @@ public class TestDataFactorySDM
                     Intermediary__c= a.Id,
                     ProductGroup__c= 'AUTOS',
                     SegmentoCliente__c= 'Particulares',
-                    Temporalidad__c= 'Mensual'
+                    Temporalidad__c= 'Mensual',
+                    CalcYear__c= '2021',
+                    CalcMonth__c= '9'
                 );
 
                 kpis.add(kpi);
@@ -313,8 +322,8 @@ public class TestDataFactorySDM
         for(Account a: intermediaries) {
             for(Integer i=0;i<num;i++) {
                 PlanComercial__c plan = new PlanComercial__c(
-                    StartDate__c= Date.today().addDays(-5),
-                    EndDate__c= Date.today().addDays(30),
+                    StartDate__c= Date.newInstance(2021, 9, 1),
+                    EndDate__c= Date.newInstance(2021, 9, 30),
                     SendNotifications__c= '01',
                     Intermediary__c= a.Id,
                     Actual_KPI__c= null,

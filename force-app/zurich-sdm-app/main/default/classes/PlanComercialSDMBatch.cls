@@ -42,11 +42,15 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
     global Database.QueryLocator start(Database.BatchableContext BC)
     {
         if( String.isBlank(query) ) {
+            Date todayValue = System.today();
+            
+            if( Test.isRunningTest() ) todayValue = Date.newInstance(2021, 9, 10);
+
             return Database.getQueryLocator([
-                SELECT Id, CreatedById, AssignedTo__c,
+                SELECT Id, CreatedById, AssignedTo__c, StartDate__c, EndDate__c,
                        Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c
                 FROM PlanComercial__c
-                WHERE StartDate__c <= :System.today() AND EndDate__c >= :System.today()
+                WHERE StartDate__c <= :todayValue AND EndDate__c >= :todayValue
             ]);
         } else {
             return Database.getQueryLocator(query);
