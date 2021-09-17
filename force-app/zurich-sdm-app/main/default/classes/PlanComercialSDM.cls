@@ -15,7 +15,7 @@ public with sharing class PlanComercialSDM {
     private static final String ERROR_SETTINGS_NO_INDICATOR = 'SDM-Plan Comercial-The following indicator cant be found in the metadata configuration: {0}';
     // Lista de nombres de los campos de filtrado de los KPI__c
     private static final List<String> KPI_FILTER_FIELDS = new List<String> {
-        'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c'
+        'CalcYear__c', 'CalcMonth__c', 'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c'
     };
     // Mapa de equivalencias entre campos del objeto PlanComercial__c y campos del objeto KPI__c
     private static final Map<String, String> mapPlanComercialToKpiFields = new Map<String, String> {
@@ -26,6 +26,7 @@ public with sharing class PlanComercialSDM {
     // Se corresponde con el API NAME del valor todos en los picklist Segment__c y Product__c del objeto PlanComercial__c
     @TestVisible
     private static final String ALL_VALUE = 'Todos';
+    private static final String PLAN_COMERCIAL_ACCUMULATE_TYPE_MONTH = 'Mensual';
     // Se corresponden el campo picklist CalculationType__c del metadato SDMCommercialPlan__mdt 
     @TestVisible
     private static final String SETTINGS_CALCULATION_TYPE_SUM = 'Sum';
@@ -33,6 +34,7 @@ public with sharing class PlanComercialSDM {
     private static final String SETTINGS_CALCULATION_TYPE_RATIO = 'Ratio';
     @TestVisible
     private static final String SETTINGS_CALCULATION_TYPE_GROWTH = 'Growth';
+    
 
     // Mapa de configuraciones del calculo de indicadores por indicador
     private Map<String, SDMCommercialPlan__mdt> mapSettingsIndicator;
@@ -205,7 +207,31 @@ public with sharing class PlanComercialSDM {
 
             if( planFieldValue != ALL_VALUE && planFieldValue != kpiFieldValue ) {
                 result = false;
-            }    
+            }
+        }
+
+        // Si ha cumplido los parametros de filtrado, revisamos las fechas
+        if( result ) {
+            // Primero revisamos el año
+            Integer startYear = plan.StartDate__c.year();       // Ej: 2021
+            Integer endYear = plan.EndDate__c.year();           // Ej: 2022
+            Integer kpiYear = Integer.valueOf(kpi.CalcYear__c); // Ej: 2021
+
+            result = (kpiYear >= startYear && kpiYear <= endYear); // Ej: true
+
+            // Y si es mensual
+            if( result && plan.AccumulateType__c == PLAN_COMERCIAL_ACCUMULATE_TYPE_MONTH ) {
+                // Revisamos el mes
+                Integer startMonth = plan.StartDate__c.month();         // Ej: 9 (2021)
+                Integer endMonth = plan.EndDate__c.month();             // Ej: 1 (2022)
+                Integer kpiMonth = Integer.valueOf(kpi.CalcMonth__c);   // Ej: 11 (2021)
+
+                Integer startValue = (startYear * 100) + startMonth;     // Ej: 202100 + 9 =     202109
+                Integer endValue = (endYear * 100) + endMonth;           // Ej: 202200 + 1 =     202201
+                Integer kpiValue = (kpiYear * 100) + kpiMonth;      // Ej: 202100 + 11 =    202111
+
+                result = (kpiValue >= startValue && kpiValue <= endValue); // Ej: true 
+            }
         }
 
         return result;
