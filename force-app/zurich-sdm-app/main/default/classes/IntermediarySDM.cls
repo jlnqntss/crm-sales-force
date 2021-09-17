@@ -282,7 +282,7 @@ public with sharing class IntermediarySDM {
             SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :SETUP_NOTIFICATION_TITLE LIMIT 1
         ]?.Value__c;
 
-        if( result == null ) result = 'Titulo de la notificación';
+        if( result == null ) result = 'Cambios en la visibilidad de tus Mediadores';
 
         return result;
     }
@@ -296,7 +296,7 @@ public with sharing class IntermediarySDM {
             SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :SETUP_NOTIFICATION_BODY LIMIT 1
         ]?.Value__c;
 
-        if( result == null ) result = 'Cuerpo de la notificación';
+        if( result == null ) result = 'La asignación de mediadores relacionados con tu usuario ha sido modificada. Puedes comprobar los cambios en la sección de Cuentas.';
 
         return result;
     }
