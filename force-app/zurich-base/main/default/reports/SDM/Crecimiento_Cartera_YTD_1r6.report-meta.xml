@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <aggregates>
-        <calculatedFormula>
-    BLANKVALUE((KPI__c.Portfolio__c:SUM-KPI__c.PA_Portfolio__c:SUM),1)
-    /
-    BLANKVALUE(KPI__c.PA_Portfolio__c:SUM,1)</calculatedFormula>
+        <calculatedFormula>if( KPI__c.PA_Portfolio__c:SUM == 0, 1, KPI__c.Portfolio__c:SUM/KPI__c.PA_Portfolio__c:SUM -1)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Crecimiento Cartera</description>
         <developerName>FORMULA1</developerName>
@@ -14,10 +11,8 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>    BLANKVALUE((KPI__c.Ratio_Claim__c:SUM - KPI__c.Ratio_PA_Claim__c:SUM),1)
-    /
-    BLANKVALUE(KPI__c.Ratio_PA_Claim__c:SUM,1)</calculatedFormula>
-        <datatype>number</datatype>
+        <calculatedFormula>KPI__c.TotalLoad__c:SUM/KPI__c.Income__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
         <description>Siniestralidad total</description>
         <developerName>FORMULA2</developerName>
         <isActive>true</isActive>
@@ -26,10 +21,10 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>    BLANKVALUE((KPI__c.Ratio_TotalDiscount__c:SUM - KPI__c.PA_Totaldiscount__c:SUM),1)
-    /
-    BLANKVALUE(KPI__c.PA_Totaldiscount__c:SUM,1)</calculatedFormula>
-        <datatype>number</datatype>
+        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0,
+0,
+   KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
+        <datatype>percent</datatype>
         <description>Descuento total</description>
         <developerName>FORMULA3</developerName>
         <isActive>true</isActive>
@@ -38,10 +33,10 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>KPI__c.RenewedPortfolio__c:SUM / KPI__c.RevisedBaseline__c:SUM</calculatedFormula>
-        <datatype>number</datatype>
+        <calculatedFormula>IF( KPI__c.RevisedBaseline__c:SUM == 0, 0, KPI__c.RenewedPortfolio__c:SUM / KPI__c.RevisedBaseline__c:SUM)</calculatedFormula>
+        <datatype>percent</datatype>
         <developerName>FORMULA4</developerName>
-        <isActive>false</isActive>
+        <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
         <masterLabel>Ratio Retencion</masterLabel>
         <scale>2</scale>
@@ -54,7 +49,7 @@
         <isCrossBlock>false</isCrossBlock>
         <masterLabel>Crecimiento Clientes</masterLabel>
         <scale>2</scale>
-    </aggregates>
+    </aggregates>    
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
