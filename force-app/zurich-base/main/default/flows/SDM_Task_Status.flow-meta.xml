@@ -130,7 +130,7 @@
         <inputParameters>
             <name>body</name>
             <value>
-                <stringValue>La tarea con el asunto {!$Record.Subject} está vencida y se dará por completada en 48 horas</stringValue>
+                <stringValue>La tarea Seguimiento Oferta/póliza con asunto {!$Record.Subject} está vencida y se dará por completada en 48 horas</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
