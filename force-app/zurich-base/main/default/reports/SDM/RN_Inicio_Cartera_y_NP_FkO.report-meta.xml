@@ -12,7 +12,7 @@
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.Portfolio__c</column>
+            <column>KPI__c.PN__c</column>
         </chartSummaries>
         <chartType>Scatter</chartType>
         <enableHoverLabels>false</enableHoverLabels>
