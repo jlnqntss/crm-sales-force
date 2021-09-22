@@ -924,7 +924,8 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Ramo__c</field>
-        <readable>true</readable>    
+        <readable>true</readable>  
+    </fieldPermissions>  
     <fieldPermissions>
             <editable>true</editable>
             <field>Task.Additional_Information__c</field>
