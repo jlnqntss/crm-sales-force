@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>ORANGE INBOUND LP - LEADS CDD/LANDING</label>
+    <protected>false</protected>
+    <values>
+        <field>AvailableForLeadCreationFlow__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>BusinessCode__c</field>
+        <value xsi:type="xsd:string">3200012617</value>
+    </values>
+    <values>
+        <field>GenesysCloudQueueName__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>SandboxBusinessCode__c</field>
+        <value xsi:type="xsd:string">3200012617</value>
+    </values>
+    <values>
+        <field>Scope_Name__c</field>
+        <value xsi:type="xsd:string">Orange Seguros</value>
+    </values>
+    <values>
+        <field>Scope__c</field>
+        <value xsi:type="xsd:string">ZEO</value>
+    </values>
+</CustomMetadata>
