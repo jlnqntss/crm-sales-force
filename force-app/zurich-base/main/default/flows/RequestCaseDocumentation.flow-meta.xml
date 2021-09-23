@@ -207,7 +207,7 @@
     <formulas>
         <name>HashURL</name>
         <dataType>String</dataType>
-        <expression>{!GetSiteUrl.Value__c} + &quot;h=&quot; + {!GenerarHashId.hashId}</expression>
+        <expression>{!GetSiteUrl.Value__c} + &quot;?h=&quot; + {!GenerarHashId.hashId}</expression>
     </formulas>
     <formulas>
         <name>SelectName</name>
