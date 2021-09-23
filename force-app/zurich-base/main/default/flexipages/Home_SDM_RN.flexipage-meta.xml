@@ -59,36 +59,6 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>reportName</name>
-                    <value>Report_KPIs_CV_ibx</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>showRefreshButton</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:reportChart</componentName>
-                <visibilityRule>
-                    <booleanFilter>1 OR 2</booleanFilter>
-                    <criteria>
-                        <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
-                        <operator>CONTAINS</operator>
-                        <rightValue>CV</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
-                        <operator>CONTAINS</operator>
-                        <rightValue>Consultor</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>cacheAge</name>
-                    <value>1440</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>reportName</name>
                     <value>Report_KPIs_RN_dCQ</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
