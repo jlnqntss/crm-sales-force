@@ -740,7 +740,7 @@
         <editable>true</editable>
         <field>Event.Ramo__c</field>
         <readable>true</readable>
-    </fieldPermissions>    </fieldPermissions>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.Premium_amount__c</field>
