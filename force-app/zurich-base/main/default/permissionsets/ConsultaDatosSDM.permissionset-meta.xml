@@ -956,7 +956,6 @@
             <field>Task.WhatId</field>
             <readable>true</readable>
         </fieldPermissions>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>et4ae5__Business_Unit__c.et4ae5__BusinessUnitIDx__c</field>
