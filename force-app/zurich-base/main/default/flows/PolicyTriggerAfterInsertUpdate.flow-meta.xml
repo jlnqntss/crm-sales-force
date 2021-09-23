@@ -2,6 +2,22 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
+        <name>Actualizar_cliente_oferta</name>
+        <label>Actualizar cliente oferta</label>
+        <locationX>725</locationX>
+        <locationY>559</locationY>
+        <assignmentItems>
+            <assignToReference>GetRelatedOffer.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.PolicyHolder__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UpdateOffer</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Se asigna a Opportunity.StageName el valor Closed won</description>
         <name>UpdateOfferClosedWon</name>
         <label>Cambiar Oferta a Closed Won</label>
@@ -15,9 +31,41 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateOffer</targetReference>
+            <targetReference>Actualizar_cliente</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>Actualizar_cliente</name>
+        <label>Actualizar cliente?</label>
+        <locationX>428</locationX>
+        <locationY>555</locationY>
+        <defaultConnector>
+            <targetReference>UpdateOffer</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetRelatedOffer.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Lead</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.PolicyHolder__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Actualizar_cliente_oferta</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
     <description>Automatismo que cada vez que se inserta o actualiza una póliza se actualiza la etapa de la oferta relacionada</description>
     <interviewLabel>Póliza Trigger - After insert/update {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Póliza Trigger - After insert/update</label>
@@ -102,8 +150,8 @@
         <description>Actualiza los registros de ofertas con su nuevo Stage</description>
         <name>UpdateOffer</name>
         <label>Actualizar Oferta</label>
-        <locationX>425</locationX>
-        <locationY>554</locationY>
+        <locationX>726</locationX>
+        <locationY>353</locationY>
         <faultConnector>
             <targetReference>LogError</targetReference>
         </faultConnector>
@@ -111,7 +159,7 @@
     </recordUpdates>
     <start>
         <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationY>49</locationY>
         <connector>
             <targetReference>GetRelatedOffer</targetReference>
         </connector>
