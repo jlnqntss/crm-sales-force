@@ -1,6 +1,6 @@
 {
   "activeBrandingSetId": "8793b432-6103-48fc-85ed-b66cc4e22ef7",
-  "customCSS": "@font-face {\n    font-family: 'Zurich Sans Regular';\n    src: url('/uploadcasedocs/s/sfsites/c/resource/ZurichSansFont/ZurichSans-Regular.woff') format('woff');\n}",
+  "customCSS": "@font-face {\n    font-family: 'Zurich Sans Regular';\n    src: url('/udocs/s/sfsites/c/resource/ZurichSansFont/ZurichSans-Regular.woff') format('woff');\n}",
   "developerName": "starter",
   "id": "41dff126-2bfd-4ece-8a97-a042a6b40df3",
   "label": "Build Your Own",
