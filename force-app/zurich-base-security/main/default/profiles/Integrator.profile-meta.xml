@@ -15142,6 +15142,11 @@
         <recordType>Task.Reminder</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Task.Offer_Policy_Follow_up</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
     <tabVisibilities>
         <tab>Claim__c</tab>
         <visibility>Hidden</visibility>
