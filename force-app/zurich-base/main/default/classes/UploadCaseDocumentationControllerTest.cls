@@ -18,6 +18,9 @@ public with sharing class UploadCaseDocumentationControllerTest
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         insert cases;
+
+        ContentVersion version = new ContentVersion(title = '001', PathOnClient='prueba',  VersionData = Blob.valueOf('data'));
+        insert version;
     }
 
     /**
@@ -104,5 +107,24 @@ public with sharing class UploadCaseDocumentationControllerTest
 
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(false, errorLogs.isEmpty(), 'List is not empty');
+    }
+
+    @isTest
+    static void test_deleteDocumentWithVersion()
+    {
+        ContentVersion version = [SELECT Id, ContentDocumentId FROM ContentVersion LIMIT 1];
+        Test.startTest();
+        UploadCaseDocumentationController.deleteDocumentWithVersion(version.Id);
+        Test.stopTest();
+        ContentDocument document = new ContentDocument();
+        try 
+        {
+            document = [SELECT Id FROM ContentDocument WHERE Id = :version.ContentDocumentId LIMIT 1];
+        } catch (Exception e) {
+            System.assertEquals(false, document == null, 'Document is not deleted');
+        }
+        System.assertEquals(false, document == null, 'Document is not deleted');
+        
+
     }
 }

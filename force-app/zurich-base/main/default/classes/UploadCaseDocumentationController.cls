@@ -1,5 +1,5 @@
 /**
- * Class that is invoked by the LWC UploadCaseDocumentation.
+ * Class that is invoked by the LWC FileUploadImproved.
  *
  * The client (Personal Account -> Case) arrives through the case documentation link (email or SMS) to the site.
  *
@@ -33,6 +33,28 @@ public without sharing class UploadCaseDocumentationController
         {
             ErrorLogUtil.commitError('warning', 'El Id del Caso está vacío.', 'UploadCaseDocumentationController');
             throw new AuraHandledException('El Id del Caso está vacío.');
+        }
+    }
+
+
+        /**
+     * Method to delete ContentDocument using ContentVersionId
+     * @author jjuaristi
+     * @date 26/05/2020
+     * @param ContentVersion Id so we can query and get ContentDocumentId
+     * @throws AuraHandledException
+     */
+    @AuraEnabled
+    public static void deleteDocumentWithVersion (String Id)
+    {
+        try{
+            ContentVersion version = [SELECT ContentDocumentId from ContentVersion where Id = :Id LIMIT 1];
+            ContentDocument record = new ContentDocument();
+            record.Id = version.ContentDocumentId;
+            delete record;
+        }catch(Exception e)
+        {
+            throw new AuraHandledException('Unable to delete');
         }
     }
 
