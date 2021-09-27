@@ -152,7 +152,6 @@ public with sharing class UploadCaseDocumentationControllerTest
             //Volvemos a intentar eliminar el documento para que salte la excepción
             UploadCaseDocumentationController.deleteDocumentWithVersion(version.Id);
         } catch (Exception e) {
-            System.debug(e.getTypeName());
             System.assertEquals('System.AuraHandledException', e.getTypeName(), 'Error not catched');
         }
         Test.stopTest();

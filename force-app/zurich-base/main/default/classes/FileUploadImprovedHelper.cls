@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : jjuaristi
+ * @group             : 
+ * @last modified on  : 27-09-2021
+ * @last modified by  : jjuaristi
+**/
 public without sharing class FileUploadImprovedHelper{
     
     @AuraEnabled(cacheable = true)
@@ -9,7 +16,6 @@ public without sharing class FileUploadImprovedHelper{
     
     @AuraEnabled(cacheable = true)
     public static String encrypt(String recordId, String encodedKey){
-        system.debug(encodedKey);
         Blob key = EncodingUtil.base64Decode(encodedKey);
         Blob value = Crypto.encryptWithManagedIV('AES256', key, Blob.valueOf(recordId));
         String encodedValue = EncodingUtil.base64Encode(value);

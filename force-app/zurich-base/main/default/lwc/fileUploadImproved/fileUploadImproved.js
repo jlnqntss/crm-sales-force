@@ -77,7 +77,6 @@ export default class FileUpload extends LightningElement {
           hashId: this.hash
         })
           .then((caseResult) => {
-            console.log(caseResult);
             this.showCase = true;
             this.isLoading = false;
             this.currentCase = caseResult;
@@ -132,7 +131,7 @@ export default class FileUpload extends LightningElement {
     recordIdToUse = '';
     @api
     get communityDetails(){
-        if(this.community != true){
+        if(this.community !== true){
             this.recordIdToUse = this.recordId;
         }
         return this.recordIdToUse;
@@ -165,10 +164,6 @@ export default class FileUpload extends LightningElement {
             this.versIds.push(file.contentVersionId);
             this.fileNames.push(file.name);
         });
-
-        this.contentDocumentIds=this.docIds;
-        this.contentVersionIds=this.versIds;
-        this.uploadedFileNames=this.fileNames;
 
         if(this.community === true){
             createContentDocLink({versIds: this.versIds, encodedKey: this.key.data});
@@ -221,38 +216,9 @@ export default class FileUpload extends LightningElement {
         this.docIds.splice(removeIndex,1);
         this.versIds.splice(removeIndex,1);
         this.fileNames.splice(removeIndex,1);
-
-        this.contentDocumentIds=this.docIds;
-        this.contentVersionIds=this.versIds;
-        this.uploadedFileNames=this.fileNames;
-
-        console.log('Ha hecho todo');
     }
 
     getUrlParamValue(url, key) {
         return new URL(url).searchParams.get(key);
-    }
-    
-
-    @api
-    validate(){
-        if(this.docIds.length === 0 && this.required === true){ 
-            var errorMessage;
-            if(this.requiredMessage == null){
-                errorMessage = 'Upload at least one file.';
-            }
-            else{
-                errorMessage = this.requiredMessage;
-            }
-            return { 
-                isValid: false,
-                errorMessage: errorMessage
-             }; 
-        } 
-        else {
-            return { 
-                isValid: true
-            };
-        }
     }
 }
