@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>GenesysCloudQueueName__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Voz_ZurichEmpresas_Orange</value>
     </values>
     <values>
         <field>SandboxBusinessCode__c</field>
