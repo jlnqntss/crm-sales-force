@@ -4,8 +4,8 @@
     <assignments>
         <name>AssignClaimProduct</name>
         <label>Asignación Producto</label>
-        <locationX>980</locationX>
-        <locationY>321</locationY>
+        <locationX>1028</locationX>
+        <locationY>254</locationY>
         <assignmentItems>
             <assignToReference>$Record.ProductId</assignToReference>
             <operator>Assign</operator>
@@ -20,8 +20,8 @@
     <assignments>
         <name>AssignOfferProduct</name>
         <label>Asignación Producto</label>
-        <locationX>1170</locationX>
-        <locationY>118</locationY>
+        <locationX>1198</locationX>
+        <locationY>303</locationY>
         <assignmentItems>
             <assignToReference>$Record.ProductId</assignToReference>
             <operator>Assign</operator>
@@ -88,10 +88,10 @@
     <decisions>
         <name>CheckPolicy</name>
         <label>Comprobar Póliza</label>
-        <locationX>819</locationX>
-        <locationY>116</locationY>
+        <locationX>859</locationX>
+        <locationY>38</locationY>
         <defaultConnector>
-            <targetReference>OfferOrClaim</targetReference>
+            <targetReference>IsClaimFilled</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Póliza Vacía</defaultConnectorLabel>
         <rules>
@@ -104,21 +104,50 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.PolicyId__r.ProductId__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>AssignPolicyProduct</targetReference>
             </connector>
             <label>Póliza Rellena</label>
         </rules>
+        <rules>
+            <name>PolicyWithoutProduct</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PolicyId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Policy__r.ProductName__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IsOfferFilled</targetReference>
+            </connector>
+            <label>Póliza pero no producto</label>
+        </rules>
     </decisions>
     <decisions>
-        <name>OfferOrClaim</name>
-        <label>Oferta o siniestro</label>
+        <name>IsClaimFilled</name>
+        <label>Siniestro relleno</label>
         <locationX>1017</locationX>
-        <locationY>92</locationY>
+        <locationY>98</locationY>
         <defaultConnector>
-            <targetReference>AssignOfferProduct</targetReference>
+            <targetReference>IsOfferFilled</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Oferta Rellena</defaultConnectorLabel>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>ClaimFilled</name>
             <conditionLogic>and</conditionLogic>
@@ -129,10 +158,49 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.ClaimId__r.Product__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>AssignClaimProduct</targetReference>
             </connector>
             <label>Siniestro Relleno</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsOfferFilled</name>
+        <label>Oferta rellena</label>
+        <locationX>1249</locationX>
+        <locationY>56</locationY>
+        <defaultConnector>
+            <targetReference>EmptyProduct</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default</defaultConnectorLabel>
+        <rules>
+            <name>OfferFilled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OfferId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OfferId__r.ProductId__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AssignOfferProduct</targetReference>
+            </connector>
+            <label>Oferta Rellena</label>
         </rules>
     </decisions>
     <interviewLabel>Case Trigger - Before insert/update - Cierre caso {!$Flow.CurrentDateTime}</interviewLabel>
@@ -161,6 +229,9 @@
         <label>Actualizar Registro</label>
         <locationX>1053</locationX>
         <locationY>536</locationY>
+        <faultConnector>
+            <targetReference>EmptyProduct</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>ProductId</field>
             <value>
@@ -169,8 +240,21 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>EmptyProduct</name>
+        <label>Vaciar producto</label>
+        <locationX>1327</locationX>
+        <locationY>528</locationY>
+        <inputAssignments>
+            <field>ProductId</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>223</locationX>
+        <locationX>224</locationX>
         <locationY>50</locationY>
         <connector>
             <targetReference>CheckChanges</targetReference>
@@ -192,6 +276,13 @@
         </filters>
         <filters>
             <field>ClaimId__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ProductId</field>
             <operator>IsNull</operator>
             <value>
                 <booleanValue>false</booleanValue>
