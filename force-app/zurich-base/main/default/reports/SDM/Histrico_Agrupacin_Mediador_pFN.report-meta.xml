@@ -120,13 +120,6 @@
             <operator>equals</operator>
             <value>YTD</value>
         </criteriaItems>
-        <criteriaItems>
-            <column>PARENT_ID</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>0017Y00001LmqrP</value>
-        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Matrix</format>
