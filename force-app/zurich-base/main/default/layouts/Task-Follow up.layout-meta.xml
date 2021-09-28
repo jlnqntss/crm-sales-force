@@ -23,12 +23,12 @@
                 <field>WhatId</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Follow_up_type__c</field>
+                <behavior>Edit</behavior>
+                <field>Ramo__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Ramo__c</field>
+                <field>Follow_up_type__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
