@@ -2446,4 +2446,8 @@
         <enabled>false</enabled>
         <name>ViewSetup</name>
     </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>OverrideForecasts</name>
+    </userPermissions>
 </Profile>
