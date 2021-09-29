@@ -2,5 +2,4 @@
 <ExperienceBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Upload Case Documentation</label>
     <type>ChatterNetworkPicasso</type>
-    <urlPathPrefix>uploadcasedocs/s</urlPathPrefix>
 </ExperienceBundle>
