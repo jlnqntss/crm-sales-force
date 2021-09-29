@@ -135,7 +135,7 @@
             <assignToReference>RecipientId</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>$Record.AssignedTo__r.Id</elementReference>
+                <elementReference>Recipient</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -489,7 +489,7 @@ IF
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>BodyKPIReached</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
