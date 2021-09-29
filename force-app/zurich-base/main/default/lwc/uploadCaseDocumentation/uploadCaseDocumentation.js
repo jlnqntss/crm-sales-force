@@ -48,7 +48,7 @@ export default class UploadCaseDocumentation extends LightningElement {
   @track showCase;
 
   connectedCallback() {
-    const param = "Hash";
+    const param = "h";
     this.hash = this.getUrlParamValue(window.location.href, param);
     this.isLoading = true;
     this.showCase = false;

@@ -28,5 +28,5 @@
     <siteTemplate>SiteTemplate</siteTemplate>
     <siteType>Visualforce</siteType>
     <subdomain>klinc</subdomain>
-    <urlPathPrefix>uploadcasedocs</urlPathPrefix>
+    <urlPathPrefix>udocs</urlPathPrefix>
 </CustomSite>
