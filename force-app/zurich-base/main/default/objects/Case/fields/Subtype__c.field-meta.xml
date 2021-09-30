@@ -625,16 +625,6 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>No definido</controllingFieldValue>
-            <controllingFieldValue>Venta</controllingFieldValue>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <controllingFieldValue>Campañas</controllingFieldValue>
-            <valueName>No definido</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Información</valueName>
         </valueSettings>
