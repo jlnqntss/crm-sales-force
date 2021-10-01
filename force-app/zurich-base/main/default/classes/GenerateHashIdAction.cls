@@ -22,7 +22,7 @@ global with sharing class GenerateHashIdAction
 
             if( String.isNotBlank(request.recordId) )
             {
-                String generatedHashFromRecordId = SystemUtil.generateHash(request.recordId);
+                String generatedHashFromRecordId = SystemUtil.generateHashBase64(request.recordId);
                 if( String.isNotBlank(generatedHashFromRecordId) )
                 {
                     GenerateHashIdActionResponse response = new GenerateHashIdActionResponse();
