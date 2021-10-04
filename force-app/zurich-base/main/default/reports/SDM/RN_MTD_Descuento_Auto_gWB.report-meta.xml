@@ -107,6 +107,9 @@
         <field>Account.INFOIntermediaryCode__c</field>
     </columns>
     <columns>
+        <field>CDF1</field>
+    </columns>
+    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.Portfolio__c</field>
     </columns>
@@ -154,10 +157,22 @@
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PA_PoliciesInForce__c</field>
     </columns>
+    <customDetailFormulas>
+        <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
+) , DATEVALUE
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
+)
+)</calculatedFormula>
+        <dataType>DateOnly</dataType>
+        <developerName>CDF1</developerName>
+        <label>Fecha Calculo</label>
+        <scale>2</scale>
+    </customDetailFormulas>
     <description>Mensual
 Auto solamente</description>
     <filter>
-        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
             <columnToColumn>false</columnToColumn>
@@ -178,6 +193,13 @@ Auto solamente</description>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>AUTOS</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CDF1</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>THIS_MONTH</value>
         </criteriaItems>
         <language>es</language>
     </filter>
