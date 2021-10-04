@@ -38,7 +38,7 @@
             </value>
         </inputParameters>
     </actionCalls>
-    <apiVersion>53.0</apiVersion>
+    <apiVersion>52.0</apiVersion>
     <assignments>
         <name>Assign_Plan_Owner_IDs</name>
         <label>Assign Plan Owner IDs</label>
