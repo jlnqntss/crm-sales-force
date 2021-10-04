@@ -1,0 +1,130 @@
+<!--
+  @description       : 
+  @author            : jjuaristi
+  @group             : 
+  @last modified on  : 16-09-2021
+  @last modified by  : jjuaristi
+-->
+<template>
+    <lightning-card>
+        <div class="c-container">
+        <div class="header">
+            <a href="https://www.zurich.es/">
+              <img
+                src={zurichLogoUrl}
+                class="logo"
+                alt="Zurich Empresas Logo"
+                title="Zurich Empresas Logo"
+                aria-label="Zurich Empresas Logo"
+              />
+            </a>
+        </div>
+        <div class="slds-var-p-horizontal_x-small" >
+            <lightning-layout>
+                <lightning-layout-item size="6">
+                    <div class="slds-var-p-left_small">
+                        <lightning-file-upload
+                            label=""
+                            accept={acceptedFormats}
+                            name="fileUploader"
+                            file-field-name="Guest_Record_fileupload__c"
+                            file-field-value={hash}
+                            onuploadfinished={handleUploadFinished}
+                            disabled={disableFileInput}
+                            title={labels.adjuntaDocumento}
+                            aria-label={labels.adjuntaDocumento}
+                            record-id={recordIdToUse}
+                            multiple={allowMultiple}>
+                        </lightning-file-upload>
+                    </div> 
+                </lightning-layout-item>
+                <lightning-layout-item size="6">
+                    <div class="slds-var-p-left_small">
+                        <div class="slds-form-element__label">
+                            {uploadedLabelToUse}
+                        </div>
+                        <div if:true={objFiles}> 
+                          <template for:each={objFiles} for:item="objFile">
+                              <div key={objFile} class="slds-var-m-bottom_small">
+                                  <div class="slds-grid slds-gutters slds-grid_vertical-align-center">
+                                      <div class="slds-col slds-size_1-of-6 slds-clearfix">
+                                          <span>
+                                              <lightning-icon 
+                                                  icon-name={objFile.filetype}
+                                                  size="medium"
+                                                  title="Doctype Icon">
+                                              </lightning-icon>
+                                          </span>
+                                      </div>
+                                      <div class="slds-col slds-size_4-of-6 slds-float_left" style='word-wrap: break-word;'>
+                                          <span>{objFile.name}</span>
+                                      </div>
+                                      <div class="slds-col slds-size_1-of-6">
+                                          <span>
+                                              <!-- sldsValidatorIgnoreNextLine -->
+                                              <lightning-button-icon
+                                                  icon-name="utility:delete"
+                                                  title="Delete Document"
+                                                  aria-hidden="true"
+                                                  data-recordid={objFile.id}
+                                                  onclick={deleteDocument}>
+                                              </lightning-button-icon>
+                                          </span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </template>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+            <footer>
+                <div class="footer slds-align_absolute-center">
+                  <div class="row">
+                    <div class="legal">
+                      <a
+                        href="https://www.zurich.es/proteccion-datos"
+                        title={labels.proteccionDatosTitle}
+                        aria-label={labels.proteccionDatosTitle}
+                        target="_blank"
+                      >
+                        {labels.proteccionDatosValue}
+                      </a>
+                    </div>
+          
+                    <div class="legal">
+                      <a
+                        href="https://www.zurich.es/aviso-legal"
+                        title={labels.avisoLegalTitle}
+                        aria-label={labels.avisoLegalTitle}
+                        target="_blank"
+                      >
+                        {labels.avisoLegalValue}
+                      </a>
+                    </div>
+          
+                    <div class="legal">
+                      <a
+                        href="https://www.zurich.es/accesibilidad"
+                        title={labels.accesibilidadTitle}
+                        aria-label={labels.accesibilidadTitle}
+                        target="_blank"
+                      >
+                        {labels.accesibilidadValue}
+                      </a>
+                    </div>
+                    <div
+                      class="legal copyright"
+                      title={labels.zurichSegurosDerechosReservados}
+                      aria-label={labels.zurichSegurosDerechosReservados}
+                      format=""
+                    >
+                      {labels.zurichSegurosDerechosReservados}
+                    </div>
+                  </div>
+                </div>
+              </footer>
+        </div>
+    </div>
+    </lightning-card>
+</template>

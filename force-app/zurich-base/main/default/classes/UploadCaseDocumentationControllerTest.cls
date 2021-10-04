@@ -18,6 +18,9 @@ public with sharing class UploadCaseDocumentationControllerTest
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         insert cases;
+
+        ContentVersion version = new ContentVersion(title = '001', PathOnClient='prueba',  VersionData = Blob.valueOf('data'));
+        insert version;
     }
 
     /**
@@ -104,5 +107,53 @@ public with sharing class UploadCaseDocumentationControllerTest
 
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(false, errorLogs.isEmpty(), 'List is not empty');
+    }
+
+
+    /**
+     * Comprueba que si el Id es correcto se elimina el documento
+     **
+     * @author jjuaristi
+     * @date 27/09/2021
+     */
+    @isTest
+    static void test_deleteDocumentWithVersion_ok()
+    {
+        ContentVersion version = [SELECT Id, ContentDocumentId FROM ContentVersion LIMIT 1];
+        Test.startTest();
+        UploadCaseDocumentationController.deleteDocumentWithVersion(version.Id);
+        Test.stopTest();
+        ContentDocument document = new ContentDocument();
+        try 
+        {
+            document = [SELECT Id FROM ContentDocument WHERE Id = :version.ContentDocumentId LIMIT 1];
+        } catch (Exception e) {
+            System.assertEquals(false, document == null, 'Document is not deleted');
+        }
+        System.assertEquals(false, document == null, 'Document is not deleted');
+    }
+
+/**
+     * Comprueba que si el Id es incorrecto, salta la excepción
+     **
+     * @author jjuaristi
+     * @date 27/09/2021
+     */
+    @isTest
+    static void test_deleteDocumentWithVersion_ko()
+    {
+         ContentVersion version = [SELECT Id, ContentDocumentId FROM ContentVersion LIMIT 1];
+        Test.startTest();
+        UploadCaseDocumentationController.deleteDocumentWithVersion(version.Id);
+        
+        ContentDocument document = new ContentDocument();
+        try 
+        {
+            //Volvemos a intentar eliminar el documento para que salte la excepción
+            UploadCaseDocumentationController.deleteDocumentWithVersion(version.Id);
+        } catch (Exception e) {
+            System.assertEquals('System.AuraHandledException', e.getTypeName(), 'Error not catched');
+        }
+        Test.stopTest();
     }
 }
