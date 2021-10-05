@@ -10,8 +10,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : { },
-      "componentName" : "c:fileUploadImproved",
-      "id" : "1441cf7d-d735-4e49-a67c-46f8ec908418",
+      "componentName" : "c:uploadCaseDocumentation",
+      "id" : "010eefda-0787-4ba7-b45d-fc3a4192513b",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
