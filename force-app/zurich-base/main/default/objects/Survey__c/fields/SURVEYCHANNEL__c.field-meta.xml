@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Insurance_Type__c</fullName>
-    <description>OCS. Para Medallia. Entidad legal</description>
+    <fullName>SURVEYCHANNEL__c</fullName>
+    <description>Si es encuesta tras la llamada IVR, sino es Email</description>
     <externalId>false</externalId>
-    <formula>CASE(CaseId__r.PolicyId__r.LegalEntity__c, 
-&apos;001&apos;, &apos;P&amp;C&apos;,
-&apos;005&apos;,&apos;Life&apos;, 
-&apos;P&amp;C&apos;)</formula>
+    <formula>IF( Solicitud__c = true,&quot;Email&quot;,&quot;IVR&quot;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-    <label>Insurance_Type</label>
+    <label>SURVEY_CHANNEL</label>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>
