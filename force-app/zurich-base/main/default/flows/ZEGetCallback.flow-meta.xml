@@ -8,7 +8,6 @@
         <locationY>475</locationY>
         <actionName>c:redirectToUrlAction</actionName>
         <actionType>component</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>url</name>
             <value>
@@ -31,7 +30,6 @@
         <locationY>472</locationY>
         <actionName>c:redirectToUrlAction</actionName>
         <actionType>component</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>url</name>
             <value>
