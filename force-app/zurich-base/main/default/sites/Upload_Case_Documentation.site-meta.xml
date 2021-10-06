@@ -27,5 +27,5 @@
     <siteGuestRecordDefaultOwner>adminklinc@zurich-es.com</siteGuestRecordDefaultOwner>
     <siteType>ChatterNetwork</siteType>
     <subdomain>zurich-es</subdomain>
-    <urlPathPrefix>uploadcasedocs</urlPathPrefix>
+    <urlPathPrefix>udocs</urlPathPrefix>
 </CustomSite>

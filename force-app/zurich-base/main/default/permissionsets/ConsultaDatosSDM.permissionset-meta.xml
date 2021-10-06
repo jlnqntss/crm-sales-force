@@ -742,6 +742,21 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.Premium_amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.Reference_number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.WhatId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>ExternalRequest__c.Action__c</field>
         <readable>false</readable>
@@ -909,8 +924,38 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Ramo__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
+        <readable>true</readable>  
+    </fieldPermissions>  
+    <fieldPermissions>
+            <editable>true</editable>
+            <field>Task.Additional_Information__c</field>
+            <readable>true</readable>
+        </fieldPermissions>
+       <fieldPermissions>
+            <editable>true</editable>
+            <field>Task.Customer_name__c</field>
+            <readable>true</readable>
+        </fieldPermissions>
+        <fieldPermissions>
+            <editable>true</editable>
+            <field>Task.Follow_up_type__c</field>
+            <readable>true</readable>
+        </fieldPermissions>
+       <fieldPermissions>
+            <editable>true</editable>
+            <field>Task.Premium_amount__c</field>
+            <readable>true</readable>
+        </fieldPermissions>
+        <fieldPermissions>
+            <editable>true</editable>
+            <field>Task.Reference_number__c</field>
+            <readable>true</readable>
+        </fieldPermissions>
+        <fieldPermissions>
+            <editable>true</editable>
+            <field>Task.WhatId</field>
+            <readable>true</readable>
+        </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>et4ae5__Business_Unit__c.et4ae5__BusinessUnitIDx__c</field>
@@ -2083,6 +2128,10 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <recordType>Task.Reminder</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>Task.Offer_Policy_Follow_up</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <tabSettings>
