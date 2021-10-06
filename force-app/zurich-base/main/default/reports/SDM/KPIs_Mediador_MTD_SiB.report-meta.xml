@@ -151,6 +151,21 @@
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PoliciesInForce__c</field>
     </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <customDetailFormulas>
+        <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
+) , DATEVALUE
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
+)
+)</calculatedFormula>
+        <dataType>DateOnly</dataType>
+        <developerName>CDF1</developerName>
+        <label>Fecha Calculo</label>
+        <scale>2</scale>
+    </customDetailFormulas>    
     <description>MTD. Incrustado en página del mediador como KPIs MTD</description>
     <filter>
         <criteriaItems>
@@ -167,6 +182,13 @@
             <operator>equals</operator>
             <value>Account.Intermediary</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>CDF1</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>THIS_MONTH</value>
+        </criteriaItems>        
         <language>en_US</language>
     </filter>
     <format>Summary</format>

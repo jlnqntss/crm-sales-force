@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TargetKPI__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE
+(
+ Indicator__c , 
+ &quot;PN&quot;,  TargetKPINumber__c, 
+ &quot;PoliciesPN&quot;, TargetKPINumber__c,
+ &quot;PoliciesInForce&quot;, TargetKPINumber__c,
+ &quot;Portfolio&quot;,  TargetKPICurrency__c ,
+ &quot;Ratio_PNIncrease&quot;,   TargetKPIPercent__c,
+ &quot;Ratio_PoliciesPNIncreas&quot;,   TargetKPIPercent__c,
+ &quot;Ratio_PoliciesInForceIncrease&quot;,   TargetKPIPercent__c,
+ &quot;Ratio_PortIncrease&quot;,   TargetKPIPercent__c,
+ &quot;Ratio_Claim&quot;,   TargetKPIPercent__c,
+ &quot;Ratio_Retention&quot;,   TargetKPIPercent__c,
+ &quot;Totaldiscount&quot;,   TargetKPIPercent__c,
+ 0
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Target KPI</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

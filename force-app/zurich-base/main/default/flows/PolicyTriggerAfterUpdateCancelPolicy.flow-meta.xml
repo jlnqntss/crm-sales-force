@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <assignments>
+        <name>UpdateOfferClosedLost</name>
+        <label>Cambiar Oferta a Closed Lost</label>
+        <locationX>518</locationX>
+        <locationY>394</locationY>
+        <assignmentItems>
+            <assignToReference>GetRelatedOffer.StageName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Closed Lost</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UpdateOffer</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>CheckPreviousStatus</name>
+        <label>Verificar si antes estaba en vigor</label>
+        <locationX>157</locationX>
+        <locationY>390</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>WasValid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.PolicyStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>V</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetRelatedOffer</targetReference>
+            </connector>
+            <label>Estaba en vigor</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Póliza Trigger - After update - Anular Póliza {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Póliza Trigger - After update - Anular Póliza</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>GetRelatedOffer</name>
+        <label>Conseguir Oferta Relacionada</label>
+        <locationX>378</locationX>
+        <locationY>394</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>UpdateOfferClosedLost</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OpportunityName__r.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>UpdateOffer</name>
+        <label>Actualizar Oferta</label>
+        <locationX>656</locationX>
+        <locationY>393</locationY>
+        <inputReference>GetRelatedOffer</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>41</locationX>
+        <locationY>72</locationY>
+        <connector>
+            <targetReference>CheckPreviousStatus</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>PolicyStatus__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>A</stringValue>
+            </value>
+        </filters>
+        <object>Policy__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

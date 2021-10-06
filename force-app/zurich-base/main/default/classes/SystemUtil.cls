@@ -186,6 +186,26 @@ public without sharing class SystemUtil
     }
 
     /**
+     * Método que genera el hash de seguridad de un string, utiliza la cadena mas corta de encriptado.
+     * El resultado de es transformad en base64.
+     Este has es tres veces mas corto el el generado por el método generateHash.
+     **
+     * @param String id
+     * @return String
+     *
+     * @author rpolvera
+     * @date 23/09/2021
+     */
+    public static String generateHashBase64(String id)
+    {
+        // Se contruye el hash a partir del contactId recibido
+        Blob data = Blob.valueOf(id);
+        Blob digest = Crypto.generatedigest('MD5', data); // SHA256
+        String returnHash = EncodingUtil.base64encode(digest);
+        return returnHash;
+    }
+
+    /**
      * Método que obtiene las peticiones externas sin procesar
      **
      * @author nbizkarra
