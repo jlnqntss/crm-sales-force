@@ -3585,6 +3585,10 @@
         <apexClass>sf_GsPilotV1__GettingStartedPostInstallTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>GenerateComercialPlanController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <custom>false</custom>
     <customSettingAccesses>
         <enabled>true</enabled>
@@ -13096,6 +13100,11 @@
         <field>PlanComercial__c.TargetKPI__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlanComercial__c.ParentPlan__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>true</enabled>
         <flow>Campaign_Member_Status</flow>
@@ -15712,6 +15721,16 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Task.Reminder</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+		<default>true</default>
+        <recordType>PlanComercial__c.ActionPlan</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+		<default>false</default>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <tabVisibilities>

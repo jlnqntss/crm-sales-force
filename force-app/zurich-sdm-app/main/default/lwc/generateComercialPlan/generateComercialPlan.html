@@ -1,0 +1,319 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <div class="c-container">
+        <lightning-card title={labels.SDM_PlanAnual_Title} icon-name="action:goal">
+            <!-- SLOT: ACTION -->
+            <span slot="actions" class="slds-m-right_medium ">
+                {deletedPlans}
+                <lightning-helptext icon-name="utility:delete" content={labels.SDM_PlanAnual_PlansToDelete}></lightning-helptext>
+            </span>
+            <template if:true={canCreate}><lightning-button label={labels.SDM_PlanAnual_ButtonNew} slot="actions" onclick={handleAddNew}></lightning-button></template>
+            <lightning-button label={toggleSaveLabel} slot="actions" onclick={handleSave}></lightning-button>
+            <!-- <template if:true={isEdited}>
+                    <lightning-button label={labels.SDM_PlanAnual_ButtonCancel} slot="actions" onclick={handleCancel}></lightning-button>
+                </template>
+                <template if:false={isEdited}>
+                    <lightning-button label={labels.SDM_PlanAnual_ButtonEdit} slot="actions" onclick={handleEdit}></lightning-button>
+                </template> -->
+            <div class="slds-p-around_none slds-m-horizontal_none">
+            <lightning-layout>
+                <!-- Combo de años -->
+                <lightning-layout-item size="2" class="slds-m-left_large" >
+                    <div class="header-column">
+                        <lightning-combobox
+                            name="plansyearcb"
+                            label={labels.SDM_PlanAnual_PlanYears}
+                            value={yearValue}
+                            placeholder={labels.SDM_PlanAnual_YearPlaceholder}
+                            options={yearOptions}
+                            onchange={handleChangeYear} ></lightning-combobox>
+                    </div>
+                </lightning-layout-item>
+                <!-- Espacio en blanco -->
+                <lightning-layout-item size="3" ></lightning-layout-item>
+                <!-- Leyenda -->
+                <lightning-layout-item size="6" >
+                    <lightning-layout horizontal-align="end">
+                        <!-- Deshacer -->
+                        <lightning-layout-item  class="slds-m-top_x-large">
+                            <lightning-icon icon-name="utility:undo" size="x-small" class="slds-m-right_xx-small"></lightning-icon>{labels.SDM_PlanAnual_ButtonUndo}
+                        </lightning-layout-item>
+                        <!-- Campo bloqueado -->
+                        <lightning-layout-item  class="slds-m-left_large slds-m-top_x-large">
+                            <lightning-icon icon-name="utility:lock" size="x-small" class="slds-m-right_xx-small"></lightning-icon>{labels.SDM_PlanAnual_FieldLock}
+                        </lightning-layout-item>
+                        <!-- Eliminar -->
+                        <lightning-layout-item  class="slds-m-left_large slds-m-top_x-large">
+                            <lightning-icon icon-name="utility:delete" size="x-small" class="slds-m-right_xx-small"></lightning-icon>{labels.SDM_PlanAnual_ButtonDelete}
+                        </lightning-layout-item>
+                        <!-- KPI real -->
+                        <lightning-layout-item  class="slds-m-left_large slds-m-top_large">
+                            <div class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_small my-css-positive" role="tooltip" title={labels.SDM_PlanAnual_KPIReal}>
+                                <div class="slds-popover__body">
+                                    <span href="#" style="color: white;">{labels.SDM_PlanAnual_KPIReal}</span>
+                                </div>    
+                            </div>
+                        </lightning-layout-item>
+                        <!-- Nuevo plan -->
+                        <lightning-layout-item  class="slds-m-left_large slds-m-top_large">
+                            <div class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_x-small my-css-nuevo" role="tooltip" title={labels.SDM_PlanAnual_NewPlan}>
+                                <div class="slds-popover__body">
+                                    <span style="color: white;">{labels.SDM_PlanAnual_NewPlan}</span>
+                                </div>    
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-layout-item>
+            </lightning-layout>
+            </div>
+        <div if:true={isLoading}>
+            <lightning-spinner alternative-text={labels.SDM_PlanAnual_Loading} size="medium" title={labels.SDM_PlanAnual_Loading} aria-label={labels.SDM_PlanAnual_Loading}></lightning-spinner>
+        </div>
+        <div if:false={isLoading}>
+            <!-- PLANES -->
+            <template if:true={thereArePlans}>
+                <div class="slds-p-around_x-small">
+                    <!-- Tabla -->
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <!-- Cabecera de la tabla -->
+                        <thead>
+                            <!-- Fila de la cabecera -->
+                            <tr class="my-header-tr" ondblclick={onDoubleClickEdit}>
+                                <!-- Columna de cabecera 1 -->
+                                <th scope="col"><div class="slds-truncate">{labels.SDM_PlanAnual_PlanName}</div></th>
+                                <!-- Resto de columnas de cabeceras -->
+                                <template for:each = {tabledata.headers.Cells} for:item = "cell" for:index="cellIndexVar">
+                                    <template if:false={cell.isDeleted}>
+                                        <th key={cell.key} class={cell.HtmlClass} scope="col">
+                                        <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                            <span class="slds-truncate">
+                                                <template if:true={cell.isLocked}>
+                                                    <span class="slds-m-right_small">{cell.stringValue}</span>
+                                                    <span class="slds-icon_container slds-icon-utility-arrowdown ">
+                                                        <lightning-icon icon-name="utility:lock" alternative-text={labels.SDM_PlanAnual_FieldLock}  size="xx-small" title={labels.SDM_PlanAnual_FieldLock}></lightning-icon>
+                                                    </span>
+                                                </template>
+                                                <template if:false={cell.isLocked}>
+                                                    <!-- NO EDICION -->
+                                                    <template if:false={isEdited}><span class="slds-m-right_small">{cell.stringValue}</span></template>
+                                                    <!-- EDICION -->
+                                                    <template if:true={isEdited}>
+                                                        <lightning-input key={cell.Key} data-colindex={cellIndexVar} data-rowindex="-1" data-id={cell.Id} name={cell.Name} value={cell.stringValue} variant="label-hidden" onchange={handleChangeHeader}></lightning-input>
+                                                    </template>
+                                                </template>
+                                            </span>
+                                            <!-- ES NUEVO -->
+                                            <template if:true={cell.isNew}>
+                                                <div class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_xx-small my-css-nuevo" role="tooltip" title={labels.SDM_PlanAnual_ButtonNew}>
+                                                    <div class="slds-popover__body">
+                                                        <span style="color: white;">+</span>
+                                                    </div>    
+                                                </div>
+                                            </template>
+                                            <!-- EDICION -->
+                                            <template if:true={isEdited}>
+                                                <lightning-button-icon 
+                                                    icon-name="utility:delete"    
+                                                    variant="border-filled" alternative-text={labels.SDM_PlanAnual_ButtonDelete} class="slds-m-left_x-small" title={labels.SDM_PlanAnual_ButtonDelete}
+                                                    data-id={cell.id} onclick={handleRemove} name={cell.Name}>
+                                                </lightning-button-icon>
+                                                <!-- Boton deshacer modificacion -->
+                                                <template if:true={cell.isModified}>
+                                                    <lightning-button-icon 
+                                                        name={cell.Name}
+                                                        icon-name="utility:undo"    
+                                                        variant="border-filled" alternative-text={labels.SDM_PlanAnual_ButtonUndo} size="small" class="slds-m-left_x-small"
+                                                        data-id={cell.Id} onclick={revertChangeHeader}
+                                                        title={cell.originalValueDescription}>
+                                                    </lightning-button-icon>
+                                                </template>
+                                            </template>
+                                        </div>
+                                        </th>
+                                    </template>
+                                </template>
+                            </tr>
+                        </thead>
+                        <!-- Cuerpo de la tabla -->
+                        <tbody>
+                            <!-- Por cada fila... -->
+                            <template for:each = {tabledata.rows} for:item = "item" for:index="indexVar">
+                                <tr key={item.Key} class="slds-text-align_right" role="gridcell" ondblclick={onDoubleClickEdit}>
+                                    <!-- Primera columna: ETIQUETAS -->
+                                    <td data-label={item.Text}>
+                                        <template if:true={item.isLink}>
+                                            <a href="#" onclick={gotoLink} data-id={item.Id} >{item.Text}</a>
+                                        </template>
+                                        <template if:false={item.isLink}>{item.Text}</template>
+                                    </td>
+                                    <!-- Resto de columnas: Valores de cada plan -->
+                                    <template for:each = {item.Cells} for:item = "cell" for:index="cellIndexVar">
+                                        <template if:false={cell.isDeleted}>
+                                        <td key={cell.Key} class={cell.HtmlClass} role="gridcell">
+                                            <div class="slds-grid slds-grid_vertical-align-center">
+                                                <!-- BLOQUEADO -->
+                                                <template if:true={cell.isLocked}>
+                                                    <span class="slds-truncate">
+                                                        <template if:true={cell.isString}>{cell.stringValue}</template>
+                                                        <template if:true={cell.isNumber}>{cell.decimalValue}</template>
+                                                        <template if:true={cell.isPercent}>{cell.decimalValue}</template>
+                                                        <template if:true={cell.isCurrency}><lightning-formatted-number value={cell.decimalValue} format-style="currency"></lightning-formatted-number></template>
+                                                        <template if:true={cell.isDate}>{cell.dateValue}</template>
+                                                        <template if:true={cell.isCombobox}>
+                                                            <lightning-combobox
+                                                                data-id={cell.Id} 
+                                                                data-colindex={cellIndexVar}
+                                                                name={cell.Name}
+                                                                value={cell.stringValue}
+                                                                variant="label-hidden" 
+                                                                placeholder={cell.combo.placeholder}
+                                                                options={cell.combo.options}
+                                                                onchange={handleChange} 
+                                                                disabled>
+                                                            </lightning-combobox>
+                                                        </template>
+                                                    </span>
+                                                    <!-- <template if:true={cell.isLocked}> -->
+                                                        <span class="slds-icon_container slds-icon-utility-arrowdown slds-m-left_x-small">
+                                                            <lightning-icon icon-name="utility:lock" alternative-text="lock"  size="xx-small" title={labels.SDM_PlanAnual_FieldLock}></lightning-icon>    
+                                                        </span>
+                                                    <!-- </template> -->
+                                                </template>
+                                                <template if:false={cell.isLocked}>
+                                                    <!-- NO EDICION -->
+                                                    <template if:false={isEdited}>
+                                                        <template if:true={cell.isString}>{cell.stringValue}</template>
+                                                        <template if:true={cell.isNumber}>{cell.decimalValue}</template>
+                                                        <template if:true={cell.isPercent}>{cell.decimalValue}</template>
+                                                        <template if:true={cell.isCurrency}><lightning-formatted-number value={cell.decimalValue} format-style="currency"></lightning-formatted-number></template>
+                                                        <template if:true={cell.isDate}>{cell.dateValue}</template>
+                                                        <template if:true={cell.isCombobox}>
+                                                            <lightning-combobox
+                                                                data-id={cell.Id} 
+                                                                data-colindex={cellIndexVar}
+                                                                name={cell.Name}
+                                                                value={cell.stringValue}
+                                                                variant="label-hidden" 
+                                                                placeholder={cell.combo.placeholder}
+                                                                options={cell.combo.options}
+                                                                onchange={handleChange} 
+                                                                disabled>
+                                                            </lightning-combobox>
+                                                        </template>
+                                                    </template>
+                                                    <!-- EDICION -->
+                                                    <template if:true={isEdited}>
+                                                        <template if:true={cell.isString}><lightning-input data-colindex={cellIndexVar} data-id={cell.Id} name={cell.Name} value={cell.stringValue} variant="label-hidden" onchange={handleChange}></lightning-input></template>
+                                                        <template if:true={cell.isNumber}>
+                                                            <lightning-input type="number" data-colindex={cellIndexVar} data-rowindex={indexVar} data-id={cell.Id} name={cell.Name} value={cell.decimalValue} variant="label-hidden" onchange={handleChange}></lightning-input>
+                                                        </template>
+                                                        <template if:true={cell.isPercent}>
+                                                            <lightning-input type="number" data-colindex={cellIndexVar} data-rowindex={indexVar} data-id={cell.Id} name={cell.Name} value={cell.decimalValue} variant="label-hidden" onchange={handleChange} step="0.01"></lightning-input>
+                                                        </template>
+                                                        <template if:true={cell.isCurrency}>
+                                                            <lightning-input type="number" data-colindex={cellIndexVar} data-rowindex={indexVar} data-id={cell.Id} name={cell.Name} value={cell.decimalValue} variant="label-hidden" onchange={handleChange} formatter="currency" step="0.01"></lightning-input>
+                                                        </template>
+                                                        <template if:true={cell.isDate}><lightning-input type="date" data-rowindex={indexVar} data-colindex={cellIndexVar} data-id={cell.Id} name={cell.Name} value={cell.dateValue} variant="label-hidden" onchange={handleChange}></lightning-input></template>
+                                                        <template if:true={cell.isCombobox}>
+                                                            <lightning-combobox
+                                                                data-id={cell.Id} 
+                                                                data-colindex={cellIndexVar}
+                                                                data-rowindex={indexVar}
+                                                                name={cell.Name}
+                                                                value={cell.stringValue}
+                                                                variant="label-hidden" 
+                                                                placeholder={cell.combo.placeholder}
+                                                                options={cell.combo.options}
+                                                                onchange={handleChange}
+                                                                >
+                                                            </lightning-combobox>
+                                                        </template>
+                                                    </template>
+                                                    <!-- Dato a comparar -->
+                                                    <template if:true={cell.hasComparing}>
+                                                        <template if:true={cell.isComparingPositive}>
+                                                        <div class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_xx-small my-css-positive" role="tooltip" title={labels.SDM_PlanAnual_KPICompare}>
+                                                            <div class="slds-popover__body">
+                                                                <a href="#" style="color: white;" onclick={gotoLink} data-id={cell.Id}>
+                                                                    <template if:false={cell.comparingHasData}>{labels.SDM_PlanAnual_KPINoData}</template>
+                                                                    <template if:true={cell.comparingHasData}>
+                                                                        <template if:true={cell.isNumber}>{cell.comparingValue}</template>
+                                                                        <template if:true={cell.isPercent}>{cell.comparingValue}</template>
+                                                                        <template if:true={cell.isCurrency}>
+                                                                            <lightning-formatted-number value={cell.comparingValue} format-style="currency"></lightning-formatted-number>
+                                                                        </template>
+                                                                    </template>
+                                                                </a>
+                                                            </div>    
+                                                        </div>
+                                                        </template>
+                                                        <template if:false={cell.isComparingPositive}>
+                                                        <div class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_xx-small my-css-negative" role="tooltip" title={labels.SDM_PlanAnual_KPICompare}>
+                                                            <div class="slds-popover__body">
+                                                                <a href="#" style="color: white;" onclick={gotoLink} data-id={cell.Id}>
+                                                                    <template if:false={cell.comparingHasData}>{labels.SDM_PlanAnual_KPINoData}</template>
+                                                                    <template if:true={cell.comparingHasData}>
+                                                                        <template if:true={cell.isNumber}>{cell.comparingValue}</template>
+                                                                        <template if:true={cell.isPercent}>{cell.comparingValue}</template>
+                                                                        <template if:true={cell.isCurrency}>
+                                                                            <lightning-formatted-number value={cell.comparingValue} format-style="currency"></lightning-formatted-number>
+                                                                        </template>
+                                                                    </template>
+                                                                </a>
+                                                            </div>    
+                                                        </div>
+                                                        </template>
+                                                    </template>
+                                                    <!-- Boton deshacer modificacion -->
+                                                    <template if:true={cell.isModified}>
+                                                        <lightning-button-icon 
+                                                            name={cell.Name}
+                                                            icon-name="utility:undo"    
+                                                            variant="border-filled" alternative-text={labels.SDM_PlanAnual_ButtonUndo} size="small" class="slds-m-left_x-small"
+                                                            data-id={cell.Id} onclick={revertChange}
+                                                            title={cell.originalValueDescription}
+                                                            data-colindex={cellIndexVar}
+                                                            data-rowindex={indexVar}
+                                                            >
+                                                        </lightning-button-icon>
+                                                    </template>
+                                                    
+                                                </template>
+                                            </div>
+                                        </td>
+                                        </template>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                        <!-- FOOTER -->
+                        <tfoot>
+                            <tr class="my-footer-tr" role="gridcell">
+                                <td data-label="Sumatorio"><div class="slds-truncate">{labels.SDM_PlanAnual_Summary}</div></td>
+                                <template for:each = {tabledata.footers.Cells} for:item = "cell" for:index="cellIndexVar">
+                                    <template if:false={cell.isDeleted}>
+                                    <td key={cell.key}>
+                                        <template if:true={cell.isNumber}>{cell.decimalValue}</template>
+                                        <template if:true={cell.isPercent}>{cell.decimalValue}</template>
+                                        <template if:true={cell.isCurrency}><lightning-formatted-number value={cell.decimalValue} format-style="currency"></lightning-formatted-number></template>
+                                    </td>
+                                    </template>
+                                </template>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </template>
+            <!-- NO PLANS -->
+            <template if:false={thereArePlans}>
+                <div class="slds-m-top_medium slds-m-bottom_x-large">
+                    <div class="slds-p-around_medium lgc-bg">
+                        <lightning-icon icon-name="utility:info" size="small" alternative-text="info" title="info"></lightning-icon>
+                        <span class="slds-m-left_xx-small slds-m-top_x-small">{labels.SDM_PlanAnual_NoPlan}</span>
+                    </div>
+                </div>
+            </template>
+        </div>
+      </lightning-card>
+    </div>
+</template>
