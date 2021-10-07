@@ -6,19 +6,19 @@
     <formula>CASE( CaseId__r.PolicyId__r.ProductId__r.GroupDescription__c , 
 &apos;ACCIDENTES&apos;,&apos;Accident &amp; Health&apos;,
 &apos;OTROS&apos;,&apos;Other&apos;,
-&apos;EMBARCACIONES&apos;,&apos;Property&apos;,
+&apos;EMBARCACIONES&apos;,&apos;Motor&apos;,
 &apos;TRANSPORTES&apos;,&apos;Motor&apos;,
 &apos;INMUEBLES&apos;,&apos;Property&apos;,
 &apos;COMERCIOS&apos;,&apos;Property&apos;,
 &apos;PATRIMONIALES&apos;,&apos;Property&apos;,
 &apos;HOGAR&apos;,&apos;Property&apos;,
-&apos;TECNICOS&apos;,&apos;Other&apos;,
+&apos;TECNICOS&apos;,&apos;Workers Comp&apos;,
 &apos;RESP. CIVIL&apos;,&apos;Liability&apos;,
 &apos;AUTOS&apos;,&apos;Motor&apos;,
 &apos;SALUD&apos;,&apos;Accident &amp; Health&apos;,
-&apos;FLOTAS&apos;,&apos;Other&apos;,
+&apos;FLOTAS&apos;,&apos;Motor&apos;,
 &apos;PROT. PAGOS&apos;,&apos;Other&apos;,
-&apos;DECESOS&apos;,&apos;Other&apos;,
+&apos;DECESOS&apos;,&apos;Life&apos;,
 &apos;Other&apos;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Product_Type</label>

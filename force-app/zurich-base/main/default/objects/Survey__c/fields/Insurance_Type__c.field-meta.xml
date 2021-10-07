@@ -4,9 +4,8 @@
     <description>OCS. Para Medallia. Entidad legal</description>
     <externalId>false</externalId>
     <formula>CASE(CaseId__r.PolicyId__r.LegalEntity__c, 
-&apos;001&apos;, &apos;P&amp;C&apos;,
-&apos;005&apos;,&apos;Life&apos;, 
-&apos;P&amp;C&apos;)</formula>
+&apos;001&apos;, &apos;P&amp;C&apos;, 
+&apos;Life&apos;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Insurance_Type</label>
     <required>false</required>
