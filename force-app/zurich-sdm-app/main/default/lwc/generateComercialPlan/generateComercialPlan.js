@@ -470,7 +470,7 @@ export default class UploadCaseDocumentation extends NavigationMixin(
         let valueFound = elementFound.combo.options.find(
           (option) => option.value === elementFound.stringValue
         );
-        console.log(valueFound);
+
         if (valueFound === undefined) {
           elementFound.stringValue = elementFound.stringValueDefault;
           elementFound.isModified = true;
