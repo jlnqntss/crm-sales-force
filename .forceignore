@@ -59,12 +59,15 @@ pt_BR.translation-meta.xml
 # Ignore EmailServices
 **emailservices
 
+# Teléfonos de redireccionamiento e interlocutores para el CTI de Salesforce / Genesys
+force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysPollPhoneNumber.md-meta.xml
+force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysRecordingNumber.md-meta.xml
+
 # Configuración especifica de cada entorno
 force-app/zurich-base/main/default/customMetadata/AdminSetup.AdminSetup.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.ZEGenesysCloudFlowId.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.ZEOGenesysCloudFlowId.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.UploadCaseDocumentationUrl.md-meta.xml
-force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysPollPhoneNumber.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/ErrorManagementSetting.Klinc_errores.md-meta.xml
 #force-app/zurich-base/main/default/customMetadata/Scope_Setting.*
 #force-app/zurich-base/main/default/flows/ZEEmailRoute.flow-meta.xml
