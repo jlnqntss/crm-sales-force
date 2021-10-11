@@ -772,6 +772,11 @@ public with sharing class GenerateComercialPlanController
         // Referencia al plan hijo
         PlanComercial__c childPlan;
 
+        // Guardara la lista de RNs a notificar si hay nuevos planes del DT
+        Set<Id> rnsToNotify;
+        // Guardara la lista de Planes nuevos a notificar si los ha creado el DT
+        Set<String> newPlanNames;
+
         Id rtPlanAnualId = (new PlanComercialSelector()).rtPlanAnualId;
         
         // Por cada plan (columna de la tabla)...
@@ -844,6 +849,12 @@ public with sharing class GenerateComercialPlanController
                     parentPlan.put(PlanComercialSelector.getTargetKPIFieldByType(indicatorType), definedDT);
 
                     parentPlansToInsert.add(parentPlan);
+
+                    // Si hay plan nuevo del DT se incluye en la lista para notificar
+                    if( isDirector ) {                        
+                        if( newPlanNames == null ) newPlanNames = new Set<String>();
+                        newPlanNames.add(planName);
+                    }
                 } else { //----------------------------------------------- Plan existente
                     if( isHeaderModified || isSegmentModified || isProductModified || isIndicatorModified || isDefinedDTModified ) {
                         parentPlan = new PlanComercial__c( Id= planId );
@@ -894,6 +905,10 @@ public with sharing class GenerateComercialPlanController
                         );
                         if( isDirector ) {
                             childPlan.AssignedTo__c= rowId;
+
+                             // Si hay plan nuevo del DT se incluyen los id de los RNs (filas) en la lista a notificar
+                             if( rnsToNotify == null ) rnsToNotify = new Set<ID>();
+                             rnsToNotify.add(rowId);
                         } else {
                             childPlan.AssignedTo__c= userId;
                             childPlan.Intermediary__c= rowId;
@@ -987,6 +1002,11 @@ public with sharing class GenerateComercialPlanController
                 }
                 // Se inserta el plan hijo
                 insert childPlansToInsert;
+
+                // Si se han relleando los destinatarios y los nombres del plan correctamente se envia las notificaciones
+                if( rnsToNotify != null && !rnsToNotify.isEmpty() && newPlanNames != null && !newPlanNames.isEmpty() ) {
+                    sendNotification(rnsToNotify, newPlanNames);
+                }
             }
         }
     }
@@ -1214,6 +1234,27 @@ public with sharing class GenerateComercialPlanController
         if( !roles.isEmpty() ) roleName = roles[0].Developername;
 
         return roleName;
+    }
+    
+    /**
+     * Metodo que envia la siguiente notificacion a todos los usuarios (RN) que se les ha creado un plan comercial anual
+     * 
+     * @param {Set<Id> userIds} Lista de usuario receptores de la notificacion
+     * @param {Set<String> planSubjects} lista de asuntos de planes a incluir en el mensaje de la notificacion
+     */
+    public static void sendNotification(Set<Id> userIds, Set<String> planSubjects)
+    {
+        if( userIds != null && !userIds.isEmpty() ) {
+            String title = Label.SDM_PlanAnual_NotifTitle;
+            String bodyContent = Label.SDM_PlanAnual_NotifBody + ' ' + String.join(new List<String>(planSubjects), ',');
+
+            Notification notif = new Notification(Notification.notificationType.SDMAlert);
+            // Permite abrir la seccion de Cuentas, listview Mis Mediadores
+            notif.addPageReference('standard__objectPage', 'PlanComercial__c', 'list', 'Planes_anuales');
+            // Convertimos la lista de ids de usuario a string
+            Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
+            notif.send(stringSet, title, bodyContent);
+        }
     }
 
     // ---------------------------------- AURA ENABLED ------------------------

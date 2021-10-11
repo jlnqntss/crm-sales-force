@@ -1207,4 +1207,20 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_PlanAnual_YearPlaceholder</shortDescription>
         <value>Select the year</value>
     </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_NotifBody</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_NotifBody</shortDescription>
+        <value>You have been assigned new business plans with the following subjects:</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_NotifTitle</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_NotifTitle</shortDescription>
+        <value>Annual business plans assigned</value>
+    </labels>
 </CustomLabels>
