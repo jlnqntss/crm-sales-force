@@ -1,2 +1,4 @@
 include:
-  - local: "config/salesforce.gitlab-ci.yml"
+  - project: 'zurich-es/shared/pipelines/ea-pipeline-scripts'
+    ref: master
+    file: '/pipelines/salesforce/salesforce.gitlab-ci.yml' 
