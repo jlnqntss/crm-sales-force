@@ -190,6 +190,6 @@
         <profileName>System Administrator</profileName>
     </profileSearchLayouts>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
