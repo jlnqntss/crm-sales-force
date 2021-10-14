@@ -4,10 +4,10 @@
     <name>SendNotifications__c</name>
     <picklistValues>
         <masterLabel>Above threshold</masterLabel>
-        <translation>Superior al límite</translation>
+        <translation>Superior al objetivo</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Below threshold</masterLabel>
-        <translation>Inferior al límite</translation>
+        <translation>Inferior al objetivo</translation>
     </picklistValues>
 </CustomFieldTranslation>
