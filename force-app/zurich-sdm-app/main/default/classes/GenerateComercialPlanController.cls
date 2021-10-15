@@ -1,5 +1,7 @@
 /**
  * Clase controlador que es invocada en el LWC -> generateComercialPlan
+ * 
+ * Proyecto: SDM - Plan comercial anual
  *
  * @author nts (agonzalezisasi)
  * @date 10/09/2021
