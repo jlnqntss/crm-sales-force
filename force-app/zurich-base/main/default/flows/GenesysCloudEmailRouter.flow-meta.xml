@@ -100,7 +100,7 @@
             </processMetadataValues>
             <name>FlowId</name>
             <value>
-                <elementReference>formula_2_myRule_1_A1_1120240441</elementReference>
+                <elementReference>formula_2_myRule_1_A1_4979469791</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -142,7 +142,7 @@
             </processMetadataValues>
             <name>Scope</name>
             <value>
-                <elementReference>formula_3_myRule_1_A1_3291312480</elementReference>
+                <elementReference>formula_3_myRule_1_A1_6441680745</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -369,7 +369,7 @@
                 <stringValue>IF(CONTAINS([EmailMessage].ToAddress , $CustomMetadata.AdminSetupParameter__mdt.ZEOInboundEmailAddress.Value__c ), $CustomMetadata.AdminSetupParameter__mdt.ZEOGenesysCloudFlowId.Value__c , $CustomMetadata.AdminSetupParameter__mdt.ZEGenesysCloudFlowId.Value__c  ) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_1120240441</name>
+        <name>formula_2_myRule_1_A1_4979469791</name>
         <dataType>String</dataType>
         <expression>IF(CONTAINS({!myVariable_current.ToAddress} , {!$CustomMetadata.AdminSetupParameter__mdt.ZEOInboundEmailAddress.Value__c} ), {!$CustomMetadata.AdminSetupParameter__mdt.ZEOGenesysCloudFlowId.Value__c} , {!$CustomMetadata.AdminSetupParameter__mdt.ZEGenesysCloudFlowId.Value__c}  )</expression>
     </formulas>
@@ -380,7 +380,7 @@
                 <stringValue>IF(CONTAINS([EmailMessage].ToAddress , $CustomMetadata.AdminSetupParameter__mdt.ZEOInboundEmailAddress.Value__c ) ,  $CustomMetadata.Scope_Setting__mdt.ORANGEDIGITAL.Scope__c , $CustomMetadata.Scope_Setting__mdt.ZE.Scope__c  )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A1_3291312480</name>
+        <name>formula_3_myRule_1_A1_6441680745</name>
         <dataType>String</dataType>
         <expression>IF(CONTAINS({!myVariable_current.ToAddress} , {!$CustomMetadata.AdminSetupParameter__mdt.ZEOInboundEmailAddress.Value__c} ) ,  {!$CustomMetadata.Scope_Setting__mdt.ORANGEDIGITAL.Scope__c} , {!$CustomMetadata.Scope_Setting__mdt.ZE.Scope__c}  )</expression>
     </formulas>
@@ -425,7 +425,8 @@ ISNULL({!myVariable_current.ParentId} )
 	( 
 		NOT(ISNEW()),
 		[EmailMessage].Incoming ,
-		[EmailMessage].Parent.Owner:Queue.DeveloperName = &apos;Email_CSM_Robot&apos;
+		[EmailMessage].Parent.Owner:Queue.DeveloperName = &apos;Email_CSM_Robot&apos;,
+		ISBLANK([EmailMessage].GenesysInteractionId__c )
 	)
 )</stringValue>
             </value>
@@ -448,7 +449,8 @@ ISNULL({!myVariable_current.ParentId} )
 	( 
 		NOT(ISNEW()),
 		{!myVariable_current.Incoming} ,
-		{!myVariable_current.Parent.Owner:Queue.DeveloperName} = &apos;Email_CSM_Robot&apos;
+		{!myVariable_current.Parent.Owner:Queue.DeveloperName} = &apos;Email_CSM_Robot&apos;,
+		ISBLANK({!myVariable_current.GenesysInteractionId__c} )
 	)
 )</expression>
     </formulas>
@@ -489,7 +491,7 @@ ISNULL({!myVariable_current.ParentId} )
 	)
 )</expression>
     </formulas>
-    <interviewLabel>GenesysCloudEmailRouter-10_InterviewLabel</interviewLabel>
+    <interviewLabel>GenesysCloudEmailRouter-12_InterviewLabel</interviewLabel>
     <label>Enrutamiento de emails en Genesys Cloud</label>
     <processMetadataValues>
         <name>ObjectType</name>
