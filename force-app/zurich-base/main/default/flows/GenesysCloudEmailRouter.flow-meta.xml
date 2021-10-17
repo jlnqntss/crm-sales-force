@@ -89,7 +89,7 @@
             <processMetadataValues>
                 <name>objectType</name>
                 <value>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -100,7 +100,7 @@
             </processMetadataValues>
             <name>FlowId</name>
             <value>
-                <elementReference>formula_2_myRule_1_A1_8897031182</elementReference>
+                <elementReference>formula_2_myRule_1_A1_1120240441</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -131,7 +131,7 @@
             <processMetadataValues>
                 <name>objectType</name>
                 <value>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -142,7 +142,7 @@
             </processMetadataValues>
             <name>Scope</name>
             <value>
-                <elementReference>formula_3_myRule_1_A1_4297609017</elementReference>
+                <elementReference>formula_3_myRule_1_A1_3291312480</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -290,69 +290,8 @@
             <name>myRule_1</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Incoming</leftValueReference>
+                <leftValueReference>formula_myRule_1</leftValueReference>
                 <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideReferenceTo</name>
-                    <value>
-                        <stringValue>Case</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ParentId</leftValueReference>
-                <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
@@ -380,135 +319,12 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_5</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideReferenceTo</name>
-                    <value>
-                        <stringValue>Case</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ParentId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Incoming</leftValueReference>
+                <leftValueReference>formula_myRule_5</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>administracion.</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>particulares.</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -531,228 +347,12 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_7</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4 OR 5 OR 6 OR 7)</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideReferenceTo</name>
-                    <value>
-                        <stringValue>Case</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ParentId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Incoming</leftValueReference>
+                <leftValueReference>formula_myRule_7</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>cc.</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>zurich</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>seguroviajezurich</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>w-sitedb</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ToAddress</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>contact.center</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -769,7 +369,7 @@
                 <stringValue>IF(CONTAINS([EmailMessage].ToAddress , $CustomMetadata.AdminSetupParameter__mdt.ZEOInboundEmailAddress.Value__c ), $CustomMetadata.AdminSetupParameter__mdt.ZEOGenesysCloudFlowId.Value__c , $CustomMetadata.AdminSetupParameter__mdt.ZEGenesysCloudFlowId.Value__c  ) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_8897031182</name>
+        <name>formula_2_myRule_1_A1_1120240441</name>
         <dataType>String</dataType>
         <expression>IF(CONTAINS({!myVariable_current.ToAddress} , {!$CustomMetadata.AdminSetupParameter__mdt.ZEOInboundEmailAddress.Value__c} ), {!$CustomMetadata.AdminSetupParameter__mdt.ZEOGenesysCloudFlowId.Value__c} , {!$CustomMetadata.AdminSetupParameter__mdt.ZEGenesysCloudFlowId.Value__c}  )</expression>
     </formulas>
@@ -780,11 +380,116 @@
                 <stringValue>IF(CONTAINS([EmailMessage].ToAddress , $CustomMetadata.AdminSetupParameter__mdt.ZEOInboundEmailAddress.Value__c ) ,  $CustomMetadata.Scope_Setting__mdt.ORANGEDIGITAL.Scope__c , $CustomMetadata.Scope_Setting__mdt.ZE.Scope__c  )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A1_4297609017</name>
+        <name>formula_3_myRule_1_A1_3291312480</name>
         <dataType>String</dataType>
         <expression>IF(CONTAINS({!myVariable_current.ToAddress} , {!$CustomMetadata.AdminSetupParameter__mdt.ZEOInboundEmailAddress.Value__c} ) ,  {!$CustomMetadata.Scope_Setting__mdt.ORANGEDIGITAL.Scope__c} , {!$CustomMetadata.Scope_Setting__mdt.ZE.Scope__c}  )</expression>
     </formulas>
-    <interviewLabel>GenesysCloudEmailRouter-13_InterviewLabel</interviewLabel>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND
+(
+   ISNEW(),
+[EmailMessage].Incoming ,
+ISNULL([EmailMessage].ParentId )
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>AND
+(
+   ISNEW(),
+{!myVariable_current.Incoming} ,
+ISNULL({!myVariable_current.ParentId} )
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>OR(
+	AND
+	(
+	   ISNEW(),
+	   [EmailMessage].Incoming ,
+	   ISNULL( [EmailMessage].ParentId ),
+	   OR
+		(
+			BEGINS([EmailMessage].ToAddress, &apos;administracion.&apos;),
+			BEGINS([EmailMessage].ToAddress, &apos;particulares.&apos;)
+		)
+	),
+	AND
+	( 
+		NOT(ISNEW()),
+		[EmailMessage].Incoming ,
+		[EmailMessage].Parent.Owner:Queue.DeveloperName = &apos;Email_CSM_Robot&apos;
+	)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_5</name>
+        <dataType>Boolean</dataType>
+        <expression>OR(
+	AND
+	(
+	   ISNEW(),
+	   {!myVariable_current.Incoming} ,
+	   ISNULL( {!myVariable_current.ParentId} ),
+	   OR
+		(
+			BEGINS({!myVariable_current.ToAddress}, &apos;administracion.&apos;),
+			BEGINS({!myVariable_current.ToAddress}, &apos;particulares.&apos;)
+		)
+	),
+	AND
+	( 
+		NOT(ISNEW()),
+		{!myVariable_current.Incoming} ,
+		{!myVariable_current.Parent.Owner:Queue.DeveloperName} = &apos;Email_CSM_Robot&apos;
+	)
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND
+(
+   ISNEW(),
+   [EmailMessage].Incoming ,
+   ISNULL( [EmailMessage].ParentId ),
+   OR
+	(
+		BEGINS([EmailMessage].ToAddress, &apos;cc.&apos;),
+		BEGINS([EmailMessage].ToAddress, &apos;zurich&apos;),
+		BEGINS([EmailMessage].ToAddress, &apos;seguroviajezurich&apos;),
+		BEGINS([EmailMessage].ToAddress, &apos;w-sitedb&apos;),
+		BEGINS([EmailMessage].ToAddress, &apos;contact.center&apos;)
+	)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_7</name>
+        <dataType>Boolean</dataType>
+        <expression>AND
+(
+   ISNEW(),
+   {!myVariable_current.Incoming} ,
+   ISNULL( {!myVariable_current.ParentId} ),
+   OR
+	(
+		BEGINS({!myVariable_current.ToAddress}, &apos;cc.&apos;),
+		BEGINS({!myVariable_current.ToAddress}, &apos;zurich&apos;),
+		BEGINS({!myVariable_current.ToAddress}, &apos;seguroviajezurich&apos;),
+		BEGINS({!myVariable_current.ToAddress}, &apos;w-sitedb&apos;),
+		BEGINS({!myVariable_current.ToAddress}, &apos;contact.center&apos;)
+	)
+)</expression>
+    </formulas>
+    <interviewLabel>GenesysCloudEmailRouter-10_InterviewLabel</interviewLabel>
     <label>Enrutamiento de emails en Genesys Cloud</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -807,7 +512,7 @@
     <processMetadataValues>
         <name>TriggerType</name>
         <value>
-            <stringValue>onCreateOnly</stringValue>
+            <stringValue>onAllChanges</stringValue>
         </value>
     </processMetadataValues>
     <processType>Workflow</processType>
