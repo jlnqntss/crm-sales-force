@@ -84,9 +84,34 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Obtener_Scope_General</targetReference>
+                <targetReference>Cuenta_asociada</targetReference>
             </connector>
             <label>Asociado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Cuenta_asociada</name>
+        <label>Cuenta asociada?</label>
+        <locationX>573</locationX>
+        <locationY>579</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_datos_adicionales</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No asociada</defaultConnectorLabel>
+        <rules>
+            <name>Asociada</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CaseId__r.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Obtener_Scope_General</targetReference>
+            </connector>
+            <label>Asociada</label>
         </rules>
     </decisions>
     <decisions>
@@ -238,8 +263,8 @@
     <recordLookups>
         <name>Obtener_Direccion_postal</name>
         <label>Obtener Dirección postal</label>
-        <locationX>579</locationX>
-        <locationY>759</locationY>
+        <locationX>370</locationX>
+        <locationY>836</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_datos_adicionales</targetReference>
@@ -287,8 +312,8 @@
     <recordLookups>
         <name>Obtener_Scope_General</name>
         <label>Obtener Scope General</label>
-        <locationX>579</locationX>
-        <locationY>580</locationY>
+        <locationX>370</locationX>
+        <locationY>657</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Obtener_Direccion_postal</targetReference>
