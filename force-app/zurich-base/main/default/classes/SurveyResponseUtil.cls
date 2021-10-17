@@ -1,6 +1,7 @@
-public class SurveyResponseUtil {
+public class SurveyResponseUtil
+{
 
-    public static Map<Id, Map<Integer,SurveyResponse__c>> allResponsesMap = new Map<Id, Map<Integer,SurveyResponse__c>>();
+    public static Map<Id, Map<Integer,SurveyResponse__c> > allResponsesMap = new Map<Id, Map<Integer,SurveyResponse__c> >();
     public static Map<Id, Survey__c> surveysToUpdate = new Map<Id, Survey__c>();
 
     /**
@@ -43,9 +44,10 @@ public class SurveyResponseUtil {
                     //obtener position si QuestionId está estructurado correctamente
                     parts = new List<String>();
                     parts = response.QuestionId__c.split('-');
-                    if(parts.size()>1)
+                    if(parts.size() > 1)
                     {
-                        Integer position = Integer.valueOf(parts.get(1));
+                        Integer i = parts.size() == 1 ? 1 : parts.size() - 1;
+                        Integer position = Integer.valueOf( parts.get(i) );
                         responsesMap.put(position,response);
                     }
                 }
@@ -68,7 +70,7 @@ public class SurveyResponseUtil {
         Survey__c surveyToUpdate = new Survey__c();
 
         //1º Por cada survey padre
-        for(Id surveyId: allResponsesMap.keySet())
+        for( Id surveyId: allResponsesMap.keySet() )
         {
             Map<Integer,SurveyResponse__c> responsesOfSurvey = allResponsesMap.get(surveyId);
 
@@ -92,11 +94,12 @@ public class SurveyResponseUtil {
                 }
                 else if(response.QuestionType__c == 'ivr')
                 {
-                    if(String.isBlank(response.Answer__c))
+                    if( String.isBlank(response.Answer__c) )
                     {
                         shortAnswer = shortAnswer + 'NULL;';
                     }
-                    else{
+                    else
+                    {
                         shortAnswer = shortAnswer + response.Answer__c + ';';
                     }
                 }
@@ -117,13 +120,15 @@ public class SurveyResponseUtil {
      * @date 24/02/2021
      */
     public static void updateParentSurveys()
-    {System.debug(surveysToUpdate);
+    {
+        System.debug(surveysToUpdate);
         List<Survey__c> surveys = new List<Survey__c>();
         surveys = surveysToUpdate.values();
 
-        if(!surveys.isEmpty())
+        if( !surveys.isEmpty() )
         {
-            try {
+            try
+            {
                 update surveys;
             }
             catch(Exception ex)
