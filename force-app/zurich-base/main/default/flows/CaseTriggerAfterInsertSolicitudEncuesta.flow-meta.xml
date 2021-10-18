@@ -4,17 +4,31 @@
     <decisions>
         <name>Tipo_de_registro_correcto</name>
         <label>Tipo de registro correcto?</label>
-        <locationX>776</locationX>
+        <locationX>769</locationX>
         <locationY>383</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Si</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>OCSInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Customer</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>BusinessCustomer</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -48,7 +62,7 @@
     <recordCreates>
         <name>Generar_Solicitud_de_Encuesta</name>
         <label>Generar Solicitud de Encuesta</label>
-        <locationX>783</locationX>
+        <locationX>774</locationX>
         <locationY>601</locationY>
         <inputAssignments>
             <field>CaseId__c</field>
@@ -91,5 +105,5 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
