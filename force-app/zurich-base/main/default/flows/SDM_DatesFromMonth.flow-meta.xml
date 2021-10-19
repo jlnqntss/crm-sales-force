@@ -127,9 +127,9 @@
         <filterLogic>1 OR 2</filterLogic>
         <filters>
             <field>AccumulateType__c</field>
-            <operator>IsChanged</operator>
+            <operator>EqualTo</operator>
             <value>
-                <booleanValue>true</booleanValue>
+                <stringValue>Mensual</stringValue>
             </value>
         </filters>
         <filters>
