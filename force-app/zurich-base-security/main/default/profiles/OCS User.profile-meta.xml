@@ -413,6 +413,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GenesysCloudLightningController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysCloudLightningControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>GenesysCloudMocks</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3545,8 +3553,16 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CallRecordingControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SendSurveyButtonController</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SendSurveyButtonControllerTest</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
     <customSettingAccesses>

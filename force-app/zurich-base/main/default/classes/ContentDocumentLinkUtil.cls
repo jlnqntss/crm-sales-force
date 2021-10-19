@@ -316,7 +316,8 @@ public without sharing class ContentDocumentLinkUtil
                                         List<String> toAddressListFromCSV = toAddressLineValues.get(0).split(',');
                                         for(String toAddressFromCSV: toAddressListFromCSV)
                                         {
-                                            String trimmedToAddressFromCSV = toAddressFromCSV.trim();
+                                            // hotfix - ocs-2246 - Salesforce no reconoce el destinatario indicado por el robot tipificador al incluir imap
+                                            String trimmedToAddressFromCSV = toAddressFromCSV.trim().toLowerCase().replaceAll('.imap', '');
                                             if( trimmedToAddressFromCSV.contains('<') )
                                             {
                                                 toAddressList.add( trimmedToAddressFromCSV.substring(0,trimmedToAddressFromCSV.length() - 1).substringAfter('<') );

@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Insurance_Type__c</fullName>
-    <description>OCS. Para Medallia. Entidad legal</description>
+    <fullName>QueueDescription__c</fullName>
     <externalId>false</externalId>
-    <formula>CASE(CaseId__r.PolicyId__r.LegalEntity__c, 
-&apos;001&apos;, &apos;P&amp;C&apos;,
-&apos;005&apos;,&apos;Life&apos;, 
-&apos;P&amp;C&apos;)</formula>
+    <formula>GenesysCloudQueue__r.Name</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-    <label>Insurance_Type</label>
+    <label>Queue_Description</label>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>
