@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <classAccesses>
-        <apexClass>GenerateComercialPlanController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
     <description>SDM: otorga los permisos sobre los campos de la entiedad Plan comercail</description>
     <fieldPermissions>
         <editable>false</editable>
@@ -85,11 +81,6 @@
         <field>PlanComercial__c.TargetKPI__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>PlanComercial__c.ParentPlan__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>SDM - Plan comercial</label>
     <objectPermissions>
@@ -101,14 +92,6 @@
         <object>PlanComercial__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-    <recordTypeVisibilities>
-        <recordType>PlanComercial__c.ActionPlan</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <recordType>PlanComercial__c.AnualPlan</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
     <tabSettings>
         <tab>PlanComercial__c</tab>
         <visibility>Visible</visibility>

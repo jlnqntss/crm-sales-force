@@ -14,8 +14,6 @@ public class TestDataFactorySDM
     public static final String TERRITORY_EMAIL = 'territorymanager{0}@invalid.com';
     public static final String TERRITORY_FIELD = 'TerritoryManagerEmail__c';
     public static final String BUSINESS_ROL = 'BusinessManager';
-    public static final String BUSINESS_EMAIL = 'rn{0}@invalid.com';
-    public static final String BUSINESS_FIELD = 'BusinessManagerEmail__c';
 
     public static final String MAINEMAIL_ROL = 'Principal';
     public static final String MAINEMAIL_FIELD = 'MainEmail__c';
@@ -25,13 +23,7 @@ public class TestDataFactorySDM
 
     public static final String RN_FIELD = 'TerritorialDirection__c';
     public static final String RN_NAME = 'ZONA ZURICH CENTRALIZADOS';
-
-    public static final String PLAN_PERMSET = 'SDM_Plan_comercial';
-    public static final String RN_PROFILE = 'SDM RN';
-    public static final String RN_ROL = 'SDMUser';
-    public static final String DT_PROFILE = 'SDM Director';
-    public static final String DT_ROL = 'SDM_DT';
-
+    
     /**
      * Metodo que crea datos de configuracion de prueba para los Account Team Members (ATM)
      *
@@ -173,30 +165,29 @@ public class TestDataFactorySDM
         insert intermediaries;
 
         // Creacion de los usuarios para el equipo de cuentas (3)
-        User thisUser = new User(Id= UserInfo.getUserId());
-        System.runAs (thisUser) {
-            List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = :RN_PROFILE];
+        // User thisUser = [SELECT Id, ProfileId FROM User WHERE Id = :UserInfo.getUserId()];
+        // System.runAs (thisUser) {
+        //     List<PermissionSetGroup> permGroups = [SELECT Id FROM PermissionSetGroup WHERE developername = 'SDM_RN'];
+        //     System.assertEquals(1, permGroups.size(), 'Deberia haber un permission set group SDM_RN');
+
+            List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = 'SDM RN'];
             System.assertEquals(1, profiles.size(), 'El perfil SDM RN deberia existir');
+
+            // List<PermissionSetAssignment> newAssignments = new List<PermissionSetAssignment>();
 
             List<User> users = TestDataFactory.generateUsersByProfile(profiles[0].Id, 3);            
             for( Integer i=0; i<users.size(); i++ ) {
                 users[i].Email = String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)});
             }
             insert users;
-
-            List<PermissionSet> permSetPlan = [SELECT Id FROM PermissionSet WHERE name = :PLAN_PERMSET];
-            System.assertEquals(1, permSetPlan.size(), 'Deberia haber 1 permission set');
-
-            List<PermissionSetAssignment> newAssignments = new List<PermissionSetAssignment>();
-            // Para cada usuario
-            for( Integer i=0; i<users.size(); i++ ) {
-                newAssignments.add(new PermissionSetAssignment(
-                    PermissionSetId = permSetPlan[0].Id,
-                    AssigneeId = users[i].Id
-                ));
-            }
-            insert newAssignments;
-        }
+        //     for( Integer i=0; i<users.size(); i++ ) {
+        //         newAssignments.add(new PermissionSetAssignment(
+        //             PermissionSetGroupId = permGroups[0].Id,
+        //             AssigneeId = users[i].Id
+        //         ));
+        //     }
+        //     insert newAssignments;
+        // }
 
         // Asignacion de la agrupacion y creacion de los equipos de cuentas
         IntermediarySDM sdm = new IntermediarySDM();
@@ -208,9 +199,6 @@ public class TestDataFactorySDM
         sdm.assignIntermediaryAgrupation(intermediaries);
         // creacion del equipo de cuenta
         sdm.assignIntermediaryAccountTeam(intermediaries);
-        // asignacion del equipo de cuenta tambien a la agrupacion 
-        sdm.assignAgrupationAccountTeam(sdm.listAgrupationCIFs);
-        
         // comprobamos que ha ido todo bien
         String soql = String.format(
             'SELECT Id FROM Account WHERE Id IN :intermediaries AND ParentId != null AND {0} != null', 
@@ -266,186 +254,37 @@ public class TestDataFactorySDM
         User userPlan = new User(
             Id= mapATMs.get(plans[0].Intermediary__c).UserId
         );
-        System.runAs(userPlan) {
+        // System.runAs(userPlan) {
             // Plan del primer mediador
             plans[0].AssignedTo__c = userPlan.Id;
             plans[0].Indicator__c = 'PN';
             plans[0].Intermediary__c = agrupations[0].Id;
             plans[0].Product__c = 'Autos';
-            insert plans[0];
-        }
+            // insert plans[0];
+        // }
         
         // Plan del segundo mediador
         userPlan = new User(
             Id= mapATMs.get(plans[1].Intermediary__c).UserId
         );
-        System.runAs(userPlan) {
+        // System.runAs(userPlan) {
             plans[1].AssignedTo__c = userPlan.Id;
             plans[1].Indicator__c = 'Ratio_Claim';
             plans[1].Product__c = PlanComercialSDM.ALL_VALUE;
-            insert plans[1];
-        }
+            // insert plans[1];
+        // }
 
         // Plan del tercer mediador
         userPlan = new User(
             Id= mapATMs.get(plans[2].Intermediary__c).UserId
         );
-        System.runAs(userPlan) {
+        // System.runAs(userPlan) {
             plans[2].AssignedTo__c = userPlan.Id;
             plans[2].Indicator__c = 'Ratio_PoliciesPNIncreas';
             plans[2].Intermediary__c = null;
-            insert plans[2];
-        }
-        // insert plans;
-    }
-
-    /**
-     * Metodo que crea los datos de prueba para la gestion de los planes comerciales anuales
-     */
-    public static void AnualPlanSetupData(Integer actualYear)
-    {
-        // 1. Creacion de usuarios DT y RN
-        List<PermissionSet> permSet = [SELECT Id FROM PermissionSet WHERE name = :PLAN_PERMSET];
-        System.assertEquals(1, permSet.size(), 'Deberia haber un permission set SDM de plan comercial');
-        Id permSetPlanId = permSet[0].Id;
-
-        // RN: Perfil y PermissionSetGroup
-        List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = :RN_PROFILE];
-        System.assertEquals(1, profiles.size(), 'El perfil SDM RN deberia existir');
-        Id profileRNId = profiles[0].Id;
-        // List<PermissionSetGroup> permGroups = [SELECT Id FROM PermissionSetGroup WHERE developername = :RN_PERMSET];
-        // System.assertEquals(1, permGroups.size(), 'Deberia haber un permission set group SDM_RN');
-        // Id permSetGrpRNId = permGroups[0].Id;
-        List<UserRole> roles = [SELECT Id FROM UserRole WHERE Developername = :RN_ROL];
-        System.assertEquals(1, roles.size(), 'El rol SDMUser deberia existir');
-        Id rnRolId = roles[0].Id;
-
-        // Usuario DT: Perfil y PermissionSetGroup
-        profiles = [SELECT Id FROM Profile WHERE Name = :DT_PROFILE];
-        System.assertEquals(1, profiles.size(), 'El perfil SDM Director deberia existir');
-        Id profileDTId = profiles[0].Id;
-        // permGroups = [SELECT Id FROM PermissionSetGroup WHERE developername = :DT_PERMSET];
-        // System.assertEquals(1, permGroups.size(), 'Deberia haber un permission set group SDM_RN');
-        // Id permSetGrpDTId = permGroups[0].Id;
-        roles = [SELECT Id FROM UserRole WHERE Developername = :DT_ROL];
-        System.assertEquals(1, roles.size(), 'El rol SDM_DT deberia existir');
-        Id dtRolId = roles[0].Id;
-
-        String dtEmail = String.format(TestDataFactorySDM.TERRITORY_EMAIL, new List<String>{String.valueOf(0)});
-        String rnEmail = String.format(TestDataFactorySDM.BUSINESS_EMAIL, new List<String>{String.valueOf(0)});
-
-        // Creacion de usuarios en entorno aparte
-        User dtUser;
-        User rnUser;
-        User thisUser = new user(Id= UserInfo.getUserId());
-        System.runAs(thisUser) {
-            List<PermissionSetAssignment> newAssignments = new List<PermissionSetAssignment>();
-
-            // Creacion de los usuarios
-            List<User> users = TestDataFactory.generateUsersByProfile(profileDTId, 2);
-            // Usuario DT
-            users[0].Email = dtEmail;
-            users[0].UserRoleId = dtRolId;
-            // Usuario RN
-            users[1].ProfileId = profileRNId;
-            users[1].Email = rnEmail;
-            users[1].UserRoleId = rnRolId;
-            insert users;
-
-            // Asignacion de permissionsetgroups
-            newAssignments.add(new PermissionSetAssignment(
-                PermissionSetId = permSetPlanId,
-                AssigneeId = users[0].Id
-            ));
-            newAssignments.add(new PermissionSetAssignment(
-                PermissionSetId = permSetPlanId,
-                AssigneeId = users[1].Id
-            ));
-            insert newAssignments;
-
-            dtUser = users[0];
-            rnUser = users[1];
-        }
-
-        System.assertNotEquals(null, dtUser?.Id, 'El usuario DT deberia existir y tener Id valido');
-        System.assertNotEquals(null, rnUser?.Id, 'El usuario RN deberia existir y tener Id valido');
-        
-
-        // 2. Creacion de los Mediadores (3) del RN
-        List<Account> intermediaries = TestDataFactory.generateAccounts(
-            TestDataFactorySDM.ACCOUNT_LEGAL_ENTITY, AccountsSelector.RT_NAME_INTERMEDIARY, 3
-        );
-        // Los mediadores tendran todos el mismo DT y el mismo RN
-        for( Integer i=0; i<intermediaries.size(); i++ ) {
-            // Para la agrupacion de mediadores
-            intermediaries[i].NationalId__c = TestDataFactorySDM.AGRUPATION_CIF;
-            // Para el equipo de cuentas
-            intermediaries[i].put(TestDataFactorySDM.TERRITORY_FIELD, dtEmail);
-            intermediaries[i].put(TestDataFactorySDM.BUSINESS_FIELD, rnEmail);
-
-            // Lo marcamos como activo (valores 001 o 002)
-            intermediaries[i].Status__c = '001';
-        }
-        insert intermediaries;
-
-        Test.startTest();
-        // 3. Ejecutamos el batch para tener el equipo de cuentas (ATM)
-        IntermediarySDMBatch batch = new IntermediarySDMBatch();
-        Id batchId = Database.executeBatch(batch, 200);
-        Test.stopTest();
-
-        List<AccountTeamMember> atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
-        // 3 mediadores por 2 usuarios (DT y RN) = 6 ATMs
-        System.assertEquals(6, atms.size(), 'Deberia haber 6 ATMs para los mediadores.');
-
-        // 4. Creamos los planes
-        Id rtPlanAnualId = (new PlanComercialSelector()).rtPlanAnualId;
-
-        List<PlanComercial__c> dtPlans = TestDataFactorySDM.generatePlansWithoutIntermediary(1);
-        // Plan DT
-        dtPlans[0].Name = 'Plan 1';
-        dtPlans[0].StartDate__c = Date.newInstance(actualYear, 1, 1);
-        dtPlans[0].EndDate__c = Date.newInstance(actualYear, 12, 31);
-        dtPlans[0].AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;
-        dtPlans[0].AssignedTo__c = dtUser.Id;
-        dtPlans[0].TargetKPINumber__c = 5;
-        // dtPlans[0].Actual_KPI__c = 4;
-        dtPlans[0].RecordTypeId = rtPlanAnualId;
-        System.runAs(dtUser) {
-            insert dtPlans;
-        }
-
-        // Plan RN
-        List<PlanComercial__c> rnPlans = TestDataFactorySDM.generatePlansWithoutIntermediary(1);        
-        rnPlans[0].Name = 'Plan 1';
-        rnPlans[0].StartDate__c = Date.newInstance(actualYear, 1, 1);
-        rnPlans[0].EndDate__c = Date.newInstance(actualYear, 12, 31);
-        rnPlans[0].AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;
-        rnPlans[0].AssignedTo__c = rnUser.Id;
-        rnPlans[0].ParentPlan__c = dtPlans[0].Id;
-        rnPlans[0].TargetKPINumber__c = 5;
-        // rnPlans[0].Actual_KPI__c = 4;
-        rnPlans[0].RecordTypeId = rtPlanAnualId;
-        System.runAs(dtUser) {
-            insert rnPlans;
-        }
-
-        // Planes para mediadores
-        List<PlanComercial__c> intermediaryPlans = TestDataFactorySDM.generatePlans(intermediaries, 1);
-        for(PlanComercial__c plan: intermediaryPlans) {
-            plan.Name = 'Plan 1';
-            plan.StartDate__c = Date.newInstance(actualYear, 1, 1);
-            plan.EndDate__c = Date.newInstance(actualYear, 12, 31);
-            plan.AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;
-            plan.AssignedTo__c = rnUser.Id;
-            plan.ParentPlan__c = rnPlans[0].Id;
-            plan.TargetKPINumber__c = 1;
-            // plan.Actual_KPI__c = 4;
-            plan.RecordTypeId = rtPlanAnualId;
-        }
-        System.runAs(rnUser) {
-            insert intermediaryPlans;
-        }
+            // insert plans[2];
+        // }
+        insert plans;
     }
 
     /**
@@ -487,7 +326,6 @@ public class TestDataFactorySDM
                     EndDate__c= Date.newInstance(2021, 9, 30),
                     SendNotifications__c= '01',
                     Intermediary__c= a.Id,
-                    AssignedTo__c= UserInfo.getUserId(),
                     Actual_KPI__c= null,
                     Indicator__c= 'PN',
                     Product__c= 'Autos',
@@ -497,32 +335,6 @@ public class TestDataFactorySDM
 
                 plans.add(plan);
             }
-        }
-
-        return plans;
-    }
-
-    /**
-     * Metodo que genera Planes comerciales sin mediadores
-     */
-    public static List<PlanComercial__c> generatePlansWithoutIntermediary(Integer num)
-    {
-        List<PlanComercial__c> plans = new List<PlanComercial__c>();
-
-        for(Integer i=0;i<num;i++) {
-            PlanComercial__c plan = new PlanComercial__c(
-                StartDate__c= Date.newInstance(2021, 9, 1),
-                EndDate__c= Date.newInstance(2021, 9, 30),
-                SendNotifications__c= '01',
-                Intermediary__c= null,
-                Actual_KPI__c= null,
-                Indicator__c= 'PN',
-                Product__c= 'Autos',
-                Segment__c= 'Particulares',
-                AccumulateType__c= 'Mensual'
-            );
-
-            plans.add(plan);
         }
 
         return plans;

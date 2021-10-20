@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>SDM: Permite generar varios planes comerciales a la vez.</description>
-    <label>Generar Plan Anual</label>
-    <lwcComponent>generateComercialPlan</lwcComponent>
-    <motif>Custom26: Flag</motif>
-</CustomTab>

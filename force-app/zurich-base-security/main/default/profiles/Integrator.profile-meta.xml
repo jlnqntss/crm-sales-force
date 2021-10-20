@@ -3612,10 +3612,6 @@
         <apexClass>DeletedCampaignMemberSchedulableJob</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-    <classAccesses>
-        <apexClass>GenerateComercialPlanController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
     <custom>true</custom>
     <customSettingAccesses>
         <enabled>true</enabled>
@@ -12592,15 +12588,11 @@
         <field>PlanComercial__c.TargetKPIPercent__c</field>
         <readable>true</readable>
     </fieldPermissions>
+
     <fieldPermissions>
         <editable>false</editable>
         <field>PlanComercial__c.TargetKPI__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>PlanComercial__c.ParentPlan__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <flowAccesses>
         <enabled>false</enabled>
@@ -15159,16 +15151,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Task.Offer_Policy_Follow_up</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-		<default>true</default>
-        <recordType>PlanComercial__c.ActionPlan</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-		<default>false</default>
-        <recordType>PlanComercial__c.AnualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <tabVisibilities>
