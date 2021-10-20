@@ -59,16 +59,27 @@ pt_BR.translation-meta.xml
 # Ignore EmailServices
 **emailservices
 
+# Teléfonos de redireccionamiento e interlocutores para el CTI de Salesforce / Genesys
+force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysPollPhoneNumber.md-meta.xml
+force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysRecordingNumber.md-meta.xml
+
+# Configuracion Envio SMS
+force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysSmsNumber.md-meta.xml
+
 # Configuración especifica de cada entorno
 force-app/zurich-base/main/default/customMetadata/AdminSetup.AdminSetup.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.ZEGenesysCloudFlowId.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.ZEOGenesysCloudFlowId.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.UploadCaseDocumentationUrl.md-meta.xml
-force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysPollPhoneNumber.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/ErrorManagementSetting.Klinc_errores.md-meta.xml
 #force-app/zurich-base/main/default/customMetadata/Scope_Setting.*
 #force-app/zurich-base/main/default/flows/ZEEmailRoute.flow-meta.xml
 force-app/zurich-base/main/default/customMetadata/INFO_Link.INFO.md-meta.xml
+
+# Metadata para evitar sobreescribir los número te telefono a evitar por el BOT de pruebas de Zurich - SOPZUR-291
+force-app/zurich-ze-base/main/default/customMetadata/AdminSetupParameter.BusinessRaterEmailsToIgnore.md-meta.xml
+force-app/zurich-ze-base/main/default/customMetadata/AdminSetupParameter.BusinessInsurancePhonesToIgnore.md-meta.xml
+force-app/zurich-ze-base/main/default/customMetadata/AdminSetupParameter.BusinessRaterPhonesToIgnore.md-meta.xml
 
 # Configuracion Genesys por usuario
 force-app/zurich-base/main/default/authproviders/GenesysCloud.authprovider-meta.xml

@@ -76,6 +76,11 @@
         <field>PlanComercial__c.TargetKPIPercent__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlanComercial__c.TargetKPI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>SDM - Plan comercial</label>
     <objectPermissions>

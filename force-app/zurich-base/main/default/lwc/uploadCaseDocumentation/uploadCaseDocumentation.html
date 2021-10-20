@@ -1,3 +1,10 @@
+<!--
+  @description       : 
+  @author            : jjuaristi
+  @group             : 
+  @last modified on  : 05-10-2021
+  @last modified by  : jjuaristi
+-->
 <template>
   <div class="c-container">
     <div class="header">
@@ -10,14 +17,6 @@
           aria-label="Zurich Empresas Logo"
         />
       </a>
-    </div>
-    <div if:true={isLoading}>
-      <lightning-spinner
-        alternative-text="Cargando"
-        size="medium"
-        title="Cargando"
-        aria-label="Cargando"
-      ></lightning-spinner>
     </div>
     <lightning-layout horizontal-align="space" vertical-align="center">
       <lightning-layout-item flexibility="auto" padding="around-small">
@@ -50,22 +49,61 @@
                 aria-label={labels.tamanoMaximoSubidaDocumentacion}
               ></lightning-helptext>
             </div>
-            <lightning-file-upload
-              label=""
-              accept={acceptedFormats}
-              name="fileUploader"
-              file-field-name="Guest_Record_fileupload__c"
-              file-field-value={hash}
-              onuploadfinished={handleFilesChangeStandard}
-              multiple
-              disabled={disableFileInput}
-              title={labels.adjuntaDocumento}
-              aria-label={labels.adjuntaDocumento}
-            >
-            </lightning-file-upload>
           </div>
         </div>
-      </lightning-layout-item>
+        <div class="slds-var-p-left_small">
+            <lightning-file-upload
+                label="¿Quieres subir archivos?"
+                accept={acceptedFormats}
+                name="fileUploader"
+                file-field-name="Guest_Record_fileupload__c"
+                file-field-value={hash}
+                onuploadfinished={handleUploadFinished}
+                disabled={disableFileInput}
+                title={labels.adjuntaDocumento}
+                aria-label={labels.adjuntaDocumento}
+                record-id={recordIdToUse}
+                multiple={allowMultiple}>
+            </lightning-file-upload>
+        </div> 
+        <div class="slds-var-p-left_small">
+            <div class="slds-form-element__label">
+                {uploadedLabelToUse}
+            </div>
+            <div if:true={objFiles}> 
+              <template for:each={objFiles} for:item="objFile">
+                  <div key={objFile} class="slds-var-m-bottom_small">
+                      <div class="slds-grid slds-gutters slds-grid_vertical-align-center">
+                          <div class="slds-col slds-size_1-of-6 slds-clearfix">
+                              <span>
+                                  <lightning-icon 
+                                      icon-name={objFile.filetype}
+                                      size="medium"
+                                      title="Doctype Icon">
+                                  </lightning-icon>
+                              </span>
+                          </div>
+                          <div class="slds-col slds-size_4-of-6 slds-float_left" style='word-wrap: break-word;'>
+                              <span>{objFile.name}</span>
+                          </div>
+                          <div class="slds-col slds-size_1-of-6">
+                              <span>
+                                  <!-- sldsValidatorIgnoreNextLine -->
+                                  <lightning-button-icon
+                                      icon-name="utility:delete"
+                                      title="Delete Document"
+                                      aria-hidden="true"
+                                      data-recordid={objFile.id}
+                                      onclick={deleteDocument}>
+                                  </lightning-button-icon>
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+              </template>
+            </div>
+        </div>
+    </lightning-layout-item>
     </lightning-layout>
     <footer>
       <div class="footer slds-align_absolute-center">

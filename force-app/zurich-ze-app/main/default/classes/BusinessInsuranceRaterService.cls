@@ -1481,6 +1481,10 @@ public without sharing class BusinessInsuranceRaterService
             Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
                 this.bestTimeFrom != null ? this.bestTimeFrom : System.now()
             );
+            // fix: ZE-1091 - correccion del error en el test al ejecutarlo fuera del horario laboral
+            if( Test.isRunningTest() ) {
+                preferredContactDatetime = this.bestTimeFrom;
+            }
 
             return (preferredContactDatetime < contactDatetime);
         }

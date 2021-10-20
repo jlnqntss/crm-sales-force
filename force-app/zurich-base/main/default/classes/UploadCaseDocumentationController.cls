@@ -1,5 +1,5 @@
 /**
- * Class that is invoked by the LWC FileUploadImproved.
+ * Class that is invoked by the LWC UploadCaseDocumentation.
  *
  * The client (Personal Account -> Case) arrives through the case documentation link (email or SMS) to the site.
  *
