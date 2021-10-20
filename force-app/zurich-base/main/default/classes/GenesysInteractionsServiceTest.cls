@@ -1225,41 +1225,13 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     /**
-     * Valida la excepción lanzada al faltar parámetros al hacer la búsqueda de pólizas
+     * Valida la excepción lanzada al faltar parámetros al hacer la búsqueda de pólizas activas
      * @author jjuaristi
      * @date 20/10/2021
      */
     @IsTest
     static void test_findActivePolicy_RequiredFieldsError()
     {
-        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
-
-        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
-        List<Account> intermediary = [SELECT Id, Phone, MainEmail__c, Channel__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
-
-        PoliciesSelector policiesSelector = new PoliciesSelector();
-        policiesSelector.setFields
-        (
-            new List<Schema.SObjectField>
-        {
-            Policy__c.Id,
-            Policy__c.Name
-        },
-            new List<String>
-        {
-            'IntermediaryId__r.MainMobilePhone__c',
-            'IntermediaryId__r.Phone',
-            'IntermediaryId__r.MainEmail__c',
-            'IntermediaryId__r.Channel__c'
-        }
-        );
-
-        List<Policy__c> policies = policiesSelector.selectByHolder(customer.get(0).Id);
-
-        policies[0].InfoPolicyNumber__c = '11122233344455';
-        policies[0].IntermediaryId__c = intermediary[0].Id;
-        update policies[0];
-
         // Test
         Test.startTest();
         try
