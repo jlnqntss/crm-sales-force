@@ -1391,28 +1391,15 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     /**
-     * Valida la búsqueda de siniestros abiertos utilzando un código con espacios pero sin necesidad
-     * de padding
-     * @author jmartinezpisson
-     * @date 15/04/2021
+     * Valida la excepción lanzada al faltar parámetros al hacer la búsqueda de siniestros
+     * @author jjuaristi
+     * @date 20/10/2021
      */
     @IsTest
     static void test_findOpenedClaim_RequiredFieldsError()
     {
-        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
-
-        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
-
-        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
-
-        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
-        claims[0].INFOClaimNumber__c = '0000044444'; // Claim Number con 20 dígitos
-        insert claims;
-
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
-        searchRequest.searchType = 'claim_number';
 
-        // Test
         Test.startTest();
         try
         {
@@ -1426,7 +1413,6 @@ private without sharing class GenesysInteractionsServiceTest
 
         Test.stopTest();
 
-        // Then
     }
 
     /**
