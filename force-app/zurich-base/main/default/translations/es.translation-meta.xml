@@ -5512,6 +5512,146 @@
         <label>Acciones</label>
         <name>CTIExtraButtonsTitle</name>
     </customLabels>
+    <customLabels>
+        <label>Cancelar</label>
+        <name>SDM_PlanAnual_ButtonCancel</name>
+    </customLabels>
+    <customLabels>
+        <label>Eliminar</label>
+        <name>SDM_PlanAnual_ButtonDelete</name>
+    </customLabels>
+    <customLabels>
+        <label>Editar</label>
+        <name>SDM_PlanAnual_ButtonEdit</name>
+    </customLabels>
+    <customLabels>
+        <label>Nuevo</label>
+        <name>SDM_PlanAnual_ButtonNew</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardar</label>
+        <name>SDM_PlanAnual_ButtonSave</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardando...</label>
+        <name>SDM_PlanAnual_ButtonSaving</name>
+    </customLabels>
+    <customLabels>
+        <label>Deshacer</label>
+        <name>SDM_PlanAnual_ButtonUndo</name>
+    </customLabels>
+    <customLabels>
+        <label>Campo bloqueado</label>
+        <name>SDM_PlanAnual_FieldLock</name>
+    </customLabels>
+    <customLabels>
+        <label>Selecciona el indicador</label>
+        <name>SDM_PlanAnual_IndicatorPlaceholder</name>
+    </customLabels>
+    <customLabels>
+        <label>KPI actual. Ir al plan.</label>
+        <name>SDM_PlanAnual_KPICompare</name>
+    </customLabels>
+    <customLabels>
+        <label>Sin datos</label>
+        <name>SDM_PlanAnual_KPINoData</name>
+    </customLabels>
+    <customLabels>
+        <label>KPI real</label>
+        <name>SDM_PlanAnual_KPIReal</name>
+    </customLabels>
+    <customLabels>
+        <label>Cargando</label>
+        <name>SDM_PlanAnual_Loading</name>
+    </customLabels>
+    <customLabels>
+        <label>Nuevo plan</label>
+        <name>SDM_PlanAnual_NewPlan</name>
+    </customLabels>
+    <customLabels>
+        <label>No hay planes anuales definidos.</label>
+        <name>SDM_PlanAnual_NoPlan</name>
+    </customLabels>
+    <customLabels>
+        <label>Valor orginal:</label>
+        <name>SDM_PlanAnual_OriginalValue</name>
+    </customLabels>
+    <customLabels>
+        <label>Nombre del plan</label>
+        <name>SDM_PlanAnual_PlanName</name>
+    </customLabels>
+    <customLabels>
+        <label>Año de los planes</label>
+        <name>SDM_PlanAnual_PlanYears</name>
+    </customLabels>
+    <customLabels>
+        <label>Planes a eliminar al guardar</label>
+        <name>SDM_PlanAnual_PlansToDelete</name>
+    </customLabels>
+    <customLabels>
+        <label>Selecciona el producto</label>
+        <name>SDM_PlanAnual_ProductPlaceholder</name>
+    </customLabels>
+    <customLabels>
+        <label>Indicador</label>
+        <name>SDM_PlanAnual_RowIndicator</name>
+    </customLabels>
+    <customLabels>
+        <label>Plan</label>
+        <name>SDM_PlanAnual_RowPlanDT</name>
+    </customLabels>
+    <customLabels>
+        <label>Producto</label>
+        <name>SDM_PlanAnual_RowProduct</name>
+    </customLabels>
+    <customLabels>
+        <label>Segmento</label>
+        <name>SDM_PlanAnual_RowSegment</name>
+    </customLabels>
+    <customLabels>
+        <label>Año</label>
+        <name>SDM_PlanAnual_RowYear</name>
+    </customLabels>
+    <customLabels>
+        <label>Error al guardar</label>
+        <name>SDM_PlanAnual_SavingError</name>
+    </customLabels>
+    <customLabels>
+        <label>Ha habido un error desconocido al guardar los cambios.</label>
+        <name>SDM_PlanAnual_SavingErrorMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Exito</label>
+        <name>SDM_PlanAnual_SavingSuccess</name>
+    </customLabels>
+    <customLabels>
+        <label>Cambios guardados correctamente.</label>
+        <name>SDM_PlanAnual_SavingSuccessMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Selecciona el segmento</label>
+        <name>SDM_PlanAnual_SegmentPlaceholder</name>
+    </customLabels>
+    <customLabels>
+        <label>Sumatorio (informativo)</label>
+        <name>SDM_PlanAnual_Summary</name>
+    </customLabels>
+    <customLabels>
+        <label>Generación de Planes Anuales</label>
+        <name>SDM_PlanAnual_Title</name>
+    </customLabels>
+    <customLabels>
+        <label>Selecciona el año</label>
+        <name>SDM_PlanAnual_YearPlaceholder</name>
+    </customLabels>
+    <customLabels>
+        <label>Se te han asignado nuevos planes comerciales con los siguientes asuntos:</label>
+        <name>SDM_PlanAnual_NotifBody</name>
+    </customLabels>
+    <customLabels>
+        <label>Asignación de planes comerciales anuales</label>
+        <name>SDM_PlanAnual_NotifTitle</name>
+    </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
         <name>Configure_Call_Center_Settings</name>
@@ -5535,6 +5675,10 @@
     <customTabs>
         <label><!-- Send Analytics --></label>
         <name>Send_Analytics</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Generar Plan Anual --></label>
+        <name>GenerarPlan</name>
     </customTabs>
     <flowDefinitions>
         <flows/>
