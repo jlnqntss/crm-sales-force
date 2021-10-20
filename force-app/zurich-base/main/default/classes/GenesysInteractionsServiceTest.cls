@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : jjuaristi
+ * @group             : 
+ * @last modified on  : 20-10-2021
+ * @last modified by  : jjuaristi
+**/
 @isTest(SeeAllData = false)
 private without sharing class GenesysInteractionsServiceTest
 {
@@ -1218,6 +1225,58 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     /**
+     * Valida la excepción lanzada al faltar parámetros al hacer la búsqueda de pólizas
+     * @author jjuaristi
+     * @date 20/10/2021
+     */
+    @IsTest
+    static void test_findActivePolicy_RequiredFieldsError()
+    {
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+        List<Account> intermediary = [SELECT Id, Phone, MainEmail__c, Channel__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
+
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
+        (
+            new List<Schema.SObjectField>
+        {
+            Policy__c.Id,
+            Policy__c.Name
+        },
+            new List<String>
+        {
+            'IntermediaryId__r.MainMobilePhone__c',
+            'IntermediaryId__r.Phone',
+            'IntermediaryId__r.MainEmail__c',
+            'IntermediaryId__r.Channel__c'
+        }
+        );
+
+        List<Policy__c> policies = policiesSelector.selectByHolder(customer.get(0).Id);
+
+        policies[0].InfoPolicyNumber__c = '11122233344455';
+        policies[0].IntermediaryId__c = intermediary[0].Id;
+        update policies[0];
+
+        // Test
+        Test.startTest();
+        try
+        {
+            GenesysInteractionsService.ActivePolicy activePolicy = GenesysInteractionsService.findActivePolicy('');
+
+        }
+        catch (Exception ex)
+        {
+            system.assertEquals('GenesysInteractionsService.GenesysPoliciesServiceException', ex.getTypeName());
+        }
+
+        Test.stopTest();
+        // Then
+    }
+
+    /**
      * Valida la búsqueda de siniestros abiertos a partir de un código de siniestro
      * @author adelgado
      * @date 27/01/2021
@@ -1329,6 +1388,45 @@ private without sharing class GenesysInteractionsServiceTest
 
         System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
         System.assertEquals(claims[0].Name, openedClaim.claimNumber, 'No se ha obtenido correctamente el código del siniestro');
+    }
+
+    /**
+     * Valida la búsqueda de siniestros abiertos utilzando un código con espacios pero sin necesidad
+     * de padding
+     * @author jmartinezpisson
+     * @date 15/04/2021
+     */
+    @IsTest
+    static void test_findOpenedClaim_RequiredFieldsError()
+    {
+        Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+
+        List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
+        claims[0].INFOClaimNumber__c = '0000044444'; // Claim Number con 20 dígitos
+        insert claims;
+
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+        searchRequest.searchType = 'claim_number';
+
+        // Test
+        Test.startTest();
+        try
+        {
+            GenesysInteractionsService.OpenedClaim openedClaim = GenesysInteractionsService.findOpenedClaim(searchRequest);
+
+        }
+        catch (Exception ex)
+        {
+            system.assertEquals('GenesysInteractionsService.GenesysClaimsServiceException', ex.getTypeName());
+        }
+
+        Test.stopTest();
+
+        // Then
     }
 
     /**
@@ -1515,6 +1613,7 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(true, digitalcustomer.isDigitalCustomer, 'Debería haber devuelto que isDigitalCustomer es true');
     }
 
+   
     @isTest
     static void test_findDigitalCustomer_ko()
     {
@@ -1529,6 +1628,34 @@ private without sharing class GenesysInteractionsServiceTest
         // Then
         //Como no existen Orders(KlincPolicy) ni Customer(ContactKlinc) pues se devuelve a false el parámetro
         System.assertEquals(false, digitalcustomer.isDigitalCustomer, 'Debería haber devuelto que isDigitalCustomer es false');
+    }
+
+     /**
+     * Valida la excepción lanzada al faltar parámetros en la búsqueda de digitalcustomer
+     **
+     * @author jjuaristi
+     * @date 20/10/2021
+     */
+    @isTest
+    static void test_findDigitalCustomer_RequiredFieldsError()
+    {
+        GenesysInteractionsService.DigitalCustomer request = new GenesysInteractionsService.DigitalCustomer();
+        request.searchType = 'document';
+
+        Test.startTest();
+        try
+        {
+            GenesysInteractionsService.DigitalCustomer digitalcustomer = GenesysInteractionsService.findDigitalCustomer(request);
+
+        }
+        catch (Exception ex)
+        {
+            system.assertEquals('GenesysInteractionsService.GenesysInteractionsServiceException', ex.getTypeName());
+        }
+
+        Test.stopTest();
+
+
     }
 
     /**
