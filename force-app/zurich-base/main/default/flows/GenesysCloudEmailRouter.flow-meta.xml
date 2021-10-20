@@ -392,7 +392,7 @@
 (
    ISNEW(),
 [EmailMessage].Incoming ,
-NOT( ISNULL([EmailMessage].ParentId ) )
+ISBLANK([EmailMessage].ParentId )
 )</stringValue>
             </value>
         </processMetadataValues>
@@ -402,7 +402,7 @@ NOT( ISNULL([EmailMessage].ParentId ) )
 (
    ISNEW(),
 {!myVariable_current.Incoming} ,
-NOT( ISNULL({!myVariable_current.ParentId} ) )
+ISBLANK({!myVariable_current.ParentId} )
 )</expression>
     </formulas>
     <formulas>
@@ -414,7 +414,7 @@ NOT( ISNULL({!myVariable_current.ParentId} ) )
 	(
 	   ISNEW(),
 	   [EmailMessage].Incoming ,
-	   NOT( ISNULL( [EmailMessage].ParentId ) ),
+	   NOT( ISBLANK( [EmailMessage].ParentId ) ),
 	   OR
 		(
 			BEGINS([EmailMessage].ToAddress, &apos;administracion.&apos;),
@@ -438,7 +438,7 @@ NOT( ISNULL({!myVariable_current.ParentId} ) )
 	(
 	   ISNEW(),
 	   {!myVariable_current.Incoming} ,
-	   NOT( ISNULL( {!myVariable_current.ParentId} ) ),
+	   NOT( ISBLANK( {!myVariable_current.ParentId} ) ),
 	   OR
 		(
 			BEGINS({!myVariable_current.ToAddress}, &apos;administracion.&apos;),
@@ -462,7 +462,7 @@ NOT( ISNULL({!myVariable_current.ParentId} ) )
 (
    ISNEW(),
    [EmailMessage].Incoming ,
-   NOT( ISNULL( [EmailMessage].ParentId ) ),
+   NOT( ISBLANK( [EmailMessage].ParentId ) ),
    OR
 	(
 		BEGINS([EmailMessage].ToAddress, &apos;cc.&apos;),
@@ -480,7 +480,7 @@ NOT( ISNULL({!myVariable_current.ParentId} ) )
 (
    ISNEW(),
    {!myVariable_current.Incoming} ,
-   NOT( ISNULL( {!myVariable_current.ParentId} ) ),
+   NOT( ISBLANK( {!myVariable_current.ParentId} ) ),
    OR
 	(
 		BEGINS({!myVariable_current.ToAddress}, &apos;cc.&apos;),
