@@ -3,6 +3,11 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>technicalIncidence</componentName>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>collapsed</name>
                     <value>false</value>
