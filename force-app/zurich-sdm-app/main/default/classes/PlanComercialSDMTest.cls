@@ -86,13 +86,13 @@ private class PlanComercialSDMTest
     @isTest
     static void testCalculateRealKPI_no_settings()
     {
-        // Se recuperan las planes comerciales
-        List<PlanComercial__c> plans = [
-            SELECT Id, CreatedById, AssignedTo__c, StartDate__c, EndDate__c,
-                   Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c
-            FROM PlanComercial__c
-        ];
-        System.assertEquals(3, plans.size(), 'Deberia haber 3 planes antes del test');
+        Id rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        List<Account> intermediaries = [SELECT Id FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 1];
+        System.assertEquals(1, intermediaries.size(), 'Deberia haber 1 mediador');
+
+        // Generacion de los planes comerciales -------------------------------
+        List<PlanComercial__c> plans = TestDataFactorySDM.generatePlans(intermediaries, 1);
+        insert plans;
 
         // Ejecucion del Test -------------------------------------------------
         Test.startTest();
