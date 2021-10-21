@@ -308,7 +308,7 @@
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Task_Policy_Follow_up</stringValue>
+                    <stringValue>Offer_Policy_Follow_up</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -337,7 +337,7 @@
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Task_Policy_Follow_up</stringValue>
+                    <stringValue>Offer_Policy_Follow_up</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -366,7 +366,7 @@
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Task_Policy_Follow_up</stringValue>
+                    <stringValue>Offer_Policy_Follow_up</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -551,7 +551,7 @@
         <connector>
             <targetReference>DueDateToday</targetReference>
         </connector>
-        <filterLogic>1 AND 2 AND (3 OR 4 OR 5)</filterLogic>
+        <filterLogic>1 AND 2 AND (3 OR 4 OR 5 OR 6)</filterLogic>
         <filters>
             <field>Status</field>
             <operator>NotEqualTo</operator>
@@ -585,6 +585,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>CommercialAction</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeDeveloperName__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Offer_Policy_Follow_up</stringValue>
             </value>
         </filters>
         <object>Task</object>
