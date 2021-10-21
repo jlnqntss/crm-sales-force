@@ -13,6 +13,13 @@ public with sharing class PlanComercialSDM {
     private static final String CLASS_NAME = 'PlanComercialSDM';
     // Mensaje de error de indicador del plan no encontrado
     private static final String ERROR_SETTINGS_NO_INDICATOR = 'SDM-Plan Comercial-The following indicator cant be found in the metadata configuration: {0}';
+    // Textos para el mensaje de notificacion cuando se elimina un plan anual a un usuario porque le ha cambiado su panel de mediadores
+    private static final String SETUP_NOTIF_REMOVE_PLAN_TITLE = '1SDMAnnualPlanNotifRemovePlanTitle';
+    private static final String SETUP_NOTIF_REMOVE_PLAN_TITLE_DEFAULT = 'Eliminados planes comerciales anuales';
+    private static final String SETUP_NOTIF_REMOVE_PLAN_BODY = 'SDMAnnualPlanNotifRemovePlanBody';
+    private static final String SETUP_NOTIF_REMOVE_PLAN_BODY_DEFAULT = 'Atención: Se han eliminado los planes comerciales anuales asociados a los mediadores que ya no están en tu panel';
+    private static final String NOTIF_LIST_VIEW_API_NAME = 'Planes_anuales';
+
     // Lista de nombres de los campos de filtrado de los KPI__c
     private static final List<String> KPI_FILTER_FIELDS = new List<String> {
         'CalcYear__c', 'CalcMonth__c', 'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c'
@@ -399,7 +406,10 @@ public with sharing class PlanComercialSDM {
                         intermediaries = mapIntermediaries?.get(plan.Intermediary__c);
 
                         // Si la lista es nula significa que no es una agrupacion sino un mediador directamente
-                        if( intermediaries == null ) intermediaries = new Set<Id>{plan.Intermediary__c};
+                        if( intermediaries == null 
+                            && mapIntermediariesByUserId?.get(userId) != null && mapIntermediariesByUserId.get(userId).contains(plan.Intermediary__c) ) {
+                            intermediaries = new Set<Id>{plan.Intermediary__c};
+                        }
                     }
 
                     // Si hay mediadores..
@@ -441,6 +451,94 @@ public with sharing class PlanComercialSDM {
                     update plansToUpdate;
                 }
             }
+        }
+    }
+    
+    /**
+     * Metodo que comprueba si hay que eliminar planes comerciales anuales a partir de los ATMs proporcionados
+     *  
+     * @author nts (agonzalezisasi)
+     * @date 11/10/2021
+     * 
+     * @param {List<AccountTeamMember> deletedAtms} lista de ATMs eliminados
+     */
+    public void removeAnnualPlans(List<AccountTeamMember> deletedAtms)
+    {
+        if( deletedAtms != null && !deletedAtms.isEmpty() ) {
+            // 1. Recuperamos la lista de mediadores y usuarios de los ATMs eliminados
+            Set<Id> intermediaries = new Set<Id>();
+            Set<Id> users = new Set<Id>();
+            // formando tambien una lista de la pareja mediador-usuario
+            Set<String> deletedRelations = new Set<String>();
+            for(AccountTeamMember atm: deletedAtms) {
+                intermediaries.add(atm.AccountId);
+                users.add(atm.UserId);
+                deletedRelations.add(atm.AccountId + '#' + atm.UserId);
+            }
+
+            // 2. Recuperamos la lista de planes que pertenecen a esos mediadores y usuarios
+            List<PlanComercial__c> annualPlans = (new PlanComercialSelector()).findAnnualPlansByIntermediariesAndUsers(
+                intermediaries, users
+            );
+            if( annualPlans != null && !annualPlans.isEmpty() ) {
+                List<PlanComercial__c> plansToDelete = new List<PlanComercial__c>();
+                Set<Id> userIdsToNotify = new Set<Id>();
+
+                // Comprobamos para cada plan...
+                for(PlanComercial__c plan: annualPlans) {
+                    // si cumple que tenga la pareja de mediadores y usuarios eliminados
+                    String planRelation = plan.Intermediary__c + '#' + plan.AssignedTo__c;
+                    if( deletedRelations.contains(planRelation) ) {
+                        plansToDelete.add(plan);
+                        userIdsToNotify.add(plan.AssignedTo__c);
+                    }
+                }
+
+                if( !plansToDelete.isEmpty() ) {
+                    delete plansToDelete;
+
+                    if( !userIdsToNotify.isEmpty() ) {
+                        sendNotificationRemovedPlans(userIdsToNotify);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Recupera de la configuracion general el elemento indicado
+     */
+    private static String getNotificationSetup(String setupApiName, String defaultValue)
+    {
+        String result = defaultValue;
+        String setupValue = [
+            SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :setupApiName LIMIT 1
+        ]?.Value__c;
+
+        if( String.isNotBlank(setupValue) ) result = setupValue;
+
+        return result;
+    }
+
+    /**
+     * Metodo que envia la siguiente notificacion a todos los usuarios (RN) que se les ha eliminado planes comerciales
+     * anuales porque algun mediador les ha desparecido del panel
+     * 
+     * @param {Set<Id> userIds} Lista de usuario receptores de la notificacion
+     * @param {Set<String> planSubjects} lista de asuntos de planes a incluir en el mensaje de la notificacion
+     */
+    public static void sendNotificationRemovedPlans(Set<Id> userIds)
+    {
+        if( userIds != null && !userIds.isEmpty() ) {
+            String title = getNotificationSetup(SETUP_NOTIF_REMOVE_PLAN_TITLE, SETUP_NOTIF_REMOVE_PLAN_TITLE_DEFAULT);
+            String bodyContent = getNotificationSetup(SETUP_NOTIF_REMOVE_PLAN_BODY, SETUP_NOTIF_REMOVE_PLAN_BODY_DEFAULT);
+
+            Notification notif = new Notification(Notification.notificationType.SDMAlert);
+            // Permite abrir la seccion de Cuentas, listview Mis Mediadores
+            notif.addPageReference('standard__objectPage', 'PlanComercial__c', 'list', NOTIF_LIST_VIEW_API_NAME);
+            // Convertimos la lista de ids de usuario a string
+            Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
+            notif.send(stringSet, title, bodyContent);
         }
     }
 }

@@ -96,4 +96,31 @@ private class PlanComercialSelectorTest
         // 1 plan dt = 1 plan RN = 3 planes mediadores
         System.assertEquals(3, childPlans.size(), 'Deberia haber 3 planes descendientes');
     }
+
+    /**
+     * Test del metodo que recupera los planes anuales por mediador y usuario
+     *
+     * @author nts (agonzalezisasi)
+     * @date 11/10/2021
+     */
+    @isTest
+    static void findAnnualPlansByIntermediariesAndUsers()
+    {
+        String rnEmail = String.format(TestDataFactorySDM.BUSINESS_EMAIL, new List<String>{String.valueOf(0)});
+        List<User> users = [SELECT Id FROM User WHERE Email = :rnEmail];
+        System.assertEquals(1, users.size(), 'Deberia haber 1 usuario RN');
+        Id rtIntermediaryId = (new AccountsSelector()).rtIntermediaryId;
+        List<Account> intermediaries = [SELECT Id FROM Account WHERE RecordTypeId = :rtIntermediaryId];
+        System.assertEquals(3, intermediaries.size(), 'Deberia haber 3 mediadores');
+
+        Test.startTest();
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        List<Plancomercial__c> plans = planSel.findAnnualPlansByIntermediariesAndUsers(
+            (new Map<Id, Account>(intermediaries)).keySet(), new Set<Id>{Users[0].Id}
+        );
+        Test.stopTest();
+
+        // Comprobamos el resultado del test
+        System.assertEquals(3, plans.size(), 'Deberia haber 3 planes anuales');
+    }
 }

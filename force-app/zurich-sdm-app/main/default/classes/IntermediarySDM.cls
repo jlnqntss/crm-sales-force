@@ -161,6 +161,9 @@ public with sharing class IntermediarySDM {
     // Lista de usuarios a enviar la notificacion de cambio de visibilidad del mediador
     public Set<Id> listUserIdsToNotify;
 
+    // Plan anual - Se registran los ATMs eliminados para ver si hay que borrar tambien planes anuales
+    public List<AccountTeamMember> listDeletedAtms;
+
     // METODOS    
     /**
      * Recupera la relacion entre los roles del objeto Account Team Member y los campos de la cuenta de tipo 
@@ -768,6 +771,12 @@ public with sharing class IntermediarySDM {
             // El orden es importante para que funcionen los casos en los que se cambia el rol de un usuario en un
             // mismo mediador
             this.deleteATMs(atmsToDelete);
+            // Planes anuales - se guarda la relacion de ATMs eliminados para ver si hay que borrar algun plan anual
+            // de un mediador que ya no tiene permisos sobre un usuario
+            if( !atmsToDelete.isEmpty() ) {
+                if( listDeletedAtms == null ) listDeletedAtms = new List<AccountTeamMember>();
+                listDeletedAtms.addAll(atmsToDelete);
+            }
             this.upsertATMs(atmsToUpsert);
         }
 
