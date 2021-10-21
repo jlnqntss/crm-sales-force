@@ -86,9 +86,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>PlanComercial__c.ParentPlan__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>SDM - Plan comercial</label>
@@ -109,6 +109,10 @@
         <recordType>PlanComercial__c.AnualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <tabSettings>
+        <tab>GenerarPlan</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
     <tabSettings>
         <tab>PlanComercial__c</tab>
         <visibility>Visible</visibility>
