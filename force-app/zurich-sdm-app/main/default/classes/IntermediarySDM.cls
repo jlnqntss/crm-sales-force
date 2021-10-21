@@ -866,7 +866,7 @@ public with sharing class IntermediarySDM {
                                 // Si es el principal, se copia tambien el telefono
                                 // todo: poner esta parte en configuracion
                                 if( rel.IntermediaryField__c.equals('MainEmail__c') && fieldsToValue.containsKey('MainMobilePhone__c') ) {
-                                    newContact.Phone = String.valueOf(fieldsToValue.get('MainMobilePhone__c'));
+                                    newContact.MobilePhone = String.valueOf(fieldsToValue.get('MainMobilePhone__c'));
                                 }
                                 
                                 // Se preparan los mapas para la nueva relacion entre el contacto, la cuenta y el rol...
