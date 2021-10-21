@@ -422,11 +422,16 @@ ISBLANK({!myVariable_current.ParentId} )
 		)
 	),
 	AND
-	( 
-		NOT(ISNEW()),
-		[EmailMessage].Incoming ,
-		[EmailMessage].Parent.Owner:Queue.DeveloperName = &apos;Email_CSM_Robot&apos;,
-		ISBLANK([EmailMessage].GenesysInteractionId__c )
+	(
+        NOT(ISNEW()),
+		[EmailMessage].Incoming,
+		ISBLANK( [EmailMessage].GenesysInteractionId__c ),
+		NOT( ISBLANK( [EmailMessage].ParentId ) ),
+        OR
+		(
+			BEGINS([EmailMessage].ToAddress, &apos;administracion.&apos;),
+			BEGINS([EmailMessage].ToAddress, &apos;particulares.&apos;)
+		)
 	)
 )</stringValue>
             </value>
@@ -449,8 +454,13 @@ ISBLANK({!myVariable_current.ParentId} )
 	( 
 		NOT(ISNEW()),
 		{!myVariable_current.Incoming} ,
-		{!myVariable_current.Parent.Owner:Queue.DeveloperName} = &apos;Email_CSM_Robot&apos;,
-		ISBLANK({!myVariable_current.GenesysInteractionId__c} )
+		ISBLANK({!myVariable_current.GenesysInteractionId__c} ),
+		NOT( ISBLANK( {!myVariable_current.ParentId} ) ),
+        OR
+		(
+			BEGINS({!myVariable_current.ToAddress}, &apos;administracion.&apos;),
+			BEGINS({!myVariable_current.ToAddress}, &apos;particulares.&apos;)
+		)
 	)
 )</expression>
     </formulas>
