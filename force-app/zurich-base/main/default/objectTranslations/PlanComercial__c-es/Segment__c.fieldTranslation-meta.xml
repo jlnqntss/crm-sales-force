@@ -4,7 +4,7 @@
     <name>Segment__c</name>
     <picklistValues>
         <masterLabel>All products</masterLabel>
-        <translation>Todos los productos</translation>
+        <translation>Todos los segmentos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Individuals</masterLabel>
@@ -12,7 +12,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Large companies</masterLabel>
-        <translation>Grandes empresas</translation>
+        <translation>Gran empresa</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Life risk</masterLabel>
