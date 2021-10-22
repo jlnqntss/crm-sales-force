@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AssignedTo_Directors</fullName>
+    <active>true</active>
+    <description>SDM: evita que un director pueda asignarle un plan comercial a un usuario de Home office.</description>
+    <errorConditionFormula>IF
+(
+ OR
+ (
+  $UserRole.Name =  &quot;SDM DT&quot; &amp;&amp;
+  AssignedTo__r.UserRole.Name  &lt;&gt; &quot;SDM DT&quot; &amp;&amp;
+  AssignedTo__r.UserRole.Name  &lt;&gt; &quot;SDM Consultor&quot; &amp;&amp;
+  AssignedTo__r.UserRole.Name  &lt;&gt; &quot;SDM RN&quot;,
+  $UserRole.Name =  &quot;SDM DV&quot; &amp;&amp;
+  AssignedTo__r.UserRole.Name  &lt;&gt; &quot;SDM DV&quot; &amp;&amp;
+  AssignedTo__r.UserRole.Name  &lt;&gt; &quot;SDM CV&quot;
+ ),
+ true,
+ false
+
+)</errorConditionFormula>
+    <errorDisplayField>AssignedTo__c</errorDisplayField>
+    <errorMessage>Un plan comercial sólo se puede asignar a un usuario con perfil del mismo nivel o dependiente al que lo genera.</errorMessage>
+</ValidationRule>
