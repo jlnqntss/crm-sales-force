@@ -150,26 +150,11 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>276</locationX>
+        <locationX>275</locationX>
         <locationY>49</locationY>
         <connector>
             <targetReference>Old_Shares</targetReference>
         </connector>
-        <filterLogic>or</filterLogic>
-        <filters>
-            <field>OwnerId</field>
-            <operator>IsChanged</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>AssignedTo__c</field>
-            <operator>IsChanged</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
         <object>PlanComercial__c</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
