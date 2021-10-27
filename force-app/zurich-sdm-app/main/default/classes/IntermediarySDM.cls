@@ -1162,7 +1162,7 @@ public with sharing class IntermediarySDM {
 
             Notification notif = new Notification(Notification.notificationType.SDMAlert);
             // Permite abrir la seccion de Cuentas, listview Mis Mediadores
-            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mis_Mediadores');
+            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mis_mediadores_SDM');
             // Convertimos la lista de ids de usuario a string
             Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
             notif.send(stringSet, title, bodyContent);
