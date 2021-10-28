@@ -97,6 +97,10 @@
         </sections>
     </layouts>
     <quickActions>
+        <label><!-- New Task --></label>
+        <name>ActividadComercial</name>
+    </quickActions>
+    <quickActions>
         <label><!-- Defer --></label>
         <name>Defer</name>
     </quickActions>
@@ -277,7 +281,7 @@
         <name>Activity</name>
     </recordTypes>
     <recordTypes>
-        <label>Acción comercial</label>
+        <label>Actividad comercial</label>
         <name>CommercialAction</name>
     </recordTypes>
     <recordTypes>
