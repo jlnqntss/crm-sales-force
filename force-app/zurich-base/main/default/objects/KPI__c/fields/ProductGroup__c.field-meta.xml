@@ -14,6 +14,131 @@
                 <default>false</default>
                 <label>COMERCIOS</label>
             </value>
+            <value>
+                <fullName>RESP. CIVIL</fullName>
+                <default>false</default>
+                <label>RESP. CIVIL</label>
+            </value>
+            <value>
+                <fullName>INDIVIDUAL UNIT LINK UNICAS</fullName>
+                <default>false</default>
+                <label>INDIVIDUAL UNIT LINK UNICAS</label>
+            </value>
+            <value>
+                <fullName>COLECTIVO AHORRO PERIODICAS</fullName>
+                <default>false</default>
+                <label>COLECTIVO AHORRO PERIODICAS</label>
+            </value>
+            <value>
+                <fullName>INDIVIDUAL UNIT LINK PERIODICAS</fullName>
+                <default>false</default>
+                <label>INDIVIDUAL UNIT LINK PERIODICAS</label>
+            </value>
+            <value>
+                <fullName>INDIVIDUAL PPA</fullName>
+                <default>false</default>
+                <label>INDIVIDUAL PPA</label>
+            </value>
+            <value>
+                <fullName>EMBARCACIONES</fullName>
+                <default>false</default>
+                <label>EMBARCACIONES</label>
+            </value>
+            <value>
+                <fullName>OTROS</fullName>
+                <default>false</default>
+                <label>OTROS</label>
+            </value>
+            <value>
+                <fullName>INMUEBLES</fullName>
+                <default>false</default>
+                <label>INMUEBLES</label>
+            </value>
+            <value>
+                <fullName>INDIVIDUAL AHORRO UNICAS</fullName>
+                <default>false</default>
+                <label>INDIVIDUAL AHORRO UNICAS</label>
+            </value>
+            <value>
+                <fullName>TRANSPORTES</fullName>
+                <default>false</default>
+                <label>TRANSPORTES</label>
+            </value>
+            <value>
+                <fullName>TECNICOS</fullName>
+                <default>false</default>
+                <label>TECNICOS</label>
+            </value>
+            <value>
+                <fullName>RESP CIVIL</fullName>
+                <default>false</default>
+                <label>RESP CIVIL</label>
+            </value>
+            <value>
+                <fullName>PLANES PENSIONES</fullName>
+                <default>false</default>
+                <label>PLANES PENSIONES</label>
+            </value>
+            <value>
+                <fullName>PATRIMONIALES</fullName>
+                <default>false</default>
+                <label>PATRIMONIALES</label>
+            </value>
+            <value>
+                <fullName>INDIVIDUAL RIESGO PERIODICAS</fullName>
+                <default>false</default>
+                <label>INDIVIDUAL RIESGO PERIODICAS</label>
+            </value>
+            <value>
+                <fullName>INDIVIDUAL AHORRO PERIODICAS</fullName>
+                <default>false</default>
+                <label>INDIVIDUAL AHORRO PERIODICAS</label>
+            </value>
+            <value>
+                <fullName>HOGAR</fullName>
+                <default>false</default>
+                <label>HOGAR</label>
+            </value>
+            <value>
+                <fullName>FLOTAS</fullName>
+                <default>false</default>
+                <label>FLOTAS</label>
+            </value>
+            <value>
+                <fullName>INDIVIDUAL RIESGO UNICAS</fullName>
+                <default>false</default>
+                <label>INDIVIDUAL RIESGO UNICAS</label>
+            </value>
+            <value>
+                <fullName>no informado</fullName>
+                <default>false</default>
+                <label>no informado</label>
+            </value>
+            <value>
+                <fullName>EPSV</fullName>
+                <default>false</default>
+                <label>EPSV</label>
+            </value>
+            <value>
+                <fullName>COLECTIVO RIESGO PERIODICAS</fullName>
+                <default>false</default>
+                <label>COLECTIVO RIESGO PERIODICAS</label>
+            </value>
+            <value>
+                <fullName>AUTOS</fullName>
+                <default>false</default>
+                <label>AUTOS</label>
+            </value>
+            <value>
+                <fullName>COLECTIVO AHORRO UNICAS</fullName>
+                <default>false</default>
+                <label>COLECTIVO AHORRO UNICAS</label>
+            </value>
+            <value>
+                <fullName>ACCIDENTES</fullName>
+                <default>false</default>
+                <label>ACCIDENTES</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
