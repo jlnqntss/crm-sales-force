@@ -2096,6 +2096,10 @@
         <recordType>Task.Reminder</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Task-Follow up</layout>
+        <recordType>Task.Offer_Policy_Follow_up</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <loginIpRanges>
