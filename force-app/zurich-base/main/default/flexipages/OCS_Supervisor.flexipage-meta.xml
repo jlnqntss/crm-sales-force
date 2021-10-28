@@ -12,7 +12,6 @@
                     <value>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;INICIO SUPERVISOR&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Pendiente de definir&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
-                <identifier>flexipage_richText</identifier>
             </componentInstance>
         </itemInstances>
         <name>top</name>

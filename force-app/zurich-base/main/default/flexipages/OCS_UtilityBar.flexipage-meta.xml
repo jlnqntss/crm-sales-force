@@ -4,7 +4,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>console:history</componentName>
-                <identifier>console_history</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -40,7 +39,6 @@
                     <value>340</value>
                 </componentInstanceProperties>
                 <componentName>ctiExtraButtonsDispatcher</componentName>
-                <identifier>ctiExtraButtonsDispatcher</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -76,7 +74,6 @@
                     <value>340</value>
                 </componentInstanceProperties>
                 <componentName>opencti:softPhone</componentName>
-                <identifier>opencti_softPhone</identifier>
             </componentInstance>
         </itemInstances>
         <name>utilityItems</name>

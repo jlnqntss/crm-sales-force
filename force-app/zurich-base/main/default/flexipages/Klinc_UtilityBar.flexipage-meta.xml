@@ -34,7 +34,6 @@
                     <value>340</value>
                 </componentInstanceProperties>
                 <componentName>opencti:softPhone</componentName>
-                <identifier>opencti_softPhone</identifier>
             </componentInstance>
         </itemInstances>
         <name>utilityItems</name>

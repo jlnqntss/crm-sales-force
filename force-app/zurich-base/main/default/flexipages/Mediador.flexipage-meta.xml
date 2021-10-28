@@ -24,7 +24,6 @@
                     <value>3</value>
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
-                <identifier>force_highlightsPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>header</name>
@@ -34,7 +33,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>force:detailPanel</componentName>
-                <identifier>force_detailPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-43351438-4369-4869-8a5c-6292e3f44181</name>
@@ -64,7 +62,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -90,7 +87,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer2</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -116,7 +112,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer3</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-53507a4a-caf9-4425-a1a8-b84011aa51c8</name>
@@ -145,7 +140,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-cd85a181-5efd-4f68-a952-1a5429940e64</name>
@@ -174,7 +168,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-3fa0c30c-a078-44e9-8ef0-27df30b89242</name>
@@ -203,7 +196,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart3</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-4b2c20e4-8531-47e1-ba10-4883c02a429c</name>
@@ -225,7 +217,6 @@
                     <value>accordionSection1</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
-                <identifier>customSection</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -243,7 +234,6 @@
                     <value>accordionSection2</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
-                <identifier>customSection2</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -261,7 +251,6 @@
                     <value>accordionSection--qqilslp7vl</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
-                <identifier>customSection3</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-730cc277-a299-45ef-966c-6b8e7041dcd0</name>
@@ -279,7 +268,6 @@
                     <value>accordionSection1</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordion</componentName>
-                <identifier>flexipage_accordion</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-bc2e76cf-bf89-4b5c-85aa-bcd9b8418962</name>
@@ -309,7 +297,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart4</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-86cee9ef-b7fe-4d7f-b24e-7d6817c6a1dc</name>
@@ -335,7 +322,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart5</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-c5422fa3-04b9-45a2-8dde-ac365822c714</name>
@@ -361,7 +347,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart6</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-q1z932si78</name>
@@ -383,7 +368,6 @@
                     <value>Standard.Tab.detail</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>detailTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -401,7 +385,6 @@
                     <value>Standard.Tab.relatedLists</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>relatedListsTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -415,7 +398,6 @@
                     <value>Visión Mediador</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -429,7 +411,6 @@
                     <value>KPIs Históricos</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab2</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -443,7 +424,6 @@
                     <value>KPIs YTD</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab3</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -457,7 +437,6 @@
                     <value>KPIs mes</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab4</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-af596097-8d47-4b85-b19f-be798d0a1a0e</name>
@@ -471,7 +450,6 @@
                     <value>Facet-af596097-8d47-4b85-b19f-be798d0a1a0e</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
@@ -481,7 +459,6 @@
         <itemInstances>
             <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
-                <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-743bde5a-c530-4022-bf71-d8077f6aa7ba</name>
@@ -510,7 +487,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart7</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-923eca4a-0b46-464e-99f0-6576518f65c0</name>
@@ -536,7 +512,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart8</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-883adcdc-39de-4c87-b84b-4c3afc037d77</name>
@@ -562,7 +537,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart9</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-toxy0vdevv</name>
@@ -588,7 +562,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart10</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-43rqei36m9k</name>
@@ -614,7 +587,6 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
-                <identifier>flexipage_reportChart11</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-fccd0a43-a72e-4001-bf70-4d0511870387</name>
@@ -636,7 +608,6 @@
                     <value>accordionSection1</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
-                <identifier>customSection4</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -654,7 +625,6 @@
                     <value>accordionSection2</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
-                <identifier>customSection5</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -672,7 +642,6 @@
                     <value>accordionSection--8x59psb6zr8</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
-                <identifier>customSection6</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -690,7 +659,6 @@
                     <value>accordionSection--s8lzar2hghj</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
-                <identifier>customSection7</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -708,7 +676,6 @@
                     <value>accordionSection--uron2ldw5dr</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
-                <identifier>customSection8</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-91d32339-9a0e-4952-9b3a-f9f98330715a</name>
@@ -726,7 +693,6 @@
                     <value>accordionSection1</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordion</componentName>
-                <identifier>flexipage_accordion2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-7oma311ehqr</name>
@@ -744,7 +710,6 @@
                     <value>Standard.Tab.activity</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>activityTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -758,7 +723,6 @@
                     <value>Indicadores YTD</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
-                <identifier>customTab5</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-04c0db2a-8bf4-450b-98a8-ab3243c1941c</name>
@@ -772,7 +736,6 @@
                     <value>Facet-04c0db2a-8bf4-450b-98a8-ab3243c1941c</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
-                <identifier>flexipage_tabset2</identifier>
             </componentInstance>
         </itemInstances>
         <name>sidebar</name>
