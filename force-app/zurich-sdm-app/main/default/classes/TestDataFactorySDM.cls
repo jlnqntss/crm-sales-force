@@ -218,6 +218,16 @@ public class TestDataFactorySDM
         List<Account> checkIntermediary = Database.query(soql);
         System.assertEquals(false, checkIntermediary.isEmpty(), 'Deberia haber mediadores con agrupacion y rol');
 
+        // Debido a lo que parece un bug en el deploy, si el valor "Particulares" del SegmentoCliente__c no existe
+        // como valor de picklist, falla uno de los test. Por tanto este valor tiene que existir en la picklist
+        // El fallo es que los campos formula EstructuraDetalle__c y EstructuraUnificada__c no se calculan bien
+        Boolean existValue = false;
+        Schema.DescribeFieldResult fieldResult = KPI__c.SegmentoCliente__c.getDescribe();
+        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+        for(Schema.PicklistEntry p : ple) {
+            if( p.getValue() == 'Particulares' ) existValue = true;
+        }
+        System.assertEquals(true, existValue, 'El valor "Particulares" no existe en la picklist KPI__c.SegmentoCliente__c');
         // Generacion de los KPIs ---------------------------------------------
         List<KPI__c> kpis = TestDataFactorySDM.generateKPIs(intermediaries, 2);
         System.assertEquals(6, kpis.size(), 'Se deberian haber generado 6 KPIs');
