@@ -392,7 +392,7 @@
 (
    ISNEW(),
 [EmailMessage].Incoming ,
-ISNULL([EmailMessage].ParentId )
+ISBLANK([EmailMessage].ParentId )
 )</stringValue>
             </value>
         </processMetadataValues>
@@ -402,7 +402,7 @@ ISNULL([EmailMessage].ParentId )
 (
    ISNEW(),
 {!myVariable_current.Incoming} ,
-ISNULL({!myVariable_current.ParentId} )
+ISBLANK({!myVariable_current.ParentId} )
 )</expression>
     </formulas>
     <formulas>
@@ -414,7 +414,7 @@ ISNULL({!myVariable_current.ParentId} )
 	(
 	   ISNEW(),
 	   [EmailMessage].Incoming ,
-	   ISNULL( [EmailMessage].ParentId ),
+	   NOT( ISBLANK( [EmailMessage].ParentId ) ),
 	   OR
 		(
 			BEGINS([EmailMessage].ToAddress, &apos;administracion.&apos;),
@@ -422,11 +422,16 @@ ISNULL({!myVariable_current.ParentId} )
 		)
 	),
 	AND
-	( 
-		NOT(ISNEW()),
-		[EmailMessage].Incoming ,
-		[EmailMessage].Parent.Owner:Queue.DeveloperName = &apos;Email_CSM_Robot&apos;,
-		ISBLANK([EmailMessage].GenesysInteractionId__c )
+	(
+        NOT(ISNEW()),
+		[EmailMessage].Incoming,
+		ISBLANK( [EmailMessage].GenesysInteractionId__c ),
+		NOT( ISBLANK( [EmailMessage].ParentId ) ),
+        OR
+		(
+			BEGINS([EmailMessage].ToAddress, &apos;administracion.&apos;),
+			BEGINS([EmailMessage].ToAddress, &apos;particulares.&apos;)
+		)
 	)
 )</stringValue>
             </value>
@@ -438,7 +443,7 @@ ISNULL({!myVariable_current.ParentId} )
 	(
 	   ISNEW(),
 	   {!myVariable_current.Incoming} ,
-	   ISNULL( {!myVariable_current.ParentId} ),
+	   NOT( ISBLANK( {!myVariable_current.ParentId} ) ),
 	   OR
 		(
 			BEGINS({!myVariable_current.ToAddress}, &apos;administracion.&apos;),
@@ -449,8 +454,13 @@ ISNULL({!myVariable_current.ParentId} )
 	( 
 		NOT(ISNEW()),
 		{!myVariable_current.Incoming} ,
-		{!myVariable_current.Parent.Owner:Queue.DeveloperName} = &apos;Email_CSM_Robot&apos;,
-		ISBLANK({!myVariable_current.GenesysInteractionId__c} )
+		ISBLANK({!myVariable_current.GenesysInteractionId__c} ),
+		NOT( ISBLANK( {!myVariable_current.ParentId} ) ),
+        OR
+		(
+			BEGINS({!myVariable_current.ToAddress}, &apos;administracion.&apos;),
+			BEGINS({!myVariable_current.ToAddress}, &apos;particulares.&apos;)
+		)
 	)
 )</expression>
     </formulas>
@@ -462,7 +472,7 @@ ISNULL({!myVariable_current.ParentId} )
 (
    ISNEW(),
    [EmailMessage].Incoming ,
-   ISNULL( [EmailMessage].ParentId ),
+   NOT( ISBLANK( [EmailMessage].ParentId ) ),
    OR
 	(
 		BEGINS([EmailMessage].ToAddress, &apos;cc.&apos;),
@@ -480,7 +490,7 @@ ISNULL({!myVariable_current.ParentId} )
 (
    ISNEW(),
    {!myVariable_current.Incoming} ,
-   ISNULL( {!myVariable_current.ParentId} ),
+   NOT( ISBLANK( {!myVariable_current.ParentId} ) ),
    OR
 	(
 		BEGINS({!myVariable_current.ToAddress}, &apos;cc.&apos;),
