@@ -40,33 +40,77 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>KPI__c.PoliciesPN__c:SUM - KPI__c.PA_PoliciesPN__c:SUM</calculatedFormula>
-        <datatype>number</datatype>
-        <description>Realiza la resta entre Póliza PN y Póliza PN (PA)</description>
+        <calculatedFormula>(KPI__c.NCustomers__c:SUM -  KPI__c.PA_NCustomers__c:SUM) / KPI__c.PA_NCustomers__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>% Crecimiento de clientes</description>
         <developerName>FORMULA5</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>Diferencia PN</masterLabel>
+        <masterLabel>% Crecimiento de clientes</masterLabel>
         <scale>2</scale>
     </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_68388292</developerName>
+        <masterLabel>Estructura</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>KPI__c.EstructuraUnificada__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Particulares</sourceValue>
+            </sourceValues>
+            <value>1- PARTICULARES</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>PYMES</sourceValue>
+            </sourceValues>
+            <value>2- PYMES</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>VIDA RIESGO</sourceValue>
+            </sourceValues>
+            <value>3- VIDA RIESGO</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>GRANDES EMPRESAS</sourceValue>
+            </sourceValues>
+            <value>4- GRAN EMPRESA</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>RESTO</sourceValue>
+            </sourceValues>
+            <value>5- VIDA RESTO</value>
+        </values>
+    </buckets>  
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
+            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>FORMULA2</column>
+            <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartType>Donut</chartType>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>KPI__c.PA_PN__c</column>
+        </chartSummaries>
+        <chartType>VerticalColumn</chartType>
         <enableHoverLabels>false</enableHoverLabels>
-        <expandOthers>false</expandOthers>
-        <groupingColumn>KPI__c.EstructuraUnificada__c</groupingColumn>
-        <legendPosition>Right</legendPosition>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>BucketField_68388292</groupingColumn>
+        <legendPosition>Bottom</legendPosition>
         <location>CHART_BOTTOM</location>
         <showAxisLabels>false</showAxisLabels>
-        <showPercentage>true</showPercentage>
-        <showTotal>true</showTotal>
-        <showValues>false</showValues>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>true</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
@@ -99,22 +143,16 @@
         <midColor>#FFFFFF</midColor>
     </colorRanges>
     <columns>
-        <field>KPI__c.SegmentoCliente__c</field>
-    </columns>
-    <columns>
-        <field>KPI__c.ProductGroup__c</field>
-    </columns>
-    <columns>
-        <field>KPI__c.LoB__c</field>
-    </columns>
-    <columns>
         <field>PARENT.NAME</field>
     </columns>
     <columns>
-        <field>ACCOUNT.NAME</field>
+        <field>Account.IntermediaryDescription__c</field>
     </columns>
     <columns>
         <field>Account.INFOIntermediaryCode__c</field>
+    </columns>
+    <columns>
+        <field>CDF1</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -138,15 +176,15 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Supplements__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.Cancellations__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PA_Cancellations__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Supplements__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -165,27 +203,33 @@
         <field>KPI__c.PA_PoliciesInForce__c</field>
     </columns>
     <columns>
-        <field>CDF1</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.NCustomers__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_NCustomers__c</field>
     </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
         <developerName>CDF1</developerName>
         <label>Fecha Calculo</label>
         <scale>2</scale>
-    </customDetailFormulas>    
+    </customDetailFormulas>
+    <description>Informe de producción Nueva, Cartera, Suplementos, Anulaciones, Pólizas y Clientes</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Mensual</value>
+            <value>YTD</value>
         </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -193,6 +237,13 @@
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>Account.Intermediary</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>KPI__c.EstructuraUnificada__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>RESTO</value>
         </criteriaItems>
         <criteriaItems>
             <column>CDF1</column>
@@ -238,22 +289,27 @@
     </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>KPI__c.EstructuraUnificada__c</field>
+        <field>Account.BusinessManagerName__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>KPI__c.EstructuraDetalle__c</field>
+        <field>BucketField_68388292</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Report Base SDM MTD</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>KPI__c.ProductGroup__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Producción Nueva RN YTD</name>
     <params>
         <name>co</name>
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>accountteam</scope>
-    <showDetails>false</showDetails>
+    <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
