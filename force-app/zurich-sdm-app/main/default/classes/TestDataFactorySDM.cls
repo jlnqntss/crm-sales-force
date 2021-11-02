@@ -229,6 +229,7 @@ public class TestDataFactorySDM
         }
         System.assertEquals(true, existValue, 'El valor "Particulares" no existe en la picklist KPI__c.SegmentoCliente__c');
         // Generacion de los KPIs ---------------------------------------------
+        List<KPI__c> kpisAll = new List<KPI__c>();
         List<KPI__c> kpis = TestDataFactorySDM.generateKPIs(intermediaries, 2);
         System.assertEquals(6, kpis.size(), 'Se deberian haber generado 6 KPIs');
         // Primer mediador => suma [10=10] El segundo KPI no se considera en el filtrado
@@ -248,14 +249,25 @@ public class TestDataFactorySDM
         kpis[4].PA_PoliciesPN__c = 35;
         kpis[5].PoliciesPN__c = 40;
         kpis[5].PA_PoliciesPN__c = 45;
-        insert kpis;
+        kpisAll.addAll(kpis);
         // Añadimos un kpi que este fuera de la fecha de los planes (01/09/2021 a 30/09/2021). No deberia contar
         kpis = TestDataFactorySDM.generateKPIs(new List<Account>{intermediaries[0]}, 1);
         kpis[0].PN__c = 13;
         kpis[0].ProductGroup__c = 'AUTOS';
         kpis[0].CalcYear__c = '2021'; // mismo que los planes
         kpis[0].CalcMonth__c = '10'; // no entra en los planes (no deberia contar el kpi)
-        insert kpis;
+        kpisAll.addAll(kpis);
+        // Añadimos un kpi Anual. No deberia contar para los mensuales
+        kpis = TestDataFactorySDM.generateKPIs(new List<Account>{intermediaries[0]}, 2);
+        kpis[0].PN__c = 13;
+        kpis[0].Temporalidad__c = KPIsSelector.TEMPORALIDAD_YTD;
+        kpis[0].CalcMonth__c = '8'; // aunque no mes de ejecucion (9), si deberia contar por ser ultimo mes disponible
+        kpis[1].PN__c = 5;
+        kpis[1].Temporalidad__c = KPIsSelector.TEMPORALIDAD_YTD;
+        kpis[1].CalcMonth__c = '7'; // aunque es anual, es foto anterior y no deberia contar
+        kpisAll.addAll(kpis);
+        
+        insert kpisAll;
 
         // Recuperamos los equipos de cuenta para que los usuarios de los mediadores
         // creen los planes
@@ -265,19 +277,20 @@ public class TestDataFactorySDM
             WHERE AccountId IN :intermediaries
         ];
         System.assertEquals(3, atms.size(), 'Deberia haber 3 registros de ATMs');
-        Map<Id, AccountTeamMember> mapATMs = new Map<Id, AccountTeamMember>();
+        Map<Id, Id> mapATMs = new Map<Id, Id>();
         for(AccountTeamMember atm: atms) {
-            mapATMs.put(atm.AccountId, atm);
+            mapATMs.put(atm.AccountId, atm.UserId);
         }
 
         // Generacion de los planes comerciales -------------------------------
         List<PlanComercial__c> plans = TestDataFactorySDM.generatePlans(intermediaries, 1);
-        System.assertEquals(3, plans.size(), 'Se deberian haber generado 3 planes');
+        
         User userPlan = new User(
-            Id= mapATMs.get(plans[0].Intermediary__c).UserId
+            Id= mapATMs.get(plans[0].Intermediary__c)
         );
         System.runAs(userPlan) {
             // Plan del primer mediador
+            plans[0].Name = 'Plan 1';
             plans[0].AssignedTo__c = userPlan.Id;
             plans[0].Indicator__c = 'PN';
             plans[0].Intermediary__c = agrupations[0].Id;
@@ -287,9 +300,10 @@ public class TestDataFactorySDM
         
         // Plan del segundo mediador
         userPlan = new User(
-            Id= mapATMs.get(plans[1].Intermediary__c).UserId
+            Id= mapATMs.get(plans[1].Intermediary__c)
         );
         System.runAs(userPlan) {
+            plans[1].Name = 'Plan 2';
             plans[1].AssignedTo__c = userPlan.Id;
             plans[1].Indicator__c = 'Ratio_Claim';
             plans[1].Product__c = PlanComercialSDM.ALL_VALUE;
@@ -298,15 +312,29 @@ public class TestDataFactorySDM
 
         // Plan del tercer mediador
         userPlan = new User(
-            Id= mapATMs.get(plans[2].Intermediary__c).UserId
+            Id= mapATMs.get(plans[2].Intermediary__c)
         );
         System.runAs(userPlan) {
+            plans[2].Name = 'Plan 3';
             plans[2].AssignedTo__c = userPlan.Id;
             plans[2].Indicator__c = 'Ratio_PoliciesPNIncreas';
             plans[2].Intermediary__c = null;
             insert plans[2];
         }
-        // insert plans;
+
+        // Creacion de un plan anual para el mediador del primer plan
+        plans = TestDataFactorySDM.generatePlans(new List<Account>{intermediaries[0]}, 1);
+        plans[0].Name = 'Plan 4';
+        plans[0].AccumulateType__c= PlanComercialSelector.ACCUMULATE_TYPE_YRD;
+        plans[0].StartDate__c= Date.newInstance(2021, 1, 1);
+        plans[0].EndDate__c= Date.newInstance(2021, 12, 31);
+        userPlan = new User(
+            Id= mapATMs.get(intermediaries[0].Id)
+        );
+        System.runAs(userPlan) {
+            plans[0].AssignedTo__c = userPlan.Id;
+            insert plans[0];
+        }
     }
 
     /**
@@ -471,7 +499,7 @@ public class TestDataFactorySDM
                     Intermediary__c= a.Id,
                     ProductGroup__c= 'AUTOS',
                     SegmentoCliente__c= 'Particulares',
-                    Temporalidad__c= 'Mensual',
+                    Temporalidad__c= KPIsSelector.TEMPORALIDAD_MONTH,
                     CalcYear__c= '2021',
                     CalcMonth__c= '9'
                 );
@@ -495,14 +523,14 @@ public class TestDataFactorySDM
                 PlanComercial__c plan = new PlanComercial__c(
                     StartDate__c= Date.newInstance(2021, 9, 1),
                     EndDate__c= Date.newInstance(2021, 9, 30),
-                    SendNotifications__c= '01',
+                    SendNotifications__c= PlancomercialSelector.SEND_NOTIFICATION_ABOVE_THRESHOLD,
                     Intermediary__c= a.Id,
                     AssignedTo__c= UserInfo.getUserId(),
                     Actual_KPI__c= null,
                     Indicator__c= 'PN',
                     Product__c= 'Autos',
                     Segment__c= 'Particulares',
-                    AccumulateType__c= 'Mensual'
+                    AccumulateType__c= PlanComercialSelector.ACCUMULATE_TYPE_MONTH
                 );
 
                 plans.add(plan);
@@ -523,13 +551,13 @@ public class TestDataFactorySDM
             PlanComercial__c plan = new PlanComercial__c(
                 StartDate__c= Date.newInstance(2021, 9, 1),
                 EndDate__c= Date.newInstance(2021, 9, 30),
-                SendNotifications__c= '01',
+                SendNotifications__c= PlancomercialSelector.SEND_NOTIFICATION_ABOVE_THRESHOLD,
                 Intermediary__c= null,
                 Actual_KPI__c= null,
                 Indicator__c= 'PN',
                 Product__c= 'Autos',
                 Segment__c= 'Particulares',
-                AccumulateType__c= 'Mensual'
+                AccumulateType__c= PlanComercialSelector.ACCUMULATE_TYPE_MONTH
             );
 
             plans.add(plan);
