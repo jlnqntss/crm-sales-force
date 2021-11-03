@@ -4,9 +4,9 @@
     <backgroundFadeDirection>Diagonal</backgroundFadeDirection>
     <backgroundStartColor>#FFFFFF</backgroundStartColor>
     <chartTheme>light</chartTheme>
-    <colorPalette>water</colorPalette>
+    <colorPalette>unity</colorPalette>
     <dashboardChartTheme>light</dashboardChartTheme>
-    <dashboardColorPalette>water</dashboardColorPalette>
+    <dashboardColorPalette>unity</dashboardColorPalette>
     <dashboardGridLayout>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -14,21 +14,20 @@
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartSummary>
-                    <axisBinding>y</axisBinding>
-                    <column>FORMULA2</column>
+                    <column>FORMULA1</column>
                 </chartSummary>
                 <componentType>Metric</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>% siniestralidad Particulares y Empresas</header>
+                <header>Cartera Vida riesgo</header>
                 <indicatorBreakpoint1>33.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>67.0</indicatorBreakpoint2>
                 <indicatorHighColor>#00716B</indicatorHighColor>
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>Acumulado YTD</metricLabel>
-                <report>SDM/RN_YT_Siniestralidad_Part_Empr_idZ</report>
+                <report>SDM/CV_Scatter_YTD_Vida_y_APES_wQm</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -40,21 +39,20 @@
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartSummary>
-                    <axisBinding>y</axisBinding>
-                    <column>FORMULA3</column>
+                    <column>FORMULA5</column>
                 </chartSummary>
                 <componentType>Metric</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>% Descuento medio Auto</header>
+                <header>Crecimiento Clientes</header>
                 <indicatorBreakpoint1>33.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>67.0</indicatorBreakpoint2>
                 <indicatorHighColor>#00716B</indicatorHighColor>
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>Acumulado YTD</metricLabel>
-                <report>SDM/RN_YT_Descuento_Auto_WRu</report>
+                <report>SDM/RN_Crecimiento_Cliente_por_Segmento_YTD_ijZ</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -66,20 +64,21 @@
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartSummary>
-                    <column>FORMULA5</column>
+                    <aggregate>Sum</aggregate>
+                    <column>KPI__c.APES__c</column>
                 </chartSummary>
                 <componentType>Metric</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>% crecimiento clientes</header>
+                <header>APES Vida</header>
                 <indicatorBreakpoint1>33.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>67.0</indicatorBreakpoint2>
                 <indicatorHighColor>#00716B</indicatorHighColor>
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>Acumulado MTD</metricLabel>
-                <report>SDM/RN_KPIs_por_Mediador_TSb</report>
+                <report>SDM/CV_APES_MTD_Vida_gMW</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -98,33 +97,8 @@
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
                 <groupingSortProperties/>
-                <header>Funnel Nueva Producción</header>
-                <report>SDM/RN_NP_Autos_Particulares_Empresas_y_Vida_JpD</report>
-                <showPercentage>false</showPercentage>
-                <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <title>Acumulado MTD</title>
-                <useReportChart>true</useReportChart>
-            </dashboardComponent>
-            <rowIndex>0</rowIndex>
-            <rowSpan>11</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>3</colSpan>
-            <columnIndex>9</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <componentType>Bar</componentType>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
-                <header>Funnel Nueva Producción</header>
-                <report>SDM/RN_NP_YTD_Funnel_Chart_g4z</report>
+                <header>Crecimiento Clientes por Segmento</header>
+                <report>SDM/RN_Crecimiento_Cliente_por_Segmento_YTD_ijZ</report>
                 <showPercentage>false</showPercentage>
                 <showPicturesOnCharts>false</showPicturesOnCharts>
                 <showValues>false</showValues>
@@ -133,84 +107,46 @@
                 <useReportChart>true</useReportChart>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
-            <rowSpan>11</rowSpan>
+            <rowSpan>9</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
-            <colSpan>2</colSpan>
-            <columnIndex>0</columnIndex>
+            <colSpan>3</colSpan>
+            <columnIndex>9</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <axisBinding>y</axisBinding>
-                    <column>FORMULA2</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>% siniestralidad Particulares y Empresas</header>
-                <indicatorBreakpoint1>33.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>67.0</indicatorBreakpoint2>
-                <indicatorHighColor>#00716B</indicatorHighColor>
-                <indicatorLowColor>#C23934</indicatorLowColor>
-                <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <metricLabel>Acumulado MTD</metricLabel>
-                <report>SDM/RN_MTD_Siniestralidad_Part_E_GAB</report>
-                <showRange>false</showRange>
+                <componentType>FlexTable</componentType>
+                <flexComponentProperties>
+                    <decimalPrecision>-1</decimalPrecision>
+                    <flexTableColumn>
+                        <reportColumn>PARENT.NAME</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>grouping</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA1</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableSortInfo>
+                        <sortOrder>1</sortOrder>
+                    </flexTableSortInfo>
+                    <hideChatterPhotos>true</hideChatterPhotos>
+                </flexComponentProperties>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortColumn>FORMULA1</sortColumn>
+                        <sortOrder>d</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>Ranking mayor decremento cartera vida riesgo respecto pa</header>
+                <report>SDM/CV_Scatter_YTD_Vida_y_APES_wQm</report>
+                <title>Acumulado YTD</title>
             </dashboardComponent>
-            <rowIndex>4</rowIndex>
-            <rowSpan>4</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>2</colSpan>
-            <columnIndex>2</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <axisBinding>y</axisBinding>
-                    <column>FORMULA3</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>% Descuento medio Auto</header>
-                <indicatorBreakpoint1>33.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>67.0</indicatorBreakpoint2>
-                <indicatorHighColor>#00716B</indicatorHighColor>
-                <indicatorLowColor>#C23934</indicatorLowColor>
-                <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <metricLabel>Acumulado MTD</metricLabel>
-                <report>SDM/RN_MTD_Descuento_Auto_gWB</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>4</rowIndex>
-            <rowSpan>4</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>2</colSpan>
-            <columnIndex>4</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <column>FORMULA5</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>% crecimiento clientes</header>
-                <indicatorBreakpoint1>33.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>67.0</indicatorBreakpoint2>
-                <indicatorHighColor>#00716B</indicatorHighColor>
-                <indicatorLowColor>#C23934</indicatorLowColor>
-                <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <metricLabel>Acumulado YTD</metricLabel>
-                <report>SDM/RN_Crecimiento_Cliente_por_Segmento_YTD_ijZ</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>4</rowIndex>
-            <rowSpan>4</rowSpan>
+            <rowIndex>0</rowIndex>
+            <rowSpan>8</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>6</colSpan>
@@ -225,20 +161,21 @@
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
                 <groupingSortProperties/>
-                <header>Importe Cartera y NP</header>
-                <report>SDM/RN_Inicio_Cartera_y_NP_FkO</report>
+                <header>Cartera y APES - Mediadores panel</header>
+                <report>SDM/CV_Scatter_YTD_Vida_y_APES_wQm</report>
                 <showPercentage>false</showPercentage>
                 <showPicturesOnCharts>false</showPicturesOnCharts>
                 <showValues>false</showValues>
                 <sortBy>RowLabelAscending</sortBy>
+                <title>Acumulado YTD</title>
                 <useReportChart>true</useReportChart>
             </dashboardComponent>
-            <rowIndex>8</rowIndex>
-            <rowSpan>9</rowSpan>
+            <rowIndex>4</rowIndex>
+            <rowSpan>10</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>3</colSpan>
-            <columnIndex>6</columnIndex>
+            <columnIndex>9</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <componentType>FlexTable</componentType>
@@ -251,7 +188,7 @@
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
-                        <reportColumn>s!KPI__c.PoliciesPN__c</reportColumn>
+                        <reportColumn>FORMULA1</reportColumn>
                         <showSubTotal>false</showSubTotal>
                         <showTotal>false</showTotal>
                         <type>aggregate</type>
@@ -261,20 +198,121 @@
                     </flexTableSortInfo>
                     <hideChatterPhotos>true</hideChatterPhotos>
                 </flexComponentProperties>
-                <footer>Se muestra el top 5</footer>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortColumn>s!KPI__c.PoliciesPN__c</sortColumn>
+                        <sortColumn>FORMULA1</sortColumn>
+                        <sortOrder>d</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>Ranking mayor diferencia pólizas pn vida riesgo respecto pa</header>
+                <report>SDM/CV_Scatter_YTD_Vida_y_APES_wQm</report>
+                <title>Acumulado YTD</title>
+            </dashboardComponent>
+            <rowIndex>8</rowIndex>
+            <rowSpan>8</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>3</colSpan>
+            <columnIndex>6</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartAxisRange>Auto</chartAxisRange>
+                <chartSummary>
+                    <aggregate>Sum</aggregate>
+                    <axisBinding>y</axisBinding>
+                    <column>KPI__c.Portfolio__c</column>
+                </chartSummary>
+                <componentType>Donut</componentType>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <drillEnabled>false</drillEnabled>
+                <drillToDetailEnabled>false</drillToDetailEnabled>
+                <enableHover>false</enableHover>
+                <expandOthers>false</expandOthers>
+                <groupingColumn>KPI__c.EstructuraDetalle__c</groupingColumn>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Mediadores Pólizas NP más bajo</header>
-                <report>SDM/Report_Base_SDM_MTD_1Q0</report>
-                <title>Acumulado MTD</title>
+                <header>Cartera Detalle</header>
+                <legendPosition>Right</legendPosition>
+                <maxValuesDisplayed>6</maxValuesDisplayed>
+                <report>SDM/CV_Scatter_YTD_Vida_y_APES_wQm</report>
+                <showPercentage>false</showPercentage>
+                <showTotal>true</showTotal>
+                <showValues>true</showValues>
+                <sortBy>RowLabelAscending</sortBy>
+                <title>Acumulado YTD</title>
+                <useReportChart>false</useReportChart>
             </dashboardComponent>
-            <rowIndex>11</rowIndex>
-            <rowSpan>8</rowSpan>
+            <rowIndex>9</rowIndex>
+            <rowSpan>9</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>3</colSpan>
+            <columnIndex>0</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+                <chartAxisRange>Auto</chartAxisRange>
+                <componentType>Bar</componentType>
+                <displayUnits>Auto</displayUnits>
+                <drillEnabled>false</drillEnabled>
+                <drillToDetailEnabled>false</drillToDetailEnabled>
+                <enableHover>false</enableHover>
+                <expandOthers>false</expandOthers>
+                <groupingSortProperties/>
+                <header>APES</header>
+                <report>SDM/CV_APES_MTD_Vida_gMW</report>
+                <showPercentage>false</showPercentage>
+                <showPicturesOnCharts>false</showPicturesOnCharts>
+                <showValues>false</showValues>
+                <sortBy>RowLabelAscending</sortBy>
+                <title>Acumulado MTD</title>
+                <useReportChart>true</useReportChart>
+            </dashboardComponent>
+            <rowIndex>14</rowIndex>
+            <rowSpan>12</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>3</colSpan>
+            <columnIndex>3</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartAxisRange>Auto</chartAxisRange>
+                <chartSummary>
+                    <aggregate>Sum</aggregate>
+                    <axisBinding>y</axisBinding>
+                    <column>KPI__c.Portfolio__c</column>
+                </chartSummary>
+                <componentType>Funnel</componentType>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <drillEnabled>false</drillEnabled>
+                <drillToDetailEnabled>false</drillToDetailEnabled>
+                <enableHover>false</enableHover>
+                <expandOthers>false</expandOthers>
+                <groupingColumn>KPI__c.EstructuraUnificada__c</groupingColumn>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>Scatter APES</header>
+                <legendPosition>Right</legendPosition>
+                <maxValuesDisplayed>6</maxValuesDisplayed>
+                <report>SDM/CV_Scatter_YTD_Vida_y_APES_wQm</report>
+                <showPercentage>false</showPercentage>
+                <showValues>true</showValues>
+                <sortBy>RowLabelAscending</sortBy>
+                <title>Acumulado YTD</title>
+                <useReportChart>false</useReportChart>
+            </dashboardComponent>
+            <rowIndex>14</rowIndex>
+            <rowSpan>12</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>3</colSpan>
@@ -301,132 +339,68 @@
                     </flexTableSortInfo>
                     <hideChatterPhotos>true</hideChatterPhotos>
                 </flexComponentProperties>
-                <footer>Se muestra el top 5</footer>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
+                        <sortColumn>FORMULA4</sortColumn>
                         <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Mediadores % Retención más bajo</header>
-                <report>SDM/Report_Base_SDM_YTD_CF1</report>
+                <header>Ranking peor % retención</header>
+                <report>SDM/CV_Scatter_YTD_Vida_y_APES_wQm</report>
                 <title>Acumulado YTD</title>
             </dashboardComponent>
-            <rowIndex>11</rowIndex>
+            <rowIndex>16</rowIndex>
             <rowSpan>8</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>6</colSpan>
-            <columnIndex>0</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <componentType>Bar</componentType>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
-                <header>Pólizas PN mes todos los productos</header>
-                <report>SDM/RN_KPIs_por_Mediador_TSb</report>
-                <showPercentage>false</showPercentage>
-                <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <title>Acumulado MTD</title>
-                <useReportChart>true</useReportChart>
-            </dashboardComponent>
-            <rowIndex>17</rowIndex>
-            <rowSpan>10</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>3</colSpan>
             <columnIndex>6</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <componentType>FlexTable</componentType>
-                <flexComponentProperties>
-                    <decimalPrecision>-1</decimalPrecision>
-                    <flexTableColumn>
-                        <reportColumn>PARENT.NAME</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>grouping</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>FORMULA1</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>aggregate</type>
-                    </flexTableColumn>
-                    <flexTableSortInfo>
-                        <sortOrder>1</sortOrder>
-                    </flexTableSortInfo>
-                    <hideChatterPhotos>true</hideChatterPhotos>
-                </flexComponentProperties>
-                <footer>Se muestra el top 5</footer>
-                <groupingSortProperties>
-                    <groupingSorts>
-                        <groupingLevel>g1</groupingLevel>
-                        <sortColumn>FORMULA1</sortColumn>
-                        <sortOrder>a</sortOrder>
-                    </groupingSorts>
-                </groupingSortProperties>
-                <header>Mediadores % Cartera más bajo</header>
-                <report>SDM/Report_Base_SDM_MTD_1Q0</report>
-                <title>Acumulado MTD</title>
-            </dashboardComponent>
-            <rowIndex>19</rowIndex>
-            <rowSpan>8</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>3</colSpan>
-            <columnIndex>9</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <componentType>FlexTable</componentType>
-                <flexComponentProperties>
-                    <decimalPrecision>-1</decimalPrecision>
-                    <flexTableColumn>
-                        <reportColumn>ACCOUNT.NAME</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>grouping</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>FORMULA5</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>aggregate</type>
-                    </flexTableColumn>
-                    <flexTableSortInfo>
-                        <sortOrder>1</sortOrder>
-                    </flexTableSortInfo>
-                    <hideChatterPhotos>true</hideChatterPhotos>
-                </flexComponentProperties>
+                <chartAxisRange>Auto</chartAxisRange>
+                <chartSummary>
+                    <aggregate>Sum</aggregate>
+                    <axisBinding>y</axisBinding>
+                    <column>KPI__c.APES__c</column>
+                </chartSummary>
+                <componentType>Donut</componentType>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <drillEnabled>false</drillEnabled>
+                <drillToDetailEnabled>false</drillToDetailEnabled>
+                <enableHover>false</enableHover>
+                <expandOthers>false</expandOthers>
+                <groupingColumn>KPI__c.EstructuraDetalle__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>% Crecimiento Clientes por Mediador</header>
-                <report>SDM/RN_Crecimiento_Cliente_por_Segmento_YTD_ijZ</report>
+                <header>APES Detalle</header>
+                <legendPosition>Right</legendPosition>
+                <maxValuesDisplayed>6</maxValuesDisplayed>
+                <report>SDM/CV_Scatter_YTD_Vida_y_APES_wQm</report>
+                <showPercentage>false</showPercentage>
+                <showTotal>true</showTotal>
+                <showValues>true</showValues>
+                <sortBy>RowLabelAscending</sortBy>
                 <title>Acumulado YTD</title>
+                <useReportChart>false</useReportChart>
             </dashboardComponent>
-            <rowIndex>19</rowIndex>
-            <rowSpan>8</rowSpan>
+            <rowIndex>18</rowIndex>
+            <rowSpan>9</rowSpan>
         </dashboardGridComponents>
         <numberOfColumns>12</numberOfColumns>
         <rowHeight>36</rowHeight>
     </dashboardGridLayout>
     <dashboardType>LoggedInUser</dashboardType>
-    <description>Panel de inicio del RN para SDM</description>
+    <description>Panel de inicio del DV para SDM</description>
     <isGridLayout>true</isGridLayout>
     <runningUser>adminklinc@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
-    <title>SDM - Visión Inicio del RN</title>
+    <title>SDM - Visión Inicio del DV</title>
     <titleColor>#000000</titleColor>
     <titleSize>12</titleSize>
 </Dashboard>

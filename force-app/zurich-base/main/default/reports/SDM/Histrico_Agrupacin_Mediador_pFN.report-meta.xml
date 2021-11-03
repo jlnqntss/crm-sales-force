@@ -21,7 +21,9 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0, 0, KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
+        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0,
+0,
+   KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Descuento total</description>
         <developerName>FORMULA3</developerName>
@@ -39,54 +41,6 @@
         <masterLabel>Ratio Retencion</masterLabel>
         <scale>2</scale>
     </aggregates>
-    <aggregates>
-        <calculatedFormula>(KPI__c.NCustomers__c:SUM -  KPI__c.PA_NCustomers__c:SUM) / KPI__c.PA_NCustomers__c:SUM</calculatedFormula>
-        <datatype>percent</datatype>
-        <description>% Crecimiento de clientes</description>
-        <developerName>FORMULA5</developerName>
-        <isActive>true</isActive>
-        <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% Crecimiento de clientes</masterLabel>
-        <scale>2</scale>
-    </aggregates>
-    <buckets>
-        <bucketType>text</bucketType>
-        <developerName>BucketField_68388292</developerName>
-        <masterLabel>Estructura</masterLabel>
-        <nullTreatment>n</nullTreatment>
-        <sourceColumnName>KPI__c.EstructuraUnificada__c</sourceColumnName>
-        <useOther>false</useOther>
-        <values>
-            <sourceValues>
-                <sourceValue>Particulares</sourceValue>
-            </sourceValues>
-            <value>1- PARTICULARES</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>PYMES</sourceValue>
-            </sourceValues>
-            <value>2- PYMES</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>VIDA RIESGO</sourceValue>
-            </sourceValues>
-            <value>3- VIDA RIESGO</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>GRANDES EMPRESAS</sourceValue>
-            </sourceValues>
-            <value>4- GRAN EMPRESA</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>RESTO</sourceValue>
-            </sourceValues>
-            <value>5- VIDA RESTO</value>
-        </values>
-    </buckets>
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
@@ -94,13 +48,19 @@
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.APES__c</column>
+            <column>KPI__c.Portfolio__c</column>
         </chartSummaries>
-        <chartType>VerticalColumn</chartType>
+        <chartSummaries>
+            <axisBinding>y2</axisBinding>
+            <column>FORMULA2</column>
+        </chartSummaries>
+        <chartType>VerticalColumnGroupedLine</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>BucketField_68388292</groupingColumn>
+        <groupingColumn>KPI__c.CalcYear__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>PARENT.NAME</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -109,19 +69,24 @@
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
+        <title>Evolución Cartera y Siniestralidad</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
-    <colorRanges>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.Portfolio__c</columnName>
-        <highColor>#FFFFFF</highColor>
-        <lowBreakpoint>-1.0</lowBreakpoint>
-        <lowColor>#FF9897</lowColor>
-        <midColor>#FFFFFF</midColor>
-    </colorRanges>
     <columns>
-        <field>Account.INFOIntermediaryCode__c</field>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>KPI__c.LoB__c</field>
+    </columns>
+    <columns>
+        <field>ADDRESS1_STATE</field>
+    </columns>
+    <columns>
+        <field>Account.BusinessManagerName__c</field>
+    </columns>
+    <columns>
+        <field>Account.LifeConsultant__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -129,15 +94,15 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Portfolio__c</field>
+        <field>KPI__c.Supplements__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.APES__c</field>
+        <field>KPI__c.PN__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.APESpa__c</field>
+        <field>KPI__c.Cancellations__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -145,15 +110,10 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_PoliciesPN__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PoliciesInForce__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_PoliciesInForce__c</field>
+        <field>CDF1</field>
     </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
@@ -167,64 +127,35 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe de APES y Cartera Vida Riesgo. Mes Actual. Gráfico de los últimos 12 meses.</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Mensual</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>RECORDTYPE</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>Account.Intermediary</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>CDF1</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>greaterOrEqual</operator>
-            <value>N_MONTHS_AGO:12</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>KPI__c.EstructuraUnificada__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>VIDA RIESGO</value>
-        </criteriaItems>
-        <language>es</language>
+            <value>YTD</value>
+        </criteriaItems>     
+        <language>en_US</language>
     </filter>
-    <format>Summary</format>
-    <formattingRules>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.Portfolio__c</columnName>
-        <values>
-            <backgroundColor>#FF9897</backgroundColor>
-            <rangeUpperBound>-1.0</rangeUpperBound>
-        </values>
-    </formattingRules>
+    <format>Matrix</format>
+    <groupingsAcross>
+        <dateGranularity>Day</dateGranularity>
+        <field>KPI__c.CalcYear__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsAcross>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>BucketField_68388292</field>
+        <field>PARENT.NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <groupingsDown>
-        <field>CDF1</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <name>APES CV Mes</name>
+    <name>Histórico Agrupación Mediador</name>
     <params>
         <name>co</name>
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>accountteam</scope>
-    <showDetails>false</showDetails>
+    <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>

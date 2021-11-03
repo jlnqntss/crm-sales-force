@@ -21,7 +21,9 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0, 0, KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
+        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0,
+0,
+   KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Descuento total</description>
         <developerName>FORMULA3</developerName>
@@ -39,53 +41,6 @@
         <masterLabel>Ratio Retencion</masterLabel>
         <scale>2</scale>
     </aggregates>
-    <aggregates>
-        <calculatedFormula>KPI__c.ConsolidatedRights__c:SUM+KPI__c.MathematicalReserve__c:SUM</calculatedFormula>
-        <datatype>number</datatype>
-        <developerName>FORMULA5</developerName>
-        <isActive>false</isActive>
-        <isCrossBlock>false</isCrossBlock>
-        <masterLabel>Saldos</masterLabel>
-        <scale>2</scale>
-    </aggregates>
-    <buckets>
-        <bucketType>text</bucketType>
-        <developerName>BucketField_68388292</developerName>
-        <masterLabel>Estructura</masterLabel>
-        <nullTreatment>n</nullTreatment>
-        <sourceColumnName>KPI__c.EstructuraUnificada__c</sourceColumnName>
-        <useOther>false</useOther>
-        <values>
-            <sourceValues>
-                <sourceValue>Particulares</sourceValue>
-            </sourceValues>
-            <value>1- PARTICULARES</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>PYMES</sourceValue>
-            </sourceValues>
-            <value>2- PYMES</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>VIDA RIESGO</sourceValue>
-            </sourceValues>
-            <value>3- VIDA RIESGO</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>GRANDES EMPRESAS</sourceValue>
-            </sourceValues>
-            <value>4- GRAN EMPRESA</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>RESTO</sourceValue>
-            </sourceValues>
-            <value>5- VIDA RESTO</value>
-        </values>
-    </buckets>       
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
@@ -98,13 +53,15 @@
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.PN__c</column>
+            <column>KPI__c.APES__c</column>
         </chartSummaries>
-        <chartType>Scatter</chartType>
+        <chartType>ScatterGrouped</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>PARENT.NAME</groupingColumn>
+        <groupingColumn>KPI__c.EstructuraUnificada__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>KPI__c.EstructuraDetalle__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -141,21 +98,22 @@
         <midColor>#FFFFFF</midColor>
     </colorRanges>
     <columns>
-        <field>KPI__c.EstructuraDetalle__c</field>
-    </columns>
-    <columns>
-        <field>KPI__c.LoB__c</field>
+        <field>KPI__c.SegmentoCliente__c</field>
     </columns>
     <columns>
         <field>KPI__c.ProductGroup__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PN__c</field>
+        <field>KPI__c.LoB__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_PN__c</field>
+        <field>PARENT.NAME</field>
+    </columns>
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>Account.INFOIntermediaryCode__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -167,6 +125,30 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_PN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Supplements__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Supplements__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Cancellations__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Cancellations__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PoliciesPN__c</field>
     </columns>
     <columns>
@@ -174,21 +156,38 @@
         <field>KPI__c.PA_PoliciesPN__c</field>
     </columns>
     <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PoliciesInForce__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_PoliciesInForce__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.APES__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.APESpa__c</field>
+    </columns>
+    <columns>
         <field>CDF1</field>
     </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
         <developerName>CDF1</developerName>
         <label>Fecha Calculo</label>
         <scale>2</scale>
-    </customDetailFormulas>
-    <description>Panel de mediadores del RN. Cartera, PN y pólizas PN</description>
+    </customDetailFormulas>    
+    <description>Acumulado YTD
+Agrupaciones de Vida riesgo indiividual y vida riesgo colectivo</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
@@ -205,19 +204,19 @@
             <value>Account.Intermediary</value>
         </criteriaItems>
         <criteriaItems>
+            <column>KPI__c.EstructuraUnificada__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Vida Riesgo</value>
+        </criteriaItems>
+        <criteriaItems>
             <column>CDF1</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>THIS_MONTH</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>KPI__c.EstructuraUnificada__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value>RESTO</value>
-        </criteriaItems>
+        </criteriaItems>        
         <language>es</language>
     </filter>
     <format>Summary</format>
@@ -245,22 +244,25 @@
             <rangeUpperBound>-1.0</rangeUpperBound>
         </values>
     </formattingRules>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>PARENT.NAME</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>Account.IntermediaryDescription__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
+    <formattingRules>
+        <aggregate>Sum</aggregate>
+        <columnName>KPI__c.Supplements__c</columnName>
+        <values>
+            <backgroundColor>#FF9897</backgroundColor>
+            <rangeUpperBound>-1.0</rangeUpperBound>
+        </values>
+    </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>KPI__c.EstructuraUnificada__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Cartera Mediadores RN YTD</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>KPI__c.EstructuraDetalle__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>CV Scatter YTD Vida y APES</name>
     <params>
         <name>co</name>
         <value>0</value>
@@ -268,8 +270,8 @@
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>accountteam</scope>
     <showDetails>false</showDetails>
-    <showGrandTotal>false</showGrandTotal>
-    <showSubTotals>false</showSubTotals>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>

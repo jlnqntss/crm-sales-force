@@ -40,72 +40,33 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>KPI__c.PoliciesPN__c:SUM - KPI__c.PA_PoliciesPN__c:SUM</calculatedFormula>
-        <datatype>number</datatype>
-        <description>Realiza la resta entre Póliza PN y Póliza PN (PA)</description>
+        <calculatedFormula>(KPI__c.NCustomers__c:SUM -  KPI__c.PA_NCustomers__c:SUM) / KPI__c.PA_NCustomers__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Informa el crecimiento de clientes</description>
         <developerName>FORMULA5</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>Diferencia Pólizas PN</masterLabel>
+        <masterLabel>% crec clientes</masterLabel>
         <scale>2</scale>
     </aggregates>
-    <buckets>
-        <bucketType>text</bucketType>
-        <developerName>BucketField_68388292</developerName>
-        <masterLabel>Estructura</masterLabel>
-        <nullTreatment>n</nullTreatment>
-        <sourceColumnName>KPI__c.EstructuraUnificada__c</sourceColumnName>
-        <useOther>false</useOther>
-        <values>
-            <sourceValues>
-                <sourceValue>Particulares</sourceValue>
-            </sourceValues>
-            <value>1- PARTICULARES</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>PYMES</sourceValue>
-            </sourceValues>
-            <value>2- PYMES</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>VIDA RIESGO</sourceValue>
-            </sourceValues>
-            <value>3- VIDA RIESGO</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>GRANDES EMPRESAS</sourceValue>
-            </sourceValues>
-            <value>4- GRAN EMPRESA</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>RESTO</sourceValue>
-            </sourceValues>
-            <value>5- VIDA RESTO</value>
-        </values>
-    </buckets>      
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
-            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.PN__c</column>
+            <column>FORMULA5</column>
         </chartSummaries>
         <chartType>Donut</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>false</expandOthers>
-        <groupingColumn>BucketField_68388292</groupingColumn>
+        <groupingColumn>Account.Segment__c</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <showAxisLabels>true</showAxisLabels>
-        <showPercentage>true</showPercentage>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
         <showTotal>true</showTotal>
-        <showValues>true</showValues>
+        <showValues>false</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
@@ -138,28 +99,16 @@
         <midColor>#FFFFFF</midColor>
     </colorRanges>
     <columns>
-        <field>Account.IntermediaryDescription__c</field>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>KPI__c.EstructuraUnificada__c</field>
+    </columns>
+    <columns>
+        <field>KPI__c.EstructuraDetalle__c</field>
     </columns>
     <columns>
         <field>Account.INFOIntermediaryCode__c</field>
-    </columns>
-    <columns>
-        <field>Account.Channel__c</field>
-    </columns>
-    <columns>
-        <field>Account.SegmentDescription__c</field>
-    </columns>
-    <columns>
-        <field>Account.TerritorialDirection__c</field>
-    </columns>
-    <columns>
-        <field>Account.Zone__c</field>
-    </columns>
-    <columns>
-        <field>KPI__c.LoB__c</field>
-    </columns>
-    <columns>
-        <field>KPI__c.ProductGroup__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -231,8 +180,9 @@
         <developerName>CDF1</developerName>
         <label>Fecha Calculo</label>
         <scale>2</scale>
-    </customDetailFormulas>
-    <description>Informe completo con los principales indicadores SDM. Mes actual.</description>
+    </customDetailFormulas>    
+    <description>Acumulado YTD
+% crecimiento Segmento Particulares, Pymes, Grandes Empresas, Corporaciones + Agrupaciones de Vida riesgo indiividual y vida riesgo colectivo</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
@@ -255,6 +205,7 @@
             <operator>equals</operator>
             <value>THIS_MONTH</value>
         </criteriaItems>
+
         <language>es</language>
     </filter>
     <format>Summary</format>
@@ -292,29 +243,19 @@
     </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>PARENT.NAME</field>
+        <field>Account.Segment__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>BucketField_68388292</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>KPI__c.EstructuraDetalle__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <name>Seguimiento diario SDM Mes Actual</name>
+    <name>RN Crecimiento Cliente por Segmento YTD</name>
     <params>
         <name>co</name>
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>accountteam</scope>
-    <showDetails>false</showDetails>
+    <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
-    <showSubTotals>false</showSubTotals>
+    <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>

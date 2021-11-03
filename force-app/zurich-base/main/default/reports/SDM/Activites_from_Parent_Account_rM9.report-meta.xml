@@ -8,16 +8,17 @@
             <axisBinding>y</axisBinding>
             <column>RowCount</column>
         </chartSummaries>
-        <chartType>Donut</chartType>
+        <chartType>HorizontalBarGrouped</chartType>
         <enableHoverLabels>false</enableHoverLabels>
-        <expandOthers>false</expandOthers>
-        <groupingColumn>RECORDTYPE</groupingColumn>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>ACCOUNT.NAME</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <showAxisLabels>false</showAxisLabels>
-        <showPercentage>true</showPercentage>
-        <showTotal>true</showTotal>
-        <showValues>false</showValues>
+        <secondaryGroupingColumn>ASSIGNED</secondaryGroupingColumn>
+        <showAxisLabels>true</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>true</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
@@ -26,46 +27,20 @@
         <titleSize>18</titleSize>
     </chart>
     <columns>
-        <field>WHAT_NAME</field>
-    </columns>
-    <columns>
-        <field>CONTACT</field>
-    </columns>
-    <columns>
-        <field>DUE_DATE</field>
-    </columns>
-    <columns>
         <field>SUBJECT</field>
     </columns>
     <columns>
         <field>PRIORITY</field>
     </columns>
     <columns>
-        <field>STATUS</field>
+        <field>DUE_DATE</field>
     </columns>
-    <columns>
-        <field>Activity.Ramo__c</field>
-    </columns>
-    <columns>
-        <field>Activity.CommunicationType__c</field>
-    </columns>
-    <columns>
-        <field>Activity.CommercialActionType__c</field>
-    </columns>
-    <columns>
-        <field>Activity.Follow_up_type__c</field>
-    </columns>
-    <columns>
-        <field>Activity.Reference_number__c</field>
-    </columns>
-    <columns>
-        <field>Activity.Customer_name__c</field>
-    </columns>
-    <columns>
-        <field>Activity.Premium_amount__c</field>
-    </columns>
-    <description>Actividades abiertas por tipología, usuario asignado y mediador</description>
     <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ACCOUNT.NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>ASSIGNED</field>
@@ -73,18 +48,13 @@
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>RECORDTYPE</field>
+        <field>STATUS</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>ACCOUNT</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <name>Actividades en curso Director</name>
+    <name>Activites from Parent Account</name>
     <params>
         <name>closed</name>
-        <value>open</value>
+        <value>all</value>
     </params>
     <params>
         <name>type</name>
@@ -94,15 +64,13 @@
         <name>co</name>
         <value>1</value>
     </params>
-    <reportType>Activity</reportType>
+    <reportType>AccountActivity</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
-    <sortColumn>DUE_DATE</sortColumn>
-    <sortOrder>Asc</sortOrder>
     <timeFrameFilter>
-        <dateColumn>DUE_DATE</dateColumn>
+        <dateColumn>CREATED_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>
