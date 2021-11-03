@@ -124,9 +124,17 @@
         <connector>
             <targetReference>Update_dates</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccumulateType__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Mensual</stringValue>
+            </value>
+        </filters>
         <object>PlanComercial__c</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>
