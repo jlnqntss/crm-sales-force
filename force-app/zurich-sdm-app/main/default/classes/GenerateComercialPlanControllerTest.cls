@@ -226,4 +226,44 @@ private with sharing class GenerateComercialPlanControllerTest
         ];
         System.assertEquals(0, resultPlans.size(), 'No deberia haber planes de los mediadores');
     }
+
+    @isTest
+    static void testSaveData_ko()
+    {
+        Test.startTest();
+        String exceptionMessage = null;
+        try {
+            GenerateComercialPlanController.testException = 'Error desconocido';
+            GenerateComercialPlanController.saveData('vacio');
+        } catch(Exception ex) {
+            exceptionMessage = ex.getMessage();
+        }
+        Test.stopTest();
+
+        // Comprobamos el resultado
+        System.assertEquals(true, String.isNotBlank(exceptionMessage), 'El mensaje de excepcion no deberia estar vacio');
+
+        List<Error_Log__c> errorList = [SELECT Id,message__c, Stack_Trace__c FROM Error_Log__c];
+        System.assertEquals(false, errorList.isEmpty(), 'Deberia haber un errorlog');
+    }
+
+    @isTest
+    static void testGetRecords_ko()
+    {
+        Test.startTest();
+        String exceptionMessage = null;
+        try {
+            GenerateComercialPlanController.testException = 'Error desconocido';
+            GenerateComercialPlanController.getRecords(2021);
+        } catch(Exception ex) {
+            exceptionMessage = ex.getMessage();
+        }
+        Test.stopTest();
+
+        // Comprobamos el resultado
+        System.assertEquals(true, String.isNotBlank(exceptionMessage), 'El mensaje de excepcion no deberia estar vacio');
+        
+        List<Error_Log__c> errorList = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(false, errorList.isEmpty(), 'Deberia haber un errorlog');
+    }
 }

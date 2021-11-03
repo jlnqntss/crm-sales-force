@@ -76,7 +76,7 @@ private class PlanComercialSelectorTest
      * @date 04/10/2021
      */
     @isTest
-    static void findAnualPlanDescendants()
+    static void findAnnualPlanDescendants()
     {
         // Recuperamos el usuario DT
         String dtEmail = String.format(TestDataFactorySDM.TERRITORY_EMAIL, new List<String>{String.valueOf(0)});
@@ -88,7 +88,7 @@ private class PlanComercialSelectorTest
 
         PlanComercialSelector planSel = new PlanComercialSelector();
         Test.startTest();
-        List<PlanComercial__c> childPlans = planSel.findAnualPlanDescendants(dtPlans);
+        List<PlanComercial__c> childPlans = planSel.findAnnualPlanDescendants(dtPlans);
         Test.stopTest();
 
         // Comprobamos el resultado
