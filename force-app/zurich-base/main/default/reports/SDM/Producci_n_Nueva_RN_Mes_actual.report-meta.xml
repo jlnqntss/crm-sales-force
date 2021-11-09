@@ -39,23 +39,73 @@
         <masterLabel>Ratio Retencion</masterLabel>
         <scale>2</scale>
     </aggregates>
+    <aggregates>
+        <calculatedFormula>(KPI__c.NCustomers__c:SUM -  KPI__c.PA_NCustomers__c:SUM) / KPI__c.PA_NCustomers__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>% Crecimiento de clientes</description>
+        <developerName>FORMULA5</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Crecimiento de clientes</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_68388292</developerName>
+        <masterLabel>Estructura</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>KPI__c.EstructuraUnificada__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Particulares</sourceValue>
+            </sourceValues>
+            <value>1- PARTICULARES</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>PYMES</sourceValue>
+            </sourceValues>
+            <value>2- PYMES</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>VIDA RIESGO</sourceValue>
+            </sourceValues>
+            <value>3- VIDA RIESGO</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>GRANDES EMPRESAS</sourceValue>
+            </sourceValues>
+            <value>4- GRAN EMPRESA</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>RESTO</sourceValue>
+            </sourceValues>
+            <value>5- VIDA RESTO</value>
+        </values>
+    </buckets>      
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
+            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>FORMULA3</column>
+            <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartType>Donut</chartType>
+        <chartType>LineGrouped</chartType>
         <enableHoverLabels>false</enableHoverLabels>
-        <expandOthers>false</expandOthers>
-        <groupingColumn>KPI__c.EstructuraUnificada__c</groupingColumn>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>CDF1</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_68388292</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
-        <showPercentage>true</showPercentage>
-        <showTotal>true</showTotal>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
         <showValues>false</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
@@ -89,15 +139,6 @@
         <midColor>#FFFFFF</midColor>
     </colorRanges>
     <columns>
-        <field>KPI__c.SegmentoCliente__c</field>
-    </columns>
-    <columns>
-        <field>KPI__c.ProductGroup__c</field>
-    </columns>
-    <columns>
-        <field>KPI__c.LoB__c</field>
-    </columns>
-    <columns>
         <field>PARENT.NAME</field>
     </columns>
     <columns>
@@ -105,6 +146,12 @@
     </columns>
     <columns>
         <field>Account.INFOIntermediaryCode__c</field>
+    </columns>
+    <columns>
+        <field>KPI__c.LoB__c</field>
+    </columns>
+    <columns>
+        <field>KPI__c.ProductGroup__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -128,15 +175,15 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Supplements__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.Cancellations__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PA_Cancellations__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Supplements__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -155,30 +202,33 @@
         <field>KPI__c.PA_PoliciesInForce__c</field>
     </columns>
     <columns>
-        <field>CDF1</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.NCustomers__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_NCustomers__c</field>
     </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
         <developerName>CDF1</developerName>
         <label>Fecha Calculo</label>
         <scale>2</scale>
-    </customDetailFormulas>    
-    <description>Acumulado YTD
-Auto solamente</description>
+    </customDetailFormulas>
+    <description>Informe de producción Nueva, Cartera, Suplementos, Anulaciones, Pólizas y Clientes. Mes Actual. Gráfico de los últimos 12 meses.</description>
     <filter>
-        <booleanFilter>1 AND 2 AND 3 and 4</booleanFilter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>YTD</value>
+            <value>Mensual</value>
         </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -188,19 +238,19 @@ Auto solamente</description>
             <value>Account.Intermediary</value>
         </criteriaItems>
         <criteriaItems>
-            <column>KPI__c.EstructuraDetalle__c</column>
+            <column>KPI__c.EstructuraUnificada__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>AUTOS</value>
+            <operator>notEqual</operator>
+            <value>RESTO</value>
         </criteriaItems>
         <criteriaItems>
             <column>CDF1</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>THIS_MONTH</value>
-        </criteriaItems>        
+            <operator>greaterOrEqual</operator>
+            <value>N_MONTHS_AGO:12</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
@@ -238,22 +288,26 @@ Auto solamente</description>
     </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>KPI__c.EstructuraUnificada__c</field>
+        <field>Account.BusinessManagerName__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>KPI__c.EstructuraDetalle__c</field>
+        <field>BucketField_68388292</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>RN YT Descuento Auto</name>
+    <groupingsDown>
+        <field>CDF1</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Producción Nueva RN Mes actual</name>
     <params>
         <name>co</name>
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>accountteam</scope>
-    <showDetails>false</showDetails>
+    <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
