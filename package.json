@@ -23,7 +23,10 @@
     "release:create": "node scripts/source/create-release.js",
     "release:candidate": "node scripts/source/increment-release.js",
     "release:finish": "node scripts/source/finish-release.js",
-    "release:changelog": "node scripts/source/changelog.js"
+    "release:changelog": "node scripts/source/changelog.js",
+    "test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
+    "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
+    "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck"
   },
   "husky": {
     "hooks": {
@@ -34,7 +37,7 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^11.0.0",
     "@salesforce/eslint-config-lwc": "^0.8.0",
-    "@salesforce/sfdx-lwc-jest": "0.10.2",
+    "@salesforce/sfdx-lwc-jest": "1.1.0",
     "eslint": "^7.15.0",
     "fs-extra": "^9.0.1",
     "husky": "^4.3.6",
