@@ -9,11 +9,13 @@
         <actionName>GenesysCloudRouteMessageAction</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>GetInteractionRecordTypeIdAction</targetReference>
+            <targetReference>CreateTaskAction</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>fromAddress</name>
             <value>
@@ -55,7 +57,7 @@
             <name>interactionId</name>
         </outputParameters>
     </actionCalls>
-    <apiVersion>52.0</apiVersion>
+    <apiVersion>53.0</apiVersion>
     <constants>
         <description>Nombre API del tipo de registro Task: Interaction</description>
         <name>RECORDTYPE_INTERACTION</name>
@@ -145,8 +147,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>CreateTaskAction</name>
         <label>Registrar tarea</label>
         <locationX>308</locationX>
-        <locationY>648</locationY>
+        <locationY>528</locationY>
+        <connector>
+            <targetReference>GetInteractionRecordTypeIdAction</targetReference>
+        </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -187,11 +193,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>GetInteractionRecordTypeIdAction</name>
         <label>Obetener tipo de registro Task: Interaction</label>
         <locationX>308</locationX>
-        <locationY>528</locationY>
+        <locationY>648</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>CreateTaskAction</targetReference>
-        </connector>
         <faultConnector>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
@@ -220,6 +223,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         </filters>
         <object>Case</object>
         <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>GetGenesysCloudQueueAction</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
