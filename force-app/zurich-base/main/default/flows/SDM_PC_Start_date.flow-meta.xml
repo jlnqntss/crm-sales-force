@@ -66,12 +66,12 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>49</locationX>
+        <locationX>48</locationX>
         <locationY>49</locationY>
         <connector>
             <targetReference>Update_dates</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>2 AND (1 OR 3)</filterLogic>
         <filters>
             <field>EndDate__c</field>
             <operator>IsChanged</operator>
@@ -86,9 +86,16 @@
                 <stringValue>YTD</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>EndDate__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
         <object>PlanComercial__c</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
