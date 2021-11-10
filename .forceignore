@@ -59,10 +59,6 @@ pt_BR.translation-meta.xml
 # Ignore EmailServices
 **emailservices
 
-# Flow ejecutado en la versión 53.0 la versión del proyecto es 50.0, cuando esta se actualice a la 53.0
-# Se podrá eliminar este componente del listado
-force-app/zurich-base/main/default/flows/CaseTriggerAfterInsertGenesysInfoNotesRouter.flow-meta.xml
-
 # Teléfonos de redireccionamiento e interlocutores para el CTI de Salesforce / Genesys
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysPollPhoneNumber.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysRecordingNumber.md-meta.xml
