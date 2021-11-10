@@ -243,7 +243,7 @@ private with sharing class GenerateComercialPlanControllerTest
         // Comprobamos el resultado
         System.assertEquals(true, String.isNotBlank(exceptionMessage), 'El mensaje de excepcion no deberia estar vacio');
 
-        List<Error_Log__c> errorList = [SELECT Id,message__c, Stack_Trace__c FROM Error_Log__c];
+        List<Error_Log__c> errorList = (new ErrorLogSelector()).findAll();
         System.assertEquals(false, errorList.isEmpty(), 'Deberia haber un errorlog');
     }
 
@@ -263,7 +263,7 @@ private with sharing class GenerateComercialPlanControllerTest
         // Comprobamos el resultado
         System.assertEquals(true, String.isNotBlank(exceptionMessage), 'El mensaje de excepcion no deberia estar vacio');
         
-        List<Error_Log__c> errorList = [SELECT Id FROM Error_Log__c];
+        List<Error_Log__c> errorList = (new ErrorLogSelector()).findAll();
         System.assertEquals(false, errorList.isEmpty(), 'Deberia haber un errorlog');
     }
 }

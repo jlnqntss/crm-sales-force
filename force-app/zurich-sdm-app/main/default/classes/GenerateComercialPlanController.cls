@@ -13,7 +13,6 @@ public with sharing class GenerateComercialPlanController
 
     public static final String ROLE_DT_DEVNAME = 'SDM_DT'; // Rol Director Territorial
     public static final String ROLE_RN_DEVNAME = 'SDMUser'; // Rol Responsable de Negocio
-    public static final String ATM_ROLE_RN_NAME = 'Responsable de Negocio'; // Rol en ATM de RN
 
     public static final String ROW_LABEL_SEGMENT = Label.SDM_PlanAnual_RowSegment;
     public static final String ROW_LABEL_PRODUCT = Label.SDM_PlanAnual_RowProduct;
@@ -665,7 +664,7 @@ public with sharing class GenerateComercialPlanController
         }
 
         // Titulo => Header (category, html name, value, isEditable, isCurrency)
-        cell = new Celltype( 'titulo', 'titulo' + SEPARATOR + plan.Year + SEPARATOR + plan.Title, plan.Title, true);
+        cell = new Celltype( 'titulo', 'titulo' + SEPARATOR + plan.Id, plan.Title, true);
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'titulo';
         cell.isNew = isNewPlan;
@@ -675,7 +674,7 @@ public with sharing class GenerateComercialPlanController
         headers.Cells.add(cell);
 
         // Sumatorio => footer (category, html name, value, isEditable, isCurrency)
-        cell = new Celltype( 'sumatorio', 'sumatorio' + SEPARATOR + plan.Year + SEPARATOR + plan.Title, sumValue, true, true);
+        cell = new Celltype( 'sumatorio', 'sumatorio' + SEPARATOR + plan.Id, sumValue, true, true);
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'sumatorio';
         cell.isNew = isNewPlan;
@@ -688,7 +687,7 @@ public with sharing class GenerateComercialPlanController
 
         // Segmento => Fila 0 (category, html name, value, isEditable, isCurrency)
         Combotype combo = tabledata.mapOptions.get(COMBOBOX_SEGMENT);
-        cell = new Celltype( 'segmento', 'segmento' + SEPARATOR + plan.Year + SEPARATOR + plan.Title, plan.Segment, true, combo);
+        cell = new Celltype( 'segmento', 'segmento' + SEPARATOR + plan.Id, plan.Segment, true, combo);
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'segmento';
         cell.isNew = isNewPlan;
@@ -711,7 +710,7 @@ public with sharing class GenerateComercialPlanController
         // combo.isDependant = true;
         // combo.dependantName = COMBOBOX_SEGMENT;
         // combo = tabledata.mapOptions.get(COMBOBOX_PRODUCT);
-        cell = new Celltype( 'producto', 'producto' + SEPARATOR + plan.Year + SEPARATOR + plan.Title, plan.Product, true, combo);
+        cell = new Celltype( 'producto', 'producto' + SEPARATOR + plan.Id, plan.Product, true, combo);
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'producto';
         cell.isNew = isNewPlan;
@@ -725,7 +724,7 @@ public with sharing class GenerateComercialPlanController
 
         // Indicador => Fila 2 (category, html name, value, isEditable, isCurrency)
         combo = tabledata.mapOptions.get(COMBOBOX_INDICATOR);
-        cell = new Celltype( 'indicador', 'indicador' + SEPARATOR + plan.Year + SEPARATOR + plan.Title, plan.Indicator, true, combo);
+        cell = new Celltype( 'indicador', 'indicador' + SEPARATOR + plan.Id, plan.Indicator, true, combo);
         cell.id = plan.Id;
         cell.key = cell.Category + SEPARATOR + cell.id;
         cell.isNew = isNewPlan;
@@ -737,7 +736,7 @@ public with sharing class GenerateComercialPlanController
         rowNum++;
 
         // Año => Fila 3 (category, html name, value, isEditable, isCurrency)
-        cell = new Celltype( 'anyo', 'anyo' + SEPARATOR + plan.Year + SEPARATOR + plan.Title, plan.Year, true, false);
+        cell = new Celltype( 'anyo', 'anyo' + SEPARATOR + plan.Id, plan.Year, true, false);
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'anyo';
         cell.isNew = isNewPlan;
@@ -748,7 +747,7 @@ public with sharing class GenerateComercialPlanController
 
         // Plan Definido Director => Fila 4 (category, html name, value, isEditable, isCurrency)
         Decimal planValue = (plan.Value != null ? plan.Value : 0);
-        cell = new Celltype( 'dt_defined', 'dt_defined' + SEPARATOR + plan.Year + SEPARATOR + plan.Title, planValue, true, true);
+        cell = new Celltype( 'dt_defined', 'dt_defined' + SEPARATOR + plan.Id, planValue, true, true);
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'dt_defined';
         cell.isPercent = (indicatorType == PlanComercialSelector.eIndicator.type_percent);
@@ -872,6 +871,7 @@ public with sharing class GenerateComercialPlanController
                 if( isNewPlan ) { //-------------------------------------- Nuevo Plan principal
                     parentPlan = new PlanComercial__c(
                         Name= planName,
+                        Description__c= planName,
                         Segment__c= segment,
                         Product__c= product,
                         Indicator__c= indicator,
@@ -898,7 +898,10 @@ public with sharing class GenerateComercialPlanController
                     if( isHeaderModified || isSegmentModified || isProductModified || isIndicatorModified || isDefinedDTModified ) {
                         parentPlan = new PlanComercial__c( Id= planId );
 
-                        if( isHeaderModified ) parentPlan.Name = planName;
+                        if( isHeaderModified ) {
+                            parentPlan.Name = planName;
+                            parentPlan.Description__c= planName;
+                        }
                         if( isSegmentModified ) parentPlan.Segment__c = segment;
                         if( isProductModified ) parentPlan.Product__c = product;
                         if( isIndicatorModified ) parentPlan.Indicator__c = indicator;
@@ -932,15 +935,16 @@ public with sharing class GenerateComercialPlanController
                     if( isNewPlan || cell.isNew ) { //-------------------- Nuevo Plan o Nuevo subplan (rn/mediador)                       
                         childPlan = new PlanComercial__c(
                             Name= planName,
+                            Description__c= planName,
                             Segment__c= segment,
                             Product__c= product,
                             Indicator__c= indicator,
                             StartDate__c= Date.newInstance(anyo, 1, 1),
                             EndDate__c= Date.newInstance(anyo, 12, 31),
                             ParentPlan__c= null,
-                            AccumulateType__c= 'YTD',
+                            AccumulateType__c= PLAN_ACCUMULATE_TYPE,
                             RecordTypeId= rtPlanAnualId,
-                            SendNotifications__c= '01'
+                            SendNotifications__c= PLAN_SEND_NOTIF
                         );
                         if( isDirector ) {
                             childPlan.AssignedTo__c= rowId;
@@ -971,7 +975,10 @@ public with sharing class GenerateComercialPlanController
                         if( isHeaderModified || isSegmentModified || isIndicatorModified || cell.isModified ) {
                             childPlan = new PlanComercial__c(Id= cell.Id);
                             
-                            if( isHeaderModified ) childPlan.Name = planName;
+                            if( isHeaderModified ) {
+                                childPlan.Name = planName;
+                                childPlan.Description__c= planName;
+                            }
                             if( isSegmentModified ) childPlan.Segment__c = segment;
                             if( isProductModified ) childPlan.Product__c = product;
                             if( isIndicatorModified ) childPlan.Indicator__c = indicator;
@@ -1147,7 +1154,10 @@ public with sharing class GenerateComercialPlanController
             // Para cada plan se comprueba si se han modificado los campos comunes
             for(PlanComercial__c plan: childPlans) {
                 // Ponemos a modificar el campo que haya modificado del padre
-                if( plan.Name != plan.ParentPlan__r.Name ) plan.Name = plan.ParentPlan__r.Name;
+                if( plan.Name != plan.ParentPlan__r.Name ) {
+                    plan.Name = plan.ParentPlan__r.Name;
+                    plan.Description__c= plan.ParentPlan__r.Name;
+                }
                 if( plan.Product__c != plan.ParentPlan__r.Product__c ) plan.Product__c = plan.ParentPlan__r.Product__c;
                 if( plan.Segment__c != plan.ParentPlan__r.Segment__c ) plan.Segment__c = plan.ParentPlan__r.Segment__c;
                 if( plan.Indicator__c != plan.ParentPlan__r.Indicator__c ) {
@@ -1199,7 +1209,6 @@ public with sharing class GenerateComercialPlanController
             }
         }
     }
-
     
     /**
      * Recupera los valores activos de un campo de objeto dado
@@ -1358,35 +1367,33 @@ public with sharing class GenerateComercialPlanController
 
             // 3. Obtenemos los RNs del director / los Mediadores del RN
             Map<String, String> mapDetail = new Map<String, String>();
-            Id rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
             
-            if( isDirector ) { //--------------------------------------------- RNs del director
+            if( isDirector ) { //--------------------------------------------- RNs del director 
                 // Lista de RNs del director
-                List<AccountTeamMember> atms = [
-                    SELECT UserId, User.Name
-                    FROM AccountTeamMember
-                    WHERE TeamMemberRole = :ATM_ROLE_RN_NAME
-                    AND AccountId IN (
-                        SELECT id FROM account 
-                        WHERE RecordTypeId = :rtIntermediaryId
-                        AND TerritoryManagerEmail__c = :userEmail
-                    )
-                ];
-                // Los metemos en el mapa de detalle
-                for(AccountTeamMember atm: atms) {
-                    mapDetail.put(atm.UserId, atm.User.Name);
+                List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findUsersByRoleAndEmailField(
+                    AccountTeamMemberSelector.ATM_ROLE_RN_NAME,
+                    AccountsSelector.SDM_DT_EMAIL_FIELD,
+                    userEmail
+                );
+
+                if( atms != null && !atms.isEmpty() ) {
+                    // Los metemos en el mapa de detalle
+                    for(AccountTeamMember atm: atms) {
+                        mapDetail.put(atm.UserId, atm.User.Name);
+                    }
                 }
             } else { //------------------------------------------------------- Mediadores del RN
                 // Lista de mediadores del RN
-                List<Account> intermediaries = [
-                    SELECT id, Name
-                    FROM Account
-                    WHERE RecordTypeId = :rtIntermediaryId
-                    AND BusinessManagerEmail__c = :userEmail
-                ];
-                // Los metemos en el mapa de detalle
-                for(Account intermediary: intermediaries) {
-                    mapDetail.put(intermediary.Id, intermediary.Name);
+                List<Account> intermediaries = (new AccountsSelector()).findIntermediariesByEmailInFields(
+                    userEmail,
+                    new Set<String> {AccountsSelector.SDM_RN_EMAIL_FIELD}
+                );
+
+                if( intermediaries != null && !intermediaries.isEmpty() ) {
+                    // Los metemos en el mapa de detalle
+                    for(Account intermediary: intermediaries) {
+                        mapDetail.put(intermediary.Id, intermediary.Name);
+                    }
                 }
             }
 
