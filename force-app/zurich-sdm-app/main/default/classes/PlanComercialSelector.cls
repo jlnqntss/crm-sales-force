@@ -13,6 +13,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
     public static final String SEGMENT_ALL = 'Todos'; // Valor picklist PlanComercial__c.Segment__c
     public static final String PRODUCT_ALL = 'Todos'; // Valor picklist PlanComercial__c.Product__c
     public static final String ACCUMULATE_TYPE_YRD = 'YTD'; // Valor picklist PlanComercial__c.AccumulateType__c
+    public static final String ACCUMULATE_TYPE_MONTH = 'Mensual'; // Valor picklist PlanComercial__c.AccumulateType__c
     public static final String INDICATOR_PN = 'PN';  // Valor picklist PlanComercial__c.Indicator__c
     public static final String SEND_NOTIFICATION_ABOVE_THRESHOLD = '01';  // Valor picklist PlanComercial__c.SendNotifications__c
 

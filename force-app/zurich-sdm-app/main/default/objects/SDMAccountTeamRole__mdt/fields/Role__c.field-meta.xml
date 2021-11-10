@@ -51,6 +51,12 @@
                 <default>false</default>
                 <label>Consultor Empresas</label>
             </value>
+            <value>
+                <fullName>PYMEManager</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>PYMEManager</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

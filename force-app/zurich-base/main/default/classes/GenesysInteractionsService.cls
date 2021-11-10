@@ -1,9 +1,16 @@
+/**
+ * @description       : 
+ * @author            : jjuaristi
+ * @group             : 
+ * @last modified on  : 20-10-2021
+ * @last modified by  : jjuaristi
+**/
 public without sharing class GenesysInteractionsService
 {
     public static Integer version { get; set; }
 
     @TestVisible
-    static final String MISSING_FIELDS_REQUIRED = 'some required fields are missing';
+    static final String MISSING_FIELDS_REQUIRED = 'Some required fields are missing';
     @TestVisible
     static final String FILTER_NOT_DEFINED = 'filterBy value not defined';
     @TestVisible
@@ -275,7 +282,8 @@ public without sharing class GenesysInteractionsService
         // 1 - Comprobar que la request tiene informados todos los campos requeridos
         if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) )
         {
-            throw new GenesysPeopleServiceException(MISSING_FIELDS_REQUIRED);
+            throw new GenesysPeopleServiceException(GenesysInteractionsService.class.getName() 
+            + MISSING_FIELDS_REQUIRED + ': searchType, filterBy and value. Payload: ' + request);
         }
 
         SearchResult results = new SearchResult();
@@ -320,7 +328,8 @@ public without sharing class GenesysInteractionsService
         // 1 - Comprobar que se ha recibido un número de póliza
         if ( String.isBlank(policyCode) )
         {
-            throw new GenesysPoliciesServiceException(MISSING_FIELDS_REQUIRED);
+            throw new GenesysPoliciesServiceException(GenesysInteractionsService.class.getName() 
+            + MISSING_FIELDS_REQUIRED + ': policyCode.');
         }
 
         // 2 - Recuperar la póliza a partir del número recibido
@@ -370,7 +379,8 @@ public without sharing class GenesysInteractionsService
         // 1 - Comprobar que la request tiene informados todos los campos requeridos
         if ( String.isBlank(request.searchType) || String.isBlank(request.searchTerm) )
         {
-            throw new GenesysClaimsServiceException(MISSING_FIELDS_REQUIRED);
+            throw new GenesysClaimsServiceException(GenesysInteractionsService.class.getName() 
+            + MISSING_FIELDS_REQUIRED + ', searchType and searchTerm. Payload: ' + request);
         }
 
         // 2 - Realizar la búsqueda de siniestro en base a los filtros definidos en la request
@@ -826,7 +836,8 @@ public without sharing class GenesysInteractionsService
         // 1 - Comprobar que la request tiene informados todos los campos requeridos
         if (String.isBlank(request.searchType) || String.isBlank(request.value))
         {
-            throw new GenesysInteractionsServiceException(MISSING_FIELDS_REQUIRED);
+            throw new GenesysInteractionsServiceException(GenesysInteractionsService.class.getName() 
+            + MISSING_FIELDS_REQUIRED + ': searchType and value. Payload: ' + request);
         }
 
         // 2 - Realizar la búsqueda de siniestro en base a los filtros definidos en la request
@@ -1462,15 +1473,11 @@ public without sharing class GenesysInteractionsService
         }
     }
 
-    @TestVisible
-    class GenesysInteractionsServiceException extends Exception {}
+    public class GenesysInteractionsServiceException extends Exception {}
 
-    @TestVisible
-    class GenesysPeopleServiceException extends Exception {}
+    public class GenesysPeopleServiceException extends Exception {}
 
-    @TestVisible
-    class GenesysPoliciesServiceException extends Exception {}
+    public class GenesysPoliciesServiceException extends Exception {}
 
-    @TestVisible
-    class GenesysClaimsServiceException extends Exception {}
+    public class GenesysClaimsServiceException extends Exception {}
 }

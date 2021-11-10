@@ -138,22 +138,6 @@
                     <name>uiBehavior</name>
                     <value>required</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.StartDate__c</fieldItem>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.AccumulateType__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>YTD</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>required</value>
-                </fieldInstanceProperties>
                 <fieldItem>Record.EndDate__c</fieldItem>
                 <visibilityRule>
                     <criteria>
