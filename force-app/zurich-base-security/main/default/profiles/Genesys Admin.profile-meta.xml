@@ -12182,7 +12182,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>purecloud__PureCloud_Queue__c.SalesforceQueueName__c</field>
+        <field>purecloud__PureCloud_Queue__c.CallCenter__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12193,6 +12193,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>purecloud__PureCloud_Queue__c.purecloud__PureCloud_Division_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>purecloud__PureCloud_Queue__c.RouteType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>purecloud__PureCloud_Queue__c.SalesforceQueueName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
