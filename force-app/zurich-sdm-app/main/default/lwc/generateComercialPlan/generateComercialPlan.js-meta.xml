@@ -5,11 +5,6 @@
     <masterLabel>Generar Planes Comerciales</masterLabel>
     <targets>
         <target>lightning__Tab</target>
-        <target>lightning__RecordAction</target>
+        <target>lightning__AppPage</target>
     </targets>
-    <targetConfigs>
-        <targetConfig targets="lightning__RecordAction">
-            <actionType>ScreenAction</actionType>
-        </targetConfig>
-    </targetConfigs>
 </LightningComponentBundle>

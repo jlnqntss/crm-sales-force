@@ -1223,4 +1223,28 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_PlanAnual_NotifTitle</shortDescription>
         <value>Annual business plans assigned</value>
     </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ValidationTitle</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ValidationTitle</shortDescription>
+        <value>Validation error</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ValidationMessage</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ValidationMessage</shortDescription>
+        <value>There are empty fields</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ButtonRefresh</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ButtonRefresh</shortDescription>
+        <value>Reload plans</value>
+    </labels>
 </CustomLabels>
