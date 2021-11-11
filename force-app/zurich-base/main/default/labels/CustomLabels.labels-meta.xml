@@ -1223,4 +1223,52 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_PlanAnual_NotifTitle</shortDescription>
         <value>Annual business plans assigned</value>
     </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_Cancel</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_Cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_Save</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_Edit</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_Edit</shortDescription>
+        <value>Edit</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_GeneralInformation</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_GeneralInformation</shortDescription>
+        <value>General Information</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_TimePeriod</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_TimePeriod</shortDescription>
+        <value>Time period</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_KPI</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_KPI</shortDescription>
+        <value>KPI</value>
+    </labels>
 </CustomLabels>
