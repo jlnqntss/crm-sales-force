@@ -12,6 +12,7 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>desktopDashboards:embeddedDashboard</componentName>
+                <identifier>desktopDashboards_embeddedDashboard</identifier>
             </componentInstance>
         </itemInstances>
         <mode>Replace</mode>
@@ -32,21 +33,25 @@
         <itemInstances>
             <componentInstance>
                 <componentName>createLeadManualUsuarioComponent</componentName>
+                <identifier>createLeadManualUsuarioComponent</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentName>home:recentRecordContainer</componentName>
+                <identifier>home_recentRecordContainer</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentName>runtime_sales_activities:todayTaskContainer</componentName>
+                <identifier>runtime_sales_activities_todayTaskContainer</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentName>home:eventContainer</componentName>
+                <identifier>home_eventContainer</identifier>
             </componentInstance>
         </itemInstances>
         <mode>Replace</mode>
