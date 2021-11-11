@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <constants>
+        <description>Valor literal del tipo de enrutado para Email.</description>
+        <name>ROUTE_TYPE_EMAIL</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Email</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Valor literal del tipo de enrutado para notas info.</description>
+        <name>ROUTE_TYPE_NOTA_INFO</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>NoteINFO</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <description>Se comprueba el tipo de enrutado en los valores de entrada.</description>
+        <name>routeTypeDecision</name>
+        <label>¿Qué se va a enrutar?</label>
+        <locationX>314</locationX>
+        <locationY>158</locationY>
+        <defaultConnectorLabel>No determinado</defaultConnectorLabel>
+        <rules>
+            <name>NotasInfoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>routeType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ROUTE_TYPE_NOTA_INFO</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetNotasInfoQueueAction</targetReference>
+            </connector>
+            <label>Notas INFO</label>
+        </rules>
+        <rules>
+            <name>EmailsOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>routeType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ROUTE_TYPE_EMAIL</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetEmailsQueueAction</targetReference>
+            </connector>
+            <label>Emails</label>
+        </rules>
+    </decisions>
+    <description>Este flujo se encarga de enrutar las colas sincronizadas con Genesys Cloud. Para ello utiliza la entidad Purecloud__PureCloud_Queue__c y sus registros, donde se encuentra toda la información referente a una cola de Genesys.
+
+Parámetros clave de entrada:
+- routeType: En este campo se especifica el tipo de comunicado que se quiere enrutar siendo posible valores como Nota Info o Email.
+- routeValue: En este campo se especifica el valor mediante el cual se buscará la cola en Salesforce.
+
+Valores de salida:
+- genesysQueueId: En caso de encontrar la cola se retornará el id de la misma en Genesys Cloud, en caso contrario el valor será vacío.
+- genesysQueueName: En caso de encontrar la cola se retornará el nombre de la misma en Genesys Cloud, en caso contrario el valor será vacío.</description>
+    <interviewLabel>Enrutador de colas de Genesys Cloud {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Obtener cola de enrutado de Genesys Cloud</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Consulta la BBDD de Salesforce para recuperar la cola donde se enrutarán los Emails.</description>
+        <name>GetEmailsQueueAction</name>
+        <label>Obtener cola para Emails</label>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SalesforceQueueName__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>routeValue</elementReference>
+            </value>
+        </filters>
+        <object>purecloud__PureCloud_Queue__c</object>
+        <outputAssignments>
+            <assignToReference>genesysQueueName</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>genesysQueueId</assignToReference>
+            <field>purecloud__PureCloud_Queue_ID__c</field>
+        </outputAssignments>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <description>Consulta la BBDD de Salesforce para recuperar la cola donde se enrutarán las Notas INFO.</description>
+        <name>GetNotasInfoQueueAction</name>
+        <label>Obtener cola para Notas INFO</label>
+        <locationX>50</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>routeValue</elementReference>
+            </value>
+        </filters>
+        <object>purecloud__PureCloud_Queue__c</object>
+        <outputAssignments>
+            <assignToReference>genesysQueueName</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>genesysQueueId</assignToReference>
+            <field>purecloud__PureCloud_Queue_ID__c</field>
+        </outputAssignments>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>routeTypeDecision</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Variable de retorno con el identificador de la cola en GenesysCloud.</description>
+        <name>genesysQueueId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Variable de retorno con el nombre de la cola en GenesysCloud.</description>
+        <name>genesysQueueName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Parámetro de entrada que determina el tipo de enrutado gestionado por el flujo.</description>
+        <name>routeType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Valor de entrada por el cual se consultará la cola a donde se enrutarán los comunidados.</description>
+        <name>routeValue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>
