@@ -12,7 +12,6 @@
     <browserXssProtection>true</browserXssProtection>
     <clickjackProtectionLevel>SameOriginOnly</clickjackProtectionLevel>
     <contentSniffingProtection>true</contentSniffingProtection>
-    <cspUpgradeInsecureRequests>true</cspUpgradeInsecureRequests>
     <description>Centro de preferencias donde los clientes o leads de EMPRESAS se podrán dar de baja de la recepción de comunicaciones de EMPRESAS o indicar el interés o no de ciertas campañas.</description>
     <enableAuraRequests>true</enableAuraRequests>
     <fileNotFoundPage>FileNotFound</fileNotFoundPage>
@@ -22,7 +21,6 @@
     <indexPage>PreferenceCentreZE</indexPage>
     <masterLabel>Preference Centre ZE</masterLabel>
     <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
-    <requireHttps>true</requireHttps>
     <siteAdmin>adminklinc@zurich-es.com</siteAdmin>
     <siteGuestRecordDefaultOwner>adminklinc@zurich-es.com</siteGuestRecordDefaultOwner>
     <siteTemplate>SiteTemplate</siteTemplate>

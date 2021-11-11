@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : jjuaristi
+ * @group             : 
+ * @last modified on  : 20-10-2021
+ * @last modified by  : jjuaristi
+**/
 @isTest(SeeAllData = false)
 private class WS_GenesysAPIServiceTest
 {
@@ -204,6 +211,36 @@ private class WS_GenesysAPIServiceTest
     }
 
     /**
+     * Valida la entrada al GET cuando algún parámetro es nulo
+     **
+     * @author jjuaristi    
+     * @date 18/10/2021
+     */
+    @isTest
+    static void test_doGet_nullsInSearchString()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/people';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('searchType', ' ');
+        request.addParameter('filterBy', 'customers');
+        request.addParameter('value', '77788899F');
+        request.addParameter('legalEntity', 'gi');
+        request.httpMethod = 'GET';
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(400, RestContext.response.statusCode);
+    }
+
+    /**
      * Valida la entrada al GET para el recurso /people
      **
      * @author adelgado
@@ -236,6 +273,36 @@ private class WS_GenesysAPIServiceTest
     }
 
     /**
+     * Valida la excepción lanzada al llamar al GET para el recurso /people
+     **
+     * @author jjuaristi
+     * @date 20/10/2021
+     */
+    @isTest
+    static void test_doGet_people_KO()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/people';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('scope', 'ccs');
+        request.addParameter('value', '77788899F');
+        request.addParameter('legalEntity', 'gi');
+
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(400, RestContext.response.statusCode);
+    }
+
+    /**
      * Valida la entrada al GET para el recurso /policies
      **
      * @author adelgado
@@ -260,6 +327,34 @@ private class WS_GenesysAPIServiceTest
 
         // Then
         System.assertEquals(200, RestContext.response.statusCode);
+    }
+
+    /**
+     * Valida la excepción lanzada al llamar al GET para el recurso /policies/
+     **
+     * @author jjuaristi
+     * @date 20/10/2021
+     */
+    @isTest
+    static void test_doGet_policies_KO()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        // La forma en la que está programado en servicio obliga a añadir la barra después de policies
+        // para poder testear la excepción
+        request.requestURI = '/genesys-cloud/v1/policies/';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(400, RestContext.response.statusCode);
     }
 
     /**
@@ -289,6 +384,33 @@ private class WS_GenesysAPIServiceTest
         // Then
         System.assertEquals(200, RestContext.response.statusCode);
     }
+
+    /**
+     * Valida la excepción lanzada al llamar al GET para el recurso /claims
+     **
+     * @author jjuaristi
+     * @date 20/10/2021
+     */
+    @isTest
+    static void test_doGet_claims_KO()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/claims';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(400, RestContext.response.statusCode);
+    }
+
 
     // #endregion
 
@@ -453,6 +575,12 @@ private class WS_GenesysAPIServiceTest
         System.assertEquals(200, RestContext.response.statusCode);
     }
 
+    /**
+     * Valida la excepción lanzada al llamar al GET para el recurso /digitalcustomer
+     **
+     * @author jjuaristi
+     * @date 20/10/2021
+     */
     @isTest
     static void test_doGet_digitalcustomer_ko()
     {
@@ -472,6 +600,6 @@ private class WS_GenesysAPIServiceTest
         Test.stopTest();
 
         // Then
-        System.assertEquals(500, RestContext.response.statusCode);
+        System.assertEquals(400, RestContext.response.statusCode);
     }
 }

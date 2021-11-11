@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : jjuaristi
+ * @group             : 
+ * @last modified on  : 20-10-2021
+ * @last modified by  : jjuaristi
+**/
 @isTest(SeeAllData = false)
 private without sharing class GenesysInteractionsServiceTest
 {
@@ -1218,6 +1225,30 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     /**
+     * Valida la excepción lanzada al faltar parámetros al hacer la búsqueda de pólizas activas
+     * @author jjuaristi
+     * @date 20/10/2021
+     */
+    @IsTest
+    static void test_findActivePolicy_RequiredFieldsError()
+    {
+        // Test
+        Test.startTest();
+        try
+        {
+            GenesysInteractionsService.ActivePolicy activePolicy = GenesysInteractionsService.findActivePolicy('');
+
+        }
+        catch (Exception ex)
+        {
+            system.assertEquals('GenesysInteractionsService.GenesysPoliciesServiceException', ex.getTypeName());
+        }
+
+        Test.stopTest();
+        // Then
+    }
+
+    /**
      * Valida la búsqueda de siniestros abiertos a partir de un código de siniestro
      * @author adelgado
      * @date 27/01/2021
@@ -1329,6 +1360,31 @@ private without sharing class GenesysInteractionsServiceTest
 
         System.assertEquals(claims[0].Id, openedClaim.id, 'No se ha obtenido correctamente el id del siniestro');
         System.assertEquals(claims[0].Name, openedClaim.claimNumber, 'No se ha obtenido correctamente el código del siniestro');
+    }
+
+    /**
+     * Valida la excepción lanzada al faltar parámetros al hacer la búsqueda de siniestros
+     * @author jjuaristi
+     * @date 20/10/2021
+     */
+    @IsTest
+    static void test_findOpenedClaim_RequiredFieldsError()
+    {
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+
+        Test.startTest();
+        try
+        {
+            GenesysInteractionsService.OpenedClaim openedClaim = GenesysInteractionsService.findOpenedClaim(searchRequest);
+
+        }
+        catch (Exception ex)
+        {
+            system.assertEquals('GenesysInteractionsService.GenesysClaimsServiceException', ex.getTypeName());
+        }
+
+        Test.stopTest();
+
     }
 
     /**
@@ -1515,6 +1571,7 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(true, digitalcustomer.isDigitalCustomer, 'Debería haber devuelto que isDigitalCustomer es true');
     }
 
+   
     @isTest
     static void test_findDigitalCustomer_ko()
     {
@@ -1529,6 +1586,34 @@ private without sharing class GenesysInteractionsServiceTest
         // Then
         //Como no existen Orders(KlincPolicy) ni Customer(ContactKlinc) pues se devuelve a false el parámetro
         System.assertEquals(false, digitalcustomer.isDigitalCustomer, 'Debería haber devuelto que isDigitalCustomer es false');
+    }
+
+     /**
+     * Valida la excepción lanzada al faltar parámetros en la búsqueda de digitalcustomer
+     **
+     * @author jjuaristi
+     * @date 20/10/2021
+     */
+    @isTest
+    static void test_findDigitalCustomer_RequiredFieldsError()
+    {
+        GenesysInteractionsService.DigitalCustomer request = new GenesysInteractionsService.DigitalCustomer();
+        request.searchType = 'document';
+
+        Test.startTest();
+        try
+        {
+            GenesysInteractionsService.DigitalCustomer digitalcustomer = GenesysInteractionsService.findDigitalCustomer(request);
+
+        }
+        catch (Exception ex)
+        {
+            system.assertEquals('GenesysInteractionsService.GenesysInteractionsServiceException', ex.getTypeName());
+        }
+
+        Test.stopTest();
+
+
     }
 
     /**

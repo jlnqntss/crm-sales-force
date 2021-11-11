@@ -713,7 +713,7 @@
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
-                <stringValue>ZERouteEmailFlow</stringValue>
+                <stringValue>CCSEmailRoute.flow</stringValue>
             </value>
         </inputAssignments>
         <object>Error_Event__e</object>
