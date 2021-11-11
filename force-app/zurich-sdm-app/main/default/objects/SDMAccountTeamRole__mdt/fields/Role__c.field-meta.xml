@@ -54,7 +54,7 @@
             <value>
                 <fullName>PYMEManager</fullName>
                 <default>false</default>
-                <isActive>false</isActive>
+                <isActive>true</isActive>
                 <label>PYMEManager</label>
             </value>
         </valueSetDefinition>

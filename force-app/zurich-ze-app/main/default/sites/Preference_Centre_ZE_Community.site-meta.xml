@@ -12,7 +12,6 @@
     <browserXssProtection>true</browserXssProtection>
     <clickjackProtectionLevel>SameOriginOnly</clickjackProtectionLevel>
     <contentSniffingProtection>true</contentSniffingProtection>
-    <cspUpgradeInsecureRequests>true</cspUpgradeInsecureRequests>
     <enableAuraRequests>true</enableAuraRequests>
     <favoriteIcon>ZurichFavicon</favoriteIcon>
     <fileNotFoundPage>FileNotFound</fileNotFoundPage>
@@ -21,7 +20,6 @@
     <indexPage>CommunitiesLanding</indexPage>
     <masterLabel>Preference Centre ZE Community</masterLabel>
     <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
-    <requireHttps>true</requireHttps>
     <selfRegPage>CommunitiesSelfReg</selfRegPage>
     <siteAdmin>adminklinc@zurich-es.com</siteAdmin>
     <siteGuestRecordDefaultOwner>adminklinc@zurich-es.com</siteGuestRecordDefaultOwner>
