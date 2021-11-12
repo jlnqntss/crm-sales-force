@@ -1,0 +1,66 @@
+<aura:component implements="flexipage:availableForAllPageTypes">
+  <aura:attribute type="Boolean" name="ismodalClicked" />
+  <div class="slds-modal__content slds-p-around--medium">
+    <lightning:layout>
+      <lightning:layoutItem
+        flexibility="grow"
+        class="cCreateLeadManualUsuarioComponent pad_left"
+      >
+        <lightning:button
+          label="Crear Lead"
+          title="Crear Lead"
+          class="
+            slds-size_11-of-12
+            slds-button slds-button_neutral slds-button_stretch
+          "
+          onclick="{!c.openmodal}"
+        />
+      </lightning:layoutItem>
+      <lightning:layoutItem flexibility="auto">
+        <lightning:button
+          label="Manual de usuario"
+          title="MANUAL DE USUARIO"
+          class="
+            slds-size_10-of-12
+            slds-button slds-button_neutral slds-button_stretch
+          "
+          onclick="{!c.manualDeUsuario}"
+        />
+      </lightning:layoutItem>
+    </lightning:layout>
+  </div>
+  <aura:if isTrue="{!v.ismodalClicked}">
+    <div
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="header43"
+      aura:id="Modalbox"
+      class="slds-modal"
+    >
+      <div class="slds-modal__container">
+        <div class="slds-modal__header">
+          <lightning:buttonIcon
+            class="
+              slds-button slds-button_icon
+              slds-modal__close
+              slds-button_icon-inverse
+            "
+            variant="border-filled"
+            iconName="utility:close"
+            title="Cerrar"
+            onclick="{!c.closeModal}"
+          >
+            <span class="slds-assistive-text">Cerrar</span>
+          </lightning:buttonIcon>
+        </div>
+        <div class="slds-modal__content slds-p-around--medium">
+          <div>
+            <c:createLeadFlowComponent createLeadFlow="createLeadFlow" />
+          </div>
+        </div>
+        <div class="slds-modal__footer"></div>
+      </div>
+    </div>
+  </aura:if>
+  <div class="slds-backdrop" aura:id="Modalbackdrop"></div>
+</aura:component>

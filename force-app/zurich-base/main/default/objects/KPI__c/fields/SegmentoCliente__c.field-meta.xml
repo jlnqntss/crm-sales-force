@@ -14,6 +14,41 @@
                 <default>false</default>
                 <label>Other</label>
             </value>
+            <value>
+                <fullName>Particulares</fullName>
+                <default>false</default>
+                <label>Particulares</label>
+            </value>
+            <value>
+                <fullName>Pymes</fullName>
+                <default>false</default>
+                <label>Pymes</label>
+            </value>
+            <value>
+                <fullName>Agentes Vida</fullName>
+                <default>false</default>
+                <label>Agentes Vida</label>
+            </value>
+            <value>
+                <fullName>Agentes Pensiones</fullName>
+                <default>false</default>
+                <label>Agentes Pensiones</label>
+            </value>
+            <value>
+                <fullName>Grandes Empresas</fullName>
+                <default>false</default>
+                <label>Grandes Empresas</label>
+            </value>
+            <value>
+                <fullName>Corredores Vida</fullName>
+                <default>false</default>
+                <label>Corredores Vida</label>
+            </value>
+            <value>
+                <fullName>Corredores Pensiones</fullName>
+                <default>false</default>
+                <label>Corredores Pensiones</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

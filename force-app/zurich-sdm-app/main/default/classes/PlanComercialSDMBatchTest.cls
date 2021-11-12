@@ -39,7 +39,7 @@ private class PlanComercialSDMBatchTest
             SELECT Id, Actual_KPI__c FROM PlanComercial__c
             WHERE Actual_KPI__c != null
         ];
-        System.assertEquals(3, checkPlans.size(), 'Deberia haber 3 planes');
+        System.assertEquals(4, checkPlans.size(), 'Deberia haber 4 planes');
     }
 
     /**

@@ -46,11 +46,14 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
             
             if( Test.isRunningTest() ) todayValue = Date.newInstance(2021, 9, 10);
 
+            // SDM-729 - Añadimos la ordenacion por tipo acumulado (YTD, Mensual) para que, en la medida de lo posible, 
+            // los lotes sean solo de planes mensuales o anuales. Para minimizar el numero de KPIs recuperados
             return Database.getQueryLocator([
                 SELECT Id, CreatedById, AssignedTo__c, StartDate__c, EndDate__c,
                        Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c
                 FROM PlanComercial__c
                 WHERE StartDate__c <= :todayValue AND EndDate__c >= :todayValue
+                ORDER BY AccumulateType__c
             ]);
         } else {
             return Database.getQueryLocator(query);
@@ -104,7 +107,9 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
      */
     global void execute(SchedulableContext SC)
     {
-        Database.executeBatch(new PlanComercialSDMBatch(query), 200);
+        // SDM-729 - Se reduce el numero de planes a procesar cada vez para minimizar el numero de KPIs a considerar en cada
+        // lote del batch
+        Database.executeBatch(new PlanComercialSDMBatch(query), 20);
     }
 
     private class PlanComercialSDMBatchException extends Exception {}

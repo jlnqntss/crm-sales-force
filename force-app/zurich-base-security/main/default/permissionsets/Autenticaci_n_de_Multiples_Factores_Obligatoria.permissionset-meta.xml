@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Permission set para activar la obligatoriedad de la autenticación de multiples factores a los usuarios que estén dentro de este.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Autenticación de Multiples Factores Obligatoria</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>DelegatedTwoFactor</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ForceTwoFactor</name>
+    </userPermissions>
+</PermissionSet>

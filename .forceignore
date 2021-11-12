@@ -63,6 +63,9 @@ pt_BR.translation-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysPollPhoneNumber.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysRecordingNumber.md-meta.xml
 
+# Configuracion Envio SMS
+force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.GenesysSmsNumber.md-meta.xml
+
 # Configuración especifica de cada entorno
 force-app/zurich-base/main/default/customMetadata/AdminSetup.AdminSetup.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.ZEGenesysCloudFlowId.md-meta.xml

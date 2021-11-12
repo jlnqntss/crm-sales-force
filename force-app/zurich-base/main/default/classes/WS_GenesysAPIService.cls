@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : jjuaristi
+ * @group             : 
+ * @last modified on  : 20-10-2021
+ * @last modified by  : jjuaristi
+**/
 @RestResource(urlMapping = '/genesys-cloud/*/*')
 global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
 {
@@ -58,6 +65,42 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
             Database.rollback(sp);
             response.statusCode = 400;
             response.responseBody = Blob.valueOf(apiError.toErrorString() );
+        }
+        catch (GenesysInteractionsService.GenesysPeopleServiceException genesysServiceError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 400;
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(
+                WS_BaseAPIService.API_BAD_REQUEST_KO, genesysServiceError.getMessage(), false).toErrorString());
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, genesysServiceError.getMessage(),
+                GenesysInteractionsService.class.getName(), genesysServiceError.getStackTraceString());
+        }
+        catch (GenesysInteractionsService.GenesysPoliciesServiceException genesysServiceError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 400;
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(
+                WS_BaseAPIService.API_BAD_REQUEST_KO, genesysServiceError.getMessage(), false).toErrorString());
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, genesysServiceError.getMessage(),
+                GenesysInteractionsService.class.getName(), genesysServiceError.getStackTraceString());
+        }
+        catch (GenesysInteractionsService.GenesysClaimsServiceException genesysServiceError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 400;
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(
+                WS_BaseAPIService.API_BAD_REQUEST_KO, genesysServiceError.getMessage(), false).toErrorString());
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, genesysServiceError.getMessage(),
+                GenesysInteractionsService.class.getName(), genesysServiceError.getStackTraceString());
+        }
+        catch (GenesysInteractionsService.GenesysInteractionsServiceException genesysServiceError)
+        {
+            Database.rollback(sp);
+            response.statusCode = 400;
+            response.responseBody = Blob.valueOf(new WS_BaseAPIService.ApiException(
+                WS_BaseAPIService.API_BAD_REQUEST_KO, genesysServiceError.getMessage(), false).toErrorString());
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, genesysServiceError.getMessage(),
+                GenesysInteractionsService.class.getName(), genesysServiceError.getStackTraceString());
         }
         catch (DmlException dmlError)
         {
