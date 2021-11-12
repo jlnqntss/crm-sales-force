@@ -4,6 +4,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>technicalIncidence</componentName>
+                <identifier>technicalIncidence</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
