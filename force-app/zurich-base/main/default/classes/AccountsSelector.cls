@@ -2,6 +2,10 @@ public with sharing class AccountsSelector extends RecordsSelector
 {
     public RecordsSelector.Scope relatedRecordsScope;
 
+    // SDM: Campo del mediador con el email del Responsable de Negocio
+    public static final String SDM_RN_EMAIL_FIELD = 'BusinessManagerEmail__c';
+    public static final String SDM_DT_EMAIL_FIELD = 'TerritoryManagerEmail__c';
+
     //#region Contructores
 
     public AccountsSelector()
@@ -464,7 +468,11 @@ public with sharing class AccountsSelector extends RecordsSelector
         List<Account> result = null;
 
         if( String.isNotBlank(email) && fields != null & !fields.isEmpty() ) {
-            this.baseQuery.selectFields(fields);
+            Set<String> queryFields = new Set<String>{
+                'Id', 'Name'
+            };
+            queryFields.addAll(fields);
+            this.baseQuery.selectFields(queryFields);
             String condition = String.join(new List<String>(fields), ' = \'' + email + '\' OR ') + ' = \'' + email + '\'';
             this.baseQuery.addConditionString(condition);
             this.baseQuery.addConditionEq(Account.RecordTypeId, this.rtIntermediaryId);
