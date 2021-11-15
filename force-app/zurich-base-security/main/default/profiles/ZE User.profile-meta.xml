@@ -205,6 +205,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+    <classAccesses>
+        <apexClass>CallMeBackListController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CallMeBackListControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
         <apexClass>CaseHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -410,6 +418,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>GenesysCloudCreateCallbackActionTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysCloudLightningController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GenesysCloudLightningControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>

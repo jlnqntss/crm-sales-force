@@ -1223,4 +1223,11 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_PlanAnual_NotifTitle</shortDescription>
         <value>Annual business plans assigned</value>
     </labels>
+    <labels>
+        <fullName>cancelGenesysCallBack</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Solicitud cancelación Genesys</shortDescription>
+        <value>Se envió correctamente la solicitud de cancelación a Genesys.</value>
+    </labels>
 </CustomLabels>
