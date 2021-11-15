@@ -28,6 +28,10 @@
             <label><!-- Related To --></label>
             <section>Related To</section>
         </sections>
+        <sections>
+            <label>Recordatorio</label>
+            <section>Reminder</section>
+        </sections>
     </layouts>
     <layouts>
         <layout>Follow up</layout>

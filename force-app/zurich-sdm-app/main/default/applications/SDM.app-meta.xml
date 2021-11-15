@@ -125,8 +125,45 @@
         <type>Flexipage</type>
         <profile>SDM RN</profile>
     </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
     <tabs>standard-home</tabs>
     <tabs>PlanComercial__c</tabs>
+    <tabs>GenerarPlan</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Contact</tabs>
     <tabs>standard-Task</tabs>
@@ -135,6 +172,9 @@
     <uiType>Lightning</uiType>
     <utilityBar>SDM_UtilityBar</utilityBar>
     <workspaceConfig>
+        <mappings>
+            <tab>GenerarPlan</tab>
+        </mappings>
         <mappings>
             <tab>PlanComercial__c</tab>
         </mappings>
