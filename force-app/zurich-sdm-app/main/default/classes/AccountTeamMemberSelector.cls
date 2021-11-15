@@ -5,7 +5,9 @@
  * @date 08/11/2021
  */
 public with sharing class AccountTeamMemberSelector extends RecordsSelector {
-    public static final String ATM_ROLE_RN_NAME = 'Responsable de Negocio'; // Rol en ATM de RN. Directamente relacionado con Metadato AccountTeamRole
+    // Roles de los usuarios en los equipos de cuenta de los mediadores. Directamente relacionados con el metadato AccountTeamRole
+    public static final String ATM_ROLE_RN_NAME = 'Responsable de Negocio';
+    public static final String ATM_ROLE_CV_NAME = 'Consultor Vida';
     
     public AccountTeamMemberSelector()
     {

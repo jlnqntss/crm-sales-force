@@ -28,9 +28,9 @@ public class TestDataFactorySDM
 
     public static final String PLAN_PERMSET = 'SDM_Plan_comercial';
     public static final String RN_PROFILE = 'SDM RN';
-    public static final String RN_ROL = 'SDMUser';
+    public static final String RN_ROL = GenerateComercialPlanController.SF_ROLE_RN_DEVNAME;
     public static final String DT_PROFILE = 'SDM Director';
-    public static final String DT_ROL = 'SDM_DT';
+    public static final String DT_ROL = GenerateComercialPlanController.SF_ROLE_DT_DEVNAME;
 
     /**
      * Metodo que crea datos de configuracion de prueba para los Account Team Members (ATM)
