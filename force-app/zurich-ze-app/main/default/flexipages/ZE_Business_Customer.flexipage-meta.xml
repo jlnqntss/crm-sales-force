@@ -3,6 +3,12 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>technicalIncidence</componentName>
+                <identifier>c_technicalIncidence1</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>collapsed</name>
                     <value>false</value>
@@ -20,6 +26,7 @@
                     <value>3</value>
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
+                <identifier>force_highlightsPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>header</name>
@@ -29,6 +36,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>force:detailPanel</componentName>
+                <identifier>force_detailPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-2c02baa6-5580-4114-ab8d-1876076e8ef9</name>
@@ -58,6 +66,7 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -83,6 +92,7 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer2</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -108,6 +118,7 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer3</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -125,6 +136,7 @@
                     <value>GRID</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer4</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-516dd24f-f38b-4bdb-81aa-fa44adf1a859</name>
@@ -146,6 +158,7 @@
                     <value>accordionSection2</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
+                <identifier>customSection</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -163,6 +176,7 @@
                     <value>accordionSection1</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordionSection</componentName>
+                <identifier>customSection2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-13d50f59-9349-4732-b147-9f59c345a7a0</name>
@@ -180,6 +194,7 @@
                     <value>accordionSection1</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:accordion</componentName>
+                <identifier>flexipage_accordion</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
@@ -209,6 +224,7 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer5</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -228,6 +244,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
+                <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>sidebar</name>

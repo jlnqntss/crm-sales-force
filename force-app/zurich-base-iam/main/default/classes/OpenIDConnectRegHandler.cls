@@ -480,7 +480,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
         if( groupNames != null && !groupNames.isEmpty() ) {
             result = new List<ID>(new Map<Id, Group>([
-                SELECT Id FROM Group WHERE DeveloperName IN :groupNames
+                SELECT Id FROM Group WHERE DeveloperName IN :groupNames AND type = 'regular'
             ]).keySet());
         }
 

@@ -1230,4 +1230,76 @@ Related fields: [{3}]</value>
         <shortDescription>Solicitud cancelación Genesys</shortDescription>
         <value>Se envió correctamente la solicitud de cancelación a Genesys.</value>
     </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_Cancel</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_Cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_Save</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_Edit</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_Edit</shortDescription>
+        <value>Edit</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_GeneralInformation</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_GeneralInformation</shortDescription>
+        <value>General Information</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_TimePeriod</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_TimePeriod</shortDescription>
+        <value>Time period</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RecordPage_KPI</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RecordPage_KPI</shortDescription>
+        <value>KPI</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ValidationTitle</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ValidationTitle</shortDescription>
+        <value>Validation error</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ValidationMessage</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ValidationMessage</shortDescription>
+        <value>There are empty fields</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ButtonRefresh</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ButtonRefresh</shortDescription>
+        <value>Reload plans</value>
+    </labels>
 </CustomLabels>

@@ -29,6 +29,16 @@
         </sections>
     </layouts>
     <nameFieldLabel>Asunto</nameFieldLabel>
+    <recordTypes>
+        <description>Creación o gestión del Plan comercial Anual</description>
+        <label>Plan de Acción</label>
+        <name>ActionPlan</name>
+    </recordTypes>
+    <recordTypes>
+        <description>Plan de acción con uno o varios mediadores que puede ser mensual o anual</description>
+        <label>Plan Anual</label>
+        <name>AnualPlan</name>
+    </recordTypes>
     <validationRules>
         <errorMessage><!-- Los RN sólo se pueden asignar Planes comerciales a sí mismo. --></errorMessage>
         <name>AssignedTo_RN</name>
