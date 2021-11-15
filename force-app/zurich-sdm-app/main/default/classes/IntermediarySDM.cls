@@ -20,8 +20,8 @@ public with sharing class IntermediarySDM {
     private static final String SETUP_RC_FIELD = 'SDMIntermediaryRCField';
     private static final String SETUP_NOTIFICATION_TITLE = 'SDMNotificationTitle';
     private static final String SETUP_NOTIFICATION_BODY = 'SDMNotificationBody';
-    private static final String ATM_ACCOUNT_ACCESS_LEVEL = 'Read';
-    private static final String ATM_CONTACT_ACCESS_LEVEL = 'Read';
+    public static final String ATM_ACCOUNT_ACCESS_LEVEL = 'Read';
+    public static final String ATM_CONTACT_ACCESS_LEVEL = 'Read';
 
     // CONFIGURACION
     // Relacion entre Rol de equipo de cuenta y campos de Mediador
@@ -184,8 +184,7 @@ public with sharing class IntermediarySDM {
     /**
      * Recupera la relacion de valores de Rol de AccountTeamMember con la etiqueta de la configuracion
      */
-    @testvisible
-    private String getATMRoleLabel(String role)
+    public String getATMRoleLabel(String role)
     {
         String result = role;
         if( this.mapATMRoleToLabel == null ) {
