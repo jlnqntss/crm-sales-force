@@ -205,7 +205,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-    <classAccesses>
         <apexClass>CallMeBackListController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
