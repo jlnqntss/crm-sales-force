@@ -212,6 +212,7 @@
         <apexClass>CallMeBackListControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
+    <classAccesses>
         <apexClass>CaseHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>

@@ -55,7 +55,7 @@ export default class CallMeBackList extends LightningElement {
             listOfFields.map(element=>
             {
                 //Sólo pasa en la primera columna
-                if(this.firstColumnAsRecordHyperLink !=null && this.firstColumnAsRecordHyperLink=='Yes' && firstTimeEntry==false)
+                if(this.firstColumnAsRecordHyperLink !=null && this.firstColumnAsRecordHyperLink==='Yes' && firstTimeEntry===false)
                 {
                     firstFieldAPI  = element.fieldPath; 
                     //Declaración de la primera columna como Hyperlink para el registro correspondiente                                     
@@ -91,7 +91,7 @@ export default class CallMeBackList extends LightningElement {
             this.columns = items;
             this.tableData = listOfRecords;
                             //Preparar el primer campo de tabla como link al registro correspondiente del objeto 
-            if(this.firstColumnAsRecordHyperLink !=null && this.firstColumnAsRecordHyperLink=='Yes')
+            if(this.firstColumnAsRecordHyperLink !=null && this.firstColumnAsRecordHyperLink==='Yes')
             {
                 let diplayedRows;
                 if(listOfRecords.length > this.maxRows)
@@ -105,16 +105,16 @@ export default class CallMeBackList extends LightningElement {
                 let URLField;
                 //Rellenado de las horas de contacto
                 this.tableData = diplayedRows.map(item=>{
-                    URLField = '/lightning/r/' + 'ContactRequest' + '/' + item.Id + '/view';
+                    URLField = '/lightning/r/ContactRequest/' + item.Id + '/view';
                     return {...item,URLField};                     
                 });
-                this.tableData = this.tableData.filter(item => item.fieldPath  != firstFieldAPI);
+                this.tableData = this.tableData.filter(item => item.fieldPath  !== firstFieldAPI);
                 //Rellenado del estado del CallMeBack
                 this.completeTableData = listOfRecords.map(item=>{
-                    URLField = '/lightning/r/' + 'ContactRequest' + '/' + item.Id + '/view';
+                    URLField = '/lightning/r/ContactRequest/' + item.Id + '/view';
                     return {...item,URLField};                
                 });
-                this.completeTableData = this.completeTableData.filter(item => item.fieldPath  != firstFieldAPI);
+                this.completeTableData = this.completeTableData.filter(item => item.fieldPath  !== firstFieldAPI);
             }
             this.error = undefined;
         })
@@ -237,7 +237,7 @@ export default class CallMeBackList extends LightningElement {
   }
 
     checkRecords(objString){
-        if(objString.RECORD_LIST == '[]'){
+        if(objString.RECORD_LIST === '[]'){
              this.noRecords = true;
         }else{
             this.noRecords = false;
