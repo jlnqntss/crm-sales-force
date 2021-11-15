@@ -16,6 +16,7 @@
                     <value>Case.UpdateOCS</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
+                <identifier>console_relatedRecord</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -33,6 +34,7 @@
                     <value>CARD</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Account.Name}</leftValue>
@@ -64,6 +66,7 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer2</identifier>
             </componentInstance>
         </itemInstances>
         <name>leftsidebar</name>
@@ -73,6 +76,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>forceChatter:recordFeedContainer</componentName>
+                <identifier>forceChatter_recordFeedContainer</identifier>
             </componentInstance>
         </itemInstances>
         <name>feedTabContent</name>
@@ -82,6 +86,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>force:detailPanel</componentName>
+                <identifier>force_detailPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-e0df31cd-8da3-4b1a-98b1-bfceff61644a</name>
@@ -103,6 +108,7 @@
                     <value>Callback</value>
                 </componentInstanceProperties>
                 <componentName>flowruntime:interview</componentName>
+                <identifier>flowruntime_interview</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-5bc070c4-72ac-48ee-96fa-953ac79d1b0f</name>
@@ -112,6 +118,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
+                <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>relatedTabContent</name>
@@ -133,6 +140,7 @@
                     <value>Historial del caso</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
+                <identifier>customTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -146,6 +154,7 @@
                     <value>Standard.Tab.detail</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
+                <identifier>detailTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -159,6 +168,7 @@
                     <value>Callbacks</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
+                <identifier>customTab2</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -172,6 +182,7 @@
                     <value>Standard.Tab.activity</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
+                <identifier>activityTab</identifier>
             </componentInstance>
         </itemInstances>
         <name>tabs</name>
@@ -197,6 +208,7 @@
                     <value>3</value>
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
+                <identifier>force_highlightsPanel</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -206,6 +218,7 @@
                     <value>tabs</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
+                <identifier>flexipage_tabset</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
@@ -219,6 +232,7 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>support:milestones</componentName>
+                <identifier>support_milestones</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -236,6 +250,7 @@
                     <value>CaseSelectCustomer</value>
                 </componentInstanceProperties>
                 <componentName>flowruntime:interview</componentName>
+                <identifier>flowruntime_interview2</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.ShowFlowCaseSelectCustomer__c}</leftValue>
@@ -256,6 +271,7 @@
                     <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;a href=&quot;https://zurichinsurance.sharepoint.com/:u:/r/sites/CCWEBProcesos/SitePages/Grabacion-Contractual.aspx?csf=1&amp;amp;web=1&amp;amp;e=DOuHkE&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;Abrir texto de grabación contractual&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
+                <identifier>flexipage_richText</identifier>
                 <visibilityRule>
                     <booleanFilter>1 AND (2 OR 3)</booleanFilter>
                     <criteria>
@@ -295,6 +311,7 @@
                     <value>Account.Update</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
+                <identifier>console_relatedRecord2</identifier>
                 <visibilityRule>
                     <booleanFilter>1 OR 2</booleanFilter>
                     <criteria>
@@ -333,6 +350,7 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer3</identifier>
                 <visibilityRule>
                     <booleanFilter>1 OR 2</booleanFilter>
                     <criteria>
@@ -367,6 +385,7 @@
                     <value>Account.UpdateIntermediary</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
+                <identifier>console_relatedRecord3</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
@@ -395,6 +414,7 @@
                     <value>Account.UpdatePartner</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
+                <identifier>console_relatedRecord4</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
@@ -423,6 +443,7 @@
                     <value>Account.Update</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
+                <identifier>console_relatedRecord5</identifier>
                 <visibilityRule>
                     <booleanFilter>1 OR 2</booleanFilter>
                     <criteria>
@@ -453,6 +474,7 @@
                     <value>NONE</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer4</identifier>
             </componentInstance>
         </itemInstances>
         <name>rightsidebar</name>

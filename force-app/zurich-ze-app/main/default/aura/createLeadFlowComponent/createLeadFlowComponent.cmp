@@ -1,0 +1,9 @@
+<aura:component
+  description="CreateLeadFlow"
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:attribute name="createLeadFlow" type="String" />
+  <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+  <lightning:flow aura:id="flowData" />
+</aura:component>

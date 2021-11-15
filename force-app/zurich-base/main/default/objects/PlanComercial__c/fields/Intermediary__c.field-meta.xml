@@ -4,6 +4,7 @@
     <deleteConstraint>Restrict</deleteConstraint>
     <description>SDM: mediador sobre el que se quiere realizar la búsqueda de KPIs para el cálculo de las cifras realas para su comparación con el objetivo</description>
     <externalId>false</externalId>
+    <inlineHelpText>En caso de querer definir el plan de acción para todos los mediadores del panel, deja este campo vacío</inlineHelpText>
     <label>Intermediary</label>
     <lookupFilter>
         <active>true</active>

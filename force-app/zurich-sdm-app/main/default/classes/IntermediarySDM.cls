@@ -866,7 +866,7 @@ public with sharing class IntermediarySDM {
                                 // Si es el principal, se copia tambien el telefono
                                 // todo: poner esta parte en configuracion
                                 if( rel.IntermediaryField__c.equals('MainEmail__c') && fieldsToValue.containsKey('MainMobilePhone__c') ) {
-                                    newContact.Phone = String.valueOf(fieldsToValue.get('MainMobilePhone__c'));
+                                    newContact.MobilePhone = String.valueOf(fieldsToValue.get('MainMobilePhone__c'));
                                 }
                                 
                                 // Se preparan los mapas para la nueva relacion entre el contacto, la cuenta y el rol...
@@ -1162,7 +1162,7 @@ public with sharing class IntermediarySDM {
 
             Notification notif = new Notification(Notification.notificationType.SDMAlert);
             // Permite abrir la seccion de Cuentas, listview Mis Mediadores
-            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mis_Mediadores');
+            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mis_mediadores_SDM');
             // Convertimos la lista de ids de usuario a string
             Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
             notif.send(stringSet, title, bodyContent);

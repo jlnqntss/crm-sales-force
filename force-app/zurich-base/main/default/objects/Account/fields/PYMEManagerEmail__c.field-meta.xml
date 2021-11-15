@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PYMEManagerEmail__c</fullName>
+    <description>Campo que indica quien es el DP. Muy importante, se usa para calcular los equipos de cuenta.</description>
+    <externalId>false</externalId>
+    <label>Email Director PYMEs</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

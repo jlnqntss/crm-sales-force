@@ -4,8 +4,8 @@
         <description>Abre las fichas de registros relacionados al Contact Request</description>
         <name>OpenRecordTabsAction</name>
         <label>Abrir pestañas de registros</label>
-        <locationX>387</locationX>
-        <locationY>204</locationY>
+        <locationX>841</locationX>
+        <locationY>475</locationY>
         <actionName>c:redirectToUrlAction</actionName>
         <actionType>component</actionType>
         <inputParameters>
@@ -22,7 +22,55 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <actionCalls>
+        <description>Abre las fichas de registros relacionados al Contact Request</description>
+        <name>OpenRecordTabsAction_0</name>
+        <label>Abrir pestañas de registros</label>
+        <locationX>445</locationX>
+        <locationY>472</locationY>
+        <actionName>c:redirectToUrlAction</actionName>
+        <actionType>component</actionType>
+        <inputParameters>
+            <name>url</name>
+            <value>
+                <elementReference>ScreenPopURLGenesys</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isRedirect</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>50.0</apiVersion>
+    <decisions>
+        <description>Indica si el callback entrante ha sido generado enteramente en genesys (buzón de saturación o fuera de horario)</description>
+        <name>Generado_en_Genesys</name>
+        <label>Generado en Genesys?</label>
+        <locationX>601</locationX>
+        <locationY>252</locationY>
+        <defaultConnector>
+            <targetReference>GetContactRquest</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>phone</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>OpenRecordTabsAction_0</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
     <description>Hace de puente entre los flows ZECallbackRoute y ZESearchAndScreenPop ya que GenesysCloud no permite más de 100 caracteres en su data para información adicional</description>
     <formulas>
         <description>Registro principal del que abrir ficha</description>
@@ -47,6 +95,13 @@
         <expression>&apos;/lightning/page/recordActionFlow?lightning__flowDevName=ZESearchAndScreenPop&amp;lightning__flowArgs=&apos;
 + &apos;[{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!relatedScreenPopRecordId}+ &apos;&quot;},&apos;
 + &apos;{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!mainScreenPopRecordId}+ &apos;&quot;}]&apos;</expression>
+    </formulas>
+    <formulas>
+        <name>ScreenPopURLGenesys</name>
+        <dataType>String</dataType>
+        <expression>&apos;/lightning/page/recordActionFlow?lightning__flowDevName=ZESearchAndScreenPop&amp;lightning__flowArgs=&apos;
++ &apos;[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!phone} + &apos;&quot;},&apos;
++ &apos;{&quot;name&quot;: &quot;scopeName&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + &quot;3200012491&quot; + &apos;&quot;}]&apos;</expression>
     </formulas>
     <interviewLabel>Zurich Empresas - Obtención de call me backs {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Zurich Empresas - Apertura de call me backs</label>
@@ -73,8 +128,8 @@
         <description>consigue el contact request a partir del id del input</description>
         <name>GetContactRquest</name>
         <label>Conseguir Contact Request</label>
-        <locationX>183</locationX>
-        <locationY>200</locationY>
+        <locationX>841</locationX>
+        <locationY>252</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>OpenRecordTabsAction</targetReference>
@@ -93,16 +148,23 @@
     </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationX>483</locationX>
+        <locationY>100</locationY>
         <connector>
-            <targetReference>GetContactRquest</targetReference>
+            <targetReference>Generado_en_Genesys</targetReference>
         </connector>
     </start>
     <status>Active</status>
     <variables>
         <description>Id del Contact Request</description>
         <name>id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>phone</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
