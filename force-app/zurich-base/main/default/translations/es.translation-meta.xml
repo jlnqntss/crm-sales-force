@@ -5652,6 +5652,18 @@
         <label>Asignación de planes comerciales anuales</label>
         <name>SDM_PlanAnual_NotifTitle</name>
     </customLabels>
+    <customLabels>
+        <label>Error de validación</label>
+        <name>SDM_PlanAnual_ValidationTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Hay campos sin informar</label>
+        <name>SDM_PlanAnual_ValidationMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Recargar planes</label>
+        <name>SDM_PlanAnual_ButtonRefresh</name>
+    </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
         <name>Configure_Call_Center_Settings</name>

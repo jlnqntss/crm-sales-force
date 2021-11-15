@@ -9,7 +9,7 @@
         <actionName>GenesysCloudRouteMessageAction</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>CreateTaskAction</targetReference>
+            <targetReference>GetInteractionRecordTypeIdAction</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -148,9 +148,6 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <label>Registrar tarea</label>
         <locationX>308</locationX>
         <locationY>528</locationY>
-        <connector>
-            <targetReference>GetInteractionRecordTypeIdAction</targetReference>
-        </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -195,6 +192,9 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <locationX>308</locationX>
         <locationY>648</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CreateTaskAction</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
