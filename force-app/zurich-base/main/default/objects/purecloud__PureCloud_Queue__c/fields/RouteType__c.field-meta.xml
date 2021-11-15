@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RouteType__c</fullName>
+    <description>Identifica el tipo de enrutamiento disponible con GenesysCloud, esto permite que una cola pueda gestionar múltiples tipos de comunidados, por ejmplo emails y notas info.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Los comunicados que se pueden gestionar a través de esta cola.</inlineHelpText>
+    <label>Route Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Nota Info</fullName>
+                <default>false</default>
+                <label>Nota Info</label>
+            </value>
+            <value>
+                <fullName>Email</fullName>
+                <default>false</default>
+                <label>Email</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

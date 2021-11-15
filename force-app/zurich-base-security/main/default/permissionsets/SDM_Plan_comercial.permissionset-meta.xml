@@ -105,10 +105,6 @@
         <recordType>PlanComercial__c.ActionPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <recordType>PlanComercial__c.AnualPlan</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
     <tabSettings>
         <tab>GenerarPlan</tab>
         <visibility>Visible</visibility>

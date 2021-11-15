@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>53.0</apiVersion>
+    <assignments>
+        <name>Asignar_CCS</name>
+        <label>Asignar CCS</label>
+        <locationX>578</locationX>
+        <locationY>551</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CallCenter__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>CC Service</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_CSM_Adm</name>
+        <label>Asignar CSM Adm</label>
+        <locationX>314</locationX>
+        <locationY>671</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CallCenter__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>CSM Administración</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_CSM_Part</name>
+        <label>Asignar CSM Part</label>
+        <locationX>50</locationX>
+        <locationY>671</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CallCenter__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>CSM Particulares</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <constants>
+        <description>Nombre API del tipo de registro de Caso: OCS Inquiry</description>
+        <name>RECORDTYPE_OCS_INQUIRY</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>OCSInquiry</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <name>CentroCSM</name>
+        <label>Centro CSM</label>
+        <locationX>182</locationX>
+        <locationY>551</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_CSM_Adm</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>CSM Administración</defaultConnectorLabel>
+        <rules>
+            <name>CSM_Particulares</name>
+            <conditionLogic>(1 OR 2 OR 3 ) AND 4 AND 5 AND 6 AND 7</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Gestión Servicios</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Gestión Cliente</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Saneamiento</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Revocación Saneamiento</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Anulación</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TypeN3__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Datos Bancarios</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_CSM_Part</targetReference>
+            </connector>
+            <label>CSM Particulares</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CSM_o_CCS</name>
+        <label>CSM o CCS</label>
+        <locationX>380</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_CCS</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>CCS</defaultConnectorLabel>
+        <rules>
+            <name>CSM</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CentroCSM</targetReference>
+            </connector>
+            <label>CSM</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Es_OCS</name>
+        <label>Es OCS</label>
+        <locationX>611</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>OCS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>RECORDTYPE_OCS_INQUIRY</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CSM_o_CCS</targetReference>
+            </connector>
+            <label>OCS</label>
+        </rules>
+    </decisions>
+    <description>Identifica el Centro al que pertenece el caso en base a la tipificación del mismo</description>
+    <interviewLabel>Case Trigger - Before insert Centro {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Trigger - Before insert/update - Centro</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>485</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Es_OCS</targetReference>
+        </connector>
+        <object>Case</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
