@@ -5653,6 +5653,30 @@
         <name>SDM_PlanAnual_NotifTitle</name>
     </customLabels>
     <customLabels>
+        <label>Cancelar</label>
+        <name>SDM_PlanAnual_RecordPage_Cancel</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardar</label>
+        <name>SDM_PlanAnual_RecordPage_Save</name>
+    </customLabels>
+    <customLabels>
+        <label>Editar</label>
+        <name>SDM_PlanAnual_RecordPage_Edit</name>
+    </customLabels>
+    <customLabels>
+        <label>Información General</label>
+        <name>SDM_PlanAnual_RecordPage_GeneralInformation</name>
+    </customLabels>
+    <customLabels>
+        <label>Periodo Temporal</label>
+        <name>SDM_PlanAnual_RecordPage_TimePeriod</name>
+    </customLabels>
+    <customLabels>
+        <label>KPI</label>
+        <name>SDM_PlanAnual_RecordPage_KPI</name>
+    </customLabels>
+    <customLabels>
         <label>Error de validación</label>
         <name>SDM_PlanAnual_ValidationTitle</name>
     </customLabels>

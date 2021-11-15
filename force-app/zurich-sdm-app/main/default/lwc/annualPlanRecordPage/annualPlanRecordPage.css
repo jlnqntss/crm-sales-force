@@ -1,0 +1,26 @@
+.my-section-block {
+  margin-top: 0.5rem;
+}
+
+.my-section {
+  padding-top: 0px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.my-section-title {
+  font-size: 16px;
+}
+
+.my-edit-button {
+  position: relative;
+  z-index: 1;
+  float: right;
+  margin-left: -1rem;
+  --sds-c-button-text-color: rgb(221, 219, 218);
+  --lwc-colorTextIconDefault: rgb(221, 219, 218);
+}
+
+.phoneActions {
+  position: relative;
+}
