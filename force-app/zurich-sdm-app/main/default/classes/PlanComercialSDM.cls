@@ -59,6 +59,10 @@ public with sharing class PlanComercialSDM {
     // Mapa de lista de KPIs de cada Mediador implicado en los planes en cuestion
     private Map<Id, List<KPI__c>> mapKPIsByIntermediary;
 
+    private String thisYear;
+    private String thisMonth;
+    private String lastMonthOfYear;
+
 
     // Id del RecordType Intermediary del objeto Account
     public Id rtIntermediaryId {
@@ -69,6 +73,21 @@ public with sharing class PlanComercialSDM {
             return rtIntermediaryId;
         }
         set;
+    }
+
+    // Constructor
+    public PlanComercialSDM()
+    {
+        // Se obtiene el año actual para la recuperacion de los KPIs (mensuales y anuales)
+        this.thisYear = String.valueOf(Date.today().year());
+        if( Test.isRunningTest() ) this.thisYear = '2021';
+        
+        // Se obtiene el mes actual para la recuperacion de los KPIs (mensuales)
+        this.thisMonth = String.valueOf(Date.today().month());
+        if( Test.isRunningTest() ) this.thisMonth = '9';
+        
+        // Se obtiene el ultimo mes disponible para la recuperacion de los KPIs (anuales)
+        this.lastMonthOfYear = (new KPIsSelector()).findThisYearsLastMonth();
     }
 
     /**
@@ -112,14 +131,41 @@ public with sharing class PlanComercialSDM {
      * @param {List<Id> intermediaries} lista de ids de mediadores
      * @param {Set<String> fields} lista de campos del objeto KPI__c
      */
-    private void findKPIsByIntermediaries(Set<Id> intermediaries, Set<String> fields)
+    private void findKPIsByIntermediaries(Set<Id> intermediaries, Set<String> fields, Boolean containsMonths, Boolean containsYTD)
     {
         if( intermediaries != null && !intermediaries.isEmpty() && fields != null && !fields.isEmpty() ) {
-            // Recuperamos los KPIs de los mediadores
-            List<KPI__c> kpis = new KPIsSelector().findByIntermediaryIds(new LIst<Id>(intermediaries), fields);
+            // SDM-729 - Recuperamos los KPIs, primero los mensuales y luego los anuales
+            // lo hemos separado en 2 consultas debido al gran volumen de registros de KPI, para evitar que salten 
+            // los limites de registros por soql
+            List<KPI__c> kpis = new List<KPI__c>();
+
+            if( containsMonths ) {
+                // Recuperamos los KPIs MENSUALES de los mediadores 
+                List<KPI__c> kpisMonth = new KPIsSelector().findByIntermediaryIds(
+                    new List<Id>(intermediaries), 
+                    new List<String>{KPIsSelector.TEMPORALIDAD_Month},
+                    this.thisYear, this.thisMonth,
+                    fields
+                );
+                if( kpisMonth != null && !kpisMonth.isEmpty() ) kpis.addAll(kpisMonth);
+            }
+
+            if( containsYTD ) {
+                // Recuperamos los KPIs ANUALES de los mediadores. Hay una foto por cada mes pero es acumulada, por tanto
+                // debemos obtener los KPIs anuales de la ultima foto=mes disponible
+                if( this.lastMonthOfYear != null ) {
+                    List<KPI__c> kpisAnnual = new KPIsSelector().findByIntermediaryIds(
+                        new List<Id>(intermediaries), 
+                        new List<String>{KPIsSelector.TEMPORALIDAD_YTD},
+                        this.thisYear, this.lastMonthOfYear,
+                        fields
+                    );
+                    if( kpisAnnual != null && !kpisAnnual.isEmpty() ) kpis.addAll(kpisAnnual);
+                }
+            }
             
             // Si se ha encontrado algo...
-            if( kpis != null && !kpis.isEmpty() ) {
+            if( !kpis.isEmpty() ) {
                 // A partir de los datos recuperamos generamos un mapa de KPIs por mediador como clave
                 mapKPIsByIntermediary = new Map<Id, List<KPI__c>>();
                 // Por cada KPI recuperado ...
@@ -360,6 +406,8 @@ public with sharing class PlanComercialSDM {
 
             // Se genera un mapa de agrupaciones de mediadores para los planes actuales
             // findAgrupationsByPlan(plans);                        
+            Boolean containsMonths = false;
+            Boolean containsYTD = false;
             
             // Por cada Plan comercial... averiguamos el usuario, los campos y los mediadores a los que hace referencia
             for(PlanComercial__c plan: plans) {
@@ -373,6 +421,9 @@ public with sharing class PlanComercialSDM {
                     kpiFields.add(indicatorSetting.FirstField__c);
                     if( indicatorSetting.SecondField__c != null ) kpiFields.add(indicatorSetting.SecondField__c);
 
+                    if( !containsMonths ) containsMonths = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_MONTH);
+                    if( !containsYTD ) containsYTD = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_YRD);
+
                     // Recuperamos el usuario del plan y lo incluimos en la lista de usuarios implicados
                     Id userId = getUserIdFromPlan(plan);
                     if( userId != null ) userIds.add(userId);
@@ -383,7 +434,7 @@ public with sharing class PlanComercialSDM {
             findIntermediariesByUserIds(userIds);
 
             // Recuperamos todos los KPIs a partir de los mediadores
-            findKPIsByIntermediaries(allIntermediaries, kpiFields);
+            findKPIsByIntermediaries(allIntermediaries, kpiFields, containsMonths, containsYTD);
 
             // Si se han encontrado KPIs...
             if( mapKPIsByIntermediary != null && !mapKPIsByIntermediary.isEmpty() ) {

@@ -20,8 +20,8 @@ public with sharing class IntermediarySDM {
     private static final String SETUP_RC_FIELD = 'SDMIntermediaryRCField';
     private static final String SETUP_NOTIFICATION_TITLE = 'SDMNotificationTitle';
     private static final String SETUP_NOTIFICATION_BODY = 'SDMNotificationBody';
-    private static final String ATM_ACCOUNT_ACCESS_LEVEL = 'Read';
-    private static final String ATM_CONTACT_ACCESS_LEVEL = 'Read';
+    public static final String ATM_ACCOUNT_ACCESS_LEVEL = 'Read';
+    public static final String ATM_CONTACT_ACCESS_LEVEL = 'Read';
 
     // CONFIGURACION
     // Relacion entre Rol de equipo de cuenta y campos de Mediador
@@ -187,8 +187,7 @@ public with sharing class IntermediarySDM {
     /**
      * Recupera la relacion de valores de Rol de AccountTeamMember con la etiqueta de la configuracion
      */
-    @testvisible
-    private String getATMRoleLabel(String role)
+    public String getATMRoleLabel(String role)
     {
         String result = role;
         if( this.mapATMRoleToLabel == null ) {
@@ -875,7 +874,7 @@ public with sharing class IntermediarySDM {
                                 // Si es el principal, se copia tambien el telefono
                                 // todo: poner esta parte en configuracion
                                 if( rel.IntermediaryField__c.equals('MainEmail__c') && fieldsToValue.containsKey('MainMobilePhone__c') ) {
-                                    newContact.Phone = String.valueOf(fieldsToValue.get('MainMobilePhone__c'));
+                                    newContact.MobilePhone = String.valueOf(fieldsToValue.get('MainMobilePhone__c'));
                                 }
                                 
                                 // Se preparan los mapas para la nueva relacion entre el contacto, la cuenta y el rol...
@@ -1171,7 +1170,7 @@ public with sharing class IntermediarySDM {
 
             Notification notif = new Notification(Notification.notificationType.SDMAlert);
             // Permite abrir la seccion de Cuentas, listview Mis Mediadores
-            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mis_Mediadores');
+            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mis_mediadores_SDM');
             // Convertimos la lista de ids de usuario a string
             Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
             notif.send(stringSet, title, bodyContent);

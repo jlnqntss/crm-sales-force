@@ -1,5 +1,7 @@
 import { LightningElement, track } from "lwc";
 
+import FORM_FACTOR from '@salesforce/client/formFactor';
+
 import SDM_PlanAnual_KPICompare from "@salesforce/label/c.SDM_PlanAnual_KPICompare";
 import SDM_PlanAnual_Title from "@salesforce/label/c.SDM_PlanAnual_Title";
 import SDM_PlanAnual_ButtonCancel from "@salesforce/label/c.SDM_PlanAnual_ButtonCancel";
@@ -26,6 +28,9 @@ import SDM_PlanAnual_NoPlan from "@salesforce/label/c.SDM_PlanAnual_NoPlan";
 import SDM_PlanAnual_SavingErrorMessage from "@salesforce/label/c.SDM_PlanAnual_SavingErrorMessage";
 import SDM_PlanAnual_ButtonUndo from "@salesforce/label/c.SDM_PlanAnual_ButtonUndo";
 import SDM_PlanAnual_PlanYears from "@salesforce/label/c.SDM_PlanAnual_PlanYears";
+import SDM_PlanAnual_ValidationTitle from "@salesforce/label/c.SDM_PlanAnual_ValidationTitle";
+import SDM_PlanAnual_ValidationMessage from "@salesforce/label/c.SDM_PlanAnual_ValidationMessage";
+import SDM_PlanAnual_ButtonRefresh from "@salesforce/label/c.SDM_PlanAnual_ButtonRefresh";
 
 import saveData from "@salesforce/apex/generateComercialPlanController.saveData";
 import getRecords from "@salesforce/apex/generateComercialPlanController.getRecords";
@@ -63,11 +68,15 @@ export default class UploadCaseDocumentation extends NavigationMixin(
     SDM_PlanAnual_Summary,
     SDM_PlanAnual_PlansToDelete,
     SDM_PlanAnual_NewPlan,
-    SDM_PlanAnual_PlanYears
+    SDM_PlanAnual_PlanYears,
+    SDM_PlanAnual_ValidationTitle,
+    SDM_PlanAnual_ValidationMessage,
+    SDM_PlanAnual_ButtonRefresh
   };
 
   @track isEdited = false;
   @track canCreate = false;
+  @track canSave = false;
   @track toggleSaveLabel = this.labels.SDM_PlanAnual_ButtonSave;
   @track tabledata;
   @track titleName;
@@ -271,6 +280,8 @@ export default class UploadCaseDocumentation extends NavigationMixin(
 
   // Evento: Gestiona la accion de guardado del usuario
   handleSave() {
+    if (!this.checkValues()) return;
+
     this.toggleSaveLabel = this.labels.SDM_PlanAnual_ButtonSaving;
 
     // Convertirmos el objeto tabledata en string para pasarselo al controller
@@ -291,7 +302,10 @@ export default class UploadCaseDocumentation extends NavigationMixin(
         this.error = error;
 
         let errorMessage = this.labels.SDM_PlanAnual_SavingErrorMessage;
-        if (this.error.body.pageErrors.length > 0) {
+
+        if (this.error.body.pageErrors === undefined) {
+          errorMessage = this.error.body.message;
+        } else if (this.error.body.pageErrors.length > 0) {
           errorMessage = this.error.body.pageErrors[0].message;
         }
 
@@ -315,8 +329,6 @@ export default class UploadCaseDocumentation extends NavigationMixin(
           recordId: recId,
           actionName: "view"
         }
-      }).then((url) => {
-        this.recordPageUrl = url;
       });
     } catch (error) {
       console.error(error);
@@ -339,12 +351,12 @@ export default class UploadCaseDocumentation extends NavigationMixin(
     this.isEdited = false;
 
     // Deshacemos las columnas eliminadas
-    this.headers.Cells.forEach((cell) => {
+    this.tabledata.headers.Cells.forEach((cell) => {
       cell.isDeleted = false;
     });
 
     // Para cada celda de cada fila restauramos los valores originales si fueron modificadas
-    this.rows.forEach((row) => {
+    this.tabledata.rows.forEach((row) => {
       row.Cells.forEach((cell) => {
         cell.isDeleted = false;
         if (cell.isModified) {
@@ -361,6 +373,11 @@ export default class UploadCaseDocumentation extends NavigationMixin(
   // Evento: Gestiona la edicion para el boton Editar
   handleEdit() {
     this.isEdited = true;
+  }
+
+  // Evento: refresh
+  handleRefresh() {
+    this.getDataRecords(this.yearValue);
   }
 
   /*-------------------- RESTO DE METODOS --------------------*/
@@ -401,7 +418,7 @@ export default class UploadCaseDocumentation extends NavigationMixin(
               }
             }
             elementFound.originalValueDescription =
-              this.labels.SDM_PlanAnual_OriginalValue + oldValueLabel;
+              this.labels.SDM_PlanAnual_OriginalValue + " " + oldValueLabel;
           } else {
             elementFound.isModified = false;
             elementFound.HtmlClass = "";
@@ -596,6 +613,7 @@ export default class UploadCaseDocumentation extends NavigationMixin(
                 // Y tomamos la etiqueta para indicar el valor original
                 elementDependant.originalValueDescription =
                   this.labels.SDM_PlanAnual_OriginalValue +
+                  " " +
                   elementDependant.stringValueOld;
               }
             }
@@ -626,6 +644,11 @@ export default class UploadCaseDocumentation extends NavigationMixin(
     this.showMessage("success", title, message);
   }
 
+  // Metodo: muestra un mensaje de aviso en pantalla
+  showWarning(title, message) {
+    this.showMessage("warning", title, message);
+  }
+
   // Metodo: muestra un mensaje en pantalla
   showMessage(variant, title, message) {
     this.dispatchEvent(
@@ -654,6 +677,8 @@ export default class UploadCaseDocumentation extends NavigationMixin(
         this.isEdited = this.tabledata.isEdited;
         // Indicamos si se pueden crear nuevos
         this.canCreate = this.tabledata.canCreate;
+        // Indicamos si se pueden salvar los cambios
+        this.canSave = this.tabledata.canSave;
         // Vemos si se han recuperado planes
         this.numActivePlans = 0;
         if (this.tabledata.headers !== undefined) {
@@ -677,5 +702,64 @@ export default class UploadCaseDocumentation extends NavigationMixin(
         // Indicamos que se ha terminado de cargar
         this.isLoading = false;
       });
+  }
+
+  // Metodo: comprueba que todos los campos del plan se hayan rellenado
+  checkValues() {
+    // Inicialmente consideramos que todo esta bien
+    let result = true;
+
+    try {
+      // Miramos si algun campo esta vacio
+      let isEmpty = false;
+
+      // Comprobamos las celdas de la fila de cabecera (nombre del plan)
+      this.tabledata.headers.Cells.forEach((cell) => {
+        if (!isEmpty && cell.stringValue === "") isEmpty = true;
+      });
+
+      // Comprobamos las celdas del resto de filas (diferentes parametros del plan)
+      if (!isEmpty) {
+        // por cada fila
+        this.tabledata.rows.forEach((row) => {
+          // por cada celda
+          row.Cells.forEach((cell) => {
+            if (!isEmpty && (cell.isModified || cell.isNew)) {
+              if (cell.isString || cell.isCombobox) {
+                if (cell.stringValue === "") isEmpty = true;
+              } else if (cell.isNumber || cell.isCurrency || cell.isPercent) {
+                if (cell.decimalValue === "") isEmpty = true;
+              } else if (cell.isDate) {
+                if (cell.dateValue === "") isEmpty = true;
+              }
+            }
+          });
+        });
+      }
+
+      // Si hay un campo vacio enviamos un mensaje de aviso
+      if (isEmpty) {
+        this.showWarning(
+          this.labels.SDM_PlanAnual_ValidationTitle,
+          this.labels.SDM_PlanAnual_ValidationMessage
+        );
+        result = false;
+      }
+    } catch (error) {
+      console.log(error);
+      result = false;
+    }
+
+    return result;
+  }
+
+  // Propiedad: indica si el formulario se esta ejecutando en una pantalla grande
+  get isDesktop() {
+    return FORM_FACTOR === 'Large';
+  }
+
+  // Propiedad: indica si el formulario se esta ejecutando en una pantalla pequeña
+  get isPhone() {
+      return FORM_FACTOR === 'Small';
   }
 }
