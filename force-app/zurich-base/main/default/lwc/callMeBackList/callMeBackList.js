@@ -52,7 +52,7 @@ export default class CallMeBackList extends LightningElement {
             //Recoger los registros del mapa
             let listOfRecords = JSON.parse(Object.values(objStr)[0]);
             let items = []; //Array que incluirá las columnas
-            listOfFields.map(element=>
+            listOfFields.map( (element)=>
             {
                 //Sólo pasa en la primera columna
                 if(this.firstColumnAsRecordHyperLink !=null && this.firstColumnAsRecordHyperLink==='Yes' && firstTimeEntry===false)
@@ -79,6 +79,7 @@ export default class CallMeBackList extends LightningElement {
                 {
                     items = [...items ,{label: element.label, fieldName: element.fieldPath, hideDefaultActions: true}];
                 }   
+                return undefined;
             });
             items = [...items , { initialWidth: 80, type: 'button-icon', typeAttributes:
             {
