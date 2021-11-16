@@ -2102,6 +2102,9 @@
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>Global-SDM</layout>
+    </layoutAssignments>
     <loginIpRanges>
         <endAddress>255.255.255.255</endAddress>
         <startAddress>0.0.0.0</startAddress>
