@@ -1,14 +1,12 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
+import { getRecord } from "lightning/uiRecordApi";
 import getContactRequestsById from '@salesforce/apex/CallMeBackListController.getContactRequestsById';
 import statusToCancelled from '@salesforce/apex/CallMeBackListController.statusToCancelled';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import genesysCloud from "c/genesysCloudService";
-/**
-* Componente que muestra una lista de contactRequests del cliente cuya ficha se encuentre
-**
-* @author Kevin Rueda
-* @date 02/09/2021
-*/
+
+import PERSON_CONTACT_ID from "@salesforce/schema/Account.PersonContactId";
+import { getDataConnector } from 'lightning/analyticsWaveApi';
 
 export default class CallMeBackList extends LightningElement {
     
@@ -26,13 +24,14 @@ export default class CallMeBackList extends LightningElement {
     noRecords;
     title;
 
-    /**
-    * Realiza una llamada al método preparado en la clase ContactRequestUtil para recuperar los campos y registros a mostrar,
-    * y hace la carga inicial de la tabla
-    **
-    * @author Kevin Rueda
-    * @date 02/09/2021
-    */
+    // Consulta de contact person Id
+    @wire(getRecord, {recordId: '$recordId', fields: [PERSON_CONTACT_ID]})
+    personContactId;
+
+    // Consulta de cmbs
+    @wire(getContactRequestsById, {personContactId: this.personContactId.data})
+    callMeBacks;
+
     connectedCallback(){
         let firstTimeEntry = false;
         let firstFieldAPI;

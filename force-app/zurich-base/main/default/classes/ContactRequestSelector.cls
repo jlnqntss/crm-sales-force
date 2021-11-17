@@ -57,4 +57,29 @@ public with sharing class ContactRequestSelector extends RecordsSelector {
 
         return (List<ContactRequest>) this.baseQuery.run();
     }
+
+    public List<ContactRequest> findByCustomerId(String customerId)
+    {
+        // TODO comprobar que funciona y deployear
+        // Se añaden las condiciones de Cliente, Fecha y hora de contacto, Estado no Cancelado
+        Query.Condition condition = Query.doAnd(
+            Query.conditionEq(ContactRequest.WhoId, customerId),
+            Query.conditionNotEq(ContactRequest.Status, STATUS_CANCELLED)
+        );
+
+        // Se incluyen los siguientes campos, la condicion y ordenados por Prioridad en ascendente
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            ContactRequest.Id,
+            ContactRequest.GenesysInteractionId__c, 
+            ContactRequest.PreferredContactDatetime__c, 
+            ContactRequest.Status, 
+            ContactRequest.Preferred_Status__c
+        })
+        .addCondition(condition)
+        .addcondition(Query.conditionNotNull(ContactRequest.GenesysInteractionId__c))
+        .orderBy(ContactRequest.Preferred_Status__c.getDescribe().getName())
+        .orderBy(ContactRequest.PreferredContactDatetime__c.getDescribe().getName());
+
+        return (List<ContactRequest>) this.baseQuery.run();
+    }
 }
