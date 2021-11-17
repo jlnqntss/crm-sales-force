@@ -74,18 +74,20 @@ public with sharing class KPIsSelector extends RecordsSelector {
 
         if( Test.isRunningTest() ) thisYear = 2021;
 
-        this.baseQuery.selectFields(new List<Schema.SObjectField> {
-                KPI__c.CalcMonth__c
-            });
-        this.baseQuery.addConditionEq(KPI__c.Temporalidad__c, TEMPORALIDAD_YTD);
-        this.baseQuery.addConditionEq(KPI__c.CalcYear__c, String.valueOf(thisYear));
-        this.baseQuery.groupBy(FIELD_MONTH);
+        // Recuperamos los meses agrupados por año. El count no se usa pero es necesario para que no salten los limites
+        // por que la consulta de agregacion considera demasiados registros.
+        List<AggregateResult> months = [
+            SELECT CalcMonth__c, count(Id)
+            FROM KPI__c
+            WHERE Temporalidad__c = :TEMPORALIDAD_YTD
+            AND CalcYear__c = :String.valueOf(thisYear)
+            GROUP BY CalcMonth__c
+        ];
+        // System.debug(months);
 
-        
         // Como el campo mes es string. hay que convertirlos a integer para saber cual es el mayor numericamente
         // Ej.: 10,8,11,5
         Integer thisMonth = 0;
-        List<AggregateResult> months = (List<AggregateResult>)this.baseQuery.run();
         for(AggregateResult agr: months) {
             Integer intValue = Integer.valueOf(agr.get(FIELD_MONTH));
             if( intValue > thisMonth ) thisMonth = intValue;

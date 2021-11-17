@@ -126,7 +126,7 @@ private class IntermediarySDMTest
         IntermediarySDM sdm = new IntermediarySDM();
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
         );
         // Se crean las agrupaciones si no existen
         sdm.assignIntermediaryAgrupation(intermediaries);
@@ -144,9 +144,9 @@ private class IntermediarySDMTest
 
         // PRUEBA 2: borrar ATMs
         // Quitamos algunos ATMs de los mediadores
-        intermediaries[3].put(TestDataFactorySDM.TERRITORY_FIELD, null);
-        intermediaries[5].put(TestDataFactorySDM.TERRITORY_FIELD, null);
-        intermediaries[7].put(TestDataFactorySDM.TERRITORY_FIELD, null);
+        intermediaries[3].put(AccountsSelector.SDM_DT_EMAIL_FIELD, null);
+        intermediaries[5].put(AccountsSelector.SDM_DT_EMAIL_FIELD, null);
+        intermediaries[7].put(AccountsSelector.SDM_DT_EMAIL_FIELD, null);
         update intermediaries;
         sdm.assignIntermediaryAccountTeam(intermediaries);
         // comprobamos que han desaparecido los ATMs de los mediadores
@@ -192,7 +192,7 @@ private class IntermediarySDMTest
         IntermediarySDM sdm = new IntermediarySDM();
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
         );
         
         Test.startTest();        
@@ -220,7 +220,7 @@ private class IntermediarySDMTest
         // Seleccionamos un mediador
         String soql = String.format(
             'SELECT Id, {0}, {1}, {2} FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 1',
-            new List<String>{'StatusIntermediary__c', TestDataFactorySDM.TERRITORY_FIELD, TestDataFactorySDM.RN_FIELD}
+            new List<String>{'StatusIntermediary__c', AccountsSelector.SDM_DT_EMAIL_FIELD, TestDataFactorySDM.RN_FIELD}
         );
         List<Account> intermediaries = Database.QUERY(soql);
         System.assertEquals(1, intermediaries.size(), 'Deberia existir 1 mediador');
@@ -229,7 +229,7 @@ private class IntermediarySDMTest
         update intermediaries;
         
         // Seleccionamos el usuario asociado al email de ese campo para ese mediador
-        String fieldValue = (String)intermediaries[0].get(TestDataFactorySDM.TERRITORY_FIELD);
+        String fieldValue = (String)intermediaries[0].get(AccountsSelector.SDM_DT_EMAIL_FIELD);
         List<User> users = [SELECT Id, Email, ProfileId FROM User WHERE Email = :fieldValue];
         System.assertEquals(1, users.size(), 'Deberia existir un usuario con el email de mediador');
 
@@ -245,8 +245,8 @@ private class IntermediarySDMTest
         insert otherUser;
 
         IntermediarySDM sdm = new IntermediarySDM();
-        String roleTerritoryLabel = sdm.getATMRoleLabel(TestDataFactorySDM.TERRITORY_ROL);
-        String roleBusinessLabel = sdm.getATMRoleLabel(TestDataFactorySDM.BUSINESS_ROL);
+        String roleTerritoryLabel = sdm.settings.getATMRoleLabel(SettingsSDM.ATM_ROL_TERRITORY);
+        String roleBusinessLabel = sdm.settings.getATMRoleLabel(SettingsSDM.ATM_ROL_BUSINESS);
 
         // Creamos el AccountTeamMember para que el metodo lo borre
         List<AccountTeamMember> atmNew = new List<AccountTeamMember>();
@@ -273,7 +273,7 @@ private class IntermediarySDMTest
 
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
         );
         
         Test.startTest();        
@@ -303,7 +303,7 @@ private class IntermediarySDMTest
         // Seleccionamos un mediador
         String soql = String.format(
             'SELECT Id, {0}, {1}, {2} FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 1',
-            new List<String>{'StatusIntermediary__c', TestDataFactorySDM.TERRITORY_FIELD, TestDataFactorySDM.RN_FIELD}
+            new List<String>{'StatusIntermediary__c', AccountsSelector.SDM_DT_EMAIL_FIELD, TestDataFactorySDM.RN_FIELD}
         );
         List<Account> intermediaries = Database.QUERY(soql);
         System.assertEquals(1, intermediaries.size(), 'Deberia existir 1 mediador');
@@ -312,7 +312,7 @@ private class IntermediarySDMTest
         update intermediaries;
         
         // Seleccionamos el usuario asociado al email de ese campo para ese mediador
-        String fieldValue = (String)intermediaries[0].get(TestDataFactorySDM.TERRITORY_FIELD);
+        String fieldValue = (String)intermediaries[0].get(AccountsSelector.SDM_DT_EMAIL_FIELD);
         List<User> users = [SELECT Id, Email, ProfileId FROM User WHERE Email = :fieldValue];
         System.assertEquals(1, users.size(), 'Deberia existir un usuario con el email de mediador');
 
@@ -328,8 +328,8 @@ private class IntermediarySDMTest
         insert otherUser;
 
         IntermediarySDM sdm = new IntermediarySDM();
-        String roleTerritoryLabel = sdm.getATMRoleLabel(TestDataFactorySDM.TERRITORY_ROL);
-        String roleBusinessLabel = sdm.getATMRoleLabel(TestDataFactorySDM.BUSINESS_ROL);
+        String roleTerritoryLabel = sdm.settings.getATMRoleLabel(SettingsSDM.ATM_ROL_TERRITORY);
+        String roleBusinessLabel = sdm.settings.getATMRoleLabel(SettingsSDM.ATM_ROL_BUSINESS);
 
         // Creamos el AccountTeamMember para que el metodo lo borre
         List<AccountTeamMember> atmNew = new List<AccountTeamMember>();
@@ -356,7 +356,7 @@ private class IntermediarySDMTest
 
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
         );
         sdm.testrnNameNoATM = TestDataFactorySDM.RN_NAME;
         sdm.testrnFieldNoATM = TestDataFactorySDM.RN_FIELD;
@@ -381,14 +381,14 @@ private class IntermediarySDMTest
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         // Seleccionamos un mediador
-        String soql = 'SELECT Id, ' + TestDataFactorySDM.TERRITORY_FIELD + ' FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 2';
+        String soql = 'SELECT Id, ' + AccountsSelector.SDM_DT_EMAIL_FIELD + ' FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 2';
         List<Account> intermediaries = Database.QUERY(soql);
         System.assertEquals(2, intermediaries.size(), 'Deberian existir 2 mediadores');
         
         // Seleccionamos el usuario asociado al email de ese campo para ese mediador
         List<String> emails = new List<String>();
-        emails.add((String)intermediaries[0].get(TestDataFactorySDM.TERRITORY_FIELD));
-        emails.add((String)intermediaries[1].get(TestDataFactorySDM.TERRITORY_FIELD));
+        emails.add((String)intermediaries[0].get(AccountsSelector.SDM_DT_EMAIL_FIELD));
+        emails.add((String)intermediaries[1].get(AccountsSelector.SDM_DT_EMAIL_FIELD));
         List<User> users = [SELECT Id, Email FROM User WHERE Email = :emails];
         System.assertEquals(2, users.size(), 'Deberian existir 2 usuarios con email de mediador');
         Map<String, User> mapUserByEmail = new Map<String, User>();
@@ -399,19 +399,19 @@ private class IntermediarySDMTest
         IntermediarySDM sdm = new IntermediarySDM();
 
         // Recuperamos el nombre del rol del picklist de configuracion
-        String roleLabel = sdm.getATMRoleLabel(TestDataFactorySDM.TERRITORY_ROL);
+        String roleLabel = sdm.settings.getATMRoleLabel(SettingsSDM.ATM_ROL_TERRITORY);
 
         // Creamos el AccountTeamMember para que el metodo lo borre
         List<AccountTeamMember> atmNew = new List<AccountTeamMember>();
         
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[0].Id,
-            userId= mapUserByEmail.get((String)intermediaries[0].get(TestDataFactorySDM.TERRITORY_FIELD)).Id,
+            userId= mapUserByEmail.get((String)intermediaries[0].get(AccountsSelector.SDM_DT_EMAIL_FIELD)).Id,
             TeamMemberRole= roleLabel
         ));
         atmNew.add(new AccountTeamMember(
             AccountId= intermediaries[1].Id,
-            userId= mapUserByEmail.get((String)intermediaries[1].get(TestDataFactorySDM.TERRITORY_FIELD)).Id,
+            userId= mapUserByEmail.get((String)intermediaries[1].get(AccountsSelector.SDM_DT_EMAIL_FIELD)).Id,
             TeamMemberRole= roleLabel
         ));
         insert atmNew;
@@ -419,14 +419,14 @@ private class IntermediarySDMTest
         System.assertEquals(2, atms.size(), 'Deberian existir 2 ATMs');
 
         // Modificamos el campo de email del mediador para dejarlo vacio
-        intermediaries[0].put(TestDataFactorySDM.TERRITORY_FIELD, null);
-        intermediaries[1].put(TestDataFactorySDM.TERRITORY_FIELD, IntermediarySDM.INTERMEDIARY_VACANT);
+        intermediaries[0].put(AccountsSelector.SDM_DT_EMAIL_FIELD, null);
+        intermediaries[1].put(AccountsSelector.SDM_DT_EMAIL_FIELD, IntermediarySDM.INTERMEDIARY_VACANT);
         update intermediaries;
 
 
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
         );
         
         Test.startTest();        
@@ -449,15 +449,15 @@ private class IntermediarySDMTest
     static void testAssignIntermediaryContactRelation_insert()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
-        String soql = 'SELECT Id, Name, ' + TestDataFactorySDM.MAINEMAIL_FIELD + ' FROM Account WHERE RecordTypeId = :rtIntermediaryId';
+        String soql = 'SELECT Id, Name, ' + AccountsSelector.SDM_MAINEMAIL_FIELD + ' FROM Account WHERE RecordTypeId = :rtIntermediaryId';
         List<Account> intermediaries = Database.query(soql);
         System.assertEquals(10, intermediaries.size(), 'Deberian existir 10 mediadores');
 
         IntermediarySDM sdm = new IntermediarySDM();
-        String roleLabelMain = sdm.getACRRoleLabel(TestDataFactorySDM.MAINEMAIL_ROL);
+        String roleLabelMain = sdm.settings.getACRRoleLabel(SettingsSDM.ACR_ROL_MAINEMAIL);
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsACR = TestDataFactorySDM.getSDMSettingsACR(
-            roleLabelMain, TestDataFactorySDM.MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
+            roleLabelMain, AccountsSelector.SDM_MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
         );
         
         Test.startTest();        
@@ -484,19 +484,19 @@ private class IntermediarySDMTest
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         // Recuperamos los Mediadores y les quitamos el campo de email para que se borren
-        String soql = 'SELECT Id, Name, ' + TestDataFactorySDM.MAINEMAIL_FIELD + ' FROM Account WHERE RecordTypeId = :rtIntermediaryId';
+        String soql = 'SELECT Id, Name, ' + AccountsSelector.SDM_MAINEMAIL_FIELD + ' FROM Account WHERE RecordTypeId = :rtIntermediaryId';
         List<Account> intermediaries = Database.query(soql);
         System.assertEquals(10, intermediaries.size(), 'Deberian existir 10 mediadores');
         for(Account a: intermediaries) {
-            a.put(TestDataFactorySDM.MAINEMAIL_FIELD, null);
+            a.put(AccountsSelector.SDM_MAINEMAIL_FIELD, null);
         }
         update intermediaries;
 
         IntermediarySDM sdm = new IntermediarySDM();
-        String roleLabelMain = sdm.getACRRoleLabel(TestDataFactorySDM.MAINEMAIL_ROL);
+        String roleLabelMain = sdm.settings.getACRRoleLabel(SettingsSDM.ACR_ROL_MAINEMAIL);
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsACR = TestDataFactorySDM.getSDMSettingsACR(
-            TestDataFactorySDM.MAINEMAIL_ROL, TestDataFactorySDM.MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
+            SettingsSDM.ACR_ROL_MAINEMAIL, AccountsSelector.SDM_MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
         );
         Set<String> fields = sdm.SettingsACRFields; // para cobertura
         
@@ -550,13 +550,13 @@ private class IntermediarySDMTest
         // Seleccionamos un mediador
         String soql = String.format(
             'SELECT Id, {0}, {1}, {2} FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 1',
-            new List<String>{'StatusIntermediary__c', TestDataFactorySDM.TERRITORY_FIELD, TestDataFactorySDM.RN_FIELD}
+            new List<String>{'StatusIntermediary__c', AccountsSelector.SDM_DT_EMAIL_FIELD, TestDataFactorySDM.RN_FIELD}
         );
         List<Account> intermediaries = Database.QUERY(soql);
         System.assertEquals(1, intermediaries.size(), 'Deberia existir 1 mediador');
         
         // Seleccionamos el usuario asociado al email de ese campo para ese mediador
-        String fieldValue = (String)intermediaries[0].get(TestDataFactorySDM.TERRITORY_FIELD);
+        String fieldValue = (String)intermediaries[0].get(AccountsSelector.SDM_DT_EMAIL_FIELD);
         List<User> users = [SELECT Id, Email, ProfileId FROM User WHERE Email = :fieldValue];
         System.assertEquals(1, users.size(), 'Deberia existir un usuario con el email de mediador');
 
@@ -572,8 +572,8 @@ private class IntermediarySDMTest
         insert otherUser;
 
         IntermediarySDM sdm = new IntermediarySDM();
-        String roleTerritoryLabel = sdm.getATMRoleLabel(TestDataFactorySDM.TERRITORY_ROL);
-        String roleBusinessLabel = sdm.getATMRoleLabel(TestDataFactorySDM.BUSINESS_ROL);
+        String roleTerritoryLabel = sdm.settings.getATMRoleLabel(SettingsSDM.ATM_ROL_TERRITORY);
+        String roleBusinessLabel = sdm.settings.getATMRoleLabel(SettingsSDM.ATM_ROL_BUSINESS);
 
         // Creamos el AccountTeamMember para que el metodo lo borre
         List<AccountTeamMember> atmNew = new List<AccountTeamMember>();
@@ -600,10 +600,10 @@ private class IntermediarySDMTest
 
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
         );
         // sdm.testSettingsATM.addAll(TestDataFactorySDM.getSDMSettingsATM(
-        //     TestDataFactorySDM.BUSINESS_ROL, TestDataFactorySDM.BUSINESS_FIELD
+        //     SettingsSDM.ATM_ROL_BUSINESS, AccountsSelector.SDM_RN_EMAIL_FIELD
         // ));
         sdm.testSettingsATM[0].Status__c = IntermediarySDM.ATM_ROL_STATUS_INACTIVE;
         

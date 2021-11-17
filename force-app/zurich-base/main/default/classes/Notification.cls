@@ -89,6 +89,12 @@ public with sharing class Notification {
         addPageReference(pageRef);
     }
 
+    public void addPageReference(String refType, String navItemApiName)
+    {
+        Pagereference pageRef = new PageReference(refType, navItemApiName);
+        addPageReference(pageRef);
+    }
+
     public void addPageReference(PageReference pageRef)
     {
         this.pageReference = pageRef;
@@ -125,6 +131,21 @@ public with sharing class Notification {
             };
             state = new Map<String, String>{
                 'filterName' => stateFilterName
+            };
+        }
+
+        /**
+         * Crea una referencia a una pagina de salesforce para mas detalles ir a:
+         * https://developer.salesforce.com/docs/component-library/documentation/en/lwc/lwc.reference_page_reference_type
+         * 
+         * @param {String refType} tipo de referecia. Ej: standard__navItemPage
+         * @param {String navItemApiName} nombre de objeto. Ej: MyCustomTabName
+         */
+        public Pagereference(String refType, String navItemApiName)
+        {
+            type = refType; // ej: standard__navItemPage
+            attributes = new Map<String, String>{
+                'apiName' => navItemApiName
             };
         }
 
