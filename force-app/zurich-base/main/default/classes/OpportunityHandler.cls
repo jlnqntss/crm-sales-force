@@ -40,7 +40,7 @@ public class OpportunityHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        OpportunityUtil.revertStageNameNull((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
+        OpportunityUtil.preventNullUpdates((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
         //OpportunityUtil.detectOpportunityStageChange(newList, (Map<Id, Opportunity>) oldMap); //20210225 sustituido por before insert
         OpportunityUtil.detectOpportunityAccountChange((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
     }
