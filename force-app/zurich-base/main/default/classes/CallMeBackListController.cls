@@ -1,55 +1,36 @@
 /**
- * @description       : 
+ * @description       : Controlador del componente de cancelación de Call Me Backs ubicado en la página de registro de Account.
  * @author            : Kevin Rueda
  * @group             : 
  * @last modified on  : 16-11-2021
  * @last modified by  : jjuaristi
+ * @last modified by  : rpolvera
 **/
-public with sharing class CallMeBackListController {
-
-
+public with sharing class CallMeBackListController
+{
+    /**
+     * Función que permite la consulra de registros Contact Request, es invocada desde el componente LWC CallMeBackList
+     * @see CallMeBackList.js
+     * @author rpolvera
+     * @date 17/11/2021
+     * @param whatId Identificador del registro de cuenta (Account) relacionada con las Contact Request a cancelar.
+     * @return Lista de Contact Request.
+     */
     @AuraEnabled(cacheable = true)
-    public static String getContactRequestsById(String customerId)
+    public static List<ContactRequest> getContactRequestsByCustomerId(String whoId)
     {
-        // TODO cambiarlo para que funcione con la query del selector y este método no haga básicamente nada
-        Map<String, String> returnMap = new Map<String,String>();
+        List<ContactRequest> contactRequests;
 
-        //Coger fields del fieldset
-        String nullFieldset;
-        List<Schema.FieldSetMember> lstFSMember;
-       
-        List<ContactRequest> contactRequests = new ContactRequestSelector().findByCustomerId(customerId);
-
-        List<Map<String, String>> records = new List<Map<String, String>>();
-        
-        Map<String, Schema.SObjectField> conReqFields = Schema.SObjectType.ContactRequest.fields.getMap();
-        for (SObject obj : lstRecordsQuery)
+        try
         {
-            Map<String, Object> objMap = obj.getPopulatedFieldsAsMap();
-            Map<String, String> stringMap = new Map<String, String>();
-            for (String fieldName : objMap.keySet()) {
-                if(conReqFields.get(fieldName).getDescribe().getType() == Schema.DisplayType.DateTime)
-                {
-                    DateTime dateTimeField = (DateTime)objMap.get(fieldName);
-                    stringMap.put(fieldName, dateTimeField.format('dd/MM/yyyy - HH:mm'));
-                }else
-                {
-                    stringMap.put(fieldName, String.valueOf(objMap.get(fieldName)));
-                }
-            }
-            records.add(stringMap);
+            contactRequests = new ContactRequestSelector().findByCustomerId(whoId);
+        }
+        catch (Exception e)
+        {
+            throw new AuraHandledException(e.getMessage());
         }
 
-        //Preparar mapa con la lista de fields y los registros, y devolverlo
-	    if(fieldset == null)
-        {
-            returnMap.put('FIELD_LIST', nullFieldset);
-        }else
-        {
-            returnMap.put('FIELD_LIST', JSON.serialize(lstFSMember));
-        }
-	    returnMap.put('RECORD_LIST', JSON.serialize(records));
-	    return JSON.serialize(returnMap);
+        return contactRequests;
     }
 
     /**

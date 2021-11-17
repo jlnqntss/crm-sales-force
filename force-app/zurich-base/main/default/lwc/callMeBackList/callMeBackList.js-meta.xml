@@ -7,9 +7,10 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
-            <property name="fieldSetName" label="Field Set Name" type="String" default="ContactRequestFieldSet"/>
-            <property name="firstColumnAsRecordHyperLink" label="First Column As RecordHyperLink" 
-                            type="String" datasource="Yes,No" default="Yes"/>                        
+            <objects>
+                <object>Account</object>
+            </objects>
+            <property name="columns" label="Culumnas a mostrar" description="El valor de este atributo se deberá corresponder con la definición de tablas de LWC: https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/documentation" type="String" default="[]" />      
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

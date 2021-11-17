@@ -6,19 +6,23 @@
   @last modified by  : jjuaristi
 -->
 <template>
-    
-    <lightning-card  variant="Narrow"  title={title}  icon-name="standard:contact_request">
-        <template if:false={noRecords}>
-            <div class="showTable" >
-                <lightning-datatable
-                        data={tableData}
-                        columns={columns}
-                        key-field="id"
-                        hide-checkbox-column=true
-                        onrowaction={handleRowAction}>
-                </lightning-datatable>
-            </div>
-            <div class={loadMoreVisible}>
+  <lightning-card
+    variant="Narrow"
+    title={title}
+    icon-name="standard:contact_request"
+  >
+    <template if:false={isEmpty}>
+      <div class="showTable">
+        <lightning-datatable
+          data={callMeMacks}
+          columns={columns}
+          key-field="id"
+          hide-checkbox-column="true"
+          onrowaction={handleRowAction}
+        >
+        </lightning-datatable>
+      </div>
+      <!-- <div class={loadMoreVisible}>
                 </br>
                 <div class="slds-align_absolute-center">
                     <lightning-button          
@@ -29,10 +33,10 @@
                             class="slds-m-left_x-small">
                     </lightning-button>
                 </div>
-            </div>
+            </div> -->
     </template>
-    </lightning-card>
-    <template if:true={isModalOpen}>
+  </lightning-card>
+  <!-- <template if:true={isModalOpen}>
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
@@ -57,5 +61,5 @@
             </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
-    </template>
+    </template> -->
 </template>

@@ -203,20 +203,6 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
-                <componentInstanceProperties>
-                    <name>fieldSetName</name>
-                    <value>ContactRequestFieldSet</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>firstColumnAsRecordHyperLink</name>
-                    <value>Yes</value>
-                </componentInstanceProperties>
-                <componentName>callMeBackList</componentName>
-                <identifier>c_callMeBackList1</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
                 <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>

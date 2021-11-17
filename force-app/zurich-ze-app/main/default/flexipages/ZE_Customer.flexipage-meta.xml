@@ -264,12 +264,8 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>fieldSetName</name>
-                    <value>ContactRequestFieldSet</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>firstColumnAsRecordHyperLink</name>
-                    <value>Yes</value>
+                    <name>columns</name>
+                    <value>[]</value>
                 </componentInstanceProperties>
                 <componentName>callMeBackList</componentName>
                 <identifier>callMeBackList</identifier>
