@@ -1,11 +1,14 @@
 <!-- sldsValidatorIgnore -->
 <template>
-  <div class="c-container">
     <lightning-card title={labels.SDM_PlanAnual_Title} icon-name="action:goal">
       <!-- SLOT: ACTION -->
+      <span slot="actions" class="slds-m-right_small">
+        <span class="slds-m-right_xx-small">{numActivePlans}</span>
+        <lightning-helptext icon-name="utility:priority" content="Planes en pantalla"></lightning-helptext>
+      </span>
       <template if:true={canSave}
         ><span slot="actions" class="slds-m-right_medium">
-          {deletedPlans}
+          <span class="slds-m-right_xx-small">{deletedPlans}</span>
           <lightning-helptext
             icon-name="utility:delete"
             content={labels.SDM_PlanAnual_PlansToDelete}
@@ -16,7 +19,6 @@
         icon-name="utility:refresh"
         variant="border-filled"
         alternative-text={labels.SDM_PlanAnual_ButtonRefresh}
-        class="slds-m-left_x-small"
         title={labels.SDM_PlanAnual_ButtonRefresh}
         onclick={handleRefresh}
       >
@@ -44,8 +46,7 @@
       <div class="slds-p-around_none slds-m-horizontal_none">
         <lightning-layout>
           <!-- Combo de años -->
-          <lightning-layout-item size="2" class="slds-m-left_large">
-            <div class="header-column">
+          <lightning-layout-item padding="horizontal-medium">
               <lightning-combobox
                 name="plansyearcb"
                 label={labels.SDM_PlanAnual_PlanYears}
@@ -54,74 +55,60 @@
                 options={yearOptions}
                 onchange={handleChangeYear}
               ></lightning-combobox>
-            </div>
           </lightning-layout-item>
-          <!-- Espacio en blanco -->
-          <lightning-layout-item size="3"></lightning-layout-item>
-          <!-- Leyenda -->
-          <lightning-layout-item size="6">
-            <lightning-layout horizontal-align="end">
-              <!-- Deshacer -->
-              <lightning-layout-item class="slds-m-top_x-large">
-                <lightning-icon
-                  icon-name="utility:undo"
-                  size="x-small"
-                  class="slds-m-right_xx-small"
-                ></lightning-icon
-                >{labels.SDM_PlanAnual_ButtonUndo}
-              </lightning-layout-item>
-              <!-- Campo bloqueado -->
-              <lightning-layout-item
-                class="slds-m-left_large slds-m-top_x-large"
-              >
-                <lightning-icon
-                  icon-name="utility:lock"
-                  size="x-small"
-                  class="slds-m-right_xx-small"
-                ></lightning-icon
-                >{labels.SDM_PlanAnual_FieldLock}
-              </lightning-layout-item>
-              <!-- Eliminar -->
-              <lightning-layout-item
-                class="slds-m-left_large slds-m-top_x-large"
-              >
-                <lightning-icon
-                  icon-name="utility:delete"
-                  size="x-small"
-                  class="slds-m-right_xx-small"
-                ></lightning-icon
-                >{labels.SDM_PlanAnual_ButtonDelete}
-              </lightning-layout-item>
-              <!-- KPI real -->
-              <lightning-layout-item class="slds-m-left_large slds-m-top_large">
-                <div
-                  class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_small my-css-positive"
-                  role="tooltip"
-                  title={labels.SDM_PlanAnual_KPIReal}
-                >
-                  <div class="slds-popover__body">
-                    <span href="#" style="color: white"
-                      >{labels.SDM_PlanAnual_KPIReal}</span
-                    >
-                  </div>
-                </div>
-              </lightning-layout-item>
-              <!-- Nuevo plan -->
-              <lightning-layout-item class="slds-m-left_large slds-m-top_large">
-                <div
-                  class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_x-small my-css-nuevo"
-                  role="tooltip"
-                  title={labels.SDM_PlanAnual_NewPlan}
-                >
-                  <div class="slds-popover__body">
-                    <span style="color: white"
-                      >{labels.SDM_PlanAnual_NewPlan}</span
-                    >
-                  </div>
-                </div>
-              </lightning-layout-item>
-            </lightning-layout>
+          <!-- Leyenda de iconos -->
+          <template if:false={isPhone}>
+            <lightning-layout-item alignment-bump="left" padding="horizontal-medium">
+              <lightning-layout horizontal-align="end">
+                  <!-- Deshacer -->
+                  <lightning-layout-item class="slds-p-right_x-small slds-m-top_x-large slds-border_right">
+                      <lightning-icon
+                      icon-name="utility:undo"
+                      size="x-small"
+                      class="slds-m-right_xx-small"
+                      ></lightning-icon
+                      >{labels.SDM_PlanAnual_ButtonUndo}
+                  </lightning-layout-item>
+                  <!-- Campo bloqueado -->
+                  <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-m-top_x-large slds-border_right">
+                      <lightning-icon
+                      icon-name="utility:lock"
+                      size="x-small"
+                      class="slds-m-right_xx-small"
+                      ></lightning-icon
+                      >{labels.SDM_PlanAnual_FieldLock}
+                  </lightning-layout-item>
+                  <!-- Eliminar -->
+                  <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-m-top_x-large slds-border_right">
+                      <lightning-icon
+                      icon-name="utility:delete"
+                      size="x-small"
+                      class="slds-m-right_xx-small"
+                      ></lightning-icon
+                      >{labels.SDM_PlanAnual_ButtonDelete}
+                  </lightning-layout-item>
+                  <!-- Nuevo plan -->
+                  <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-m-top_x-large slds-border_right">
+                      <lightning-icon variant="success" icon-name="utility:new" size="x-small" class="slds-m-right_xx-small my-isnew" ></lightning-icon>
+                      {labels.SDM_PlanAnual_NewPlan}
+                  </lightning-layout-item>
+                  <!-- KPI real -->
+                  <lightning-layout-item class="slds-m-left_x-small slds-m-top_large">
+                      <div
+                      class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_small my-css-positive"
+                      role="tooltip"
+                      title={labels.SDM_PlanAnual_KPIReal}
+                      >
+                          <div class="slds-popover__body">
+                              <span href="#" style="color: white"
+                              >{labels.SDM_PlanAnual_KPIReal}</span
+                              >
+                          </div>
+                      </div>
+                  </lightning-layout-item>
+              </lightning-layout>
           </lightning-layout-item>
+        </template>
         </lightning-layout>
       </div>
       <div if:true={isLoading}>
@@ -135,10 +122,10 @@
       <div if:false={isLoading}>
         <!-- PLANES -->
         <template if:true={thereArePlans}>
-          <div class="slds-p-around_x-small">
+          <div class="slds-p-around_x-small slds-scrollable_x">
             <!-- Tabla -->
             <table
-              class="slds-table slds-table_cell-buffer slds-table_bordered"
+              class="slds-table slds-table_cell-buffer slds-table_bordered" role="grid"
             >
               <!-- Cabecera de la tabla -->
               <thead>
@@ -202,13 +189,11 @@
                           <!-- ES NUEVO -->
                           <template if:true={cell.isNew}>
                             <div
-                              class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_xx-small my-css-nuevo"
+                              class="slds-popover slds-popover_tooltip slds-m-left_xx-small slds-m-right_xx-small my-css-nuevo"
                               role="tooltip"
                               title={labels.SDM_PlanAnual_ButtonNew}
                             >
-                              <div class="slds-popover__body">
-                                <span style="color: white">+</span>
-                              </div>
+                            <lightning-icon variant="success" icon-name="utility:new" size="x-small" class="slds-m-right_xx-small" ></lightning-icon>
                             </div>
                           </template>
                           <!-- EDICION -->
@@ -217,7 +202,7 @@
                               icon-name="utility:delete"
                               variant="border-filled"
                               alternative-text={labels.SDM_PlanAnual_ButtonDelete}
-                              class="slds-m-left_x-small"
+                              class="slds-m-left_xx-small"
                               title={labels.SDM_PlanAnual_ButtonDelete}
                               data-id={cell.id}
                               onclick={handleRemove}
@@ -256,19 +241,19 @@
                 >
                   <tr
                     key={item.Key}
-                    class="slds-text-align_right"
+                    class="slds-text-align_right my-body-tr"
                     role="gridcell"
                     ondblclick={onDoubleClickEdit}
                   >
                     <!-- Primera columna: ETIQUETAS -->
-                    <td data-label={item.Text}>
+                    <th data-label={item.Text} scope="row">
                       <template if:true={item.isLink}>
                         <a href="#" onclick={gotoLink} data-id={item.Id}
                           >{item.Text}</a
                         >
                       </template>
                       <template if:false={item.isLink}>{item.Text}</template>
-                    </td>
+                    </th>
                     <!-- Resto de columnas: Valores de cada plan -->
                     <template
                       for:each={item.Cells}
@@ -554,7 +539,7 @@
                                 variant="border-filled"
                                 alternative-text={labels.SDM_PlanAnual_ButtonUndo}
                                 size="small"
-                                class="slds-m-left_x-small"
+                                class="slds-m-left_xx-small"
                                 data-id={cell.Id}
                                 onclick={revertChange}
                                 title={cell.originalValueDescription}
@@ -630,5 +615,4 @@
         </template>
       </div>
     </lightning-card>
-  </div>
 </template>

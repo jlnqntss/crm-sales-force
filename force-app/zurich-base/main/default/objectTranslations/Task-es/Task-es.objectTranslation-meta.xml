@@ -28,6 +28,10 @@
             <label><!-- Related To --></label>
             <section>Related To</section>
         </sections>
+        <sections>
+            <label>Recordatorio</label>
+            <section>Reminder</section>
+        </sections>
     </layouts>
     <layouts>
         <layout>Follow up</layout>
@@ -96,6 +100,10 @@
             <section>Related To</section>
         </sections>
     </layouts>
+    <quickActions>
+        <label><!-- New Task --></label>
+        <name>ActividadComercial</name>
+    </quickActions>
     <quickActions>
         <label><!-- Defer --></label>
         <name>Defer</name>
@@ -277,7 +285,7 @@
         <name>Activity</name>
     </recordTypes>
     <recordTypes>
-        <label>Acción comercial</label>
+        <label>Actividad comercial</label>
         <name>CommercialAction</name>
     </recordTypes>
     <recordTypes>

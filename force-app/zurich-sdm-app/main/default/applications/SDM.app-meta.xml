@@ -36,7 +36,7 @@
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Intermediary</recordType>
         <type>Flexipage</type>
-        <profile>SDM Director</profile>
+        <profile>Admin</profile>
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
@@ -45,7 +45,7 @@
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Intermediary</recordType>
         <type>Flexipage</type>
-        <profile>SDM Director</profile>
+        <profile>Admin</profile>
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
@@ -54,7 +54,7 @@
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Intermediary</recordType>
         <type>Flexipage</type>
-        <profile>SDM RN</profile>
+        <profile>Integrator</profile>
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
@@ -63,23 +63,60 @@
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Intermediary</recordType>
         <type>Flexipage</type>
-        <profile>SDM RN</profile>
+        <profile>Integrator</profile>
     </profileActionOverrides>
     <profileActionOverrides>
-        <actionName>Tab</actionName>
-        <content>Home_SDM_Director</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <actionName>View</actionName>
+        <content>Agrupaci_n_Mediador</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.AgrupacionMediador</recordType>
         <type>Flexipage</type>
-        <profile>SDM Director</profile>
+        <profile>Integrator</profile>
     </profileActionOverrides>
     <profileActionOverrides>
-        <actionName>Tab</actionName>
-        <content>Home_SDM_Director</content>
+        <actionName>View</actionName>
+        <content>Agrupaci_n_Mediador</content>
         <formFactor>Large</formFactor>
-        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.AgrupacionMediador</recordType>
+        <type>Flexipage</type>
+        <profile>Integrator</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Agrupaci_n_Mediador</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.AgrupacionMediador</recordType>
         <type>Flexipage</type>
         <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Agrupaci_n_Mediador</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.AgrupacionMediador</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_RN</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Integrator</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Mediador</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
@@ -89,6 +126,15 @@
         <recordType>Account.AgrupacionMediador</recordType>
         <type>Flexipage</type>
         <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Mediador</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
@@ -125,16 +171,56 @@
         <type>Flexipage</type>
         <profile>SDM RN</profile>
     </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Mediador</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Mediador</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_SDM_Director</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_SDM_Director</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
     <tabs>standard-home</tabs>
-    <tabs>PlanComercial__c</tabs>
     <tabs>standard-Account</tabs>
-    <tabs>standard-Contact</tabs>
     <tabs>standard-Task</tabs>
+    <tabs>PlanComercial__c</tabs>
+    <tabs>GenerarPlan</tabs>
     <tabs>standard-Event</tabs>
+    <tabs>standard-Contact</tabs>
     <tabs>standard-report</tabs>
+    <tabs>standard-Feed</tabs>
+    <tabs>standard-ContentNote</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>SDM_UtilityBar</utilityBar>
     <workspaceConfig>
+        <mappings>
+            <tab>GenerarPlan</tab>
+        </mappings>
         <mappings>
             <tab>PlanComercial__c</tab>
         </mappings>
@@ -147,8 +233,14 @@
             <tab>standard-Contact</tab>
         </mappings>
         <mappings>
+            <tab>standard-ContentNote</tab>
+        </mappings>
+        <mappings>
             <fieldName>WhoId</fieldName>
             <tab>standard-Event</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Feed</tab>
         </mappings>
         <mappings>
             <fieldName>WhoId</fieldName>

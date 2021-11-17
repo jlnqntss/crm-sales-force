@@ -702,6 +702,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                     // for DML
                     List<AccountTeamMember> atmToUpsert = new List<AccountTeamMember>();
 
+                    // Will keep a record of the Ids from the parent Agrupations of the intermediaries
+                    List<Id> parentsAlreadyCreated = new List<Id>();
+
                     // For each Intermediary...
                     for(Account i: intermediaries) {
                         // Get the the fields of the Account in memory to be sure that we got the fields
@@ -714,15 +717,34 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                                 // Compare the value of the Intermediary for that field with the email of the user
                                 String fieldValue = (String)i.get(s.IntermediaryField__c);
                                 if( fieldValue != null && fieldValue.equalsIgnoreCase(email) ) {
+                                    String roleLabel = sdm.getATMRoleLabel(s.Role__c);
+                                    
                                     // ATM to be created
                                     AccountTeamMember atm = new AccountTeamMember(
                                         AccountId= i.Id,
                                         userId= userId,
-                                        TeamMemberRole= s.Role__c,
-                                        AccountAccessLevel= 'Read'
+                                        TeamMemberRole= roleLabel,
+                                        AccountAccessLevel= IntermediarySDM.ATM_ACCOUNT_ACCESS_LEVEL,
+                                        ContactAccessLevel= IntermediarySDM.ATM_CONTACT_ACCESS_LEVEL
                                     );
 
                                     atmToUpsert.add(atm);
+
+                                    // Check if the intermediary has an Agrupation and is not already created by another intermediary
+                                    if( i.ParentId != null && !parentsAlreadyCreated.contains(i.parentId) ) {
+                                        // ATM to be created for the parent Agrupation account
+                                        AccountTeamMember atmParent = new AccountTeamMember(
+                                            AccountId= i.ParentId,
+                                            userId= userId,
+                                            TeamMemberRole= roleLabel,
+                                            AccountAccessLevel= IntermediarySDM.ATM_ACCOUNT_ACCESS_LEVEL,
+                                            ContactAccessLevel= IntermediarySDM.ATM_CONTACT_ACCESS_LEVEL
+                                        );
+
+                                        atmToUpsert.add(atmParent);
+
+                                        parentsAlreadyCreated.add(i.ParentId);
+                                    }
                                 }
                             }
                         }

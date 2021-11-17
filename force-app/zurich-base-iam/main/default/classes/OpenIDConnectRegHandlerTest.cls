@@ -674,37 +674,18 @@ private class OpenIDConnectRegHandlerTest
         // SDM, create intermediary account
         // Because of MIXED-DML error, we have to create the account this way
         User thisUser = [SELECT Id FROM User WHERE Id = :UserInfo.getUserId()];
-        System.runAs (thisUser) {            
-            // Create the intermediary account
-            List<Account> intermediaries = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        System.runAs (thisUser) {
+            // Agrupation account creation
+            List<Account> agrupations = TestDataFactory.generateAccounts('001', AccountsSelector.RT_NAME_AGRUPATION, 1);
+            agrupations[0].NationalId__c = '77777';
+            insert agrupations;
+
+            // Intermediary account creation
+            List<Account> intermediaries = TestDataFactory.generateAccounts('001', AccountsSelector.RT_NAME_INTERMEDIARY, 1);
+            intermediaries[0].NationalId__c = '77777';
             intermediaries[0].TerritoryManagerEmail__c = sampleDataIAM.email;
+            intermediaries[0].ParentId = agrupations[0].Id;
             insert intermediaries;
-
-            // Create AccountTeamMembers for that user and for another user with diefferent roles
-            Schema.DescribeFieldResult atmRolPicklist = AccountTeamMember.TeamMemberRole.getDescribe();
-		    List<Schema.PicklistEntry> atmRolPicklistValues = atmRolPicklist.getPicklistValues();
-            List<AccountTeamMember> otherAtms = new List<AccountTeamMember>();
-            // If there is one rol
-            if( atmRolPicklistValues.size() > 0 ) {
-                otherAtms.add(new AccountTeamMember(
-                    AccountId= intermediaries[0].Id,
-                    UserId= thisUser.Id,
-                    TeamMemberRole= atmRolPicklistValues[0].getValue()
-                ));
-            }
-
-            // If there is a second rol
-            if( atmRolPicklistValues.size() > 1 ) {
-                if( otherUser != null ) {
-                    otherAtms.add(new AccountTeamMember(
-                        AccountId= intermediaries[0].Id,
-                        UserId= otherUser.Id,
-                        TeamMemberRole= atmRolPicklistValues[1].getValue()
-                    ));
-                }
-            }
-            
-            if( !otherAtms.isEmpty() ) insert otherAtms;
         }
 
         // Test user Creation
@@ -713,8 +694,10 @@ private class OpenIDConnectRegHandlerTest
         Test.stopTest();
 
         // check if the account team member has been created
-        List<AccountTeamMember> atms = [SELECT Id FROM AccountTeamMember];
+        List<AccountTeamMember> atms = [SELECT Id FROM AccountTeamMember WHERE UserId = :u.Id];
         System.assertEquals(false, atms.isEmpty(), 'There should be AccountTeamMembers');
+        // 2 = 1 for the intermediary, 1 for the parent agrupation account
+        System.assertEquals(2, atms.size(), 'There should be 2 AccountTeamMembers');
     }
 
     /**

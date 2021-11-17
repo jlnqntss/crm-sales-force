@@ -1,5 +1,7 @@
 import { LightningElement, track } from "lwc";
 
+import FORM_FACTOR from '@salesforce/client/formFactor';
+
 import SDM_PlanAnual_KPICompare from "@salesforce/label/c.SDM_PlanAnual_KPICompare";
 import SDM_PlanAnual_Title from "@salesforce/label/c.SDM_PlanAnual_Title";
 import SDM_PlanAnual_ButtonCancel from "@salesforce/label/c.SDM_PlanAnual_ButtonCancel";
@@ -749,5 +751,15 @@ export default class UploadCaseDocumentation extends NavigationMixin(
     }
 
     return result;
+  }
+
+  // Propiedad: indica si el formulario se esta ejecutando en una pantalla grande
+  get isDesktop() {
+    return FORM_FACTOR === 'Large';
+  }
+
+  // Propiedad: indica si el formulario se esta ejecutando en una pantalla pequeña
+  get isPhone() {
+      return FORM_FACTOR === 'Small';
   }
 }
