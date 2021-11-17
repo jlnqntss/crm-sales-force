@@ -201,7 +201,7 @@ private class OpportunityUtilTest
      * @date 25/02/2021
      */
     @isTest
-    static void test_revertStageNameNull_ok()
+    static void test_preventNullUpdates_ok()
     {
         List<Account> accounts = [SELECT Name FROM Account];
         List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Quoted', System.today().addDays(10), 2);
@@ -215,6 +215,7 @@ private class OpportunityUtilTest
         for(Integer j = 0; j < optys.size(); j++)
         {
             optys[j].StageName = null;
+            optys[j].AccountId = null;
         }
         update optys;
         Test.stopTest();
@@ -232,7 +233,7 @@ private class OpportunityUtilTest
      * @date 25/02/2021
      */
     @isTest
-    static void test_revertStageNameNull_ko()
+    static void test_preventNullUpdates_ko()
     {
         List<Account> accounts = [SELECT Name FROM Account];
         List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Open', System.today().addDays(10), 2);
@@ -246,6 +247,7 @@ private class OpportunityUtilTest
         for(Integer j = 0; j < optys.size(); j++)
         {
             optys[j].StageName = 'Quoted';
+            optys[j].AccountId = accounts[0].Id;
         }
         update optys;
         Test.stopTest();

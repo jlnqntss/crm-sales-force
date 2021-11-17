@@ -362,6 +362,12 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
         WS_BusinessInsuranceAPIService.doPost();
         Test.stopTest();
 
+        // Se generan únicamente ofertas de test
+        for (Opportunity offer : [SELECT IsTest__c FROM Opportunity])
+        {
+            System.assertEquals(true, offer.IsTest__c, 'Se ha registrado una oferta de pruebas sin identificar');
+        }
+
         System.assertEquals(200, response.statusCode, 'Response statusCode should be 200');
     }
 

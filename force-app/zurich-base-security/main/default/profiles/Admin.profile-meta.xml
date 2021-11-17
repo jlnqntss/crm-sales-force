@@ -8391,7 +8391,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.IsPrivate</field>
+        <field>Opportunity.IsTest__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
