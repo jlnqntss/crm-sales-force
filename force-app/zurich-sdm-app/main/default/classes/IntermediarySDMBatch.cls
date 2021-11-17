@@ -143,6 +143,10 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
 
             // Finalmente, se envia la notificacion a los usuarios de que la visibilidad de sus mediadores ha cambiado
             sdm.sendNotification(sdm.listUserIdsToNotify);
+            
+            // Eliminar planes comerciales anuales de usuarios que les ha cambiado el panel de mediadores
+            PlanComercialSDM plan = new PlanComercialSDM();
+            plan.removeAnnualPlans(sdm.listDeletedAtms);
 
             // System.debug('------ AFTER => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
         } catch (Exception e) {

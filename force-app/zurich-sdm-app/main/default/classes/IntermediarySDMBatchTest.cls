@@ -35,10 +35,10 @@ private class IntermediarySDMBatchTest
         IntermediarySDMBatch batch = new IntermediarySDMBatch();
         // Preparamos la configuracion para el campo que nos interesa
         batch.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
         );
         batch.testSettingsACR = TestDataFactorySDM.getSDMSettingsACR(
-            TestDataFactorySDM.MAINEMAIL_ROL, TestDataFactorySDM.MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
+            SettingsSDM.ACR_ROL_MAINEMAIL, AccountsSelector.SDM_MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
         );
 
         Test.startTest();
@@ -61,10 +61,11 @@ private class IntermediarySDMBatchTest
         System.assertEquals(10, atmsAgrupation.size(), 'Deberia haber 10 ATMs para la agrupacion');
 
         // Comprobamos que se han creado las relaciones (ACR) correctamente
+        String roleLabel = (new SettingsSDM()).getACRRoleLabel(SettingsSDM.ACR_ROL_MAINEMAIL);
         List<AccountContactRelation> acrs = [
             SELECT Id, Roles FROM AccountContactRelation 
             WHERE AccountId IN :intermediaries
-            AND Roles includes(:TestDataFactorySDM.MAINEMAIL_ROL)
+            AND Roles includes(:roleLabel)
         ];
         System.assertEquals(10, acrs.size(), 'Deberia haber 10 ACRs');
     }

@@ -168,4 +168,36 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
 
         return childPlans;
     }
+
+    /**
+     * Recupera los planes comerciales anuales que tienen los mediadores y usuarios dados
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 11/10/2021
+     * 
+     * @param {List<Id> intermediaries} lista de ids de mediadores
+     * @return {List<Id> users} lista ids de usuarios
+     */
+    public List<PlanComercial__c> findAnnualPlansByIntermediariesAndUsers(Set<Id> intermediaries, Set<Id> users)
+    {
+        List<PlanComercial__c> result = null;
+
+        if( intermediaries != null && !intermediaries.isEmpty() && users != null && !users.isEmpty() ) {
+            this.baseQuery.selectFields (
+                new List<Schema.SObjectField> {
+                    PlanComercial__c.Id,
+                    PlanComercial__c.Intermediary__c,
+                    PlanComercial__c.AssignedTo__c
+                }
+            );
+            
+            this.baseQuery.addConditionEq(PlanComercial__c.RecordTypeId, rtPlanAnualId);
+            this.baseQuery.addConditionIn(PlanComercial__c.Intermediary__c, intermediaries);
+            this.baseQuery.addConditionIn(Plancomercial__c.AssignedTo__c, users);
+
+            result = (List<PlanComercial__c>) this.baseQuery.run();
+        }
+
+        return result;
+    }
 }
