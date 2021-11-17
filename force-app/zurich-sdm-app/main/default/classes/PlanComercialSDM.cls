@@ -42,6 +42,7 @@ public with sharing class PlanComercialSDM {
     @TestVisible
     private static final String SETTINGS_CALCULATION_TYPE_GROWTH = 'Growth';
     
+    SettingsSDM settings;    
 
     // Mapa de configuraciones del calculo de indicadores por indicador
     private Map<String, SDMCommercialPlan__mdt> mapSettingsIndicator;
@@ -63,21 +64,11 @@ public with sharing class PlanComercialSDM {
     private String thisMonth;
     private String lastMonthOfYear;
 
-
-    // Id del RecordType Intermediary del objeto Account
-    public Id rtIntermediaryId {
-        get {
-            if( rtIntermediaryId == null ) {
-                rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
-            }
-            return rtIntermediaryId;
-        }
-        set;
-    }
-
     // Constructor
     public PlanComercialSDM()
     {
+        settings = new SettingsSDM();
+
         // Se obtiene el año actual para la recuperacion de los KPIs (mensuales y anuales)
         this.thisYear = String.valueOf(Date.today().year());
         if( Test.isRunningTest() ) this.thisYear = '2021';
@@ -88,36 +79,6 @@ public with sharing class PlanComercialSDM {
         
         // Se obtiene el ultimo mes disponible para la recuperacion de los KPIs (anuales)
         this.lastMonthOfYear = (new KPIsSelector()).findThisYearsLastMonth();
-    }
-
-    /**
-     * Recuperamos de los metadatos de configuracion los tipos de calculos que seran necesarios para cada indicador
-     * de los planes comerciales
-     * 
-     * @author nts (agonzalezisasi)
-     * @date 26/07/2021
-     */
-    private void getSettingsIndicator()
-    {
-        // Si no existen los datos de configuracion...
-        if( mapSettingsIndicator == null ) {
-            // creamos el mapa
-            mapSettingsIndicator = new Map<String, SDMCommercialPlan__mdt>();
-            // Recuperamos los datos de configuracion de los indicadores
-            List<SDMCommercialPlan__mdt> settings = [
-                SELECT Indicator__c, CalculationType__c, FirstField__c, SecondField__c FROM SDMCommercialPlan__mdt
-            ];
-
-            // Solo para los test cambiamos la configuracion
-            if( Test.isRunningTest() && testSettingsIndicator != null ) {
-                settings = testSettingsIndicator;
-            }
-
-            // Por cada indicador...
-            for(SDMCommercialPlan__mdt s: settings) {
-                mapSettingsIndicator.put( s.Indicator__c, s );
-            }
-        }
     }
 
     /**
@@ -306,16 +267,10 @@ public with sharing class PlanComercialSDM {
         if( userIds != null && !userIds.isEmpty() ) {
             // Se recuperan los ATMs que hay para dichos usuarios. Se incluyen los campos del mediador y de la agrupacion
             // a la que pertenece
-            Id rtId = this.rtIntermediaryId;
-            List<AccountTeamMember> atms = [
-                SELECT id, AccountId, Account.ParentId, UserId
-                FROM AccountTeamMember
-                WHERE Account.RecordTypeId = :rtId
-                AND UserId IN :userIds
-            ];
+            List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findIntermediariesByUsers(userIds);
 
             // Si se han encontrado ATMs
-            if( !atms.isEmpty() ) {
+            if( atms != null && !atms.isEmpty() ) {
                 allIntermediaries = new Set<Id>();
                 // Crear un mapa de todos los mediadores de cada usuario
                 mapIntermediariesByUserId = new Map<Id, Set<Id>>();
@@ -402,7 +357,7 @@ public with sharing class PlanComercialSDM {
             kpiFields.addAll(KPI_FILTER_FIELDS);
 
             // Recuperamos la configuracion del calculo para cada indicador del plan comercial
-            getSettingsIndicator();
+            mapSettingsIndicator = settings.getSettingsIndicator(this.testSettingsIndicator);
 
             // Se genera un mapa de agrupaciones de mediadores para los planes actuales
             // findAgrupationsByPlan(plans);                        
@@ -557,32 +512,17 @@ public with sharing class PlanComercialSDM {
     }
 
     /**
-     * Recupera de la configuracion general el elemento indicado
-     */
-    private static String getNotificationSetup(String setupApiName, String defaultValue)
-    {
-        String result = defaultValue;
-        String setupValue = [
-            SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :setupApiName LIMIT 1
-        ]?.Value__c;
-
-        if( String.isNotBlank(setupValue) ) result = setupValue;
-
-        return result;
-    }
-
-    /**
      * Metodo que envia la siguiente notificacion a todos los usuarios (RN) que se les ha eliminado planes comerciales
      * anuales porque algun mediador les ha desparecido del panel
      * 
      * @param {Set<Id> userIds} Lista de usuario receptores de la notificacion
      * @param {Set<String> planSubjects} lista de asuntos de planes a incluir en el mensaje de la notificacion
      */
-    public static void sendNotificationRemovedPlans(Set<Id> userIds)
+    public void sendNotificationRemovedPlans(Set<Id> userIds)
     {
         if( userIds != null && !userIds.isEmpty() ) {
-            String title = getNotificationSetup(SETUP_NOTIF_REMOVE_PLAN_TITLE, SETUP_NOTIF_REMOVE_PLAN_TITLE_DEFAULT);
-            String bodyContent = getNotificationSetup(SETUP_NOTIF_REMOVE_PLAN_BODY, SETUP_NOTIF_REMOVE_PLAN_BODY_DEFAULT);
+            String title = this.settings.getSetupParameter(SETUP_NOTIF_REMOVE_PLAN_TITLE, SETUP_NOTIF_REMOVE_PLAN_TITLE_DEFAULT);
+            String bodyContent = this.settings.getSetupParameter(SETUP_NOTIF_REMOVE_PLAN_BODY, SETUP_NOTIF_REMOVE_PLAN_BODY_DEFAULT);
 
             Notification notif = new Notification(Notification.notificationType.SDMAlert);
             // Permite abrir la seccion de Cuentas, listview Mis Mediadores

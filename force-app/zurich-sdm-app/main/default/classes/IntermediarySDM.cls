@@ -23,86 +23,89 @@ public with sharing class IntermediarySDM {
     public static final String ATM_ACCOUNT_ACCESS_LEVEL = 'Read';
     public static final String ATM_CONTACT_ACCESS_LEVEL = 'Read';
 
+    public static final String INTERMEDIARY_FIELD_NATIONALID = 'NationalId__c';
+    public static final String INTERMEDIARY_FIELD_PARENTID = 'ParentId';
+    public static final String INTERMEDIARY_FIELD_NAME = 'Name';
+    public static final String INTERMEDIARY_FIELD_STATUS = 'StatusIntermediary__c';
+
     // CONFIGURACION
+    public SettingsSDM settings;
+
     // Relacion entre Rol de equipo de cuenta y campos de Mediador
-    private List<SDMAccountTeamRole__mdt> pSettingsATM; 
     public List<SDMAccountTeamRole__mdt> SettingsATM {
+        set;
         get {
-            if( psettingsATM == null ) {
-                psettingsATM = getAccountRolesWithIntermediaryFields();
+            if( SettingsATM == null ) {
+                SettingsATM = this.settings.getAccountRolesWithIntermediaryFields(
+                    this.testSettingsATM
+                );
             }
-            return psettingsATM;
+            return SettingsATM;
         }
     }
-    private Set<String> pSettingsATMFields;
     public Set<String> SettingsATMFields {
+        set;
         get {
-            if( pSettingsATMFields == null ) {
-                pSettingsATMFields = new Set<String>();
+            if( SettingsATMFields == null ) {
+                SettingsATMFields = new Set<String>();
                 if( SettingsATM != null && !SettingsATM.isEmpty() ) {
                     // Get the list of Intermediary fields
                     for( SDMAccountTeamRole__mdt s: SettingsATM ) {
-                        pSettingsATMFields.add(s.IntermediaryField__c);
+                        SettingsATMFields.add(s.IntermediaryField__c);
                     }
                 }
             }
-            return pSettingsATMFields;
+            return SettingsATMFields;
         }
     }
     @testvisible
     private List<SDMAccountTeamRole__mdt> testSettingsATM;
-    @testvisible
-    private Map<String, String> mapATMRoleToLabel;
 
     // Relacion entre Rol de cuenta-contacto y campos de Mediador
-    List<SDMAccountContactRelation__mdt> pSettingsACR;
     public List<SDMAccountContactRelation__mdt> SettingsACR {
+        set;
         get {
-            if( pSettingsACR == null ) {
-                pSettingsACR = getContactRolesWithIntermediaryFields();
+            if( SettingsACR == null ) {
+                SettingsACR = this.settings.getContactRolesWithIntermediaryFields(
+                    this.testSettingsACR
+                );
             }
-            return pSettingsACR;
+            return SettingsACR;
         }
     }
-    private Set<String> pSettingsACRFields;
     public Set<String> SettingsACRFields {
+        set;
         get {
-            if( pSettingsACRFields == null ) {
-                pSettingsACRFields = new Set<String>();
+            if( SettingsACRFields == null ) {
+                SettingsACRFields = new Set<String>();
                 if( SettingsACR != null && !SettingsACR.isEmpty() ) {
                     // Get the list of Intermediary fields
                     for( SDMAccountContactRelation__mdt s: SettingsACR ) {
-                        pSettingsACRFields.add(s.IntermediaryField__c);
+                        SettingsACRFields.add(s.IntermediaryField__c);
                     }
                 }
             }
-            return pSettingsACRFields;
+            return SettingsACRFields;
         }
     }
     @testvisible
     private List<SDMAccountContactRelation__mdt> testSettingsACR;
-    @testvisible
-    private Map<String, String> mapACRRoleToLabel;
 
     // Nombre del responsable de negocio: Director Territorial Centralizados => no tiene equipos de cuenta (ATM)
     private String rnNameNoATM {
+        set;
         get {
             if( String.isBlank(rnNameNoATM) ) rnNameNoATM = getRNName();
             return rnNameNoATM;
-        }
-        set {
-            rnNameNoATM = value;
         }
     }
     @testvisible
     private String testrnNameNoATM;
     public String rnFieldNoATM{
+        set;
         get {
             if( String.isBlank(rnFieldNoATM) ) rnFieldNoATM = getRNField();
             return rnFieldNoATM;
-        }
-        set {
-            rnFieldNoATM = value;
         }
     }
     @testvisible
@@ -110,22 +113,18 @@ public with sharing class IntermediarySDM {
     
     // Metadato de configuracion: Titulo de la notificacion
     private String notificationTitle {
+        set;
         get {
             if( notificationTitle == null ) notificationTitle = this.getNotificationTitle();
             return notificationTitle;
         }
-        set {
-            notificationTitle = value;
-        }
     }
     // Metadato de configuracion: Cuerpo de la notificacion
     private String notificationBody {
+        set;
         get {
             if( notificationBody == null ) notificationBody = this.getNotificationBody();
             return notificationBody;
-        }
-        set {
-            notificationBody = value;
         }
     }
 
@@ -164,97 +163,20 @@ public with sharing class IntermediarySDM {
     // Plan anual - Se registran los ATMs eliminados para ver si hay que borrar tambien planes anuales
     public List<AccountTeamMember> listDeletedAtms;
 
-    // METODOS    
-    /**
-     * Recupera la relacion entre los roles del objeto Account Team Member y los campos de la cuenta de tipo 
-     * Mediador (Intermediary)
-     */
-    private List<SDMAccountTeamRole__mdt> getAccountRolesWithIntermediaryFields()
+    // CONSTRUCTOR
+    public IntermediarySDM()
     {
-        List<SDMAccountTeamRole__mdt> result = [
-            SELECT Role__c, IntermediaryField__c, Status__c 
-            FROM SDMAccountTeamRole__mdt
-        ];
-
-        // Solo para los test cambiamos los datos de configuracion
-        if( Test.isRunningTest() && this.testSettingsATM != null && !this.testSettingsATM.isEmpty() ) {
-            result.clear();
-            result.addAll(this.testSettingsATM);
-        }
-        return result;
+        settings = new SettingsSDM();
     }
-
-    /**
-     * Recupera la relacion de valores de Rol de AccountTeamMember con la etiqueta de la configuracion
-     */
-    public String getATMRoleLabel(String role)
-    {
-        String result = role;
-        if( this.mapATMRoleToLabel == null ) {
-            this.mapATMRoleToLabel = new Map<String, String>();
-            List<Schema.PicklistEntry> P = SDMAccountTeamRole__mdt.Role__c.getDescribe().getPicklistValues();
-            for(Schema.PicklistEntry e: p) {
-                this.mapATMRoleToLabel.put(e.getValue(), e.getLabel());
-            }
-        }
-
-        if( this.mapATMRoleToLabel.containsKey(role) ) {
-            result= this.mapATMRoleToLabel.get(role);
-        }
-
-        return result;
-    }
-
-    /**
-     * Recupera la relacion de valores de Rol de AccountContactRelation con la etiqueta de la configuracion
-     */
-    @testvisible
-    private String getACRRoleLabel(String role)
-    {
-        String result = role;
-        if( this.mapACRRoleToLabel == null ) {
-            this.mapACRRoleToLabel = new Map<String, String>();
-            List<Schema.PicklistEntry> P = SDMAccountContactRelation__mdt.Role__c.getDescribe().getPicklistValues();
-            for(Schema.PicklistEntry e: p) {
-                this.mapACRRoleToLabel.put(e.getValue(), e.getLabel());
-            }
-        }
-
-        if( this.mapACRRoleToLabel.containsKey(role) ) {
-            result= this.mapACRRoleToLabel.get(role);
-        }
-
-        return result;
-    }
-
-    /**
-     * Recupera la relacion entre los roles del objeto Account Contact Relation y los campos de la cuenta de tipo 
-     * Mediador (Intermediary)
-     */
-    private List<SDMAccountContactRelation__mdt> getContactRolesWithIntermediaryFields()
-    {
-        List<SDMAccountContactRelation__mdt> result = [
-            SELECT Role__c, IntermediaryField__c, NameText__c 
-            FROM SDMAccountContactRelation__mdt
-        ];
-
-        // Solo para los test cambiamos los datos de configuracion
-        if( Test.isRunningTest() && this.testSettingsACR != null && !this.testSettingsACR.isEmpty() ) {
-            result.clear();
-            result.addAll(this.testSettingsACR);
-        }
-
-        return result;
-    }
+    
+    // METODOS
 
     /**
      * Recupera de la configuracion el nombre del responsable de negocio de mediadores
      */
     private String getRNName()
     {
-        String result = [
-            SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :SETUP_RC_NAME LIMIT 1
-        ]?.Value__c;
+        String result = this.settings.getSetupParameter(SETUP_RC_NAME, null);
 
         if( Test.isRunningTest() && String.isNotBlank(this.testrnNameNoATM) ) result = this.testrnNameNoATM;
 
@@ -266,9 +188,7 @@ public with sharing class IntermediarySDM {
      */
     private String getRNField()
     {
-        String result = [
-            SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :SETUP_RC_FIELD LIMIT 1
-        ]?.Value__c;
+        String result = this.settings.getSetupParameter(SETUP_RC_FIELD, null);
 
         if( Test.isRunningTest() && String.isNotBlank(this.testrnFieldNoATM) ) result = this.testrnFieldNoATM;
 
@@ -280,11 +200,9 @@ public with sharing class IntermediarySDM {
      */
     private String getNotificationTitle()
     {
-        String result = [
-            SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :SETUP_NOTIFICATION_TITLE LIMIT 1
-        ]?.Value__c;
-
-        if( result == null ) result = 'Cambios en la visibilidad de tus Mediadores';
+        String result = this.settings.getSetupParameter(
+            SETUP_NOTIFICATION_TITLE, 'Cambios en la visibilidad de tus Mediadores'
+        );
 
         return result;
     }
@@ -294,11 +212,9 @@ public with sharing class IntermediarySDM {
      */
     private String getNotificationBody()
     {
-        String result = [
-            SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :SETUP_NOTIFICATION_BODY LIMIT 1
-        ]?.Value__c;
-
-        if( result == null ) result = 'La asignación de mediadores relacionados con tu usuario ha sido modificada. Puedes comprobar los cambios en la sección de Cuentas.';
+        String result = this.settings.getSetupParameter(
+            SETUP_NOTIFICATION_BODY, 'La asignación de mediadores relacionados con tu usuario ha sido modificada. Puedes comprobar los cambios en la sección de Cuentas.'
+        );
 
         return result;
     }
@@ -341,58 +257,25 @@ public with sharing class IntermediarySDM {
      */
     private void findATMsByIntermediaries(List<Account> intermediaries)
     {
-        List<AccountTeamMember> atms = [
-            SELECT Id, AccountId, UserId, User.Email, TeamMemberRole 
-            FROM AccountTeamMember 
-            WHERE AccountId IN :intermediaries
-        ];
+        List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findByIntermediary(intermediaries);
 
         // Mapa de ATM por Id de mediador asociado, Rol de ATM y por Id de usuario
         this.mapATMsByAccountRolUser = new Map<ID, Map<string, Map<ID, AccountTeamMember>>>();
-        for(AccountTeamMember atm: atms) {
-            Map<String, Map<ID, AccountTeamMember>> mapRoles = this.mapATMsByAccountRolUser.get(atm.AccountId);
-            if( mapRoles == null ) {
-                mapRoles = new Map<String, Map<ID, AccountTeamMember>>();
-                this.mapATMsByAccountRolUser.put(atm.AccountId, mapRoles);
+        if( atms != null && !atms.isEmpty() ) {
+            for(AccountTeamMember atm: atms) {
+                Map<String, Map<ID, AccountTeamMember>> mapRoles = this.mapATMsByAccountRolUser.get(atm.AccountId);
+                if( mapRoles == null ) {
+                    mapRoles = new Map<String, Map<ID, AccountTeamMember>>();
+                    this.mapATMsByAccountRolUser.put(atm.AccountId, mapRoles);
+                }
+                Map<ID, AccountTeamMember> mapUser = mapRoles.get(atm.TeamMemberRole);
+                if( mapUser == null ) {
+                    mapUser = new Map<ID, AccountTeamMember>();
+                    mapRoles.put(atm.TeamMemberRole, mapUser);
+                }
+                mapUser.put(atm.UserId, atm);
             }
-            Map<ID, AccountTeamMember> mapUser = mapRoles.get(atm.TeamMemberRole);
-            if( mapUser == null ) {
-                mapUser = new Map<ID, AccountTeamMember>();
-                mapRoles.put(atm.TeamMemberRole, mapUser);
-            }
-            mapUser.put(atm.UserId, atm);
         }
-    }
-
-    private List<AccountTeamMember> findATMsByNationalIDs(Set<String> nationalIDs )
-    {
-        List<AccountTeamMember> atms = [
-            SELECT Id, AccountId, Account.NationalID__c, Account.ParentId, UserId, TeamMemberRole, 
-                   Account.RecordType.DeveloperName
-            FROM AccountTeamMember
-            WHERE AccountId IN (
-                SELECT Id FROM Account WHERE NationalID__c IN :nationalIDs
-            )
-        ];
-        
-        return atms;
-    }
-
-    /**
-     * Recupera los Account Team Members que pertecen a los roles indicados por parametro.
-     * Incluimos el UserId para poder notificar el cambio en la visibilidad al borrar los ATM
-     * 
-     * @param {List<String> roles} Lista de roles
-     */
-    private List<AccountTeamMember> findATMsByRoles(List<String> roles)
-    {
-        List<AccountTeamMember> atms = [
-            SELECT Id, UserId
-            FROM AccountTeamMember
-            WHERE TeamMemberRole IN :roles
-        ];
-        
-        return atms;
     }
 
     /**
@@ -404,36 +287,36 @@ public with sharing class IntermediarySDM {
      */
     private void findACRsByIntermediaries(List<Account> intermediaries)
     {
-        List<AccountContactRelation> acrs = [
-            SELECT Id, AccountId, ContactId, Contact.Email, Roles, StartDate, EndDate, IsActive, isDirect
-            FROM AccountContactRelation
-            WHERE AccountId IN :intermediaries
-        ];
+        List<AccountContactRelation> acrs = (new AccountContactRelationSelector()).findByIntermediaries(
+            intermediaries
+        );
 
         // Mapa de ACRs por Id de Mediador y por Id de Contacto
         this.mapACRsByAccountContact = new Map<ID, Map<ID, AccountContactRelation>>();
         // Mapa de ACRs por Id de Mediador y por Role
         this.mapACRsByAccountRole = new Map<ID, Map<String, AccountContactRelation>>();
 
-        for( AccountContactRelation acr: acrs ) {
-            // Mapa de ACRs por Id de Mediador y por Id de Contacto
-            Map<ID, AccountContactRelation> mapContact = this.mapACRsByAccountContact.get(acr.AccountId);
-            if( mapContact == null ) {
-                mapContact = new Map<ID, AccountContactRelation>();
-                this.mapACRsByAccountContact.put(acr.AccountId, mapContact);
-            }
-            mapContact.put(acr.Contactid, acr);
-            
-            // Mapa de ACRs por Id de Mediador y por cada role que tenga la relacion
-            List<String> roles = acr.Roles?.split(';');
-            if( roles != null ) {
-                for(String role: roles) {
-                    Map<String, AccountContactRelation> mapRole = this.mapACRsByAccountRole.get(acr.AccountId);
-                    if( mapRole == null ) {
-                        mapRole = new Map<String, AccountContactRelation>();
-                        this.mapACRsByAccountRole.put(acr.AccountId, mapRole);
+        if( acrs != null && !acrs.isEmpty() ) {
+            for( AccountContactRelation acr: acrs ) {
+                // Mapa de ACRs por Id de Mediador y por Id de Contacto
+                Map<ID, AccountContactRelation> mapContact = this.mapACRsByAccountContact.get(acr.AccountId);
+                if( mapContact == null ) {
+                    mapContact = new Map<ID, AccountContactRelation>();
+                    this.mapACRsByAccountContact.put(acr.AccountId, mapContact);
+                }
+                mapContact.put(acr.Contactid, acr);
+                
+                // Mapa de ACRs por Id de Mediador y por cada role que tenga la relacion
+                List<String> roles = acr.Roles?.split(';');
+                if( roles != null ) {
+                    for(String role: roles) {
+                        Map<String, AccountContactRelation> mapRole = this.mapACRsByAccountRole.get(acr.AccountId);
+                        if( mapRole == null ) {
+                            mapRole = new Map<String, AccountContactRelation>();
+                            this.mapACRsByAccountRole.put(acr.AccountId, mapRole);
+                        }
+                        mapRole.put(role, acr);
                     }
-                    mapRole.put(role, acr);
                 }
             }
         }
@@ -530,8 +413,8 @@ public with sharing class IntermediarySDM {
             // Comprobamos en el PRIMER Mediador si tienen el campo CIF y su Agrupacion Actual, 
             // sino lo tiene se vuelven a recuperar
             Map<String, Object> fieldsToValue = intermediariesToProcess[0].getPopulatedFieldsAsMap();
-            if( !fieldsToValue.containsKey('NationalId__c') || !fieldsToValue.containsKey('ParentId') || !fieldsToValue.containsKey('Name') ) {
-                Set<String> fields = new Set<String>{'NationalId__c', 'ParentId', 'Name'};
+            if( !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID) || !fieldsToValue.containsKey(INTERMEDIARY_FIELD_PARENTID) || !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NAME) ) {
+                Set<String> fields = new Set<String>{INTERMEDIARY_FIELD_NATIONALID, INTERMEDIARY_FIELD_PARENTID, INTERMEDIARY_FIELD_NAME};
                 intermediariesToProcess = new AccountsSelector().findWithFields(intermediaries, fields);
             }
 
@@ -657,10 +540,10 @@ public with sharing class IntermediarySDM {
 
             // Comprobamos si el primer Mediador tiene el campo Status
             Map<String, Object> fieldsToValue = intermediariesToProcess[0].getPopulatedFieldsAsMap();
-            if( !fieldsToValue.containsKey('StatusIntermediary__c') || !fieldsToValue.containsKey('NationalId__c') ) {
+            if( !fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS) || !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID) ) {
                 Set<String> fields = this.SettingsATMFields;
-                fields.add('StatusIntermediary__c');
-                fields.add('NationalId__c');
+                fields.add(INTERMEDIARY_FIELD_STATUS);
+                fields.add(INTERMEDIARY_FIELD_NATIONALID);
                 if( this.rnFieldNoATM != null ) fields.add(this.rnFieldNoATM);
                 intermediariesToProcess = new AccountsSelector().findWithFields(intermediaries, fields);
             }
@@ -706,7 +589,7 @@ public with sharing class IntermediarySDM {
                     for( SDMAccountTeamRole__mdt s: this.SettingsATM ) {
                         if( String.isNotBlank(s.IntermediaryField__c) && s.Status__c == ATM_ROL_STATUS_ACTIVE ) {
                             // Buscamos la etiqueta del rol si la hay
-                            String roleLabel = this.getATMRoleLabel(s.Role__c);
+                            String roleLabel = this.settings.getATMRoleLabel(s.Role__c);
 
                             // Recuperamos el ATM, si existe, para esa cuenta y rol
                             Map<ID, AccountTeamMember> mapAtmByUserId = this.mapATMsByAccountRolUser?.get(i.Id)?.get(roleLabel);
@@ -835,7 +718,7 @@ public with sharing class IntermediarySDM {
                 // Por cada relacion de rol contact - campo mediador
                 for( SDMAccountContactRelation__mdt rel: this.SettingsACR) {
                     // Buscamos la etiqueta del rol si la hay
-                    String roleLabel = this.getACRRoleLabel(rel.Role__c);
+                    String roleLabel = this.settings.getACRRoleLabel(rel.Role__c);
 
                     // ACRs de Contactos para el Mediador
                     Map<ID, AccountContactRelation> mapACRsByContact = this.mapACRsByAccountContact?.get(i.Id);
@@ -873,8 +756,8 @@ public with sharing class IntermediarySDM {
                                 );
                                 // Si es el principal, se copia tambien el telefono
                                 // todo: poner esta parte en configuracion
-                                if( rel.IntermediaryField__c.equals('MainEmail__c') && fieldsToValue.containsKey('MainMobilePhone__c') ) {
-                                    newContact.MobilePhone = String.valueOf(fieldsToValue.get('MainMobilePhone__c'));
+                                if( rel.IntermediaryField__c.equals(AccountsSelector.SDM_MAINEMAIL_FIELD) && fieldsToValue.containsKey(AccountsSelector.SDM_MAINMOBILEPHONE_FIELD) ) {
+                                    newContact.MobilePhone = String.valueOf(fieldsToValue.get(AccountsSelector.SDM_MAINMOBILEPHONE_FIELD));
                                 }
                                 
                                 // Se preparan los mapas para la nueva relacion entre el contacto, la cuenta y el rol...
@@ -1024,7 +907,7 @@ public with sharing class IntermediarySDM {
         if( agrupationNationalIDs != null && !agrupationNationalIDs.isEmpty() ) {
             // 1. Recuperamos los ATMs que hay para los CIFs dados, tanto los de las agrupaciones como los 
             // de los mediadores
-            List<AccountTeamMember> atms = findATMsByNationalIDs(agrupationNationalIDs);
+            List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findByNationalIDs(agrupationNationalIDs);
 
             // Si hay ATMs
             if( atms != null && !atms.isEmpty() ) {
@@ -1188,7 +1071,7 @@ public with sharing class IntermediarySDM {
         for( SDMAccountTeamRole__mdt s: this.SettingsATM ) {
             if( s.Status__c == ATM_ROL_STATUS_INACTIVE ) {
                 // Recumperamos la etiqueta del rol
-                String roleLabel = this.getATMRoleLabel(s.Role__c);
+                String roleLabel = this.settings.getATMRoleLabel(s.Role__c);
 
                 // Lo marcamos para borrar
                 inactiveRoles.add(roleLabel);
@@ -1198,7 +1081,7 @@ public with sharing class IntermediarySDM {
         // Si hay roles inactivos...
         if( !inactiveRoles.isEmpty() ) {
             // Recuperamos los ATMs para esos roles
-            List<AccountTeamMember> atmsToDelete = this.findATMsByRoles(inactiveRoles);
+            List<AccountTeamMember> atmsToDelete = (new AccountTeamMemberSelector()).findByRoles(inactiveRoles);
             // Recorremos los ATMs recuperados para incluir a los usuarios en la notificacion de cambio de
             // visibilidad
             for(AccountTeamMember atm: atmsToDelete) {
