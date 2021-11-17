@@ -717,7 +717,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                                 // Compare the value of the Intermediary for that field with the email of the user
                                 String fieldValue = (String)i.get(s.IntermediaryField__c);
                                 if( fieldValue != null && fieldValue.equalsIgnoreCase(email) ) {
-                                    String roleLabel = sdm.getATMRoleLabel(s.Role__c);
+                                    String roleLabel = sdm.settings.getATMRoleLabel(s.Role__c);
                                     
                                     // ATM to be created
                                     AccountTeamMember atm = new AccountTeamMember(

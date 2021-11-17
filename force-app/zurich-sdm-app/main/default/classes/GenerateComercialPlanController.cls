@@ -11,38 +11,30 @@ public with sharing class GenerateComercialPlanController
 {
     private static final String CLASS_NAME = 'GenerateComercialPlanController';
 
-    // Roles de Salesforce de los usuarios que pueden usar la pantalla
-    @Testvisible
-    private static final String SF_ROLE_DT_DEVNAME = 'SDM_DT'; // Rol Director Territorial
-    private static final String SF_ROLE_DV_DEVNAME = 'SDM_DV'; // Rol Director Vida
-    @Testvisible
-    private static final String SF_ROLE_RN_DEVNAME = 'SDM_RN'; // Rol Responsable de Negocio
-    private static final String SF_ROLE_CV_DEVNAME = 'SDM_CV'; // Rol Consultor vida
-
     // Lista de roles de Salesforce que pueden ejercer de Directores en la pantalla
     private static final List<String> Directors = new List<String> {
-        SF_ROLE_DT_DEVNAME,
-        SF_ROLE_DV_DEVNAME
+        SettingsSDM.SF_ROLE_DT_DEVNAME,
+        SettingsSDM.SF_ROLE_DV_DEVNAME
     };
 
     // Lista de roles de Salesforce que pueden ejercer de Consultores o RNs en la pantalla
     private static final List<String> Consultants = new List<String> {
-        SF_ROLE_RN_DEVNAME,
-        SF_ROLE_CV_DEVNAME
+        SettingsSDM.SF_ROLE_RN_DEVNAME,
+        SettingsSDM.SF_ROLE_CV_DEVNAME
     };
 
     // Relacion entre el rol de Salesforce y el campo de email en el objeto mediador (account)
     private static final Map<String, String> mapEmailFieldsByUserRole = new Map<String, String> {
-        SF_ROLE_DT_DEVNAME => AccountsSelector.SDM_DT_EMAIL_FIELD,
-        SF_ROLE_RN_DEVNAME => AccountsSelector.SDM_RN_EMAIL_FIELD,
-        SF_ROLE_DV_DEVNAME => AccountsSelector.SDM_DV_EMAIL_FIELD,
-        SF_ROLE_CV_DEVNAME => AccountsSelector.SDM_CV_EMAIL_FIELD
+        SettingsSDM.SF_ROLE_DT_DEVNAME => AccountsSelector.SDM_DT_EMAIL_FIELD,
+        SettingsSDM.SF_ROLE_RN_DEVNAME => AccountsSelector.SDM_RN_EMAIL_FIELD,
+        SettingsSDM.SF_ROLE_DV_DEVNAME => AccountsSelector.SDM_DV_EMAIL_FIELD,
+        SettingsSDM.SF_ROLE_CV_DEVNAME => AccountsSelector.SDM_CV_EMAIL_FIELD
     };
 
     // Relacion entre el rol de Salesforce de Director y el Rol de Consultor o RN del usuario en el equipo de cuenta de los mediadores
     private static final Map<String, String> mapATMRoleByUserRole = new Map<String, String> {
-        SF_ROLE_DT_DEVNAME => AccountTeamMemberSelector.ATM_ROLE_RN_NAME,
-        SF_ROLE_DV_DEVNAME => AccountTeamMemberSelector.ATM_ROLE_CV_NAME
+        SettingsSDM.SF_ROLE_DT_DEVNAME => SettingsSDM.ATM_ROL_BUSINESS,
+        SettingsSDM.SF_ROLE_DV_DEVNAME => SettingsSDM.ATM_ROL_LIFECONSULTANT
     };
 
     public static final String ROW_LABEL_SEGMENT = Label.SDM_PlanAnual_RowSegment;
@@ -1356,8 +1348,8 @@ public with sharing class GenerateComercialPlanController
             String bodyContent = Label.SDM_PlanAnual_NotifBody + ' ' + String.join(new List<String>(planSubjects), ',');
 
             Notification notif = new Notification(Notification.notificationType.SDMAlert);
-            // Permite abrir la seccion de Cuentas, listview Mis Mediadores
-            notif.addPageReference('standard__objectPage', 'PlanComercial__c', 'list', 'Planes_anuales');
+            // Permite abrir la ventana de gestion de planes anuales
+            notif.addPageReference('standard__navItemPage', 'GenerarPlan');
             // Convertimos la lista de ids de usuario a string
             Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
             notif.send(stringSet, title, bodyContent);
@@ -1405,11 +1397,12 @@ public with sharing class GenerateComercialPlanController
                 // Recuperamos el rol ATM del Consultor o RN que buscaremos en los equipos de cuentas de los mediadores del
                 // director
                 String consultantRole = mapATMRoleByUserRole.get(roleName);
+                String consultantRoleLabel = (new SettingsSDM()).getATMRoleLabel(consultantRole);
 
-                if( String.isNotBlank(directorEmailField) && String.isNotBlank(consultantRole) ) {
+                if( String.isNotBlank(directorEmailField) && String.isNotBlank(consultantRoleLabel) ) {
                     // Lista de consultores o RNs del director
                     List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findUsersByRoleAndEmailField(
-                        consultantRole,
+                        consultantRoleLabel,
                         directorEmailField,
                         userEmail
                     );

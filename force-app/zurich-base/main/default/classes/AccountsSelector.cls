@@ -8,6 +8,10 @@ public with sharing class AccountsSelector extends RecordsSelector
     public static final String SDM_DV_EMAIL_FIELD = 'LifeManagerEmail__c';          // Director Vida
     public static final String SDM_CV_EMAIL_FIELD = 'LifeConsultantEmail__c';       // Consultor Vida
 
+    public static final String SDM_MAINEMAIL_FIELD = 'MainEmail__c';
+    public static final String SDM_MAINMOBILEPHONE_FIELD = 'MainMobilePhone__c';
+    public static final String SDM_RN_FIELD = 'TerritorialDirection__c';
+
     //#region Contructores
 
     public AccountsSelector()
