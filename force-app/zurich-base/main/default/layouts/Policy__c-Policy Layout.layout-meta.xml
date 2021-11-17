@@ -126,13 +126,21 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>EndDate__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>MovementStartDate__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>EndDate__c</field>
+                <field>InfoCreatedDate__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>InfoLastModifiedDate__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -181,6 +189,10 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>CreatedById</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>InfoUser__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

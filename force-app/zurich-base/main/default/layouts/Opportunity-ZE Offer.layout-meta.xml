@@ -145,7 +145,12 @@
                 <field>ExpirationDate__c</field>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns/>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>InfoLastModifiedDate__c</field>
+            </layoutItems>
+        </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
@@ -187,6 +192,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>FirstReceipt__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>InfoUser__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
