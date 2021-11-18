@@ -27,6 +27,7 @@ export default class CallMeBackList extends LightningElement {
 
   callMeBacks;
   error;
+  isEmpty;
   isLoading = false;
 
   // Consulta de contact person Id
@@ -96,35 +97,36 @@ export default class CallMeBackList extends LightningElement {
       );
       this.authorize();
     } else {
+      genesysCloud.cancelCallBack(row.GenesysInteractionId__c, row.Id);
       const fields = {};
       fields[CONTACT_REQUEST_ID.fieldApiName] = row.Id;
       fields[CONTACT_REQUEST_STATUS.fieldApiName] = "Cancelled";
-      const recordInput = { fields };
-      updateRecord(recordInput)
-        .then((result) => {
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Contact updated",
-              variant: "success"
-            })
-          );
-          // otra función
-          this.callMeBacks = this.callMeBacks.filter(
-            (element) => element.Id !== row.Id
-          );
-          console.log(result);
-          genesysCloud.cancelCallBack(row.GenesysInteractionId__c, result);
-        })
-        .catch((error) => {
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Error creating record",
-              message: error.body.message,
-              variant: "error"
-            })
-          );
-        });
+    //   const recordInput = { fields };
+    //   updateRecord(recordInput)
+    //     .then((result) => {
+    //       this.dispatchEvent(
+    //         new ShowToastEvent({
+    //           title: "Success",
+    //           message: "Contact updated",
+    //           variant: "success"
+    //         })
+    //       );
+    //       // otra función
+    //       this.callMeBacks = this.callMeBacks.filter(
+    //         (element) => element.Id !== row.Id
+    //       );
+    //       console.log(result);
+          
+    //     })
+    //     .catch((error) => {
+    //       this.dispatchEvent(
+    //         new ShowToastEvent({
+    //           title: "Error creating record",
+    //           message: error.body.message,
+    //           variant: "error"
+    //         })
+    //       );
+    //     });
     }
     // Display fresh data in the form
   }
@@ -205,5 +207,19 @@ export default class CallMeBackList extends LightningElement {
    */
   get columnsDefinition() {
     return JSON.parse(this.columns);
+  }
+
+    /**
+   * Título de la tabla.
+   * @author jjuaristi
+   * @date 18/11/2021
+   * @return String que contiene el título.
+   */
+  get title(){
+    let title = "Call me backs";
+    if(this.isEmpty){
+        title =this.title + " (0)";
+    }
+    return title;
   }
 }
