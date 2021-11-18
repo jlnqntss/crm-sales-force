@@ -46,3 +46,7 @@
   border-top: 1px solid gray;
   color: rgb(81, 79, 77);
 }
+
+.my-css-table {
+  min-height: 30rem;
+}
