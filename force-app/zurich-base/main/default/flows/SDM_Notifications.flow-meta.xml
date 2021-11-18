@@ -498,7 +498,7 @@ IF
     <textTemplates>
         <name>BodyKPIReached</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>Se ha cumplido la condición que especificaste en el plan de acción con asunto &quot;{!$Record.Name}&quot;, si te gustaría comunicárselo al mediador puedes enviarle un e-mail</text>
+        <text>Se ha cumplido la condición que especificaste del plan comercial con asunto &quot;{!$Record.Name}&quot;</text>
     </textTemplates>
     <textTemplates>
         <name>BodyPlanEnded</name>
