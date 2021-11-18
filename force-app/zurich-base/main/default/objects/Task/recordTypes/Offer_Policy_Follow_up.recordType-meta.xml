@@ -176,63 +176,7 @@
     <picklistValues>
         <picklist>Subject</picklist>
         <values>
-            <fullName>Abandono</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Buzón de saturación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Buzón fuera de horario</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Call</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Call me now</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Expertise request</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Interacción programada</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Other</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Receipt review</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Reminder</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Scaled other areas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Scaling Supervisor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Send Letter</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Send Quote</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Technical direction scaling</fullName>
             <default>false</default>
         </values>
     </picklistValues>
