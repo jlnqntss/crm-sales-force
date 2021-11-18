@@ -77,8 +77,8 @@ public with sharing class ContactRequestSelector extends RecordsSelector
         // GenesysInteractionId__c != null
         Query.Condition condition = Query.doAnd(
             Query.conditionNotEq(ContactRequest.Status, STATUS_CANCELLED),
-            Query.conditionEq(ContactRequest.WhoId, customerId)
-            // Query.conditionNotNull(ContactRequest.GenesysInteractionId__c)
+            Query.conditionEq(ContactRequest.WhoId, customerId),
+            Query.conditionNotNull(ContactRequest.GenesysInteractionId__c)
         );
 
         // Se estructura la query.

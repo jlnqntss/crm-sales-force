@@ -1,10 +1,13 @@
 import { LightningElement, api, wire } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import { getRecord } from "lightning/uiRecordApi";
+import { getRecord, updateRecord } from "lightning/uiRecordApi";
+import { refreshApex } from "@salesforce/apex";
 import PERSON_CONTACT_ID from "@salesforce/schema/Account.PersonContactId";
+import CONTACT_REQUEST_ID from "@salesforce/schema/ContactRequest.Id";
+import CONTACT_REQUEST_STATUS from "@salesforce/schema/ContactRequest.Status";
 
 import getContactRequestsByCustomerId from "@salesforce/apex/CallMeBackListController.getContactRequestsByCustomerId";
-import statusToCancelled from "@salesforce/apex/CallMeBackListController.statusToCancelled";
+// import statusToCancelled from "@salesforce/apex/CallMeBackListController.statusToCancelled";
 import genesysCloud from "c/genesysCloudService";
 
 const ERROR_TITLE = "Error";
@@ -30,9 +33,13 @@ export default class CallMeBackList extends LightningElement {
   @wire(getRecord, { recordId: "$recordId", fields: [PERSON_CONTACT_ID] })
   getAccount({ error, data }) {
     if (data) {
+      console.log(
+        "🚀 ~ file: callMeBackList.js ~ line 36 ~ CallMeBackList ~ getAccount ~ data.fields.personContactId",
+        data.fields.PersonContactId.value
+      );
       this.isLoading = true;
       getContactRequestsByCustomerId({
-        whoId: data.fields.personContactId
+        whoId: data.fields.PersonContactId.value
       }).then(this.resolve.bind(this), this.reject.bind(this));
       this.error = undefined;
     } else if (error) {
@@ -49,8 +56,8 @@ export default class CallMeBackList extends LightningElement {
    * @param {Object} data Lista de Contact Request.
    */
   resolve(data) {
+    this.callMeBacks = [];
     data.forEach((element) => {
-      this.callMeBacks = [];
       let callMeBack = Object.assign({}, element);
       callMeBack.url = window.location.hostname + "/" + callMeBack.Id;
       this.callMeBacks.push(callMeBack);
@@ -66,7 +73,7 @@ export default class CallMeBackList extends LightningElement {
    */
   reject(error) {
     this.isLoading = false;
-    this.ShowToast(ERROR_TITLE, NO_RECORDS_FOUND, ERROR_VARIANT);
+    this.showMessage(ERROR_TITLE, NO_RECORDS_FOUND, ERROR_VARIANT);
     console.error(error.body.message);
   }
 
@@ -78,7 +85,6 @@ export default class CallMeBackList extends LightningElement {
    * @date 28/10/2021
    */
   async handleRowAction(event) {
-    const actionName = event.detail.action.name;
     const row = event.detail.row;
 
     // Si el usuario no está autorizado será redireccionado.
@@ -90,26 +96,37 @@ export default class CallMeBackList extends LightningElement {
       );
       this.authorize();
     } else {
-      statusToCancelled({
-        genesysInteractionId: row.GenesysInteractionId__c
-      }).then((result) => {
-        console.log(result);
-        //   genesysCloud.cancelCallBack(row.GenesysInteractionId__c, result);
-      });
-
-      switch (actionName) {
-        case "cancelConReq":
-          this.record = row;
-          this.showMessage(
-            "Éxito",
-            // TODO Hardcodeado para pasarlo a hotfix, poner la label antes de hacer el commit
-            "Se envió correctamente la solicitud de cancelación a Genesys",
-            "success"
+      const fields = {};
+      fields[CONTACT_REQUEST_ID.fieldApiName] = row.Id;
+      fields[CONTACT_REQUEST_STATUS.fieldApiName] = "Cancelled";
+      const recordInput = { fields };
+      updateRecord(recordInput)
+        .then((result) => {
+          this.dispatchEvent(
+            new ShowToastEvent({
+              title: "Success",
+              message: "Contact updated",
+              variant: "success"
+            })
           );
-          break;
-        default:
-      }
+          // otra función
+          this.callMeBacks = this.callMeBacks.filter(
+            (element) => element.Id !== row.Id
+          );
+          console.log(result);
+          genesysCloud.cancelCallBack(row.GenesysInteractionId__c, result);
+        })
+        .catch((error) => {
+          this.dispatchEvent(
+            new ShowToastEvent({
+              title: "Error creating record",
+              message: error.body.message,
+              variant: "error"
+            })
+          );
+        });
     }
+    // Display fresh data in the form
   }
 
   /**
