@@ -12,53 +12,17 @@
     icon-name="standard:contact_request"
   >
     <template if:false={isEmpty}>
-      <div class="showTable">
+      <div>
         <lightning-datatable
-          data={callMeBacks}
-          columns={columns}
           key-field="id"
+          data={callMeBacks}
+          columns={columnsDefinition}
+          enable-infinite-loading="true"
           hide-checkbox-column="true"
-          onrowaction={handleRowAction}>
+          onrowaction={handleRowAction}
+        >
         </lightning-datatable>
       </div>
-      <!-- <div class={loadMoreVisible}>
-                </br>
-                <div class="slds-align_absolute-center">
-                    <lightning-button          
-                            variant="base"
-                            label="Ver más"
-                            title="Ver más registros"
-                            onclick={modalControl}
-                            class="slds-m-left_x-small">
-                    </lightning-button>
-                </div>
-            </div> -->
     </template>
   </lightning-card>
-  <!-- <template if:true={isModalOpen}>
-        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-            <div class="slds-modal__container">
-                <header class="slds-modal__header">
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Cerrar" onclick={modalControl}>
-                        <lightning-icon icon-name="utility:close"
-                            alternative-text="Cerrar"
-                            variant="inverse"
-                            size="small" ></lightning-icon>
-                        <span class="slds-assistive-text">Cerrar</span>
-                    </button>
-                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Call me Backs</h2>
-                </header>
-                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                    <lightning-datatable 
-                            data={completeTableData}
-                            columns={columns}
-                            key-field="id"
-                            hide-checkbox-column=true
-                            onrowaction={handleRowAction}>
-                    </lightning-datatable>
-                </div>
-            </div>
-        </section>
-        <div class="slds-backdrop slds-backdrop_open"></div>
-    </template> -->
 </template>
