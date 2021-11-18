@@ -265,7 +265,7 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>columns</name>
-                    <value>[]</value>
+                    <value>[{"label":"Prefered Contact Datetime","fieldName":"url","type":"url","typeAttributes":{"label":{"fieldName":"PreferredContactDatetime__c"},"tooltip":{"fieldName":"url","target":"_self"}}},{"label":"Prefered Status","fieldName":"Preferred_Status__c","type":"text"},{"type":"button-icon","initialWidth":30,"typeAttributes":{"iconName":"utility:clear","name":"cancelConReq","title":"Cancelar Call me back","variant":"container"}}]</value>
                 </componentInstanceProperties>
                 <componentName>callMeBackList</componentName>
                 <identifier>callMeBackList</identifier>
