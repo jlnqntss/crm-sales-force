@@ -2,7 +2,7 @@
   @description       : 
   @author            : Kevin Rueda
   @group             : 
-  @last modified on  : 12-11-2021
+  @last modified on  : 17-11-2021
   @last modified by  : jjuaristi
 -->
 <template>
@@ -14,12 +14,11 @@
     <template if:false={isEmpty}>
       <div class="showTable">
         <lightning-datatable
-          data={callMeMacks}
+          data={callMeBacks}
           columns={columns}
           key-field="id"
           hide-checkbox-column="true"
-          onrowaction={handleRowAction}
-        >
+          onrowaction={handleRowAction}>
         </lightning-datatable>
       </div>
       <!-- <div class={loadMoreVisible}>

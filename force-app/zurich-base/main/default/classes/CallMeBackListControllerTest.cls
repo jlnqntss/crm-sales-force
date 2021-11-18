@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : jjuaristi
+ * @group             : 
+ * @last modified on  : 18-11-2021
+ * @last modified by  : jjuaristi
+**/
 @isTest
 private class CallMeBackListControllerTest {
 
@@ -30,57 +37,32 @@ private class CallMeBackListControllerTest {
     @isTest
     static void test_getContactRequestsById_ok()
     {
-        // Creamos el objeto esperado
-        Map<String, String> returnMap = new Map<String,String>();
+        //Obtenemos el whoId a enviar al controlador
+        Account account = [SELECT Id, PersonContactId FROM Account LIMIT 1];
 
-        //Obtenemos los campos del fieldset para una parte del mapa
-        SObject sObj = (SObject)(Type.forName('Schema.ContactRequest').newInstance());
-        List<Schema.FieldSetMember> lstFSMember = sObj.getSObjectType().getDescribe().fieldSets.getMap().get('ContactRequestFieldSet').getFields();
-
-        //Obtenemos el contenido de los registros para la otra parte del mapa
-        List<Account> accounts = [SELECT Id FROM Account];
-        Id accountId = accounts.get(0).Id;
-        List<Account> accList = [SELECT PersonContactId FROM Account WHERE Id = :accountId];
-        Id perConId = accList.get(0).PersonContactId;
-        String query = 'SELECT Id, Name, CreatedById, CreatedDate, GenesysCloudQueueId__c, LastModifiedById, LastModifiedDate, ' + 
-                        'OwnerId, PreferredChannel, PreferredPhone, Preferred_Status__c, WhatId, RequestDescription, RequestReason, ' + 
-                        'WhoId, WebName__c, GenesysInteractionId__c, PreferredContactDatetime__c, Status, Priority__c FROM ContactRequest ' + 
-                        'WHERE WhoId = :perConId ORDER BY Preferred_Status__c, PreferredContactDatetime__c';
-        List<SObject> lstRecordsQuery = Database.query(query);
-        List<Map<String, String>> records = new List<Map<String, String>>();
-        
-        Map<String, Schema.SObjectField> conReqFields = Schema.SObjectType.ContactRequest.fields.getMap();
-        
-        //Parseamos los posibles campos de tipo fecha para que estén el el formato deseado posteriormente
-        for (SObject obj : lstRecordsQuery)
-        {
-            Map<String, Object> objMap = obj.getPopulatedFieldsAsMap();
-            Map<String, String> stringMap = new Map<String, String>();
-            for (String fieldName : objMap.keySet()) {
-                if(conReqFields.get(fieldName).getDescribe().getType() == Schema.DisplayType.DateTime)
-                {
-                    DateTime dateTimeField = (DateTime)objMap.get(fieldName);
-                    stringMap.put(fieldName, dateTimeField.format('dd/MM/yyyy - HH:mm'));
-                }else
-                {
-                    stringMap.put(fieldName, String.valueOf(objMap.get(fieldName)));
-                }
-            }
-            records.add(stringMap);
-        }
-        //Serializamos el mapa compuesto por registros y campos para que nos quede un string
-        returnMap.put('FIELD_LIST', JSON.serialize(lstFSMember));
-	    returnMap.put('RECORD_LIST', JSON.serialize(records));
-        String expectedContactRequests = JSON.serialize(returnMap);
-        
         // Test
         Test.startTest();
 
-        String foundContactRequests = CallMeBackListController.getContactRequestsById('ContactRequestFieldSet', accountId);
+        List<ContactRequest> foundContactRequests = CallMeBackListController.getContactRequestsByCustomerId(account.PersonContactId);
 
         Test.stopTest();
 
-        // Asserts
-        System.assertEquals(expectedContactRequests, foundContactRequests, 'No contiene los mismos contactRequests');
+        // Asserts, en el makeData se le añaden 10 CR
+        System.assertEquals(10, foundContactRequests.size(), 'Debería contener 10 CR');
+    }
+
+    @isTest
+    static void test_statusToCancelled()
+    {
+        //Obtenemos el whoId a enviar al controlador
+        ContactRequest contactRequest = [SELECT Id FROM ContactRequest LIMIT 1];
+
+        // Test
+        Test.startTest();
+        CallMeBackListController.statusToCancelled(contactRequest.Id);
+        Test.stopTest();
+
+        ContactRequest cancelledRequest = [SELECT Id, Status FROM ContactRequest WHERE Id = :contactRequest.Id LIMIT 1];
+        System.assertEquals('Cancelled', cancelledRequest.Status, 'Debería estar cancelada');
     }
 }
