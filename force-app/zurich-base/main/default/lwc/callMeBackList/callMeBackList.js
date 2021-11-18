@@ -1,7 +1,6 @@
 import { LightningElement, api, wire } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getRecord, updateRecord } from "lightning/uiRecordApi";
-import { refreshApex } from "@salesforce/apex";
 import PERSON_CONTACT_ID from "@salesforce/schema/Account.PersonContactId";
 import CONTACT_REQUEST_ID from "@salesforce/schema/ContactRequest.Id";
 import CONTACT_REQUEST_STATUS from "@salesforce/schema/ContactRequest.Status";
@@ -11,8 +10,14 @@ import getContactRequestsByCustomerId from "@salesforce/apex/CallMeBackListContr
 import genesysCloud from "c/genesysCloudService";
 
 const ERROR_TITLE = "Error";
+const SUCCESS_TITLE = "Cancelado";
 const ERROR_VARIANT = "error";
+const SUCCESS_VARIANT = "Success";
 const NO_RECORDS_FOUND = "No se han encontrado Contact Request.";
+const ERROR_CANCELED = "No es posible cancelar el Contact Request.";
+const SUCCESS_CANCELED = "Contact Request cancelado con éxito";
+const STATUS_CANCELLED = "Cancelled";
+
 export default class CallMeBackList extends LightningElement {
   /**
    * Identificador del registro donde se ha cargado este componente.
@@ -27,7 +32,6 @@ export default class CallMeBackList extends LightningElement {
 
   callMeBacks;
   error;
-  isEmpty;
   isLoading = false;
 
   // Consulta de contact person Id
@@ -97,38 +101,39 @@ export default class CallMeBackList extends LightningElement {
       );
       this.authorize();
     } else {
-      genesysCloud.cancelCallBack(row.GenesysInteractionId__c, row.Id);
-      const fields = {};
-      fields[CONTACT_REQUEST_ID.fieldApiName] = row.Id;
-      fields[CONTACT_REQUEST_STATUS.fieldApiName] = "Cancelled";
-    //   const recordInput = { fields };
-    //   updateRecord(recordInput)
-    //     .then((result) => {
-    //       this.dispatchEvent(
-    //         new ShowToastEvent({
-    //           title: "Success",
-    //           message: "Contact updated",
-    //           variant: "success"
-    //         })
-    //       );
-    //       // otra función
-    //       this.callMeBacks = this.callMeBacks.filter(
-    //         (element) => element.Id !== row.Id
-    //       );
-    //       console.log(result);
-          
-    //     })
-    //     .catch((error) => {
-    //       this.dispatchEvent(
-    //         new ShowToastEvent({
-    //           title: "Error creating record",
-    //           message: error.body.message,
-    //           variant: "error"
-    //         })
-    //       );
-    //     });
+      try {
+        await genesysCloud.cancelCallBack(row.GenesysInteractionId__c, row.Id);
+        this.setCancelStatus(row);
+      } catch (error) {
+        this.showMessage(ERROR_TITLE, ERROR_CANCELED, ERROR_VARIANT);
+        console.error(error);
+      }
     }
     // Display fresh data in the form
+  }
+
+  /**
+   * Se actualiza el estado del registro de Contact Request a Cancelado.
+   * @date 02/11/2021
+   * @author rpolvera
+   */
+  setCancelStatus(record) {
+    const fields = {};
+    fields[CONTACT_REQUEST_ID.fieldApiName] = record.Id;
+    fields[CONTACT_REQUEST_STATUS.fieldApiName] = STATUS_CANCELLED;
+    const recordInput = { fields };
+    updateRecord(recordInput)
+      .then((result) => {
+        this.showMessage(SUCCESS_TITLE, SUCCESS_CANCELED, SUCCESS_VARIANT);
+        this.callMeBacks = this.callMeBacks.filter(
+          (element) => element.Id !== record.Id
+        );
+        console.log(result);
+      })
+      .catch((error) => {
+        this.showMessage(ERROR_TITLE, SUCCESS_CANCELED, ERROR_VARIANT);
+        console.error(error);
+      });
   }
 
   /**
@@ -196,6 +201,10 @@ export default class CallMeBackList extends LightningElement {
    * @return verdadero si no hay registros cargados, falso de lo contrario.
    */
   get isEmpty() {
+    console.log(
+      "🚀 ~ file: callMeBackList.js ~ line 205 ~ CallMeBackList ~ getisEmpty ~ this.callMeBacks",
+      this.callMeBacks
+    );
     return this.callMeBacks && this.callMeBacks.length === 0;
   }
 
@@ -209,16 +218,20 @@ export default class CallMeBackList extends LightningElement {
     return JSON.parse(this.columns);
   }
 
-    /**
+  /**
    * Título de la tabla.
    * @author jjuaristi
    * @date 18/11/2021
    * @return String que contiene el título.
    */
-  get title(){
-    let title = "Call me backs";
-    if(this.isEmpty){
-        title =this.title + " (0)";
+  get title() {
+    let title = "Call Me Backs";
+    if (this.isEmpty) {
+      title = title + " (0)";
+      console.log(
+        "🚀 ~ file: callMeBackList.js ~ line 228 ~ CallMeBackList ~ gettitle ~ title",
+        title
+      );
     }
     return title;
   }
