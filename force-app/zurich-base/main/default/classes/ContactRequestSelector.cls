@@ -4,11 +4,13 @@
  * @author nts (agonzalezisasi)
  * @date 02/06/2021
  */
-public with sharing class ContactRequestSelector extends RecordsSelector {
+public with sharing class ContactRequestSelector extends RecordsSelector
+{
     public static final String STATUS_CANCELLED = 'Cancelled';
 
     //#region Contructores
-    public ContactRequestSelector() {
+    public ContactRequestSelector()
+    {
         super(ContactRequest.getSObjectType());
     }
     //#region
@@ -55,6 +57,37 @@ public with sharing class ContactRequestSelector extends RecordsSelector {
         .orderBy(ContactRequest.Priority__c.getDescribe().getName(),'ASC' )
         .orderBy(ContactRequest.PreferredContactDatetime__c.getDescribe().getName(), 'ASC');
 
+        return (List<ContactRequest>) this.baseQuery.run();
+    }
+
+    /**
+     * Función que instancia el Selector de la entidad Contact Request.
+     * Consulta la BBDD de Salesforce y retorna los registros relacionados de un cliente (Account)
+     * @date 17/11/2021
+     * @author jjuaristi@nts-solutions.com
+     * @last modified by  : rpolvera@nts-solutions.com
+     * @param customerId Identificador de la cuenta a la que pertenecen los Contact Request buscados.
+     * @return Lista de ContactRequest encontrados en el sistema.
+     */
+    public List<ContactRequest> findByCustomerId(String customerId)
+    {
+        // Se añaden las condiciones:
+        // Status != Cancelled
+        // WhoId = customerId
+        // GenesysInteractionId__c != null
+        Query.Condition condition = Query.doAnd(
+            Query.conditionNotEq(ContactRequest.Status, STATUS_CANCELLED),
+            Query.conditionEq(ContactRequest.WhoId, customerId),
+            Query.conditionNotNull(ContactRequest.GenesysInteractionId__c)
+        );
+
+        // Se estructura la query.
+        this.baseQuery.selectReadableFields()
+        .addCondition(condition)
+        .orderBy(ContactRequest.Preferred_Status__c.getDescribe().getName())
+        .orderBy(ContactRequest.PreferredContactDatetime__c.getDescribe().getName());
+
+        // Se ejecuta la Query.
         return (List<ContactRequest>) this.baseQuery.run();
     }
 }

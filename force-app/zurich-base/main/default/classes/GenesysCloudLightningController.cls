@@ -22,7 +22,7 @@ public with sharing class GenesysCloudLightningController
             userAuths.add(testExternalDataUserAuth);
         }
 
-        return userAuths.isEmpty();
+        return !userAuths.isEmpty();
     }
 
     /**
@@ -82,4 +82,22 @@ public with sharing class GenesysCloudLightningController
             throw new AuraHandledException(error.getMessage() );
         }
     }
-}
+
+       /**
+     * Cancela un CallBack de Genesys Cloud
+     * @author jjuaristi
+     * @date 28/10/2021
+     */
+    @AuraEnabled
+    public static GenesysCloud.CallbackCancel cancelCallBack(String interactionID, String contactRequestId)
+    {
+        GenesysCloud.CallbackCancel callback = new GenesysCloud.CallbackCancel();
+         // Creamos la cancelacion del CallMeBack poniendo el id de genesys
+         callback.genesysId = interactionID;
+ 
+         // Solicitamos la cancelacion del CallMeBack a Genesys
+         return GenesysCloud.CallbacksService.cancel(callback);
+
+    }
+}       
+

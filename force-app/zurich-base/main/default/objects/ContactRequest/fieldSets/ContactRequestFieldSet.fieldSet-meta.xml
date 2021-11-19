@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FieldSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContactRequestFieldSet</fullName>
+    <description>Se usa en la carga de campos en la tabla del componente que hace las veces de Related List.</description>
+    <displayedFields>
+        <field>PreferredContactDatetime__c</field>
+        <isFieldManaged>false</isFieldManaged>
+        <isRequired>false</isRequired>
+    </displayedFields>
+    <displayedFields>
+        <field>Preferred_Status__c</field>
+        <isFieldManaged>false</isFieldManaged>
+        <isRequired>false</isRequired>
+    </displayedFields>
+    <label>ContactRequestFieldSet</label>
+</FieldSet>

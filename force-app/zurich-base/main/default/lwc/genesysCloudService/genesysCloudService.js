@@ -18,6 +18,8 @@ import conferenceTo from "@salesforce/apex/GenesysCloudLightningController.confe
 import isAuthorized from "@salesforce/apex/GenesysCloudLightningController.isAuthorized";
 import authorize from "@salesforce/apex/GenesysCloudLightningController.authorize";
 import getActiveCalls from "@salesforce/apex/GenesysCloudLightningController.getActiveCalls";
+import cancelCallBack from "@salesforce/apex/GenesysCloudLightningController.cancelCallBack";
+
 
 // #region Estado interno de la librería
 
@@ -224,7 +226,20 @@ export default {
     var authorizeURL = await authorize();
 
     window.open(authorizeURL);
+  },
+
+  /**
+   * Cancela un CallBack de genesys
+   * GenesysCloud
+   *
+   * @author jjuaristi
+   */
+  cancelCallBack(interactionID, ID) {
+    return cancelCallBack({interactionID : interactionID, contactRequestId : ID});
   }
+
 };
+
+
 
 //#endregion

@@ -1,0 +1,29 @@
+<!--
+  @description       : 
+  @author            : Kevin Rueda
+  @group             : 
+  @last modified on  : 17-11-2021
+  @last modified by  : jjuaristi
+-->
+<template>
+  <lightning-card
+    variant="Narrow"
+    title={title}
+    icon-name="standard:contact_request"
+  >
+    <template if:false={isEmpty}>
+      <div>
+        <lightning-datatable
+          key-field="id"
+          data={callMeBacks}
+          columns={columnsDefinition}
+          enable-infinite-loading="true"
+          hide-checkbox-column="true"
+          onrowaction={handleRowAction}
+          column-widths-mode="auto"
+        >
+        </lightning-datatable>
+      </div>
+    </template>
+  </lightning-card>
+</template>
