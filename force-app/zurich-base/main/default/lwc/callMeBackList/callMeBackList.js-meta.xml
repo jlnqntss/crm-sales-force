@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="callMeBackList">
+    <apiVersion>52.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Account</object>
+            </objects>
+            <property name="columns" label="Culumnas a mostrar" description="El valor de este atributo se deberá corresponder con la definición de tablas de LWC: https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/documentation" type="String" default="[]" />      
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
