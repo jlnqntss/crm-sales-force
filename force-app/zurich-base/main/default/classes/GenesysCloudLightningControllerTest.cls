@@ -21,7 +21,7 @@ public class GenesysCloudLightningControllerTest {
         Boolean isAuthorized = GenesysCloudLightningController.isAuthorized();
         Test.stopTest();
 
-        System.assertEquals(false, isAuthorized, 'Should be authorized');
+        System.assertEquals(true, isAuthorized, 'Should be authorized');
     }
 
     /**
