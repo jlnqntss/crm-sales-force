@@ -119,7 +119,7 @@ export default class CallMeBackList extends LightningElement {
     fields[CONTACT_REQUEST_STATUS.fieldApiName] = STATUS_CANCELLED;
     const recordInput = { fields };
     updateRecord(recordInput)
-      .then((result) => {
+      .then(() => {
         this.showMessage(SUCCESS_TITLE, SUCCESS_CANCELED, SUCCESS_VARIANT);
         this.callMeBacks = this.callMeBacks.filter(
           (element) => element.Id !== record.Id
