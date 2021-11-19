@@ -2,26 +2,26 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>52.0</apiVersion>
     <assignments>
-        <name>UpdateOfferClosedLost</name>
+        <name>UpdateOfferClosedLostAssignment</name>
         <label>Cambiar Oferta a Closed Lost</label>
-        <locationX>518</locationX>
-        <locationY>394</locationY>
+        <locationX>50</locationX>
+        <locationY>575</locationY>
         <assignmentItems>
-            <assignToReference>GetRelatedOffer.StageName</assignToReference>
+            <assignToReference>GetRelatedOfferAction.StageName</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>Closed Lost</stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateOffer</targetReference>
+            <targetReference>UpdateOfferAction</targetReference>
         </connector>
     </assignments>
     <decisions>
-        <name>CheckPreviousStatus</name>
+        <name>CheckPreviousStatusDecision</name>
         <label>Verificar si antes estaba en vigor</label>
-        <locationX>157</locationX>
-        <locationY>390</locationY>
+        <locationX>446</locationX>
+        <locationY>335</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>WasValid</name>
@@ -34,7 +34,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetRelatedOffer</targetReference>
+                <targetReference>GetRelatedOfferAction</targetReference>
             </connector>
             <label>Estaba en vigor</label>
         </rules>
@@ -50,7 +50,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -60,15 +60,64 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Se inserta un registro de log de errores en el sistema.</description>
+        <name>CreateErrorLogAction</name>
+        <label>Registrar Error</label>
+        <locationX>314</locationX>
+        <locationY>815</locationY>
+        <inputAssignments>
+            <field>Level__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Record_Object__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Póliza Trigger - After update - Anular Póliza</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Stack_Trace__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
-        <name>GetRelatedOffer</name>
+        <name>GetRelatedOfferAction</name>
         <label>Conseguir Oferta Relacionada</label>
-        <locationX>378</locationX>
-        <locationY>394</locationY>
+        <locationX>50</locationX>
+        <locationY>455</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>UpdateOfferClosedLost</targetReference>
+            <targetReference>UpdateOfferClosedLostAssignment</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CreateErrorLogAction</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -82,20 +131,30 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>UpdateOffer</name>
+        <name>UpdateOfferAction</name>
         <label>Actualizar Oferta</label>
-        <locationX>656</locationX>
-        <locationY>393</locationY>
-        <inputReference>GetRelatedOffer</inputReference>
+        <locationX>50</locationX>
+        <locationY>695</locationY>
+        <faultConnector>
+            <targetReference>CreateErrorLogAction</targetReference>
+        </faultConnector>
+        <inputReference>GetRelatedOfferAction</inputReference>
     </recordUpdates>
     <start>
-        <locationX>41</locationX>
-        <locationY>72</locationY>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>CheckPreviousStatus</targetReference>
+            <targetReference>CheckPreviousStatusDecision</targetReference>
         </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityName__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
         <filters>
             <field>PolicyStatus__c</field>
             <operator>EqualTo</operator>
