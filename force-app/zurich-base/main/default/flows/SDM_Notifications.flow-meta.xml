@@ -10,6 +10,7 @@
         <connector>
             <targetReference>WeekLeft</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -52,6 +53,7 @@
         <connector>
             <targetReference>End_Date_Reached</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -93,6 +95,7 @@
         <connector>
             <targetReference>UpdateSentNotifications</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -130,7 +133,7 @@
         <name>Assign_Notification</name>
         <label>Assign Notification</label>
         <locationX>117</locationX>
-        <locationY>293</locationY>
+        <locationY>292</locationY>
         <assignmentItems>
             <assignToReference>RecipientId</assignToReference>
             <operator>Add</operator>
@@ -318,7 +321,7 @@
         <dataType>String</dataType>
         <expression>IF
 (
-   {!$Record.AssignedTo__r.Id} != null,
+   {!$Record.AssignedTo__r.Id} = null,
    {!$Record.OwnerId},
   {!$Record.AssignedTo__r.Id}
 )</expression>

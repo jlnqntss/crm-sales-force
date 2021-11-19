@@ -24,6 +24,13 @@
                     <elementReference>$Record.OwnerId</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedTo__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Create_PC_Visibility</targetReference>
             </connector>
@@ -80,8 +87,8 @@
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
         <name>Create_PC_Visibility</name>
-        <label>Creat PC Visibility</label>
-        <locationX>388</locationX>
+        <label>Create PC Visibility</label>
+        <locationX>387</locationX>
         <locationY>633</locationY>
         <inputAssignments>
             <field>AccessLevel</field>
@@ -151,7 +158,7 @@
     </recordLookups>
     <start>
         <locationX>275</locationX>
-        <locationY>49</locationY>
+        <locationY>47</locationY>
         <connector>
             <targetReference>Old_Shares</targetReference>
         </connector>
