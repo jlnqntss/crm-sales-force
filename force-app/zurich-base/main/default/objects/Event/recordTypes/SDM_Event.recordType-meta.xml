@@ -85,6 +85,21 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Follow_up_type__c</picklist>
+        <values>
+            <fullName>Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Póliza</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>InboundOutbound__c</picklist>
         <values>
             <fullName>Inbound</fullName>
@@ -140,23 +155,7 @@
     <picklistValues>
         <picklist>Subject</picklist>
         <values>
-            <fullName>Call</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Email</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Meeting</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Other</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Send Letter%2FQuote</fullName>
             <default>false</default>
         </values>
     </picklistValues>

@@ -27,25 +27,6 @@ public class OpportunityUtil
     }
 
     /**
-     * Evitar modificar la etapa de la oferta de INFO cuando se actualiza a través de la integración
-     *
-     * @author adelgado
-     * @date 26/01/2021
-     */
-    //20210225 sustituido por before insert
-    /*public static void detectOpportunityStageChange(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
-    {
-        for(Opportunity opty : newList)
-        {
-            if(opty.StageName != oldMap.get(opty.Id).StageName && String.isNotBlank(opty.InfoQuoteNumber__c) && UserInfo.getName() == 'Integrator')
-            {
-                opty.StageName = oldMap.get(opty.Id).StageName;
-            }
-        }
-
-    }*/
-
-    /**
      * Detect a change in the AccountId field of the offer
      * In a batch we will check if the old account is a lead and if so we will merge the lead with the client that is
      * coming from INFO (ocs-920)
@@ -81,10 +62,17 @@ public class OpportunityUtil
     }
 
     /**BEFOREUPDATE
-     * Si por cualquier motivo se pretende actualizar el Stage a null, se evita
+     * Método que previene la pérdida de datos en el registro de oportunidad.
+     * Las oportunidades son actualizadas desde INFO un sistema externo mediante una integración.
+     * Esta función afectará a los cambios tanto por interfaz como automáticos por integraciones.
+     * Si los siguientes campos cambian a nulo entonces se previene esta acción:
+     * - Stae
+     * - AccountId
+     * @author rpolvera
      * @date 25/02/2021
+     * @last modified 16/11/2021 : ZE-1149 Ofertas sin tomador.
      */
-    public static void revertStageNameNull(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
+    public static void preventNullUpdates(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
     {
         for(Opportunity opty : newList)
         {
@@ -93,6 +81,11 @@ public class OpportunityUtil
                 Opportunity oldOffer = oldMap.get(opty.Id);
                 opty.StageName = oldOffer.StageName;
             }
+
+            if (String.isBlank(opty.AccountId) && !String.isBlank(oldMap?.get(opty.Id)?.AccountId))
+            {
+                opty.AccountId = oldMap?.get(opty.Id)?.AccountId;
+            } 
         }
     }
 }

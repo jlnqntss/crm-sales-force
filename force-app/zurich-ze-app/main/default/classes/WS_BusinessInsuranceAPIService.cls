@@ -59,10 +59,7 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
                     BusinessInsuranceRaterService.validateReceivedInformation();
                     // Se comprueban los datos de la solicitud para descartar las pruebas del bot.
-                    if (!BusinessInsuranceRaterService.isBotTestingExecution(requestInformationObject))
-                    {
-                        BusinessInsuranceRaterService.processFormData(requestInformationObject);
-                    }
+                    BusinessInsuranceRaterService.processFormData(requestInformationObject);
 
                     response.responseBody = Blob.valueOf('{"status":"success", "sfId":"", "errors":[]}');
                     response.statusCode = 200;
