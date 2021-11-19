@@ -231,7 +231,7 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>columns</name>
-                    <value>[{"label":"Prefered Contact Datetime","fieldName":"url","type":"url","typeAttributes":{"label":{"fieldName":"PreferredContactDatetime__c"},"tooltip":{"fieldName":"url","target":"_self"}}},{"label":"Prefered Status","fieldName":"Preferred_Status__c","type":"text"},{"type":"button-icon","initialWidth":30,"typeAttributes":{"iconName":"utility:clear","name":"cancelConReq","title":"Cancelar Call me back","variant":"container"}}]</value>
+                    <value>[{"label":"Number","fieldName":"url","type":"url","typeAttributes":{"label":{"fieldName":"Name"},"tooltip":{"fieldName":"url","target":"_self"}}},{"label":"Prefered Contact Datetime","fieldName":"PreferredContactDatetime__c","type":"date","typeAttributes":{"day":"numeric","month":"numeric","year":"numeric","hour":"2-digit","minute":"2-digit"}},{"label":"Status","fieldName":"Preferred_Status__c","type":"text"},{"label":"Cancel","type":"button-icon","initialWidth":40,"typeAttributes":{"iconName":"utility:clear","name":"cancelConReq","title":"Cancel Call Me Back","variant":"container"}}]</value>
                 </componentInstanceProperties>
                 <componentName>callMeBackList</componentName>
                 <identifier>c_callMeBackList1</identifier>

@@ -38,10 +38,6 @@ export default class CallMeBackList extends LightningElement {
   @wire(getRecord, { recordId: "$recordId", fields: [PERSON_CONTACT_ID] })
   getAccount({ error, data }) {
     if (data) {
-      console.log(
-        "🚀 ~ file: callMeBackList.js ~ line 36 ~ CallMeBackList ~ getAccount ~ data.fields.personContactId",
-        data.fields.PersonContactId.value
-      );
       this.isLoading = true;
       getContactRequestsByCustomerId({
         whoId: data.fields.PersonContactId.value
@@ -128,7 +124,6 @@ export default class CallMeBackList extends LightningElement {
         this.callMeBacks = this.callMeBacks.filter(
           (element) => element.Id !== record.Id
         );
-        console.log(result);
       })
       .catch((error) => {
         this.showMessage(ERROR_TITLE, SUCCESS_CANCELED, ERROR_VARIANT);
@@ -165,7 +160,7 @@ export default class CallMeBackList extends LightningElement {
     try {
       return await genesysCloud.isAuthorized();
     } catch (error) {
-      console.log("Exception: CallRecordingButton.isAuthorized()", error);
+      console.error("Exception: CallRecordingButton.isAuthorized()", error);
       this.showMessage(
         this.labels.errorTitle,
         this.labels.recordingException,
@@ -185,7 +180,7 @@ export default class CallMeBackList extends LightningElement {
     try {
       await genesysCloud.authorize();
     } catch (error) {
-      console.log("Exception: CallRecordingButton.authorize()", error);
+      console.error("Exception: CallRecordingButton.authorize()", error);
       this.showMessage(
         this.labels.errorTitle,
         this.labels.recordingException,
@@ -201,10 +196,6 @@ export default class CallMeBackList extends LightningElement {
    * @return verdadero si no hay registros cargados, falso de lo contrario.
    */
   get isEmpty() {
-    console.log(
-      "🚀 ~ file: callMeBackList.js ~ line 205 ~ CallMeBackList ~ getisEmpty ~ this.callMeBacks",
-      this.callMeBacks
-    );
     return this.callMeBacks && this.callMeBacks.length === 0;
   }
 
@@ -215,7 +206,9 @@ export default class CallMeBackList extends LightningElement {
    * @return JSON de deficnión de columnas para el componente data-table.
    */
   get columnsDefinition() {
-    return JSON.parse(this.columns);
+    return this.columns && this.columns !== ""
+      ? JSON.parse(this.columns)
+      : undefined;
   }
 
   /**
@@ -228,10 +221,6 @@ export default class CallMeBackList extends LightningElement {
     let title = "Call Me Backs";
     if (this.isEmpty) {
       title = title + " (0)";
-      console.log(
-        "🚀 ~ file: callMeBackList.js ~ line 228 ~ CallMeBackList ~ gettitle ~ title",
-        title
-      );
     }
     return title;
   }
