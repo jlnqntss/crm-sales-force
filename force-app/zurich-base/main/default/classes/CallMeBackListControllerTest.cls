@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : jjuaristi
  * @group             : 
- * @last modified on  : 18-11-2021
+ * @last modified on  : 19-11-2021
  * @last modified by  : jjuaristi
 **/
 @isTest
@@ -52,17 +52,19 @@ private class CallMeBackListControllerTest {
     }
 
     @isTest
-    static void test_statusToCancelled()
+    static void test_getContactRequestsById_ko()
     {
-        //Obtenemos el whoId a enviar al controlador
-        ContactRequest contactRequest = [SELECT Id FROM ContactRequest LIMIT 1];
-
         // Test
         Test.startTest();
-        CallMeBackListController.statusToCancelled(contactRequest.Id);
-        Test.stopTest();
+        try
+        {
+            List<ContactRequest> foundContactRequests = CallMeBackListController.getContactRequestsByCustomerId('3246525');
 
-        ContactRequest cancelledRequest = [SELECT Id, Status FROM ContactRequest WHERE Id = :contactRequest.Id LIMIT 1];
-        System.assertEquals('Cancelled', cancelledRequest.Status, 'Debería estar cancelada');
+        }catch(Exception ex)
+        {
+            System.assertEquals('AuraHandledException', ex.getTypeName());
+        }
+
+        Test.stopTest();
     }
 }

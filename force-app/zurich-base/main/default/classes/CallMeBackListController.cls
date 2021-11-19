@@ -2,9 +2,9 @@
  * @description       : Controlador del componente de cancelación de Call Me Backs ubicado en la página de registro de Account.
  * @author            : Kevin Rueda
  * @group             : 
- * @last modified on  : 16-11-2021
+ * @last modified on  : 19-11-2021
  * @last modified by  : jjuaristi
- * @last modified by  : rpolvera
+ * @last modified by  : jjuaristi
 **/
 public with sharing class CallMeBackListController
 {
@@ -31,27 +31,5 @@ public with sharing class CallMeBackListController
         }
 
         return contactRequests;
-    }
-
-    /**
-    * Pasa el estado de un CMB a cancelado
-    * @author jjuaristi
-    * @date 04/11/2021
-    * @param string que contiene el contactRequestId a cancelar
-    * @return void
-    */
-    @AuraEnabled(cacheable=false)
-    public static void statusToCancelled(String contactRequestId){
-        try {
-
-            ContactRequest contactRequest = new ContactRequest(
-                Id = contactRequestId,
-                Status = ContactRequestSelector.STATUS_CANCELLED
-            );
-            //Actualizar registro en la base de datos
-            update contactRequest;
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
     }
 }
