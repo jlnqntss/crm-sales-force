@@ -87,7 +87,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Recordatorio</label>
+        <label>Reminder</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
