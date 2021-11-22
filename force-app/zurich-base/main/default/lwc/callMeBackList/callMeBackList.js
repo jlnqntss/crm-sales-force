@@ -90,11 +90,7 @@ export default class CallMeBackList extends LightningElement {
 
     // Si el usuario no está autorizado será redireccionado.
     if (!(await this.isAuthorized())) {
-      this.showMessage(
-        this.labels.errorTitle,
-        this.labels.callRecordingAuthError,
-        "warning"
-      );
+      this.showMessage(ERROR_TITLE, ERROR_CANCELED, "warning");
       this.authorize();
     } else {
       try {
@@ -161,11 +157,7 @@ export default class CallMeBackList extends LightningElement {
       return await genesysCloud.isAuthorized();
     } catch (error) {
       console.error("Exception: CallRecordingButton.isAuthorized()", error);
-      this.showMessage(
-        this.labels.errorTitle,
-        this.labels.recordingException,
-        "error"
-      );
+      this.showMessage(ERROR_TITLE, ERROR_CANCELED, "error");
       return false;
     }
   }
@@ -181,11 +173,7 @@ export default class CallMeBackList extends LightningElement {
       await genesysCloud.authorize();
     } catch (error) {
       console.error("Exception: CallRecordingButton.authorize()", error);
-      this.showMessage(
-        this.labels.errorTitle,
-        this.labels.recordingException,
-        "error"
-      );
+      this.showMessage(ERROR_TITLE, ERROR_CANCELED, "error");
     }
   }
 
