@@ -51,14 +51,6 @@ public without sharing class BusinessInsuranceRaterService
 
     public static Account processFormData(Request formData)
     {
-        // System.debug('processFormData INIT LIMIT: Query ' + Limits.getQueries() + ' / DML ' + Limits.getDmlStatements());
-        /*if( String.isBlank(formData.webEmail) )
-           {
-            throw new BusinessInsuranceRaterServiceException(
-                      INVALID_FIELD_STATUSCODE,
-                      'WebEmail field is empty'
-                      );
-           }*/
 
         //0. Inicializamos scopeSettings
         initScopeSettings(formData);
@@ -95,7 +87,6 @@ public without sharing class BusinessInsuranceRaterService
         //   - Call me back o abandono (ContactRequest)
         manageOffersAndRelatedInformation(formData);
 
-        // System.debug('processFormData END LIMIT: Query ' + Limits.getQueries() + ' / DML ' + Limits.getDmlStatements());
         return currentCustomer;
     }
 
@@ -231,7 +222,6 @@ public without sharing class BusinessInsuranceRaterService
     private static void manageContactPoints(Scope__c relatedScope, String email, String phone)
     {
         List<SObject> contactPointsToUpsert = new List<SObject>();
-        //List<SObject> contactPointsToUpsert = new List<SObject>();
 
         //1. ContactPointEmail
         List<ContactPointEmail> contactPointEmailsByScope = new ContactPointEmailsSelector(
@@ -355,7 +345,6 @@ public without sharing class BusinessInsuranceRaterService
         {
             accountToCreate.LeadWebId__c = externalid;
 
-            //System.Debug('---------------- external id: ' + externalid);
             Database.UpsertResult result = Database.upsert(accountToCreate, Schema.Account.LeadWebId__c);
             isCreated = result.isCreated();
         }
@@ -446,22 +435,24 @@ public without sharing class BusinessInsuranceRaterService
     {
         Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         List<Opportunity> offersToCreate = new List<Opportunity>();
-        
-
-        // Offers
+        Boolean isTest = isBotTestingExecution(formData);
+        // Gestión de Ofertas
         if( offersSteps.contains(formData.lastStep) )
         {
-            checkOffers(formData, offersToCreate, currentScopeSettings);
+            checkOffers(formData, offersToCreate, currentScopeSettings, isTest);
         }
-
-        if( !formData.doNotCreateCallback ) {
-            if( campaignMemberSteps.contains(formData.lastStep) ) {
+        // Gestión de otros registros relacionados como Campaign Member o Contact Request.
+        if( !isTest && !formData.doNotCreateCallback )
+        {
+            if( campaignMemberSteps.contains(formData.lastStep) )
+            {
                 //Crear Campaign Member 
                 manageCampaignAssignment(offersToCreate, formData.webPhone);
             }
 
-            // Call Me Back
-            if( contactRequestSteps.contains(formData.lastStep) ) {
+            if( contactRequestSteps.contains(formData.lastStep) )
+            {
+                // Crear Call Me Back
                 checkCallMeBack(formData, offersToCreate, currentScopeSettings);
             }
         }
@@ -613,7 +604,6 @@ public without sharing class BusinessInsuranceRaterService
         // onSuccess Method
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
-            // System.debug('------------- onSuccess');
             List<ContactRequest> contactReqToUpdate = new List<ContactRequest>();
 
             // Por cada peticion
@@ -641,7 +631,6 @@ public without sharing class BusinessInsuranceRaterService
         // onError Method
         public void onError(Exception error)
         {
-            // System.debug('------------- onError');
             ErrorLogUtil.commitError(error);
         }
     }
@@ -650,7 +639,7 @@ public without sharing class BusinessInsuranceRaterService
 
     //#region Offer Creation And Update
 
-    private static void checkOffers(Request formData, List<Opportunity> offersToCreate, Scope_Setting__mdt currentScopeSettings)
+    private static void checkOffers(Request formData, List<Opportunity> offersToCreate, Scope_Setting__mdt currentScopeSettings, Boolean isTest)
     {
         if( formData.offers != null && !formData.offers.isEmpty() ) {
             List<BusinessInsuranceRaterService.Offer> receivedOffers = formData.offers;
@@ -706,7 +695,6 @@ public without sharing class BusinessInsuranceRaterService
 
                 // Oferta - calculamos el id externo: SessionId
                 String externalSessionId = sessionId + productCodes;
-                // System.debug('Session Id: ' + externalSessionId);
 
                 // Oferta - calculamos el paso de la oferta: Stage
                 String stageName = 'Legit Lead';
@@ -741,6 +729,7 @@ public without sharing class BusinessInsuranceRaterService
                 sfOffer.ProductId__c = product?.Id;
                 sfOffer.LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI);
                 sfOffer.LegalAuth__c = (formData.legalAuth != null ? formData.legalAuth : false);
+                sfOffer.IsTest__c = isTest;
 
                 offersToCreate.add(sfOffer);
 

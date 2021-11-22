@@ -10,27 +10,21 @@ public class TestDataFactorySDM
     public static final String ACCOUNT_LEGAL_ENTITY = '001';
     public static final String AGRUPATION_CIF = '1111';
 
-    public static final String TERRITORY_ROL = 'TerritoryManager';
     public static final String TERRITORY_EMAIL = 'territorymanager{0}@invalid.com';
-    public static final String TERRITORY_FIELD = 'TerritoryManagerEmail__c';
-    public static final String BUSINESS_ROL = 'BusinessManager';
     public static final String BUSINESS_EMAIL = 'rn{0}@invalid.com';
-    public static final String BUSINESS_FIELD = 'BusinessManagerEmail__c';
 
-    public static final String MAINEMAIL_ROL = 'Principal';
-    public static final String MAINEMAIL_FIELD = 'MainEmail__c';
     public static final String MAINEMAIL_TEXT = 'Cto Pcipal';
     public static final String MAINEMAIL_EMAIL = 'cto.principal{0}@invalid.com';
     public static final String CONTACT_FIELD = 'Email';
 
-    public static final String RN_FIELD = 'TerritorialDirection__c';
+    public static final String RN_FIELD = AccountsSelector.SDM_RN_FIELD;
     public static final String RN_NAME = 'ZONA ZURICH CENTRALIZADOS';
 
-    public static final String PLAN_PERMSET = 'SDM_Plan_comercial';
-    public static final String RN_PROFILE = 'SDM RN';
-    public static final String RN_ROL = 'SDMUser';
-    public static final String DT_PROFILE = 'SDM Director';
-    public static final String DT_ROL = 'SDM_DT';
+    public static final String PLAN_PERMSET = SettingsSDM.PERMSET_COMERCIAL_PLAN;
+    public static final String RN_PROFILE = SettingsSDM.PROFILE_RN;
+    public static final String RN_ROL = SettingsSDM.SF_ROLE_RN_DEVNAME;
+    public static final String DT_PROFILE = SettingsSDM.PROFILE_DT;
+    public static final String DT_ROL = SettingsSDM.SF_ROLE_DT_DEVNAME;
 
     /**
      * Metodo que crea datos de configuracion de prueba para los Account Team Members (ATM)
@@ -107,10 +101,10 @@ public class TestDataFactorySDM
             // Para la agrupacion de mediadores
             intermediaries[i].NationalId__c = AGRUPATION_CIF;
             // Para el equipo de cuentas
-            intermediaries[i].put(TERRITORY_FIELD, String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)}));
+            intermediaries[i].put(AccountsSelector.SDM_DT_EMAIL_FIELD, String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)}));
             intermediaries[i].Status__c = '001';
             // Para la relacion de contactos
-            intermediaries[i].put(MAINEMAIL_FIELD, String.format(MAINEMAIL_EMAIL, new List<String>{String.valueOf(i)}));
+            intermediaries[i].put(AccountsSelector.SDM_MAINEMAIL_FIELD, String.format(MAINEMAIL_EMAIL, new List<String>{String.valueOf(i)}));
         }
         insert intermediaries;
 
@@ -166,7 +160,7 @@ public class TestDataFactorySDM
             // Para la agrupacion de mediadores
             intermediaries[i].NationalId__c = AGRUPATION_CIF;
             // Para el equipo de cuentas
-            intermediaries[i].put(TERRITORY_FIELD, String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)}));
+            intermediaries[i].put(AccountsSelector.SDM_DT_EMAIL_FIELD, String.format(TERRITORY_EMAIL, new List<String>{String.valueOf(i)}));
             // Lo marcamos como activo (valores 001 o 002)
             intermediaries[i].Status__c = '001';
         }
@@ -202,7 +196,7 @@ public class TestDataFactorySDM
         IntermediarySDM sdm = new IntermediarySDM();
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            TestDataFactorySDM.TERRITORY_ROL, TestDataFactorySDM.TERRITORY_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
         );
         // asignacion de la agrupacion
         sdm.assignIntermediaryAgrupation(intermediaries);
@@ -214,7 +208,7 @@ public class TestDataFactorySDM
         // comprobamos que ha ido todo bien
         String soql = String.format(
             'SELECT Id FROM Account WHERE Id IN :intermediaries AND ParentId != null AND {0} != null', 
-            new List<String> {TestDataFactorySDM.TERRITORY_FIELD});
+            new List<String> {AccountsSelector.SDM_DT_EMAIL_FIELD});
         List<Account> checkIntermediary = Database.query(soql);
         System.assertEquals(false, checkIntermediary.isEmpty(), 'Deberia haber mediadores con agrupacion y rol');
 
@@ -418,8 +412,8 @@ public class TestDataFactorySDM
             // Para la agrupacion de mediadores
             intermediaries[i].NationalId__c = TestDataFactorySDM.AGRUPATION_CIF;
             // Para el equipo de cuentas
-            intermediaries[i].put(TestDataFactorySDM.TERRITORY_FIELD, dtEmail);
-            intermediaries[i].put(TestDataFactorySDM.BUSINESS_FIELD, rnEmail);
+            intermediaries[i].put(AccountsSelector.SDM_DT_EMAIL_FIELD, dtEmail);
+            intermediaries[i].put(AccountsSelector.SDM_RN_EMAIL_FIELD, rnEmail);
 
             // Lo marcamos como activo (valores 001 o 002)
             intermediaries[i].Status__c = '001';

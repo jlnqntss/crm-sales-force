@@ -13,6 +13,13 @@ public with sharing class PlanComercialSDM {
     private static final String CLASS_NAME = 'PlanComercialSDM';
     // Mensaje de error de indicador del plan no encontrado
     private static final String ERROR_SETTINGS_NO_INDICATOR = 'SDM-Plan Comercial-The following indicator cant be found in the metadata configuration: {0}';
+    // Textos para el mensaje de notificacion cuando se elimina un plan anual a un usuario porque le ha cambiado su panel de mediadores
+    private static final String SETUP_NOTIF_REMOVE_PLAN_TITLE = '1SDMAnnualPlanNotifRemovePlanTitle';
+    private static final String SETUP_NOTIF_REMOVE_PLAN_TITLE_DEFAULT = 'Eliminados planes comerciales anuales';
+    private static final String SETUP_NOTIF_REMOVE_PLAN_BODY = 'SDMAnnualPlanNotifRemovePlanBody';
+    private static final String SETUP_NOTIF_REMOVE_PLAN_BODY_DEFAULT = 'Atención: Se han eliminado los planes comerciales anuales asociados a los mediadores que ya no están en tu panel';
+    private static final String NOTIF_LIST_VIEW_API_NAME = 'Planes_anuales';
+
     // Lista de nombres de los campos de filtrado de los KPI__c
     private static final List<String> KPI_FILTER_FIELDS = new List<String> {
         'CalcYear__c', 'CalcMonth__c', 'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c'
@@ -35,6 +42,7 @@ public with sharing class PlanComercialSDM {
     @TestVisible
     private static final String SETTINGS_CALCULATION_TYPE_GROWTH = 'Growth';
     
+    SettingsSDM settings;    
 
     // Mapa de configuraciones del calculo de indicadores por indicador
     private Map<String, SDMCommercialPlan__mdt> mapSettingsIndicator;
@@ -56,21 +64,11 @@ public with sharing class PlanComercialSDM {
     private String thisMonth;
     private String lastMonthOfYear;
 
-
-    // Id del RecordType Intermediary del objeto Account
-    public Id rtIntermediaryId {
-        get {
-            if( rtIntermediaryId == null ) {
-                rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
-            }
-            return rtIntermediaryId;
-        }
-        set;
-    }
-
     // Constructor
     public PlanComercialSDM()
     {
+        settings = new SettingsSDM();
+
         // Se obtiene el año actual para la recuperacion de los KPIs (mensuales y anuales)
         this.thisYear = String.valueOf(Date.today().year());
         if( Test.isRunningTest() ) this.thisYear = '2021';
@@ -81,36 +79,6 @@ public with sharing class PlanComercialSDM {
         
         // Se obtiene el ultimo mes disponible para la recuperacion de los KPIs (anuales)
         this.lastMonthOfYear = (new KPIsSelector()).findThisYearsLastMonth();
-    }
-
-    /**
-     * Recuperamos de los metadatos de configuracion los tipos de calculos que seran necesarios para cada indicador
-     * de los planes comerciales
-     * 
-     * @author nts (agonzalezisasi)
-     * @date 26/07/2021
-     */
-    private void getSettingsIndicator()
-    {
-        // Si no existen los datos de configuracion...
-        if( mapSettingsIndicator == null ) {
-            // creamos el mapa
-            mapSettingsIndicator = new Map<String, SDMCommercialPlan__mdt>();
-            // Recuperamos los datos de configuracion de los indicadores
-            List<SDMCommercialPlan__mdt> settings = [
-                SELECT Indicator__c, CalculationType__c, FirstField__c, SecondField__c FROM SDMCommercialPlan__mdt
-            ];
-
-            // Solo para los test cambiamos la configuracion
-            if( Test.isRunningTest() && testSettingsIndicator != null ) {
-                settings = testSettingsIndicator;
-            }
-
-            // Por cada indicador...
-            for(SDMCommercialPlan__mdt s: settings) {
-                mapSettingsIndicator.put( s.Indicator__c, s );
-            }
-        }
     }
 
     /**
@@ -299,16 +267,10 @@ public with sharing class PlanComercialSDM {
         if( userIds != null && !userIds.isEmpty() ) {
             // Se recuperan los ATMs que hay para dichos usuarios. Se incluyen los campos del mediador y de la agrupacion
             // a la que pertenece
-            Id rtId = this.rtIntermediaryId;
-            List<AccountTeamMember> atms = [
-                SELECT id, AccountId, Account.ParentId, UserId
-                FROM AccountTeamMember
-                WHERE Account.RecordTypeId = :rtId
-                AND UserId IN :userIds
-            ];
+            List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findIntermediariesByUsers(userIds);
 
             // Si se han encontrado ATMs
-            if( !atms.isEmpty() ) {
+            if( atms != null && !atms.isEmpty() ) {
                 allIntermediaries = new Set<Id>();
                 // Crear un mapa de todos los mediadores de cada usuario
                 mapIntermediariesByUserId = new Map<Id, Set<Id>>();
@@ -395,7 +357,7 @@ public with sharing class PlanComercialSDM {
             kpiFields.addAll(KPI_FILTER_FIELDS);
 
             // Recuperamos la configuracion del calculo para cada indicador del plan comercial
-            getSettingsIndicator();
+            mapSettingsIndicator = settings.getSettingsIndicator(this.testSettingsIndicator);
 
             // Se genera un mapa de agrupaciones de mediadores para los planes actuales
             // findAgrupationsByPlan(plans);                        
@@ -495,6 +457,79 @@ public with sharing class PlanComercialSDM {
                     update plansToUpdate;
                 }
             }
+        }
+    }
+    
+    /**
+     * Metodo que comprueba si hay que eliminar planes comerciales anuales a partir de los ATMs proporcionados
+     *  
+     * @author nts (agonzalezisasi)
+     * @date 11/10/2021
+     * 
+     * @param {List<AccountTeamMember> deletedAtms} lista de ATMs eliminados
+     */
+    public void removeAnnualPlans(List<AccountTeamMember> deletedAtms)
+    {
+        if( deletedAtms != null && !deletedAtms.isEmpty() ) {
+            // 1. Recuperamos la lista de mediadores y usuarios de los ATMs eliminados
+            Set<Id> intermediaries = new Set<Id>();
+            Set<Id> users = new Set<Id>();
+            // formando tambien una lista de la pareja mediador-usuario
+            Set<String> deletedRelations = new Set<String>();
+            for(AccountTeamMember atm: deletedAtms) {
+                intermediaries.add(atm.AccountId);
+                users.add(atm.UserId);
+                deletedRelations.add(atm.AccountId + '#' + atm.UserId);
+            }
+
+            // 2. Recuperamos la lista de planes que pertenecen a esos mediadores y usuarios
+            List<PlanComercial__c> annualPlans = (new PlanComercialSelector()).findAnnualPlansByIntermediariesAndUsers(
+                intermediaries, users
+            );
+            if( annualPlans != null && !annualPlans.isEmpty() ) {
+                List<PlanComercial__c> plansToDelete = new List<PlanComercial__c>();
+                Set<Id> userIdsToNotify = new Set<Id>();
+
+                // Comprobamos para cada plan...
+                for(PlanComercial__c plan: annualPlans) {
+                    // si cumple que tenga la pareja de mediadores y usuarios eliminados
+                    String planRelation = plan.Intermediary__c + '#' + plan.AssignedTo__c;
+                    if( deletedRelations.contains(planRelation) ) {
+                        plansToDelete.add(plan);
+                        userIdsToNotify.add(plan.AssignedTo__c);
+                    }
+                }
+
+                if( !plansToDelete.isEmpty() ) {
+                    delete plansToDelete;
+
+                    if( !userIdsToNotify.isEmpty() ) {
+                        sendNotificationRemovedPlans(userIdsToNotify);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Metodo que envia la siguiente notificacion a todos los usuarios (RN) que se les ha eliminado planes comerciales
+     * anuales porque algun mediador les ha desparecido del panel
+     * 
+     * @param {Set<Id> userIds} Lista de usuario receptores de la notificacion
+     * @param {Set<String> planSubjects} lista de asuntos de planes a incluir en el mensaje de la notificacion
+     */
+    public void sendNotificationRemovedPlans(Set<Id> userIds)
+    {
+        if( userIds != null && !userIds.isEmpty() ) {
+            String title = this.settings.getSetupParameter(SETUP_NOTIF_REMOVE_PLAN_TITLE, SETUP_NOTIF_REMOVE_PLAN_TITLE_DEFAULT);
+            String bodyContent = this.settings.getSetupParameter(SETUP_NOTIF_REMOVE_PLAN_BODY, SETUP_NOTIF_REMOVE_PLAN_BODY_DEFAULT);
+
+            Notification notif = new Notification(Notification.notificationType.SDMAlert);
+            // Permite abrir la seccion de Cuentas, listview Mis Mediadores
+            notif.addPageReference('standard__objectPage', 'PlanComercial__c', 'list', NOTIF_LIST_VIEW_API_NAME);
+            // Convertimos la lista de ids de usuario a string
+            Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
+            notif.send(stringSet, title, bodyContent);
         }
     }
 }

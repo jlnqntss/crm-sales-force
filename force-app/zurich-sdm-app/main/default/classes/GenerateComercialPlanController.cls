@@ -11,8 +11,31 @@ public with sharing class GenerateComercialPlanController
 {
     private static final String CLASS_NAME = 'GenerateComercialPlanController';
 
-    public static final String ROLE_DT_DEVNAME = 'SDM_DT'; // Rol Director Territorial
-    public static final String ROLE_RN_DEVNAME = 'SDMUser'; // Rol Responsable de Negocio
+    // Lista de roles de Salesforce que pueden ejercer de Directores en la pantalla
+    private static final List<String> Directors = new List<String> {
+        SettingsSDM.SF_ROLE_DT_DEVNAME,
+        SettingsSDM.SF_ROLE_DV_DEVNAME
+    };
+
+    // Lista de roles de Salesforce que pueden ejercer de Consultores o RNs en la pantalla
+    private static final List<String> Consultants = new List<String> {
+        SettingsSDM.SF_ROLE_RN_DEVNAME,
+        SettingsSDM.SF_ROLE_CV_DEVNAME
+    };
+
+    // Relacion entre el rol de Salesforce y el campo de email en el objeto mediador (account)
+    private static final Map<String, String> mapEmailFieldsByUserRole = new Map<String, String> {
+        SettingsSDM.SF_ROLE_DT_DEVNAME => AccountsSelector.SDM_DT_EMAIL_FIELD,
+        SettingsSDM.SF_ROLE_RN_DEVNAME => AccountsSelector.SDM_RN_EMAIL_FIELD,
+        SettingsSDM.SF_ROLE_DV_DEVNAME => AccountsSelector.SDM_DV_EMAIL_FIELD,
+        SettingsSDM.SF_ROLE_CV_DEVNAME => AccountsSelector.SDM_CV_EMAIL_FIELD
+    };
+
+    // Relacion entre el rol de Salesforce de Director y el Rol de Consultor o RN del usuario en el equipo de cuenta de los mediadores
+    private static final Map<String, String> mapATMRoleByUserRole = new Map<String, String> {
+        SettingsSDM.SF_ROLE_DT_DEVNAME => SettingsSDM.ATM_ROL_BUSINESS,
+        SettingsSDM.SF_ROLE_DV_DEVNAME => SettingsSDM.ATM_ROL_LIFECONSULTANT
+    };
 
     public static final String ROW_LABEL_SEGMENT = Label.SDM_PlanAnual_RowSegment;
     public static final String ROW_LABEL_PRODUCT = Label.SDM_PlanAnual_RowProduct;
@@ -526,7 +549,7 @@ public with sharing class GenerateComercialPlanController
 
 
         /**
-         * Añade subplanes al plan princal
+         * Añade subplanes al plan principal
          * 
          * @author nts (agonzalezisasi)
          * @date 20/09/2021
@@ -590,7 +613,7 @@ public with sharing class GenerateComercialPlanController
     private static void planToTable(Tabletype tabledata, Plandata plan, String roleType, Boolean isEmpty) 
     {
         // Indica si el usuario es director o no en funcion del rol
-        Boolean isDirector = (roleType == ROLE_DT_DEVNAME);
+        Boolean isDirector = Directors.contains(roleType);
         // Indica si el plan es nuevo o no en funcion de si tiene id
         Boolean isNewPlan = (plan.Id == null);
 
@@ -775,7 +798,7 @@ public with sharing class GenerateComercialPlanController
      */
     private static void tableToPlan(Tabletype tabledata, String userId, String roleType)
     {
-        Boolean isDirector = (roleType == ROLE_DT_DEVNAME);
+        Boolean isDirector = Directors.contains(roleType);
 
         // Fila de cabecera
         Rowtype headerdata = tabledata.headers;
@@ -1325,8 +1348,8 @@ public with sharing class GenerateComercialPlanController
             String bodyContent = Label.SDM_PlanAnual_NotifBody + ' ' + String.join(new List<String>(planSubjects), ',');
 
             Notification notif = new Notification(Notification.notificationType.SDMAlert);
-            // Permite abrir la seccion de Cuentas, listview Mis Mediadores
-            notif.addPageReference('standard__objectPage', 'PlanComercial__c', 'list', 'Planes_anuales');
+            // Permite abrir la ventana de gestion de planes anuales
+            notif.addPageReference('standard__navItemPage', 'GenerarPlan');
             // Convertimos la lista de ids de usuario a string
             Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
             notif.send(stringSet, title, bodyContent);
@@ -1362,37 +1385,51 @@ public with sharing class GenerateComercialPlanController
             // 2. Obtenemos los datos del rol
             String roleName = getUserRolDevName(rolId);
 
-            Boolean isDirector = (roleName == ROLE_DT_DEVNAME);
-            Boolean isRN = (roleName == ROLE_RN_DEVNAME);
+            Boolean isDirector = Directors.contains(roleName);
+            Boolean isRN = Consultants.contains(roleName);
 
             // 3. Obtenemos los RNs del director / los Mediadores del RN
             Map<String, String> mapDetail = new Map<String, String>();
             
             if( isDirector ) { //--------------------------------------------- RNs del director 
-                // Lista de RNs del director
-                List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findUsersByRoleAndEmailField(
-                    AccountTeamMemberSelector.ATM_ROLE_RN_NAME,
-                    AccountsSelector.SDM_DT_EMAIL_FIELD,
-                    userEmail
-                );
+                // Recuperamos el campo del director en el mediador para el role de Salesforce del usuario
+                String directorEmailField = mapEmailFieldsByUserRole.get(roleName);
+                // Recuperamos el rol ATM del Consultor o RN que buscaremos en los equipos de cuentas de los mediadores del
+                // director
+                String consultantRole = mapATMRoleByUserRole.get(roleName);
+                String consultantRoleLabel = (new SettingsSDM()).getATMRoleLabel(consultantRole);
 
-                if( atms != null && !atms.isEmpty() ) {
-                    // Los metemos en el mapa de detalle
-                    for(AccountTeamMember atm: atms) {
-                        mapDetail.put(atm.UserId, atm.User.Name);
+                if( String.isNotBlank(directorEmailField) && String.isNotBlank(consultantRoleLabel) ) {
+                    // Lista de consultores o RNs del director
+                    List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findUsersByRoleAndEmailField(
+                        consultantRoleLabel,
+                        directorEmailField,
+                        userEmail
+                    );
+
+                    if( atms != null && !atms.isEmpty() ) {
+                        // Los metemos en el mapa de detalle
+                        for(AccountTeamMember atm: atms) {
+                            mapDetail.put(atm.UserId, atm.User.Name);
+                        }
                     }
                 }
             } else { //------------------------------------------------------- Mediadores del RN
-                // Lista de mediadores del RN
-                List<Account> intermediaries = (new AccountsSelector()).findIntermediariesByEmailInFields(
-                    userEmail,
-                    new Set<String> {AccountsSelector.SDM_RN_EMAIL_FIELD}
-                );
+                // Recuperamos el campo del Consultor o RN en el mediador para el role de Salesforce del usuario
+                String consultantEmailField = mapEmailFieldsByUserRole.get(roleName);
 
-                if( intermediaries != null && !intermediaries.isEmpty() ) {
-                    // Los metemos en el mapa de detalle
-                    for(Account intermediary: intermediaries) {
-                        mapDetail.put(intermediary.Id, intermediary.Name);
+                if( String.isNotBlank(consultantEmailField) ) {
+                    // Lista de mediadores del Consultor o RN
+                    List<Account> intermediaries = (new AccountsSelector()).findIntermediariesByEmailInFields(
+                        userEmail,
+                        new Set<String> {consultantEmailField}
+                    );
+
+                    if( intermediaries != null && !intermediaries.isEmpty() ) {
+                        // Los metemos en el mapa de detalle
+                        for(Account intermediary: intermediaries) {
+                            mapDetail.put(intermediary.Id, intermediary.Name);
+                        }
                     }
                 }
             }

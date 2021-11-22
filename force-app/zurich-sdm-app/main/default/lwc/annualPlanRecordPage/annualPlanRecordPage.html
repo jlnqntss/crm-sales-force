@@ -1,0 +1,382 @@
+<template>
+  <lightning-record-edit-form
+    record-id={recordId}
+    object-api-name={objectApiName}
+    onsuccess={handleSuccess}
+  >
+    <!-- Acciones de Cancelar y Guardar para cuando se ejecuta en pequeños dispositivos -->
+    <template if:true={isPhone}>
+      <template if:true={isEditable}>
+        <div class="phoneActions slds-var-m-top_x-small">
+          <lightning-layout horizontal-align="spread">
+            <lightning-layout-item padding="horizontal-small">
+              <button
+                type="button"
+                class="slds-button slds-button_neutral"
+                onclick={toggleEdit}
+              >
+                {labels.SDM_PlanAnual_RecordPage_Cancel}
+              </button>
+            </lightning-layout-item>
+            <lightning-layout-item padding="horizontal-small">
+              <button type="submit" class="slds-button slds-button_brand">
+                {labels.SDM_PlanAnual_RecordPage_Save}
+              </button>
+            </lightning-layout-item>
+          </lightning-layout>
+        </div>
+      </template>
+    </template>
+    <!-- Seccion Informacion general -->
+    <div data-id={Sections.secA.Id} class={secA}>
+      <!-- cabecera -->
+      <h3 class="slds-section__title">
+        <button
+          type="button"
+          name={Sections.secA.Name}
+          aria-controls={Sections.secA.ControlName}
+          aria-expanded="true"
+          class="slds-button slds-section__title-action"
+          onclick={sectionToggle}
+        >
+          <lightning-icon
+            name={Sections.secA.Name}
+            icon-name="utility:switch"
+            size="x-small"
+            class="slds-section__title-action-icon slds-button__icon_left"
+          >
+            <label>Contraer</label>
+          </lightning-icon>
+          <span
+            class="slds-truncate my-section-title"
+            title={Sections.secA.Title}
+            >{Sections.secA.Title}</span
+          >
+        </button>
+      </h3>
+      <!-- contenido -->
+      <div
+        aria-hidden="false"
+        class="slds-section__content my-section"
+        id={Sections.secA.ControlName}
+      >
+        <lightning-layout multiple-rows="true" pull-to-boundary="small">
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="Name"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="OwnerId"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="AssignedTo__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <template if:true={isEditable}>
+              <lightning-input-field
+                field-name="Contact__c"
+                class="slds-border_bottom"
+              ></lightning-input-field>
+            </template>
+            <template if:false={isEditable}>
+              <lightning-button-icon
+                icon-name="utility:edit"
+                variant="bare"
+                size="medium"
+                class="my-edit-button"
+                onclick={toggleEdit}
+                title={labels.SDM_PlanAnual_RecordPage_Edit}
+              ></lightning-button-icon>
+              <lightning-output-field
+                field-name="Contact__c"
+                ondblclick={toggleEdit}
+                class="slds-border_bottom"
+              ></lightning-output-field>
+            </template>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="Intermediary__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <template if:true={isEditable}>
+              <lightning-input-field
+                field-name="FollowUp__c"
+                class="slds-border_bottom"
+              ></lightning-input-field>
+            </template>
+            <template if:false={isEditable}>
+              <lightning-button-icon
+                icon-name="utility:edit"
+                variant="bare"
+                size="medium"
+                class="my-edit-button"
+                onclick={toggleEdit}
+                title={labels.SDM_PlanAnual_RecordPage_Edit}
+              ></lightning-button-icon>
+              <lightning-output-field
+                field-name="FollowUp__c"
+                ondblclick={toggleEdit}
+                class="slds-border_bottom"
+              ></lightning-output-field>
+            </template>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="Description__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <template if:true={isEditable}>
+              <lightning-input-field
+                field-name="Priority__c"
+                class="slds-border_bottom"
+              ></lightning-input-field>
+            </template>
+            <template if:false={isEditable}>
+              <lightning-button-icon
+                icon-name="utility:edit"
+                variant="bare"
+                size="medium"
+                class="my-edit-button"
+                onclick={toggleEdit}
+                title={labels.SDM_PlanAnual_RecordPage_Edit}
+              ></lightning-button-icon>
+              <lightning-output-field
+                field-name="Priority__c"
+                ondblclick={toggleEdit}
+                class="slds-border_bottom"
+              ></lightning-output-field>
+            </template>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+    </div>
+    <!-- Seccion Periodo temporal -->
+    <div data-id={Sections.secB.Id} class={secB}>
+      <!-- cabecera -->
+      <h3 class="slds-section__title">
+        <button
+          type="button"
+          name={Sections.secB.Name}
+          aria-controls={Sections.secB.ControlName}
+          aria-expanded="true"
+          class="slds-button slds-section__title-action"
+          onclick={sectionToggle}
+        >
+          <lightning-icon
+            name={Sections.secB.Name}
+            icon-name="utility:switch"
+            size="x-small"
+            class="slds-section__title-action-icon slds-button__icon_left"
+          >
+          </lightning-icon>
+          <span
+            class="slds-truncate my-section-title"
+            title={Sections.secB.Title}
+            >{Sections.secB.Title}</span
+          >
+        </button>
+      </h3>
+      <!-- contenido -->
+      <div
+        aria-hidden="false"
+        class="slds-section__content my-section"
+        id={Sections.secB.ControlName}
+      >
+        <lightning-layout multiple-rows="true" pull-to-boundary="small">
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="StartDate__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="EndDate__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+    </div>
+    <!-- Seccion KPI -->
+    <div data-id={Sections.secC.Id} class={secC}>
+      <!-- cabecera -->
+      <h3 class="slds-section__title">
+        <button
+          type="button"
+          name={Sections.secC.Name}
+          aria-controls={Sections.secC.ControlName}
+          aria-expanded="true"
+          class="slds-button slds-section__title-action"
+          onclick={sectionToggle}
+        >
+          <lightning-icon
+            name={Sections.secC.Name}
+            icon-name="utility:switch"
+            size="x-small"
+            class="slds-section__title-action-icon slds-button__icon_left"
+          >
+          </lightning-icon>
+          <span class="slds-truncate" title={Sections.secC.Title}
+            >{Sections.secC.Title}</span
+          >
+        </button>
+      </h3>
+      <!-- contenido -->
+      <div
+        aria-hidden="false"
+        class="slds-section__content my-section"
+        id={Sections.secC.ControlName}
+      >
+        <lightning-layout multiple-rows="true" pull-to-boundary="small">
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="Segment__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="TargetKPI__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="Product__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="Actual_KPI__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="Indicator__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            padding="horizontal-small"
+          >
+            <lightning-output-field
+              field-name="SendNotifications__c"
+              class="slds-border_bottom"
+            ></lightning-output-field>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+    </div>
+    <!-- Acciones de Cancelar y Guardar para cuando se ejecuta en escritorio -->
+    <template if:true={isDesktop}>
+      <template if:true={isEditable}>
+        <div class="slds-docked-form-footer">
+          <button
+            type="button"
+            class="slds-button slds-button_neutral"
+            onclick={toggleEdit}
+          >
+            {labels.SDM_PlanAnual_RecordPage_Cancel}
+          </button>
+          <button type="submit" class="slds-button slds-button_brand">
+            {labels.SDM_PlanAnual_RecordPage_Save}
+          </button>
+        </div>
+      </template>
+    </template>
+  </lightning-record-edit-form>
+</template>

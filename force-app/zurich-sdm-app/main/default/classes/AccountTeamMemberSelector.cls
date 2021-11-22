@@ -5,8 +5,6 @@
  * @date 08/11/2021
  */
 public with sharing class AccountTeamMemberSelector extends RecordsSelector {
-    public static final String ATM_ROLE_RN_NAME = 'Responsable de Negocio'; // Rol en ATM de RN. Directamente relacionado con Metadato AccountTeamRole
-    
     public AccountTeamMemberSelector()
     {
         super(AccountTeamMember.getSObjectType());
@@ -53,6 +51,110 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
             result = (List<AccountTeamMember>)this.baseQuery.run();
         }
 
+        return result;
+    }
+
+    /**
+     * Se recuperan los ATMs que hay para dichos usuarios. Se incluyen los campos del mediador y de la agrupacion
+     * a la que pertenece
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/11/2021
+     * 
+     * @param {Set<Id> userIds} lista de ids de usuario
+     * @return {List<AccountTeamMember>} lista de ATMs con los mediadores
+     */
+    public List<AccountTeamMember> findIntermediariesByUsers(Set<Id> userIds)
+    {
+        List<AccountTeamMember> result = null;
+
+        if( userIds != null && !userIds.isEmpty() ) {
+            Id rtId = (new AccountsSelector()).rtIntermediaryId;
+
+            result = [
+                SELECT id, AccountId, Account.ParentId, UserId
+                FROM AccountTeamMember
+                WHERE Account.RecordTypeId = :rtId
+                AND UserId IN :userIds
+            ];
+        }
+
+        return result;
+    }
+    
+    /**
+     * Recupera los objetos Account Team Member que pertenecen a alguna de las cuentas de Mediadores dadas
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/11/2021
+     * 
+     * @param {List<Account> intermediaries} cuentas de Mediadores
+     * @return {List<AccountTeamMember>} lista de ATMs con los mediadores
+     */
+    public List<AccountTeamMember> findByIntermediary(List<Account> intermediaries)
+    {
+        List<AccountTeamMember> result = null;
+
+        if( intermediaries != null && !intermediaries.isEmpty() ) {
+            result = [
+                SELECT Id, AccountId, UserId, User.Email, TeamMemberRole 
+                FROM AccountTeamMember 
+                WHERE AccountId IN :intermediaries
+            ];
+        }
+
+        return result;
+    }
+
+    /**
+     * Recupera los objetos Account Team Member de las cuentas que tengan los NationIDs dados
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/11/2021
+     * 
+     * @param {Set<String> nationalIDs} lista de NIFs
+     * @return {List<AccountTeamMember>} lista de ATMs
+     */
+    public List<AccountTeamMember> findByNationalIDs(Set<String> nationalIDs)
+    {
+        List<AccountTeamMember> result = null;
+
+        if( nationalIDs != null && !nationalIDs.isEmpty() ) {
+            result = [
+                SELECT Id, AccountId, Account.NationalID__c, Account.ParentId, UserId, TeamMemberRole, 
+                    Account.RecordType.DeveloperName
+                FROM AccountTeamMember
+                WHERE AccountId IN (
+                    SELECT Id FROM Account WHERE NationalID__c IN :nationalIDs
+                )
+            ];
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Recupera los Account Team Members que pertecen a los roles indicados por parametro.
+     * Incluimos el UserId para poder notificar el cambio en la visibilidad al borrar los ATM
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/11/2021
+     * 
+     * @param {List<String> roles} Lista de roles
+     * @return {List<AccountTeamMember>} lista de ATMs
+     */
+    public List<AccountTeamMember> findByRoles(List<String> roles)
+    {
+        List<AccountTeamMember> result = null;
+
+        if( roles != null && !roles.isEmpty() ) {
+            result = [
+                SELECT Id, UserId
+                FROM AccountTeamMember
+                WHERE TeamMemberRole IN :roles
+            ];
+        }
+        
         return result;
     }
 }

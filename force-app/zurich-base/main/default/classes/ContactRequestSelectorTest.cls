@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : jjuaristi
+ * @group             : 
+ * @last modified on  : 18-11-2021
+ * @last modified by  : jjuaristi
+**/
 @isTest
 private with sharing class ContactRequestSelectorTest 
 {
@@ -34,5 +41,33 @@ private with sharing class ContactRequestSelectorTest
 
         // Los 2 con fecha y hora en el futuro
         System.assertEquals(2, foundContactReqs.size(), 'Deberia encontrar 2 ContactRequest');
+    }
+
+    @isTest
+    static void findByCustomerId() {
+        // Recuperamos la cuenta
+        List<Account> accounts = [SELECT Id, PersonContactId FROM Account];
+        System.assertEquals(1, accounts.size(), 'Deberia haber 1 cuenta');
+
+        // Creamos 3 ContactRequest de ejemplo. 1 con fecha y hora de contacto en el pasado y 
+        // 2 con fecha y hora de contacto en el futuro
+        List<ContactRequest> contactReqs = TestDataFactory.generateContactRequest(accounts[0].PersonContactId, 3);
+        contactReqs[0].PreferredContactDatetime__c = System.now().addMinutes(5);
+        contactReqs[1].PreferredContactDatetime__c = System.now().addMinutes(-10);
+        contactReqs[2].PreferredContactDatetime__c = System.now().addMinutes(15);
+        insert contactReqs;
+
+
+        Test.startTest();
+        // Buscamos los ContactRequest para el momento actual
+        List<ContactRequest> foundContactReqs =
+            new ContactRequestSelector().findByCustomerId(
+                accounts[0].PersonContactId
+            );
+
+        Test.stopTest();
+
+        // Los 2 con fecha y hora en el futuro
+        System.assertEquals(3, foundContactReqs.size(), 'Deberia encontrar 3 ContactRequest');
     }
 }
