@@ -156,7 +156,7 @@ export default class CallMeBackList extends LightningElement {
     try {
       return await genesysCloud.isAuthorized();
     } catch (error) {
-      console.error("Exception: CallRecordingButton.isAuthorized()", error);
+      console.error("Exception: callMeBackList.isAuthorized()", error);
       this.showMessage(ERROR_TITLE, ERROR_CANCELED, "error");
       return false;
     }
@@ -172,7 +172,7 @@ export default class CallMeBackList extends LightningElement {
     try {
       await genesysCloud.authorize();
     } catch (error) {
-      console.error("Exception: CallRecordingButton.authorize()", error);
+      console.error("Exception: callMeBackList.authorize()", error);
       this.showMessage(ERROR_TITLE, ERROR_CANCELED, "error");
     }
   }
