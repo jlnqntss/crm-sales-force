@@ -30,12 +30,12 @@
     </layouts>
     <nameFieldLabel>Asunto</nameFieldLabel>
     <recordTypes>
-        <description>Creación o gestión del Plan comercial Anual</description>
+        <description>Plan de acción con uno o varios mediadores que puede ser mensual o anual</description>
         <label>Plan de Acción</label>
         <name>ActionPlan</name>
     </recordTypes>
     <recordTypes>
-        <description>Plan de acción con uno o varios mediadores que puede ser mensual o anual</description>
+        <description>Creación o gestión del Plan comercial Anual</description>
         <label>Plan Anual</label>
         <name>AnualPlan</name>
     </recordTypes>
