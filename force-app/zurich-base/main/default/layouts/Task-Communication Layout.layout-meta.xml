@@ -87,7 +87,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Reminder</label>
+        <label>Recordatorio</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -351,7 +351,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h3N000002QsD6</masterLabel>
+        <masterLabel>00h68000000uASQ</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

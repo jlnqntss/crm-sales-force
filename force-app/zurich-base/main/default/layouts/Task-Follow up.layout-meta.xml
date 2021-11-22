@@ -59,7 +59,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Información adicional</label>
+        <label>Seguimiento</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
