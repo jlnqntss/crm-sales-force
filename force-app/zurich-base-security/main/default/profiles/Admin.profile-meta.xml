@@ -9941,6 +9941,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Scope__c.TechnicalIncidence__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Scope__c.TotalNetPremium__c</field>
         <readable>true</readable>
     </fieldPermissions>

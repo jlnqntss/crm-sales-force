@@ -316,6 +316,18 @@
         </quickActionListItems>
         <quickActionListItems>
             <quickActionName>NewTask</quickActionName>
+        </quickActionListItems>        
+        <quickActionListItems>
+            <quickActionName>Account.ActividadComercial</quickActionName>
+        </quickActionListItems>
+        <quickActionListItems>
+            <quickActionName>Account.Comunicacion</quickActionName>
+        </quickActionListItems>
+        <quickActionListItems>
+            <quickActionName>Account.Recordatorio2</quickActionName>
+        </quickActionListItems>
+        <quickActionListItems>
+            <quickActionName>Account.SeguimientoOfertaPoliza</quickActionName>
         </quickActionListItems>
     </quickActionList>
     <relatedContent>

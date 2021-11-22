@@ -2102,7 +2102,6 @@
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
-
     <layoutAssignments>
         <layout>Contact-SDM Contact Layout</layout>
         <recordType>Contact.AgentMediator</recordType>
@@ -2111,7 +2110,9 @@
         <layout>Contact-SDM Contact Layout</layout>
         <recordType>Contact.Contact</recordType>
     </layoutAssignments>
-
+    <layoutAssignments>
+        <layout>Global-SDM</layout>
+    </layoutAssignments>
     <loginIpRanges>
         <endAddress>255.255.255.255</endAddress>
         <startAddress>0.0.0.0</startAddress>
