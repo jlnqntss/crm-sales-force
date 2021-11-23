@@ -60,9 +60,6 @@
     </platformActionList>
     <quickActionList>
         <quickActionListItems>
-            <quickActionName>Nueva_Interacci_n</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
             <quickActionName>FeedItem.TextPost</quickActionName>
         </quickActionListItems>
         <quickActionListItems>
