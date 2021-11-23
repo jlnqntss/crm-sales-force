@@ -18,8 +18,8 @@
     <layouts>
         <layout>Commercial action Layout</layout>
         <sections>
-            <label><!-- Related To --></label>
-            <section>Related To</section>
+            <label>Recordatorio</label>
+            <section>Reminder</section>
         </sections>
     </layouts>
     <layouts>
@@ -91,6 +91,10 @@
         <sections>
             <label><!-- Related To --></label>
             <section>Related To</section>
+        </sections>
+        <sections>
+            <label>Recordatorio</label>
+            <section>Reminder</section>
         </sections>
     </layouts>
     <layouts>
