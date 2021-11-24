@@ -223,6 +223,42 @@
         <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
     <tabs>standard-home</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Task</tabs>
