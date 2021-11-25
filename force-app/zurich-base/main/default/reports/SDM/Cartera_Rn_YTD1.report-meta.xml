@@ -147,7 +147,7 @@
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>KPI__c.EstructuraUnificada__c</field>
+        <field>BucketField_68388292</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
@@ -161,7 +161,7 @@
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>accountteam</scope>
+    <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
