@@ -122,7 +122,7 @@ export default class CallMeBackList extends LightningElement {
         );
       })
       .catch((error) => {
-        this.showMessage(ERROR_TITLE, SUCCESS_CANCELED, ERROR_VARIANT);
+        this.showMessage(ERROR_TITLE, ERROR_CANCELED, ERROR_VARIANT);
         console.error(error);
       });
   }
