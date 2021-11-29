@@ -12,6 +12,7 @@ function convertSFDXProject(targetDirectory, tmpDirectory) {
   );
 
   console.log("Converting project...");
+  console.log("API version: " + sfdxProject.sourceApiVersion);
 
   sfdxProject.packageDirectories.forEach((dir) => {
     console.log(`Converting package ${dir.path}...`);
@@ -22,7 +23,7 @@ function convertSFDXProject(targetDirectory, tmpDirectory) {
     if (existsSync(`${targetDirectory}/package.xml`)) {
       console.log("Merging package.xml");
       execSync(
-        `sfdx sfpowerkit:project:manifest:merge -p "${tmpDirectory}/${dir.path}/package.xml,${targetDirectory}/package.xml" -d "${tmpDirectory}"`,
+        `sfdx sfpowerkit:project:manifest:merge -p "${tmpDirectory}/${dir.path}/package.xml,${targetDirectory}/package.xml" -d "${tmpDirectory}" --apiversion=${sfdxProject.sourceApiVersion}`,
         {
           stdio: "inherit"
         }
