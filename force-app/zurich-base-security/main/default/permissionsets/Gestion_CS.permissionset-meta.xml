@@ -192,6 +192,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactRequest.Preferred_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>ContactRequest.WebName__c</field>
         <readable>true</readable>
@@ -370,9 +375,5 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewCaseInteraction</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>EmailTemplateManagement</name>
     </userPermissions>
 </PermissionSet>
