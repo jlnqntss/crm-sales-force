@@ -87,7 +87,7 @@
             </value>
         </filters>
         <filters>
-            <field>EndDate__c</field>
+            <field>StartDate__c</field>
             <operator>IsNull</operator>
             <value>
                 <booleanValue>true</booleanValue>

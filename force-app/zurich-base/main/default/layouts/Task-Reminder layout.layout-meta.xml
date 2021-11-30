@@ -80,10 +80,10 @@
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
-        <customLabel>false</customLabel>
+        <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Other Information</label>
+        <label>Reminder</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>

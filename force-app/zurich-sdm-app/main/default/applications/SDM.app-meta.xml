@@ -3,6 +3,24 @@
     <actionOverrides>
         <actionName>View</actionName>
         <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Contact_Record_Page2</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Contact</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Contact_Record_Page2</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Contact</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
         <content>Agrupaci_n_Mediador</content>
         <formFactor>Small</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
@@ -204,6 +222,42 @@
         <pageOrSobjectType>standard-home</pageOrSobjectType>
         <type>Flexipage</type>
         <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
     </profileActionOverrides>
     <tabs>standard-home</tabs>
     <tabs>standard-Account</tabs>

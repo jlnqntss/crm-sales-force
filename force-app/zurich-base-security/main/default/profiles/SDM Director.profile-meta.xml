@@ -2103,6 +2103,14 @@
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Contact-SDM Contact Layout</layout>
+        <recordType>Contact.AgentMediator</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-SDM Contact Layout</layout>
+        <recordType>Contact.Contact</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Global-SDM</layout>
     </layoutAssignments>
     <loginIpRanges>
