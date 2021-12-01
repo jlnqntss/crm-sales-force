@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GenesysQueueName__c</fullName>
+    <description>Contiene el nombre de la cola de Genesys a la que se ha enrutado la interacción.</description>
+    <externalId>false</externalId>
+    <label>Genesys Queue Name</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
