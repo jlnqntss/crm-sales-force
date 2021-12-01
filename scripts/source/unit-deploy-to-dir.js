@@ -11,18 +11,20 @@ const { convertSFDXProject } = require("./convertSFDXProject");
 
 /**
  * Valida un despliegue a un entorno a la org indicada como parámetro
- * f.e: node scripts/source/unit-deploy-to-dir  zurich_prod 0 C:/TEMP/
+ * f.e: node scripts/source/unit-deploy-to-dir zurich_prod 0 C:/TEMP/ nomdirdeploy
  *
- * f.npm (package.json): npm run deploy:dir zurichKlincT 0 C:/TEMP/ deploy
+ * f.npm (package.json): npm run deploy:dir zurichKlincT 0 C:/TEMP/ nomdirdeploy
  *
- *   opcional
+ *   Parametros:
+ *    - "zurich_prod": nombre de la org en SFDX CLI
  *    - que hacer
- *      0: crear deploy y lanzarlo a salesforce CON --checkonly
- *      1: solo crear deploy
- *      2: solo lanzar a salesforce CON --checkonly
- *      3: solo lanzar SIN --checkonly
- *    - directorio destino donde hacer todo
- *    - directorio destino del deploy
+ *      0: crear paquete de deploy en directorio Y desplegar verificacion a salesforce (CON checkonly).
+ *      1: solo crear paquete de deploy en directorio.
+ *      2: solo desplegar verificacion a salesforce (CON checkonly).
+ *      3: solo desplegar a Salesforce (Aviso: **SIN** checkonly).
+ *      4: solo reconciliar perfiles
+ *    - "C:/TEMP/": directorio destino donde hacer todo
+ *    - "nomdirdeploy": directorio destino del deploy
  *
  */
 async function main() {
