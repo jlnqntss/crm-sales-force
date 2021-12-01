@@ -175,11 +175,6 @@
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>PARENT.NAME</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
         <field>KPI__c.CalcYear__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
@@ -194,7 +189,7 @@
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>accountteam</scope>
+    <scope>organization</scope>
     <showDetails>false</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>

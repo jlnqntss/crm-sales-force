@@ -292,11 +292,6 @@
     </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>PARENT.NAME</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
         <field>BucketField_68388292</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
@@ -311,7 +306,7 @@
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>accountteam</scope>
+    <scope>organization</scope>
     <showDetails>false</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>false</showSubTotals>

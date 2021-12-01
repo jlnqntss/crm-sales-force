@@ -96,13 +96,11 @@
             <axisBinding>y</axisBinding>
             <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartType>LineGrouped</chartType>
+        <chartType>Line</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
         <groupingColumn>CDF1</groupingColumn>
-        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>BucketField_68388292</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -284,16 +282,6 @@
         </values>
     </formattingRules>
     <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>PARENT.NAME</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>BucketField_68388292</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
         <field>CDF1</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
@@ -303,7 +291,7 @@
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>accountteam</scope>
+    <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
