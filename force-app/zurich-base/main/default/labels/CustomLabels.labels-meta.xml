@@ -1295,4 +1295,20 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_PlanAnual_ButtonRefresh</shortDescription>
         <value>Reload plans</value>
     </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_Legend</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_Legend</shortDescription>
+        <value>Legend</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_WarningCero</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_WarningCero</shortDescription>
+        <value>Subplans with a zero value at the RN/CV level for DT/DV or Intermediary level for RN/CV will not be created or, if they existed, they will be eliminated.</value>
+    </labels>
 </CustomLabels>

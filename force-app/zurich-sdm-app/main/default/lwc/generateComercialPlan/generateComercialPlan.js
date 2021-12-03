@@ -31,6 +31,8 @@ import SDM_PlanAnual_PlanYears from "@salesforce/label/c.SDM_PlanAnual_PlanYears
 import SDM_PlanAnual_ValidationTitle from "@salesforce/label/c.SDM_PlanAnual_ValidationTitle";
 import SDM_PlanAnual_ValidationMessage from "@salesforce/label/c.SDM_PlanAnual_ValidationMessage";
 import SDM_PlanAnual_ButtonRefresh from "@salesforce/label/c.SDM_PlanAnual_ButtonRefresh";
+import SDM_PlanAnual_Legend from "@salesforce/label/c.SDM_PlanAnual_Legend";
+import SDM_PlanAnual_WarningCero from "@salesforce/label/c.SDM_PlanAnual_WarningCero";
 
 import saveData from "@salesforce/apex/generateComercialPlanController.saveData";
 import getRecords from "@salesforce/apex/generateComercialPlanController.getRecords";
@@ -71,7 +73,9 @@ export default class UploadCaseDocumentation extends NavigationMixin(
     SDM_PlanAnual_PlanYears,
     SDM_PlanAnual_ValidationTitle,
     SDM_PlanAnual_ValidationMessage,
-    SDM_PlanAnual_ButtonRefresh
+    SDM_PlanAnual_ButtonRefresh,
+    SDM_PlanAnual_Legend,
+    SDM_PlanAnual_WarningCero
   };
 
   @track isEdited = false;
