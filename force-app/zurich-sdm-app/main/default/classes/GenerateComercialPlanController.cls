@@ -828,9 +828,9 @@ public with sharing class GenerateComercialPlanController
         PlanComercial__c childPlan;
 
         // Guardara la lista de RNs a notificar si hay nuevos planes del DT
-        Set<Id> rnsToNotify;
+        Set<Id> rnsToNotify = new Set<Id>();
         // Guardara la lista de Planes nuevos a notificar si los ha creado el DT
-        Set<String> newPlanNames;
+        Set<String> newPlanNames = new Set<String>();
 
         Id rtPlanAnualId = (new PlanComercialSelector()).rtPlanAnualId;
         
@@ -913,8 +913,7 @@ public with sharing class GenerateComercialPlanController
                     parentPlansToInsert.add(parentPlan);
 
                     // Si hay plan nuevo del DT se incluye en la lista para notificar
-                    if( isDirector ) {                        
-                        if( newPlanNames == null ) newPlanNames = new Set<String>();
+                    if( isDirector ) {
                         newPlanNames.add(planName);
                     }
                 } else { //----------------------------------------------- Plan existente
@@ -955,47 +954,53 @@ public with sharing class GenerateComercialPlanController
                     cell = row.Cells[i];
                     childValue = cell.decimalValue;
 
-                    if( isNewPlan || cell.isNew ) { //-------------------- Nuevo Plan o Nuevo subplan (rn/mediador)                       
-                        childPlan = new PlanComercial__c(
-                            Name= planName,
-                            Description__c= planName,
-                            Segment__c= segment,
-                            Product__c= product,
-                            Indicator__c= indicator,
-                            StartDate__c= Date.newInstance(anyo, 1, 1),
-                            EndDate__c= Date.newInstance(anyo, 12, 31),
-                            ParentPlan__c= null,
-                            AccumulateType__c= PLAN_ACCUMULATE_TYPE,
-                            RecordTypeId= rtPlanAnualId,
-                            SendNotifications__c= PLAN_SEND_NOTIF
-                        );
-                        if( isDirector ) {
-                            childPlan.AssignedTo__c= rowId;
+                    if( isNewPlan || cell.isNew ) { //-------------------- Nuevo Plan o Nuevo subplan (rn/mediador)    
+                        if( childValue > 0 ) {                   
+                            childPlan = new PlanComercial__c(
+                                Name= planName,
+                                Description__c= planName,
+                                Segment__c= segment,
+                                Product__c= product,
+                                Indicator__c= indicator,
+                                StartDate__c= Date.newInstance(anyo, 1, 1),
+                                EndDate__c= Date.newInstance(anyo, 12, 31),
+                                ParentPlan__c= null,
+                                AccumulateType__c= PLAN_ACCUMULATE_TYPE,
+                                RecordTypeId= rtPlanAnualId,
+                                SendNotifications__c= PLAN_SEND_NOTIF
+                            );
+                            if( isDirector ) {
+                                childPlan.AssignedTo__c= rowId;
 
-                             // Si hay plan nuevo del DT se incluyen los id de los RNs (filas) en la lista a notificar
-                             if( rnsToNotify == null ) rnsToNotify = new Set<ID>();
-                             rnsToNotify.add(rowId);
-                        } else {
-                            childPlan.AssignedTo__c= userId;
-                            childPlan.Intermediary__c= rowId;
-                        }
+                                // Se incluye el nombre del plan por si es una creacion individual
+                                newPlanNames.add(planName);
+                                // Si hay plan nuevo del DT se incluyen los id de los RNs (filas) en la lista a notificar
+                                rnsToNotify.add(rowId);
+                            } else {
+                                childPlan.AssignedTo__c= userId;
+                                childPlan.Intermediary__c= rowId;
+                            }
                         
-                        childPlan.put(PlanComercialSelector.getTargetKPIFieldByType(indicatorType), childValue);
+                            childPlan.put(PlanComercialSelector.getTargetKPIFieldByType(indicatorType), childValue);
 
-                        if( isNewPlan ) {
-                            // Añadimos el plan hijo a la lista para crearlo
-                            childPlansToInsert.add(childPlan);
+                            if( isNewPlan ) {
+                                // Añadimos el plan hijo a la lista para crearlo
+                                childPlansToInsert.add(childPlan);
 
-                            Integer parentPos = parentPlansToInsert.size()-1;
-                            Integer childPos = childPlansToInsert.size()-1;
-                            // Y añadimos la referencia al padre
-                            mapChildToParent.put(childPos, parentPos);
-                        } else {
-                            childPlan.ParentPlan__c = planId;
-                            existingPlansToUpsert.add(childPlan);
+                                Integer parentPos = parentPlansToInsert.size()-1;
+                                Integer childPos = childPlansToInsert.size()-1;
+                                // Y añadimos la referencia al padre
+                                mapChildToParent.put(childPos, parentPos);
+                            } else {
+                                childPlan.ParentPlan__c = planId;
+                                existingPlansToUpsert.add(childPlan);
+                            }
                         }
                     } else { //------------------------------------------- Subplan existente
-                        if( isHeaderModified || isSegmentModified || isIndicatorModified || cell.isModified ) {
+                        if( childValue == 0 ) {
+                            childPlan = new PlanComercial__c(Id= cell.Id);
+                            plansToDelete.add(childPlan);
+                        } else if( isHeaderModified || isSegmentModified || isIndicatorModified || cell.isModified ) {
                             childPlan = new PlanComercial__c(Id= cell.Id);
                             
                             if( isHeaderModified ) {
@@ -1029,7 +1034,7 @@ public with sharing class GenerateComercialPlanController
                     Integer pos = ROWS_FROM_RN_INTERMEDIARY;
                     for(Integer j=pos; j<maxRows; j++) {
                         Celltype cell = rowsdata?.get(j)?.Cells[i];
-                        if( cell != null ) idsToDelete.add(cell.Id);
+                        if( cell?.Id != null ) idsToDelete.add(cell.Id);
                     }
                     
                     // Se convierte la lista a planes comerciales
@@ -1075,12 +1080,12 @@ public with sharing class GenerateComercialPlanController
                 }
                 // Se inserta el plan hijo
                 insert childPlansToInsert;
-
-                // Si se han relleando los destinatarios y los nombres del plan correctamente se envia las notificaciones
-                if( rnsToNotify != null && !rnsToNotify.isEmpty() && newPlanNames != null && !newPlanNames.isEmpty() ) {
-                    sendNotification(rnsToNotify, newPlanNames);
-                }
             }
+        }
+
+        // Si se han relleando los destinatarios y los nombres del plan correctamente se envia las notificaciones
+        if( !rnsToNotify.isEmpty() && !newPlanNames.isEmpty() ) {
+            sendNotification(rnsToNotify, newPlanNames);
         }
     }
 

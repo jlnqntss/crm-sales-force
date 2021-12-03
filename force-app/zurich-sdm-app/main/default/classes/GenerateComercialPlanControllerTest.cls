@@ -83,6 +83,9 @@ private with sharing class GenerateComercialPlanControllerTest
             GenerateComercialPlanController.Celltype newPlanRow = tabledata.rowsNew[i].Cells[0];
             newPlanRow.Id = null;
             newPlanRow.IsNew = true;
+            if( i == 4 || i == 5 ) { // filas de plan DT y RN
+                newPlanRow.decimalValue = 8;
+            }
             tabledata.rows[i].Cells.add(newPlanRow);
         }
 

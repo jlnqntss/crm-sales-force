@@ -1,14 +1,22 @@
 <!-- sldsValidatorIgnore -->
 <template>
     <lightning-card title={labels.SDM_PlanAnual_Title} icon-name="action:goal">
-      <!-- SLOT: ACTION -->
+      <!-- SLOT: ACTION -->      
+      <template if:true={canSave}>
+        <span slot="actions" class="slds-m-right_small">
+          <lightning-helptext 
+              icon-variant="warning" icon-name="utility:warning" 
+              content={labels.SDM_PlanAnual_WarningCero}>
+          </lightning-helptext>
+        </span>
+      </template>
       <span slot="actions" class="slds-m-right_small">
-        <span class="slds-m-right_xx-small">{numActivePlans}</span>
+        <span style="padding-right: 0.1rem;">{numActivePlans}</span>
         <lightning-helptext icon-name="utility:priority" content="Planes en pantalla"></lightning-helptext>
       </span>
       <template if:true={canSave}
         ><span slot="actions" class="slds-m-right_medium">
-          <span class="slds-m-right_xx-small">{deletedPlans}</span>
+          <span style="padding-right: 0.1rem;">{deletedPlans}</span>
           <lightning-helptext
             icon-name="utility:delete"
             content={labels.SDM_PlanAnual_PlansToDelete}
@@ -44,7 +52,7 @@
                     <lightning-button label={labels.SDM_PlanAnual_ButtonEdit} slot="actions" onclick={handleEdit}></lightning-button>
                 </template> -->
       <div class="slds-p-around_none slds-m-horizontal_none">
-        <lightning-layout>
+        <lightning-layout vertical-align="end">
           <!-- Combo de años -->
           <lightning-layout-item padding="horizontal-medium">
               <lightning-combobox
@@ -59,53 +67,56 @@
           <!-- Leyenda de iconos -->
           <template if:false={isPhone}>
             <lightning-layout-item alignment-bump="left" padding="horizontal-medium">
-              <lightning-layout horizontal-align="end">
-                  <!-- Deshacer -->
-                  <lightning-layout-item class="slds-p-right_x-small slds-m-top_x-large slds-border_right">
-                      <lightning-icon
-                      icon-name="utility:undo"
-                      size="x-small"
-                      class="slds-m-right_xx-small"
-                      ></lightning-icon
-                      >{labels.SDM_PlanAnual_ButtonUndo}
-                  </lightning-layout-item>
-                  <!-- Campo bloqueado -->
-                  <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-m-top_x-large slds-border_right">
-                      <lightning-icon
-                      icon-name="utility:lock"
-                      size="x-small"
-                      class="slds-m-right_xx-small"
-                      ></lightning-icon
-                      >{labels.SDM_PlanAnual_FieldLock}
-                  </lightning-layout-item>
-                  <!-- Eliminar -->
-                  <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-m-top_x-large slds-border_right">
-                      <lightning-icon
-                      icon-name="utility:delete"
-                      size="x-small"
-                      class="slds-m-right_xx-small"
-                      ></lightning-icon
-                      >{labels.SDM_PlanAnual_ButtonDelete}
-                  </lightning-layout-item>
-                  <!-- Nuevo plan -->
-                  <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-m-top_x-large slds-border_right">
-                      <lightning-icon variant="success" icon-name="utility:new" size="x-small" class="slds-m-right_xx-small my-isnew" ></lightning-icon>
-                      {labels.SDM_PlanAnual_NewPlan}
-                  </lightning-layout-item>
-                  <!-- KPI real -->
-                  <lightning-layout-item class="slds-m-left_x-small slds-m-top_large">
-                      <div
-                      class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_small my-css-positive"
-                      role="tooltip"
-                      title={labels.SDM_PlanAnual_KPIReal}
-                      >
-                          <div class="slds-popover__body">
-                              <span href="#" style="color: white"
-                              >{labels.SDM_PlanAnual_KPIReal}</span
-                              >
-                          </div>
-                      </div>
-                  </lightning-layout-item>
+              <lightning-layout horizontal-align="end" vertical-align="center" class="slds-form-element__label slds-box slds-box_xx-small">
+                        <lightning-layout-item class="slds-p-left_x-small slds-p-right_x-small slds-border_right slds-text-title_caps slds-text-color_weak">
+                          <span>{labels.SDM_PlanAnual_Legend}</span>
+                        </lightning-layout-item>
+                        <!-- Deshacer -->
+                        <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-border_right">
+                            <lightning-icon
+                            icon-name="utility:undo"
+                            size="x-small"
+                            class="slds-m-right_xx-small"
+                            ></lightning-icon
+                            >{labels.SDM_PlanAnual_ButtonUndo}
+                        </lightning-layout-item>
+                        <!-- Campo bloqueado -->
+                        <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-border_right">
+                            <lightning-icon
+                            icon-name="utility:lock"
+                            size="x-small"
+                            class="slds-m-right_xx-small"
+                            ></lightning-icon
+                            >{labels.SDM_PlanAnual_FieldLock}
+                        </lightning-layout-item>
+                        <!-- Eliminar -->
+                        <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-border_right">
+                            <lightning-icon
+                            icon-name="utility:delete"
+                            size="x-small"
+                            class="slds-m-right_xx-small"
+                            ></lightning-icon
+                            >{labels.SDM_PlanAnual_ButtonDelete}
+                        </lightning-layout-item>
+                        <!-- Nuevo plan -->
+                        <lightning-layout-item class="slds-p-right_x-small slds-m-left_x-small slds-border_right">
+                            <lightning-icon icon-name="utility:new" size="x-small" class="slds-m-right_xx-small my-isnew" ></lightning-icon>
+                            {labels.SDM_PlanAnual_NewPlan}
+                        </lightning-layout-item>
+                        <!-- KPI real -->
+                        <lightning-layout-item class="slds-m-left_x-small">
+                            <div
+                            class="slds-popover slds-popover_tooltip slds-nubbin_left slds-m-left_small my-css-positive"
+                            role="tooltip"
+                            title={labels.SDM_PlanAnual_KPIReal}
+                            >
+                                <div class="slds-popover__body">
+                                    <span href="#" style="color: white"
+                                    >{labels.SDM_PlanAnual_KPIReal}</span
+                                    >
+                                </div>
+                            </div>
+                        </lightning-layout-item>
               </lightning-layout>
           </lightning-layout-item>
         </template>
@@ -193,7 +204,7 @@
                               role="tooltip"
                               title={labels.SDM_PlanAnual_ButtonNew}
                             >
-                            <lightning-icon variant="success" icon-name="utility:new" size="x-small" class="slds-m-right_xx-small" ></lightning-icon>
+                            <lightning-icon icon-name="utility:new" size="x-small" class="slds-m-right_xx-small" ></lightning-icon>
                             </div>
                           </template>
                           <!-- EDICION -->

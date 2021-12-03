@@ -5688,6 +5688,14 @@
         <label>Recargar planes</label>
         <name>SDM_PlanAnual_ButtonRefresh</name>
     </customLabels>
+    <customLabels>
+        <label>Leyenda</label>
+        <name>SDM_PlanAnual_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>Los subplanes con valor Cero a nivel de RN/CV para DT/DV o Mediador para RN/CV no se crearán o si existían se eliminarán.</label>
+        <name>SDM_PlanAnual_WarningCero</name>
+    </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
         <name>Configure_Call_Center_Settings</name>
