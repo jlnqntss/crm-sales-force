@@ -1111,7 +1111,7 @@ private with sharing class ContentDocumentLinkUtilTest
         String csvContent = ''+caseTypeValue+';'+caseSubtypeValue+';;1;'+relatedOffer.InfoQuoteNumber__c+';;'+relatedPolicy.InfoPolicyNumber__c+';'+receiptNumber+';'+relatedClaim.InfoClaimNumber__c+';'+relatedIntermediary.INFOIntermediaryCode__c+'\n';
         csvContent += 'Fake Name <'+FAKE_FROM_ADDRESS+'>\n';
         String secondEmailAddress = 'secondfakeemailaddress@fakeemail.com.invalid';
-        csvContent += 'Fake Name <'+FAKE_TO_ADDRESS+'>, '+secondEmailAddress+'';
+        csvContent += 'Fake Name <'+FAKE_TO_ADDRESS+'>; '+secondEmailAddress+'';
 
         ContentVersion newVersion = new ContentVersion();
         newVersion.Title = robotHegeoSettings.get(0).DocumentTitle__c;

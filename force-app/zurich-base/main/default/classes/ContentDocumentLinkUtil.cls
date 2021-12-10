@@ -313,8 +313,7 @@ public without sharing class ContentDocumentLinkUtil
                                     List<String> toAddressLineValues = csvFileLines.get(toAddressCSVIndex).split(csvSeparator);
                                     if( toAddressLineValues != null && !toAddressLineValues.isEmpty() )
                                     {
-                                        List<String> toAddressListFromCSV = toAddressLineValues.get(0).split(',');
-                                        for(String toAddressFromCSV: toAddressListFromCSV)
+                                        for(String toAddressFromCSV: toAddressLineValues)
                                         {
                                             // hotfix - ocs-2246 - Salesforce no reconoce el destinatario indicado por el robot tipificador al incluir imap
                                             String trimmedToAddressFromCSV = toAddressFromCSV.trim().toLowerCase().replaceAll('.imap', '');
@@ -345,8 +344,7 @@ public without sharing class ContentDocumentLinkUtil
                                         List<String> ccAddressLineValues = csvFileLines.get(ccAddressCSVIndex).split(csvSeparator);
                                         if( ccAddressLineValues != null && !ccAddressLineValues.isEmpty() )
                                         {
-                                            List<String> ccAddressListFromCSV = ccAddressLineValues.get(0).split(',');
-                                            for(String ccAddressFromCSV: ccAddressListFromCSV)
+                                            for(String ccAddressFromCSV: ccAddressLineValues)
                                             {
                                                 String trimmedCcAddressFromCSV = ccAddressFromCSV.trim();
                                                 if( trimmedCcAddressFromCSV.contains('<') )
@@ -377,8 +375,7 @@ public without sharing class ContentDocumentLinkUtil
                                         List<String> bccAddressLineValues = csvFileLines.get(bccAddressCSVIndex).split(csvSeparator);
                                         if( bccAddressLineValues != null && !bccAddressLineValues.isEmpty() )
                                         {
-                                            List<String> bccAddressListFromCSV = bccAddressLineValues.get(0).split(',');
-                                            for(String bccAddressFromCSV: bccAddressListFromCSV)
+                                            for(String bccAddressFromCSV: bccAddressLineValues)
                                             {
                                                 String trimmedBccAddressFromCSV = bccAddressFromCSV.trim();
                                                 if( trimmedBccAddressFromCSV.contains('<') )
