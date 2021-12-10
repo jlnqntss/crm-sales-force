@@ -331,7 +331,7 @@ public without sharing class ContentDocumentLinkUtil
 
                                 if( toAddressList != null && !toAddressList.isEmpty() )
                                 {
-                                    relatedEmail.ToAddress = String.join(toAddressList, ',');
+                                    relatedEmail.ToAddress = String.join(toAddressList, ';');
                                 }
 
                                 //Extraemos el email ccAddress
@@ -361,7 +361,7 @@ public without sharing class ContentDocumentLinkUtil
 
                                     if( ccAddressList != null && !ccAddressList.isEmpty() )
                                     {
-                                        relatedEmail.ccAddress = String.join(ccAddressList, ',');
+                                        relatedEmail.ccAddress = String.join(ccAddressList, ';');
                                     }
                                 }
 
@@ -392,7 +392,7 @@ public without sharing class ContentDocumentLinkUtil
 
                                     if( bccAddressList != null && !bccAddressList.isEmpty() )
                                     {
-                                        relatedEmail.BccAddress = String.join(bccAddressList, ',');
+                                        relatedEmail.BccAddress = String.join(bccAddressList, ';');
                                     }
                                 }
 
