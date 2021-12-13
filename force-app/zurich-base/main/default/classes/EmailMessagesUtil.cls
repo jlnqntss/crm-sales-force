@@ -72,7 +72,7 @@ public with sharing class EmailMessagesUtil
                 Boolean includeEmail = false;
 
                 // First check: Routed is false and not is not from an excluded subject list
-                if( em.RoutedToGenesys__c == false && !excludedSubjects.contains(em.Subject) ) {
+                if( em.RoutedToGenesys__c == false && !excludedSubjects.contains(em.Subject) && em.Incoming) {
                     includeEmail = true;
 
                     if( checkHegeoEmails ) {

@@ -44,6 +44,8 @@ private class EmailMessagesUtilTest
                 EMAIL_HEGEO
             };
 
+            emails[i].Incoming = true;
+
             if( i == 0 ) { // The first one will have the hegeo email in the To field -> invalid
                 emails[i].ToAddress = String.join(addressList, ';');
             } else if( i == 1 ) { // The second one will have the hegeo email in the Cc field -> invalid
@@ -79,6 +81,8 @@ private class EmailMessagesUtilTest
             addressList.add(String.format(EMAIL_FORMAT_TO, new List<String>{String.valueOf(i)}));
             addressList.add(EMAIL_QUEUE);
 
+            emails[i].Incoming = true;
+
             if( i == 0 ) {
                 emails[i].CcAddress = String.join(addressList, ';');
                 emails[i].ToAddress = String.format(EMAIL_FORMAT_CC, new List<String>{String.valueOf(i)});
@@ -103,7 +107,13 @@ private class EmailMessagesUtilTest
     {
         // The first time the emails dont have any valid genesys queue email receipts
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
+        
+        for(Integer i=0; i<emails.size();i++) {
+            emails[i].Incoming = true;
+        }
+        
         insert emails;
+
         List<EmailMessage> emailsResult = [
             SELECT Id FROM EmailMessage WHERE GenesysFlowID__c != null AND GenesysQueueName__c != null
         ];

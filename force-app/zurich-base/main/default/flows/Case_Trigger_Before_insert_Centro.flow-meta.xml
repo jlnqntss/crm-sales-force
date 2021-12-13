@@ -190,6 +190,14 @@
         <connector>
             <targetReference>Es_OCS</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Origin</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Email</stringValue>
+            </value>
+        </filters>
         <object>Case</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
