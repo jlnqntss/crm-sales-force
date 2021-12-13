@@ -7,5 +7,6 @@
     <fields>MobilePhone</fields>
     <fields>Email</fields>
     <fields>AccountId</fields>
+    <fields>OwnerId</fields>
     <label>Agent/Mediator</label>
 </CompactLayout>
