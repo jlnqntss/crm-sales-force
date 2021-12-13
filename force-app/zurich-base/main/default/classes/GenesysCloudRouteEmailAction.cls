@@ -92,6 +92,8 @@ public class GenesysCloudRouteEmailAction
         public String activityId;
         @InvocableVariable(label = 'Email Message Id' description='Id. del Email Message')
         public String emailMessageId;
+        @InvocableVariable(label = 'Attribute Queue Id' description='Id. de la cola como atributo')
+        public String queueIdAttribute;
 
 
         /**
@@ -113,6 +115,7 @@ public class GenesysCloudRouteEmailAction
             email.screenPopRecordId = '' + this.screenPopRecordId;
             email.attributes.put('SF_OwnerId', '' + this.ownerId);
             email.attributes.put('SF_EmailURL', URL.getOrgDomainUrl().toExternalForm() + '/' + this.emailMessageId);
+            email.attributes.put('Genesys_QueueId', '' + this.queueIdAttribute);
 
             return email;
         }
@@ -140,7 +143,8 @@ public class GenesysCloudRouteEmailAction
                 {
                     emailMessages.add(new EmailMessage(
                                           Id = relatedEmailMessageId,
-                                          GenesysInteractionId__c = email.interactionId
+                                          GenesysInteractionId__c = email.interactionId,
+                                          RoutedToGenesys__c = true
                                           ) );
                 }
             }

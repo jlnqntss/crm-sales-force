@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SalesforceRecipientEmail__c</fullName>
+    <caseSensitive>true</caseSensitive>
+    <description>Contiene la dirección de email asociada a esa cola</description>
+    <externalId>false</externalId>
+    <label>Salesforce Recipient Email</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Email</type>
+    <unique>true</unique>
+</CustomField>
