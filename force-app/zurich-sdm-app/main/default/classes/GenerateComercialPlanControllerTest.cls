@@ -73,8 +73,6 @@ private with sharing class GenerateComercialPlanControllerTest
 
         // Nuevo plan
         GenerateComercialPlanController.Celltype newPlanHeader = tabledata.headersNew.Cells[0];
-        // newPlanHeader.Name = newPlanHeader.Category + '#0';
-        // newPlanHeader.Key = newPlanHeader.Name;
         newPlanHeader.stringValue = 'New plan';
         newPlanHeader.Id = null;
         newPlanHeader.IsNew = true;
@@ -102,8 +100,8 @@ private with sharing class GenerateComercialPlanControllerTest
         List<PlanComercial__c> resultPlans = [
             SELECT Id, Name FROM PlanComercial__c WHERE Name = 'Plan 1 modificado'
         ];
-        // 5 = plan DT global, plan de RN 1, 3 planes de mediadores
-        System.assertEquals(5, resultPlans.size(), 'Deberia haber 5 planes modificados');
+        // 2 = plan DT global, plan de RN 1, no ve los 3 planes de mediadores
+        System.assertEquals(2, resultPlans.size(), 'Deberia haber 2 planes modificados');
 
         // Creacion de nuevo plan
         resultPlans = [

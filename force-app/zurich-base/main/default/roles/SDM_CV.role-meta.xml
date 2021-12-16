@@ -6,5 +6,5 @@
     <mayForecastManagerShare>false</mayForecastManagerShare>
     <name>SDM CV</name>
     <opportunityAccessLevel>None</opportunityAccessLevel>
-    <parentRole>SDM_DV</parentRole>
+    <parentRole>SDMHomeOffice</parentRole>
 </Role>
