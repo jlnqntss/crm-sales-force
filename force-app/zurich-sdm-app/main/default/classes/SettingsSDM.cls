@@ -7,12 +7,13 @@
 public with sharing class SettingsSDM 
 {    
     // Roles de Salesforce de los usuarios que pueden usar la pantalla
-    public static final String SF_ROLE_DT_DEVNAME = 'SDM_DT'; // Rol Director Territorial
+    public static final String SF_ROLE_DT_DEVNAME = 'SDM_DT'; // Rol Director Territorial / Director Zona
     public static final String SF_ROLE_DV_DEVNAME = 'SDM_DV'; // Rol Director Vida
     public static final String SF_ROLE_RN_DEVNAME = 'SDM_RN'; // Rol Responsable de Negocio
     public static final String SF_ROLE_CV_DEVNAME = 'SDM_CV'; // Rol Consultor vida
 
     public static final String ATM_ROL_TERRITORY = 'TerritoryManager';
+    public static final String ATM_ROL_MANAGER = 'Manager';
     public static final String ATM_ROL_BUSINESS = 'BusinessManager';
     public static final String ATM_ROL_LIFECONSULTANT = 'LifeConsultant';
 
@@ -115,8 +116,8 @@ public with sharing class SettingsSDM
         String result = role;
         if( this.mapATMRoleToLabel == null ) {
             this.mapATMRoleToLabel = new Map<String, String>();
-            List<Schema.PicklistEntry> P = SDMAccountTeamRole__mdt.Role__c.getDescribe().getPicklistValues();
-            for(Schema.PicklistEntry e: p) {
+            List<Schema.PicklistEntry> pklist = SDMAccountTeamRole__mdt.Role__c.getDescribe().getPicklistValues();
+            for(Schema.PicklistEntry e: pklist) {
                 this.mapATMRoleToLabel.put(e.getValue(), e.getLabel());
             }
         }
@@ -158,8 +159,8 @@ public with sharing class SettingsSDM
         String result = role;
         if( this.mapACRRoleToLabel == null ) {
             this.mapACRRoleToLabel = new Map<String, String>();
-            List<Schema.PicklistEntry> P = SDMAccountContactRelation__mdt.Role__c.getDescribe().getPicklistValues();
-            for(Schema.PicklistEntry e: p) {
+            List<Schema.PicklistEntry> pklist = SDMAccountContactRelation__mdt.Role__c.getDescribe().getPicklistValues();
+            for(Schema.PicklistEntry e: pklist) {
                 this.mapACRRoleToLabel.put(e.getValue(), e.getLabel());
             }
         }

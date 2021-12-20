@@ -18,7 +18,7 @@ private class PlanComercialSelectorTest
     @TestSetup
     static void makeData() 
     {
-        TestDataFactorySDM.AnualPlanSetupData(ACTUAL_YEAR);
+        TestDataFactorySDM.AnualPlanSetupData(ACTUAL_YEAR, AccountsSelector.SDM_DT_EMAIL_FIELD);
     }
 
     /**

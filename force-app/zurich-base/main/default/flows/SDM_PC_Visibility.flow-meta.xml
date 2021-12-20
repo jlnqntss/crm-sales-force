@@ -9,11 +9,36 @@
         </value>
     </constants>
     <decisions>
+        <name>Has_Intermediary</name>
+        <label>Has Intermediary</label>
+        <locationX>580</locationX>
+        <locationY>839</locationY>
+        <defaultConnector>
+            <targetReference>Is_different_owner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Has_Intermediary_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Intermediary__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Account_Team_Members</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_different_owner</name>
         <label>Is different owner</label>
-        <locationX>50</locationX>
-        <locationY>599</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <locationX>778</locationX>
+        <locationY>959</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
@@ -41,10 +66,10 @@
         <description>Valida si este registro tiene comparticiones personalizadas antiguas.</description>
         <name>Validate_old_share_values</name>
         <label>Validate old share values</label>
-        <locationX>52</locationX>
-        <locationY>347</locationY>
+        <locationX>580</locationX>
+        <locationY>503</locationY>
         <defaultConnector>
-            <targetReference>Is_different_owner</targetReference>
+            <targetReference>Has_Intermediary</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -66,6 +91,17 @@
     <description>SDM: gestiona la visibilidad de los planes comerciales al ser un objeto privado</description>
     <interviewLabel>SDM - PC Visibility {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SDM - PC Visibility</label>
+    <loops>
+        <name>For_each_Team_Member</name>
+        <label>For each Team Member</label>
+        <locationX>382</locationX>
+        <locationY>1079</locationY>
+        <collectionReference>Get_Account_Team_Members</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Create_member_visibility</targetReference>
+        </nextValueConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -86,10 +122,45 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Create_member_visibility</name>
+        <label>Create member visibility</label>
+        <locationX>470</locationX>
+        <locationY>1199</locationY>
+        <connector>
+            <targetReference>For_each_Team_Member</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>AccessLevel</field>
+            <value>
+                <stringValue>Edit</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RowCause</field>
+            <value>
+                <stringValue>Manual</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserOrGroupId</field>
+            <value>
+                <elementReference>For_each_Team_Member.UserId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>PlanComercial__Share</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_PC_Visibility</name>
         <label>Create PC Visibility</label>
-        <locationX>387</locationX>
-        <locationY>633</locationY>
+        <locationX>646</locationX>
+        <locationY>1079</locationY>
         <inputAssignments>
             <field>AccessLevel</field>
             <value>
@@ -120,19 +191,49 @@
     <recordDeletes>
         <name>Delete_old_shares</name>
         <label>Delete old shares</label>
-        <locationX>410</locationX>
-        <locationY>352</locationY>
+        <locationX>448</locationX>
+        <locationY>623</locationY>
         <connector>
-            <targetReference>Is_different_owner</targetReference>
+            <targetReference>Has_Intermediary</targetReference>
         </connector>
         <inputReference>Old_Shares</inputReference>
     </recordDeletes>
     <recordLookups>
+        <name>Get_Account_Team_Members</name>
+        <label>Get Account Team Members</label>
+        <locationX>383</locationX>
+        <locationY>959</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>For_each_Team_Member</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Intermediary__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>UserId</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AccountTeamMember</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>UserId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Recupera los antiguos registros de compartición de visibilidad de este plan.</description>
         <name>Old_Shares</name>
         <label>Old Shares</label>
-        <locationX>55</locationX>
-        <locationY>179</locationY>
+        <locationX>580</locationX>
+        <locationY>383</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Validate_old_share_values</targetReference>
@@ -157,8 +258,8 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>275</locationX>
-        <locationY>47</locationY>
+        <locationX>454</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>Old_Shares</targetReference>
         </connector>
