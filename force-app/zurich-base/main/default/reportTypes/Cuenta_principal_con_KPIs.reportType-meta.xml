@@ -3,7 +3,7 @@
     <baseObject>Account</baseObject>
     <category>accounts</category>
     <deployed>true</deployed>
-    <description>Cuenta principal con KPIs</description>
+    <description>Cuenta principal con los KPIs</description>
     <join>
         <join>
             <outerJoin>true</outerJoin>
