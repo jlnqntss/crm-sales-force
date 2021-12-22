@@ -796,6 +796,16 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>Archetype__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>BrokerRanking__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>InfluencerAssociation__c</field>
             <table>Account</table>
         </columns>
@@ -982,6 +992,56 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>NumberEmployees__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Income2014__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Income2019__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>IncomeVar__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>IncomeLevel__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>InterestConc__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>NatAdvisoryCouncil__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ResultBeforeTax__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>RevenuesPerEmployee__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>SalesResult__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>TerAdvisoryCouncil__c</field>
             <table>Account</table>
         </columns>
         <masterLabel>Cuentas</masterLabel>
@@ -1864,6 +1924,11 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>LeadBusinessCode__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>MiEmpresaLinkedinUsage__c</field>
             <table>Account.Intermediary__r</table>
         </columns>
@@ -1950,6 +2015,61 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>NumberEmployees__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>BusinessManagerEmail__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>PYMEManagerEmail__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>EnterpriseManagerEmail__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Intermediary_Name__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>IntermediaryStatus__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LifeConsultantEmail__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LifeManagerEmail__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ManagerEmail__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>PYMEConsultantEmail__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>StatusIntermediary__c</field>
+            <table>Account.Intermediary__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>TerritoryManagerEmail__c</field>
             <table>Account.Intermediary__r</table>
         </columns>
         <masterLabel>Accounts</masterLabel>
@@ -2253,6 +2373,11 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>InfoKpiCode__c</field>
+            <table>Account.Intermediary__r.KPIs__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Intermediary__c</field>
             <table>Account.Intermediary__r.KPIs__r</table>
         </columns>
         <masterLabel>KPIs</masterLabel>
