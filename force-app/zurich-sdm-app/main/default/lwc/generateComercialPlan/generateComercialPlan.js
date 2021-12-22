@@ -41,7 +41,7 @@ import { CloseActionScreenEvent } from "lightning/actions";
 
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
-export default class UploadCaseDocumentation extends NavigationMixin(
+export default class GenerateComercialPlan extends NavigationMixin(
   LightningElement
 ) {
   labels = {

@@ -143,7 +143,8 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
     }
 
     /**
-     * Recupera los planes comerciales anuales "hijos" de los planes comerciales anuales dados
+     * Recupera los planes comerciales anuales "hijos" de los planes comerciales anuales dados.
+     * Ignorandose a si mismos si fueran "hijos" de algun otro plan de la lista.
      * 
      * @author nts (agonzalezisasi)
      * @date 04/10/2021
@@ -162,7 +163,8 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
                 TargetKPICurrency__c, TargetKPINumber__c, TargetKPIPercent__c
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanAnualId
-                AND ParentPlan__r.ParentPlan__c IN :plans
+                AND ParentPlan__c IN :plans
+                AND Id NOT IN :plans
             ];
         }
 

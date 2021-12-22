@@ -26,6 +26,8 @@ public class TestDataFactorySDM
     public static final String DT_PROFILE = SettingsSDM.PROFILE_DT;
     public static final String DT_ROL = SettingsSDM.SF_ROLE_DT_DEVNAME;
 
+    public static final String PLAN_1_NAME = 'Plan 1';
+
     /**
      * Metodo que crea datos de configuracion de prueba para los Account Team Members (ATM)
      *
@@ -86,7 +88,7 @@ public class TestDataFactorySDM
     /**
      * Metodo que crea los datos de prueba para el mantenimiento de mediadores
      */
-    public static void IntermediarySetupData()
+    public static void intermediarySetupData()
     {
         // Creacion de las Agrupaciones de Mediadores
         List<Account> agrupations = TestDataFactory.generateAccounts(
@@ -143,7 +145,7 @@ public class TestDataFactorySDM
     /**
      * Metodo que crea los datos de prueba para el calculo del kpi de los planes comerciales
      */
-    public static void PlanComercialSetupData()
+    public static void planComercialSetupData()
     {
         // Creacion de las Agrupaciones de Mediadores
         List<Account> agrupations = TestDataFactory.generateAccounts(
@@ -170,7 +172,7 @@ public class TestDataFactorySDM
         User thisUser = new User(Id= UserInfo.getUserId());
         System.runAs (thisUser) {
             List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = :RN_PROFILE];
-            System.assertEquals(1, profiles.size(), 'El perfil SDM RN deberia existir');
+            System.assertEquals(1, profiles.size(), 'El perfil SDM_RN deberia existir');
 
             List<User> users = TestDataFactory.generateUsersByProfile(profiles[0].Id, 3);            
             for( Integer i=0; i<users.size(); i++ ) {
@@ -284,7 +286,7 @@ public class TestDataFactorySDM
         );
         System.runAs(userPlan) {
             // Plan del primer mediador
-            plans[0].Name = 'Plan 1';
+            plans[0].Name = PLAN_1_NAME;
             plans[0].AssignedTo__c = userPlan.Id;
             plans[0].Indicator__c = 'PN';
             plans[0].Intermediary__c = agrupations[0].Id;
@@ -334,7 +336,7 @@ public class TestDataFactorySDM
     /**
      * Metodo que crea los datos de prueba para la gestion de los planes comerciales anuales
      */
-    public static void AnualPlanSetupData(Integer actualYear)
+    public static void anualPlanSetupData(Integer actualYear, String directorEmailField)
     {
         // 1. Creacion de usuarios DT y RN
         List<PermissionSet> permSet = [SELECT Id FROM PermissionSet WHERE name = :PLAN_PERMSET];
@@ -345,9 +347,6 @@ public class TestDataFactorySDM
         List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = :RN_PROFILE];
         System.assertEquals(1, profiles.size(), 'El perfil SDM RN deberia existir');
         Id profileRNId = profiles[0].Id;
-        // List<PermissionSetGroup> permGroups = [SELECT Id FROM PermissionSetGroup WHERE developername = :RN_PERMSET];
-        // System.assertEquals(1, permGroups.size(), 'Deberia haber un permission set group SDM_RN');
-        // Id permSetGrpRNId = permGroups[0].Id;
         List<UserRole> roles = [SELECT Id FROM UserRole WHERE Developername = :RN_ROL];
         System.assertEquals(1, roles.size(), 'El rol SDMUser deberia existir');
         Id rnRolId = roles[0].Id;
@@ -356,9 +355,6 @@ public class TestDataFactorySDM
         profiles = [SELECT Id FROM Profile WHERE Name = :DT_PROFILE];
         System.assertEquals(1, profiles.size(), 'El perfil SDM Director deberia existir');
         Id profileDTId = profiles[0].Id;
-        // permGroups = [SELECT Id FROM PermissionSetGroup WHERE developername = :DT_PERMSET];
-        // System.assertEquals(1, permGroups.size(), 'Deberia haber un permission set group SDM_RN');
-        // Id permSetGrpDTId = permGroups[0].Id;
         roles = [SELECT Id FROM UserRole WHERE Developername = :DT_ROL];
         System.assertEquals(1, roles.size(), 'El rol SDM_DT deberia existir');
         Id dtRolId = roles[0].Id;
@@ -412,7 +408,7 @@ public class TestDataFactorySDM
             // Para la agrupacion de mediadores
             intermediaries[i].NationalId__c = TestDataFactorySDM.AGRUPATION_CIF;
             // Para el equipo de cuentas
-            intermediaries[i].put(AccountsSelector.SDM_DT_EMAIL_FIELD, dtEmail);
+            intermediaries[i].put(directorEmailField, dtEmail);
             intermediaries[i].put(AccountsSelector.SDM_RN_EMAIL_FIELD, rnEmail);
 
             // Lo marcamos como activo (valores 001 o 002)
@@ -423,7 +419,7 @@ public class TestDataFactorySDM
         Test.startTest();
         // 3. Ejecutamos el batch para tener el equipo de cuentas (ATM)
         IntermediarySDMBatch batch = new IntermediarySDMBatch();
-        Id batchId = Database.executeBatch(batch, 200);
+        Database.executeBatch(batch, 200);
         Test.stopTest();
 
         List<AccountTeamMember> atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
@@ -435,13 +431,12 @@ public class TestDataFactorySDM
 
         List<PlanComercial__c> dtPlans = TestDataFactorySDM.generatePlansWithoutIntermediary(1);
         // Plan DT
-        dtPlans[0].Name = 'Plan 1';
+        dtPlans[0].Name = PLAN_1_NAME;
         dtPlans[0].StartDate__c = Date.newInstance(actualYear, 1, 1);
         dtPlans[0].EndDate__c = Date.newInstance(actualYear, 12, 31);
         dtPlans[0].AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;
         dtPlans[0].AssignedTo__c = dtUser.Id;
         dtPlans[0].TargetKPINumber__c = 5;
-        // dtPlans[0].Actual_KPI__c = 4;
         dtPlans[0].RecordTypeId = rtPlanAnualId;
         System.runAs(dtUser) {
             insert dtPlans;
@@ -449,14 +444,13 @@ public class TestDataFactorySDM
 
         // Plan RN
         List<PlanComercial__c> rnPlans = TestDataFactorySDM.generatePlansWithoutIntermediary(1);        
-        rnPlans[0].Name = 'Plan 1';
+        rnPlans[0].Name = PLAN_1_NAME;
         rnPlans[0].StartDate__c = Date.newInstance(actualYear, 1, 1);
         rnPlans[0].EndDate__c = Date.newInstance(actualYear, 12, 31);
         rnPlans[0].AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;
         rnPlans[0].AssignedTo__c = rnUser.Id;
         rnPlans[0].ParentPlan__c = dtPlans[0].Id;
         rnPlans[0].TargetKPINumber__c = 5;
-        // rnPlans[0].Actual_KPI__c = 4;
         rnPlans[0].RecordTypeId = rtPlanAnualId;
         System.runAs(dtUser) {
             insert rnPlans;
@@ -465,14 +459,13 @@ public class TestDataFactorySDM
         // Planes para mediadores
         List<PlanComercial__c> intermediaryPlans = TestDataFactorySDM.generatePlans(intermediaries, 1);
         for(PlanComercial__c plan: intermediaryPlans) {
-            plan.Name = 'Plan 1';
+            plan.Name = PLAN_1_NAME;
             plan.StartDate__c = Date.newInstance(actualYear, 1, 1);
             plan.EndDate__c = Date.newInstance(actualYear, 12, 31);
             plan.AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;
             plan.AssignedTo__c = rnUser.Id;
             plan.ParentPlan__c = rnPlans[0].Id;
             plan.TargetKPINumber__c = 1;
-            // plan.Actual_KPI__c = 4;
             plan.RecordTypeId = rtPlanAnualId;
         }
         System.runAs(rnUser) {
@@ -551,6 +544,7 @@ public class TestDataFactorySDM
                 Indicator__c= 'PN',
                 Product__c= 'Autos',
                 Segment__c= 'Particulares',
+                TargetKPINumber__c = 5,
                 AccumulateType__c= PlanComercialSelector.ACCUMULATE_TYPE_MONTH
             );
 

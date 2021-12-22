@@ -25,7 +25,7 @@ public with sharing class GenerateComercialPlanController
 
     // Relacion entre el rol de Salesforce y el campo de email en el objeto mediador (account)
     private static final Map<String, String> mapEmailFieldsByUserRole = new Map<String, String> {
-        SettingsSDM.SF_ROLE_DT_DEVNAME => AccountsSelector.SDM_DT_EMAIL_FIELD,
+        SettingsSDM.SF_ROLE_DT_DEVNAME => AccountsSelector.SDM_DZ_EMAIL_FIELD,
         SettingsSDM.SF_ROLE_RN_DEVNAME => AccountsSelector.SDM_RN_EMAIL_FIELD,
         SettingsSDM.SF_ROLE_DV_DEVNAME => AccountsSelector.SDM_DV_EMAIL_FIELD,
         SettingsSDM.SF_ROLE_CV_DEVNAME => AccountsSelector.SDM_CV_EMAIL_FIELD
@@ -285,7 +285,6 @@ public with sharing class GenerateComercialPlanController
         @testvisible
         String stringValue;
         Date dateValue;
-        // Object value;
 
         // Permitira saber si se ha modificado el dato
         Decimal decimalValueOld;
@@ -532,6 +531,18 @@ public with sharing class GenerateComercialPlanController
             }
         }
 
+        public Boolean isTitleModified;
+        public Boolean isSegmentModified;
+        public Boolean isProductModified;
+        public Boolean isIndicatorModified;
+        public Boolean isValueModified;
+        public Boolean isDirector;
+        public Boolean isNewPlan;
+
+        public PlanComercialSelector.eIndicator IndicatorType;
+        public Id rtPlanAnualId;
+        
+
         // Constructor
         public Plandata(String id, String title, String segment, String product, String indicator, Integer year, Decimal value, Decimal actualKpi, String assignedToId, String ownerId)
         {
@@ -545,6 +556,12 @@ public with sharing class GenerateComercialPlanController
             this.ActualKpi = actualKpi;
             this.AssignedToId = assignedToId;
             this.OwnerId = ownerId;
+
+            isTitleModified = false;
+            isSegmentModified = false;
+            isProductModified = false;
+            isIndicatorModified = false;
+            isValueModified = false;
         }
 
 
@@ -597,49 +614,43 @@ public with sharing class GenerateComercialPlanController
     // ------------------------------------------------------------------------
 
     /**
-     * Convierte un plan en filas y columnas de la tabla en el LWC
-     * 
-     * Se puede añadir un plan vacio para el caso de que se permita añadir
-     * nuevos planes con valores por defecto
+     * Obtiene el valor objetivo del plan del campo informado
      * 
      * @author nts (agonzalezisasi)
-     * @date 20/09/2021
+     * @date 16/12/2021
      * 
-     * @param {Tabletype tabledata} la tabla
-     * @param {Plandata plan} el plan
-     * @param {String roleType} tipo de rol del usuario
-     * @param {Boolean isEmpty} si es un plan vacio (true) o no (false)
+     * @param {PlanComercial__c plan} el plan
+     * @return {Decimal} el valor
      */
-    private static void planToTable(Tabletype tabledata, Plandata plan, String roleType, Boolean isEmpty) 
+    private static Decimal getComercialPlanValue(PlanComercial__c plan)
     {
-        // Indica si el usuario es director o no en funcion del rol
-        Boolean isDirector = Directors.contains(roleType);
-        // Indica si el plan es nuevo o no en funcion de si tiene id
-        Boolean isNewPlan = (plan.Id == null);
+        Decimal value = plan.TargetKPINumber__c;
+        if( value == null ) value = plan.TargetKPICurrency__c;
+        if( value == null ) value = plan.TargetKPIPercent__c;
+        return value;
+    }
 
-        // Referencias a las filas y columnas de la tabla
-        Celltype cell;
-        Rowtype headers = tabledata.headers;
-        Rowtype footers = tabledata.footers;
-        List<Rowtype> rows = tabledata.rows;
-        // Para el caso de planes vacios se rellenan otras filas y columnas
-        if( isEmpty ) {
-            headers = tabledata.headersNew;
-            footers = tabledata.footersNew;
-            rows = tabledata.rowsNew;
-        }
-
-        // Se calcula el tipo de indicador del plan para los campos de importe
-        PlanComercialSelector.eIndicator indicatorType = PlanComercialSelector.getIndicatorType(plan.Indicator);
-
+    /**
+     * Obtiene el valor objetivo del plan del campo informado
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {PlanComercial__c plan} el plan
+     * @return {Decimal} el valor
+     */
+    private static Decimal addCellsPerPlan(List<Rowtype> rows, Plandata plan, PlanComercialSelector.eIndicator indicatorType, Boolean isDirector)
+    {
         // Planes => Fila 5 en adelante
+        Celltype cell;        
         Decimal sumValue = 0;
+
         // Por cada fila de tipo subplan se mira si ya existe dicho subplan en el plan
-        for(Integer rowPos = ROWS_FROM_RN_INTERMEDIARY; rowPos < tabledata.rows.size(); rowPos++) {
+        for(Integer rowPos = ROWS_FROM_RN_INTERMEDIARY; rowPos < rows.size(); rowPos++) {
             // Id de la fila
-            Id detailId = tabledata.rows[rowPos].Id;
+            Id detailId = rows[rowPos].Id;
             // Nombre de la fila (RN / Mediador)
-            String detailName = tabledata.rows[rowPos].Text;
+            String detailName = rows[rowPos].Text;
 
             // Intentamos recuperar el subplan
             Subplandata sub = plan?.mapSubplanByDetail?.get(detailId);
@@ -686,6 +697,47 @@ public with sharing class GenerateComercialPlanController
             sumValue += subValue;
         }
 
+        return sumValue;
+    }
+
+    /**
+     * Convierte un plan en filas y columnas de la tabla en el LWC
+     * 
+     * Se puede añadir un plan vacio para el caso de que se permita añadir
+     * nuevos planes con valores por defecto
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 20/09/2021
+     * 
+     * @param {Tabletype tabledata} la tabla
+     * @param {Plandata plan} el plan
+     * @param {String roleType} tipo de rol del usuario
+     * @param {Boolean isEmpty} si es un plan vacio (true) o no (false)
+     */
+    private static void planToTable(Tabletype tabledata, Plandata plan, String roleType, Boolean isEmpty) 
+    {
+        // Indica si el usuario es director o no en funcion del rol
+        Boolean isDirector = Directors.contains(roleType);
+        // Indica si el plan es nuevo o no en funcion de si tiene id
+        Boolean isNewPlan = (plan.Id == null);
+
+        // Referencias a las filas y columnas de la tabla
+        Celltype cell;
+        Rowtype headers = tabledata.headers;
+        Rowtype footers = tabledata.footers;
+        List<Rowtype> rows = tabledata.rows;
+        // Para el caso de planes vacios se rellenan otras filas y columnas
+        if( isEmpty ) {
+            headers = tabledata.headersNew;
+            footers = tabledata.footersNew;
+            rows = tabledata.rowsNew;
+        }
+
+        // Se calcula el tipo de indicador del plan para los campos de importe
+        PlanComercialSelector.eIndicator indicatorType = PlanComercialSelector.getIndicatorType(plan.Indicator);
+
+        Decimal sumValue = addCellsPerPlan(rows, plan, indicatorType, isDirector);        
+
         // Titulo => Header (category, html name, value, isEditable, isCurrency)
         cell = new Celltype( 'titulo', 'titulo' + SEPARATOR + plan.Id, plan.Title, true);
         cell.id = plan.Id;
@@ -730,9 +782,6 @@ public with sharing class GenerateComercialPlanController
         List<Optiontype> options = mapToOptions(mapAvailableProducts);
         // Creamos el combobox para el lwc
         combo = new Combotype(COMBOBOX_PRODUCT_PLACEHOLDER, options);
-        // combo.isDependant = true;
-        // combo.dependantName = COMBOBOX_SEGMENT;
-        // combo = tabledata.mapOptions.get(COMBOBOX_PRODUCT);
         cell = new Celltype( 'producto', 'producto' + SEPARATOR + plan.Id, plan.Product, true, combo);
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'producto';
@@ -789,6 +838,262 @@ public with sharing class GenerateComercialPlanController
     }
 
     /**
+     * Ejecuta las dmls sobre los planes (creacion, modificacion y borrado) que correspondan. 
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {List<PlanComercial__c> plansToDelete} planes a borrar
+     * @param {List<PlanComercial__c> existingPlansToUpsert} planes a modificar
+     * @param {List<PlanComercial__c> parentPlansToInsert} planes padres a insertar
+     * @param {List<PlanComercial__c> childPlansToInsert} planes hijos a insertar
+     * @param {Map<Integer, Integer> mapChildToParent} relacion de padres con hijos
+     */
+    private static void dmlPlans(List<PlanComercial__c> plansToDelete, 
+                                List<PlanComercial__c> existingPlansToUpsert, List<PlanComercial__c> parentPlansToInsert, 
+                                List<PlanComercial__c> childPlansToInsert, Map<Integer, Integer> mapChildToParent)
+    {
+        // Planes a borrar
+        if( !plansToDelete.isEmpty() ) {
+            // Se solicita borrar planes comerciales descendientes
+            GenerateComercialPlanHelper.deleteDescendantPlans(plansToDelete);
+
+            delete plansToDelete;
+        }
+
+        // Planes existentes a modificar
+        if( !existingPlansToUpsert.isEmpty() ) {
+            upsert existingPlansToUpsert;
+
+            // Se mira si hay que modificar algun descendiente de los planes modificados
+            updateDescendantPlans(existingPlansToUpsert);
+        }
+
+        // Planes nuevos a crear
+        if( !parentPlansToInsert.isEmpty() ) {
+            // Se crea el plan principal
+            insert parentPlansToInsert;
+
+            // Para los planes hijos
+            if( !childPlansToInsert.isEmpty() ) {
+                // A cada plan hijo se le asigna el id de su padre
+                for(Integer pos: mapChildToParent.keySet()) {
+                    Integer newParentPos = mapChildToParent.get(pos);
+                    Id parentId = parentPlansToInsert.get(newParentPos).Id;
+
+                    childPlansToInsert.get(pos).ParentPlan__c = parentId;
+                }
+                // Se inserta el plan hijo
+                insert childPlansToInsert;
+            }
+        }
+    }
+
+    /**
+     * Comprueba si un plan se ha modificado y si es asi realiza los cambios y lo incluye en la lista de planes a
+     * modificar
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {Plandata myplan} datos del plan
+     * @param {List<PlanComercial__c> existingPlansToUpsert} planes a modificar
+     */
+    private static void addModifiedPlan(Plandata myplan, List<PlanComercial__c> existingPlansToUpsert)
+    {
+        // Si ha cambiado alguno de los campos del plan
+        if( myplan.isTitleModified || myplan.isSegmentModified || myplan.isProductModified
+            || myplan.isIndicatorModified || myplan.isValueModified ) {
+            
+            PlanComercial__c parentPlan = new PlanComercial__c( Id= myplan.Id );
+
+            if( myplan.isTitleModified ) {
+                parentPlan.Name = myplan.Title;
+                parentPlan.Description__c= parentPlan.Name;
+            }
+            if( myplan.isSegmentModified ) parentPlan.Segment__c = myplan.Segment;
+            if( myplan.isProductModified ) parentPlan.Product__c = myplan.Product;
+            if( myplan.isIndicatorModified ) parentPlan.Indicator__c = myplan.Indicator;
+            if( myplan.isIndicatorModified || myplan.isValueModified ) {
+                // En caso de cambio del tipo de indicador se debera "mover" el valor al campo correspondiente y
+                // limpiar los otros
+                parentPlan.TargetKPICurrency__c = null;
+                parentPlan.TargetKPIPercent__c = null;
+                parentPlan.TargetKPINumber__c = null;
+                // Valor del Plan
+                parentPlan.put(PlanComercialSelector.getTargetKPIFieldByType(myplan.IndicatorType), myplan.Value);
+            }
+
+            existingPlansToUpsert.add(parentPlan);
+        }
+    }
+
+    /**
+     * Añade todos los planes que corresponan en la lista de planes a borrar
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {List<Rowtype> rowsdata} datos del plan
+     * @param {Integer cellPos} posicion de la celda
+     * @param {List<PlanComercial__c> plansToDelete} planes a borrar
+     * @param {Boolean isMyPlan} si es plan propio (RN)
+     * @param {String planId} id de plan padre
+     * @param {Integer maxRows} numero maximo de filas
+     */
+    private static void addPlansToDelete(List<Rowtype> rowsdata, Integer cellPos, List<PlanComercial__c> plansToDelete, 
+        Boolean isMyPlan, String planId, Integer maxRows)
+    {
+        // Lista de ids a borrar
+        Set<Id> idsToDelete = new Set<Id>();
+        // Id del plan principal solo si es DT o es plan creado por RN
+        if( isMyPlan ) idsToDelete.add(planId);
+        // Ids de los planes de los RN/Mediadores
+        Integer pos = ROWS_FROM_RN_INTERMEDIARY;
+        for(Integer j=pos; j<maxRows; j++) {
+            Celltype cell = rowsdata?.get(j)?.Cells[cellPos];
+            if( cell?.Id != null ) idsToDelete.add(cell.Id);
+        }
+        
+        // Se convierte la lista a planes comerciales
+        if( !idsToDelete.isEmpty() ) {
+            for(Id idtodelete: idsToDelete) {
+                plansToDelete.add(new PlanComercial__c(Id= idtodelete));
+            }
+        }
+    }
+
+    /**
+     * Crea un nuevo plan padre y lo mete en los planes padre a crear
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {Plandata myplan} datos del plan
+     * @param {List<PlanComercial__c> parentPlansToInsert} planes padre a insertar
+     * @param {Set<String> newPlanNames} lista con los nombre de los planes nuevos
+     */
+    private static void addNewPlan(Plandata myplan, List<PlanComercial__c> parentPlansToInsert, Set<String> newPlanNames)
+    {
+        PlanComercial__c parentPlan = new PlanComercial__c(
+            Name= myplan.Title,
+            Description__c= myplan.Title,
+            Segment__c= myplan.Segment,
+            Product__c= myplan.Product,
+            Indicator__c= myplan.Indicator,
+            StartDate__c= Date.newInstance(myplan.Year, 1, 1),
+            EndDate__c= Date.newInstance(myplan.Year, 12, 31),
+            ParentPlan__c= null,
+            AssignedTo__c= myplan.AssignedToId,
+            AccumulateType__c= PLAN_ACCUMULATE_TYPE,
+            RecordTypeId= myplan.rtPlanAnualId,
+            SendNotifications__c= PLAN_SEND_NOTIF
+        );
+        
+        // Valor del Plan
+        parentPlan.put(PlanComercialSelector.getTargetKPIFieldByType(myplan.IndicatorType), myplan.Value);
+
+        parentPlansToInsert.add(parentPlan);
+
+        // Si hay plan nuevo del DT se incluye en la lista para notificar
+        if( myplan.isDirector ) {
+            newPlanNames.add(myplan.Title);
+        }
+    }
+
+    // Indices del mapa de listas de planes a crear, modificar y borrar
+    private static final Integer IDX_PLANS_EXISTING = 0;
+    private static final Integer IDX_PLANS_DELETE = 1;
+    private static final Integer IDX_PLANS_CHILD = 2;
+    private static final Integer IDX_PLANS_PARENT = 3;
+
+    /**
+     * Añade un plan hijo a crear, modificar o borrar (si valor 0)
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {Rowtype row} datos del plan
+     * @param {Integer cellPos} posicion de la celda
+     * @param {Map<Integer, List<PlanComercial__c>> mapPlanLists} mapa de listas de planes
+     * @param {Map<Integer, Integer> mapChildToParent} mapa de relacion entre planes padres e hijos
+     * @param {Plandata myplan} datos del plan padre
+     * @param {Set<String> newPlanNames} lista con los nombre de los planes nuevos
+     * @param {Set<Id> rnsToNotify} ids de rns a notificar por nuevo plan
+     */
+    private static void addChildPlans(Rowtype row, Integer cellPos, Map<Integer, List<PlanComercial__c>> mapPlanLists, 
+                                Map<Integer, Integer> mapChildToParent,
+                                Plandata myplan, Set<String> newPlanNames, Set<Id> rnsToNotify)
+    {
+        PlanComercial__c childPlan;
+        // Id de la fila
+        String rowId = row.Id;
+
+        // Valor decimal de la celda
+        Decimal childValue = 0;
+        Celltype cell = row.Cells[cellPos];
+        childValue = cell.decimalValue;
+
+        List<PlanComercial__c> existingPlansToUpsert = mapPlanLists.get(IDX_PLANS_EXISTING);
+        List<PlanComercial__c> plansToDelete = mapPlanLists.get(IDX_PLANS_DELETE);
+        List<PlanComercial__c> childPlansToInsert = mapPlanLists.get(IDX_PLANS_CHILD);
+        List<PlanComercial__c> parentPlansToInsert = mapPlanLists.get(IDX_PLANS_PARENT);
+        
+
+        if( myplan.isNewPlan || cell.isNew ) { //-------------------- Nuevo Plan o Nuevo subplan (rn/mediador)    
+            if( childValue > 0 ) {
+                childPlan = new PlanComercial__c(
+                    Name= myplan.Title,
+                    Description__c= myplan.Title,
+                    Segment__c= myplan.Segment,
+                    Product__c= myplan.Product,
+                    Indicator__c= myplan.Indicator,
+                    StartDate__c= Date.newInstance(myplan.Year, 1, 1),
+                    EndDate__c= Date.newInstance(myplan.Year, 12, 31),
+                    ParentPlan__c= null,
+                    AccumulateType__c= PLAN_ACCUMULATE_TYPE,
+                    RecordTypeId= myplan.rtPlanAnualId,
+                    SendNotifications__c= PLAN_SEND_NOTIF
+                );
+                if( myplan.isDirector ) {
+                    childPlan.AssignedTo__c= rowId;
+
+                    // Se incluye el nombre del plan por si es una creacion individual
+                    newPlanNames.add(childPlan.Name);
+                    // Si hay plan nuevo del DT se incluyen los id de los RNs (filas) en la lista a notificar
+                    rnsToNotify.add(rowId);
+                } else {
+                    childPlan.AssignedTo__c= myplan.AssignedToId;
+                    childPlan.Intermediary__c= rowId;
+                }
+            
+                childPlan.put(PlanComercialSelector.getTargetKPIFieldByType(myPlan.IndicatorType), childValue);
+
+                if( myplan.isNewPlan ) {
+                    // Añadimos el plan hijo a la lista para crearlo
+                    childPlansToInsert.add(childPlan);
+
+                    Integer parentPos = parentPlansToInsert.size()-1;
+                    Integer childPos = childPlansToInsert.size()-1;
+                    // Y añadimos la referencia al padre
+                    mapChildToParent.put(childPos, parentPos);
+                } else {
+                    childPlan.ParentPlan__c = myplan.Id;
+                    existingPlansToUpsert.add(childPlan);
+                }
+            }
+        } else if( childValue == 0 ) { //------------------------------------------- Subplan existente a 0
+            childPlan = new PlanComercial__c(Id= cell.Id);
+            plansToDelete.add(childPlan);
+        } else { //----------------------------------------------------------------- Subplan existente
+            myplan.Id = cell.Id;
+            myplan.isValueModified = cell.isModified;
+            myplan.Value = childValue;
+            addModifiedPlan(myplan, existingPlansToUpsert);
+        }
+    }
+
+    /**
      * Convierte la tabla que viene del LWC en modificaciones sobre el objeto PlanComercial__c
      * 
      * @author nts (agonzalezisasi)
@@ -821,6 +1126,12 @@ public with sharing class GenerateComercialPlanController
         List<PlanComercial__c> existingPlansToUpsert = new List<PlanComercial__c>();
         // Lista de planes existentes a borrar
         List<PlanComercial__c> plansToDelete = new List<PlanComercial__c>();
+
+        Map<Integer, List<PlanComercial__c>> mapPlanLists = new Map<Integer, List<PlanComercial__c>>();
+        mapPlanLists.put(IDX_PLANS_EXISTING, existingPlansToUpsert);
+        mapPlanLists.put(IDX_PLANS_DELETE, plansToDelete);
+        mapPlanLists.put(IDX_PLANS_CHILD, childPlansToInsert);
+        mapPlanLists.put(IDX_PLANS_PARENT, parentPlansToInsert);
 
         // Referencia al plan padre
         PlanComercial__c parentPlan;
@@ -859,12 +1170,6 @@ public with sharing class GenerateComercialPlanController
             Boolean isHeaderModified = cellHeader.isModified;
 
             if( !isDeleted ) { //---------------------------------------------- Nuevo o Modificacion
-                Boolean isSegmentModified = false;
-                Boolean isProductModified = false;
-                Boolean isIndicatorModified = false;
-                Boolean isYearModified = false;
-                Boolean isDefinedDTModified = false;
-                
                 // Datos FIJOS del plan
                 String segment = rowsdata.get(0).Cells.get(i).stringValue;
                 String product = rowsdata.get(1).Cells.get(i).stringValue;
@@ -874,71 +1179,35 @@ public with sharing class GenerateComercialPlanController
 
                 PlanComercialSelector.eIndicator indicatorType = PlanComercialSelector.getIndicatorType(indicator);
 
+                Plandata myplan = new Plandata(
+                    planId, planName, segment, product, indicator, anyo, definedDT, null, userId, null
+                );
+                myplan.indicatorType = indicatorType;
+                myplan.isDirector = isDirector;
+                myplan.rtPlanAnualId = rtPlanAnualId;
+                myplan.isNewPlan = isNewPlan;
+                myplan.isTitleModified = isHeaderModified;
+
                 // Segmento => Fila 0
                 Celltype cell = rowsdata.get(0).Cells.get(i);
-                if( cell.isModified ) isSegmentModified = true;
+                myplan.isSegmentModified = cell.isModified;
                 // Producto => Fila 1
                 cell = rowsdata.get(1).Cells.get(i);
-                if( cell.isModified ) isProductModified = true;
+                myplan.isProductModified = cell.isModified;
                 // Indicador => Fila 2
                 cell = rowsdata.get(2).Cells.get(i);
-                if( cell.isModified ) isIndicatorModified = true;
+                myplan.isIndicatorModified = cell.isModified;
                 // Año => Fila 3
                 cell = rowsdata.get(3).Cells.get(i);
-                if( cell.isModified ) isYearModified = true;
+                // myplan.isYearModified = cell.isModified;
                 // Plan (Definido DT) => Fila 4
                 cell = rowsdata.get(4).Cells.get(i);
-                if( cell.isModified ) isDefinedDTModified = true;
-                
+                myplan.isValueModified = cell.isModified;
 
                 if( isNewPlan ) { //-------------------------------------- Nuevo Plan principal
-                    parentPlan = new PlanComercial__c(
-                        Name= planName,
-                        Description__c= planName,
-                        Segment__c= segment,
-                        Product__c= product,
-                        Indicator__c= indicator,
-                        StartDate__c= Date.newInstance(anyo, 1, 1),
-                        EndDate__c= Date.newInstance(anyo, 12, 31),
-                        ParentPlan__c= null,
-                        AssignedTo__c= userId,
-                        AccumulateType__c= PLAN_ACCUMULATE_TYPE,
-                        RecordTypeId= rtPlanAnualId,
-                        SendNotifications__c= PLAN_SEND_NOTIF
-                    );
-                    
-                    // Valor del Plan
-                    parentPlan.put(PlanComercialSelector.getTargetKPIFieldByType(indicatorType), definedDT);
-
-                    parentPlansToInsert.add(parentPlan);
-
-                    // Si hay plan nuevo del DT se incluye en la lista para notificar
-                    if( isDirector ) {
-                        newPlanNames.add(planName);
-                    }
+                    addNewPlan(myplan, parentPlansToInsert, newPlanNames);
                 } else { //----------------------------------------------- Plan existente
-                    if( isHeaderModified || isSegmentModified || isProductModified || isIndicatorModified || isDefinedDTModified ) {
-                        parentPlan = new PlanComercial__c( Id= planId );
-
-                        if( isHeaderModified ) {
-                            parentPlan.Name = planName;
-                            parentPlan.Description__c= planName;
-                        }
-                        if( isSegmentModified ) parentPlan.Segment__c = segment;
-                        if( isProductModified ) parentPlan.Product__c = product;
-                        if( isIndicatorModified ) parentPlan.Indicator__c = indicator;
-                        if( isIndicatorModified || isDefinedDTModified ) {
-                            // En caso de cambio del tipo de indicador se debera "mover" el valor al campo correspondiente y
-                            // limpiar los otros
-                            parentPlan.TargetKPICurrency__c = null;
-                            parentPlan.TargetKPIPercent__c = null;
-                            parentPlan.TargetKPINumber__c = null;
-                            // Valor del Plan
-                            parentPlan.put(PlanComercialSelector.getTargetKPIFieldByType(indicatorType), definedDT);
-                        }
-
-                        existingPlansToUpsert.add(parentPlan);
-                    }
+                    addModifiedPlan(myplan, existingPlansToUpsert);
                 }
 
                 // Datos por RN / Mediador => Fila 5 en adelante
@@ -946,147 +1215,19 @@ public with sharing class GenerateComercialPlanController
                 for(Integer j=pos; j<maxRows; j++) {
                     // Fila de RN/Mediador
                     Rowtype row = rowsdata.get(j);
-                    // Id de la fila
-                    String rowId = row.Id;
 
-                    // Valor decimal de la celda
-                    Decimal childValue = 0;
-                    cell = row.Cells[i];
-                    childValue = cell.decimalValue;
-
-                    if( isNewPlan || cell.isNew ) { //-------------------- Nuevo Plan o Nuevo subplan (rn/mediador)    
-                        if( childValue > 0 ) {                   
-                            childPlan = new PlanComercial__c(
-                                Name= planName,
-                                Description__c= planName,
-                                Segment__c= segment,
-                                Product__c= product,
-                                Indicator__c= indicator,
-                                StartDate__c= Date.newInstance(anyo, 1, 1),
-                                EndDate__c= Date.newInstance(anyo, 12, 31),
-                                ParentPlan__c= null,
-                                AccumulateType__c= PLAN_ACCUMULATE_TYPE,
-                                RecordTypeId= rtPlanAnualId,
-                                SendNotifications__c= PLAN_SEND_NOTIF
-                            );
-                            if( isDirector ) {
-                                childPlan.AssignedTo__c= rowId;
-
-                                // Se incluye el nombre del plan por si es una creacion individual
-                                newPlanNames.add(planName);
-                                // Si hay plan nuevo del DT se incluyen los id de los RNs (filas) en la lista a notificar
-                                rnsToNotify.add(rowId);
-                            } else {
-                                childPlan.AssignedTo__c= userId;
-                                childPlan.Intermediary__c= rowId;
-                            }
-                        
-                            childPlan.put(PlanComercialSelector.getTargetKPIFieldByType(indicatorType), childValue);
-
-                            if( isNewPlan ) {
-                                // Añadimos el plan hijo a la lista para crearlo
-                                childPlansToInsert.add(childPlan);
-
-                                Integer parentPos = parentPlansToInsert.size()-1;
-                                Integer childPos = childPlansToInsert.size()-1;
-                                // Y añadimos la referencia al padre
-                                mapChildToParent.put(childPos, parentPos);
-                            } else {
-                                childPlan.ParentPlan__c = planId;
-                                existingPlansToUpsert.add(childPlan);
-                            }
-                        }
-                    } else { //------------------------------------------- Subplan existente
-                        if( childValue == 0 ) {
-                            childPlan = new PlanComercial__c(Id= cell.Id);
-                            plansToDelete.add(childPlan);
-                        } else if( isHeaderModified || isSegmentModified || isIndicatorModified || cell.isModified ) {
-                            childPlan = new PlanComercial__c(Id= cell.Id);
-                            
-                            if( isHeaderModified ) {
-                                childPlan.Name = planName;
-                                childPlan.Description__c= planName;
-                            }
-                            if( isSegmentModified ) childPlan.Segment__c = segment;
-                            if( isProductModified ) childPlan.Product__c = product;
-                            if( isIndicatorModified ) childPlan.Indicator__c = indicator;
-
-                            if( cell.isModified  || isIndicatorModified ) {
-                                childPlan.TargetKPICurrency__c = null;
-                                childPlan.TargetKPIPercent__c = null;
-                                childPlan.TargetKPINumber__c = null;
-
-                                childPlan.put(PlanComercialSelector.getTargetKPIFieldByType(indicatorType), childValue);
-                            }
-                            
-                            existingPlansToUpsert.add(childPlan);
-                        }
-                    }
+                    addChildPlans(row, i, mapPlanLists, mapChildToParent, myplan, newPlanNames, rnsToNotify);
                 }
-            } else { //-------------------------------------------------------- Borrado del plan
-                // Si hay ids de planes
-                if( planId != null ) {
-                    // Lista de ids a borrar
-                    Set<Id> idsToDelete = new Set<Id>();
-                    // Id del plan principal solo si es DT o es plan creado por RN
-                    if( isMyPlan ) idsToDelete.add(planId);
-                    // Ids de los planes de los RN/Mediadores
-                    Integer pos = ROWS_FROM_RN_INTERMEDIARY;
-                    for(Integer j=pos; j<maxRows; j++) {
-                        Celltype cell = rowsdata?.get(j)?.Cells[i];
-                        if( cell?.Id != null ) idsToDelete.add(cell.Id);
-                    }
-                    
-                    // Se convierte la lista a planes comerciales
-                    if( !idsToDelete.isEmpty() ) {
-                        for(Id idtodelete: idsToDelete) {
-                            plansToDelete.add(new PlanComercial__c(Id= idtodelete));
-                        }
-                    }
-
-                    // Se incluyen los hijos de los planes si los hubiera, sobre todo cuando es el DT el que borra
-                    // el plan principal
-                    addDescendantPlans(plansToDelete);
-                }
+            } else if( planId != null ) { //-------------------------------------------------------- Borrado del plan (Si hay ids de planes)                
+                addPlansToDelete(rowsdata, i, plansToDelete, isMyPlan, planId, maxRows);
             }
         }
 
-        // Planes a borrar
-        if( !plansToDelete.isEmpty() ) {
-            delete plansToDelete;
-        }
-
-        // Planes existentes a modificar
-        if( !existingPlansToUpsert.isEmpty() ) {
-            upsert existingPlansToUpsert;
-
-            // Se mira si hay que modificar algun descendiente de los planes modificados
-            updateDescendantPlans(existingPlansToUpsert);
-        }
-
-        // Planes nuevos a crear
-        if( !parentPlansToInsert.isEmpty() ) {
-            // Se crea el plan principal
-            insert parentPlansToInsert;
-
-            // Para los planes hijos
-            if( !childPlansToInsert.isEmpty() ) {
-                // A cada plan hijo se le asigna el id de su padre
-                for(Integer pos: mapChildToParent.keySet()) {
-                    Integer newParentPos = mapChildToParent.get(pos);
-                    Id parentId = parentPlansToInsert.get(newParentPos).Id;
-
-                    childPlansToInsert.get(pos).ParentPlan__c = parentId;
-                }
-                // Se inserta el plan hijo
-                insert childPlansToInsert;
-            }
-        }
+        // Realizamos todas las modificaciones sobre los planes que corresponda
+        dmlPlans(plansToDelete, existingPlansToUpsert, parentPlansToInsert, childPlansToInsert, mapChildToParent);        
 
         // Si se han relleando los destinatarios y los nombres del plan correctamente se envia las notificaciones
-        if( !rnsToNotify.isEmpty() && !newPlanNames.isEmpty() ) {
-            sendNotification(rnsToNotify, newPlanNames);
-        }
+        sendNotification(rnsToNotify, newPlanNames);
     }
 
     /**
@@ -1112,9 +1253,7 @@ public with sharing class GenerateComercialPlanController
             // Para cada plan crearemos un Plandata
             for( PlanComercial__c parentPlan: parentPlans ) {
                 // Recogemos el valor del target KPI
-                Decimal value = parentPlan.TargetKPINumber__c;
-                if( value == null ) value = parentPlan.TargetKPICurrency__c;
-                if( value == null ) value = parentPlan.TargetKPIPercent__c;
+                Decimal value = getComercialPlanValue(parentPlan);
 
                 // Creamos el padre
                 Plandata plandata = new Plandata(
@@ -1141,9 +1280,7 @@ public with sharing class GenerateComercialPlanController
                         detailName = childPlan.Intermediary__r.Name;
                     }
 
-                    Decimal childValue = childPlan.TargetKPINumber__c;
-                    if( childValue == null ) childValue = childPlan.TargetKPICurrency__c;
-                    if( childValue == null ) childValue = childPlan.TargetKPIPercent__c;
+                    Decimal childValue = getComercialPlanValue(childPlan);
 
                     // Le asignamos los datos de los RN / Mediadores
                     Subplandata subplan = new Subplandata(
@@ -1165,6 +1302,43 @@ public with sharing class GenerateComercialPlanController
         return plansData;
     }
 
+    
+    /**
+     * Comprobamos si se han modificado y si es asi asignamos los campos comunes del plan padre al hijo
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {PlanComercial__c} el plan
+     */
+    private static void planUpdatedFields(PlanComercial__c plan)
+    {
+        // Ponemos a modificar el campo que haya modificado del padre
+        if( plan.Name != plan.ParentPlan__r.Name ) {
+            plan.Name = plan.ParentPlan__r.Name;
+            plan.Description__c= plan.ParentPlan__r.Name;
+        }
+        if( plan.Product__c != plan.ParentPlan__r.Product__c ) plan.Product__c = plan.ParentPlan__r.Product__c;
+        if( plan.Segment__c != plan.ParentPlan__r.Segment__c ) plan.Segment__c = plan.ParentPlan__r.Segment__c;
+        if( plan.Indicator__c != plan.ParentPlan__r.Indicator__c ) {
+            plan.Indicator__c = plan.ParentPlan__r.Indicator__c;
+
+            // Comprobamos los campos de valor
+            PlanComercialSelector.eIndicator indicatorTypeNew = PlanComercialSelector.getIndicatorType(plan.ParentPlan__r.Indicator__c);
+
+            // Recuperamos el valor actual
+            Decimal value = getComercialPlanValue(plan);
+
+            // Limpiamos los campos
+            plan.TargetKPINumber__c = null;
+            plan.TargetKPICurrency__c = null;
+            plan.TargetKPIPercent__c = null;
+
+            // Establecemos el valor nuevo
+            plan.put(PlanComercialSelector.getTargetKPIFieldByType(indicatorTypeNew), value);
+        }
+    }
+
     /**
      * Modifica los planes descendientes de los planes dados para los campos comunes
      * 
@@ -1181,60 +1355,10 @@ public with sharing class GenerateComercialPlanController
         if( childPlans != null && !childPlans.isEmpty() ) {
             // Para cada plan se comprueba si se han modificado los campos comunes
             for(PlanComercial__c plan: childPlans) {
-                // Ponemos a modificar el campo que haya modificado del padre
-                if( plan.Name != plan.ParentPlan__r.Name ) {
-                    plan.Name = plan.ParentPlan__r.Name;
-                    plan.Description__c= plan.ParentPlan__r.Name;
-                }
-                if( plan.Product__c != plan.ParentPlan__r.Product__c ) plan.Product__c = plan.ParentPlan__r.Product__c;
-                if( plan.Segment__c != plan.ParentPlan__r.Segment__c ) plan.Segment__c = plan.ParentPlan__r.Segment__c;
-                if( plan.Indicator__c != plan.ParentPlan__r.Indicator__c ) {
-                    plan.Indicator__c = plan.ParentPlan__r.Indicator__c;
-
-                    // Comprobamos los campos de valor
-                    // String indicatorTypeOld = mapIndicatorType.get(plan.Indicator__c);
-                    PlanComercialSelector.eIndicator indicatorTypeNew = PlanComercialSelector.getIndicatorType(plan.ParentPlan__r.Indicator__c);
-
-                    // if( indicatorTypeOld != null && indicatorTypeNew != null && indicatorTypeOld != indicatorTypeNew ) {
-                        // Recuperamos el valor actual
-                        Decimal value = plan.TargetKPINumber__c;
-                        if( value == null ) value = plan.TargetKPICurrency__c;
-                        if( value == null ) value = plan.TargetKPIPercent__c;
-
-                        // Limpiamos los campos
-                        plan.TargetKPINumber__c = null;
-                        plan.TargetKPICurrency__c = null;
-                        plan.TargetKPIPercent__c = null;
-
-                        // Establecemos el valor nuevo
-                        plan.put(PlanComercialSelector.getTargetKPIFieldByType(indicatorTypeNew), value);
-                    // }
-                }
+                planUpdatedFields(plan);
             }
 
             update childPlans;
-        }
-    }
-
-    /**
-     * Busca los planes hijos de los planes dados y los incluye en la misma lista
-     * 
-     * @author nts (agonzalezisasi)
-     * @date 02/11/2021
-     * 
-     * @param {Set<String> planIds} lista de ids
-     */
-    private static void addDescendantPlans(List<PlanComercial__c> plans) 
-    {
-        // Se recupera la lista de planes descendientes de los planes modificados
-        List<PlanComercial__c> childPlans = (new PlanComercialSelector()).findAnnualPlanDescendants(plans);
-
-        if( childPlans != null && !childPlans.isEmpty() ) {
-            for(PlanComercial__c plan: childPlans) {
-                if( !plans.contains(plan) ) {
-                    plans.add(plan);
-                }
-            }
         }
     }
     
@@ -1263,6 +1387,50 @@ public with sharing class GenerateComercialPlanController
     }
 
     /**
+     * Comprueba si una entrada de picklist es valida y tiene valores de control. Si es asi los añade a los valores
+     * de dependencia
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {Schema.PicklistEntry entry} entrada de picklist
+     * @param {String base64map} mapa de caracteres base 64
+     * @param {String validForValue} valores validos
+     * @param {List<Schema.PicklistEntry> controlEntries} entradas de control de picklist
+     * @param {Map<String, Map<String, String>> dependentPicklistValues} mapa de valores de dependencia
+     */
+    private static void addValidEntries(Schema.PicklistEntry entry, String base64map, String validForValue,
+                                        List<Schema.PicklistEntry> controlEntries,
+                                        Map<String, Map<String, String>> dependentPicklistValues)
+    {
+        // Cogemos las posiciones del campo controlador de la entrada dependiente
+        List<String> base64chars = validForValue.split('');
+                
+        // Vemos a que posicion del campo controlador pertenece ese 
+        for (Integer index = 0; index < (controlEntries != null ? controlEntries.size() : 2); index++) {
+            Object controlValue =
+                    (controlEntries == null ?   
+                        (Object) (index == 1) :   
+                        (Object) (controlEntries[index].isActive() ? controlEntries[index].getValue() : null)
+                    );
+            Integer bitIndex = index / 6;
+            if (bitIndex > base64chars.size() - 1) break;
+
+            Integer bitShift = 5 - Math.mod(index, 6);
+            if( controlValue == null || (base64map.indexOf( base64chars[ bitIndex ] ) & (1 << bitShift)) == 0 )
+                continue;
+
+            // Add de values
+            Map<String, String> mapValues = dependentPicklistValues.get((String) controlValue);
+            if( mapValues == null ) {
+                mapValues = new Map<String, String>();
+                dependentPicklistValues.put((String) controlValue, mapValues);
+            }
+            mapValues.put(entry.getValue(), entry.getLabel());
+        }
+    }
+
+    /**
      * Recupera los valores activos de un campo picklist, junto con sus dependencias
      * 
      * @author nts (agonzalezisasi)
@@ -1276,48 +1444,25 @@ public with sharing class GenerateComercialPlanController
 
         Schema.DescribeFieldResult depend = dependToken.getDescribe();
         Schema.sObjectField controlToken = depend.getController();
-        if (controlToken != null) {
-            Schema.DescribeFieldResult control = controlToken.getDescribe();
-            List<Schema.PicklistEntry> controlEntries;
-            if(control.getType() != Schema.DisplayType.Boolean) {
-                controlEntries = control.getPicklistValues();
-            }
-        
-            System.debug(controlEntries);
-            String base64map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-            for (Schema.PicklistEntry entry : depend.getPicklistValues()) {
-                // validFor es una propiedad de PicklistEntry pero no esta accesible
-                String validForValue = String.valueOf(((Map<String,Object>) JSON.deserializeUntyped(JSON.serialize(entry))).get('validFor'));
-                
-                if (entry.isActive() && String.isNotEmpty(validForValue)) {
-                    // Cogemos las posiciones del campo controlador de la entrada dependiente
-                    List<String> base64chars = validForValue.split('');
-                    
-                    // Vemos a que posicion del campo controlador pertenece ese 
-                    for (Integer index = 0; index < (controlEntries != null ? controlEntries.size() : 2); index++) {
-                        Object controlValue =
-                                (controlEntries == null ?   
-                                    (Object) (index == 1) :   
-                                    (Object) (controlEntries[index].isActive() ? controlEntries[index].getValue() : null)
-                                );
-                        Integer bitIndex = index / 6;
-                        if (bitIndex > base64chars.size() - 1) break;
 
-                        Integer bitShift = 5 - Math.mod(index, 6);
-                        if( controlValue == null || (base64map.indexOf( base64chars[ bitIndex ] ) & (1 << bitShift)) == 0 )
-                            continue;
+        if (controlToken == null) return dependentPicklistValues;
 
-                        // Add de values
-                        Map<String, String> mapValues = dependentPicklistValues.get((String) controlValue);
-                        if( mapValues == null ) {
-                            mapValues = new Map<String, String>();
-                            dependentPicklistValues.put((String) controlValue, mapValues);
-                        }
-                        mapValues.put(entry.getValue(), entry.getLabel());
-                    }
-                }
+        Schema.DescribeFieldResult control = controlToken.getDescribe();
+        List<Schema.PicklistEntry> controlEntries;
+        if(control.getType() != Schema.DisplayType.Boolean) {
+            controlEntries = control.getPicklistValues();
+        }
+    
+        String base64map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        for (Schema.PicklistEntry entry : depend.getPicklistValues()) {
+            // validFor es una propiedad de PicklistEntry pero no esta accesible
+            String validForValue = String.valueOf(((Map<String,Object>) JSON.deserializeUntyped(JSON.serialize(entry))).get('validFor'));
+            
+            if (entry.isActive() && String.isNotEmpty(validForValue)) {
+                addValidEntries(entry, base64map, validForValue, controlEntries, dependentPicklistValues);
             }
         }
+        
         return dependentPicklistValues;
     }
 
@@ -1348,7 +1493,7 @@ public with sharing class GenerateComercialPlanController
      */
     public static void sendNotification(Set<Id> userIds, Set<String> planSubjects)
     {
-        if( userIds != null && !userIds.isEmpty() ) {
+        if( userIds != null && !userIds.isEmpty() && planSubjects != null && !planSubjects.isEmpty() ) {
             String title = Label.SDM_PlanAnual_NotifTitle;
             String bodyContent = Label.SDM_PlanAnual_NotifBody + ' ' + String.join(new List<String>(planSubjects), ',');
 
@@ -1359,6 +1504,82 @@ public with sharing class GenerateComercialPlanController
             Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
             notif.send(stringSet, title, bodyContent);
         }
+    }
+
+    /**
+     * Recupera los usuarios (RN/CV) asociados al usuario DZ/DV
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {String roleName} rol del usuario
+     * @param {String userEmail} email del usuario
+     * @return {Map<String, String>} detalle de los usuarios
+     */
+    private static Map<String, String> getDirectorDetail(String roleName, String userEmail)
+    {
+        Map<String, String> mapDetail = new Map<String, String>();
+
+        // Recuperamos el campo del director en el mediador para el role de Salesforce del usuario
+        String directorEmailField = mapEmailFieldsByUserRole.get(roleName);
+        // Recuperamos el rol ATM del Consultor o RN que buscaremos en los equipos de cuentas de los mediadores del
+        // director
+        String consultantRole = mapATMRoleByUserRole.get(roleName);
+        String consultantRoleLabel = (new SettingsSDM()).getATMRoleLabel(consultantRole);
+
+        if( String.isNotBlank(directorEmailField) && String.isNotBlank(consultantRoleLabel) ) {
+            // Lista de consultores o RNs del director
+            List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findUsersByRoleAndEmailField(
+                consultantRoleLabel,
+                directorEmailField,
+                userEmail
+            );
+
+            if( atms != null && !atms.isEmpty() ) {
+                // Los metemos en el mapa de detalle
+                for(AccountTeamMember atm: atms) {
+                    mapDetail.put(atm.UserId, atm.User.Name);
+                }
+            }
+        }
+
+        return mapDetail;
+    }
+
+    
+    /**
+     * Recupera los mediadores asociados al usuario RN/Consultor vida
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 16/12/2021
+     * 
+     * @param {String roleName} rol del usuario
+     * @param {String userEmail} email del usuario
+     * @return {Map<String, String>} detalle de los mediadores
+     */
+    private static Map<String, String> getConsultantDetail(String roleName, String userEmail)
+    {
+        Map<String, String> mapDetail = new Map<String, String>();
+
+        // Recuperamos el campo del Consultor o RN en el mediador para el role de Salesforce del usuario
+        String consultantEmailField = mapEmailFieldsByUserRole.get(roleName);
+
+        if( String.isNotBlank(consultantEmailField) ) {
+            // Lista de mediadores del Consultor o RN
+            List<Account> intermediaries = (new AccountsSelector()).findIntermediariesByEmailInFields(
+                userEmail,
+                new Set<String> {consultantEmailField}
+            );
+
+            if( intermediaries != null && !intermediaries.isEmpty() ) {
+                // Los metemos en el mapa de detalle
+                for(Account intermediary: intermediaries) {
+                    mapDetail.put(intermediary.Id, intermediary.Name);
+                }
+            }
+        }
+
+        return mapDetail;
     }
 
     // ---------------------------------- AURA ENABLED ------------------------
@@ -1394,53 +1615,16 @@ public with sharing class GenerateComercialPlanController
             Boolean isRN = Consultants.contains(roleName);
 
             // 3. Obtenemos los RNs del director / los Mediadores del RN
-            Map<String, String> mapDetail = new Map<String, String>();
+            Map<String, String> mapDetail;
             
             if( isDirector ) { //--------------------------------------------- RNs del director 
-                // Recuperamos el campo del director en el mediador para el role de Salesforce del usuario
-                String directorEmailField = mapEmailFieldsByUserRole.get(roleName);
-                // Recuperamos el rol ATM del Consultor o RN que buscaremos en los equipos de cuentas de los mediadores del
-                // director
-                String consultantRole = mapATMRoleByUserRole.get(roleName);
-                String consultantRoleLabel = (new SettingsSDM()).getATMRoleLabel(consultantRole);
-
-                if( String.isNotBlank(directorEmailField) && String.isNotBlank(consultantRoleLabel) ) {
-                    // Lista de consultores o RNs del director
-                    List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findUsersByRoleAndEmailField(
-                        consultantRoleLabel,
-                        directorEmailField,
-                        userEmail
-                    );
-
-                    if( atms != null && !atms.isEmpty() ) {
-                        // Los metemos en el mapa de detalle
-                        for(AccountTeamMember atm: atms) {
-                            mapDetail.put(atm.UserId, atm.User.Name);
-                        }
-                    }
-                }
+                mapDetail = getDirectorDetail(roleName, userEmail);                
             } else { //------------------------------------------------------- Mediadores del RN
-                // Recuperamos el campo del Consultor o RN en el mediador para el role de Salesforce del usuario
-                String consultantEmailField = mapEmailFieldsByUserRole.get(roleName);
-
-                if( String.isNotBlank(consultantEmailField) ) {
-                    // Lista de mediadores del Consultor o RN
-                    List<Account> intermediaries = (new AccountsSelector()).findIntermediariesByEmailInFields(
-                        userEmail,
-                        new Set<String> {consultantEmailField}
-                    );
-
-                    if( intermediaries != null && !intermediaries.isEmpty() ) {
-                        // Los metemos en el mapa de detalle
-                        for(Account intermediary: intermediaries) {
-                            mapDetail.put(intermediary.Id, intermediary.Name);
-                        }
-                    }
-                }
+                mapDetail = getConsultantDetail(roleName, userEmail);
             }
 
             // 4. Establecemos el año de ejecucion
-            Integer actualYear = year; //Date.today().year();
+            Integer actualYear = year;
 
             //---------------------------------------------------------- Planes anuales
             // 5. Obtenemos los planes comerciales anuales existentes para el Director / RN
@@ -1464,9 +1648,11 @@ public with sharing class GenerateComercialPlanController
             tabledata.addFixedRow(ROW_LABEL_YEAR);
             tabledata.addFixedRow(ROW_LABEL_PLAN);
 
-            // Etiquetas variables (rn/mediador) de las filas
-            for(String key: mapDetail.keySet()) {
-                tabledata.addFixedRow(key, mapDetail.get(key));
+            if( mapDetail != null ) {
+                // Etiquetas variables (rn/mediador) de las filas
+                for(String key: mapDetail.keySet()) {
+                    tabledata.addFixedRow(key, mapDetail.get(key));
+                }
             }
 
             // 6.2 Valores de combobox

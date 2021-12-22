@@ -1,5 +1,5 @@
 /**
- * Clase controlador que es invocada en el LWC -> generateComercialPlan
+ * Clase de test de la clase GenerateComercialPlanController
  *
  * @author nts (agonzalezisasi)
  * @date 10/09/2021
@@ -19,7 +19,7 @@ private with sharing class GenerateComercialPlanControllerTest
     @TestSetup
     static void makeData() 
     {
-        TestDataFactorySDM.AnualPlanSetupData(ACTUAL_YEAR);
+        TestDataFactorySDM.anualPlanSetupData(ACTUAL_YEAR, AccountsSelector.SDM_DZ_EMAIL_FIELD);
     }
 
     @isTest
@@ -89,19 +89,18 @@ private with sharing class GenerateComercialPlanControllerTest
 
         tableString = tabledata.toJSON();
         Test.startTest();        
+        // Modificacion
         System.runAs(dtUser) {
             GenerateComercialPlanController.saveData(tableString);
         }
-        Test.stopTest();
 
         // Comprobamos el resultado
-        
         // Modificaciones en los planes
         List<PlanComercial__c> resultPlans = [
             SELECT Id, Name FROM PlanComercial__c WHERE Name = 'Plan 1 modificado'
         ];
-        // 2 = plan DT global, plan de RN 1, no ve los 3 planes de mediadores
-        System.assertEquals(2, resultPlans.size(), 'Deberia haber 2 planes modificados');
+        // 5 = plan DT global, plan de RN 1, ve los 3 planes de mediadores (por el flow SDM - PC Visibility)
+        System.assertEquals(5, resultPlans.size(), 'Deberia haber 5 planes modificados');
 
         // Creacion de nuevo plan
         resultPlans = [
@@ -110,6 +109,19 @@ private with sharing class GenerateComercialPlanControllerTest
         // 2 = plan DT global, plan de RN 1
         System.assertEquals(2, resultPlans.size(), 'Deberia haber 2 planes nuevos');
 
+        // Borrado del Plan 1 del DT
+        tabledata.headers.Cells[0].isDeleted = true;
+        tableString = tabledata.toJSON();
+        System.runAs(dtUser) {
+            GenerateComercialPlanController.saveData(tableString);
+        }
+
+        resultPlans = [
+            SELECT Id, Name FROM PlanComercial__c WHERE Name = :tabledata.headers.Cells[0].stringValue
+        ];
+        SYstem.assertEquals(0, resultPlans.size(), 'No deberia haber planes');
+
+        Test.stopTest();
     }
 
     @isTest
@@ -173,59 +185,6 @@ private with sharing class GenerateComercialPlanControllerTest
             sumValue += plan.TargetKPINumber__c;
         }
         System.assertEquals(9, sumValue, 'La suma de target KPI number deberia ser 9');
-    }
-
-    @isTest
-    static void testDeletePlans()
-    {
-        // Recuperamos el usuario DT
-        String rnEmail = String.format(TestDataFactorySDM.BUSINESS_EMAIL, new List<String>{String.valueOf(0)});
-        List<User> users = [SELECT Id FROM User WHERE Email = :rnEmail];
-        System.assertEquals(1, users.size(), 'Deberia haber 1 usuario RN');
-        User rnUser = users[0];
-        
-        // Simulamos que se han calculado los KPIs y se han actualizado los planes con el valor
-        List<PlanComercial__c> plans = [
-            SELECT Id, Actual_KPI__c FROM PlanComercial__c WHERE AssignedTo__c = :rnUser.Id
-        ];
-        System.assertEquals(4, plans.size(), 'Deberia haber 4 planes, rn y 3 mediadores');
-        for(PlanComercial__c plan: plans) {
-            plan.Actual_KPI__c = 1;
-        }
-        update plans;
-
-        String tableString;
-        System.runAs(rnUser) {
-            tableString = GenerateComercialPlanController.getRecords(ACTUAL_YEAR);
-        }
-        
-        // Comprobamos el resultado
-        System.assertEquals(true, String.isNotEmpty(tableString), 'El string de la tabla no deberia ser vacio');
-
-        // Convertirmos el resultado en objeto Tabletype para verificar mas campos
-        GenerateComercialPlanController.Tabletype tabledata = 
-            (GenerateComercialPlanController.Tabletype)JSON.deserialize(
-                tableString, 
-                GenerateComercialPlanController.Tabletype.class
-            );
-        
-        tabledata.headers.Cells[0].isDeleted = true;
-        for(Integer i; i<tabledata.rows.size(); i++) {
-            tabledata.rows[i].Cells[0].isDeleted = true;
-        }
-
-        Test.startTest();
-        tableString = tabledata.toJSON();
-        System.runAs(rnUser) {
-            GenerateComercialPlanController.saveData(tableString);
-        }
-        Test.stopTest();
-
-        // Comprobamos el resultado
-        List<PlanComercial__c> resultPlans = [
-            SELECT Id FROM PlanComercial__c WHERE Intermediary__c != null
-        ];
-        System.assertEquals(0, resultPlans.size(), 'No deberia haber planes de los mediadores');
     }
 
     @isTest
