@@ -6,6 +6,7 @@
     <permissionSets>GestionCuentaContacto_SDM</permissionSets>
     <permissionSets>GestionPlanComercial_SDM</permissionSets>
     <permissionSets>Gestionar_vistaslista</permissionSets>
+    <permissionSets>SDM_Gestion_Informes</permissionSets>
     <permissionSets>SDM_Plan_comercial</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
