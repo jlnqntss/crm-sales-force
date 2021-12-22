@@ -85,7 +85,7 @@
             </sourceValues>
             <value>5- VIDA RESTO</value>
         </values>
-    </buckets>      
+    </buckets>
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
@@ -103,7 +103,7 @@
         <chartType>HorizontalBar</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>Account.LifeConsultant__c</groupingColumn>
+        <groupingColumn>Account.LifeConsultantEmail__c</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
         <showAxisLabels>false</showAxisLabels>
@@ -214,7 +214,7 @@
     </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Account.LifeConsultant__c</field>
+        <field>Account.LifeConsultantEmail__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>

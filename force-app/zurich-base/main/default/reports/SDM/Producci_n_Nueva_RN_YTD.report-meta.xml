@@ -86,7 +86,7 @@
             </sourceValues>
             <value>5- VIDA RESTO</value>
         </values>
-    </buckets>  
+    </buckets>
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
@@ -289,7 +289,7 @@
     </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Account.BusinessManagerName__c</field>
+        <field>Account.BusinessManagerEmail__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
