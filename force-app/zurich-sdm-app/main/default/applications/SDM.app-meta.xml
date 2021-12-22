@@ -38,7 +38,9 @@
     </actionOverrides>
     <brand>
         <headerColor>#0070D2</headerColor>
-        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+        <logo>Zurich_logo_diversidad_inclusin</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
     <description>Application for Sales Digital Management</description>
     <formFactors>Small</formFactors>
