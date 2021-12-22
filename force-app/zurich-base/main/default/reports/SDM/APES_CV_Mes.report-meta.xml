@@ -21,7 +21,7 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0, 0, KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
+        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0, 0, -KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Descuento total</description>
         <developerName>FORMULA3</developerName>
