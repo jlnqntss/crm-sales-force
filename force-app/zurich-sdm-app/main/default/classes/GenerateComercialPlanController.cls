@@ -849,17 +849,17 @@ public with sharing class GenerateComercialPlanController
      * @param {List<PlanComercial__c> childPlansToInsert} planes hijos a insertar
      * @param {Map<Integer, Integer> mapChildToParent} relacion de padres con hijos
      */
-    private static void dmlPlans(List<PlanComercial__c> plansToDelete, List<PlanComercial__c> plansToDeleteDescendants, 
+    private static void dmlPlans(List<PlanComercial__c> plansToDelete, 
                                 List<PlanComercial__c> existingPlansToUpsert, List<PlanComercial__c> parentPlansToInsert, 
                                 List<PlanComercial__c> childPlansToInsert, Map<Integer, Integer> mapChildToParent)
     {
         // Planes a borrar
         if( !plansToDelete.isEmpty() ) {
+            // Se solicita borrar planes comerciales descendientes
+            GenerateComercialPlanHelper.deleteDescendantPlans(plansToDelete);
+
             delete plansToDelete;
         }
-
-        // Se solicita borrar planes comerciales descendientes
-        GenerateComercialPlanHelper.deleteDescendantPlans(plansToDeleteDescendants);
 
         // Planes existentes a modificar
         if( !existingPlansToUpsert.isEmpty() ) {
@@ -942,7 +942,7 @@ public with sharing class GenerateComercialPlanController
      * @param {Integer maxRows} numero maximo de filas
      */
     private static void addPlansToDelete(List<Rowtype> rowsdata, Integer cellPos, List<PlanComercial__c> plansToDelete, 
-        Boolean isMyPlan, String planId, Integer maxRows, List<PlanComercial__c> plansToDeleteDescendants)
+        Boolean isMyPlan, String planId, Integer maxRows)
     {
         // Lista de ids a borrar
         Set<Id> idsToDelete = new Set<Id>();
@@ -961,10 +961,6 @@ public with sharing class GenerateComercialPlanController
                 plansToDelete.add(new PlanComercial__c(Id= idtodelete));
             }
         }
-
-        // Se incluyen los hijos de los planes si los hubiera, sobre todo cuando es el DT el que borra
-        // el plan principal
-        addDescendantPlans(plansToDelete, plansToDeleteDescendants);
     }
 
     /**
@@ -1130,8 +1126,6 @@ public with sharing class GenerateComercialPlanController
         List<PlanComercial__c> existingPlansToUpsert = new List<PlanComercial__c>();
         // Lista de planes existentes a borrar
         List<PlanComercial__c> plansToDelete = new List<PlanComercial__c>();
-        // Lista de planes descendientes existentes a borrar
-        List<PlanComercial__c> plansToDeleteDescendants = new List<PlanComercial__c>();
 
         Map<Integer, List<PlanComercial__c>> mapPlanLists = new Map<Integer, List<PlanComercial__c>>();
         mapPlanLists.put(IDX_PLANS_EXISTING, existingPlansToUpsert);
@@ -1225,12 +1219,12 @@ public with sharing class GenerateComercialPlanController
                     addChildPlans(row, i, mapPlanLists, mapChildToParent, myplan, newPlanNames, rnsToNotify);
                 }
             } else if( planId != null ) { //-------------------------------------------------------- Borrado del plan (Si hay ids de planes)                
-                addPlansToDelete(rowsdata, i, plansToDelete, isMyPlan, planId, maxRows, plansToDeleteDescendants);
+                addPlansToDelete(rowsdata, i, plansToDelete, isMyPlan, planId, maxRows);
             }
         }
 
         // Realizamos todas las modificaciones sobre los planes que corresponda
-        dmlPlans(plansToDelete, plansToDeleteDescendants, existingPlansToUpsert, parentPlansToInsert, childPlansToInsert, mapChildToParent);        
+        dmlPlans(plansToDelete, existingPlansToUpsert, parentPlansToInsert, childPlansToInsert, mapChildToParent);        
 
         // Si se han relleando los destinatarios y los nombres del plan correctamente se envia las notificaciones
         sendNotification(rnsToNotify, newPlanNames);
@@ -1365,28 +1359,6 @@ public with sharing class GenerateComercialPlanController
             }
 
             update childPlans;
-        }
-    }
-
-    /**
-     * Busca los planes hijos de los planes dados y los incluye en la misma lista
-     * 
-     * @author nts (agonzalezisasi)
-     * @date 02/11/2021
-     * 
-     * @param {Set<String> planIds} lista de ids
-     */
-    private static void addDescendantPlans(List<PlanComercial__c> plans, List<PlanComercial__c> descendantPlans) 
-    {
-        // Se recupera la lista de planes descendientes de los planes modificados
-        List<PlanComercial__c> childPlans = (new PlanComercialSelector()).findAnnualPlanDescendants(plans);
-
-        if( childPlans != null && !childPlans.isEmpty() ) {
-            for(PlanComercial__c plan: childPlans) {
-                if( !descendantPlans.contains(plan) ) {
-                    descendantPlans.add(plan);
-                }
-            }
         }
     }
     

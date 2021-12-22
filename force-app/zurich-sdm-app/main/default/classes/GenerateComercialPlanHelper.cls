@@ -10,17 +10,22 @@
  */
 public without sharing class GenerateComercialPlanHelper {
     /**
-     * Borra los planes comerciales indicados
+     * Busca los planes comerciales "hijos" de los planes comerciales anuales dados
      * 
      * @author nts (agonzalezisasi)
      * @date 17/12/2021
      * 
-     * @param {List<PlanComercial__c> plansToDelete} planes a borrar
+     * @param {List<PlanComercial__c> plansToDelete} planes "padres"
      */
     public static void deleteDescendantPlans(List<PlanComercial__c> plans)
     {
         if( plans != null && !plans.isEmpty() ) {
-            delete plans;
+            // Se recupera la lista de planes descendientes (hijos) de los planes dados
+            List<PlanComercial__c> childPlans = (new PlanComercialSelector()).findAnnualPlanDescendants(plans);
+
+            if( childPlans != null && !childPlans.isEmpty() ) {
+                delete childPlans;
+            }
         }
     }
 }

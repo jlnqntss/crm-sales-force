@@ -119,7 +119,7 @@ private with sharing class GenerateComercialPlanControllerTest
         resultPlans = [
             SELECT Id, Name FROM PlanComercial__c WHERE Name = :tabledata.headers.Cells[0].stringValue
         ];
-        SYstem.assertEquals(0, resultPlans.size(), 'Deberia haber 0 planes');
+        SYstem.assertEquals(0, resultPlans.size(), 'No deberia haber planes');
 
         Test.stopTest();
     }

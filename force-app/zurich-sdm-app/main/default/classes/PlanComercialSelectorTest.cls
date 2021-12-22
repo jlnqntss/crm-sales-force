@@ -93,8 +93,8 @@ private class PlanComercialSelectorTest
 
         // Comprobamos el resultado
         System.assertNotEquals(null, childPlans, 'Deberia encontrar planes');
-        // 1 plan dt = 1 plan RN = 3 planes mediadores
-        System.assertEquals(3, childPlans.size(), 'Deberia haber 3 planes descendientes');
+        // 1 plan RN, hijo del plan del DT
+        System.assertEquals(1, childPlans.size(), 'Deberia haber 1 plan descendiente');
     }
 
     /**
