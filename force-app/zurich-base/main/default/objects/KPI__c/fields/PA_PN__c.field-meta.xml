@@ -3,9 +3,9 @@
     <fullName>PA_PN__c</fullName>
     <externalId>false</externalId>
     <label>PN (pa)</label>
-    <precision>18</precision>
+    <precision>15</precision>
     <required>false</required>
-    <scale>3</scale>
+    <scale>0</scale>
     <trackTrending>false</trackTrending>
     <type>Currency</type>
 </CustomField>
