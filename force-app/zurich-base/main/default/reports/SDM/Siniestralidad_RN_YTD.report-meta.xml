@@ -39,6 +39,16 @@
         <masterLabel>Ratio Retencion</masterLabel>
         <scale>2</scale>
     </aggregates>
+    <aggregates>
+        <calculatedFormula>KPI__c.CAYLoad__c:SUM / KPI__c.Income__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Siniestralidad CAY</description>
+        <developerName>FORMULA5</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Sin. CAY</masterLabel>
+        <scale>2</scale>
+    </aggregates>
     <buckets>
         <bucketType>text</bucketType>
         <developerName>BucketField_68388292</developerName>
@@ -76,7 +86,7 @@
             </sourceValues>
             <value>5- VIDA RESTO</value>
         </values>
-    </buckets>        
+    </buckets>
     <colorRanges>
         <aggregate>Sum</aggregate>
         <columnName>KPI__c.Portfolio__c</columnName>

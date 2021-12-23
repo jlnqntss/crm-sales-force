@@ -148,6 +148,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.BusinessManagerEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.LifeConsultantEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>        
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.BusinessName__c</field>
         <readable>false</readable>
     </fieldPermissions>
