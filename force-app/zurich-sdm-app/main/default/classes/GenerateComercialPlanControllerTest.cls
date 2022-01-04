@@ -19,7 +19,8 @@ private with sharing class GenerateComercialPlanControllerTest
     @TestSetup
     static void makeData() 
     {
-        TestDataFactorySDM.anualPlanSetupData(ACTUAL_YEAR, AccountsSelector.SDM_DZ_EMAIL_FIELD);
+        Integer actualYear = System.today().year();
+        TestDataFactorySDM.anualPlanSetupData(actualYear, AccountsSelector.SDM_DZ_EMAIL_FIELD);
     }
 
     @isTest
@@ -32,9 +33,10 @@ private with sharing class GenerateComercialPlanControllerTest
         User dtUser = users[0];
 
         // Recuperamos la tabla
+        Integer actualYear = System.today().year();
         String tableString;
         System.runAs(dtUser) {
-            tableString = GenerateComercialPlanController.getRecords(ACTUAL_YEAR);
+            tableString = GenerateComercialPlanController.getRecords(actualYear);
         }
 
         // Convertirmos el resultado en objeto Tabletype para verificar mas campos
@@ -134,9 +136,10 @@ private with sharing class GenerateComercialPlanControllerTest
         User rnUser = users[0];
 
         // Recuperamos la tabla
+        Integer actualYear = System.today().year();
         String tableString;
         System.runAs(rnUser) {
-            tableString = GenerateComercialPlanController.getRecords(ACTUAL_YEAR);
+            tableString = GenerateComercialPlanController.getRecords(actualYear);
         }
 
         // Convertirmos el resultado en objeto Tabletype para verificar mas campos
