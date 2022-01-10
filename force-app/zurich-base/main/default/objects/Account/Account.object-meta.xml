@@ -232,6 +232,20 @@
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <externalSharingModel>Private</externalSharingModel>
+    <profileSearchLayouts>
+        <fields>ACCOUNT.NAME</fields>
+        <fields>IntermediaryDescription__c</fields>
+        <fields>INFOIntermediaryCode__c</fields>
+        <fields>ACCOUNT.RECORDTYPE</fields>
+        <profileName>SDM Director</profileName>
+    </profileSearchLayouts>
+    <profileSearchLayouts>
+        <fields>ACCOUNT.NAME</fields>
+        <fields>IntermediaryDescription__c</fields>
+        <fields>INFOIntermediaryCode__c</fields>
+        <fields>ACCOUNT.RECORDTYPE</fields>
+        <profileName>SDM RN</profileName>
+    </profileSearchLayouts>
     <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <searchLayouts>
