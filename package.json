@@ -9,7 +9,7 @@
     "postinstall": "sfdx update && (echo y | sfdx plugins:install sfpowerkit -f)",
     "install:extensions": "type config/vscode-extensions.list | code --install-extension -",
     "test:lwc": "lwc-jest -- --passWithNoTests",
-    "test:org": "sfdx force:apex:test:run -c -r json --wait 120 -d ./tests/apex",
+    "test:org": "sfdx force:apex:test:run -c -r json -l RunLocalTests --wait 120 -d ./tests/apex --json",
     "push:source": "sfdx force:source:push -f",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
     "deploy:validate": "node scripts/source/unit-deploy-validation.js",
