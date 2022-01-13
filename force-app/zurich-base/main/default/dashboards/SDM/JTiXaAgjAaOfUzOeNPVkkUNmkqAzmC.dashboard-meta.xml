@@ -228,7 +228,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>Account.BusinessManagerName__c</groupingColumn>
+                <groupingColumn>Account.BusinessManagerEmail__c</groupingColumn>
                 <groupingColumn>KPI__c.ProductGroup__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
@@ -281,7 +281,7 @@
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
                 <groupingColumn>CDF1</groupingColumn>
-                <groupingColumn>Account.BusinessManagerName__c</groupingColumn>
+                <groupingColumn>Account.BusinessManagerEmail__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
@@ -329,7 +329,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>Account.BusinessManagerName__c</groupingColumn>
+                <groupingColumn>Account.BusinessManagerEmail__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
