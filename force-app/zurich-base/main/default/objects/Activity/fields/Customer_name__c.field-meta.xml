@@ -4,7 +4,7 @@
     <description>Nombre del cliente</description>
     <externalId>false</externalId>
     <label>Customer name</label>
-    <length>20</length>
+    <length>255</length>
     <required>false</required>
     <type>Text</type>
     <unique>false</unique>
