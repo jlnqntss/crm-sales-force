@@ -156,7 +156,7 @@
     </customDetailFormulas>
     <description>En este informe se muestran los kpi&apos;s de los últimos años del mediador agrupados por cif.</description>
     <filter>
-        <booleanFilter>1 AND 2 AND (3 OR 4)</booleanFilter>
+        <booleanFilter>1 AND 2 AND (3 OR (4 AND 5))</booleanFilter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
             <columnToColumn>false</columnToColumn>
@@ -176,7 +176,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>LAST_MONTH</value>
+            <value>THIS_MONTH</value>
         </criteriaItems>
         <criteriaItems>
             <column>CDF1</column>
@@ -184,6 +184,13 @@
             <isUnlocked>true</isUnlocked>
             <operator>lessThan</operator>
             <value>THIS_YEAR</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>KPI__c.CalcMonth__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>12</value>
         </criteriaItems>
         <language>es</language>
     </filter>
