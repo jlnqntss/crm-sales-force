@@ -47,7 +47,7 @@ export default class CallRecordingButton extends LightningElement {
   isOnCall;
 
   /**
-   * Método del ciclo de vida de los componentes LWC que es ejecutado antes de renderizarse el componente en el DOM.
+   * Metodo del ciclo de vida de los componentes LWC que es ejecutado antes de renderizarse el componente en el DOM.
    * @date 26/10/2021
    */
   async connectedCallback() {
@@ -60,7 +60,7 @@ export default class CallRecordingButton extends LightningElement {
   }
 
   /**
-   * Método del ciclo de vida de los componentes LWC que es ejecutado tras eliminar el componente del DOM.
+   * Metodo del ciclo de vida de los componentes LWC que es ejecutado tras eliminar el componente del DOM.
    * @date 26/10/2021
    */
   disconnectedCallback() {
@@ -209,7 +209,7 @@ export default class CallRecordingButton extends LightningElement {
   }
 
   /**
-   * Método que comprueba si el participante de grabacion esta aun en la conversacion
+   * Metodo que comprueba si el participante de grabacion esta aun en la conversacion
    *
    * @date 04/01/2022
    * @author nts (agonzalezisasi)

@@ -258,7 +258,7 @@ export default {
   async isCallConnected(activeCalls) {
     // Si el parametro es nulo recuperamos las llamadas activas directamente
     if (activeCalls === null || activeCalls === undefined) {
-      activeCalls = await this.getActiveCalls();
+      activeCalls = await getActiveCalls();
     }
     // Si el usuario no tiene vinculada ninguna llamada activa tampoco pordrá realizar la grabación.
     if (!activeCalls || !activeCalls[0]) {
@@ -291,7 +291,7 @@ export default {
   async isRecording(activeCalls) {
     // Si el parametro es nulo recuperamos las llamadas activas directamente
     if (activeCalls === null || activeCalls === undefined) {
-      activeCalls = await this.getActiveCalls();
+      activeCalls = await getActiveCalls();
     }
 
     // Si el usuario no tiene vinculada ninguna llamada activa tampoco pordrá realizar la grabación.
@@ -318,7 +318,6 @@ export default {
           participant.state === PARTICIPANT_STATE_DIALING) &&
         participant.address.includes(recordingNum)
       ) {
-        // if( participant.purpose === PARTICIPANT_PURPOSE_IVR && (participant.state === PARTICIPANT_STATE_CONNECTED || participant.state === PARTICIPANT_STATE_DIALING) ) {
         isRecorderConnected = true;
       }
       // Comprobamos tambien que hay un numero de cliente externo, esta conectado y no es el numero de grabacion
