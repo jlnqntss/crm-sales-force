@@ -81,18 +81,13 @@ public without sharing class BusinessInsuranceRaterService
         // arcortazar - 11/01/2022 - Modificamos para que sólo se haga la búsqueda en caso de no ser una Opportunity de test
         // Si la oferta es de Test, entonces, que no busque el advisor
         isTest = isBotTestingExecution(formData);
-        System.debug('Is test: ' + isTest);
         if(!isTest)
         {
-            System.debug('Entra en if - NO ES TEST');
             searchAdvisor();
-            System.debug('Current adv' + currentAdvisorId);
         }
         else 
         {
-            System.debug('Entra en else - ES UN TEST');
             currentAdvisorId = System.UserInfo.getUserId();   
-            System.debug('Current adv' + currentAdvisorId);
         }
 
         //5. Buscamos a la persona autorizada
@@ -452,7 +447,6 @@ public without sharing class BusinessInsuranceRaterService
     {
         Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         List<Opportunity> offersToCreate = new List<Opportunity>();
-        Boolean isTest = isBotTestingExecution(formData);
         // Gestión de Ofertas
         if( offersSteps.contains(formData.lastStep) )
         {
@@ -974,6 +968,12 @@ public without sharing class BusinessInsuranceRaterService
         List<Opportunity> existingOffers = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(
             currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String> {PROFILE_NAME}
         );
+
+        System.debug('Lista existingOffers ' + existingOffers.size());
+        if(existingOffers.size() > 0)
+        {
+            System.debug('Lista existingOffers ' + existingOffers.get(0).OwnerId);
+        }
 
         if( existingOffers.isEmpty() )
         {
