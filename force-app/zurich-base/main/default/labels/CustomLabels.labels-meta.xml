@@ -54,7 +54,23 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>CTIExtraButtonsTitle</shortDescription>
-        <value>Phone Actions</value>
+        <value>Call additional actions</value>
+    </labels>
+    <labels>
+        <fullName>CTIExtraButtonsWarning</fullName>
+        <categories>CTIExtraButtons</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CTIExtraButtonsWarning</shortDescription>
+        <value>You are not authorized to use the additional actions on the call. Click the Authorize button.</value>
+    </labels>
+    <labels>
+        <fullName>CTIExtraButtonsAuthButton</fullName>
+        <categories>CTIExtraButtons</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CTIExtraButtonsAuthButton</shortDescription>
+        <value>Authorize</value>
     </labels>
     <labels>
         <fullName>CampaignCheckbox</fullName>
@@ -789,7 +805,7 @@ Related fields: [{3}]</value>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>sendSurveyButtonLabel</shortDescription>
-        <value>Send Survey</value>
+        <value>Redirect to Survey</value>
     </labels>
     <labels>
         <fullName>sendSurveyToastMessageSuccess</fullName>
@@ -942,6 +958,20 @@ Related fields: [{3}]</value>
         <protected>false</protected>
         <shortDescription>documentaciónAñadida</shortDescription>
         <value>Documentación subida por cliente</value>
+    </labels>
+    <labels>
+        <fullName>callRecordingButtonAuthError</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Call Recording Button Auth Error</shortDescription>
+        <value>You need to log into the system, you will be redirected to the Genesys login page.</value>
+    </labels>
+    <labels>
+        <fullName>callRecordingButtonError</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Call Recording Button Error</shortDescription>
+        <value>There was a problem recording, please try again later or contact your Salesfroce administrator.</value>
     </labels>
     <labels>
         <fullName>SDM_PlanAnual_ButtonCancel</fullName>

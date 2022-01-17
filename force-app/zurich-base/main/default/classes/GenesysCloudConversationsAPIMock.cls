@@ -1,13 +1,15 @@
 @isTest
 public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
 {
+    public static final String ENTITY_ID = '22083121-445c-469f-8ba1-596e6a671c14';
+    public static final String ENTITY_DNIS = 'tel:+34699504908';
+    public static final String ENTITY_ADDRESS = 'sip:5fda310463dfb0197a3546c0+zurichspainlab.orgspan.com@localhost';
+
     Map<String, List<APIResponse> > scenario = new Map<String, List<APIResponse> >();
 
     public HTTPResponse respond(HTTPRequest request)
     {
         String path = request.getEndpoint().substringAfter('/');
-        // System.debug(path);
-        // System.debug(scenario);
 
         if(this.scenario.containsKey(path) )
         {
@@ -44,8 +46,8 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
                     {
                         new Map<String, Object>
                         {
-                            'id' => '22083121-445c-469f-8ba1-596e6a671c14',
-                            'address' => 'sip:5fda310463dfb0197a3546c0+zurichspainlab.orgspan.com@localhost',
+                            'id' => ENTITY_ID,
+                            'address' => ENTITY_ADDRESS,
                             'startTime' => '2021-03-31T06:46:45.131Z',
                             'connectedTime' => '2021-03-31T06:46:52.151Z',
                             'purpose' => 'user',
@@ -58,14 +60,14 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
                             'confined' => false,
                             'recording' => false,
                             'recordingState' => 'none',
-                            'ani' => 'sip:5fda310463dfb0197a3546c0+zurichspainlab.orgspan.com@localhost',
-                            'dnis' => 'tel:+34699504908'
+                            'ani' => ENTITY_ADDRESS,
+                            'dnis' => ENTITY_DNIS
                         },
                         new Map<String, Object>
                         {
-                            'id' => '22083121-445c-469f-8ba1-596e6a671c14',
+                            'id' => ENTITY_ID,
                             'name' => 'Mobile Number, Spain',
-                            'address' => 'tel:+34699504908',
+                            'address' => ENTITY_DNIS,
                             'startTime' => '2021-03-31T06:46:46.519Z',
                             'connectedTime' => '2021-03-31T06:46:52.149Z',
                             'purpose' => 'external',
@@ -74,14 +76,17 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
                             'held' => false,
                             'wrapupRequired' => false,
                             'provider' => 'Edge',
+                            'attributes' => new Map<String, String> {
+                                'CalledAddress' => '662114885'
+                            },
                             'peer' => '30136822-029b-4582-a171-25297a793326',
                             'muted' => false,
                             'confined' => false,
                             'recording' => true,
                             'recordingState' => 'active',
                             'ani' => 'sip:soporte-ocs+genesys.qa%40nts-solutions.com@localhost',
-                            'dnis' => 'tel:+34699504908',
-                            'consultParticipantId' => '22083121-445c-469f-8ba1-596e6a671c14'
+                            'dnis' => ENTITY_DNIS,
+                            'consultParticipantId' => ENTITY_ID
                         }
                     }
                 }
@@ -138,8 +143,8 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
                     'id' => conversationId,
                     'participants' => new List<Map<String, Object>> {
                         new Map<String, Object> {
-                            'id' => '22083121-445c-469f-8ba1-596e6a671c14',
-                            'address' => 'sip:5fda310463dfb0197a3546c0+zurichspainlab.orgspan.com@localhost',
+                            'id' => ENTITY_ID,
+                            'address' => ENTITY_ADDRESS,
                             'startTime' => '2021-03-31T06:46:45.131Z',
                             'connectedTime' => '2021-03-31T06:46:52.151Z',
                             'purpose' => 'user',
@@ -152,13 +157,13 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
                             'confined' => false,
                             'recording' => false,
                             'recordingState' => 'none',
-                            'ani' => 'sip:5fda310463dfb0197a3546c0+zurichspainlab.orgspan.com@localhost',
-                            'dnis' => 'tel:+34699504908'
+                            'ani' => ENTITY_ADDRESS,
+                            'dnis' => ENTITY_DNIS
                         },
                         new Map<String, Object> {
-                            'id' => '22083121-445c-469f-8ba1-596e6a671c14',
+                            'id' => ENTITY_ID,
                             'name' => 'Mobile Number, Spain',
-                            'address' => 'tel:+34699504908',
+                            'address' => ENTITY_DNIS,
                             'startTime' => '2021-03-31T06:46:46.519Z',
                             'connectedTime' => '2021-03-31T06:46:52.149Z',
                             'purpose' => 'external',
@@ -173,8 +178,8 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
                             'recording' => true,
                             'recordingState' => 'active',
                             'ani' => 'sip:soporte-ocs+genesys.qa%40nts-solutions.com@localhost',
-                            'dnis' => 'tel:+34699504908',
-                            'consultParticipantId' => '22083121-445c-469f-8ba1-596e6a671c14'
+                            'dnis' => ENTITY_DNIS,
+                            'consultParticipantId' => ENTITY_ID
                         }
                     }
                 }
