@@ -30,6 +30,8 @@ public without sharing class BusinessInsuranceRaterService
     public static ContactPointEmail currentContactPointEmail;
     public static ContactPointPhone currentContactPointPhone;
 
+    public static Boolean isTest;
+
     // Mapa que relaciona los estados que vienen del formulario con su prioridad (a menor valor mas prioridad).
     private static final Map<String, Integer> mapPriorities = new Map<String, Integer> {
         'Completado' => 0,
@@ -76,7 +78,17 @@ public without sharing class BusinessInsuranceRaterService
         }
 
         //4. Buscamos un advisor para asignar a la oportunidad y a la tarea
-        searchAdvisor();
+        // arcortazar - 11/01/2022 - Modificamos para que sólo se haga la búsqueda en caso de no ser una Opportunity de test
+        // Si la oferta es de Test, entonces, que no busque el advisor
+        isTest = isBotTestingExecution(formData);
+        if(!isTest)
+        {
+            searchAdvisor();
+        }
+        else 
+        {
+            currentAdvisorId = System.UserInfo.getUserId();    
+        }
 
         //5. Buscamos a la persona autorizada
         manageAuthorizedPerson(formData);
