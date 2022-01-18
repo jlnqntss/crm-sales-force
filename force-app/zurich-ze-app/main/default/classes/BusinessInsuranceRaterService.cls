@@ -335,7 +335,6 @@ public without sharing class BusinessInsuranceRaterService
             AnnualRevenue = accountInformation.annualRevenue,
             NumberOfEmployees = accountInformation.numberOfEmployees,
             TradeName__c = accountInformation.tradeName,
-            //CompanyName__pc = accountInformation.companyName,
             NationalId__c = accountInformation.nationalIdentifier,
             NationalIdType__c = (String.isBlank(accountInformation.nationalIdentifier) ? '' : 'N'),
             RecordTypeId = leadRecordTypeId,
@@ -396,8 +395,6 @@ public without sharing class BusinessInsuranceRaterService
             accountToUpdate.AnnualRevenue = formData.accountInformation.annualRevenue;
             accountToUpdate.NumberOfEmployees = formData.accountInformation.numberOfEmployees;
             accountToUpdate.TradeName__c = formData.accountInformation.tradeName;
-            //accountToUpdate.CompanyName__pc = formData.accountInformation.companyName;
-
             update accountToUpdate;
 
             // Si se ha hecho el update, para evitar hacer una soql copiamos los datos a la variable customer original
@@ -406,7 +403,6 @@ public without sharing class BusinessInsuranceRaterService
             customer.AnnualRevenue = formData.accountInformation.annualRevenue;
             customer.NumberOfEmployees = formData.accountInformation.numberOfEmployees;
             customer.TradeName__c = formData.accountInformation.tradeName;
-            //customer.CompanyName__pc = formData.accountInformation.companyName;
         }
     }
 
@@ -560,7 +556,7 @@ public without sharing class BusinessInsuranceRaterService
             RequestReason = 'Offer',
             Status = formData.statusSF,
             WebName__c = formData.accountInformation.firstName + ' ' + formData.accountInformation.lastName,
-            WhoId = currentCustomer.PersonContactId//currentCustomer.Id
+            WhoId = currentCustomer.PersonContactId
             );
 
         if( !offersToCreate.isEmpty() )
@@ -657,7 +653,6 @@ public without sharing class BusinessInsuranceRaterService
 
             List<Policy__c> policiesToCreate = new List<Policy__c>();
             List<Asset> risksToCreate = new List<Asset>();
-            //List<ContactRequest> contactRequestsToCreate = new List<ContactRequest>();
             Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation> quoteNumberRiskMap = new Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation>();
             Map<Integer, String> quoteNumberToPolicyNumberMap = new Map<Integer, String>();
 
@@ -690,7 +685,7 @@ public without sharing class BusinessInsuranceRaterService
                 BusinessInsuranceRaterService.Offer offer = receivedOffers.get(i);
 
                 // Producto - calculamos el codigo conjunto para la oferta
-                String productCodes = offer.productCodes;// offer.commercialPC + offer.technicalPC;
+                String productCodes = offer.productCodes;
                 // Producto - miramos si lo conocemos, sino sera nulo
                 Product2 product = productCodesToProductMap?.get(productCodes);
 
@@ -766,7 +761,6 @@ public without sharing class BusinessInsuranceRaterService
             if( !offersToCreate.isEmpty() ) {
 
                 // Creamos o actualizamos las ofertas por id externos
-                // upsert offersToCreate;
                 if( !offersByQuoteNumber.isEmpty() ) upsert offersByQuoteNumber Opportunity.INFOQuoteNumber__c;
                 if( !offersBySessionId.isEmpty() ) upsert offersBySessionId Opportunity.SessionId__c;
 
@@ -839,7 +833,6 @@ public without sharing class BusinessInsuranceRaterService
                 // Riesgo - insercion o actualizacion
                 if( !risksToCreate.isEmpty() )
                 {
-                    // insert risksToCreate;
                     upsert risksToCreate INFOInsuredObjectCode__c;
                 }
             }
