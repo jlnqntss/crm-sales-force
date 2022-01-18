@@ -18,8 +18,10 @@ import conferenceTo from "@salesforce/apex/GenesysCloudLightningController.confe
 import isAuthorized from "@salesforce/apex/GenesysCloudLightningController.isAuthorized";
 import authorize from "@salesforce/apex/GenesysCloudLightningController.authorize";
 import getActiveCalls from "@salesforce/apex/GenesysCloudLightningController.getActiveCalls";
+import startRecording from "@salesforce/apex/GenesysCloudLightningController.startRecording";
+import stopRecording from "@salesforce/apex/GenesysCloudLightningController.stopRecording";
 import cancelCallBack from "@salesforce/apex/GenesysCloudLightningController.cancelCallBack";
-
+import getRecordingNumber from "@salesforce/apex/CallRecordingController.getRecordingPhoneNumber";
 
 // #region Estado interno de la librería
 
@@ -27,6 +29,11 @@ import cancelCallBack from "@salesforce/apex/GenesysCloudLightningController.can
  * Contexto del Lightning Message Service
  */
 const messageContext = createMessageContext();
+
+const PARTICIPANT_PURPOSE_CLIENT = "customer";
+const PARTICIPANT_PURPOSE_EXTERNAL = "external";
+const PARTICIPANT_STATE_CONNECTED = "connected";
+const PARTICIPANT_STATE_DIALING = "dialing";
 
 /**
  * Estado interno. Variables y atributos requeridos por el funcionamiento de la librería
@@ -192,6 +199,142 @@ export default {
   },
 
   /**
+   * Determina si el usuario actual está conectado
+   *
+   * @author nts (agonzalezisasi)
+   * @return {Boolean} Verdadero si la llamada actual está conectada (true) o no (false)
+   *
+   */
+  async isConnected() {
+    let result = false;
+
+    // Comprobamos si tenemos interaccion en el state
+    if (state.currentInteractionId !== null) {
+      let currentInteraction =
+        state.interactions[state.currentInteractionId] || {};
+      result = currentInteraction.state === "CONNECTED";
+    } else {
+      // Si no lo hay se debe muy probablemente a que el usuario a desacoplado el panel
+      // Por ello lo vamos a buscar directamente en las llamadas activas del agente
+      let activeCalls = await getActiveCalls();
+      if (activeCalls !== undefined && activeCalls.length > 0) {
+        result = true;
+      }
+    }
+
+    return result;
+  },
+
+  /**
+   * Inicia la grabación contractual si esta no había sido iniciada.
+   * IMPORTANTE: Esta función utiliza el API Conversations/ de Genesys Cloud y por tanto se ejecuta bajo contexto de usuario.
+   * Requiere que el usuario actual se encuentre autorizado en la Named Credential de GenesysCloud.
+   * External Resources: https://developer.genesys.cloud/api/rest/v2/conversations/
+   */
+  startRecording(conversationId) {
+    return startRecording({
+      conversationId: conversationId
+    });
+  },
+
+  /**
+   * Finaliza la grabación contractual en curso.
+   * IMPORTANTE: Esta función utiliza el API Conversations/ de Genesys Cloud y por tanto se ejecuta bajo contexto de usuario.
+   * Requiere que el usuario actual se encuentre autorizado en la Named Credential de GenesysCloud.
+   * External Resources: https://developer.genesys.cloud/api/rest/v2/conversations/
+   */
+  stopRecording(conversationId) {
+    return stopRecording({
+      conversationId: conversationId
+    });
+  },
+
+  /**
+   * Metodo asincrono oque comprueba si el agente tiene una llamada activa.
+   *
+   * @date 13/01/2022
+   * @author nts (agonzalezisasi)
+   */
+  async isCallConnected(activeCalls) {
+    // Si el parametro es nulo recuperamos las llamadas activas directamente
+    if (activeCalls === null || activeCalls === undefined) {
+      activeCalls = await getActiveCalls();
+    }
+    // Si el usuario no tiene vinculada ninguna llamada activa tampoco pordrá realizar la grabación.
+    if (!activeCalls || !activeCalls[0]) {
+      return false;
+    }
+
+    // Recuperamos el num de grabacion para descartarlo ya que aparece como cliente en el purpose
+    let recordingNum = await getRecordingNumber();
+
+    let isClientConnected = false;
+    activeCalls[0].participants.forEach((participant) => {
+      // Comprobamos tambien que hay un numero de cliente externo, esta conectado y no es el numero de grabacion
+      if (
+        (participant.purpose === PARTICIPANT_PURPOSE_CLIENT ||
+          participant.purpose === PARTICIPANT_PURPOSE_EXTERNAL) &&
+        participant.state === PARTICIPANT_STATE_CONNECTED &&
+        !participant.address.includes(recordingNum)
+      ) {
+        isClientConnected = true;
+      }
+    });
+    return isClientConnected;
+  },
+
+  /**
+   * Comprueba si existe una grabación en curso.
+   * External Resources: https://developer.genesys.cloud/api/rest/v2/conversations/
+   * @returns Verdadero si el usaurio se encuentra en una llamada y con una grabación contractual en curso.
+   */
+  async isRecording(activeCalls) {
+    // Si el parametro es nulo recuperamos las llamadas activas directamente
+    if (activeCalls === null || activeCalls === undefined) {
+      activeCalls = await getActiveCalls();
+    }
+
+    // Si el usuario no tiene vinculada ninguna llamada activa tampoco pordrá realizar la grabación.
+    if (!activeCalls || !activeCalls[0]) {
+      return false;
+    }
+
+    // Si los participantes no son mas de 2 (agente, cliente y grabacion)
+    if (activeCalls[0].participants.length <= 2) {
+      return false;
+    }
+
+    // Recuperamos el num de grabacion para identificarlo en la lista de participantes
+    let recordingNum = await getRecordingNumber();
+
+    // Miramos si el cliente y el participante de grabacion estan aun conectados
+    let isRecorderConnected = false;
+    let isClientConnected = false;
+    activeCalls[0].participants.forEach((participant) => {
+      // Comprobamos que hay un numero de cliente externo, esta conectado o en proceso de conectar (dialing) y que se corresponde con el numero de grabacion
+      if (
+        participant.purpose === PARTICIPANT_PURPOSE_CLIENT &&
+        (participant.state === PARTICIPANT_STATE_CONNECTED ||
+          participant.state === PARTICIPANT_STATE_DIALING) &&
+        participant.address.includes(recordingNum)
+      ) {
+        isRecorderConnected = true;
+      }
+      // Comprobamos tambien que hay un numero de cliente externo, esta conectado y no es el numero de grabacion
+      if (
+        (participant.purpose === PARTICIPANT_PURPOSE_CLIENT ||
+          participant.purpose === PARTICIPANT_PURPOSE_EXTERNAL) &&
+        participant.state === PARTICIPANT_STATE_CONNECTED &&
+        !participant.address.includes(recordingNum)
+      ) {
+        isClientConnected = true;
+      }
+    });
+
+    return isRecorderConnected && isClientConnected;
+  },
+
+  /**
    * Devuelve las llamadas activas del usuario
    * Requiere que el usuario actual se encuentre autorizado en la Named Credential
    * GenesysCloud
@@ -235,11 +378,11 @@ export default {
    * @author jjuaristi
    */
   cancelCallBack(interactionID, ID) {
-    return cancelCallBack({interactionID : interactionID, contactRequestId : ID});
+    return cancelCallBack({
+      interactionID: interactionID,
+      contactRequestId: ID
+    });
   }
-
 };
-
-
 
 //#endregion

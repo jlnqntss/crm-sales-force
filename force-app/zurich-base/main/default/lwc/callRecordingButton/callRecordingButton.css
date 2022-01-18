@@ -1,0 +1,13 @@
+:host {
+  --sds-c-icon-color-foreground-default: white;
+}
+
+.fixedSize {
+  height: 3rem;
+  width: 100%;
+  max-width: 10rem;
+}
+
+.fixedSize label {
+  cursor: pointer;
+}
