@@ -2,8 +2,11 @@
   @description       : 
   @author            : Kevin Rueda
   @group             : 
-  @last modified on  : 17-11-2021
-  @last modified by  : jjuaristi
+  @modified on  : 17-11-2021
+  @modified by  : jjuaristi
+  
+  @last modified on  : 20/01/2022
+  @last modified by  : arcortazar
 -->
 <template>
   <lightning-card
@@ -23,6 +26,43 @@
           column-widths-mode="auto"
         >
         </lightning-datatable>
+        <!-- 
+          arcortazar - 20/01/2022: Fix de componente CallMeBack
+          Se incluye un botón que será visible si el listado de elementos tiene más de 4 elementos. Al pulsarlo, se mostrará todo el listado en una ventana modal
+        -->
+        <template if:true={isLong}>
+          <lightning-button variant="base" label="View all" title="Open all callMeBacks" onclick={openModal} class="slds-align_absolute-center"></lightning-button>
+          
+          <template if:true={showModal}>
+            <section aria-modal="true" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container ">
+                    <header class="slds-modal__header">
+                        <h2 class="slds-text-heading_small">{title}</h2>
+                        <lightning-icon class="slds-modal__close" icon-name="utility:close" size="small" onclick={closeModal}></lightning-icon>
+                    </header>
+                    <div class="slds-modal__content">
+                        <div class="slds-p-around_small">
+                          <lightning-datatable
+                            key-field="id"
+                            data={fullListCallMeBacks}
+                            columns={columnsDefinition}
+                            enable-infinite-loading="true"
+                            hide-checkbox-column="true"
+                            onrowaction={handleRowAction}
+                            column-widths-mode="auto"
+                          >
+                        </lightning-datatable>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button variant="brand" label="Cancel" onclick={closeModal} class="slds-p-around_x-small"></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+          </template>
+
+        </template>
       </div>
     </template>
   </lightning-card>

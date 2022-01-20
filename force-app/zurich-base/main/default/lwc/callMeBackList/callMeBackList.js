@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getRecord, updateRecord } from "lightning/uiRecordApi";
 import PERSON_CONTACT_ID from "@salesforce/schema/Account.PersonContactId";
@@ -31,8 +31,12 @@ export default class CallMeBackList extends LightningElement {
   @api columns;
 
   callMeBacks;
+  fullListCallMeBacks; // arcortazar - 20/01/2022: Fix del componente CallMeBack. Lista de todos los CMB que se corresponden a una cuenta.
   error;
   isLoading = false;
+  isLong = false; // arcortazar - 20/01/2022: Fix del componente CallMeBack. Flag utilizado para habilitar el boton que lanza la ventana modal
+
+  @track showModal = false; // arcortazar - 20/01/2022: Fix del componente CallMeBack. Flag que hace que se visualice o no la ventana modal
 
   // Consulta de contact person Id
   @wire(getRecord, { recordId: "$recordId", fields: [PERSON_CONTACT_ID] })
@@ -55,14 +59,34 @@ export default class CallMeBackList extends LightningElement {
    * @author rpolvera@nts-solutions.com
    * @date 18/11/2021
    * @param {Object} data Lista de Contact Request.
+   * 
+   * @last modified on  : 20/01/2022
+   * @last modified by  : arcortazar
    */
   resolve(data) {
     this.callMeBacks = [];
+    this.fullListCallMeBacks = [];
     data.forEach((element) => {
       let callMeBack = Object.assign({}, element);
       callMeBack.url = window.location.hostname + "/" + callMeBack.Id;
-      this.callMeBacks.push(callMeBack);
+      this.fullListCallMeBacks.push(callMeBack);
     });
+
+    // arcortazar - 20/01/2022: 
+    // Fix del componente CallMeBack. Visualizamos un máximo de 4 elementos en el componente, y si son más, 
+    // habilitamos un boton que permita desplegar una ventana modal con toda la información
+    let cargaTemp;
+    if(this.fullListCallMeBacks.length > 3)
+    {
+      cargaTemp = this.fullListCallMeBacks.slice(0, 4);
+      this.isLong = true;
+    }
+    else
+    {
+      cargaTemp = this.fullListCallMeBacks;
+      this.isLong = false;
+    }
+    this.callMeBacks = cargaTemp;
     this.isLoading = false;
   }
 
@@ -102,6 +126,30 @@ export default class CallMeBackList extends LightningElement {
       }
     }
     // Display fresh data in the form
+  }
+
+  /**
+   * Maneja el evento que ocurre al pulsar en el botón 'View all' del componente. Pone a true el valor showModal, haciendo que se abra la ventana modal con 
+   * todos los CallMeBacks
+   **
+   * @author arcortazar
+   * @date 20/01/2022
+   */
+  openModal() {
+    // Setting boolean variable to true, this will show the Modal
+    this.showModal = true;
+  }
+
+  /**
+   * Maneja el evento que ocurre al pulsar en el botón 'Close' de la ventana modal. Pone a false el valor showModal haciendo que esta se cierre, volviendo 
+   * a la ficha del account.
+   **
+   * @author arcortazar
+   * @date 20/01/2022
+   */
+  closeModal() {
+    // Setting boolean variable to false, this will hide the Modal
+    this.showModal = false;
   }
 
   /**
