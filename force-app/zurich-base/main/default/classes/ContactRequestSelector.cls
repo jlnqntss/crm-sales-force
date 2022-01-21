@@ -65,12 +65,21 @@ public with sharing class ContactRequestSelector extends RecordsSelector
      * Consulta la BBDD de Salesforce y retorna los registros relacionados de un cliente (Account)
      * @date 17/11/2021
      * @author jjuaristi@nts-solutions.com
-     * @last modified by  : rpolvera@nts-solutions.com
+     * @last modified by  : arcortazar@nts-solutions.com
      * @param customerId Identificador de la cuenta a la que pertenecen los Contact Request buscados.
+     * @param name Nombre de la cuenta (Account) relacionada con las Contact Request
      * @return Lista de ContactRequest encontrados en el sistema.
      */
-    public List<ContactRequest> findByCustomerId(String customerId)
+    public List<ContactRequest> findByCustomerId(String customerId, String name)
     {
+        // Si el customerId que llega es nulo, buscamos un contacto con el mismo 
+        // nombre y nos quedamos con su ID para hacer las búsquedas 
+        if (String.isBlank(customerId))
+        {
+            Contact c = [SELECT Id FROM Contact WHERE name = :name].get(0);
+            customerId = c.Id;
+        }
+
         // Se añaden las condiciones:
         // Status != Cancelled
         // WhoId = customerId
