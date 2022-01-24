@@ -9,7 +9,7 @@
     "postinstall": "sfdx update && (echo y | sfdx plugins:install sfpowerkit -f)",
     "install:extensions": "type config/vscode-extensions.list | code --install-extension -",
     "test:lwc": "lwc-jest -- --passWithNoTests",
-    "test:org": "SFDX_IMPROVED_CODE_COVERAGE=true sfdx force:apex:test:run --codecoverage --verbose --detailedcoverage --resultformat junit --wait 120 --loglevel trace --outputdir ./tests/apex",
+    "test:org": "sfdx force:apex:test:run --codecoverage --verbose --detailedcoverage --resultformat junit --wait 120 --loglevel trace --outputdir ./tests/apex",
     "push:source": "sfdx force:source:push -f",
     "deploy:source": "sfdx force:source:deploy --sourcepath=force-app",
     "deploy:validate": "node scripts/source/unit-deploy-validation.js",
