@@ -72,31 +72,45 @@ public with sharing class ContactRequestSelector extends RecordsSelector
      */
     public List<ContactRequest> findByCustomerId(String customerId, String name)
     {
+
         // Si el customerId que llega es nulo, buscamos un contacto con el mismo 
         // nombre y nos quedamos con su ID para hacer las búsquedas 
         if (String.isBlank(customerId))
         {
-            Contact c = [SELECT Id FROM Contact WHERE name = :name].get(0);
-            customerId = c.Id;
+            List<Contact> contactos = [SELECT Id FROM Contact WHERE name = :name];
+            if (contactos.size() > 0)
+            {
+                customerId = contactos.get(0).Id;
+            }
         }
+        
+        // arcortazar - 24/01/2022
+        // Comprobamos si en este punto el customerId es nulo. Si no lo es, buscamos los ContactRequest asociados
+        // si no, devolvemos una lista vacía
+        if (!String.isBlank(customerId))
+        {
+            // Se añaden las condiciones:
+            // Status != Cancelled
+            // WhoId = customerId
+            // GenesysInteractionId__c != null
+            Query.Condition condition = Query.doAnd(
+                Query.conditionNotEq(ContactRequest.Status, STATUS_CANCELLED),
+                Query.conditionEq(ContactRequest.WhoId, customerId),
+                Query.conditionNotNull(ContactRequest.GenesysInteractionId__c)
+            );
 
-        // Se añaden las condiciones:
-        // Status != Cancelled
-        // WhoId = customerId
-        // GenesysInteractionId__c != null
-        Query.Condition condition = Query.doAnd(
-            Query.conditionNotEq(ContactRequest.Status, STATUS_CANCELLED),
-            Query.conditionEq(ContactRequest.WhoId, customerId),
-            Query.conditionNotNull(ContactRequest.GenesysInteractionId__c)
-        );
+            // Se estructura la query.
+            this.baseQuery.selectReadableFields()
+            .addCondition(condition)
+            .orderBy(ContactRequest.Preferred_Status__c.getDescribe().getName())
+            .orderBy(ContactRequest.PreferredContactDatetime__c.getDescribe().getName());
 
-        // Se estructura la query.
-        this.baseQuery.selectReadableFields()
-        .addCondition(condition)
-        .orderBy(ContactRequest.Preferred_Status__c.getDescribe().getName())
-        .orderBy(ContactRequest.PreferredContactDatetime__c.getDescribe().getName());
-
-        // Se ejecuta la Query.
-        return (List<ContactRequest>) this.baseQuery.run();
+            // Se ejecuta la Query.
+            return (List<ContactRequest>) this.baseQuery.run();
+        }
+        else 
+        {
+            return (new List<ContactRequest>());
+        }
     }
 }
