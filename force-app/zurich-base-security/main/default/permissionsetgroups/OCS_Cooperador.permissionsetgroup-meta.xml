@@ -3,6 +3,7 @@
     <label>OCS Cooperador</label>
     <permissionSets>Acceso_App_OCS</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
+    <permissionSets>Consulta_CS</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
