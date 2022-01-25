@@ -31,7 +31,7 @@
           Se incluye un botón que será visible si el listado de elementos tiene más de 4 elementos. Al pulsarlo, se mostrará todo el listado en una ventana modal
         -->
         <template if:true={isLong}>
-          <lightning-button variant="base" label="View all" title="Open all callMeBacks" onclick={openModal} class="slds-align_absolute-center"></lightning-button>
+          <lightning-button variant="base" label="Ver todos" title="Ver todos los Call Me Backs" onclick={openModal} class="slds-align_absolute-center"></lightning-button>
           
           <template if:true={showModal}>
             <section aria-modal="true" class="slds-modal slds-fade-in-open">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <footer class="slds-modal__footer">
-                        <lightning-button variant="brand" label="Cancel" onclick={closeModal} class="slds-p-around_x-small"></lightning-button>
+                        <lightning-button variant="brand" label="Cancelar" onclick={closeModal} class="slds-p-around_x-small"></lightning-button>
                     </footer>
                 </div>
             </section>
