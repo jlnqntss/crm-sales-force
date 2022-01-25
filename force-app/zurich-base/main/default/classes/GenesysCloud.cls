@@ -1,5 +1,19 @@
 public class GenesysCloud
 {
+    private static final String CONTENT_TYPE = 'Content-Type';
+    private static final String APPLICATION_JSON = 'application/json';
+    private static final String GENESYS_CONVERSATION = '/api/v2/conversations';
+    private static final String GENESYS_CONVERSATION_CALL = GENESYS_CONVERSATION + '/calls';
+    private static final String GENESYS_CONVERSATION_CALL_ID = GENESYS_CONVERSATION_CALL + '/{0}';
+    private static final String GENESYS_CONVERSATION_PARTICIPANT = GENESYS_CONVERSATION_CALL_ID + '/participants';
+    private static final String GENESYS_CONVERSATION_PARTICIPANT_ID = GENESYS_CONVERSATION_PARTICIPANT + '/{1}';
+    private static final String GENESYS_CONVERSATION_CONSULT = GENESYS_CONVERSATION_PARTICIPANT_ID + '/consult';
+    private static final String GENESYS_CONVERSATION_PARTICIPANT_ID_ATTR = GENESYS_CONVERSATION_PARTICIPANT_ID + '/attributes';
+    private static final String GENESYS_CONVERSATION_PARTICIPANT_COMMUNICATIONS = GENESYS_CONVERSATION_PARTICIPANT_ID + '/communications/{2}/uuidata';
+    private static final String GENESYS_CONVERSATION_MESSAGES_AGENTLESS = GENESYS_CONVERSATION + '/messages/agentless';
+    private static final String GENESYS_CONVERSATION_CALLBACKS = GENESYS_CONVERSATION + '/callbacks';
+    private static final String GENESYS_CONVERSATION_CALLBACK = GENESYS_CONVERSATION_CALLBACKS + '/{0}';
+    private static final String GENESYS_CONVERSATION_ENDPOINT = GENESYS_CONVERSATION + '/{0}';
     @TestVisible
     private static final String ERROR_IN_RESPONSE = 'response is null';
     @TestVisible
@@ -80,7 +94,7 @@ public class GenesysCloud
     }
 
     /**
-     * Getter de solo lectura que devuelve la instancia Singleton de CallbacksService
+     * Getter de solo lectura que devuelve la instancia Singleton de CallsService
      */
     public static GenesysCloud.CallsService CallsService
     {
@@ -92,6 +106,23 @@ public class GenesysCloud
             }
 
             return CallsService;
+        }
+        private set;
+    }
+
+    /**
+     * Getter de solo lectura que devuelve la instancia Singleton de CallRecorderService
+     */
+    public static GenesysCloud.CallRecorderService CallRecorderService
+    {
+        get
+        {
+            if(CallRecorderService == null)
+            {
+                CallRecorderService = new GenesysCloud.CallRecorderService();
+            }
+
+            return CallRecorderService;
         }
         private set;
     }
@@ -172,31 +203,19 @@ public class GenesysCloud
 
                 if(this.method == 'route')
                 {
-                    for(IAPIRequest request : this.requests)
-                    {
-                        results.add(RoutingService.route( (RoutingWork) request ) );
-                    }
+                    getRoutingResults(results);
                 }
                 else if(this.method == 'create')
                 {
-                    for(IAPIRequest request : this.requests)
-                    {
-                        results.add(CallbacksService.create( (Callback) request ) );
-                    }
+                    getCallbackResults(results);
                 }
                 else if(this.method == ASYNC_METHOD_SMS )
                 {
-                    for(IAPIRequest request: this.requests)
-                    {
-                        results.add(SMSService.send( (SmsData) request ) );
-                    }
+                    getSMSResults(results);
                 }
                 else if(this.method == ASYNC_METHOD_CALLBACK_CANCEL )
                 {
-                    for(IAPIRequest request: this.requests)
-                    {
-                        results.add(CallbacksService.cancel( (CallbackCancel) request ) );
-                    }
+                    getCallbackCancelResults(results);
                 }
                 else
                 {
@@ -216,7 +235,47 @@ public class GenesysCloud
                 }
             }
         }
-    }
+
+        private void getRoutingResults(List<Object> results)
+        {
+            if( results != null ) {
+                for(IAPIRequest request : this.requests)
+                {
+                    results.add(RoutingService.route( (RoutingWork) request ) );
+                }
+            }
+        }
+
+        private void getCallbackResults(List<Object> results)
+        {
+            if( results != null ) {
+                for(IAPIRequest request : this.requests)
+                {
+                    results.add(CallbacksService.create( (Callback) request ) );
+                }
+            }
+        }
+
+        private void getSMSResults(List<Object> results)
+        {
+            if( results != null ) {
+                for(IAPIRequest request: this.requests)
+                {
+                    results.add(SMSService.send( (SmsData) request ) );
+                }
+            }
+        }
+
+        private void getCallbackCancelResults(List<Object> results)
+        {
+            if( results != null ) {
+                for(IAPIRequest request: this.requests)
+                {
+                    results.add(CallbacksService.cancel( (CallbackCancel) request ) );
+                }
+            }
+        }
+    }    
 
     /**
      * Representa un elemento utilizado en un recurso REST de Genesys como una solicitud de enrutamiento
@@ -251,26 +310,12 @@ public class GenesysCloud
         {
             throw new GenesysCloud.GenesysCloudException(ERROR_VALIDATE_RESPONSE);
         }
-        switch on service
-        {
-            when SERVICE_ROUTING {
-                if(response == null || response.getStatusCode() != 200)
-                {
-                    throw new GenesysCloud.RoutingServiceException(response);
-                }
-            }
-            when SERVICE_CALLBACKS {
-                if(response == null || response.getStatusCode() != 202)
-                {
-                    throw new GenesysCloud.CallbacksServiceException(response);
-                }
-            }
-            when SERVICE_SMS {
-                if(response == null || response.getStatusCode() != 202)
-                {
-                    throw new GenesysCloud.SMSServiceException(response);
-                }
-            }
+        if( service == GenesysCloudServices.SERVICE_ROUTING && (response == null || response.getStatusCode() != 200) ) {
+            throw new GenesysCloud.RoutingServiceException(response);
+        } else if( service == GenesysCloudServices.SERVICE_CALLBACKS && (response == null || response.getStatusCode() != 202) ) {
+            throw new GenesysCloud.CallbacksServiceException(response);
+        } else if( service == GenesysCloudServices.SERVICE_SMS && (response == null || response.getStatusCode() != 202) ) {
+            throw new GenesysCloud.SMSServiceException(response);
         }
     }
 
@@ -281,7 +326,6 @@ public class GenesysCloud
     private static HttpResponse validateResponse(HttpResponse responseToValidate)
     {
 
-        // System.debug(responseToValidate);
         if(responseToValidate.getStatusCode() > 202)
         {
             throw new GenesysCloud.GenesysCloudException(responseToValidate);
@@ -313,13 +357,13 @@ public class GenesysCloud
             {
                 HttpRequest req = new HttpRequest();
                 req.setMethod('POST');
-                req.setEndpoint('/api/v2/conversations/' + work.getEndpoint() );
+                req.setEndpoint(String.format(GENESYS_CONVERSATION_ENDPOINT, new List<String>{work.getEndpoint()}) );
                 req.setBody(work.toJSON() );
                 response = mock.respond(req);
             }
             else //POST
             {
-                response = purecloud.sdk.Rest.post('/api/v2/conversations/' + work.getEndpoint(), work.toJSON() );
+                response = purecloud.sdk.Rest.post(String.format(GENESYS_CONVERSATION_ENDPOINT, new List<String>{work.getEndpoint()}), work.toJSON() );
             }
 
             validateResponse(response, GenesysCloudServices.SERVICE_ROUTING);
@@ -534,13 +578,13 @@ public class GenesysCloud
             {
                 HttpRequest req = new HttpRequest();
                 req.setMethod('POST');
-                req.setEndpoint('/api/v2/conversations/callbacks');
+                req.setEndpoint(GENESYS_CONVERSATION_CALLBACKS);
                 req.setBody(callback.toJSON() );
                 response = mock.respond(req);
             }
             else //POST
             {
-                response = purecloud.sdk.Rest.post('/api/v2/conversations/callbacks', callback.toJSON() );
+                response = purecloud.sdk.Rest.post(GENESYS_CONVERSATION_CALLBACKS, callback.toJSON() );
             }
 
             validateResponse(response, GenesysCloudServices.SERVICE_CALLBACKS);
@@ -570,8 +614,8 @@ public class GenesysCloud
          */
         public CallbackCancel cancel(CallbackCancel callback)
         {
-            HttpResponse response = new GenesysCloud.GenesysCloudNamedUserAPI().patch(
-                '/api/v2/conversations/callbacks/' + callback.genesysId, callback.toJSON()
+            (new GenesysCloud.GenesysCloudNamedUserAPI()).patch(
+                String.format(GENESYS_CONVERSATION_CALLBACK, new List<String>{callback.genesysId}), callback.toJSON()
             );
             return callback;
         }
@@ -754,13 +798,13 @@ public class GenesysCloud
             {
                 HttpRequest req = new HttpRequest();
                 req.setMethod('POST');
-                req.setEndpoint('/api/v2/conversations/messages/agentless' );
-                req.setBody(message.toJSON() );
+                req.setEndpoint(GENESYS_CONVERSATION_MESSAGES_AGENTLESS);
+                req.setBody(message.toJSON());
                 response = mock.respond(req);
             }
             else //POST
             {
-                response = purecloud.sdk.Rest.post('/api/v2/conversations/messages/agentless', message.toJSON() );
+                response = purecloud.sdk.Rest.post(GENESYS_CONVERSATION_MESSAGES_AGENTLESS, message.toJSON() );
             }
 
             validateResponse(response, GenesysCloudServices.SERVICE_SMS);
@@ -871,7 +915,7 @@ public class GenesysCloud
          */
         public Call[] getActive()
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().get('/api/v2/conversations/calls');
+            HttpResponse response = new GenesysCloudNamedUserAPI().get(GENESYS_CONVERSATION_CALL);
             ActiveCalls activeCalls = (ActiveCalls) JSON.deserialize(response.getBody(), ActiveCalls.class);
 
             return activeCalls.entities;
@@ -884,7 +928,7 @@ public class GenesysCloud
          */
         public Call get(String interactionId)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().get('/api/v2/conversations/calls/' + interactionId);
+            HttpResponse response = new GenesysCloudNamedUserAPI().get(String.format(GENESYS_CONVERSATION_CALL_ID, new List<String>{interactionId}));
 
             return (Call) JSON.deserialize(response.getBody(), Call.class);
         }
@@ -895,7 +939,20 @@ public class GenesysCloud
          */
         public void consult(ConsultTransfer consult)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + '/participants/' + consult.participantId + '/consult', consult.toJSON() );
+            (new GenesysCloudNamedUserAPI()).post(String.format(GENESYS_CONVERSATION_CONSULT, new List<String>{consult.conversationId, consult.participantId}), consult.toJSON());
+        }
+
+        /**
+         * @description LLamada al API de GenesysCloud para cancelar la transferencia.
+         *              https://developer.genesys.cloud/api/rest/v2/conversations/
+         * @param  conversationId Identificador de Genesys de la llamada / Interacción en curso.
+         * @param  consult Identificador de Genesys del participante conectado a la transferencia, el cliente que llama o es llamado.
+         * @author rpolvera
+         * @date 02/11/2021
+         */
+        public void cancelConsult(String conversationId, String participantId)
+        {
+            (new GenesysCloudNamedUserAPI()).del(String.format(GENESYS_CONVERSATION_CONSULT, new List<String>{conversationId, participantId}));
         }
 
         /**
@@ -906,10 +963,33 @@ public class GenesysCloud
          */
         public void setParticipantData(String conversationId, String participantId, Map<String, String> attributes)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + '/participants/' + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
+            (new GenesysCloudNamedUserAPI()).patch(String.format(GENESYS_CONVERSATION_PARTICIPANT_ID_ATTR, new List<String>{conversationId, participantId}), JSON.serialize(new Map<String, Map<String, String> >
             {
                 'attributes' => attributes
             }) );
+        }
+
+        /**
+         * @description Se iteran los participantes de la llamada y se recupera aquel que se encuentre conectado.
+         *              El participante conectado será aquel que figura con un atributo llamado "address" el cual contiene el número de teléfono
+         *              del cliente en la llamada en curso.
+         *              En caso contrario este atributo contiene el id de interacción de genesys.
+         * @param GenesysCloud.Call activeCall - Llamada en curso.
+         * @return Participante conectado en la llamada en curso, la persona que ha llamado, normalmente es el cliente.
+         */
+        public GenesysCloud.Participant getConnectedParticipant(GenesysCloud.Call activeCall)
+        {
+            GenesysCloud.Participant connectedParticipant;
+            // fix: Se iteran los participantes de la llamada y se recupera aquel que se encuentre conectado 
+            // error: object.participant.id.required -> A connected object participant is required
+            for (GenesysCloud.Participant participant : activeCall.participants)
+            {
+                if ( !String.IsBlank(participant.address) && participant.address.substringAfter('+').isNumericSpace() )
+                {
+                    return participant;
+                }
+            }
+            return connectedParticipant;
         }
 
         /**
@@ -920,7 +1000,7 @@ public class GenesysCloud
          */
         public void setUUIData(String conversationId, String participantId, String communicationId, String uuiData)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + '/participants/' + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
+            (new GenesysCloudNamedUserAPI()).put(String.format(GENESYS_CONVERSATION_PARTICIPANT_COMMUNICATIONS, new List<String>{conversationId, participantId, communicationId}), JSON.serialize(new Map<String, String>
             {
                 'uuiData' => uuiData
             }) );
@@ -931,6 +1011,8 @@ public class GenesysCloud
          *
          * @author jmartinezpisson
          * @date 31/03/2021
+         * @last modified on  : 08-10-2021
+         * @last modified by  : jjuaristi
          * @param {String} addressTo Número al que conferenciar
          * @param {Map<String, String>} attributeValuesByKey Mapa de clave-valor a transferir como información del partipante
          * @param {Boolean} fallbackToUUI Habilita el paso de los atributos como los valores separados por un pipe (|) utilizando el UUI
@@ -940,8 +1022,7 @@ public class GenesysCloud
             // 1 - Se obtiene la llamada activa y se elige el participante destino de la conferencia
             GenesysCloud.Call[] activeCalls = this.getActive();
             String currentConversationId = activeCalls[0].id;
-            GenesysCloud.Participant targetParticipant = activeCalls[0].participants[1];
-
+            GenesysCloud.Participant targetParticipant = getConnectedParticipant(activeCalls[0]);
             // 2 - Preparamos la información a transferir. Utilizamos el participantData y el UUI para tener un fallback de los datos a enviar.
             if(attributesByName != null && !attributesByName.isEmpty())
             {
@@ -964,6 +1045,60 @@ public class GenesysCloud
             this.consult(consultTransfer);
         }
     }
+
+    //#endregion
+
+    //#region Módulo CallRecorderService
+
+    /**
+     * Clase interna del servicio Apex de Genesys encargada de gestionar el API de Genesys.
+     * Contiene las funcionalidad para inciar y detener una grabación.
+     * @author rpolvera@nts-solutions.com
+     * @date 19/10/2021
+    **/
+    public class CallRecorderService
+    {
+        /**
+         * Método encargado de iniciar la grabación, para ello esnecesario incluir un participante en la llamada para iniciar una conversación a tres.
+         * Este participante será el encargado de grabar la conversación. Será necesario el id de la conversación activa y el id del participante para realizar esta gestión.
+         * @author rpolvera@nts-solutions.com
+         * @date 19/10/2021
+         */
+        public void start(String conversationId)
+        {
+            // 1 - Se obtiene la llamada activa para el usuario actual.
+            // Se consume bajo CONTEXTO de USUARIO
+            GenesysCloud.Call activeCall = CallsService.get(conversationId);
+            // 2 - Se recupera el participante connectado a la llamada (el cliente).
+            GenesysCloud.Participant participant = CallsService.getConnectedParticipant(activeCall);
+            // 3 - Generamos la llamada de consulta
+            GenesysCloud.ConsultTransfer consultTransfer = new GenesysCloud.ConsultTransfer();
+            consultTransfer.conversationId = conversationId;
+            consultTransfer.participantId = participant.id;
+            consultTransfer.speakTo = 'BOTH';
+            consultTransfer.destination = new GenesysCloud.ConsultTransferDestination();
+            consultTransfer.destination.address = CallRecordingController.getRecordingPhoneNumber();
+            CallsService.consult(consultTransfer);
+        }
+
+        /**
+         * Método encargado de detener la grabación, para ello esnecesario eliminar al participante que realiza la grabación.
+         * Este participante será el encargado de grabar la conversación. Será necesario el id de la conversación activa y el id del participante para realizar esta gestión.
+         * @author rpolvera@nts-solutions.com
+         * @date 19/10/2021
+         */
+        public void end(String conversationId)
+        {
+            // 1 - Se obtiene la llamada activa para el usuario actual.
+            // Se consume bajo CONTEXTO de USUARIO
+            GenesysCloud.Call activeCall = CallsService.get(conversationId);
+            // 2 - Se recupera el participante connectado a la llamada (el cliente).
+            GenesysCloud.Participant participant = CallsService.getConnectedParticipant(activeCall);
+            CallsService.cancelConsult(conversationId, participant.id);
+        }
+    }
+
+    //#endregion
 
 
     /**
@@ -1001,6 +1136,21 @@ public class GenesysCloud
         }
     }
 
+    public class Wrapup
+    {
+        @auraEnabled
+        public String code;
+
+        @auraEnabled
+        public String name;
+
+        @auraEnabled
+        public String notes;
+
+        @auraEnabled
+        public String[] tags;
+    }
+
     /**
      * Representa la estructura de un participante en una llamada en Genesys Cloud
      * https://developer.mypurecloud.com/api/rest/v2/conversations/#get-api-v2-conversations-calls--conversationId
@@ -1025,7 +1175,26 @@ public class GenesysCloud
         public String peer;
 
         @auraEnabled
+        public String startTime; // yyyy-MM-ddTHH:mm:ss[.mmmm]Z
+
+        @auraEnabled
+        public String endTime; // yyyy-MM-ddTHH:mm:ss[.mmmm]Z
+
+        @auraEnabled
+        public String purpose; // Values: agent, user, customer, external, acd, ivr
+
+        @AuraEnabled
+        public String state; // Values: alerting, connected, disconnected, terminated, converting, uploading, transmitting, none
+
+        @auraEnabled
         public Map<String, String> attributes;
+
+        @AuraEnabled
+        public String recording;
+
+        @auraEnabled
+        public Wrapup wrapup;
+
 
         public String toJSON()
         {
@@ -1090,8 +1259,6 @@ public class GenesysCloud
         }
     }
 
-    //#endregion
-
     private class GenesysCloudNamedUserAPI
     {
         HttpRequest request;
@@ -1125,7 +1292,7 @@ public class GenesysCloud
         {
             return get(url, new Map<String, String>
             {
-                'Content-Type' => 'application/json'
+                CONTENT_TYPE => APPLICATION_JSON
             });
         }
 
@@ -1141,7 +1308,7 @@ public class GenesysCloud
         {
             return post(url, body, new Map<String, String>
             {
-                'Content-Type' => 'application/json'
+                CONTENT_TYPE => APPLICATION_JSON
             });
         }
 
@@ -1157,7 +1324,7 @@ public class GenesysCloud
         {
             return patch(url, body, new Map<String, String>
             {
-                'Content-Type' => 'application/json'
+                CONTENT_TYPE => APPLICATION_JSON
             });
         }
 
@@ -1173,7 +1340,7 @@ public class GenesysCloud
         {
             return put(url, body, new Map<String, String>
             {
-                'Content-Type' => 'application/json'
+                CONTENT_TYPE => APPLICATION_JSON
             });
         }
 
@@ -1181,6 +1348,22 @@ public class GenesysCloud
         {
             prepare(url, body, headers);
             request.setMethod('PUT');
+
+            return send();
+        }
+        
+        public HttpResponse del(String url)
+        {
+            return del(url, new Map<String, String>
+            {
+                CONTENT_TYPE => APPLICATION_JSON
+            });
+        }
+        
+        public HttpResponse del(String url, Map<String, String> headers)
+        {
+            prepare(url, null, headers);
+            request.setMethod('DELETE');
 
             return send();
         }

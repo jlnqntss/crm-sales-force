@@ -5,6 +5,9 @@
 .sfdx/
 .localdevserver
 
+# Salesforce local server development @salesforce/lwc-dev-server
+.localdevserver
+
 # Temp files
 tmp/force-app/*
 .tmp/

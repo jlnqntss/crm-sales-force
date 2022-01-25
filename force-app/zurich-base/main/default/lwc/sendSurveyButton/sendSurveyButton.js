@@ -1,4 +1,4 @@
-import { LightningElement, track } from "lwc";
+import { LightningElement, track, api } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import sendSurveyLabel from "@salesforce/label/c.sendSurveyButtonLabel";
 import sendSurveyToastTitleSuccess from "@salesforce/label/c.sendSurveyToastTitleSuccess";
@@ -20,13 +20,27 @@ export default class SendSurveyButton extends LightningElement {
   @track
   isOnCall = false;
 
+  @track
+  isOtherButton = false;
+
   /**
    * Variable interna para poder realizar un bind del handler handleCTIMessage
    */
   ctiMessageHandler = null;
 
   get isDisabled() {
-    return !this.pollPhoneNumber || !this.isOnCall;
+    return !this.pollPhoneNumber || !this.isOnCall || this.isOtherButton;
+  }
+
+  /**
+   * Función pública para deshabilitar este botón.
+   * @author rpolvera
+   * @date 02/11/2021
+   * @param {Boolean} value
+   */
+  @api
+  disable(value) {
+    this.isOtherButton = value;
   }
 
   //#endregion
@@ -40,13 +54,16 @@ export default class SendSurveyButton extends LightningElement {
    * @author rlopez
    * @modified jmartinezpisson
    */
-  connectedCallback() {
+  async connectedCallback() {
     getPollPhoneNumber().then((result) => {
       this.pollPhoneNumber = result || "1000";
     });
 
     this.ctiMessageHandler = this.handleCTIMessage.bind(this);
     genesysCloud.addListener(this.ctiMessageHandler);
+
+    // Para los casos en los que se refresca la ventana o se desacopla el panel
+    this.isOnCall = await genesysCloud.isConnected();
   }
 
   /**
@@ -97,10 +114,23 @@ export default class SendSurveyButton extends LightningElement {
    * @author jmartinezpisson
    * @param {*} message Mensajes
    */
-  handleCTIMessage(message) {
+  async handleCTIMessage(message) {
     if (message.type === "Interaction") {
-      this.isOnCall = genesysCloud.isOnCall();
+      this.isOnCall = await genesysCloud.isConnected();
     }
+  }
+
+  /**
+   * Metodo que vuelve a comprobar el estado de la llamada y si ya esta en grabacion o no.
+   * Es necesario para los casos en los que el agente por lo que sea refresca la ventana o
+   * desacopla el panel
+   *
+   * @date 13/01/2022
+   * @author nts (agonzalezisasi)
+   */
+  @api
+  async refresh(activeCalls) {
+    this.isOnCall = await genesysCloud.isCallConnected(activeCalls);
   }
 
   //#endregion
