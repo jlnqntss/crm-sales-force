@@ -369,14 +369,6 @@
         <name>callRecordingButtonStop</name>
     </customLabels>
     <customLabels>
-        <label>Es necesario autorizarse en el sistema, será redirigido a la página de inicio de sesión con Genesys.</label>
-        <name>callRecordingButtonAuthError</name>
-    </customLabels>
-    <customLabels>
-        <label>Se ha producido un problema en la grabación, vuelva a intentarlo más tarde o póngase en contacto con su administrador de Salesfroce.</label>
-        <name>callRecordingButtonError</name>
-    </customLabels>
-    <customLabels>
         <label><!-- AB Test From Name A Exception --></label>
         <name>et4ae5__ABTestFromNameAException</name>
     </customLabels>
@@ -5505,28 +5497,20 @@
         <name>lightningbuddy__Dont_show_this_again</name>
     </customLabels>
     <customLabels>
-        <label>Enviar encuesta</label>
+        <label>Lanzar encuesta</label>
         <name>sendSurveyButtonLabel</name>
     </customLabels>
     <customLabels>
-        <label>La encuesta de satisfacción ha sido enviada al cliente correctamente.</label>
+        <label>Encuesta enviada correctamente al cliente</label>
         <name>sendSurveyToastMessageSuccess</name>
     </customLabels>
     <customLabels>
-        <label>Encuesta envidada!</label>
+        <label>Encuesta enviada</label>
         <name>sendSurveyToastTitleSuccess</name>
     </customLabels>
     <customLabels>
-        <label>Acciones de la llamada</label>
+        <label>Acciones</label>
         <name>CTIExtraButtonsTitle</name>
-    </customLabels>
-    <customLabels>
-        <label>No estas autorizado para usar las acciones adicionales sobre la llamada. Haz clic en el botón Autorizar.</label>
-        <name>CTIExtraButtonsWarning</name>
-    </customLabels>
-    <customLabels>
-        <label>Autorizar</label>
-        <name>CTIExtraButtonsAuthButton</name>
     </customLabels>
     <customLabels>
         <label>Cancelar</label>
