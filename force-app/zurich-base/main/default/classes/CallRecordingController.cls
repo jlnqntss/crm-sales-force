@@ -4,19 +4,25 @@
  * @author nts (agonzalezisasi) 
  * @date 12/04/2021
  */
-public with sharing class CallRecordingController
+public without sharing class CallRecordingController
 {
-    public static final String GENESYS_RECORDING_NUMBER = 'GenesysRecordingNumber';
+    @testvisible
+    public static List<AdminSetupParameter__mdt> testListRecordingPhoneNumber;
 
-    /**
-     * Método que recupera el metadato con el teléfono de las grabaciones de genesys
-     * 
-     * @author nts (jjuaristi)
-     * @date 13/10/2021
-     */
     @AuraEnabled
     public static String getRecordingPhoneNumber()
     {
-        return AdminSetupParameter__mdt.getInstance(GENESYS_RECORDING_NUMBER)?.Value__c;
+        String genesysRecordingNumber = '';
+        List<AdminSetupParameter__mdt> settings = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = 'GenesysRecordingNumber'];
+        if( Test.isRunningTest() ) {
+            settings = testListRecordingPhoneNumber;
+        }
+        if( settings != null && !settings.isEmpty() ) {
+            genesysRecordingNumber = settings[0].Value__c;
+        } else {
+            ErrorLogUtil.commitError('warning', 'No se ha podido recuperar el número de teléfono de grabación de llamadas', 'CallRecordingController');
+        }
+
+        return genesysRecordingNumber;
     }
 }
