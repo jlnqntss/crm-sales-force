@@ -1,12 +1,16 @@
 <template>
-  <lightning-button
-    variant="brand"
-    label={label.sendSurveyLabel}
-    title={label.sendSurveyLabel}
-    alternative-text={label.sendSurveyLabel}
-    icon-name="utility:survey"
+  <button
+    class="slds-button slds-button_brand fixedSize"
     onclick={sendSurvey}
     disabled={isDisabled}
+    title={label.sendSurveyLabel}
   >
-  </lightning-button>
+    <lightning-icon
+      class="slds-button__icon slds-button__icon_left"
+      icon-name="utility:survey"
+      alternative-text={label.sendSurveyLabel}
+      size="x-small"
+    ></lightning-icon>
+    <label>{label.sendSurveyLabel}</label>
+  </button>
 </template>

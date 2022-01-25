@@ -83,6 +83,45 @@ public with sharing class GenesysCloudLightningController
         }
     }
 
+    // #region Funciones para la grabación contractual
+
+    /**
+     * @description Iniciar la grabación contractual. Se incluye al participante que realizará la grabación en la llamada.
+     * @author rpolvera@nts-solutions.com
+     * @date 19/10/2021
+     */
+    @AuraEnabled
+    public static void startRecording(String conversationId)
+    {
+        try
+        {
+            GenesysCloud.CallRecorderService.start(conversationId);
+        }
+        catch(Exception error)
+        {
+            throw new AuraHandledException(error.getMessage() );
+        }
+    }
+
+    /**
+     * @description Detener la grabación contractual. Se al participante que realizará la grabación de la llamada.
+     * @author rpolvera@nts-solutions.com
+     * @date 19/10/2021
+     */
+    @AuraEnabled
+    public static void stopRecording(String conversationId)
+    {
+        try
+        {
+            GenesysCloud.CallRecorderService.end(conversationId);
+        }
+        catch(Exception error)
+        {
+            throw new AuraHandledException(error.getMessage() );
+        }
+    }
+    // #endregion
+
        /**
      * Cancela un CallBack de Genesys Cloud
      * @author jjuaristi

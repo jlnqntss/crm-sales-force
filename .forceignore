@@ -85,6 +85,9 @@ force-app/zurich-ze-base/main/default/customMetadata/AdminSetupParameter.Busines
 force-app/zurich-base/main/default/authproviders/GenesysCloud.authprovider-meta.xml
 force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredentials-meta.xml
 
+# Auth Providers OpenIdConnect
+force-app/zurich-base/main/default/authproviders/zurich_internal.authprovider-meta.xml
+
 # Entitlement Process. Fallan al redesplegar
 **/entitlementProcesses/**
 
