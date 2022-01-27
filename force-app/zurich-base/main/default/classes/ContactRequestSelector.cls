@@ -65,29 +65,52 @@ public with sharing class ContactRequestSelector extends RecordsSelector
      * Consulta la BBDD de Salesforce y retorna los registros relacionados de un cliente (Account)
      * @date 17/11/2021
      * @author jjuaristi@nts-solutions.com
-     * @last modified by  : rpolvera@nts-solutions.com
+     * @last modified by  : arcortazar@nts-solutions.com
      * @param customerId Identificador de la cuenta a la que pertenecen los Contact Request buscados.
+     * @param name Nombre de la cuenta (Account) relacionada con las Contact Request
      * @return Lista de ContactRequest encontrados en el sistema.
      */
-    public List<ContactRequest> findByCustomerId(String customerId)
+    public List<ContactRequest> findByCustomerId(String customerId, String name)
     {
-        // Se añaden las condiciones:
-        // Status != Cancelled
-        // WhoId = customerId
-        // GenesysInteractionId__c != null
-        Query.Condition condition = Query.doAnd(
-            Query.conditionNotEq(ContactRequest.Status, STATUS_CANCELLED),
-            Query.conditionEq(ContactRequest.WhoId, customerId),
-            Query.conditionNotNull(ContactRequest.GenesysInteractionId__c)
-        );
 
-        // Se estructura la query.
-        this.baseQuery.selectReadableFields()
-        .addCondition(condition)
-        .orderBy(ContactRequest.Preferred_Status__c.getDescribe().getName())
-        .orderBy(ContactRequest.PreferredContactDatetime__c.getDescribe().getName());
+        // Si el customerId que llega es nulo, buscamos un contacto con el mismo 
+        // nombre y nos quedamos con su ID para hacer las búsquedas 
+        if (String.isBlank(customerId))
+        {
+            List<Contact> contactos = [SELECT Id FROM Contact WHERE name = :name];
+            if (contactos.size() > 0)
+            {
+                customerId = contactos.get(0).Id;
+            }
+        }
+        
+        // arcortazar - 24/01/2022
+        // Comprobamos si en este punto el customerId es nulo. Si no lo es, buscamos los ContactRequest asociados
+        // si no, devolvemos una lista vacía
+        if (!String.isBlank(customerId))
+        {
+            // Se añaden las condiciones:
+            // Status != Cancelled
+            // WhoId = customerId
+            // GenesysInteractionId__c != null
+            Query.Condition condition = Query.doAnd(
+                Query.conditionNotEq(ContactRequest.Status, STATUS_CANCELLED),
+                Query.conditionEq(ContactRequest.WhoId, customerId),
+                Query.conditionNotNull(ContactRequest.GenesysInteractionId__c)
+            );
 
-        // Se ejecuta la Query.
-        return (List<ContactRequest>) this.baseQuery.run();
+            // Se estructura la query.
+            this.baseQuery.selectReadableFields()
+            .addCondition(condition)
+            .orderBy(ContactRequest.Preferred_Status__c.getDescribe().getName())
+            .orderBy(ContactRequest.PreferredContactDatetime__c.getDescribe().getName());
+
+            // Se ejecuta la Query.
+            return (List<ContactRequest>) this.baseQuery.run();
+        }
+        else 
+        {
+            return (new List<ContactRequest>());
+        }
     }
 }

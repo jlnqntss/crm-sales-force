@@ -229,6 +229,16 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>[{&quot;label&quot;:&quot;Number&quot;,&quot;fieldName&quot;:&quot;url&quot;,&quot;type&quot;:&quot;url&quot;,&quot;typeAttributes&quot;:{&quot;label&quot;:{&quot;fieldName&quot;:&quot;Name&quot;},&quot;tooltip&quot;:{&quot;fieldName&quot;:&quot;url&quot;,&quot;target&quot;:&quot;_self&quot;}}},{&quot;label&quot;:&quot;Prefered Contact Datetime&quot;,&quot;fieldName&quot;:&quot;PreferredContactDatetime__c&quot;,&quot;type&quot;:&quot;date&quot;,&quot;typeAttributes&quot;:{&quot;day&quot;:&quot;numeric&quot;,&quot;month&quot;:&quot;numeric&quot;,&quot;year&quot;:&quot;numeric&quot;,&quot;hour&quot;:&quot;2-digit&quot;,&quot;minute&quot;:&quot;2-digit&quot;}},{&quot;label&quot;:&quot;Status&quot;,&quot;fieldName&quot;:&quot;Preferred_Status__c&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;label&quot;:&quot;Cancel&quot;,&quot;type&quot;:&quot;button-icon&quot;,&quot;initialWidth&quot;:40,&quot;typeAttributes&quot;:{&quot;iconName&quot;:&quot;utility:clear&quot;,&quot;name&quot;:&quot;cancelConReq&quot;,&quot;title&quot;:&quot;Cancel Call Me Back&quot;,&quot;variant&quot;:&quot;container&quot;}}]</value>
+                </componentInstanceProperties>
+                <componentName>callMeBackList</componentName>
+                <identifier>c_callMeBackList1</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
                 <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>

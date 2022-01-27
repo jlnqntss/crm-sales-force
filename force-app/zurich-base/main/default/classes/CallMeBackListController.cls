@@ -2,9 +2,11 @@
  * @description       : Controlador del componente de cancelación de Call Me Backs ubicado en la página de registro de Account.
  * @author            : Kevin Rueda
  * @group             : 
- * @last modified on  : 19-11-2021
- * @last modified by  : jjuaristi
- * @last modified by  : jjuaristi
+ * modified on        : 19-11-2021
+ * modified by        : jjuaristi
+ * 
+ * @last modified on  : 20-01-2022
+ * @last modified by  : arcortazar
 **/
 public with sharing class CallMeBackListController
 {
@@ -13,17 +15,19 @@ public with sharing class CallMeBackListController
      * @see CallMeBackList.js
      * @author rpolvera
      * @date 17/11/2021
+     * @last modified by  : arcortazar@nts-solutions.com
      * @param whatId Identificador del registro de cuenta (Account) relacionada con las Contact Request a cancelar.
+     * @param name Nombre de la cuenta (Account) relacionada con las Contact Request (Añadido por arcortazar - 20/01/2022: Fix del componente CallMeBack)
      * @return Lista de Contact Request.
      */
     @AuraEnabled(cacheable = true)
-    public static List<ContactRequest> getContactRequestsByCustomerId(String whoId)
+    public static List<ContactRequest> getContactRequestsByCustomerId(String whoId, String name)
     {
         List<ContactRequest> contactRequests;
 
         try
         {
-            contactRequests = new ContactRequestSelector().findByCustomerId(whoId);
+            contactRequests = new ContactRequestSelector().findByCustomerId(whoId, name);
         }
         catch (Exception e)
         {

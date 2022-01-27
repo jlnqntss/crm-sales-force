@@ -1,12 +1,12 @@
-import { LightningElement, api, wire } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getRecord, updateRecord } from "lightning/uiRecordApi";
 import PERSON_CONTACT_ID from "@salesforce/schema/Account.PersonContactId";
+import PERSON_CONTACT_NAME from "@salesforce/schema/Account.Name";
 import CONTACT_REQUEST_ID from "@salesforce/schema/ContactRequest.Id";
 import CONTACT_REQUEST_STATUS from "@salesforce/schema/ContactRequest.Status";
 
 import getContactRequestsByCustomerId from "@salesforce/apex/CallMeBackListController.getContactRequestsByCustomerId";
-// import statusToCancelled from "@salesforce/apex/CallMeBackListController.statusToCancelled";
 import genesysCloud from "c/genesysCloudService";
 
 const ERROR_TITLE = "Error";
@@ -31,16 +31,22 @@ export default class CallMeBackList extends LightningElement {
   @api columns;
 
   callMeBacks;
+  fullListCallMeBacks; // arcortazar - 20/01/2022: Fix del componente CallMeBack. Lista de todos los CMB que se corresponden a una cuenta.
   error;
   isLoading = false;
+  isLong = false; // arcortazar - 20/01/2022: Fix del componente CallMeBack. Flag utilizado para habilitar el boton que lanza la ventana modal
+
+  @track showModal = false; // arcortazar - 20/01/2022: Fix del componente CallMeBack. Flag que hace que se visualice o no la ventana modal
 
   // Consulta de contact person Id
-  @wire(getRecord, { recordId: "$recordId", fields: [PERSON_CONTACT_ID] })
+  // arcortazar - 20/02/2022: fix del componente callMeBack. Añadimos tambien el ContactName a la lista de atributos a recuperar
+  @wire(getRecord, { recordId: "$recordId", fields: [PERSON_CONTACT_ID, PERSON_CONTACT_NAME] })
   getAccount({ error, data }) {
     if (data) {
       this.isLoading = true;
       getContactRequestsByCustomerId({
-        whoId: data.fields.PersonContactId.value
+        whoId: data.fields.PersonContactId.value,
+        name: data.fields.Name.value
       }).then(this.resolve.bind(this), this.reject.bind(this));
       this.error = undefined;
     } else if (error) {
@@ -55,14 +61,34 @@ export default class CallMeBackList extends LightningElement {
    * @author rpolvera@nts-solutions.com
    * @date 18/11/2021
    * @param {Object} data Lista de Contact Request.
+   * 
+   * @last modified on  : 20/01/2022
+   * @last modified by  : arcortazar
    */
   resolve(data) {
     this.callMeBacks = [];
+    this.fullListCallMeBacks = [];
     data.forEach((element) => {
       let callMeBack = Object.assign({}, element);
       callMeBack.url = window.location.hostname + "/" + callMeBack.Id;
-      this.callMeBacks.push(callMeBack);
+      this.fullListCallMeBacks.push(callMeBack);
     });
+
+    // arcortazar - 20/01/2022: 
+    // Fix del componente CallMeBack. Visualizamos un máximo de 4 elementos en el componente, y si son más, 
+    // habilitamos un boton que permita desplegar una ventana modal con toda la información
+    let cargaTemp;
+    if(this.fullListCallMeBacks.length > 3)
+    {
+      cargaTemp = this.fullListCallMeBacks.slice(0, 4);
+      this.isLong = true;
+    }
+    else
+    {
+      cargaTemp = this.fullListCallMeBacks;
+      this.isLong = false;
+    }
+    this.callMeBacks = cargaTemp;
     this.isLoading = false;
   }
 
@@ -102,6 +128,30 @@ export default class CallMeBackList extends LightningElement {
       }
     }
     // Display fresh data in the form
+  }
+
+  /**
+   * Maneja el evento que ocurre al pulsar en el botón 'View all' del componente. Pone a true el valor showModal, haciendo que se abra la ventana modal con 
+   * todos los CallMeBacks
+   **
+   * @author arcortazar
+   * @date 20/01/2022
+   */
+  openModal() {
+    // Setting boolean variable to true, this will show the Modal
+    this.showModal = true;
+  }
+
+  /**
+   * Maneja el evento que ocurre al pulsar en el botón 'Close' de la ventana modal. Pone a false el valor showModal haciendo que esta se cierre, volviendo 
+   * a la ficha del account.
+   **
+   * @author arcortazar
+   * @date 20/01/2022
+   */
+  closeModal() {
+    // Setting boolean variable to false, this will hide the Modal
+    this.showModal = false;
   }
 
   /**
