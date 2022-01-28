@@ -737,7 +737,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                                             AccountId= i.ParentId,
                                             userId= userId,
                                             TeamMemberRole= roleLabel,
-                                            AccountAccessLevel= IntermediarySDM.ATM_ACCOUNT_ACCESS_LEVEL,
+                                            AccountAccessLevel= IntermediarySDM.ATM_ACCOUNT_ACCESS_LEVEL_EDIT,
                                             ContactAccessLevel= IntermediarySDM.ATM_CONTACT_ACCESS_LEVEL
                                         );
 
