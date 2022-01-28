@@ -1574,7 +1574,8 @@ public with sharing class GenerateComercialPlanController
             if( intermediaries != null && !intermediaries.isEmpty() ) {
                 // Los metemos en el mapa de detalle
                 for(Account intermediary: intermediaries) {
-                    mapDetail.put(intermediary.Id, intermediary.Name);
+                    String colName = String.isBlank(intermediary.IntermediaryDescription__c) ? intermediary.Name : intermediary.IntermediaryDescription__c;
+                    mapDetail.put(intermediary.Id, colName);
                 }
             }
         }

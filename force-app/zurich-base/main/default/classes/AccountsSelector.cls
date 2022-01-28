@@ -447,7 +447,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         if( String.isNotBlank(email) && fields != null & !fields.isEmpty() ) {
             Set<String> queryFields = new Set<String>{
-                'Id', 'Name', 'ParentId'
+                'Id', 'Name', 'ParentId', 'IntermediaryDescription__c'
             };
             queryFields.addAll(fields);
             this.baseQuery.selectFields(queryFields);
