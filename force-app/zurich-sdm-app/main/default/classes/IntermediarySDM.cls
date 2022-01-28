@@ -21,6 +21,7 @@ public with sharing class IntermediarySDM {
     private static final String SETUP_NOTIFICATION_TITLE = 'SDMNotificationTitle';
     private static final String SETUP_NOTIFICATION_BODY = 'SDMNotificationBody';
     public static final String ATM_ACCOUNT_ACCESS_LEVEL = 'Read';
+    public static final String ATM_ACCOUNT_ACCESS_LEVEL_EDIT = 'Edit';
     public static final String ATM_CONTACT_ACCESS_LEVEL = 'Read';
 
     public static final String INTERMEDIARY_FIELD_NATIONALID = 'NationalId__c';
@@ -661,8 +662,6 @@ public with sharing class IntermediarySDM {
             }
             this.upsertATMs(atmsToUpsert);
         }
-
-        // System.debug('ATM: ' + this.listAgrupationCIFs);
     }
 
     /**
@@ -901,8 +900,6 @@ public with sharing class IntermediarySDM {
      */
     public void assignAgrupationAccountTeam(Set<String> agrupationNationalIDs)
     {
-        // System.debug(agrupationNationalIDs);
-
         // Si hay CIFs
         if( agrupationNationalIDs != null && !agrupationNationalIDs.isEmpty() ) {
             // 1. Recuperamos los ATMs que hay para los CIFs dados, tanto los de las agrupaciones como los 
@@ -996,7 +993,7 @@ public with sharing class IntermediarySDM {
                                     AccountId= intermediaryAtm.Account.ParentId,
                                     UserId= userId,
                                     TeamMemberRole= intermediaryAtm.TeamMemberRole,
-                                    AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL,
+                                    AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL_EDIT,
                                     ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
                                 );
                                 atmsToCreate.add(newAtm);
