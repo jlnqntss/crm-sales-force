@@ -268,9 +268,10 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 }
 
                 //Si el Owner es el Integrador hay que cambiarlo
+                // arcortazar - 31/01/2022: Y si la oferta no es de test
                 for(Opportunity offer: totalOffers)
                 {
-                    if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator')
+                    if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && !offer.IsTest__c)
                     {
                         //Cambiar el propietario al usuario actual
                         offer.OwnerId = UserInfo.getUserId();
