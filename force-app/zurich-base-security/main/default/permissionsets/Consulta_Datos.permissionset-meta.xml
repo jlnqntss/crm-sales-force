@@ -1688,6 +1688,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>EmailMessage.GenesysInteractionId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>EmailMessage.GenesysQueueName__c</field>
         <readable>true</readable>
     </fieldPermissions>
