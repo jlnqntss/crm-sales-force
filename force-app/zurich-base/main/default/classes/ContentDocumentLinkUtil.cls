@@ -346,7 +346,8 @@ public without sharing class ContentDocumentLinkUtil
                                         {
                                             for(String ccAddressFromCSV: ccAddressLineValues)
                                             {
-                                                String trimmedCcAddressFromCSV = ccAddressFromCSV.trim();
+                                                // hotfix - ocs-2411 - Salesforce no reconoce el destinatario indicado por el robot tipificador al incluir imap
+                                                String trimmedCcAddressFromCSV = ccAddressFromCSV.trim().toLowerCase().replaceAll('.imap', '');
                                                 if( trimmedCcAddressFromCSV.contains('<') )
                                                 {
                                                     ccAddressList.add( trimmedCcAddressFromCSV.substring(0,trimmedCcAddressFromCSV.length() - 1).substringAfter('<') );
