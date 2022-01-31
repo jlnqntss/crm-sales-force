@@ -250,7 +250,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }//Comprobar si es una Offer
         else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
         {
-            List<Opportunity> offers = [SELECT Id, AccountId, ScopeId__c, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id = :interactionTask.WhatId];
+            List<Opportunity> offers = [SELECT Id, AccountId, ScopeId__c, OwnerId, Owner.ProfileId, Owner.Profile.Name, IsTest__c FROM Opportunity WHERE Id = :interactionTask.WhatId];
             if(!offers.isEmpty() )
             {
                 List<Opportunity> totalOffers = new List<Opportunity>();
@@ -261,7 +261,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     Id accountId = offers[0].AccountId;
                     Id scopeId = offers[0].ScopeId__c;
                     List<Opportunity> extraOffers = new List<Opportunity>();
-                    extraOffers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id != :interactionTask.WhatId AND AccountId = :accountId AND ScopeId__c = :scopeId];
+                    extraOffers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name, IsTest__c FROM Opportunity WHERE Id != :interactionTask.WhatId AND AccountId = :accountId AND ScopeId__c = :scopeId];
                     if(!extraOffers.isEmpty() )
                     {
                         totalOffers.addAll(extraOffers);
@@ -272,7 +272,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 // arcortazar - 31/01/2022: Y si la oferta no es de test
                 for(Opportunity offer: totalOffers)
                 {
-                    if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && !offer.IsTest__c)
+                    if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && offer.IsTest__c == false)
                     {
                         //Cambiar el propietario al usuario actual
                         offer.OwnerId = UserInfo.getUserId();
