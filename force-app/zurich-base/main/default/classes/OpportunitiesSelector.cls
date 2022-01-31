@@ -6,12 +6,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         super(Opportunity.getSObjectType());
     }
 
-    // public OpportunitiesSelector(Set<String> fieldsToQuery)
-    // {
-    //     this();
-    //     this.sObjectToQuery = 'Opportunity';
-    //     this.fieldsToQuery = fieldsToQuery;
-    // }
     //#endregion
 
     /**
@@ -44,22 +38,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         return result;
 
-        // if(accountId != null && scopeIds != null)
-        // {
-        //     String query = String.format(
-        //         'SELECT {0} FROM Opportunity ' +
-        //         'WHERE AccountId = : accountId AND ScopeId__c IN : scopeIds ' +
-        //         'ORDER BY createdDate DESC ',
-        //         new List<String> {
-        //         String.join(new List<String> (this.fieldsToQuery), ',')
-        //     }
-        //         );
-        //     return (List<Opportunity>) Database.query(query);
-        // }
-        // else
-        // {
-        //     return new List<Opportunity>();
-        // }
     }
 
     /**
@@ -73,6 +51,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @param ownerProfileNames Conjunto de nombres de perfiles para filtrar los propietarios de las ofertas
      *
      * @return                  Listado de opportunies sobre los que se ha realizado match
+     * 
+     * @last modified by  : arcortazar
      */
     public List<Opportunity> selectByAccountIdScopesAndOwnerProfile(Id accountId, Set<Id> scopeIds, Set<String> ownerProfileNames)
     {
@@ -95,23 +75,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         }
 
         return result;
-
-        // if(accountId != null && scopeIds != null && ownerProfileNames != null)
-        // {
-        //     String query = String.format(
-        //         'SELECT {0} FROM Opportunity ' +
-        //         'WHERE AccountId = : accountId AND ScopeId__c IN : scopeIds AND Owner.Profile.Name IN : ownerProfileNames ' +
-        //         'ORDER BY createdDate DESC ',
-        //         new List<String> {
-        //         String.join(new List<String> (this.fieldsToQuery), ',')
-        //     }
-        //         );
-        //     return (List<Opportunity>) Database.query(query);
-        // }
-        // else
-        // {
-        //     return new List<Opportunity>();
-        // }
     }
 
     /**

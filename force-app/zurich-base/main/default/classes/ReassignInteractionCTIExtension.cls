@@ -212,12 +212,13 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }
 
         return null;
-        //return id.length() > 10 ? id : null;
     }
 
     /**
      * Si la tarea está asociada a un caso y este caso pertenece a una cola, reasignar el caso al usuario actual.
      * @param interactionTask Task recibida
+     * @last modified on  : 31-01-2022
+     * @last modified by  : arcortazar
      */
     @TestVisible
     private static void changeOwnerFromQueueToUser(Task interactionTask)
