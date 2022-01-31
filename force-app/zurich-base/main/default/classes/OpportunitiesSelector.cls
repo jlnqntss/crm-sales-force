@@ -68,7 +68,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
             .addCondition(Query.conditionIn(Opportunity.ScopeId__c, scopeIds))
             .addConditionString('Owner.Profile.Name IN (\'' + String.join(new List<String>(ownerProfileNames), '\',\'') + '\')')
-            .addCondition(Query.conditionIn(Opportunity.IsTest__c, false)) // arcortazar - 31/01/2022: Incluímos esta condición para que no devuelva las ofertas de test
+            .addCondition(Query.conditionEq(Opportunity.IsTest__c, false)) // arcortazar - 31/01/2022: Incluímos esta condición para que no devuelva las ofertas de test
             .orderBy(Opportunity.CreatedDate.getDescribe().getName(), 'DESC');
 
             result = (List<Opportunity>) this.baseQuery.run();
