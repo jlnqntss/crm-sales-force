@@ -20,24 +20,40 @@
     </dashboardFilters>
     <dashboardFilters>
         <dashboardFilterOptions>
-            <operator>equals</operator>
-            <values>ESTRATÉGICOS</values>
+            <operator>contains</operator>
+            <values>TOP</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>equals</operator>
-            <values>Potenciales</values>
+            <values>ORO</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>equals</operator>
-            <values>Activos</values>
+            <values>PLATA</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>equals</operator>
-            <values>Brokers en captacion/activacion</values>
+            <values>GLOBAL BROKERS</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>equals</operator>
-            <values>Global brokers</values>
+            <values>RESTO</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>START</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>NEXT</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>A REASIGNAR</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>CAPTACIÓN</values>
         </dashboardFilterOptions>
         <name>Segmento Mediador</name>
     </dashboardFilters>
