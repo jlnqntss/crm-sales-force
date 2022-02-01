@@ -157,21 +157,4 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
     }
 
-    @isTest
-    static void test_findByAccountIdAndScopeNotId()
-    {
-        List<Opportunity> existingOpportunities = [SELECT Id FROM Opportunity];
-
-        List<Scope__c> existingScopes = [SELECT Id, AccountId__c, Scope__c FROM Scope__c];
-        System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
-
-        Test.startTest();
-        List<Opportunity> offers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(
-            existingOpportunities[0].Id, existingScopes[0].AccountId__c, existingScopes[0].Scope__c
-        );
-        Test.stopTest();
-
-        System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
-    }
-
 }
