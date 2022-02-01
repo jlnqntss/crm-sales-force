@@ -212,12 +212,13 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }
 
         return null;
-        //return id.length() > 10 ? id : null;
     }
 
     /**
      * Si la tarea está asociada a un caso y este caso pertenece a una cola, reasignar el caso al usuario actual.
      * @param interactionTask Task recibida
+     * @last modified on  : 31-01-2022
+     * @last modified by  : arcortazar
      */
     @TestVisible
     private static void changeOwnerFromQueueToUser(Task interactionTask)
@@ -249,7 +250,9 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }//Comprobar si es una Offer
         else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
         {
-            List<Opportunity> offers = [SELECT Id, AccountId, ScopeId__c, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id = :interactionTask.WhatId];
+            
+            OpportunitiesSelector optySelector = new OpportunitiesSelector();
+            List<Opportunity> offers = optySelector.findById(interactionTask.WhatId);
             if(!offers.isEmpty() )
             {
                 List<Opportunity> totalOffers = new List<Opportunity>();
@@ -260,7 +263,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     Id accountId = offers[0].AccountId;
                     Id scopeId = offers[0].ScopeId__c;
                     List<Opportunity> extraOffers = new List<Opportunity>();
-                    extraOffers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name FROM Opportunity WHERE Id != :interactionTask.WhatId AND AccountId = :accountId AND ScopeId__c = :scopeId];
+                    extraOffers = optySelector.findByAccountIdAndScopeAndNotId(interactionTask.WhatId, accountId, scopeId);
                     if(!extraOffers.isEmpty() )
                     {
                         totalOffers.addAll(extraOffers);
@@ -268,9 +271,10 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 }
 
                 //Si el Owner es el Integrador hay que cambiarlo
+                // arcortazar - 31/01/2022: Y si la oferta no es de test
                 for(Opportunity offer: totalOffers)
                 {
-                    if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator')
+                    if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && offer.IsTest__c == false)
                     {
                         //Cambiar el propietario al usuario actual
                         offer.OwnerId = UserInfo.getUserId();

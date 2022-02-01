@@ -53,22 +53,6 @@ private with sharing class OpportunitiesSelectorTest
         }
     }
 
-    // @isTest
-    // static void test_selectByAccountIdAndScopes_emptySet_matchedRecords()
-    // {
-    //     List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
-    //     System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
-
-    //     Set<Id> scopesIds = new Set<Id>();
-
-    //     Test.startTest();
-    //     List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdAndScopes(
-    //         existingScopes.get(0).AccountId__c, scopesIds);
-    //     Test.stopTest();
-
-    //     System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-    // }
-
     @isTest
     static void test_selectByAccountIdAndScopes_nullSet_matchedRecords()
     {
@@ -78,22 +62,6 @@ private with sharing class OpportunitiesSelectorTest
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
-
-    // @isTest
-    // static void test_selectByAccountIdAndScopes_invalidFields_matchedRecords()
-    // {
-    //     List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
-    //     System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
-
-    //     Set<Id> scopesIds = new Set<Id>();
-
-    //     Test.startTest();
-    //     // InvalidField
-    //     List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdAndScopes(existingScopes.get(0).AccountId__c, scopesIds);
-    //     Test.stopTest();
-
-    //     System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-    // }
 
     @isTest
     static void test_selectByAccountIdScopesAndOwnerProfile_matchedRecords()
@@ -150,26 +118,6 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
 
-    // @isTest
-    // static void test_selectByAccountIdScopesAndOwnerProfile_emptySet_matchedRecords()
-    // {
-    //     List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
-    //     System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
-
-    //     Set<Id> scopesIds = new Set<Id>();
-    //     for(Scope__c scope: existingScopes)
-    //     {
-    //         scopesIds.add(scope.Id);
-    //     }
-
-    //     Test.startTest();
-    //     List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(
-    //         existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {});
-    //     Test.stopTest();
-
-    //     System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-    // }
-
     @isTest
     static void test_selectByAccountIdScopesAndOwnerProfile_nullSet_matchedRecords()
     {
@@ -194,4 +142,36 @@ private with sharing class OpportunitiesSelectorTest
 
         System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
     }
+
+    @isTest
+    static void test_findById()
+    {
+        List<Opportunity> existingOpportunities = [SELECT Id FROM Opportunity];
+
+        Test.startTest();
+        List<Opportunity> offers = new OpportunitiesSelector().findById(
+            existingOpportunities[0].Id
+        );
+        Test.stopTest();
+
+        System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
+    }
+
+    @isTest
+    static void test_findByAccountIdAndScopeNotId()
+    {
+        List<Opportunity> existingOpportunities = [SELECT Id FROM Opportunity];
+
+        List<Scope__c> existingScopes = [SELECT Id, AccountId__c, Scope__c FROM Scope__c];
+        System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
+
+        Test.startTest();
+        List<Opportunity> offers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(
+            existingOpportunities[0].Id, existingScopes[0].AccountId__c, existingScopes[0].Scope__c
+        );
+        Test.stopTest();
+
+        System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
+    }
+
 }
