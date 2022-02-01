@@ -53,22 +53,6 @@ private with sharing class OpportunitiesSelectorTest
         }
     }
 
-    // @isTest
-    // static void test_selectByAccountIdAndScopes_emptySet_matchedRecords()
-    // {
-    //     List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
-    //     System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
-
-    //     Set<Id> scopesIds = new Set<Id>();
-
-    //     Test.startTest();
-    //     List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdAndScopes(
-    //         existingScopes.get(0).AccountId__c, scopesIds);
-    //     Test.stopTest();
-
-    //     System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-    // }
-
     @isTest
     static void test_selectByAccountIdAndScopes_nullSet_matchedRecords()
     {
@@ -78,22 +62,6 @@ private with sharing class OpportunitiesSelectorTest
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
-
-    // @isTest
-    // static void test_selectByAccountIdAndScopes_invalidFields_matchedRecords()
-    // {
-    //     List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
-    //     System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
-
-    //     Set<Id> scopesIds = new Set<Id>();
-
-    //     Test.startTest();
-    //     // InvalidField
-    //     List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdAndScopes(existingScopes.get(0).AccountId__c, scopesIds);
-    //     Test.stopTest();
-
-    //     System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-    // }
 
     @isTest
     static void test_selectByAccountIdScopesAndOwnerProfile_matchedRecords()
@@ -149,26 +117,6 @@ private with sharing class OpportunitiesSelectorTest
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
-
-    // @isTest
-    // static void test_selectByAccountIdScopesAndOwnerProfile_emptySet_matchedRecords()
-    // {
-    //     List<Scope__c> existingScopes = [SELECT Id, AccountId__c FROM Scope__c];
-    //     System.assertEquals(false, existingScopes.isEmpty(), 'List should NOT be empty');
-
-    //     Set<Id> scopesIds = new Set<Id>();
-    //     for(Scope__c scope: existingScopes)
-    //     {
-    //         scopesIds.add(scope.Id);
-    //     }
-
-    //     Test.startTest();
-    //     List<Opportunity> matchedRecords = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(
-    //         existingScopes.get(0).AccountId__c, scopesIds, new Set<String> {});
-    //     Test.stopTest();
-
-    //     System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-    // }
 
     @isTest
     static void test_selectByAccountIdScopesAndOwnerProfile_nullSet_matchedRecords()
