@@ -98,4 +98,56 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         return (List<Opportunity>) this.baseQuery.run();
     }
+
+
+    /**
+     * Busca Ofertas a partir del Id del cliente, del ambito.
+     * 
+     * @author nts (arcortazar)
+     * @date 01/02/2022
+     * @param {Id id} id de la oportunidad
+     * @return {List<Opportunity} ofertas encontradas
+     */
+    public List<Opportunity> findById(Id id)
+    {
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Opportunity.Id,
+            Opportunity.InfoQuoteNumber__c,
+            Opportunity.SessionId__c, 
+            Opportunity.AccountId, 
+            Opportunity.ScopeId__c, 
+            Opportunity.OwnerId, 
+            Opportunity.Owner.Profile.Id, 
+            Opportunity.Owner.Profile.Name, 
+            Opportunity.IsTest__c
+        })
+        .addCondition(Query.conditionEq(Opportunity.Id, id));
+
+        return (List<Opportunity>) this.baseQuery.run();
+    }
+
+    /**
+     * Busca Ofertas a partir del AccountId, ScopeId y que tenga distinto ID
+     * 
+     * @author nts (arcortazar)
+     * @date 01/02/2022
+     * @param {Id id} id de la oportunidad
+     * @return {List<Opportunity} ofertas encontradas
+     */
+    public List<Opportunity> findByAccountIdAndScopeAndNotId(Id id, Id accountId, String scope)
+    {
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Opportunity.Id,
+            Opportunity.OwnerId, 
+            Opportunity.Owner.Profile.Id, 
+            Opportunity.Owner.Profile.Name, 
+            Opportunity.IsTest__c
+        })
+        .addCondition(Query.conditionNotEq(Opportunity.Id, id))
+        .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
+        .addCondition(Query.conditionEq(Opportunity.Scope__c, scope));
+
+        return (List<Opportunity>) this.baseQuery.run();
+    }
+
 }

@@ -250,7 +250,10 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }//Comprobar si es una Offer
         else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
         {
-            List<Opportunity> offers = [SELECT Id, AccountId, ScopeId__c, OwnerId, Owner.ProfileId, Owner.Profile.Name, IsTest__c FROM Opportunity WHERE Id = :interactionTask.WhatId];
+            //List<Opportunity> offers = [SELECT Id, AccountId, ScopeId__c, OwnerId, Owner.ProfileId, Owner.Profile.Name, IsTest__c FROM Opportunity WHERE Id = :interactionTask.WhatId];
+            
+            OpportunitiesSelector optySelector = new OpportunitiesSelector();
+            List<Opportunity> offers = optySelector.findById(interactionTask.WhatId);
             if(!offers.isEmpty() )
             {
                 List<Opportunity> totalOffers = new List<Opportunity>();
@@ -261,7 +264,8 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     Id accountId = offers[0].AccountId;
                     Id scopeId = offers[0].ScopeId__c;
                     List<Opportunity> extraOffers = new List<Opportunity>();
-                    extraOffers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name, IsTest__c FROM Opportunity WHERE Id != :interactionTask.WhatId AND AccountId = :accountId AND ScopeId__c = :scopeId];
+                    //extraOffers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name, IsTest__c FROM Opportunity WHERE Id != :interactionTask.WhatId AND AccountId = :accountId AND ScopeId__c = :scopeId];
+                    extraOffers = optySelector.findByAccountIdAndScopeAndNotId(interactionTask.WhatId, accountId, scopeId);
                     if(!extraOffers.isEmpty() )
                     {
                         totalOffers.addAll(extraOffers);
