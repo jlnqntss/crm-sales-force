@@ -154,7 +154,22 @@ private with sharing class OpportunitiesSelectorTest
         );
         Test.stopTest();
 
-        System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
+        System.assertEquals(false, offers.isEmpty(), 'There should be some offers');
+    }
+
+    @isTest
+    static void test_findByAccountIdAndScopeNotId()
+    {
+        List<Opportunity> existingOpportunities = [SELECT Id, AccountId, ScopeId__c FROM Opportunity];
+
+        Test.startTest();
+
+        List<Opportunity> offers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(
+            existingOpportunities.get(0).Id, existingOpportunities.get(0).AccountId, existingOpportunities.get(0).ScopeId__c
+        );
+        Test.stopTest();
+
+        System.assertEquals(false, offers.isEmpty());
     }
 
 }
