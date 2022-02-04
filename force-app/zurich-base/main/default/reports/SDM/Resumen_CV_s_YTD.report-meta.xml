@@ -195,7 +195,7 @@
             <value>VIDA RIESGO</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Account.LifeConsultant__c</column>
+            <column>Account.LifeConsultantEmail__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
