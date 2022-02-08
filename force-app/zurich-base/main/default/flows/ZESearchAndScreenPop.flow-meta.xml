@@ -11,6 +11,7 @@
         <connector>
             <targetReference>CustomerFoundByPhoneDecision</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>phone</name>
             <value>
@@ -33,6 +34,7 @@
         <locationY>398</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -58,6 +60,7 @@
         <connector>
             <targetReference>RedirectToRelatedRecord</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -80,6 +83,7 @@
         <locationY>638</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -102,6 +106,7 @@
         <locationY>638</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -165,6 +170,13 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>FindContactRequestById.PreferredPhone</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>WebIdentifier</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FindContactRequestById.WebIdentifier__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -396,6 +408,7 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>WebName__c</queriedFields>
         <queriedFields>PreferredPhone</queriedFields>
+        <queriedFields>WebIdentifier__c</queriedFields>
         <sortField>CreatedDate</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -455,6 +468,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>InputWebIdentifier</name>
+            <value>
+                <elementReference>WebIdentifier</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>InputWebName</name>
             <value>
                 <elementReference>WebName</elementReference>
@@ -501,6 +520,13 @@
         <value>
             <numberValue>0.0</numberValue>
         </value>
+    </variables>
+    <variables>
+        <name>WebIdentifier</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <description>Variable para almacenar el WebName recuperado en Buscar ContactRequest</description>
