@@ -11,7 +11,6 @@
         <connector>
             <targetReference>GoToLead</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>commercialActivity</name>
             <value>
@@ -54,12 +53,6 @@
                 <elementReference>Scope</elementReference>
             </value>
         </inputParameters>
-        <inputParameters>
-            <name>WebIdentifier</name>
-            <value>
-                <elementReference>WebIdentifier</elementReference>
-            </value>
-        </inputParameters>
         <outputParameters>
             <assignToReference>CreatedOrFoundLead</assignToReference>
             <name>leadId</name>
@@ -73,7 +66,6 @@
         <locationY>734</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -326,7 +318,6 @@
                     <elementReference>FakeEmail</elementReference>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -346,7 +337,6 @@
                     <elementReference>InputPhone</elementReference>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -358,16 +348,6 @@
             <defaultSelectedChoiceReference>DefaultScope</defaultSelectedChoiceReference>
             <fieldText>Ámbito</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>WebIdentifier</name>
-            <dataType>String</dataType>
-            <defaultValue>
-                <elementReference>InputWebIdentifier</elementReference>
-            </defaultValue>
-            <fieldText>WebIdentifier</fieldText>
-            <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -399,13 +379,6 @@
     </variables>
     <variables>
         <name>InputScope</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>InputWebIdentifier</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

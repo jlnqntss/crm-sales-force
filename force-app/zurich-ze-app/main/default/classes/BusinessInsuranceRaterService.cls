@@ -338,8 +338,7 @@ public without sharing class BusinessInsuranceRaterService
             NationalId__c = accountInformation.nationalIdentifier,
             NationalIdType__c = (String.isBlank(accountInformation.nationalIdentifier) ? '' : 'N'),
             RecordTypeId = leadRecordTypeId,
-            LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
-            WebIdentifier__c = accountInformation.webIdentifier
+            LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI)
             );
 
         // nts (agonzalezisasi) - 02/09/2021 - fix bug: SOPZUR-304 APR Registros duplicados al enviar trazas al CRM desde ZE 
@@ -396,7 +395,6 @@ public without sharing class BusinessInsuranceRaterService
             accountToUpdate.AnnualRevenue = formData.accountInformation.annualRevenue;
             accountToUpdate.NumberOfEmployees = formData.accountInformation.numberOfEmployees;
             accountToUpdate.TradeName__c = formData.accountInformation.tradeName;
-            accountToUpdate.WebIdentifier__c = formData.accountInformation.webIdentifier;
             update accountToUpdate;
 
             // Si se ha hecho el update, para evitar hacer una soql copiamos los datos a la variable customer original
@@ -405,7 +403,6 @@ public without sharing class BusinessInsuranceRaterService
             customer.AnnualRevenue = formData.accountInformation.annualRevenue;
             customer.NumberOfEmployees = formData.accountInformation.numberOfEmployees;
             customer.TradeName__c = formData.accountInformation.tradeName;
-            customer.WebIdentifier__c = formData.accountInformation.webIdentifier;
         }
     }
 
@@ -1327,7 +1324,6 @@ public without sharing class BusinessInsuranceRaterService
      * @date 15/10/2020
      * 
      * @change 02/06/2021 - nts (agonzalezisasi) - Se incluye el campo prioridad
-     * @change 04/02/2022 - nts (arcortazar) - Se incluye el campo webIdentifier
      */
     public class Request
     {
@@ -1491,15 +1487,6 @@ public without sharing class BusinessInsuranceRaterService
 
             return (preferredContactDatetime < contactDatetime);
         }
-
-        /// arcortazar - 07/02/2022: feat-ZE-1234 
-        public String webIdentifier {
-            get;
-            set {
-                setRequiredFields('Request' + 'webdentifier');
-                webIdentifier = value;
-            }
-        }
     }
 
     /**
@@ -1507,8 +1494,6 @@ public without sharing class BusinessInsuranceRaterService
      *
      * @author rlopez
      * @date 15/10/2020
-     * 
-     * @change 04/02/2022 - nts (arcortazar) - Se incluye el campo webIdentifier
      */
     public class AccountInformation
     {
@@ -1579,15 +1564,6 @@ public without sharing class BusinessInsuranceRaterService
             set {
                 setRequiredFields('AccountInformation' + 'nationalIdentifier');
                 nationalIdentifier = value;
-            }
-        }
-
-        // arcortazar - 04/02/2022: feat-ZE-1234
-        public String webIdentifier {
-            get;
-            set {
-                setRequiredFields('AccountInformation' + 'webIdentifier');
-                webIdentifier = value;
             }
         }
     }
