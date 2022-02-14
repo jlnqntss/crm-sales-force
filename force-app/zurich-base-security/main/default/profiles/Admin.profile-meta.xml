@@ -4598,12 +4598,7 @@
         <editable>true</editable>
         <field>Account.Archetype__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.WebIdentifier__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
+    </fieldPermissions> 
     <fieldPermissions>
         <editable>true</editable>
         <field>AsignacionPlan__c.Agrupacion_mediador__c</field>
@@ -6807,11 +6802,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>ContactRequest.Preferred_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ContactRequest.WebIdentifier__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

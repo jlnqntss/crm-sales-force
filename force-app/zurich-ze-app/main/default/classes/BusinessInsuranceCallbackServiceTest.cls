@@ -1,7 +1,7 @@
 @isTest(SeeAllData=false)
 public class BusinessInsuranceCallbackServiceTest
 {
-    static final String COMPLETE_CALLBACK = '{"name":"Carles Sans","phone":"600666000","bestTimeFrom":"2020-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z", "webIdentifier":"ACB1234"}';
+    static final String COMPLETE_CALLBACK = '{"name":"Carles Sans","phone":"600666000","bestTimeFrom":"2020-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z"}';
     static final String NO_COMPLETE_CALLBACK = '{"name":"Carles Sans","bestTimeFrom":"2020-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z"}';
     static final String CALLBACK_WITH_BADTIME = '{"name":"Carles Sans","phone":"600666000","bestTimeFrom":"2050-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z"}';
 

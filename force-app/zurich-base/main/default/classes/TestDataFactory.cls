@@ -2662,8 +2662,7 @@ public class TestDataFactory
             'numberOfEmployees' => '150',
             'tradeName' => 'TradeName',
             'companyName' => 'CompanyName',
-            'nationalIdentifier' => nationalId, 
-            'webIdentifier' => 'ABC123'
+            'nationalIdentifier' => nationalId
         };
     }
 
