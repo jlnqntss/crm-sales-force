@@ -441,6 +441,8 @@
         <excludeButtons>DisplayAccountTeamEffectiveAccess</excludeButtons>
         <fields>MEMBER_NAME</fields>
         <fields>TEAM_MEMBER_ROLE</fields>
+        <fields>Email__c</fields>
+        <fields>Phone__c</fields>
         <relatedList>RelatedAccountSalesTeam</relatedList>
     </relatedLists>
     <relatedLists>
