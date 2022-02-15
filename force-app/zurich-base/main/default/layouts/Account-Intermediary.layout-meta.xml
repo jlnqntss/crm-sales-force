@@ -50,10 +50,6 @@
                 <behavior>Edit</behavior>
                 <field>RegistryDGS__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>WebIdentifier__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

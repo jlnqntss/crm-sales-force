@@ -313,6 +313,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Es_ZE</name>
+        <label>¿Es ZE?</label>
+        <locationX>1266</locationX>
+        <locationY>241</locationY>
+        <defaultConnector>
+            <targetReference>Buscar_Gestor_Preferente</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No ZE</defaultConnectorLabel>
+        <rules>
+            <name>ZE</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Recuperar_cola_Genesys_async.Scope__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ZE</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Recuperar_cola_Genesys_async.Scope__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ZEO</stringValue>
+                </rightValue>
+            </conditions>
+            <label>ZE</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Flow_o_Queue</name>
         <label>¿Flow o Queue?</label>
         <locationX>1098</locationX>
@@ -376,8 +405,8 @@
 &quot;ZEO&quot;, &quot;ZEO&quot;,
 &quot;all&quot;)</expression>
     </formulas>
-    <interviewLabel>EmailMessage Trigger - After insert/update Route to Genesys {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>EmailMessage Trigger - After insert - Route to Genesys</label>
+    <interviewLabel>EmailMessage Trigger - After update - Route to Genesys {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>EmailMessage Trigger - After update - Route to Genesys</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -574,10 +603,10 @@
         <name>Recuperar_cola_Genesys_async</name>
         <label>Recuperar cola Genesys Async</label>
         <locationX>1106</locationX>
-        <locationY>129</locationY>
+        <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Buscar_Gestor_Preferente</targetReference>
+            <targetReference>Es_ZE</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -669,7 +698,7 @@
             </value>
         </filters>
         <object>EmailMessage</object>
-        <recordTriggerType>Create</recordTriggerType>
+        <recordTriggerType>Update</recordTriggerType>
         <scheduledPaths>
             <connector>
                 <targetReference>Recuperar_cola_Genesys_async</targetReference>
