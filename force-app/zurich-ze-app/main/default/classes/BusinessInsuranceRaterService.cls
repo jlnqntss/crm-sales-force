@@ -1491,15 +1491,6 @@ public without sharing class BusinessInsuranceRaterService
 
             return (preferredContactDatetime < contactDatetime);
         }
-
-        /// arcortazar - 07/02/2022: feat-ZE-1234 
-        public String webIdentifier {
-            get;
-            set {
-                setRequiredFields('Request' + 'webdentifier');
-                webIdentifier = value;
-            }
-        }
     }
 
     /**
