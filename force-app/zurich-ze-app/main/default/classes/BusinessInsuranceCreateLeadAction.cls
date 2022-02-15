@@ -36,7 +36,7 @@ global with sharing class BusinessInsuranceCreateLeadAction {
             accountInformation.firstName = request.firstName;
             accountInformation.commercialActivity = request.commercialActivity;
             accountInformation.nationalIdentifier = request.nationalIdentifier;
-            accountInformation.webIdentifier = request.WebIdentifier;
+            accountInformation.webIdentifier = request.DisplayWebIdentifier.replace('Web Identifier: ', '');
             formRequest.accountInformation = accountInformation;
 
             Account currentCustomer = BusinessInsuranceRaterService.processFormData(formRequest);
@@ -103,11 +103,11 @@ global with sharing class BusinessInsuranceCreateLeadAction {
         global String scopeBusinessCode;
 
         @InvocableVariable(
-            label='WebIdentifier'
-            description='WebIdentifier'
-            required=true
+            label='DisplayWebIdentifier'
+            description='DisplayWebIdentifier'
+            required=false
         )
-        global String WebIdentifier;
+        global String DisplayWebIdentifier;
     }
 
     global class CreateLeadActionResponse
