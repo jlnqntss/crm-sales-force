@@ -30,7 +30,6 @@ global with sharing class BusinessInsuranceCreateLeadAction {
             formRequest.webEmail = request.email;
             formRequest.webPhone = request.phone;
             formRequest.businessCode = request.scopeBusinessCode;
-            formRequest.webIdentifier = request.WebIdentifier; 
 
             BusinessInsuranceRaterService.AccountInformation accountInformation = new BusinessInsuranceRaterService.AccountInformation();
             accountInformation.lastName = request.lastName;
