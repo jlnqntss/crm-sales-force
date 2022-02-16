@@ -113,6 +113,7 @@ public class INFOHandler implements ISystem
     };
 
     private static final String NOTE_CASE_ORIGIN = 'NoteINFO';
+    private static final String NOTE_CASE_SOURCE_AREA = 'Mediator';
 
     private class INFOHandlerException extends Exception {}
 
@@ -511,6 +512,8 @@ public class INFOHandler implements ISystem
                 Case caseRecord = (Case) tf.transform(NOTE, SOBJECT_CASE, recordValuesMap);
                 // Assign the Case Origin to "Nota INFO"
                 caseRecord.Origin = NOTE_CASE_ORIGIN;
+                // Assign the Case Source Area to "Mediator"
+                caseRecord.SourceArea__c = NOTE_CASE_SOURCE_AREA;
                 // Assign the RecordType
                 caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
                 // Get the Type, Subytype and TypeN3 from the HEGEO fields metadata configuration
