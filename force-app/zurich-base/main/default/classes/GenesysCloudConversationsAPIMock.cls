@@ -1,3 +1,4 @@
+
 @isTest
 public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
 {
@@ -201,6 +202,34 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
         // {"participants":[],"state":"disconnected"}
         addRawMockResponse(
             'api/v2/conversations/callbacks/' + interactionId, 
+            new GenesysCloudConversationsAPIMock.APIResponse(
+                404,
+                new Map<String, Object> {
+                    'message' => 'not found'
+                }
+            )
+        );
+    }
+
+    public void addInteractionDisconnectionMockResponse(String interactionId)
+    {
+        // {"participants":[],"state":"disconnected"}
+        addRawMockResponse(
+            '/api/v2/conversations/'+interactionId +'/disconnect',
+            new GenesysCloudConversationsAPIMock.APIResponse(
+                200,
+                new Map<String, Object> {
+                    'conversationId' => interactionId
+                }
+            )
+        );
+    }
+
+    public void addInteractionDisconnectionMockResponseError(String interactionId)
+    {
+        // {"participants":[],"state":"disconnected"}
+        addRawMockResponse(
+            '/api/v2/conversations/'+interactionId +'/disconnect',
             new GenesysCloudConversationsAPIMock.APIResponse(
                 404,
                 new Map<String, Object> {

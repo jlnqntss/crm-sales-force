@@ -8,11 +8,13 @@ public class GenesysCloud
     private static final String ERROR_VALIDATE_RESPONSE = 'Service is a required parameter to validate a response';
     private static final String ASYNC_METHOD_SMS = 'sms';
     private static final String ASYNC_METHOD_CALLBACK_CANCEL = 'cancel';
+    private static final String ASYNC_METHOD_DISCONNECTION = 'disconnect';
     public static final String SERVICE_ROUTING = 'RoutingService';
     public static final String SERVICE_CALLBACKS = 'CallbacksService';
     public static final String SERVICE_SMS = 'SMSService';
+    public static final String SERVICE_DISCONNECTION = 'DisconnectionService';
 
-    public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS, SERVICE_SMS }
+    public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS, SERVICE_SMS, SERVICE_DISCONNECTION }
 
     public class GenesysCloudException extends Exception
     {
@@ -92,6 +94,23 @@ public class GenesysCloud
             }
 
             return CallsService;
+        }
+        private set;
+    }
+
+    /**
+     * Getter de solo lectura que devuelve la instancia Singleton de DisconnectService
+     */
+    public static GenesysCloud.DisconnectionService DisconnectionService
+    {
+        get
+        {
+            if(DisconnectionService == null)
+            {
+                DisconnectionService = new GenesysCloud.DisconnectionService();
+            }
+
+            return DisconnectionService;
         }
         private set;
     }
@@ -198,6 +217,13 @@ public class GenesysCloud
                         results.add(CallbacksService.cancel( (CallbackCancel) request ) );
                     }
                 }
+                else if(this.method == ASYNC_METHOD_DISCONNECTION )
+                {
+                    for(IAPIRequest request: this.requests)
+                    {
+                        results.add(DisconnectionService.close( (InteractionCancel) request ) );
+                    }
+                }
                 else
                 {
                     throw new RoutingServiceException('No method defined');
@@ -269,6 +295,12 @@ public class GenesysCloud
                 if(response == null || response.getStatusCode() != 202)
                 {
                     throw new GenesysCloud.SMSServiceException(response);
+                }
+            }
+            when SERVICE_DISCONNECTION {
+                if(response == null || response.getStatusCode() != 202)
+                {
+                    throw new GenesysCloud.DisconnectionServiceException(response);
                 }
             }
         }
@@ -717,6 +749,126 @@ public class GenesysCloud
     {
         public Integer statusCode;
         public CallbacksServiceException(HttpResponse response)
+        {
+            String message = ERROR_IN_RESPONSE;
+            if(response != null)
+            {
+                message = ERROR_RESPONSE_SDK + response.getStatusCode() + ' ' + response.getStatus() + ' ' + response.getBody();
+                this.statusCode = response.getStatusCode();
+            }
+            this.setMessage(message);
+        }
+    }
+
+    //#endregion
+
+    //#region Módulo DisconnectService
+
+    /**
+     * DisconnectService ofrece el método de cierre de interacciones programadas dentro de los flujos de
+     *  Genesys Cloud a través de una configuración de enrutamiento especificada antes de enrutar.
+     */
+    public class DisconnectionService
+    {
+        public HttpCalloutMock mock = null;
+
+        /**
+         * Metodo publico que realiza una solicitud de tipo PATCH a genesys para cancelar una interaccion de forma 
+         * asincrona
+         * 
+         * @author nts (arcortazar)
+         * @date 16/02/2022
+         * @param {InteractionCancel} objeto con el id de Genesys de la interacción a cancelar
+         * @return Devuelve la interaccion
+         */
+        public String close(InteractionCancel interaction)
+        {
+            String retorno = '';
+
+            HttpResponse response = null;
+            //Setear el mock para que funcionen los tests
+            if (Test.isRunningTest() && mock != null)
+            {
+
+                HttpRequest req = new HttpRequest();
+                req.setMethod('POST');
+                req.setEndpoint('/api/v2/conversations/'+interaction.conversationId +'/disconnect');
+                req.setBody(interaction.toJSON() );
+                response = mock.respond(req);
+                retorno = interaction.conversationId;
+            }
+            else //POST
+            {
+                response = purecloud.sdk.Rest.post('/api/v2/conversations/'+interaction.conversationId +'/disconnect', interaction.toJSON());
+                retorno = getFieldFromResponse(response, 'conversationId');
+            }
+
+            return retorno;
+        }
+
+        /**
+         * Método público que realiza una solicitud de tipo PATCH a genesys para crear un 
+         * listado de Callbacks de forma asíncrona
+         *
+         * @author nts (arcotazar)
+         * @date 16/02/2022
+         * @param {InteractionCancel[]} interacciones a desconectar en Genesys
+         * @param callback Apex Callback a ejecutar finalizadas las desconexiones
+         */
+        public void close(InteractionCancel[] interactions, IAPICallback apexCallback)
+        {
+            asynchronousCallout(ASYNC_METHOD_DISCONNECTION, interactions, apexCallback);
+        }
+
+        /**
+         * Devuelve el interacitionID si lo encuentra
+         * @param response httpResponse del SDK
+         * @return el Id o vacío
+         */
+        public String getFieldFromResponse(HttpResponse response, string field)
+        {
+            String result = '';
+            //Devolver el ID solamente si el body lo contiene
+            String responseBody = response.getBody();
+            if(responseBody != null && responseBody.contains('\"' + field + '\"') )
+            {
+                Map<String, Object> deserializedBody = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
+                if(deserializedBody.containsKey(field) )
+                {
+                    result = (String) deserializedBody.get(field);
+                }
+            }
+
+            //Si no se encuentra el id no se puede devolver
+            return result;
+        }
+    }
+
+    
+
+    /**
+     * Clase que representa una interaccion de Genesys Cloud
+     * Implemente la interfaz GenesysCloud.IAPIRequest.
+     */
+    public class InteractionCancel implements IAPIRequest
+    {
+        //Identificador de la interacción en Genesys Cloud
+        public String conversationId;
+
+        // Método público que devuelve una serialización a JSON de la propia instancia de la clase para su uso en las llamadas al SDK.
+        public String toJSON()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Clase Exception específica para los errores del DisconnectionService que vengan de la respuesta del SDK
+     */
+    public class DisconnectionServiceException extends Exception
+    {
+        public Integer statusCode;
+        public DisconnectionServiceException(HttpResponse response)
         {
             String message = ERROR_IN_RESPONSE;
             if(response != null)
