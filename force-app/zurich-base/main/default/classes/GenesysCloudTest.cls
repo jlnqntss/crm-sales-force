@@ -439,6 +439,113 @@ private class GenesysCloudTest
 
     //#endregion
 
+    //#region InteractionDisconnectService
+
+    @isTest
+    static void test_DisconnectionService_close()
+    {
+        // Id de interaccion generado por Genesys
+        String interactionId = '30136822-029b-4582-a171-25297a793326';
+
+        // Mock
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addInteractionDisconnectionMockResponse(interactionId);
+
+        GenesysCloud.InteractionCancel cmb = new GenesysCloud.InteractionCancel();
+        cmb.conversationId = interactionId;
+
+        Test.startTest();
+        GenesysCloud.DisconnectionService.mock = responsesMock;
+        String returnedInteractionID = GenesysCloud.DisconnectionService.close(cmb);
+        Test.stopTest();
+
+        System.assertEquals(interactionId, returnedInteractionID, 'Deberia ser el mismo interactionId');
+    }
+
+    @isTest
+    static void test_DisconnectionService_cancelList()
+    {
+        // Id de interaccion generado por Genesys
+        String interactionId = '30136822-029b-4582-a171-25297a793326';
+
+        // Creamos el ContactRequest que provocaria la creacion del call me back en Genesys
+        // Informamos el interactionId directamente aunque se informaria tras llamar a create en Genesys
+        EmailMessage email = new EmailMessage(
+            GenesysInteractionId__c= interactionId,
+            Status= '3'
+        );
+        insert email;
+
+        // Mock
+        GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
+        responsesMock.addInteractionDisconnectionMockResponse(interactionId);
+        Test.setMock(HttpCalloutMock.class, responsesMock);
+
+        // Generamos el objeto de cancelacion del callmeback
+        GenesysCloud.InteractionCancel cmb = new GenesysCloud.InteractionCancel();
+        cmb.conversationId = interactionId;
+
+        // Preparamos el mapa de relacion entre callmeback y los contactRequest
+        Map<GenesysCloud.InteractionCancel, String> interactions = new Map<GenesysCloud.InteractionCancel, String>();
+        interactions.put(cmb, email.Id);
+
+        Test.startTest();
+        GenesysCloud.DisconnectionService.close(
+            new List<GenesysCloud.InteractionCancel>{cmb},
+            new UpdateInteractionCancel(interactions)
+        );
+        Test.stopTest();
+
+        // Comprobamos que el callmeback se ha cancelado
+        List<EmailMessage> emailMessages = [
+            SELECT Id, Status FROM EmailMessage WHERE Id = :email.Id
+        ];
+
+        System.debug('+++ EmailMessage ' + emailMessages);
+        System.assertEquals(1, emailMessages.size(), 'Deberia haber un EmailMessage que se haya modificado');
+    }
+
+    public class UpdateInteractionCancel implements GenesysCloud.IAPICallback
+    {
+        Map<GenesysCloud.InteractionCancel, String> interactionIdsByCallback;
+
+        public UpdateInteractionCancel(Map<GenesysCloud.InteractionCancel, String> interactionIdsByCallback)
+        {
+            this.interactionIdsByCallback = interactionIdsByCallback;
+        }
+
+        public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
+        {
+            System.debug('------------- onSuccess');
+            List<EmailMessage> emailsToUpdate = new List<EmailMessage>();
+
+            for(Object result : results) {
+                GenesysCloud.InteractionCancel callback = (GenesysCloud.InteractionCancel) result;
+                String interactionId = interactionIdsByCallback.get(callback);
+                
+                emailsToUpdate.add(
+                    new EmailMessage(
+                        Id= interactionId,
+                        Status= '4'
+                    )
+                );
+                System.debug('------------- update emailsToUpdate: ' + emailsToUpdate);
+            }
+
+            if( !emailsToUpdate.isEmpty() ) {
+                update emailsToUpdate;
+            }
+        }
+
+        public void onError(Exception error)
+        {
+            System.debug('------------- onError');
+            ErrorLogUtil.commitError(error);
+        }
+    }
+
+    //#endregion
+
     //#region SMSService
 
     @isTest
