@@ -690,72 +690,91 @@ public without sharing class BusinessInsuranceRaterService
                 Product2 product = productCodesToProductMap?.get(productCodes);
 
                 // Oferta - calculamos el nombre que tendra la oferta
-                String offerName = offer.quoteNumberINFO;
-                if( String.isBlank(offerName) ) {
-                    if( product != null ) {
-                        offerName = product.Name + ' - ' + currentCustomer.Name;
+
+                // arcortazar - 22/2/22: incidencia actualización de ofertas cerradas
+                // Buscamos la oferta que viene por quoteNumberInfo y comprobamos el estado del campo isUpdatedFromINFO__c
+                // Si el campo isUpdatedFromINFO__c es true, es que se ha actualizado desde INFO y no debe de volver a manejarse.
+                if(String.isBlank(offer.quoteNumberINFO) || mapOffersToDelete.get(offer.quoteNumberINFO).isUpdatedFromINFO__c == false)
+                {
+
+                    String offerName = offer.quoteNumberINFO;
+                    if( String.isBlank(offerName) ) {
+                        if( product != null ) {
+                            offerName = product.Name + ' - ' + currentCustomer.Name;
+                        } else {
+                            offerName = offer.commercialPC + ' - ' + offer.technicalPC + ' - ' + currentCustomer.Name;
+                        }
+                    }
+
+                    // Oferta - calculamos el id externo: SessionId
+                    String externalSessionId = sessionId + productCodes;
+
+                    // Oferta - calculamos el paso de la oferta: Stage
+                    String stageName = 'Legit Lead';
+                    if( String.isNotBlank(offer.policyNumber) ) {
+                        stageName = 'Closed Won';
+                    } else if(offer.netPremium != null) {
+                        stageName = 'Quoted';
+                    } else if( offer.netPremium == null && String.isNotBlank(formData.webPhone) ) {
+                        stageName = 'App Submitted';
+                    }
+
+                    // Oferta - obtenemos una oferta con todos los datos que vienen del formulario 
+                    Opportunity sfOffer = offer.toOpportunity();
+
+                    // Oferta - a partir del id externo miramos si ya existe en Salesforce
+                    if( mapOffersToDelete.containsKey(sfOffer.INFOQuoteNumber__c) ) {
+                        mapOffersToDelete.remove(sfOffer.INFOQuoteNumber__c);
+                    } else if( mapOffersToDelete.containsKey(externalSessionId) ) {
+                        mapOffersToDelete.remove(externalSessionId);
+                    }
+
+                    // Oferta - finalmente rellenamos los campos calculados que faltan de la oferta
+                    sfOffer.SessionId__c = externalSessionId;
+                    sfOffer.Name = offerName;
+                    sfOffer.ScopeId__c = currentScope.Id;
+                    sfOffer.Scope__c = scope;
+                    sfOffer.StageName = stageName;
+                    sfOffer.OwnerId = currentAdvisorId;
+                    sfOffer.AccountId = currentCustomer.Id;
+                    sfOffer.BusinessCode__c = (String.isNotBlank(offer.businessCode) ? offer.businessCode : formData.businessCode);
+                    sfOffer.BusinessName__c = (String.isNotBlank(currentScopeSettings?.Label) ? currentScopeSettings.Label : 'ZURICH EMPRESAS DIGITAL');
+                    sfOffer.ProductId__c = product?.Id;
+                    sfOffer.LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI);
+                    sfOffer.LegalAuth__c = (formData.legalAuth != null ? formData.legalAuth : false);
+                    sfOffer.IsTest__c = isTest;
+
+                    offersToCreate.add(sfOffer);
+
+                    if( sfOffer.INFOQuoteNumber__c != null ) {
+                        offersByQuoteNumber.add(sfOffer);
                     } else {
-                        offerName = offer.commercialPC + ' - ' + offer.technicalPC + ' - ' + currentCustomer.Name;
+                        offersBySessionId.add(sfOffer);
+                    }
+
+                    // Poliza
+                    if( String.isNotBlank(offer.policyNumber) ) {
+                        quoteNumberToPolicyNumberMap.put(i, offer.policyNumber);
+                    }
+
+                    // Risk (objeto asegurado)
+                    BusinessInsuranceRaterService.OfferRiskInformation risk = offer.offerRiskInformation;
+                    if(risk != null) {
+                        quoteNumberRiskMap.put( i, risk);
                     }
                 }
-
-                // Oferta - calculamos el id externo: SessionId
-                String externalSessionId = sessionId + productCodes;
-
-                // Oferta - calculamos el paso de la oferta: Stage
-                String stageName = 'Legit Lead';
-                if( String.isNotBlank(offer.policyNumber) ) {
-                    stageName = 'Closed Won';
-                } else if(offer.netPremium != null) {
-                    stageName = 'Quoted';
-                } else if( offer.netPremium == null && String.isNotBlank(formData.webPhone) ) {
-                    stageName = 'App Submitted';
-                }
-
-                // Oferta - obtenemos una oferta con todos los datos que vienen del formulario 
-                Opportunity sfOffer = offer.toOpportunity();
-
-                // Oferta - a partir del id externo miramos si ya existe en Salesforce
-                if( mapOffersToDelete.containsKey(sfOffer.INFOQuoteNumber__c) ) {
-                    mapOffersToDelete.remove(sfOffer.INFOQuoteNumber__c);
-                } else if( mapOffersToDelete.containsKey(externalSessionId) ) {
-                    mapOffersToDelete.remove(externalSessionId);
-                }
-
-                // Oferta - finalmente rellenamos los campos calculados que faltan de la oferta
-                sfOffer.SessionId__c = externalSessionId;
-                sfOffer.Name = offerName;
-                sfOffer.ScopeId__c = currentScope.Id;
-                sfOffer.Scope__c = scope;
-                sfOffer.StageName = stageName;
-                sfOffer.OwnerId = currentAdvisorId;
-                sfOffer.AccountId = currentCustomer.Id;
-                sfOffer.BusinessCode__c = (String.isNotBlank(offer.businessCode) ? offer.businessCode : formData.businessCode);
-                sfOffer.BusinessName__c = (String.isNotBlank(currentScopeSettings?.Label) ? currentScopeSettings.Label : 'ZURICH EMPRESAS DIGITAL');
-                sfOffer.ProductId__c = product?.Id;
-                sfOffer.LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI);
-                sfOffer.LegalAuth__c = (formData.legalAuth != null ? formData.legalAuth : false);
-                sfOffer.IsTest__c = isTest;
-
-                offersToCreate.add(sfOffer);
-
-                if( sfOffer.INFOQuoteNumber__c != null ) {
-                    offersByQuoteNumber.add(sfOffer);
-                } else {
-                    offersBySessionId.add(sfOffer);
-                }
-
-                // Poliza
-                if( String.isNotBlank(offer.policyNumber) ) {
-                    quoteNumberToPolicyNumberMap.put(i, offer.policyNumber);
-                }
-
-                // Risk (objeto asegurado)
-                BusinessInsuranceRaterService.OfferRiskInformation risk = offer.offerRiskInformation;
-                if(risk != null) {
-                    quoteNumberRiskMap.put( i, risk);
+                else
+                {
+                    insert new Error_Log__c(
+                        Message__c = 'No se puede actualizar la oferta porque ya se ha producido la integración con INFO',
+                        Source_Class__c = 'BussinessIinsuranceRaterService',
+                        Source_Method__c = 'checkOffers',
+                        Level__c = 'Error',
+                        Throwing_time__c = System.now()
+                        );
                 }
             }
+            
 
             // Creacion de la oferta
             if( !offersToCreate.isEmpty() ) {

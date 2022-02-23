@@ -91,7 +91,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Opportunity.Id,
             Opportunity.InfoQuoteNumber__c,
-            Opportunity.SessionId__c
+            Opportunity.SessionId__c, 
+            Opportunity.isUpdatedFromINFO__c // arcortazar - 22/2/22: Fix-ZE-1289
         })
         .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
         .addCondition(Query.conditionEq(Opportunity.Scope__c, scope));
