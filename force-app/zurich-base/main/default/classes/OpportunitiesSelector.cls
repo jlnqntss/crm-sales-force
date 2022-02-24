@@ -111,17 +111,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      */
     public List<Opportunity> findById(Id id)
     {
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
-            Opportunity.Id,
-            Opportunity.AccountId,
-            Opportunity.ScopeId__c,
-            Opportunity.OwnerId, 
-            Opportunity.IsTest__c
-        })
-        .selectReadableFields('Owner.Profile')
-        .addCondition(Query.conditionEq(Opportunity.Id, id));
-
-        return (List<Opportunity>) this.baseQuery.run();
+        List<Opportunity> offers = [SELECT Id, AccountId, ScopeId__c, OwnerId, Owner.ProfileId, Owner.Profile.Name, IsTest__c FROM Opportunity WHERE Id = :id];
+        return offers;
     }
 
     /**
@@ -134,19 +125,13 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @param {String scope} id del scope
      * @return {List<Opportunity} ofertas encontradas
      */
-    public List<Opportunity> findByAccountIdAndScopeAndNotId(Id id, Id accountId, String scopeId)
+    public List<Opportunity> findByAccountIdAndScopeAndNotId(Id id, Id accountId, String scope)
     {
+        List<Opportunity> extraOffers = new List<Opportunity>();
+        extraOffers = [SELECT Id, OwnerId, Owner.ProfileId, Owner.Profile.Name, IsTest__c FROM Opportunity WHERE Id != :id AND AccountId = :accountId AND ScopeId__c = :scope];
 
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
-            Opportunity.Id,
-            Opportunity.IsTest__c
-        })
-        .selectReadableFields('Owner.Profile')
-        .addCondition(Query.conditionNotEq(Opportunity.Id, id))
-        .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
-        .addCondition(Query.conditionEq(Opportunity.ScopeId__c, scopeId));
+        return extraOffers;
         
-        return (List<Opportunity>) this.baseQuery.run();
     }
 
 }
