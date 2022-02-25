@@ -20,6 +20,10 @@ export default class SendSurveyButton extends LightningElement {
   @track
   isOnCall = false;
 
+  // arcortazar - 24/02/22
+  status;
+  interactionId;
+
   /**
    * Variable interna para poder realizar un bind del handler handleCTIMessage
    */
@@ -47,6 +51,9 @@ export default class SendSurveyButton extends LightningElement {
 
     this.ctiMessageHandler = this.handleCTIMessage.bind(this);
     genesysCloud.addListener(this.ctiMessageHandler);
+
+    this.status = genesysCloud.getState();
+    this.interactionId = this.status.interactionId;
   }
 
   /**
@@ -72,6 +79,10 @@ export default class SendSurveyButton extends LightningElement {
    * @param {*} message Mensajes en el formato del Embedded Framework de Genesys
    */
   sendSurvey() {
+    // Aqui podríamos comprobar si tenemos el InteractionID
+    this.status = genesysCloud.getState();
+    this.interactionId = this.status.interactionId;
+
     genesysCloud.transfer(this.pollPhoneNumber);
     const navigateToCall = new CustomEvent("redirect", {
       bubbles: true,

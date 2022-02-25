@@ -20,7 +20,6 @@ import authorize from "@salesforce/apex/GenesysCloudLightningController.authoriz
 import getActiveCalls from "@salesforce/apex/GenesysCloudLightningController.getActiveCalls";
 import cancelCallBack from "@salesforce/apex/GenesysCloudLightningController.cancelCallBack";
 
-
 // #region Estado interno de la librería
 
 /**
@@ -94,6 +93,10 @@ function publishMessage(payload) {
 
 // #Exports
 export default {
+  getState() {
+    return state;
+  },
+
   /**
    * Añade un listener para escuchar cambios producidos en la telefonía
    * Ver https://help.mypurecloud.com/articles/events-in-salesforce/
@@ -235,11 +238,11 @@ export default {
    * @author jjuaristi
    */
   cancelCallBack(interactionID, ID) {
-    return cancelCallBack({interactionID : interactionID, contactRequestId : ID});
+    return cancelCallBack({
+      interactionID: interactionID,
+      contactRequestId: ID
+    });
   }
-
 };
-
-
 
 //#endregion
