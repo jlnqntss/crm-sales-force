@@ -1693,17 +1693,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>EmailMessage.GenesysInteractionId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>EmailMessage.GenesysQueueName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>EmailMessage.RoutedToGenesys__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>EmailMessage.GenesysInteractionId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2054,6 +2054,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.ValidationErrors__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.isUpdatedFromINFO__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
