@@ -3194,10 +3194,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>purecloud__PermissionCheck</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>purecloud__PhoneColumn</apexClass>
         <enabled>true</enabled>
     </classAccesses>
