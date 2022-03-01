@@ -469,17 +469,16 @@
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
         <fields>NAME</fields>
+        <fields>Indicator__c</fields>
+        <fields>TargetKPI__c</fields>
+        <fields>Actual_KPI__c</fields>
         <fields>RECORDTYPE</fields>
-        <fields>Status__c</fields>
         <fields>AccumulateType__c</fields>
         <fields>Segment__c</fields>
         <fields>Product__c</fields>
-        <fields>Indicator__c</fields>
-        <fields>TargetKPI__c</fields>
-        <fields>StartDate__c</fields>
+        <fields>EndDate__c</fields>
+        <fields>Status__c</fields>
         <relatedList>PlanComercial__c.Intermediary__c</relatedList>
-        <sortField>StartDate__c</sortField>
-        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
