@@ -679,6 +679,7 @@ public without sharing class BusinessInsuranceRaterService
 
             List<Opportunity> offersBySessionId = new List<Opportunity>();
             List<Opportunity> offersByQuoteNumber = new List<Opportunity>();
+            List<Error_Log__c> listaErroresInsertar = new List<Error_Log__c>();
 
             // Por cada Oferta que viene del formulario...
             for(Integer i=0; i < receivedOffers.size(); i++) {
@@ -694,6 +695,8 @@ public without sharing class BusinessInsuranceRaterService
                 // arcortazar - 22/2/22: incidencia actualización de ofertas cerradas
                 // Buscamos la oferta que viene por quoteNumberInfo y comprobamos el estado del campo isUpdatedFromINFO__c
                 // Si el campo isUpdatedFromINFO__c es true, es que se ha actualizado desde INFO y no debe de volver a manejarse.
+
+                
                 if(String.isBlank(offer.quoteNumberINFO) || mapOffersToDelete.get(offer.quoteNumberINFO).isUpdatedFromINFO__c == false)
                 {
 
@@ -765,15 +768,17 @@ public without sharing class BusinessInsuranceRaterService
                 }
                 else
                 {
-                    insert new Error_Log__c(
+                    Error_Log__c e = new Error_Log__c(
                         Message__c = 'No se puede actualizar la oferta porque ya se ha producido la integración con INFO',
                         Source_Class__c = 'BussinessIinsuranceRaterService',
                         Source_Method__c = 'checkOffers',
                         Level__c = 'Error',
                         Throwing_time__c = System.now()
                         );
+                    listaErroresInsertar.add(e);
                 }
             }
+            insert listaErroresInsertar;
             
 
             // Creacion de la oferta
