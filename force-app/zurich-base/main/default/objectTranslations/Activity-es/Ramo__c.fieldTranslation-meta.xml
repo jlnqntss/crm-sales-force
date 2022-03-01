@@ -8,7 +8,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Enterprise</masterLabel>
-        <translation>Diversos</translation>
+        <translation>Empresas</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Life</masterLabel>
@@ -16,7 +16,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Miscellaneous</masterLabel>
-        <translation>Empresas</translation>
+        <translation>Diversos</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Others</masterLabel>
