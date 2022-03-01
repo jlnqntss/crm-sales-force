@@ -4369,6 +4369,26 @@
         <readable>true</readable>
     </fieldPermissions>    
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.GroupLifeConsultantName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.GroupLifeConsultantEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>    
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.EnterpriseConsultantName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>   
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.EnterpriseConsultantEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>    
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.StatusIntermediary__c</field>
         <readable>true</readable>
