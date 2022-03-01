@@ -49,13 +49,22 @@
             <value>
                 <fullName>PYMEConsultant</fullName>
                 <default>false</default>
-                <label>Consultor Empresas</label>
+                <label>Consultor PYME</label>
             </value>
             <value>
                 <fullName>PYMEManager</fullName>
                 <default>false</default>
-                <isActive>true</isActive>
-                <label>PYMEManager</label>
+                <label>PYME Manager</label>
+            </value>
+            <value>
+                <fullName>GroupLifeConsultant</fullName>
+                <default>false</default>
+                <label>Consultor Vida Colectivo</label>
+            </value>
+            <value>
+                <fullName>EnterpriseConsultant</fullName>
+                <default>false</default>
+                <label>Consultor Empresas</label>
             </value>
         </valueSetDefinition>
     </valueSet>
