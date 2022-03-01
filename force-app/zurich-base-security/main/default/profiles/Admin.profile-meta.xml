@@ -7307,6 +7307,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.Additional_Information__c</field>
+        <readable>true</readable>
+    </fieldPermissions>    
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.ANIPhone__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7325,6 +7330,11 @@
         <field>Task.FollowUp__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Follow_up_type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>    
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.MeetingMinutes__c</field>
