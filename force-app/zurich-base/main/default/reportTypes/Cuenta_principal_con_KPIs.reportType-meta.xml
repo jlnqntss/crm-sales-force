@@ -221,7 +221,42 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>EnterpriseConsultantName__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>StatusIntermediary__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LifeConsultantEmail__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>GroupLifeConsultantEmail__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>GroupLifeConsultantName__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>TerritoryManagerEmail__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>CreatedDate</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LifeManagerEmail__c</field>
             <table>Account</table>
         </columns>
         <columns>
@@ -241,7 +276,37 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>PYMEConsultantEmail__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ManagerEmail__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>LastActivityDate</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>EnterpriseManagerEmail__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>IntermediaryStatus__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>PYMEManagerEmail__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>EnterpriseConsultantEmail__c</field>
             <table>Account</table>
         </columns>
         <columns>
@@ -262,6 +327,11 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>SicDesc</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>BusinessManagerEmail__c</field>
             <table>Account</table>
         </columns>
         <columns>
