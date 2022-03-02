@@ -27,7 +27,7 @@
                 <componentInstanceProperties>
                     <name>label</name>
                     <type>decorator</type>
-                    <value>Grabación/Encuesta</value>
+                    <value>Encuesta</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>scrollable</name>
