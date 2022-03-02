@@ -1593,14 +1593,6 @@ public without sharing class BusinessInsuranceRaterService
                 nationalIdentifier = value;
             }
         }
-
-        public String webIdentifier {
-            get;
-            set {
-                setRequiredFields('AccountInformation' + 'WebIdentifier');
-                webIdentifier = value;
-            }
-        }
     }
 
     /**
