@@ -36,7 +36,8 @@ const state = {
   logs: [],
   listeners: [],
   currentInteractionId: null,
-  interactions: {}
+  interactions: {},
+  isEmail: null
 };
 
 //#endregion
@@ -55,6 +56,7 @@ subscribe(
   (message) => {
     state.logs.push(message);
     if (message.type === "Interaction" && message.data.id) {
+      state.isEmail = message.data.isEmail;
       state.currentInteractionId = message.data.id;
       state.interactions[message.data.id] = Object.assign(
         state.interactions[message.data.id] || {},
@@ -93,6 +95,10 @@ function publishMessage(payload) {
 
 // #Exports
 export default {
+  setInteractionID(id) {
+    state.currentInteractionId = id;
+  },
+
   getState() {
     return state;
   },
@@ -107,7 +113,6 @@ export default {
    */
   addListener(listener) {
     state.listeners.push(listener);
-
     return state.logs;
   },
   /**
