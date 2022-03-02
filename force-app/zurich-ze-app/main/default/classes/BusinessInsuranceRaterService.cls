@@ -696,8 +696,11 @@ public without sharing class BusinessInsuranceRaterService
                 // Buscamos la oferta que viene por quoteNumberInfo y comprobamos el estado del campo isUpdatedFromINFO__c
                 // Si el campo isUpdatedFromINFO__c es true, es que se ha actualizado desde INFO y no debe de volver a manejarse.
 
-                
-                if(String.isBlank(offer.quoteNumberINFO) || mapOffersToDelete.get(offer.quoteNumberINFO).isUpdatedFromINFO__c == false)
+                System.debug('++++ quoteNumberInfo: ' + offer.quoteNumberINFO);
+                System.debug('++++ Oferta: ' + mapOffersToDelete.get(offer.quoteNumberINFO));
+
+
+                if(String.isBlank(offer.quoteNumberINFO) || mapOffersToDelete.get(offer.quoteNumberINFO) == null || mapOffersToDelete.get(offer.quoteNumberINFO).isUpdatedFromINFO__c == false)
                 {
 
                     String offerName = offer.quoteNumberINFO;
@@ -1588,6 +1591,14 @@ public without sharing class BusinessInsuranceRaterService
             set {
                 setRequiredFields('AccountInformation' + 'nationalIdentifier');
                 nationalIdentifier = value;
+            }
+        }
+
+        public String webIdentifier {
+            get;
+            set {
+                setRequiredFields('AccountInformation' + 'WebIdentifier');
+                webIdentifier = value;
             }
         }
     }
