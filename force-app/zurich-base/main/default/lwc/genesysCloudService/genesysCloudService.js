@@ -20,7 +20,6 @@ import authorize from "@salesforce/apex/GenesysCloudLightningController.authoriz
 import getActiveCalls from "@salesforce/apex/GenesysCloudLightningController.getActiveCalls";
 import cancelCallBack from "@salesforce/apex/GenesysCloudLightningController.cancelCallBack";
 
-
 // #region Estado interno de la librería
 
 /**
@@ -37,7 +36,8 @@ const state = {
   logs: [],
   listeners: [],
   currentInteractionId: null,
-  interactions: {}
+  interactions: {},
+  isEmail: null
 };
 
 //#endregion
@@ -56,6 +56,7 @@ subscribe(
   (message) => {
     state.logs.push(message);
     if (message.type === "Interaction" && message.data.id) {
+      state.isEmail = message.data.isEmail;
       state.currentInteractionId = message.data.id;
       state.interactions[message.data.id] = Object.assign(
         state.interactions[message.data.id] || {},
@@ -94,6 +95,14 @@ function publishMessage(payload) {
 
 // #Exports
 export default {
+  setInteractionID(id) {
+    state.currentInteractionId = id;
+  },
+
+  getState() {
+    return state;
+  },
+
   /**
    * Añade un listener para escuchar cambios producidos en la telefonía
    * Ver https://help.mypurecloud.com/articles/events-in-salesforce/
@@ -104,7 +113,6 @@ export default {
    */
   addListener(listener) {
     state.listeners.push(listener);
-
     return state.logs;
   },
   /**
@@ -235,11 +243,11 @@ export default {
    * @author jjuaristi
    */
   cancelCallBack(interactionID, ID) {
-    return cancelCallBack({interactionID : interactionID, contactRequestId : ID});
+    return cancelCallBack({
+      interactionID: interactionID,
+      contactRequestId: ID
+    });
   }
-
 };
-
-
 
 //#endregion

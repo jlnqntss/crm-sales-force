@@ -20,6 +20,10 @@ export default class SendSurveyButton extends LightningElement {
   @track
   isOnCall = false;
 
+  // arcortazar - 24/02/22
+  hasBeenTranfered = false;
+  isEmail = false;
+
   /**
    * Variable interna para poder realizar un bind del handler handleCTIMessage
    */
@@ -49,6 +53,14 @@ export default class SendSurveyButton extends LightningElement {
     genesysCloud.addListener(this.ctiMessageHandler);
   }
 
+  renderedCallback() {
+    getPollPhoneNumber().then((result) => {
+      this.pollPhoneNumber = result || "1000";
+    });
+
+    this.isOnCall = genesysCloud.isOnCall();
+  }
+
   /**
    * Elimina el listener sobre el API de Genesys Cloud
    *
@@ -72,21 +84,42 @@ export default class SendSurveyButton extends LightningElement {
    * @param {*} message Mensajes en el formato del Embedded Framework de Genesys
    */
   sendSurvey() {
-    genesysCloud.transfer(this.pollPhoneNumber);
-    const navigateToCall = new CustomEvent("redirect", {
-      bubbles: true,
-      composed: true,
-      detail: {
-        utilityBarIcon: "call"
+    // Aqui podríamos comprobar si tenemos el InteractionID
+
+    if (!this.isEmail) {
+      if (
+        genesysCloud.getState().currentInteractionId !== null &&
+        genesysCloud.getState().currentInteractionId !== undefined &&
+        this.pollPhoneNumber !== undefined &&
+        this.pollPhoneNumber !== null
+      ) {
+        genesysCloud.transfer(this.pollPhoneNumber);
+        const navigateToCall = new CustomEvent("redirect", {
+          bubbles: true,
+          composed: true,
+          detail: {
+            utilityBarIcon: "call"
+          }
+        });
+        this.dispatchEvent(navigateToCall);
+      } else {
+        const eventError = new ShowToastEvent({
+          title: "Error",
+          message:
+            "No se ha recuperado el identificador de la llamada, por favor, refresque la página o ancle esta ventana a la barra de tareas",
+          variant: "error"
+        });
+        this.dispatchEvent(eventError);
       }
-    });
-    this.dispatchEvent(navigateToCall);
-    const event = new ShowToastEvent({
-      title: this.label.sendSurveyToastTitleSuccess,
-      message: this.label.sendSurveyToastMessageSuccess,
-      variant: "success"
-    });
-    this.dispatchEvent(event);
+    } else {
+      const eventError = new ShowToastEvent({
+        title: "Error",
+        message:
+          "No puede redireccionarse una encuesta en este tipo de interaccion",
+        variant: "error"
+      });
+      this.dispatchEvent(eventError);
+    }
   }
 
   /**
@@ -98,8 +131,21 @@ export default class SendSurveyButton extends LightningElement {
    * @param {*} message Mensajes
    */
   handleCTIMessage(message) {
-    if (message.type === "Interaction") {
+    if (message.type === "Interaction" && !message.data.isEmail) {
       this.isOnCall = genesysCloud.isOnCall();
+
+      if (message.category === "blindTransfer") {
+        this.hasBeenTranfered = true;
+      } else if (message.category === "change" && this.hasBeenTranfered) {
+        const event = new ShowToastEvent({
+          title: this.label.sendSurveyToastTitleSuccess,
+          message: this.label.sendSurveyToastMessageSuccess,
+          variant: "success"
+        });
+        this.dispatchEvent(event);
+      } else if (message.category === "disconnect" && this.hasBeenTranfered) {
+        this.hasBeenTranfered = false;
+      }
     }
   }
 
