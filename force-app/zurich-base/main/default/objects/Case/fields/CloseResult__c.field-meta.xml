@@ -11,7 +11,6 @@
     <type>Picklist</type>
     <valueSet>
         <controllingField>Subtype__c</controllingField>
-        <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
