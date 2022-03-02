@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AutomaticNotifications__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>OCS. Si está activa y se cumplen las demás condiciones de envío, se notificará al cliente o mediador cuando su caso esté pendiente por su parte.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Si está activa y se cumplen las demás condiciones de envío, se notificará al cliente o mediador cuando su caso esté pendiente por su parte.</inlineHelpText>
+    <label>Automatic notifications</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
