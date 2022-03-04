@@ -215,7 +215,7 @@
         <connector>
             <targetReference>FulfilPrerequisitesDecision</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3) AND 4 AND 5 AND 6 AND 7</filterLogic>
+        <filterLogic>1 AND (2 OR 3) AND 4 AND 5 AND 6 AND 7 AND 8</filterLogic>
         <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
@@ -265,11 +265,18 @@
                 <stringValue>Cerrado</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>CloseDetail__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Sin respuesta de cliente/mediador</stringValue>
+            </value>
+        </filters>
         <object>Case</object>
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>CoincideVAR</name>
         <dataType>Boolean</dataType>
