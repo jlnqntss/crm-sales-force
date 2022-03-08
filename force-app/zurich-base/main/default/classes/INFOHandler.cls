@@ -419,9 +419,7 @@ public class INFOHandler implements ISystem
             when 'QUOTE'
             {
                 Opportunity quoteRecord = (Opportunity) tf.transform(QUOTE, 'Opportunity', recordValuesMap);
-                // arcortazar - 22/2/22: incidencia actualización de ofertas cerradas
-                quoteRecord.isUpdatedFromINFO__c = true;
-                
+                //quoteRecord.StageName = 'Open'; //20210225 movido a trigger before insert
                 addRecordToMap(externalRequest, QUOTE, 'Opportunity', quoteRecord);
             }
             // Opción oferta
