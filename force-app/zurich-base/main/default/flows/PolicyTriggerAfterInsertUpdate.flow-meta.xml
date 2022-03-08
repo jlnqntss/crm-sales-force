@@ -22,19 +22,12 @@
         <name>UpdateOfferClosedWon</name>
         <label>Cambiar Oferta a Closed Won</label>
         <locationX>175</locationX>
-        <locationY>551</locationY>
+        <locationY>553</locationY>
         <assignmentItems>
             <assignToReference>GetRelatedOffer.StageName</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>Closed Won</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>GetRelatedOffer.isUpdatedFromINFO__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
             </value>
         </assignmentItems>
         <connector>
