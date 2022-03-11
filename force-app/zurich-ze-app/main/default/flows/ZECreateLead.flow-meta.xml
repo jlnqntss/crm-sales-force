@@ -11,10 +11,17 @@
         <connector>
             <targetReference>GoToLead</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>commercialActivity</name>
             <value>
                 <elementReference>CommercialActivity</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>DisplayWebIdentifier</name>
+            <value>
+                <elementReference>DisplayWebIdentifier</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -66,6 +73,7 @@
         <locationY>734</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -318,6 +326,7 @@
                     <elementReference>FakeEmail</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -337,6 +346,7 @@
                     <elementReference>InputPhone</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -349,6 +359,11 @@
             <fieldText>Ámbito</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>DisplayWebIdentifier</name>
+            <fieldText>&lt;p&gt;Web Identifier: {!InputWebIdentifier}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -379,6 +394,13 @@
     </variables>
     <variables>
         <name>InputScope</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>InputWebIdentifier</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

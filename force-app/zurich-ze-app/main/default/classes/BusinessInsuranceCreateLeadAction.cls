@@ -4,6 +4,9 @@
  * 
  * @author rlopez
  * @date 30/12/2020
+ * 
+ * @last modified by arcortazar
+ * @last modified 07/02/2022
  */
 global with sharing class BusinessInsuranceCreateLeadAction {
 
@@ -33,6 +36,7 @@ global with sharing class BusinessInsuranceCreateLeadAction {
             accountInformation.firstName = request.firstName;
             accountInformation.commercialActivity = request.commercialActivity;
             accountInformation.nationalIdentifier = request.nationalIdentifier;
+            accountInformation.webIdentifier = request.DisplayWebIdentifier.replace('Web Identifier: ', '');
             formRequest.accountInformation = accountInformation;
 
             Account currentCustomer = BusinessInsuranceRaterService.processFormData(formRequest);
@@ -97,6 +101,13 @@ global with sharing class BusinessInsuranceCreateLeadAction {
             required=true
         )
         global String scopeBusinessCode;
+
+        @InvocableVariable(
+            label='DisplayWebIdentifier'
+            description='DisplayWebIdentifier'
+            required=false
+        )
+        global String DisplayWebIdentifier;
     }
 
     global class CreateLeadActionResponse

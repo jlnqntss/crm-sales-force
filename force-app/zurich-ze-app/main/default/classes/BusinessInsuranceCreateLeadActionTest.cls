@@ -16,6 +16,7 @@ public class BusinessInsuranceCreateLeadActionTest
         leadInformation.commercialActivity = '101100';
         leadInformation.nationalIdentifier = '12345678U';
         leadInformation.scopeBusinessCode = businessCode;
+        leadInformation.DisplayWebIdentifier = '';
 
         requests.add(leadInformation);
 

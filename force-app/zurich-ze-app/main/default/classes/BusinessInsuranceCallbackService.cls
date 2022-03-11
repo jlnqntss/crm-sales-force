@@ -33,7 +33,7 @@ public class BusinessInsuranceCallbackService
      */
     public static void validateRequiredFields(CallMeBack callMeBack)
     {
-        if( callMeBack.phone == null || String.isBlank(callMeBack.phone) )
+        if( callMeBack.phone == null || String.isBlank(callMeBack.phone))
         {
             throw new BusinessInsuranceCallbackServiceException(REQUIRED_FIELD_MISSING_STATUSCODE, REQUIRED_FIELD_MISSING);
         }
@@ -89,6 +89,7 @@ public class BusinessInsuranceCallbackService
         public String phone {get; set;}
         public Datetime bestTimeFrom {get; set;}
         public Datetime bestTimeUntil {get; set;}
+        public String webIdentifier {get; set;}
     }
 
     /**
