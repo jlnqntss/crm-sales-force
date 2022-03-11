@@ -1,5 +1,18 @@
 public class OpportunityUtil
 {
+    public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
+
+    /**
+     * BULK BEFORE
+     * Inicializa un mapa de perfiles a los que se les permite bypasear la regla de validación para
+     *
+     * @date 24/02/2021
+     */
+    public static void initMapOfProfiles()
+    {
+        listaPerfiles = new Map<Id, Profile>([SELECT Id FROM Profile WHERE Name IN ('System Administrator', 'Genesys Admin', 'Integrator', 'Automation')]);
+    }
+
     /**
      * Método que controla la generación del scope correspondiente
      * Actualmente solo se generá scope para Ofertas que provengan de INFO
@@ -114,14 +127,12 @@ public class OpportunityUtil
      * */ 
      public static void validateOfferStage(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
      {
-         System.debug('++++ validateOfferStage');
         for (Opportunity newOpty : newList)
         {
             Opportunity oldOpty = oldMap.get(newOpty.Id);
 
             if (!skipStageNameValidation(newOpty) && !isValidStageName(oldOpty))
             { 
-                System.debug('++++ Entramos en el if');
                 // ERROR  : Agregar el mensaje a nivel de campo 
                 newOpty.addError('StageName', Label.OfferStageValidationMessage);
             } 
@@ -140,7 +151,6 @@ public class OpportunityUtil
     @TestVisible
     private static Boolean isValidStageName(Opportunity oldOpty)
     {
-        System.debug('++++ isValidStageName');
         Boolean retorno = true;
 
         if (oldOpty != null )
@@ -164,42 +174,30 @@ public class OpportunityUtil
     @TestVisible
     private static Boolean skipStageNameValidation(Opportunity newOpty)
     {
-
-        System.debug('++++ skipStageNameValidation');
         Boolean retorno = false;
         
-        System.debug('++++ Perfil de usuario ' + UserInfo.getProfileId());
         // Bypass por perfil
-        if (!OpportunityHandler.listaPerfiles.isEmpty())
+        if (!listaPerfiles.isEmpty())
         {
-            System.debug('++++ Entra en if, la lista de perfiles no está vacía');
-            System.debug('++++ Keys ' + OpportunityHandler.listaPerfiles.keySet());
-            if(OpportunityHandler.listaPerfiles.containsKey(UserInfo.getProfileId()))
+            if(listaPerfiles.containsKey(UserInfo.getProfileId()))
             {
-
-                System.debug('++++ listaPerfiles : perfil permitido');
                 retorno = true;
             }
         }
 
         // Bypass por usuario (usando los Custom Permisson)
-        System.debug('++++ OppUtil CustomPermis ' + FeatureManagement.checkPermission('ZE_Supervisor'));
-        if(FeatureManagement.checkPermission('ZE_Supervisor'))
+        if(FeatureManagement.checkPermission('Editar_ofertas_cerradas'))
         {
             retorno = true;
-            System.debug('++++ Custom Permisson :' + retorno);
         }
         
 
         // Bypass por reasignación
         if(newOpty.HasBeenReassigned__c)
         {
-            System.debug('++++ Reasignación ' + newOpty.HasBeenReassigned__c);
             newOpty.HasBeenReassigned__c = false;
             retorno = true;
         }
-
-        System.debug('++++ Retorno ' + retorno);
         return retorno;
     }
 }
