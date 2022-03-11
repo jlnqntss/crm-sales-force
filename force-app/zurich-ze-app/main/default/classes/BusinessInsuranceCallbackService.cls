@@ -60,6 +60,7 @@ public class BusinessInsuranceCallbackService
             callMeBack.PreferredContactDatetime__c = BusinessInsuranceUtil.getPreferredContactDatetime(requestCallMeBack.bestTimeFrom);
             callMeBack.PreferredPhone = requestCallMeBack.phone;
             callMeBack.WebName__c = requestCallMeBack.name;
+            callMeBack.WebIdentifier__c = requestCallMeBack.webIdentifier; // arcortazar - fiz-ZE-1234, asignamos el campo que viene desde la request al objeto CallMeBack
             if( !genesysQueue.isEmpty() )
             {   //Cola de Genesys OPCIONAL, si no se rellena, no entrará al ProcessBuilder que rellena el id de interacción
                 callMeBack.GenesysCloudQueueId__c = genesysQueue[0].Id;
