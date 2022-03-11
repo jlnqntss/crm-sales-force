@@ -1,5 +1,7 @@
 public class OpportunityHandler implements ITrigger
 {
+
+    public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
     public OpportunityHandler()
     {}
 
@@ -10,7 +12,10 @@ public class OpportunityHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        // FIXME: refactorizar y meter en método en OppoortunityUtils
+        listaPerfiles = new Map<Id, Profile>([SELECT Id FROM Profile WHERE Name IN ('System Administrator', 'Genesys Admin', 'Integrator', 'Automation')]);
+    }
 
     /**
      * bulkAfter
@@ -40,9 +45,17 @@ public class OpportunityHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        System.debug('++++ BEFORE UPDATE');
+        Opportunity optyNew = (Opportunity)newList.get(0);
+        Opportunity optyOld = (Opportunity)oldMap.get(optyNew.Id);
+
+        System.debug('++++ New list ' + optyNew.OwnerId + ' Old list ' + optyOld.OwnerId);
         OpportunityUtil.preventNullUpdates((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
         //OpportunityUtil.detectOpportunityStageChange(newList, (Map<Id, Opportunity>) oldMap); //20210225 sustituido por before insert
         OpportunityUtil.detectOpportunityAccountChange((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
+
+        // arcortazar - 09/03/2022: Validamos si puede llevarse a cabo el cambio que se presenta
+        OpportunityUtil.validateOfferStage((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
     }
 
     /**

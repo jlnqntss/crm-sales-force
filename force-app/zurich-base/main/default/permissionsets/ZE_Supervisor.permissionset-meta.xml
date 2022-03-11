@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>ZE_Supervisor</name>
+    </customPermissions>
+    <description>Otorga permisos a los supervisores de ZE</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>ZE Supervisor</label>
+</PermissionSet>

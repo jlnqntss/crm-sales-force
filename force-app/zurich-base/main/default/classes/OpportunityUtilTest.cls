@@ -42,6 +42,418 @@ private class OpportunityUtilTest
         }
     }
 
+    // TODO: 
+    // Si cuando hacemos un update con user = no Supervisor y no está reasignada, que me saque el dedo -> que no cumpla ninguna de las condiciones
+    // Si cuando hacemos un update con user = no Supervisor y hasBeenReassigned -> OK y que el check tiene que quedarse a false
+    // Si cuando hacemos un update con user = Supervisor ->  que funcione 
+    // Si cuando hacemos un update con perfil de los bypaseados (Admin, GenesysAdmin..., Automation) ->  que funcione -> DONE
+
+    /**
+     * Método de test que comprueba que la oportunidad NO esta Cerrada Ganada
+     * 
+     * @author arcortazar - nts
+     * @date 10/03/2022
+     */
+    @isTest
+    static void test_isValidStageName_OK() 
+    {
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        System.debug('++++ Accounts ' + accounts);
+
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
+        insert opp;
+
+        Boolean salida;
+        Test.startTest();
+        salida = OpportunityUtil.isValidStageName(opp);
+        Test.stopTest();
+
+        System.assertEquals(true, salida, 'La oferta que hemos creado no debe ser Cerrada Ganada');
+    }
+
+    /**
+     * Método de test que comprueba que la oportunidad SI está cerrada ganada
+     * 
+     * @author arcortazar - nts
+     * @date 10/03/2022
+     */
+    @isTest
+    static void test_isValidStageName_NOK() 
+    {
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        System.debug('++++ Accounts ' + accounts);
+
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed won', System.today().addDays(10), 1).get(0);
+        insert opp;
+
+        Boolean salida;
+        Test.startTest();
+        salida = OpportunityUtil.isValidStageName(opp);
+        Test.stopTest();
+
+        System.assertEquals(false, salida, 'La oferta que hemos creado si debe ser Cerrada Ganada');
+    }
+
+    /**
+     * Método de test que comprueba que se hace correctamente el bypass debido al perfil. 
+     * 
+     * @author arcortazar - nts
+     * @date 10/03/2022
+     */
+    @isTest
+    static void test_skipStageNameValidation_byProfile_OK() 
+    {
+
+        User u = [Select Id FROM User WHERE Name like 'Integrator'];
+
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        System.debug('++++ Accounts ' + accounts);
+
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed won', System.today().addDays(10), 1).get(0);
+        insert opp;
+
+        // Primera parte, ha de hacer el skip debido a que el perfil del usuario lo permite
+        Boolean salida;
+        System.runAs(u)
+        {
+            Test.startTest();
+            salida = OpportunityUtil.skipStageNameValidation(opp);
+            Test.stopTest();
+        }
+        System.assertEquals(true, salida, 'Se debe hacer el bypass debido al perfil (Integrator)');
+    }
+
+    /**
+     * Método de test que comprueba que se hace correctamente el Bypass debido al Custom Permisson
+     * 
+     * @author arcortazar - nts
+     * @date 10/03/2022
+     */
+    @isTest
+    static void test_skipStageNameValidation_byCustomPermisson_OK() 
+    {
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        System.debug('++++ Accounts ' + accounts);
+
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed won', System.today().addDays(10), 1).get(0);
+        insert opp;
+
+        Boolean salida;
+        User u = [Select Id FROM User WHERE Name like 'Agustin Angel Zapata Mendez'];
+        System.runAs(u)
+        {
+            System.debug('++++ TEst Custom permiss ' + FeatureManagement.checkPermission('ZE_Supervisor'));
+
+            Test.startTest();
+            salida = OpportunityUtil.skipStageNameValidation(opp);
+            Test.stopTest();
+        }
+        System.assertEquals(true, salida, 'Este usuario tiene los Custom Permission adecuados para hacer el bypass');
+    }
+
+    /**
+     * Método de test que comprueba que se hace correctamente el Bypass debido al flag de reasignación
+     * 
+     * @author arcortazar - nts
+     * @date 10/03/2022
+     */
+    @isTest
+    static void test_skipStageNameValidation_byHasBeenReassigned_OK() 
+    {
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        System.debug('++++ Accounts ' + accounts);
+
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed won', System.today().addDays(10), 1).get(0);
+        opp.HasBeenReassigned__c = true;
+        insert opp;
+        User u = [Select Id FROM User WHERE Name like 'Julio Fabeiro Garcia'];
+        Boolean salida;
+        System.runAs(u)
+        {
+            Test.startTest();
+            salida = OpportunityUtil.skipStageNameValidation(opp);
+            Test.stopTest();
+        }
+
+        System.assertEquals(true, salida, 'Debe pasar el bypass debido al flag de HasBeenReassigned__c');
+    }
+
+    /**
+     * Método de test que comprueba que no se lleva a cabo el bypass debido a que no se da ninguna de las condiciones.
+     * 
+     * @author arcortazar - nts
+     * @date 10/03/2022
+     */
+    @isTest
+    static void test_skipStageNameValidation_NOK() 
+    {
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        System.debug('++++ Accounts ' + accounts);
+
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed won', System.today().addDays(10), 1).get(0);
+        opp.HasBeenReassigned__c = false;
+        insert opp;
+        System.debug('++++ Despues del insert ' + opp);
+
+        User u = [Select Id FROM User WHERE Name like 'Julio Fabeiro Garcia'];
+        Boolean salida;
+        System.runAs(u)
+        {
+            Test.startTest();
+            salida = OpportunityUtil.skipStageNameValidation(opp);
+            Test.stopTest();
+        }
+
+        System.assertEquals(false, salida, 'No debe pasar el bypass debido al flag de HasBeenReassigned__c');
+    }
+
+    /**
+     * Método de test que comprueba que se hace un update de la oportunidad utilizando uno de los perfiles bypaseados (En este caso, sysadmin).
+     * @author arcortazar
+     * @date 09/03/2022
+     * 
+     */
+    @isTest
+    static void test_runAsSysAdmin_OK() 
+    {
+        // Setup del test
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        System.debug('++++ Accounts ' + accounts);
+
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
+        insert opp;
+        System.debug('++++ Optys recien insertada ' + opp);
+
+        opp.OwnerId = UserInfo.getUserId();
+        opp.HasBeenReassigned__c = true;
+        
+        // Lanzamos el test, modificamos la oferta 
+        Test.startTest();
+        upsert opp;
+        Test.stopTest();
+
+        // Comprobamos que se haya modificado la oferta
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity]; 
+        System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
+        System.debug('++++ Opty despues de insertar la tarea ' + oportunidades.get(0));
+
+        System.assertEquals(UserInfo.getUserId(), oportunidades.get(0).OwnerId, 'EL owner de la oferta ha de ser el usuario que corre el test');
+        System.assertEquals(false, oportunidades.get(0).HasBeenReassigned__c, 'El flag debe haberse modificado');
+    }
+
+    /**
+     * Método de test que comprueba que se hace un update de la oportunidad utilizando un perfil supervisor.
+     * @author arcortazar
+     * @date 09/03/2022
+     * 
+     */
+    @isTest
+    static void test_runAsSupervisor_OK() 
+    {
+        // Obtenemos los diferentes usuarios: supervisor y no supervisor
+        User uSup = [SELECT Id FROM User WHERE Name='Agustin Angel Zapata Mendez'];
+        System.debug('++++ User ' + uSup);
+
+        // Creamos la oportunidad que vamos a manejar en el test
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+
+       Product2 p = new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'Group 1',
+                INFO_Product_Number__c = '00800-00001'
+            );
+        insert p;
+
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
+        opp.BusinessCode__c = '123456';
+        opp.InfoQuoteNumber__c = '123456';
+        opp.OwnerId = uSup.Id;
+        opp.ProductId__c = p.Id;
+        insert opp;
+        System.debug('++++ Opty recien insertada ' + opp);
+
+        // Modificamos la oportunidad
+        opp.HasBeenReassigned__c = true;
+
+        System.runAs(uSup)
+        {   
+            // Lanzamos el test, modificamos la oferta 
+            System.debug('++++ Lanzamos el test');
+            Test.startTest();
+            upsert opp;
+            Test.stopTest();
+        }
+
+        // Comprobamos que se haya modificado la oferta
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity]; 
+        System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
+        System.debug('++++ Opty despues de insertar la tarea ' + oportunidades.get(0));
+
+        System.assertEquals(uSup.Id, oportunidades.get(0).OwnerId, 'EL owner de la oferta ha de ser el usuario que corre el test');
+        System.assertEquals(false, oportunidades.get(0).HasBeenReassigned__c, 'El flag debe haberse modificado');
+    }
+
+    /**
+     * Método de test que comprueba que se hace un update de la oportunidad utilizando un perfil no supervisor, mediante el bypass de HassBeenReassigned
+     * @author arcortazar
+     * @date 09/03/2022
+     * 
+     */
+    @isTest
+    static void test_runNotAsSupervisor_OK() 
+    {
+       // Obtenemos los diferentes usuarios: supervisor y no supervisor
+       User uNoSup = [SELECT Id FROM User WHERE Name='Julio Fabeiro Garcia'];
+       System.debug('++++ User ' + uNoSup);
+
+       // Creamos la oportunidad que vamos a manejar en el test
+       List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+
+       Product2 p = new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'Group 1',
+                INFO_Product_Number__c = '00800-00001'
+            );
+        insert p;
+
+       Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
+       opp.BusinessCode__c = '123456';
+       opp.InfoQuoteNumber__c = '123456';
+       opp.OwnerId = uNoSup.Id;
+       opp.ProductId__c = p.Id;
+       insert opp;
+       System.debug('++++ Opty recien insertada ' + opp);
+
+       // Modificamos la oportunidad
+       opp.HasBeenReassigned__c = true;
+
+       System.runAs(uNoSup)
+       {   
+           // Lanzamos el test, modificamos la oferta 
+           System.debug('++++ Lanzamos el test');
+           Test.startTest();
+           upsert opp;
+           Test.stopTest();
+       }
+
+        // Comprobamos que se haya modificado la oferta
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity]; 
+        System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
+        System.debug('++++ Opty despues de insertar la tarea ' + oportunidades.get(0));
+
+        System.assertEquals(false, oportunidades.get(0).HasBeenReassigned__c, 'El flag debe haberse modificado');
+    }
+
+    /**
+     * Método de test que comprueba que NO se hace un update de la oportunidad. No tenemos ninguna de las opciones de bypass
+     * @author arcortazar
+     * @date 09/03/2022
+     * 
+     */
+    @isTest
+    static void test_runNotAsSupervisor_ClosedWon_NOK() 
+    {
+        // Obtenemos los diferentes usuarios: supervisor y no supervisor
+       User uNoSup = [SELECT Id FROM User WHERE Name='Julio Fabeiro Garcia'];
+       System.debug('++++ User ' + uNoSup);
+
+       // Creamos la oportunidad que vamos a manejar en el test
+       List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+
+       Product2 p = new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'Group 1',
+                INFO_Product_Number__c = '00800-00001'
+            );
+        insert p;
+
+       Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed Won', System.today().addDays(10), 1).get(0);
+       opp.BusinessCode__c = '123456';
+       opp.InfoQuoteNumber__c = '123456';
+       opp.OwnerId = uNoSup.Id;
+       opp.ProductId__c = p.Id;
+       insert opp;
+       System.debug('++++ Opty recien insertada ' + opp);
+
+       // Modificamos la oportunidad
+       opp.HasBeenReassigned__c = false;
+
+       Database.SaveResult resultados;
+       System.runAs(uNoSup)
+       {   
+           // Lanzamos el test, modificamos la oferta 
+           System.debug('++++ Lanzamos el test');
+           Test.startTest();
+           resultados = Database.update(opp, false);
+           Test.stopTest();
+       }
+
+        // Comprobamos que se haya modificado la oferta
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, StageName, HasBeenReassigned__c FROM Opportunity]; 
+        System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
+        System.debug('++++ Opty despues de insertar la tarea ' + oportunidades.get(0));
+
+        System.assertEquals(false, resultados.isSuccess());
+        System.assertEquals(Label.OfferStageValidationMessage, resultados.getErrors().get(0).getMessage());
+    }
+
+    /**
+     * Método de test que comprueba que pese a tener elementos para bypasear, no se actualiza la oferta porque está cerrada ganada.
+     * @author arcortazar
+     * @date 09/03/2022
+     */
+    @isTest
+    static void test_runAsSupervisor_ClosedWon_OK() 
+    {
+       // Obtenemos los diferentes usuarios: supervisor y no supervisor
+       User uSup = [SELECT Id FROM User WHERE Name='Agustin Angel Zapata Mendez'];
+       System.debug('++++ User ' + uSup);
+       User uNoSup = [SELECT Id, IsZESupervisor__c FROM User WHERE Name='Julio Fabeiro Garcia'];
+       System.debug('++++ User ' + uNoSup);
+
+       // Creamos la oportunidad que vamos a manejar en el test
+       List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+
+        Product2 p = new Product2
+           (
+               Name = 'Product test 1',
+               GroupDescription__c = 'Group 1',
+               INFO_Product_Number__c = '00800-00001'
+           );
+        insert p;
+
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed Won', System.today().addDays(10), 1).get(0);
+        opp.BusinessCode__c = '123456';
+        opp.InfoQuoteNumber__c = '123456';
+        opp.OwnerId = uSup.Id;
+        opp.ProductId__c = p.Id;
+        insert opp;
+        System.debug('++++ Opty recien insertada ' + opp);
+
+        // Modificamos la oportunidad
+        opp.HasBeenReassigned__c = true;
+
+        Database.SaveResult resultados;
+        System.runAs(uSup)
+        {   
+           // Lanzamos el test, modificamos la oferta 
+           System.debug('++++ Lanzamos el test');
+           Test.startTest();
+           resultados = Database.update(opp, false);
+           Test.stopTest();
+        }
+
+        // Comprobamos que se haya modificado la oferta
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity]; 
+        System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
+        System.debug('++++ Opty despues de insertar la tarea ' + oportunidades.get(0));
+
+        System.assertEquals(true, resultados.isSuccess());
+    }
+
     /**
      * Test que comprueba que no se modifica la etapa de la oferta cuando el usuario es Integrator
      *

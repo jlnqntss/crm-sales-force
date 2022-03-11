@@ -7945,6 +7945,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.HasBeenReassigned__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.InfoLastModifiedDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
