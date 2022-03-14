@@ -379,7 +379,7 @@ private class OpportunityUtilTest
     {
        // Obtenemos los diferentes usuarios: supervisor y no supervisor
        User uSup = [SELECT Id FROM User WHERE Name='Agustin Angel Zapata Mendez'];
-       User uNoSup = [SELECT Id, IsZESupervisor__c FROM User WHERE Name='Nestor Neira Bellisco'];
+       User uNoSup = [SELECT Id FROM User WHERE Name='Nestor Neira Bellisco'];
 
        // Creamos la oportunidad que vamos a manejar en el test
        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
