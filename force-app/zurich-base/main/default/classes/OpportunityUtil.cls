@@ -1,4 +1,4 @@
-public class OpportunityUtil
+public with sharing class OpportunityUtil
 {
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
 
@@ -10,7 +10,8 @@ public class OpportunityUtil
      */
     public static void initMapOfProfiles()
     {
-        listaPerfiles = new Map<Id, Profile>([SELECT Id FROM Profile WHERE Name IN ('System Administrator', 'Genesys Admin', 'Integrator', 'Automation')]);
+        List<String> nombresPerfiles = new List<String>{'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
+        listaPerfiles = ProfilesSelector.getAuthorizedProfiles(nombresPerfiles);
     }
 
     /**
