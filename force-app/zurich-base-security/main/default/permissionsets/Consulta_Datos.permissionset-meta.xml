@@ -1923,7 +1923,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.HassBeenReassigned__c</field>
+        <field>Opportunity.HasBeenReassigned__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
