@@ -153,14 +153,11 @@ public with sharing class OpportunityUtil
     private static Boolean isValidStageName(Opportunity oldOpty)
     {
         Boolean retorno = true;
-
-        if (oldOpty != null )
+        if( oldOpty != null && oldOpty.StageName.equalsIgnoreCase('Closed won'))
         {
-            if( oldOpty.StageName.equalsIgnoreCase('Closed won'))
-            {
-                retorno = false;
-            }
+            retorno = false;
         }
+
         return retorno;
     }
 
@@ -178,13 +175,11 @@ public with sharing class OpportunityUtil
         Boolean retorno = false;
         
         // Bypass por perfil
-        if (!listaPerfiles.isEmpty())
+        if(!listaPerfiles.isEmpty() && listaPerfiles.containsKey(UserInfo.getProfileId()))
         {
-            if(listaPerfiles.containsKey(UserInfo.getProfileId()))
-            {
-                retorno = true;
-            }
+            retorno = true;
         }
+        
 
         // Bypass por usuario (usando los Custom Permisson)
         if(FeatureManagement.checkPermission('Editar_ofertas_cerradas'))
