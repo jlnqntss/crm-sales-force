@@ -11,7 +11,7 @@ public with sharing class OpportunityUtil
     public static void initMapOfProfiles()
     {
         List<String> nombresPerfiles = new List<String>{'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
-        listaPerfiles = ProfilesSelector.getAuthorizedProfiles(nombresPerfiles);
+        listaPerfiles = ProfilesSelector.getProfilesByName(nombresPerfiles);
     }
 
     /**
