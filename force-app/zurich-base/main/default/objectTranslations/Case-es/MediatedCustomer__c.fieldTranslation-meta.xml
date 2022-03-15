@@ -2,5 +2,5 @@
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Cliente mediado</label>
     <name>MediatedCustomer__c</name>
-    <relationshipLabel><!-- Cases (Mediated Customer) --></relationshipLabel>
+    <relationshipLabel>Casos (Cliente Mediado)</relationshipLabel>
 </CustomFieldTranslation>
