@@ -1,8 +1,12 @@
 @isTest
 private with sharing class AccountsSelectorTest
 {
-    public static final String INTERMEDIARY_EMAIL = 'intermediary01@invalid.com';
-    public static final String INTERMEDIARY_EMAIL_FIELD = 'MainEmail__c';
+    public static final String SET_ERROR_MSG            =   'Set should contains the record Id';
+    public static final String EMPTY_TEXT_MSG           =   'List shouldnt be empty';
+    public static final String NEMP_TEXT_MSG            =   'List should be empty';
+    public static final String ACC_ERROR_MSG            =   'There should be Accounts';
+    public static final String INTERMEDIARY_EMAIL       =   'intermediary01@invalid.com';
+    public static final String INTERMEDIARY_EMAIL_FIELD =   'MainEmail__c';
 
     @TestSetup
     public static void createScenario()
@@ -62,12 +66,12 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
+        System.assertEquals(false, matchedRecords.isEmpty(), EMPTY_TEXT_MSG );
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, recordIds.contains(record.Id), 'Set should contains the record Id');
+            System.assertEquals(true, recordIds.contains(record.Id), SET_ERROR_MSG);
         }
     }
 
@@ -120,12 +124,12 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
+        System.assertEquals(false, matchedRecords.isEmpty(), EMPTY_TEXT_MSG );
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, recordIds.contains(record.Id), 'Set should contains the record Id');
+            System.assertEquals(true, recordIds.contains(record.Id), SET_ERROR_MSG);
         }
     }
 
@@ -156,11 +160,11 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         // Then
-        System.assertEquals(false, matchedRecords.isEmpty(), 'The list shouldnt be empty');
+        System.assertEquals(false, matchedRecords.isEmpty(), EMPTY_TEXT_MSG );
 
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, recordIds.contains(record.Id), 'Set should contains the record Id');
+            System.assertEquals(true, recordIds.contains(record.Id), SET_ERROR_MSG);
         }
     }
 
@@ -209,7 +213,7 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista de teléfonos
-        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
+        System.assertEquals(true, matchedRecords.isEmpty(), NEMP_TEXT_MSG);
     }
 
     @isTest
@@ -257,7 +261,7 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
+        System.assertEquals(true, matchedRecords.isEmpty(), NEMP_TEXT_MSG);
     }
 
     @isTest
@@ -266,7 +270,7 @@ private with sharing class AccountsSelectorTest
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: customerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, ACC_ERROR_MSG);
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
         {
@@ -289,12 +293,12 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
+        System.assertEquals(false, matchedRecords.isEmpty(), EMPTY_TEXT_MSG );
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, accountIds.contains(record.Id), 'Set should contains the record Id');
+            System.assertEquals(true, accountIds.contains(record.Id), SET_ERROR_MSG);
         }
     }
 
@@ -309,7 +313,7 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
+        System.assertEquals(true, matchedRecords.isEmpty(), NEMP_TEXT_MSG);
     }
 
     @isTest
@@ -318,7 +322,7 @@ private with sharing class AccountsSelectorTest
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: customerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, ACC_ERROR_MSG);
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
         {
@@ -344,12 +348,12 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
+        System.assertEquals(false, matchedRecords.isEmpty(), EMPTY_TEXT_MSG );
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, accountIds.contains(record.Id), 'Set should contains the record Id');
+            System.assertEquals(true, accountIds.contains(record.Id), SET_ERROR_MSG);
         }
     }
 
@@ -364,7 +368,7 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
+        System.assertEquals(true, matchedRecords.isEmpty(), NEMP_TEXT_MSG);
     }
 
     @isTest
@@ -373,7 +377,7 @@ private with sharing class AccountsSelectorTest
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, Phone, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, ACC_ERROR_MSG);
         Set<Id> accountIds = new Set<Id>();
         List<String> phoneNumbers = new List<String>();
         for(Account account: accountsToSearch)
@@ -389,12 +393,12 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
+        System.assertEquals(false, matchedRecords.isEmpty(), EMPTY_TEXT_MSG );
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, accountIds.contains(record.Id), 'Set should contains the record Id');
+            System.assertEquals(true, accountIds.contains(record.Id), SET_ERROR_MSG);
         }
     }
 
@@ -407,7 +411,7 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
+        System.assertEquals(true, matchedRecords.isEmpty(), NEMP_TEXT_MSG);
     }
 
     @isTest
@@ -416,7 +420,7 @@ private with sharing class AccountsSelectorTest
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, INFOIntermediaryCode__c, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
+        System.assertEquals(true, accountsToSearch.size() > 0, ACC_ERROR_MSG);
         Set<Id> accountIds = new Set<Id>();
         List<String> codes = new List<String>();
         for(Account account: accountsToSearch)
@@ -431,12 +435,12 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
+        System.assertEquals(false, matchedRecords.isEmpty(), EMPTY_TEXT_MSG );
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, accountIds.contains(record.Id), 'Set should contains the record Id');
+            System.assertEquals(true, accountIds.contains(record.Id), SET_ERROR_MSG);
         }
     }
 
@@ -449,7 +453,7 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
+        System.assertEquals(true, matchedRecords.isEmpty(), NEMP_TEXT_MSG);
     }
 
     /**
@@ -514,8 +518,10 @@ private with sharing class AccountsSelectorTest
     @isTest
     static void test_findAgrupatedIntermediries()
     {
+        List<Account> acList = [SELECT Id, NationalID__c FROM Account WHERE RecordType.DeveloperName='Intermediary' ];
+
         Test.startTest();
-        List<Account> agrupated = new AccountsSelector().findAgrupatedIntermediaries();
+        List<Account> agrupated = new AccountsSelector().findAgrupatedIntermediaries(acList);
         Test.stopTest();
 
         System.assertEquals(false, agrupated.isEmpty(), 'Deberia haber cuentas de Agrupacion de Intermediarios');
