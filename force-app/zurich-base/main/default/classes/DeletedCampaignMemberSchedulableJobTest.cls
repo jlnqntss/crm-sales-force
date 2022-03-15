@@ -6,7 +6,7 @@
 @isTest(SeeAllData=false)
 private with sharing class DeletedCampaignMemberSchedulableJobTest
 {
-    public static String CRON_EXP = '0 0 0 15 3 ? 2022';
+    public static String CRON_EXP = '0 0 0 15 3 ? ' + System.now().addYears(1).year(); 
     @TestSetup
     public static void createScenario()
     {
