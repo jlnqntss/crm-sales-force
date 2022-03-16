@@ -422,8 +422,14 @@ public with sharing class AccountsSelector extends RecordsSelector
     /**
      * Obtiene un listado de cuentas de Agrupacion 
      */
-    public List<Account> findAgrupatedIntermediaries()
+    public List<Account> findAgrupatedIntermediaries(List<Account> acList)
     {
+        Set<String> natIdSet = new Set<String>();
+        for (Account a: acList)
+        {
+            if (String.isNotBlank(a.NationalId__c) && !natIdSet.contains(a.NationalId__c)) natIdSet.add(a.NationalId__c);
+        }
+
         this.baseQuery.selectFields (
             new List<Schema.SObjectField> {
                 Account.Id,
@@ -431,6 +437,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             }
         );
         this.baseQuery.addConditionEq(Account.RecordTypeId, rtAgrupationId);
+        this.baseQuery.addConditionIn(Account.NationalId__c, natIdSet); //Meter parte del filtro del NationalId
 
         return (List<Account>) this.baseQuery.run();
     }
