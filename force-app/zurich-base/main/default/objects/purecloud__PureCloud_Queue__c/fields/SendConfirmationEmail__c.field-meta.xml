@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SendConfirmationEmail__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>OCS. Marcar si se desea enviar a los remitentes un mensaje de acuse de recibo (solo colas de email)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Marcar si se desea enviar a los remitentes un mensaje de acuse de recibo (solo colas de email)</inlineHelpText>
+    <label>Send confirmation email</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
