@@ -13,10 +13,6 @@ public with sharing class GenesysCloudStatusAction
 
         for (List<EmailMessage> listaParaEstadoEmailMessages : estadoInteracciones)
         {
-            List<EmailMessage> workingValues = new List<EmailMessage>();
-            List<EmailMessage> pendingValues = new List<EmailMessage>();
-
-            String valueToAdd;
 
             List<String> listaValores = new List<String>();
 
