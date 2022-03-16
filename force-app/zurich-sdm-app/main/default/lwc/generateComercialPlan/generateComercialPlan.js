@@ -139,13 +139,10 @@ export default class GenerateComercialPlan extends NavigationMixin(
     try {
       // Buscamos la celda en cada una de las celdas de cada fila
       let elementFound;
-      let colIndex = event.target.dataset['colindex'];
-      let rowIndex = event.target.dataset['rowindex'];
-      let row = this.tabledata.rows[rowIndex];
-      let cell = row.Cells[colIndex];
-      if (cell !== undefined) {
-        elementFound = cell;
-      }
+      this.tabledata.rows.forEach((row) => {
+        let element = row.Cells.find((ele) => ele.Name === event.target.name);
+        if (element !== undefined) elementFound = element;
+      });
 
       // Gestiona el cambio en la celda
       this.handleChangeElement(elementFound, event.target);
