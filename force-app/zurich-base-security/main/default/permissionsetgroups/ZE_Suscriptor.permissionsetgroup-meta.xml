@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <hasActivationRequired>false</hasActivationRequired>
     <label>ZE Suscriptor</label>
     <permissionSets>Acceso_App_ZE</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
+    <permissionSets>Editar_Ofertas_Cerradas</permissionSets>
     <permissionSets>Gestion_Captacion</permissionSets>
     <permissionSets>Gestion_Captacion_Avanzada</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>

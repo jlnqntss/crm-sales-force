@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>NoClosedWon</fullName>
-    <active>true</active>
-    <description>[VR Oferta] No se puede cambiar la oferta a Cerrada Ganada</description>
+    <active>false</active>
+    <description>[ZE-1327: Desactivado ya que esta validación se hará por código][VR Oferta] No se puede cambiar la oferta a Cerrada Ganada</description>
     <errorConditionFormula>ISPICKVAL(StageName,&quot;Closed Won&quot;) &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;

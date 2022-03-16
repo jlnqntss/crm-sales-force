@@ -1,5 +1,19 @@
-public class OpportunityUtil
+public with sharing class OpportunityUtil
 {
+    public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
+
+    /**
+     * BULK BEFORE
+     * Inicializa un mapa de perfiles a los que se les permite bypasear la regla de validación para
+     *
+     * @date 24/02/2021
+     */
+    public static void initMapOfProfiles()
+    {
+        List<String> nombresPerfiles = new List<String>{'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
+        listaPerfiles = ProfilesSelector.getProfilesByName(nombresPerfiles);
+    }
+
     /**
      * Método que controla la generación del scope correspondiente
      * Actualmente solo se generá scope para Ofertas que provengan de INFO
@@ -87,5 +101,99 @@ public class OpportunityUtil
                 opty.AccountId = oldMap?.get(opty.Id)?.AccountId;
             } 
         }
+    }
+
+    /** 
+     * Método privado que sustituye la Regla de validación de Opportunity llamada NoCloseWon
+     * 
+     * [VR] de Offer -> NoCloseWon.
+
+            ISPICKVAL(StageName,"Closed Won") &&
+            $Profile.Id <> '00e5I000000Hu97' &&
+            $Profile.Id <> '00e5I000000UPld' &&
+            $Profile.Id <> '00e5I000000QeQS' &&
+            $Profile.Id <> '00e5I000000Hu9B' &&
+            $User.Username <> 'israel.catala@zurich-es.com' &&
+            $User.Username <> 'agustin.zapata@zurich-es.com' &&
+            $User.Username <> 'j.tomegarcia@zurich-es.com' &&
+            $User.Username <> 'julio.fabeiro@zurich-es.com' &&
+            $User.Username <> 'francisco.orta@zurich-es.com' 
+     * 
+     * 
+     * @author arcortazar - nts
+     * @created date 09/03/2022
+     * 
+     * @param newList List<Opportunity> lista de oportunidades a updatear con los datos actualizados
+     * @param oldMap Map<Id, Opportunity> mapa de las oportunidades a actualizar, con los datos anteriores al update
+     * */ 
+     public static void validateOfferStage(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
+     {
+        for (Opportunity newOpty : newList)
+        {
+            Opportunity oldOpty = oldMap.get(newOpty.Id);
+
+            if (!skipStageNameValidation(newOpty) && !isValidStageName(oldOpty))
+            { 
+                // ERROR  : Agregar el mensaje a nivel de campo 
+                newOpty.addError('StageName', Label.OfferStageValidationMessage);
+            } 
+        }
+    }
+
+    /** 
+     * Método privado que comprueba el StageName de la oportunidad. Si esta se encuentra en closed won, no se podrá actualizar
+     *
+     * @author arcortazar - nts
+     * @created date 09/03/2022
+     * 
+     * @param oldOpty Opportunity que se va a updatear.
+     * @return Booleano que indica si el StageName de la opportunity es el adecuado para proceder al update (true) o no (false)
+     * */ 
+    @TestVisible
+    private static Boolean isValidStageName(Opportunity oldOpty)
+    {
+        Boolean retorno = true;
+        if( oldOpty != null && oldOpty.StageName.equalsIgnoreCase('Closed won'))
+        {
+            retorno = false;
+        }
+
+        return retorno;
+    }
+
+    /** 
+     * Método privado que comprueba si se ha producido un cambio en el OwnerId.
+     * @author arcortazar - nts
+     * @created date 09/03/2022
+     * 
+     * @param newOpty Opportunity  que se va a comprobar si se puede bypasear las reglas para su actualización
+     * @return Boolean que indica si puede bypasearse (true) o no (false).
+     * */ 
+    @TestVisible
+    private static Boolean skipStageNameValidation(Opportunity newOpty)
+    {
+        Boolean retorno = false;
+        
+        // Bypass por perfil
+        if(!listaPerfiles.isEmpty() && listaPerfiles.containsKey(UserInfo.getProfileId()))
+        {
+            retorno = true;
+        }
+        
+
+        // Bypass por usuario (usando los Custom Permisson)
+        if(FeatureManagement.checkPermission('Editar_ofertas_cerradas'))
+        {
+            retorno = true;
+        }
+        
+
+        // Bypass por reasignación
+        if(newOpty.HasBeenReassigned__c)
+        {
+            newOpty.HasBeenReassigned__c = false;
+            retorno = true;
+        }
+        return retorno;
     }
 }

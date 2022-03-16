@@ -1,5 +1,6 @@
 public class OpportunityHandler implements ITrigger
 {
+
     public OpportunityHandler()
     {}
 
@@ -10,7 +11,10 @@ public class OpportunityHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        // arcortazar - 11/03/2022: ZE-1327, cargamos un listado de perfiles que tienen permitido efectuar modificaciones en las ofertas cerradas ganadas
+        OpportunityUtil.initMapOfProfiles();
+    }
 
     /**
      * bulkAfter
@@ -41,8 +45,10 @@ public class OpportunityHandler implements ITrigger
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         OpportunityUtil.preventNullUpdates((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
-        //OpportunityUtil.detectOpportunityStageChange(newList, (Map<Id, Opportunity>) oldMap); //20210225 sustituido por before insert
         OpportunityUtil.detectOpportunityAccountChange((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
+
+        // arcortazar - 09/03/2022: Validamos si puede llevarse a cabo el cambio que se presenta
+        OpportunityUtil.validateOfferStage((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
     }
 
     /**

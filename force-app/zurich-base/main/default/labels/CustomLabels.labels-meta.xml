@@ -1311,4 +1311,11 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_PlanAnual_WarningCero</shortDescription>
         <value>Subplans with a zero value at the RN/CV level for DT/DV or Intermediary level for RN/CV will not be created or, if they existed, they will be eliminated.</value>
     </labels>
+    <labels>
+        <fullName>OfferStageValidationMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OfferStageNameErrorMsg</shortDescription>
+        <value>No se puede cambiar la oferta a Cerrada Ganada</value>
+    </labels>
 </CustomLabels>
