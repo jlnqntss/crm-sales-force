@@ -13,6 +13,8 @@ public class GenesysCloud
     public static final String SERVICE_CALLBACKS = 'CallbacksService';
     public static final String SERVICE_SMS = 'SMSService';
     public static final String SERVICE_DISCONNECTION = 'DisconnectionService';
+    public static final String CONVERSATION_EMAIL_ENDPOINT = '/api/v2/conversations/emails';
+    public static final String CONVERSATION_EMAIL_PARTICIPANTS = '/participants/';
 
     public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS, SERVICE_SMS, SERVICE_DISCONNECTION }
 
@@ -891,21 +893,19 @@ public class GenesysCloud
 
          public HttpResponse status(InteractionStatus interaction)
          {
-            //  String retorno = '';
-
              HttpResponse response = null;
 
              if(Test.isRunningTest() && mock != null)
              {
                  HttpRequest req = new HttpRequest();
                  req.setMethod('GET');
-                 req.setEndpoint('/api/v2/conversations/emails/' + interaction.conversationId);
+                 req.setEndpoint(CONVERSATION_EMAIL_ENDPOINT + interaction.conversationId);
                  req.setBody(interaction.toJSON());
                  response = mock.respond(req);
              }
              else 
              {
-                response = purecloud.SDK.Rest.get('/api/v2/conversations/emails/' + interaction.conversationId);
+                response = purecloud.SDK.Rest.get(CONVERSATION_EMAIL_ENDPOINT + interaction.conversationId);
              }
             
              return response;
@@ -949,7 +949,7 @@ public class GenesysCloud
             {
                 HttpRequest req = new HttpRequest();
                 req.setMethod('PATCH');
-                req.setEndpoint('/api/v2/conversations/emails/' + interaction.conversationId + '/participants/' + interaction.participants);
+                req.setEndpoint(CONVERSATION_EMAIL_ENDPOINT + interaction.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + interaction.participants);
                 req.setBody(interaction.toJSON());
                 response = mock.respond(req);
                 retorno = interaction.conversationId;
@@ -966,11 +966,10 @@ public class GenesysCloud
                     bodyPatchWrapup.put('name', 'válida');
                     bodyPatch.put('wrapup', bodyPatchWrapup);
                 }
-                response = purecloud.sdk.rest.patch('/api/v2/conversations/emails/' 
-                                                    + interaction.conversationId + '/participants/' 
+                response = purecloud.sdk.rest.patch(CONVERSATION_EMAIL_ENDPOINT 
+                                                    + interaction.conversationId + CONVERSATION_EMAIL_PARTICIPANTS 
                                                     + interaction.participants, 
                                                     JSON.serialize(bodyPatch));
-                //retorno = getFieldFromPatch(response, 'conversationId');
             }
             return response.getBody();
         }
@@ -1213,7 +1212,7 @@ public class GenesysCloud
          */
         public void consult(ConsultTransfer consult)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + '/participants/' + consult.participantId + '/consult', consult.toJSON() );
+            HttpResponse response = new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + consult.participantId + '/consult', consult.toJSON() );
         }
 
         /**
@@ -1224,7 +1223,7 @@ public class GenesysCloud
          */
         public void setParticipantData(String conversationId, String participantId, Map<String, String> attributes)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + '/participants/' + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
+            HttpResponse response = new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
             {
                 'attributes' => attributes
             }) );
@@ -1238,7 +1237,7 @@ public class GenesysCloud
          */
         public void setUUIData(String conversationId, String participantId, String communicationId, String uuiData)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + '/participants/' + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
+            HttpResponse response = new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
             {
                 'uuiData' => uuiData
             }) );

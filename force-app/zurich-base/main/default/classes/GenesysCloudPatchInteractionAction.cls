@@ -10,7 +10,6 @@ public with sharing class GenesysCloudPatchInteractionAction
     {
         List<String> responsePatch = new List<String>();
 
-        String response;
         String getDataResponse;
 
         for (List<String> interaccionPatch : listaRetorno)
