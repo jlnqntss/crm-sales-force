@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
-    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -449,11 +446,14 @@
         <relatedList>RelatedAccountSalesTeam</relatedList>
     </relatedLists>
     <relatedLists>
+        <relatedList>RelatedFileList</relatedList>
+    </relatedLists>
+    <relatedLists>
         <excludeButtons>MailMerge</excludeButtons>
         <fields>TASK.SUBJECT</fields>
         <fields>TASK.STATUS</fields>
         <fields>TASK.RECORDTYPE</fields>
-        <fields>CommunicationType__c</fields>
+        <fields>TASK.TYPE</fields>
         <fields>Ramo__c</fields>
         <fields>Reference_number__c</fields>
         <fields>TASK.WHAT_NAME</fields>
@@ -467,13 +467,15 @@
     </relatedLists>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
-        <fields>TASK.WHO_NAME</fields>
-        <fields>TASK.WHAT_NAME</fields>
-        <fields>ACTIVITY.TASK</fields>
-        <fields>TASK.DUE_DATE</fields>
         <fields>TASK.STATUS</fields>
-        <fields>TASK.PRIORITY</fields>
+        <fields>TASK.TYPE</fields>
+        <fields>ACTIVITY.TASK</fields>
+        <fields>Ramo__c</fields>
+        <fields>Reference_number__c</fields>
+        <fields>TASK.WHAT_NAME</fields>
         <fields>CORE.USERS.FULL_NAME</fields>
+        <fields>TASK.WHO_NAME</fields>
+        <fields>TASK.DUE_DATE</fields>
         <relatedList>RelatedActivityList</relatedList>
     </relatedLists>
     <relatedLists>
