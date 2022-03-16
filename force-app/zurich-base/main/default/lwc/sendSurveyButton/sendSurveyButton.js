@@ -3,6 +3,11 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import sendSurveyLabel from "@salesforce/label/c.sendSurveyButtonLabel";
 import sendSurveyToastTitleSuccess from "@salesforce/label/c.sendSurveyToastTitleSuccess";
 import sendSurveyToastMessageSuccess from "@salesforce/label/c.sendSurveyToastMessageSuccess";
+import sendSurveyToastTitleError from "@salesforce/label/c.sendSurveyToastTitleError";
+import sendSurveyToastMessageError from "@salesforce/label/c.sendSurveyToastMessageError";
+import sendErrorInteractionTypeTitle from "@salesforce/label/c.sendSurveyShowToastEvent";
+import sendErrorInteractionTypeMessage from "@salesforce/label/c.sendSurveyShowToastEventMessage";
+
 import genesysCloud from "c/genesysCloudService";
 import getPollPhoneNumber from "@salesforce/apex/SendSurveyButtonController.getTransferPollPhoneNumber";
 
@@ -11,7 +16,11 @@ export default class SendSurveyButton extends LightningElement {
   label = {
     sendSurveyLabel,
     sendSurveyToastTitleSuccess,
-    sendSurveyToastMessageSuccess
+    sendSurveyToastMessageSuccess,
+    sendSurveyToastTitleError,
+    sendSurveyToastMessageError,
+    sendErrorInteractionTypeTitle,
+    sendErrorInteractionTypeMessage
   };
 
   @track
@@ -97,7 +106,7 @@ export default class SendSurveyButton extends LightningElement {
         this.pollPhoneNumber !== undefined &&
         this.pollPhoneNumber !== null
       ) {
-        console.log("MENSAJE transferimos");
+        // Guardamos el ID De la interaction que se está transfiriendo
         this.hasBeenTranfered = true;
         this.transferedID = genesysCloud.getState().currentInteractionId;
 
@@ -113,9 +122,8 @@ export default class SendSurveyButton extends LightningElement {
       } else {
         console.log("MENSAJE algo falla");
         const eventError = new ShowToastEvent({
-          title: "Error",
-          message:
-            "No se ha recuperado el identificador de la llamada, por favor, refresque la página o ancle esta ventana a la barra de tareas",
+          title: this.label.sendSurveyToastTitleError,
+          message: this.label.sendSurveyToastMessageError,
           variant: "error"
         });
         this.dispatchEvent(eventError);
@@ -123,9 +131,8 @@ export default class SendSurveyButton extends LightningElement {
     } else {
       console.log("MENAJE es email");
       const eventError = new ShowToastEvent({
-        title: "Error",
-        message:
-          "No puede redireccionarse una encuesta en este tipo de interaccion",
+        title: this.label.sendErrorInteractionTypeTitle,
+        message: this.label.sendErrorInteractionTypeMessage,
         variant: "error"
       });
       this.dispatchEvent(eventError);
@@ -158,7 +165,11 @@ export default class SendSurveyButton extends LightningElement {
         if (
           this.transferedID === genesysCloud.getState().currentInteractionId
         ) {
+          // Inicializamos los campos de comprobación
           this.hasBeenTranfered = false;
+          this.transferedID = "";
+
+          // Lanzamos el toast
           const event = new ShowToastEvent({
             title: this.label.sendSurveyToastTitleSuccess,
             message: this.label.sendSurveyToastMessageSuccess,
