@@ -96,10 +96,7 @@ export default class SendSurveyButton extends LightningElement {
   sendSurvey() {
     // Aqui podríamos comprobar si tenemos el InteractionID
 
-    console.log("MENSAJE SURVEY");
     if (!this.isEmail) {
-      console.log("MENSAJE no es email");
-
       if (
         genesysCloud.getState().currentInteractionId !== null &&
         genesysCloud.getState().currentInteractionId !== undefined &&
@@ -120,7 +117,6 @@ export default class SendSurveyButton extends LightningElement {
         });
         this.dispatchEvent(navigateToCall);
       } else {
-        console.log("MENSAJE algo falla");
         const eventError = new ShowToastEvent({
           title: this.label.sendSurveyToastTitleError,
           message: this.label.sendSurveyToastMessageError,
@@ -129,7 +125,6 @@ export default class SendSurveyButton extends LightningElement {
         this.dispatchEvent(eventError);
       }
     } else {
-      console.log("MENAJE es email");
       const eventError = new ShowToastEvent({
         title: this.label.sendErrorInteractionTypeTitle,
         message: this.label.sendErrorInteractionTypeMessage,
