@@ -13,7 +13,7 @@ public class GenesysCloud
     public static final String SERVICE_CALLBACKS = 'CallbacksService';
     public static final String SERVICE_SMS = 'SMSService';
     public static final String SERVICE_DISCONNECTION = 'DisconnectionService';
-    public static final String CONVERSATION_EMAIL_ENDPOINT = '/api/v2/conversations/emails';
+    public static final String CONVERSATION_EMAIL_ENDPOINT = '/api/v2/conversations/emails/';
     public static final String CONVERSATION_EMAIL_PARTICIPANTS = '/participants/';
 
     public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS, SERVICE_SMS, SERVICE_DISCONNECTION }
