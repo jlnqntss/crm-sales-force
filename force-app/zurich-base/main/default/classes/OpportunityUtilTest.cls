@@ -129,7 +129,11 @@ private class OpportunityUtilTest
         insert opp;
 
         Boolean salida;
-        User u = [Select Id FROM User WHERE Name like 'Agustin Angel Zapata Mendez'];
+
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         System.runAs(u)
         {
             Test.startTest();
@@ -153,7 +157,11 @@ private class OpportunityUtilTest
         Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed won', System.today().addDays(10), 1).get(0);
         opp.HasBeenReassigned__c = true;
         insert opp;
-        User u = [Select Id FROM User WHERE Name like 'Nestor Neira Bellisco'];
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
+
         Boolean salida;
         System.runAs(u)
         {
@@ -180,7 +188,10 @@ private class OpportunityUtilTest
         opp.HasBeenReassigned__c = false;
         insert opp;
 
-        User u = [Select Id FROM User WHERE Name like 'Nestor Neira Bellisco'];
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         Boolean salida;
         System.runAs(u)
         {
@@ -233,7 +244,10 @@ private class OpportunityUtilTest
     static void test_runAsSupervisor_OK() 
     {
         // Obtenemos los diferentes usuarios: supervisor y no supervisor
-        User uSup = [SELECT Id FROM User WHERE Name='Agustin Angel Zapata Mendez'];
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        
+        User uSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
         // Creamos la oportunidad que vamos a manejar en el test
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
@@ -282,7 +296,10 @@ private class OpportunityUtilTest
     static void test_runNotAsSupervisor_OK() 
     {
        // Obtenemos los diferentes usuarios: supervisor y no supervisor
-       User uNoSup = [SELECT Id FROM User WHERE Name='Nestor Neira Bellisco'];
+       List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        
+        User uNoSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
        // Creamos la oportunidad que vamos a manejar en el test
        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
@@ -329,7 +346,10 @@ private class OpportunityUtilTest
     static void test_runNotAsSupervisor_ClosedWon_NOK() 
     {
         // Obtenemos los diferentes usuarios: supervisor y no supervisor
-       User uNoSup = [SELECT Id FROM User WHERE Name='Nestor Neira Bellisco'];
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        
+        User uNoSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
        // Creamos la oportunidad que vamos a manejar en el test
        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
@@ -378,8 +398,10 @@ private class OpportunityUtilTest
     static void test_runAsSupervisor_ClosedWon_OK() 
     {
        // Obtenemos los diferentes usuarios: supervisor y no supervisor
-       User uSup = [SELECT Id FROM User WHERE Name='Agustin Angel Zapata Mendez'];
-       User uNoSup = [SELECT Id FROM User WHERE Name='Nestor Neira Bellisco'];
+       List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        
+        User uSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
        // Creamos la oportunidad que vamos a manejar en el test
        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
