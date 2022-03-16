@@ -131,7 +131,7 @@ private class OpportunityUtilTest
         Boolean salida;
 
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
-        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
         
         User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         System.runAs(u)
@@ -158,7 +158,7 @@ private class OpportunityUtilTest
         opp.HasBeenReassigned__c = true;
         insert opp;
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
-        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
         
         User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
@@ -189,7 +189,7 @@ private class OpportunityUtilTest
         insert opp;
 
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
-        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
         
         User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         Boolean salida;
@@ -245,7 +245,7 @@ private class OpportunityUtilTest
     {
         // Obtenemos los diferentes usuarios: supervisor y no supervisor
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
-        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
         
         User uSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
@@ -297,7 +297,7 @@ private class OpportunityUtilTest
     {
        // Obtenemos los diferentes usuarios: supervisor y no supervisor
        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
-        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
         
         User uNoSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
@@ -347,7 +347,7 @@ private class OpportunityUtilTest
     {
         // Obtenemos los diferentes usuarios: supervisor y no supervisor
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
-        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
         
         User uNoSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
@@ -399,7 +399,7 @@ private class OpportunityUtilTest
     {
        // Obtenemos los diferentes usuarios: supervisor y no supervisor
        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
-        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el perfir requerido');
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
         
         User uSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
