@@ -13292,6 +13292,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>purecloud__PureCloud_Queue__c.SendConfirmationEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>purecloud__PureCloud_Routing_Request__c.purecloud__API_Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
