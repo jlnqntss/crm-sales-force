@@ -16,7 +16,7 @@ public with sharing class GenesysCloudStatusActionTest
         emailMessage.FromAddress = 'jgarciamartinez@nts-solutions.com';
         emailMessage.FromName = 'Javi Garcia';
         emailMessage.Subject = 'Prueba';
-        emailMessage.GenesysInteractionId__c = '1111AAAA';
+        emailMessage.GenesysInteractionId__c = '1788029f-ad65-41ea-bc5f-ce41673fe109';
         insert emailMessage;
 
         List<EmailMessage> listaTemp = new List<EmailMessage>();
@@ -25,12 +25,10 @@ public with sharing class GenesysCloudStatusActionTest
         List<List<EmailMessage> > listaInput = new List<List<EmailMessage> >();
         listaInput.add(listaTemp);
 
-        System.debug('+++++ ' + listaTemp);
-        System.debug('+++++ ' + listaInput);
         String body = '{"id": "1788029f-ad65-41ea-bc5f-ce41673fe109",'
                       + '"participants": [{"id": "20714c8e-9a60-4efd-9e75-0efb4b95267f","name": "Javier García Martínez", "purpose": "customer", "state": "disconnected"},'
                       + '{"id": "25fcb71d-9ff3-4c45-8a07-091831376cdd", "name": "Email_CCS_Soporte", "purpose": "acd", "state": "connected"},'
-                      + '{"id": "77f648d0-354f-4d07-8540-14604b87bffc", "name": "Agente1","purpose": "agent","state": "disconnected"}]}';
+                      + '{"id": "77f648d0-354f-4d07-8540-14604b87bffc", "name": "Agente1","purpose": "agent","state": "connected"}]}';
         Integer code = 200;
         GenesysCloud.StatusService.mock = new GenesysCloudMocks(body, code);
 
