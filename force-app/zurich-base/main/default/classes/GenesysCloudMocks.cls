@@ -26,6 +26,19 @@ global class GenesysCloudMocks implements HttpCalloutMock
             }
         }
 
+        //jgarciamartinez - se añade método get
+
+        else if(req.getMethod() == 'GET' || req.getMethod() == 'PATCH')
+        {
+            if( req.getEndpoint().contains('/api/v2/conversations/emails/') )
+            {
+                HttpResponse res = new HttpResponse();
+                res.setBody(body);
+                res.setStatusCode(code);
+                return res;
+            }
+        }
+
         //No está implementado aún en el mock la respuesta:
         HttpResponse res = new HttpResponse();
         res.setStatusCode(500);
