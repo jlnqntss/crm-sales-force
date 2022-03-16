@@ -273,7 +273,7 @@
         <fields>ProductId__c</fields>
         <fields>PolicyStatus__c</fields>
         <fields>BusinessName__c</fields>
-        <fields>IntermediaryName__c</fields>
+        <fields>IntermediaryNameForm__c</fields>
         <fields>TotalPremium__c</fields>
         <fields>StartDate__c</fields>
         <relatedList>Policy__c.PolicyHolder__c</relatedList>
