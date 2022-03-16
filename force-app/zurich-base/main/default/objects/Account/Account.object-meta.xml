@@ -262,8 +262,11 @@
         <lookupPhoneDialogsAdditionalFields>ACCOUNT.PHONE1</lookupPhoneDialogsAdditionalFields>
         <searchResultsAdditionalFields>ACCOUNT.NAME</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>ACCOUNT.RECORDTYPE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>NationalId__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>ACCOUNT.PHONE1</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>INFOIntermediaryCode__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>IntermediaryDescription__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>INFOBusinessCode__c</searchResultsAdditionalFields>
         <searchResultsCustomButtons>CreateLead</searchResultsCustomButtons>
     </searchLayouts>
     <sharingModel>Private</sharingModel>
