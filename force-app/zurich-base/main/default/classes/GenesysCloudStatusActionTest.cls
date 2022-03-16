@@ -38,7 +38,12 @@ public with sharing class GenesysCloudStatusActionTest
         List<List<String> > inserciones = GenesysCloudStatusAction.execute(listaInput);
         Test.stopTest();
 
-        List<String> listaStatus = inserciones.get(0);
+        List<String> listaStatus = new List<String>();
+        if (inserciones.size() > 0)
+        {
+            listaStatus = inserciones.get(0);
+        }
+
         System.assertEquals( 1, listaStatus.size() );
     }
 }
