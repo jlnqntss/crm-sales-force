@@ -113,7 +113,7 @@
                 <behavior>Edit</behavior>
                 <field>CsmIndividualsManager__c</field>
             </layoutItems>
-            <layoutItems> 
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CsmPhone__c</field>
             </layoutItems>
@@ -251,11 +251,6 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>NewEvent</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>2</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>SendEmail</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>3</sortOrder>
@@ -299,6 +294,11 @@
             <actionName>LogCall_Klinc</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>NewEvent</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>2</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <quickActionList>
@@ -359,13 +359,15 @@
     </relatedContent>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
-        <fields>TASK.WHO_NAME</fields>
-        <fields>TASK.WHAT_NAME</fields>
-        <fields>ACTIVITY.TASK</fields>
-        <fields>TASK.DUE_DATE</fields>
         <fields>TASK.STATUS</fields>
-        <fields>TASK.PRIORITY</fields>
+        <fields>TASK.TYPE</fields>
+        <fields>ACTIVITY.TASK</fields>
+        <fields>Ramo__c</fields>
+        <fields>Reference_number__c</fields>
+        <fields>TASK.WHAT_NAME</fields>
         <fields>CORE.USERS.FULL_NAME</fields>
+        <fields>TASK.WHO_NAME</fields>
+        <fields>TASK.DUE_DATE</fields>
         <relatedList>RelatedActivityList</relatedList>
     </relatedLists>
     <relatedLists>
@@ -373,7 +375,7 @@
         <fields>TASK.SUBJECT</fields>
         <fields>TASK.STATUS</fields>
         <fields>TASK.RECORDTYPE</fields>
-        <fields>CommunicationType__c</fields>
+        <fields>TASK.TYPE</fields>
         <fields>Ramo__c</fields>
         <fields>Reference_number__c</fields>
         <fields>TASK.WHAT_NAME</fields>
