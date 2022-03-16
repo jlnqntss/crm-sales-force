@@ -23,6 +23,7 @@ export default class SendSurveyButton extends LightningElement {
   // arcortazar - 24/02/22
   hasBeenTranfered = false;
   isEmail = false;
+  transferedID;
 
   /**
    * Variable interna para poder realizar un bind del handler handleCTIMessage
@@ -86,13 +87,20 @@ export default class SendSurveyButton extends LightningElement {
   sendSurvey() {
     // Aqui podríamos comprobar si tenemos el InteractionID
 
+    console.log("MENSAJE SURVEY");
     if (!this.isEmail) {
+      console.log("MENSAJE no es email");
+
       if (
         genesysCloud.getState().currentInteractionId !== null &&
         genesysCloud.getState().currentInteractionId !== undefined &&
         this.pollPhoneNumber !== undefined &&
         this.pollPhoneNumber !== null
       ) {
+        console.log("MENSAJE transferimos");
+        this.hasBeenTranfered = true;
+        this.transferedID = genesysCloud.getState().currentInteractionId;
+
         genesysCloud.transfer(this.pollPhoneNumber);
         const navigateToCall = new CustomEvent("redirect", {
           bubbles: true,
@@ -103,6 +111,7 @@ export default class SendSurveyButton extends LightningElement {
         });
         this.dispatchEvent(navigateToCall);
       } else {
+        console.log("MENSAJE algo falla");
         const eventError = new ShowToastEvent({
           title: "Error",
           message:
@@ -112,6 +121,7 @@ export default class SendSurveyButton extends LightningElement {
         this.dispatchEvent(eventError);
       }
     } else {
+      console.log("MENAJE es email");
       const eventError = new ShowToastEvent({
         title: "Error",
         message:
@@ -134,17 +144,28 @@ export default class SendSurveyButton extends LightningElement {
     if (message.type === "Interaction" && !message.data.isEmail) {
       this.isOnCall = genesysCloud.isOnCall();
 
+      console.log(
+        "MENSAJE " +
+          message.category +
+          "; Interactoin ID " +
+          genesysCloud.getState().currentInteractionId
+      );
       if (message.category === "blindTransfer") {
-        this.hasBeenTranfered = true;
+        console.log("MENSAJE blind transfer");
       } else if (message.category === "change" && this.hasBeenTranfered) {
-        const event = new ShowToastEvent({
-          title: this.label.sendSurveyToastTitleSuccess,
-          message: this.label.sendSurveyToastMessageSuccess,
-          variant: "success"
-        });
-        this.dispatchEvent(event);
+        console.log("MENSAJE change + blindtransfer");
       } else if (message.category === "disconnect" && this.hasBeenTranfered) {
-        this.hasBeenTranfered = false;
+        if (
+          this.transferedID === genesysCloud.getState().currentInteractionId
+        ) {
+          this.hasBeenTranfered = false;
+          const event = new ShowToastEvent({
+            title: this.label.sendSurveyToastTitleSuccess,
+            message: this.label.sendSurveyToastMessageSuccess,
+            variant: "success"
+          });
+          this.dispatchEvent(event);
+        }
       }
     }
   }
