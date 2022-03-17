@@ -278,6 +278,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     {
                         //Cambiar el propietario al usuario actual
                         offer.OwnerId = UserInfo.getUserId();
+                        offer.HasBeenReassigned__c = true; //arcortazar - 09/03/2022: [ZE-1327] Indicamos que la oferta ha sido reasignada
                     }
                 }
                 update totalOffers;

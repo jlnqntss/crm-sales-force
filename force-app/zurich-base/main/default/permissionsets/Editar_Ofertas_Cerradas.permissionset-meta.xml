@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Editar_ofertas_cerradas</name>
+    </customPermissions>
+    <description>Permission set que permite que aquellos usuarios que lo tienen puedan editar ofertas pese a estar Closed Won</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Editar Ofertas Cerradas</label>
+</PermissionSet>

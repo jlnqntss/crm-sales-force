@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>SendConfirmationEmailAction</name>
+        <label>Enviar Acuse de recibo</label>
+        <locationX>451</locationX>
+        <locationY>1320</locationY>
+        <actionName>Case.Acuse_de_recibo</actionName>
+        <actionType>emailAlert</actionType>
+        <faultConnector>
+            <targetReference>Crear_error_log_0_0_0</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>54.0</apiVersion>
+    <assignments>
+        <name>DomainMatchAssignment</name>
+        <label>Asignar coincidencia dominio</label>
+        <locationX>407</locationX>
+        <locationY>888</locationY>
+        <assignmentItems>
+            <assignToReference>DomainMatchVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>LoopExcludedDomainListAction</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>DomainMatchDecision</name>
+        <label>¿Coincide Dominio?</label>
+        <locationX>539</locationX>
+        <locationY>768</locationY>
+        <defaultConnector>
+            <targetReference>LoopExcludedDomainListAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No coincide dominio</defaultConnectorLabel>
+        <rules>
+            <name>DomainMatchOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FromAddress</leftValueReference>
+                <operator>EndsWith</operator>
+                <rightValue>
+                    <elementReference>LoopExcludedDomainListAction.EmailDomain__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DomainMatchAssignment</targetReference>
+            </connector>
+            <label>Coincide dominio</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ExcludedSenderDecision</name>
+        <label>¿Remitente excluido?</label>
+        <locationX>319</locationX>
+        <locationY>1200</locationY>
+        <defaultConnector>
+            <targetReference>SendConfirmationEmailAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Remitente no excluido</defaultConnectorLabel>
+        <rules>
+            <name>ExcludedSenderOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>DomainMatchVariable</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Remitente excluido</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Se comprueba si la cola está configurada para enviar acuses de recibo</description>
+        <name>SendConfirmationEmailDecision</name>
+        <label>¿Enviar acuse de recibo?</label>
+        <locationX>649</locationX>
+        <locationY>408</locationY>
+        <defaultConnectorLabel>No enviar acuse de recibo</defaultConnectorLabel>
+        <rules>
+            <name>SendConfirmationEmailOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetGenesysQueueAction.SendConfirmationEmail__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetExludedDomainsAction</targetReference>
+            </connector>
+            <label>Enviar acuse de recibo</label>
+        </rules>
+    </decisions>
+    <description>Flujo encargado de orquestar el envío de acuses de recibo para los emails entrantes en base a la cola de destino</description>
+    <formulas>
+        <description>Define el valor CCS o CSM en función de la cola asignada del email</description>
+        <name>CallCenterFormula</name>
+        <dataType>String</dataType>
+        <expression>CASE({!GetGenesysQueueAction.CallCenter__c}, 
+&apos;CSM Particulares&apos;, &apos;CSM&apos;, 
+&apos;CSM Administración&apos;, &apos;CSM&apos;, 
+&apos;CCS&apos;)</expression>
+    </formulas>
+    <interviewLabel>EmailMessage Trigger - After insert/update - Acuse recibo {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>EmailMessage Trigger - After insert/update - Acuse recibo</label>
+    <loops>
+        <name>LoopExcludedDomainListAction</name>
+        <label>Recorrer listado exclusiones</label>
+        <locationX>319</locationX>
+        <locationY>648</locationY>
+        <collectionReference>GetExludedDomainsAction</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>DomainMatchDecision</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>ExcludedSenderDecision</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Crear_error_log_0_0_0</name>
+        <label>Crear error log</label>
+        <locationX>715</locationX>
+        <locationY>1440</locationY>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>EmailMessage Trigger - After insert/update - Acuse recibo</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>SendConfirmationEmailAction</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Stack_Trace__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <description>Recupera los dominios excluidos</description>
+        <name>GetExludedDomainsAction</name>
+        <label>Obtener listado de exclusiones</label>
+        <locationX>319</locationX>
+        <locationY>528</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>LoopExcludedDomainListAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CallCenterFormula</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ExcludeDomainList__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Recupera la cola de genesys para comprobar si aplica enviar notificación</description>
+        <name>GetGenesysQueueAction</name>
+        <label>Obtener Cola Genesys</label>
+        <locationX>649</locationX>
+        <locationY>288</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>SendConfirmationEmailDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.GenesysQueueName__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>purecloud__PureCloud_Queue__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>GenesysQueueName__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>GenesysQueueName__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Incoming</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ParentId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>EmailMessage</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>GetGenesysQueueAction</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+    <variables>
+        <name>DomainMatchVariable</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+</Flow>

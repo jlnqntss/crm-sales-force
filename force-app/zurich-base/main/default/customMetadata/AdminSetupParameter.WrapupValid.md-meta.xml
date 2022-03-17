@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>WrapupValid</label>
+    <protected>false</protected>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">Valor del wrapup válida</value>
+    </values>
+    <values>
+        <field>KeyName__c</field>
+        <value xsi:type="xsd:string">WrapupValid</value>
+    </values>
+    <values>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">6719e52e-c53a-478f-bdf5-9bd4d61c9bb6</value>
+    </values>
+</CustomMetadata>

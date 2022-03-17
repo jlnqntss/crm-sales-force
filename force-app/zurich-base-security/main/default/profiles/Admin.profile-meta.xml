@@ -8432,6 +8432,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.HasBeenReassigned__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.InfoLastModifiedDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -13283,6 +13288,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>purecloud__PureCloud_Queue__c.Scope__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>purecloud__PureCloud_Queue__c.SendConfirmationEmail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

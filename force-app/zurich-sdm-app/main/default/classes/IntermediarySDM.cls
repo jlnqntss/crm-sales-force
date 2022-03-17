@@ -237,11 +237,11 @@ public with sharing class IntermediarySDM {
     /**
      * Recupera todas las cuentas de tipo Agrupacion de Mediadores y crea un Mapa de Agrupaciones por CIF
      */
-    private void findAgrupatedIntermediaries()
+    private void findAgrupatedIntermediaries(List<Account> acList)
     {
         // Se recuperan las Agrupaciones de intermediarios si no se ha hecho ya
         if( this.mapAgrupationByCIF == null ) {
-            List<Account> agrupationIntermediary = new AccountsSelector().findAgrupatedIntermediaries();
+            List<Account> agrupationIntermediary = new AccountsSelector().findAgrupatedIntermediaries(acList);
 
             // Mapa de agrupaciones por CIF de agrupacion
             this.mapAgrupationByCIF = new Map<String, Account>();
@@ -307,18 +307,28 @@ public with sharing class IntermediarySDM {
                 }
                 mapContact.put(acr.Contactid, acr);
                 
-                // Mapa de ACRs por Id de Mediador y por cada role que tenga la relacion
-                List<String> roles = acr.Roles?.split(';');
-                if( roles != null ) {
-                    for(String role: roles) {
-                        Map<String, AccountContactRelation> mapRole = this.mapACRsByAccountRole.get(acr.AccountId);
-                        if( mapRole == null ) {
-                            mapRole = new Map<String, AccountContactRelation>();
-                            this.mapACRsByAccountRole.put(acr.AccountId, mapRole);
-                        }
-                        mapRole.put(role, acr);
-                    }
+                createACRMap(acr); // Mapa de ACRs por Id de Mediador y por cada role que tenga la relacion
+            }
+        }
+    }
+
+
+    /**
+     *  Mapa de ACRs por Id de Mediador y por cada role que tenga la relacion
+     *
+     * @param {AccountContactRelation acr} AccountContactRelation a procesar en el mapa de roles
+     */    
+    private void createACRMap(AccountContactRelation acr)
+    {
+        List<String> roles = acr.Roles?.split(';');
+        if( roles != null ) {
+            for(String role: roles) {
+                Map<String, AccountContactRelation> mapRole = this.mapACRsByAccountRole.get(acr.AccountId);
+                if( mapRole == null ) {
+                    mapRole = new Map<String, AccountContactRelation>();
+                    this.mapACRsByAccountRole.put(acr.AccountId, mapRole);
                 }
+                mapRole.put(role, acr);
             }
         }
     }
@@ -424,7 +434,7 @@ public with sharing class IntermediarySDM {
                 // Recuperamos todos las cuentas de Agrupacion de Mediadores y creamos un mapa por CIF
                 // (si la lista se vuelve muy grande se podria reducir el numero devuelto mirando primero los CIF de
                 //  los mediadores a buscar)
-                this.findAgrupatedIntermediaries();
+                this.findAgrupatedIntermediaries(intermediariesToProcess);
                 
                 Map<Integer, Account> mapAgrupationByPos = new Map<Integer, Account>();
                 Map<Integer, List<Account>> mapIntermediaryByPos = new Map<Integer, List<Account>>();

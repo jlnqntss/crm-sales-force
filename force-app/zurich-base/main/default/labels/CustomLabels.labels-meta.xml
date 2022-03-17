@@ -1343,4 +1343,11 @@ Related fields: [{3}]</value>
         <shortDescription>sendSurveyToastTitleError</shortDescription>
         <value>Survey not sent</value>
     </labels>
+    <labels>
+        <fullName>OfferStageValidationMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OfferStageNameErrorMsg</shortDescription>
+        <value>No se puede cambiar la oferta a Cerrada Ganada</value>
+    </labels>
 </CustomLabels>

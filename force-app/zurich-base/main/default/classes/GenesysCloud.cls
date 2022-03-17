@@ -13,6 +13,8 @@ public class GenesysCloud
     public static final String SERVICE_CALLBACKS = 'CallbacksService';
     public static final String SERVICE_SMS = 'SMSService';
     public static final String SERVICE_DISCONNECTION = 'DisconnectionService';
+    public static final String CONVERSATION_EMAIL_ENDPOINT = '/api/v2/conversations/emails/';
+    public static final String CONVERSATION_EMAIL_PARTICIPANTS = '/participants/';
 
     public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS, SERVICE_SMS, SERVICE_DISCONNECTION }
 
@@ -111,6 +113,32 @@ public class GenesysCloud
             }
 
             return DisconnectionService;
+        }
+        private set;
+    }
+
+    public static GenesysCloud.StatusService StatusService
+    {
+        get
+        {
+            if (StatusService == null)
+            {
+                StatusService = new StatusService();
+            }
+            return StatusService;
+        }
+        private set;
+    }
+
+    public static GenesysCloud.PatchService PatchService
+    {
+        get
+        {
+            if (PatchService == null)
+            {
+                PatchService = new PatchService();
+            }
+            return PatchService;
         }
         private set;
     }
@@ -844,6 +872,128 @@ public class GenesysCloud
         }
     }
 
+    /**
+     * StatusService ofrece el método de consulta de estado para integrar con cierre de interacciones 
+     *  programadas dentro de los flujos de
+     *  Genesys Cloud a través de una configuración de enrutamiento especificada antes de enrutar.
+     */ 
+    public class StatusService 
+    {
+        public HttpCalloutMock mock = null;
+
+        /**
+         * Metodo publico que realiza una solicitud de tipo GET a Genesys para 
+         * recuperar el estado de las interacciones
+         * 
+         * @author nts (jgarciamartinez)
+         * @date 22/02/2022
+         * @param {InteractionStatus} objeto con el id de Genesys de la interacción a comprobar
+         * @return Devuelve la interaccion
+         */
+
+         public HttpResponse status(InteractionStatus interaction)
+         {
+             HttpResponse response = null;
+
+             if(Test.isRunningTest() && mock != null)
+             {
+                 HttpRequest req = new HttpRequest();
+                 req.setMethod('GET');
+                 req.setEndpoint(CONVERSATION_EMAIL_ENDPOINT + interaction.conversationId);
+                 req.setBody(interaction.toJSON());
+                 response = mock.respond(req);
+             }
+             else 
+             {
+                response = purecloud.SDK.Rest.get(CONVERSATION_EMAIL_ENDPOINT + interaction.conversationId);
+             }
+            
+             return response;
+             
+         }
+
+         public void status(InteractionStatus[] interactions, IAPICallback apexCallback)
+         {
+             asynchronousCallout(ASYNC_METHOD_DISCONNECTION, interactions, apexCallback);
+         }
+
+    }
+
+    /**
+     * PatchService ofrece el método de desconexión de estado para poder cerrar correctamente
+     * las interacciones. Para ello, necesitamos el conversationId así como el participantId
+     * (ya sea acd o agent)
+     * 
+     *  Metodo publico que realiza una solicitud de tipo PATCH a Genesys para 
+     * desconectar la interacción en caso de Agent.
+     * 
+     * @author nts (jgarciamartinez)
+     * @date 06/03/2022
+     * @param {InteractionStatus} string concatenado con conversationId, participantId y un estado
+     *          inventado 'working' para el Agent.
+     * @return Devuelve el resultado de la interacción como ok o nok
+     */ 
+    public class PatchService
+    {
+        public HttpCalloutMock mock = null;
+
+        public String patchForService(InteractionStatus interaction)
+        {
+            String retorno = '';
+
+            AdminSetupParameter__mdt codigoWrapup = [SELECT KeyName__c, Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = 'WrapupValid' LIMIT 1];
+
+            HttpResponse response = null;
+
+            if(Test.isRunningTest() && mock != null)
+            {
+                HttpRequest req = new HttpRequest();
+                req.setMethod('PATCH');
+                req.setEndpoint(CONVERSATION_EMAIL_ENDPOINT + interaction.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + interaction.participants);
+                req.setBody(interaction.toJSON());
+                response = mock.respond(req);
+                retorno = interaction.conversationId;
+            }
+            else 
+            {
+                Map<String, Object> bodyPatch = new Map<String, Object>();
+                bodyPatch.put('state', 'disconnected');
+
+                if(interaction.purposeStatus.equalsIgnoreCase('acd'))
+                {
+                    Map<String, Object> bodyPatchWrapup = new Map<String,Object>();
+                    bodyPatchWrapup.put('code', codigoWrapup.Value__c);
+                    bodyPatchWrapup.put('name', 'válida');
+                    bodyPatch.put('wrapup', bodyPatchWrapup);
+                }
+                response = purecloud.sdk.rest.patch(CONVERSATION_EMAIL_ENDPOINT 
+                                                    + interaction.conversationId + CONVERSATION_EMAIL_PARTICIPANTS 
+                                                    + interaction.participants, 
+                                                    JSON.serialize(bodyPatch));
+            }
+            return response.getBody();
+        }
+
+        public void agentPatch(InteractionStatus[] interactions, IAPICallback apexCallback)
+         {
+             asynchronousCallout(ASYNC_METHOD_DISCONNECTION, interactions, apexCallback);
+         }
+
+         public String getFieldFromPatch(HttpResponse response, string field)
+         {
+             String result = '';
+             String responseBody = response.getBody();
+             if(responseBody != null && responseBody.contains('\"' + field + '\"'))
+             {
+                 Map<String, Object> deserializedBody = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
+                 if(deserializedBody.containsKey(field))
+                 {
+                     result = (String) deserializedBody.get(field);
+                 }
+             }
+             return result;
+         }
+    }
     
 
     /**
@@ -856,6 +1006,21 @@ public class GenesysCloud
         public String conversationId;
 
         // Método público que devuelve una serialización a JSON de la propia instancia de la clase para su uso en las llamadas al SDK.
+        public String toJSON()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    
+    public class InteractionStatus implements IAPIRequest
+    {
+        public String conversationId;
+        public String participants;
+
+        //jgarciamartinez - 16/03/2022 - se añade este campo para poder leer el purpose
+        public String purposeStatus;
+
         public String toJSON()
         {
             return JSON.serialize(this);
@@ -1047,7 +1212,7 @@ public class GenesysCloud
          */
         public void consult(ConsultTransfer consult)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + '/participants/' + consult.participantId + '/consult', consult.toJSON() );
+            HttpResponse response = new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + consult.participantId + '/consult', consult.toJSON() );
         }
 
         /**
@@ -1058,7 +1223,7 @@ public class GenesysCloud
          */
         public void setParticipantData(String conversationId, String participantId, Map<String, String> attributes)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + '/participants/' + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
+            HttpResponse response = new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
             {
                 'attributes' => attributes
             }) );
@@ -1072,7 +1237,7 @@ public class GenesysCloud
          */
         public void setUUIData(String conversationId, String participantId, String communicationId, String uuiData)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + '/participants/' + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
+            HttpResponse response = new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
             {
                 'uuiData' => uuiData
             }) );
@@ -1178,6 +1343,13 @@ public class GenesysCloud
 
         @auraEnabled
         public Map<String, String> attributes;
+
+        //añadimos más campos a participant
+        @AuraEnabled
+        public String purpose;
+
+        @AuraEnabled
+        public String state;
 
         public String toJSON()
         {

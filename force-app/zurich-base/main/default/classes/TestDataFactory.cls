@@ -2049,6 +2049,7 @@ public class TestDataFactory
                             Name = 'intermediaryName' + i,
                             INFOIntermediaryCode__c = String.valueOf(phoneNumber).leftPad(10, '0'),
                             Phone = String.valueOf(phoneNumber),
+                            NationalId__c = 'C',
                             RecordTypeId = recordTypeId
                         )
                     );
@@ -2092,6 +2093,7 @@ public class TestDataFactory
                         new Account(
                             Name = 'agrupationName' + i,
                             NationalIdType__c = 'C',
+                            NationalId__c = 'C',
                             RecordTypeId = recordTypeId
                         )
                     );
@@ -2662,7 +2664,7 @@ public class TestDataFactory
             'numberOfEmployees' => '150',
             'tradeName' => 'TradeName',
             'companyName' => 'CompanyName',
-            'nationalIdentifier' => nationalId, 
+            'nationalIdentifier' => nationalId,
             'webIdentifier' => 'ABC123'
         };
     }
