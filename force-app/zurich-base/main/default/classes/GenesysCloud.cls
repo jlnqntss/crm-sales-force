@@ -959,7 +959,7 @@ public class GenesysCloud
                 Map<String, Object> bodyPatch = new Map<String, Object>();
                 bodyPatch.put('state', 'disconnected');
 
-                if(interaction.purposeStatus.equalsIgnoreCase('acd'))
+                if(interaction.purposeStatus.equalsIgnoreCase('pending'))
                 {
                     Map<String, Object> bodyPatchWrapup = new Map<String,Object>();
                     bodyPatchWrapup.put('code', codigoWrapup.Value__c);

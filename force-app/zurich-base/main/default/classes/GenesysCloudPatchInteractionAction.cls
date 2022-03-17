@@ -6,14 +6,15 @@ public with sharing class GenesysCloudPatchInteractionAction
                description='Check the purpose and state of an interaction to check if its wrapup can be patched through Genesys Cloud'
                             category='Other'
         )
-    public static List<String> execute (List<List<String> > listaRetorno)
+    public static List<List<String> > execute (List<List<String> > listaRetorno)
     {
-        List<String> responsePatch = new List<String>();
-
+        List<List<String> > responsePatch = new List<List<String> >();
         String getDataResponse;
 
         for (List<String> interaccionPatch : listaRetorno)
         {
+            List<String> listaResponsePatch = new List<String>();
+
             for(String interaccionToPatch : interaccionPatch)
             {
                 try
@@ -25,7 +26,7 @@ public with sharing class GenesysCloudPatchInteractionAction
                     interaccionCasos.purposeStatus = interaccionToPatch.split('#').get(2);
 
                     getDataResponse = GenesysCloud.PatchService.patchForService(interaccionCasos);
-                    responsePatch.add(getDataResponse);
+                    listaResponsePatch.add(getDataResponse);
 
                 }
 
@@ -34,6 +35,7 @@ public with sharing class GenesysCloudPatchInteractionAction
                     System.debug( e.getMessage() );
                 }
             }
+            responsePatch.add(listaResponsePatch);
         }
         return responsePatch;
     }

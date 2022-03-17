@@ -13,11 +13,12 @@ public with sharing class GenesysCloudStatusAction
 
         for (List<EmailMessage> listaParaEstadoEmailMessages : estadoInteracciones)
         {
-
             List<String> listaValores = new List<String>();
 
             for(EmailMessage email : listaParaEstadoEmailMessages)
             {
+                String valores = '';
+
                 try
                 {
                     //Creo nueva instancia de InteractionStatus
@@ -39,25 +40,30 @@ public with sharing class GenesysCloudStatusAction
                     {
                         //asignamos el participantObj a un mapa de participant para poder comprar los valores y añadirlo
                         Map<String,Object> participant = (Map<String,Object>) participantObj;
-                        if( listaValores.isEmpty() )
+                        if( valores == '' )
                         {
                             if ( participant.get('purpose') == 'agent' && (participant.get('state') == 'connected' || participant.get('state') == 'alerting') )
                             {
-                                listaValores.add(email.GenesysInteractionId__c + '#' + participant.get('id') + '#' + 'pending');
+                                valores = email.GenesysInteractionId__c + '#' + participant.get('id') + '#' + 'working';
                             }
                             else if (participant.get('purpose') == 'acd' && participant.get('state') == 'connected')
                             {
-                                listaValores.add(email.GenesysInteractionId__c + '#' + participant.get('id') + '#' + 'working');
+                                valores = email.GenesysInteractionId__c + '#' + participant.get('id') + '#' + 'pending';
                             }
                         }
                     }
-                    listaRetorno.add(listaValores);
+                    if (valores != '')
+                    {
+                        listaValores.add(valores);
+                    }
+
                 }
                 catch (Exception e)
                 {
                     System.debug( e.getMessage() );
                 }
             }
+            listaRetorno.add(listaValores);
         }
         return listaRetorno;
     }
