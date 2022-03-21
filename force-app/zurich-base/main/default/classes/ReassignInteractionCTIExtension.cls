@@ -99,7 +99,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         catch (Exception e)
         {
             Database.rollback(sp);
-            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, e.getMessage(), 'ReassignInteractionCTIExtension', e.getStackTraceString() + ' Payload: ' + data);
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_CRITICAL, e.getMessage(), 'ReassignInteractionCTIExtension', e.getStackTraceString() + ' Payload: ' + data);
         }
 
         return null;
@@ -223,66 +223,76 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     @TestVisible
     private static void changeOwnerFromQueueToUser(Task interactionTask)
     {
-        //Comprobar si es un CASO
-        if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
+        try
         {
-            List<Case> cases = [SELECT Id, OwnerId, Owner.Type FROM Case WHERE Id = :interactionTask.WhatId];
-            if(!cases.isEmpty() )
+            //Comprobar si es un CASO
+            if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
             {
-                //Si el propietario es una COLA
-                if(cases[0].OwnerId.getSobjectType() == Group.sObjectType) //(cases[0].Owner.Type == 'Queue')
+                List<Case> cases = [SELECT Id, OwnerId, Owner.Type FROM Case WHERE Id = :interactionTask.WhatId];
+                if(!cases.isEmpty() )
                 {
-                    //Cambiar el propietario al usuario actual
-                    cases[0].OwnerId = UserInfo.getUserId();
-                    update cases;
-                }
-            }
-        }//Comprobar si es un ContactRequest
-        else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
-        {
-            List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
-            if(!contactrequests.isEmpty() )
-            {
-                //Cambiar el propietario al usuario actual siempre
-                contactrequests[0].OwnerId = UserInfo.getUserId();
-                update contactrequests;
-            }
-        }//Comprobar si es una Offer
-        else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
-        {
-            
-            OpportunitiesSelector optySelector = new OpportunitiesSelector();
-            List<Opportunity> offers = optySelector.findById(interactionTask.WhatId);
-            if(!offers.isEmpty() )
-            {
-                List<Opportunity> totalOffers = new List<Opportunity>();
-                totalOffers.addAll(offers);
-                //Si el cliente de la oferta tiene más ofertas que también están asignadas a Integrator, cambiarlas todas de owner
-                if(offers[0].AccountId != null && offers[0].ScopeId__c != null)
-                {
-                    Id accountId = offers[0].AccountId;
-                    Id scopeId = offers[0].ScopeId__c;
-                    List<Opportunity> extraOffers = new List<Opportunity>();
-                    extraOffers = optySelector.findByAccountIdAndScopeAndNotId(interactionTask.WhatId, accountId, scopeId);
-                    if(!extraOffers.isEmpty() )
-                    {
-                        totalOffers.addAll(extraOffers);
-                    }
-                }
-
-                //Si el Owner es el Integrador hay que cambiarlo
-                // arcortazar - 31/01/2022: Y si la oferta no es de test
-                for(Opportunity offer: totalOffers)
-                {
-                    if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && offer.IsTest__c == false)
+                    //Si el propietario es una COLA
+                    if(cases[0].OwnerId.getSobjectType() == Group.sObjectType) //(cases[0].Owner.Type == 'Queue')
                     {
                         //Cambiar el propietario al usuario actual
-                        offer.OwnerId = UserInfo.getUserId();
-                        offer.HasBeenReassigned__c = true; //arcortazar - 09/03/2022: [ZE-1327] Indicamos que la oferta ha sido reasignada
+                        cases[0].OwnerId = UserInfo.getUserId();
+                        update cases;
                     }
                 }
-                update totalOffers;
+            }//Comprobar si es un ContactRequest
+            else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
+            {
+                List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
+                if(!contactrequests.isEmpty() )
+                {
+                    //Cambiar el propietario al usuario actual siempre
+                    contactrequests[0].OwnerId = UserInfo.getUserId();
+                    update contactrequests;
+                }
+            }//Comprobar si es una Offer
+            else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
+            {
+                OpportunitiesSelector optySelector = new OpportunitiesSelector();
+                List<Opportunity> offers = optySelector.findById(interactionTask.WhatId);
+                if(!offers.isEmpty() )
+                {
+                    List<Opportunity> totalOffers = new List<Opportunity>();
+                    
+                    // Sería aqui donde tendríamos que cambiar el Owner de la oferta para que siempre pasase:
+                    totalOffers.addAll(offers);
+                    
+                    //Si el cliente de la oferta tiene más ofertas que también están asignadas a Integrator, cambiarlas todas de owner
+                    if(offers[0].AccountId != null && offers[0].ScopeId__c != null)
+                    {
+                        // Luego ya buscamos el resto de ofertas asociadas a la misma Account y Scope para comprobar si alguna tiene como Owner el Integrator
+                        Id accountId = offers[0].AccountId;
+                        Id scopeId = offers[0].ScopeId__c;
+                        List<Opportunity> extraOffers = new List<Opportunity>();
+                        extraOffers = optySelector.findByAccountIdAndScopeAndNotId(interactionTask.WhatId, accountId, scopeId);
+                        if(!extraOffers.isEmpty() )
+                        {
+                            totalOffers.addAll(extraOffers);
+                        }
+                    }
+
+                    //Si el Owner es el Integrador hay que cambiarlo
+                    // arcortazar - 31/01/2022: Y si la oferta no es de test
+                    for(Opportunity offer: totalOffers)
+                    {
+                        if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && offer.IsTest__c == false)
+                        {
+                            //Cambiar el propietario al usuario actual
+                            offer.OwnerId = UserInfo.getUserId();
+                            offer.HasBeenReassigned__c = true; //arcortazar - 09/03/2022: [ZE-1327] Indicamos que la oferta ha sido reasignada
+                        }
+                    }
+                    update totalOffers;
+                }
             }
+        }
+        catch(Exception e)
+        {
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, e.getMessage(), 'ReassignInteractionCTIExtension', e.getStackTraceString());
         }
     }
 
