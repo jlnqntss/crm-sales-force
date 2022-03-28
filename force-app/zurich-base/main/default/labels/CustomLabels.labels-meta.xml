@@ -1312,6 +1312,38 @@ Related fields: [{3}]</value>
         <value>Subplans with a zero value at the RN/CV level for DT/DV or Intermediary level for RN/CV will not be created or, if they existed, they will be eliminated.</value>
     </labels>
     <labels>
+        <fullName>sendSurveyShowToastEvent</fullName>
+        <categories>sendSurveyShowToast</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>sendSurveyShowToastEventTitle</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>sendSurveyShowToastEventMessage</fullName>
+        <categories>sendSurveyShowToast</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>sendSurveyShowToastEventMessage</shortDescription>
+        <value>A survey with this interaction type cannot be redirected</value>
+    </labels>
+    <labels>
+        <fullName>sendSurveyToastMessageError</fullName>
+        <categories>sendSurveyButtonError</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>sendSurveyToastMessageError</shortDescription>
+        <value>The call identifier has not been recovered. Please, reload the page or dock this window to the taskbar</value>
+    </labels>
+    <labels>
+        <fullName>sendSurveyToastTitleError</fullName>
+        <categories>sendSurveyButtonError</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>sendSurveyToastTitleError</shortDescription>
+        <value>Survey not sent</value>
+    </labels>
+    <labels>
         <fullName>OfferStageValidationMessage</fullName>
         <language>en_US</language>
         <protected>false</protected>

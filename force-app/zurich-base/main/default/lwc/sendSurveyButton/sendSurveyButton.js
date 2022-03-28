@@ -3,15 +3,26 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import sendSurveyLabel from "@salesforce/label/c.sendSurveyButtonLabel";
 import sendSurveyToastTitleSuccess from "@salesforce/label/c.sendSurveyToastTitleSuccess";
 import sendSurveyToastMessageSuccess from "@salesforce/label/c.sendSurveyToastMessageSuccess";
+import sendSurveyToastTitleError from "@salesforce/label/c.sendSurveyToastTitleError";
+import sendSurveyToastMessageError from "@salesforce/label/c.sendSurveyToastMessageError";
+import sendErrorInteractionTypeTitle from "@salesforce/label/c.sendSurveyShowToastEvent";
+import sendErrorInteractionTypeMessage from "@salesforce/label/c.sendSurveyShowToastEventMessage";
+
 import genesysCloud from "c/genesysCloudService";
 import getPollPhoneNumber from "@salesforce/apex/SendSurveyButtonController.getTransferPollPhoneNumber";
+
+import getSurveyableQueue from "@salesforce/apex/GenesysCloudQueues.getSurveyableQueue"; 
 
 export default class SendSurveyButton extends LightningElement {
   // #region Propiedades y atributos internos
   label = {
     sendSurveyLabel,
     sendSurveyToastTitleSuccess,
-    sendSurveyToastMessageSuccess
+    sendSurveyToastMessageSuccess,
+    sendSurveyToastTitleError,
+    sendSurveyToastMessageError,
+    sendErrorInteractionTypeTitle,
+    sendErrorInteractionTypeMessage
   };
 
   @track
@@ -23,6 +34,7 @@ export default class SendSurveyButton extends LightningElement {
   // arcortazar - 24/02/22
   hasBeenTranfered = false;
   isEmail = false;
+  transferedID;
 
   /**
    * Variable interna para poder realizar un bind del handler handleCTIMessage
@@ -91,6 +103,10 @@ export default class SendSurveyButton extends LightningElement {
         this.pollPhoneNumber !== undefined &&
         this.pollPhoneNumber !== null
       ) {
+        // Guardamos el ID De la interaction que se está transfiriendo
+        this.hasBeenTranfered = true;
+        this.transferedID = genesysCloud.getState().currentInteractionId;
+
         genesysCloud.transfer(this.pollPhoneNumber);
         const navigateToCall = new CustomEvent("redirect", {
           bubbles: true,
@@ -102,18 +118,16 @@ export default class SendSurveyButton extends LightningElement {
         this.dispatchEvent(navigateToCall);
       } else {
         const eventError = new ShowToastEvent({
-          title: "Error",
-          message:
-            "No se ha recuperado el identificador de la llamada, por favor, refresque la página o ancle esta ventana a la barra de tareas",
+          title: this.label.sendSurveyToastTitleError,
+          message: this.label.sendSurveyToastMessageError,
           variant: "error"
         });
         this.dispatchEvent(eventError);
       }
     } else {
       const eventError = new ShowToastEvent({
-        title: "Error",
-        message:
-          "No puede redireccionarse una encuesta en este tipo de interaccion",
+        title: this.label.sendErrorInteractionTypeTitle,
+        message: this.label.sendErrorInteractionTypeMessage,
         variant: "error"
       });
       this.dispatchEvent(eventError);
@@ -129,21 +143,28 @@ export default class SendSurveyButton extends LightningElement {
    * @param {*} message Mensajes
    */
   handleCTIMessage(message) {
+
     if (message.type === "Interaction" && !message.data.isEmail) {
       if (message.category === "connect" && !this.isEmail) {
         this.isOnCall = genesysCloud.isOnCall(); // arcortazar (nts) - 17/03/2022: Hacemos que el botón se habilite al iniciar la interacción, siempre y cuando no sea un email
       } else if (message.category === "blindTransfer") {
-        this.hasBeenTranfered = true;
+        console.log("MENSAJE blind transfer");
       } else if (message.category === "change" && this.hasBeenTranfered) {
-        const event = new ShowToastEvent({
-          title: this.label.sendSurveyToastTitleSuccess,
-          message: this.label.sendSurveyToastMessageSuccess,
-          variant: "success"
-        });
-        this.dispatchEvent(event);
+        console.log("MENSAJE change + blindtransfer");
       } else if (message.category === "disconnect") {
-        if (this.hasBeenTranfered) {
+        if (this.transferedID === genesysCloud.getState().currentInteractionId && this.hasBeenTranfered) 
+        {
+          // Inicializamos los campos de comprobación
           this.hasBeenTranfered = false;
+          this.transferedID = "";
+
+          // Lanzamos el toast
+          const event = new ShowToastEvent({
+            title: this.label.sendSurveyToastTitleSuccess,
+            message: this.label.sendSurveyToastMessageSuccess,
+            variant: "success"
+          });
+          this.dispatchEvent(event);
         }
 
         this.isOnCall = false; // arcortazar (nts) - 17/03/2022: Hacemos que el botón se deshabilite al terminar la interacción
