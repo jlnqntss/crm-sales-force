@@ -11,8 +11,6 @@ import sendErrorInteractionTypeMessage from "@salesforce/label/c.sendSurveyShowT
 import genesysCloud from "c/genesysCloudService";
 import getPollPhoneNumber from "@salesforce/apex/SendSurveyButtonController.getTransferPollPhoneNumber";
 
-import getSurveyableQueue from "@salesforce/apex/GenesysCloudQueues.getSurveyableQueue"; 
-
 export default class SendSurveyButton extends LightningElement {
   // #region Propiedades y atributos internos
   label = {
