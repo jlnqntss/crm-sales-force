@@ -57,8 +57,6 @@ export default class SendSurveyButton extends LightningElement {
     getPollPhoneNumber().then((result) => {
       this.pollPhoneNumber = result || "1000";
     });
-
-    this.isOnCall = genesysCloud.isOnCall();
   }
 
   /**
@@ -132,9 +130,9 @@ export default class SendSurveyButton extends LightningElement {
    */
   handleCTIMessage(message) {
     if (message.type === "Interaction" && !message.data.isEmail) {
-      this.isOnCall = genesysCloud.isOnCall();
-
-      if (message.category === "blindTransfer") {
+      if (message.category === "connect" && !this.isEmail) {
+        this.isOnCall = genesysCloud.isOnCall(); // arcortazar (nts) - 17/03/2022: Hacemos que el botón se habilite al iniciar la interacción, siempre y cuando no sea un email
+      } else if (message.category === "blindTransfer") {
         this.hasBeenTranfered = true;
       } else if (message.category === "change" && this.hasBeenTranfered) {
         const event = new ShowToastEvent({
@@ -143,8 +141,12 @@ export default class SendSurveyButton extends LightningElement {
           variant: "success"
         });
         this.dispatchEvent(event);
-      } else if (message.category === "disconnect" && this.hasBeenTranfered) {
-        this.hasBeenTranfered = false;
+      } else if (message.category === "disconnect") {
+        if (this.hasBeenTranfered) {
+          this.hasBeenTranfered = false;
+        }
+
+        this.isOnCall = false; // arcortazar (nts) - 17/03/2022: Hacemos que el botón se deshabilite al terminar la interacción
       }
     }
   }
