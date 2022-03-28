@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsSurveyable__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Campo que determina si la cola es elegible para encuesta o no</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Campo que determina si la cola es elegible para encuesta o no</inlineHelpText>
+    <label>Is Surveyable?</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
