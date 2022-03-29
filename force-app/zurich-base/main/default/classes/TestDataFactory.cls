@@ -3210,7 +3210,9 @@ public class TestDataFactory
             genesysQueues.add(
                 new purecloud__PureCloud_Queue__c(
                     Name='GenesysQueueName'+i,
-                    purecloud__PureCloud_Queue_ID__c='GenesysQueueId'+i
+                    purecloud__PureCloud_Queue_ID__c='GenesysQueueId'+i,
+                    isSurveyable__c=false,
+                    scope__c= 'Z'
                 )
             );
         }

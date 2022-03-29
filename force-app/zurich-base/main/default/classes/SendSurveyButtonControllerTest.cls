@@ -20,4 +20,25 @@ public class SendSurveyButtonControllerTest
 
         System.assertEquals(SendSurveyButtonController.testListPollPhoneNumber.get(0).Value__c, pollPhoneNumberResult, 'PhoneNumber is the same');
     }
+    
+    @TestSetup
+        static void makeData()
+        {
+            List<purecloud__PureCloud_Queue__c> testingGenesysQueues = TestDataFactory.generateGenesysQueues(5);
+            testingGenesysQueues[1].IsSurveyable__c = true;
+            insert testingGenesysQueues;
+        }
+
+    @IsTest
+    static void test_getAllQueues_ok()
+    {
+        List<purecloud__PureCloud_Queue__c> totalQueues = [SELECT Id, Name, IsSurveyable__c FROM purecloud__PureCloud_Queue__c];
+    
+        Test.startTest();
+        List<purecloud__PureCloud_Queue__c> selectedQueues = SendSurveyButtonController.getGenesysCloudQueues();
+        Test.stopTest();
+    
+        System.assertEquals(totalQueues.size(), selectedQueues.size(), 'No hay las colas esperadas');
+
+    }
 }

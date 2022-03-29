@@ -1,4 +1,4 @@
-import { LightningElement, track } from "lwc";
+import { LightningElement, track, wire } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import sendSurveyLabel from "@salesforce/label/c.sendSurveyButtonLabel";
 import sendSurveyToastTitleSuccess from "@salesforce/label/c.sendSurveyToastTitleSuccess";
@@ -11,6 +11,8 @@ import sendErrorInteractionTypeMessage from "@salesforce/label/c.sendSurveyShowT
 import genesysCloud from "c/genesysCloudService";
 import getPollPhoneNumber from "@salesforce/apex/SendSurveyButtonController.getTransferPollPhoneNumber";
 
+ // jgarciamartinez - 29/03/2022
+import getGenesysCloudQueues from "@salesforce/apex/SendSurveyButtonController.getGenesysCloudQueues";
 export default class SendSurveyButton extends LightningElement {
   // #region Propiedades y atributos internos
   label = {
@@ -34,13 +36,39 @@ export default class SendSurveyButton extends LightningElement {
   isEmail = false;
   transferedID;
 
+  // jgarciamartinez - 28/03/2022
+  @wire(getGenesysCloudQueues) getQueueList;
+  isSurveyable = false;
+
   /**
    * Variable interna para poder realizar un bind del handler handleCTIMessage
    */
   ctiMessageHandler = null;
 
+  /**
+   * 
+   * @author jgarciamartinez@nts-solutions.com
+   * @date 29/03/2022
+   * @param (name) - nombre de la cola que he
+   * @return 
+   */
+  colaEsEncuestable(name) {
+    for (let i = 0; i < this.getQueueList.data.length; i++) {
+      if (name === this.getQueueList.data[i].Name && this.getQueueList.data[i].IsSurveyable__c === true)
+      {
+        this.isSurveyable = true;
+        console.log('++++ lista de colas ++++ ' + this.getQueueList.data[i].Name && this.getQueueList.data[i].IsSurveyable__c === true)
+        break;
+      }
+      else
+      {
+        this.isSurveyable = false;
+      }
+    }
+  }
+
   get isDisabled() {
-    return !this.pollPhoneNumber || !this.isOnCall;
+    return !this.pollPhoneNumber || !this.isOnCall || !this.isSurveyable ;
   }
 
   //#endregion
@@ -141,21 +169,37 @@ export default class SendSurveyButton extends LightningElement {
    * @param {*} message Mensajes
    */
   handleCTIMessage(message) {
+
+    if (message.data.queueName !== undefined && message.data.queueName !== '')
+    {
+      this.colaEsEncuestable(message.data.queueName);
+    }
+
     if (message.type === "Interaction" && !message.data.isEmail) {
+
       if (message.category === "connect" && !this.isEmail) {
         this.isOnCall = genesysCloud.isOnCall(); // arcortazar (nts) - 17/03/2022: Hacemos que el botón se habilite al iniciar la interacción, siempre y cuando no sea un email
       } else if (message.category === "blindTransfer") {
-        this.hasBeenTranfered = true;
+
       } else if (message.category === "change" && this.hasBeenTranfered) {
-        const event = new ShowToastEvent({
-          title: this.label.sendSurveyToastTitleSuccess,
-          message: this.label.sendSurveyToastMessageSuccess,
-          variant: "success"
-        });
-        this.dispatchEvent(event);
+ 
+      } else if (message.category === 'change' && message.isConnected === true) {
+        this.isOnCall = genesysCloud.isOnCall();
+
       } else if (message.category === "disconnect") {
-        if (this.hasBeenTranfered) {
+        if (this.transferedID === genesysCloud.getState().currentInteractionId && this.hasBeenTranfered) 
+        {
+          // Inicializamos los campos de comprobación
           this.hasBeenTranfered = false;
+          this.transferedID = "";
+
+          // Lanzamos el toast
+          const event = new ShowToastEvent({
+            title: this.label.sendSurveyToastTitleSuccess,
+            message: this.label.sendSurveyToastMessageSuccess,
+            variant: "success"
+          });
+          this.dispatchEvent(event);
         }
 
         this.isOnCall = false; // arcortazar (nts) - 17/03/2022: Hacemos que el botón se deshabilite al terminar la interacción

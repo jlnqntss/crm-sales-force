@@ -29,4 +29,24 @@ public without sharing class SendSurveyButtonController
 
     public class SendSurveyButtonControllerException extends Exception
     {}
+
+    /**
+     * 
+     * @author jgarciamartinez@nts-solutions.com
+     * @date 29/03/2022
+     * se crea un método con auraenabled para traernos
+     * todas las queries que hemos solicitado con el selector
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<purecloud__PureCloud_Queue__c> getGenesysCloudQueues()
+    {
+        try 
+        {
+            return new GenesysQueueSelector().getAllQueues();
+        }
+        catch (Exception e) 
+        {
+            throw new AuraException(e.getMessage() + ': No se han recuperado las colas de la BBDD.');
+        }      
+    }
 }
