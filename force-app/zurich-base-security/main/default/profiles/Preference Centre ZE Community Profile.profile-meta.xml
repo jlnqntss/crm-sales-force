@@ -15214,10 +15214,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
-        <name>LearningManager</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
         <name>LightningConsoleAllowedForUser</name>
     </userPermissions>
     <userPermissions>

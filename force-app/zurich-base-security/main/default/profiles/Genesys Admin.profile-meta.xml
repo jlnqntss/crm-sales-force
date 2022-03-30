@@ -17041,10 +17041,6 @@
         <name>LMOutboundMessagingUserPerm</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>LearningManager</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>LightningConsoleAllowedForUser</name>
     </userPermissions>
