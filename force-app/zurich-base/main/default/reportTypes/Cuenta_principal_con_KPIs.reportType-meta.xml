@@ -2177,11 +2177,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>LastActivityDate</field>
-            <table>Account.Intermediary__r.KPIs__r</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>CodIntermediario__c</field>
             <table>Account.Intermediary__r.KPIs__r</table>
         </columns>

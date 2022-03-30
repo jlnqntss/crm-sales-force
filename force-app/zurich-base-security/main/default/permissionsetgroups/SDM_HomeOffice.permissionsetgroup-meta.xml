@@ -8,5 +8,6 @@
     <permissionSets>Gestionar_vistaslista</permissionSets>
     <permissionSets>SDM_Gestion_Informes</permissionSets>
     <permissionSets>SDM_Plan_comercial</permissionSets>
+    <permissionSets>Gestion_Informes</permissionSets>    
     <status>Updated</status>
 </PermissionSetGroup>

@@ -90,7 +90,7 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>$Record.Id</elementReference>
+                <elementReference>ScreenPopURL</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -109,7 +109,7 @@
     <actionCalls>
         <name>Enrutar_a_Queue_Genesys</name>
         <label>Enrutar a Queue Genesys</label>
-        <locationX>1267</locationX>
+        <locationX>1268</locationX>
         <locationY>651</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
@@ -150,7 +150,7 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>$Record.Id</elementReference>
+                <elementReference>ScreenPopURL</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -316,7 +316,7 @@
         <name>Flow_o_Queue</name>
         <label>¿Flow o Queue?</label>
         <locationX>1098</locationX>
-        <locationY>494</locationY>
+        <locationY>549</locationY>
         <defaultConnector>
             <targetReference>Enrutar_a_Queue_Genesys</targetReference>
         </defaultConnector>
@@ -376,6 +376,15 @@
 &quot;ZEO&quot;, &quot;ZEO&quot;,
 &quot;all&quot;)</expression>
     </formulas>
+    <formulas>
+        <description>URL de la ficha a abrir con el correo enrutado</description>
+        <name>ScreenPopURL</name>
+        <dataType>String</dataType>
+        <expression>IF( {!scopeValue} = &apos;ZE&apos; , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=ZESearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; +  {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Id} + &apos;&quot;},{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
+IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CCS&apos;) , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CCSSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId} + &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId} + &apos;&quot;}]&apos;,
+IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CSM&apos;) ,  &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CSMSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress} + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId}+ &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
+ {!$Record.Id} )))</expression>
+    </formulas>
     <interviewLabel>EmailMessage Trigger - After insert/update Route to Genesys {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After insert - Route to Genesys</label>
     <processMetadataValues>
@@ -400,8 +409,8 @@
     <recordCreates>
         <name>Generar_error_actualizar_caso</name>
         <label>Generar error actualizar caso</label>
-        <locationX>581</locationX>
-        <locationY>340</locationY>
+        <locationX>574</locationX>
+        <locationY>302</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -573,8 +582,8 @@
     <recordLookups>
         <name>Recuperar_cola_Genesys_async</name>
         <label>Recuperar cola Genesys Async</label>
-        <locationX>1106</locationX>
-        <locationY>129</locationY>
+        <locationX>1097</locationX>
+        <locationY>157</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Buscar_Gestor_Preferente</targetReference>
