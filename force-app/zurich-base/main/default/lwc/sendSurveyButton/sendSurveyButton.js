@@ -55,9 +55,10 @@ export default class SendSurveyButton extends LightningElement {
   colaEsEncuestable(name) {
     for (const element of this.getQueueList.data) 
     {
-      if (name === element.name && element.IsSurveyable__c === true)
+      if (name === element.Name && element.IsSurveyable__c === true)
       {
         this.isSurveyable = true;
+        break;
       }
       else
       {
@@ -168,7 +169,6 @@ export default class SendSurveyButton extends LightningElement {
    * @param {*} message Mensajes
    */
   handleCTIMessage(message) {
-
     if (message.data.queueName !== undefined && message.data.queueName !== '')
     {
       this.colaEsEncuestable(message.data.queueName);
@@ -179,6 +179,7 @@ export default class SendSurveyButton extends LightningElement {
       if (message.category === "connect" && !this.isEmail) {
         this.isOnCall = genesysCloud.isOnCall(); // arcortazar (nts) - 17/03/2022: Hacemos que el botón se habilite al iniciar la interacción, siempre y cuando no sea un email
       } else if (message.category === 'change' && message.isConnected === true) {
+        this.colaEsEncuestable(message.data.new.queueName);
         this.isOnCall = genesysCloud.isOnCall();
 
       } else if (message.category === "disconnect") {
