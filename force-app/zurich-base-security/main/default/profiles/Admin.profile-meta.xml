@@ -4539,12 +4539,12 @@
         <editable>true</editable>
         <field>Account.GroupLifeConsultantEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseConsultantName__c</field>
         <readable>true</readable>
-    </fieldPermissions>   
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseConsultantEmail__c</field>
@@ -7334,7 +7334,7 @@
         <editable>true</editable>
         <field>Task.Additional_Information__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.ANIPhone__c</field>
@@ -7359,7 +7359,7 @@
         <editable>true</editable>
         <field>Task.Follow_up_type__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.MeetingMinutes__c</field>
@@ -16271,10 +16271,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-DeleteEvent</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-Development</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
