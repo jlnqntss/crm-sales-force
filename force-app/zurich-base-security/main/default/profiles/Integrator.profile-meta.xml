@@ -4372,7 +4372,7 @@
         <editable>true</editable>
         <field>Account.PYMEManagerEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.GroupLifeConsultantName__c</field>
@@ -4382,17 +4382,17 @@
         <editable>true</editable>
         <field>Account.GroupLifeConsultantEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseConsultantName__c</field>
         <readable>true</readable>
-    </fieldPermissions>   
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseConsultantEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.StatusIntermediary__c</field>
@@ -4402,12 +4402,12 @@
         <editable>true</editable>
         <field>AccountTeamMember.Email__c</field>
         <readable>true</readable>
-    </fieldPermissions> 
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>AccountTeamMember.Phone__c</field>
         <readable>true</readable>
-    </fieldPermissions> 
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>AccountContactRelation.EndDate</field>
@@ -9887,7 +9887,7 @@
         <editable>true</editable>
         <field>Task.Additional_Information__c</field>
         <readable>true</readable>
-    </fieldPermissions>      
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Klinc_CallResult__c</field>
@@ -9917,7 +9917,7 @@
         <editable>true</editable>
         <field>Task.Follow_up_type__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.MeetingMinutes__c</field>
@@ -16326,10 +16326,6 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>ManageChatterMessages</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageClearbitIntegration</name>
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>

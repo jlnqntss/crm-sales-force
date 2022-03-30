@@ -17101,10 +17101,6 @@
         <name>ManageChatterMessages</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageClearbitIntegration</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageContentPermissions</name>
     </userPermissions>
