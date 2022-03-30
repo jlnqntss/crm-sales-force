@@ -16095,10 +16095,7 @@
         <enabled>false</enabled>
         <name>ManageUsers</name>
     </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageZapierIntegration</name>
-    </userPermissions>
+
     <userPermissions>
         <enabled>false</enabled>
         <name>MassInlineEdit</name>

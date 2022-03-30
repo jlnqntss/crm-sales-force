@@ -2547,15 +2547,9 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-ApprovalRequests</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-YourAccount</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
-
-
     <userLicense>Salesforce</userLicense>
     <userPermissions>
         <enabled>true</enabled>

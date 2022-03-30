@@ -13584,10 +13584,6 @@
         <layout>Business_Quotes_Field__mdt-Business Quotes Field Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Campaign-Campaign Layout</layout>
-        <recordType>Default</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Campaign-Telemarketing</layout>
         <recordType>Campaign.Telemarketing</recordType>
     </layoutAssignments>
