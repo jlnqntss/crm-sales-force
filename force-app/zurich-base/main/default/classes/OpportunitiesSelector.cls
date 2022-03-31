@@ -91,7 +91,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Opportunity.Id,
             Opportunity.InfoQuoteNumber__c,
-            Opportunity.SessionId__c
+            Opportunity.SessionId__c,
+            Opportunity.isUpdatedFromINFO__c
         })
         .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
         .addCondition(Query.conditionEq(Opportunity.Scope__c, scope));
@@ -133,4 +134,36 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         
     }
 
+    /**
+     * Busca Ofertas a partir del Id del cliente, del ambito.
+     * 
+     * @author nts (arcortazar)
+     * @date 30/03/2022
+     * @param {Set<String> } lista de InfoQuoteNumber por los que buscar
+     * @return {List<Opportunity} ofertas encontradas
+     */
+    public Set<String> findUpdatedFromInfoByQuoteNumber(Set<String> quoteNumbers)
+    {
+        Set<String> setInfoQuoteNumbers = new Set<String>();
+        if(!quoteNumbers.isEmpty() && quoteNumbers != null)
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Opportunity.Id,
+                Opportunity.InfoQuoteNumber__c
+            })
+            .addConditionString('InfoQuoteNumber__c IN (\'' + String.join(new List<String>(quoteNumbers), '\',\'') + '\')')
+            .addCondition(Query.conditionEq(Opportunity.isUpdatedFromINFO__c, true));
+
+            List<Opportunity> listaRetorno = (List<Opportunity>) this.baseQuery.run();
+            for (Opportunity o : listaRetorno)
+            {
+                setInfoQuoteNumbers.add(o.InfoQuoteNumber__c);
+            }
+            return setInfoQuoteNumbers;
+        }
+        else 
+        {
+            return setInfoQuoteNumbers;
+        }
+    }
 }

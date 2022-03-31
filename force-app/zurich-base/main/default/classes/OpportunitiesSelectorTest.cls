@@ -157,4 +157,37 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
     }
 
+    @isTest 
+    static void test_findUpdatedFromInfoByQuoteNumber()
+    {
+        List<Opportunity> existingOpportunities = [SELECT Id, isUpdatedFromINFO__c, InfoQuoteNumber__c FROM Opportunity];
+        
+        // Actualizamos tres oportunidades metiéndoles InfoNumber y el flag
+        existingOpportunities.get(0).InfoQuoteNumber__c = 'ACB123';
+        existingOpportunities.get(0).isUpdatedFromINFO__c = true;
+
+        existingOpportunities.get(1).InfoQuoteNumber__c = 'ACB124';
+        existingOpportunities.get(1).isUpdatedFromINFO__c = true;
+
+        existingOpportunities.get(2).InfoQuoteNumber__c = 'ACB125';
+        existingOpportunities.get(2).isUpdatedFromINFO__c = false;
+
+        List<Opportunity> optysToUpdate = new List<Opportunity>();
+        optysToUpdate.add(existingOpportunities.get(0));
+        optysToUpdate.add(existingOpportunities.get(1));
+        optysToUpdate.add(existingOpportunities.get(2));
+
+        upsert optysToUpdate;
+
+        Set<String> idsABuscar = new Set<String>{'ACB123', 'ACB124', 'ACB125'};
+        Set<String> idsRecuperados;
+        Test.startTest();
+        idsRecuperados = new OpportunitiesSelector().findUpdatedFromInfoByQuoteNumber(idsABuscar);
+        Test.stopTest();
+
+        System.assertEquals(2, idsRecuperados.size(), 'Se han tenido que recuperar los dos identificadores con el flag a true');
+
+
+    }
+
 }
