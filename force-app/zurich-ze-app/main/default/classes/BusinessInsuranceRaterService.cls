@@ -663,11 +663,9 @@ public without sharing class BusinessInsuranceRaterService
                     listaQuoteNumbers.add(rOffer.quoteNumberINFO);
                 }
             }
-            System.debug('++++ QuoteNumbers que vienen: ' + listaQuoteNumbers);
 
             // Obtenemos los QuoteNumber que están en SF y que están ya modificadas por Info (los que no deben actualizarse).
             Set<String> existingSFQuoteNumbers = new OpportunitiesSelector().findUpdatedFromInfoByQuoteNumber(listaQuoteNumbers);
-            System.debug('++++ existing quotes: ' + existingSFQuoteNumbers);
 
             // Checkeamos si las ofertas que nos llegan del tarificador han de ser procesadas a continuacion o no
             List<BusinessInsuranceRaterService.Offer> toProcessReceivedOffers = new List<BusinessInsuranceRaterService.Offer>();
@@ -684,38 +682,14 @@ public without sharing class BusinessInsuranceRaterService
                     }
                     else
                     {
-                        System.debug('++++ Entra en el else, hay una oferta con los datos que vienen del tarificador');
-                        // TODO: Quitar mensajes hardcodeados
-                        Error_Log__c error = new Error_Log__c(
-                            Message__c = 'Error upserting oferta',
-                            Source_Class__c = 'BusinessInsuranceRaterService',
-                            Source_Method__c = 'checkOffer',
-                            Level__c = 'Error',
-                            Stack_Trace__c = 'Traza',
-                            Job_ID__c = null,
-                            Record_External_ID__c = null,
-                            Record_Object__c = null,
-                            Type_Name__c = null,
-                            Throwing_time__c = System.now()
-                            );
-
-                        System.debug('++++ Error log ' + error);
-                        errorsAtUpsertingOffer.add(error);
+                        ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_WARNING, 'No se puede actualizar la oferta porque existe en INFO. QuoteNumber: ' + rOffer.quoteNumberINFO, 'BusinessInsuranceRaterService');   
                     }
-                }
-
-                if(!errorsAtUpsertingOffer.isEmpty())
-                {
-                    insert errorsAtUpsertingOffer;
                 }
                 // actualizamos y dejamos sólo las ofertas que vamos a procesar
                 receivedOffers = toProcessReceivedOffers;
             }
-            System.debug('++++ A procesar: ' + toProcessReceivedOffers);
 
             // Finalmente, machacamos los datos que nos venian del request por los datos filtrados.
-            System.debug('++++ Cómo queda received: ' + receivedOffers);
-
             List<Policy__c> policiesToCreate = new List<Policy__c>();
             List<Asset> risksToCreate = new List<Asset>();
             Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation> quoteNumberRiskMap = new Map<Integer, BusinessInsuranceRaterService.OfferRiskInformation>();
@@ -734,20 +708,13 @@ public without sharing class BusinessInsuranceRaterService
 
             // Por cada Oferta que hay en Salesforce....
             for (Opportunity o : existingOffers) {
-                System.debug('++++ o ' + o);
                 // Miramos cual de los dos id externos tiene, dando prioridad al INFOQuoteNumber
                 if( o.INFOQuoteNumber__c != null ) {
-                    System.debug('++++ Entra en el if pata guardar en el mapa');
                     mapOffersToDelete.put(o.INFOQuoteNumber__c, o);
                 } else if( o.SessionId__c != null && o.SessionId__c.Contains(sessionId) ) {
-                    System.debug('++++ Entra en el ELSEIF pata guardar en el mapa');
                     mapOffersToDelete.put(o.SessionId__c, o);
-                } else {
-                    System.debug('++++ Entra en el ELSE pata guardar en el mapa');
-                }
+                } 
             }
-
-             System.debug('++++ Mapata ofertas a borrar ' + mapOffersToDelete.values());
 
             List<Opportunity> offersBySessionId = new List<Opportunity>();
             List<Opportunity> offersByQuoteNumber = new List<Opportunity>();
@@ -757,7 +724,6 @@ public without sharing class BusinessInsuranceRaterService
             {
                 for(Integer i=0; i < receivedOffers.size(); i++) {
                     BusinessInsuranceRaterService.Offer offer = receivedOffers.get(i);
-                    System.debug('++++ Oferta recibida del tarificador ' + offer);
 
                     // Producto - calculamos el codigo conjunto para la oferta
                     String productCodes = offer.productCodes;
@@ -789,10 +755,6 @@ public without sharing class BusinessInsuranceRaterService
 
                     // Oferta - obtenemos una oferta con todos los datos que vienen del formulario 
                     Opportunity sfOffer = offer.toOpportunity();
-                    System.debug('++++ Oferta recibida convertida a Opportunity: ' + sfOffer);
-                    System.debug('++++ Oferta recibida QuoteNumber: ' + sfOffer.InfoQuoteNumber__c);
-
-                    // Tendremos que comprobar si existe la oferta y si tiene el flag a true (si ha sido modificado, no hay que cambiarla)
 
                     // Oferta - a partir del id externo miramos si ya existe en Salesforce
                     if( mapOffersToDelete.containsKey(sfOffer.INFOQuoteNumber__c) ) {
@@ -839,15 +801,7 @@ public without sharing class BusinessInsuranceRaterService
 
             // Creacion de la oferta
             if( !offersToCreate.isEmpty() ) {
-
-                System.debug('++++ Offers to create no es empty ');
-                System.debug('++++ Offers to create: ' + offersToCreate);
-
                 // Creamos o actualizamos las ofertas por id externos
-
-                System.debug('++++ OffersByQuoteNumber: ' + offersByQuoteNumber);
-                System.debug('++++ OffersBySessionId: ' + offersBySessionId);
-
                 if( !offersByQuoteNumber.isEmpty() ) upsert offersByQuoteNumber Opportunity.INFOQuoteNumber__c;
                 if( !offersBySessionId.isEmpty() ) upsert offersBySessionId Opportunity.SessionId__c;
 
@@ -924,14 +878,9 @@ public without sharing class BusinessInsuranceRaterService
                     upsert risksToCreate INFOInsuredObjectCode__c;
                 }
             }
-            else
-            {
-                System.debug('++++ Offers to create is empty');
-            }
 
             // Borrado - Ofertas del id de sesion actual pero que ya no vienen en el formulario
             if( !mapOffersToDelete.isEmpty() ) {
-                System.debug('++++ Map Offers not empty');
                 List<Opportunity> offersToDelete = new List<Opportunity>();
                 for (Opportunity o : mapOffersToDelete.values() ) {
                     if( o.SessionId__c != null && o.SessionId__c.contains(sessionId) ) {
@@ -941,9 +890,6 @@ public without sharing class BusinessInsuranceRaterService
                 if( !offersToDelete.isEmpty() ) {
                     delete offersToDelete;
                 }
-            }
-            else{
-                System.debug('++++ Map offers to delete is empty');
             }
         }
     }

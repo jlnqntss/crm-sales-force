@@ -172,21 +172,24 @@ private with sharing class OpportunitiesSelectorTest
         existingOpportunities.get(2).InfoQuoteNumber__c = 'ACB125';
         existingOpportunities.get(2).isUpdatedFromINFO__c = false;
 
+        existingOpportunities.get(3).InfoQuoteNumber__c = '   ';
+        existingOpportunities.get(3).isUpdatedFromINFO__c = true;
+
         List<Opportunity> optysToUpdate = new List<Opportunity>();
         optysToUpdate.add(existingOpportunities.get(0));
         optysToUpdate.add(existingOpportunities.get(1));
         optysToUpdate.add(existingOpportunities.get(2));
+        optysToUpdate.add(existingOpportunities.get(3));
 
         upsert optysToUpdate;
 
-        Set<String> idsABuscar = new Set<String>{'ACB123', 'ACB124', 'ACB125'};
+        Set<String> idsABuscar = new Set<String>{'ACB123', 'ACB124', 'ACB125', '   '};
         Set<String> idsRecuperados;
         Test.startTest();
         idsRecuperados = new OpportunitiesSelector().findUpdatedFromInfoByQuoteNumber(idsABuscar);
         Test.stopTest();
 
-        System.assertEquals(2, idsRecuperados.size(), 'Se han tenido que recuperar los dos identificadores con el flag a true');
-
+        System.assertEquals(2, idsRecuperados.size(), 'Se han tenido que recuperar los dos identificadores con el flag a true y con quoteNumber');
 
     }
 
