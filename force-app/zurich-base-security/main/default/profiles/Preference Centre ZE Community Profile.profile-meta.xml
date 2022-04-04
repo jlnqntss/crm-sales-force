@@ -709,14 +709,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningLoginFormController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningLoginFormControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LightningSelfRegisterController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -12827,10 +12819,6 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
-        <flow>CSMEmailRoute</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
         <flow>CSMSearchAndScreenPop</flow>
     </flowAccesses>
     <flowAccesses>
@@ -15364,7 +15352,6 @@
         <enabled>false</enabled>
         <name>ManageUsers</name>
     </userPermissions>
-
     <userPermissions>
         <enabled>false</enabled>
         <name>MassInlineEdit</name>

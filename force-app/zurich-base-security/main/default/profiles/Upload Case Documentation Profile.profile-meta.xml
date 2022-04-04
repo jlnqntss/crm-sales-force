@@ -12328,10 +12328,6 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
-        <flow>CSMEmailRoute</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
         <flow>CSMSearchAndScreenPop</flow>
     </flowAccesses>
     <flowAccesses>
@@ -12349,10 +12345,6 @@
     <flowAccesses>
         <enabled>false</enabled>
         <flow>CaseSelectCustomer</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
-        <flow>CaseTriggerBeforeInsert</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
@@ -15848,7 +15840,6 @@
         <enabled>false</enabled>
         <name>ManageUsers</name>
     </userPermissions>
-
     <userPermissions>
         <enabled>false</enabled>
         <name>MassInlineEdit</name>

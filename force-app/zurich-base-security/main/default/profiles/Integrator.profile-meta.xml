@@ -3556,55 +3556,56 @@
     <classAccesses>
         <apexClass>sf_GsPilotV1__GettingStartedPostInstallTest</apexClass>
         <enabled>true</enabled>
-    </classAccesses><classAccesses>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BaseSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>Batch_MergeLeadsWithClients</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>BusinessInsuranceCreateLeadAction</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>BusinessInsuranceUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>CampaignMemberUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>CampaignMembersSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>CampaignsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ClaimsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ContactPointAddressHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ContactPointAddressUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ContentDocumentLinkHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ContentDocumentLinkUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>DeletedCampaignMemberSchedulableJob</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -4218,12 +4219,12 @@
         <field>Account.ClassDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseSegment__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.IdSubscriber2__c</field>
         <readable>true</readable>
@@ -4233,12 +4234,12 @@
         <field>Account.IdSubscriber__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.LifeConsultant__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.SAMTechnicalIssues__c</field>
         <readable>true</readable>
@@ -4248,7 +4249,7 @@
         <field>Account.SMEConsultant__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Subscriber2__c</field>
         <readable>true</readable>
@@ -4283,7 +4284,7 @@
         <field>Account.SubscriptionManager__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.TDChannelCode__c</field>
         <readable>true</readable>
@@ -4303,7 +4304,7 @@
         <field>Account.TerritorialDirection__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.TradeName__c</field>
         <readable>true</readable>
@@ -4323,7 +4324,7 @@
         <field>Account.TrainerPhone__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.ZoneCode__c</field>
         <readable>true</readable>
@@ -5588,12 +5589,12 @@
         <field>Case.Form_type__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.INFONoteId__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.CreatedDateInfo__c</field>
         <readable>true</readable>
@@ -7046,7 +7047,7 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.Ramo__c</field>
-		<readable>true</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -9901,7 +9902,7 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.CommercialActionType__c</field>
-		<readable>true</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -9931,7 +9932,7 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Ramo__c</field>
-		<readable>true</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -12724,7 +12725,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-		<editable>true</editable>
+        <editable>true</editable>
         <field>ReglaAlarma__c.KPI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -13512,15 +13513,15 @@
     <layoutAssignments>
         <layout>Account-Intermediary Group</layout>
         <recordType>Account.AgrupacionMediador</recordType>
-		</layoutAssignments>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>Alarma__c-Alarma KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-	<layout>Event-Event Layout</layout>
+        <layout>Event-Event Layout</layout>
         <recordType>Event.SDM_Event</recordType>
     </layoutAssignments>
-	<layoutAssignments>
+    <layoutAssignments>
         <layout>KPI__c-KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -13540,7 +13541,7 @@
     <layoutAssignments>
         <layout>Task-Reminder layout</layout>
         <recordType>Task.Reminder</recordType>
-	</layoutAssignments>
+    </layoutAssignments>
     <loginIpRanges>
         <description>Avoid security token</description>
         <endAddress>255.255.255.255</endAddress>
@@ -14311,7 +14312,6 @@
         <object>et4ae5__SupportRequest__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions    >
-
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -14645,7 +14645,7 @@
         <object>Alarma__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-	<objectPermissions>
+    <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
@@ -14654,7 +14654,7 @@
         <object>KPI__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-	<objectPermissions>
+    <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
@@ -15344,7 +15344,7 @@
         <recordType>Task.Interaction</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
-	<recordTypeVisibilities>
+    <recordTypeVisibilities>
         <default>false</default>
         <recordType>Task.CommercialAction</recordType>
         <visible>true</visible>
@@ -15365,12 +15365,12 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-		<default>true</default>
+        <default>true</default>
         <recordType>PlanComercial__c.ActionPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-		<default>false</default>
+        <default>false</default>
         <recordType>PlanComercial__c.AnualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -16415,7 +16415,6 @@
         <enabled>false</enabled>
         <name>ManageUsers</name>
     </userPermissions>
-
     <userPermissions>
         <enabled>true</enabled>
         <name>MassInlineEdit</name>

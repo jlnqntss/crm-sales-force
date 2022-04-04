@@ -14682,7 +14682,6 @@
         <enabled>false</enabled>
         <name>ManageUsers</name>
     </userPermissions>
-
     <userPermissions>
         <enabled>false</enabled>
         <name>MassInlineEdit</name>
