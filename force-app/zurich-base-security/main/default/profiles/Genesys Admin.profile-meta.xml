@@ -12581,9 +12581,6 @@
         <layout>ContactPointAddress-Formato Dirección de punto de contacto</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ContactPointConsent-Contact Point Consent Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ContactPointEmail-Formato Correo electrónico de punto de contacto</layout>
     </layoutAssignments>
     <layoutAssignments>
