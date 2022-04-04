@@ -12379,10 +12379,6 @@
         <flow>New_Campaign_Member_Status_Creation</flow>
     </flowAccesses>
     <flowAccesses>
-        <enabled>true</enabled>
-        <flow>OpenCTIFlow</flow>
-    </flowAccesses>
-    <flowAccesses>
         <enabled>false</enabled>
         <flow>PolicyTriggerAfterInsertUpdate</flow>
     </flowAccesses>
