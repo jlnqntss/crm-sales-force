@@ -239,15 +239,13 @@ public with sharing class IntermediarySDM {
      */
     private void findAgrupatedIntermediaries(List<Account> acList)
     {
-        // Se recuperan las Agrupaciones de intermediarios si no se ha hecho ya
-        if( this.mapAgrupationByCIF == null ) {
-            List<Account> agrupationIntermediary = new AccountsSelector().findAgrupatedIntermediaries(acList);
+        // Se recuperan las Agrupaciones de intermediarios para los elementos que se han recibido en la lista
+        List<Account> agrupationIntermediary = new AccountsSelector().findAgrupatedIntermediaries(acList);
 
-            // Mapa de agrupaciones por CIF de agrupacion
-            this.mapAgrupationByCIF = new Map<String, Account>();
-            for(Account a: agrupationIntermediary) {
-                this.mapAgrupationByCIF.put(a.NationalID__c, a);
-            }
+        // Mapa de agrupaciones por CIF de agrupacion
+        this.mapAgrupationByCIF = new Map<String, Account>();
+        for(Account a: agrupationIntermediary) {
+            this.mapAgrupationByCIF.put(a.NationalID__c, a);
         }
     }
 
