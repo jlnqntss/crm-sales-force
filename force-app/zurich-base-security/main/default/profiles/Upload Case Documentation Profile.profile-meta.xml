@@ -12727,10 +12727,6 @@
         <recordType>PersonAccount.Customer</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PersonAccount-Formato de cuenta personal</layout>
-        <recordType>PersonAccount.PersonAccount</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>PolicyVersion__c-Policy Version Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -14754,11 +14750,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>PersonAccount.Lead</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>PersonAccount.PersonAccount</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
