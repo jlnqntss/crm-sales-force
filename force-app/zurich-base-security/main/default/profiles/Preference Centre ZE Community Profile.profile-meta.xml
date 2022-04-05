@@ -12869,10 +12869,6 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
-        <flow>Integraci_n</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
         <flow>JBSystemFlow_CampaignMember</flow>
     </flowAccesses>
     <flowAccesses>
@@ -13146,9 +13142,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>EmailsIBA__c-Email IBA Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>EngagementChannelType-Engagement Channel Type Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>EnhancedLetterhead-Enhanced Letterhead Layout</layout>
