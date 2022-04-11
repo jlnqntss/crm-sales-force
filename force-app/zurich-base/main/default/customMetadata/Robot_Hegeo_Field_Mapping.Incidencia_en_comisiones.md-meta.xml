@@ -24,7 +24,7 @@
     </values>
     <values>
         <field>Subtype__c</field>
-        <value xsi:type="xsd:string">Incidencias</value>
+        <value xsi:type="xsd:string">Incidencias (Mediador)</value>
     </values>
     <values>
         <field>TypeN3__c</field>
