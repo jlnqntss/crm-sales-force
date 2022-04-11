@@ -669,7 +669,6 @@ public without sharing class BusinessInsuranceRaterService
 
             // Checkeamos si las ofertas que nos llegan del tarificador han de ser procesadas a continuacion o no
             List<BusinessInsuranceRaterService.Offer> toProcessReceivedOffers = new List<BusinessInsuranceRaterService.Offer>();
-            List<Error_Log__c> errorsAtUpsertingOffer = new List<Error_Log__c>();
 
             if (existingSFQuoteNumbers.size() > 0)
             {
