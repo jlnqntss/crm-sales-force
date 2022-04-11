@@ -2,10 +2,10 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
-        <name>Asignar_datos_adicionales</name>
+        <name>AssignAdditionalDataAssignment</name>
         <label>Asignar datos adicionales</label>
-        <locationX>578</locationX>
-        <locationY>914</locationY>
+        <locationX>446</locationX>
+        <locationY>2747</locationY>
         <assignmentItems>
             <assignToReference>$Record.DSRESULT__c</assignToReference>
             <operator>Assign</operator>
@@ -17,7 +17,7 @@
             <assignToReference>$Record.NUTELF1__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Obtener_Scope_General.PrimaryPhone__c</elementReference>
+                <elementReference>GetGeneralScopeAction.PrimaryPhone__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -31,31 +31,18 @@
             <assignToReference>$Record.NOPOBL__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Obtener_Direccion_postal.CityINECode__c</elementReference>
+                <elementReference>GetZipCodeAction.CityINECode__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Gestor_asignado</targetReference>
+            <targetReference>AssignedAgentAssignment</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Asignar_gestor_interaccion</name>
+        <name>AssignInteractionAgent0Assignment</name>
         <label>Asignar gestor interaccion</label>
-        <locationX>1212</locationX>
-        <locationY>909</locationY>
-        <assignmentItems>
-            <assignToReference>$Record.CDUSUARI__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Obtener_email_gestor.Email</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>Asignar_gestor_interaccion_0</name>
-        <label>Asignar gestor interaccion</label>
-        <locationX>1033</locationX>
-        <locationY>1055</locationY>
+        <locationX>732</locationX>
+        <locationY>3083</locationY>
         <assignmentItems>
             <assignToReference>$Record.CDUSUARI__c</assignToReference>
             <operator>Assign</operator>
@@ -64,89 +51,27 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <name>AssignInteractionAgentAssignment</name>
+        <label>Asignar gestor interaccion</label>
+        <locationX>468</locationX>
+        <locationY>3203</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CDUSUARI__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetAgentEmailAction.Email</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
     <decisions>
-        <name>Caso_asociado</name>
-        <label>Caso asociado?</label>
-        <locationX>771</locationX>
-        <locationY>580</locationY>
-        <defaultConnector>
-            <targetReference>Gestor_asignado</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No asociado</defaultConnectorLabel>
-        <rules>
-            <name>Asociado</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.CaseId__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Cuenta_asociada</targetReference>
-            </connector>
-            <label>Asociado</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Cuenta_asociada</name>
-        <label>Cuenta asociada?</label>
-        <locationX>573</locationX>
-        <locationY>579</locationY>
-        <defaultConnector>
-            <targetReference>Asignar_datos_adicionales</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No asociada</defaultConnectorLabel>
-        <rules>
-            <name>Asociada</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.CaseId__r.AccountId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Obtener_Scope_General</targetReference>
-            </connector>
-            <label>Asociada</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Es_solicitud</name>
-        <label>Es solicitud</label>
-        <locationX>769</locationX>
-        <locationY>360</locationY>
-        <defaultConnector>
-            <targetReference>Obtener_cola_Genesys</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Respuesta</defaultConnectorLabel>
-        <rules>
-            <name>Solicitud</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Solicitud__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Caso_asociado</targetReference>
-            </connector>
-            <label>Solicitud</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Gestor_asignado</name>
-        <label>Gestor asignado?</label>
-        <locationX>775</locationX>
-        <locationY>915</locationY>
+        <name>AssignedAgentAssignment</name>
+        <label>¿Es Gestor asignado?</label>
+        <locationX>732</locationX>
+        <locationY>2963</locationY>
         <defaultConnectorLabel>Sin gestor</defaultConnectorLabel>
         <rules>
-            <name>En_interaccion</name>
+            <name>InInteractionOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>CDUSUARI</leftValueReference>
@@ -156,7 +81,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Obtener_email_gestor</targetReference>
+                <targetReference>GetAgentEmailAction</targetReference>
             </connector>
             <label>En interacción</label>
         </rules>
@@ -171,15 +96,165 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Asignar_gestor_interaccion_0</targetReference>
+                <targetReference>AssignInteractionAgent0Assignment</targetReference>
             </connector>
             <label>En caso</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>AssociatedAccountDecision</name>
+        <label>¿Es Cuenta asociada?</label>
+        <locationX>446</locationX>
+        <locationY>2255</locationY>
+        <defaultConnector>
+            <targetReference>AssignAdditionalDataAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No asociada</defaultConnectorLabel>
+        <rules>
+            <name>AssociatedAccountOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CaseId__r.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetGeneralScopeAction</targetReference>
+            </connector>
+            <label>Asociada</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>AssociatedCaseDecision</name>
+        <label>¿Es Caso asociado?</label>
+        <locationX>732</locationX>
+        <locationY>2135</locationY>
+        <defaultConnector>
+            <targetReference>AssignedAgentAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No asociado</defaultConnectorLabel>
+        <rules>
+            <name>AssociatedOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CaseId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AssociatedAccountDecision</targetReference>
+            </connector>
+            <label>Asociado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsClaimEmptyDecision</name>
+        <label>¿Es Siniestro vacío?</label>
+        <locationX>886</locationX>
+        <locationY>1031</locationY>
+        <defaultConnector>
+            <targetReference>IsClientDataEmptyDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ClaimNumber__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetClaimDataAction</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsClientDataEmptyDecision</name>
+        <label>¿Es Datos Cliente vacío?</label>
+        <locationX>886</locationX>
+        <locationY>1367</locationY>
+        <defaultConnector>
+            <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NoClientDataOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CustomerNif__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetClientDataAction</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsRequestDecision</name>
+        <label>¿Es solicitud?</label>
+        <locationX>732</locationX>
+        <locationY>311</locationY>
+        <defaultConnector>
+            <targetReference>GetMotorRecordTypeAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Respuesta</defaultConnectorLabel>
+        <rules>
+            <name>RequestOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Solicitud__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AssociatedCaseDecision</targetReference>
+            </connector>
+            <label>Solicitud</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsVehicleLicensePlateEmptyDecision</name>
+        <label>¿Es Datos Matrícula vacío?</label>
+        <locationX>886</locationX>
+        <locationY>1703</locationY>
+        <defaultConnector>
+            <targetReference>AssociatedCaseDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NoVehicleLicenseOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.VehicleLicensePlate__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetVehicleLicensePlateAction</targetReference>
+            </connector>
+            <label>No</label>
         </rules>
     </decisions>
     <formulas>
         <name>codigoProvincia</name>
         <dataType>String</dataType>
-        <expression>LEFT({!Obtener_Direccion_postal.PostalCode},2)</expression>
+        <expression>LEFT({!GetZipCodeAction.PostalCode},2)</expression>
     </formulas>
     <interviewLabel>Survey Trigger - Before Insert - Completado de datos {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Survey Trigger - Before Insert - Completado de datos</label>
@@ -192,7 +267,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -203,13 +278,170 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <name>Obtener_cola_Genesys</name>
-        <label>Obtener cola Genesys</label>
-        <locationX>1017</locationX>
-        <locationY>359</locationY>
+        <name>GetAgentEmailAction</name>
+        <label>Obtener email gestor</label>
+        <locationX>468</locationX>
+        <locationY>3083</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Obtener_datos_Interaccion</targetReference>
+            <targetReference>AssignInteractionAgentAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CDUSUARI</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetBusinessCustomerRecordType</name>
+        <label>Obtener Business Customer Record Type</label>
+        <locationX>886</locationX>
+        <locationY>671</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetGenesysQueueAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>BusinessCustomer</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetClaimDataAction</name>
+        <label>Obtener datos siniestro</label>
+        <locationX>754</locationX>
+        <locationY>1151</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IsClientDataEmptyDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>INFOClaimNumber__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ClaimNumber__c</elementReference>
+            </value>
+        </filters>
+        <object>Claim__c</object>
+        <outputAssignments>
+            <assignToReference>$Record.NumeroSiniestro__c</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>GetClientDataAction</name>
+        <label>Obtener datos cliente</label>
+        <locationX>754</locationX>
+        <locationY>1487</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3)</filterLogic>
+        <filters>
+            <field>NationalId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.CustomerNif__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetCustomerRecordTypeAction.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetBusinessCustomerRecordType.Id</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <outputAssignments>
+            <assignToReference>$Record.NumeroIdCliente__c</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>GetCustomerRecordTypeAction</name>
+        <label>Obtener Customer Record Type</label>
+        <locationX>886</locationX>
+        <locationY>551</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetBusinessCustomerRecordType</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Customer</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetGeneralScopeAction</name>
+        <label>Obtener Scope General</label>
+        <locationX>50</locationX>
+        <locationY>2375</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetZipCodeAction</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>AssignAdditionalDataAssignment</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.CaseId__r.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Scope__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Z</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Scope__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>PrimaryPhone__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetGenesysQueueAction</name>
+        <label>Obtener cola Genesys</label>
+        <locationX>886</locationX>
+        <locationY>791</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetInteractionDataAction</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -226,13 +458,13 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>Obtener_datos_Interaccion</name>
+        <name>GetInteractionDataAction</name>
         <label>Obtener datos Interacción</label>
-        <locationX>1017</locationX>
-        <locationY>578</locationY>
+        <locationX>886</locationX>
+        <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Caso_asociado</targetReference>
+            <targetReference>IsClaimEmptyDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -261,23 +493,75 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>Obtener_Direccion_postal</name>
-        <label>Obtener Dirección postal</label>
-        <locationX>362</locationX>
-        <locationY>914</locationY>
+        <name>GetMotorRecordTypeAction</name>
+        <label>Obtener Motor Record Type</label>
+        <locationX>886</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Asignar_datos_adicionales</targetReference>
+            <targetReference>GetCustomerRecordTypeAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Motor</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetVehicleLicensePlateAction</name>
+        <label>Obtener datos matrícula</label>
+        <locationX>754</locationX>
+        <locationY>1823</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AssociatedCaseDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RegistrationNumber__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.VehicleLicensePlate__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetMotorRecordTypeAction.Id</elementReference>
+            </value>
+        </filters>
+        <object>Asset</object>
+        <outputAssignments>
+            <assignToReference>$Record.NumeroMatriculaVehiculo__c</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>GetZipCodeAction</name>
+        <label>Obtener Dirección postal</label>
+        <locationX>50</locationX>
+        <locationY>2495</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AssignAdditionalDataAssignment</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Asignar_datos_adicionales</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>AssignAdditionalDataAssignment</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>ScopeId__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Obtener_Scope_General.Id</elementReference>
+                <elementReference>GetGeneralScopeAction.Id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -291,71 +575,17 @@
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordLookups>
-        <name>Obtener_email_gestor</name>
-        <label>Obtener email gestor</label>
-        <locationX>1036</locationX>
-        <locationY>910</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Asignar_gestor_interaccion</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>CDUSUARI</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Obtener_Scope_General</name>
-        <label>Obtener Scope General</label>
-        <locationX>370</locationX>
-        <locationY>657</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Obtener_Direccion_postal</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Asignar_datos_adicionales</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>AccountId__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.CaseId__r.AccountId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Scope__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Z</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Scope__c</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>PrimaryPhone__c</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <start>
-        <locationX>650</locationX>
-        <locationY>48</locationY>
+        <locationX>606</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>Es_solicitud</targetReference>
+            <targetReference>IsRequestDecision</targetReference>
         </connector>
         <object>Survey__c</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>CDUSUARI</name>
         <dataType>String</dataType>
