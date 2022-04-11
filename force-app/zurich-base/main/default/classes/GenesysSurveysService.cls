@@ -121,7 +121,7 @@ public without sharing class GenesysSurveysService {
         survey.NumberOfQuestions__c = request.numberOfQuestions;
 
         //jgarciamartinez - 06/04/2022 // nuevos campos para survey
-        survey.CDUsuari__c = request.agentEmail;
+        survey.CDUSUARI__c = request.agentEmail;
         survey.ClaimNumber__c = request.claimNumber;
         survey.VehicleLicensePlate__c = request.licensePlate;
         survey.CustomerNif__c = request.customerNif;
