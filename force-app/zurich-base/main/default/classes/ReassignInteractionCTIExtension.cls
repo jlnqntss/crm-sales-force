@@ -237,7 +237,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 {
                     //Si el propietario es una COLA
                     // arcortazar - nts: fix-OCS-2682: Hacemos que asignme el usuario si es Owner es una cola o el usuario Integrator
-                    if(cases[0].OwnerId.getSobjectType() == Group.sObjectType || cases[0].Owner.Profile.Name == 'Integrator') //(cases[0].Owner.Type == 'Queue')
+                    if(cases[0].OwnerId.getSobjectType() == Group.sObjectType || cases[0].Owner.Profile.Name == Label.IntegratorUser) //(cases[0].Owner.Type == 'Queue')
                     {
                         //Cambiar el propietario al usuario actual
                         cases[0].OwnerId = UserInfo.getUserId();
