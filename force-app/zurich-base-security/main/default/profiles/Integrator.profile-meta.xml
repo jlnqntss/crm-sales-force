@@ -3556,55 +3556,56 @@
     <classAccesses>
         <apexClass>sf_GsPilotV1__GettingStartedPostInstallTest</apexClass>
         <enabled>true</enabled>
-    </classAccesses><classAccesses>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BaseSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>Batch_MergeLeadsWithClients</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>BusinessInsuranceCreateLeadAction</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>BusinessInsuranceUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>CampaignMemberUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>CampaignMembersSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>CampaignsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ClaimsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ContactPointAddressHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ContactPointAddressUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ContentDocumentLinkHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>ContentDocumentLinkUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-	<classAccesses>
+    <classAccesses>
         <apexClass>DeletedCampaignMemberSchedulableJob</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -4218,12 +4219,12 @@
         <field>Account.ClassDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseSegment__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.IdSubscriber2__c</field>
         <readable>true</readable>
@@ -4233,12 +4234,12 @@
         <field>Account.IdSubscriber__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.LifeConsultant__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.SAMTechnicalIssues__c</field>
         <readable>true</readable>
@@ -4248,7 +4249,7 @@
         <field>Account.SMEConsultant__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Subscriber2__c</field>
         <readable>true</readable>
@@ -4283,7 +4284,7 @@
         <field>Account.SubscriptionManager__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.TDChannelCode__c</field>
         <readable>true</readable>
@@ -4303,7 +4304,7 @@
         <field>Account.TerritorialDirection__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.TradeName__c</field>
         <readable>true</readable>
@@ -4323,7 +4324,7 @@
         <field>Account.TrainerPhone__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.ZoneCode__c</field>
         <readable>true</readable>
@@ -4372,7 +4373,7 @@
         <editable>true</editable>
         <field>Account.PYMEManagerEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.GroupLifeConsultantName__c</field>
@@ -4382,17 +4383,17 @@
         <editable>true</editable>
         <field>Account.GroupLifeConsultantEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseConsultantName__c</field>
         <readable>true</readable>
-    </fieldPermissions>   
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseConsultantEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.StatusIntermediary__c</field>
@@ -4402,12 +4403,12 @@
         <editable>true</editable>
         <field>AccountTeamMember.Email__c</field>
         <readable>true</readable>
-    </fieldPermissions> 
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>AccountTeamMember.Phone__c</field>
         <readable>true</readable>
-    </fieldPermissions> 
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>AccountContactRelation.EndDate</field>
@@ -5588,12 +5589,12 @@
         <field>Case.Form_type__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.INFONoteId__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.CreatedDateInfo__c</field>
         <readable>true</readable>
@@ -7046,7 +7047,7 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.Ramo__c</field>
-		<readable>true</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -9887,7 +9888,7 @@
         <editable>true</editable>
         <field>Task.Additional_Information__c</field>
         <readable>true</readable>
-    </fieldPermissions>      
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Klinc_CallResult__c</field>
@@ -9901,7 +9902,7 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.CommercialActionType__c</field>
-		<readable>true</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -9917,7 +9918,7 @@
         <editable>true</editable>
         <field>Task.Follow_up_type__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.MeetingMinutes__c</field>
@@ -9931,7 +9932,7 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Ramo__c</field>
-		<readable>true</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -12724,7 +12725,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-		<editable>true</editable>
+        <editable>true</editable>
         <field>ReglaAlarma__c.KPI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -12824,10 +12825,6 @@
     <flowAccesses>
         <enabled>false</enabled>
         <flow>GenesysCloudCallbackRouter</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
-        <flow>GenesysCloudEmailRouter</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
@@ -12950,10 +12947,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Business_Quotes_Field__mdt-Business Quotes Field Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Campaign-Campaign Layout</layout>
-        <recordType>Default</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Campaign-Telemarketing</layout>
@@ -13520,15 +13513,15 @@
     <layoutAssignments>
         <layout>Account-Intermediary Group</layout>
         <recordType>Account.AgrupacionMediador</recordType>
-		</layoutAssignments>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>Alarma__c-Alarma KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-	<layout>Event-Event Layout</layout>
+        <layout>Event-Event Layout</layout>
         <recordType>Event.SDM_Event</recordType>
     </layoutAssignments>
-	<layoutAssignments>
+    <layoutAssignments>
         <layout>KPI__c-KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -13548,7 +13541,7 @@
     <layoutAssignments>
         <layout>Task-Reminder layout</layout>
         <recordType>Task.Reminder</recordType>
-	</layoutAssignments>
+    </layoutAssignments>
     <loginIpRanges>
         <description>Avoid security token</description>
         <endAddress>255.255.255.255</endAddress>
@@ -14319,7 +14312,6 @@
         <object>et4ae5__SupportRequest__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions    >
-
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -14653,7 +14645,7 @@
         <object>Alarma__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-	<objectPermissions>
+    <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
@@ -14662,7 +14654,7 @@
         <object>KPI__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-	<objectPermissions>
+    <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
@@ -15352,7 +15344,7 @@
         <recordType>Task.Interaction</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
-	<recordTypeVisibilities>
+    <recordTypeVisibilities>
         <default>false</default>
         <recordType>Task.CommercialAction</recordType>
         <visible>true</visible>
@@ -15373,12 +15365,12 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-		<default>true</default>
+        <default>true</default>
         <recordType>PlanComercial__c.ActionPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-		<default>false</default>
+        <default>false</default>
         <recordType>PlanComercial__c.AnualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -15483,35 +15475,7 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-BoardCertification</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-Campaign</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-CareProviderAdverseAction</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-CareProviderFacilitySpecialty</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-CareProviderSearchableField</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-CareRegisteredDevice</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-CareSpecialty</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-CareTaxonomy</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -15587,10 +15551,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-Development</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-DiscoveryForAccounts</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -15633,34 +15593,6 @@
     <tabVisibilities>
         <tab>standard-Forecasting3</tab>
         <visibility>DefaultOff</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-HealthcareFacilityNetwork</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-HealthcarePayerNetwork</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-HealthcarePractitionerFacility</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-HealthcareProvider</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-HealthcareProviderNpi</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-HealthcareProviderSpecialty</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-HealthcareProviderTaxonomy</tab>
-        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Idea</tab>
@@ -15747,20 +15679,8 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-ProfilePlatformFeed</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-ProfilePlatformOverview</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-ProfileSkill</tab>
         <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-ProviderSearchSyncLog</tab>
-        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Quote</tab>
@@ -15808,14 +15728,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-UserProvisioningRequest</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-WorkBadge</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-WorkBadgeDefinition</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -16329,10 +16241,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
-        <name>ManageClearbitIntegration</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
         <name>ManageContentPermissions</name>
     </userPermissions>
     <userPermissions>
@@ -16506,10 +16414,6 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>ManageUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageZapierIntegration</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
