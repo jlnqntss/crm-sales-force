@@ -252,8 +252,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             }//Comprobar si es una Offer
             else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
             {
-                OpportunitiesSelector optySelector = new OpportunitiesSelector();
-                List<Opportunity> offers = optySelector.findById(interactionTask.WhatId);
+                List<Opportunity> offers = new OpportunitiesSelector().findById(interactionTask.WhatId);
                 if(!offers.isEmpty() )
                 {
                     List<Opportunity> totalOffers = new List<Opportunity>();
@@ -268,7 +267,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                         Id accountId = offers[0].AccountId;
                         Id scopeId = offers[0].ScopeId__c;
                         List<Opportunity> extraOffers = new List<Opportunity>();
-                        extraOffers = optySelector.findByAccountIdAndScopeAndNotId(interactionTask.WhatId, accountId, scopeId);
+                        extraOffers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(interactionTask.WhatId, accountId, scopeId);
                         if(!extraOffers.isEmpty() )
                         {
                             totalOffers.addAll(extraOffers);
