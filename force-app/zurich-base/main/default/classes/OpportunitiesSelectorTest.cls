@@ -157,6 +157,70 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
     }
 
+    @isTest
+    static void test_findById_byUser()
+    {
+
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
+
+        List<Opportunity> existingOpportunities = [SELECT Id FROM Opportunity];
+        existingOpportunities.get(0).OwnerId = u.id;
+        upsert existingOpportunities.get(0);
+
+        System.runAs(u)
+        {
+            Test.startTest();
+            List<Opportunity> offers = new OpportunitiesSelector().findById(
+                existingOpportunities[0].Id
+            );
+            Test.stopTest();
+
+            System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
+        }
+    }
+
+    @isTest
+    static void test_findByAccountIdAndScopeNotId()
+    {
+        List<Opportunity> existingOpportunities = [SELECT Id, AccountId, ScopeId__c FROM Opportunity];
+
+        Test.startTest();
+        List<Opportunity> offers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(
+            existingOpportunities.get(0).Id, existingOpportunities.get(0).AccountId, existingOpportunities.get(0).ScopeId__c
+        );
+        Test.stopTest();
+
+        System.assertEquals(false, offers.isEmpty());
+    }
+
+    @isTest
+    static void test_findByAccountIdAndScopeNotId_byUser()
+    {
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
+        System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
+
+        List<Opportunity> existingOpportunities = [SELECT Id, AccountId, ScopeId__c FROM Opportunity];
+        for (Opportunity o : existingOpportunities)
+        {
+            o.OwnerId = u.id;
+        }
+        upsert existingOpportunities;
+        existingOpportunities = [SELECT Id, AccountId, ScopeId__c FROM Opportunity];
+        
+        System.runAs(u)
+        {
+            Test.startTest();
+            List<Opportunity> offers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(
+                existingOpportunities.get(0).Id, existingOpportunities.get(0).AccountId, existingOpportunities.get(0).ScopeId__c
+            );
+            Test.stopTest();
+    
+            System.assertEquals(false, offers.isEmpty());
+        }
+    }
+
     @isTest 
     static void test_findUpdatedFromInfoByQuoteNumber()
     {
