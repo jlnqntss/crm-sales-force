@@ -12,6 +12,7 @@
             <operation>equals</operation>
             <value>Agent/Mediator</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>AgentMediator_Z_GI_ES</fullName>
@@ -25,6 +26,7 @@
             <operation>equals</operation>
             <value>Agent/Mediator</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Contact_GI</fullName>
@@ -43,6 +45,7 @@
             <operation>equals</operation>
             <value>Zurich</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Contacts_GI_France</fullName>
@@ -61,6 +64,7 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Contacts_GI_Germany</fullName>
@@ -79,6 +83,7 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Contacts_GI_Spain</fullName>
@@ -97,6 +102,7 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Contacts_GI_Spain_ICP</fullName>
@@ -115,6 +121,27 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Contacts_Legal_Entity_999</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Contactos con entidad legal 999 (multientidad) podrán ser vistos por agentes.</description>
+        <label>Contacts_Legal_Entity_999</label>
+        <sharedTo>
+            <group>Read</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Contact</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Multientidad</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Contacts_Life_Orange</fullName>
@@ -133,6 +160,7 @@
             <operation>equals</operation>
             <value>Life Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Contacts_Life_Spain</fullName>
@@ -151,6 +179,7 @@
             <operation>equals</operation>
             <value>Life Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingGuestRules>
         <fullName>Site_Access</fullName>
@@ -164,5 +193,6 @@
             <operation>equals</operation>
             <value>Life Insurance,General Insurance</value>
         </criteriaItems>
+        <includeHVUOwnedRecords>false</includeHVUOwnedRecords>
     </sharingGuestRules>
 </SharingRules>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <assignments>
+        <name>Assign999AsLegalEntityAssignment</name>
+        <label>Asignar al contacto 999 como Legal Entity</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.LegalEntity__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>999</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>AccountTypeDecision</name>
+        <label>¿Tipo de cuenta?</label>
+        <locationX>182</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IntermediaryOrPartnerOcsAccountOutcome</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>PartnerOCS</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign999AsLegalEntityAssignment</targetReference>
+            </connector>
+            <label>Es cuenta Intermediaria/Partner OCS</label>
+        </rules>
+    </decisions>
+    <description>Flow que asigna al campo &quot;Legal Entity&quot; el valor Multientidad (999) siempre que se cree un contacto de una cuenta Intermediaria o Partner OCS</description>
+    <interviewLabel>Contact Trigger - Before insert - Multientidad {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Contact Trigger - Before insert - Multientidad</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>AccountTypeDecision</targetReference>
+        </connector>
+        <object>Contact</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
