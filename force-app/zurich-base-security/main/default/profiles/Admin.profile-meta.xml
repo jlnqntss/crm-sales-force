@@ -10466,6 +10466,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.ClaimNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.CustomerNIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Survey__c.Customer_Type__c</field>
         <readable>true</readable>
@@ -10497,6 +10507,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Survey__c.FENACCON__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Survey__c.GenesysCloudQueue__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10523,6 +10538,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Survey__c.NOPROVIN__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.NumeroIdCliente__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.NumeroMatricula__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.NumeroSiniestro__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10603,6 +10633,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Survey__c.VALHORAS__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.VehicleLicensePlate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
