@@ -139,7 +139,7 @@
         <criteriaItems>
             <field>LegalEntity__c</field>
             <operation>equals</operation>
-            <value>Multientidad</value>
+            <value>999</value>
         </criteriaItems>
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
