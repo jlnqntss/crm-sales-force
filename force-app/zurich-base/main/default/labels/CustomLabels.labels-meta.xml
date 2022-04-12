@@ -1350,4 +1350,12 @@ Related fields: [{3}]</value>
         <shortDescription>OfferStageNameErrorMsg</shortDescription>
         <value>No se puede cambiar la oferta a Cerrada Ganada</value>
     </labels>
+    <labels>
+        <fullName>IntegratorUser</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>IntegratorUser</shortDescription>
+        <value>Integrator</value>
+    </labels>
 </CustomLabels>

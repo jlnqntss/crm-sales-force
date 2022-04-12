@@ -78,4 +78,35 @@ public with sharing class CasesSelector extends RecordsSelector
         }
 
     }
+
+    /**
+     * Busca casos a partir de una lista de Id
+     * @author arcortazar
+     * @date 05/04/2022
+     * @param  caseIds ids de los casos
+     * @return listado de casos
+     */
+    public List<Case> findById(Set<String> caseIds)
+    {
+        if(caseIds != null && !caseIds.isEmpty() )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.Id,
+                Case.OwnerId
+            })
+            .selectFields('Owner.Type')
+            .selectFields('Owner.Profile.Name')
+            .addConditionString('Case.Id IN (\'' + String.join(new List<String>(caseIds), '\',\'') + '\')');
+
+            this.baseQuery.debug();
+
+            return (List<Case>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<Case>();
+        }
+
+    }
+
 }

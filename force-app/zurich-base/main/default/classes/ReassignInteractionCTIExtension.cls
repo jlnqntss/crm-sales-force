@@ -228,11 +228,16 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             //Comprobar si es un CASO
             if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
             {
-                List<Case> cases = [SELECT Id, OwnerId, Owner.Type FROM Case WHERE Id = :interactionTask.WhatId];
+                Set<String> idsCasos = new Set<String>();
+                idsCasos.add(interactionTask.WhatId);
+
+                List<Case> cases = new CasesSelector().findById(idsCasos);
+
                 if(!cases.isEmpty() )
                 {
                     //Si el propietario es una COLA
-                    if(cases[0].OwnerId.getSobjectType() == Group.sObjectType) //(cases[0].Owner.Type == 'Queue')
+                    // arcortazar - nts: fix-OCS-2682: Hacemos que asignme el usuario si es Owner es una cola o el usuario Integrator
+                    if(cases[0].OwnerId.getSobjectType() == Group.sObjectType || cases[0].Owner.Profile.Name == Label.IntegratorUser) //(cases[0].Owner.Type == 'Queue')
                     {
                         //Cambiar el propietario al usuario actual
                         cases[0].OwnerId = UserInfo.getUserId();
@@ -252,8 +257,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             }//Comprobar si es una Offer
             else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
             {
-                OpportunitiesSelector optySelector = new OpportunitiesSelector();
-                List<Opportunity> offers = optySelector.findById(interactionTask.WhatId);
+                List<Opportunity> offers = new OpportunitiesSelector().findById(interactionTask.WhatId);
                 if(!offers.isEmpty() )
                 {
                     List<Opportunity> totalOffers = new List<Opportunity>();
@@ -268,7 +272,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                         Id accountId = offers[0].AccountId;
                         Id scopeId = offers[0].ScopeId__c;
                         List<Opportunity> extraOffers = new List<Opportunity>();
-                        extraOffers = optySelector.findByAccountIdAndScopeAndNotId(interactionTask.WhatId, accountId, scopeId);
+                        extraOffers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(interactionTask.WhatId, accountId, scopeId);
                         if(!extraOffers.isEmpty() )
                         {
                             totalOffers.addAll(extraOffers);
