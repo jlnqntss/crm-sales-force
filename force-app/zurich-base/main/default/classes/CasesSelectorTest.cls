@@ -46,4 +46,34 @@ private class CasesSelectorTest
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista de teléfonos
         System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
     }
+
+
+    @isTest
+    static void test_findById_matchedRecord()
+    {
+        List<Case> casos = [SELECT Id FROM Case];
+        Set<String> casosIds = new Set<String>();
+        casosIds.add(casos.get(0).Id);
+
+        // Test
+        Test.startTest();
+        List<Case> matchedRecords = new CasesSelector().findById(casosIds);
+        Test.stopTest();
+
+        System.assertEquals(casosIds.size(), matchedRecords.size(), 'no devuelve el número de registros correcto');
+    }
+
+    @isTest
+    static void test_findById_notFound()
+    {
+        Set<String> casosIds = new Set<String>();
+        casosIds.add('500AAAAAAAAAAAAAAA'); // ponemos un Id inventado
+
+        // Test
+        Test.startTest();
+        List<Case> matchedRecords = new CasesSelector().findById(casosIds);
+        Test.stopTest();
+
+        System.assertEquals(0, matchedRecords.size(), 'No debe devolver ningún Caso');
+    }
 }
