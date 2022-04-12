@@ -2,10 +2,10 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>53.0</apiVersion>
     <assignments>
-        <name>Asignar_CCS</name>
+        <name>AssignCCSAssignment</name>
         <label>Asignar CCS</label>
         <locationX>578</locationX>
-        <locationY>551</locationY>
+        <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
             <operator>Assign</operator>
@@ -15,10 +15,10 @@
         </assignmentItems>
     </assignments>
     <assignments>
-        <name>Asignar_CSM_Adm</name>
+        <name>AssignCSMAdmAssignment</name>
         <label>Asignar CSM Adm</label>
         <locationX>314</locationX>
-        <locationY>671</locationY>
+        <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
             <operator>Assign</operator>
@@ -28,10 +28,10 @@
         </assignmentItems>
     </assignments>
     <assignments>
-        <name>Asignar_CSM_Part</name>
+        <name>AssignCSMPartAssignment</name>
         <label>Asignar CSM Part</label>
         <locationX>50</locationX>
-        <locationY>671</locationY>
+        <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
             <operator>Assign</operator>
@@ -49,16 +49,16 @@
         </value>
     </constants>
     <decisions>
-        <name>CentroCSM</name>
-        <label>Centro CSM</label>
+        <name>CSMCenterDecision</name>
+        <label>¿Es Centro CSM?</label>
         <locationX>182</locationX>
-        <locationY>551</locationY>
+        <locationY>671</locationY>
         <defaultConnector>
-            <targetReference>Asignar_CSM_Adm</targetReference>
+            <targetReference>AssignCSMAdmAssignment</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>CSM Administración</defaultConnectorLabel>
         <rules>
-            <name>CSM_Particulares</name>
+            <name>CSMParticularesOutcome</name>
             <conditionLogic>(1 OR 2 OR 3 ) AND 4 AND 5 AND 6 AND 7</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Type</leftValueReference>
@@ -110,22 +110,22 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Asignar_CSM_Part</targetReference>
+                <targetReference>AssignCSMPartAssignment</targetReference>
             </connector>
             <label>CSM Particulares</label>
         </rules>
     </decisions>
     <decisions>
-        <name>CSM_o_CCS</name>
-        <label>CSM o CCS</label>
+        <name>CSMOrCCSDecision</name>
+        <label>¿Es CSM o CCS?</label>
         <locationX>380</locationX>
-        <locationY>431</locationY>
+        <locationY>551</locationY>
         <defaultConnector>
-            <targetReference>Asignar_CCS</targetReference>
+            <targetReference>AssignCCSAssignment</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>CCS</defaultConnectorLabel>
         <rules>
-            <name>CSM</name>
+            <name>CSMOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
@@ -135,19 +135,19 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>CentroCSM</targetReference>
+                <targetReference>CSMCenterDecision</targetReference>
             </connector>
             <label>CSM</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Es_OCS</name>
-        <label>Es OCS</label>
+        <name>IsOCSDecision</name>
+        <label>¿Es OCS?</label>
         <locationX>611</locationX>
-        <locationY>311</locationY>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>OCS</name>
+            <name>OCSOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
@@ -157,9 +157,38 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>CSM_o_CCS</targetReference>
+                <targetReference>CSMOrCCSDecision</targetReference>
             </connector>
             <label>OCS</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>UserIntegratorOrEmptyDepartmentDecision</name>
+        <label>¿Es user Integrator / Departamento Vacío?</label>
+        <locationX>858</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IntegratorOrEmptyDepartmentOutcome</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$User.Department</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$User.LastName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IsOCSDecision</targetReference>
+            </connector>
+            <label>Integrator o Department vacío</label>
         </rules>
     </decisions>
     <description>Identifica el Centro al que pertenece el caso en base a la tipificación del mismo</description>
@@ -185,17 +214,17 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>485</locationX>
+        <locationX>732</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Es_OCS</targetReference>
+            <targetReference>UserIntegratorOrEmptyDepartmentDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Origin</field>
-            <operator>NotEqualTo</operator>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
             <value>
-                <stringValue>Email</stringValue>
+                <stringValue></stringValue>
             </value>
         </filters>
         <object>Case</object>
