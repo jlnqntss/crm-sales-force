@@ -30,6 +30,13 @@
                 <stringValue>Closed Won</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetRelatedOffer.isUpdatedFromINFO__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Actualizar_cliente</targetReference>
         </connector>
