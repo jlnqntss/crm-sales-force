@@ -15,6 +15,16 @@
         <default>false</default>
         <label>CSM Particulares</label>
     </customValue>
+    <customValue>
+        <fullName>Motor Express</fullName>
+        <default>false</default>
+        <label>Motor Express</label>
+    </customValue>
+    <customValue>
+        <fullName>Property Express</fullName>
+        <default>false</default>
+        <label>Property Express</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
