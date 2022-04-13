@@ -18,6 +18,7 @@ public without sharing class BusinessInsuranceRaterService
     public static final String INVALID_FIELD_STATUSCODE = 'INVALID_FIELD';
     public static final String INVALID_BUSINESS_CODE_STATUSCODE = 'INVALID_BUSINESS_CODE';
     public static final String DUPLICATE_REQUEST_STATUSCODE = 'DUPLICATE_LEAD_REQUEST';
+    public static final String MISSING_PURECLOUD_QUEUE = 'No se ha encontrado la cola de Genesys Cloud configurada.';
 
     public static final String SPANISH_PHONE_PREFIX = '+34';
     public static final String PROFILE_NAME = 'ZE User';
@@ -536,15 +537,22 @@ public without sharing class BusinessInsuranceRaterService
     {
         //OPCIONAL - puede que no requiera funcionar con genesys
         purecloud__PureCloud_Queue__c genesysQueue;
-        if (!String.isBlank(currentScopeSettings.GenesysCloudQueueName__c))
+        try
         {
-            genesysQueue = [
-                SELECT  Id,
-                        purecloud__PureCloud_Queue_ID__c
-                FROM purecloud__PureCloud_Queue__c
-                WHERE Name = :currentScopeSettings.GenesysCloudQueueName__c
-                LIMIT 1
-            ];
+            if (String.isNotBlank(currentScopeSettings.GenesysCloudQueueName__c))
+            {
+                genesysQueue = [
+                    SELECT  Id,
+                            purecloud__PureCloud_Queue_ID__c
+                    FROM purecloud__PureCloud_Queue__c
+                    WHERE Name = :currentScopeSettings.GenesysCloudQueueName__c
+                    LIMIT 1
+                ];
+            }
+        }
+        catch (QueryException qe)
+        {
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, MISSING_PURECLOUD_QUEUE, BusinessInsuranceRaterService.class.getName(), qe.getStackTraceString());
         }
 
         Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
