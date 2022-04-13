@@ -19,7 +19,6 @@ public without sharing class BusinessInsuranceRaterService
     public static final String INVALID_BUSINESS_CODE_STATUSCODE = 'INVALID_BUSINESS_CODE';
     public static final String DUPLICATE_REQUEST_STATUSCODE = 'DUPLICATE_LEAD_REQUEST';
 
-    public static final String QUEUE_NAME = 'Voz_ZurichEmpresas';
     public static final String SPANISH_PHONE_PREFIX = '+34';
     public static final String PROFILE_NAME = 'ZE User';
 
@@ -536,22 +535,25 @@ public without sharing class BusinessInsuranceRaterService
     private static void createCallMeBack(Request formData, List<Opportunity> offersToCreate, Scope_Setting__mdt currentScopeSettings)
     {
         //OPCIONAL - puede que no requiera funcionar con genesys
-        String queueName = QUEUE_NAME;
-        if( String.isNotBlank(currentScopeSettings?.GenesysCloudQueueName__c) )
+        purecloud__PureCloud_Queue__c genesysQueue;
+        if (!String.isBlank(currentScopeSettings.GenesysCloudQueueName__c))
         {
-            queueName = currentScopeSettings.GenesysCloudQueueName__c;
+            genesysQueue = [
+                SELECT  Id,
+                        purecloud__PureCloud_Queue_ID__c
+                FROM purecloud__PureCloud_Queue__c
+                WHERE Name = :currentScopeSettings.GenesysCloudQueueName__c
+                LIMIT 1
+            ];
         }
-        List<purecloud__PureCloud_Queue__c> genesysQueue = [
-            SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :queueName
-        ];
 
         Datetime preferredContactDatetime = BusinessInsuranceUtil.getPreferredContactDatetime(
             formData.bestTimeFrom != null ? formData.bestTimeFrom : System.now()
-            );
+        );
 
         //Creamos ContactRequest para cualquiera de los pasos
         ContactRequest contactRequestToCreate = new ContactRequest(
-            GenesysCloudQueueId__c = (!genesysQueue.isEmpty() ? genesysQueue.get(0).Id : null),
+            GenesysCloudQueueId__c = genesysQueue?.Id,
             OwnerId = currentAdvisorId,
             PreferredChannel = (String.isBlank(formData.webPhone) ? 'Email' : 'Phone'),
             PreferredContactDatetime__c = preferredContactDatetime,
