@@ -40,6 +40,19 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <name>CallCenterAssignment</name>
+        <label>Asignar Call Center</label>
+        <locationX>1106</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CallCenter__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CallCenterFormula</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
     <constants>
         <description>Nombre API del tipo de registro de Caso: OCS Inquiry</description>
         <name>RECORDTYPE_OCS_INQUIRY</name>
@@ -163,13 +176,13 @@
         </rules>
     </decisions>
     <decisions>
-        <name>UserIntegratorOrEmptyDepartmentDecision</name>
-        <label>¿Es user Integrator / Departamento Vacío?</label>
-        <locationX>858</locationX>
+        <name>UserTypeAndDepartmentDecision</name>
+        <label>¿Tipo de user y departamento?</label>
+        <locationX>990</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>IntegratorOrEmptyDepartmentOutcome</name>
+            <name>TypologyBasedCallCenterOutcome</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$User.Department</leftValueReference>
@@ -188,10 +201,41 @@
             <connector>
                 <targetReference>IsOCSDecision</targetReference>
             </connector>
-            <label>Integrator o Department vacío</label>
+            <label>Call Center en base a tipología</label>
+        </rules>
+        <rules>
+            <name>DepartmentBasedCallCenterOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$User.Department</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$User.LastName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CallCenterAssignment</targetReference>
+            </connector>
+            <label>Call Center en base a departamento</label>
         </rules>
     </decisions>
     <description>Identifica el Centro al que pertenece el caso en base a la tipificación del mismo</description>
+    <formulas>
+        <name>CallCenterFormula</name>
+        <dataType>String</dataType>
+        <expression>IF
+(
+{!$User.Department} = &apos;Servicio de Atención al Cliente&apos;,
+&apos;CC Service&apos;, {!$User.Department}
+)</expression>
+    </formulas>
     <interviewLabel>Case Trigger - Before insert Centro {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before insert/update - Centro</label>
     <processMetadataValues>
@@ -214,10 +258,10 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>732</locationX>
+        <locationX>864</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>UserIntegratorOrEmptyDepartmentDecision</targetReference>
+            <targetReference>UserTypeAndDepartmentDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
