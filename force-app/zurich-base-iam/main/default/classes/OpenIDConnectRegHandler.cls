@@ -17,6 +17,10 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     @testvisible
     private static final string PROFILE_ADMIN = 'SystemAdmin';
 
+    // Text to be used to update the field AutoBcc for OCS Users
+    @testvisible
+    private static final string PROFILE_OCS = 'OCS User';
+
     // Reference to the picklist field AuthMapping__mdt.Permission_Type__c
     @testvisible
     private static final string PERMISSION_TYPE_PROFILE = 'Profile';
@@ -136,7 +140,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         u.UserPermissionsSupportUser  = SERVICE_CLOUD_USER;
         u.localesidkey                = UserInfo.getLocale();
         u.emailEncodingKey            = EMAIL_ENCODING;
-        u.timeZoneSidKey              = TIMEZONE;        
+        u.timeZoneSidKey              = TIMEZONE; 
         if( roleId != null )
             u.UserRoleId              = roleId;
         if( callcenterId != null )
@@ -149,8 +153,30 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         insert u;
 
         String signature              = getSignature(u.Id, mapAuthData.get(PERMISSION_TYPE_SIGNATURE));
-        if( String.isNotBlank(signature) )
-            update new User( Id= u.Id, Signature= signature );
+
+        // OCS-2796 @Olalla Iglesias
+        // Actualizamos la clase para quitar el Bcc a los usuarios de OCS
+        u = new user(id = u.id);
+        boolean updateuser = false;
+
+        //Ponemos las preferiencias de Bcc a false
+        if(mapAuthData.get(PERMISSION_TYPE_PROFILE).contains(PROFILE_OCS)){
+            u.EmailPreferencesAutoBcc = false;
+            updateuser = true;
+        }
+
+        //Añadimos la firma si aplica
+        if(String.isNotBlank(signature)){
+            u.Signature= signature;
+            updateuser = true;
+        }
+
+        //Actualizamos el usuario si ha entrado en uno de los dos ifs anteriores
+        if(updateuser){
+            update u;
+        }
+        //Fin OCS-2796
+
 
         // GROUPS
         // Obtener los ids de los grupos públicos en salesforce

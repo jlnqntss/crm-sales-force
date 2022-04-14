@@ -14,6 +14,7 @@
 private class OpenIDConnectRegHandlerTest
 {
     static final string IAM_ROLE_A = 'IAM_ROLE_A';
+    static final string IAM_ROLE_OCS = 'Gestor_Particulares';
     static final string IAM_ROLE_B = 'IAM_ROLE_B';
     static final string IAM_ROLE_ADMIN = 'IAM_ROLE_ADMIN';
     static final string IAM_ROLE_A_NAME = 'TestRoleA';
@@ -645,6 +646,50 @@ private class OpenIDConnectRegHandlerTest
 
         User updatedUser = [SELECT userName, Title FROM user WHERE id=:u.Id];
         System.assertEquals('TestTitleA2', updatedUser.Title, 'The title of the user should be TestTitleA2');
+    }
+
+   /**
+     * Test if the Bcc is disabled
+     *
+     * @author Zurich (Olalla Iglesias)
+     * @date 13/04/2022
+     */
+    @isTest
+    static void testBccDisabledforOCSUser()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_OCS);
+
+        Test.startTest();
+
+        User u = handler.createUser(null, sampleDataIAM);
+        
+        Test.stopTest();
+
+        User updatedUser = [SELECT EmailPreferencesAutoBcc FROM user WHERE id=:u.Id];
+        System.assertEquals(false , updatedUser.EmailPreferencesAutoBcc, 'The Bcc should be false');
+    }
+
+   /**
+     * Test if the Bcc is enabled for non OCS Users
+     *
+     * @author Zurich (Olalla Iglesias)
+     * @date 13/04/2022
+     */
+    @isTest
+    static void testBccEnabled()
+    {
+        OpenIDConnectRegHandler handler = new OpenIDConnectRegHandler();
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_A);
+
+        Test.startTest();
+
+        User u = handler.createUser(null, sampleDataIAM);
+        
+        Test.stopTest();
+
+        User updatedUser = [SELECT EmailPreferencesAutoBcc FROM user WHERE id=:u.Id];
+        System.assertEquals(true , updatedUser.EmailPreferencesAutoBcc, 'The Bcc should be true');
     }
 
     /**
