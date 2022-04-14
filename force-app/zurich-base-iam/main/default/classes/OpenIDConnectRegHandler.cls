@@ -154,26 +154,28 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
         String signature              = getSignature(u.Id, mapAuthData.get(PERMISSION_TYPE_SIGNATURE));
 
+        // OCS-2796 @Olalla Iglesias
+        // Actualizamos la clase para quitar el Bcc a los usuarios de OCS
         u = new user(id = u.id);
         boolean updateuser = false;
 
+        //Ponemos las preferiencias de Bcc a false
         if(mapAuthData.get(PERMISSION_TYPE_PROFILE).contains(PROFILE_OCS)){
-
             u.EmailPreferencesAutoBcc = false;
             updateuser = true;
-
         }
 
+        //Añadimos la firma si aplica
         if(String.isNotBlank(signature)){
-
             u.Signature= signature;
             updateuser = true;
-
         }
 
+        //Actualizamos el usuario si ha entrado en uno de los dos ifs anteriores
         if(updateuser){
             update u;
         }
+        //Fin OCS-2796
 
 
         // GROUPS
