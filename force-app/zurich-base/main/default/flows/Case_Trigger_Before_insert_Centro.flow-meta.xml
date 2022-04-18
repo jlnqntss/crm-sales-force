@@ -43,8 +43,8 @@
     <assignments>
         <name>CallCenterAssignment</name>
         <label>Asignar Call Center</label>
-        <locationX>1106</locationX>
-        <locationY>431</locationY>
+        <locationX>842</locationX>
+        <locationY>551</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
             <operator>Assign</operator>
@@ -156,8 +156,8 @@
     <decisions>
         <name>IsOCSDecision</name>
         <label>¿Es OCS?</label>
-        <locationX>611</locationX>
-        <locationY>431</locationY>
+        <locationX>1056</locationX>
+        <locationY>311</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>OCSOutcome</name>
@@ -170,7 +170,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>CSMOrCCSDecision</targetReference>
+                <targetReference>UserTypeAndDepartmentDecision</targetReference>
             </connector>
             <label>OCS</label>
         </rules>
@@ -178,8 +178,8 @@
     <decisions>
         <name>UserTypeAndDepartmentDecision</name>
         <label>¿Tipo de user y departamento?</label>
-        <locationX>990</locationX>
-        <locationY>311</locationY>
+        <locationX>743</locationX>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>TypologyBasedCallCenterOutcome</name>
@@ -199,7 +199,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IsOCSDecision</targetReference>
+                <targetReference>CSMOrCCSDecision</targetReference>
             </connector>
             <label>Call Center en base a tipología</label>
         </rules>
@@ -226,7 +226,7 @@
             <label>Call Center en base a departamento</label>
         </rules>
     </decisions>
-    <description>Identifica el Centro al que pertenece el caso en base a la tipificación del mismo</description>
+    <description>Identifica el Centro al que pertenece el caso en base a la tipificación del mismo o al departamento asignado al usuario</description>
     <formulas>
         <name>CallCenterFormula</name>
         <dataType>String</dataType>
@@ -258,10 +258,10 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>864</locationX>
+        <locationX>930</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>UserTypeAndDepartmentDecision</targetReference>
+            <targetReference>IsOCSDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
