@@ -117,6 +117,26 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Contacts_Legal_Entity_999</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Contactos con entidad legal 999 (multientidad) podrán ser vistos por agentes.</description>
+        <label>Contacts_Legal_Entity_999</label>
+        <sharedTo>
+            <group>Read</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Contact</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>999</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Contacts_Life_Orange</fullName>
         <accessLevel>Read</accessLevel>
         <label>Contacts Life Orange</label>
@@ -164,5 +184,5 @@
             <operation>equals</operation>
             <value>Life Insurance,General Insurance</value>
         </criteriaItems>
-    </sharingGuestRules>
+        </sharingGuestRules>
 </SharingRules>
