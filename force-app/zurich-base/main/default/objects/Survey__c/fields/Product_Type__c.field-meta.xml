@@ -3,7 +3,7 @@
     <fullName>Product_Type__c</fullName>
     <description>OCS. Campo utilizado en el envío de información a Medallia</description>
     <externalId>false</externalId>
-    <formula>CASE( CaseId__r.PolicyId__r.ProductId__r.GroupDescription__c , 
+    <formula>CASE(PolicyId__r.ProductId__r.GroupDescription__c, 
 &apos;ACCIDENTES&apos;,&apos;Accident &amp; Health&apos;,
 &apos;OTROS&apos;,&apos;Other&apos;,
 &apos;EMBARCACIONES&apos;,&apos;Property&apos;,

@@ -3,7 +3,7 @@
     <fullName>Customer_Type__c</fullName>
     <description>OCS. Para Medallia. Tipo de cliente</description>
     <externalId>false</externalId>
-    <formula>CASE(CaseId__r.PolicyId__r.CommercialStructureCode__c, 
+    <formula>CASE(PolicyId__r.CommercialStructureCode__c, 
 &apos;6100&apos;, &apos;Small Business&apos;, 
 &apos;6200&apos;, &apos;Small Business&apos;,
 &apos;6250&apos;, &apos;Small Business&apos;,

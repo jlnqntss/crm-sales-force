@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PolicyId__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>OCS. Póliza asociada a la encuesta</description>
+    <externalId>false</externalId>
+    <label>Póliza</label>
+    <referenceTo>Policy__c</referenceTo>
+    <relationshipLabel>Surveys</relationshipLabel>
+    <relationshipName>Surveys</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
