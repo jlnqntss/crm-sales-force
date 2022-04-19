@@ -3,7 +3,7 @@
     <fullName>Policy_Renewal_Date__c</fullName>
     <description>OCS. Para Medallia. Fecha de renovación (vencimiento + 1)</description>
     <externalId>false</externalId>
-    <formula>CaseId__r.PolicyId__r.EndDate__c + 1</formula>
+    <formula>PolicyId__r.EndDate__c + 1</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Policy_Renewal_Date</label>
     <required>false</required>

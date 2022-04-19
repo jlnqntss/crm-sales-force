@@ -120,6 +120,12 @@ public without sharing class GenesysSurveysService {
         survey.SurveyFlowId__c = request.surveyFlowId;
         survey.NumberOfQuestions__c = request.numberOfQuestions;
 
+        //jgarciamartinez - 06/04/2022 // nuevos campos para survey
+        survey.CDUSUARI__c = request.agentEmail;
+        survey.ClaimNumber__c = request.claimNumber;
+        survey.VehicleLicensePlate__c = request.licensePlate;
+        survey.CustomerNif__c = request.customerNif;
+
         //Solo si la task estaba relacionada con un caso
         if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
         {
@@ -214,6 +220,12 @@ public without sharing class GenesysSurveysService {
         public String questionId { get; set; }
         public String questionType { get; set; }
         public String answer { get; set; } //32k caracteres
+
+        //jgarciamartinez - 06/04/2022 // nuevos campos para survey
+        public String agentEmail { get; set; }
+        public String claimNumber { get; set; }
+        public String licensePlate { get; set; }
+        public String customerNif { get; set; }
 
         public override String toString()
         {
