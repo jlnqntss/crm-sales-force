@@ -2,17 +2,10 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
-        <name>AssignAdditionalDataAssignment</name>
-        <label>Asignar datos adicionales</label>
-        <locationX>446</locationX>
-        <locationY>2747</locationY>
-        <assignmentItems>
-            <assignToReference>$Record.DSRESULT__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.CaseId__r.Status</elementReference>
-            </value>
-        </assignmentItems>
+        <name>AssignAccountDataAssignment</name>
+        <label>Asignar datos cuenta</label>
+        <locationX>50</locationX>
+        <locationY>2615</locationY>
         <assignmentItems>
             <assignToReference>$Record.NUTELF1__c</assignToReference>
             <operator>Assign</operator>
@@ -35,14 +28,44 @@
             </value>
         </assignmentItems>
         <connector>
+            <targetReference>AssignAdditionalDataAssignment</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>AssignAdditionalDataAssignment</name>
+        <label>Asignar datos adicionales</label>
+        <locationX>446</locationX>
+        <locationY>2831</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.DSRESULT__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.CaseId__r.Status</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.PolicyId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>PolicyIdFormula</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.NumeroIdCliente__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.CaseId__r.AccountId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
             <targetReference>AssignedAgentAssignment</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>AssignInteractionAgent0Assignment</name>
         <label>Asignar gestor interaccion</label>
-        <locationX>732</locationX>
-        <locationY>3083</locationY>
+        <locationX>930</locationX>
+        <locationY>3167</locationY>
         <assignmentItems>
             <assignToReference>$Record.CDUSUARI__c</assignToReference>
             <operator>Assign</operator>
@@ -54,8 +77,8 @@
     <assignments>
         <name>AssignInteractionAgentAssignment</name>
         <label>Asignar gestor interaccion</label>
-        <locationX>468</locationX>
-        <locationY>3203</locationY>
+        <locationX>666</locationX>
+        <locationY>3287</locationY>
         <assignmentItems>
             <assignToReference>$Record.CDUSUARI__c</assignToReference>
             <operator>Assign</operator>
@@ -64,11 +87,41 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <name>AssignSurveyAccountDataAssignment</name>
+        <label>Asignar datos cuenta</label>
+        <locationX>1018</locationX>
+        <locationY>2615</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.NUTELF1__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetGeneralScopeSurveyAction.PrimaryPhone__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.NOPROVIN__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>codigoProvincia</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.NOPOBL__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetZipCodeSurveyAction.CityINECode__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>AssignedAgentAssignment</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>AssignedAgentAssignment</name>
         <label>¿Es Gestor asignado?</label>
-        <locationX>732</locationX>
-        <locationY>2963</locationY>
+        <locationX>930</locationX>
+        <locationY>3047</locationY>
         <defaultConnectorLabel>Sin gestor</defaultConnectorLabel>
         <rules>
             <name>InInteractionOutcome</name>
@@ -78,6 +131,13 @@
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CDUSUARI__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -129,10 +189,10 @@
     <decisions>
         <name>AssociatedCaseDecision</name>
         <label>¿Es Caso asociado?</label>
-        <locationX>732</locationX>
+        <locationX>930</locationX>
         <locationY>2135</locationY>
         <defaultConnector>
-            <targetReference>AssignedAgentAssignment</targetReference>
+            <targetReference>AssociatedSurveyAccountDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No asociado</defaultConnectorLabel>
         <rules>
@@ -152,9 +212,34 @@
         </rules>
     </decisions>
     <decisions>
+        <name>AssociatedSurveyAccountDecision</name>
+        <label>¿Es Cuenta de Survey asociada?</label>
+        <locationX>1414</locationX>
+        <locationY>2255</locationY>
+        <defaultConnector>
+            <targetReference>AssignedAgentAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No asociada</defaultConnectorLabel>
+        <rules>
+            <name>AssociatedSurveyAccountOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.NumeroIdCliente__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetGeneralScopeSurveyAction</targetReference>
+            </connector>
+            <label>Asociada</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>IsClaimEmptyDecision</name>
         <label>¿Es Siniestro vacío?</label>
-        <locationX>886</locationX>
+        <locationX>1084</locationX>
         <locationY>1031</locationY>
         <defaultConnector>
             <targetReference>IsClientDataEmptyDecision</targetReference>
@@ -165,7 +250,7 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ClaimNumber__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue></stringValue>
                 </rightValue>
@@ -179,7 +264,7 @@
     <decisions>
         <name>IsClientDataEmptyDecision</name>
         <label>¿Es Datos Cliente vacío?</label>
-        <locationX>886</locationX>
+        <locationX>1084</locationX>
         <locationY>1367</locationY>
         <defaultConnector>
             <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
@@ -190,7 +275,7 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.CustomerNif__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue></stringValue>
                 </rightValue>
@@ -204,7 +289,7 @@
     <decisions>
         <name>IsRequestDecision</name>
         <label>¿Es solicitud?</label>
-        <locationX>732</locationX>
+        <locationX>930</locationX>
         <locationY>311</locationY>
         <defaultConnector>
             <targetReference>GetMotorRecordTypeAction</targetReference>
@@ -229,7 +314,7 @@
     <decisions>
         <name>IsVehicleLicensePlateEmptyDecision</name>
         <label>¿Es Datos Matrícula vacío?</label>
-        <locationX>886</locationX>
+        <locationX>1084</locationX>
         <locationY>1703</locationY>
         <defaultConnector>
             <targetReference>AssociatedCaseDecision</targetReference>
@@ -240,7 +325,7 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.VehicleLicensePlate__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue></stringValue>
                 </rightValue>
@@ -254,7 +339,12 @@
     <formulas>
         <name>codigoProvincia</name>
         <dataType>String</dataType>
-        <expression>LEFT({!GetZipCodeAction.PostalCode},2)</expression>
+        <expression>BLANKVALUE(LEFT({!GetZipCodeAction.PostalCode},2),LEFT({!GetZipCodeSurveyAction.PostalCode},2))</expression>
+    </formulas>
+    <formulas>
+        <name>PolicyIdFormula</name>
+        <dataType>String</dataType>
+        <expression>BLANKVALUE({!$Record.CaseId__r.PolicyId__c},{!$Record.CaseId__r.ClaimId__r.Policy__c})</expression>
     </formulas>
     <interviewLabel>Survey Trigger - Before Insert - Completado de datos {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Survey Trigger - Before Insert - Completado de datos</label>
@@ -280,8 +370,8 @@
     <recordLookups>
         <name>GetAgentEmailAction</name>
         <label>Obtener email gestor</label>
-        <locationX>468</locationX>
-        <locationY>3083</locationY>
+        <locationX>666</locationX>
+        <locationY>3167</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssignInteractionAgentAssignment</targetReference>
@@ -301,7 +391,7 @@
     <recordLookups>
         <name>GetBusinessCustomerRecordType</name>
         <label>Obtener Business Customer Record Type</label>
-        <locationX>886</locationX>
+        <locationX>1084</locationX>
         <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -322,7 +412,7 @@
     <recordLookups>
         <name>GetClaimDataAction</name>
         <label>Obtener datos siniestro</label>
-        <locationX>754</locationX>
+        <locationX>952</locationX>
         <locationY>1151</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -341,11 +431,23 @@
             <assignToReference>$Record.NumeroSiniestro__c</assignToReference>
             <field>Id</field>
         </outputAssignments>
+        <outputAssignments>
+            <assignToReference>$Record.NumeroMatriculaVehiculo__c</assignToReference>
+            <field>InsuredObject__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>$Record.NumeroIdCliente__c</assignToReference>
+            <field>PolicyHolder__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>$Record.PolicyId__c</assignToReference>
+            <field>Policy__c</field>
+        </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>GetClientDataAction</name>
         <label>Obtener datos cliente</label>
-        <locationX>754</locationX>
+        <locationX>952</locationX>
         <locationY>1487</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -382,7 +484,7 @@
     <recordLookups>
         <name>GetCustomerRecordTypeAction</name>
         <label>Obtener Customer Record Type</label>
-        <locationX>886</locationX>
+        <locationX>1084</locationX>
         <locationY>551</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -435,9 +537,39 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>GetGeneralScopeSurveyAction</name>
+        <label>Obtener Scope General</label>
+        <locationX>1018</locationX>
+        <locationY>2375</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetZipCodeSurveyAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.NumeroIdCliente__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Scope__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Z</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Scope__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>PrimaryPhone__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Obtener cola Genesys</label>
-        <locationX>886</locationX>
+        <locationX>1084</locationX>
         <locationY>791</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -460,7 +592,7 @@
     <recordLookups>
         <name>GetInteractionDataAction</name>
         <label>Obtener datos Interacción</label>
-        <locationX>886</locationX>
+        <locationX>1084</locationX>
         <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -495,7 +627,7 @@
     <recordLookups>
         <name>GetMotorRecordTypeAction</name>
         <label>Obtener Motor Record Type</label>
-        <locationX>886</locationX>
+        <locationX>1084</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -516,7 +648,7 @@
     <recordLookups>
         <name>GetVehicleLicensePlateAction</name>
         <label>Obtener datos matrícula</label>
-        <locationX>754</locationX>
+        <locationX>952</locationX>
         <locationY>1823</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -550,7 +682,7 @@
         <locationY>2495</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>AssignAdditionalDataAssignment</targetReference>
+            <targetReference>AssignAccountDataAssignment</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -575,8 +707,36 @@
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>GetZipCodeSurveyAction</name>
+        <label>Obtener Dirección postal</label>
+        <locationX>1018</locationX>
+        <locationY>2495</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AssignSurveyAccountDataAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ScopeId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetGeneralScopeSurveyAction.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ContactPointAddress</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>CityINECode__c</queriedFields>
+        <queriedFields>PostalCode</queriedFields>
+        <queriedFields>City</queriedFields>
+        <queriedFields>State</queriedFields>
+        <sortField>IsPrimary</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>606</locationX>
+        <locationX>804</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsRequestDecision</targetReference>
@@ -585,7 +745,7 @@
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>CDUSUARI</name>
         <dataType>String</dataType>

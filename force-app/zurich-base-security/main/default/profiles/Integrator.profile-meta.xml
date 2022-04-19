@@ -9990,6 +9990,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Survey__c.DSPERCON__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Survey__c.DSPOINT__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10016,6 +10021,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Survey__c.NumeroSiniestro__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Survey__c.PolicyId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
