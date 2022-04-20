@@ -185,6 +185,25 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Subtype__c</picklist>
+        <values>
+            <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reminder</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request for appraisal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Review</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Type</picklist>
         <values>
             <fullName>Call</fullName>
@@ -196,6 +215,14 @@
         </values>
         <values>
             <fullName>Meeting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Message</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Minisite</fullName>
             <default>false</default>
         </values>
         <values>

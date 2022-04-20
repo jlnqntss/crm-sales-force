@@ -13,6 +13,14 @@
         <translation>Reunión</translation>
     </valueTranslation>
     <valueTranslation>
+        <masterLabel>Message</masterLabel>
+        <translation>Mensaje</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Minisite</masterLabel>
+        <translation><!-- Minisite --></translation>
+    </valueTranslation>
+    <valueTranslation>
         <masterLabel>Other</masterLabel>
         <translation>Otro</translation>
     </valueTranslation>

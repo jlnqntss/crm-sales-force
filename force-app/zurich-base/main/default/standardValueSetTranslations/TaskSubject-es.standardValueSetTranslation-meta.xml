@@ -5,59 +5,11 @@
         <translation><!-- Abandono --></translation>
     </valueTranslation>
     <valueTranslation>
-        <masterLabel>Buzón de saturación</masterLabel>
-        <translation><!-- Buzón de saturación --></translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Buzón fuera de horario</masterLabel>
-        <translation><!-- Buzón fuera de horario --></translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Call</masterLabel>
-        <translation>Llamada</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Call me now</masterLabel>
-        <translation>Llámame ahora</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Expertise request</masterLabel>
-        <translation>Solicitud peritación</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Interacción programada</masterLabel>
-        <translation><!-- Interacción programada --></translation>
+        <masterLabel>Escribe un asunto...</masterLabel>
+        <translation><!-- Escribe un asunto... --></translation>
     </valueTranslation>
     <valueTranslation>
         <masterLabel>Other</masterLabel>
         <translation>Otro</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Receipt review</masterLabel>
-        <translation>Revisión recibo</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Reminder</masterLabel>
-        <translation>Recordatorio</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Scaled other areas</masterLabel>
-        <translation>Escalado otras áreas</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Scaling Supervisor</masterLabel>
-        <translation>Escalado Supervisor</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Send Letter</masterLabel>
-        <translation>Enviar carta</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Send Quote</masterLabel>
-        <translation>Enviar reseña</translation>
-    </valueTranslation>
-    <valueTranslation>
-        <masterLabel>Technical direction scaling</masterLabel>
-        <translation>Escalado dirección técnica</translation>
     </valueTranslation>
 </StandardValueSetTranslation>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Subtipo</label>
+    <name>Subtype__c</name>
+    <picklistValues>
+        <masterLabel>Abandonment</masterLabel>
+        <translation>Abandono</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Call</masterLabel>
+        <translation>Llamada</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Callback</masterLabel>
+        <translation>Callback</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Contact Request</masterLabel>
+        <translation>Devolución Llamada</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Contractual recording</masterLabel>
+        <translation>Grabación contractual</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Documentation uploaded by customer</masterLabel>
+        <translation>Documentación subida por cliente</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Email</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>External service transfer</masterLabel>
+        <translation>Transferencia servicio externo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Note Info</masterLabel>
+        <translation>Nota Info</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Others</masterLabel>
+        <translation>Otros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Reminder</masterLabel>
+        <translation>Recordatorio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Request for appraisal</masterLabel>
+        <translation>Solicitud peritación</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Request for documentation by EMAIL</masterLabel>
+        <translation>Solicitud de documentación por EMAIL</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Request for documentation by SMS</masterLabel>
+        <translation>Solicitud de documentación por SMS</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Review</masterLabel>
+        <translation>Revisión</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SMS</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Scaled Other Areas</masterLabel>
+        <translation>Escalado otras áreas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Scaled Supervisor</masterLabel>
+        <translation>Escalado supervisor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Scaled Technical Direction</masterLabel>
+        <translation>Escalado dirección técnica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>WhatsApp</masterLabel>
+        <translation></translation>
+    </picklistValues>
+</CustomFieldTranslation>
