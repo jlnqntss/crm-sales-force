@@ -176,7 +176,14 @@
     <picklistValues>
         <picklist>Subject</picklist>
         <values>
-            <fullName>Other</fullName>
+            <fullName>Escribe un asunto%2E%2E%2E</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Subtype__c</picklist>
+        <values>
+            <fullName>Others</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -192,6 +199,14 @@
         </values>
         <values>
             <fullName>Meeting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Message</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Minisite</fullName>
             <default>false</default>
         </values>
         <values>
