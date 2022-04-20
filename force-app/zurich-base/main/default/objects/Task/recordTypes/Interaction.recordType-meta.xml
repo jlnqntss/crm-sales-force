@@ -181,15 +181,14 @@
     <picklistValues>
         <picklist>Subject</picklist>
         <values>
-            <fullName>Abandono</fullName>
+            <fullName>Escribe un asunto%2E%2E%2E</fullName>
             <default>false</default>
         </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Subtype__c</picklist>
         <values>
-            <fullName>Buzón de saturación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Buzón fuera de horario</fullName>
+            <fullName>Abandonment</fullName>
             <default>false</default>
         </values>
         <values>
@@ -197,23 +196,75 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Call me now</fullName>
+            <fullName>Callback</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Interacción programada</fullName>
+            <fullName>Contact Request</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Other</fullName>
+            <fullName>Contractual recording</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Send Letter</fullName>
+            <fullName>Documentation uploaded by customer</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Send Quote</fullName>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External service transfer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Note Info</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reminder</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request for appraisal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request for documentation by EMAIL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Request for documentation by SMS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SMS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Scaled Other Areas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Scaled Supervisor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Scaled Technical Direction</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WhatsApp</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -229,6 +280,10 @@
         </values>
         <values>
             <fullName>Meeting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Message</fullName>
             <default>false</default>
         </values>
         <values>

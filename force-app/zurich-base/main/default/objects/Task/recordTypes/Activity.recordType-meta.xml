@@ -181,15 +181,14 @@
     <picklistValues>
         <picklist>Subject</picklist>
         <values>
-            <fullName>Call</fullName>
+            <fullName>Escribe un asunto%2E%2E%2E</fullName>
             <default>false</default>
         </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Subtype__c</picklist>
         <values>
-            <fullName>Expertise request</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Receipt review</fullName>
+            <fullName>Others</fullName>
             <default>false</default>
         </values>
         <values>
@@ -197,35 +196,19 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Scaled other areas</fullName>
+            <fullName>Request for appraisal</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Scaling Supervisor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Technical direction scaling</fullName>
+            <fullName>Review</fullName>
             <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
         <values>
-            <fullName>Call</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Email</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Meeting</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Other</fullName>
-            <default>false</default>
+            <default>true</default>
         </values>
     </picklistValues>
 </RecordType>

@@ -228,6 +228,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Subtype__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Type</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -264,6 +269,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.InboundOutbound__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Subtype__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -44,12 +44,12 @@
                 <field>Priority</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Type</field>
+                <behavior>Edit</behavior>
+                <field>Response__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Response__c</field>
+                <field>Subtype__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -116,7 +116,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h5I000000jj1F</masterLabel>
+        <masterLabel>00h1x000000TYDE</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

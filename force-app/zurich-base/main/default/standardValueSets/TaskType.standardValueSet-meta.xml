@@ -26,4 +26,14 @@
         <default>false</default>
         <label>Scaled Case</label>
     </standardValue>
+    <standardValue>
+        <fullName>Message</fullName>
+        <default>false</default>
+        <label>Message</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Minisite</fullName>
+        <default>false</default>
+        <label>Minisite</label>
+    </standardValue>
 </StandardValueSet>
