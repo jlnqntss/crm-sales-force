@@ -6,4 +6,14 @@
         <default>true</default>
         <label>Escribe un asunto...</label>
     </standardValue>
+    <standardValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Abandono</fullName>
+        <default>false</default>
+        <label>Abandono</label>
+    </standardValue>
 </StandardValueSet>

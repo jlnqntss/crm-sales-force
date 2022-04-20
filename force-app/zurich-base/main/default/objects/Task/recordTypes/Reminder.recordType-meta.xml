@@ -180,7 +180,7 @@
     <picklistValues>
         <picklist>Subject</picklist>
         <values>
-            <fullName>Escribe un asunto%2E%2E%2E</fullName>
+            <fullName>Other</fullName>
             <default>false</default>
         </values>
     </picklistValues>
