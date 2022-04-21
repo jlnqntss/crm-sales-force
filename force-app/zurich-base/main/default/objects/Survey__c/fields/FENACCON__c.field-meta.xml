@@ -3,12 +3,12 @@
     <fullName>FENACCON__c</fullName>
     <externalId>false</externalId>
     <formula>IF(  NOT(ISBLANK( CaseId__r.Account.Birthdate__c ))  , 
-  TEXT(YEAR(CaseId__r.Account.Birthdate__c)) + &quot;/&quot; +
-    IF( LEN(TEXT(MONTH(CaseId__r.Account.Birthdate__c))) &gt; 1 , TEXT(MONTH(CaseId__r.Account.Birthdate__c)), &quot;0&quot; + TEXT(MONTH(CaseId__r.Account.Birthdate__c))) + &quot;/&quot; +
+  TEXT(YEAR(CaseId__r.Account.Birthdate__c)) +
+    IF( LEN(TEXT(MONTH(CaseId__r.Account.Birthdate__c))) &gt; 1 , TEXT(MONTH(CaseId__r.Account.Birthdate__c)), &quot;0&quot; + TEXT(MONTH(CaseId__r.Account.Birthdate__c))) +
     IF(LEN(TEXT(DAY(CaseId__r.Account.Birthdate__c))) &gt; 1 , TEXT(DAY(CaseId__r.Account.Birthdate__c)), &quot;0&quot; + TEXT(DAY(CaseId__r.Account.Birthdate__c))), 
 IF(   NOT(ISBLANK( NumeroIdCliente__r.Birthdate__c ))   , 
-  TEXT(YEAR(NumeroIdCliente__r.Birthdate__c )) + &quot;/&quot; +
-    IF( LEN(TEXT(MONTH(NumeroIdCliente__r.Birthdate__c ))) &gt; 1 , TEXT(MONTH(NumeroIdCliente__r.Birthdate__c )), &quot;0&quot; + TEXT(MONTH(NumeroIdCliente__r.Birthdate__c ))) + &quot;/&quot; +
+  TEXT(YEAR(NumeroIdCliente__r.Birthdate__c )) +
+    IF( LEN(TEXT(MONTH(NumeroIdCliente__r.Birthdate__c ))) &gt; 1 , TEXT(MONTH(NumeroIdCliente__r.Birthdate__c )), &quot;0&quot; + TEXT(MONTH(NumeroIdCliente__r.Birthdate__c ))) +
     IF(LEN(TEXT(DAY(NumeroIdCliente__r.Birthdate__c ))) &gt; 1 , TEXT(DAY(NumeroIdCliente__r.Birthdate__c )), &quot;0&quot; + TEXT(DAY(NumeroIdCliente__r.Birthdate__c ))), 
   &apos;&apos;) )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
