@@ -239,12 +239,13 @@ public with sharing class ExternalRequestsSelector
     public String getQueryProcessedAfterThan (Integer days , String processedResult)
     {
         recordsLimit=LIMIT_BATCH_DELETE_EXTERNAL_REQUEST;
+        String escape = '\'';
         try 
         {
             return String.format('{0} {1} {2}', new List<String>
             {
                 baseQuery,
-                'WHERE Processed__c = true AND ProcessedDate__c < LAST_N_DAYS: ' + days + ' AND ProcessResult__c = \''+processedResult+'\' AND (RecordTypeId = \''+GENERIC_RECORD_TYPE_DEVELOPER_ID+'\' OR RecordTypeId = \''+INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID +'\')',
+                'WHERE Processed__c = true AND ProcessedDate__c < LAST_N_DAYS: ' + days + ' AND ProcessResult__c = ' + escape + processedResult + escape +' AND RecordTypeId IN ( ' + escape + GENERIC_RECORD_TYPE_DEVELOPER_ID + escape +', ' + escape + INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID + escape + ')',
                 limitCondition
             });
         }
@@ -271,21 +272,22 @@ public with sharing class ExternalRequestsSelector
         {
             if(processed != null)
             {
-                return Database.countQuery('SELECT count() FROM ExternalRequest__c WHERE Processed__c = :processed AND (RecordTypeId  = \''+GENERIC_RECORD_TYPE_DEVELOPER_ID+'\' OR RecordTypeId = \''+INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID +'\')' );
+                return Database.countQuery('SELECT count() FROM ExternalRequest__c WHERE Processed__c = :processed AND RecordTypeId IN ( \''+GENERIC_RECORD_TYPE_DEVELOPER_ID +'\', \''+INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID+'\' )' );
             }
             if(days != 0 && processedResult != null && processedResult != '')
             {
+
                 return Database.countQuery(
-                    'SELECT count () FROM ExternalRequest__c WHERE ProcessedDate__c < LAST_N_DAYS: '+ days + 'AND ProcessResult__c = \''+processedResult+'\' AND (RecordTypeId = \''+GENERIC_RECORD_TYPE_DEVELOPER_ID+'\' OR RecordTypeId = \''+INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID +'\')' );
+                    'SELECT count () FROM ExternalRequest__c WHERE ProcessedDate__c < LAST_N_DAYS: '+ days + 'AND ProcessResult__c = \''+processedResult+'\' AND RecordTypeId IN ( \''+GENERIC_RECORD_TYPE_DEVELOPER_ID +'\', \''+INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID+'\' )' );
 
             }
             else if (days == 0 && processedResult != null && processedResult != '')
             {
                 return Database.countQuery(
-                    'SELECT count () FROM ExternalRequest__c WHERE ProcessResult__c = \''+processedResult +'\' AND (RecordTypeId = \''+GENERIC_RECORD_TYPE_DEVELOPER_ID+'\' OR RecordTypeId = \''+INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID +'\')' );
+                    'SELECT count () FROM ExternalRequest__c WHERE ProcessResult__c = \''+processedResult +'\' AND RecordTypeId IN ( \''+GENERIC_RECORD_TYPE_DEVELOPER_ID +'\', \''+INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID+'\' )' );
             }
 
-            return Database.countQuery('SELECT count() FROM ExternalRequest__c WHERE (RecordTypeId = \''+GENERIC_RECORD_TYPE_DEVELOPER_ID+'\' OR RecordTypeId = \''+INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID +'\')' );
+            return Database.countQuery('SELECT count() FROM ExternalRequest__c WHERE RecordTypeId IN ( \''+GENERIC_RECORD_TYPE_DEVELOPER_ID +'\', \''+INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID+'\' )');
         }
         catch (Exception ex) 
         { 
