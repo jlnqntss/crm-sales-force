@@ -14,12 +14,6 @@
                 <componentName>desktopDashboards:embeddedDashboard</componentName>
                 <identifier>desktopDashboards_embeddedDashboard</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 OR 2</booleanFilter>
-                    <criteria>
-                        <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
-                        <operator>CONTAINS</operator>
-                        <rightValue>Consultor</rightValue>
-                    </criteria>
                     <criteria>
                         <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
                         <operator>CONTAINS</operator>
@@ -41,6 +35,12 @@
                 <componentName>desktopDashboards:embeddedDashboard</componentName>
                 <identifier>desktopDashboards_embeddedDashboard2</identifier>
                 <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
+                        <operator>CONTAINS</operator>
+                        <rightValue>Consultor</rightValue>
+                    </criteria>                    
                     <criteria>
                         <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
                         <operator>CONTAINS</operator>
