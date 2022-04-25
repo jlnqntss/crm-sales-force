@@ -86,6 +86,8 @@ public without sharing class SystemUtil
             NumberDaysDeleteErrors__c,
             NumberDaysDeleteRequests__c,
             NumberDaysDeleteRequestErrors__c,
+            RetentionExternalRequestKO__c,
+            RetentionExternalRequestOK__c,
             NumDaysDeleteLeads__c,
             IBACaseworker__c,
             MaxRetries__c,
@@ -1426,4 +1428,6 @@ public without sharing class SystemUtil
 
         return response;
     }
+    
+    public class SystemUtilException extends Exception {}
 }
