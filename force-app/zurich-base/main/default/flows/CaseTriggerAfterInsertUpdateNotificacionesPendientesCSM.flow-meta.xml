@@ -335,6 +335,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status</field>
             <value>
                 <stringValue>Cerrado</stringValue>
