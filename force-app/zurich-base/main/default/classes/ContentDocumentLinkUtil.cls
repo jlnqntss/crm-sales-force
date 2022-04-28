@@ -5,6 +5,10 @@
  */
 public without sharing class ContentDocumentLinkUtil
 {
+    public static List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = null;
+
+    public static List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = null;
+
     public static Map<String, Robot_Hegeo_Setting__mdt> robotHegeoSettingsMap = new Map<String, Robot_Hegeo_Setting__mdt>();
 
     public static Map<String, Map<String, String> > caseTypesMapping = new Map<String, Map<String, String> >();
@@ -19,15 +23,16 @@ public without sharing class ContentDocumentLinkUtil
 
     private static void initSettings()
     {
-        //Cargamos los settings generales
-        List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
-            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c,
-            DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, CaseTypeFieldsMetadata__c, RoutingAddresses__c,
-            CCAddressIndex__c, BCCAddressIndex__c
-            FROM Robot_Hegeo_Setting__mdt
-            WHERE IsActive__c = true
-        ];
-
+        if( robotHegeoSettings == null ) {
+            //Cargamos los settings generales
+            robotHegeoSettings = [
+                SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c,
+                DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, CaseTypeFieldsMetadata__c, RoutingAddresses__c,
+                CCAddressIndex__c, BCCAddressIndex__c
+                FROM Robot_Hegeo_Setting__mdt
+                WHERE IsActive__c = true
+            ];
+        }
         if( !robotHegeoSettings.isEmpty() )
         {
             for (Robot_Hegeo_Setting__mdt setting: robotHegeoSettings)
@@ -67,11 +72,13 @@ public without sharing class ContentDocumentLinkUtil
         }
 
         //Cargamos el mapeo de campos de tipificación del caso
-        List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
-            SELECT Id, SourceType__c, SourceSubtype__c, Type__c, Subtype__c, TypeN3__c
-            FROM Robot_Hegeo_Field_Mapping__mdt
-        ];
-
+        if ( robotHegeoFieldsMapping == null ){
+            robotHegeoFieldsMapping = [
+                SELECT Id, SourceType__c, SourceSubtype__c, Type__c, Subtype__c, TypeN3__c
+                FROM Robot_Hegeo_Field_Mapping__mdt
+            ];
+        }
+        
         if( !robotHegeoFieldsMapping.isEmpty() )
         {
             for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
