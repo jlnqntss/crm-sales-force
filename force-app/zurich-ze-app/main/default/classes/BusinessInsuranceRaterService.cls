@@ -717,6 +717,7 @@ public without sharing class BusinessInsuranceRaterService
 
             List<Opportunity> offersBySessionId = new List<Opportunity>();
             List<Opportunity> offersByQuoteNumber = new List<Opportunity>();
+            Map<String, Opportunity> mapaOffersToCreate = new Map<String, Opportunity>();
 
             // Por cada Oferta que viene del formulario...
             if(!receivedOffers.isEmpty())
@@ -777,14 +778,19 @@ public without sharing class BusinessInsuranceRaterService
                     sfOffer.LegalAuth__c = (formData.legalAuth != null ? formData.legalAuth : false);
                     sfOffer.IsTest__c = isTest;
 
-                    offersToCreate.add(sfOffer);
-
-                    if( sfOffer.INFOQuoteNumber__c != null ) {
-                        offersByQuoteNumber.add(sfOffer);
+                    if (mapaOffersToCreate.containsKey(sfOffer.SessionId__c))
+                    {
+                        ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_WARNING, 'Ya existe una oferta con las mismas características' , 'BusinessInsuranceRaterService');   
                     } else {
-                        offersBySessionId.add(sfOffer);
+                        mapaOffersToCreate.put(sfOffer.SessionId__c, sfOffer);
+                        
+                        if( sfOffer.INFOQuoteNumber__c != null ) {
+                            offersByQuoteNumber.add(sfOffer);
+                        } else {
+                            offersBySessionId.add(sfOffer);
+                        }
                     }
-
+                    
                     // Poliza
                     if( String.isNotBlank(offer.policyNumber) ) {
                         quoteNumberToPolicyNumberMap.put(i, offer.policyNumber);
@@ -797,6 +803,8 @@ public without sharing class BusinessInsuranceRaterService
                     }
                 }
             }
+
+            offersToCreate.addAll(mapaOffersToCreate.values());
 
             // Creacion de la oferta
             if( !offersToCreate.isEmpty() ) {
@@ -1003,7 +1011,6 @@ public without sharing class BusinessInsuranceRaterService
             currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String> {PROFILE_NAME}
         );
 
-        System.debug('Lista existingOffers ' + existingOffers.size());
         if(existingOffers.size() > 0)
         {
             System.debug('Lista existingOffers ' + existingOffers.get(0).OwnerId);
