@@ -24,17 +24,10 @@ public without sharing class ContentDocumentLinkUtil
     private static void initSettings()
     {
         if( robotHegeoSettings == null ) {
+
             robotHegeoSettings = Robot_Hegeo_Setting__mdt.getAll().values();
-            /*
-            //Cargamos los settings generales
-            robotHegeoSettings = [
-                SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c,
-                DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, CaseTypeFieldsMetadata__c, RoutingAddresses__c,
-                CCAddressIndex__c, BCCAddressIndex__c
-                FROM Robot_Hegeo_Setting__mdt
-                WHERE IsActive__c = true
-            ];*/
         }
+
         if( !robotHegeoSettings.isEmpty() )
         {
             for (Robot_Hegeo_Setting__mdt setting: robotHegeoSettings)
@@ -77,13 +70,8 @@ public without sharing class ContentDocumentLinkUtil
 
         //Cargamos el mapeo de campos de tipificación del caso
         if ( robotHegeoFieldsMapping == null ){
-
+            
             robotHegeoFieldsMapping = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
-            /*
-            robotHegeoFieldsMapping = [
-                SELECT Id, SourceType__c, SourceSubtype__c, Type__c, Subtype__c, TypeN3__c
-                FROM Robot_Hegeo_Field_Mapping__mdt
-            ];*/
         }
         
         if( !robotHegeoFieldsMapping.isEmpty() )
