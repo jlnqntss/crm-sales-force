@@ -170,7 +170,6 @@
         <connector>
             <targetReference>GetRelatedOffer</targetReference>
         </connector>
-        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
         <filters>
             <field>OpportunityName__c</field>
