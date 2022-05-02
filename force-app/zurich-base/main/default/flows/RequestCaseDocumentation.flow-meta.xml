@@ -742,6 +742,7 @@ u + .body .full {
 &lt;/head&gt;
 
 &lt;body class=&quot;body&quot;&gt;
+&lt;p style=&quot;text-align:center; font-size:12px&quot;&gt;&lt;a href=&quot;{!HashURL}&quot;&gt;Si no ves bien el email clica aquí&lt;/a&gt;&lt;/p&gt;
 &lt;table class=&quot;full&quot; width=&quot;100%&quot; border=&quot;0&quot; align=&quot;center&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
   &lt;tr&gt;
     &lt;td align=&quot;center&quot;&gt;&lt;table class=&quot;table-inner&quot; width=&quot;750&quot; style=&quot;max-width: 750px; background: #ffffff&quot; border=&quot;0&quot; align=&quot;center&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
@@ -794,8 +795,7 @@ u + .body .full {
                     &lt;br /&gt;
                   &lt;/p&gt;
                   &lt;p style=&quot;text-align: center&quot;&gt;&lt;br /&gt;
-                  &lt;a href=&quot;{!HashURL}&quot;&gt;{!botonAdjuntar}&lt;/a&gt;
-&lt;br&gt;&lt;br&gt;Si no puedes ver el botón, haz click en &lt;a href=&quot;{!HashURL}&quot;&gt;este enlace&lt;/a&gt;&lt;/p&gt;
+                  &lt;a href=&quot;{!HashURL}&quot;&gt;{!botonAdjuntar}&lt;/a&gt;&lt;/p&gt;
                   &lt;p&gt;&lt;br /&gt;
                     &lt;br /&gt;
                     &lt;br /&gt;
