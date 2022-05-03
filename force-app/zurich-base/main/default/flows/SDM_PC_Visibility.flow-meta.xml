@@ -63,6 +63,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>IsActive</name>
+        <label>IsActive</label>
+        <locationX>392</locationX>
+        <locationY>1319</locationY>
+        <defaultConnector>
+            <targetReference>For_each_Team_Member</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>ActiveMember</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>For_each_Team_Member.User.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_member_visibility</targetReference>
+            </connector>
+            <label>ActiveMember</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Valida si este registro tiene comparticiones personalizadas antiguas.</description>
         <name>Validate_old_share_values</name>
         <label>Validate old share values</label>
@@ -94,12 +119,12 @@
     <loops>
         <name>For_each_Team_Member</name>
         <label>For each Team Member</label>
-        <locationX>382</locationX>
-        <locationY>1079</locationY>
+        <locationX>231</locationX>
+        <locationY>1219</locationY>
         <collectionReference>Get_Account_Team_Members</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Create_member_visibility</targetReference>
+            <targetReference>IsActive</targetReference>
         </nextValueConnector>
     </loops>
     <processMetadataValues>
@@ -124,8 +149,8 @@
     <recordCreates>
         <name>Create_member_visibility</name>
         <label>Create member visibility</label>
-        <locationX>470</locationX>
-        <locationY>1199</locationY>
+        <locationX>581</locationX>
+        <locationY>1214</locationY>
         <connector>
             <targetReference>For_each_Team_Member</targetReference>
         </connector>
