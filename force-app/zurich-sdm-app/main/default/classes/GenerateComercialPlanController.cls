@@ -510,6 +510,7 @@ public with sharing class GenerateComercialPlanController
     public class Plandata 
     {
         String Id;
+        String ParentId;
         public String Title;
         public String Segment;
         public String Product;
@@ -1023,7 +1024,7 @@ public with sharing class GenerateComercialPlanController
      */
     private static void addChildPlans(Rowtype row, Integer cellPos, Map<Integer, List<PlanComercial__c>> mapPlanLists, 
                                 Map<Integer, Integer> mapChildToParent,
-                                Plandata myplan, Set<String> newPlanNames, Set<Id> rnsToNotify)
+                                Plandata myplan, Set<String> newPlanNames, Set<Id> rnsToNotify, List<PlanComercial__c> parentPlansToInsert)
     {
         PlanComercial__c childPlan;
         // Id de la fila
@@ -1037,11 +1038,10 @@ public with sharing class GenerateComercialPlanController
         List<PlanComercial__c> existingPlansToUpsert = mapPlanLists.get(IDX_PLANS_EXISTING);
         List<PlanComercial__c> plansToDelete = mapPlanLists.get(IDX_PLANS_DELETE);
         List<PlanComercial__c> childPlansToInsert = mapPlanLists.get(IDX_PLANS_CHILD);
-        List<PlanComercial__c> parentPlansToInsert = mapPlanLists.get(IDX_PLANS_PARENT);
         
 
         if( myplan.isNewPlan || cell.isNew ) { //-------------------- Nuevo Plan o Nuevo subplan (rn/mediador)    
-            if( childValue > 0 ) {
+            if( childValue > 0) {
                 childPlan = new PlanComercial__c(
                     Name= myplan.Title,
                     Description__c= myplan.Title,
@@ -1050,7 +1050,8 @@ public with sharing class GenerateComercialPlanController
                     Indicator__c= myplan.Indicator,
                     StartDate__c= Date.newInstance(myplan.Year, 1, 1),
                     EndDate__c= Date.newInstance(myplan.Year, 12, 31),
-                    ParentPlan__c= null,
+                    // ParentPlan__c= null,
+                    ParentPlan__c= myplan.ParentId,
                     AccumulateType__c= PLAN_ACCUMULATE_TYPE,
                     RecordTypeId= myplan.rtPlanAnualId,
                     SendNotifications__c= PLAN_SEND_NOTIF
@@ -1069,7 +1070,11 @@ public with sharing class GenerateComercialPlanController
             
                 childPlan.put(PlanComercialSelector.getTargetKPIFieldByType(myPlan.IndicatorType), childValue);
 
-                if( myplan.isNewPlan ) {
+                // En caso de no existir plan comercial padre se crea uno nuevo. fix: 
+                if( String.isBlank(childPlan.ParentPlan__c) )
+                {
+                    myplan.Id = null;
+                    // addNewPlan(myplan, parentPlansToInsert, newPlanNames);
                     // Añadimos el plan hijo a la lista para crearlo
                     childPlansToInsert.add(childPlan);
 
@@ -1078,7 +1083,7 @@ public with sharing class GenerateComercialPlanController
                     // Y añadimos la referencia al padre
                     mapChildToParent.put(childPos, parentPos);
                 } else {
-                    childPlan.ParentPlan__c = myplan.Id;
+                    childPlan.ParentPlan__c = myplan.ParentId;
                     existingPlansToUpsert.add(childPlan);
                 }
             }
@@ -1134,7 +1139,8 @@ public with sharing class GenerateComercialPlanController
         mapPlanLists.put(IDX_PLANS_PARENT, parentPlansToInsert);
 
         // Referencia al plan padre
-        PlanComercial__c parentPlan;
+        // Celltype cellHeaderParent = headerdata.Cells[0];
+        // String parentPlan = cellHeaderParent.Id;
         // Referencia al plan hijo
         PlanComercial__c childPlan;
 
@@ -1147,11 +1153,12 @@ public with sharing class GenerateComercialPlanController
         
         // Por cada plan (columna de la tabla)...
         for(Integer i=0; i<numColumns; i++) {
-            parentPlan = null;
-            childPlan = null;
-
             // Cabecera del plan
             Celltype cellHeader = headerdata.Cells[i];
+
+            String parentPlan = cellHeader.Id;
+            childPlan = null;
+
             // Si es nuevo
             Boolean isNewPlan = cellHeader.isNew;
             // Si es borrado
@@ -1187,6 +1194,7 @@ public with sharing class GenerateComercialPlanController
                 myplan.rtPlanAnualId = rtPlanAnualId;
                 myplan.isNewPlan = isNewPlan;
                 myplan.isTitleModified = isHeaderModified;
+                myplan.ParentId = parentPlan;
 
                 // Segmento => Fila 0
                 Celltype cell = rowsdata.get(0).Cells.get(i);
@@ -1216,7 +1224,7 @@ public with sharing class GenerateComercialPlanController
                     // Fila de RN/Mediador
                     Rowtype row = rowsdata.get(j);
 
-                    addChildPlans(row, i, mapPlanLists, mapChildToParent, myplan, newPlanNames, rnsToNotify);
+                    addChildPlans(row, i, mapPlanLists, mapChildToParent, myplan, newPlanNames, rnsToNotify, parentPlansToInsert);
                 }
             } else if( planId != null ) { //-------------------------------------------------------- Borrado del plan (Si hay ids de planes)                
                 addPlansToDelete(rowsdata, i, plansToDelete, isMyPlan, planId, maxRows);
