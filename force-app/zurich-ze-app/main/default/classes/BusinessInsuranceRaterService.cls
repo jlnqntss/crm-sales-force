@@ -780,7 +780,15 @@ public without sharing class BusinessInsuranceRaterService
 
                     if (mapaOffersToCreate.containsKey(sfOffer.SessionId__c))
                     {
-                        ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_WARNING, 'Ya existe una oferta con las mismas características' , 'BusinessInsuranceRaterService');   
+                        Opportunity oAux = mapaOffersToCreate.get(sfOffer.SessionId__c);
+                        if (oAux.InfoQuoteNumber__c == null && sfOffer.INFOQuoteNumber__c != null)
+                        {
+                            mapaOffersToCreate.put(sfOffer.SessionId__c, sfOffer);
+                        }
+                        else
+                        {
+                            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_WARNING, 'Ya existe una oferta con las mismas características' , 'BusinessInsuranceRaterService');   
+                        }
                     } else {
                         mapaOffersToCreate.put(sfOffer.SessionId__c, sfOffer);
                         
