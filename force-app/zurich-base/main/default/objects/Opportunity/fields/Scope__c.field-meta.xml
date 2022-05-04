@@ -27,6 +27,11 @@
                 <default>false</default>
                 <label>General</label>
             </value>
+            <value>
+                <fullName>ZEB</fullName>
+                <default>false</default>
+                <label>Zurich Empresas Brokers</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

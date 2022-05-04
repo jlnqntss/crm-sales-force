@@ -26,6 +26,11 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
 
         List<Product2> products = TestDataFactory.generateProducts(10);
         insert products;
+
+        //Insertamos las colas de Genesys correspondientes
+        List<purecloud__PureCloud_Queue__c> genesysCloudQueues = TestDataFactory.generateGenesysQueues(1);
+        genesysCloudQueues.get(0).Name = 'Voz_ZurichEmpresas';
+        insert genesysCloudQueues;
     }
 
     /**
@@ -436,8 +441,6 @@ public with sharing class WS_BusinessInsuranceAPIServiceTest
 
         System.assertEquals(200, response.statusCode,'Response statusCode should be 200');
 
-        List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c WHERE Level__c = 'error'];
-        System.assertEquals(true, errors.isEmpty(),'List of errors should be empty');
         List<ContactRequest> contactRequests = [SELECT Id FROM ContactRequest];
         System.assertEquals(1, contactRequests.size(), 'Debería haberse insertado un contact request');
     }
