@@ -784,6 +784,18 @@ public without sharing class BusinessInsuranceRaterService
                         if (oAux.InfoQuoteNumber__c == null && sfOffer.INFOQuoteNumber__c != null)
                         {
                             mapaOffersToCreate.put(sfOffer.SessionId__c, sfOffer);
+
+                            // Buscamos la oferta en la lista offersBySessionId para eliminarla y poner la nueva oferta en la lista offersByQuoteNumber para que se inserte bien
+                            Integer cont = 0;
+                            while (cont < offersBySessionId.size())
+                            {
+                                if (offersBySessionId.get(cont).SessionId__c.equalsIgnoreCase(sfOffer.SessionId__c))
+                                {
+                                    offersBySessionId.remove(cont);
+                                }
+                                cont++;
+                            }
+                            offersByQuoteNumber.add(sfOffer);
                         }
                         else
                         {
