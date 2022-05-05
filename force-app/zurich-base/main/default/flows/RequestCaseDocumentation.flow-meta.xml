@@ -802,8 +802,7 @@ u + .body .full {
 &lt;/head&gt;
 
 &lt;body class=&quot;body&quot;&gt;
-
- &lt;p style=&quot;text-align:center; font-size:12px&quot;&gt;&lt;a href=&quot;&quot;&gt;Si no ves bien el email clica aquí&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align:center; font-size:12px&quot;&gt;&lt;a href=&quot;{!HashURL}&quot;&gt;Si no ves bien el email clica aquí&lt;/a&gt;&lt;/p&gt;
 &lt;table class=&quot;full&quot; width=&quot;100%&quot; border=&quot;0&quot; align=&quot;center&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
   &lt;tr&gt;
     &lt;td align=&quot;center&quot;&gt;&lt;table class=&quot;table-inner&quot; width=&quot;750&quot; style=&quot;max-width: 750px; background: #ffffff&quot; border=&quot;0&quot; align=&quot;center&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
@@ -851,13 +850,12 @@ u + .body .full {
               &lt;!--title--&gt;
               &lt;tr&gt;
                 &lt;td style=&quot;font-family: Arial, sans-serif; color:#2167AE; font-size:14px; padding: 25px&quot;&gt;
-                  &lt;p&gt;Hola $nombre$,&lt;/p&gt;
+                  &lt;p&gt;Hola {!SelectName},&lt;/p&gt;
                   &lt;p&gt; Para enviarnos la documentación necesaria solo debes clicar en el botón de abajo.&lt;br /&gt;
                     &lt;br /&gt;
                   &lt;/p&gt;
                   &lt;p style=&quot;text-align: center&quot;&gt;&lt;br /&gt;
-                  &lt;img src=&quot;https://zurich-es--c.documentforce.com/servlet/servlet.ImageServer?id=01568000000q0HMAAY&amp;oid=00D5I000000DH2H&amp;lastMod=1624901062000&quot; width=&quot;286&quot; height=&quot;51&quot; alt=&quot;&quot;/&gt;
-				  &lt;/p&gt;
+                  &lt;a href=&quot;{!HashURL}&quot;&gt;&lt;img src=&quot;https://zurich-es--c.documentforce.com/servlet/servlet.ImageServer?id=01568000000q0HMAAY&amp;oid=00D5I000000DH2H&amp;lastMod=1624901062000&quot; width=&quot;286&quot; height=&quot;51&quot; alt=&quot;&quot;/&gt; &lt;/a&gt;&lt;/p&gt;
                   &lt;p&gt;&lt;br /&gt;
                     &lt;br /&gt;
                     &lt;br /&gt;
@@ -884,8 +882,8 @@ u + .body .full {
       &lt;td colspan=&quot;2&quot; valign=&quot;middle&quot; style=&quot;padding: 5px; font-size: 13px; color:#2167AE; font-family: Arial, sans-serif;&quot;&gt;Descarga la App y conéctate a Mi Zurich&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td width=&quot;75&quot; style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;a href=&quot;https://urldefense.com/v3/__https://apps.apple.com/es/app/zurich-seguros/id485033181__;!!FVajH6CFHhmYMuQ!4y9L5JTBMgAnHXKORf-2siYw8XoT-Fi0jUa7VLUhEdWMabw2dW2EuMT6_1GMLY3BJJqyz4zWTcsUIkPYBXJ8KsW2igYP3tU$&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/apple-store.png&quot; width=&quot;47&quot; height=&quot;15&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
-      &lt;td width=&quot;250&quot; style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;a href=&quot;https://urldefense.com/v3/__https://play.google.com/store/apps/details?id=es.zurich.zhp&amp;amp;hl=es__;!!FVajH6CFHhmYMuQ!4y9L5JTBMgAnHXKORf-2siYw8XoT-Fi0jUa7VLUhEdWMabw2dW2EuMT6_1GMLY3BJJqyz4zWTcsUIkPYBXJ8KsW2U32fi7Q$&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/google-play.png&quot; width=&quot;47&quot; height=&quot;15&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+      &lt;td width=&quot;75&quot; style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;a href=&quot;https://apps.apple.com/es/app/zurich-seguros/id485033181&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/apple-store.png&quot; width=&quot;47&quot; height=&quot;15&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+      &lt;td width=&quot;250&quot; style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;a href=&quot;https://play.google.com/store/apps/details?id=es.zurich.zhp&amp;amp;hl=es&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/google-play.png&quot; width=&quot;47&quot; height=&quot;15&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
@@ -900,11 +898,11 @@ u + .body .full {
       &lt;td style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;br /&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;https://urldefense.com/v3/__http://bit.ly/Twitter-Zurich__;!!FVajH6CFHhmYMuQ!4y9L5JTBMgAnHXKORf-2siYw8XoT-Fi0jUa7VLUhEdWMabw2dW2EuMT6_1GMLY3BJJqyz4zWTcsUIkPYBXJ8KsW2ci8e5To$&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/twitter.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
-     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;https://urldefense.com/v3/__https://www.instagram.com/zurichseguros/__;!!FVajH6CFHhmYMuQ!4y9L5JTBMgAnHXKORf-2siYw8XoT-Fi0jUa7VLUhEdWMabw2dW2EuMT6_1GMLY3BJJqyz4zWTcsUIkPYBXJ8KsW2EsI0h6I$&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/instagram.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
-     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;https://urldefense.com/v3/__http://bit.ly/Facebook-Zurich__;!!FVajH6CFHhmYMuQ!4y9L5JTBMgAnHXKORf-2siYw8XoT-Fi0jUa7VLUhEdWMabw2dW2EuMT6_1GMLY3BJJqyz4zWTcsUIkPYBXJ8KsW2e3Azew0$&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/fb.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
-     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;https://urldefense.com/v3/__https://www.linkedin.com/company/zurich-insurance-company-ltd/__;!!FVajH6CFHhmYMuQ!4y9L5JTBMgAnHXKORf-2siYw8XoT-Fi0jUa7VLUhEdWMabw2dW2EuMT6_1GMLY3BJJqyz4zWTcsUIkPYBXJ8KsW2cu3xsjo$&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/lnk.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
-      &lt;td style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;a href=&quot;https://urldefense.com/v3/__http://www.youtube.com/zurichseguros__;!!FVajH6CFHhmYMuQ!4y9L5JTBMgAnHXKORf-2siYw8XoT-Fi0jUa7VLUhEdWMabw2dW2EuMT6_1GMLY3BJJqyz4zWTcsUIkPYBXJ8KsW2WR6eWSk$&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/youtube.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;http://bit.ly/Twitter-Zurich&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/twitter.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;https://www.instagram.com/zurichseguros/&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/instagram.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;http://bit.ly/Facebook-Zurich&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/fb.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;https://www.linkedin.com/company/zurich-insurance-company-ltd/&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/lnk.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+      &lt;td style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;a href=&quot;http://www.youtube.com/zurichseguros&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/youtube.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
