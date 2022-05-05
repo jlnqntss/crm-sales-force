@@ -95,8 +95,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se registra el error en Salesforce con el detalle del mismo.</description>
         <name>CreateErrorLogAction</name>
         <label>Registrar error</label>
-        <locationX>572</locationX>
-        <locationY>768</locationY>
+        <locationX>836</locationX>
+        <locationY>648</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -147,7 +147,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>CreateTaskAction</name>
         <label>Registrar tarea</label>
         <locationX>308</locationX>
-        <locationY>528</locationY>
+        <locationY>648</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -177,6 +177,18 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <stringValue>Note Info</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Email</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>WhatId</field>
             <value>
                 <elementReference>$Record.Id</elementReference>
@@ -190,7 +202,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>GetInteractionRecordTypeIdAction</name>
         <label>Obetener tipo de registro Task: Interaction</label>
         <locationX>308</locationX>
-        <locationY>648</locationY>
+        <locationY>528</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CreateTaskAction</targetReference>
