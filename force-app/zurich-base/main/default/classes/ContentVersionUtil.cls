@@ -85,7 +85,8 @@ public without sharing class ContentVersionUtil
                             Status = 'Cerrada',
                             Subject = Label.documentacionAnadida,
                             Description = 'Archivo añadido: ' + Url.getOrgDomainUrl().toExternalForm() + '/' + version.ContentDocumentId,
-                            Type = 'Other',
+                            Type = 'Minisite',
+                            SubType__c = 'Documentation uploaded by customer',
                             WhatId = hashToCaseMap.get(version.Guest_Record_fileupload__c).Id,
                             ActivityDate = System.today()
                             )

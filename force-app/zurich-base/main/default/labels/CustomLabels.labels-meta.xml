@@ -903,7 +903,7 @@ Related fields: [{3}]</value>
         <shortDescription>avisoLegalValue</shortDescription>
         <value>Aviso legal</value>
     </labels>
-	<labels>
+    <labels>
         <fullName>proteccionDatosTitle</fullName>
         <categories>uploadCaseDocumentation</categories>
         <language>en_US</language>
@@ -919,7 +919,7 @@ Related fields: [{3}]</value>
         <shortDescription>protecciónDatosValue</shortDescription>
         <value>Protección datos</value>
     </labels>
-	<labels>
+    <labels>
         <fullName>zurichSegurosDerechosReservados</fullName>
         <categories>uploadCaseDocumentation</categories>
         <language>en_US</language>
@@ -1357,5 +1357,13 @@ Related fields: [{3}]</value>
         <protected>false</protected>
         <shortDescription>IntegratorUser</shortDescription>
         <value>Integrator</value>
+    </labels>
+    <labels>
+        <fullName>solicitudDocumentacionEmail</fullName>
+        <categories>uploadCaseDocumentation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>solicitudDocumentaciónEmail</shortDescription>
+        <value>Solicitud de documentación por email</value>
     </labels>
 </CustomLabels>

@@ -243,6 +243,9 @@
         <label>Create EmailMessage Record</label>
         <locationX>50</locationX>
         <locationY>1574</locationY>
+        <connector>
+            <targetReference>createTask_0</targetReference>
+        </connector>
         <inputAssignments>
             <field>FromAddress</field>
             <value>
@@ -343,9 +346,90 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <stringValue>Request for documentation by SMS</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Type</field>
             <value>
-                <stringValue>Other</stringValue>
+                <stringValue>Minisite</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Se inserta una tarea en el sistema para registrar el envío de Email.</description>
+        <name>createTask_0</name>
+        <label>Crear Tarea</label>
+        <locationX>50</locationX>
+        <locationY>1694</locationY>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CallType</field>
+            <value>
+                <stringValue>Outbound</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Channel__c</field>
+            <value>
+                <stringValue>Email</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>HashURL</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Priority</field>
+            <value>
+                <stringValue>Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cerrada</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>$Label.solicitudDocumentacionEmail</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <stringValue>Request for documentation by EMAIL</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Minisite</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
