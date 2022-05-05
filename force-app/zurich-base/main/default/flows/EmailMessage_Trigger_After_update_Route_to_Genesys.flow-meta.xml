@@ -1,54 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Buscar_Gestor_Preferente</name>
-        <label>Buscar Gestor Preferente</label>
-        <locationX>1106</locationX>
-        <locationY>336</locationY>
-        <actionName>GenesysFindBestAgentAction</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Flow_o_Queue</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Generar_error_gestor_preferente</targetReference>
-        </faultConnector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>fromId</name>
-            <value>
-                <elementReference>$Record.FromAddress</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>interactionType</name>
-            <value>
-                <stringValue>Inbound</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>lookFor</name>
-            <value>
-                <elementReference>lookForValue</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>scope</name>
-            <value>
-                <elementReference>scopeValue</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
-        <name>Enrutar_a_Flow_Genesys</name>
+        <name>GenesysFlowRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
-        <locationX>961</locationX>
-        <locationY>641</locationY>
+        <locationX>1634</locationX>
+        <locationY>768</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
-            <targetReference>Generar_error_enrutamiento</targetReference>
+            <targetReference>CreateRoutingErrorAction</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -84,13 +44,13 @@
         <inputParameters>
             <name>ownerId</name>
             <value>
-                <elementReference>Buscar_Gestor_Preferente.ownerId</elementReference>
+                <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.GestorPreferenteAsignado</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>ScreenPopURL</elementReference>
+                <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -107,14 +67,15 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <name>Enrutar_a_Queue_Genesys</name>
+        <name>GenesysQueueRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
-        <locationX>1267</locationX>
-        <locationY>651</locationY>
+        <locationX>2162</locationX>
+        <locationY>768</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
-            <targetReference>Generar_error_enrutamiento</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>CreateRoutingErrorAction</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -138,7 +99,7 @@
         <inputParameters>
             <name>ownerId</name>
             <value>
-                <elementReference>Buscar_Gestor_Preferente.ownerId</elementReference>
+                <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.GestorPreferenteAsignado</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -150,7 +111,7 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>ScreenPopURL</elementReference>
+                <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -168,38 +129,15 @@
     </actionCalls>
     <apiVersion>53.0</apiVersion>
     <assignments>
-        <name>Informa_cola</name>
-        <label>Informa cola</label>
-        <locationX>576</locationX>
-        <locationY>798</locationY>
-        <assignmentItems>
-            <assignToReference>CasoRelacionado.OwnerId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Recuperar_cola_Salesforce.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>CasoRelacionado.Id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.ParentId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Aplica_actualizar</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Informar_call_center</name>
-        <label>Informar call center</label>
-        <locationX>85</locationX>
-        <locationY>799</locationY>
+        <name>CallCenterReportingAssignment</name>
+        <label>Asignar Informar Call Center</label>
+        <locationX>182</locationX>
+        <locationY>768</locationY>
         <assignmentItems>
             <assignToReference>CasoRelacionado.CallCenter__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Recuperar_cola_Genesys.CallCenter__c</elementReference>
+                <elementReference>GetGenesysQueueAction.CallCenter__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -210,58 +148,84 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Cola_Salesforce_informada</targetReference>
+            <targetReference>IsSalesforceQueueReportedDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>QueueReportingAssignment</name>
+        <label>Asignar informar a cola</label>
+        <locationX>182</locationX>
+        <locationY>1104</locationY>
+        <assignmentItems>
+            <assignToReference>CasoRelacionado.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetSalesforceQueueAction.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>CasoRelacionado.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>IsUpdateNecessaryDecision</targetReference>
         </connector>
     </assignments>
     <decisions>
-        <name>Aplica_actualizar</name>
-        <label>¿Aplica actualizar?</label>
-        <locationX>573</locationX>
-        <locationY>683</locationY>
-        <defaultConnectorLabel>No aplica</defaultConnectorLabel>
-        <rules>
-            <name>Aplica</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>CasoRelacionado.Id</leftValueReference>
-                <operator>NotEqualTo</operator>
-            </conditions>
-            <connector>
-                <targetReference>Actualiza_caso</targetReference>
-            </connector>
-            <label>Aplica</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Call_Center_informado</name>
+        <name>IsCallCenterReportedDecision</name>
         <label>¿Call Center informado?</label>
-        <locationX>222</locationX>
+        <locationX>314</locationX>
         <locationY>648</locationY>
         <defaultConnector>
-            <targetReference>Cola_Salesforce_informada</targetReference>
+            <targetReference>IsSalesforceQueueReportedDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>CC No informado</defaultConnectorLabel>
         <rules>
-            <name>CC_Informado</name>
+            <name>CCReportedOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Recuperar_cola_Genesys.CallCenter__c</leftValueReference>
+                <leftValueReference>GetGenesysQueueAction.CallCenter__c</leftValueReference>
                 <operator>NotEqualTo</operator>
             </conditions>
             <connector>
-                <targetReference>Informar_call_center</targetReference>
+                <targetReference>CallCenterReportingAssignment</targetReference>
             </connector>
             <label>CC Informado</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Caso_relacionado</name>
+        <name>IsFlowOrQueueDecision</name>
+        <label>¿Flow o Queue?</label>
+        <locationX>1898</locationX>
+        <locationY>648</locationY>
+        <defaultConnector>
+            <targetReference>GenesysQueueRoutingInvocableAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Queue</defaultConnectorLabel>
+        <rules>
+            <name>FlowOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.GenesysFlowID__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>GenesysFlowRoutingInvocableAction</targetReference>
+            </connector>
+            <label>Flow</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsRelatedCaseDecision</name>
         <label>¿Caso relacionado?</label>
-        <locationX>447</locationX>
-        <locationY>455</locationY>
+        <locationX>710</locationX>
+        <locationY>408</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
-            <name>Si</name>
+            <name>YesOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ParentId</leftValueReference>
@@ -275,64 +239,83 @@
                 <operator>NotEqualTo</operator>
             </conditions>
             <conditions>
-                <leftValueReference>Recuperar_cola_Genesys</leftValueReference>
+                <leftValueReference>GetGenesysQueueAction</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Recuperar_cola_Salesforce</targetReference>
+                <targetReference>GetSalesforceQueueAction</targetReference>
             </connector>
             <label>Si</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Cola_Salesforce_informada</name>
+        <name>IsSalesforceQueueReportedDecision</name>
         <label>¿Cola Salesforce informada?</label>
-        <locationX>365</locationX>
-        <locationY>801</locationY>
+        <locationX>314</locationX>
+        <locationY>984</locationY>
         <defaultConnector>
-            <targetReference>Aplica_actualizar</targetReference>
+            <targetReference>IsUpdateNecessaryDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Cola no informada</defaultConnectorLabel>
         <rules>
-            <name>Cola_informada</name>
+            <name>ReportedQueueOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Recuperar_cola_Salesforce</leftValueReference>
+                <leftValueReference>GetSalesforceQueueAction</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Informa_cola</targetReference>
+                <targetReference>QueueReportingAssignment</targetReference>
             </connector>
             <label>Cola informada</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Es_ZE</name>
+        <name>IsUpdateNecessaryDecision</name>
+        <label>¿Aplica actualizar?</label>
+        <locationX>314</locationX>
+        <locationY>1320</locationY>
+        <defaultConnectorLabel>No aplica</defaultConnectorLabel>
+        <rules>
+            <name>IsNecessaryOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CasoRelacionado.Id</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>UpdateCaseAction</targetReference>
+            </connector>
+            <label>Aplica</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsZEDecision</name>
         <label>¿Es ZE?</label>
-        <locationX>1266</locationX>
-        <locationY>241</locationY>
+        <locationX>1634</locationX>
+        <locationY>408</locationY>
         <defaultConnector>
-            <targetReference>Buscar_Gestor_Preferente</targetReference>
+            <targetReference>GetGenesysQueueAndParentIdFromEmailSubflow</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No ZE</defaultConnectorLabel>
         <rules>
-            <name>ZE</name>
+            <name>ZEOutcome</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>Recuperar_cola_Genesys_async.Scope__c</leftValueReference>
+                <leftValueReference>GetGenesysQueueAsyncAction.Scope__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>ZE</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>Recuperar_cola_Genesys_async.Scope__c</leftValueReference>
+                <leftValueReference>GetGenesysQueueAsyncAction.Scope__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>ZEO</stringValue>
@@ -341,40 +324,16 @@
             <label>ZE</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Flow_o_Queue</name>
-        <label>¿Flow o Queue?</label>
-        <locationX>1098</locationX>
-        <locationY>494</locationY>
-        <defaultConnector>
-            <targetReference>Enrutar_a_Queue_Genesys</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Queue</defaultConnectorLabel>
-        <rules>
-            <name>Flow</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.GenesysFlowID__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-            </conditions>
-            <connector>
-                <targetReference>Enrutar_a_Flow_Genesys</targetReference>
-            </connector>
-            <label>Flow</label>
-        </rules>
-    </decisions>
     <description>Flujo encargado de enrutar a genesys los emails entrantes recibidos</description>
     <formulas>
-        <name>AsyncErrorMessage</name>
+        <name>CSMAdministrationManager</name>
         <dataType>String</dataType>
-        <expression>&quot;Genesys Queue Name: &quot; + {!$Record.GenesysQueueName__c} + BR() +
-&quot;Record Id: &quot; + {!$Record.Id} + BR() +
-&quot;Genesys Flow Id: &quot; + {!$Record.GenesysFlowID__c} + BR() +
-&quot;From Address: &quot; + {!$Record.FromAddress} + BR() +
-&quot;From Name: &quot; + {!$Record.FromName} + BR() +
-&quot;Gestor preferente: &quot; + {!Buscar_Gestor_Preferente.ownerId} + BR() +
-&quot;Subject: &quot; + {!$Record.Subject} + BR() +
-&quot;To Address: &quot; + {!$Record.ToAddress}</expression>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.CsmAdministrationManager__c})</expression>
+    </formulas>
+    <formulas>
+        <name>CSMIndividualsManager</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.CsmIndividualsManager__c})</expression>
     </formulas>
     <formulas>
         <name>ErrorMessage</name>
@@ -392,7 +351,7 @@
         <description>Si es de ZE o ZEO, se buscan oportunidades, si no, casos</description>
         <name>lookForValue</name>
         <dataType>String</dataType>
-        <expression>CASE({!Recuperar_cola_Genesys_async.Scope__c}, 
+        <expression>CASE({!GetGenesysQueueAsyncAction.Scope__c}, 
 &quot;ZE&quot;, &quot;Opportunity&quot;, 
 &quot;ZEO&quot;, &quot;Opportunity&quot;,
 &quot;Case&quot;)</expression>
@@ -400,19 +359,10 @@
     <formulas>
         <name>scopeValue</name>
         <dataType>String</dataType>
-        <expression>CASE({!Recuperar_cola_Genesys_async.Scope__c}, 
+        <expression>CASE({!GetGenesysQueueAsyncAction.Scope__c}, 
 &quot;ZE&quot;, &quot;ZE&quot;, 
 &quot;ZEO&quot;, &quot;ZEO&quot;,
 &quot;all&quot;)</expression>
-    </formulas>
-    <formulas>
-        <description>URL de la ficha a abrir con el correo enrutado</description>
-        <name>ScreenPopURL</name>
-        <dataType>String</dataType>
-        <expression>IF( {!scopeValue} = &apos;ZE&apos; , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=ZESearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; +  {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Id} + &apos;&quot;},{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
-IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CCS&apos;) , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CCSSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId} + &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId} + &apos;&quot;}]&apos;,
-IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CSM&apos;) ,  &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CSMSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress} + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId}+ &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
- {!$Record.Id} )))</expression>
     </formulas>
     <interviewLabel>EmailMessage Trigger - After update - Route to Genesys {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After update - Route to Genesys</label>
@@ -425,7 +375,7 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -436,10 +386,10 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <name>Generar_error_actualizar_caso</name>
+        <name>CreateCaseUpdateErrorAction</name>
         <label>Generar error actualizar caso</label>
-        <locationX>581</locationX>
-        <locationY>340</locationY>
+        <locationX>314</locationX>
+        <locationY>1560</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -474,10 +424,45 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Generar_error_cola_Salesforce</name>
+        <name>CreateRoutingErrorAction</name>
+        <label>Generar error enrutamiento</label>
+        <locationX>1898</locationX>
+        <locationY>888</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>EmailMessage Trigger - After insert/update - Route to Genesys</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Route Email to Genesys Cloud Apex Action</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Stack_Trace__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateSalesforceQueueErrorAction</name>
         <label>Generar error cola Salesforce</label>
-        <locationX>231</locationX>
-        <locationY>256</locationY>
+        <locationX>842</locationX>
+        <locationY>648</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -511,90 +496,14 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordCreates>
-        <name>Generar_error_enrutamiento</name>
-        <label>Generar error enrutamiento</label>
-        <locationX>1107</locationX>
-        <locationY>733</locationY>
-        <inputAssignments>
-            <field>Message__c</field>
-            <value>
-                <elementReference>AsyncErrorMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>EmailMessage Trigger - After insert/update - Route to Genesys</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Method__c</field>
-            <value>
-                <stringValue>Route Email to Genesys Cloud Apex Action</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Stack_Trace__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Generar_error_gestor_preferente</name>
-        <label>Generar error gestor preferente</label>
-        <locationX>941</locationX>
-        <locationY>335</locationY>
-        <inputAssignments>
-            <field>Message__c</field>
-            <value>
-                <elementReference>AsyncErrorMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>EmailMessage Trigger - After insert/update - Route to Genesys</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Method__c</field>
-            <value>
-                <stringValue>Find Best Agent Apex Action</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Stack_Trace__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
     <recordLookups>
-        <name>Recuperar_cola_Genesys</name>
-        <label>Recuperar cola Genesys</label>
-        <locationX>455</locationX>
-        <locationY>133</locationY>
+        <name>GetGenesysQueueAction</name>
+        <label>Obtener cola Genesys</label>
+        <locationX>710</locationX>
+        <locationY>288</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Caso_relacionado</targetReference>
+            <targetReference>IsRelatedCaseDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -609,13 +518,13 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Recuperar_cola_Genesys_async</name>
-        <label>Recuperar cola Genesys Async</label>
-        <locationX>1106</locationX>
-        <locationY>134</locationY>
+        <name>GetGenesysQueueAsyncAction</name>
+        <label>Obtener cola Genesys Async</label>
+        <locationX>1634</locationX>
+        <locationY>288</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Es_ZE</targetReference>
+            <targetReference>IsZEDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -630,16 +539,16 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Recuperar_cola_Salesforce</name>
-        <label>Recuperar cola Salesforce</label>
-        <locationX>229</locationX>
-        <locationY>454</locationY>
+        <name>GetSalesforceQueueAction</name>
+        <label>Obtener cola Salesforce</label>
+        <locationX>314</locationX>
+        <locationY>528</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Call_Center_informado</targetReference>
+            <targetReference>IsCallCenterReportedDecision</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Generar_error_cola_Salesforce</targetReference>
+            <targetReference>CreateSalesforceQueueErrorAction</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -653,7 +562,7 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
             <field>Name</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Recuperar_cola_Genesys.Name</elementReference>
+                <elementReference>GetGenesysQueueAction.Name</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -661,20 +570,20 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>Actualiza_caso</name>
+        <name>UpdateCaseAction</name>
         <label>Actualiza caso</label>
-        <locationX>580</locationX>
-        <locationY>484</locationY>
+        <locationX>50</locationX>
+        <locationY>1440</locationY>
         <faultConnector>
-            <targetReference>Generar_error_actualizar_caso</targetReference>
+            <targetReference>CreateCaseUpdateErrorAction</targetReference>
         </faultConnector>
         <inputReference>CasoRelacionado</inputReference>
     </recordUpdates>
     <start>
-        <locationX>650</locationX>
-        <locationY>48</locationY>
+        <locationX>1046</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>Recuperar_cola_Genesys</targetReference>
+            <targetReference>GetGenesysQueueAction</targetReference>
         </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>1 AND (2 OR 3) AND 4</filterLogic>
@@ -710,13 +619,66 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         <recordTriggerType>Update</recordTriggerType>
         <scheduledPaths>
             <connector>
-                <targetReference>Recuperar_cola_Genesys_async</targetReference>
+                <targetReference>GetGenesysQueueAsyncAction</targetReference>
             </connector>
             <pathType>AsyncAfterCommit</pathType>
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>GetGenesysQueueAndParentIdFromEmailSubflow</name>
+        <label>Comprobar Cola Genesys y ParentID del Email</label>
+        <locationX>1898</locationX>
+        <locationY>528</locationY>
+        <connector>
+            <targetReference>IsFlowOrQueueDecision</targetReference>
+        </connector>
+        <flowName>EmailMessage_Comprobar_Cola_Genesys_y_ParentID</flowName>
+        <inputAssignments>
+            <name>ColaGenesysCallCenter</name>
+            <value>
+                <elementReference>GetGenesysQueueAsyncAction.CallCenter__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ColaGenesysScope</name>
+            <value>
+                <elementReference>GetGenesysQueueAsyncAction.Scope__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>EmailPropietarioCaso</name>
+            <value>
+                <elementReference>$Record.Parent.Owner:User.Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>IDPropietarioCaso</name>
+            <value>
+                <elementReference>$Record.Parent.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreCSMAdminManager</name>
+            <value>
+                <elementReference>CSMAdministrationManager</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreCSMIndivManager</name>
+            <value>
+                <elementReference>CSMIndividualsManager</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NumeroParentId</name>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>CasoRelacionado</name>
         <dataType>SObject</dataType>
