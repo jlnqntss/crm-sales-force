@@ -5,6 +5,10 @@
  */
 public without sharing class ContentDocumentLinkUtil
 {
+    public static List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = null;
+
+    public static List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = null;
+
     public static Map<String, Robot_Hegeo_Setting__mdt> robotHegeoSettingsMap = new Map<String, Robot_Hegeo_Setting__mdt>();
 
     public static Map<String, Map<String, String> > caseTypesMapping = new Map<String, Map<String, String> >();
@@ -19,41 +23,39 @@ public without sharing class ContentDocumentLinkUtil
 
     private static void initSettings()
     {
-        //Cargamos los settings generales
-        List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
-            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c,
-            DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, CaseTypeFieldsMetadata__c, RoutingAddresses__c,
-            CCAddressIndex__c, BCCAddressIndex__c
-            FROM Robot_Hegeo_Setting__mdt
-            WHERE IsActive__c = true
-        ];
+        if( robotHegeoSettings == null ) {
+
+            robotHegeoSettings = Robot_Hegeo_Setting__mdt.getAll().values();
+        }
 
         if( !robotHegeoSettings.isEmpty() )
         {
             for (Robot_Hegeo_Setting__mdt setting: robotHegeoSettings)
             {
-                if (setting.RoutingAddresses__c != null)
+                if (setting.IsActive__c == true)
                 {
-                    List<String> routingAddresses = setting.RoutingAddresses__c.split(',');
-                    for(String emailAddress: routingAddresses)
+                    if (setting.RoutingAddresses__c != null)
                     {
-                        robotHegeoSettingsMap.put(emailAddress, setting);
+                        List<String> routingAddresses = setting.RoutingAddresses__c.split(',');
+                        for(String emailAddress: routingAddresses)
+                        {
+                            robotHegeoSettingsMap.put(emailAddress, setting);
+                        }
                     }
-                }
+                    if(setting.CaseRecordTypeNames__c != null)
+                    {
+                        caseRecordTypeNames.addAll( setting.CaseRecordTypeNames__c.split(',') );
+                    }
 
-                if(setting.CaseRecordTypeNames__c != null)
-                {
-                    caseRecordTypeNames.addAll( setting.CaseRecordTypeNames__c.split(',') );
-                }
+                    if( String.isNotBlank(setting.DocumentTitle__c) )
+                    {
+                        documentTitles.add(setting.DocumentTitle__c);
+                    }
 
-                if( String.isNotBlank(setting.DocumentTitle__c) )
-                {
-                    documentTitles.add(setting.DocumentTitle__c);
-                }
-
-                if( String.isNotBlank(setting.FileExtension__c) )
-                {
-                    fileExtensions.add(setting.FileExtension__c);
+                    if( String.isNotBlank(setting.FileExtension__c) )
+                    {
+                        fileExtensions.add(setting.FileExtension__c);
+                    }
                 }
             }
         }
@@ -67,11 +69,11 @@ public without sharing class ContentDocumentLinkUtil
         }
 
         //Cargamos el mapeo de campos de tipificación del caso
-        List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
-            SELECT Id, SourceType__c, SourceSubtype__c, Type__c, Subtype__c, TypeN3__c
-            FROM Robot_Hegeo_Field_Mapping__mdt
-        ];
-
+        if ( robotHegeoFieldsMapping == null ){
+            
+            robotHegeoFieldsMapping = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
+        }
+        
         if( !robotHegeoFieldsMapping.isEmpty() )
         {
             for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
