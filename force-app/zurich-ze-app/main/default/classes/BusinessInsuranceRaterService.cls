@@ -56,7 +56,6 @@ public without sharing class BusinessInsuranceRaterService
 
         //0. Inicializamos scopeSettings
         initScopeSettings(formData);
-
         //1. Buscamos el cliente y si no existe lo insertamos
         currentCustomer = manageCustomer(formData);
 
@@ -454,7 +453,9 @@ public without sharing class BusinessInsuranceRaterService
         // Gestión de otros registros relacionados como Campaign Member o Contact Request.
         if( !isTest && !formData.doNotCreateCallback )
         {
-            if( campaignMemberSteps.contains(formData.lastStep) )
+            // arcortazar (05/05/2022): fix 1400 - debemos comprobar si el scope tiene asignada una Genesys Queue. Si no es así, no se le asignan campañas
+            Scope_Setting__mdt scopeAux = scopeSettings.get(formData.businessCode);
+            if( campaignMemberSteps.contains(formData.lastStep) && !String.isEmpty(scopeAux.GenesysCloudQueueName__c))
             {
                 //Crear Campaign Member 
                 manageCampaignAssignment(offersToCreate, formData.webPhone);
