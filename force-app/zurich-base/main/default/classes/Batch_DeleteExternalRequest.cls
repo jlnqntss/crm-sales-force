@@ -4,19 +4,45 @@
  * @change adelgado 13/11/2020 Accept query as parameter to schedule batch
  * @date 27/04/2020
  */
-global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Schedulable
+global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Schedulable 
 {
     global String query;
+    public static final String PROCESSED_RESULT_OK = 'OK';
+    public static final String PROCESSED_RESULT_KO = 'KO';
+    private static final AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
+    private static Integer daysKO;
+    private static Integer daysOK;
 
     global Batch_DeleteExternalRequest()
-    {}
+    {
+        checkMetadata();
+    }
 
     global Batch_DeleteExternalRequest(String query)
     {
+        checkMetadata();
         if ( !String.isBlank(query) )
         {
             this.query = query;
         }
+    }
+
+    private static void checkMetadata ()
+    {
+        if(adminSetup.RetentionExternalRequestKO__c != null && adminSetup.RetentionExternalRequestOK__c != null)
+        {
+            daysKO = adminSetup.RetentionExternalRequestKO__c.intValue();
+            daysOK = adminSetup.RetentionExternalRequestOK__c.intValue();
+        }
+        else 
+        {
+            throw new SystemUtil.SystemUtilException('There are not any AdminSetup__mdt defined in the System that contain Retention Dates');
+        }
+    }
+
+    static 
+    {
+        checkMetadata();
     }
 
     /**
@@ -27,13 +53,7 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
      */
     public static String scheduleExternalRequestClearKlinc()
     {
-        AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
-        Integer days = adminSetup.NumberDaysDeleteRequests__c.intValue();
-        
-        Id recordTypeId = 
-				Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByName().get('GENERIC').getRecordTypeId();
-
-        String query = 'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + recordTypeId + '\' AND CreatedDate < LAST_N_DAYS:' + days;
+        String query = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id}).getQueryProcessedAfterThan(daysOK, PROCESSED_RESULT_OK);
         return scheduleExternalRequestClear('Delete Old External Requests Klinc', '0 0 22 * * ?', query);
     }
 
@@ -45,20 +65,15 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
      */
     public static String scheduleExternalRequestClearOcs()
     {
-        Integer days = 15;
-        
-        Id recordTypeId = 
-				Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByName().get('INFOProcessed').getRecordTypeId();
-
-        String query = 'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + recordTypeId + '\' AND CreatedDate < LAST_N_DAYS:' + days + ' LIMIT 50000000';
-        return scheduleExternalRequestClear('OCS_Clear_External_Request', '0 0 02 * * ?', query);
+        String query = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id}).getQueryProcessedAfterThan(daysOK, PROCESSED_RESULT_OK);
+        return scheduleExternalRequestClear('OCS_Clear_External_Request', '0 0 22 * * ?', query);
     }
 
     private static String scheduleExternalRequestClear(String jobName, String timeExpression, String query)
     {
         if ( String.isBlank(query) )
         {
-            query = SystemUtil.getOldExternalRequests();
+            query = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id}).getQueryProcessedAfterThan(daysOK, PROCESSED_RESULT_OK);
         }
 
         if( String.isNotBlank(jobName) && Test.isRunningTest() ) jobName += ' Test';
@@ -102,22 +117,21 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
     {
         if ( String.isBlank(query) )
         {
-            query = SystemUtil.getOldExternalRequests();
+            query = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id}).getQueryProcessedAfterThan(daysOK, PROCESSED_RESULT_OK);
         }
-
         return Database.getQueryLocator(query);
     }
 
     global void execute(SchedulableContext SC)
     {
-        database.executeBatch( new Batch_DeleteExternalRequest(query), 200 );
+        database.executeBatch( new Batch_DeleteExternalRequest(query), 2000 );
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)
     {
         try
         {
-            delete scope;
+            Database.delete(scope, false);
         }
         catch (Exception e)
         {
@@ -126,5 +140,19 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
     }
 
     global void finish(Database.BatchableContext BC)
-    {}
+    {
+        Integer numReqToDeleteKO = new ExternalRequestsSelector().count(null, daysKO, PROCESSED_RESULT_KO);
+        Integer numReqToDeleteOK = new ExternalRequestsSelector().count(null, daysOK, PROCESSED_RESULT_OK);
+        
+        if(numReqToDeleteOK != 0 )
+        {
+             query = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id}).getQueryProcessedAfterThan(daysOK, PROCESSED_RESULT_OK);
+             database.executeBatch( new Batch_DeleteExternalRequest(query), 2000 );
+        }
+        else if (numReqToDeleteKO != 0)  
+        {
+            query = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id}).getQueryProcessedAfterThan(daysKO, PROCESSED_RESULT_KO);
+            database.executeBatch( new Batch_DeleteExternalRequest(query), 2000 );  
+        }
+    }
 }

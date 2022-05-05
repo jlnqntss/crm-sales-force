@@ -323,6 +323,52 @@ private class ExternalRequestsSelectorTest
 
         System.assertEquals(1, numRecords, 'No se han obtenido external request');
     }
+    
+    @istest
+    static void test_count()
+    {        
+        Datetime fechaHora10KO = System.today() - 10;
+        Datetime fechaHora4KO = System.today() - 4;
 
+        List<ExternalRequest__c> requestsToInsert = new List<ExternalRequest__c>();
+        for(Integer i = 0; i<3; i++)
+        {
+            requestsToInsert.add(new ExternalRequest__c(
+                Entity__c = 'Claim', 
+                Origin__c = 'IBA',
+                ProcessedDate__c = fechaHora10KO,
+                ProcessResult__c = 'KO'
+                )
+            );
+        }
 
+        for(Integer i = 0; i<6; i++)
+        {
+            requestsToInsert.add(new ExternalRequest__c(
+                Entity__c = 'Claim', 
+                Origin__c = 'IBA',
+                ProcessedDate__c = fechaHora4KO,
+                ProcessResult__c = 'OK'
+                )
+            );
+        }
+        insert requestsToInsert;
+
+        Test.startTest();
+        System.assertEquals(9, new ExternalRequestsSelector().count(null, 0, null), 'No se ha contado correctamente');
+        System.assertEquals(3, new ExternalRequestsSelector().count(null, 0, 'KO'), 'No se ha contado correctamente las peticiones ko');
+        System.assertEquals(6, new ExternalRequestsSelector().count(null, 0, 'OK'), 'No se ha contado correctamente las peticiones ok');
+        Test.stopTest();
+    }
+
+    @istest
+    static void test_getQueryProcessedAfterThan()
+    {      
+        Test.startTest();
+        System.assert (
+             String.isNotBlank( new ExternalRequestsSelector().getQueryProcessedAfterThan(20,'OK')),
+             'No se ha podido recuperar la query de processed external request'
+             );
+        Test.stopTest();
+    }
 }
