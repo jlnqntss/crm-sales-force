@@ -609,7 +609,237 @@
     <textTemplates>
         <name>MessageBody</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;img src=&quot;https://zurich-es--c.documentforce.com/servlet/servlet.ImageServer?id=01568000000oq8m&amp;oid=00D5I000000DH2H&amp;lastMod=1624901062000&quot; style=&quot;width: 100%; max-width: 700px;&quot;&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 16px; color: rgb(33, 103, 174); font-family: sans-serif;&quot;&gt;Hola {!SelectName}, &lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 16px; color: rgb(33, 103, 174); font-family: sans-serif;&quot;&gt;Para enviarnos la documentación necesaria sólo debes clicar en el botón de abajo.&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;a href=&quot;{!HashURL}&quot;&gt;&lt;img src=&quot;https://zurich-es--c.documentforce.com/servlet/servlet.ImageServer?id=01568000000oq8r&amp;oid=00D5I000000DH2H&amp;lastMod=1624901098000&quot; style=&quot;width: 220px;&quot;&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(33, 103, 174); font-family: sans-serif;&quot;&gt;Zurich Seguros&lt;/b&gt;&lt;/p&gt;</text>
+        <text>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+&lt;!--[if !mso]&gt;&lt;!--&gt;
+&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot; /&gt;
+&lt;!--&lt;![endif]--&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+&lt;title&gt;&lt;/title&gt;
+&lt;style type=&quot;text/css&quot;&gt;
+.ReadMsgBody {
+    width: 100%;
+    background-color: #ffffff;
+}
+.ExternalClass {
+    width: 100%;
+    background-color: #ffffff;
+}
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+    line-height: 100%;
+}
+html {
+    width: 100%;
+}
+body {
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Sans-serif !important;
+    background-color: #ececec;
+}
+table {
+    border-spacing: 0;
+    table-layout: auto;
+    margin: 0 auto;
+}
+img {
+    
+    overflow: hidden !important;
+}
+	strong {
+		color: #003871;
+	}
+.yshortcuts a {
+    border-bottom: none !important;
+}
+img:hover {
+    opacity: 0.9 !important;
+}
+a {
+    color: #003399;
+    text-decoration: none;
+}
+.textbutton a {
+    font-family: &apos;open sans&apos;, arial, sans-serif !important;
+}
+.btn-link a {
+    color: #FFFFFF !important;
+}
+
+/*Responsive*/
+@media only screen and (max-width: 640px) {
+body {
+    margin: 0px;
+    width: auto !important;
+    font-family: &apos;Open Sans&apos;, Arial, Sans-serif !important;
+}
+.table-inner {
+    width: 90% !important;
+    max-width: 90%!important;
+}
+.table-full {
+    width: 100%!important;
+    max-width: 100%!important;
+    text-align: left !important;
+}
+	.margin-responsive {
+		margin-bottom: 25px;
+	}
+}
+
+@media only screen and (max-width: 479px) {
+body {
+    width: auto !important;
+    font-family: &apos;Open Sans&apos;, Arial, Sans-serif !important;
+}
+.table-inner {
+    width: 90% !important;
+    text-align: left !important;
+}
+.table-full {
+    width: 100%!important;
+    max-width: 100%!important;
+    text-align: left !important;
+}
+	.margin-responsive {
+		margin-bottom: 25px;
+	}
+/*gmail*/
+u + .body .full {
+    width: 100% !important;
+    width: 100vw !important;
+}
+}
+&lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body class=&quot;body&quot;&gt;
+&lt;p style=&quot;text-align:center; font-size:12px&quot;&gt;&lt;a href=&quot;{!HashURL}&quot;&gt;Si no ves bien el email clica aquí&lt;/a&gt;&lt;/p&gt;
+&lt;table class=&quot;full&quot; width=&quot;100%&quot; border=&quot;0&quot; align=&quot;center&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;table class=&quot;table-inner&quot; width=&quot;750&quot; style=&quot;max-width: 750px; background: #ffffff&quot; border=&quot;0&quot; align=&quot;center&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+        
+        &lt;tr&gt;
+          &lt;td height=&quot;10&quot; style=&quot;background: #ececec&quot;&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;!--Header Logo--&gt;        &lt;!--end slogan--&gt;
+		&lt;tr&gt;
+          &lt;td align=&quot;center&quot; style=&quot;background: #ffffff; padding: 25px 50px 0px;&quot;&gt;&lt;table width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+            &lt;tbody&gt;
+              &lt;tr&gt;
+                &lt;td&gt;
+				  &lt;table width=&quot;525&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; class=&quot;table-full&quot; align=&quot;left&quot;&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;padding-bottom: 10px;&quot;&gt;&lt;img src=&quot;https://zurich-es--c.documentforce.com/servlet/servlet.ImageServer?id=01568000000q0HWAAY&amp;oid=00D5I000000DH2H&amp;lastMod=1624901062000&quot; width=&quot;116&quot; height=&quot;27&quot; alt=&quot;&quot;/&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+				  
+				  &lt;!--end space--&gt;
+                    &lt;!--[if (gte mso 9)|(IE)]&gt;&lt;/td&gt;&lt;td&gt;&lt;![endif]--&gt;
+                    &lt;!--middle--&gt;
+				  
+				  
+				  &lt;table width=&quot;125&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; class=&quot;table-full&quot; align=&quot;left&quot;&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+    
+		&lt;td style=&quot;width: 27px&quot; align=&quot;right&quot;&gt;&lt;img src=&quot;https://zurich-es--c.documentforce.com/servlet/servlet.ImageServer?id=01568000000q0HRAAY&amp;oid=00D5I000000DH2H&amp;lastMod=1624901062000&quot; width=&quot;41&quot; height=&quot;41&quot; alt=&quot;&quot;/&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+				  
+				  
+				  &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/tbody&gt;
+          &lt;/table&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td align=&quot;center&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;table class=&quot;table-inner&quot; align=&quot;center&quot; width=&quot;700&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; style=&quot;width: 700px&quot;&gt;
+              &lt;!--title--&gt;
+              &lt;tr&gt;
+                &lt;td style=&quot;font-family: Arial, sans-serif; color:#2167AE; font-size:14px; padding: 25px&quot;&gt;
+                  &lt;p&gt;Hola {!SelectName},&lt;/p&gt;
+                  &lt;p&gt; Para enviarnos la documentación necesaria solo debes clicar en el botón de abajo.&lt;br /&gt;
+                    &lt;br /&gt;
+                  &lt;/p&gt;
+                  &lt;p style=&quot;text-align: center&quot;&gt;&lt;br /&gt;
+                  &lt;a href=&quot;{!HashURL}&quot;&gt;&lt;img src=&quot;https://zurich-es--c.documentforce.com/servlet/servlet.ImageServer?id=01568000000q0HMAAY&amp;oid=00D5I000000DH2H&amp;lastMod=1624901062000&quot; width=&quot;286&quot; height=&quot;51&quot; alt=&quot;&quot;/&gt; &lt;/a&gt;&lt;/p&gt;
+                  &lt;p&gt;&lt;br /&gt;
+                    &lt;br /&gt;
+                    &lt;br /&gt;
+                    Gracias por tu atención, &lt;br /&gt;
+                  &lt;strong&gt;El equipo de Zurich Seguros&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+              &lt;!--end title--&gt;              &lt;!--dash--&gt;              &lt;!--end dash--&gt;              &lt;!--content--&gt;              &lt;!--end content--&gt;
+             
+            &lt;/table&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+		
+		
+      &lt;tr&gt;
+          &lt;td align=&quot;center&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;table class=&quot;table-inner&quot; align=&quot;center&quot; width=&quot;700&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; style=&quot;width: 700px&quot;&gt;
+              &lt;!--title--&gt;
+              &lt;tr&gt;
+                &lt;td style=&quot;font-family: Arial, sans-serif; color:#2167AE; font-size:14px; padding: 25px&quot;&gt;&lt;table width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; class=&quot;table-full&quot;&gt;
+				    &lt;tbody&gt;
+	   &lt;tr&gt;
+		   &lt;td width=&quot;100%&quot;&gt;
+		   &lt;table width=&quot;325&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; class=&quot;table-full&quot; align=&quot;left&quot; style=&quot;width: 325px&quot;&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td colspan=&quot;2&quot; valign=&quot;middle&quot; style=&quot;padding: 5px; font-size: 13px; color:#2167AE; font-family: Arial, sans-serif;&quot;&gt;Descarga la App y conéctate a Mi Zurich&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td width=&quot;75&quot; style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;a href=&quot;https://apps.apple.com/es/app/zurich-seguros/id485033181&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/apple-store.png&quot; width=&quot;47&quot; height=&quot;15&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+      &lt;td width=&quot;250&quot; style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;a href=&quot;https://play.google.com/store/apps/details?id=es.zurich.zhp&amp;amp;hl=es&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/google-play.png&quot; width=&quot;47&quot; height=&quot;15&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/td&gt;&lt;td&gt;
+		   &lt;table width=&quot;200&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; class=&quot;table-full&quot; align=&quot;left&quot; style=&quot;width: 200px&quot;&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;td style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;br /&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;http://bit.ly/Twitter-Zurich&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/twitter.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;https://www.instagram.com/zurichseguros/&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/instagram.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;http://bit.ly/Facebook-Zurich&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/fb.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+     &lt;td style=&quot;padding: 5px;&quot;&gt;&lt;a href=&quot;https://www.linkedin.com/company/zurich-insurance-company-ltd/&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/lnk.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+      &lt;td style=&quot;padding: 5px; font-size: 13px; color:#2167AE&quot;&gt;&lt;a href=&quot;http://www.youtube.com/zurichseguros&quot;&gt;&lt;img src=&quot;https://estaticos.zurichnews.zurichinforma.es/eternos/iconos/xsell/youtube.png&quot; width=&quot;20&quot; height=&quot;20&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+		   
+		   
+		   &lt;/td&gt;
+	     &lt;/tr&gt;
+          &lt;/tbody&gt;
+&lt;/table&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+              &lt;!--end title--&gt;              &lt;!--dash--&gt;              &lt;!--end dash--&gt;              &lt;!--content--&gt;              &lt;!--end content--&gt;
+             
+          &lt;/table&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;!-- preference --&gt;        &lt;!-- end preference --&gt;
+      &lt;/table&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+  &lt;custom name=&quot;opencounter&quot; type=&quot;tracking&quot;/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</text>
     </textTemplates>
     <variables>
         <name>AccountId</name>
