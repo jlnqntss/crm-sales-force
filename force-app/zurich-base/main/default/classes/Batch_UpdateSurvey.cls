@@ -72,7 +72,7 @@ global class Batch_UpdateSurvey implements Database.Batchable<sObject>, Schedula
                );
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if ( String.isBlank(query) )
         {
@@ -81,12 +81,12 @@ global class Batch_UpdateSurvey implements Database.Batchable<sObject>, Schedula
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         database.executeBatch( new Batch_UpdateSurvey(query), 2000 );
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         try
         {
@@ -124,7 +124,7 @@ global class Batch_UpdateSurvey implements Database.Batchable<sObject>, Schedula
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {
         Integer numSurveyToUpdate = new SurveySelector().count(daysRetentionSurvey,null);
         

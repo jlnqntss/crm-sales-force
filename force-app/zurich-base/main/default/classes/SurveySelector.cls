@@ -51,16 +51,16 @@ public with sharing class SurveySelector extends RecordsSelector
      * param Boolean CanBeRemoved 
      * 
      */
-    public Integer count (Integer days, Boolean CanBeRemoved)
+    public Integer count (Integer days, Boolean canBeRemoved)
     {
-        if(days != 0 && CanBeRemoved == null )
+        if(days != 0 && canBeRemoved == null )
         {
             this.baseQuery.addConditionEq(Survey__c.fields.CanBeRemoved__c, false);
             this.baseQuery.addConditionString('LastModifiedDate < LAST_N_DAYS:' + days);
         }
-        else if (days == 0 && CanBeRemoved != null )
+        else if (days == 0 && canBeRemoved != null )
         {
-            this.baseQuery.addConditionEq(Survey__c.fields.CanBeRemoved__c, CanBeRemoved);   
+            this.baseQuery.addConditionEq(Survey__c.fields.CanBeRemoved__c, canBeRemoved);   
         }
         return this.baseQuery.countQuery();
     }
