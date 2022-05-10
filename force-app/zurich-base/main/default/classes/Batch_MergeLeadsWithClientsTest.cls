@@ -25,6 +25,7 @@ public class Batch_MergeLeadsWithClientsTest
             leadAccounts[i].firstName = 'test';
             leadAccounts[i].LastName = 'Lead ' + i;
             leadAccounts[i].RecordTypeId = LeadRecordTypeId;
+            leadAccounts[i].Salutation = 'Mr.';
         }
         insert leadAccounts;
         
