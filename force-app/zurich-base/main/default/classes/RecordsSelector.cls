@@ -4,7 +4,7 @@ public abstract class RecordsSelector
 
     public Query baseQuery;
 
-    public enum Scope { ALL, Z, ZE, ZEO }
+    public enum Scope { ALL, Z, ZE, ZEO, ZEB }
     static Map<String, Scope> scopesByCode
     {
         get
@@ -16,7 +16,8 @@ public abstract class RecordsSelector
                     'ALL'   => Scope.ALL,
                     'Z'     => Scope.Z,
                     'ZE'    => Scope.ZE,
-                    'ZEO'   => Scope.ZEO
+                    'ZEO'   => Scope.ZEO,
+                    'ZEB'   => Scope.ZEB
                 };
             }
             return scopesByCode;
