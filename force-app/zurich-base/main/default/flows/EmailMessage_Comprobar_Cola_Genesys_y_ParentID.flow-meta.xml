@@ -4,8 +4,8 @@
     <assignments>
         <name>CaseUserOwnerAssignment</name>
         <label>Asignar Propietario Caso Usuario</label>
-        <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationX>1304</locationX>
+        <locationY>1406</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Assign</operator>
@@ -15,9 +15,38 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>CCServiceClosedCaseAgentAssignment</name>
+        <label>Asignar Gestor Caso Cerrado CCService</label>
+        <locationX>1546</locationX>
+        <locationY>878</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetClosedCasesAction.Owner:User.Email</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>CCServiceOpenCaseAgentAssignment</name>
+        <label>Asignar Gestor Caso Abierto CCService</label>
+        <locationX>1414</locationX>
+        <locationY>518</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetOpenCasesAction.Owner:User.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>IsPreferredAgentDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>CSMAdmManagerAssignment</name>
         <label>Asignar CSM Administración Manager</label>
-        <locationX>1106</locationX>
+        <locationX>754</locationX>
         <locationY>398</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -30,7 +59,7 @@
     <assignments>
         <name>CSMIndividualManagerAssignment</name>
         <label>Asignar CSM Individual Manager</label>
-        <locationX>314</locationX>
+        <locationX>50</locationX>
         <locationY>398</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -43,7 +72,7 @@
     <decisions>
         <name>CaseOwnerOrCSMAdmManagerDecision</name>
         <label>¿Propietario de caso o Gestor CSM?</label>
-        <locationX>1106</locationX>
+        <locationX>798</locationX>
         <locationY>278</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -64,7 +93,6 @@
                 </rightValue>
             </conditions>
             <connector>
-                <isGoTo>true</isGoTo>
                 <targetReference>CaseUserOwnerAssignment</targetReference>
             </connector>
             <label>Propietario Caso CSM</label>
@@ -102,7 +130,7 @@
     <decisions>
         <name>CaseOwnerOrCSMIndManagerDecision</name>
         <label>¿Propietario de caso o Gestor CSM?</label>
-        <locationX>314</locationX>
+        <locationX>94</locationX>
         <locationY>278</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -158,9 +186,75 @@
         </rules>
     </decisions>
     <decisions>
+        <name>IsCaseAssignedToQueueDecision</name>
+        <label>¿Caso asignado a cola?</label>
+        <locationX>1700</locationX>
+        <locationY>278</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>AssignedToQueueOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>NumeroParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetOpenCasesAction</targetReference>
+            </connector>
+            <label>Asignado a Cola</label>
+        </rules>
+        <rules>
+            <name>NotAssignedToQueueOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>005</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CaseUserOwnerAssignment</targetReference>
+            </connector>
+            <label>NoAsignado a cola</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsPreferredAgentDecision</name>
+        <label>¿Hay Gestor Preferente?</label>
+        <locationX>1414</locationX>
+        <locationY>638</locationY>
+        <defaultConnector>
+            <targetReference>GetClosedCasesAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YesPreferrendAgentOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GestorPreferenteAsignado</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>QueueTypeDecision</name>
         <label>¿Qué tipo de cola es?</label>
-        <locationX>1194</locationX>
+        <locationX>1304</locationX>
         <locationY>158</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -203,6 +297,9 @@
                     <stringValue>CC Service</stringValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>IsCaseAssignedToQueueDecision</targetReference>
+            </connector>
             <label>CC Service</label>
         </rules>
         <rules>
@@ -219,7 +316,7 @@
         </rules>
     </decisions>
     <interviewLabel>EmailMessage - Comprobar Cola Genesys y ParentID {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>EmailMessage - Comprobar Cola Genesys y ParentID</label>
+    <label>EmailMessage - Búsqueda gestor preferente</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -239,8 +336,75 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>GetClosedCasesAction</name>
+        <label>Obtener Casos Cerrados</label>
+        <locationX>1546</locationX>
+        <locationY>758</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CCServiceClosedCaseAgentAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsClosed</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>IdCuentaCaso</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetOpenCasesAction</name>
+        <label>Obtener Casos Abiertos</label>
+        <locationX>1414</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CCServiceOpenCaseAgentAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsClosed</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>IdCuentaCaso</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>NumeroParentId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>1068</locationX>
+        <locationX>1178</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>QueueTypeDecision</targetReference>
@@ -277,11 +441,32 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>FechaMasCercana</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>GestorPreferenteAsignado</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>IdCuentaCaso</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>IdOwnerLoop</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>IDPropietarioCaso</name>
