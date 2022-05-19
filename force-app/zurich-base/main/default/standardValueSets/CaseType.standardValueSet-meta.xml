@@ -1,55 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <sorted>false</sorted>
+    <sorted>true</sorted>
+    <standardValue>
+        <fullName>Campañas</fullName>
+        <default>false</default>
+        <label>Campañas</label>
+    </standardValue>
     <standardValue>
         <fullName>Contratar mi seguro</fullName>
         <default>false</default>
         <label>Contratar mi seguro</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Validar mi seguro</fullName>
-        <default>false</default>
-        <label>Validar mi seguro</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Pago de mi seguro</fullName>
-        <default>false</default>
-        <label>Pago de mi seguro</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Modificar mi seguro</fullName>
-        <default>false</default>
-        <label>Modificar mi seguro</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Renovar mi seguro</fullName>
-        <default>false</default>
-        <label>Renovar mi seguro</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Siniestro</fullName>
-        <default>false</default>
-        <label>Siniestro</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Incidencia</fullName>
-        <default>false</default>
-        <label>Incidencia</label>
-    </standardValue>
-    <standardValue>
-        <fullName>No definido</fullName>
-        <default>false</default>
-        <label>No definido</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Venta</fullName>
-        <default>false</default>
-        <label>Venta</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Gestión Servicios</fullName>
-        <default>false</default>
-        <label>Gestión Servicios</label>
     </standardValue>
     <standardValue>
         <fullName>Gestión Cliente</fullName>
@@ -62,13 +22,53 @@
         <label>Gestión Económica</label>
     </standardValue>
     <standardValue>
-        <fullName>Campañas</fullName>
-        <default>false</default>
-        <label>Campañas</label>
-    </standardValue>
-    <standardValue>
         <fullName>Gestión Mediador</fullName>
         <default>false</default>
         <label>Gestión Mediador</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Gestión Servicios</fullName>
+        <default>false</default>
+        <label>Gestión Servicios</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Incidencia</fullName>
+        <default>false</default>
+        <label>Incidencia</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Modificar mi seguro</fullName>
+        <default>false</default>
+        <label>Modificar mi seguro</label>
+    </standardValue>
+    <standardValue>
+        <fullName>No definido</fullName>
+        <default>false</default>
+        <label>No definido</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Pago de mi seguro</fullName>
+        <default>false</default>
+        <label>Pago de mi seguro</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Renovar mi seguro</fullName>
+        <default>false</default>
+        <label>Renovar mi seguro</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Siniestro</fullName>
+        <default>false</default>
+        <label>Siniestro</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Validar mi seguro</fullName>
+        <default>false</default>
+        <label>Validar mi seguro</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Venta</fullName>
+        <default>false</default>
+        <label>Venta</label>
     </standardValue>
 </StandardValueSet>

@@ -11,221 +11,11 @@
     <valueSet>
         <controllingField>Type</controllingField>
         <valueSetDefinition>
-            <sorted>false</sorted>
+            <sorted>true</sorted>
             <value>
-                <fullName>Como contrato mi seguro</fullName>
+                <fullName>Anulación</fullName>
                 <default>false</default>
-                <label>Como contrato mi seguro</label>
-            </value>
-            <value>
-                <fullName>Coberturas</fullName>
-                <default>false</default>
-                <label>Coberturas</label>
-            </value>
-            <value>
-                <fullName>Documentacion necesaria</fullName>
-                <default>false</default>
-                <label>Documentación necesaria</label>
-            </value>
-            <value>
-                <fullName>Precio de mi seguro</fullName>
-                <default>false</default>
-                <label>Precio de mi seguro</label>
-            </value>
-            <value>
-                <fullName>Franquicia</fullName>
-                <default>false</default>
-                <label>Franquicia</label>
-            </value>
-            <value>
-                <fullName>Nuevo dispositivo</fullName>
-                <default>false</default>
-                <label>Nuevo dispositivo</label>
-            </value>
-            <value>
-                <fullName>Descargar App</fullName>
-                <default>false</default>
-                <label>Descargar App</label>
-            </value>
-            <value>
-                <fullName>Como valido mi seguro</fullName>
-                <default>false</default>
-                <label>Como valido mi seguro</label>
-            </value>
-            <value>
-                <fullName>Como firmo mi seguro</fullName>
-                <default>false</default>
-                <label>Como firmo mi seguro</label>
-            </value>
-            <value>
-                <fullName>Metodos de pago admitidos</fullName>
-                <default>false</default>
-                <label>Metodos de pago admitidos</label>
-            </value>
-            <value>
-                <fullName>Solicitud factura</fullName>
-                <default>false</default>
-                <label>Solicitud factura</label>
-            </value>
-            <value>
-                <fullName>Datos personales</fullName>
-                <default>false</default>
-                <label>Datos personales</label>
-            </value>
-            <value>
-                <fullName>Datos de pago</fullName>
-                <default>false</default>
-                <label>Datos de pago</label>
-            </value>
-            <value>
-                <fullName>Contraseña App</fullName>
-                <default>false</default>
-                <label>Contraseña App</label>
-            </value>
-            <value>
-                <fullName>Modificar el beneficiario</fullName>
-                <default>false</default>
-                <label>Modificar el beneficiario</label>
-            </value>
-            <value>
-                <fullName>Modificar el capital</fullName>
-                <default>false</default>
-                <label>Modificar el capital</label>
-            </value>
-            <value>
-                <fullName>Modificar las garantias</fullName>
-                <default>false</default>
-                <label>Modificar las garantias</label>
-            </value>
-            <value>
-                <fullName>Modificar dispositivo asegurado</fullName>
-                <default>false</default>
-                <label>Modificar dispositivo asegurado</label>
-            </value>
-            <value>
-                <fullName>Modificar modalidad del seguro</fullName>
-                <default>false</default>
-                <label>Modificar modalidad del seguro</label>
-            </value>
-            <value>
-                <fullName>Cancelacion</fullName>
-                <default>false</default>
-                <label>Cancelacion</label>
-            </value>
-            <value>
-                <fullName>Como renuevo mi seguro</fullName>
-                <default>false</default>
-                <label>Como renuevo mi seguro</label>
-            </value>
-            <value>
-                <fullName>Cuando me avisan</fullName>
-                <default>false</default>
-                <label>Cuando me avisan</label>
-            </value>
-            <value>
-                <fullName>El precio de mi renovacion</fullName>
-                <default>false</default>
-                <label>El precio de mi renovacion</label>
-            </value>
-            <value>
-                <fullName>Como abro un siniestro</fullName>
-                <default>false</default>
-                <label>Como abro un siniestro</label>
-            </value>
-            <value>
-                <fullName>Documentacion - Factura</fullName>
-                <default>false</default>
-                <label>Documentación - Factura</label>
-            </value>
-            <value>
-                <fullName>Documentacion - Bloqueo IMEI</fullName>
-                <default>false</default>
-                <label>Documentación - Bloqueo IMEI</label>
-            </value>
-            <value>
-                <fullName>Documentacion - Denuncia</fullName>
-                <default>false</default>
-                <label>Documentación - Denuncia</label>
-            </value>
-            <value>
-                <fullName>Documentacion Otros</fullName>
-                <default>false</default>
-                <label>Documentación Otros</label>
-            </value>
-            <value>
-                <fullName>Pago de franquicia</fullName>
-                <default>false</default>
-                <label>Pago de franquicia</label>
-            </value>
-            <value>
-                <fullName>Desactivar FMI</fullName>
-                <default>false</default>
-                <label>Desactivar FMI</label>
-            </value>
-            <value>
-                <fullName>Denegacion de cobertura</fullName>
-                <default>false</default>
-                <label>Denegación de cobertura</label>
-            </value>
-            <value>
-                <fullName>Dudas sobre recogida/entrega</fullName>
-                <default>false</default>
-                <label>Dudas sobre recogida/entrega</label>
-            </value>
-            <value>
-                <fullName>Problemas con el transportista</fullName>
-                <default>false</default>
-                <label>Problemas con el transportista</label>
-            </value>
-            <value>
-                <fullName>Reparacion incorrecta</fullName>
-                <default>false</default>
-                <label>Reparación incorrecta</label>
-            </value>
-            <value>
-                <fullName>Retraso en la reparacion</fullName>
-                <default>false</default>
-                <label>Retraso en la reparación</label>
-            </value>
-            <value>
-                <fullName>App</fullName>
-                <default>false</default>
-                <label>App</label>
-            </value>
-            <value>
-                <fullName>Contratacion</fullName>
-                <default>false</default>
-                <label>Contratación</label>
-            </value>
-            <value>
-                <fullName>Validacion</fullName>
-                <default>false</default>
-                <label>Validación</label>
-            </value>
-            <value>
-                <fullName>Pago</fullName>
-                <default>false</default>
-                <label>Pago</label>
-            </value>
-            <value>
-                <fullName>Otros</fullName>
-                <default>false</default>
-                <label>Otros</label>
-            </value>
-            <value>
-                <fullName>Internas</fullName>
-                <default>false</default>
-                <label>Internas</label>
-            </value>
-            <value>
-                <fullName>Backoffice</fullName>
-                <default>false</default>
-                <label>Backoffice</label>
-            </value>
-            <value>
-                <fullName>No definido</fullName>
-                <default>false</default>
-                <label>No definido</label>
+                <label>Anulación</label>
             </value>
             <value>
                 <fullName>Apoyo Captación</fullName>
@@ -233,79 +23,19 @@
                 <label>Apoyo Captación</label>
             </value>
             <value>
-                <fullName>Gestión Competencias</fullName>
+                <fullName>App</fullName>
                 <default>false</default>
-                <label>Gestión Competencias</label>
+                <label>App</label>
             </value>
             <value>
-                <fullName>Validación/ emisión</fullName>
+                <fullName>Asistencia en Viaje</fullName>
                 <default>false</default>
-                <label>Validación/ emisión</label>
+                <label>Asistencia en Viaje</label>
             </value>
             <value>
-                <fullName>Reemplazo</fullName>
+                <fullName>Backoffice</fullName>
                 <default>false</default>
-                <label>Reemplazo</label>
-            </value>
-            <value>
-                <fullName>Saneamiento</fullName>
-                <default>false</default>
-                <label>Saneamiento</label>
-            </value>
-            <value>
-                <fullName>Revocación Saneamiento</fullName>
-                <default>false</default>
-                <label>Revocación Saneamiento</label>
-            </value>
-            <value>
-                <fullName>Rehabilitación</fullName>
-                <default>false</default>
-                <label>Rehabilitación</label>
-            </value>
-            <value>
-                <fullName>Anulación</fullName>
-                <default>false</default>
-                <label>Anulación</label>
-            </value>
-            <value>
-                <fullName>Modificación</fullName>
-                <default>false</default>
-                <label>Modificación</label>
-            </value>
-            <value>
-                <fullName>Información</fullName>
-                <default>false</default>
-                <label>Información</label>
-            </value>
-            <value>
-                <fullName>Envíos</fullName>
-                <default>false</default>
-                <label>Envíos</label>
-            </value>
-            <value>
-                <fullName>Retención</fullName>
-                <default>false</default>
-                <label>Retención</label>
-            </value>
-            <value>
-                <fullName>Recobro indirecto</fullName>
-                <default>false</default>
-                <label>Recobro indirecto</label>
-            </value>
-            <value>
-                <fullName>Recobro proactivo</fullName>
-                <default>false</default>
-                <label>Recobro proactivo</label>
-            </value>
-            <value>
-                <fullName>Gestión de recibos</fullName>
-                <default>false</default>
-                <label>Gestión de recibos</label>
-            </value>
-            <value>
-                <fullName>Recobro reactivo</fullName>
-                <default>false</default>
-                <label>Recobro reactivo</label>
+                <label>Backoffice</label>
             </value>
             <value>
                 <fullName>Cambio de intermediario</fullName>
@@ -313,99 +43,24 @@
                 <label>Cambio de intermediario</label>
             </value>
             <value>
-                <fullName>Partnership</fullName>
-                <default>false</default>
-                <label>Partnership</label>
-            </value>
-            <value>
-                <fullName>Queja</fullName>
-                <default>false</default>
-                <label>Queja</label>
-            </value>
-            <value>
-                <fullName>Reclamación</fullName>
-                <default>false</default>
-                <label>Reclamación</label>
-            </value>
-            <value>
-                <fullName>Incidencias Mi Zurich</fullName>
-                <default>false</default>
-                <label>Incidencias Mi Zurich</label>
-            </value>
-            <value>
-                <fullName>Embargo Cliente</fullName>
-                <default>false</default>
-                <label>Embargo Cliente</label>
-            </value>
-            <value>
-                <fullName>Sugerencia</fullName>
-                <default>false</default>
-                <label>Sugerencia</label>
-            </value>
-            <value>
-                <fullName>Felicitación</fullName>
-                <default>false</default>
-                <label>Felicitación</label>
-            </value>
-            <value>
-                <fullName>Devolución de recibo liquidado mediador</fullName>
-                <default>false</default>
-                <label>Devolución de recibo liquidado mediador</label>
-            </value>
-            <value>
                 <fullName>Campaña</fullName>
                 <default>false</default>
                 <label>Campaña</label>
             </value>
             <value>
-                <fullName>Embargo Mediador</fullName>
+                <fullName>Cancelacion</fullName>
                 <default>false</default>
-                <label>Embargo Mediador</label>
+                <label>Cancelacion</label>
             </value>
             <value>
-                <fullName>Incidencias (Cliente)</fullName>
+                <fullName>Coberturas</fullName>
                 <default>false</default>
-                <label>Incidencias (Cliente)</label>
+                <label>Coberturas</label>
             </value>
             <value>
-                <fullName>Incidencias (Mediador)</fullName>
+                <fullName>Como abro un siniestro</fullName>
                 <default>false</default>
-                <label>Incidencias (Mediador)</label>
-            </value>
-            <value>
-                <fullName>Escalable</fullName>
-                <default>false</default>
-                <label>Escalable</label>
-            </value>
-            <value>
-                <fullName>Documentacion - Fotos</fullName>
-                <default>false</default>
-                <label>Documentación - Fotos</label>
-            </value>
-            <value>
-                <fullName>Indemnizacion de mi vehiculo</fullName>
-                <default>false</default>
-                <label>Indemnización de mi vehiculo</label>
-            </value>
-            <value>
-                <fullName>Indemnizacion por mis lesiones</fullName>
-                <default>false</default>
-                <label>Indemnización por mis lesiones</label>
-            </value>
-            <value>
-                <fullName>Rehuse daños</fullName>
-                <default>false</default>
-                <label>Rehuse daños</label>
-            </value>
-            <value>
-                <fullName>SWAP - incidencias</fullName>
-                <default>false</default>
-                <label>SWAP - incidencias</label>
-            </value>
-            <value>
-                <fullName>SWAP - experiencia</fullName>
-                <default>false</default>
-                <label>SWAP - experiencia</label>
+                <label>Como abro un siniestro</label>
             </value>
             <value>
                 <fullName>Como abro un siniestro de Dispositivo</fullName>
@@ -423,69 +78,54 @@
                 <label>Cómo abro un siniestro de Vida</label>
             </value>
             <value>
-                <fullName>Documentacion - Factura Dispositivo</fullName>
+                <fullName>Como contrato mi seguro</fullName>
                 <default>false</default>
-                <label>Documentación - Factura Dispositivo</label>
+                <label>Como contrato mi seguro</label>
             </value>
             <value>
-                <fullName>Documentacion - Factura Movilidad</fullName>
+                <fullName>Como firmo mi seguro</fullName>
                 <default>false</default>
-                <label>Documentación - Factura Movilidad</label>
+                <label>Como firmo mi seguro</label>
             </value>
             <value>
-                <fullName>Documentacion - Fotos Dispositivo</fullName>
+                <fullName>Como renuevo mi seguro</fullName>
                 <default>false</default>
-                <label>Documentación - Fotos Dispositivo</label>
+                <label>Como renuevo mi seguro</label>
             </value>
             <value>
-                <fullName>Documentacion - Fotos Movilidad</fullName>
+                <fullName>Como valido mi seguro</fullName>
                 <default>false</default>
-                <label>Documentación - Fotos Movilidad</label>
+                <label>Como valido mi seguro</label>
             </value>
             <value>
-                <fullName>Documentacion - Bloqueo IMEI Dispositivo</fullName>
+                <fullName>Contraseña App</fullName>
                 <default>false</default>
-                <label>Documentación - Bloqueo IMEI Dispositivo</label>
+                <label>Contraseña App</label>
             </value>
             <value>
-                <fullName>Documentacion - Denuncia Dispositivo</fullName>
+                <fullName>Contratacion</fullName>
                 <default>false</default>
-                <label>Documentación - Denuncia Dispositivo</label>
+                <label>Contratación</label>
             </value>
             <value>
-                <fullName>Documentacion - Denuncia Movilidad</fullName>
+                <fullName>Cuando me avisan</fullName>
                 <default>false</default>
-                <label>Documentación - Denuncia Movilidad</label>
+                <label>Cuando me avisan</label>
             </value>
             <value>
-                <fullName>Documentacion Otros Dispositivo</fullName>
+                <fullName>Datos de pago</fullName>
                 <default>false</default>
-                <label>Documentación Otros Dispositivo</label>
+                <label>Datos de pago</label>
             </value>
             <value>
-                <fullName>Documentacion Otros Movilidad</fullName>
+                <fullName>Datos personales</fullName>
                 <default>false</default>
-                <label>Documentación Otros Movilidad</label>
+                <label>Datos personales</label>
             </value>
             <value>
-                <fullName>Documentacion Otros Vida</fullName>
+                <fullName>Denegacion de cobertura</fullName>
                 <default>false</default>
-                <label>Documentación Otros Vida</label>
-            </value>
-            <value>
-                <fullName>Pago de franquicia Dispositivo</fullName>
-                <default>false</default>
-                <label>Pago de franquicia Dispositivo</label>
-            </value>
-            <value>
-                <fullName>Pago de Franquicia Movilidad</fullName>
-                <default>false</default>
-                <label>Pago de Franquicia Movilidad</label>
-            </value>
-            <value>
-                <fullName>Desactivar FMI Dispositivo</fullName>
-                <default>false</default>
-                <label>Desactivar FMI Dispositivo</label>
+                <label>Denegación de cobertura</label>
             </value>
             <value>
                 <fullName>Denegacion de cobertura Dispositivo</fullName>
@@ -503,6 +143,111 @@
                 <label>Denegación de cobertura Vida</label>
             </value>
             <value>
+                <fullName>Desactivar FMI</fullName>
+                <default>false</default>
+                <label>Desactivar FMI</label>
+            </value>
+            <value>
+                <fullName>Desactivar FMI Dispositivo</fullName>
+                <default>false</default>
+                <label>Desactivar FMI Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Descargar App</fullName>
+                <default>false</default>
+                <label>Descargar App</label>
+            </value>
+            <value>
+                <fullName>Devolución de recibo liquidado mediador</fullName>
+                <default>false</default>
+                <label>Devolución de recibo liquidado mediador</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Bloqueo IMEI</fullName>
+                <default>false</default>
+                <label>Documentación - Bloqueo IMEI</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Bloqueo IMEI Dispositivo</fullName>
+                <default>false</default>
+                <label>Documentación - Bloqueo IMEI Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Denuncia</fullName>
+                <default>false</default>
+                <label>Documentación - Denuncia</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Denuncia Dispositivo</fullName>
+                <default>false</default>
+                <label>Documentación - Denuncia Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Denuncia Movilidad</fullName>
+                <default>false</default>
+                <label>Documentación - Denuncia Movilidad</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Factura</fullName>
+                <default>false</default>
+                <label>Documentación - Factura</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Factura Dispositivo</fullName>
+                <default>false</default>
+                <label>Documentación - Factura Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Factura Movilidad</fullName>
+                <default>false</default>
+                <label>Documentación - Factura Movilidad</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Fotos</fullName>
+                <default>false</default>
+                <label>Documentación - Fotos</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Fotos Dispositivo</fullName>
+                <default>false</default>
+                <label>Documentación - Fotos Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Documentacion - Fotos Movilidad</fullName>
+                <default>false</default>
+                <label>Documentación - Fotos Movilidad</label>
+            </value>
+            <value>
+                <fullName>Documentacion necesaria</fullName>
+                <default>false</default>
+                <label>Documentación necesaria</label>
+            </value>
+            <value>
+                <fullName>Documentacion Otros</fullName>
+                <default>false</default>
+                <label>Documentación Otros</label>
+            </value>
+            <value>
+                <fullName>Documentacion Otros Dispositivo</fullName>
+                <default>false</default>
+                <label>Documentación Otros Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Documentacion Otros Movilidad</fullName>
+                <default>false</default>
+                <label>Documentación Otros Movilidad</label>
+            </value>
+            <value>
+                <fullName>Documentacion Otros Vida</fullName>
+                <default>false</default>
+                <label>Documentación Otros Vida</label>
+            </value>
+            <value>
+                <fullName>Dudas sobre recogida/entrega</fullName>
+                <default>false</default>
+                <label>Dudas sobre recogida/entrega</label>
+            </value>
+            <value>
                 <fullName>Dudas sobre recogida/entrega Dispositivo</fullName>
                 <default>false</default>
                 <label>Dudas sobre recogida/entrega Dispositivo</label>
@@ -513,34 +258,144 @@
                 <label>Dudas sobre recogida/entrega Movilidad</label>
             </value>
             <value>
-                <fullName>Problemas con el transportista Dispositivo</fullName>
+                <fullName>El precio de mi renovacion</fullName>
                 <default>false</default>
-                <label>Problemas con el transportista Dispositivo</label>
+                <label>El precio de mi renovacion</label>
             </value>
             <value>
-                <fullName>Problemas con el transportista Movilidad</fullName>
+                <fullName>Embargo Cliente</fullName>
                 <default>false</default>
-                <label>Problemas con el transportista Movilidad</label>
+                <label>Embargo Cliente</label>
             </value>
             <value>
-                <fullName>Reparacion incorrecta Dispositivo</fullName>
+                <fullName>Embargo Mediador</fullName>
                 <default>false</default>
-                <label>Reparación incorrecta Dispositivo</label>
+                <label>Embargo Mediador</label>
             </value>
             <value>
-                <fullName>Reparacion incorrecta Movilidad</fullName>
+                <fullName>Envíos</fullName>
                 <default>false</default>
-                <label>Reparación incorrecta Movilidad</label>
+                <label>Envíos</label>
             </value>
             <value>
-                <fullName>Retraso en la reparacion Dispositivo</fullName>
+                <fullName>Escalable</fullName>
                 <default>false</default>
-                <label>Retraso en la reparación Dispositivo</label>
+                <label>Escalable</label>
             </value>
             <value>
-                <fullName>Retraso en la reparacion Movilidad</fullName>
+                <fullName>Felicitación</fullName>
                 <default>false</default>
-                <label>Retraso en la reparación Movilidad</label>
+                <label>Felicitación</label>
+            </value>
+            <value>
+                <fullName>Franquicia</fullName>
+                <default>false</default>
+                <label>Franquicia</label>
+            </value>
+            <value>
+                <fullName>Gestión Competencias</fullName>
+                <default>false</default>
+                <label>Gestión Competencias</label>
+            </value>
+            <value>
+                <fullName>Gestión de recibos</fullName>
+                <default>false</default>
+                <label>Gestión de recibos</label>
+            </value>
+            <value>
+                <fullName>Incidencias (Cliente)</fullName>
+                <default>false</default>
+                <label>Incidencias (Cliente)</label>
+            </value>
+            <value>
+                <fullName>Incidencias (Mediador)</fullName>
+                <default>false</default>
+                <label>Incidencias (Mediador)</label>
+            </value>
+            <value>
+                <fullName>Incidencias Mi Zurich</fullName>
+                <default>false</default>
+                <label>Incidencias Mi Zurich</label>
+            </value>
+            <value>
+                <fullName>Indemnizacion de mi vehiculo</fullName>
+                <default>false</default>
+                <label>Indemnización de mi vehiculo</label>
+            </value>
+            <value>
+                <fullName>Indemnizacion de mi vehiculo Movilidad</fullName>
+                <default>false</default>
+                <label>Indemnización de mi vehiculo Movilidad</label>
+            </value>
+            <value>
+                <fullName>Indemnizacion por mis lesiones</fullName>
+                <default>false</default>
+                <label>Indemnización por mis lesiones</label>
+            </value>
+            <value>
+                <fullName>Indemnizacion por mis lesiones Movilidad</fullName>
+                <default>false</default>
+                <label>Indemnización por mis lesiones Movilidad</label>
+            </value>
+            <value>
+                <fullName>Información</fullName>
+                <default>false</default>
+                <label>Información</label>
+            </value>
+            <value>
+                <fullName>Internas</fullName>
+                <default>false</default>
+                <label>Internas</label>
+            </value>
+            <value>
+                <fullName>Metodos de pago admitidos</fullName>
+                <default>false</default>
+                <label>Metodos de pago admitidos</label>
+            </value>
+            <value>
+                <fullName>Modificación</fullName>
+                <default>false</default>
+                <label>Modificación</label>
+            </value>
+            <value>
+                <fullName>Modificar dispositivo asegurado</fullName>
+                <default>false</default>
+                <label>Modificar dispositivo asegurado</label>
+            </value>
+            <value>
+                <fullName>Modificar el beneficiario</fullName>
+                <default>false</default>
+                <label>Modificar el beneficiario</label>
+            </value>
+            <value>
+                <fullName>Modificar el capital</fullName>
+                <default>false</default>
+                <label>Modificar el capital</label>
+            </value>
+            <value>
+                <fullName>Modificar las garantias</fullName>
+                <default>false</default>
+                <label>Modificar las garantias</label>
+            </value>
+            <value>
+                <fullName>Modificar modalidad del seguro</fullName>
+                <default>false</default>
+                <label>Modificar modalidad del seguro</label>
+            </value>
+            <value>
+                <fullName>No definido</fullName>
+                <default>false</default>
+                <label>No definido</label>
+            </value>
+            <value>
+                <fullName>Nuevo dispositivo</fullName>
+                <default>false</default>
+                <label>Nuevo dispositivo</label>
+            </value>
+            <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <label>Otros</label>
             </value>
             <value>
                 <fullName>Otros Dispositivo</fullName>
@@ -558,29 +413,178 @@
                 <label>Otros Vida</label>
             </value>
             <value>
-                <fullName>Asistencia en Viaje</fullName>
+                <fullName>Pago</fullName>
                 <default>false</default>
-                <label>Asistencia en Viaje</label>
+                <label>Pago</label>
             </value>
             <value>
-                <fullName>Indemnizacion de mi vehiculo Movilidad</fullName>
+                <fullName>Pago de franquicia</fullName>
                 <default>false</default>
-                <label>Indemnización de mi vehiculo Movilidad</label>
+                <label>Pago de franquicia</label>
             </value>
             <value>
-                <fullName>Indemnizacion por mis lesiones Movilidad</fullName>
+                <fullName>Pago de franquicia Dispositivo</fullName>
                 <default>false</default>
-                <label>Indemnización por mis lesiones Movilidad</label>
+                <label>Pago de franquicia Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Pago de Franquicia Movilidad</fullName>
+                <default>false</default>
+                <label>Pago de Franquicia Movilidad</label>
+            </value>
+            <value>
+                <fullName>Partnership</fullName>
+                <default>false</default>
+                <label>Partnership</label>
+            </value>
+            <value>
+                <fullName>Precio de mi seguro</fullName>
+                <default>false</default>
+                <label>Precio de mi seguro</label>
+            </value>
+            <value>
+                <fullName>Problemas con el transportista</fullName>
+                <default>false</default>
+                <label>Problemas con el transportista</label>
+            </value>
+            <value>
+                <fullName>Problemas con el transportista Dispositivo</fullName>
+                <default>false</default>
+                <label>Problemas con el transportista Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Problemas con el transportista Movilidad</fullName>
+                <default>false</default>
+                <label>Problemas con el transportista Movilidad</label>
+            </value>
+            <value>
+                <fullName>Queja</fullName>
+                <default>false</default>
+                <label>Queja</label>
+            </value>
+            <value>
+                <fullName>Reclamación</fullName>
+                <default>false</default>
+                <label>Reclamación</label>
+            </value>
+            <value>
+                <fullName>Recobro indirecto</fullName>
+                <default>false</default>
+                <label>Recobro indirecto</label>
+            </value>
+            <value>
+                <fullName>Recobro proactivo</fullName>
+                <default>false</default>
+                <label>Recobro proactivo</label>
+            </value>
+            <value>
+                <fullName>Recobro reactivo</fullName>
+                <default>false</default>
+                <label>Recobro reactivo</label>
+            </value>
+            <value>
+                <fullName>Reemplazo</fullName>
+                <default>false</default>
+                <label>Reemplazo</label>
+            </value>
+            <value>
+                <fullName>Rehabilitación</fullName>
+                <default>false</default>
+                <label>Rehabilitación</label>
+            </value>
+            <value>
+                <fullName>Rehuse daños</fullName>
+                <default>false</default>
+                <label>Rehuse daños</label>
             </value>
             <value>
                 <fullName>Rehuse daños Movilidad</fullName>
                 <default>false</default>
                 <label>Rehuse daños Movilidad</label>
             </value>
+            <value>
+                <fullName>Reparacion incorrecta</fullName>
+                <default>false</default>
+                <label>Reparación incorrecta</label>
+            </value>
+            <value>
+                <fullName>Reparacion incorrecta Dispositivo</fullName>
+                <default>false</default>
+                <label>Reparación incorrecta Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Reparacion incorrecta Movilidad</fullName>
+                <default>false</default>
+                <label>Reparación incorrecta Movilidad</label>
+            </value>
+            <value>
+                <fullName>Retención</fullName>
+                <default>false</default>
+                <label>Retención</label>
+            </value>
+            <value>
+                <fullName>Retraso en la reparacion</fullName>
+                <default>false</default>
+                <label>Retraso en la reparación</label>
+            </value>
+            <value>
+                <fullName>Retraso en la reparacion Dispositivo</fullName>
+                <default>false</default>
+                <label>Retraso en la reparación Dispositivo</label>
+            </value>
+            <value>
+                <fullName>Retraso en la reparacion Movilidad</fullName>
+                <default>false</default>
+                <label>Retraso en la reparación Movilidad</label>
+            </value>
+            <value>
+                <fullName>Revocación Saneamiento</fullName>
+                <default>false</default>
+                <label>Revocación Saneamiento</label>
+            </value>
+            <value>
+                <fullName>Saneamiento</fullName>
+                <default>false</default>
+                <label>Saneamiento</label>
+            </value>
+            <value>
+                <fullName>Solicitud factura</fullName>
+                <default>false</default>
+                <label>Solicitud factura</label>
+            </value>
+            <value>
+                <fullName>Sugerencia</fullName>
+                <default>false</default>
+                <label>Sugerencia</label>
+            </value>
+            <value>
+                <fullName>SWAP - experiencia</fullName>
+                <default>false</default>
+                <label>SWAP - experiencia</label>
+            </value>
+            <value>
+                <fullName>SWAP - incidencias</fullName>
+                <default>false</default>
+                <label>SWAP - incidencias</label>
+            </value>
+            <value>
+                <fullName>Validacion</fullName>
+                <default>false</default>
+                <label>Validación</label>
+            </value>
+            <value>
+                <fullName>Validación/ emisión</fullName>
+                <default>false</default>
+                <label>Validación/ emisión</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
-            <valueName>Datos personales</valueName>
+            <valueName>Cancelacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Contraseña App</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
@@ -588,7 +592,11 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
-            <valueName>Contraseña App</valueName>
+            <valueName>Datos personales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <valueName>Modificar dispositivo asegurado</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
@@ -604,15 +612,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
-            <valueName>Modificar dispositivo asegurado</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
             <valueName>Modificar modalidad del seguro</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
-            <valueName>Cancelacion</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
@@ -625,8 +625,11 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Información</valueName>
+            <valueName>Cambio de intermediario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Embargo Mediador</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
@@ -635,7 +638,17 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Cambio de intermediario</valueName>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Felicitación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Incidencias (Mediador)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Información</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
@@ -653,17 +666,8 @@
             <valueName>Sugerencia</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Felicitación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Embargo Mediador</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Incidencias (Mediador)</valueName>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Coberturas</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
@@ -671,15 +675,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
-            <valueName>Coberturas</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
             <valueName>Documentacion necesaria</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
-            <valueName>Precio de mi seguro</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
@@ -692,6 +688,10 @@
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
             <valueName>Partnership</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <valueName>Precio de mi seguro</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
@@ -715,11 +715,11 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Validacion</valueName>
+            <valueName>Pago</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Pago</valueName>
+            <valueName>Validacion</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
@@ -731,26 +731,6 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Validación/ emisión</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Reemplazo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Saneamiento</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Revocación Saneamiento</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Rehabilitación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
             <valueName>Anulación</valueName>
         </valueSettings>
         <valueSettings>
@@ -758,12 +738,24 @@
             <valueName>Modificación</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Retención</valueName>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Reemplazo</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Incidencias Mi Zurich</valueName>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Rehabilitación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Revocación Saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Validación/ emisión</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
@@ -774,12 +766,16 @@
             <valueName>Incidencias (Cliente)</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
-            <valueName>Descargar App</valueName>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Incidencias Mi Zurich</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Retención</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
-            <valueName>Como valido mi seguro</valueName>
+            <valueName>Backoffice</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
@@ -787,23 +783,15 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
-            <valueName>Backoffice</valueName>
+            <valueName>Como valido mi seguro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
+            <valueName>Descargar App</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Internas</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Escalable</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>SWAP - incidencias</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>SWAP - experiencia</valueName>
+            <valueName>Asistencia en Viaje</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
@@ -816,6 +804,34 @@
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
             <valueName>Como abro un siniestro de Vida</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Denegacion de cobertura Dispositivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Denegacion de cobertura Movilidad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Denegacion de cobertura Vida</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Desactivar FMI Dispositivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Documentacion - Bloqueo IMEI Dispositivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Documentacion - Denuncia Dispositivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Documentacion - Denuncia Movilidad</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
@@ -835,18 +851,6 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Documentacion - Bloqueo IMEI Dispositivo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Documentacion - Denuncia Dispositivo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Documentacion - Denuncia Movilidad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
             <valueName>Documentacion Otros Dispositivo</valueName>
         </valueSettings>
         <valueSettings>
@@ -859,30 +863,6 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Pago de franquicia Dispositivo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Pago de Franquicia Movilidad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Desactivar FMI Dispositivo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Denegacion de cobertura Dispositivo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Denegacion de cobertura Movilidad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Denegacion de cobertura Vida</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
             <valueName>Dudas sobre recogida/entrega Dispositivo</valueName>
         </valueSettings>
         <valueSettings>
@@ -891,11 +871,51 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Escalable</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Indemnizacion de mi vehiculo Movilidad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Indemnizacion por mis lesiones Movilidad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Internas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Otros Dispositivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Otros Movilidad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Otros Vida</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Pago de franquicia Dispositivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Pago de Franquicia Movilidad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
             <valueName>Problemas con el transportista Dispositivo</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
             <valueName>Problemas con el transportista Movilidad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestro</controllingFieldValue>
+            <valueName>Rehuse daños Movilidad</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
@@ -915,31 +935,11 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Otros Dispositivo</valueName>
+            <valueName>SWAP - experiencia</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Otros Movilidad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Otros Vida</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Asistencia en Viaje</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Indemnizacion de mi vehiculo Movilidad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Indemnizacion por mis lesiones Movilidad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Siniestro</controllingFieldValue>
-            <valueName>Rehuse daños Movilidad</valueName>
+            <valueName>SWAP - incidencias</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
@@ -951,6 +951,14 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Devolución de recibo liquidado mediador</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Gestión de recibos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
             <valueName>Recobro indirecto</valueName>
         </valueSettings>
         <valueSettings>
@@ -959,15 +967,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Gestión de recibos</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
             <valueName>Recobro reactivo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Devolución de recibo liquidado mediador</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Campañas</controllingFieldValue>
