@@ -654,6 +654,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>IdCuentaCaso</name>
+            <value>
+                <elementReference>$Record.Parent.AccountId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>IDPropietarioCaso</name>
             <value>
                 <elementReference>$Record.Parent.OwnerId</elementReference>
