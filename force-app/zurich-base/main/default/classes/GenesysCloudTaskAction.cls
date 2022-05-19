@@ -37,9 +37,16 @@ public with sharing class GenesysCloudTaskAction {
                     for(Object participantsTasksObj : participantsTasks)
                     {
                         Map<String, Object> participant = (Map<String,Object>) participantsTasksObj;
-                        if (valores == '' && participant.get('purpose') == 'acd')
+                        if (valores == '')
                         {
-                            valores = tasks.CallObject + '#' + participant.get('id') + '#' + 'working';
+                            if (participant.get('purpose') == 'agent' && (participant.get('state') == 'connected' || participant.get('state') == 'alerting'))
+                            {
+                                valores = tasks.CallObject + '#' + participant.get('id') + '#' + 'working';
+                            }
+                            else if (participant.get('purpose') == 'acd' && participant.get('state') == 'connected')
+                            {
+                                valores = tasks.CallObject + '#' + participant.get('id') + '#' + 'pending';
+                            }
                         }
                     }
                     if (valores != '')
