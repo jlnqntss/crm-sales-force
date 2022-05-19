@@ -14,7 +14,7 @@
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <stringValue>Aquí puedes adjuntarnos la documentación</stringValue>
+                <stringValue>Adjunta la documentación dando click al botón</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -273,7 +273,7 @@
         <inputAssignments>
             <field>Subject</field>
             <value>
-                <stringValue>Aquí puedes adjuntarnos la documentación</stringValue>
+                <stringValue>Adjunta la documentación dando click al botón</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
