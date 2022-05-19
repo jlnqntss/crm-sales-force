@@ -719,8 +719,10 @@ public without sharing class BusinessInsuranceRaterService
             // Por cada Oferta que hay en Salesforce....
             for (Opportunity o : existingOffers) {
                 // Miramos cual de los dos id externos tiene, dando prioridad al INFOQuoteNumber
-                if( o.INFOQuoteNumber__c != null ) {
-                    mapOffersToDelete.put(o.INFOQuoteNumber__c, o);
+                if( o.INFOQuoteNumber__c != null) {
+                    if(!existingSFQuoteNumbers.contains(o.InfoQuoteNumber__c)) { // tan sólo lo contemplamos si no está entre las ofertas que no han de tocarse
+                        mapOffersToDelete.put(o.INFOQuoteNumber__c, o);
+                    }
                 } else if( o.SessionId__c != null && o.SessionId__c.Contains(sessionId) ) {
                     mapOffersToDelete.put(o.SessionId__c, o);
                 } 
