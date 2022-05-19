@@ -18,7 +18,13 @@ ProductId__r.INFO_Product_Number__c = &quot;00483-00001&quot;,
 ProductId__r.INFO_Product_Number__c = &quot;00481-00001&quot;,
 ProductId__r.INFO_Product_Number__c = &quot;00526-00001&quot;,
 ProductId__r.INFO_Product_Number__c = &quot;00516-00001&quot;,
-ProductId__r.INFO_Product_Number__c = &quot;00515-00001&quot;
+ProductId__r.INFO_Product_Number__c = &quot;00515-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00721-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00504-00002&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00849-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00255-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00450-00001&quot;,
+ProductId__r.INFO_Product_Number__c = &quot;00846-00001&quot;
 )))</errorConditionFormula>
     <errorDisplayField>ProductId__c</errorDisplayField>
     <errorMessage>[VR Offer] Su perfil no permite la selección de este producto</errorMessage>
