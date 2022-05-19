@@ -20,6 +20,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
     private static final string PERSON_ACCOUNT_FIELD_EXTENSION = '__pc'; // lowercase
     private static final string PERSON_ACCOUNT_LASTNAME = 'lastname'; // lowercase
     private static final string PERSON_ACCOUNT_FIRSTNAME = 'firstname'; // lowercase
+    private static final string PERSON_ACCOUNT_SALUTATION = 'salutation'; // lowercase
     private static final string ACCOUNT_FIELD_NAME = 'name'; // lowercase
 
     private static final string SETTINGS_LEAD_FIELDS_TO_KEEP = 'BatchMergeLeadsLeadFields';
@@ -75,7 +76,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
 
                 // Normal Account
                 if( !key.endsWithIgnoreCase(PERSON_ACCOUNT_FIELD_EXTENSION) && !key.equalsIgnoreCase(PERSON_ACCOUNT_LASTNAME) && 
-                    !key.equalsIgnoreCase(PERSON_ACCOUNT_FIRSTNAME) ) {
+                    !key.equalsIgnoreCase(PERSON_ACCOUNT_FIRSTNAME) && !key.equalsIgnoreCase(PERSON_ACCOUNT_SALUTATION)) {
                     fieldsToMergeNotPerson.add(key);
                 }
             }
