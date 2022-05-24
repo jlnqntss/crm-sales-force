@@ -98,8 +98,9 @@ class GitlabAPIService {
    */
   getTags() {
     console.log(
-      `Fetching ${this.baseUrl}/projects/${this.projectId}/repository/tags`
+      `[INFO] GET ${this.baseUrl}/projects/${this.projectId}/repository/tags`
     );
+
     return fetch(`${this.baseUrl}/projects/${this.projectId}/repository/tags`, {
       method: "GET",
       headers: {
