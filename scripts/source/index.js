@@ -1,6 +1,6 @@
 const { readFileSync, writeFileSync } = require("fs");
-//const SCRIPTS_DIR = process.env['CI_SCRIPTS_DIR'] + '/scripts';
-const SCRIPTS_DIR = "scripts/source";
+const SCRIPTS_DIR = process.env["CI_SCRIPTS_DIR"] + "/scripts/source";
+
 const scripts = {
   "release:authenticate": `node ${SCRIPTS_DIR}/authenticate`,
   "release:scan": `node ${SCRIPTS_DIR}/scan`,
