@@ -26,7 +26,15 @@
     "release:changelog": "node scripts/source/changelog.js",
     "test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
     "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
-    "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck"
+    "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
+    "release:authenticate": "node scripts/source/authenticate",
+    "release:scan": "node scripts/source/scan",
+    "release:test:lwc": "node scripts/source/test-lwc",
+    "release:test:apex": "node scripts/source/test-apex",
+    "release:validate": "node scripts/source/deploy --check",
+    "release:deploy": "node scripts/source/deploy",
+    "release:tag:version": "node scripts/source/tag-version",
+    "release:start": "node scripts/source/create-release"
   },
   "husky": {
     "hooks": {
