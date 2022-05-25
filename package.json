@@ -52,6 +52,7 @@
     "merge-dirs": "^0.2.1",
     "mustache": "^4.1.0",
     "node-fetch": "^2.6.1",
+    "node-find-folder": "^0.1.32",
     "node-merge": "^0.1.0",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0"
