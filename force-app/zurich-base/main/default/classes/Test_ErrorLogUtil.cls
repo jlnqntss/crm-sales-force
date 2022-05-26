@@ -14,6 +14,7 @@ public class Test_ErrorLogUtil
     @isTest
     static void testCommitErrors()
     {
+        System.debug('isanjose - Pipeline test 2');
         Test.startTest();
         try
         {
