@@ -1,5 +1,5 @@
 /**
- * Genera un proceso de release.
+ * Generación de releases. Basado en pipelines Zurich
  *
  * @author jmartinezpisson
  */
@@ -28,18 +28,16 @@ async function main() {
     });
 
     if (!isRelease && isDev) {
-      console.log(
-        "[Info] El commit ya está en la rama dev. Creando rama release"
-      );
+      console.log("Commit is in dev branch");
       await gitLabService.createBranch({
         ref: tag.target,
         branch: `release/${tag.name.split("-")[0]}`
       });
     } else {
-      console.log("[Error] El commit ya está en la rama dev. Abortando");
+      console.log('Commit is not in branch "dev". Aborting...');
     }
   } catch (error) {
-    console.error("[Error] Error generando release");
+    console.error("Error creating release");
     console.error(error.message || error);
     process.exit(1);
   }
