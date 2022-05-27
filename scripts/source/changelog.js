@@ -104,16 +104,15 @@ class ChangelogGenerator {
   generate(commits) {
     return new Promise((resolve, reject) => {
       fs.readFile(
-        `${__dirname}/templates/CHANGELOG.md.mustache`,
+        `${__dirname}/templates/CHANGELOG.MD.mustache`,
         (err, data) => {
           if (err) {
             reject(err);
           } else {
             const changelog = Mustache.render(data.toString(), {
               commits: {
-                unreleased: ChangelogGenerator.generateMustacheDataStructure(
-                  commits
-                )
+                unreleased:
+                  ChangelogGenerator.generateMustacheDataStructure(commits)
               }
             });
             resolve(changelog);
