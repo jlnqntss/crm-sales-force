@@ -29,7 +29,7 @@ async function main() {
 
     default:
       if (!process.env["CI_FULL_DEPLOYMENT_DEV"]) {
-        target = findLastSemanticTag("rc").target;
+        target = findLastSemanticTag("dev").target;
       }
       break;
   }
