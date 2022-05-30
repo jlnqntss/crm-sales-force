@@ -158,6 +158,10 @@ function runOrgTests() {
 }
 
 function runLocalTests() {
+  if (!shouldRunLocalTests()) {
+    console.log("[Info] No hay tests JavaScript para ejecutar");
+  }
+
   executeBash(`sfdx-lwc-jest --skipApiVersionCheck --coverage`);
 }
 
@@ -288,10 +292,11 @@ async function findLastSemanticTag(targetSuffix) {
   // 3 - Si no existe tag, se genera la inicial
   if (!lastTag) {
     return await gitLabService.createTag({
-      tag_name: `1.0.0${targetSuffix ? targetSuffix + "" : ""}`,
+      tag_name: `1.0.0${targetSuffix ? "-" + targetSuffix : ""}`,
       ref: process.env["CI_COMMIT_REF_NAME"]
     });
   }
+  return lastTag;
 }
 
 module.exports = {
