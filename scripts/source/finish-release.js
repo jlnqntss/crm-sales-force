@@ -1,5 +1,5 @@
 /**
- * Finalización de release. Basado en pipelines
+ * Finalización de release. Basado en pipelines Zurich
  *
  * @author jmartinezpisson
  */
@@ -22,9 +22,7 @@ async function main() {
   });
 
   if (isRelease) {
-    console.log(
-      "[Info] El commit se encuentra en la rama release. Generadno MR"
-    );
+    console.log("Commit is in release branch");
     let { iid } = await gitLabService.createMergeRequest({
       title: `Merge branch release/${tag.name.split("-")[0]} to master`,
       source_branch: `release/${tag.name.split("-")[0]}`,
@@ -36,7 +34,7 @@ async function main() {
       should_remove_source_branch: true
     });
   } else {
-    console.log('[Info] Commit is not in branch "release". Aborting...');
+    console.log('Commit is not in branch "release". Aborting...');
   }
 }
 

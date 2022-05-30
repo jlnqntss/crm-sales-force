@@ -104,7 +104,7 @@ class ChangelogGenerator {
   generate(commits) {
     return new Promise((resolve, reject) => {
       fs.readFile(
-        `${__dirname}/templates/CHANGELOG.MD.mustache`,
+        `${__dirname}/templates/CHANGELOG.md.mustache`,
         (err, data) => {
           if (err) {
             reject(err);
