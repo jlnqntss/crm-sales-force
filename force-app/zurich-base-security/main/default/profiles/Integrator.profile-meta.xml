@@ -8906,6 +8906,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Policy__c.IssuedOnline__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Policy__c.LegalEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>

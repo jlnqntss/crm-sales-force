@@ -865,7 +865,8 @@ public without sharing class BusinessInsuranceRaterService
                                 InfoQuoteNumber__c = offer.InfoQuoteNumber__c,
                                 BusinessCode__c = offer.BusinessCode__c,
                                 ScopeId__c = currentScope.Id,
-                                OpportunityName__c= offer.Id
+                                OpportunityName__c= offer.Id, 
+                                IssuedOnline__c = true
                                 )
                             );
                     }
