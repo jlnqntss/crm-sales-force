@@ -27,15 +27,6 @@
                 <elementReference>GetZipCodeAction.CityINECode__c</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>AssignAdditionalDataAssignment</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>AssignAdditionalDataAssignment</name>
-        <label>Asignar datos adicionales</label>
-        <locationX>446</locationX>
-        <locationY>2951</locationY>
         <assignmentItems>
             <assignToReference>$Record.DSRESULT__c</assignToReference>
             <operator>Assign</operator>
@@ -183,7 +174,7 @@
         <locationX>446</locationX>
         <locationY>2375</locationY>
         <defaultConnector>
-            <targetReference>AssignAdditionalDataAssignment</targetReference>
+            <targetReference>AssignedAgentAssignment</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No asociada</defaultConnectorLabel>
         <rules>
@@ -542,10 +533,6 @@
         <connector>
             <targetReference>GetZipCodeAction</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>AssignAdditionalDataAssignment</targetReference>
-        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>AccountId__c</field>
@@ -723,10 +710,6 @@
         <connector>
             <targetReference>AssignAccountDataAssignment</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>AssignAdditionalDataAssignment</targetReference>
-        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>ScopeId__c</field>
