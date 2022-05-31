@@ -50,7 +50,7 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>$Record.Id</elementReference>
+                <elementReference>ScreenPopURL</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -111,7 +111,7 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>$Record.Id</elementReference>
+                <elementReference>ScreenPopURL</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -363,6 +363,15 @@
 &quot;ZE&quot;, &quot;ZE&quot;, 
 &quot;ZEO&quot;, &quot;ZEO&quot;,
 &quot;all&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>URL de la ficha a abrir con el correo enrutado</description>
+        <name>ScreenPopURL</name>
+        <dataType>String</dataType>
+        <expression>IF( {!scopeValue} = &apos;ZE&apos; , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=ZESearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; +  {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Id} + &apos;&quot;},{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
+IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CCS&apos;) , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CCSSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId} + &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId} + &apos;&quot;}]&apos;,
+IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CSM&apos;) ,  &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CSMSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress} + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId}+ &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
+ {!$Record.Id} )))</expression>
     </formulas>
     <interviewLabel>EmailMessage Trigger - After update - Route to Genesys {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After update - Route to Genesys</label>
