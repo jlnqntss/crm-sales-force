@@ -28,7 +28,7 @@
     </values>
     <values>
         <field>TypeN3__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Anulación</value>
     </values>
     <values>
         <field>Type__c</field>
