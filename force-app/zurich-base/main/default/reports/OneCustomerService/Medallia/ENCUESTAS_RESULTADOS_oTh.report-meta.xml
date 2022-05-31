@@ -152,6 +152,9 @@
         <field>Survey__c$DSPERCON__c</field>
     </columns>
     <columns>
+        <field>Survey__c$FENACCON__c</field>
+    </columns>
+    <columns>
         <field>Survey__c$CDTIPDTF__c</field>
     </columns>
     <customDetailFormulas>

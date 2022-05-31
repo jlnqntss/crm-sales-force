@@ -119,6 +119,9 @@
         <field>Survey__c$DSOBSER__c</field>
     </columns>
     <columns>
+        <field>Survey__c$PolicyId__c.IntermediaryId__c.Name</field>
+    </columns>
+    <columns>
         <field>Survey__c$NumeroIdCliente__c.NationalId__c</field>
     </columns>
     <columns>
@@ -147,6 +150,9 @@
     </columns>
     <columns>
         <field>Survey__c$DSPERCON__c</field>
+    </columns>
+    <columns>
+        <field>Survey__c$FENACCON__c</field>
     </columns>
     <columns>
         <field>Survey__c$CDTIPDTF__c</field>
