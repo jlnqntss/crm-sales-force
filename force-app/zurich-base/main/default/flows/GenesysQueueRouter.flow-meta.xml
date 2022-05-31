@@ -127,6 +127,13 @@ Valores de salida:
                 <elementReference>routeValue</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>RouteType__c</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Nota Info</stringValue>
+            </value>
+        </filters>
         <object>purecloud__PureCloud_Queue__c</object>
         <outputAssignments>
             <assignToReference>genesysQueueName</assignToReference>
