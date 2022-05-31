@@ -2,26 +2,29 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <assignments>
-        <name>CaseUserOwnerAssignment</name>
-        <label>Asignar Propietario Caso Usuario</label>
-        <locationX>1304</locationX>
-        <locationY>1406</locationY>
+        <name>CaseOwnerAssignment</name>
+        <label>Asignar propietario caso</label>
+        <locationX>446</locationX>
+        <locationY>398</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <elementReference>EmailPropietarioCaso</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>CallCenterDecision</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>CCServiceClosedCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Cerrado CCService</label>
-        <locationX>1546</locationX>
-        <locationY>878</locationY>
+        <locationX>578</locationX>
+        <locationY>1430</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <elementReference>GetClosedCasesAction.Owner:User.Email</elementReference>
             </value>
@@ -30,27 +33,27 @@
     <assignments>
         <name>CCServiceOpenCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Abierto CCService</label>
-        <locationX>1414</locationX>
-        <locationY>518</locationY>
+        <locationX>578</locationX>
+        <locationY>974</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <elementReference>GetOpenCasesAction.Owner:User.Email</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>IsPreferredAgentDecision</targetReference>
+            <targetReference>GetClosedCasesAction</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>CSMAdmManagerAssignment</name>
         <label>Asignar CSM Administración Manager</label>
-        <locationX>754</locationX>
-        <locationY>398</locationY>
+        <locationX>314</locationX>
+        <locationY>734</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <elementReference>NombreCSMAdminManager</elementReference>
             </value>
@@ -60,202 +63,20 @@
         <name>CSMIndividualManagerAssignment</name>
         <label>Asignar CSM Individual Manager</label>
         <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationY>734</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <elementReference>NombreCSMIndivManager</elementReference>
             </value>
         </assignmentItems>
     </assignments>
     <decisions>
-        <name>CaseOwnerOrCSMAdmManagerDecision</name>
-        <label>¿Propietario de caso o Gestor CSM?</label>
-        <locationX>798</locationX>
-        <locationY>278</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>CsmAdmCaseOwnerOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>IDPropietarioCaso</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>005</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>NumeroParentId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>CaseUserOwnerAssignment</targetReference>
-            </connector>
-            <label>Propietario Caso CSM</label>
-        </rules>
-        <rules>
-            <name>CsmAdmManagerOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>IDPropietarioCaso</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>00G</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>NumeroParentId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>NombreCSMIndivManager</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue></stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>CSMAdmManagerAssignment</targetReference>
-            </connector>
-            <label>Gestor personalizado CSM</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>CaseOwnerOrCSMIndManagerDecision</name>
-        <label>¿Propietario de caso o Gestor CSM?</label>
-        <locationX>94</locationX>
-        <locationY>278</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>CsmIndCaseOwnerOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>IDPropietarioCaso</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>005</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>NumeroParentId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>CaseUserOwnerAssignment</targetReference>
-            </connector>
-            <label>Propietario Caso CSM</label>
-        </rules>
-        <rules>
-            <name>CsmIndManagerOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>IDPropietarioCaso</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>00G</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>NumeroParentId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>NombreCSMIndivManager</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue></stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>CSMIndividualManagerAssignment</targetReference>
-            </connector>
-            <label>Gestor personalizado CSM</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>IsCaseAssignedToQueueDecision</name>
-        <label>¿Caso asignado a cola?</label>
-        <locationX>1700</locationX>
-        <locationY>278</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>AssignedToQueueOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>IDPropietarioCaso</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>00G</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>NumeroParentId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>GetOpenCasesAction</targetReference>
-            </connector>
-            <label>Asignado a Cola</label>
-        </rules>
-        <rules>
-            <name>NotAssignedToQueueOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>IDPropietarioCaso</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>005</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>CaseUserOwnerAssignment</targetReference>
-            </connector>
-            <label>NoAsignado a cola</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>IsPreferredAgentDecision</name>
-        <label>¿Hay Gestor Preferente?</label>
-        <locationX>1414</locationX>
-        <locationY>638</locationY>
-        <defaultConnector>
-            <targetReference>GetClosedCasesAction</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>YesPreferrendAgentOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>GestorPreferenteAsignado</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <label>Si</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>QueueTypeDecision</name>
-        <label>¿Qué tipo de cola es?</label>
-        <locationX>1304</locationX>
-        <locationY>158</locationY>
+        <name>CallCenterDecision</name>
+        <label>¿Qué Call Center es?</label>
+        <locationX>578</locationX>
+        <locationY>614</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>CSMParticularesOutcome</name>
@@ -268,7 +89,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>CaseOwnerOrCSMIndManagerDecision</targetReference>
+                <targetReference>CSMIndividualManagerAssignment</targetReference>
             </connector>
             <label>CSM Particulares</label>
         </rules>
@@ -283,7 +104,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>CaseOwnerOrCSMAdmManagerDecision</targetReference>
+                <targetReference>CSMAdmManagerAssignment</targetReference>
             </connector>
             <label>CSM Administración</label>
         </rules>
@@ -297,13 +118,67 @@
                     <stringValue>CC Service</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>IdCuentaCaso</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>IsCaseAssignedToQueueDecision</targetReference>
+                <targetReference>GetOpenCasesAction</targetReference>
             </connector>
             <label>CC Service</label>
         </rules>
+    </decisions>
+    <decisions>
+        <name>CaseAssignedToUserDecision</name>
+        <label>¿Caso asignado a usuario?</label>
+        <locationX>578</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>CallCenterDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>ZurichEmpresasOutcome</name>
+            <name>AssignedToUserOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>005</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CaseOwnerAssignment</targetReference>
+            </connector>
+            <label>Asignado a Usuario</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CaseOrOpportunityDecision</name>
+        <label>¿Caso u oportunidad?</label>
+        <locationX>1106</locationX>
+        <locationY>158</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CaseOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NumeroParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CaseAssignedToUserDecision</targetReference>
+            </connector>
+            <label>Caso</label>
+        </rules>
+        <rules>
+            <name>OpportunityOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>ColaGenesysScope</leftValueReference>
@@ -312,7 +187,54 @@
                     <stringValue>ZE</stringValue>
                 </rightValue>
             </conditions>
-            <label>Zurich Empresas</label>
+            <label>Oportunidad</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ClosedCasesFoundDecision</name>
+        <label>¿Casos cerrados encontrados?</label>
+        <locationX>710</locationX>
+        <locationY>1310</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>ClosedCasesFoundOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetClosedCasesAction.Owner:User.Email</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CCServiceClosedCaseAgentAssignment</targetReference>
+            </connector>
+            <label>Casos cerrados encontrados</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>OpenCasesFoundDecision</name>
+        <label>¿Casos abiertos encontrados?</label>
+        <locationX>710</locationX>
+        <locationY>854</locationY>
+        <defaultConnector>
+            <targetReference>GetClosedCasesAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>OpenCasesFoundOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetOpenCasesAction.Owner:User.Email</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CCServiceOpenCaseAgentAssignment</targetReference>
+            </connector>
+            <label>Casos abiertos encontrados</label>
         </rules>
     </decisions>
     <interviewLabel>EmailMessage - Comprobar Cola Genesys y ParentID {!$Flow.CurrentDateTime}</interviewLabel>
@@ -339,11 +261,11 @@
     <recordLookups>
         <name>GetClosedCasesAction</name>
         <label>Obtener Casos Cerrados</label>
-        <locationX>1546</locationX>
-        <locationY>758</locationY>
+        <locationX>710</locationX>
+        <locationY>1190</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>CCServiceClosedCaseAgentAssignment</targetReference>
+            <targetReference>ClosedCasesFoundDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -369,11 +291,11 @@
     <recordLookups>
         <name>GetOpenCasesAction</name>
         <label>Obtener Casos Abiertos</label>
-        <locationX>1414</locationX>
-        <locationY>398</locationY>
+        <locationX>710</locationX>
+        <locationY>734</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>CCServiceOpenCaseAgentAssignment</targetReference>
+            <targetReference>OpenCasesFoundDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -404,10 +326,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>1178</locationX>
+        <locationX>980</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>QueueTypeDecision</targetReference>
+            <targetReference>CaseOrOpportunityDecision</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -450,7 +372,7 @@
     <variables>
         <name>GestorPreferenteAsignado</name>
         <dataType>String</dataType>
-        <isCollection>false</isCollection>
+        <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
     </variables>

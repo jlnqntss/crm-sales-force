@@ -87,7 +87,7 @@ public class GenesysCloudRouteEmailAction
         @InvocableVariable(label = 'Screen Pop Id' description='Id. de registro con el que realizar un ScreenPop. Se pasará a Genesys como el SF_URLPop')
         public String screenPopRecordId;
         @InvocableVariable(label = 'Owner Id' description='Id. de usuario en Genesys (Correo electrónico SF). Se pasará a Genesys como SF_OwnerId')
-        public String ownerId;
+        public String[] ownerId;
         @InvocableVariable(label = 'Activity Id' description='Id. de la tarea asociada al Email')
         public String activityId;
         @InvocableVariable(label = 'Email Message Id' description='Id. del Email Message')
