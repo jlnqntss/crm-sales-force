@@ -1030,7 +1030,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Validación%2F emisión</fullName>
+            <fullName>Validación %2F emisión</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1252,7 +1252,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Validación%2F emisión</fullName>
+            <fullName>Validación %2F emisión</fullName>
             <default>false</default>
         </values>
         <values>

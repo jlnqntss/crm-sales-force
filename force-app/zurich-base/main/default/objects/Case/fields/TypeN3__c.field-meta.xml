@@ -562,9 +562,9 @@
                 <label>User / password lock</label>
             </value>
             <value>
-                <fullName>Validación/ emisión</fullName>
+                <fullName>Validación / emisión</fullName>
                 <default>false</default>
-                <label>Validación/ emisión</label>
+                <label>Validación / emisión</label>
             </value>
             <value>
                 <fullName>Warranty extension</fullName>
@@ -701,10 +701,6 @@
             <valueName>Nueva Producción</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
-            <valueName>Validación/ emisión</valueName>
-        </valueSettings>
-        <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <valueName>Anulación</valueName>
@@ -796,6 +792,10 @@
         <valueSettings>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <valueName>Rehabilitación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Validación / emisión</controllingFieldValue>
+            <valueName>Validación / emisión</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Campaña</controllingFieldValue>

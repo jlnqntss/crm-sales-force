@@ -573,9 +573,9 @@
                 <label>Validación</label>
             </value>
             <value>
-                <fullName>Validación/ emisión</fullName>
+                <fullName>Validación / emisión</fullName>
                 <default>false</default>
-                <label>Validación/ emisión</label>
+                <label>Validación / emisión</label>
             </value>
         </valueSetDefinition>
         <valueSettings>
@@ -755,7 +755,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Validación/ emisión</valueName>
+            <valueName>Validación / emisión</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
