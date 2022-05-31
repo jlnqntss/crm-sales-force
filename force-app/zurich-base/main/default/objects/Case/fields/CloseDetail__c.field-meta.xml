@@ -638,13 +638,13 @@
         <valueSettings>
             <controllingFieldValue>Con Oferta</controllingFieldValue>
             <controllingFieldValue>Generación Oferta</controllingFieldValue>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Validación / emisión</controllingFieldValue>
             <valueName>No autoservicio</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Con Oferta</controllingFieldValue>
             <controllingFieldValue>Generación Oferta</controllingFieldValue>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Validación / emisión</controllingFieldValue>
             <valueName>Caída sistema</valueName>
         </valueSettings>
         <valueSettings>
@@ -758,15 +758,15 @@
             <valueName>Denegación anulación</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Validación / emisión</controllingFieldValue>
             <valueName>Oferta no accesible</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Validación / emisión</controllingFieldValue>
             <valueName>Falta de datos</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Validación/ emisión</controllingFieldValue>
+            <controllingFieldValue>Validación / emisión</controllingFieldValue>
             <valueName>Gestión Competencias</valueName>
         </valueSettings>
         <valueSettings>
