@@ -201,7 +201,7 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>GetClosedCasesAction.Owner:User.Email</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
