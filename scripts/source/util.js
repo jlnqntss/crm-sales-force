@@ -283,7 +283,7 @@ async function findLastSemanticTag(targetSuffix) {
   let currentBranchTags = await gitLabService.getTags();
   console.log("[INFO] - Current Branch Tags");
   console.log(currentBranchTags);
-  console, log("Target Suffix");
+  console.log("Target Suffix");
   console.log(targetSuffix);
   // 2 - Se define la expresión regular de búsqueda
   // 2 - Se busca a través de expresión regular la etiqueta de versionado semántico con el sufijo de tipo
