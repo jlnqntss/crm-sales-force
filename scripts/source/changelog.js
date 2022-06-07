@@ -111,9 +111,8 @@ class ChangelogGenerator {
           } else {
             const changelog = Mustache.render(data.toString(), {
               commits: {
-                unreleased: ChangelogGenerator.generateMustacheDataStructure(
-                  commits
-                )
+                unreleased:
+                  ChangelogGenerator.generateMustacheDataStructure(commits)
               }
             });
             resolve(changelog);

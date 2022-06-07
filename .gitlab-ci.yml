@@ -1,4 +1,4 @@
 include:
   - project: 'zurich-es/shared/pipelines/ea-pipeline-scripts'
-    ref: master
+    ref: feat-pipeline-scripts-update
     file: '/pipelines/salesforce/salesforce.gitlab-ci.yml' 
