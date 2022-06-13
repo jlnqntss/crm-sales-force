@@ -5,16 +5,16 @@ const GitlabAPIService = require("./GitLabAPI").default;
 const { getLastSemanticTag, SemanticTag } = require("./SemanticTag");
 
 function executeBash(command, options = {}) {
-  console.log();
   return execSync(command, {
     encoding: "utf8",
+    shell: false,
     ...options
   });
 }
 
 function executeSfdxCommand(bash, options = {}) {
-  var sfdxCommand = bash;
-  var sfdxJsonResult, sfdxResult;
+  let sfdxCommand = bash;
+  let sfdxJsonResult, sfdxResult;
 
   if (!sfdxCommand.includes("--json") && !options.skipJsonParsing) {
     sfdxCommand += " --json";
@@ -48,7 +48,7 @@ function executeSfdxCommand(bash, options = {}) {
     );
     console.error(`[Error] ${sfdxResult.name}: ${sfdxResult.message}`);
     console.error(`[StackTrace] ${sfdxResult.stack}`);
-    throw `${sfdxResult.name}: ${sfdxResult.message}`;
+    throw new Error(`${sfdxResult.name}: ${sfdxResult.message}`);
   }
 
   return sfdxResult.result;
@@ -83,7 +83,9 @@ function getTargetSfdxOrgUsername() {
 
     return configGetResult[0].value;
   } catch (error) {
-    throw "[Error] Obtención de usuario SFDX: No se ha podido recuperar el usuario de la org objetivo de SFDX";
+    throw new Error(
+      "[Error] Obtención de usuario SFDX: No se ha podido recuperar el usuario de la org objetivo de SFDX"
+    );
   }
 }
 
@@ -98,7 +100,9 @@ function setTargetSfdxOrgUsername(username) {
       `[Info] Configurando usuario SFDX: Configurado ${username} como usuario SFDX`
     );
   } catch (error) {
-    throw `[Error] Configurando usuario SFDX: No se ha podido establecer ${username} como la org objetivo de SFDX`;
+    throw new Error(
+      `[Error] Configurando usuario SFDX: No se ha podido establecer ${username} como la org objetivo de SFDX`
+    );
   }
 }
 
@@ -183,7 +187,7 @@ function generateSfdxDelta(targetCommit) {
       `[Command] sfdx sgd:source:delta --from ${targetCommit} -o .deploy`
     );
 
-    throw `SFDX Delta: ${result.error}`;
+    throw new Error(`SFDX Delta: ${result.error}`);
   }
 }
 
@@ -291,7 +295,7 @@ async function findLastSemanticTag(targetSuffix) {
 
   // 3 - Si no existe tag, se genera la inicial
   if (!lastTag) {
-    return await gitLabService.createTag({
+    return gitLabService.createTag({
       tag_name: `1.0.0${targetSuffix ? "-" + targetSuffix : ""}`,
       ref: process.env["CI_COMMIT_REF_NAME"]
     });
