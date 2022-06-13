@@ -202,6 +202,6 @@
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>Survey__c$CreatedDate</dateColumn>
-        <interval>INTERVAL_CUSTOM</interval>
+        <interval>INTERVAL_YESTERDAY</interval>
     </timeFrameFilter>
 </Report>
