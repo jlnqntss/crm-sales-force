@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tipo de especialización</label>
+    <name>SpecializationType__c</name>
+    <picklistValues>
+        <masterLabel>a eliminar</masterLabel>
+        <translation></translation>
+    </picklistValues>
+</CustomFieldTranslation>

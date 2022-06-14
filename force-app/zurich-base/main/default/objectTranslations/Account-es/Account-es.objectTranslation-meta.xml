@@ -3,7 +3,7 @@
     <layouts>
         <layout>Account Layout</layout>
         <sections>
-            <label><!-- Account Summary --></label>
+            <label></label>
             <section>Account Summary</section>
         </sections>
     </layouts>
@@ -14,7 +14,7 @@
             <section>Company Information</section>
         </sections>
         <sections>
-            <label><!-- Custom Links --></label>
+            <label></label>
             <section>Custom Links</section>
         </sections>
         <sections>
@@ -22,12 +22,70 @@
             <section>Description</section>
         </sections>
         <sections>
-            <label><!-- Fields --></label>
+            <label></label>
             <section>Fields</section>
         </sections>
         <sections>
-            <label><!-- GDPR --></label>
+            <label></label>
             <section>GDPR</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>EON Business Customer</layout>
+        <sections>
+            <label>Información de compañía</label>
+            <section>Company Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>GDPR</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>EON Customer</layout>
+        <layoutType>PersonAccount</layoutType>
+        <sections>
+            <label>Información adicional</label>
+            <section>Additional information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>GDPR Status</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>EON Intermediary</layout>
+        <sections>
+            <label>Asignación</label>
+            <section>Allocation</section>
+        </sections>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label>Contacto de intermediario</label>
+            <section>Intermediary Contact</section>
+        </sections>
+        <sections>
+            <label>Información del sistema</label>
+            <section>System Information</section>
         </sections>
     </layouts>
     <layouts>
@@ -100,6 +158,10 @@
             <section>Digitalisation</section>
         </sections>
         <sections>
+            <label></label>
+            <section>Financial Information</section>
+        </sections>
+        <sections>
             <label>Info Zurich</label>
             <section>Info Zurich</section>
         </sections>
@@ -123,11 +185,11 @@
     <layouts>
         <layout>Master layout</layout>
         <sections>
-            <label><!-- Custom Links --></label>
+            <label></label>
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label><!-- Fields --></label>
+            <label></label>
             <section>Fields</section>
         </sections>
     </layouts>
@@ -146,6 +208,10 @@
             <section>Fields</section>
         </sections>
         <sections>
+            <label></label>
+            <section>New Section</section>
+        </sections>
+        <sections>
             <label>Información del sistema</label>
             <section>System Information</section>
         </sections>
@@ -153,55 +219,110 @@
     <layouts>
         <layout>Parent Account</layout>
         <sections>
-            <label><!-- Custom Links --></label>
+            <label></label>
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label><!-- Fields --></label>
+            <label></label>
             <section>Fields</section>
         </sections>
     </layouts>
     <layouts>
         <layout>Partner layout</layout>
         <sections>
-            <label><!-- Custom Links --></label>
+            <label></label>
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label><!-- Fields --></label>
+            <label></label>
             <section>Fields</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>SDM Intermediary</layout>
+        <sections>
+            <label></label>
+            <section>Address</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Allocation</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Indicators</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Intermediary Contact</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Main section</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System Information</section>
         </sections>
     </layouts>
     <layouts>
         <layout>ZE Customer</layout>
         <layoutType>PersonAccount</layoutType>
         <sections>
-            <label><!-- Additional information --></label>
+            <label></label>
             <section>Additional information</section>
         </sections>
         <sections>
-            <label><!-- GDPR Status --></label>
+            <label></label>
             <section>GDPR Status</section>
         </sections>
     </layouts>
+    <layouts>
+        <layout>ZE Lead</layout>
+        <layoutType>PersonAccount</layoutType>
+        <sections>
+            <label></label>
+            <section>Telemarketing</section>
+        </sections>
+    </layouts>
     <quickActions>
-        <label><!-- Child Account --></label>
+        <label></label>
+        <name>ActividadComercial</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
         <name>Child_Account</name>
     </quickActions>
     <quickActions>
-        <label><!-- Update --></label>
+        <label></label>
+        <name>Comunicacion</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Recordatorio2</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>SeguimientoOfertaPoliza</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
         <name>Update</name>
     </quickActions>
     <quickActions>
-        <label><!-- Update Intermediary --></label>
+        <label></label>
         <name>UpdateIntermediary</name>
     </quickActions>
     <quickActions>
-        <label><!-- Update Partner --></label>
+        <label></label>
         <name>UpdatePartner</name>
     </quickActions>
     <recordTypes>
-        <description><!-- SDM: Agrupación de mediador a nivel CIF --></description>
+        <description></description>
         <label>Agrupación Mediador</label>
         <name>AgrupacionMediador</name>
     </recordTypes>
@@ -215,65 +336,65 @@
         <name>Intermediary</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Master --></label>
+        <label></label>
         <name>Master</name>
     </recordTypes>
     <recordTypes>
         <description>Tipo de registro para las cuentas empresariales</description>
-        <label><!-- Parent Account --></label>
+        <label></label>
         <name>ParentAccount</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Partner --></label>
+        <label></label>
         <name>Partner</name>
     </recordTypes>
     <recordTypes>
-        <description><!-- For non-klinc partners --></description>
+        <description></description>
         <label>Partner OCS</label>
         <name>PartnerOCS</name>
     </recordTypes>
     <validationRules>
-        <errorMessage><!-- [VR Cuenta] No tienes permisos para modificar estos datos --></errorMessage>
+        <errorMessage></errorMessage>
         <name>OnlyEditIntermediaryManagers</name>
     </validationRules>
     <validationRules>
-        <errorMessage><!-- [VR Cuenta] Es necesario un formato de email válido --></errorMessage>
+        <errorMessage></errorMessage>
         <name>ValidateAdministrationManagerEmailFormat</name>
     </validationRules>
     <validationRules>
-        <errorMessage><!-- [VR Cuenta] Es necesario un formato de email válido --></errorMessage>
+        <errorMessage></errorMessage>
         <name>ValidateIndividualsManagerEmailFormat</name>
     </validationRules>
     <webLinks>
-        <label><!-- CreateLead --></label>
+        <label></label>
         <name>CreateLead</name>
     </webLinks>
     <webLinks>
-        <label><!-- GoogleMaps --></label>
+        <label></label>
         <name>GoogleMaps</name>
     </webLinks>
     <webLinks>
-        <label><!-- GoogleNews --></label>
+        <label></label>
         <name>GoogleNews</name>
     </webLinks>
     <webLinks>
-        <label><!-- GoogleSearch --></label>
+        <label></label>
         <name>GoogleSearch</name>
     </webLinks>
     <webLinks>
-        <label><!-- ExactTarget_Resubscribe --></label>
+        <label></label>
         <name>et4ae5__ExactTarget_Resubscribe</name>
     </webLinks>
     <webLinks>
-        <label><!-- ExactTarget_Unsubscribe --></label>
+        <label></label>
         <name>et4ae5__ExactTarget_Unsubscribe</name>
     </webLinks>
     <webLinks>
-        <label><!-- Send_ExactTarget_Email --></label>
+        <label></label>
         <name>et4ae5__Send_ExactTarget_Email</name>
     </webLinks>
     <webLinks>
-        <label><!-- View_ExactTarget_Analytics --></label>
+        <label></label>
         <name>et4ae5__View_ExactTarget_Analytics</name>
     </webLinks>
 </CustomObjectTranslation>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZZExclusiveManagement__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Clientes que solo pueden realizar gestiones en ZZ, tienen capada el soporte de CSM y USP</description>
+    <externalId>false</externalId>
+    <label>ZZ Exclusive Management</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>
