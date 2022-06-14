@@ -595,7 +595,7 @@
         <locationY>791</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>GetInteractionDataAction</targetReference>
+            <targetReference>GetMissedCallsId</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -628,6 +628,13 @@
                 <elementReference>$Record.InteractionId__c</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>OwnerId</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>GetMissedCallsId.Id</elementReference>
+            </value>
+        </filters>
         <object>Task</object>
         <outputAssignments>
             <assignToReference>$Record.TIPENT__c</assignToReference>
@@ -647,9 +654,31 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <description>Obtenemos el ID correspondiente al grupo Missed Calls</description>
+        <name>GetMissedCallsId</name>
+        <label>Get missed calls group ID</label>
+        <locationX>688</locationX>
+        <locationY>911</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetInteractionDataAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Missed_Calls</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Group</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>GetMotorRecordTypeAction</name>
         <label>Obtener Motor Record Type</label>
-        <locationX>1084</locationX>
+        <locationX>688</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
