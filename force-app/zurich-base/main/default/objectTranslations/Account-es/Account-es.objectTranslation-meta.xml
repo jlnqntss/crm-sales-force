@@ -77,11 +77,15 @@
         </sections>
         <sections>
             <label></label>
-            <section>Fields</section>
+            <section>Indicators</section>
         </sections>
         <sections>
             <label>Contacto de intermediario</label>
             <section>Intermediary Contact</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Main Section</section>
         </sections>
         <sections>
             <label>Información del sistema</label>
@@ -206,10 +210,6 @@
         <sections>
             <label>Campos</label>
             <section>Fields</section>
-        </sections>
-        <sections>
-            <label></label>
-            <section>New Section</section>
         </sections>
         <sections>
             <label>Información del sistema</label>

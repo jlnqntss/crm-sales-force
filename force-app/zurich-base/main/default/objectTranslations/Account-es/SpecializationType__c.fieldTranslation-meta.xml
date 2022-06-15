@@ -3,7 +3,15 @@
     <label>Tipo de especialización</label>
     <name>SpecializationType__c</name>
     <picklistValues>
-        <masterLabel>a eliminar</masterLabel>
+        <masterLabel>Cartera y Oferta</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Oferta</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Plan Madrid</masterLabel>
         <translation></translation>
     </picklistValues>
 </CustomFieldTranslation>
