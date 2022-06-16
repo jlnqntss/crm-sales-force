@@ -3651,7 +3651,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.AllowedIntermediaryCharge__c</field>
+        <field>Account.ActivityIndex__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3661,7 +3661,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.CAR__c</field>
+        <field>Account.Delegations__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.FinancialScoring__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.GridReference__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.HazardSusceptibility__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3707,6 +3722,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.NatAdvisoryCouncil__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Profitability__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12997,7 +13017,7 @@
         <recordType>Account.PartnerOCS</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Business Customer</layout>
+        <layout>Account-EON Business Customer</layout>
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
