@@ -25,6 +25,11 @@
         <default>false</default>
         <label>Property Express</label>
     </customValue>
+    <customValue>
+        <fullName>USP</fullName>
+        <default>false</default>
+        <label>USP</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

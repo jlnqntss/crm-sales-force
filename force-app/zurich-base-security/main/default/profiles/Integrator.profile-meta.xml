@@ -5376,6 +5376,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.CrossSellingApplied__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.CustomerNum__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5467,6 +5472,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.MasterClaimNo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Monitoring__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
