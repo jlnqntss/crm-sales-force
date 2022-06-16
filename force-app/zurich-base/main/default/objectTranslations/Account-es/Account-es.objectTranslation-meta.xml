@@ -31,41 +31,6 @@
         </sections>
     </layouts>
     <layouts>
-        <layout>EON Business Customer</layout>
-        <sections>
-            <label>Información de compañía</label>
-            <section>Company Information</section>
-        </sections>
-        <sections>
-            <label></label>
-            <section>Custom Links</section>
-        </sections>
-        <sections>
-            <label></label>
-            <section>Fields</section>
-        </sections>
-        <sections>
-            <label></label>
-            <section>GDPR</section>
-        </sections>
-        <sections>
-            <label></label>
-            <section>System Information</section>
-        </sections>
-    </layouts>
-    <layouts>
-        <layout>EON Customer</layout>
-        <layoutType>PersonAccount</layoutType>
-        <sections>
-            <label>Información adicional</label>
-            <section>Additional information</section>
-        </sections>
-        <sections>
-            <label></label>
-            <section>GDPR Status</section>
-        </sections>
-    </layouts>
-    <layouts>
         <layout>EON Intermediary</layout>
         <sections>
             <label>Asignación</label>
