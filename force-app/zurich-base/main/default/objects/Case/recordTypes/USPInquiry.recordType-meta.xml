@@ -1018,10 +1018,6 @@
             <fullName>Sugerencia</fullName>
             <default>false</default>
         </values>
-        <values>
-            <fullName>Validación%2F emisión</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
@@ -1238,10 +1234,6 @@
         </values>
         <values>
             <fullName>Sin Oferta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Validación%2F emisión</fullName>
             <default>false</default>
         </values>
         <values>
