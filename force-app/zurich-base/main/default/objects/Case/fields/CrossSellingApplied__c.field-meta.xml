@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CrossSellingApplied__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Manualmente puede marcar usuario de USP</description>
+    <externalId>false</externalId>
+    <label>Cross Selling Applied</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
