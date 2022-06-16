@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreClientPortfolioCommunication__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Intermediario que recibe listado de mediadores a los que mandar precartera</description>
+    <externalId>false</externalId>
+    <label>Pre Client Portfolio Communication</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

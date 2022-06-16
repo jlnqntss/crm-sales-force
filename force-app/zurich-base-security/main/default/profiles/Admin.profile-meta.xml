@@ -121,6 +121,11 @@
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
+    <applicationVisibilities>
+        <application>USP</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
     <classAccesses>
         <apexClass>AccountSearchService</apexClass>
         <enabled>true</enabled>
@@ -3652,6 +3657,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.AllowedIntermediaryCharge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.AnnualRevenue</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3698,6 +3708,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.BusinessesEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.CAR__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4012,6 +4027,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.PreClientPortfolioCommunication__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Profitability__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Rating</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4072,6 +4097,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.SMEClientPortfolio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SpecializationType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4117,6 +4152,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.TOPIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.TradeName__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4138,6 +4178,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Zone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ZZExclusiveManagement__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10572,7 +10617,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Survey__c.NumeroMatricula__c</field>
+        <field>Survey__c.NumeroMatriculaVehiculo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13579,7 +13624,7 @@
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Intermediary</layout>
+        <layout>Account-EON Intermediary</layout>
         <recordType>Account.Intermediary</recordType>
     </layoutAssignments>
     <layoutAssignments>
