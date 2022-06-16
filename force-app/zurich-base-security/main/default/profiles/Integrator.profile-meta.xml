@@ -3651,6 +3651,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.AllowedIntermediaryCharge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.ActivityIndex__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3662,6 +3667,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Delegations__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.CAR__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

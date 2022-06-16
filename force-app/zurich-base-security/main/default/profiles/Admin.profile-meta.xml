@@ -4052,6 +4052,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.PreClientPortfolioCommunication__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Profitability__c</field>
         <readable>true</readable>
     </fieldPermissions>
