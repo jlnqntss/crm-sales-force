@@ -11,7 +11,7 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>USP</label>
+    <label>USP - OCS</label>
     <navType>Console</navType>
     <profileActionOverrides>
         <actionName>View</actionName>
