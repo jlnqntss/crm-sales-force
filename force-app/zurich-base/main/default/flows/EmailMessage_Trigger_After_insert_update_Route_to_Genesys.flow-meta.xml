@@ -50,7 +50,7 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>$Record.Id</elementReference>
+                <elementReference>ScreenPopURL</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -111,7 +111,7 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>$Record.Id</elementReference>
+                <elementReference>ScreenPopURL</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -161,6 +161,29 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>GetSalesforceQueueAction.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>CasoRelacionado.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>IsSourceAreaReportedDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>SourceAreaReportedAssignment</name>
+        <label>Asignar informacion area origen</label>
+        <locationX>182</locationX>
+        <locationY>1440</locationY>
+        <assignmentItems>
+            <assignToReference>CasoRelacionado.SourceArea__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetGenesysQueueAction.SourceArea__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -257,7 +280,7 @@
         <locationX>314</locationX>
         <locationY>984</locationY>
         <defaultConnector>
-            <targetReference>IsUpdatingNeccesaryDecision</targetReference>
+            <targetReference>IsSourceAreaReportedDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Cola no informada</defaultConnectorLabel>
         <rules>
@@ -277,10 +300,42 @@
         </rules>
     </decisions>
     <decisions>
+        <name>IsSourceAreaReportedDecision</name>
+        <label>¿Area Origen informada?</label>
+        <locationX>314</locationX>
+        <locationY>1320</locationY>
+        <defaultConnector>
+            <targetReference>IsUpdatingNeccesaryDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Area Origen no informada</defaultConnectorLabel>
+        <rules>
+            <name>ReportedSourceArea</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetGenesysQueueAction.SourceArea__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.SourceArea__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SourceAreaReportedAssignment</targetReference>
+            </connector>
+            <label>Area Origen informada</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>IsUpdatingNeccesaryDecision</name>
         <label>¿Aplica actualizar?</label>
         <locationX>314</locationX>
-        <locationY>1320</locationY>
+        <locationY>1656</locationY>
         <defaultConnectorLabel>No aplica</defaultConnectorLabel>
         <rules>
             <name>IsNecessaryOutcome</name>
@@ -345,6 +400,15 @@
 &quot;ZE&quot;, &quot;ZE&quot;, 
 &quot;ZEO&quot;, &quot;ZEO&quot;,
 &quot;all&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>URL de la ficha a abrir con el correo enrutado</description>
+        <name>ScreenPopURL</name>
+        <dataType>String</dataType>
+        <expression>IF( {!scopeValue} = &apos;ZE&apos; , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=ZESearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; +  {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Id} + &apos;&quot;},{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
+IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CCS&apos;) , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CCSSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId} + &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId} + &apos;&quot;}]&apos;,
+IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CSM&apos;) ,  &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CSMSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress} + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId}+ &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
+ {!$Record.Id} )))</expression>
     </formulas>
     <interviewLabel>EmailMessage Trigger - After insert/update Route to Genesys {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After insert - Route to Genesys</label>
@@ -447,7 +511,7 @@
         <name>CreateUpdateCaseErrorAction</name>
         <label>Generar error actualizar caso</label>
         <locationX>314</locationX>
-        <locationY>1560</locationY>
+        <locationY>1896</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -558,7 +622,7 @@
         <name>UpdateCaseAction</name>
         <label>Actualizar caso</label>
         <locationX>50</locationX>
-        <locationY>1440</locationY>
+        <locationY>1776</locationY>
         <faultConnector>
             <targetReference>CreateUpdateCaseErrorAction</targetReference>
         </faultConnector>
