@@ -54,6 +54,29 @@
         </sections>
         <sections>
             <label>Información del sistema</label>
+        <layout>EON Business Customer</layout>
+        <sections>
+            <label>Comportamiento siniestral</label>
+            <section>Claiming Performance</section>
+        </sections>
+        <sections>
+            <label>Información de compañía</label>
+            <section>Company Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>GDPR</section>
+        </sections>
+        <sections>
+            <label></label>
             <section>System Information</section>
         </sections>
     </layouts>
@@ -254,6 +277,12 @@
             <section>Telemarketing</section>
         </sections>
     </layouts>
+    <quickActions>
+        <label></label>
+        <name>ActividadComercial</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
     <quickActions>
         <label></label>
         <name>ActividadComercial</name>
