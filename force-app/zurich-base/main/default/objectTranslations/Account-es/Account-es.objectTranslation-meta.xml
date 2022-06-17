@@ -31,6 +31,33 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>EON Business Customer</layout>
+        <sections>
+            <label>Comportamiento siniestral</label>
+            <section>Claiming Performance</section>
+        </sections>
+        <sections>
+            <label>Información de compañía</label>
+            <section>Company Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>GDPR</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>EON Intermediary</layout>
         <sections>
             <label>Asignación</label>
