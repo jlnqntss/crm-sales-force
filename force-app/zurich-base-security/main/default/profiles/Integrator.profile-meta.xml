@@ -13022,7 +13022,7 @@
         <recordType>Account.PartnerOCS</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Business Customer</layout>
+        <layout>Account-EON Business Customer</layout>
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
