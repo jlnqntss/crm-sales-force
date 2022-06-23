@@ -7788,11 +7788,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Event.GenesysCloudInteractionTranscript__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>OpportunityLineItem.ServiceDate</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9959,11 +9954,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>et4ae5__Automated_Send__c.et4ae5__NumberofSoftBounces__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Task.GenesysCloudInteractionTranscript__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14898,10 +14888,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Special_Condition__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>purecloud__PureCloud_Chat_Transcript__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

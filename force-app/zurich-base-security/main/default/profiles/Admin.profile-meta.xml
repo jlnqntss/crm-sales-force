@@ -6957,11 +6957,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Event.GenesysCloudInteractionTranscript__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Contract.CustomerSignedDate</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10787,11 +10782,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Task.GenesysCloudInteractionTranscript__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Task.IdentifiedByANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -13745,7 +13735,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Default EON</layout>
-        <recordType>Case.EONInquiry</recordType>
+        <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
@@ -16253,10 +16243,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Special_Condition__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>purecloud__PureCloud_Chat_Transcript__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
