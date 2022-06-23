@@ -90,6 +90,14 @@
         <type>Flexipage</type>
         <pageOrSobjectType>Case</pageOrSobjectType>
     </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <content>OCS_Home_Default</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+    </actionOverrides>
     <brand>
         <headerColor>#003398</headerColor>
         <logo>logo_2</logo>
@@ -105,6 +113,22 @@
     <navType>Console</navType>
     <profileActionOverrides>
         <actionName>View</actionName>
+        <content>OCS_Offer_Defaut</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>OCS_Offer_Defaut</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
         <content>Opci_n_P_gina_de_registro</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Quote</pageOrSobjectType>
@@ -400,6 +424,15 @@
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>PersonAccount.Lead</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>OCS_Customer_Default</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>PersonAccount.Customer</recordType>
         <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
@@ -414,6 +447,7 @@
     <tabs>Claim__c</tabs>
     <tabs>Scope__c</tabs>
     <tabs>Relationship__c</tabs>
+    <tabs>purecloud__PureCloud_Chat_Transcript__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>OCS_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -430,6 +464,9 @@
         <mappings>
             <fieldName>AccountId__c</fieldName>
             <tab>Scope__c</tab>
+        </mappings>
+        <mappings>
+            <tab>purecloud__PureCloud_Chat_Transcript__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>

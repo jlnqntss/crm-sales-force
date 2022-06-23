@@ -6097,6 +6097,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.GenesysCloudInteractionTranscript__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Cover__c.SourceCountry__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10751,6 +10756,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.GenesysCloudInteractionTranscript__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>et4ae5__SendJunction__c.et4ae5__From_Name__c</field>
         <readable>false</readable>
@@ -13824,6 +13834,10 @@
     <tabVisibilities>
         <tab>Special_Condition__c</tab>
         <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>purecloud__PureCloud_Chat_Transcript__c</tab>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>et4ae5__Configuration__c</tab>
