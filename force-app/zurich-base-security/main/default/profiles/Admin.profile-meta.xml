@@ -13735,7 +13735,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Default EON</layout>
-        <recordType>Case.EONInquiry</recordType>
+        <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
