@@ -167,10 +167,6 @@
                 <behavior>Edit</behavior>
                 <field>PolicyId__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ProductId</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -219,7 +215,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Información CARTOPS</label>
+        <label>Información Robot Tipificador</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>

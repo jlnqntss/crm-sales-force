@@ -12,8 +12,11 @@
                     <value>Case.Id</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>titleFieldName</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>updateQuickActionName</name>
-                    <value>Case.UpdateOCS</value>
+                    <value>Case.UpdateEON</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord</identifier>
