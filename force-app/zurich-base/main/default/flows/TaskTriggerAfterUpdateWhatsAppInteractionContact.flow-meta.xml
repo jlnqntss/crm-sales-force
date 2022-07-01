@@ -1,6 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
+    <decisions>
+        <name>Hay_WhatId_y_ha_cambiado</name>
+        <label>Hay WhatId y ha cambiado</label>
+        <locationX>182</locationX>
+        <locationY>671</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_hay_WhatId_y_ha_cambiado</name>
+            <conditionLogic>3 OR (1 AND 2)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WhatId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WhatId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.GenesysCloudInteractionTranscript__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Transcripcion_Cliente</targetReference>
+            </connector>
+            <label>Si hay WhatId y ha cambiado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Hay_WhoId_y_ha_cambiado</name>
+        <label>Hay WhoId y ha cambiado</label>
+        <locationX>182</locationX>
+        <locationY>335</locationY>
+        <defaultConnector>
+            <targetReference>Hay_WhatId_y_ha_cambiado</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_hay_WhoId_y_ha_cambiado</name>
+            <conditionLogic>3 OR (1 AND 2)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WhoId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WhoId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.GenesysCloudInteractionTranscript__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Transcripcion_0</targetReference>
+            </connector>
+            <label>Si hay WhoId y ha cambiado</label>
+        </rules>
+    </decisions>
     <description>Si cambia el Contacto de una Tarea, y esta tiene una Transcripción de Chat, se pasa esa relación de contacto a la Transcripción.</description>
     <interviewLabel>Task Trigger {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After Update - WhatsApp Interaction Contact</label>
@@ -24,10 +99,13 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>Update_Transcripcion</name>
+        <name>Update_Transcripcion_0</name>
         <label>Update Transcripción</label>
-        <locationX>176</locationX>
-        <locationY>335</locationY>
+        <locationX>50</locationX>
+        <locationY>455</locationY>
+        <connector>
+            <targetReference>Hay_WhatId_y_ha_cambiado</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -44,13 +122,34 @@
         </inputAssignments>
         <object>purecloud__PureCloud_Chat_Transcript__c</object>
     </recordUpdates>
-    <start>
+    <recordUpdates>
+        <name>Update_Transcripcion_Cliente</name>
+        <label>Update Transcripción Cliente</label>
         <locationX>50</locationX>
+        <locationY>791</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.GenesysCloudInteractionTranscript__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Account__c</field>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>purecloud__PureCloud_Chat_Transcript__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Update_Transcripcion</targetReference>
+            <targetReference>Hay_WhoId_y_ha_cambiado</targetReference>
         </connector>
-        <filterLogic>3 AND (4 OR (1 AND 2))</filterLogic>
+        <filterLogic>3 AND ( (1 AND 2) OR (4 AND 5) OR 6)</filterLogic>
         <filters>
             <field>WhoId</field>
             <operator>IsNull</operator>
@@ -70,6 +169,20 @@
             <operator>IsNull</operator>
             <value>
                 <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WhatId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WhatId</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <filters>

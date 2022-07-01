@@ -20,6 +20,11 @@
         <field>purecloud__PureCloud_Chat_Transcript__c.Contact__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>purecloud__PureCloud_Chat_Transcript__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Gestión WhatsApp</label>
     <objectPermissions>
