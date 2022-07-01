@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Sub-motivo</label>
+    <name>LossSubReason__c</name>
+    <picklistValues>
+        <masterLabel>Excluded professions</masterLabel>
+        <translation>Profesiones excluidas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Excluded risks</masterLabel>
+        <translation>Riesgos excluidos</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Insurance conditions</masterLabel>
+        <translation>Condiciones de aseguramiento</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Product not insurable in ZE.es</masterLabel>
+        <translation>Producto no asegurable en ZE.es</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Risk quality</masterLabel>
+        <translation>Calidad del riesgo</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Several</masterLabel>
+        <translation>Varios</translation>
+    </picklistValues>
+</CustomFieldTranslation>
