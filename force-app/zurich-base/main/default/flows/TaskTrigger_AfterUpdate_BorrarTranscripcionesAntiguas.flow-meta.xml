@@ -23,6 +23,7 @@
             <label>Hay Interaction Anterior</label>
         </rules>
     </decisions>
+    <description>Si cambia el "Genesys Cloud Interaction Transcript" relacionado a la Task, se borra el anterior. Esto se hace para evitar duplicidad de Transcripciones, ya que la nueva tendrá los mismos datos que la anterior mas los nuevos mensajes.</description>
     <interviewLabel>Task Trigger - After Update - Borrar Transcripciones Antiguas {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After Update - Borrar Transcripciones Antiguas</label>
     <processMetadataValues>
