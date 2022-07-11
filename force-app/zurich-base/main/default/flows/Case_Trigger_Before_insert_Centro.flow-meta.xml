@@ -2,9 +2,22 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>53.0</apiVersion>
     <assignments>
+        <name>Asignar_Call_Center_del_Owner</name>
+        <label>Asignar Call Center del Owner</label>
+        <locationX>50</locationX>
+        <locationY>551</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CallCenter__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CallCenterByOwnerFormula</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>AssignCCSAssignment</name>
         <label>Asignar CCS</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
@@ -17,7 +30,7 @@
     <assignments>
         <name>AssignCSMAdmAssignment</name>
         <label>Asignar CSM Adm</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
@@ -30,7 +43,7 @@
     <assignments>
         <name>AssignCSMPartAssignment</name>
         <label>Asignar CSM Part</label>
-        <locationX>50</locationX>
+        <locationX>314</locationX>
         <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
@@ -43,7 +56,7 @@
     <assignments>
         <name>CallCenterAssignment</name>
         <label>Asignar Call Center</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>551</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
@@ -64,7 +77,7 @@
     <decisions>
         <name>CSMCenterDecision</name>
         <label>¿Es Centro CSM?</label>
-        <locationX>182</locationX>
+        <locationX>446</locationX>
         <locationY>671</locationY>
         <defaultConnector>
             <targetReference>AssignCSMAdmAssignment</targetReference>
@@ -131,7 +144,7 @@
     <decisions>
         <name>CSMOrCCSDecision</name>
         <label>¿Es CSM o CCS?</label>
-        <locationX>380</locationX>
+        <locationX>644</locationX>
         <locationY>551</locationY>
         <defaultConnector>
             <targetReference>AssignCCSAssignment</targetReference>
@@ -156,7 +169,7 @@
     <decisions>
         <name>IsOCSDecision</name>
         <label>¿Es OCS?</label>
-        <locationX>1056</locationX>
+        <locationX>1172</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -178,12 +191,48 @@
     <decisions>
         <name>UserTypeAndDepartmentDecision</name>
         <label>¿Tipo de user y departamento?</label>
-        <locationX>743</locationX>
+        <locationX>710</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
+            <name>Call_Center_en_base_a_departamento_del_Owner</name>
+            <conditionLogic>1 AND (2 OR (3 AND 4))</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>005</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Owner:User.Department</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Call_Center_del_Owner</targetReference>
+            </connector>
+            <label>Call Center en base a departamento del Owner</label>
+        </rules>
+        <rules>
             <name>TypologyBasedCallCenterOutcome</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>$User.Department</leftValueReference>
                 <operator>EqualTo</operator>
@@ -196,6 +245,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -220,6 +276,13 @@
                     <stringValue>Integrator</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>CallCenterAssignment</targetReference>
             </connector>
@@ -227,6 +290,41 @@
         </rules>
     </decisions>
     <description>Identifica el Centro al que pertenece el caso en base a la tipificación del mismo o al departamento asignado al usuario</description>
+    <formulas>
+        <name>CallCenterByOwnerFormula</name>
+        <dataType>String</dataType>
+        <expression>IF
+(
+	BEGINS({!$Record.OwnerId},&apos;00G&apos;),
+	IF
+	(
+		CONTAINS({!$Record.Owner:Group.Name},&apos;CCS&apos;),
+		&apos;CC Service&apos;,
+		IF
+		(
+			CONTAINS({!$Record.Owner:Group.Name},&apos;CSM_A&apos;),
+			&apos;CSM Administración&apos;,
+			IF
+			(
+				CONTAINS({!$Record.Owner:Group.Name},&apos;CSM_P&apos;),
+				&apos;CSM Particulares&apos;,
+				IF
+				(
+					{!$User.Department} = &apos;Servicio de Atención al Cliente&apos;,
+					&apos;CC Service&apos;, 
+					{!$User.Department}
+				)
+			)
+		)
+	),
+	IF
+	(
+		{!$Record.Owner:User.Department} = &apos;Servicio de Atención al Cliente&apos;,
+		&apos;CC Service&apos;, 
+		{!$Record.Owner:User.Department}
+	)
+)</expression>
+    </formulas>
     <formulas>
         <name>CallCenterFormula</name>
         <dataType>String</dataType>
@@ -258,17 +356,24 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>930</locationX>
+        <locationX>1046</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsOCSDecision</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>or</filterLogic>
         <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue></stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OwnerId</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <object>Case</object>
