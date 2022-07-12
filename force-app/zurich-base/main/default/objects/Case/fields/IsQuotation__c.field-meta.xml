@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsQuotation__c</fullName>
+    <description>EON. Indica si el caso corresponde a una cotización o un caso de tipo consulta.</description>
+    <externalId>false</externalId>
+    <formula>ISPICKVAL(Type,&quot;Captación&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>¿Es cotización?</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
