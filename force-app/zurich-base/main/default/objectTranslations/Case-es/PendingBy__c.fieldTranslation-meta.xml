@@ -11,6 +11,10 @@
         <translation>Gestión de Competencias</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Intermediary</masterLabel>
+        <translation>Mediador</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Other areas Third parties</masterLabel>
         <translation>Otras áreas Terceros</translation>
     </picklistValues>
@@ -19,11 +23,27 @@
         <translation>Otras áreas Zurich</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Others</masterLabel>
+        <translation>Otros</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Supervisor</masterLabel>
         <translation>Supervisor</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Systems Incidence</masterLabel>
         <translation>Incidencia Sistemas</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Technical Direction</masterLabel>
+        <translation>Dirección Técnica</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Territorial Direction</masterLabel>
+        <translation>Dirección Territorial</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>USP Scaled</masterLabel>
+        <translation>Escalado USP</translation>
     </picklistValues>
 </CustomFieldTranslation>

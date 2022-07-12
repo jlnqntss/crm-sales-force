@@ -3,231 +3,223 @@
     <label>Tipo N3</label>
     <name>TypeN3__c</name>
     <picklistValues>
-        <masterLabel>Activation failure</masterLabel>
-        <translation>Fallo activación</translation>
+        <masterLabel>Ajuste oferta</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Annulment</masterLabel>
-        <translation>Anulación</translation>
+        <masterLabel>Anotación Embargo</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Bank data</masterLabel>
-        <translation>Datos bancarios</translation>
+        <masterLabel>Anulación</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>CTL surveys</masterLabel>
-        <translation>Encuestas CTL</translation>
+        <masterLabel>Bloqueo / Desbloqueo</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Cancellation due to change of mediator</masterLabel>
-        <translation>Anulación por cambio de mediador</translation>
+        <masterLabel>Bloqueo usuario/contraseña</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Capital decrease</masterLabel>
-        <translation>Disminución capitales</translation>
+        <masterLabel>Cambio Idioma en póliza</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Capital expansion</masterLabel>
-        <translation>Ampliación capitales</translation>
+        <masterLabel>Cambio Tomador</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Card payment</masterLabel>
-        <translation>Pago tarjeta</translation>
+        <masterLabel>Cambio datos Riesgo</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Certificate</masterLabel>
-        <translation>Certificado</translation>
+        <masterLabel>Cambio de Actividad</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Change taker</masterLabel>
-        <translation>Cambio tomador</translation>
+        <masterLabel>Cambio de Riesgo</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Claims</masterLabel>
-        <translation>Reclamaciones</translation>
+        <masterLabel>Cambio de Roles</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Complaints</masterLabel>
-        <translation>Quejas</translation>
+        <masterLabel>Campaña</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Congratulations</masterLabel>
-        <translation>Felicitaciones</translation>
+        <masterLabel>Cartera</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>DDA part</masterLabel>
-        <translation>Parte DDA</translation>
+        <masterLabel>Clausulado</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Dates</masterLabel>
-        <translation>Fechas</translation>
+        <masterLabel>Comisiones</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Decrease in guarantees</masterLabel>
-        <translation>Disminución garantías</translation>
+        <masterLabel>Con Oferta</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Digital signature</masterLabel>
-        <translation>Firma digital</translation>
+        <masterLabel>Conductor</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Fines</masterLabel>
-        <translation>Multas</translation>
+        <masterLabel>Datos Bancarios</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>General information</masterLabel>
-        <translation>Información general</translation>
+        <masterLabel>Datos Personales</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Green card</masterLabel>
-        <translation>Carta Verde</translation>
+        <masterLabel>Devolución</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Incl./Modif driver (Main-2º)</masterLabel>
-        <translation>Incl./Modif conductor (Ppal-2º)</translation>
+        <masterLabel>Emisión</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Inconsistency</masterLabel>
-        <translation>Inconsistencia</translation>
+        <masterLabel>Emisión de Factura Electrónica</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Insured management</masterLabel>
-        <translation>Gestión asegurados</translation>
+        <masterLabel>Emitir financiada</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Issue</masterLabel>
-        <translation>Emisión</translation>
+        <masterLabel>Emitir póliza</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Language change in policy</masterLabel>
-        <translation>Cambio idioma en póliza</translation>
+        <masterLabel>Fallo activación</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Navigation</masterLabel>
-        <translation>Navegación</translation>
+        <masterLabel>Fallo registro NO identificado</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>New offer (Competences management)</masterLabel>
-        <translation>Nueva oferta (Gestión competencias)</translation>
+        <masterLabel>Fallo registro identificado</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>New offer (Support recruitment)</masterLabel>
-        <translation>Nueva oferta (Apoyo captación)</translation>
+        <masterLabel>Fechas</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>No offer</masterLabel>
-        <translation>Sin oferta</translation>
+        <masterLabel>Firma digital</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Offer (Modification)</masterLabel>
-        <translation>Oferta (Modificación)</translation>
+        <masterLabel>Forma de Pago</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Offer (Shipping)</masterLabel>
-        <translation>Oferta (Envíos)</translation>
+        <masterLabel>Garantías / Capitales</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Payments</masterLabel>
-        <translation>Pagos</translation>
+        <masterLabel>Generación Oferta</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Personal information</masterLabel>
-        <translation>Datos personales</translation>
+        <masterLabel>General</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Policy</masterLabel>
-        <translation>Póliza</translation>
+        <masterLabel>Gestión competencias (Captación)</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Policy supplement</masterLabel>
-        <translation>Suplemento póliza</translation>
+        <masterLabel>Inconsistencia</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Proteo client</masterLabel>
-        <translation>Cliente proteo</translation>
+        <masterLabel>Infraseguro</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Receipt</masterLabel>
-        <translation>Recibo</translation>
+        <masterLabel>Levantamiento de Embargo</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Record failure NOT identified</masterLabel>
-        <translation>Fallo registro NO identificado</translation>
+        <masterLabel>Modificación</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Record failure identified</masterLabel>
-        <translation>Fallo registro identificado</translation>
+        <masterLabel>Multas</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Regular</masterLabel>
-        <translation>Regular</translation>
+        <masterLabel>Navegación</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Regularization</masterLabel>
-        <translation>Regularización</translation>
+        <masterLabel>No definido</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Resend receipt</masterLabel>
-        <translation>Reenvío recibo</translation>
+        <masterLabel>Nueva Producción</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Return</masterLabel>
-        <translation>Devolución</translation>
+        <masterLabel>Nueva oferta</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Risk change</masterLabel>
-        <translation>Cambio de riesgo</translation>
+        <masterLabel>Oferta</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Rule 57</masterLabel>
-        <translation>Norma 57</translation>
+        <masterLabel>Oferta financiada</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Secure document</masterLabel>
-        <translation>Documento seguro</translation>
+        <masterLabel>Pagos</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Suggestion</masterLabel>
-        <translation>Sugerencia</translation>
+        <masterLabel>Queja</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Transfer payment</masterLabel>
-        <translation>Pago transferencia</translation>
+        <masterLabel>Recibo</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Undefined</masterLabel>
-        <translation>No definido</translation>
+        <masterLabel>Reclamación</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Underinsurance</masterLabel>
-        <translation>Infraseguro</translation>
+        <masterLabel>Regularización</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Urgent</masterLabel>
-        <translation>Urgente</translation>
+        <masterLabel>Rehabilitación</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>User / password lock</masterLabel>
-        <translation>Bloqueo usuario/contraseña</translation>
+        <masterLabel>Retención</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Warranty extension</masterLabel>
-        <translation>Ampliación garantías</translation>
+        <masterLabel>Sin Oferta</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Way to pay</masterLabel>
-        <translation>Forma de pago</translation>
+        <masterLabel>Validación / emisión</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Web</masterLabel>
-        <translation>Web</translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>With offer (Management skills)</masterLabel>
-        <translation>Con oferta (Gestión competencias)</translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>With offer (Recruitment support)</masterLabel>
-        <translation>Con oferta (Apoyo captación)</translation>
+        <masterLabel>Zona Zurich</masterLabel>
+        <translation></translation>
     </picklistValues>
 </CustomFieldTranslation>
