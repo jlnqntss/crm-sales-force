@@ -3,12 +3,16 @@
     <label>Type N2</label>
     <name>Subtype__c</name>
     <picklistValues>
+        <masterLabel>Ajuste oferta</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Anulación</masterLabel>
-        <translation><!-- Anulación --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Apoyo Captación</masterLabel>
-        <translation><!-- Apoyo Captación --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>App</masterLabel>
@@ -20,15 +24,15 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Backoffice</masterLabel>
-        <translation><!-- Backoffice --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Cambio de intermediario</masterLabel>
-        <translation><!-- Cambio de intermediario --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Campaña</masterLabel>
-        <translation><!-- Campaña --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Cancelacion</masterLabel>
@@ -65,6 +69,10 @@
     <picklistValues>
         <masterLabel>Contratación</masterLabel>
         <translation>Purchase</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cotización</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Cuando me avisan</masterLabel>
@@ -120,7 +128,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Devolución de recibo liquidado mediador</masterLabel>
-        <translation><!-- Devolución de recibo liquidado mediador --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Documentación - Bloqueo IMEI</masterLabel>
@@ -168,7 +176,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Documentación Otros</masterLabel>
-        <translation><!-- Documentación Otros --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Documentación Otros Dispositivo</masterLabel>
@@ -184,7 +192,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Documentación necesaria</masterLabel>
-        <translation><!-- Documentación necesaria --></translation>
+        <translation>Documents required</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Dudas sobre recogida/entrega</masterLabel>
@@ -204,15 +212,19 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Embargo Cliente</masterLabel>
-        <translation><!-- Embargo Cliente --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Embargo Mediador</masterLabel>
-        <translation><!-- Embargo Mediador --></translation>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Emisión</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Envíos</masterLabel>
-        <translation><!-- Envíos --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Escalable</masterLabel>
@@ -220,7 +232,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Felicitación</masterLabel>
-        <translation><!-- Felicitación --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Franquicia</masterLabel>
@@ -228,23 +240,27 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Gestión Competencias</masterLabel>
-        <translation><!-- Gestión Competencias --></translation>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Gestión competencias (Captación)</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Gestión de recibos</masterLabel>
-        <translation><!-- Gestión de recibos --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Incidencias (Cliente)</masterLabel>
-        <translation><!-- Incidencias (Cliente) --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Incidencias (Mediador)</masterLabel>
-        <translation><!-- Incidencias (Mediador) --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Incidencias Mi Zurich</masterLabel>
-        <translation><!-- Incidencias Mi Zurich --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Indemnización de mi vehiculo</masterLabel>
@@ -264,7 +280,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Información</masterLabel>
-        <translation><!-- Información --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Internas</masterLabel>
@@ -276,7 +292,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Modificación</masterLabel>
-        <translation><!-- Modificación --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Modificar dispositivo asegurado</masterLabel>
@@ -300,7 +316,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>No definido</masterLabel>
-        <translation><!-- No definido --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Nuevo dispositivo</masterLabel>
@@ -340,7 +356,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Partnership</masterLabel>
-        <translation><!-- Partnership --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Precio de mi seguro</masterLabel>
@@ -360,31 +376,31 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Queja</masterLabel>
-        <translation><!-- Queja --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Reclamación</masterLabel>
-        <translation><!-- Reclamación --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Recobro indirecto</masterLabel>
-        <translation><!-- Recobro indirecto --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Recobro proactivo</masterLabel>
-        <translation><!-- Recobro proactivo --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Recobro reactivo</masterLabel>
-        <translation><!-- Recobro reactivo --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Reemplazo</masterLabel>
-        <translation><!-- Reemplazo --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Rehabilitación</masterLabel>
-        <translation><!-- Rehabilitación --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Rehuse daños</masterLabel>
@@ -408,7 +424,7 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Retención</masterLabel>
-        <translation><!-- Retención --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Retraso en la reparación</masterLabel>
@@ -424,19 +440,19 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Revocación Saneamiento</masterLabel>
-        <translation><!-- Revocación Saneamiento --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>SWAP - experiencia</masterLabel>
-        <translation><!-- SWAP - experiencia --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>SWAP - incidencias</masterLabel>
-        <translation><!-- SWAP - incidencias --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Saneamiento</masterLabel>
-        <translation><!-- Saneamiento --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Solicitud factura</masterLabel>
@@ -444,14 +460,14 @@
     </picklistValues>
     <picklistValues>
         <masterLabel>Sugerencia</masterLabel>
-        <translation><!-- Sugerencia --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Validación</masterLabel>
-        <translation><!-- Validación --></translation>
+        <translation>Validation</translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Validación/ emisión</masterLabel>
-        <translation><!-- Validación/ emisión --></translation>
+        <masterLabel>Validación / emisión</masterLabel>
+        <translation></translation>
     </picklistValues>
 </CustomFieldTranslation>
