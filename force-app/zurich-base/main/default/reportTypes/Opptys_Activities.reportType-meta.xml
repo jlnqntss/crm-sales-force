@@ -700,4 +700,17 @@
         </columns>
         <masterLabel>Activities</masterLabel>
     </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LossSubReason__c</field>
+            <table>Opportunity</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LossSubReasonDescription__c</field>
+            <table>Opportunity</table>
+        </columns>
+        <masterLabel>Offers</masterLabel>
+    </sections>
 </ReportType>
