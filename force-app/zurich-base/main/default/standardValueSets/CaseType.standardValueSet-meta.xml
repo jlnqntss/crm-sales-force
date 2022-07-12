@@ -7,6 +7,11 @@
         <label>Campañas</label>
     </standardValue>
     <standardValue>
+        <fullName>Captación</fullName>
+        <default>false</default>
+        <label>Captación</label>
+    </standardValue>
+    <standardValue>
         <fullName>Contratar mi seguro</fullName>
         <default>false</default>
         <label>Contratar mi seguro</label>
