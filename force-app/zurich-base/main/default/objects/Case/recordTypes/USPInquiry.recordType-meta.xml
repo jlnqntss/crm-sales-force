@@ -428,11 +428,31 @@
     <picklistValues>
         <picklist>CloseResult__c</picklist>
         <values>
+            <fullName>Caducada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Declinada - Actividad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Declinada - Medidas protección</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Declinada - Precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Derivado - Norma 57%2FAJ</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Derivado - Otras Áreas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ganada</fullName>
             <default>false</default>
         </values>
         <values>
@@ -469,6 +489,18 @@
         </values>
         <values>
             <fullName>No realizado - Rechazo técnico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perdida - Garantías</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perdida - Precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perdida - Tiempo respuesta</fullName>
             <default>false</default>
         </values>
         <values>
@@ -769,27 +801,23 @@
     <picklistValues>
         <picklist>PendingBy__c</picklist>
         <values>
-            <fullName>Client</fullName>
+            <fullName>Intermediary</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Competency Management</fullName>
+            <fullName>Others</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Other areas Third parties</fullName>
+            <fullName>Technical Direction</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Other areas Zurich</fullName>
+            <fullName>Territorial Direction</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Supervisor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Systems Incidence</fullName>
+            <fullName>USP Scaled</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -806,6 +834,33 @@
         <values>
             <fullName>Medium</fullName>
             <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>QuotationStage__c</picklist>
+        <values>
+            <fullName>Info request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lost</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prospect</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quoted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Won</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Work in Progress</fullName>
+            <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
@@ -828,6 +883,25 @@
         </values>
         <values>
             <fullName>User didn%27t attend training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RiskAppetite__c</picklist>
+        <values>
+            <fullName>Excluido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Moderado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Preferente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Restringido</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -907,6 +981,10 @@
     <picklistValues>
         <picklist>Subtype__c</picklist>
         <values>
+            <fullName>Ajuste oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Anulación</fullName>
             <default>false</default>
         </values>
@@ -923,6 +1001,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cotización</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Devolución de recibo liquidado mediador</fullName>
             <default>false</default>
         </values>
@@ -935,6 +1017,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Emisión</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Envíos</fullName>
             <default>false</default>
         </values>
@@ -944,6 +1030,10 @@
         </values>
         <values>
             <fullName>Gestión Competencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión competencias %28Captación%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1026,7 +1116,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Cliente</fullName>
+            <fullName>Captación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1041,13 +1131,13 @@
             <fullName>Gestión Servicios</fullName>
             <default>false</default>
         </values>
-        <values>
-            <fullName>Venta</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>TypeN3__c</picklist>
+        <values>
+            <fullName>Ajuste oferta</fullName>
+            <default>false</default>
+        </values>
         <values>
             <fullName>Anotación Embargo</fullName>
             <default>false</default>
@@ -1133,6 +1223,14 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Emitir financiada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Emitir póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Fallo activación</fullName>
             <default>false</default>
         </values>
@@ -1169,6 +1267,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Gestión competencias %28Captación%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Inconsistencia</fullName>
             <default>false</default>
         </values>
@@ -1201,7 +1303,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Nueva oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta financiada</fullName>
             <default>false</default>
         </values>
         <values>

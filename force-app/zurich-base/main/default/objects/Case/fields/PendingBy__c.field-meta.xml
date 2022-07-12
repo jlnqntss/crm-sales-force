@@ -44,6 +44,31 @@
                 <default>false</default>
                 <label>Other areas Third parties</label>
             </value>
+            <value>
+                <fullName>Intermediary</fullName>
+                <default>false</default>
+                <label>Intermediary</label>
+            </value>
+            <value>
+                <fullName>USP Scaled</fullName>
+                <default>false</default>
+                <label>USP Scaled</label>
+            </value>
+            <value>
+                <fullName>Technical Direction</fullName>
+                <default>false</default>
+                <label>Technical Direction</label>
+            </value>
+            <value>
+                <fullName>Territorial Direction</fullName>
+                <default>false</default>
+                <label>Territorial Direction</label>
+            </value>
+            <value>
+                <fullName>Others</fullName>
+                <default>false</default>
+                <label>Others</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
