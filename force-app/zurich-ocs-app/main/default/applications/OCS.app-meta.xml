@@ -90,14 +90,6 @@
         <type>Flexipage</type>
         <pageOrSobjectType>Case</pageOrSobjectType>
     </actionOverrides>
-    <actionOverrides>
-        <actionName>Tab</actionName>
-        <content>OCS_Home_Default</content>
-        <formFactor>Large</formFactor>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
-        <type>Flexipage</type>
-        <pageOrSobjectType>standard-home</pageOrSobjectType>
-    </actionOverrides>
     <brand>
         <headerColor>#003398</headerColor>
         <logo>logo_2</logo>
@@ -422,7 +414,6 @@
     <tabs>Claim__c</tabs>
     <tabs>Scope__c</tabs>
     <tabs>Relationship__c</tabs>
-    <tabs>purecloud__PureCloud_Chat_Transcript__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>OCS_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -439,9 +430,6 @@
         <mappings>
             <fieldName>AccountId__c</fieldName>
             <tab>Scope__c</tab>
-        </mappings>
-        <mappings>
-            <tab>purecloud__PureCloud_Chat_Transcript__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>
