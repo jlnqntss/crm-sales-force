@@ -32,6 +32,7 @@
             <operation>equals</operation>
             <value>False</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Customer_GI</fullName>
@@ -65,6 +66,7 @@
             <operation>equals</operation>
             <value>False</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Intermediary</fullName>
@@ -83,6 +85,7 @@
             <operation>equals</operation>
             <value>Intermediary</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Lead_GI</fullName>
@@ -106,6 +109,7 @@
             <operation>equals</operation>
             <value>Zurich</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>PartnerOCS</fullName>
@@ -124,6 +128,7 @@
             <operation>equals</operation>
             <value>Partner OCS</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Partners_GI_France</fullName>
@@ -142,6 +147,7 @@
             <operation>equals</operation>
             <value>Partner</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Partners_GI_Germany</fullName>
@@ -160,6 +166,7 @@
             <operation>equals</operation>
             <value>Partner</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Partners_GI_Spain</fullName>
@@ -178,6 +185,7 @@
             <operation>equals</operation>
             <value>Partner</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Partners_Life_Orange</fullName>
@@ -201,6 +209,7 @@
             <operation>equals</operation>
             <value>Orange Seguros</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Partners_Life_Spain</fullName>
@@ -219,6 +228,7 @@
             <operation>equals</operation>
             <value>Partner</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>SDM_Home_Office</fullName>
@@ -238,6 +248,7 @@
             <operation>equals</operation>
             <value>Agrupación Mediador,Intermediary</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Write_Intermediary</fullName>
@@ -256,6 +267,26 @@
             <operation>equals</operation>
             <value>Intermediary</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Write_Intermediary_USP</fullName>
+        <accessLevel>Edit</accessLevel>
+        <accountSettings>
+            <caseAccessLevel>None</caseAccessLevel>
+            <contactAccessLevel>None</contactAccessLevel>
+            <opportunityAccessLevel>None</opportunityAccessLevel>
+        </accountSettings>
+        <label>Write_Intermediary_USP</label>
+        <sharedTo>
+            <group>Write_Z_ES_USP</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Intermediary</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Write_Lead</fullName>
@@ -285,5 +316,6 @@
             <operation>equals</operation>
             <value>False</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
 </SharingRules>

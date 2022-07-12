@@ -17,6 +17,7 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_CC_GI_France_ICP</fullName>
@@ -40,6 +41,7 @@
             <operation>equals</operation>
             <value>Siniestro</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_CC_GI_Germany</fullName>
@@ -58,6 +60,7 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_CC_GI_Germany_ICP</fullName>
@@ -81,6 +84,7 @@
             <operation>equals</operation>
             <value>Siniestro</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_CC_GI_Spain</fullName>
@@ -99,6 +103,7 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_CC_GI_Spain_ICP</fullName>
@@ -122,6 +127,7 @@
             <operation>equals</operation>
             <value>Siniestro</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_CC_Life_Orange</fullName>
@@ -140,6 +146,7 @@
             <operation>equals</operation>
             <value>Life Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_CC_Life_Spain</fullName>
@@ -158,6 +165,7 @@
             <operation>equals</operation>
             <value>Life Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_GI_France</fullName>
@@ -176,6 +184,7 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_GI_Germany</fullName>
@@ -194,6 +203,7 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_GI_Spain</fullName>
@@ -212,6 +222,7 @@
             <operation>equals</operation>
             <value>General Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_Life_Orange</fullName>
@@ -230,6 +241,7 @@
             <operation>equals</operation>
             <value>Life Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Cases_Life_Spain</fullName>
@@ -248,6 +260,7 @@
             <operation>equals</operation>
             <value>Life Insurance</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>OCSInquiry_GI</fullName>
@@ -261,6 +274,7 @@
             <operation>equals</operation>
             <value>OCS Inquiry</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>OCSInquiry_Z_GI_ES</fullName>
@@ -274,5 +288,34 @@
             <operation>equals</operation>
             <value>OCS Inquiry</value>
         </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>USPInquiry_GI</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>USPInquiry_GI</label>
+        <sharedTo>
+            <group>Read_GI</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>USP Inquiry</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>USPInquiry_Z_GI_ES</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>USPInquiry_Z_GI_ES</label>
+        <sharedTo>
+            <group>Write_Z_ES_USP</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>USP Inquiry</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
 </SharingRules>
