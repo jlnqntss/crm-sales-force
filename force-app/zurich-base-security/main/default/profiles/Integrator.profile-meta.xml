@@ -5376,7 +5376,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.CloseDate__C</field>
+        <field>Case.CloseDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

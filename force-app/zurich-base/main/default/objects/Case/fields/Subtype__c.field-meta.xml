@@ -656,6 +656,22 @@
             <valueName>Datos personales</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Captación</controllingFieldValue>
+            <valueName>Ajuste oferta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Captación</controllingFieldValue>
+            <valueName>Cotización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Captación</controllingFieldValue>
+            <valueName>Emisión</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Captación</controllingFieldValue>
+            <valueName>Gestión competencias (Captación)</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
             <valueName>Apoyo Captación</valueName>
         </valueSettings>
