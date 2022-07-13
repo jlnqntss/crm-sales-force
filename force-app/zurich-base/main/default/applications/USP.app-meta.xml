@@ -34,6 +34,24 @@
     <profileActionOverrides>
         <actionName>View</actionName>
         <content>EON_Intermediary_Default</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>USP Supervisor</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Intermediary_Default</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>USP Supervisor</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Intermediary_Default</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Intermediary</recordType>
@@ -85,6 +103,96 @@
         <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Case_Default</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Case</pageOrSobjectType>
+        <recordType>Case.USPInquiry</recordType>
+        <type>Flexipage</type>
+        <profile>USP Supervisor</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Case_Default</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Case</pageOrSobjectType>
+        <recordType>Case.USPInquiry</recordType>
+        <type>Flexipage</type>
+        <profile>USP Supervisor</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Intermediary_Default</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>USP User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Intermediary_Default</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>USP User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Case_Default</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Case</pageOrSobjectType>
+        <recordType>Case.USPInquiry</recordType>
+        <type>Flexipage</type>
+        <profile>USP User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Case_Default</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Case</pageOrSobjectType>
+        <recordType>Case.USPInquiry</recordType>
+        <type>Flexipage</type>
+        <profile>USP User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Business_Customer</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.BusinessCustomer</recordType>
+        <type>Flexipage</type>
+        <profile>USP Supervisor</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Business_Customer</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.BusinessCustomer</recordType>
+        <type>Flexipage</type>
+        <profile>USP Supervisor</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Business_Customer</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.BusinessCustomer</recordType>
+        <type>Flexipage</type>
+        <profile>USP User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>EON_Business_Customer</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.BusinessCustomer</recordType>
+        <type>Flexipage</type>
+        <profile>USP User</profile>
+    </profileActionOverrides>
     <tabs>standard-home</tabs>
     <tabs>standard-Case</tabs>
     <tabs>standard-Opportunity</tabs>
@@ -95,6 +203,7 @@
     <tabs>Claim__c</tabs>
     <tabs>Scope__c</tabs>
     <tabs>Relationship__c</tabs>
+    <tabs>purecloud__PureCloud_Chat_Transcript__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>USP_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -112,6 +221,9 @@
         <mappings>
             <fieldName>AccountId__c</fieldName>
             <tab>Scope__c</tab>
+        </mappings>
+        <mappings>
+            <tab>purecloud__PureCloud_Chat_Transcript__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>
