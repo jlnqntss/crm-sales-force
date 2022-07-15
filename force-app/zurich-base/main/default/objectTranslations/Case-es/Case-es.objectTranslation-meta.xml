@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <layouts>
+        <layout>Case Default EON</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información Robot Tipificador</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Relaciones</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>SLAs</section>
+        </sections>
+        <sections>
+            <label>Información del sistema</label>
+            <section>System Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Tipificación</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>Case Default OCS</layout>
         <sections>
             <label><!-- Custom Links --></label>
