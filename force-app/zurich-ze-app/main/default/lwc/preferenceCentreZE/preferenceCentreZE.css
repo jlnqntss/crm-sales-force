@@ -190,13 +190,6 @@ div.name {
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
-/*.cbx span {
-    display: inline-block;
-    vertical-align: middle;
-    transform: translate3d(0, 0, 0);
-    color: #ccc;
-    font-size: 20px
-}*/
 .cbx span {
   position: relative;
   width: 48px;

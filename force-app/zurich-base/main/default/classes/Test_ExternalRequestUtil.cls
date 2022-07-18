@@ -1469,87 +1469,6 @@ public class Test_ExternalRequestUtil
     }
 
     /**
-     * @description This method inserts a new Email from IBA with an existing customer
-       then the customer is removed to test that an error is launched when receiving an email of an inextistend customer
-     **
-     * @author nbizkarra
-     * @date 05/05/2020
-     **/
-    // Descartado en fase de implementación
-    /*@isTest
-       static void test_EmailIBAinsert()
-       {
-          Integer numEmails= [SELECT count() FROM EmailsIBA__c];
-          System.assertEquals(0, numEmails);
-
-          Test.startTest();
-
-          ExternalRequest__c ExtReq= new ExternalRequest__c(Origin__c='IBA', Country__c='Spain', Entity__c='EmailIBA',  Json__c='{}', Timestamp__c=Datetime.now(),  Processed__c=false);
-          List<ExternalRequest__c> listExternalRequest=new List<ExternalRequest__c>();
-          listExternalRequest.add(ExtReq);
-
-          ExternalRequestUtil.processExternalRequests(listExternalRequest);
-
-          numEmails= [SELECT count() FROM EmailsIBA__c];
-          System.assertEquals(1, numEmails);
-
-          //remove existing customer
-          Contact cont=[SELECT id FROM Contact where CustomerNum__c='GI-3123'];
-          delete cont;
-
-          //Test error use case
-
-          try{
-              ExternalRequestUtil.processExternalRequests(listExternalRequest);
-
-          }Catch(Exception e){
-              system.assert(e.getMessage().contains(Label.EmailIBAError));
-          }
-
-          Test.stopTest();
-       }*/
-
-    /**
-     * @description This method inserts a new Document from IBA with an existing policy
-     *              then the policy is removed to test that an error is launched when receiving a document of an inextistend policy
-     **
-     * @author nbizkarra
-     * @date 05/05/2020
-     **/
-    // Descartado en fase de implementación
-    /*@isTest
-       static void test_DocumentInsert()
-       {
-          Integer numDocuments = [SELECT count() FROM IBADocument__c];
-          System.assertEquals(0, numDocuments);
-
-          Test.startTest();
-
-          ExternalRequest__c ExtReq= new ExternalRequest__c(Origin__c='IBA', Country__c='Spain', Entity__c='Document',  Json__c='{}', Timestamp__c=Datetime.now(),  Processed__c=false);
-          List<ExternalRequest__c> listExternalRequest=new List<ExternalRequest__c>();
-          listExternalRequest.add(ExtReq);
-
-          ExternalRequestUtil.processExternalRequests(listExternalRequest);
-
-          numDocuments = [SELECT count() FROM IBADocument__c];
-          System.assertEquals(1, numDocuments);
-
-          //remove existing policy
-          Order policy=[SELECT id FROM Order where PolicyNum__c='8989'];
-          delete policy;
-
-          //Test error use case
-
-          try{
-              ExternalRequestUtil.processExternalRequests(listExternalRequest);
-
-          }Catch(Exception e){
-              system.assert(e.getMessage().contains(Label.ErrorIBADocument));
-          }
-          Test.stopTest();
-       }*/
-
-    /**
      * Test: if is recovering the data from the json to the object correctly. for coverage because metadata may change
      *
      * @author nts (agonzalezisasi)
@@ -1602,26 +1521,5 @@ public class Test_ExternalRequestUtil
             WS_SERVICE_NAME_PROCESS_REQUEST
             );
         errorMessages = parserResultCustomer.errorMessagesMap;
-        // for( String key: errorMessages.keySet() )
-        // {
-        //     
-        // }
-        // System.assertEquals(true,  errorMessages.isEmpty(), 'There should not be any errors');
-        // recordsMap = parserResultCustomer.recordsMap;
-        // System.assertEquals(1, recordsMap.size(), 'There should be 1 element in the records map from parser');
-
-        // Contact customer = (Contact) recordsMap.values().get(0);
-        
-
-        // List<Contact> customers = [
-        //     SELECT Id, MailingCity, MailingCountry, LegalEntity__c, Partner__c, Status__c
-        //     FROM Contact WHERE CustomerNum__c = 'Orange-234234233'
-        // ];
-        //System.assertEquals(1, customers.size(), 'There should be 1 customer');
-        // System.assertEquals('Bilbao', customer.MailingCity, 'The city should be Bilbao');
-        // System.assertEquals('Life Insurance', customer.LegalEntity__c, 'The legal entity should be Life Insurance');
-        // System.assertEquals('Lead', customer.Status__c, 'The status should be Lead');
-        // System.assertEquals('Orange Seguros', customer.Partner__c, 'The partner should be Orange Seguros');
-        // System.assertEquals('España', customer.MailingCountry, 'The country should be España');
     }
 }

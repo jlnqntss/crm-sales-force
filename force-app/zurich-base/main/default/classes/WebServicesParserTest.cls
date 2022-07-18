@@ -537,17 +537,6 @@ private class WebServicesParserTest
         {
             System.assert ( errorMsg.contains(Label.NombreAtributoVacio) );
         }
-
-        /*String duplicateAttributeNameJSON = '[{"Level":"Cold","Level":"Warm"}]';
-           WebServicesParser.WebParserResult accountResult4 = WebServicesParser.parseObject(Account.sObjectType, duplicateAttributeNameJSON, 'Web', 'GenericWS');
-           System.assert(!accountResult4.errorMessagesMap.values().isEmpty());
-           for(String errorMsg : accountResult4.errorMessagesMap.values())
-           {
-           
-           System.assert(errorMsg.contains(Label.AtributoDuplicado + ': Level'), 'Error Message: ' + errorMsg);
-           }*/
-
-        
     }
 
     @isTest

@@ -26,13 +26,6 @@ export default class preferenceCentre extends LightningElement {
     PreferenceCentreRedirect: ""
   };
 
-  // Get the logo url by the scope parameter
-  /*@wire(getLogoUrl, { scope: this.scope }) wiredLogoResult(result) {
-    if (result.data) {
-      this.zurichLogoUrl = result.data;
-    }
-  }*/
-
   @wire(getLabels)
   getLabels({ error, data }) {
     if (data) {

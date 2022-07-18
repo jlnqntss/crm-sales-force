@@ -378,10 +378,6 @@ public without sharing class ErrorLogUtil
             if ( !sr.isSuccess() )
             {
                 isSuccess = sr.isSuccess();
-                // for(Database.Error err : sr.getErrors())
-                // {
-                //     
-                // }
             }
         }
 

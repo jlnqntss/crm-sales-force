@@ -676,13 +676,6 @@ public class QueryTest
                    descend().
                    orderNullsFirst().
                    run();
-
-        /*
-           System.assertEquals(accounts.get(0).Name, 'Account 4');
-           System.assertEquals(accounts.get(1).Name, 'Account 2');
-           System.assertEquals(accounts.get(2).Name, 'Account 1');
-           System.assertEquals(accounts.get(3).Name, 'Account 3');
-         */
     }
 
     @isTest
@@ -703,13 +696,6 @@ public class QueryTest
                    ascend().
                    orderNullsLast().
                    run();
-
-        /*
-           System.assertEquals(accounts.get(0).Name, 'Account 1');
-           System.assertEquals(accounts.get(1).Name, 'Account 3');
-           System.assertEquals(accounts.get(2).Name, 'Account 2');
-           System.assertEquals(accounts.get(3).Name, 'Account 4');
-         */
     }
 
     @isTest
