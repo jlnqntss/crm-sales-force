@@ -40,7 +40,7 @@ global class Mock_Parser
         }
         else if ( Entity.equals('Customer') )
         {
-            
+            System.debug( 'el entity es >>> ' + ExternalRequestUtil.actualRequest.entity__c );
             if (ExternalRequestUtil.actualRequest.entity__c == 'QuoteEntry')
             {
                 Contact lead = new Contact(

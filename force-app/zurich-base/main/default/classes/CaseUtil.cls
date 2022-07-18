@@ -12,7 +12,7 @@ public class CaseUtil
      **/
     public static void upsertClaim(Case claim)
     {
-        
+        System.debug('- - - - - ExternalRequestUtil.upsertClaim - - - - -');
         Case claimSF = ExternalRequestUtil.mapClaims.get(claim.ClaimNumber__c);
 
         if ( claimSF != null ) //claim exists
@@ -22,7 +22,7 @@ public class CaseUtil
         }
         else //claim doesn't exist
         {
-            
+            System.Debug('***** PolicyNum: ' + claim.PolicyNum__c);
             Order policySF = ExternalRequestUtil.mapPolicies.get(claim.PolicyNum__c);
             if ( policySF != null ) //policy exists
             {
@@ -54,7 +54,7 @@ public class CaseUtil
                     }
                 }
 
-                
+                System.Debug('***** CustomerNum: ' + claim.CustomerNum__c);
                 Contact contactSF = ExternalRequestUtil.mapContacts.get( claim.CustomerNum__c );
                 if ( contactSF != null ) //contact exists
                 {
@@ -63,7 +63,7 @@ public class CaseUtil
                 }
                 else
                 {
-                    
+                    System.debug('Error: Cliente no existe');
                     throw new IntegrationException(
                               Label.ClaimError + ' ' + claim.ClaimNumber__c + '. ' + Label.CustomerError + ' ' + claim.CustomerNum__c
                               );
@@ -71,7 +71,7 @@ public class CaseUtil
             }
             else // policy doesnt exist
             {
-                
+                System.debug('Error: Póliza no existe');
                 throw new IntegrationException(
                           Label.ClaimError + ' ' + claim.ClaimNumber__c + '. ' + Label.PolicyNotExisting + ' ' + claim.PolicyNum__c
                           );
@@ -289,10 +289,10 @@ public class CaseUtil
                 if ( !checkRecursive.SetOfIDs.contains(caso.ID) )
                 {
                     checkRecursive.SetOfIDs.add(caso.ID);
-                    //
+                    //System.debug('>>>>>> TEST: ' + caso.Origin + caso.CustomerFoundBy__c +caso.SuppliedEmail+ caso.LegalEntity__c+caso.SourceCountry__c) ;
 
 
-                    //
+                    //System.debug('>>>>>> TEST record type: ' +  caso.RecordTypeId );
 
                     if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Email') && String.isBlank(caso.CustomerFoundBy__c) &&
                          String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)

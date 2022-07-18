@@ -46,6 +46,10 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
             }
             catch (Exception e)
             {
+                System.debug(
+                    'Ha habido un error eliminando los registros de Error_Log__c: ' +
+                    e.getMessage()
+                    );
                 ErrorLogUtil.commitError(e, 'Batch_DeleteErrorLogs');
             }
         }

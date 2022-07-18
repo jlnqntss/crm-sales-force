@@ -313,16 +313,16 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        
+        System.debug('Error map: ' + accountResult.errorMessagesMap);
         System.assert ( accountResult.errorMessagesMap.values().isEmpty() );
-        
-        
+        System.debug('Result Record Map: ' + accountResult.recordsMap);
+        System.debug('Result LvL 2 Record Map: ' + accountResult.secLvlRecordsMap);
     }
 
     @isTest
     static void test_parseObject_everyFieldType_Account()
     {
-        
+        System.debug('@@test_parseObject_everyFieldType');
         createGenericControlList(false, null, true, true);
 
         //Se simula la generación de registros
@@ -335,7 +335,7 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        
+        System.debug('Error map: ' + accountResult.errorMessagesMap);
         System.assert ( accountResult.errorMessagesMap.values().isEmpty() );
         for ( Account acc : (List<Account>) accountResult.recordsMap.values() )
         {
@@ -346,7 +346,7 @@ private class WebServicesParserTest
             System.AssertEquals(acc.Website, 'www.google.es');
         }
 
-        
+        System.debug('@@FIN_test_parseObject_everyFieldType');
     }
 
     @isTest
@@ -416,7 +416,7 @@ private class WebServicesParserTest
     @isTest
     static void test_parseObject_specificPicklistValue_Valid()
     {
-        
+        System.debug('@@test_parseObject_specificPicklistValue_Valid');
         createGenericControlList(false, 'Warm;Agriculture', true, true);
 
         //Se simula la generación de registros
@@ -428,7 +428,7 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        
+        System.debug( 'Error map: ' + accountResult.errorMessagesMap.values() );
         System.assert ( accountResult.errorMessagesMap.values().isEmpty() );
         for ( Account acc : (List<Account>) accountResult.recordsMap.values() )
         {
@@ -439,13 +439,13 @@ private class WebServicesParserTest
             System.AssertEquals(acc.Website, 'www.google.es');
         }
 
-        
+        System.debug('@@FIN_test_parseObject_specificPicklistValue_Valid');
     }
 
     @isTest
     static void test_parseObject_specificPicklistValue_Invalid()
     {
-        
+        System.debug('@@test_parseObject_specificPicklistValue_Invalid');
         createGenericControlList(false, null, true, true);
 
         //Se simula la generación de registros
@@ -470,13 +470,13 @@ private class WebServicesParserTest
             accountResult.recordsMap.values().isEmpty()
             );
 
-        
+        System.debug('@@FIN_test_parseObject_specificPicklistValue_Invalid');
     }
 
     @isTest
     static void test_parseObject_emptyParameters()
     {
-        
+        System.debug('@@test_parseObject_emptyParameters');
         createGenericControlList(false, 'Warm', true, true);
 
         WebServicesParser.WebParserResult accountResult = WebServicesParser.parseObject(
@@ -490,13 +490,13 @@ private class WebServicesParserTest
         {
             //System.assert(errorMsg.contains(Label.ParametrosVacios));
         }
-        
+        System.debug('@@FIN_test_parseObject_emptyParameters');
     }
 
     @isTest
     static void test_parseObject_invalidJSON()
     {
-        
+        System.debug('@@test_parseObject_invalidJSON');
         createGenericControlList(false, 'Warm', true, true);
 
         String anyJSON = '';
@@ -543,17 +543,17 @@ private class WebServicesParserTest
            System.assert(!accountResult4.errorMessagesMap.values().isEmpty());
            for(String errorMsg : accountResult4.errorMessagesMap.values())
            {
-           
+           System.debug('Error Message: ' + errorMsg);
            System.assert(errorMsg.contains(Label.AtributoDuplicado + ': Level'), 'Error Message: ' + errorMsg);
            }*/
 
-        
+        System.debug('@@FIN_test_parseObject_invalidJSON');
     }
 
     @isTest
     static void test_parseObject_checkFormatErrors()
     {
-        
+        System.debug('@@test_parseObject_checkFormatErrors');
         createGenericControlList(false, 'Warm', true, true);
 
         //Se simula la generación de registros
@@ -568,7 +568,7 @@ private class WebServicesParserTest
             'Web',
             'GenericWS'
             );
-        
+        System.debug('### ErroreMessagesMap: ' + accountResult.errorMessagesMap);
         System.assert ( !accountResult.errorMessagesMap.values().isEmpty() );
         for ( String errorMsg : accountResult.errorMessagesMap.values() )
         {
@@ -617,7 +617,7 @@ private class WebServicesParserTest
         System.assert ( !opportunityResult.errorMessagesMap.values().isEmpty() );
         for ( String errorMsg : opportunityResult.errorMessagesMap.values() )
         {
-            
+            System.Debug('errorMsg: ' + errorMsg);
             System.assert (
                 errorMsg.contains('Private: ' + Label.BooleanoNoValido) ||
                 errorMsg.contains('WhenIsClosed: ' + Label.FechaNovalida) ||
@@ -647,13 +647,13 @@ private class WebServicesParserTest
             contactResult.recordsMap.values() == null ||
             contactResult.recordsMap.values().isEmpty()
             );
-        
+        System.debug('@@FIN_test_parseObject_checkFormatErrors');
     }
 
     @isTest
     static void test_parseObject_checkFormatIgnoringErrors()
     {
-        
+        System.debug('@@test_parseObject_checkFormatIgnoringErrors');
         createGenericControlList(true, null, true, true);
 
         //Se simula la generación de registros
@@ -710,13 +710,13 @@ private class WebServicesParserTest
             contactResult.recordsMap.values() == null ||
             contactResult.recordsMap.values().isEmpty()
             );
-        
+        System.debug('@@FIN_test_parseObject_checkFormatIgnoringErrors');
     }
 
     @isTest
     static void test_parseObject_checkNullables()
     {
-        
+        System.debug('@@test_parseObject_checkNullables');
         createGenericControlList(false, null, true, false);
 
         //Se simula la generación de registros
@@ -750,13 +750,13 @@ private class WebServicesParserTest
             );
         System.assert ( contactResult.errorMessagesMap.values().isEmpty() );
         System.assert (contactResult.recordsMap.values().size() == 1);
-        
+        System.debug('@@FIN_test_parseObject_checkNullables');
     }
 
     @isTest
     static void test_parseObject_checkNotNullables()
     {
-        
+        System.debug('@@test_parseObject_checkNotNullables');
         createGenericControlList(false, null, false, true);
 
         //Se simula la generación de registros
@@ -824,13 +824,13 @@ private class WebServicesParserTest
             contactResult.recordsMap.values() == null ||
             contactResult.recordsMap.values().isEmpty()
             );
-        
+        System.debug('@@FIN_test_parseObject_checkNotNullables');
     }
 
     @isTest
     static void test_parseObject_checkRequired()
     {
-        
+        System.debug('@@test_parseObject_checkRequired');
         createGenericControlList(false, null, true, true);
 
         //Se simula la generación de registros
@@ -898,6 +898,6 @@ private class WebServicesParserTest
             contactResult.recordsMap.values() == null ||
             contactResult.recordsMap.values().isEmpty()
             );
-        
+        System.debug('@@FIN_test_parseObject_checkRequired');
     }
 }

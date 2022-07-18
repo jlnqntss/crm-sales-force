@@ -102,6 +102,9 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
         }
         catch (Exception e)
         {
+            System.debug(
+                'Ha habido un error eliminando los quotes: ' + e.getMessage()
+                );
             ErrorLogUtil.commitError(e, 'Batch_DeleteQuotes');
         }
     }

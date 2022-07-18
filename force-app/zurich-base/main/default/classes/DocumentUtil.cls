@@ -24,7 +24,7 @@ public with sharing class DocumentUtil
               documentsToInsert.add(document);
 
           }else{
-              
+              System.debug('Error insertando document: poliza no existe');
               throw new IntegrationException(Label.ErrorIBADocument+' '+ document.Name+'. '+Label.PolicyNotExisting+' '+document.PolicyNum__c);
 
           }

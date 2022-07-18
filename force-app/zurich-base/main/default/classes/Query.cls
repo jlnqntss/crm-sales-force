@@ -1669,7 +1669,7 @@ public class Query
 
     public Query debug()
     {
-        
+        System.debug(toQueryString() );
 
         return this;
     }

@@ -71,16 +71,16 @@ public with sharing class PreferenceCentreZEController {
     @AuraEnabled
     public static void processRequest( String hashedId, Boolean hasOptedOutOfEmail ) 
     {
-        // 
+        // System.debug('- - - - - PreferenceCentreZEController.processRequest - - - - - ');
       
-        // 
-        // 
+        // System.Debug('processRequest#hashedId: ' + hashedId);
+        // System.Debug('processRequest#hasOptedOutOfEmail: ' + hasOptedOutOfEmail);
     
         // Ahora se intenta actualizar las preferencias del cliente
         if( String.isNotBlank(hashedId) ) {
             Scope__c scope = PreferenceCentreProcessController.getScopeData(hashedId);
     
-            // 
+            // System.Debug('scope:' + scope);
     
             if (scope != null) {
                 // Se comprueba si la suscripción a comunicaciones ha cambiado
@@ -110,7 +110,7 @@ public with sharing class PreferenceCentreZEController {
     @AuraEnabled(cacheable=true)
     public static String getLabels() 
     {
-        // 
+        // System.debug('- - - - - PreferenceCentreZEController.getLabels - - - - - ');
 
         AppLabels labels = new AppLabels();
 

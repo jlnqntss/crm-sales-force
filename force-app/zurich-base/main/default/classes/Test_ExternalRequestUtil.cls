@@ -968,7 +968,7 @@ public class Test_ExternalRequestUtil
         AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
         String IBA_MULTI_PARTNER_ORIGIN = adminSetup.IBA_Multi_Partner_Origin__c;
 
-        
+        System.Debug('**** Origin: ' + IBA_MULTI_PARTNER_ORIGIN);
         ExternalRequest__c ExtReq = new ExternalRequest__c(
             Origin__c = IBA_MULTI_PARTNER_ORIGIN,
             Country__c = 'Spain',
@@ -1085,7 +1085,7 @@ public class Test_ExternalRequestUtil
         //after inserting customer has 2 policies
         system.assertEquals( 2, customer.Pedidos__r.size() );
 
-        
+        System.debug('**** PEDIDOS ' + customer.Pedidos__r);
 
         //check that discounts have been added to policy
         Order newPolicy = [
@@ -1094,16 +1094,16 @@ public class Test_ExternalRequestUtil
             WHERE PolicyNum__c = '1111'
         ];
 
-        
+        System.debug('**** DECUENTOS ' + newPolicy.Descuentos__r);
 
-        
+        System.debug('**** DECUENTOS ' + newPolicy.OrderItems);
 
         System.assert (newPolicy.Descuentos__r != null);
         //check that orderItems have been added to policy
         System.assert (newPolicy.OrderItems != null);
         for(OrderItem oi: newPolicy.OrderItems)
         {
-            
+            System.Debug(oi);
         }
 
         //test that the partner has been created
@@ -1147,7 +1147,7 @@ public class Test_ExternalRequestUtil
         //after inserting customer has 2 policies
         system.assertEquals( 2, customer.Pedidos__r.size() );
 
-        
+        System.debug('**** PEDIDOS ' + customer.Pedidos__r);
 
         //check that discounts have been added to policy
         Order newPolicy = [
@@ -1156,9 +1156,9 @@ public class Test_ExternalRequestUtil
             WHERE PolicyNum__c = 'EMEA-1111'
         ];
 
-        
+        System.debug('**** DECUENTOS ' + newPolicy.Descuentos__r);
 
-        
+        System.debug('**** DECUENTOS ' + newPolicy.OrderItems);
 
         System.assert (newPolicy.Descuentos__r != null);
         //check that orderItems have been added to policy
@@ -1208,7 +1208,7 @@ public class Test_ExternalRequestUtil
         //after inserting customer has 2 policies
         system.assertEquals( 2, customer.Pedidos__r.size() );
 
-        
+        System.debug('**** PEDIDOS ' + customer.Pedidos__r);
 
         //check that discounts have been added to policy
         Order newPolicy = [
@@ -1217,9 +1217,9 @@ public class Test_ExternalRequestUtil
             WHERE PolicyNum__c = :PARTNER_PREFIX + '-1111'
         ];
 
-        
+        System.debug('**** DECUENTOS ' + newPolicy.Descuentos__r);
 
-        
+        System.debug('**** DECUENTOS ' + newPolicy.OrderItems);
 
         System.assert (newPolicy.Descuentos__r != null);
         //check that orderItems have been added to policy
@@ -1349,11 +1349,11 @@ public class Test_ExternalRequestUtil
 
         for(Contact c: [SELECT CustomerNum__c FROM Contact] )
         {
-            
+            System.Debug(c);
         }
         for(Order o: [SELECT CustomerNum__c, PolicyNum__c FROM Order])
         {
-            
+            System.Debug(o);
         }
 
 
@@ -1564,8 +1564,8 @@ public class Test_ExternalRequestUtil
         String WS_SOURCE_IBA_MULTI_PARTNER = adminSetup.WS_Source_IBA_Multi_Partner__c;
         String WS_SERVICE_NAME_PROCESS_REQUEST = adminSetup.WS_Service_Process_Request__c;
 
-        // 
-        // 
+        // System.Debug('*** Source MultiPartner: ' + WS_SOURCE_IBA_MULTI_PARTNER);
+        // SYstem.Debug('*** Service Name Process request: ' + WS_SERVICE_NAME_PROCESS_REQUEST);
 
         WebServicesParser.metadataList = new List<WebServicesControl__mdt>(
             [
@@ -1604,14 +1604,14 @@ public class Test_ExternalRequestUtil
         errorMessages = parserResultCustomer.errorMessagesMap;
         // for( String key: errorMessages.keySet() )
         // {
-        //     
+        //     System.Debug( key + ': ' + errorMessages.get(key) );
         // }
         // System.assertEquals(true,  errorMessages.isEmpty(), 'There should not be any errors');
         // recordsMap = parserResultCustomer.recordsMap;
         // System.assertEquals(1, recordsMap.size(), 'There should be 1 element in the records map from parser');
 
         // Contact customer = (Contact) recordsMap.values().get(0);
-        // 
+        // System.debug('**** customer: ' + customer);
 
         // List<Contact> customers = [
         //     SELECT Id, MailingCity, MailingCountry, LegalEntity__c, Partner__c, Status__c

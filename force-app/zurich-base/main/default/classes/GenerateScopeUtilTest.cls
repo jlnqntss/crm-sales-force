@@ -43,7 +43,7 @@ private class GenerateScopeUtilTest
 
         for(Database.SaveResult result : results)
         {
-            //
+            //System.debug( 'Entra ' + result.getErrors() );
             System.assert (result.isSuccess(), 'No se ha publicado correctamente el evento');
         }
     }

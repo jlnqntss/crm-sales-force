@@ -18,7 +18,7 @@ public with sharing class EmailIBAUtil
                   email.SentTo__c=contactSF.Id;
                   emailsToInsert.add(email);
           }else{
-              
+              System.debug('Error insertando emailIBA: Cliente no existe');
               throw new IntegrationException(Label.EmailIBAError +' '+ email.Subject__c+'. '+Label.CustomerError+' '+email.CustomerNum__c);
           }
 

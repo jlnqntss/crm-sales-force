@@ -141,6 +141,6 @@ public class Test_Batch_ResponseExternalRequest
         Test.startTest();
         String jobID = system.schedule('Response External Request', sch, m);
         Test.stopTest();
-        
+        System.Debug('jobID: ' + jobID);
     }
 }

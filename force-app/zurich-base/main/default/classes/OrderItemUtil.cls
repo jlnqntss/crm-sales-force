@@ -25,7 +25,7 @@ public class OrderItemUtil
         User recordOwner
         )
     {
-        
+        System.debug('- - - - - OrderItemUtil.createOrderItem - - - - -');
         //crear mapa con covers de cada OrderItem
         Map<String, List<Cover__c> > receivedCovers = new Map<String, List<Cover__c> >();
         if (listCovers != null)
@@ -44,8 +44,8 @@ public class OrderItemUtil
                 }
             }
         }
-        
-        
+        System.debug('receivedCovers >>> ' + receivedCovers);
+        System.debug('listOrderItems >>> ' + listOrderItems);
         if (listOrderItems != null)
         {
             for (OrderItem item : listOrderItems)
@@ -57,7 +57,7 @@ public class OrderItemUtil
                 OrderItem orderItemSF = mapOrderItem.get(item.ItemId__c);
                 if (orderItemSF != null)
                 {
-                    
+                    System.debug('orderItem exists');
                     item.Id = orderItemSF.Id;
 
                     // mantener solo el external ID de la poliza
@@ -68,7 +68,7 @@ public class OrderItemUtil
                 }
                 else
                 {
-                    
+                    System.debug('orderItem doesnt exist');
                     //if order Item doesn't exist, relate product2
                     PricebookEntry productSF;
                     //Search product by product name
@@ -90,12 +90,12 @@ public class OrderItemUtil
 
                     if (productSF != null)
                     {
-                        //
+                        //System.debug('Producto existe');
                         item.PricebookEntryId = productSF.Id;
                     }
                     else
                     {
-                        
+                        System.debug('Producto no existe');
                         createProduct( item, productsToInsert, pricebookEntryToInsert, Pricebook );
                         PricebookEntry pricebookRef;
 
@@ -139,7 +139,7 @@ public class OrderItemUtil
                     order.LegalEntity__c,
                     recordOwner
                     );
-                
+                System.Debug('**** orderItems to Insert: ' + item);
                 orederItemsToInsert.put(item.ItemId__c, item);
             }
         }
@@ -157,7 +157,7 @@ public class OrderItemUtil
         Pricebook2 Pricebook
         )
     {
-        
+        System.debug('- - - - - OrderItemUtil.createProduct - - - - -');
         String productID;
 
         if (item.itemModel__c != null)
@@ -217,7 +217,7 @@ public class OrderItemUtil
         Map<String, OrderItem> orederItemsToInsert
         )
     {
-        
+        System.debug('- - - - - OrderItemUtil.deactivateOldProduct - - - - -');
         Map<String, OrderItem> mapReceivedItems = new Map<String, OrderItem>();
 
         for (Orderitem ordItem : listOrderItems)
@@ -233,7 +233,7 @@ public class OrderItemUtil
             if (receivedItem == null)
             {
                 //El producto no se ha recibido, marcar active=false
-                //
+                //System.debug('Poner producto en false: '+ itemSF);
                 itemSF.Active__c = false;
                 orederItemsToInsert.put(itemSF.ItemId__c, itemSF);
             }

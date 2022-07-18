@@ -70,13 +70,13 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
                         ExtReq.Json__c
                         );
 
-                    
+                    System.debug('**** JSON: ' + json);
                     if( !String.isBlank(json) )
                     {
                         Http http = new Http();
                         HttpRequest request = new HttpRequest();
-                        
-                        
+                        System.debug('**** COUNTRY [' + ExtReq.Country__c + ']');
+                        System.debug('**** ORIGIN [' + ExtReq.Origin__c + ']');
 
                         // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
                         // IBA Endpoint & Authorization Token
@@ -110,7 +110,7 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
                         // Response
                         HttpResponse response = new HttpResponse();
 
-                        
+                        System.debug('**** REQUEST: ' + request);
                         response = http.send(request);
 
                         // Respuesta a mi respuesta. Status Code
@@ -129,7 +129,7 @@ global class Batch_ResponseExternalRequest implements Database.Batchable<sObject
                     }
                     else
                     {
-                        //
+                        //System.debug('Error creando Json de respuesta');
                         ErrorLogUtil.commitError(Label.Error, Label.ErrorJSON + ' ' + ExtReq.Id, 'Batch_ResponseExternalRequest');
                     }
                 }

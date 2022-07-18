@@ -34,7 +34,7 @@ global class ConcurAuthHandler extends Auth.AuthProviderPluginClass
         String code = queryParams.get('code');
         String sfdcState = queryParams.get('state');
 
-        
+        System.debug(state);
 
         HttpRequest req = new HttpRequest();
         String url = accessTokenUrl;
@@ -55,7 +55,7 @@ global class ConcurAuthHandler extends Auth.AuthProviderPluginClass
         HTTPResponse res = http.send(req);
         String responseBody = res.getBody();
 
-        
+        System.debug(responseBody);
         Map<String, String> accessToken = (Map<String, String>) JSON.deserialize(responseBody, Map<String, string>.class);
 
         //Parse access token value
@@ -84,7 +84,7 @@ global class ConcurAuthHandler extends Auth.AuthProviderPluginClass
         HTTPResponse res = http.send(req);
         String responseBody = res.getBody();
 
-        
+        System.debug(responseBody);
         Map<String, Object> userInfo = ( Map<String, Object> ) JSON.deserializeUntyped(responseBody);
 
 

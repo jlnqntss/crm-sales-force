@@ -95,6 +95,9 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
         }
         catch (Exception e)
         {
+            System.debug(
+                'Ha habido un error en el batch de postprocesamiento: ' + e.getMessage()
+                );
             ErrorLogUtil.commitError(e, 'Batch_PostProcessing');
         }
     }

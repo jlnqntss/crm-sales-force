@@ -52,7 +52,7 @@ public with sharing class Test_PreferenceCentreProcessController
     @isTest
     static void test_getScopeData()
     {
-        
+        System.Debug('- - - - - Test_PreferenceCentreProcessController.test_getScopeData - - - - -');
 
         String hashid = '123456';
 
@@ -66,7 +66,7 @@ public with sharing class Test_PreferenceCentreProcessController
         Scope__c scope = PreferenceCentreProcessController.getScopeData(hashid);
         test.stopTest();
 
-        
+        System.Debug('---------------- Results');
         System.assertNotEquals(null, scope, 'The scope should not be null');
         
     }

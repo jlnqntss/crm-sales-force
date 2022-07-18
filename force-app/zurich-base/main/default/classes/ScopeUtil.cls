@@ -40,7 +40,7 @@ global without sharing class ScopeUtil {
     List<Scope__c> newList,
     Map<Id, Scope__c> oldMap
   ) {
-    // 
+    // System.debug('- - - - - ScopeUtil.bulkContactableBefore - - - - -');
     if (newList != null) {
       this.scopesToSetContatable = new List<Scope__c>();
 
@@ -97,7 +97,7 @@ global without sharing class ScopeUtil {
     List<Scope__c> newList,
     Map<Id, Scope__c> oldMap
   ) {
-    // 
+    // System.debug('- - - - - ScopeUtil.bulkContactableAfter - - - - -');
 
     if (newList != null) {
       Set<ID> accounts = new Set<ID>();
@@ -145,7 +145,7 @@ global without sharing class ScopeUtil {
    * @date 30/11/2020
    */
   public void checkContactable() {
-    // 
+    // System.debug('- - - - - ScopeUtil.checkContactable - - - - -');
 
     if (scopesToSetContatable != null && !scopesToSetContatable.isEmpty()) {
       for (Integer i = 0, j = scopesToSetContatable.size(); i < j; i++) {
@@ -167,7 +167,7 @@ global without sharing class ScopeUtil {
    * @date 30/11/2020
    **/
   public void checkAccounts() {
-    // 
+    // System.debug('- - - - - ScopeUtil.checkAccounts - - - - -');
 
     if (accountsToCheck != null && !accountsToCheck.isEmpty()) {
       this.accountsToUpdate = new List<Account>();
@@ -186,8 +186,8 @@ global without sharing class ScopeUtil {
             i++;
           }
           // now check the contacts
-          // if( showDebug ) 
-          // if( showDebug ) 
+          // if( showDebug ) System.Debug('--------- isContactable: ' + isContactable);
+          // if( showDebug ) System.Debug('--------- SincronizarMC__pc: ' + a.SincronizarMC__pc);
           if (
             ((isContactable && !a.SincronizarMC__pc) ||
             (!isContactable && a.SincronizarMC__pc))
@@ -211,7 +211,7 @@ global without sharing class ScopeUtil {
    * @change 15/12/2020 - nts (agonzalezisasi) - Make the process of update indepedent
    */
   public void finish(System.TriggerOperation triggerOperation) {
-    // 
+    // System.debug('- - - - - ScopeUtil.finish - - - - -');
 
     switch on triggerOperation {
       when AFTER_INSERT, AFTER_UPDATE {
@@ -236,13 +236,13 @@ global without sharing class ScopeUtil {
    * @change 15/12/2020 - nts (agonzalezisasi) - Make the process of update indepedent
    */
   public void doUpdate(List<SObject> listToUpdate) {
-    // 
+    // System.debug('- - - - - ScopeUtil.doUpdate - - - - -');
 
     if (listToUpdate != null && !listToUpdate.isEmpty()) {
       try {
         Map<ID, List<Database.Error>> mapOfErrors = new Map<ID, List<Database.Error>>();
         // for(SObject so: listToUpdate) {
-        //     
+        //     System.debug(so);
         // }
         // Do the Update
         List<Database.SaveResult> listaSaveResult = Database.update(
@@ -294,7 +294,7 @@ global without sharing class ScopeUtil {
    * @date 15/12/2020
    */
   public void generateHashId(List<Scope__c> newList) {
-    // 
+    // System.debug('- - - - - ScopeUtil.generateHashId - - - - -');
 
     if (newList != null && !newList.isEmpty()) {
       if (this.scopesToUpdateAfter == null) {
@@ -307,11 +307,11 @@ global without sharing class ScopeUtil {
           try {
             Scope__c aux = null;
             if (this.scopesToUpdateAfter.containsKey(s.Id)) {
-              //
+              //System.Debug(s.Id + ': the scope has other changes');
 
               aux = this.scopesToUpdateAfter.get(s.Id);
             } else {
-              //
+              //System.Debug(s.Id + ': the scope only has this change');
 
               // Creates another object for the update, only to change the HasedId__c field
               aux = new Scope__c(Id = s.Id);

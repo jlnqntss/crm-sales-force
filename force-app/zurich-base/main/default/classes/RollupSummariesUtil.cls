@@ -72,18 +72,18 @@ public class RollupSummariesUtil
 
         // variable # 0 of query
         String selectFields = context.searchField.getName();
-        //
+        //System.Debug('selectFields: ' + selectFields);
         Integer expressionIndex = 0;
         Boolean requiresCurrency = false;
         Map<String, RollupSummaryField> mapReferencesAlias = new Map<String, RollupSummaryField>(); //{Alias field detail, Name field master}
         for (RollupSummaryField summaryField : context.fieldsToSummarize)
         {
-            /*
+            /*System.Debug('summaryField: ' + summaryField);
                    create expression added with alias for easy recovery in the AggregateResult class
                             Example: SUM (Amount) Amount*/
             String alias = 'lre' + expressionIndex++; // Generic alias, use the name of the field can exceed the limit of 25 characters
             selectFields += ', ' + summaryField.operation + '(' + summaryField.detailField.getName() + ') ' + alias;
-            //
+            //System.Debug('selectFields: ' + selectFields);
             mapReferencesAlias.put(alias, summaryField);
             if (
                 IsMultiCurrencyOrg() == true &&
@@ -100,7 +100,7 @@ public class RollupSummariesUtil
         {
             String searchRelationName = context.searchField.getRelationshipName();
             selectFields += ', ' + summaryOperation.Max + '(' + searchRelationName + '.' + CURRENCYISOCODENAME + ') ' + MASTERCURRENCYALIAS;
-            //
+            //System.Debug('selectFields: ' + selectFields);
         }
 
         //variable #1
@@ -108,26 +108,26 @@ public class RollupSummariesUtil
 
         //Variable #2
         String whereClause = '';
-        //
+        //System.Debug('whereClause: ' + whereClause);
         if (
             context.detailWhereClause != null &&
             context.detailWhereClause.trim().length() > 0
             )
         {
             whereClause = 'AND ' + context.detailWhereClause;
-            //
+            //System.Debug('whereClause: ' + whereClause);
         }
 
         //Variable #3
         String groupingGroupName = context.searchField.getName();
         String otherGroups = context.additionalAggregationFieldsList;
 
-        //
-        //
-        //
-        //
-        //
-        //
+        //System.Debug('selectFields: ' + selectFields);
+        //System.Debug('tableDetailName: ' + tableDetailName);
+        //System.Debug('whereClause: ' + whereClause);
+        //System.Debug('groupingGroupName: ' + groupingGroupName);
+        //System.Debug('otherGroups: ' + otherGroups);
+        //System.Debug('masterRecordId: ' + masterRecordId);
 
         String soql = String.format(
             SOQL_TEMPLATE,
@@ -149,7 +149,7 @@ public class RollupSummariesUtil
             Sobject masterObject = masterRecordsMap.get(masterRecordId1);
             if (masterObject == null)
             {
-                // 
+                // System.Debug(
                 //     Logginglevel.WARN,
                 //     'No master record found for the Id:' + masterRecordId1
                 //     );
@@ -162,7 +162,7 @@ public class RollupSummariesUtil
                 Object agregateDetail = result.get(alias);
                 if (agregateDetail != null)
                 {
-                    // 
+                    // System.Debug(
                     //     'Nuevo valor agregado ' +
                     //     agregateDetail +
                     //     ' para el master ' +

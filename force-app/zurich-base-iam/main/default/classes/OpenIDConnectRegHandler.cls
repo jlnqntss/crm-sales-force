@@ -83,9 +83,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     global User createUser(Id portalId, Auth.UserData data)
     {
 
-        //
-        // 
-        // 
+        //System.debug('**** CREATE USER');
+        // System.debug('**** CREATE USER, PORTAL ID: ' + portalId);
+        // System.debug('**** CREATE USER, data: ' + data);
 
         // CHECK USER
         User u                        = checkUser(data);
@@ -204,10 +204,10 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
      */
     global void updateUser(Id userId, Id portalId, Auth.UserData data)
     {
-        // 
-        // 
-        // 
-        // 
+        // System.debug('**** UPDATE USER');
+        // System.debug('**** UPDATE USER, PORTAL ID: ' + portalId);
+        // System.debug('**** UPDATE USER, data: ' + data);
+        // System.debug('**** UPDATE USER ID: ' + userId);
 
         Boolean modified             = false;
 
@@ -305,7 +305,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
      */
     private User checkUser(Auth.UserData data)
     {
-        // 
+        // System.debug('**** CHECK USER , USER EMAIL: ' + data.email);
 
         User result = null;
         
@@ -332,7 +332,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     {
         try
         {
-            // 
+            // System.debug('**** GET EXTERNAL ROLE NAMES, DATA: ' + data);
 
             // Recuperación de los roles del usuario recibidos desde el IAM            
             //'{crm=[rol_name1, rol_name2, rol_name3]}'

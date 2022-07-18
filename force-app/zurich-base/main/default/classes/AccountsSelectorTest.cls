@@ -477,7 +477,7 @@ private with sharing class AccountsSelectorTest
         List<Account> result = accountSel.findByIdsAndScope(ids, new List<String> {'ZE', 'ZEO'});
         Test.stopTest();
 
-        
+        System.Debug('-------------- Results');
         System.assertEquals(2, result.size(), 'There should be 2 accounts');
         System.assertEquals(3, result[0].Scope__r.size(), 'There should be 3 scopes for the first account');
         System.assertEquals(3, result[1].Scope__r.size(), 'There should be 3 scopes for the second account');

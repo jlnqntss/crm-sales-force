@@ -77,7 +77,7 @@ public with sharing class GenesysCloudTaskAction {
                 }
                 catch (Exception e)
                 {
-                    
+                    System.debug(e.getMessage() );
                 }
             }
             //una vez recorridas las tareas, añadiremos la lista superior a la lista primera que devolveremos para proceder a la desconexión de las tareas 

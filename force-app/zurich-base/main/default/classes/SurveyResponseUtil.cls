@@ -121,7 +121,7 @@ public class SurveyResponseUtil
      */
     public static void updateParentSurveys()
     {
-        
+        System.debug(surveysToUpdate);
         List<Survey__c> surveys = new List<Survey__c>();
         surveys = surveysToUpdate.values();
 

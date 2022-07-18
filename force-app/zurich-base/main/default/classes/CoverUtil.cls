@@ -21,7 +21,7 @@ public class CoverUtil
     {
         Map<String, Cover__c> mapNewCovers = new Map<String, Cover__c>();
 
-        
+        System.debug('listCovers >>> ' + listCovers);
 
         if (listCovers != null)
         {
