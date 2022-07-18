@@ -126,7 +126,7 @@ public class Batch_MergeLeadsWithClientsTest
         Test.stopTest();
 
         List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c];
-        System.debug(errors);
+        
         System.assertEquals(false, errors.isEmpty(), 'There should be Error Logs');
     }
 
@@ -205,6 +205,6 @@ public class Batch_MergeLeadsWithClientsTest
         Test.startTest();
         String jobID = system.schedule('Batch Merge Leads with Clients', sch, m);
         Test.stopTest();
-        //System.Debug('jobID: ' + jobID);
+        //
     }
 }

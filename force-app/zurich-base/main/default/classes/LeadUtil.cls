@@ -21,7 +21,7 @@ public class LeadUtil
      **/
     public static void NewSubscribers(List<Lead> subscribers)
     {
-        System.debug('[NewSubscribers] INIT');
+        
 
         Set<String> emailsToSearch = new Set<String>();
         mapContacts = new Map<String, List<Contact> >();
@@ -46,7 +46,7 @@ public class LeadUtil
 
             if ( contactlist == null )   // ---------------------------------------------------------------- NO CONTACTS
             {
-                System.debug('>>> The contact does not exist: ' + contactlist);
+                
 
                 // Master (account) creation
                 Account accountItem = new Account();
@@ -73,7 +73,7 @@ public class LeadUtil
             }
             else     //-------------------------------------------------------------------------------------- CONTACTS EXISTS
             {   // There are contacts in Salesforce with subscriber's email
-                System.debug('>>> The contact exists: ' + contactlist);
+                
 
                 // If LeadSource is Klinc the partner field of the contact must be empty
                 String partner = (subscriber.LeadSource == LEAD_SOURCE_KLINC ? null : subscriber.LeadSource);
@@ -89,7 +89,7 @@ public class LeadUtil
                         //GI
                         if( subscriber.CheckGI__c == true && contact.LegalEntity__c == Label.GeneralInsurance )
                         {
-                            // System.debug('>>> Subscriber GI Contact found: ' + contact);
+                            // 
 
                             contact.HasOptedOutOfEmail = false;
                             contact.IsSubscriber__c = true;
@@ -111,7 +111,7 @@ public class LeadUtil
                         //Life
                         if( subscriber.CheckLife__c == true && contact.LegalEntity__c == Label.LifeInsurance )
                         {
-                            // System.debug('>>> Subscriber Life Contact found: ' + contact);
+                            // 
 
                             contact.HasOptedOutOfEmail = false;
                             contact.IsSubscriber__c = true;
@@ -130,8 +130,8 @@ public class LeadUtil
                     }
                 }
 
-                // System.debug('>>> CheckGI__c == true && GI_found == false: ' + (subscriber.CheckGI__c == true && GI_found == false));
-                // System.debug('>>> CheckLife__c == true && Life_found == false : ' + (subscriber.CheckLife__c == true && Life_found == false));
+                // 
+                // 
 
                 if( (subscriber.CheckGI__c == true && GI_found == false) || (subscriber.CheckLife__c == true && Life_found == false) )
                 {
@@ -147,7 +147,7 @@ public class LeadUtil
                         mapExistingMasters.put(contact.AccountId, contact);
                     }
 
-                    // System.debug('>>> mapExistingMasters size : ' + mapExistingMasters.size() + mapExistingMasters);
+                    // 
 
                     if(mapExistingMasters.size() == 1)   //------------------- ONLY 1 MASTER
                     {
@@ -171,14 +171,14 @@ public class LeadUtil
                         if ( mapCustomers != null && !mapCustomers.isEmpty() )
                         {
 
-                            // System.debug('>>> Relate to customer : ' + mapCustomers.values().get(0));
+                            // 
 
                             accountId = mapCustomers.values().get(0);
 
                         }
                         else    //Is all of the masters are related to leads, associate to the first one
 
-                        {   // System.debug('>>> Relate to first lead : ' + mapLeads.values().get(0));
+                        {   // 
 
                             accountId = mapLeads.values().get(0);
                         }

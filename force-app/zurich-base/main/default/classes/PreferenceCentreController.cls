@@ -129,7 +129,7 @@ public with sharing class PreferenceCentreController {
    * @change nts (agonzalezisasi) - 27/01/2021 - Use the PreferenceCentreProcessController class to see the contacts
    **/
   public static Contact getContactData(String hashedId) {
-    //System.debug('hashedId:' + hashedId);
+    //
     Contact contact = new Contact();
 
     Contact c = PreferenceCentreProcessController.getContactData(hashedId);
@@ -154,7 +154,7 @@ public with sharing class PreferenceCentreController {
     String hashedId,
     String language
   ) {
-    System.debug('hashedId: ' + hashedId);
+    
 
     List<Campaign> suscriptionCampaigns = new List<Campaign>();
     List<CampaignStatus> allCampaigns = new List<CampaignStatus>();
@@ -178,7 +178,7 @@ public with sharing class PreferenceCentreController {
             )
         ];
 
-        System.debug('**** CONTACT CAMPAIGNS: ' + contactCampaigns);
+        
 
         allCampaigns.addAll(
           translateCampaigns(contactCampaigns, language, true)
@@ -198,14 +198,14 @@ public with sharing class PreferenceCentreController {
           contact.SourceCountry__c
         );
 
-        System.debug('**** SUBSCRIPTION CAMPAIGNS: ' + suscriptionCampaigns);
+        
 
         //Se rellena la lista de las campañas con el campo contactSubscribed a false
         allCampaigns.addAll(
           translateCampaigns(suscriptionCampaigns, language, false)
         );
 
-        System.debug('**** ALL CAMPAIGNS: ' + suscriptionCampaigns);
+        
       } else {
         ErrorLogUtil.commitError( ' ', 'El hashedId es vacío', 'PreferenceCentreController' );
       }
@@ -221,9 +221,9 @@ public with sharing class PreferenceCentreController {
     String language,
     Boolean contactSubscribed
   ) {
-    System.debug('**** TRANSLATE CAMPAIGNS');
+    
 
-    System.debug('**** CAMPAIGN LIST' + campaignList);
+    
 
     List<CampaignStatus> campaignStatusList = new List<CampaignStatus>();
 
@@ -249,9 +249,9 @@ public with sharing class PreferenceCentreController {
       String campaignName = name + '_Name';
       String campaignDescription = name + '_Description';
 
-      System.debug('**** CAMPAIGN NAME:' + campaignItem.Name);
-      System.debug('**** CAMPAIGN label NAME:' + campaignName);
-      System.debug('**** CAMPAIGN label DESCRIPTION:' + campaignDescription);
+      
+      
+      
 
       labelsToTranslate.add(campaignName);
       labelsToTranslate.add(campaignDescription);
@@ -278,7 +278,7 @@ public with sharing class PreferenceCentreController {
       WHERE DeveloperName IN :labelsToTranslate
     ];
 
-    System.debug('**** LABEL LIST:' + labelTranslationList);
+    
 
     Map<String, String> labelTranslationsMap = new Map<String, String>();
 
@@ -289,7 +289,7 @@ public with sharing class PreferenceCentreController {
       );
     }
 
-    System.debug('**** LABEL MAP:' + labelTranslationsMap);
+    
 
     for (Campaign campaignItem : campaignList) {
       List<String> labelNames = nameAndLabelNames.get(campaignItem.Name);
@@ -305,8 +305,8 @@ public with sharing class PreferenceCentreController {
           description = labelTranslationsMap.get(labelNames.get(1));
       }
 
-      System.debug('****  FINAL NAME:' + name);
-      System.debug('****  FINAL DESCRIPTION:' + description);
+      
+      
 
       campaignStatusList.add(
         new CampaignStatus(
@@ -390,16 +390,16 @@ public with sharing class PreferenceCentreController {
     Boolean hasOptedOutOfEmail,
     List<CampaignStatus> campaigns
   ) {
-    System.Debug('processRequest#hashedId: ' + hashedId);
-    System.Debug('processRequest#hasOptedOutOfEmail: ' + hasOptedOutOfEmail);
-    System.Debug('processRequest#campaigns: ' + campaigns);
+    
+    
+    
 
     try {
       // Ahora se intenta actualizar las preferencias del cliente
       if (!String.isBlank(hashedId)) {
         Contact contact = getContactData(hashedId);
 
-        System.Debug('contact:' + contact);
+        
 
         if (contact != null) {
           // Se actualiza el contacto si los parametros cambian con respecto a los valores actuales en el contacto
@@ -474,14 +474,8 @@ public with sharing class PreferenceCentreController {
   private static void updateHasOptedOutOfEmail(
     Contact contact,
     Boolean hasOptedOutOfEmail
-  ) {
-    System.Debug(
-      'updateHasOptedOutOfEmail:' +
-      contact +
-      ' ' +
-      hasOptedOutOfEmail
-    );
-
+  )
+  {
     Contact contactUpdate;
 
     // Se comprueba si la suscripción a comunicaciones ha cambiado

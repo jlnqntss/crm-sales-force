@@ -60,7 +60,7 @@ public with sharing class GenesysCloudStatusAction
                 }
                 catch (Exception e)
                 {
-                    System.debug( e.getMessage() );
+                    
                 }
             }
             listaRetorno.add(listaValores);

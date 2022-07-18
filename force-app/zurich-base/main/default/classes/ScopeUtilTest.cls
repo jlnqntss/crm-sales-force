@@ -11,7 +11,7 @@ public class ScopeUtilTest
 
     @TestSetup
     static void makeData() {
-        System.debug('- - - - - ScopeUtilTest.makeData - - - - -');
+        
         // Create 2 personal accounts
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 2);
         accounts[0].SincronizarMC__pc = false;
@@ -40,7 +40,7 @@ public class ScopeUtilTest
     @isTest
     static void test_insertScopes_ok()
     {
-        System.debug('- - - - - ScopeUtilTest.test_insertScopes_ok - - - - -');
+        
 
         List<Account> accounts = [SELECT Id, SincronizarMC__pc FROM Account];
         System.assertEquals(2, accounts.size(), 'There should be 2 accounts');
@@ -66,7 +66,7 @@ public class ScopeUtilTest
         insert scopes;
         Test.stopTest();
 
-        if( showDebug ) System.Debug('--------------- ScopeUtilTest.test_insertScopes_ok Results');
+        if( showDebug ) 
         List<Scope__c> scopesResult = [SELECT Id, Contactable__c, HashedId__c FROM Scope__c WHERE Id IN :scopes];
         // Check Contactable
         System.assertEquals(4, scopesResult.size(), 'There should exist 4 new scopes');
@@ -98,7 +98,7 @@ public class ScopeUtilTest
     @isTest
     static void test_updateScopes_ok()
     {
-        System.debug('- - - - - ScopeUtilTest.test_updateScopes_ok ini - - - - -');
+        
 
         List<Account> accounts = [SELECT Id, SincronizarMC__pc FROM Account ORDER BY Id ASC];
         System.assertEquals(2, accounts.size(), 'There should be 2 accounts');
@@ -125,7 +125,7 @@ public class ScopeUtilTest
         scopesAll.addAll(scopesAcc2);
         insert scopesAll;
 
-        if( showDebug ) System.Debug('--------------- ScopeUtilTest.test_updateScopes_ok Pre-check');
+        if( showDebug ) 
         // Check scopes after insert
         List<Scope__c> scopesResult = [SELECT Id, Contactable__c FROM Scope__c WHERE Id IN :scopesAcc1];
         System.assertEquals(1, scopesResult.size(), 'There should exist 1 new scopes');
@@ -146,7 +146,7 @@ public class ScopeUtilTest
             update scopesAll;
         Test.stopTest();
 
-        if( showDebug ) System.Debug('--------------- ScopeUtilTest.test_updateScopes_ok Results');
+        if( showDebug ) 
 
         // Check scopes after update
         scopesResult = [SELECT Id, Contactable__c FROM Scope__c WHERE Id IN :scopesAcc1];

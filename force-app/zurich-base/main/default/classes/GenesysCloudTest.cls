@@ -366,7 +366,7 @@ private class GenesysCloudTest
 
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
-            // System.debug('------------- onSuccess');
+            // 
             List<ContactRequest> contactReqToUpdate = new List<ContactRequest>();
 
             for(Object result : results) {
@@ -379,7 +379,7 @@ private class GenesysCloudTest
                         Status= 'Cancelled'
                     )
                 );
-                // System.debug('------------- update ContactRequest: ' + contactRequestId);
+                // 
             }
 
             if( !contactReqToUpdate.isEmpty() ) {
@@ -389,7 +389,7 @@ private class GenesysCloudTest
 
         public void onError(Exception error)
         {
-            // System.debug('------------- onError');
+            // 
             ErrorLogUtil.commitError(error);
         }
     }
@@ -501,7 +501,7 @@ private class GenesysCloudTest
             SELECT Id, Status FROM EmailMessage WHERE Id = :email.Id
         ];
 
-        System.debug('+++ EmailMessage ' + emailMessages);
+        
         System.assertEquals(1, emailMessages.size(), 'Deberia haber un EmailMessage que se haya modificado');
     }
 
@@ -516,7 +516,7 @@ private class GenesysCloudTest
 
         public void onSuccess(List<Object> results, List<GenesysCloud.IAPIRequest> requests)
         {
-            System.debug('------------- onSuccess');
+            
             List<EmailMessage> emailsToUpdate = new List<EmailMessage>();
 
             for(Object result : results) {
@@ -529,7 +529,7 @@ private class GenesysCloudTest
                         Status= '4'
                     )
                 );
-                System.debug('------------- update emailsToUpdate: ' + emailsToUpdate);
+                
             }
 
             if( !emailsToUpdate.isEmpty() ) {
@@ -539,7 +539,7 @@ private class GenesysCloudTest
 
         public void onError(Exception error)
         {
-            System.debug('------------- onError');
+            
             ErrorLogUtil.commitError(error);
         }
     }

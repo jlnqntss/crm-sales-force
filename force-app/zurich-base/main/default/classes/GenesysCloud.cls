@@ -341,7 +341,7 @@ public class GenesysCloud
     private static HttpResponse validateResponse(HttpResponse responseToValidate)
     {
 
-        // System.debug(responseToValidate);
+        // 
         if(responseToValidate.getStatusCode() > 202)
         {
             throw new GenesysCloud.GenesysCloudException(responseToValidate);
@@ -1082,7 +1082,7 @@ public class GenesysCloud
 
             validateResponse(response, GenesysCloudServices.SERVICE_SMS);
             // Campos interesantes de la respuesta al envio del SMS
-            //System.debug(response.getBody());
+            //
             message.smsId = getFieldFromResponse(response, 'id');
             message.conversationId = getFieldFromResponse(response, 'conversationId');
             return message;

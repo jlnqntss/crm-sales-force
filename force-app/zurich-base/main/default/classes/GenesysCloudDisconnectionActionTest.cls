@@ -33,7 +33,7 @@ public class GenesysCloudDisconnectionActionTest {
         List<List<String>> inserciones = GenesysCloudDisconnectionAction.execute(listaInput);
         Test.stopTest();
 
-        System.debug('+++ ListaSalida ' + inserciones);
+        
         List<String> listaStatus = inserciones.get(0);
         System.assertEquals(1, listaStatus.size(), 'Se ha debido de insertar un evento');
     }

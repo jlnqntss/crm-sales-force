@@ -67,7 +67,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
     {
         if ( scope != null && !scope.isEmpty() ) {
             try {
-                // System.debug('------ BEFORE => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+                // 
 
                 if( Test.isRunningTest() && testUnknownError != null && testUnknownError ) 
                     throw new PlanComercialSDMBatchException('Unknown Error');                    
@@ -76,7 +76,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
 
                 sdm.calculateRealKPI(plans);
 
-                // System.debug('------ AFTER => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+                // 
             } catch (Exception e) {
                 ErrorLogUtil.commitError(e, CLASS_NAME);
             }

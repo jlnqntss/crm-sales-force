@@ -83,7 +83,7 @@ public with sharing class KPIsSelector extends RecordsSelector {
             AND CalcYear__c = :String.valueOf(thisYear)
             GROUP BY CalcMonth__c
         ];
-        // System.debug(months);
+        // 
 
         // Como el campo mes es string. hay que convertirlos a integer para saber cual es el mayor numericamente
         // Ej.: 10,8,11,5

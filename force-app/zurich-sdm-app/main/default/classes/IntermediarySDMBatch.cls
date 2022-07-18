@@ -101,7 +101,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
     {
         if ( scope != null && !scope.isEmpty() ) {
             try {
-                // System.debug('------ BEFORE => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+                // 
 
                 if( Test.isRunningTest() && testUnknownError != null && testUnknownError ) 
                     throw new IntermediarySDMBatchException('Unknown Error');
@@ -117,7 +117,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
                 // Calculo de las Relaciones de Contactos
                 sdm.assignIntermediaryContactRelation(intermediaries);
 
-                // System.debug('------ AFTER => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+                // 
             } catch (Exception e) {
                 ErrorLogUtil.commitError(e, CLASS_NAME);
             }
@@ -130,7 +130,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
     global void finish(Database.BatchableContext BC)
     {
         try {
-            // System.debug('------ BEFORE => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+            // 
 
             if( Test.isRunningTest() && testUnknownErrorFinish != null && testUnknownErrorFinish ) 
                 throw new IntermediarySDMBatchException('Unknown Error in the Finish method');
@@ -148,7 +148,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
             PlanComercialSDM plan = new PlanComercialSDM();
             plan.removeAnnualPlans(sdm.listDeletedAtms);
 
-            // System.debug('------ AFTER => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+            // 
         } catch (Exception e) {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
