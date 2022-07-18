@@ -228,11 +228,6 @@ public class Test_ContactUtil
         ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCodeCountry;
 
         ContactUtil.upsertContact(lead, null);
-
-        System.debug(
-            'ExternalRequestUtil.contactsToUpdate >>> ' +
-            ExternalRequestUtil.contactsToUpdate
-            );
         Contact updatedLead = ExternalRequestUtil.contactsToUpdate.get(
             ExistingLead.CustomerNum__c
             );

@@ -13,7 +13,7 @@ global boolean canCreateUser(Auth.UserData data) {
 }
 
 global User createUser(Id portalId, Auth.UserData data){
-    System.debug(data);
+    
   if(!canCreateUser(data)) {
     //Returning null or throwing an exception fails the SSO flow
     return null;

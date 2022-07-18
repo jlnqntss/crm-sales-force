@@ -193,7 +193,7 @@ public class WebServicesParser
 
         for (String fieldName : recordMap.keySet() )
         {
-            // System.Debug('****** fieldName: ' + fieldName);
+            
             if (!String.isBlank(fieldName))
             {
                 fieldControl = checkFieldProcessing(
@@ -237,9 +237,6 @@ public class WebServicesParser
                                     Map<String, Object> mapMultiPick = (Map<String, Object>) listMultiPick.get(0);
                                     if (!mapMultiPick.values().isEmpty() )
                                     {
-                                        System.debug(
-                                            'Field Control Name: ' + fieldControl.FieldName__c
-                                            );
                                         List<Object> pickPairList = (List<Object>) mapMultiPick.values()
                                                                     .get(0);
                                         for (Object pickPair : pickPairList)
@@ -313,9 +310,9 @@ public class WebServicesParser
                 if (!parented)
                 {
                     String fieldNameAux = getRelatedAttrName(relFieldName);
-                    System.debug('##relFieldName: ' + relFieldName);
-                    System.debug('##FieldNameAux: ' + fieldNameAux);
-                    System.debug('##entityName: ' + entityName);
+                    
+                    
+                    
                     Schema.DescribeFieldResult fieldDescribe = Schema.getGlobalDescribe()
                                                                .get(entityName)
                                                                .getDescribe()
@@ -325,8 +322,8 @@ public class WebServicesParser
                     String parentFieldName = relFieldName.substring(
                         relFieldName.indexOf('.') + 1
                         );
-                    System.debug('##parentObjectType: ' + parentObjectType);
-                    System.debug('##parentFieldName: ' + parentFieldName);
+                    
+                    
                     //setParentRecord(record, fieldDescribe, parentObjectType, parentFieldName, parenExtKey); // gpacho 2020-05-26
                     setParentRecord(
                         record,
@@ -479,8 +476,8 @@ public class WebServicesParser
                     //TODO: Añadir mensaje de error
                 }
 
-                // System.debug('*** valuesMap: ' + valuesMap);
-                // System.debug('*** fieldDescribe: ' + fieldDescribe);
+                
+                
                 String value = null;
                 if( fieldDescribe.getPicklistValues() != null && !fieldDescribe.getPicklistValues().isEmpty() )
                 {
@@ -510,7 +507,7 @@ public class WebServicesParser
                         }
                     }
                 }
-                // System.debug('*** value: ' + value);
+                
                 if (!String.isBlank(value) )
                 {
                     writeObjectField(record, fieldControl, value, result, errorMessages);
@@ -1137,17 +1134,17 @@ public class WebServicesParser
         Object value
         )
     {
-        System.debug('Inicio setParentRecord');
+        
         SObject parentObject;
         parentObject = relRecEntityType.newSObject();
-        System.debug('parentObject: ' + parentObject.getSObjectType() );
-        System.debug('relRecFieldName: ' + relRecFieldName);
-        System.debug('value: ' + value);
+        
+        
+        
         parentObject.put(relRecFieldName, value);
         record.putSObject(fieldDescribe.getRelationshipName(), parentObject);
         result.upsertRequired = true;
         parented = true;
-        System.debug('Fin setParentRecord');
+        
     }
 
     /**

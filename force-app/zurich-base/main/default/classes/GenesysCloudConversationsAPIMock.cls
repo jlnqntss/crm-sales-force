@@ -7,8 +7,8 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
     public HTTPResponse respond(HTTPRequest request)
     {
         String path = request.getEndpoint().substringAfter('/');
-        // System.debug(path);
-        // System.debug(scenario);
+        
+        
 
         if(this.scenario.containsKey(path) )
         {

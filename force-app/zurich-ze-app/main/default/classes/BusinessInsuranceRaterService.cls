@@ -1047,7 +1047,7 @@ public without sharing class BusinessInsuranceRaterService
 
         if(existingOffers.size() > 0)
         {
-            System.debug('Lista existingOffers ' + existingOffers.get(0).OwnerId);
+            
         }
 
         if( existingOffers.isEmpty() )

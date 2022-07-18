@@ -92,7 +92,7 @@ global class ExternalJobPriorityQueueBatch implements Database.Batchable<sObject
     // Finish
     global void finish(Database.BatchableContext bc)
     {
-        System.debug('---------- finish - origin: ' + origin);
+        
         // check if there are more Priority entities to process..
         String exReqRecordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(origin).getRecordTypeId();
         String queryNum = 'SELECT count() FROM ExternalRequest__c '; 

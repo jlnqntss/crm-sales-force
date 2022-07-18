@@ -380,7 +380,7 @@ public without sharing class ErrorLogUtil
                 isSuccess = sr.isSuccess();
                 // for(Database.Error err : sr.getErrors())
                 // {
-                //     System.debug('Error returned: ' + err.getStatusCode() + ' - ' + err.getMessage());
+                //     
                 // }
             }
         }
@@ -421,32 +421,6 @@ public without sharing class ErrorLogUtil
         if ( !errors.isEmpty() )
         {
             Database.SaveResult[] srResults = Database.insert(errors, false);
-
-            /* DEBUG */
-            for (Database.SaveResult sr : srResults)
-            {
-                if ( !sr.isSuccess() )
-                {
-                    System.debug(
-                        LoggingLevel.ERROR,
-                        '[ERROR LOG] Excepción insertando registros de log:'
-                        );
-                    for ( Database.Error err : sr.getErrors() )
-                    {
-                        System.debug(
-                            LoggingLevel.ERROR,
-                            err.getStatusCode() +
-                            ': ' +
-                            err.getMessage()
-                            );
-                        System.debug(
-                            LoggingLevel.ERROR,
-                            'ErrorLog fields that affected this error: ' + err.getFields()
-                            );
-                    }
-                }
-            }
-            /* END DEBUG */
         }
     }
 
@@ -489,32 +463,6 @@ public without sharing class ErrorLogUtil
             dmo.OptAllOrNone = false;
 
             Database.SaveResult[] srResults = Database.insert(errors, dmo);
-
-            /* DEBUG */
-            for (Database.SaveResult sr : srResults)
-            {
-                if ( !sr.isSuccess() )
-                {
-                    System.debug(
-                        LoggingLevel.ERROR,
-                        '[ERROR LOG] Excepción insertando registros de log:'
-                        );
-                    for ( Database.Error err : sr.getErrors() )
-                    {
-                        System.debug(
-                            LoggingLevel.ERROR,
-                            err.getStatusCode() +
-                            ': ' +
-                            err.getMessage()
-                            );
-                        System.debug(
-                            LoggingLevel.ERROR,
-                            'ErrorLog fields that affected this error: ' + err.getFields()
-                            );
-                    }
-                }
-            }
-            /* END DEBUG */
         }
     }
 
@@ -528,7 +476,7 @@ public without sharing class ErrorLogUtil
      */
     public static void notifyErrors(List<Error_Log__c> errors)
     {
-        System.debug('[ERROR LOG] Preparando para notificar errores');
+        
         if (errors != null && SETTING_SEND_EMAIL == true)
         {
             List<String> recipients = new List<String>();
@@ -607,7 +555,7 @@ public without sharing class ErrorLogUtil
 
                     try
                     {
-                        System.debug('[ERROR LOG] Preparando envío ...');
+                        
                         /* Construir el email */
                         Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
                         email.setSubject(subject);
@@ -617,38 +565,14 @@ public without sharing class ErrorLogUtil
                         Messaging.sendEmail(
                             new List<Messaging.SingleEmailMessage> { email }
                             );
-                        System.debug('[ERROR LOG] OK!');
+                        
                     }
                     catch (EmailException ex)
-                    {
-                        System.debug(
-                            LoggingLevel.ERROR,
-                            '[ERROR LOG] No se ha podido enviar el email de notifiación de errores'
-                            );
-                        System.debug( LoggingLevel.ERROR, 'Mensaje: ' + ex.getMessage() );
-                        System.debug(
-                            LoggingLevel.ERROR,
-                            'Trace: ' + ex.getStackTraceString()
-                            );
-                    }
+                    {}
                 }
-                else
-                {
-                    System.debug(
-                        LoggingLevel.WARN,
-                        '[ERROR LOG] No hay ningún error que cumple la configuración mínima para ser notificado'
-                        );
-                }
-            }
-            else
-            {
-                System.debug(
-                    LoggingLevel.WARN,
-                    '[ERROR LOG] No se ha especificado ninguna dirección de email para notificar los errores registrados'
-                    );
             }
         }
-        System.debug('[ERROR LOG] Fin de notificar errores');
+        
     }
 
     /**

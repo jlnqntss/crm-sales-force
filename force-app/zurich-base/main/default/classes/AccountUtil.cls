@@ -27,12 +27,12 @@ public class AccountUtil
 
         if (partnerSF != null)
         {
-            //System.debug('PARTNER existe');
+            
             customer.MasterPolicy__c = partnerSF.Id;
         }
         else
         {
-            //System.debug('Parnter no existe');
+            
             Account newPartner = new Account(
                 Name = customer.MasterPolicyDesc__c,
                 Masterpolicy__c = customer.MasterPolicyNum__c,
@@ -82,12 +82,12 @@ public class AccountUtil
 
         if (partnerSF != null)
         {
-            // System.debug('PARTNER existe');
+            
             order.MasterPolicy__c = partnerSF.Id;
         }
         else
         {
-            //System.debug('Parnter no existe');
+            
             Account newPartner = new Account(
                 Name = order.MasterPolicyDescr__c,
                 Masterpolicy__c = order.MasterPolicyNum__c,
