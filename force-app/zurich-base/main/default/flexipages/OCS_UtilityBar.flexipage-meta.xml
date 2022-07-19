@@ -53,42 +53,6 @@
                 <componentInstanceProperties>
                     <name>height</name>
                     <type>decorator</type>
-                    <value>680</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>icon</name>
-                    <type>decorator</type>
-                    <value>anywhere_chat</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>label</name>
-                    <type>decorator</type>
-                    <value>Chat</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>scrollable</name>
-                    <type>decorator</type>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>width</name>
-                    <type>decorator</type>
-                    <value>960</value>
-                </componentInstanceProperties>
-                <componentName>purecloud:PureCloudInteractionUtility</componentName>
-                <identifier>purecloud_PureCloudInteractionUtility</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>eager</name>
-                    <type>decorator</type>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>height</name>
-                    <type>decorator</type>
                     <value>480</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
