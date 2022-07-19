@@ -4,6 +4,9 @@
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>CreateCallList</excludeButtons>
     <excludeButtons>CreateSurveyInvitation</excludeButtons>
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -248,11 +251,6 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>NewTask</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>LogCall_Klinc</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
@@ -286,6 +284,11 @@
             <actionName>Recordatorio_SDM</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>7</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>NewTask</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>Account.Comunicacion</actionName>
@@ -357,7 +360,7 @@
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
         <fields>TASK.STATUS</fields>
-        <fields>TASK.TYPE</fields>
+        <fields>ACTIVITY_SUBTYPE</fields>
         <fields>Ramo__c</fields>
         <fields>Reference_number__c</fields>
         <fields>TASK.WHAT_NAME</fields>
