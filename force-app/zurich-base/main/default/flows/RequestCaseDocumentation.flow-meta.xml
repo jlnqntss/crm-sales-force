@@ -128,6 +128,32 @@
         </value>
     </constants>
     <decisions>
+        <description>Mostramos un mensaje de error dependiendo de la razon del fallo.</description>
+        <name>ErrorType</name>
+        <label>ErrorType</label>
+        <locationX>974</locationX>
+        <locationY>1094</locationY>
+        <defaultConnector>
+            <targetReference>DefaultMsg</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CaseClosed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetCaseRelatedContactInformation.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CaseClosedMsg</targetReference>
+            </connector>
+            <label>CaseClosed</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>OpcionSeleccionada</name>
         <label>Opción seleccionada?</label>
         <locationX>314</locationX>
@@ -489,6 +515,7 @@
         <queriedFields>ScopeId__c</queriedFields>
         <queriedFields>SuppliedEmail</queriedFields>
         <queriedFields>AccountId</queriedFields>
+        <queriedFields>Status</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -568,6 +595,9 @@
         <connector>
             <targetReference>GetSiteUrl</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>ErrorType</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -585,6 +615,38 @@
         <object>Case</object>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
+    <screens>
+        <name>CaseClosedMsg</name>
+        <label>CaseClosedMsg</label>
+        <locationX>842</locationX>
+        <locationY>1214</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>ErrorMsg</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Operación no permitida.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Este caso ya está cerrado por lo que no es posible enviar el enlace al minisite de documentación.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>DefaultMsg</name>
+        <label>DefaultMsg</label>
+        <locationX>1106</locationX>
+        <locationY>1214</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>ErrorDefaultMsg</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Operación no permitida.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 12px; color: rgb(8, 7, 7);&quot;&gt;Póngase en contacto con su administrador del sistema si desea obtener más información.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: monospace, monospace; color: rgb(8, 7, 7);&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <screens>
         <name>InsertEmailScreen</name>
         <label>¿A qué dirección enviamos el enlace?</label>

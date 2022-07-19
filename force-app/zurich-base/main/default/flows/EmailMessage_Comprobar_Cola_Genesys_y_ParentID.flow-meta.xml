@@ -20,7 +20,7 @@
     <assignments>
         <name>CCServiceClosedCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Cerrado CCService</label>
-        <locationX>578</locationX>
+        <locationX>930</locationX>
         <locationY>1430</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -73,6 +73,28 @@
         </assignmentItems>
     </assignments>
     <decisions>
+        <name>Administration_manager_encontrado</name>
+        <label>¿Administration manager encontrado?</label>
+        <locationX>622</locationX>
+        <locationY>734</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>AdminManagerEncontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreCSMAdminManager</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CSMAdmManagerAssignment</targetReference>
+            </connector>
+            <label>Administration manager encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>CallCenterDecision</name>
         <label>¿Qué Call Center es?</label>
         <locationX>578</locationX>
@@ -89,7 +111,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>CSMIndividualManagerAssignment</targetReference>
+                <targetReference>Individual_manager_encontrado</targetReference>
             </connector>
             <label>CSM Particulares</label>
         </rules>
@@ -104,7 +126,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>CSMAdmManagerAssignment</targetReference>
+                <targetReference>Administration_manager_encontrado</targetReference>
             </connector>
             <label>CSM Administración</label>
         </rules>
@@ -210,6 +232,28 @@
                 <targetReference>CCServiceClosedCaseAgentAssignment</targetReference>
             </connector>
             <label>Casos cerrados encontrados</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Individual_manager_encontrado</name>
+        <label>¿Individual manager encontrado?</label>
+        <locationX>182</locationX>
+        <locationY>734</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IndividualManagerEncontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreCSMIndivManager</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CSMIndividualManagerAssignment</targetReference>
+            </connector>
+            <label>Individual manager encontrado</label>
         </rules>
     </decisions>
     <decisions>

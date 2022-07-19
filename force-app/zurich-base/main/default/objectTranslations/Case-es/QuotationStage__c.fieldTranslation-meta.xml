@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Etapa</label>
+    <name>QuotationStage__c</name>
+    <picklistValues>
+        <masterLabel>Info request</masterLabel>
+        <translation>Información</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Lost</masterLabel>
+        <translation>Perdida</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Prospect</masterLabel>
+        <translation>Prospecto</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Quoted</masterLabel>
+        <translation>Ofertada</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Won</masterLabel>
+        <translation>Ganada</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Work in Progress</masterLabel>
+        <translation>Negociación</translation>
+    </picklistValues>
+</CustomFieldTranslation>

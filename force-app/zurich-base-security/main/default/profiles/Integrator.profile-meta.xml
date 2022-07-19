@@ -5376,6 +5376,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.CloseDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.CloseDetail__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5466,7 +5471,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.InsuredAmount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.InsuredObjectId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Intermediary__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5482,6 +5497,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.IsEscalated</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.IsQuotation__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5502,6 +5522,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Monitoring__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.NetPremiumRating__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5561,7 +5586,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.QuotationStage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Reason</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RiskAppetite__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8072,6 +8107,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.IntermediaryName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.LossSubReasonDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.LossSubReason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

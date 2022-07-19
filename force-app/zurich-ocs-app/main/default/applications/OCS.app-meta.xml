@@ -414,6 +414,7 @@
     <tabs>Claim__c</tabs>
     <tabs>Scope__c</tabs>
     <tabs>Relationship__c</tabs>
+    <tabs>purecloud__PureCloud_Chat_Transcript__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>OCS_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -430,6 +431,9 @@
         <mappings>
             <fieldName>AccountId__c</fieldName>
             <tab>Scope__c</tab>
+        </mappings>
+        <mappings>
+            <tab>purecloud__PureCloud_Chat_Transcript__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>

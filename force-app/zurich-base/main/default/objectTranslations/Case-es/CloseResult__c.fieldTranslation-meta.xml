@@ -3,39 +3,127 @@
     <label>Resultado de Cierre</label>
     <name>CloseResult__c</name>
     <picklistValues>
+        <masterLabel>Caducada</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Declinada - Actividad</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Declinada - Medidas protección</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Declinada - Precio</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Derivado - Norma 57/AJ</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Derivado - Otras Áreas</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Ganada</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>No Realizado</masterLabel>
-        <translation><!-- No Realizado --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>No Realizado -Pol. Seguridad</masterLabel>
-        <translation><!-- No Realizado -Pol. Seguridad --></translation>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No Retenido</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No realizado - Caída Sistema</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>No realizado - Cliente no interesa</masterLabel>
-        <translation><!-- No realizado - Cliente no interesa --></translation>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>No realizado - Derivado mediación</masterLabel>
-        <translation><!-- No realizado - Derivado mediación --></translation>
+        <masterLabel>No realizado - Derivado otras áreas</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>No realizado - No procede</masterLabel>
-        <translation><!-- No realizado - No procede --></translation>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>No realizado - Otros</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>No realizado - Rechazo técnico</masterLabel>
-        <translation><!-- No realizado - Rechazo técnico --></translation>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Perdida - Garantías</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Perdida - Precio</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Perdida - Tiempo respuesta</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Realizado</masterLabel>
-        <translation><!-- Realizado --></translation>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Con extorno</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Realizado - Impacto en prima</masterLabel>
-        <translation><!-- Realizado - Impacto en prima --></translation>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Nueva Póliza</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Pago Tarjeta</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Pago Transferencia</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Reenvío Recibo</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Rehabilitación</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Retroactividad</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado - Sin extorno</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Realizado - Sin impacto en prima</masterLabel>
-        <translation><!-- Realizado - Sin impacto en prima --></translation>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Retenido</masterLabel>
+        <translation></translation>
     </picklistValues>
 </CustomFieldTranslation>
