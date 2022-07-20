@@ -47,7 +47,6 @@ public with sharing class ObjectivesViewController {
         try {
 
             List<String> result = new List<String>();
-            List<String> pickListValuesList= new List<String>();
 
             Schema.DescribeFieldResult fieldResult = Objective__c.Year__c.getDescribe();
             List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
@@ -75,8 +74,6 @@ public with sharing class ObjectivesViewController {
 
             System.debug('input ' + data);
             Map<String, String> result = new Map<String, String>();
-            Integer numSuccess = 0;
-            Integer numFailures = 0;
             String toastMessage = '';
             String title;
             String variant;
@@ -89,7 +86,6 @@ public with sharing class ObjectivesViewController {
                 newYear = String.valueOf(Date.today().Year());
 
             } else {
-                //List<Objective__c> objectivesList = (List<Objective__c>) JSON.deserialize(data, List<Objective__c>.class);
                 List<Objective__c> objectivesList = (List<Objective__c>) JSON.deserialize(
                     data,
                     List<Objective__c>.class
@@ -112,7 +108,7 @@ public with sharing class ObjectivesViewController {
                 } else {
                     System.debug('no hay duplicado');
                     // multiplico el porcentaje x100 y añado el valor de año
-                    objectivesToClone = muliplyPercentToClone(objectivesList, newYear);
+                    objectivesToClone = getClonedObjectives(objectivesList, newYear);
                     System.debug('Ready to insert: ' + objectivesToClone);
 
                     // inserto
@@ -130,7 +126,7 @@ public with sharing class ObjectivesViewController {
             result.put('title', title);
             result.put('variant', variant);
             result.put('toastMessage', toastMessage);
-            result.put('year', newYear);            
+            result.put('year', newYear);       
             
             return result;
 
@@ -139,52 +135,7 @@ public with sharing class ObjectivesViewController {
             throw new AuraHandledException(e.getMessage());
         } 
     }
-
-
-    /*@AuraEnabled
-    public static String cloneRecords2(Object data, String year) {
-        try {
-
-            System.debug('input ' + JSON.serialize(data));
-            List<Objective__c> objectivesList = (List<Objective__c>) JSON.deserialize(JSON.serialize(data), List<Objective__c>.class);
-
-            List<Objective__c> objectivesToClone = new List<Objective__c>();
-            String newYear = String.valueOf(Integer.valueOf(year) + 1);
-
-            // multiplico el porcentaje x100 y añado el valor de año
-            if (!objectivesList.isEmpty()) {
-                Objective__c objClone;                
-                for (Objective__c objective: objectivesList) {
-                    objective.Year__c = newYear;
-                    objective.January__c = objective.January__c * 100;
-                    objective.February__c = objective.February__c * 100;
-                    objective.March__c = objective.March__c * 100;
-                    objective.May__c = objective.May__c * 100;
-                    objective.June__c = objective.June__c * 100;
-                    objective.July__c = objective.July__c * 100;
-                    objective.August__c = objective.August__c * 100;
-                    objective.September__c = objective.September__c * 100;
-                    objective.October__c = objective.October__c * 100;
-                    objective.November__c = objective.November__c * 100;
-                    objective.December__c = objective.December__c * 100;
-
-                    objClone = objective.clone(false, false, false, false);
-                    objectivesToClone.add(objClone);
-                }
-            }
-
-            System.debug('Ready to insert: ' + objectivesToClone);
-
-            if (!objectivesToClone.isEmpty()) {
-                insert objectivesToClone;
-            }
-            return newYear;
-
-        } catch (Exception e) {
-            System.debug('error traza ' + e.getStackTraceString());
-            throw new AuraHandledException(e.getMessage());
-        }
-    }*/
+    
 
     /**
      * Actualiza los registros modificados por la edicion in line del componente
@@ -196,19 +147,16 @@ public with sharing class ObjectivesViewController {
     @AuraEnabled
     public static Map<String, String> updateObjectives(String data) {
         Map<String, String> result = new Map<String, String>();
-        Integer numSuccess = 0;
-        Integer numFailures = 0;
+        Map<String, String> updateResultMap = new Map<String, String>();
+        Map<String, String> toastInfoMap = new Map<String, String>();
         String variant; // variante del toast: success, warning, error
         String toastMessage; // mensaje a mostrar en el toast
-        String title; // titulo del toast      
-        List<String> idsList = new List<String>(); // lista ids con error
-        String ids = ''; // ids concatenados para el json a montar en el controlador JS
-        List<String> recordErrorsList = new List<String>(); // añado los errores de cada registro aquí para hacer join con ","
-        String recordErrors = ''; // aqui hago el join de recordErrorsList para cada registro
-        List<String> errorList = new List<String>(); // añado los errores calculados en recordErrors
-        String errorMessage = ''; // err1,err2|err1|err1 separo los errores de cada id por |
-        try {
+        String title; // titulo del toast
 
+        String errorIds = '';
+        String errorMessage = '';
+
+        try {
             if (data != null) {
                 List<Objective__c> objectivesForUpdate = (List<Objective__c>) JSON.deserialize(
                     data,
@@ -216,69 +164,30 @@ public with sharing class ObjectivesViewController {
                 );
     
                 System.debug('actualizar ' + objectivesForUpdate);
-            
-                Database.SaveResult[] srList = Database.update(objectivesForUpdate, false);
-                
-                for (Database.SaveResult sr : srList) {
-                    if (sr.isSuccess()) {                    
-                        numSuccess++;
+                updateResultMap = updateRecords(objectivesForUpdate);
+                toastInfoMap = getToastInfoUpdateRecords(updateResultMap.get('numSuccess'), updateResultMap.get('numFailures'));
     
-                    } else {
-                        numFailures++;
-                        idsList.add(sr.getId());
-    
-                        for(Database.Error err : sr.getErrors()) {                        
-                            //errorMessage += err.getMessage() + ' ';
-                            recordErrorsList.add(err.getMessage());
-                        }
-                        
-                        // hago join, añado a la lista de errores finales y blanqueo variables
-                        recordErrors = String.join(recordErrorsList, ',');
-                        recordErrorsList.clear();
-                        errorList.add(recordErrors);
-    
-                        recordErrors = '';
-                    }
-                }
-    
-                ids = String.join(idsList, ',');
-                errorMessage = String.join(errorList, '|');
-    
-                if (numSuccess > 0 && numFailures == 0) {
-                    variant = 'success';
-                    title = System.Label.SDM_Objetivos_Success;
-                    toastMessage = String.format(System.Label.SDM_Objetivos_ToastMessage, new List<String> {String.valueOf(numSuccess)});
-                } else if (numSuccess > 0 && numFailures > 0) {
-                    variant = 'warning';
-                    title = System.Label.SDM_Objetivos_Warning;
-                    toastMessage = String.format(System.Label.SDM_Objetivos_ToastMessageWithError, new List<String> {String.valueOf(numSuccess), String.valueOf(numFailures)});
-    
-                    result.put('ids', ids);
-                    result.put('errorMessage', errorMessage);
-                } else if (numFailures > 0) {
-                    variant = 'error';
-                    title = System.Label.SDM_Objetivos_Error;
-                    toastMessage = String.format(System.Label.SDM_Objetivos_ToastMessageWithError, new List<String> {String.valueOf(numSuccess), String.valueOf(numFailures)});
-    
-                    result.put('ids', ids);
-                    result.put('errorMessage', errorMessage);
-                }
-    
+                title = toastInfoMap.get('title');
+                variant = toastInfoMap.get('variant');
+                toastMessage = toastInfoMap.get('toastMessage');    
                    
             } else {
                 variant = 'error';
                 title = System.Label.SDM_Objetivos_Error;
                 toastMessage = System.Label.SDM_Objetivos_ErrorInput;
+                errorIds = '';
+                errorMessage = '';
             }
 
             result.put('title', title);
             result.put('variant', variant);
             result.put('toastMessage', toastMessage); 
+            result.put('errorIds', updateResultMap.get('errorIds'));
+            result.put('errorMessage', updateResultMap.get('errorMessage'));
     
         } catch (Exception e) {
-            result.put('title', System.Label.SDM_Objetivos_Error);
-            result.put('variant', 'error');
-            result.put('toastMessage', e.getMessage());
+            System.debug('error trace ' + e.getStackTraceString());
+            throw new AuraHandledException(e.getMessage());            
         }
             
         System.debug('result ' + result);
@@ -288,6 +197,105 @@ public with sharing class ObjectivesViewController {
 
 
     /********************************* Métodos Auxiliares ********************************************************************/
+
+    /**
+     * Llamada a BD para actualizar registros
+     * @param objectivesForUpdate: datos a actualizar enviados por el componente LWC
+     * @return map con los atributos para los mensajes toast y si procede argumentos para construir el objeto error
+     * @author dmunoz
+     * @date 06/07/2022
+     */
+    private static Map<String, String> updateRecords(List<Objective__c> objectivesForUpdate) {
+        Map<String, String> result = new Map<String, String>();
+        Integer numSuccess = 0;
+        Integer numFailures = 0;
+        List<String> idsList = new List<String>(); // lista ids con error
+        String errorIds = ''; // ids concatenados para el json a montar en el controlador JS. Ej id1,id2,...,idn
+        List<String> recordErrorsList = new List<String>(); // añado los errores de cada registro aquí para hacer join con ","
+        String recordErrors = ''; // aqui hago el join de recordErrorsList para cada registro, variable auxiliar
+        List<String> errorList = new List<String>(); // añado los errores calculados en recordErrors
+        String errorMessage = ''; // err1,err2|err1|err1 separo los errores de cada id por |
+
+        Database.SaveResult[] srList = Database.update(objectivesForUpdate, false);
+                
+        for (Database.SaveResult sr : srList) {
+            if (sr.isSuccess()) {                    
+                numSuccess++;
+
+            } else {
+                numFailures++;
+                idsList.add(sr.getId());
+
+                for(Database.Error err : sr.getErrors()) {
+                    recordErrorsList.add(err.getMessage());
+                }
+                
+                // hago join, añado a la lista de errores finales y blanqueo variables
+                recordErrors = String.join(recordErrorsList, ',');
+                recordErrorsList.clear();
+                errorList.add(recordErrors);
+
+                recordErrors = '';
+            }
+        }
+
+        errorIds = String.join(idsList, ',');
+        errorMessage = String.join(errorList, '|');
+
+        result.put('numSuccess', String.valueOf(numSuccess));
+        result.put('numFailures', String.valueOf(numFailures));
+        result.put('errorIds', errorIds);
+        result.put('errorMessage', errorMessage);
+
+        return result;
+    }
+
+    /**
+     * En función del numero de resultados de updateRecords seteo los valores que va a tener el toast a mostrar
+     * @param numSuccessInput: numero de registros actualizados con exito
+     * @param numFailuresInput: numero de registros actualizados con error
+     * @return map con los atributos para los mensajes toast y si procede argumentos para construir el objeto error
+     * @author dmunoz
+     * @date 06/07/2022
+     */
+    private static Map<String, String> getToastInfoUpdateRecords(String numSuccessInput, String numFailuresInput) {
+        Map<String, String> result = new Map<String, String>();
+        String variant; // variante del toast: success, warning, error
+        String toastMessage; // mensaje a mostrar en el toast
+        String title; // titulo del toast
+
+        Integer numSuccess = Integer.valueOf(numSuccessInput);
+        Integer numFailures = Integer.valueOf(numFailuresInput);
+
+        if (numSuccess > 0 && numFailures == 0) {
+            variant = 'success';
+            title = System.Label.SDM_Objetivos_Success;
+            toastMessage = String.format(System.Label.SDM_Objetivos_ToastMessage, new List<String> {String.valueOf(numSuccess)});
+        } else if (numSuccess > 0 && numFailures > 0) {
+            variant = 'warning';
+            title = System.Label.SDM_Objetivos_Warning;
+            toastMessage = String.format(System.Label.SDM_Objetivos_ToastMessageWithError, new List<String> {String.valueOf(numSuccess), String.valueOf(numFailures)});
+        } else if (numFailures > 0) {
+            variant = 'error';
+            title = System.Label.SDM_Objetivos_Error;
+            toastMessage = String.format(System.Label.SDM_Objetivos_ToastMessageWithError, new List<String> {String.valueOf(numSuccess), String.valueOf(numFailures)});
+        }
+
+        result.put('variant', variant);
+        result.put('title', title);
+        result.put('toastMessage', toastMessage);
+
+        return result;
+    } 
+
+    /**
+     * En función del numero de resultados de updateRecords seteo los valores que va a tener el toast a mostrar
+     * @param selectedObjectivesList: lista de objetivos seleccionados en LWC
+     * @param newYear: año +1 del año seleccionado en el LWC
+     * @return map con la información para los duplicados
+     * @author dmunoz
+     * @date 06/07/2022
+     */
     private static Map<String, String> compareSelectedWithNextYearRecords(List<Objective__c> selectedObjectivesList, String newYear) {
         Map<String, String> result = new Map<String, String>();
         String hasDuplicate = 'false';
@@ -326,6 +334,13 @@ public with sharing class ObjectivesViewController {
         return result;
     }
 
+    /**
+     * Obtener la lista de ExternalId de los registros para el año +1
+     * @param newYear: año +1 del año seleccionado en el LWC
+     * @return Set con los ExternalId obtenidos de la BD
+     * @author dmunoz
+     * @date 06/07/2022
+     */
     private static Set<String> getExternalIdObjectivesNextYear(String newYear) {
         Set<String> result = new Set<String>();
 
@@ -338,6 +353,14 @@ public with sharing class ObjectivesViewController {
         return result;
     }
 
+    /**
+     * Para poder comparar los External Ids de los registros seleccionados, tengo que convertirlos a año+1 para ver si son iguales con los obtenidos de la query año +1
+     * @param externalId: external id del objetivo seleccionado a clonar
+     * @param newYear: año +1 del año seleccionado en el LWC
+     * @return string con el external id modificado
+     * @author dmunoz
+     * @date 06/07/2022
+     */
     private static String getConvertedExternalId(String externalId, String newYear) {
         String result = '';
 
@@ -353,13 +376,21 @@ public with sharing class ObjectivesViewController {
         return result;
     }
 
-    private static List<Objective__c> muliplyPercentToClone(List<Objective__c> objectivesList, String newYear) {
+    /**
+     * Clonamos los objetivos de entrada preparando los datos, con año +1 y porcentajes x100
+     * @param objectivesList: lista de objetivos seleccionados a clonar
+     * @param newYear: año +1 del año seleccionado en el LWC
+     * @return lista de objetivos clonados
+     * @author dmunoz
+     * @date 06/07/2022
+     */
+    private static List<Objective__c> getClonedObjectives(List<Objective__c> objectivesList, String newYear) {
         
-        List<Objective__c> objectivesToClone = new List<Objective__c>();
+        List<Objective__c> result = new List<Objective__c>();
         if (!objectivesList.isEmpty()) {
             Objective__c objClone;                
             for (Objective__c objective: objectivesList) {
-                objective.Year__c = newYear;
+                objective.Year__c = newYear;      
                 objective.January__c = objective.January__c * 100;
                 objective.February__c = objective.February__c * 100;
                 objective.March__c = objective.March__c * 100;
@@ -374,9 +405,9 @@ public with sharing class ObjectivesViewController {
                 objective.December__c = objective.December__c * 100;
 
                 objClone = objective.clone(false, false, false, false);
-                objectivesToClone.add(objClone);
+                result.add(objClone);
             }
         }
-        return objectivesToClone;
+        return result;
     }
 }

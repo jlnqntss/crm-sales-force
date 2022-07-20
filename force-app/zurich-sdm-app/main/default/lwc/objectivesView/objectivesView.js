@@ -55,7 +55,6 @@ import OBJECTIVE_OCTOBER_FIELD from "@salesforce/schema/Objective__c.October__c"
 import OBJECTIVE_NOVEMBER_FIELD from "@salesforce/schema/Objective__c.November__c";
 import OBJECTIVE_DECEMBER_FIELD from "@salesforce/schema/Objective__c.December__c";
 import OBJECTIVE_ACTIVE_FIELD from "@salesforce/schema/Objective__c.Active__c";
-//import OBJECTIVE_OBJECT from '@salesforce/schema/Objective__c';
 
 // controller
 import getObjetives from "@salesforce/apex/ObjectivesViewController.getObjetives";
@@ -262,8 +261,6 @@ export default class ObjectivesView extends LightningElement {
   ];
 
   // variables tabla
-  //@api recordId;
-  //objectivesData;
   errors;
   columns = this.columns;
   rowOffset = 0;
@@ -326,7 +323,7 @@ export default class ObjectivesView extends LightningElement {
       console.log("Apex update result: " + JSON.stringify(result));
 
       if (result.variant !== "success") {
-        const idsErrorArray = result.ids.split(",");
+        const idsErrorArray = result.errorIds.split(",");
         const messageErrorsUpdate = result.errorMessage.split("|");
 
         let errors = {};
@@ -373,7 +370,7 @@ export default class ObjectivesView extends LightningElement {
   handleRowAction(event) {
     const actionName = event.detail.action.name;
     const row = event.detail.row;
-    let copyRow = JSON.parse(JSON.stringify(row)); // por alguna razon tengo que copiar el objeto para poder modificar los valores de porcentajes
+    let copyRow = JSON.parse(JSON.stringify(row)); // por alguna razon tengo que copiar el objeto para poder modificar los valores de porcentajes, parece que internamente es una constante
     let array = [];
     switch (actionName) {
       case "edit":
@@ -401,10 +398,8 @@ export default class ObjectivesView extends LightningElement {
       "setMonthPercentValues input: " + JSON.stringify(draftValuesInput)
     );
 
-    for (let objetivo = 0; objetivo < draftValuesInput.length; objetivo++) {
-      let obj = draftValuesInput[objetivo];
-
-      for (let key in obj) {
+    for (let objetivo of draftValuesInput) {
+      for (let key in objetivo) {
         if (
           key !== "Id" &&
           key !== "Active__c" &&
@@ -415,8 +410,8 @@ export default class ObjectivesView extends LightningElement {
           key !== "ExternalId__c"
         ) {
           console.log(key);
-          let monthValue = obj[key];
-          obj[key] = monthValue * 100;
+          let monthValue = objetivo[key];
+          objetivo[key] = monthValue * 100;
         }
       }
     }
@@ -425,22 +420,6 @@ export default class ObjectivesView extends LightningElement {
     );
 
     return draftValuesInput;
-  }
-
-  getErrorMessage(error) {
-    let result = "";
-    if (error != null) {
-      let body = error.body;
-      if (body.output != null) {
-        for (let i = 0; i < body.output.errors.length; i++) {
-          result += body.output.errors[i].message + " ";
-        }
-      } else {
-        result = body.message;
-      }
-    }
-
-    return result;
   }
 
   /************************************Selector ****************************************************************************/
