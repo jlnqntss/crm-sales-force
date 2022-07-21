@@ -7,7 +7,7 @@
                                        &apos;CC Service&apos;, &apos;1&apos;,
                                        &apos;Property Express&apos;, &apos;4&apos;,
                                        &apos;Me Catalán&apos;, &apos;3&apos;,
-                                       &apos;&apos;)</formula>
+                                       &apos;1&apos;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>CDTIPDTF</label>
     <required>false</required>
