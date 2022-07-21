@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Product__c</fullName>
+    <externalId>false</externalId>
+    <label>Producto</label>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Segment__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Autos</fullName>
+                <default>false</default>
+                <label>Autos</label>
+            </value>
+            <value>
+                <fullName>Hogar</fullName>
+                <default>false</default>
+                <label>Hogar</label>
+            </value>
+            <value>
+                <fullName>Inmuebles</fullName>
+                <default>false</default>
+                <label>Inmuebles</label>
+            </value>
+            <value>
+                <fullName>Accidentes</fullName>
+                <default>false</default>
+                <label>Accidentes</label>
+            </value>
+            <value>
+                <fullName>Comercios</fullName>
+                <default>false</default>
+                <label>Comercios</label>
+            </value>
+            <value>
+                <fullName>Patrimoniales</fullName>
+                <default>false</default>
+                <label>Patrimoniales</label>
+            </value>
+            <value>
+                <fullName>Resp. Civil</fullName>
+                <default>false</default>
+                <label>Resp. Civil</label>
+            </value>
+            <value>
+                <fullName>Vida riesgo individual</fullName>
+                <default>false</default>
+                <label>Vida riesgo individual</label>
+            </value>
+            <value>
+                <fullName>Vida riesgo colectivo</fullName>
+                <default>false</default>
+                <label>Vida riesgo colectivo</label>
+            </value>
+            <value>
+                <fullName>Todos</fullName>
+                <default>false</default>
+                <label>Todos</label>
+            </value>
+            <value>
+                <fullName>Resto</fullName>
+                <default>false</default>
+                <label>Resto</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <valueName>Autos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <valueName>Hogar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <valueName>Inmuebles</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Accidentes</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <controllingFieldValue>Grandes empresas</controllingFieldValue>
+            <controllingFieldValue>Vida riesgo</controllingFieldValue>
+            <controllingFieldValue>Todos</controllingFieldValue>
+            <valueName>Todos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Resto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Comercios</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Patrimoniales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PYMEs</controllingFieldValue>
+            <valueName>Resp. Civil</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Vida riesgo</controllingFieldValue>
+            <valueName>Vida riesgo individual</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Vida riesgo</controllingFieldValue>
+            <valueName>Vida riesgo colectivo</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>
