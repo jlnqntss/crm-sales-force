@@ -11,6 +11,5 @@
     <permissionSets>Gestionar_vistaslista</permissionSets>
     <permissionSets>SDM_Gestion_Informes</permissionSets>
     <permissionSets>SDM_Plan_comercial</permissionSets>
-    <permissionSets>Gestion_Objetivos_SDM</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
