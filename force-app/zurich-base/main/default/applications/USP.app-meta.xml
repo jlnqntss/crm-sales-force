@@ -31,6 +31,7 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>USP - OCS</label>
     <navType>Console</navType>
+    <!-- 
     <profileActionOverrides>
         <actionName>View</actionName>
         <content>EON_Intermediary_Default</content>
@@ -193,6 +194,7 @@
         <type>Flexipage</type>
         <profile>USP User</profile>
     </profileActionOverrides>
+    -->
     <tabs>standard-home</tabs>
     <tabs>standard-Case</tabs>
     <tabs>standard-Opportunity</tabs>
