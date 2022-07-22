@@ -76,7 +76,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
-    <label>Gestion Objetivos SDM</label>
+    <label>Gestion Objetivos SDM</label> 
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>

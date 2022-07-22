@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <hasActivationRequired>false</hasActivationRequired>
     <label>SDM Home Office</label>
     <permissionSets>ConsultaDatosSDM</permissionSets>
     <permissionSets>Consulta_de_KPI</permissionSets>
     <permissionSets>GestionCuentaContacto_SDM</permissionSets>
     <permissionSets>GestionPlanComercial_SDM</permissionSets>
+    <permissionSets>Gestion_Informes</permissionSets>
+    <permissionSets>Gestion_Objetivos_SDM</permissionSets>
     <permissionSets>Gestionar_vistaslista</permissionSets>
     <permissionSets>SDM_Gestion_Informes</permissionSets>
     <permissionSets>SDM_Plan_comercial</permissionSets>
-    <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>Gestion_Objetivos_SDM</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
