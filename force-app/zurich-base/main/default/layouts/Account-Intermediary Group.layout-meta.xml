@@ -468,8 +468,7 @@
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
         <fields>TASK.STATUS</fields>
-        <fields>TASK.TYPE</fields>
-        <fields>ACTIVITY.TASK</fields>
+        <fields>ACTIVITY_SUBTYPE</fields>
         <fields>Ramo__c</fields>
         <fields>Reference_number__c</fields>
         <fields>TASK.WHAT_NAME</fields>
