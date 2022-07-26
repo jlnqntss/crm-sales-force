@@ -7,12 +7,24 @@
         <translation>Abandono</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Administrative Tasks</masterLabel>
+        <translation>Tareas Administrativas</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Call</masterLabel>
         <translation>Llamada</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Callback</masterLabel>
         <translation>Callback</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Campaign Actions (Massive)</masterLabel>
+        <translation>Acción Campañas (para Masivas)</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Complaint</masterLabel>
+        <translation>Reclamación</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Contact Request</masterLabel>
@@ -35,12 +47,20 @@
         <translation>Transferencia servicio externo</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Monitoring</masterLabel>
+        <translation>Seguimiento</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Note Info</masterLabel>
         <translation>Nota Info</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Others</masterLabel>
         <translation>Otros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Postponed</masterLabel>
+        <translation>Diferido</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Reminder</masterLabel>
