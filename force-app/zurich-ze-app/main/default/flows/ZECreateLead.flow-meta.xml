@@ -21,7 +21,7 @@
         <inputParameters>
             <name>DisplayWebIdentifier</name>
             <value>
-                <elementReference>DisplayWebIdentifier</elementReference>
+                <elementReference>InputWebIdentifier</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -359,11 +359,6 @@
             <fieldText>Ámbito</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>DisplayWebIdentifier</name>
-            <fieldText>&lt;p&gt;Web Identifier: {!InputWebIdentifier}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
