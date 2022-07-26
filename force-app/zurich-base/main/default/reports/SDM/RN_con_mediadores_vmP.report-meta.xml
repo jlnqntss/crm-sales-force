@@ -18,6 +18,12 @@
     <columns>
         <field>Account$IntermediaryDescription__c</field>
     </columns>
+    <columns>
+        <field>Account$NationalId__c</field>
+    </columns>
+    <columns>
+        <field>Account$Parent.Id</field>
+    </columns>
     <description>Informe para mostrar la información de los responsables de negocio con sus respectivo mediadores.</description>
     <filter>
         <criteriaItems>
