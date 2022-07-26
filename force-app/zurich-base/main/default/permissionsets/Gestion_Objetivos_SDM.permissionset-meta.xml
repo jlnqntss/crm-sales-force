@@ -76,7 +76,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
-    <label>Gestion Objetivos SDM</label>
+    <label>Gestion Objetivos SDM</label> 
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -88,6 +88,10 @@
     </objectPermissions>
     <tabSettings>
         <tab>Objective__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+	<tabSettings>
+        <tab>Objetivos</tab>
         <visibility>Visible</visibility>
     </tabSettings>
 </PermissionSet>

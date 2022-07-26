@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <hasActivationRequired>false</hasActivationRequired>
     <label>OCS Director</label>
     <permissionSets>Acceso_App_OCS</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
+    <permissionSets>Gestion_Whatsapp</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
