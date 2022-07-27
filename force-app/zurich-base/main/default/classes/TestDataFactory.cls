@@ -3289,32 +3289,4 @@ public class TestDataFactory
 
         return contactReqs;
     }
-
-    /**
-     * Genera una lista de Objetivos para un año
-     *
-     * @author nts (dmunoz)
-     * @date 11/07/2022
-     * @param {String year} Año del objetivo
-     * @param {Integer num} Numero a crear
-     * @return {List<ContactRequest>} la lista creada
-     */
-    public static List<Objective__c> generateObjectives(String year, Integer num) {
-
-        List<Objective__c> result = new List<Objective__c>();
-        for (Integer i = 0; i < num; i++) {
-            result.add(
-                new Objective__c(
-                    Year__c = year,
-                    Indicator__c = 'PN',
-                    Segment__c = 'PYMEs',
-                    Product__c = 'Accidentes',
-                    January__c = 100,
-                    ExternalId__c = String.valueOf(i)
-                )
-            );
-        }
-
-        return result;
-    } 
 }

@@ -118,10 +118,6 @@
                 <behavior>Readonly</behavior>
                 <field>CallObject</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>GenesysCloudInteractionTranscript__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
