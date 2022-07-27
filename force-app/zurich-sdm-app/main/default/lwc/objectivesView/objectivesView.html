@@ -1,0 +1,216 @@
+<template>
+  <lightning-card title={labels.SDM_Objetivos_Title} icon-name="custom:custom3">
+    <div class="slds-grid slds-gutters">
+      <div class="slds-col slds-size_1-of-6">
+        <lightning-combobox
+          name="YearSelector"
+          label={labels.SDM_Objetivos_Year}
+          value={selectedYear}
+          options={yearSelectorValues}
+          placeholder={currentYear}
+          onchange={handleChangeYear}
+          class="slds-p-left_small"
+        ></lightning-combobox>
+      </div>
+      <div class="slds-col slds-size_4-of-6"></div>
+      <div class="slds-col slds-size_1-of-6">
+        <div class="slds-float_right">
+          <lightning-button
+            variant="brand"
+            label={labels.SDM_Objetivos_ButtonNew}
+            title="Primary action"
+            onclick={handleNew}
+            class="slds-p-right_x-small"
+          ></lightning-button>
+          <lightning-button
+            variant="brand"
+            label={labels.SDM_Objetivos_ButtonClone}
+            title="Primary action"
+            onclick={handleCloneNewYear}
+            class="slds-p-right_small"
+          ></lightning-button>
+        </div>
+      </div>
+    </div>
+    <div class="slds-p-top_medium slds-p-horizontal_small">
+      <lightning-datatable
+        key-field="Id"
+        data={objectivesData.data}
+        show-row-number-column
+        row-number-offset={rowOffset}
+        columns={columns}
+        onsave={handleSave}
+        draft-values={draftValues}
+        onrowaction={handleRowAction}
+        errors={errors}
+      >
+      </lightning-datatable>
+    </div>
+  </lightning-card>
+
+  <template if:true={isShowModal}>
+    <!--
+            I Used SLDS for this code
+            Here is link https://www.lightningdesignsystem.com/components/modals/
+        -->
+
+    <section
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="modal-heading-01"
+      aria-modal="true"
+      aria-describedby="modal-content-id-1"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <!-- modal header start -->
+        <header class="slds-modal__header">
+          <button
+            class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+            title="Close"
+            onclick={hideModalBox}
+          >
+            <lightning-icon
+              icon-name="utility:close"
+              alternative-text="close"
+              variant="inverse"
+              size="small"
+            ></lightning-icon>
+            <span class="slds-assistive-text"
+              >{labels.SDM_Objetivos_ButtonClose}</span
+            >
+          </button>
+          <h2
+            id="modal-heading-01"
+            class="slds-text-heading_medium slds-hyphenate"
+          >
+            {labels.SDM_Objetivos_Create_Title}
+          </h2>
+        </header>
+
+        <!-- modal body start -->
+        <div
+          class="slds-modal__content slds-p-around_medium"
+          id="modal-content-id-1"
+        >
+          <template if:false={cloneFormModal}>
+            <lightning-record-form
+              object-api-name="Objective__c"
+              record-id={recordIdSelected}
+              fields={fields}
+              columns="2"
+              mode="edit"
+              onsuccess={handleSuccess}
+              oncancel={hideModalBox}
+            >
+            </lightning-record-form>
+          </template>
+          <template if:true={cloneFormModal}>
+            <lightning-record-edit-form
+              object-api-name="Objective__c"
+              onsuccess={handleSuccess}
+            >
+              <lightning-messages></lightning-messages>
+              <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-2">
+                  <!-- Your lightning-input-field components here -->
+                  <lightning-input-field
+                    field-name="Year__c"
+                    value={recordSelected.Year__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="Segment__c"
+                    value={recordSelected.Segment__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="January__c"
+                    value={recordSelected.January__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="March__c"
+                    value={recordSelected.March__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="May__c"
+                    value={recordSelected.May__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="July__c"
+                    value={recordSelected.July__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="September__c"
+                    value={recordSelected.September__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="November__c"
+                    value={recordSelected.November__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="Active__c"
+                    value={recordSelected.Active__c}
+                  ></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                  <!-- More lightning-input-field components here -->
+                  <lightning-input-field
+                    field-name="Indicator__c"
+                    value={recordSelected.Indicator__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="Product__c"
+                    value={recordSelected.Product__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="February__c"
+                    value={recordSelected.February__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="April__c"
+                    value={recordSelected.April__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="June__c"
+                    value={recordSelected.June__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="August__c"
+                    value={recordSelected.August__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="October__c"
+                    value={recordSelected.October__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="December__c"
+                    value={recordSelected.December__c}
+                  ></lightning-input-field>
+                </div>
+              </div>
+              <div class="slds-m-top_medium">
+                <div class="slds-align_absolute-center">
+                  <lightning-button
+                    name="cancel"
+                    label="Cancel"
+                    onclick={hideModalBox}
+                    class="slds-m-right_x-small"
+                  >
+                  </lightning-button>
+                  <lightning-button
+                    variant="brand"
+                    type="submit"
+                    name="save"
+                    label="Create"
+                  >
+                  </lightning-button>
+                </div>
+              </div>
+            </lightning-record-edit-form>
+          </template>
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+  <!-- modal end -->
+</template>
