@@ -192,6 +192,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Call</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Callback</fullName>
             <default>false</default>
         </values>
@@ -221,6 +225,10 @@
         </values>
         <values>
             <fullName>Request for appraisal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Review</fullName>
             <default>false</default>
         </values>
         <values>
