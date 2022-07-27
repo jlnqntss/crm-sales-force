@@ -361,7 +361,7 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <recordType>Task.Activity</recordType>
+        <recordType>Task.Activity_USP</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <tabSettings>
