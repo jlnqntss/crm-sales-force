@@ -1,5 +1,21 @@
 import { createElement } from "lwc";
 import ObjectivesView from "c/objectivesView";
+import getObjetives from "@salesforce/apex/ObjectivesViewController.getObjetives";
+
+// Realistic data with a list of contacts
+const mockGetContactList = require("./data/getObjetives.json");
+
+// Mock getContactList Apex wire adapter
+jest.mock(
+  "@salesforce/apex/ObjectivesViewController.getObjetives",
+  () => {
+    const { createApexTestWireAdapter } = require("@salesforce/sfdx-lwc-jest");
+    return {
+      default: createApexTestWireAdapter(jest.fn())
+    };
+  },
+  { virtual: true }
+);
 
 describe("c-objectives-view", () => {
   afterEach(() => {
@@ -17,9 +33,15 @@ describe("c-objectives-view", () => {
     // Act
     document.body.appendChild(element);
 
+    // Emit data from @wire
+    getObjetives.emit(mockGetContactList);
+
+    // Wait for any asynchronous DOM updates
+    //await flushPromises();
+
     // Assert
     expect(element.shadowRoot.querySelector("lightning-card").title).toBe(
-      "Objectives"
+      "c.SDM_Objetivos_Title"
     );
   });
 });
