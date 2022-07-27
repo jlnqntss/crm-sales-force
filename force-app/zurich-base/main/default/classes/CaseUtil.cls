@@ -395,7 +395,7 @@ public class CaseUtil
             {
                 oldCase =  oldMap.get(caso.Id);
                 //Solo se hace algo si se cerró el caso
-                if(oldCase.Status != caso.Status && caso.Status == 'Cerrado' && caso.SlaExitDate == null)
+                if(oldCase.Status != caso.Status && (caso.Status == 'Cerrado' || caso.Status == 'Merged' || caso.Status == 'Combinado') && caso.SlaExitDate == null)
                 {
                     updatedCases.add(caso);
                 }
