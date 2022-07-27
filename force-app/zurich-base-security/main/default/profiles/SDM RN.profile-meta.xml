@@ -428,6 +428,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.PYMEConsultantEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.LifeSegment__c</field>
         <readable>false</readable>
     </fieldPermissions>
