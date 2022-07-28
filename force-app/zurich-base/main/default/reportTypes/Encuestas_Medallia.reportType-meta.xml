@@ -183,6 +183,11 @@
             <field>CreatedDate</field>
             <table>Survey__c</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CaseId__c.IsRemitentInContact__c</field>
+            <table>Survey__c</table>
+        </columns>
         <masterLabel>Surveys</masterLabel>
     </sections>
     <sections>
@@ -277,6 +282,16 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>NUTELCON__c</field>
+            <table>Survey__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CaseId__c.Account</field>
+            <table>Survey__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CaseId__c.Account.RecordType.DeveloperName</field>
             <table>Survey__c</table>
         </columns>
         <masterLabel>Cliente</masterLabel>
