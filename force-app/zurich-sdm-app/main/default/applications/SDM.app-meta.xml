@@ -266,6 +266,7 @@
     <tabs>standard-Task</tabs>
     <tabs>PlanComercial__c</tabs>
     <tabs>GenerarPlan</tabs>
+    <tabs>Objetivos</tabs>
     <tabs>standard-Event</tabs>
     <tabs>standard-Contact</tabs>
     <tabs>standard-report</tabs>
@@ -279,6 +280,9 @@
         </mappings>
         <mappings>
             <tab>PlanComercial__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Objetivos</tab>
         </mappings>
         <mappings>
             <fieldName>ParentId</fieldName>
