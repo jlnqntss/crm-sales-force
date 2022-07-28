@@ -3997,6 +3997,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.GrandparentBusinessName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.GreatGrandparentBusinessName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.GridReference__c</field>
         <readable>true</readable>
@@ -4079,6 +4089,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.LastStatusModification__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LeadWebId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
