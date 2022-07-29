@@ -422,4 +422,27 @@ private without sharing class ReassignInteractionCTIExtensionTest
             'El tipo de registro de la tarea actualizada no es Interacción'
             );
     }
+
+    /**
+     * Test para event "interactionChanged" con Intrection Task Id
+     * @date 21/07/2022
+     */
+    @isTest
+    static void test_onSaveLog_interactionChanged_hasTaskId()
+    {
+        List<Task> interaction = TestDataFactory.generateInteractionTasks(1);
+        insert interaction;
+        Id taskId = interaction[0].Id;
+
+        Test.startTest();
+        ReassignInteractionCTIExtension.onSaveLog(
+            '{"eventName": "interactionChanged", "interaction" : { "id": "'+taskId+'", "messageType": "whatsapp"},  "callLog": {"CallObject": "'+taskId+'", "Id": "'+taskId+'"}}'
+        );
+        Test.stopTest();
+
+        //Hacer query para recuperar los nuevos valores
+        List<Task> tasks = [SELECT Status, RecordTypeId FROM Task];
+
+        System.assertEquals( 'Asignada',  tasks[0].Status, 'Se debería haber actualizado el status de la tarea a Asignada.');
+    }
 }
