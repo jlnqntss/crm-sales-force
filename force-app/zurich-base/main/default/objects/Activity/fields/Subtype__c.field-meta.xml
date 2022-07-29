@@ -109,6 +109,31 @@
                 <default>false</default>
                 <label>Request for appraisal</label>
             </value>
+            <value>
+                <fullName>Monitoring</fullName>
+                <default>false</default>
+                <label>Monitoring</label>
+            </value>
+            <value>
+                <fullName>Postponed</fullName>
+                <default>false</default>
+                <label>Postponed</label>
+            </value>
+            <value>
+                <fullName>Complaint</fullName>
+                <default>false</default>
+                <label>Complaint</label>
+            </value>
+            <value>
+                <fullName>Administrative Tasks</fullName>
+                <default>false</default>
+                <label>Administrative Tasks</label>
+            </value>
+            <value>
+                <fullName>Campaign Actions (Massive)</fullName>
+                <default>false</default>
+                <label>Campaign Actions (Massive)</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
