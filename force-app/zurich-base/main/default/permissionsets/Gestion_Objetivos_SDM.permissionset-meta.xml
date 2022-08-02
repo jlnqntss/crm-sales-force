@@ -90,6 +90,10 @@
         <object>Objective__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
     <tabSettings>
         <tab>Objective__c</tab>
         <visibility>Visible</visibility>

@@ -9,6 +9,7 @@
 public with sharing class PlanComercialSelector extends RecordsSelector {
 
     public static final String RT_NAME_PLAN_ANUAL = 'AnualPlan'; // Recordtype PlanComercial__c=>PlanAnual
+    public static final String RT_NAME_PLAN_MENSUAL = 'MensualPlan'; // Recordtype PlanComercial__c=>PlanMensual
 
     public static final String SEGMENT_ALL = 'Todos'; // Valor picklist PlanComercial__c.Segment__c
     public static final String PRODUCT_ALL = 'Todos'; // Valor picklist PlanComercial__c.Product__c
@@ -21,6 +22,13 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
     public ID rtPlanAnualId {
         get {
             return Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get(RT_NAME_PLAN_ANUAL)?.getRecordTypeId();
+        }
+    }
+
+    // Id del tipo de registro de PlanMensual
+    public ID rtPlanMensualId {
+        get {
+            return Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get(RT_NAME_PLAN_MENSUAL)?.getRecordTypeId();
         }
     }
 
@@ -198,6 +206,95 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
             this.baseQuery.addConditionIn(Plancomercial__c.AssignedTo__c, users);
 
             result = (List<PlanComercial__c>) this.baseQuery.run();
+        }
+
+        return result;
+    }
+
+    /**
+     * Recupera los planes comerciales mensuales hijos
+     * 
+     * @author nts (dmunoz)
+     * @date 25/07/2022
+     * 
+     * @param {List<PlanComercial__c} plnes
+     * @return {List<PlanComercial__c>} lista de planes mensuales
+     */
+    public List<PlanComercial__c> findMensualPlans(List<PlanComercial__c> plans) {
+        List<PlanComercial__c> childPlans = new List<PlanComercial__c>();
+
+        if( plans != null && !plans.isEmpty() ) {
+            childPlans = [
+                SELECT Id,  TargetKPINumber__c, Indicator__c, Segment__c, Product__c, EndDate__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c
+                FROM PlanComercial__c
+                WHERE ParentPlan__c IN :plans
+                AND RecordTypeId = :rtPlanMensualId
+                
+            ];
+        }
+
+        return childPlans;
+    }
+
+    /**Recuperar todos los campos de plan comercial anual (RN) según indicadores y año de objetivo
+     * @author nts (dmunoz)
+     * @date 25/07/2022
+     * 
+     * @param {Set<String} indicadores
+     * @param {Set<String} segmentos
+     * @param {Set<String} productos
+     * @param year año del plan
+     * @return {List<PlanComercial__c>} lista de planes anuales
+     */
+    public List<PlanComercial__c> findAnualPlanByObjectiveIndicators(Set<String> indicatorSet, Set<String> segmentSet, Set<String> productSet, Set<Integer> year) {
+        List<PlanComercial__c> result = new List<PlanComercial__c>();
+
+        if( indicatorSet != null && !indicatorSet.isEmpty() && segmentSet != null && !segmentSet.isEmpty() && productSet != null && !productSet.isEmpty() && year != null) {
+            result = [
+                SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
+                Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
+                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c
+
+                FROM PlanComercial__c
+                WHERE RecordTypeId = :rtPlanAnualId
+                AND Intermediary__c = NULL
+                AND ParentPlan__c != NULL
+                AND Indicator__c IN :indicatorSet
+                AND Product__c IN :productSet
+                AND Segment__c IN :segmentSet
+                AND CALENDAR_YEAR(StartDate__c) IN :year                
+            ];
+        }
+
+        return result;
+    }
+
+    /**Recuperar todos los campos de plan comercial mensual según indicadores y año de objetivo
+     * @author nts (dmunoz)
+     * @date 25/07/2022
+     * 
+     * @param {Set<String} indicadores
+     * @param {Set<String} segmentos
+     * @param {Set<String} productos
+     * @param year año del plan
+     * @return {List<PlanComercial__c>} lista de planes anuales
+     */
+    public List<PlanComercial__c> findMensualPlanByObjectiveIndicators(Set<String> indicatorSet, Set<String> segmentSet, Set<String> productSet, Set<Integer> year) {
+        List<PlanComercial__c> result = new List<PlanComercial__c>();
+
+        if( indicatorSet != null && !indicatorSet.isEmpty() && segmentSet != null && !segmentSet.isEmpty() && productSet != null && !productSet.isEmpty() && year != null) {
+            result = [
+                SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
+                Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
+                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c
+
+                FROM PlanComercial__c
+                WHERE RecordTypeId = :rtPlanMensualId
+                AND Indicator__c IN :indicatorSet
+                AND Product__c IN :productSet
+                AND Segment__c IN :segmentSet
+                AND CALENDAR_YEAR(StartDate__c) IN :year                
+            ];
         }
 
         return result;
