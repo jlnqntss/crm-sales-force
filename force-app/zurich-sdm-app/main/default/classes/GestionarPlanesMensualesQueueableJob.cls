@@ -32,7 +32,9 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
                     updatePlanesMensuales(planesComerciales, mapObjetivos);
                 } when 'Delete' {
                     deletePlanesMensuales(planesComerciales, mapObjetivos);                
-                } when else {}
+                } when else {
+                    throw new HandledException('Action no permitido, recibido ' + action);
+                }
             }
         } catch (Exception e) {
             ErrorLogUtil.commitError(e, 'GestionarPlanesMensualesQueueableJob', 'execute');
@@ -394,7 +396,9 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
             result = (new PlanComercialSelector()).findAnualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, yearSet);
         } else if ('Mensual'.equals(pcType)) {
             result = (new PlanComercialSelector()).findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, yearSet);
-        } else {}        
+        } else {
+            throw new HandledException('Tipo no permitido en getPlanesComercialesAnualesMensualesByObjetivos');
+        }        
 
         return result;
     }
@@ -523,7 +527,9 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c + obj.October__c + obj.November__c + obj.December__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-            } when else {}
+            } when else {
+                throw new HandledException('No se permite un valor superior a 12, por ser mes, recibido ' + i);
+            }
         }
 
         result.put('MonthName', monthName);
