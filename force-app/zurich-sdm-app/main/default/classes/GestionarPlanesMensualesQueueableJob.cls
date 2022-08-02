@@ -32,10 +32,9 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
                     updatePlanesMensuales(planesComerciales, mapObjetivos);
                 } when 'Delete' {
                     deletePlanesMensuales(planesComerciales, mapObjetivos);                
-                }
+                } when else {}
             }
         } catch (Exception e) {
-            System.debug('EXCEPTION ' + e.getMessage() + ' - ' + e.getStackTraceString()); // TODO: BORRAR ANTES DE SUBIR
             ErrorLogUtil.commitError(e, 'GestionarPlanesMensualesQueueableJob', 'execute');
         }
     }
@@ -68,18 +67,9 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
     private static void updatePlanesMensuales(List<PlanComercial__c> planesComercialesAnualesList, Map<String, Map<String, Objective__c>> mapObjetivos) {
         
         if (mapObjetivos == null) { // si no hay objetivos se ha invocado desde el trigger de plan comercial
-            Map<String, Objective__c> objetivosMap = getObjetivosParametrica(planesComercialesAnualesList); // key externalId
-            if (!objetivosMap.isEmpty()) {
-                List<PlanComercial__c> planesMensualesList = getPlanesMensuales(planesComercialesAnualesList);
-            
-                planesMensualesList = recalcularKPI(planesMensualesList, objetivosMap);
-
-                if (!planesMensualesList.isEmpty()) {
-                    update planesMensualesList;
-                }            
-            } 
+            updatePlanesMensualesFromPC(planesComercialesAnualesList);
         } else { // se ha invocado desde trigger objetivos
-            gestionarUpdateObjetivos(mapObjetivos);
+            updatePlanesMensualesFromObjective(mapObjetivos);
         }
                         
     }
@@ -99,69 +89,9 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         } else {
             deletePlanesMensualesFromObjectives(mapObjetivos);
         }        
-    }
+    }   
 
-    /**
-     * Gestion logica actualización objetivos y su influencia sobre los PC
-     * @param mapObjetivos: objetivos modificados
-     * @return void
-     * @author dmunoz
-     * @date 21/07/2022
-     */
-    private static void gestionarUpdateObjetivos(Map<String, Map<String, Objective__c>> mapObjetivos) {
-        Map<String, Objective__c> objetivosToUpdatePesos = mapObjetivos.get('ObjetivosToUpdatePesos'); // map externalId, Objetivo
-        Map<String, Objective__c> objetivosToUpdateActive = mapObjetivos.get('ObjetivosToUpdateActive'); // map externalId, Objetivo
-        Map<String, Objective__c> objetivosToUpdateInactive = mapObjetivos.get('ObjetivosToUpdateInactive'); // map externalId, Objetivo
-
-        // lista pc para hacer las operaciones
-        List<PlanComercial__c> pcToInsert = new List<PlanComercial__c>();
-        List<PlanComercial__c> pcToUpdate = new List<PlanComercial__c>();
-        List<PlanComercial__c> pcToDelete = new List<PlanComercial__c>();
-
-        List<PlanComercial__c> pcList = new List<PlanComercial__c>(); // lista de planes via query
-
-        // query de planes cambia segun si es insert o update/delete de planes
-        if (!objetivosToUpdateActive.isEmpty()) {
-            pcList = getPlanesComercialesAnualesByObjetivos(objetivosToUpdateActive);
-        } else if (!objetivosToUpdatePesos.isEmpty()) {            
-            // obtener planes mensuales
-            pcList = getPlanesComercialesMensualesByObjetivos(objetivosToUpdatePesos); // TODO: sustituir por metodo get planes mensuales, nota hay que obtener los datos del padre necesarios para que todo funcione
-        } else if (!objetivosToUpdateInactive.isEmpty()) {
-            pcToDelete = getPlanesComercialesMensualesByObjetivos(objetivosToUpdateInactive);
-        }
-
-        String externalIdPCGenerated;
-        for (PlanComercial__c pc: pcList) {
-            externalIdPCGenerated = generateExternalIdValue(pc);
-
-            if (objetivosToUpdateActive.get(externalIdPCGenerated) != null) {
-                pcToInsert.add(pc); // inserto planes anuales
-            } else if (objetivosToUpdatePesos.get(externalIdPCGenerated) != null) {
-                pcToUpdate.add(pc); // inserto planes mensuales
-            }
-        }
-
-        if (!pcToInsert.isEmpty()) {
-            // insert planes
-            List<PlanComercial__c> listaPlanesInsert = generatePlanesHijosToInsert(pcToInsert, objetivosToUpdateActive);
-
-            if (!listaPlanesInsert.isEmpty()) {
-                insert listaPlanesInsert;
-            }
-        } else if (!pcToUpdate.isEmpty()) {
-            // recalcular planes
-            List<PlanComercial__c>  planesMensualesList = recalcularKPI(pcToUpdate, objetivosToUpdatePesos);
-
-            if (!planesMensualesList.isEmpty()) {
-                update planesMensualesList;
-            } 
-
-        } else if (!pcToDelete.isEmpty()) {
-            // eliminar planes
-            deletePlanesMensuales(pcToDelete, null);
-        }
-
-    }
+    
 
     /****************************************************** Metodos Auxiliares Insert Planes Mensuales***************************************************************************/    
 
@@ -200,7 +130,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         Map<String, Objective__c> objetivosToInsert = mapObjetivos.get('ObjetivosInsert'); // map externalId, Objetivo
 
         // obtengo los planes anuales compatibles con los objetivos insertados
-        List<PlanComercial__c> pcAnualesList = getPlanesComercialesAnualesByObjetivos(objetivosToInsert);
+        List<PlanComercial__c> pcAnualesList = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToInsert, 'Anual');
 
         // genero la lista de planes mensuales a insertar
         List<PlanComercial__c> listaPlanesMensualesInsert = generatePlanesHijosToInsert(pcAnualesList, objetivosToInsert);
@@ -348,35 +278,104 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
     private static void deletePlanesMensualesFromObjectives(Map<String, Map<String, Objective__c>> mapObjetivos) {
 
         Map<String, Objective__c> objetivosToDelete = mapObjetivos.get('ObjetivosToDelete'); // map externalId, Objetivo
-        List<PlanComercial__c> pcToDelete = getPlanesComercialesMensualesByObjetivos(objetivosToDelete);      
+        List<PlanComercial__c> pcToDelete = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToDelete, 'Mensual');      
         deletePlanesMensualesFromPC(pcToDelete);
     }
 
 
-    /****************************************************** Metodos Auxiliares gestionarUpdateObjetivos***************************************************************************/
+    /****************************************************** Metodos Auxiliares updatePlanesMensualesFromObjective***************************************************************************/
+    /**
+     * Gestion logica actualización objetivos y su influencia sobre los PC
+     * @param mapObjetivos: objetivos modificados
+     * @return void
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static void updatePlanesMensualesFromPC(List<PlanComercial__c> planesComercialesAnualesList) {
+        Map<String, Objective__c> objetivosMap = getObjetivosParametrica(planesComercialesAnualesList); // key externalId
+        if (!objetivosMap.isEmpty()) {
+            List<PlanComercial__c> planesMensualesList = getPlanesMensuales(planesComercialesAnualesList);
+        
+            planesMensualesList = recalcularKPI(planesMensualesList, objetivosMap);
 
-
-    private static List<PlanComercial__c> getPlanesComercialesAnualesByObjetivos(Map<String, Objective__c> objetivosInput) {
-        List<PlanComercial__c> result = new List<PlanComercial__c>();
-
-        Set<String> indicatorSet = new Set<String>();
-        Set<String> segmentSet = new Set<String>();
-        Set<String> productSet = new Set<String>();
-        Set<Integer> yearSet = new Set<Integer>();
-
-        for (Objective__c obj: objetivosInput.values()) {
-            indicatorSet.add(obj.Indicator__c);
-            segmentSet.add(obj.Segment__c);
-            productSet.add(obj.Product__c);
-            yearSet.add(Integer.valueOf(obj.Year__c));
-        }
-
-        result = (new PlanComercialSelector()).findAnualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, yearSet);
-
-        return result;
+            if (!planesMensualesList.isEmpty()) {
+                update planesMensualesList;
+            }            
+        } 
     }
 
-    private static List<PlanComercial__c> getPlanesComercialesMensualesByObjetivos(Map<String, Objective__c> objetivosInput) {
+
+    /**
+     * Gestion logica actualización objetivos y su influencia sobre los PC
+     * @param mapObjetivos: objetivos modificados
+     * @return void
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static void updatePlanesMensualesFromObjective(Map<String, Map<String, Objective__c>> mapObjetivos) {
+        Map<String, Objective__c> objetivosToUpdatePesos = mapObjetivos.get('ObjetivosToUpdatePesos'); // map externalId, Objetivo
+        Map<String, Objective__c> objetivosToUpdateActive = mapObjetivos.get('ObjetivosToUpdateActive'); // map externalId, Objetivo
+        Map<String, Objective__c> objetivosToUpdateInactive = mapObjetivos.get('ObjetivosToUpdateInactive'); // map externalId, Objetivo
+
+        // lista pc para hacer las operaciones
+        List<PlanComercial__c> pcToInsert = new List<PlanComercial__c>();
+        List<PlanComercial__c> pcToUpdate = new List<PlanComercial__c>();
+        List<PlanComercial__c> pcToDelete = new List<PlanComercial__c>();
+
+        List<PlanComercial__c> pcList = new List<PlanComercial__c>(); // lista de planes via query
+
+        // query de planes cambia segun si es insert o update/delete de planes
+        if (!objetivosToUpdateActive.isEmpty()) {
+            pcList = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToUpdateActive, 'Anual');
+        } else if (!objetivosToUpdatePesos.isEmpty()) {            
+            // obtener planes mensuales
+            pcList = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToUpdatePesos, 'Mensual');
+        } else if (!objetivosToUpdateInactive.isEmpty()) {
+            pcToDelete = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToUpdateInactive, 'Mensual');
+        }
+
+        String externalIdPCGenerated;
+        for (PlanComercial__c pc: pcList) {
+            externalIdPCGenerated = generateExternalIdValue(pc);
+
+            if (objetivosToUpdateActive.get(externalIdPCGenerated) != null) {
+                pcToInsert.add(pc); // inserto planes anuales
+            } else if (objetivosToUpdatePesos.get(externalIdPCGenerated) != null) {
+                pcToUpdate.add(pc); // inserto planes mensuales
+            }
+        }
+
+        if (!pcToInsert.isEmpty()) {
+            // insert planes
+            List<PlanComercial__c> listaPlanesInsert = generatePlanesHijosToInsert(pcToInsert, objetivosToUpdateActive);
+
+            if (!listaPlanesInsert.isEmpty()) {
+                insert listaPlanesInsert;
+            }
+        } else if (!pcToUpdate.isEmpty()) {
+            // recalcular planes
+            List<PlanComercial__c>  planesMensualesList = recalcularKPI(pcToUpdate, objetivosToUpdatePesos);
+
+            if (!planesMensualesList.isEmpty()) {
+                update planesMensualesList;
+            } 
+
+        } else if (!pcToDelete.isEmpty()) {
+            // eliminar planes
+            deletePlanesMensuales(pcToDelete, null);
+        }
+
+    }
+
+    /**
+     * Query planes anuales o mensuales a partir de indicadores y año
+     * @param objetivosInput: Objetivos recibidos
+     * @param pcType: tipo de query a hacer planes anuales o mensuales
+     * @return Map con los objetivos recuperados de la consulta siendo la clave ExternalId__c 
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static List<PlanComercial__c> getPlanesComercialesAnualesMensualesByObjetivos(Map<String, Objective__c> objetivosInput, String pcType) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
 
         Set<String> indicatorSet = new Set<String>();
@@ -391,7 +390,11 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
             yearSet.add(Integer.valueOf(obj.Year__c));
         }
 
-        result = (new PlanComercialSelector()).findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, yearSet);
+        if ('Anual'.equals(pcType)) {
+            result = (new PlanComercialSelector()).findAnualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, yearSet);
+        } else if ('Mensual'.equals(pcType)) {
+            result = (new PlanComercialSelector()).findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, yearSet);
+        } else {}        
 
         return result;
     }
@@ -520,7 +523,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c + obj.October__c + obj.November__c + obj.December__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-            }
+            } when else {}
         }
 
         result.put('MonthName', monthName);

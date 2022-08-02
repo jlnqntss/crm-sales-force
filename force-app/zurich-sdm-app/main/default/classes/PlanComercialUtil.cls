@@ -26,7 +26,7 @@ public with sharing class PlanComercialUtil {
 
         if (!planesComercialesJob.isEmpty()) {
             System.debug('lanzar job ' + action);
-            ID jobID = System.enqueueJob(new GestionarPlanesMensualesQueueableJob(planesComercialesJob, action));
+            System.enqueueJob(new GestionarPlanesMensualesQueueableJob(planesComercialesJob, action));
         }        
     }
 
@@ -54,7 +54,7 @@ public with sharing class PlanComercialUtil {
      */
     public static void altaJobEliminarPlanesMensuales(List<PlanComercial__c> planesMensuales) {
         if (!planesMensuales.isEmpty()) {            
-            ID jobID = System.enqueueJob(new GestionarPlanesMensualesQueueableJob(planesMensuales, 'Delete'));
+            System.enqueueJob(new GestionarPlanesMensualesQueueableJob(planesMensuales, 'Delete'));
         }        
     }
 

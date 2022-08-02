@@ -28,7 +28,7 @@ public with sharing class ObjetivosUtil {
         if (!objetivosToInsert.isEmpty()) {        
             objectivesToJob.put('ObjetivosInsert', objetivosToInsert);
             
-            ID jobID = System.enqueueJob(new GestionarPlanesMensualesQueueableJob(objectivesToJob, 'Insert'));
+            System.enqueueJob(new GestionarPlanesMensualesQueueableJob(objectivesToJob, 'Insert'));
         }
     }
     
@@ -66,7 +66,7 @@ public with sharing class ObjetivosUtil {
             objectivesToJob.put('ObjetivosToUpdateActive', objetivosToUpdateActive);
             objectivesToJob.put('ObjetivosToUpdateInactive', objetivosToUpdateInactive);
             
-            ID jobID = System.enqueueJob(new GestionarPlanesMensualesQueueableJob(objectivesToJob, 'Update'));
+            System.enqueueJob(new GestionarPlanesMensualesQueueableJob(objectivesToJob, 'Update'));
         }
     }
 
@@ -89,7 +89,7 @@ public with sharing class ObjetivosUtil {
 
         if (!objectivesToDelete.isEmpty()) {
             objectivesToJob.put('ObjetivosToDelete', objectivesToDelete);
-            ID jobID = System.enqueueJob(new GestionarPlanesMensualesQueueableJob(objectivesToJob, 'Delete'));    
+            System.enqueueJob(new GestionarPlanesMensualesQueueableJob(objectivesToJob, 'Delete'));    
         }            
     }
 
