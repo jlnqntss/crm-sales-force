@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FranquiciaGastosMontajeDesmontaje__c</fullName>
+    <description>Franquicia gastos de montaje y desmontaje Recomendada</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Franquicia gastos de montaje y desmontaje Recomendada</inlineHelpText>
+    <label>Assembly Disassembly Expenses Excess</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

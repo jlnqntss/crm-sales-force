@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Preferente</fullName>
+        <default>false</default>
+        <label>Preferente</label>
+    </customValue>
+    <customValue>
+        <fullName>No preferente</fullName>
+        <default>false</default>
+        <label>No preferente</label>
+    </customValue>
+    <customValue>
+        <fullName>Fuera de apetito</fullName>
+        <default>false</default>
+        <label>Fuera de apetito</label>
+    </customValue>
+    <customValue>
+        <fullName>Excluido</fullName>
+        <default>false</default>
+        <label>Excluido</label>
+    </customValue>
+    <masterLabel>Nivel de Apetito de Riesgo</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
