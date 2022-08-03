@@ -8286,11 +8286,6 @@
     </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
-        <field>MaestroApetito__c.Name</field>
-        <readable>true</readable>
-    </fieldPermissions>
-	<fieldPermissions>
-        <editable>true</editable>
         <field>MaestroApetito__c.NivelCompetencias__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8322,11 +8317,6 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ObservacionesProducto__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-	<fieldPermissions>
-        <editable>true</editable>
-        <field>MaestroApetito__c.OwnerId</field>
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
