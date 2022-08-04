@@ -5,7 +5,8 @@
     <externalId>false</externalId>
     <inlineHelpText>Notas de ayuda para la suscripción del riesgo</inlineHelpText>
     <label>Suscription Risk Help Notes</label>
-    <required>false</required>
+    <length>10000</length>
     <trackTrending>false</trackTrending>
-    <type>TextArea</type>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
 </CustomField>
