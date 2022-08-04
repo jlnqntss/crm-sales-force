@@ -8190,6 +8190,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.IsUspProduct__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.LossSubReasonDescription__c</field>
         <readable>true</readable>
@@ -9282,6 +9287,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.InfoStatusDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.IsUspProduct__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
