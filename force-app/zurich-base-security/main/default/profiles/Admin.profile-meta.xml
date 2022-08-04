@@ -16330,6 +16330,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>Task.Activity_USP</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Task.CommercialAction</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
