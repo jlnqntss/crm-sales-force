@@ -11,6 +11,8 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
     private Map<String, Map<String, Objective__c>> mapObjetivos;
     private String action;
 
+    private static final Integer numRecordsDML = 2000;
+
     public GestionarPlanesMensualesQueueableJob(List<PlanComercial__c> planesComercialesAnualesList, String action) {
         this.planesComerciales = planesComercialesAnualesList;
         this.mapObjetivos = null;
@@ -31,7 +33,13 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
                 } when 'Update' {
                     updatePlanesMensuales(planesComerciales, mapObjetivos);
                 } when 'Delete' {
-                    deletePlanesMensuales(planesComerciales, mapObjetivos);                
+                    deletePlanesMensuales(planesComerciales, mapObjetivos);             
+                } when 'InsertMensualesJob' { // en caso de insertar mas de 10k registros volvemos a llamar al job para los restantes
+                    insertPlanesMensuales(planesComerciales);
+                } when 'UpdateMensualesJob' { // en caso de actualizar mas de 10k registros volvemos a llamar al job para los restantes
+                    updatePlanesMensuales(planesComerciales);
+                } when 'DeleteMensualesJob' { // en caso de eliminar mas de 10k registros volvemos a llamar al job para los restantes
+                    deletePlanesMensuales(planesComerciales);
                 } when else {
                     throw new HandledException('Action no permitido, recibido ' + action);
                 }
@@ -93,7 +101,59 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         }        
     }   
 
-    
+    /**
+     * Según el número de registros a insertar, si son menores a 10k los insertamos directamente, si es mayor insertamos los primeros 10k e invocamos a un nuevo job para que los inserte directamente
+     * @param planesComercialesAnualesList: Planes comerciales validados
+     * @return void
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static void insertPlanesMensuales(List<PlanComercial__c> planesToInsertList) {
+
+        if (planesToInsertList != null && !planesToInsertList.isEmpty()) {
+            if (planesToInsertList.size() < numRecordsDML) {
+                insert planesToInsertList;
+            } else {
+                dmlAndCallNewJob(planesToInsertList, 'InsertMensualesJob');
+            }
+        }
+    }
+
+    /**
+     * Según el número de registros a insertar, si son menores a 10k los insertamos directamente, si es mayor insertamos los primeros 10k e invocamos a un nuevo job para que los inserte directamente
+     * @param planesComercialesAnualesList: Planes comerciales validados
+     * @return void
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static void updatePlanesMensuales(List<PlanComercial__c> planesToUpdateList) {
+
+        if (planesToUpdateList != null && !planesToUpdateList.isEmpty()) {
+            if (planesToUpdateList.size() < numRecordsDML) {
+                update planesToUpdateList;
+            } else {
+                dmlAndCallNewJob(planesToUpdateList, 'UpdateMensualesJob');
+            }
+        }
+    }
+
+    /**
+     * Según el número de registros a insertar, si son menores a 10k los insertamos directamente, si es mayor insertamos los primeros 10k e invocamos a un nuevo job para que los inserte directamente
+     * @param planesComercialesAnualesList: Planes comerciales validados
+     * @return void
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static void deletePlanesMensuales(List<PlanComercial__c> planesToDeleteList) {
+
+        if (planesToDeleteList != null && !planesToDeleteList.isEmpty()) {
+            if (planesToDeleteList.size() < numRecordsDML) {
+                delete planesToDeleteList;
+            } else {
+                dmlAndCallNewJob(planesToDeleteList, 'DeleteMensualesJob');
+            }
+        }
+    }
 
     /****************************************************** Metodos Auxiliares Insert Planes Mensuales***************************************************************************/    
 
@@ -107,16 +167,14 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
     private static void insertPlanesMensualesFromPC(List<PlanComercial__c> planesComercialesAnualesList) {
 
         if (planesComercialesAnualesList != null && !planesComercialesAnualesList.isEmpty()) {
-            List<PlanComercial__c> listPlanesHijos = new List<PlanComercial__c>();
+            List<PlanComercial__c> listaPlanesMensualesInsert = new List<PlanComercial__c>();
 
             Map<String, Objective__c> objetivosMap = getObjetivosParametrica(planesComercialesAnualesList); // key externalId
             if (!objetivosMap.isEmpty()) {
-                listPlanesHijos = generatePlanesHijosToInsert(planesComercialesAnualesList, objetivosMap);
+                listaPlanesMensualesInsert = generatePlanesHijosToInsert(planesComercialesAnualesList, objetivosMap);
             }  
             
-            if (!listPlanesHijos.isEmpty()) {
-                insert listPlanesHijos;
-            }
+            insertPlanesMensuales(listaPlanesMensualesInsert);
         }        
     }
 
@@ -137,9 +195,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         // genero la lista de planes mensuales a insertar
         List<PlanComercial__c> listaPlanesMensualesInsert = generatePlanesHijosToInsert(pcAnualesList, objetivosToInsert);
 
-        if (!listaPlanesMensualesInsert.isEmpty()) {
-            insert listaPlanesMensualesInsert;
-        }
+        insertPlanesMensuales(listaPlanesMensualesInsert);
     }
 
     /**
@@ -206,6 +262,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         result.RecordTypeId = Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId();
         result.EndDate__c = Date.newInstance(pc.EndDate__c.year(), i, Integer.valueOf(calculoPCMap.get('NumberOfDays')));
         result.ParentPlan__c = pc.Id;
+        result.SentNotifications__c = calculoPCMap.get('notificationSent');
 
         return result;
     }
@@ -263,11 +320,8 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static void deletePlanesMensualesFromPC(List<PlanComercial__c> planesComercialesMensualesList) {
-        
-        if (!planesComercialesMensualesList.isEmpty()) {
-            delete planesComercialesMensualesList; 
-        }        
+    private static void deletePlanesMensualesFromPC(List<PlanComercial__c> planesComercialesMensualesList) {         
+        deletePlanesMensuales(planesComercialesMensualesList);      
     }
 
     /**
@@ -281,7 +335,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
 
         Map<String, Objective__c> objetivosToDelete = mapObjetivos.get('ObjetivosToDelete'); // map externalId, Objetivo
         List<PlanComercial__c> pcToDelete = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToDelete, 'Mensual');      
-        deletePlanesMensualesFromPC(pcToDelete);
+        deletePlanesMensuales(pcToDelete);
     }
 
 
@@ -300,9 +354,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         
             planesMensualesList = recalcularKPI(planesMensualesList, objetivosMap);
 
-            if (!planesMensualesList.isEmpty()) {
-                update planesMensualesList;
-            }            
+            updatePlanesMensuales(planesMensualesList);            
         } 
     }
 
@@ -350,17 +402,12 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         if (!pcToInsert.isEmpty()) {
             // insert planes
             List<PlanComercial__c> listaPlanesInsert = generatePlanesHijosToInsert(pcToInsert, objetivosToUpdateActive);
+            insertPlanesMensuales(listaPlanesInsert);
 
-            if (!listaPlanesInsert.isEmpty()) {
-                insert listaPlanesInsert;
-            }
         } else if (!pcToUpdate.isEmpty()) {
             // recalcular planes
             List<PlanComercial__c>  planesMensualesList = recalcularKPI(pcToUpdate, objetivosToUpdatePesos);
-
-            if (!planesMensualesList.isEmpty()) {
-                update planesMensualesList;
-            } 
+            updatePlanesMensuales(planesMensualesList); 
 
         } else if (!pcToDelete.isEmpty()) {
             // eliminar planes
@@ -404,6 +451,43 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
     }
 
     /****************************************************** Metodos Auxiliares Comunes ******************************************************************************************/
+    /**
+     * Hago la operación dml indicada, hago el insert/update/delete de los primeros 10k y los que queden los que queden los envío al siguiente encolable
+     * @param planesComercialesAnualesList: Planes comerciales mensuales a insertar/ actualizar/eliminar
+     * @return Map con los objetivos recuperados de la consulta siendo la clave ExternalId__c 
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static void dmlAndCallNewJob(List<PlanComercial__c> planesMensualesList, String action) {
+        List<PlanComercial__c> planesMensualesToDMLList = new List<PlanComercial__c>();
+        List<PlanComercial__c> planesMensualesSobrantesList = new List<PlanComercial__c>(); // en caso de haber mas de 10k informo esta lista
+        if (planesMensualesList.size() > numRecordsDML) {            
+            for (Integer i = 0; i < numRecordsDML; i++) {
+                planesMensualesToDMLList.add(planesMensualesList.get(i));
+            }
+            for (Integer j = numRecordsDML; j < planesMensualesList.size(); j++) {
+                planesMensualesSobrantesList.add(planesMensualesList.get(j));
+            }
+            
+            System.enqueueJob(new GestionarPlanesMensualesQueueableJob(planesMensualesSobrantesList, action));
+        } else {
+            planesMensualesToDMLList = planesMensualesList;
+        }
+
+        switch on action {
+            when 'InsertMensualesJob' {
+                insert planesMensualesToDMLList;
+            } when  'UpdateMensualesJob' {
+                update planesMensualesToDMLList;
+            } when  'DeleteMensualesJob' {
+                delete planesMensualesToDMLList;
+            }
+            when else {
+                throw new HandledException('Operación no permitida en dmlAndCallNewJob, recibido: ' + action);
+            }
+        }
+
+    }
     
     /**
      * Obtener los objetivos de los planes comerciales validos
@@ -471,62 +555,75 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         String monthName;
         Decimal kpi;
         Integer numberOfDays;
+        String notificationSent;
         
         switch on i {
             when 1 {
                 monthName = 'Enero';
                 kpi = (pc.TargetKPINumber__c * obj.January__c) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 2 {
                 monthName = 'Febrero';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 3 {
                 monthName = 'Marzo';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 4 {
                 monthName = 'Abril';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 5 {
                 monthName = 'Mayo';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 6 {
                 monthName = 'Junio';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 7 {
                 monthName = 'Julio';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 8 {
                 monthName = 'Agosto';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 9 {
                 monthName = 'Septiembre';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 10 {
                 monthName = 'Octubre';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c + obj.October__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 11 {
                 monthName = 'Noviembre';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c + obj.October__c + obj.November__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when 12 {
                 monthName = 'Diciembre';
                 kpi = (pc.TargetKPINumber__c * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c + obj.October__c + obj.November__c + obj.December__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
+                notificationSent = calculateNotificationsSent(pc, i);
             } when else {
                 throw new HandledException('No se permite un valor superior a 12, por ser mes, recibido ' + i);
             }
@@ -535,6 +632,44 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         result.put('MonthName', monthName);
         result.put('KPI', String.valueOf(kpi));
         result.put('NumberOfDays', String.valueOf(numberOfDays));
+        result.put('NotificationSent', notificationSent);
+
+        return result;
+    }
+
+    /**
+     * Calculo el valor de sent notifications para los planes hijos, añado el valor 03 para no enviar notificaciones en planes de meses anteriores al actual
+     * @param pc: plan comercial anual
+     * @param monthToCalculate: mes a generar
+     * @return Map con los calculos
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static String calculateNotificationsSent(PlanComercial__c pc, Integer monthToCalculate) {
+        String result = '';
+        Integer actualMonth = Date.today().month();
+
+        if (monthToCalculate < actualMonth) {
+            result = setNotificationSentValue(pc.SentNotifications__c);
+        }
+        
+        return result;
+    }
+
+    /**
+     * Calculo el valor de sent notifications para los planes hijos, añado el valor 03 para no enviar notificaciones en planes de meses anteriores al actual
+     * @param notificationSetValue: valor del campo sent notification del plan
+     * @param monthToCalculate: mes a generar
+     * @return Map con los calculos
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static String setNotificationSentValue(String notificationSetValue) {
+        String result = '03';
+
+        if (notificationSetValue != null && String.isNotEmpty(notificationSetValue)) { // concateno el valor 03 a la picklist
+            result += ';03';
+        }
 
         return result;
     }

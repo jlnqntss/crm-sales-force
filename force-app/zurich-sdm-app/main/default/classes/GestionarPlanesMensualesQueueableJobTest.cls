@@ -47,7 +47,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
                                                                                 AND RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()]);
             System.debug('num mensuales ' + planesMensuales.size());
             
-            System.assertEquals(24, planesMensuales.size(), 'Se deben haber insertado 24 planes mensuales');
+            System.assertEquals(12, planesMensuales.size(), 'Se deben haber insertado 12 planes mensuales');
 
             Date endDate = Date.newInstance(ACTUAL_YEAR, 1, 31);
             List<PlanComercial__c> planesMensualesUpdated = new List<PlanComercial__c>([SELECT ID, Name, startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c

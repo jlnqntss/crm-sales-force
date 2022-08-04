@@ -225,7 +225,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
 
         if( plans != null && !plans.isEmpty() ) {
             childPlans = [
-                SELECT Id,  TargetKPINumber__c, Indicator__c, Segment__c, Product__c, EndDate__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c
+                SELECT Id,  TargetKPINumber__c, Indicator__c, Segment__c, Product__c, EndDate__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c
                 FROM PlanComercial__c
                 WHERE ParentPlan__c IN :plans
                 AND RecordTypeId = :rtPlanMensualId
@@ -286,7 +286,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
             result = [
                 SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
                 Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
-                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c
+                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c
 
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanMensualId
