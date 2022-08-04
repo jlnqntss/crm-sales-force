@@ -30,6 +30,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         try
         {
             Map<String, Object> deserializedData = (Map<String, Object>) JSON.deserializeUntyped(data);
+            Map<String, Object> interaction = (Map<String, Object>) deserializedData.get('interaction');
             Task interactionTask = createTaskFromCallLog( (Map<String, Object>) deserializedData.get('callLog') );
             String eventName = (String) deserializedData.get('eventName');
             String interactionId;
@@ -39,8 +40,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             //     Este proceso solo se produce en la gestión inicial
             if(eventName == 'interactionChanged' && String.isEmpty(interactionTask.Id) )
             {
-                Map<String, Object> interaction = (Map<String, Object>) deserializedData.get('interaction');
-
                 if ( interaction.containsKey('id') )
                 {
                     interactionId = (String) interaction.get('id');
@@ -80,6 +79,13 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 interactionTask.Status = TASK_STATUS_ASSIGNED;
                 interactionTask.CallObject = interactionId;
                 interactionTask.OwnerId = UserInfo.getUserId();
+            }
+            else if(eventName == 'interactionChanged' && !String.isEmpty(interactionTask.Id))
+            {
+                if ( interaction.containsKey('messageType') && (String) interaction.get('messageType') == 'whatsapp')
+                {
+                    interactionTask.Status = TASK_STATUS_ASSIGNED;
+                }
             }
             else if(eventName == 'interactionDisconnected')
             {
