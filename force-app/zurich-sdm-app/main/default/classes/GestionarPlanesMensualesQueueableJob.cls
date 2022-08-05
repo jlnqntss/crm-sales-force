@@ -262,7 +262,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         result.RecordTypeId = Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId();
         result.EndDate__c = Date.newInstance(pc.EndDate__c.year(), i, Integer.valueOf(calculoPCMap.get('NumberOfDays')));
         result.ParentPlan__c = pc.Id;
-        result.SentNotifications__c = calculoPCMap.get('notificationSent');
+        result.SentNotifications__c = calculoPCMap.get('NotificationSent');
 
         return result;
     }
@@ -638,7 +638,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
     }
 
     /**
-     * Calculo el valor de sent notifications para los planes hijos, añado el valor 03 para no enviar notificaciones en planes de meses anteriores al actual
+     * Calculo el valor de sent notifications para los planes hijos, añado el valor 02,03 para no enviar notificaciones en planes de meses anteriores al actual
      * @param pc: plan comercial anual
      * @param monthToCalculate: mes a generar
      * @return Map con los calculos
@@ -650,27 +650,9 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         Integer actualMonth = Date.today().month();
 
         if (monthToCalculate < actualMonth) {
-            result = setNotificationSentValue(pc.SentNotifications__c);
+            result = '01;02;03';
         }
         
-        return result;
-    }
-
-    /**
-     * Calculo el valor de sent notifications para los planes hijos, añado el valor 03 para no enviar notificaciones en planes de meses anteriores al actual
-     * @param notificationSetValue: valor del campo sent notification del plan
-     * @param monthToCalculate: mes a generar
-     * @return Map con los calculos
-     * @author dmunoz
-     * @date 21/07/2022
-     */
-    private static String setNotificationSentValue(String notificationSetValue) {
-        String result = '03';
-
-        if (notificationSetValue != null && String.isNotEmpty(notificationSetValue)) { // concateno el valor 03 a la picklist
-            result += ';03';
-        }
-
         return result;
     }
 }
