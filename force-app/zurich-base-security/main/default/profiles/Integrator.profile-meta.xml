@@ -3741,6 +3741,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.USPConversionRatio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Archetype__c</field>
         <readable>true</readable>
     </fieldPermissions>

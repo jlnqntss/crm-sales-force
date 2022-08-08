@@ -139,11 +139,15 @@
                 <behavior>Edit</behavior>
                 <field>SMEClientPortfolio__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>USPConversionRatio__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Profitability__c</field>
+                <field>AccidentRate__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
