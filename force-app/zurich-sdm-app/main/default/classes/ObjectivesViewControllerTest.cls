@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @group             : 
+ * @last modified on  : 08-08-2022
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+**/
 @isTest(SeeAllData=false)
 public with sharing class ObjectivesViewControllerTest {
     
@@ -70,6 +77,7 @@ public with sharing class ObjectivesViewControllerTest {
      * @author dmunoz
      * @date 08/07/2022
      */
+    /*
     @isTest
     static void test_clone() {
 
@@ -85,7 +93,7 @@ public with sharing class ObjectivesViewControllerTest {
         Test.stopTest();
 
         System.assertEquals('2024', mapCloneResult.get('year'), 'Se debería recibir el año siguiente a 2023');
-    }
+    }*/
 
     /**
      * Prueba clonar objetivos
