@@ -13705,6 +13705,11 @@
         <field>PlanComercial__c.ParentPlan__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlanComercial__c.Intermediary_Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>true</enabled>
         <flow>Campaign_Member_Status</flow>
