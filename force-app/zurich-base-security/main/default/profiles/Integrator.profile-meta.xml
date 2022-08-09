@@ -5505,6 +5505,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.IsRemitentInContact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.Language</field>
         <readable>true</readable>
@@ -8185,6 +8190,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.IsUspProduct__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.LossSubReasonDescription__c</field>
         <readable>true</readable>
@@ -9277,6 +9287,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.InfoStatusDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.IsUspProduct__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -15606,6 +15621,11 @@
     <recordTypeVisibilities>
         <default>true</default>
         <recordType>Task.Activity</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Task.Activity_USP</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

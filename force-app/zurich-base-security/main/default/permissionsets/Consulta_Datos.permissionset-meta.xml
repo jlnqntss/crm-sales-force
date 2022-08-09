@@ -1108,6 +1108,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.IsRemitentInContact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.IsStopped</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2178,6 +2183,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.isUpdatedFromINFO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Policy__c.Bonus__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2404,6 +2414,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.INFO_Product_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.IsUspProduct__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

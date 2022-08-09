@@ -2,8 +2,8 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>StatusRuleCantGoFromClosed</fullName>
     <active>true</active>
-    <errorConditionFormula>OR(RecordType.DeveloperName = &quot;Activity&quot;,RecordType.DeveloperName = &quot;Interaction&quot;) 
-&amp;&amp; ISCHANGED(Status) 
+    <errorConditionFormula>OR(RecordType.DeveloperName = &quot;Activity&quot;,RecordType.DeveloperName = &quot;Interaction&quot;)
+&amp;&amp; ISCHANGED(Status)
 
 &amp;&amp; ( ISPICKVAL(PRIORVALUE(Status),&quot;Cerrada&quot;) &amp;&amp;  !ISCHANGED(OwnerId)  )</errorConditionFormula>
     <errorMessage>[VR Tarea] Una actividad o interacción en estado CERRADA solo puede pasar a otro estado si es a un Owner diferente.</errorMessage>
