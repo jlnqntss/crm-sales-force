@@ -66,10 +66,18 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             return;
         }
 
-        if(eventName == 'interactionChanged' && String.isEmpty(interactionTask.Id))
+        if(eventName == 'interactionChanged')
         {
             Map<String, Object> interaction = (Map<String, Object>) eventData.get('interaction');
-            eventOnInteractionChanged(interactionTask, interaction);
+
+            if( String.isEmpty(interactionTask.Id))
+            {
+                eventOnInteractionChanged(interactionTask, interaction);
+            }
+            else // Interaccion Whatsapp
+            {
+                eventOnInteractionChangedWhatsApp(interactionTask, interaction);
+            }
         }
         else if(eventName == 'interactionDisconnected')
         {
@@ -125,6 +133,21 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         interactionTask.Status      = TASK_STATUS_ASSIGNED;
         interactionTask.CallObject  = interactionId;
         interactionTask.OwnerId     = UserInfo.getUserId();
+    }
+
+        /**
+     * @author      jgallaga
+     * @date        05/08/2022
+     * @description En caso de que la interaccion sea por whatsapp, unicamente se cambia el estado de la tarea a asignada.
+     * @param       Task - La interacción relacionada con el evento
+     * @param       Map<String,Obejct> - Mapa con la información del evento
+     */
+    private static void eventOnInteractionChangedWhatsApp(Task interactionTask, Map<String, Object> eventInteractionData)
+    {
+        if(eventInteractionData.containsKey('messageType') && (String) eventInteractionData.get('messageType') == 'whatsapp')
+        {
+            interactionTask.Status = TASK_STATUS_ASSIGNED;
+        }
     }
 
         /**
