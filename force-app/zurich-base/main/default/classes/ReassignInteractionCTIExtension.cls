@@ -281,7 +281,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     /**
      * Si la tarea está asociada a un caso y este caso pertenece a una cola, reasignar el caso al usuario actual.
      * @param interactionTask Task recibida
-     * @last modified on  : 09/08/2022
+     * @last modified on  : 10/08/2022
      * @last modified by  : jgallaga
      */
     @TestVisible
@@ -295,7 +295,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         try
         {
             //Comprobar si es un CASO
-            if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
+            if(interactionTask.WhatId.getsObjectType() == Case.sObjectType)
             {
                 Set<String> idsCasos = new Set<String>();
                 idsCasos.add(interactionTask.WhatId);
@@ -314,7 +314,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     }
                 }
             }//Comprobar si es un ContactRequest
-            else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
+            else if(interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
             {
                 List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
                 if(!contactrequests.isEmpty() )
@@ -324,7 +324,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     update contactrequests;
                 }
             }//Comprobar si es una Offer
-            else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
+            else if(interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
             {
                 List<Opportunity> offers = new OpportunitiesSelector().findById(interactionTask.WhatId);
                 if(!offers.isEmpty() )
