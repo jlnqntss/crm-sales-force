@@ -11,7 +11,8 @@ ISCHANGED( TargetKPINumber__c),
 ISCHANGED( TargetKPICurrency__c),
 ISCHANGED( TargetKPIPercent__c)
 ),
-Status__c = &quot;Cerrado&quot;
+Status__c = &quot;Cerrado&quot;,
+ RecordType.DeveloperName &lt;&gt; &apos;MensualPlan&apos;
 )</errorConditionFormula>
     <errorDisplayField>TargetKPINumber__c</errorDisplayField>
     <errorMessage>El KPI objetivo no puede ser modificado si el plan ha finalizado.</errorMessage>
