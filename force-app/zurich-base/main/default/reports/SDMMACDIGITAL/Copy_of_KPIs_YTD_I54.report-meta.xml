@@ -40,13 +40,14 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>KPI__c.ConsolidatedRights__c:SUM+KPI__c.MathematicalReserve__c:SUM</calculatedFormula>
-        <datatype>number</datatype>
+        <calculatedFormula>(KPI__c.PN__c:SUM-KPI__c.PA_PN__c:SUM)/KPI__c.PA_PN__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Variación PN respecto PA</description>
         <developerName>FORMULA5</developerName>
-        <isActive>false</isActive>
+        <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>Saldos</masterLabel>
-        <scale>2</scale>
+        <masterLabel>Variación PN respecto PA</masterLabel>
+        <scale>0</scale>
     </aggregates>
     <buckets>
         <bucketType>text</bucketType>
@@ -92,25 +93,19 @@
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
             <aggregate>Sum</aggregate>
-            <axisBinding>x</axisBinding>
+            <axisBinding>y</axisBinding>
             <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartSummaries>
-            <aggregate>Sum</aggregate>
-            <axisBinding>y</axisBinding>
-            <column>KPI__c.Portfolio__c</column>
-        </chartSummaries>
-        <chartType>ScatterGrouped</chartType>
+        <chartType>Donut</chartType>
         <enableHoverLabels>false</enableHoverLabels>
-        <expandOthers>true</expandOthers>
-        <groupingColumn>Account.BusinessManagerName__c</groupingColumn>
+        <expandOthers>false</expandOthers>
+        <groupingColumn>BucketField_68388292</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>Account.IntermediaryDescription__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
-        <showPercentage>false</showPercentage>
-        <showTotal>false</showTotal>
-        <showValues>false</showValues>
+        <showPercentage>true</showPercentage>
+        <showTotal>true</showTotal>
+        <showValues>true</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
@@ -118,14 +113,6 @@
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
-    <colorRanges>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.Portfolio__c</columnName>
-        <highColor>#FFFFFF</highColor>
-        <lowBreakpoint>-1.0</lowBreakpoint>
-        <lowColor>#FF9897</lowColor>
-        <midColor>#FFFFFF</midColor>
-    </colorRanges>
     <colorRanges>
         <aggregate>Sum</aggregate>
         <columnName>KPI__c.PN__c</columnName>
@@ -143,7 +130,7 @@
         <midColor>#FFFFFF</midColor>
     </colorRanges>
     <columns>
-        <field>CDF1</field>
+        <field>Account.IntermediaryDescription__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -155,25 +142,36 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.Portfolio__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Portfolio__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PoliciesPN__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PA_PoliciesPN__c</field>
     </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.APES__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.APESpa__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Portfolio__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Portfolio__c</field>
+    </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
@@ -181,7 +179,7 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe sobre la producción de de los mediadores y el volumen de cartera</description>
+    <description>Informe completo con los principales indicadores Mac Digital YTD</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
@@ -198,30 +196,22 @@
             <value>Account.Intermediary</value>
         </criteriaItems>
         <criteriaItems>
+            <column>BucketField_68388292</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>5- VIDA RESTO</value>
+        </criteriaItems>
+        <criteriaItems>
             <column>CDF1</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>THIS_MONTH</value>
         </criteriaItems>
-        <criteriaItems>
-            <column>KPI__c.EstructuraUnificada__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value>RESTO</value>
-        </criteriaItems>
-        <language>es</language>
+        <language>en_US</language>
     </filter>
     <format>Summary</format>
-    <formattingRules>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.Portfolio__c</columnName>
-        <values>
-            <backgroundColor>#FF9897</backgroundColor>
-            <rangeUpperBound>-1.0</rangeUpperBound>
-        </values>
-    </formattingRules>
     <formattingRules>
         <aggregate>Sum</aggregate>
         <columnName>KPI__c.PN__c</columnName>
@@ -240,23 +230,15 @@
     </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Account.BusinessManagerName__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>Account.IntermediaryDescription__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <aggregateType>Sum</aggregateType>
-        <dateGranularity>Day</dateGranularity>
         <field>BucketField_68388292</field>
-        <sortByName>KPI__c.PN__c</sortByName>
-        <sortOrder>Desc</sortOrder>
-        <sortType>Aggregate</sortType>
+        <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Resumen mediadores YTD</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>KPI__c.EstructuraDetalle__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Copy of KPI&apos;s YTD</name>
     <params>
         <name>co</name>
         <value>0</value>
@@ -264,8 +246,8 @@
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>ownaccountteam</scope>
     <showDetails>false</showDetails>
-    <showGrandTotal>false</showGrandTotal>
-    <showSubTotals>true</showSubTotals>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>

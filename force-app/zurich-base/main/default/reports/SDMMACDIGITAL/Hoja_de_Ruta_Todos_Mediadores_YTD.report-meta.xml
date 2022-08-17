@@ -25,7 +25,7 @@
         <datatype>percent</datatype>
         <description>Descuento total</description>
         <developerName>FORMULA3</developerName>
-        <isActive>true</isActive>
+        <isActive>false</isActive>
         <isCrossBlock>false</isCrossBlock>
         <masterLabel>% Dto. Total</masterLabel>
         <scale>2</scale>
@@ -40,12 +40,13 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>KPI__c.ConsolidatedRights__c:SUM+KPI__c.MathematicalReserve__c:SUM</calculatedFormula>
+        <calculatedFormula>KPI__c.PoliciesPN__c:SUM - KPI__c.PA_PoliciesPN__c:SUM</calculatedFormula>
         <datatype>number</datatype>
+        <description>Realiza la resta entre Póliza PN y Póliza PN (PA)</description>
         <developerName>FORMULA5</developerName>
         <isActive>false</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>Saldos</masterLabel>
+        <masterLabel>Diferencia Pólizas PN</masterLabel>
         <scale>2</scale>
     </aggregates>
     <buckets>
@@ -93,20 +94,18 @@
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>x</axisBinding>
-            <column>KPI__c.PN__c</column>
+            <column>KPI__c.Portfolio__c</column>
         </chartSummaries>
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.Portfolio__c</column>
+            <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartType>ScatterGrouped</chartType>
+        <chartType>Scatter</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>Account.BusinessManagerName__c</groupingColumn>
-        <legendPosition>Right</legendPosition>
+        <groupingColumn>PARENT.NAME</groupingColumn>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>Account.IntermediaryDescription__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -115,17 +114,10 @@
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
+        <title>DISTRIBUCIÓN MEDIADOR CARTERA Y NP</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
-    <colorRanges>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.Portfolio__c</columnName>
-        <highColor>#FFFFFF</highColor>
-        <lowBreakpoint>-1.0</lowBreakpoint>
-        <lowColor>#FF9897</lowColor>
-        <midColor>#FFFFFF</midColor>
-    </colorRanges>
     <colorRanges>
         <aggregate>Sum</aggregate>
         <columnName>KPI__c.PN__c</columnName>
@@ -143,9 +135,6 @@
         <midColor>#FFFFFF</midColor>
     </colorRanges>
     <columns>
-        <field>CDF1</field>
-    </columns>
-    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PN__c</field>
     </columns>
@@ -155,25 +144,24 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.Portfolio__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Portfolio__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PoliciesPN__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PA_PoliciesPN__c</field>
     </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Portfolio__c</field>
+    </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
@@ -181,7 +169,7 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe sobre la producción de de los mediadores y el volumen de cartera</description>
+    <description>Informe con los principales indicadores a nivel Mediador y Estructura.</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
@@ -205,23 +193,15 @@
             <value>THIS_MONTH</value>
         </criteriaItems>
         <criteriaItems>
-            <column>KPI__c.EstructuraUnificada__c</column>
+            <column>BucketField_68388292</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
-            <value>RESTO</value>
+            <value>5- VIDA RESTO</value>
         </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
-    <formattingRules>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.Portfolio__c</columnName>
-        <values>
-            <backgroundColor>#FF9897</backgroundColor>
-            <rangeUpperBound>-1.0</rangeUpperBound>
-        </values>
-    </formattingRules>
     <formattingRules>
         <aggregate>Sum</aggregate>
         <columnName>KPI__c.PN__c</columnName>
@@ -240,23 +220,15 @@
     </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Account.BusinessManagerName__c</field>
+        <field>PARENT.NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>Account.IntermediaryDescription__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <aggregateType>Sum</aggregateType>
         <dateGranularity>Day</dateGranularity>
         <field>BucketField_68388292</field>
-        <sortByName>KPI__c.PN__c</sortByName>
-        <sortOrder>Desc</sortOrder>
-        <sortType>Aggregate</sortType>
+        <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Resumen mediadores YTD</name>
+    <name>Hoja de Ruta Todos Mediadores YTD</name>
     <params>
         <name>co</name>
         <value>0</value>
@@ -264,8 +236,8 @@
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>ownaccountteam</scope>
     <showDetails>false</showDetails>
-    <showGrandTotal>false</showGrandTotal>
-    <showSubTotals>true</showSubTotals>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>

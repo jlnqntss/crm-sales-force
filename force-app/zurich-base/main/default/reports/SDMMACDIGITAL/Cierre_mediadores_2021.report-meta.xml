@@ -93,20 +93,18 @@
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>x</axisBinding>
-            <column>KPI__c.PN__c</column>
+            <column>KPI__c.Portfolio__c</column>
         </chartSummaries>
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.Portfolio__c</column>
+            <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartType>ScatterGrouped</chartType>
+        <chartType>Scatter</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>Account.BusinessManagerName__c</groupingColumn>
-        <legendPosition>Right</legendPosition>
+        <groupingColumn>PARENT.NAME</groupingColumn>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>Account.IntermediaryDescription__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -143,7 +141,13 @@
         <midColor>#FFFFFF</midColor>
     </colorRanges>
     <columns>
-        <field>CDF1</field>
+        <field>KPI__c.EstructuraDetalle__c</field>
+    </columns>
+    <columns>
+        <field>KPI__c.LoB__c</field>
+    </columns>
+    <columns>
+        <field>KPI__c.ProductGroup__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -169,6 +173,9 @@
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PA_PoliciesPN__c</field>
     </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
 (TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
@@ -181,7 +188,7 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe sobre la producción de de los mediadores y el volumen de cartera</description>
+    <description>Cierre 2021 de mi panel de mediadores</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
@@ -198,18 +205,25 @@
             <value>Account.Intermediary</value>
         </criteriaItems>
         <criteriaItems>
-            <column>CDF1</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>THIS_MONTH</value>
-        </criteriaItems>
-        <criteriaItems>
             <column>KPI__c.EstructuraUnificada__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
             <value>RESTO</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>KPI__c.CalcYear__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>2021</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>KPI__c.CalcMonth__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>12</value>
         </criteriaItems>
         <language>es</language>
     </filter>
@@ -240,7 +254,7 @@
     </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Account.BusinessManagerName__c</field>
+        <field>PARENT.NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
@@ -249,14 +263,11 @@
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
-        <aggregateType>Sum</aggregateType>
         <dateGranularity>Day</dateGranularity>
-        <field>BucketField_68388292</field>
-        <sortByName>KPI__c.PN__c</sortByName>
-        <sortOrder>Desc</sortOrder>
-        <sortType>Aggregate</sortType>
+        <field>KPI__c.EstructuraUnificada__c</field>
+        <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Resumen mediadores YTD</name>
+    <name>Cierre mediadores 2021</name>
     <params>
         <name>co</name>
         <value>0</value>
@@ -265,7 +276,7 @@
     <scope>ownaccountteam</scope>
     <showDetails>false</showDetails>
     <showGrandTotal>false</showGrandTotal>
-    <showSubTotals>true</showSubTotals>
+    <showSubTotals>false</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>

@@ -21,7 +21,7 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0, 0, -KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
+        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0, 0, KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Descuento total</description>
         <developerName>FORMULA3</developerName>
@@ -40,12 +40,13 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>KPI__c.ConsolidatedRights__c:SUM+KPI__c.MathematicalReserve__c:SUM</calculatedFormula>
+        <calculatedFormula>KPI__c.PoliciesPN__c:SUM - KPI__c.PA_PoliciesPN__c:SUM</calculatedFormula>
         <datatype>number</datatype>
+        <description>Realiza la resta entre Póliza PN y Póliza PN (PA)</description>
         <developerName>FORMULA5</developerName>
-        <isActive>false</isActive>
+        <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>Saldos</masterLabel>
+        <masterLabel>Diferencia Pólizas PN</masterLabel>
         <scale>2</scale>
     </aggregates>
     <buckets>
@@ -92,25 +93,19 @@
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
             <aggregate>Sum</aggregate>
-            <axisBinding>x</axisBinding>
+            <axisBinding>y</axisBinding>
             <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartSummaries>
-            <aggregate>Sum</aggregate>
-            <axisBinding>y</axisBinding>
-            <column>KPI__c.Portfolio__c</column>
-        </chartSummaries>
-        <chartType>ScatterGrouped</chartType>
+        <chartType>Donut</chartType>
         <enableHoverLabels>false</enableHoverLabels>
-        <expandOthers>true</expandOthers>
-        <groupingColumn>Account.BusinessManagerName__c</groupingColumn>
+        <expandOthers>false</expandOthers>
+        <groupingColumn>BucketField_68388292</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>Account.IntermediaryDescription__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
-        <showPercentage>false</showPercentage>
-        <showTotal>false</showTotal>
-        <showValues>false</showValues>
+        <showPercentage>true</showPercentage>
+        <showTotal>true</showTotal>
+        <showValues>true</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
@@ -143,15 +138,28 @@
         <midColor>#FFFFFF</midColor>
     </colorRanges>
     <columns>
-        <field>CDF1</field>
+        <field>Account.IntermediaryDescription__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PN__c</field>
+        <field>Account.INFOIntermediaryCode__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_PN__c</field>
+        <field>Account.Channel__c</field>
+    </columns>
+    <columns>
+        <field>Account.SegmentDescription__c</field>
+    </columns>
+    <columns>
+        <field>Account.TerritorialDirection__c</field>
+    </columns>
+    <columns>
+        <field>Account.Zone__c</field>
+    </columns>
+    <columns>
+        <field>KPI__c.LoB__c</field>
+    </columns>
+    <columns>
+        <field>KPI__c.ProductGroup__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -163,17 +171,60 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_PN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Supplements__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Supplements__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Cancellations__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Cancellations__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PoliciesPN__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PA_PoliciesPN__c</field>
     </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PoliciesInForce__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_PoliciesInForce__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.NCustomers__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_NCustomers__c</field>
+    </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
@@ -181,7 +232,7 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe sobre la producción de de los mediadores y el volumen de cartera</description>
+    <description>Informe completo con los principales indicadores SDM</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
@@ -205,11 +256,18 @@
             <value>THIS_MONTH</value>
         </criteriaItems>
         <criteriaItems>
-            <column>KPI__c.EstructuraUnificada__c</column>
+            <column>BucketField_68388292</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value>RESTO</value>
+            <operator>equals</operator>
+            <value>4- GRAN EMPRESA,2- PYMES,1- PARTICULARES</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_68388292</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1- PARTICULARES</value>
         </criteriaItems>
         <language>es</language>
     </filter>
@@ -238,25 +296,25 @@
             <rangeUpperBound>-1.0</rangeUpperBound>
         </values>
     </formattingRules>
+    <formattingRules>
+        <aggregate>Sum</aggregate>
+        <columnName>KPI__c.Supplements__c</columnName>
+        <values>
+            <backgroundColor>#FF9897</backgroundColor>
+            <rangeUpperBound>-1.0</rangeUpperBound>
+        </values>
+    </formattingRules>
     <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>Account.BusinessManagerName__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>Account.IntermediaryDescription__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <groupingsDown>
-        <aggregateType>Sum</aggregateType>
         <dateGranularity>Day</dateGranularity>
         <field>BucketField_68388292</field>
-        <sortByName>KPI__c.PN__c</sortByName>
-        <sortOrder>Desc</sortOrder>
-        <sortType>Aggregate</sortType>
+        <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Resumen mediadores YTD</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>KPI__c.EstructuraDetalle__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Copia de Seguimiento diario SDM YTD</name>
     <params>
         <name>co</name>
         <value>0</value>
@@ -264,8 +322,8 @@
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>ownaccountteam</scope>
     <showDetails>false</showDetails>
-    <showGrandTotal>false</showGrandTotal>
-    <showSubTotals>true</showSubTotals>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
