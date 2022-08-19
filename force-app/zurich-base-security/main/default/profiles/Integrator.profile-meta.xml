@@ -3741,6 +3741,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.USPConversionRatio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Archetype__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -15661,6 +15666,10 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>PlanComercial__c.AnualPlan</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <tabVisibilities>

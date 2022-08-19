@@ -38,4 +38,26 @@ public with sharing class ObjectivesSelector {
 
         return (List<Objective__c>) Database.query(query);
     }
+
+    /**
+     * Obtiene un listado de Objetivos activos según indicadores en externalId
+     * @param year: String con el año a consultar
+     * @return Listado de objetivos
+     * @author dmunoz
+     * @date 06/07/2022
+     */
+    public static List<Objective__c> selectObjectivesByExternalId(Set<String> externalIdList) {
+        //Devolver lista vacía
+        if (externalIdList == null || externalIdList.isEmpty()) {
+            return new List<Objective__c>();
+        }
+
+        String query = String.format(
+            'SELECT {0} FROM {1} WHERE ExternalId__c in :externalIdList AND Active__c = true',
+            new List<String> {getFieldListString(), getSObjectName()}
+            );
+        System.debug('query ' + query);
+
+        return (List<Objective__c>) Database.query(query);
+    }
 }

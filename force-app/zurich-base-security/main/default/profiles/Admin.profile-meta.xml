@@ -4557,6 +4557,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.USPConversionRatio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.ZurichEmpresasParticipant__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -13720,6 +13725,11 @@
         <field>PlanComercial__c.ParentPlan__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlanComercial__c.Intermediary_Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>true</enabled>
         <flow>Campaign_Member_Status</flow>
@@ -16361,6 +16371,10 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>PlanComercial__c.AnualPlan</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <tabVisibilities>

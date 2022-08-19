@@ -4738,6 +4738,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.USPConversionRatio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.ZurichEmpresasParticipant__c</field>
         <readable>true</readable>
     </fieldPermissions>

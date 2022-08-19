@@ -171,6 +171,7 @@
     <profileSearchLayouts>
         <fields>NAME</fields>
         <fields>Intermediary__c</fields>
+        <fields>Intermediary_Description__c</fields>
         <fields>Status__c</fields>
         <fields>StartDate__c</fields>
         <fields>EndDate__c</fields>
@@ -183,6 +184,7 @@
     <profileSearchLayouts>
         <fields>NAME</fields>
         <fields>Intermediary__c</fields>
+        <fields>Intermediary_Description__c</fields>
         <fields>Status__c</fields>
         <fields>StartDate__c</fields>
         <fields>EndDate__c</fields>
@@ -195,6 +197,7 @@
     <profileSearchLayouts>
         <fields>NAME</fields>
         <fields>Intermediary__c</fields>
+        <fields>Intermediary_Description__c</fields>
         <fields>Status__c</fields>
         <fields>StartDate__c</fields>
         <fields>EndDate__c</fields>
@@ -205,7 +208,7 @@
         <profileName>System Administrator</profileName>
     </profileSearchLayouts>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
-    <searchLayouts/>
+    <searchLayouts></searchLayouts>
     <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
