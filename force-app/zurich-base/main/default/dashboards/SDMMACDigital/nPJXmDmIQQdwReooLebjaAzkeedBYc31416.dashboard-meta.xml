@@ -68,242 +68,25 @@
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>equals</operator>
-            <values>VIDA RIESGO</values>
+            <values>Grandes Empresas</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>equals</operator>
-            <values>Grandes Empresas</values>
+            <values>VIDA RIESGO</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>notContain</operator>
             <values>Vida Riesgo</values>
         </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>contains</operator>
+            <values>m</values>
+        </dashboardFilterOptions>
         <name>Segmento / Ramo</name>
     </dashboardFilters>
     <dashboardGridLayout>
         <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>0</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <column>FORMULA1</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <dashboardFilterColumns>
-                    <column>Account.Channel__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account.SegmentDescription__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
-                </dashboardFilterColumns>
-                <decimalPrecision>1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>Crecimiento Cartera</header>
-                <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
-                <indicatorHighColor>#00716B</indicatorHighColor>
-                <indicatorLowColor>#C23934</indicatorLowColor>
-                <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <metricLabel>YTD</metricLabel>
-                <report>SDM/Cartera_Rn_YTD1</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>0</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>4</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <column>FORMULA2</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <dashboardFilterColumns>
-                    <column>Account.Channel__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account.SegmentDescription__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
-                </dashboardFilterColumns>
-                <decimalPrecision>0</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>% Siniestralidad</header>
-                <indicatorBreakpoint1>55.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>65.0</indicatorBreakpoint2>
-                <indicatorHighColor>#C23934</indicatorHighColor>
-                <indicatorLowColor>#00716B</indicatorLowColor>
-                <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <metricLabel>YTD</metricLabel>
-                <report>SDM/Siniestralidad_RN_YTD</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>0</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>8</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <column>FORMULA3</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <dashboardFilterColumns>
-                    <column>Account.Channel__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account.SegmentDescription__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
-                </dashboardFilterColumns>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>Descuento medio Autos</header>
-                <indicatorBreakpoint1>15.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>25.0</indicatorBreakpoint2>
-                <indicatorHighColor>#C23934</indicatorHighColor>
-                <indicatorLowColor>#00716B</indicatorLowColor>
-                <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
-                <metricLabel>YTD</metricLabel>
-                <report>SDM/Descuento_medio_Autos_RN_YTD</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>0</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
             <colSpan>12</colSpan>
-            <columnIndex>0</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <componentType>Bar</componentType>
-                <dashboardFilterColumns>
-                    <column>Account.Channel__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account.SegmentDescription__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
-                </dashboardFilterColumns>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
-                <header>Producción Nueva vs pa</header>
-                <report>SDM/Producci_n_Nueva_RN_YTD</report>
-                <showPercentage>false</showPercentage>
-                <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <title>YTD</title>
-                <useReportChart>true</useReportChart>
-            </dashboardComponent>
-            <rowIndex>5</rowIndex>
-            <rowSpan>10</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>12</colSpan>
-            <columnIndex>0</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <componentType>Bar</componentType>
-                <dashboardFilterColumns>
-                    <column>Account.Channel__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account.SegmentDescription__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
-                </dashboardFilterColumns>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingSortProperties/>
-                <header>Producción Nueva Mes</header>
-                <report>SDM/Producci_n_Nueva_RN_Mes_actual</report>
-                <showPercentage>false</showPercentage>
-                <showPicturesOnCharts>false</showPicturesOnCharts>
-                <showValues>false</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <title>Últimos 12 meses</title>
-                <useReportChart>true</useReportChart>
-            </dashboardComponent>
-            <rowIndex>15</rowIndex>
-            <rowSpan>10</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>12</colSpan>
-            <columnIndex>0</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <chartSummary>
-                    <aggregate>Sum</aggregate>
-                    <axisBinding>y</axisBinding>
-                    <column>KPI__c.Portfolio__c</column>
-                </chartSummary>
-                <componentType>BarStacked</componentType>
-                <dashboardFilterColumns>
-                    <column>Account.Channel__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account.SegmentDescription__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
-                </dashboardFilterColumns>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingColumn>PARENT.NAME</groupingColumn>
-                <groupingColumn>KPI__c.EstructuraUnificada__c</groupingColumn>
-                <groupingSortProperties>
-                    <groupingSorts>
-                        <groupingLevel>g1</groupingLevel>
-                        <sortOrder>d</sortOrder>
-                    </groupingSorts>
-                    <groupingSorts>
-                        <groupingLevel>g2</groupingLevel>
-                        <sortOrder>a</sortOrder>
-                    </groupingSorts>
-                </groupingSortProperties>
-                <header>Cartera Mediadores</header>
-                <legendPosition>Right</legendPosition>
-                <report>SDM/Cartera_Mediadores_RN_YTD</report>
-                <showPercentage>false</showPercentage>
-                <showValues>false</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <title>YTD</title>
-                <useReportChart>false</useReportChart>
-            </dashboardComponent>
-            <rowIndex>25</rowIndex>
-            <rowSpan>17</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>6</colSpan>
             <columnIndex>0</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
@@ -320,69 +103,22 @@
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
                     <flexTableColumn>
-                        <reportColumn>PARENT.NAME</reportColumn>
+                        <reportColumn>KPI__c.EstructuraUnificada__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
                         <showTotal>false</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
-                        <reportColumn>s!KPI__c.PoliciesPN__c</reportColumn>
+                        <reportColumn>s!KPI__c.PN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
                         <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
-                        <reportColumn>FORMULA5</reportColumn>
+                        <reportColumn>s!KPI__c.PA_PN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
                         <showTotal>false</showTotal>
                         <type>aggregate</type>
-                    </flexTableColumn>
-                    <flexTableColumn>
-                        <reportColumn>s!KPI__c.PA_PoliciesPN__c</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>aggregate</type>
-                    </flexTableColumn>
-                    <flexTableSortInfo>
-                        <sortOrder>1</sortOrder>
-                    </flexTableSortInfo>
-                    <hideChatterPhotos>true</hideChatterPhotos>
-                </flexComponentProperties>
-                <groupingSortProperties>
-                    <groupingSorts>
-                        <groupingLevel>g1</groupingLevel>
-                        <sortColumn>FORMULA5</sortColumn>
-                        <sortOrder>a</sortOrder>
-                    </groupingSorts>
-                </groupingSortProperties>
-                <header>Mediadores con mayor diferencia de pólizas PN respecto al mismo mes pa</header>
-                <report>SDM/Informe_completo_SDM_Mes_v6P</report>
-            </dashboardComponent>
-            <rowIndex>42</rowIndex>
-            <rowSpan>8</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>6</colSpan>
-            <columnIndex>6</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <componentType>FlexTable</componentType>
-                <dashboardFilterColumns>
-                    <column>Account.Channel__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>Account.SegmentDescription__c</column>
-                </dashboardFilterColumns>
-                <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
-                </dashboardFilterColumns>
-                <flexComponentProperties>
-                    <decimalPrecision>-1</decimalPrecision>
-                    <flexTableColumn>
-                        <reportColumn>PARENT.NAME</reportColumn>
-                        <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
-                        <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA1</reportColumn>
@@ -398,18 +134,17 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortColumn>FORMULA1</sortColumn>
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Mediadores con peor crecimiento cartera Mes Actual</header>
-                <report>SDM/Informe_completo_SDM_Mes_v6P</report>
+                <header>KPI&apos;s YTD</header>
+                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
             </dashboardComponent>
-            <rowIndex>42</rowIndex>
-            <rowSpan>8</rowSpan>
+            <rowIndex>0</rowIndex>
+            <rowSpan>6</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
-            <colSpan>6</colSpan>
+            <colSpan>12</colSpan>
             <columnIndex>0</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
@@ -424,17 +159,29 @@
                     <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
-                    <decimalPrecision>-1</decimalPrecision>
+                    <decimalPrecision>0</decimalPrecision>
                     <flexTableColumn>
                         <reportColumn>PARENT.NAME</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
-                        <reportColumn>FORMULA4</reportColumn>
+                        <reportColumn>s!KPI__c.PN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.PA_PN__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA1</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableSortInfo>
@@ -445,19 +192,19 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortColumn>FORMULA4</sortColumn>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>s!KPI__c.PA_PN__c</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Mediadores con peor ratio retención año en curso</header>
-                <report>SDM/Informe_completo_SDM_ia4</report>
+                <header>Panel mediadores YTD No Vida</header>
+                <report>SDMMACDIGITALHomeOffice/KPIs_Mediadores_YTD_No_Vida_hlT</report>
             </dashboardComponent>
-            <rowIndex>50</rowIndex>
-            <rowSpan>8</rowSpan>
+            <rowIndex>6</rowIndex>
+            <rowSpan>16</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
-            <colSpan>6</colSpan>
-            <columnIndex>6</columnIndex>
+            <colSpan>12</colSpan>
+            <columnIndex>0</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <componentType>FlexTable</componentType>
@@ -471,15 +218,86 @@
                     <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
-                    <decimalPrecision>-1</decimalPrecision>
+                    <decimalPrecision>0</decimalPrecision>
                     <flexTableColumn>
                         <reportColumn>PARENT.NAME</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>grouping</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.APES__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.APESpa__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA1</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableSortInfo>
+                        <sortOrder>1</sortOrder>
+                    </flexTableSortInfo>
+                    <hideChatterPhotos>true</hideChatterPhotos>
+                </flexComponentProperties>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortColumn>s!KPI__c.APESpa__c</sortColumn>
+                        <sortOrder>d</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>Panel Mediadores YTD Vida</header>
+                <report>SDMMACDIGITALHomeOffice/KPIs_Mediadores_YTD_Vida_yAL</report>
+            </dashboardComponent>
+            <rowIndex>22</rowIndex>
+            <rowSpan>13</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>12</colSpan>
+            <columnIndex>0</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <componentType>FlexTable</componentType>
+                <dashboardFilterColumns>
+                    <column>Account.Channel__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Account.SegmentDescription__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.EstructuraUnificada__c</column>
+                </dashboardFilterColumns>
+                <flexComponentProperties>
+                    <decimalPrecision>0</decimalPrecision>
+                    <flexTableColumn>
+                        <reportColumn>KPI__c.EstructuraUnificada__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
                         <showTotal>false</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
-                        <reportColumn>FORMULA2</reportColumn>
+                        <reportColumn>s!KPI__c.PN__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.PA_PN__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA1</reportColumn>
                         <showSubTotal>false</showSubTotal>
                         <showTotal>false</showTotal>
                         <type>aggregate</type>
@@ -492,25 +310,141 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortColumn>FORMULA2</sortColumn>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>KPI&apos;s Mes Actual</header>
+                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+            </dashboardComponent>
+            <rowIndex>35</rowIndex>
+            <rowSpan>6</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>12</colSpan>
+            <columnIndex>0</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <componentType>FlexTable</componentType>
+                <dashboardFilterColumns>
+                    <column>Account.Channel__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Account.SegmentDescription__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.EstructuraUnificada__c</column>
+                </dashboardFilterColumns>
+                <flexComponentProperties>
+                    <decimalPrecision>0</decimalPrecision>
+                    <flexTableColumn>
+                        <reportColumn>PARENT.NAME</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>grouping</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.PN__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.PA_PN__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA1</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableSortInfo>
+                        <sortOrder>1</sortOrder>
+                    </flexTableSortInfo>
+                    <hideChatterPhotos>true</hideChatterPhotos>
+                </flexComponentProperties>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortColumn>s!KPI__c.PA_PN__c</sortColumn>
                         <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Mediadores con mayor siniestralidad año en curso</header>
-                <report>SDM/Informe_completo_SDM_ia4</report>
+                <header>Panel Mediadores Mes Actual NO VIDA</header>
+                <report>SDMMACDIGITALHomeOffice/KPIs_Mediadores_Mes_Actual_No_Vida_YQX</report>
             </dashboardComponent>
-            <rowIndex>50</rowIndex>
-            <rowSpan>8</rowSpan>
+            <rowIndex>41</rowIndex>
+            <rowSpan>15</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>12</colSpan>
+            <columnIndex>0</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <componentType>FlexTable</componentType>
+                <dashboardFilterColumns>
+                    <column>Account.Channel__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Account.SegmentDescription__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.EstructuraUnificada__c</column>
+                </dashboardFilterColumns>
+                <flexComponentProperties>
+                    <decimalPrecision>0</decimalPrecision>
+                    <flexTableColumn>
+                        <reportColumn>PARENT.NAME</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>grouping</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.APES__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.APESpa__c</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA1</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>true</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableSortInfo>
+                        <sortOrder>1</sortOrder>
+                    </flexTableSortInfo>
+                    <hideChatterPhotos>true</hideChatterPhotos>
+                </flexComponentProperties>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortColumn>s!KPI__c.APESpa__c</sortColumn>
+                        <sortOrder>d</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>Panel Mediadores Mes Actual VIDA</header>
+                <report>SDMMACDIGITALHomeOffice/KPIs_Mediadores_Mes_Actual_Vida_cq8</report>
+            </dashboardComponent>
+            <rowIndex>56</rowIndex>
+            <rowSpan>14</rowSpan>
         </dashboardGridComponents>
         <numberOfColumns>12</numberOfColumns>
         <rowHeight>36</rowHeight>
     </dashboardGridLayout>
-    <dashboardType>MyTeamUser</dashboardType>
-    <description>Panel de inicio del RN para SDM</description>
+    <dashboardType>SpecifiedUser</dashboardType>
     <isGridLayout>true</isGridLayout>
-    <runningUser>adminklinc@zurich-es.com</runningUser>
+    <runningUser>ferriol.lopez@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
-    <title>Visión Global RN</title>
+    <title>Panel RN Suscripción</title>
     <titleColor>#000000</titleColor>
     <titleSize>12</titleSize>
 </Dashboard>
