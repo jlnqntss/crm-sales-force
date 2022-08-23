@@ -15,7 +15,7 @@
         <datatype>percent</datatype>
         <description>Siniestralidad total</description>
         <developerName>FORMULA2</developerName>
-        <isActive>true</isActive>
+        <isActive>false</isActive>
         <isCrossBlock>false</isCrossBlock>
         <masterLabel>% Sin Total</masterLabel>
         <scale>2</scale>
@@ -25,7 +25,7 @@
         <datatype>percent</datatype>
         <description>Descuento total</description>
         <developerName>FORMULA3</developerName>
-        <isActive>true</isActive>
+        <isActive>false</isActive>
         <isCrossBlock>false</isCrossBlock>
         <masterLabel>% Dto. Total</masterLabel>
         <scale>2</scale>
@@ -40,13 +40,12 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>(KPI__c.NCustomers__c:SUM -  KPI__c.PA_NCustomers__c:SUM) / KPI__c.PA_NCustomers__c:SUM</calculatedFormula>
-        <datatype>percent</datatype>
-        <description>% Crecimiento de clientes</description>
+        <calculatedFormula>KPI__c.ConsolidatedRights__c:SUM+KPI__c.MathematicalReserve__c:SUM</calculatedFormula>
+        <datatype>number</datatype>
         <developerName>FORMULA5</developerName>
-        <isActive>true</isActive>
+        <isActive>false</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% Crecimiento de clientes</masterLabel>
+        <masterLabel>Saldos</masterLabel>
         <scale>2</scale>
     </aggregates>
     <buckets>
@@ -94,12 +93,18 @@
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.PN__c</column>
+            <column>KPI__c.APES__c</column>
         </chartSummaries>
-        <chartType>Line</chartType>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>KPI__c.APESpa__c</column>
+        </chartSummaries>
+        <chartType>HorizontalBar</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>CDF1</groupingColumn>
+        <groupingColumn>Account.LifeConsultantEmail__c</groupingColumn>
+        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
@@ -120,33 +125,16 @@
         <lowColor>#FF9897</lowColor>
         <midColor>#FFFFFF</midColor>
     </colorRanges>
-    <colorRanges>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.PN__c</columnName>
-        <highColor>#FFFFFF</highColor>
-        <lowBreakpoint>-1.0</lowBreakpoint>
-        <lowColor>#FF9897</lowColor>
-        <midColor>#FFFFFF</midColor>
-    </colorRanges>
-    <colorRanges>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.PA_PN__c</columnName>
-        <highColor>#FFFFFF</highColor>
-        <lowBreakpoint>-1.0</lowBreakpoint>
-        <lowColor>#FF9897</lowColor>
-        <midColor>#FFFFFF</midColor>
-    </colorRanges>
     <columns>
-        <field>ACCOUNT.NAME</field>
+        <field>CDF1</field>
     </columns>
     <columns>
-        <field>Account.INFOIntermediaryCode__c</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.APES__c</field>
     </columns>
     <columns>
-        <field>KPI__c.LoB__c</field>
-    </columns>
-    <columns>
-        <field>KPI__c.ProductGroup__c</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.APESpa__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -158,57 +146,17 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PN__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_PN__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.Supplements__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.Cancellations__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Cancellations__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Supplements__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PoliciesPN__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>KPI__c.PA_PoliciesPN__c</field>
     </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PoliciesInForce__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_PoliciesInForce__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.NCustomers__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_NCustomers__c</field>
-    </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
@@ -216,14 +164,14 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe de producción Nueva, Cartera, Suplementos, Anulaciones, Pólizas y Clientes. Mes Actual. Gráfico de los últimos 12 meses.</description>
+    <description>Informe sobre la producción de Consultores. Cartera, Apes y pólizas PN</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Mensual</value>
+            <value>YTD</value>
         </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -233,20 +181,27 @@
             <value>Account.Intermediary</value>
         </criteriaItems>
         <criteriaItems>
-            <column>KPI__c.EstructuraUnificada__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value>RESTO</value>
-        </criteriaItems>
-        <criteriaItems>
             <column>CDF1</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>greaterOrEqual</operator>
-            <value>N_MONTHS_AGO:12</value>
+            <operator>equals</operator>
+            <value>THIS_MONTH</value>
         </criteriaItems>
-        <language>es</language>
+        <criteriaItems>
+            <column>KPI__c.EstructuraUnificada__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>VIDA RIESGO</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.LifeConsultantEmail__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <language>en_US</language>
     </filter>
     <format>Summary</format>
     <formattingRules>
@@ -257,44 +212,26 @@
             <rangeUpperBound>-1.0</rangeUpperBound>
         </values>
     </formattingRules>
-    <formattingRules>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.PN__c</columnName>
-        <values>
-            <backgroundColor>#FF9897</backgroundColor>
-            <rangeUpperBound>-1.0</rangeUpperBound>
-        </values>
-    </formattingRules>
-    <formattingRules>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.PA_PN__c</columnName>
-        <values>
-            <backgroundColor>#FF9897</backgroundColor>
-            <rangeUpperBound>-1.0</rangeUpperBound>
-        </values>
-    </formattingRules>
-    <formattingRules>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.Supplements__c</columnName>
-        <values>
-            <backgroundColor>#FF9897</backgroundColor>
-            <rangeUpperBound>-1.0</rangeUpperBound>
-        </values>
-    </formattingRules>
     <groupingsDown>
-        <field>CDF1</field>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.LifeConsultantEmail__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Producción Nueva Mediadores Mes actual</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_68388292</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Resumen CV&apos;s YTD</name>
     <params>
         <name>co</name>
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>ownaccountteam</scope>
-    <showDetails>true</showDetails>
-    <showGrandTotal>true</showGrandTotal>
-    <showSubTotals>true</showSubTotals>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>

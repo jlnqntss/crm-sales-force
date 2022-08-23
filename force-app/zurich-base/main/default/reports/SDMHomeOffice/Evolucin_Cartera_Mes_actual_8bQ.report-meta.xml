@@ -92,15 +92,16 @@
         <backgroundColor2>#FFFFFF</backgroundColor2>
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
-            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.PN__c</column>
+            <column>FORMULA1</column>
         </chartSummaries>
-        <chartType>Line</chartType>
+        <chartType>LineGrouped</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
         <groupingColumn>CDF1</groupingColumn>
+        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_68388292</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -206,9 +207,9 @@
     </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
@@ -216,7 +217,7 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe de producción Nueva, Cartera, Suplementos, Anulaciones, Pólizas y Clientes. Mes Actual. Gráfico de los últimos 12 meses.</description>
+    <description>Informe de la evolución crecimiento cartera, producción Nueva, Cartera, Suplementos, Anulaciones, Pólizas y Clientes. Mes Actual. Gráfico de los últimos 12 meses.</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
@@ -233,7 +234,7 @@
             <value>Account.Intermediary</value>
         </criteriaItems>
         <criteriaItems>
-            <column>KPI__c.EstructuraUnificada__c</column>
+            <column>BucketField_68388292</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
@@ -246,7 +247,7 @@
             <operator>greaterOrEqual</operator>
             <value>N_MONTHS_AGO:12</value>
         </criteriaItems>
-        <language>es</language>
+        <language>en_US</language>
     </filter>
     <format>Summary</format>
     <formattingRules>
@@ -282,17 +283,22 @@
         </values>
     </formattingRules>
     <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_68388292</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
         <field>CDF1</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Producción Nueva Mediadores Mes actual</name>
+    <name>Evolución Cartera Mes actual</name>
     <params>
         <name>co</name>
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>ownaccountteam</scope>
-    <showDetails>true</showDetails>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>

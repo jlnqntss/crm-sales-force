@@ -96,11 +96,13 @@
             <axisBinding>y</axisBinding>
             <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartType>Line</chartType>
+        <chartType>LineGrouped</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
         <groupingColumn>CDF1</groupingColumn>
+        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
+        <secondaryGroupingColumn>BucketField_68388292</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -136,6 +138,9 @@
         <lowColor>#FF9897</lowColor>
         <midColor>#FFFFFF</midColor>
     </colorRanges>
+    <columns>
+        <field>PARENT.NAME</field>
+    </columns>
     <columns>
         <field>ACCOUNT.NAME</field>
     </columns>
@@ -206,9 +211,9 @@
     </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
@@ -246,7 +251,7 @@
             <operator>greaterOrEqual</operator>
             <value>N_MONTHS_AGO:12</value>
         </criteriaItems>
-        <language>es</language>
+        <language>en_US</language>
     </filter>
     <format>Summary</format>
     <formattingRules>
@@ -282,16 +287,26 @@
         </values>
     </formattingRules>
     <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.BusinessManagerEmail__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>BucketField_68388292</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
         <field>CDF1</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Producción Nueva Mediadores Mes actual</name>
+    <name>Producción Nueva RN Mes actual</name>
     <params>
         <name>co</name>
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>ownaccountteam</scope>
+    <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
