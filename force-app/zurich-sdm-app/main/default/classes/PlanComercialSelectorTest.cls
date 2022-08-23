@@ -185,7 +185,7 @@ private class PlanComercialSelectorTest
 
             Test.stopTest();
             
-            System.assertEquals(false, plans.isEmpty(), 'Debe haber al menos un plan anual');
+            System.assertEquals(true, plans.isEmpty(), 'No debe haber un plan anual por el valor de metadata');
         }
     }
 
@@ -230,7 +230,45 @@ private class PlanComercialSelectorTest
             PlanComercialSelector planSel = new PlanComercialSelector();
             List<Plancomercial__c> plans = planSel.findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, year);            
             
-            System.assertEquals(false, plans.isEmpty(), 'Debe haber al menos un plan mensual');
+            System.assertEquals(true, plans.isEmpty(), 'No debe haber plan mensual');
         }
+    }
+
+    /**
+     * Test del metodo que recupera los email del usuario asignado a un plan
+     *
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     */
+    @isTest
+    static void findAssignedToEmailFromPC() {
+        List<PlanComercial__c> planesComerciales = new List<PlanComercial__c>([SELECT ID FROM PlanComercial__c LIMIT 1]);
+
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        Test.startTest();
+        Map<Id, PlanComercial__c> result = planSel.findAssignedToEmailFromPC(planesComerciales);
+        Test.stopTest();
+
+        System.assertEquals(false, result.isEmpty(), 'Debe haber resultados');
+
+
+    }
+
+    /**
+     * Test NULL del metodo que recupera los email del usuario asignado a un plan
+     *
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     */
+    @isTest
+    static void findAssignedToEmailFromPC_Null() {
+        List<PlanComercial__c> planesComerciales = new List<PlanComercial__c>([SELECT ID FROM PlanComercial__c LIMIT 1]);
+
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        Test.startTest();
+        Map<Id, PlanComercial__c> result = planSel.findAssignedToEmailFromPC(null);
+        Test.stopTest();
+
+        System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
     }
 }

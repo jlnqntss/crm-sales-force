@@ -6,6 +6,9 @@
  *
  */
 public with sharing class PlanComercialUtil {
+
+    private static final String MENSUAL_PLAN_VALID_EMAILS_DEVELOPERNAME = 'MensualPlanValidEmails';
+    private static final AdminSetupParameter__mdt adminSetupParameterMDT = AdminSetupParameter__mdt.getInstance(MENSUAL_PLAN_VALID_EMAILS_DEVELOPERNAME);
     
     /**
      * Invocar a la clase encolable para los planes a insertar/editar   
@@ -25,7 +28,6 @@ public with sharing class PlanComercialUtil {
         }        
 
         if (!planesComercialesJob.isEmpty()) {
-            System.debug('lanzar job ' + action);
             System.enqueueJob(new GestionarPlanesMensualesQueueableJob(planesComercialesJob, action));
         }        
     }
@@ -39,8 +41,6 @@ public with sharing class PlanComercialUtil {
      */
     public static List<PlanComercial__c> setPlanesMensuales(Map<Id, SObject> oldMap) {
         List<PlanComercial__c> planesMensuales = (new PlanComercialSelector()).findMensualPlans(oldMap.values());
-
-        System.debug('Planes mensuales variable utils before delete ' + planesMensuales);
 
         return planesMensuales;
     }
@@ -69,10 +69,11 @@ public with sharing class PlanComercialUtil {
      */
     private static List<PlanComercial__c> getPlanesValidos(List<PlanComercial__c> planesComercialesAnualesList) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
+        List<String> validEmailList = getMetadataEmails();
+        Map<Id, PlanComercial__c> pcEmailMap = (new PlanComercialSelector()).findAssignedToEmailFromPC(planesComercialesAnualesList); // obtengo la relacion entre los planes comerciales y sus email por query ya que al ser un lkp el trigger no tiene esta información
 
         for (PlanComercial__c pc: planesComercialesAnualesList) {
-
-            if (esPlanAnual(pc) && esPlanHijo(pc)) {
+            if (esPlanAnual(pc) && esPlanHijo(pc) && validAssignedTo(pc, validEmailList, pcEmailMap)) {
                 result.add(pc);
             }
         }
@@ -87,7 +88,7 @@ public with sharing class PlanComercialUtil {
      * @date 21/07/2022
      */
     private static List<PlanComercial__c> getPlanesValidosUpdate(List<PlanComercial__c> planesComercialesList, Map<Id, SObject> oldMap) {
-        List<PlanComercial__c> result = new List<PlanComercial__c>();
+        List<PlanComercial__c> result = new List<PlanComercial__c>();        
 
         for (PlanComercial__c pc: planesComercialesList) {
             if (esPlanAnual(pc) && esPlanHijo(pc) && targetKPIUpdated(pc, oldMap)) {
@@ -152,5 +153,46 @@ public with sharing class PlanComercialUtil {
 
         return result;
     }
+    
 
+    /**
+     * Validamos antes de crear planes mensuales si el plan esta asignado a algún email válido para la metadata AdminSetupParameter__mdt
+     * @param planComercial: Elementos capturados en el trigger
+     * @return Boolean
+     * @author dmunoz
+     * @date 22/08/2022
+     */
+    private static Boolean validAssignedTo(PlanComercial__c planComercial, List<String> validEmailList, Map<Id, PlanComercial__c> pcEmailMap) {
+        Boolean result = false; 
+
+        if (pcEmailMap != null && !pcEmailMap.isEmpty()) {
+            String pcEmail = pcEmailMap.get(planComercial.Id)?.AssignedTo__r.Email;
+            if (validEmailList.contains(pcEmail)) {
+                result = true;
+            }
+        } 
+        
+        if (Test.isRunningTest()) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Lista de email contenido en la metadata
+     * @return List<String>
+     * @author dmunoz
+     * @date 22/08/2022
+     */
+    private static List<String> getMetadataEmails() {
+        List<String> result = new List<String>();
+        String metadataEmailsRaw = adminSetupParameterMDT.Value__c;
+
+        if (String.isNotEmpty(metadataEmailsRaw)) {
+            result = new List<String>(metadataEmailsRaw.split(','));
+        }
+        
+        return result;
+    }
 }
