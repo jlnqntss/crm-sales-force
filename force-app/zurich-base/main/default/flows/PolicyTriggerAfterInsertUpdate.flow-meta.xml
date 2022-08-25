@@ -18,9 +18,9 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Se asigna a Opportunity.StageName el valor Closed won</description>
+        <description>Se asigna a Opportunity.StageName el valor Closed won y se copia el Name (Policy number) de la póliza a Oppotuniy.ResultingPolicyNumber__c.</description>
         <name>UpdateOfferClosedWon</name>
-        <label>Cambiar Oferta a Closed Won</label>
+        <label>Actualizar oferta vinculada</label>
         <locationX>175</locationX>
         <locationY>553</locationY>
         <assignmentItems>
