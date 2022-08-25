@@ -37,6 +37,13 @@
                 <booleanValue>true</booleanValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetRelatedOffer.ResultingPolicyNumber__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Name</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Actualizar_cliente</targetReference>
         </connector>
@@ -132,7 +139,7 @@
         <description>Ofertas cuyo Opportunity.Id sea igual al Policy__c.OpportunityName__c y cuyo Opportunity.StageName NO sea Closed Won</description>
         <name>GetRelatedOffer</name>
         <label>Conseguir Oferta Relacionada</label>
-        <locationX>176</locationX>
+        <locationX>177</locationX>
         <locationY>339</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
