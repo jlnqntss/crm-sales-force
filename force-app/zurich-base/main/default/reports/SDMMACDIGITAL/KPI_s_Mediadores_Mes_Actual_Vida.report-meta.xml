@@ -238,8 +238,8 @@
             <column>BucketField_68388292</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value>5- VIDA RESTO</value>
+            <operator>equals</operator>
+            <value>3- VIDA RIESGO</value>
         </criteriaItems>
         <language>es</language>
     </filter>
@@ -259,7 +259,7 @@
         <field>KPI__c.EstructuraUnificada__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>KPI&apos;s Mediadores Mes Actual</name>
+    <name>KPI&apos;s Mediadores Mes Actual Vida</name>
     <params>
         <name>co</name>
         <value>0</value>

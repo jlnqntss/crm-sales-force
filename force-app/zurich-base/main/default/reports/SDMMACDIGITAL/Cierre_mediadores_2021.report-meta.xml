@@ -3,51 +3,49 @@
     <aggregates>
         <calculatedFormula>if( KPI__c.PA_Portfolio__c:SUM == 0, 1, KPI__c.Portfolio__c:SUM/KPI__c.PA_Portfolio__c:SUM -1)</calculatedFormula>
         <datatype>percent</datatype>
-        <description>Crecimiento cartera</description>
+        <description>Crecimiento Cartera</description>
         <developerName>FORMULA1</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% Crecimiento cartera</masterLabel>
+        <masterLabel>% crec cartera</masterLabel>
         <scale>2</scale>
     </aggregates>
     <aggregates>
         <calculatedFormula>KPI__c.TotalLoad__c:SUM/KPI__c.Income__c:SUM</calculatedFormula>
         <datatype>percent</datatype>
-        <description>Siniestralidad Total</description>
+        <description>Siniestralidad total</description>
         <developerName>FORMULA2</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% Siniestralidad Total</masterLabel>
+        <masterLabel>% Sin Total</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>IF( KPI__c.Portfolio__c:SUM == 0, 0, -KPI__c.Totaldiscount__c:SUM / KPI__c.Portfolio__c:SUM)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Descuento total</description>
+        <developerName>FORMULA3</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Dto. Total</masterLabel>
         <scale>2</scale>
     </aggregates>
     <aggregates>
         <calculatedFormula>IF( KPI__c.RevisedBaseline__c:SUM == 0, 0, KPI__c.RenewedPortfolio__c:SUM / KPI__c.RevisedBaseline__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
-        <description>Ratio Retención</description>
-        <developerName>FORMULA3</developerName>
-        <isActive>false</isActive>
-        <isCrossBlock>false</isCrossBlock>
-        <masterLabel>Ratio Retención</masterLabel>
-        <scale>2</scale>
-    </aggregates>
-    <aggregates>
-        <calculatedFormula>KPI__c.CAYLoad__c:SUM/KPI__c.Income__c:SUM</calculatedFormula>
-        <datatype>percent</datatype>
-        <description>Siniestralidad CAY</description>
         <developerName>FORMULA4</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% Siniestralidad Cay</masterLabel>
+        <masterLabel>Ratio Retencion</masterLabel>
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>IF( KPI__c.RevisedBaseline__c:SUM == 0, 0, KPI__c.RenewedPortfolio__c:SUM / KPI__c.RevisedBaseline__c:SUM)</calculatedFormula>
-        <datatype>percent</datatype>
-        <description>Ratio Retención</description>
+        <calculatedFormula>KPI__c.ConsolidatedRights__c:SUM+KPI__c.MathematicalReserve__c:SUM</calculatedFormula>
+        <datatype>number</datatype>
         <developerName>FORMULA5</developerName>
-        <isActive>true</isActive>
+        <isActive>false</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% Ratio Retención</masterLabel>
+        <masterLabel>Saldos</masterLabel>
         <scale>2</scale>
     </aggregates>
     <buckets>
@@ -94,16 +92,19 @@
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
             <aggregate>Sum</aggregate>
+            <axisBinding>x</axisBinding>
+            <column>KPI__c.Portfolio__c</column>
+        </chartSummaries>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
             <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartType>HorizontalBarStacked</chartType>
+        <chartType>Scatter</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
         <groupingColumn>PARENT.NAME</groupingColumn>
-        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>KPI__c.EstructuraUnificada__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -112,29 +113,41 @@
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
-        <title>Mediadores Producción Nueva</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
+    <colorRanges>
+        <aggregate>Sum</aggregate>
+        <columnName>KPI__c.Portfolio__c</columnName>
+        <highColor>#FFFFFF</highColor>
+        <lowBreakpoint>-1.0</lowBreakpoint>
+        <lowColor>#FF9897</lowColor>
+        <midColor>#FFFFFF</midColor>
+    </colorRanges>
+    <colorRanges>
+        <aggregate>Sum</aggregate>
+        <columnName>KPI__c.PN__c</columnName>
+        <highColor>#FFFFFF</highColor>
+        <lowBreakpoint>-1.0</lowBreakpoint>
+        <lowColor>#FF9897</lowColor>
+        <midColor>#FFFFFF</midColor>
+    </colorRanges>
+    <colorRanges>
+        <aggregate>Sum</aggregate>
+        <columnName>KPI__c.PA_PN__c</columnName>
+        <highColor>#FFFFFF</highColor>
+        <lowBreakpoint>-1.0</lowBreakpoint>
+        <lowColor>#FF9897</lowColor>
+        <midColor>#FFFFFF</midColor>
+    </colorRanges>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.Portfolio__c</field>
+        <field>KPI__c.EstructuraDetalle__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Portfolio__c</field>
+        <field>KPI__c.LoB__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PortfolioEntry__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_PortfolioEntry__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.RenewedPortfolio__c</field>
+        <field>KPI__c.ProductGroup__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -146,27 +159,11 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.Supplements__c</field>
+        <field>KPI__c.Portfolio__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Supplements__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.Cancellations__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_Cancellations__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.APES__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.APESpa__c</field>
+        <field>KPI__c.PA_Portfolio__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -177,33 +174,13 @@
         <field>KPI__c.PA_PoliciesPN__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PoliciesInForce__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_PoliciesInForce__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.Commission__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.NCustomers__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_NCustomers__c</field>
-    </columns>
-    <columns>
         <field>CDF1</field>
     </columns>
     <customDetailFormulas>
         <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()))
 ) , DATEVALUE
-(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-&quot; &amp; TEXT(DAY(TODAY()) )
 )
 )</calculatedFormula>
         <dataType>DateOnly</dataType>
@@ -211,14 +188,14 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe completo con los principales indicadores Mac Digital</description>
+    <description>Cierre 2021 de mi panel de mediadores</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Mensual</value>
+            <value>YTD</value>
         </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -228,27 +205,53 @@
             <value>Account.Intermediary</value>
         </criteriaItems>
         <criteriaItems>
-            <column>CDF1</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>THIS_MONTH</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>BucketField_68388292</column>
+            <column>KPI__c.EstructuraUnificada__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
-            <value>5- VIDA RESTO</value>
+            <value>RESTO</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>KPI__c.CalcYear__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>2021</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>KPI__c.CalcMonth__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>12</value>
         </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>Account.BusinessManagerEmail__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
+    <formattingRules>
+        <aggregate>Sum</aggregate>
+        <columnName>KPI__c.Portfolio__c</columnName>
+        <values>
+            <backgroundColor>#FF9897</backgroundColor>
+            <rangeUpperBound>-1.0</rangeUpperBound>
+        </values>
+    </formattingRules>
+    <formattingRules>
+        <aggregate>Sum</aggregate>
+        <columnName>KPI__c.PN__c</columnName>
+        <values>
+            <backgroundColor>#FF9897</backgroundColor>
+            <rangeUpperBound>-1.0</rangeUpperBound>
+        </values>
+    </formattingRules>
+    <formattingRules>
+        <aggregate>Sum</aggregate>
+        <columnName>KPI__c.PA_PN__c</columnName>
+        <values>
+            <backgroundColor>#FF9897</backgroundColor>
+            <rangeUpperBound>-1.0</rangeUpperBound>
+        </values>
+    </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>PARENT.NAME</field>
@@ -256,10 +259,15 @@
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
+        <field>Account.IntermediaryDescription__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
         <field>KPI__c.EstructuraUnificada__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>KPI&apos;s Mediadores Mes Actual</name>
+    <name>Cierre mediadores 2021</name>
     <params>
         <name>co</name>
         <value>0</value>
@@ -267,8 +275,8 @@
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>ownaccountteam</scope>
     <showDetails>false</showDetails>
-    <showGrandTotal>true</showGrandTotal>
-    <showSubTotals>true</showSubTotals>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>

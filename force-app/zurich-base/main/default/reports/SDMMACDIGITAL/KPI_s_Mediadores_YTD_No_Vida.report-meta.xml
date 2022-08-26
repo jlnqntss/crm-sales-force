@@ -94,16 +94,19 @@
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
             <aggregate>Sum</aggregate>
+            <axisBinding>x</axisBinding>
+            <column>KPI__c.Portfolio__c</column>
+        </chartSummaries>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
             <column>KPI__c.PN__c</column>
         </chartSummaries>
-        <chartType>HorizontalBarStacked</chartType>
+        <chartType>Scatter</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
         <groupingColumn>PARENT.NAME</groupingColumn>
-        <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>KPI__c.EstructuraUnificada__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
@@ -112,7 +115,7 @@
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
-        <title>Mediadores Producción Nueva</title>
+        <title>Mediadores Producción Nueva y Cartera</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
@@ -211,14 +214,14 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe completo con los principales indicadores Mac Digital</description>
+    <description>Informe completo con los principales indicadores SDM</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Mensual</value>
+            <value>YTD</value>
         </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -239,7 +242,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
-            <value>5- VIDA RESTO</value>
+            <value>3- VIDA RIESGO,5- VIDA RESTO</value>
         </criteriaItems>
         <language>es</language>
     </filter>
@@ -259,7 +262,7 @@
         <field>KPI__c.EstructuraUnificada__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>KPI&apos;s Mediadores Mes Actual</name>
+    <name>KPI&apos;s Mediadores YTD No Vida</name>
     <params>
         <name>co</name>
         <value>0</value>
