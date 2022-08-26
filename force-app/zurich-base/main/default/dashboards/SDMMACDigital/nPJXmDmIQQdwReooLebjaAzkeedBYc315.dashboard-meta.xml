@@ -20,6 +20,45 @@
     </dashboardFilters>
     <dashboardFilters>
         <dashboardFilterOptions>
+            <operator>contains</operator>
+            <values>TOP</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>ORO</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>PLATA</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>GLOBAL BROKERS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>RESTO</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>START</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>NEXT</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>A REASIGNAR</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>CAPTACIÓN</values>
+        </dashboardFilterOptions>
+        <name>Segmento Mediador</name>
+    </dashboardFilters>
+    <dashboardFilters>
+        <dashboardFilterOptions>
             <operator>equals</operator>
             <values>Particulares</values>
         </dashboardFilterOptions>
@@ -45,53 +84,6 @@
         </dashboardFilterOptions>
         <name>Segmento / Ramo</name>
     </dashboardFilters>
-    <dashboardFilters>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>ARAGÓN-CATALUÑA OESTE</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>BARCELONA-CATALUÑA ESTE</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>LEVANTE</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>BALEARES</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>MADRID</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>SUR</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>CANARIAS</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>NORTE</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>GALICIA</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>CENTRO</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>CENTRALIZADOS</values>
-        </dashboardFilterOptions>
-        <name>Zona</name>
-    </dashboardFilters>
     <dashboardGridLayout>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -106,10 +98,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -121,7 +113,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -141,10 +133,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -157,7 +149,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -176,10 +168,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -191,7 +183,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -211,10 +203,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -226,7 +218,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -245,10 +237,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -260,7 +252,7 @@
                 <indicatorLowColor>#00716B</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -279,10 +271,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -294,7 +286,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -310,10 +302,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -349,6 +341,12 @@
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PoliciesPN__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.PA_PoliciesPN__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
                         <showTotal>false</showTotal>
                         <type>aggregate</type>
@@ -388,7 +386,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Panel RN&apos;s YTD</header>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_fsV</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
             </dashboardComponent>
             <rowIndex>5</rowIndex>
             <rowSpan>24</rowSpan>
@@ -414,10 +412,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>0</decimalPrecision>
                 <displayUnits>Integer</displayUnits>
@@ -436,7 +434,7 @@
                 <header>KPI&apos;s Ampliados Rn&apos;s y Mediadores YTD</header>
                 <legendPosition>Right</legendPosition>
                 <maxValuesDisplayed>18</maxValuesDisplayed>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mediadores_YTD_MUd</report>
+                <report>SDMMACDIGITAL/KPI_s_Mediadores_YTD</report>
                 <showPercentage>false</showPercentage>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
@@ -458,10 +456,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -473,7 +471,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -493,10 +491,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -509,7 +507,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -529,10 +527,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -545,7 +543,7 @@
                 <indicatorLowColor>#ABABAB</indicatorLowColor>
                 <indicatorMiddleColor>#ABABAB</indicatorMiddleColor>
                 <metricLabel>Mes cerrado pa</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -565,10 +563,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>0</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -580,7 +578,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -600,10 +598,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>0</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -615,7 +613,7 @@
                 <indicatorLowColor>#ABABAB</indicatorLowColor>
                 <indicatorMiddleColor>#ABABAB</indicatorMiddleColor>
                 <metricLabel>Mes cerrado pa</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -635,10 +633,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -650,7 +648,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>38</rowIndex>
@@ -666,10 +664,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -710,6 +708,12 @@
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
+                        <reportColumn>s!KPI__c.PA_PoliciesPN__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
                         <reportColumn>s!KPI__c.Portfolio__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
                         <showTotal>false</showTotal>
@@ -744,7 +748,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Panel Rn&apos;s Mes Actual</header>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_Actual_4Ah</report>
+                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
             </dashboardComponent>
             <rowIndex>43</rowIndex>
             <rowSpan>25</rowSpan>
@@ -770,10 +774,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>0</decimalPrecision>
                 <displayUnits>Integer</displayUnits>
@@ -792,7 +796,7 @@
                 <header>KPI&apos;s Ampliados Rn&apos;s y Mediadores Mes Actual</header>
                 <legendPosition>Right</legendPosition>
                 <maxValuesDisplayed>20</maxValuesDisplayed>
-                <report>SDMMACDIGITALHomeOffice/KPIs_Mediadores_Mes_Actual_8ew</report>
+                <report>SDMMACDIGITAL/KPI_s_Mediadores_Mes_Actual</report>
                 <showPercentage>false</showPercentage>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
@@ -811,10 +815,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -876,7 +880,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>KPI&apos;s VIDA Consultores</header>
-                <report>SDMMACDIGITALHomeOffice/KPIs_VIDA_Consultores_fDT</report>
+                <report>SDMMACDIGITAL/KPI_s_VIDA_Consultores</report>
             </dashboardComponent>
             <rowIndex>77</rowIndex>
             <rowSpan>11</rowSpan>
@@ -891,10 +895,10 @@
                     <column>Account.Channel__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>KPI__c.EstructuraUnificada__c</column>
+                    <column>Account.SegmentDescription__c</column>
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
-                    <column>Account.Zone__c</column>
+                    <column>KPI__c.EstructuraUnificada__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>0</decimalPrecision>
@@ -957,7 +961,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>KPI&apos;s YTD detalle producto</header>
-                <report>SDMMACDIGITALHomeOffice/KPIs_YTD_detalle_producto_LVZ</report>
+                <report>SDMMACDIGITAL/KPI_s_YTD</report>
             </dashboardComponent>
             <rowIndex>88</rowIndex>
             <rowSpan>15</rowSpan>
@@ -965,7 +969,7 @@
         <numberOfColumns>12</numberOfColumns>
         <rowHeight>36</rowHeight>
     </dashboardGridLayout>
-    <dashboardType>MyTeamUser</dashboardType>
+    <dashboardType>LoggedInUser</dashboardType>
     <isGridLayout>true</isGridLayout>
     <runningUser>adminklinc@zurich-es.com</runningUser>
     <textColor>#000000</textColor>

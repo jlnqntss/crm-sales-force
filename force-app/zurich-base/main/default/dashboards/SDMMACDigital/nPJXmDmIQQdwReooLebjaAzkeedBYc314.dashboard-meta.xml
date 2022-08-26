@@ -650,7 +650,7 @@
         <numberOfColumns>12</numberOfColumns>
         <rowHeight>36</rowHeight>
     </dashboardGridLayout>
-    <dashboardType>MyTeamUser</dashboardType>
+    <dashboardType>LoggedInUser</dashboardType>
     <isGridLayout>true</isGridLayout>
     <runningUser>adminklinc@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
