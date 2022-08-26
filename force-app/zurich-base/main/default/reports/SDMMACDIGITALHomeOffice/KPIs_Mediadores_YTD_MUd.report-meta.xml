@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>if( KPI__c.PA_Portfolio__c:SUM == 0, 1, KPI__c.Portfolio__c:SUM/KPI__c.PA_Portfolio__c:SUM -1)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Crecimiento cartera</description>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Crecimiento cartera</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>KPI__c.TotalLoad__c:SUM/KPI__c.Income__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Siniestralidad Total</description>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Siniestralidad Total</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>IF( KPI__c.RevisedBaseline__c:SUM == 0, 0, KPI__c.RenewedPortfolio__c:SUM / KPI__c.RevisedBaseline__c:SUM)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Ratio Retención</description>
+        <developerName>FORMULA3</developerName>
+        <isActive>false</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Ratio Retención</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>KPI__c.CAYLoad__c:SUM/KPI__c.Income__c:SUM</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Siniestralidad CAY</description>
+        <developerName>FORMULA4</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Siniestralidad Cay</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>IF( KPI__c.RevisedBaseline__c:SUM == 0, 0, KPI__c.RenewedPortfolio__c:SUM / KPI__c.RevisedBaseline__c:SUM)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>Ratio Retención</description>
+        <developerName>FORMULA5</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% Ratio Retención</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_68388292</developerName>
+        <masterLabel>Estructura</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>KPI__c.EstructuraUnificada__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Particulares</sourceValue>
+            </sourceValues>
+            <value>1- PARTICULARES</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>PYMES</sourceValue>
+            </sourceValues>
+            <value>2- PYMES</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>VIDA RIESGO</sourceValue>
+            </sourceValues>
+            <value>3- VIDA RIESGO</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>GRANDES EMPRESAS</sourceValue>
+            </sourceValues>
+            <value>4- GRAN EMPRESA</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>RESTO</sourceValue>
+            </sourceValues>
+            <value>5- VIDA RESTO</value>
+        </values>
+    </buckets>
+    <chart>
+        <backgroundColor1>#FFFFFF</backgroundColor1>
+        <backgroundColor2>#FFFFFF</backgroundColor2>
+        <backgroundFadeDir>Diagonal</backgroundFadeDir>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>x</axisBinding>
+            <column>KPI__c.Portfolio__c</column>
+        </chartSummaries>
+        <chartSummaries>
+            <aggregate>Sum</aggregate>
+            <axisBinding>y</axisBinding>
+            <column>KPI__c.PN__c</column>
+        </chartSummaries>
+        <chartType>Scatter</chartType>
+        <enableHoverLabels>false</enableHoverLabels>
+        <expandOthers>true</expandOthers>
+        <groupingColumn>PARENT.NAME</groupingColumn>
+        <location>CHART_BOTTOM</location>
+        <showAxisLabels>false</showAxisLabels>
+        <showPercentage>false</showPercentage>
+        <showTotal>false</showTotal>
+        <showValues>false</showValues>
+        <size>Medium</size>
+        <summaryAxisRange>Auto</summaryAxisRange>
+        <textColor>#000000</textColor>
+        <textSize>12</textSize>
+        <title>Mediadores Producción Nueva y Cartera</title>
+        <titleColor>#000000</titleColor>
+        <titleSize>18</titleSize>
+    </chart>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Portfolio__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Portfolio__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PortfolioEntry__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_PortfolioEntry__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.RenewedPortfolio__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_PN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Supplements__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Supplements__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Cancellations__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_Cancellations__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.APES__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.APESpa__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PoliciesPN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_PoliciesPN__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PoliciesInForce__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_PoliciesInForce__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.Commission__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.NCustomers__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>KPI__c.PA_NCustomers__c</field>
+    </columns>
+    <columns>
+        <field>CDF1</field>
+    </columns>
+    <customDetailFormulas>
+        <calculatedFormula>IF (DAY(TODAY()) = 1 , DATEVALUE
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; text(VALUE(TEXT(KPI__c.CalcMonth__c)) + 1) &amp; &quot;-01&quot; 
+) , DATEVALUE
+(TEXT(KPI__c.CalcYear__c) &amp; &quot;-&quot; &amp; TEXT(KPI__c.CalcMonth__c) &amp; &quot;-01&quot; 
+)
+)</calculatedFormula>
+        <dataType>DateOnly</dataType>
+        <developerName>CDF1</developerName>
+        <label>Fecha Calculo</label>
+        <scale>2</scale>
+    </customDetailFormulas>
+    <description>Informe completo con los principales indicadores SDM</description>
+    <filter>
+        <criteriaItems>
+            <column>KPI__c.Temporalidad__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>YTD</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>RECORDTYPE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Account.Intermediary</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CDF1</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>THIS_MONTH</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>BucketField_68388292</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>5- VIDA RESTO</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.BusinessManagerEmail__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>PARENT.NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>KPI__c.EstructuraUnificada__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>KPI&apos;s Mediadores YTD</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>AccountCustomEntity$KPI__c</reportType>
+    <scope>organization</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>DUE_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -2619,4 +2619,8 @@
         <enabled>false</enabled>
         <name>OverrideForecasts</name>
     </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewMyTeamsDashboards</name>
+    </userPermissions>
 </Profile>
