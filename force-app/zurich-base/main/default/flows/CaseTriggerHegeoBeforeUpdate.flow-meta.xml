@@ -2,10 +2,84 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
+        <name>Update_Mediated_Customer_With_Offer_Account_Found</name>
+        <label>Update Mediated Customer With Offer Account Found</label>
+        <locationX>479</locationX>
+        <locationY>3575</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.MediatedCustomer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>OfferAccountId</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Update_Mediated_Customer_With_Policy_Holder_Found</name>
+        <label>Update Mediated Customer With Policy Holder Found</label>
+        <locationX>215</locationX>
+        <locationY>3575</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.MediatedCustomer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>PolicyHolderId</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Update_Offer_Account_Id_Variable_With_HegeoOfferId</name>
+        <label>Update Offer Account Id Variable With HegeoOfferId</label>
+        <locationX>490</locationX>
+        <locationY>911</locationY>
+        <assignmentItems>
+            <assignToReference>OfferAccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SearchRelatedOfferWithOfferId.AccountId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>HegeoPolicyIdHasChanged</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Offer_Account_Id_Variable_With_HegeoPrePolicyId</name>
+        <label>Update Offer Account Id Variable With HegeoPrePolicyId</label>
+        <locationX>50</locationX>
+        <locationY>791</locationY>
+        <assignmentItems>
+            <assignToReference>OfferAccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SearchRelatedOfferWithPrePolicyId.AccountId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>HegeoPolicyIdHasChanged</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Policy_Holder_Id_Variable_With_Policy_Found</name>
+        <label>Update Policy Holder Id Variable With Policy Found</label>
+        <locationX>193</locationX>
+        <locationY>1799</locationY>
+        <assignmentItems>
+            <assignToReference>PolicyHolderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SearchRelatedPolicy.PolicyHolder__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>HegeoClaimIdHasChanged</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>UpdateAccountLookupWithAccountFound</name>
         <label>Update Account Lookup With Account Found</label>
-        <locationX>149</locationX>
-        <locationY>2903</locationY>
+        <locationX>193</locationX>
+        <locationY>3143</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -13,12 +87,15 @@
                 <elementReference>SearchRelatedIntermediary.Id</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>UpdateClaimLookupWithClaimFound</name>
         <label>Update Claim Lookup With Claim Found</label>
         <locationX>193</locationX>
-        <locationY>2231</locationY>
+        <locationY>2471</locationY>
         <assignmentItems>
             <assignToReference>$Record.ClaimId__c</assignToReference>
             <operator>Assign</operator>
@@ -43,7 +120,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>HegeoPolicyIdHasChanged</targetReference>
+            <targetReference>Update_Offer_Account_Id_Variable_With_HegeoOfferId</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -59,14 +136,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>HegeoPolicyIdHasChanged</targetReference>
+            <targetReference>Update_Offer_Account_Id_Variable_With_HegeoPrePolicyId</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>UpdatePolicyLookupWithPolicyFound</name>
         <label>Update Policy Lookup With Policy Found</label>
         <locationX>193</locationX>
-        <locationY>1559</locationY>
+        <locationY>1679</locationY>
         <assignmentItems>
             <assignToReference>$Record.PolicyId__c</assignToReference>
             <operator>Assign</operator>
@@ -75,14 +152,17 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>HegeoClaimIdHasChanged</targetReference>
+            <targetReference>Update_Policy_Holder_Id_Variable_With_Policy_Found</targetReference>
         </connector>
     </assignments>
     <decisions>
         <name>AccountFound</name>
         <label>Account Found?</label>
-        <locationX>281</locationX>
-        <locationY>2783</locationY>
+        <locationX>325</locationX>
+        <locationY>3023</locationY>
+        <defaultConnector>
+            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>AccountFoundYes</name>
@@ -104,7 +184,7 @@
         <name>ClaimFound</name>
         <label>Claim Found?</label>
         <locationX>325</locationX>
-        <locationY>2111</locationY>
+        <locationY>2351</locationY>
         <defaultConnector>
             <targetReference>HegeoIntermediaryIdHasChanged</targetReference>
         </defaultConnector>
@@ -129,7 +209,7 @@
         <name>HegeoClaimIdHasChanged</name>
         <label>Hegeo ClaimId Has Changed?</label>
         <locationX>479</locationX>
-        <locationY>1871</locationY>
+        <locationY>2111</locationY>
         <defaultConnector>
             <targetReference>HegeoIntermediaryIdHasChanged</targetReference>
         </defaultConnector>
@@ -161,7 +241,10 @@
         <name>HegeoIntermediaryIdHasChanged</name>
         <label>Hegeo IntermediaryId Has Changed?</label>
         <locationX>479</locationX>
-        <locationY>2543</locationY>
+        <locationY>2783</locationY>
+        <defaultConnector>
+            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>HegeoIntermediaryIdHasChangedYes</name>
@@ -247,7 +330,7 @@
         <name>HegeoPolicyIdHasChanged</name>
         <label>HegeoPolicyId Has Changed?</label>
         <locationX>479</locationX>
-        <locationY>1199</locationY>
+        <locationY>1319</locationY>
         <defaultConnector>
             <targetReference>HegeoClaimIdHasChanged</targetReference>
         </defaultConnector>
@@ -334,10 +417,47 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Policy_Holder_or_Offer_Account_Found</name>
+        <label>Policy Holder or Offer Account Found?</label>
+        <locationX>479</locationX>
+        <locationY>3455</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Policy_Holder</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PolicyHolderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Mediated_Customer_With_Policy_Holder_Found</targetReference>
+            </connector>
+            <label>Yes - Policy Holder</label>
+        </rules>
+        <rules>
+            <name>Yes_Offer_Account</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>OfferAccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Mediated_Customer_With_Offer_Account_Found</targetReference>
+            </connector>
+            <label>Yes - Offer Account</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>PolicyFound</name>
         <label>Policy Found?</label>
         <locationX>325</locationX>
-        <locationY>1439</locationY>
+        <locationY>1559</locationY>
         <defaultConnector>
             <targetReference>HegeoClaimIdHasChanged</targetReference>
         </defaultConnector>
@@ -384,7 +504,7 @@
         <name>SearchRelatedClaim</name>
         <label>Search Related Claim</label>
         <locationX>325</locationX>
-        <locationY>1991</locationY>
+        <locationY>2231</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ClaimFound</targetReference>
@@ -405,8 +525,8 @@
     <recordLookups>
         <name>SearchRelatedIntermediary</name>
         <label>Search Related Intermediary</label>
-        <locationX>281</locationX>
-        <locationY>2663</locationY>
+        <locationX>325</locationX>
+        <locationY>2903</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AccountFound</targetReference>
@@ -444,6 +564,7 @@
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Opportunity</object>
         <queriedFields>Id</queriedFields>
+        <queriedFields>AccountId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -467,13 +588,14 @@
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Opportunity</object>
         <queriedFields>Id</queriedFields>
+        <queriedFields>AccountId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <name>SearchRelatedPolicy</name>
         <label>Search Related Policy</label>
         <locationX>325</locationX>
-        <locationY>1319</locationY>
+        <locationY>1439</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>PolicyFound</targetReference>
@@ -489,6 +611,7 @@
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Policy__c</object>
         <queriedFields>Id</queriedFields>
+        <queriedFields>PolicyHolder__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
@@ -538,4 +661,18 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>OfferAccountId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>PolicyHolderId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>
