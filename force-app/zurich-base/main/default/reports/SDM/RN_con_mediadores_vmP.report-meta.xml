@@ -42,7 +42,7 @@
         <value>1</value>
     </params>
     <reportType>Cuentas_con_equipos_de_cuentas__c</reportType>
-    <scope>organization</scope>
+    <scope>ownaccountteam</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>

@@ -15,7 +15,7 @@
         <datatype>percent</datatype>
         <description>Siniestralidad total</description>
         <developerName>FORMULA2</developerName>
-        <isActive>true</isActive>
+        <isActive>false</isActive>
         <isCrossBlock>false</isCrossBlock>
         <masterLabel>% Sin Total</masterLabel>
         <scale>2</scale>
@@ -25,7 +25,7 @@
         <datatype>percent</datatype>
         <description>Descuento total</description>
         <developerName>FORMULA3</developerName>
-        <isActive>true</isActive>
+        <isActive>false</isActive>
         <isCrossBlock>false</isCrossBlock>
         <masterLabel>% Dto. Total</masterLabel>
         <scale>2</scale>
@@ -92,25 +92,20 @@
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
             <aggregate>Sum</aggregate>
-            <axisBinding>x</axisBinding>
-            <column>KPI__c.PN__c</column>
-        </chartSummaries>
-        <chartSummaries>
-            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>KPI__c.Portfolio__c</column>
+            <column>KPI__c.APES__c</column>
         </chartSummaries>
-        <chartType>ScatterGrouped</chartType>
+        <chartType>HorizontalBarGrouped</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>Account.BusinessManagerName__c</groupingColumn>
+        <groupingColumn>Account.LifeConsultantEmail__c</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
-        <secondaryGroupingColumn>Account.IntermediaryDescription__c</secondaryGroupingColumn>
+        <secondaryGroupingColumn>KPI__c.Temporalidad__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
-        <showValues>false</showValues>
+        <showValues>true</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
@@ -126,32 +121,16 @@
         <lowColor>#FF9897</lowColor>
         <midColor>#FFFFFF</midColor>
     </colorRanges>
-    <colorRanges>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.PN__c</columnName>
-        <highColor>#FFFFFF</highColor>
-        <lowBreakpoint>-1.0</lowBreakpoint>
-        <lowColor>#FF9897</lowColor>
-        <midColor>#FFFFFF</midColor>
-    </colorRanges>
-    <colorRanges>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.PA_PN__c</columnName>
-        <highColor>#FFFFFF</highColor>
-        <lowBreakpoint>-1.0</lowBreakpoint>
-        <lowColor>#FF9897</lowColor>
-        <midColor>#FFFFFF</midColor>
-    </colorRanges>
     <columns>
         <field>CDF1</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PN__c</field>
+        <field>KPI__c.APES__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>KPI__c.PA_PN__c</field>
+        <field>KPI__c.APESpa__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -181,15 +160,8 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe sobre la producción de de los mediadores y el volumen de cartera</description>
+    <description>Informe sobre la producción de Consultores. Cartera, Apes y pólizas PN</description>
     <filter>
-        <criteriaItems>
-            <column>KPI__c.Temporalidad__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>YTD</value>
-        </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
             <columnToColumn>false</columnToColumn>
@@ -208,8 +180,15 @@
             <column>KPI__c.EstructuraUnificada__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>VIDA RIESGO</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.LifeConsultantEmail__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
             <operator>notEqual</operator>
-            <value>RESTO</value>
+            <value></value>
         </criteriaItems>
         <language>es</language>
     </filter>
@@ -222,41 +201,22 @@
             <rangeUpperBound>-1.0</rangeUpperBound>
         </values>
     </formattingRules>
-    <formattingRules>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.PN__c</columnName>
-        <values>
-            <backgroundColor>#FF9897</backgroundColor>
-            <rangeUpperBound>-1.0</rangeUpperBound>
-        </values>
-    </formattingRules>
-    <formattingRules>
-        <aggregate>Sum</aggregate>
-        <columnName>KPI__c.PA_PN__c</columnName>
-        <values>
-            <backgroundColor>#FF9897</backgroundColor>
-            <rangeUpperBound>-1.0</rangeUpperBound>
-        </values>
-    </formattingRules>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Account.BusinessManagerName__c</field>
+        <field>Account.LifeConsultantEmail__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Account.IntermediaryDescription__c</field>
+        <field>KPI__c.Temporalidad__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
-        <aggregateType>Sum</aggregateType>
         <dateGranularity>Day</dateGranularity>
-        <field>BucketField_68388292</field>
-        <sortByName>KPI__c.PN__c</sortByName>
-        <sortOrder>Desc</sortOrder>
-        <sortType>Aggregate</sortType>
+        <field>KPI__c.EstructuraDetalle__c</field>
+        <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Resumen mediadores YTD</name>
+    <name>KPI&apos;s VIDA Consultores</name>
     <params>
         <name>co</name>
         <value>0</value>
@@ -265,7 +225,7 @@
     <scope>ownaccountteam</scope>
     <showDetails>false</showDetails>
     <showGrandTotal>false</showGrandTotal>
-    <showSubTotals>true</showSubTotals>
+    <showSubTotals>false</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
