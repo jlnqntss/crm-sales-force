@@ -1,6 +1,102 @@
+/**
+ * @description       :
+ * @author            : jgallaga
+ * @group             :
+ * @last modified on  : 09/08/2022
+ * @last modified by  : jgallaga
+**/
 @isTest(SeeAllData = false)
 private without sharing class ReassignInteractionCTIExtensionTest
 {
+    /**
+    * @description  Se asegura que al cambiar de advisor en una interacción, este ultimo queda como propietario de la tarea.
+    *               Se usan dos usuarios y se simula una llamada. La llamada será primero tratada por el primer Advisor que tomará la
+    *               llamada y después se la "traspasa" al segundo advisor. El traspaso produce un evento de colgar la interaccion en el primer usuario.
+    *               Cuando el segundo agente toma esa llamada, comienza la interaccion con el usuario que deberá quedarse con la posesión
+    *               de la tarea (interacción) al terminar el proceso.
+    * @author jgallaga | 05/08/2022
+    **/
+    @isTest
+    static void test_onSaveLog_chageTaskOwner()
+    {
+        List<Task> tasksInTestStart = [SELECT Id From Task];
+
+        System.assert(tasksInTestStart.isEmpty(), 'For this test there should not be any task');
+
+        // Creamos los dos advisors
+        String zeAdvisorProfileName = 'ZE User';
+        Id advisorProfileId         = [SELECT Id FROM Profile WHERE Name = :zeAdvisorProfileName].Id;
+        List<User> advisorUsers     = TestDataFactory.generateUsersByProfile(advisorProfileId,2);
+        insert advisorUsers;
+
+        User advisor1 = advisorUsers.get(0);
+        User advisor2 = advisorUsers.get(1);
+
+        Test.startTest();
+
+        // Evento de coger la llamada
+        String interactionChangedEventString = '{"eventName": "interactionChanged", "interaction" : { "id": "ucid0"},  "callLog": {"CallObject": "ucid0"}}';
+
+        // Se coge la llamada con el primer usuario
+        System.runAs(advisor1)
+        {
+            ReassignInteractionCTIExtension.onSaveLog(interactionChangedEventString);
+        }
+
+        List<Task> tasksInSystem = [SELECT id FROM task];
+
+        System.assertEquals(1, tasksInSystem.size(), 'La interaccion solo debería crear una tarea');
+
+        Task createdTask = tasksInSystem.get(0);
+
+        // Evento de colgar la llamada
+        String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction" : { "id": "'+ createdTask.Id +'"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + createdTask.Id +'"}}';
+
+        // Se "traspasa" la llamada
+        System.runAs(advisor1)
+        {
+            ReassignInteractionCTIExtension.onSaveLog(interactionDisconnectEventString);
+        }
+
+        tasksInSystem = [SELECT id, Status, OwnerId, RecordType.DeveloperName FROM task];
+
+        System.assertEquals(1, tasksInSystem.size(), 'No se deben crear mas tareas aparte de la interacción original');
+
+        Task currentTask = tasksInSystem.get(0);
+        System.assertEquals('Cerrada', currentTask.Status, 'La interacción debería haber acabado como Cerrada');
+        System.assertEquals(advisor1.Id, currentTask.OwnerId, 'El propietario de la primera interacción no es correcta');
+
+        // Se coge la llamada con el segundo usuario
+        System.runAs(advisor2)
+        {
+            ReassignInteractionCTIExtension.onSaveLog(interactionChangedEventString);
+        }
+
+        tasksInSystem = [SELECT id, Status FROM task];
+
+        System.assertEquals(1, tasksInSystem.size(), 'Una interaccion solo debería crear una tarea');
+        currentTask = tasksInSystem.get(0);
+        System.assertEquals('Asignada', currentTask.Status, 'El estado no ha cambiado a asignada');
+
+        // Se cuelga la llamada
+        System.runAs(advisor2)
+        {
+            ReassignInteractionCTIExtension.onSaveLog(interactionDisconnectEventString);
+        }
+
+        Test.stopTest();
+
+        tasksInSystem = [SELECT id, Status, OwnerId, RecordType.DeveloperName FROM task];
+        currentTask = tasksInSystem.get(0);
+
+        System.assertEquals(1, tasksInSystem.size(), 'Se han generado mas tareas de las necesarias');
+        System.assertEquals('Cerrada', currentTask.Status, 'La interacción debería haber acabado como Cerrada');
+        System.assertEquals(advisor2.Id, currentTask.OwnerId, 'El propietario de la primera interacción no es correcta');
+
+        List<Error_Log__c> errores = [SELECT id FROM Error_Log__c];
+        System.assert(errores.isEmpty(),' El proceso no puede haber generado errores');
+    }
+
     /**
      * Prueba a que se actualiza la tarea existente
      * @author nescudero

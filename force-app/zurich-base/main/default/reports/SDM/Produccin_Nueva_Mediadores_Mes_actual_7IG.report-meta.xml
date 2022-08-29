@@ -86,7 +86,7 @@
             </sourceValues>
             <value>5- VIDA RESTO</value>
         </values>
-    </buckets>      
+    </buckets>
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
@@ -291,7 +291,7 @@
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>organization</scope>
+    <scope>ownaccountteam</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
