@@ -325,8 +325,8 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
      * @date 22/08/2022
      */
     private static List<String> getMetadataEmails() {
-        String MENSUAL_PLAN_VALID_EMAILS_DEVELOPERNAME = 'MensualPlanValidEmails';
-        AdminSetupParameter__mdt adminSetupParameterMDT = AdminSetupParameter__mdt.getInstance(MENSUAL_PLAN_VALID_EMAILS_DEVELOPERNAME);
+        String mensualPlanValidEmails = 'MensualPlanValidEmails';
+        AdminSetupParameter__mdt adminSetupParameterMDT = AdminSetupParameter__mdt.getInstance(mensualPlanValidEmails);
         
         List<String> result = new List<String>();
         String metadataEmailsRaw = adminSetupParameterMDT.Value__c;
