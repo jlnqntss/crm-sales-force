@@ -969,7 +969,7 @@
     <isGridLayout>true</isGridLayout>
     <runningUser>adminklinc@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
-    <title>Dashboard inicio DT</title>
+    <title>inicio DT (*Fuente DW sin normalizar Flotas ni códigos de Digital*)</title>
     <titleColor>#000000</titleColor>
     <titleSize>12</titleSize>
 </Dashboard>
