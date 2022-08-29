@@ -144,10 +144,13 @@ public with sharing class PlanComercialUtil {
      */
     private static Boolean targetKPIUpdated(PlanComercial__c planComercial, Map<Id, SObject> oldMap) {
         Boolean result = false; 
+        String kpiFieldNew = getKPIFieldName(planComercial);
+        
         PlanComercial__c oldPC = (PlanComercial__c) oldMap.get(planComercial.Id); 
-        Decimal oldKPINumber = oldPC.TargetKPINumber__c;
+        String kpiFieldOld = getKPIFieldName(planComercial);
+        Decimal oldKPINumber = Decimal.valueOf(String.valueOf(oldPC.get(kpiFieldOld)));
 
-        if (planComercial.TargetKPINumber__c != oldKPINumber) {
+        if (planComercial.get(kpiFieldNew) != oldKPINumber) {
             result = true;
         }
 
@@ -193,6 +196,28 @@ public with sharing class PlanComercialUtil {
             result = new List<String>(metadataEmailsRaw.split(','));
         }
         
+        return result;
+    }
+
+
+    /**
+     * Obtener el nombre del campo  
+     * @param pc: plan comercial anual
+     * @return Api name del campo informado
+     * @author dmunoz
+     * @date 29/08/2022
+     */
+    private static String getKPIFieldName(PlanComercial__c planComercial) {
+        String result = '';
+
+        if (planComercial.TargetKPIPercent__c != null) {
+            result = 'TargetKPIPercent__c';
+        } else if (planComercial.TargetKPINumber__c != null) {
+            result = 'TargetKPINumber__c';
+        } else if (planComercial.TargetKPICurrency__c != null) {
+            result = 'TargetKPICurrency__c';
+        }
+
         return result;
     }
 }
