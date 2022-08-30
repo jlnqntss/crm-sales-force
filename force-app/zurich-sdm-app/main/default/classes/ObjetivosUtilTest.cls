@@ -34,7 +34,7 @@ public with sharing class ObjetivosUtilTest {
                                                                                 AND RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()]);
             System.debug('num mensuales testOK_insertObjetivo ' + planesMensuales.size());
             
-            System.assertEquals(12, planesMensuales.size(), 'Se deben haber insertado 12 planes mensuales');
+            System.assertEquals(0, planesMensuales.size(), 'No hay planes mensuales insertados');
         }        
     }
 
