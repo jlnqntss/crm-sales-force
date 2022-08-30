@@ -225,7 +225,8 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
 
         if( plans != null && !plans.isEmpty() ) {
             childPlans = [
-                SELECT Id,  TargetKPINumber__c, Indicator__c, Segment__c, Product__c, EndDate__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c
+                SELECT Id, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, Indicator__c, Segment__c, Product__c, EndDate__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c,
+                            ParentPlan__r.TargetKPIPercent__c, ParentPlan__r.TargetKPICurrency__c
                 FROM PlanComercial__c
                 WHERE ParentPlan__c IN :plans
                 AND RecordTypeId = :rtPlanMensualId
@@ -236,7 +237,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         return childPlans;
     }
 
-    /**Recuperar todos los campos de plan comercial anual (RN) según indicadores y año de objetivo
+    /**Recuperar todos los campos de plan comercial anual (RN) según indicadores y año de objetivo además de related email coincida con los de la metadata
      * @author nts (dmunoz)
      * @date 25/07/2022
      * 
@@ -254,7 +255,6 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
                 SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
                 Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
                 Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c
-
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanAnualId
                 AND Intermediary__c = NULL
@@ -262,7 +262,8 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
                 AND Indicator__c IN :indicatorSet
                 AND Product__c IN :productSet
                 AND Segment__c IN :segmentSet
-                AND CALENDAR_YEAR(StartDate__c) IN :year                
+                AND CALENDAR_YEAR(StartDate__c) IN :year
+                AND AssignedTo__r.Email IN :getMetadataEmails()        
             ];
         }
 
@@ -286,7 +287,8 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
             result = [
                 SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
                 Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
-                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c
+                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.TargetKPIPercent__c, ParentPlan__r.TargetKPICurrency__c, 
+                ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c
 
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanMensualId
@@ -297,6 +299,44 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
             ];
         }
 
+        return result;
+    }
+
+    /**Recuperar los email del usuario asignado de unos planes dados
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     * 
+     * @param {List<String} planComercialList
+     * @return {Map<Id, PlanComercial__c>} mapa con el par id, email
+     */
+     public Map<Id, PlanComercial__c> findAssignedToEmailFromPC(List<PlanComercial__c> planComercialList) {
+        Map<Id, PlanComercial__c> result = new Map<Id, PlanComercial__c>();
+
+        if (planComercialList != null && !planComercialList.isEmpty()) {
+            result = new Map<Id, PlanComercial__c>([SELECT Id, AssignedTo__r.Email FROM PlanComercial__c WHERE Id IN :planComercialList]);
+        }
+
+        return result;
+     }
+
+     /**
+     * Lista de email contenido en la metadata
+     * @return List<String>
+     * @author dmunoz
+     * @date 22/08/2022
+     */
+    private static List<String> getMetadataEmails() {
+        String mensualPlanValidEmails = 'MensualPlanValidEmails';
+        AdminSetupParameter__mdt adminSetupParameterMDT = AdminSetupParameter__mdt.getInstance(mensualPlanValidEmails);
+        
+        List<String> result = new List<String>();
+        String metadataEmailsRaw = adminSetupParameterMDT.Value__c;
+
+        if (String.isNotEmpty(metadataEmailsRaw)) {
+            result = new List<String>(metadataEmailsRaw.split(','));
+        }
+
+        System.debug('selector planes getMetadataEmails ' + result);
         return result;
     }
 }
