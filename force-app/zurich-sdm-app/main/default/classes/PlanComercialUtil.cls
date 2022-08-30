@@ -148,11 +148,14 @@ public with sharing class PlanComercialUtil {
         
         PlanComercial__c oldPC = (PlanComercial__c) oldMap.get(planComercial.Id); 
         String kpiFieldOld = getKPIFieldName(planComercial);
-        Decimal oldKPINumber = Decimal.valueOf(String.valueOf(oldPC.get(kpiFieldOld)));
+        String oldKPINumberString = String.valueOf(oldPC.get(kpiFieldOld));
+        if (oldKPINumberString != null && String.isNotEmpty(oldKPINumberString)) {
+            Decimal oldKPINumber = Decimal.valueOf(oldKPINumberString);
 
-        if (planComercial.get(kpiFieldNew) != oldKPINumber) {
-            result = true;
-        }
+            if (planComercial.get(kpiFieldNew) != oldKPINumber) {
+                result = true; 
+            }
+        }        
 
         return result;
     }
