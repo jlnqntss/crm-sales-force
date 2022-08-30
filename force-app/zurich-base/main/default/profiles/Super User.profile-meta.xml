@@ -2537,16 +2537,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>AdminSetup__mdt.RetentionExternalRequestKO__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AdminSetup__mdt.RetentionExternalRequestOK__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>AdminSetup__mdt.SameMasterPolicy__c</field>
         <readable>true</readable>
