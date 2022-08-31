@@ -442,11 +442,8 @@ public without sharing class ContentDocumentLinkUtil
 
                                             if(caseFieldsList.get(i) == 'Industry__c')
                                             {
-                                               
-                                                // relatedEmail.Industry__c = caseFieldsMap.put(caseFieldsList.get(i), types.get(types.size()-1));
                                                 caseFieldsMap.put(caseFieldsList.get(i), types.get(i));
                                                 relatedEmail.Industry__c = types.get(i);
-                                                // caseFieldsMap.put(caseFieldsList.get(i), types.get(types.size()-1));
                                             }
                                         }
                                        
