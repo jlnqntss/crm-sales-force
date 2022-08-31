@@ -54,6 +54,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>industrySpecializationType</name>
+            <value>
+                <elementReference>SpecializationType</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>subject</name>
             <value>
                 <elementReference>$Record.Subject</elementReference>
@@ -112,6 +118,12 @@
             <name>screenPopRecordId</name>
             <value>
                 <elementReference>ScreenPopURL</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>industrySpecializationType</name>
+            <value>
+                <elementReference>SpecializationType</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -409,6 +421,12 @@
 IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CCS&apos;) , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CCSSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId} + &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId} + &apos;&quot;}]&apos;,
 IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CSM&apos;) ,  &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CSMSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress} + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId}+ &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
  {!$Record.Id} )))</expression>
+    </formulas>
+    <formulas>
+        <description>Fórmula que comprobará si el campo SpecializationType está informado</description>
+        <name>SpecializationType</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!$Record.Parent.AccountId}), &apos;&apos;, TEXT({!$Record.Parent.Account.SpecializationType__c}))</expression>
     </formulas>
     <interviewLabel>EmailMessage Trigger - After insert/update Route to Genesys {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After insert - Route to Genesys</label>

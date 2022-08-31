@@ -225,6 +225,10 @@
                 <behavior>Edit</behavior>
                 <field>RobotTypeN3__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Industry__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

@@ -94,6 +94,8 @@ public class GenesysCloudRouteEmailAction
         public String emailMessageId;
         @InvocableVariable(label = 'Attribute Queue Id' description='Id. de la cola como atributo')
         public String queueIdAttribute;
+        @InvocableVariable(label = 'Specialization Type' description='Tipo de especialización del caso')
+        public String industrySpecializationType;
 
 
         /**
@@ -116,6 +118,7 @@ public class GenesysCloudRouteEmailAction
             email.attributes.put('SF_OwnerId', '' + this.ownerId);
             email.attributes.put('SF_EmailURL', URL.getOrgDomainUrl().toExternalForm() + '/' + this.emailMessageId);
             email.attributes.put('Genesys_QueueId', '' + this.queueIdAttribute);
+            email.attributes.put('SF_IntermediaryType', '' + this.industrySpecializationType);
 
             return email;
         }

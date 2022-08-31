@@ -1088,6 +1088,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.Industry__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.InsuredObjectId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1798,17 +1803,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>EmailMessage.GenesysInteractionId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>EmailMessage.GenesysQueueName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>EmailMessage.RoutedToGenesys__c</field>
+        <field>EmailMessage.Industry__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>EmailMessage.GenesysInteractionId__c</field>
+        <field>EmailMessage.RoutedToGenesys__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

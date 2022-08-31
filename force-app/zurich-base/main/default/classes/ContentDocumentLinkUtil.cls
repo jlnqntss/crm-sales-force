@@ -143,7 +143,7 @@ public without sharing class ContentDocumentLinkUtil
 
                     Map<Id, EmailMessage> relatedEmailMessages = new Map<Id, EmailMessage>(
                         [
-                            SELECT Id, Subject, ToAddress, CreatedDate, ParentId, Parent.RecordTypeId
+                            SELECT Id, Subject, ToAddress, CreatedDate, ParentId, Parent.RecordTypeId, Parent.Industry__c
                             FROM EmailMessage WHERE Id IN: linkedEntityToDocumentMap.keySet()
                             AND Parent.RecordTypeId IN: caseRecordTypeIds AND ToAddress IN: robotHegeoSettingsMap.keySet()
                         ]
@@ -399,8 +399,6 @@ public without sharing class ContentDocumentLinkUtil
                                     }
                                 }
 
-                                emailMessagesToUpdate.add(relatedEmail);
-
                                 //Actualizamos los campos correspondientes al caso
                                 if(relatedEmail.ParentId != null)
                                 {
@@ -415,6 +413,7 @@ public without sharing class ContentDocumentLinkUtil
 
                                         //Extraemos la combinación de los tipos de casos (2 primeras posiciones del listado de valores)
                                         String typeAndSubtypeCombination = types.get(0) + types.get(1);
+                                       
                                         if( caseTypesMapping.containsKey(typeAndSubtypeCombination) )
                                         {
                                             caseFieldsMap.putAll( caseTypesMapping.get(typeAndSubtypeCombination) );
@@ -430,16 +429,24 @@ public without sharing class ContentDocumentLinkUtil
 
                                         //Recorremos la lista ordenada de campos a tipificar,
                                         //así podemos acceder directamente por posición al valor recibido
+                                        
                                         for(Integer i=0; i < caseFieldsList.size(); i++)
                                         {
+                                            
                                             //Este if controla que no falle la ejecución si recibimos menos valores de los esperados,
                                             //si el valor viene vacio o si ya se ha incluido ese campo en el mapa a deserializar
                                             if( i < types.size() && String.isNotBlank( types.get(i) ) && !caseFieldsMap.containsKey( caseFieldsList.get(i) ) )
                                             {
                                                 caseFieldsMap.put( caseFieldsList.get(i), types.get(i) );
                                             }
-                                        }
 
+                                            if(caseFieldsList.get(i) == 'Industry__c')
+                                            {
+                                                caseFieldsMap.put(caseFieldsList.get(i), types.get(i));
+                                                relatedEmail.Industry__c = types.get(i);
+                                            }
+                                        }
+                                       
                                         casesToUpdate.add(
                                             (Case) JSON.deserialize(
                                                 JSON.serialize(caseFieldsMap), Case.class
@@ -463,6 +470,9 @@ public without sharing class ContentDocumentLinkUtil
                                         'ContentDocumentLinkUtil'
                                         );
                                 }
+
+                                emailMessagesToUpdate.add(relatedEmail);
+
                             }
                             else
                             {
