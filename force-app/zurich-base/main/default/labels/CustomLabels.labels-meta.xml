@@ -1654,4 +1654,12 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_Objetivos_RowErrorTitle</shortDescription>
         <value>We found an error</value>
     </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_Message_Fleets</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_Message_Fleets</shortDescription>
+        <value>DW source without contemplating normalization of Fleets or Digital codes</value>
+    </labels>
 </CustomLabels>

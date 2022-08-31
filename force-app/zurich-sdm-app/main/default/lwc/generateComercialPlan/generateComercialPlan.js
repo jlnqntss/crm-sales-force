@@ -4,6 +4,7 @@ import FORM_FACTOR from '@salesforce/client/formFactor';
 
 import SDM_PlanAnual_KPICompare from "@salesforce/label/c.SDM_PlanAnual_KPICompare";
 import SDM_PlanAnual_Title from "@salesforce/label/c.SDM_PlanAnual_Title";
+import SDM_PlanAnual_Message_Fleets from "@salesforce/label/c.SDM_PlanAnual_Message_Fleets"
 import SDM_PlanAnual_ButtonCancel from "@salesforce/label/c.SDM_PlanAnual_ButtonCancel";
 import SDM_PlanAnual_ButtonDelete from "@salesforce/label/c.SDM_PlanAnual_ButtonDelete";
 import SDM_PlanAnual_ButtonEdit from "@salesforce/label/c.SDM_PlanAnual_ButtonEdit";
@@ -46,6 +47,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
 ) {
   labels = {
     SDM_PlanAnual_Title,
+    SDM_PlanAnual_Message_Fleets,
     SDM_PlanAnual_ButtonNew,
     SDM_PlanAnual_ButtonCancel,
     SDM_PlanAnual_ButtonDelete,
