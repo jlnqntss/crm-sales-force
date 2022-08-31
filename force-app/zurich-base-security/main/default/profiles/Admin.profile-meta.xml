@@ -5707,6 +5707,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.Industry__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.InsuredAmount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7203,6 +7208,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>EmailMessage.GenesysQueueName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EmailMessage.Industry__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13538,6 +13548,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>purecloud__PureCloud_Queue__c.GenesysFlowId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>purecloud__PureCloud_Queue__c.Industry__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
