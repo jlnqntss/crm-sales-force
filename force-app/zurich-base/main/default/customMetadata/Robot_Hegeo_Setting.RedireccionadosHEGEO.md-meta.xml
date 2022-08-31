@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>CaseFields__c</field>
-        <value xsi:type="xsd:string">RobotTypeN1__c,RobotTypeN2__c,RobotTypeN3__c,HegeoProductGroupCode__c,HegeoOfferId__c,HegeoPrePolicyId__c,HegeoPolicyId__c,HegeoReceiptNumber__c,HegeoClaimId__c,HegeoIntermediaryId__c</value>
+        <value xsi:type="xsd:string">RobotTypeN1__c,RobotTypeN2__c,RobotTypeN3__c,HegeoProductGroupCode__c,HegeoOfferId__c,HegeoPrePolicyId__c,HegeoPolicyId__c,HegeoReceiptNumber__c,HegeoClaimId__c,HegeoIntermediaryId__c,RobotActivitySegCode__c,RobotActivitySegDesc__c,RobotBusinessStructure__c,RobotActivityCod__c,RobotActividadDesc__c,RobotDocumentType__c,RobotDocumentId__c,RobotAappIndicator__c,Robot30mmBilling__c,Industry__c</value>
     </values>
     <values>
         <field>CaseRecordTypeNames__c</field>
