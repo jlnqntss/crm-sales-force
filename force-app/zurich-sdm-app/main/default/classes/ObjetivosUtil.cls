@@ -21,7 +21,9 @@ public with sharing class ObjetivosUtil {
         Map<String, Objective__c> objetivosToInsert = new Map<String, Objective__c>(); // map externalId, Objetivo
 
         for (Objective__c obj: newList) {
-            objetivosToInsert.put(obj.ExternalId__c, obj);           
+            if (obj.Active__c == true) { // solo generamos planes de objetivos que se inserten activos
+                objetivosToInsert.put(obj.ExternalId__c, obj);      
+            }                 
         }
 
         // envio todos los objetivos juntos 
