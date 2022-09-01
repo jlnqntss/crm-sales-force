@@ -276,8 +276,7 @@ public with sharing class EmailMessagesUtil
     private purecloud__PureCloud_Queue__c findGenesysQueue(EmailMessage em)
     {
         purecloud__PureCloud_Queue__c genesysQueue;
-        
-            
+                    
         if( em != null ) 
         {
             try 
@@ -298,14 +297,16 @@ public with sharing class EmailMessagesUtil
                         String routingType;
                      
                         routingType = getEmailRouteType(emailsToCheck[i]);
-                       
+                                               
                         switch on routingType {
                             when 'Industry' {
-                                genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
+                                if (em.Industry__c != null)
+                                {
+                                    genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
+                                }
                             }
                             when else {
-
-                                genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());                             
+                                genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());                          
                             }
                         }
                         

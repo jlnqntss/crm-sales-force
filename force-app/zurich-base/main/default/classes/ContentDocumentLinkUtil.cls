@@ -25,7 +25,7 @@ public without sharing class ContentDocumentLinkUtil
     {
         if( robotHegeoSettings == null ) {
 
-            robotHegeoSettings = Robot_Hegeo_Setting__mdt.getAll().values();
+            robotHegeoSettings = [SELECT Id, DeveloperName, CaseFields__c, CaseFieldsIndex__c, Separator__c, FromAddressIndex__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, CaseTypeFieldsMetadata__c, RoutingAddresses__c, CCAddressIndex__c, BCCAddressIndex__c FROM Robot_Hegeo_Setting__mdt];
         }
 
         if( !robotHegeoSettings.isEmpty() )
@@ -263,6 +263,7 @@ public without sharing class ContentDocumentLinkUtil
                             Integer toAddressCSVIndex = Integer.valueOf(relatedEmailSettings.ToAddressIndex__c);
                             Integer ccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.CCAddressIndex__c);
                             Integer bccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.BCCAddressIndex__c);
+                            String caseFields = relatedEmailSettings.CaseFields__c;
 
                             List<String> caseTypeFieldsMetadataList = new List<String>();
                             if(relatedEmailSettings.CaseTypeFieldsMetadata__c != null)
@@ -271,9 +272,9 @@ public without sharing class ContentDocumentLinkUtil
                             }
 
                             List<String> caseFieldsList = new List<String>();
-                            if(relatedEmailSettings.CaseFields__c != null)
+                            if(caseFields != null)
                             {
-                                caseFieldsList = relatedEmailSettings.CaseFields__c.split(',');
+                                caseFieldsList = caseFields.split(',');
                             }
 
                             //Recuperamos los datos del csv y dividimos por cada línea que contiene el documento
@@ -429,21 +430,18 @@ public without sharing class ContentDocumentLinkUtil
 
                                         //Recorremos la lista ordenada de campos a tipificar,
                                         //así podemos acceder directamente por posición al valor recibido
-                                        
                                         for(Integer i=0; i < caseFieldsList.size(); i++)
                                         {
-                                            
                                             //Este if controla que no falle la ejecución si recibimos menos valores de los esperados,
                                             //si el valor viene vacio o si ya se ha incluido ese campo en el mapa a deserializar
                                             if( i < types.size() && String.isNotBlank( types.get(i) ) && !caseFieldsMap.containsKey( caseFieldsList.get(i) ) )
                                             {
                                                 caseFieldsMap.put( caseFieldsList.get(i), types.get(i) );
-                                            }
 
-                                            if(caseFieldsList.get(i) == 'Industry__c')
-                                            {
-                                                caseFieldsMap.put(caseFieldsList.get(i), types.get(i));
-                                                relatedEmail.Industry__c = types.get(i);
+                                                if(caseFieldsList.get(i) == 'Industry__c')
+                                                {
+                                                    relatedEmail.Industry__c = types.get(i);
+                                                }
                                             }
                                         }
                                        
