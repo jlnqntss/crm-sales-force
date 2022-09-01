@@ -377,40 +377,27 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         List<PlanComercial__c> pcToUpdate = new List<PlanComercial__c>();
         List<PlanComercial__c> pcToDelete = new List<PlanComercial__c>();
 
-        List<PlanComercial__c> pcList = new List<PlanComercial__c>(); // lista de planes via query
-
         // query de planes cambia segun si es insert o update/delete de planes
         if (!objetivosToUpdateActive.isEmpty()) {
-            pcList = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToUpdateActive, 'Anual');
-        } else if (!objetivosToUpdatePesos.isEmpty()) {            
+            pcToInsert = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToUpdateActive, 'Anual');
+        } if (!objetivosToUpdatePesos.isEmpty()) {            
             // obtener planes mensuales
-            pcList = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToUpdatePesos, 'Mensual');
-        } else if (!objetivosToUpdateInactive.isEmpty()) {
+            pcToUpdate = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToUpdatePesos, 'Mensual');
+        } if (!objetivosToUpdateInactive.isEmpty()) {
             pcToDelete = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToUpdateInactive, 'Mensual');
-        }
-
-        String externalIdPCGenerated;
-        for (PlanComercial__c pc: pcList) {
-            externalIdPCGenerated = generateExternalIdValue(pc);
-
-            if (objetivosToUpdateActive.get(externalIdPCGenerated) != null) {
-                pcToInsert.add(pc); // inserto planes anuales
-            } else if (objetivosToUpdatePesos.get(externalIdPCGenerated) != null) {
-                pcToUpdate.add(pc); // inserto planes mensuales
-            }
-        }
+        }             
 
         if (!pcToInsert.isEmpty()) {
             // insert planes
             List<PlanComercial__c> listaPlanesInsert = generatePlanesHijosToInsert(pcToInsert, objetivosToUpdateActive);
             insertPlanesMensuales(listaPlanesInsert);
 
-        } else if (!pcToUpdate.isEmpty()) {
+        } if (!pcToUpdate.isEmpty()) {
             // recalcular planes
             List<PlanComercial__c>  planesMensualesList = recalcularKPI(pcToUpdate, objetivosToUpdatePesos);
             updatePlanesMensuales(planesMensualesList); 
 
-        } else if (!pcToDelete.isEmpty()) {
+        } if (!pcToDelete.isEmpty()) {
             // eliminar planes
             deletePlanesMensuales(pcToDelete, null);
         }
