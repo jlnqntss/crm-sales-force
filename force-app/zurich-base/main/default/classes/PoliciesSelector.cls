@@ -70,6 +70,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
     {
         if(policyHolder != null && policyNumbers != null)
         {
+            this.baseQuery.selectReadableFields();
             this.baseQuery.addConditionEq(Policy__c.PolicyHolder__c, policyHolder).addConditionIn(Policy__c.InfoPolicyNumber__c, policyNumbers);
 
             return (List<Policy__c>) this.baseQuery.run();
@@ -139,6 +140,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
     {
         if(String.isNotBlank(policyNumber))
         {
+            this.baseQuery.selectReadableFields();
             this.baseQuery.addConditionEq(Policy__c.InfoPolicyNumber__c, policyNumber.leftPad(14, '0'));
 
             return (List<Policy__c>) this.baseQuery.run();
