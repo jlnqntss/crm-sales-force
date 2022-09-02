@@ -1,0 +1,36 @@
+<!--
+  @description       : 
+  @author            : jjuaristi
+  @group             : 
+  @last modified on  : 16-08-2022
+  @last modified by  : jjuaristi
+-->
+<template>
+  <div class="slds-float_right">
+    <lightning-button label="Buscar nuevo SIC" class="slds-button" onclick={handleSIC} variant="brand"></lightning-button>
+  </div>
+      <lightning-breadcrumbs>
+        <lightning-breadcrumb
+            label={label}
+            onclick={handleSIC}
+            >
+        </lightning-breadcrumb>
+    </lightning-breadcrumbs>
+    <div class="slds-p-top_medium">
+    <template for:each={options} for:item="item" >
+      <div key={item.label} class="slds-p-top_small">
+        <article class="slds-card slds-card_boundary">
+          <div class="slds-p-around_medium">
+            <a class="slds-card__header-link" title="Card Header" onclick={handleClick}>
+              <span id={item.id}>{item.label}</span>
+            </a>
+            <div class= "slds-float_right">
+              <lightning-badge label="Preferente" class="slds-badge slds-theme_success" ></lightning-badge>
+              <lightning-helptext content="Navegar al documento vinculado a este ramo" onclick={goToDoc}></lightning-helptext>
+            </div>
+          </div>
+        </article>
+      </div>
+  </template>
+</div>
+</template>
