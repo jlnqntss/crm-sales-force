@@ -7,10 +7,8 @@
 import { api, LightningElement, wire } from 'lwc';
 import { FlowNavigationNextEvent, FlowAttributeChangeEvent } from "lightning/flowSupport";
 import getTechPoliciesForActivities from "@salesforce/apex/RiskAppetiteController.getTechPoliciesForActivities";
-import MASTER_OBJECT from '@salesforce/schema/MaestroApetito__c';
-import NAME_FIELD from '@salesforce/schema/MaestroApetito__c.ObservacionesActividad__c';
-import SIC_FIELD from '@salesforce/schema/MaestroApetito__c.SIC__c';
-import PRODUCT_FIELD from '@salesforce/schema/MaestroApetito__c.CodigoProducto__c';
+import getFields from "@salesforce/apex/RiskAppetiteController.getFields";
+
 
 const fieldsToFilter = [
     "UsoExplosivos__c",
@@ -30,7 +28,6 @@ const fieldsToFilter = [
 
 export default class TechnicalPolicies extends LightningElement 
 {
-    sfObject = MASTER_OBJECT;
 
     // Variable to return the nextPage that should be opened
     @api nextPage = 0;
@@ -156,6 +153,7 @@ export default class TechnicalPolicies extends LightningElement
     }
 
     loadFilters(){
+        // TODO : La idea es pasar todo esto a un array de variables haciendo destructuring, de momento no he conseguido que funcione
         this.showExplosives = this.checkShowField(fieldsToFilter[0]);
         this.showEspumosos = this.checkShowField(fieldsToFilter[1]);
         this.showAspiration = this.checkShowField(fieldsToFilter[2]);
@@ -259,10 +257,25 @@ export default class TechnicalPolicies extends LightningElement
 
     loadFields()
     {
+        var fieldsRetrieved =  [];
         console.log(this.policies);
         this.currentRecord = this.policies[this.currentCounter-1];
         if(this.currentRecord){
             this.size = this.policies.length;
+            // TODO aquí se recoge el fieldSet, debido a que hay que hacerlo con apex, pasamos el registro y toda la lógica la dejamos en el controlador
+            // el controlador va a devolver un array de strings que van a ser los campos, y aquí lo dividimos en dos (si lo quieren a la derecha igual mejor dejar en 1) 
+            // para que luego en el grid quede bien faltaría estudiar cómo hacer que salga la traducción
+
+            // Imperative apex RiskAppetiteController.getFields(this.currentRecord)
+            getFields({ record: this.currentRecord })
+            .then((result) => {
+                fieldsRetrieved = result;
+            });
+
+            // Para pintar estos campos solo hay que hacer un for each en el html recorriendo la lista y se irán mostrando
+
+            // TODO crear una lista a parte que contenga los campos de franquicia para que luego vayan en el acordeón solos, necesitarán una variable "showFranquicias"
+            // porque hay en ramos en los que estos campos no deben aparecer.
             return this.currentRecord.Id;
         }
     }

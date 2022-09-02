@@ -107,6 +107,7 @@ public with sharing class RiskAppetiteController {
         return label;
     }
 
+    @AuraEnabled(cacheable=true)
     public static List<String> getFields(MaestroApetito__c record)
     {
         String fieldSet = 'ramo' + record.CodigoProducto__c;
