@@ -4,9 +4,9 @@ public with sharing class WS_ClientIdentificationServiceTest {
     static final String REQUEST_URI = '/identification/v1/people/';
     static final String INVALID_REQUEST_URI = '/identification/va/people/';
     
-    static final String CLIENT_REQUEST = '{"nombreCompleto": "Nombre Apellido", "dniNiePasaporte": "12345678A","codigoPoliza": "12345678901234"}';
-    static final String CLIENT_REQUEST_WITHOUT_DNI =  '{"nombreCompleto": "Nombre Apellido",  "codigoPoliza": "12345678901234"}';
-    static final String INCORRECT_JSON =  '"nombreCompleto": "Nombre Apellido", "codigoPoliza": "12345678901234"';
+    static final String CLIENT_REQUEST = '{"fullName": "Nombre Apellido", "nationalID": "12345678A","policyNumber": "12345678901234"}';
+    static final String CLIENT_REQUEST_WITHOUT_DNI =  '{"fullName": "Nombre Apellido",  "policyNumber": "12345678901234"}';
+    static final String INCORRECT_JSON =  '"fullName": "Nombre Apellido", "policyNumber": "12345678901234"';
 
 
     @TestSetup

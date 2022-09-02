@@ -12,7 +12,7 @@ public with sharing class ClientIdentificationService
 
     public static SearchResult processData(Client receivedData)
     {
-        if ( String.isBlank(receivedData.dniNiePasaporte) || String.isBlank(receivedData.codigoPoliza) )
+        if ( String.isBlank(receivedData.nationalID) || String.isBlank(receivedData.policyNumber) )
         {
             throw new ClientIdentificationException(
                       EMPTY_FIELD_STATUSCODE,
@@ -24,43 +24,43 @@ public with sharing class ClientIdentificationService
         PoliciesSelector policiesSelector = new PoliciesSelector();
 
         SearchResult resultado = new SearchResult();
-        resultado.polizaValida = false;
+        resultado.isValidPolicy = false;
 
         // jgarciamartinez - 18/08/2022 - campos nuevos añadidos a petición de cliente
-        resultado.existeDNI = false;
-        resultado.existePoliza = false;
+        resultado.existsNationalID = false;
+        resultado.existsPolicy = false;
 
         // Comprobamos si existe una poliza asignada al DNI que nos envían:
         // 1.- Obtenemos el ID del Account
-        List<Account> cuentasEncontradas = accountsSelector.findByNationalId(new List<String> { receivedData.dniNiePasaporte }, 'N');
+        List<Account> cuentasEncontradas = accountsSelector.findByNationalId(new List<String> { receivedData.nationalID }, 'N');
         List<Policy__c> polizaEncontrada = new List<Policy__c>();
 
         if( !cuentasEncontradas.isEmpty() )
         {
-            resultado.existeDNI = true;
-            polizaEncontrada = policiesSelector.selectByHolderAndNumber(cuentasEncontradas[0].id, new Set<String> {receivedData.codigoPoliza});
+            resultado.existsNationalID = true;
+            polizaEncontrada = policiesSelector.selectByHolderAndNumber(cuentasEncontradas[0].id, new Set<String> {receivedData.policyNumber});
         }
         else
         {
-            resultado.existeDNI = false;
-            polizaEncontrada = policiesSelector.selectByNumber(receivedData.codigoPoliza);
+            resultado.existsNationalID = false;
+            polizaEncontrada = policiesSelector.selectByNumber(receivedData.policyNumber);
         }
 
         if( !polizaEncontrada.isEmpty() )
         {
-            resultado.existePoliza = true;
+            resultado.existsPolicy = true;
             if(polizaEncontrada[0].PolicyStatus__c == 'V')
             {
-                resultado.polizaValida = true;
+                resultado.isValidPolicy = true;
             }
         }
 
         // Tan solo si los tres flags son true les vamos a pasar los valores
-        if (resultado.existeDni && resultado.existePoliza && resultado.polizaValida)
+        if (resultado.existsNationalID && resultado.existsPolicy && resultado.isValidPolicy)
         {
-            resultado.fechaFinPoliza = polizaEncontrada[0].EndDate__c;
-            resultado.fechaInicioPoliza = polizaEncontrada[0].MovementStartDate__c;
-            resultado.versionPoliza = polizaEncontrada[0].policyVersion__c;
+            resultado.endDate = polizaEncontrada[0].EndDate__c;
+            resultado.startDate = polizaEncontrada[0].MovementStartDate__c;
+            resultado.policyVersion = polizaEncontrada[0].policyVersion__c;
         } 
 
         return resultado;
@@ -127,26 +127,26 @@ public with sharing class ClientIdentificationService
         public Client()
         {}
 
-        public String nombreCompleto {
+        public String fullName {
             get;
             set {
-                setCurrentFields('nombreCompleto');
-                nombreCompleto = value;
+                setCurrentFields('fullName');
+                fullName = value;
             }
         }
 
-        public String dniNiePasaporte {
+        public String nationalID {
             get;
             set {
-                setCurrentFields('dniNiePasaporte');
-                dniNiePasaporte = value;
+                setCurrentFields('nationalID');
+                nationalID = value;
             }
         }
-        public String codigoPoliza {
+        public String policyNumber {
             get;
             set {
-                setCurrentFields('codigoPoliza');
-                codigoPoliza = value;
+                setCurrentFields('policyNumber');
+                policyNumber = value;
             }
         }
 
@@ -164,13 +164,13 @@ public with sharing class ClientIdentificationService
      */
     public class SearchResult
     {
-        public Boolean polizaValida;
+        public Boolean isValidPolicy;
         // jgarciamartinez - 18/08/2022 - campos nuevos añadidos a petición de cliente
-        public Boolean existeDni;
-        public Boolean existePoliza;
-        public Date fechaFinPoliza;
-        public Date fechaInicioPoliza;
-        public String versionPoliza;
+        public Boolean existsNationalID;
+        public Boolean existsPolicy;
+        public Date endDate;
+        public Date startDate;
+        public String policyVersion;
 
         public override String toString()
         {
