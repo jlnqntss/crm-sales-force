@@ -56,8 +56,8 @@ public with sharing class ClientInteracionServiceTest {
         System.assertEquals(true, resultado.existsPolicy, 'La póliza existe y está asociada al cliente');
         
         System.assertEquals(true, resultado.isValidPolicy, 'La póliza existe y es válida');
-        System.assertNotEquals(null, resultado.startDate, 'La póliza tiene una fecha de inicio');
-        System.assertNotEquals(null, resultado.endDate, 'La póliza tiene una fecha de fin');
+        System.assertNotEquals(null, resultado.policyStartDate, 'La póliza tiene una fecha de inicio');
+        System.assertNotEquals(null, resultado.policyEndDate, 'La póliza tiene una fecha de fin');
         System.assertNotEquals(null, resultado.policyVersion, 'La póliza tiene una versión');
     }
 

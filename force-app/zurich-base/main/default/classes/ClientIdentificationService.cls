@@ -58,8 +58,8 @@ public with sharing class ClientIdentificationService
         // Tan solo si los tres flags son true les vamos a pasar los valores
         if (resultado.existsNationalID && resultado.existsPolicy && resultado.isValidPolicy)
         {
-            resultado.endDate = polizaEncontrada[0].EndDate__c;
-            resultado.startDate = polizaEncontrada[0].MovementStartDate__c;
+            resultado.policyEndDate = polizaEncontrada[0].EndDate__c;
+            resultado.policyStartDate = polizaEncontrada[0].MovementStartDate__c;
             resultado.policyVersion = polizaEncontrada[0].policyVersion__c;
         } 
 
@@ -168,8 +168,8 @@ public with sharing class ClientIdentificationService
         // jgarciamartinez - 18/08/2022 - campos nuevos añadidos a petición de cliente
         public Boolean existsNationalID;
         public Boolean existsPolicy;
-        public Date endDate;
-        public Date startDate;
+        public Date policyEndDate;
+        public Date policyStartDate;
         public String policyVersion;
 
         public override String toString()
