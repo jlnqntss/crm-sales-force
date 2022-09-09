@@ -13,10 +13,10 @@ public with sharing class AssetsSelector extends RecordsSelector {
     /**
      * Busca assets a partir del número de la póliza
      **
-     * @author xsobera
-     * @date 21/01/2021
-     * @param   String          claimNumber   Números de siniestro a buscar
-     * @return  List<Asset>  Listado de siniestros sobre los que se ha realizado match
+     * @author arcortazar
+     * @date 09/09/2022
+     * @param   String       policyID   Identificador de la póliza a buscar
+     * @return  List<Asset>  Listado de assets asociados a la póliza que estamos buscando
      */
     public List<Asset> selectByPolicyID(String policyId)
     {
