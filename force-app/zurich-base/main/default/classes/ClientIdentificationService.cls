@@ -22,6 +22,7 @@ public with sharing class ClientIdentificationService
 
         AccountsSelector accountsSelector = new AccountsSelector();
         PoliciesSelector policiesSelector = new PoliciesSelector();
+        AssetsSelector assetsSelector = new AssetsSelector();
 
         SearchResult resultado = new SearchResult();
         resultado.isValidPolicy = false;
@@ -61,6 +62,12 @@ public with sharing class ClientIdentificationService
             resultado.policyEndDate = polizaEncontrada[0].EndDate__c;
             resultado.policyStartDate = polizaEncontrada[0].MovementStartDate__c;
             resultado.policyVersion = polizaEncontrada[0].policyVersion__c;
+            
+            List<Asset> obtainedAssets = assetsSelector.selectByPolicyID(polizaEncontrada[0].id);
+            if(!obtainedAssets.isEmpty())
+            {
+                resultado.policyInfoInsuredObject = obtainedAssets[0].INFOInsuredObjectCode__c;
+            }
         } 
 
         return resultado;
@@ -171,6 +178,7 @@ public with sharing class ClientIdentificationService
         public Date policyEndDate;
         public Date policyStartDate;
         public String policyVersion;
+        public String policyInfoInsuredObject;
 
         public override String toString()
         {
