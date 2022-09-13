@@ -637,10 +637,6 @@
         </filters>
         <object>Task</object>
         <outputAssignments>
-            <assignToReference>$Record.TIPENT__c</assignToReference>
-            <field>CallType</field>
-        </outputAssignments>
-        <outputAssignments>
             <assignToReference>$Record.NUTELCON__c</assignToReference>
             <field>DNISPhone__c</field>
         </outputAssignments>
