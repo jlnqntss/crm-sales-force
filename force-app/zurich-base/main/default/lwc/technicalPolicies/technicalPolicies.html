@@ -7,7 +7,6 @@
 -->
 <template>
   <div class="slds-float_right">
-    <lightning-button-icon icon-name="utility:filterList" onclick={handleFilter}></lightning-button-icon>
     <lightning-button label="Ver Actividades comerciales" class="slds-button" onclick={handleCommercial}></lightning-button>
     <lightning-button label="Buscar nuevo SIC" class="slds-button" onclick={handleSIC} variant="brand"></lightning-button>
   </div>
@@ -29,13 +28,12 @@
     </lightning-breadcrumb>
   </lightning-breadcrumbs>
   <br><br/>
-  <div class="slds-float_right">
+  <div class="slds-float_right" if:true={showCheckboxes}>
+    <lightning-button-icon icon-name="utility:filterList" onclick={handleFilter}></lightning-button-icon>
+    <lightning-button-icon icon-name="utility:table" onclick={openModal}></lightning-button-icon>
     <lightning-button label="<" class="slds-button" onclick={moveLeft}></lightning-button>
+      {currentCounter}/{size}
     <lightning-button label=">" class="slds-button" onclick={moveRight}></lightning-button>
-  </div>
-  <br><br/>
-  <div class="slds-float_right">
-    {currentCounter}/{size}
   </div>
   <div>
     <template if:true={filtersVisible}>
@@ -62,24 +60,75 @@
         <div class="slds-box">
           <div class="slds-grid">
             <div class="slds-col slds-size_1-of-2">
-              <lightning-output-field field-name="UsoExplosivos__c"></lightning-output-field>
-              <lightning-output-field field-name="Espumosos__c"></lightning-output-field>
-              <lightning-output-field field-name="ConAspiracionAutomatica__c"></lightning-output-field>
-              <lightning-output-field field-name="ConRecubrimiento__c"></lightning-output-field>
-              <lightning-output-field field-name="ConPlanchasCombustibles__c"></lightning-output-field>
-              <lightning-output-field field-name="ConFabricacionDeEnvases__c"></lightning-output-field>
-              <lightning-output-field field-name="ConDestilacion__c"></lightning-output-field>
+          <lightning-output-field for:each={firstColumnFields} for:item="field" key={field} field-name={field}></lightning-output-field>
             </div>
             <div class="slds-col slds-size_1-of-2">
-              <lightning-output-field field-name="ConExistenciaLiquidosInflamables__c"></lightning-output-field>
-              <lightning-output-field field-name="ConFoamizado__c"></lightning-output-field>
-              <lightning-output-field field-name="ConMateriasPlasticasEspumosas__c"></lightning-output-field>
-              <lightning-output-field field-name="ConNitratos__c"></lightning-output-field>
-              <lightning-output-field field-name="ConTapizados__c"></lightning-output-field>
-              <lightning-output-field field-name="ConSecaderoMadera__c"></lightning-output-field>
+          <lightning-output-field for:each={secondColumnFields} for:item="field" key={field} field-name={field}></lightning-output-field>
             </div>
           </div>
+          <lightning-accordion if:true={showAccordion} allow-multiple-sections-open>
+            <lightning-accordion-section name="Franquicias" label="Franquicias">
+              <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-2">
+                  <lightning-output-field for:each={firstColumnAccordionFields} for:item="field" key={field} field-name={field}></lightning-output-field>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                  <lightning-output-field for:each={secondColumnAccordionFields} for:item="field" key={field} field-name={field}></lightning-output-field>
+                </div>
+              </div>
+            </lightning-accordion-section>
+          </lightning-accordion>
+          <lightning-accordion if:true={showCheckboxes} allow-multiple-sections-open>
+            <lightning-accordion-section name="Características" label="Características">
+              <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-2">
+                  <lightning-output-field field-name="UsoExplosivos__c"></lightning-output-field>
+                  <lightning-output-field field-name="Espumosos__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConAspiracionAutomatica__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConRecubrimiento__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConPlanchasCombustibles__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConFabricacionDeEnvases__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConDestilacion__c"></lightning-output-field>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                  <lightning-output-field field-name="ConExistenciaLiquidosInflamables__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConFoamizado__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConMateriasPlasticasEspumosas__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConNitratos__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConTapizados__c"></lightning-output-field>
+                  <lightning-output-field field-name="ConSecaderoMadera__c"></lightning-output-field>
+                </div>
+              </div>
+            </lightning-accordion-section>
+          </lightning-accordion>
         </div>
     </lightning-record-view-form>
 </div>
+
+<template if:true={showModal}>
+  <section aria-modal="true" class="slds-modal slds-modal_large slds-fade-in-open">
+      <div class="slds-modal__container">
+          <header class="slds-modal__header">
+              <h2 class="slds-text-heading_small">Políticas técnicas</h2>
+              <lightning-icon class="slds-modal__close" icon-name="utility:close" size="small" onclick={closeModal}></lightning-icon>
+          </header>
+          <div class="slds-modal__content">
+              <div class="slds-p-around_small">
+                <lightning-datatable
+                  key-field="id"
+                  data={optionsList.data}
+                  columns={columns}
+                  hide-checkbox-column="true"
+                  wrap-text-max-lines = "3"
+                >
+              </lightning-datatable>
+              </div>
+          </div>
+          <footer class="slds-modal__footer">
+              <lightning-button variant="brand" label="Cerrar" onclick={closeModal} class="slds-p-around_x-small"></lightning-button>
+          </footer>
+      </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
 </template>

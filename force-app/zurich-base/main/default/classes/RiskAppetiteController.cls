@@ -108,21 +108,21 @@ public with sharing class RiskAppetiteController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static List<String> getFields(MaestroApetito__c record)
+    public static List<Field> getFields(String productCode)
     {
-        String fieldSet = 'ramo' + record.CodigoProducto__c;
+        String fieldSet = 'ramo' + productCode;
         Map<String, Schema.SObjectType> GlobalDescribeMap = Schema.getGlobalDescribe(); 
         Schema.SObjectType SObjectTypeObj = GlobalDescribeMap.get('MaestroApetito__c');
         Schema.DescribeSObjectResult DescribeSObjectResultObj = SObjectTypeObj.getDescribe();
         Schema.FieldSet fieldSetObj = DescribeSObjectResultObj.FieldSets.getMap().get(fieldSet);
         List<Schema.FieldSetMember> fieldList = fieldSetObj.getFields(); 
 
-        List<String> fieldsToShow = new List<String>();
+        List<Field> fieldsToShow = new List<Field>();
 
         // To return the field api name
         for(FieldSetMember field : fieldList)
         {
-            fieldsToShow.add(field.getFieldPath());
+            fieldsToShow.add(new Field(field.getLabel(), field.getFieldPath(), field.getType()));
         }
 
         return fieldsToShow;
@@ -157,6 +157,41 @@ public with sharing class RiskAppetiteController {
             this.riskAppetite = riskAppetite;
             this.dyo = dyo;
             this.ciber = ciber;
+        }
+    }
+
+    class Field {
+        @AuraEnabled
+        public String label {get;set;}
+        @AuraEnabled       
+        public String fieldName {get;set;}
+        @AuraEnabled
+        public String type {get;set;}
+        @AuraEnabled
+        public Integer initialWidth {get;set;}
+
+        public Field(String label, String fieldName, Schema.DisplayType type)
+        {
+            this.label     = label;
+            this.fieldName = fieldName;
+            calculateType(type);
+        }
+
+        private void calculateType(Schema.DisplayType type)
+        {
+            this.type = String.valueOf(type).toLowerCase();
+            if(this.type == 'boolean')
+            {
+                this.initialWidth = 15;
+            }
+            else if(this.type == 'currency')
+            {
+                this.initialWidth = 120;
+            }
+            else 
+            {
+                this.initialWidth = 90;
+            }
         }
     }
 }

@@ -46,6 +46,7 @@ export default class TechnicalPolicies extends LightningElement
     @api filtersVisible;
     idsInPolicies = [];
 
+    showCheckboxes;
     @api showExplosives;
     @api showEspumosos;
     @api showAspiration;
@@ -61,6 +62,19 @@ export default class TechnicalPolicies extends LightningElement
     @api showWood;
 
     @api buttonsClicked = [];
+
+    fieldsToShow = [];
+    firstColumnFields = [];
+    secondColumnFields = [];
+
+    showAccordion;
+    fieldsInAccordion = [];
+    firstColumnAccordionFields = [];
+    secondColumnAccordionFields = [];
+
+    showModal = false;
+    columns = [];
+
 
     @wire (getTechPoliciesForActivities, {SICCode : '$sicCode', productCode: '$productCode', activityCode: '$activityCode'}) optionsList;
 
@@ -152,6 +166,91 @@ export default class TechnicalPolicies extends LightningElement
         }
     }
 
+    openModal() {
+        // Setting boolean variable to true, this will show the Modal
+        this.showModal = true;
+      }
+    closeModal() {
+        // Setting boolean variable to false, this will hide the Modal
+        this.showModal = false;
+      }
+
+    connectedCallback(){
+        getFields({ productCode: this.productCode })
+        .then((result) => {
+            result.forEach(field =>{
+                if(field.fieldName.includes("Franquicia") && !this.fieldsInAccordion.includes(field.fieldName)){
+                    this.fieldsInAccordion.push(field.fieldName);
+                }
+                else if(!this.fieldsToShow.includes(field.fieldName) && !fieldsToFilter.includes(field.fieldName)){
+                    this.fieldsToShow.push(field.fieldName);
+                }
+            })
+            this.gridFields();
+            this.gridFieldsFranquicia();
+            this.checkProductCode();
+            this.defineColumns(result);
+        });
+    }
+
+    checkProductCode(){
+        console.log(this.productCode);
+        if(this.productCode == 516){
+            this.showCheckboxes = true;
+        }else{
+            this.showCheckboxes = false;
+        }
+    }
+
+    gridFields(){
+        var size = this.countObjects(this.fieldsToShow);
+
+        var half = size/2;
+
+        for(var i = 0 ; i < half ; i++){
+            this.firstColumnFields.push(this.fieldsToShow[i]);
+        }
+        for(var j = half ; j < size ; j++){
+            this.secondColumnFields.push(this.fieldsToShow[j]);
+        }
+    }
+
+    gridFieldsFranquicia(){
+        var size = this.countObjects(this.fieldsInAccordion);
+
+        if(size == 0){
+            this.showAccordion=false;
+        }else{
+            this.showAccordion=true;
+            var half = size/2;
+    
+            for(var i = 0 ; i < size ; i++){
+                if(i<half){
+                    this.firstColumnAccordionFields.push(this.fieldsInAccordion[i]);
+                }else{
+                    this.secondColumnAccordionFields.push(this.fieldsInAccordion[i]);
+                }
+            }
+        }
+    }
+
+    defineColumns(result){
+        result.forEach(field => {
+            this.columns.push( {label:field.label, fieldName:field.fieldName, type:field.type, initialWidth:field.initialWidth, wrapText:true});
+        })
+    }
+
+    countObjects(object){
+        var size = 0;
+
+        object.forEach( field=>{
+            console.log(field);
+            size++;
+        })
+
+        return size;
+    }
+    
     loadFilters(){
         // TODO : La idea es pasar todo esto a un array de variables haciendo destructuring, de momento no he conseguido que funcione
         this.showExplosives = this.checkShowField(fieldsToFilter[0]);
@@ -262,20 +361,6 @@ export default class TechnicalPolicies extends LightningElement
         this.currentRecord = this.policies[this.currentCounter-1];
         if(this.currentRecord){
             this.size = this.policies.length;
-            // TODO aquí se recoge el fieldSet, debido a que hay que hacerlo con apex, pasamos el registro y toda la lógica la dejamos en el controlador
-            // el controlador va a devolver un array de strings que van a ser los campos, y aquí lo dividimos en dos (si lo quieren a la derecha igual mejor dejar en 1) 
-            // para que luego en el grid quede bien faltaría estudiar cómo hacer que salga la traducción
-
-            // Imperative apex RiskAppetiteController.getFields(this.currentRecord)
-            getFields({ record: this.currentRecord })
-            .then((result) => {
-                fieldsRetrieved = result;
-            });
-
-            // Para pintar estos campos solo hay que hacer un for each en el html recorriendo la lista y se irán mostrando
-
-            // TODO crear una lista a parte que contenga los campos de franquicia para que luego vayan en el acordeón solos, necesitarán una variable "showFranquicias"
-            // porque hay en ramos en los que estos campos no deben aparecer.
             return this.currentRecord.Id;
         }
     }
