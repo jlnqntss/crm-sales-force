@@ -30,23 +30,23 @@
               </div>
             </header>
             <div class="slds-grid slds-p-top_small">
-              <div class="slds-col">
+              <div class="slds-col slds-size_1-of-6">
                 <span>Apetito de riesgo</span>
               </div>
-              <div class="slds-col">
-                {item.riskAppetite}
+              <div class="slds-col slds-size_1-of-6">
+                <lightning-badge label={item.riskAppetite} class={item.riskAppetiteBadge}></lightning-badge>
               </div>
-              <div class="slds-col">
+              <div class="slds-col slds-size_1-of-6">
                 <span>Apetito DyO</span>
               </div>
-              <div class="slds-col">
-                {item.dyo}
+              <div class="slds-col slds-size_1-of-6">
+                <lightning-badge label={item.dyo} class={item.dyoBadge}></lightning-badge>
               </div>
-              <div class="slds-col">
+              <div class="slds-col slds-size_1-of-6">
                 <span>Apetito CIBER</span>
               </div>
-              <div class="slds-col">
-                {item.ciber}
+              <div class="slds-col slds-size_1-of-6">
+                <lightning-badge label={item.ciber} class={item.ciberBadge}></lightning-badge>
               </div>
             </div>
           </div>

@@ -1,5 +1,11 @@
 public with sharing class RiskAppetiteController {
 
+    private static final String PREFERENTE_BADGE_CLASS = 'slds-theme_success';
+    private static final String NO_PREFERENTE_BADGE_CLASS = 'slds-theme_warning';
+    private static final String EXCLUIDO_BADGE_CLASS = 'slds-theme_inverse';
+    private static final String FUERA_DE_APETITO_BADGE_CLASS = 'slds-theme_error';
+    private static final String VARIOS_BADGE_CLASS = 'slds-theme_lightest';
+
     @AuraEnabled(cacheable=true)
     public static List<String> getAvailableSICs(){
 
@@ -11,7 +17,6 @@ public with sharing class RiskAppetiteController {
             List<String> labels = new List<String>();
             for(MaestroApetito__c currentRecord : noDuplicatesList)
             {
-                // TODO Aquí se pone el nombre de los campos a concatenar, no es SicDesc ni Subfamilia
                 labels.add(generateLabel(currentRecord, 'SIC__c', 'Subfamilia__c'));
             }
             return labels;
@@ -23,18 +28,20 @@ public with sharing class RiskAppetiteController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static List<String> getProductsForSIC(String SICCode){
+    public static List<Product> getProductsForSIC(String SICCode){
         try {
             List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findProductsBySicCode(SICcode);
             List<MaestroApetito__c> noDuplicatesList = removeDuplicates(records, 'CodigoProducto__c');
 
-            List<String> labels = new List<String>();
+            List<Product> products = new List<Product>();
             for(MaestroApetito__c currentRecord : noDuplicatesList)
             {
-                // TODO Aquí se pone el nombre de los campos a concatenar, no es SicDesc ni Subfamilia
-                labels.add(generateLabel(currentRecord, 'CodigoProducto__c', 'NombreProducto__c'));
+                Product product = new Product(generateLabel(currentRecord, 'CodigoProducto__c', 'NombreProducto__c'), currentRecord);
+                product.buttonLabel = checkBadgeLabel(records, currentRecord.CodigoProducto__c, 'CodigoProducto__c', 'ApetitoRiesgo__c');
+                product.buttonClass = generateButtonClass(product.buttonLabel);
+                products.add(product);
             }
-            return labels;
+            return products;
         } 
         catch (Exception e) 
         {
@@ -53,7 +60,14 @@ public with sharing class RiskAppetiteController {
             for(MaestroApetito__c currentRecord : noDuplicatesList)
             {
                 currentLabel = generateLabel(currentRecord, 'CodigoActividad__c', 'ObservacionesActividad__c');
-                policies.add(new CommercialActivity(currentLabel, currentRecord.ApetitoRiesgo__c, currentRecord.DyO__c, currentRecord.Ciber__c));
+                CommercialActivity activity = new CommercialActivity(currentLabel);
+                activity.riskAppetite = checkBadgeLabel(records, currentRecord.CodigoActividad__c, 'CodigoActividad__c', 'ApetitoRiesgo__c');
+                activity.riskAppetiteBadge = generateButtonClass(activity.riskAppetite);
+                activity.dyo = checkBadgeLabel(records, currentRecord.CodigoActividad__c, 'CodigoActividad__c', 'DyO__c');
+                activity.dyoBadge = generateButtonClass(activity.dyo);
+                activity.ciber = checkBadgeLabel(records, currentRecord.CodigoActividad__c, 'CodigoActividad__c', 'Ciber__c');
+                activity.ciberBadge = generateButtonClass(activity.ciber);
+                policies.add(activity);
             }
             return policies;
         } 
@@ -66,11 +80,7 @@ public with sharing class RiskAppetiteController {
     @AuraEnabled(cacheable=true)
     public static List<MaestroApetito__c> getTechPoliciesForActivities(String SICCode, String productCode, String activityCode){
         try {
-            System.debug(SICCode);
-            System.debug(productCode);
-            System.debug(activityCode);
             List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findTechPolicyByCommercialActivity(SICcode, productCode, activityCode);
-            System.debug(records);
             return records;
         } 
         catch (Exception e) 
@@ -107,6 +117,51 @@ public with sharing class RiskAppetiteController {
         return label;
     }
 
+    public static String checkBadgeLabel (List<MaestroApetito__c> records, String fieldCode, String fieldName, String fieldToCheck)
+    {
+        String badgeLabel = '';
+        for(MaestroApetito__c currentRecord : records)
+        {
+            if((String) currentRecord.get(fieldName) == fieldCode)
+            {
+                if(badgeLabel == '')
+                {
+                    badgeLabel = (String) currentRecord.get(fieldToCheck);
+                }
+                else
+                {
+                    if( (String) currentRecord.get(fieldToCheck) != badgeLabel)
+                    {
+                        return 'Varios';
+                    }
+                }
+            }
+        }
+        return badgeLabel;
+    }
+
+    public static String generateButtonClass(String preference)
+        {
+            if(preference == 'Preferente')
+            {
+                return PREFERENTE_BADGE_CLASS;
+            }
+            else if(preference == 'No Preferente')
+            {
+                return NO_PREFERENTE_BADGE_CLASS;
+            }
+            else if(preference == 'Excluido')
+            {
+                return EXCLUIDO_BADGE_CLASS;
+            }
+            else if(preference == 'Fuera de apetito')
+            {
+                return FUERA_DE_APETITO_BADGE_CLASS;
+            }
+
+            return '';
+        }
+
     @AuraEnabled(cacheable=true)
     public static List<Field> getFields(String productCode)
     {
@@ -128,35 +183,38 @@ public with sharing class RiskAppetiteController {
         return fieldsToShow;
     }
 
+
+    
+
     class Product
     {
         @auraEnabled public String label;
         @auraEnabled public String enlace1;
         @auraEnabled public String enlace2;
         @auraEnabled public String enlace3;
+        @AuraEnabled public String buttonClass;
+        @AuraEnabled public String buttonLabel;
 
-        public Product (String label, String enlace1, String enlace2, String enlace3)
+        public Product (String label, MaestroApetito__c maestro)
         {
             this.label = label;
-            this.enlace1 = enlace1;
-            this.enlace2 = enlace2;
-            this.enlace3 = enlace3;
         }
     }
 
     class CommercialActivity
     {
+        // riskAppetite, dyo y ciber van a ser el label del botón, y a cada uno de ellos se le calcula la clase a partir de eso, solo hace falta crear 3 variables
         @auraEnabled public String label;
         @auraEnabled public String riskAppetite;
+        @auraEnabled public String riskAppetiteBadge;
         @auraEnabled public String dyo;
+        @auraEnabled public String dyoBadge;
         @auraEnabled public String ciber;
+        @auraEnabled public String ciberBadge;
 
-        public CommercialActivity (String label, String riskAppetite, String dyo, String ciber)
+        public CommercialActivity (String label)
         {
             this.label = label;
-            this.riskAppetite = riskAppetite;
-            this.dyo = dyo;
-            this.ciber = ciber;
         }
     }
 

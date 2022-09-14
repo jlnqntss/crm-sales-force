@@ -194,7 +194,6 @@ export default class TechnicalPolicies extends LightningElement
     }
 
     checkProductCode(){
-        console.log(this.productCode);
         if(this.productCode == 516){
             this.showCheckboxes = true;
         }else{
@@ -244,7 +243,6 @@ export default class TechnicalPolicies extends LightningElement
         var size = 0;
 
         object.forEach( field=>{
-            console.log(field);
             size++;
         })
 
@@ -286,7 +284,6 @@ export default class TechnicalPolicies extends LightningElement
         var position = event.target.id.split("-")[1];
         this.currentCounter = 1;
         
-        console.log(event.target.checked);
         if(event.target.checked){
             this.buttonsClicked.push(position);
             this.checkField(fieldsToFilter[position]);
@@ -318,7 +315,6 @@ export default class TechnicalPolicies extends LightningElement
 
             auxiliarArray.forEach(ele =>{
                 if(ele[field]){
-                    console.log(ele);
                     if(!this.idsInPolicies.includes(ele.Id))
                     {
                         this.policies.push(ele);
@@ -356,8 +352,6 @@ export default class TechnicalPolicies extends LightningElement
 
     loadFields()
     {
-        var fieldsRetrieved =  [];
-        console.log(this.policies);
         this.currentRecord = this.policies[this.currentCounter-1];
         if(this.currentRecord){
             this.size = this.policies.length;

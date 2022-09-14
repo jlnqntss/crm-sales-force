@@ -53,7 +53,7 @@
         <lightning-button-icon icon-name="utility:filterList" onclick={handleFilter}></lightning-button-icon>
         <lightning-button-icon icon-name="utility:table" onclick={openModal}></lightning-button-icon>
         <lightning-button label="<" class="slds-button" onclick={moveLeft}></lightning-button>
-          {currentCounter}/{size}
+        <span class="slds-text-heading_small">{currentCounter}/{size}</span>
         <lightning-button label=">" class="slds-button" onclick={moveRight}></lightning-button>
       </div>
     </div>

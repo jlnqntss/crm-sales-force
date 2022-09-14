@@ -20,10 +20,10 @@ export default class CommercialActivityChoser extends LightningElement {
         var options = [];
         if(this.optionsList.data)
         {
-            console.log(this.optionsList.data);
             this.optionsList.data.forEach(ele =>{
                 options.push({label:ele.label, value:ele.label, id:ele.label.replaceAll(" ", ""), 
-                riskAppetite:ele.riskAppetite, dyo:ele.dyo, ciber:ele.ciber});
+                riskAppetite:ele.riskAppetite, dyo:ele.dyo, ciber:ele.ciber, riskAppetiteBadge : ele.riskAppetiteBadge,
+                dyoBadge : ele.dyoBadge, ciberBadge : ele.ciberBadge});
             }); 
             return options;
         }
@@ -67,10 +67,6 @@ export default class CommercialActivityChoser extends LightningElement {
     }
 
     handleClick(evt) {
-        // this.value = evt.target.id;
-        // this.value = this.value.replace("-", " - ");
-        // this.chosenValue = this.parseSelection(this.value);
-
         var position = evt.target.id.indexOf("-");
         this.chosenValue = evt.target.id.substring(0, position);
 

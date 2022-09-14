@@ -19,8 +19,8 @@ export default class BunchChoser extends LightningElement
         if(this.optionsList.data)
         {
             this.optionsList.data.forEach(ele =>{
-
-                options.push({label:ele , value:ele, id:ele.split(" - ")[0]});
+                options.push({label:ele.label , value:ele.label, id:ele.label.split(" - ")[0],
+                badgeLabel:ele.buttonLabel, badgeClass:ele.buttonClass});
             }); 
             return options;
         }

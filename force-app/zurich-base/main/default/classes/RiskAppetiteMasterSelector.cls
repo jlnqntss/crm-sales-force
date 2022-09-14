@@ -7,16 +7,7 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
 
     public List<MaestroApetito__c> findAllMasters()
     {
-        // Seleccionamos los campos necesarios para mostrar en el componente 
-        this.baseQuery.selectFields
-        (
-            new List<Schema.SObjectField>
-            {
-                MaestroApetito__c.Id,
-                MaestroApetito__c.SIC__c,
-                MaestroApetito__c.Subfamilia__c
-            }
-        );
+        this.baseQuery.selectReadableFields();
 
         this.baseQuery.orderBy('SIC__c');
         return (List<MaestroApetito__c>) this.baseQuery.run();
@@ -26,18 +17,7 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
     {
         if(String.isNotBlank(SICcode))
         {
-            // Seleccionamos los campos necesarios para mostrar en el componente 
-            this.baseQuery.selectFields
-            (
-                new List<Schema.SObjectField>
-                {
-                    MaestroApetito__c.Id,
-                    MaestroApetito__c.SIC__c,
-                    MaestroApetito__c.Subfamilia__c,
-                    MaestroApetito__c.CodigoProducto__c,
-                    MaestroApetito__c.NombreProducto__c
-                }
-            );
+            this.baseQuery.selectReadableFields();
             // Solo filtramos por código, el nombre iría en Subfamilia__c pero solo lo queremos para pintarlo en el breadcrumb
             this.baseQuery.addConditionEq(MaestroApetito__c.SIC__c, SICcode);
 
@@ -53,23 +33,7 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
     {
         if(String.isNotBlank(ProductCode) && String.isNotBlank(sicCode))
         {
-            // Seleccionamos los campos necesarios para mostrar en el componente 
-            this.baseQuery.selectFields
-            (
-                new List<Schema.SObjectField>
-                {
-                    MaestroApetito__c.Id,
-                    MaestroApetito__c.SIC__c,
-                    MaestroApetito__c.Subfamilia__c,
-                    MaestroApetito__c.CodigoProducto__c,
-                    MaestroApetito__c.NombreProducto__c,
-                    MaestroApetito__c.CodigoActividad__c,
-                    MaestroApetito__c.ObservacionesActividad__c,
-                    MaestroApetito__c.ApetitoRiesgo__c,
-                    MaestroApetito__c.DyO__c,
-                    MaestroApetito__c.Ciber__c
-                }
-            );
+            this.baseQuery.selectReadableFields();
 
             // Solo filtramos por código, el nombre iría en NombreProducto__c pero solo lo queremos para pintarlo en el breadcrumb
             this.baseQuery.addConditionEq(MaestroApetito__c.CodigoProducto__c, ProductCode)
