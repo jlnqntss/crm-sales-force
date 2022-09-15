@@ -13,13 +13,13 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
         return (List<MaestroApetito__c>) this.baseQuery.run();
     }
 
-    public List<MaestroApetito__c> findProductsBySicCode(String SICcode)
+    public List<MaestroApetito__c> findProductsBySicCode(String sicCode)
     {
-        if(String.isNotBlank(SICcode))
+        if(String.isNotBlank(sicCode))
         {
             this.baseQuery.selectReadableFields();
             // Solo filtramos por código, el nombre iría en Subfamilia__c pero solo lo queremos para pintarlo en el breadcrumb
-            this.baseQuery.addConditionEq(MaestroApetito__c.SIC__c, SICcode);
+            this.baseQuery.addConditionEq(MaestroApetito__c.SIC__c, sicCode);
 
             this.baseQuery.orderBy('NombreProducto__c', 'DESC');
 
@@ -49,7 +49,7 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
         }
     }
 
-    public List<MaestroApetito__c> findTechPolicyByCommercialActivity(String sicCode, String ProductCode, String commercialActivity)
+    public List<MaestroApetito__c> findTechPolicyByCommercialActivity(String sicCode, String productCode, String commercialActivity)
     {
         if(String.isNotBlank(commercialActivity))
         {
@@ -57,7 +57,7 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
             this.baseQuery.selectReadableFields();
 
             // Solo filtramos por código, el nombre iría en NombreActividad__c pero solo lo queremos para pintarlo en el breadcrumb
-            this.baseQuery.addConditionEq(MaestroApetito__c.CodigoProducto__c, ProductCode)
+            this.baseQuery.addConditionEq(MaestroApetito__c.CodigoProducto__c, productCode)
             .addConditionEq(MaestroApetito__c.SIC__c, sicCode)
             .addConditionEq(MaestroApetito__c.CodigoActividad__c, commercialActivity);
 

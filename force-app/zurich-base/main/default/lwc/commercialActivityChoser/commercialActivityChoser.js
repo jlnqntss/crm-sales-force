@@ -13,11 +13,11 @@ export default class CommercialActivityChoser extends LightningElement {
     @api sicCode;
     @api productCode;
 
-    @wire (getCommercialActivitiesForProducts, {SICCode : '$sicCode', productCode: '$productCode'}) optionsList;
+    @wire (getCommercialActivitiesForProducts, {sicCode : '$sicCode', productCode: '$productCode'}) optionsList;
 
     get options() {
 
-        var options = [];
+        let options = [];
         if(this.optionsList.data)
         {
             this.optionsList.data.forEach(ele =>{
@@ -37,6 +37,7 @@ export default class CommercialActivityChoser extends LightningElement {
 
     moveForward()
     {
+        this.handleChange("nextPage", this.nextPage);
         const navigateNextEvent = new FlowNavigationNextEvent();
         this.dispatchEvent(navigateNextEvent);
     }
@@ -44,21 +45,13 @@ export default class CommercialActivityChoser extends LightningElement {
     handleSIC()
     {
         this.nextPage = 1;
-        this.handleChange("nextPage", this.nextPage);
         this.moveForward();
     }
 
     handleBunch()
     {
         this.nextPage = 2;
-        this.handleChange("nextPage", this.nextPage);
         this.moveForward();
-    }
-
-    handleNext()
-    {
-        const navigateNextEvent = new FlowNavigationNextEvent();
-        this.dispatchEvent(navigateNextEvent);
     }
 
     parseSelection(labelSelected)
@@ -67,7 +60,7 @@ export default class CommercialActivityChoser extends LightningElement {
     }
 
     handleClick(evt) {
-        var position = evt.target.id.indexOf("-");
+        let position = evt.target.id.indexOf("-");
         this.chosenValue = evt.target.id.substring(0, position);
 
         this.options.forEach( option =>{

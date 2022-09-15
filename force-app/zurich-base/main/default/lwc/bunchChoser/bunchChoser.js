@@ -11,11 +11,11 @@ export default class BunchChoser extends LightningElement
     @api chosenValue;
     @api label;
 
-    @wire (getProductsForSIC, {SICCode : '$sicCode'}) optionsList;
+    @wire (getProductsForSIC, {sicCode : '$sicCode'}) optionsList;
 
     get options() {
 
-        var options = [];
+        let options = [];
         if(this.optionsList.data)
         {
             this.optionsList.data.forEach(ele =>{
@@ -61,7 +61,7 @@ export default class BunchChoser extends LightningElement
 
     handleClick(evt) {
         
-        var position = evt.target.id.indexOf("-");
+        const position = evt.target.id.indexOf("-");
         this.chosenValue = evt.target.id.substring(0, position);
 
         this.options.forEach( option =>{
@@ -74,7 +74,7 @@ export default class BunchChoser extends LightningElement
     }
 
     goToDoc(event){
-        var URL = event.target.value;
+        const URL = event.target.value;
         window.open(URL, '_blank').focus();
     }
 }

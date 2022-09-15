@@ -76,7 +76,7 @@ export default class TechnicalPolicies extends LightningElement
     columns = [];
 
 
-    @wire (getTechPoliciesForActivities, {SICCode : '$sicCode', productCode: '$productCode', activityCode: '$activityCode'}) optionsList;
+    @wire (getTechPoliciesForActivities, {sicCode : '$sicCode', productCode: '$productCode', activityCode: '$activityCode'}) optionsList;
 
 
     get size()
@@ -93,7 +93,7 @@ export default class TechnicalPolicies extends LightningElement
 
     get currentId()
     {
-        var currentId;
+        let currentId;
         if(this.optionsList.data)
         {  
             if(!this.policies){
@@ -210,9 +210,9 @@ export default class TechnicalPolicies extends LightningElement
     }
 
     gridFields(){
-        var size = this.countObjects(this.fieldsToShow);
+        const size = this.countObjects(this.fieldsToShow);
 
-        var half = size/2;
+        const half = size/2;
 
         for(var i = 0 ; i < half ; i++){
             this.firstColumnFields.push(this.fieldsToShow[i]);
@@ -223,13 +223,13 @@ export default class TechnicalPolicies extends LightningElement
     }
 
     gridFieldsFranquicia(){
-        var size = this.countObjects(this.fieldsInAccordion);
+        const size = this.countObjects(this.fieldsInAccordion);
 
         if(size == 0){
             this.showAccordion=false;
         }else{
             this.showAccordion=true;
-            var half = size/2;
+            const half = size/2;
     
             for(var i = 0 ; i < size ; i++){
                 if(i<half){
@@ -248,7 +248,7 @@ export default class TechnicalPolicies extends LightningElement
     }
 
     countObjects(object){
-        var size = 0;
+        let size = 0;
 
         object.forEach( field=>{
             size++;
@@ -275,7 +275,7 @@ export default class TechnicalPolicies extends LightningElement
     }
 
     checkShowField(field){
-        var show = false;
+        let show = false;
         if(this.policies)
         {
             this.policies.some(ele =>{
@@ -289,7 +289,7 @@ export default class TechnicalPolicies extends LightningElement
 
     filterPolicies(event)
     {
-        var position = event.target.id.split("-")[1];
+        const position = event.target.id.split("-")[1];
         this.currentCounter = 1;
         
         if(event.target.checked){
@@ -304,7 +304,7 @@ export default class TechnicalPolicies extends LightningElement
     }
 
     removePosition(positionClicked){
-        var auxPositions = this.buttonsClicked;
+        const auxPositions = this.buttonsClicked;
         this.buttonsClicked = [];
         auxPositions.forEach(pos=>{
             if(pos != positionClicked)
@@ -317,7 +317,7 @@ export default class TechnicalPolicies extends LightningElement
     checkField(field){
         if(this.policies)
         {
-            var auxiliarArray = this.policies;
+            const auxiliarArray = this.policies;
             this.policies = [];
             this.idsInPolicies = [];
 
@@ -349,7 +349,7 @@ export default class TechnicalPolicies extends LightningElement
     }
 
     checkPreviousButtons(element){
-        var correct = true;
+        let correct = true;
         this.buttonsClicked.forEach(position =>{
             if(!element[fieldsToFilter[position]]){
                 correct = false;

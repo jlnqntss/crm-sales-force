@@ -28,9 +28,9 @@ public with sharing class RiskAppetiteController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static List<Product> getProductsForSIC(String SICCode){
+    public static List<Product> getProductsForSIC(String sicCode){
         try {
-            List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findProductsBySicCode(SICcode);
+            List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findProductsBySicCode(sicCode);
             List<MaestroApetito__c> noDuplicatesList = removeDuplicates(records, 'CodigoProducto__c');
 
             List<Product> products = new List<Product>();
@@ -50,9 +50,9 @@ public with sharing class RiskAppetiteController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static List<CommercialActivity> getCommercialActivitiesForProducts(String SICCode, String productCode){
+    public static List<CommercialActivity> getCommercialActivitiesForProducts(String sicCode, String productCode){
         try {
-            List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findCommercialActivitiesByProductCode(SICcode, productCode);
+            List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findCommercialActivitiesByProductCode(sicCode, productCode);
             List<MaestroApetito__c> noDuplicatesList = removeDuplicates(records, 'CodigoActividad__c');
             List<CommercialActivity> policies = new List<CommercialActivity>();
 
@@ -78,9 +78,9 @@ public with sharing class RiskAppetiteController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static List<MaestroApetito__c> getTechPoliciesForActivities(String SICCode, String productCode, String activityCode){
+    public static List<MaestroApetito__c> getTechPoliciesForActivities(String sicCode, String productCode, String activityCode){
         try {
-            List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findTechPolicyByCommercialActivity(SICcode, productCode, activityCode);
+            List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findTechPolicyByCommercialActivity(sicCode, productCode, activityCode);
             return records;
         } 
         catch (Exception e) 
@@ -95,13 +95,10 @@ public with sharing class RiskAppetiteController {
 
         for(MaestroApetito__c maestro : records)
         {
-            if(values != null)
+            if(values != null && !values.contains((String)maestro.get(fieldToCheck)))
             {
-                if(!values.contains((String)maestro.get(fieldToCheck)))
-                {
-                    values.add((String)maestro.get(fieldToCheck));
-                    noDuplicatesList.add(maestro);
-                }
+                values.add((String)maestro.get(fieldToCheck));
+                noDuplicatesList.add(maestro);
             }
         }
         return noDuplicatesList;
@@ -166,10 +163,10 @@ public with sharing class RiskAppetiteController {
     public static List<Field> getFields(String productCode)
     {
         String fieldSet = 'ramo' + productCode;
-        Map<String, Schema.SObjectType> GlobalDescribeMap = Schema.getGlobalDescribe(); 
-        Schema.SObjectType SObjectTypeObj = GlobalDescribeMap.get('MaestroApetito__c');
-        Schema.DescribeSObjectResult DescribeSObjectResultObj = SObjectTypeObj.getDescribe();
-        Schema.FieldSet fieldSetObj = DescribeSObjectResultObj.FieldSets.getMap().get(fieldSet);
+        Map<String, Schema.SObjectType> globalDescribeMap = Schema.getGlobalDescribe(); 
+        Schema.SObjectType sObjectTypeObj = globalDescribeMap.get('MaestroApetito__c');
+        Schema.DescribeSObjectResult describeSObjectResultObj = sObjectTypeObj.getDescribe();
+        Schema.FieldSet fieldSetObj = describeSObjectResultObj.FieldSets.getMap().get(fieldSet);
         List<Schema.FieldSetMember> fieldList = fieldSetObj.getFields(); 
 
         List<Field> fieldsToShow = new List<Field>();

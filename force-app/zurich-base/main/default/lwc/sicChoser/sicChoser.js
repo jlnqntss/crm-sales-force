@@ -17,7 +17,7 @@ export default class SicChoser extends LightningElement
 
     get options() {
 
-        var options = [];
+        let options = [];
         if(this.optionsList.data)
         {
             this.optionsList.data.forEach(ele =>{
