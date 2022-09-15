@@ -1,11 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
+    <assignments>
+        <name>CaseSICAssignment</name>
+        <label>Assign Case SIC</label>
+        <locationX>622</locationX>
+        <locationY>638</locationY>
+        <assignmentItems>
+            <assignToReference>SicCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetClientCaseAction.Sic</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>chosenSIC</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>{!GetClientCaseAction.Sic} - {!GetClientCaseAction.SicDesc}</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>CaseHasProductCodeDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>ProductAssignment</name>
+        <label>Assign Product</label>
+        <locationX>490</locationX>
+        <locationY>878</locationY>
+        <assignmentItems>
+            <assignToReference>ProductCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetCaseAction.HegeoProductGroupCode__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ChosenProduct</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetCaseAction.HegeoProductGroupCode__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CommercialActivityScreen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>SICAssignment</name>
+        <label>Assign SIC</label>
+        <locationX>50</locationX>
+        <locationY>518</locationY>
+        <assignmentItems>
+            <assignToReference>SicCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetClientAction.Sic</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>chosenSIC</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>{!GetClientAction.Sic} - {!GetClientAction.SicDesc} </stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>RamoScreen</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>CaseHasProductCodeDecision</name>
+        <label>Case Has Product Code</label>
+        <locationX>622</locationX>
+        <locationY>758</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>RamoScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>YesProduct</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetCaseAction.Ramo__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ProductAssignment</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CaseHasSICCode</name>
+        <label>Case Has SIC Code</label>
+        <locationX>820</locationX>
+        <locationY>518</locationY>
+        <defaultConnector>
+            <targetReference>SICScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>caseYes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetClientCaseAction.Sic</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CaseSICAssignment</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>GoBackDecision</name>
         <label>Go Back?</label>
-        <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationX>501</locationX>
+        <locationY>1586</locationY>
         <defaultConnector>
             <targetReference>CommercialActivityScreen</targetReference>
         </defaultConnector>
@@ -28,10 +150,60 @@
         </rules>
     </decisions>
     <decisions>
+        <name>HasSICCodeDecision</name>
+        <label>Has SIC Code</label>
+        <locationX>182</locationX>
+        <locationY>398</locationY>
+        <defaultConnector>
+            <targetReference>SICScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetClientAction.Sic</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SICAssignment</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>WhichDetailPageDecision</name>
+        <label>Which Detail Page</label>
+        <locationX>501</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>GetCaseAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Case</defaultConnectorLabel>
+        <rules>
+            <name>Client</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Location</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Client</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetClientAction</targetReference>
+            </connector>
+            <label>Client</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>WhichPageNextDecision</name>
         <label>Which Page Next</label>
-        <locationX>539</locationX>
-        <locationY>638</locationY>
+        <locationX>864</locationX>
+        <locationY>1826</locationY>
         <defaultConnector>
             <targetReference>TechnicalPoliciesScreen</targetReference>
         </defaultConnector>
@@ -72,8 +244,8 @@
     <decisions>
         <name>WhichPageNextDecision_0</name>
         <label>Which Page Next</label>
-        <locationX>1001</locationX>
-        <locationY>878</locationY>
+        <locationX>1326</locationX>
+        <locationY>2066</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>SIC_0</name>
@@ -145,12 +317,75 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordLookups>
+        <name>GetCaseAction</name>
+        <label>Get case</label>
+        <locationX>820</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetClientCaseAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetClientAction</name>
+        <label>Get client</label>
+        <locationX>182</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>HasSICCodeDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetClientCaseAction</name>
+        <label>Get Client Case</label>
+        <locationX>820</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CaseHasSICCode</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetCaseAction.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>CommercialActivityScreen</name>
         <label>Commercial Activity</label>
-        <locationX>539</locationX>
-        <locationY>518</locationY>
+        <locationX>864</locationX>
+        <locationY>1706</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -211,8 +446,8 @@
     <screens>
         <name>RamoScreen</name>
         <label>Ramo</label>
-        <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationX>501</locationX>
+        <locationY>1466</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -267,8 +502,8 @@
     <screens>
         <name>SICScreen</name>
         <label>SIC</label>
-        <locationX>176</locationX>
-        <locationY>158</locationY>
+        <locationX>501</locationX>
+        <locationY>1346</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -311,8 +546,8 @@
     <screens>
         <name>TechnicalPoliciesScreen</name>
         <label>TechnicalPolicies</label>
-        <locationX>1001</locationX>
-        <locationY>758</locationY>
+        <locationX>1326</locationX>
+        <locationY>1946</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -387,10 +622,10 @@
         <stageOrder>20</stageOrder>
     </stages>
     <start>
-        <locationX>50</locationX>
+        <locationX>375</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>SICScreen</targetReference>
+            <targetReference>WhichDetailPageDecision</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -430,6 +665,13 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>Location</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>nextPage</name>
         <dataType>Number</dataType>
         <isCollection>false</isCollection>
@@ -445,6 +687,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
