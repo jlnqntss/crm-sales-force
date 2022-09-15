@@ -51,14 +51,14 @@
     <div class="slds-col slds-size_1-of-2">
       <div class="slds-float_right" if:true={showCheckboxes}>
         <lightning-button-icon icon-name="utility:filterList" onclick={handleFilter}></lightning-button-icon>
-        <lightning-button-icon icon-name="utility:table" onclick={openModal}></lightning-button-icon>
-        <lightning-button label="<" class="slds-button" onclick={moveLeft}></lightning-button>
-        <span class="slds-text-heading_small">{currentCounter}/{size}</span>
-        <lightning-button label=">" class="slds-button" onclick={moveRight}></lightning-button>
+        <lightning-button-icon icon-name="utility:table" size="large" onclick={openModal} ></lightning-button-icon>
+        <lightning-button-icon icon-name="utility:chevronleft" onclick={moveLeft}></lightning-button-icon>
+        <span class="slds-text-heading_small"> {currentCounter}/{size} </span>
+        <lightning-button-icon icon-name="utility:chevronright" onclick={moveRight}></lightning-button-icon>
       </div>
     </div>
   </div>
-  <div>
+  <div class="slds-p-top_small">
     <lightning-record-view-form
         record-id={currentId}
         object-api-name="MaestroApetito__c"

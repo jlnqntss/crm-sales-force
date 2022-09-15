@@ -7,7 +7,7 @@ export default class SicChoser extends LightningElement
 {
     // Variable to return the nextPage that should be opened
     @api nextPage;
-    @api value = "Introduzca un valor";
+    @api value = "";
     @api chosenValue;
     @api label = "Escoge un SIC";
     initialized = false;

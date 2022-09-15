@@ -17,7 +17,7 @@ public with sharing class RiskAppetiteController {
             List<String> labels = new List<String>();
             for(MaestroApetito__c currentRecord : noDuplicatesList)
             {
-                labels.add(generateLabel(currentRecord, 'SIC__c', 'Subfamilia__c'));
+                labels.add(generateLabel(currentRecord, 'SIC__c', 'SICDescription__c'));
             }
             return labels;
         }
@@ -185,22 +185,26 @@ public with sharing class RiskAppetiteController {
 
 
     
-
+    @TestVisible
     class Product
     {
         @auraEnabled public String label;
-        @auraEnabled public String enlace1;
-        @auraEnabled public String enlace2;
-        @auraEnabled public String enlace3;
+        @auraEnabled public String sharepoint;
+        @auraEnabled public String dyoSharepoint;
+        @auraEnabled public String ciberSharepoint;
         @AuraEnabled public String buttonClass;
         @AuraEnabled public String buttonLabel;
 
         public Product (String label, MaestroApetito__c maestro)
         {
             this.label = label;
+            this.sharepoint = maestro.SharepointLink__c;
+            this.dyoSharepoint = maestro.SharepointLinkDO__c;
+            this.ciberSharepoint = maestro.SharepointLinkCyber__c;
         }
     }
 
+    @TestVisible
     class CommercialActivity
     {
         // riskAppetite, dyo y ciber van a ser el label del botón, y a cada uno de ellos se le calcula la clase a partir de eso, solo hace falta crear 3 variables
@@ -218,6 +222,7 @@ public with sharing class RiskAppetiteController {
         }
     }
 
+    @TestVisible
     class Field {
         @AuraEnabled
         public String label {get;set;}

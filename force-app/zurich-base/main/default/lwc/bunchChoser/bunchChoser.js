@@ -20,7 +20,8 @@ export default class BunchChoser extends LightningElement
         {
             this.optionsList.data.forEach(ele =>{
                 options.push({label:ele.label , value:ele.label, id:ele.label.split(" - ")[0],
-                badgeLabel:ele.buttonLabel, badgeClass:ele.buttonClass});
+                badgeLabel:ele.buttonLabel, badgeClass:ele.buttonClass, productLink:ele.sharepoint,
+                dyoLink:ele.dyoSharepoint, ciberLink:ele.ciberSharepoint});
             }); 
             return options;
         }
@@ -72,8 +73,8 @@ export default class BunchChoser extends LightningElement
         this.handleNext();
     }
 
-    goToDoc(){
-        // window.navigate para ir al enlace al documento correspondiente. Probablemente habrá que almacenar ese enlace en algo estático que en base al código del ramo 
-        // en el que hemos clickado nos lleve a la página que toca
+    goToDoc(event){
+        var URL = event.target.value;
+        window.open(URL, '_blank').focus();
     }
 }

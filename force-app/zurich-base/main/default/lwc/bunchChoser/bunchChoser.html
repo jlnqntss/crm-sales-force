@@ -20,13 +20,29 @@
     <template for:each={options} for:item="item" >
       <div key={item.label} class="slds-p-top_small">
         <article class="slds-card slds-card_boundary">
-          <div class="slds-p-around_medium">
-            <a class="slds-card__header-link" title="Card Header" onclick={handleClick}>
-              <span id={item.id}>{item.label}</span>
-            </a>
-            <div class= "slds-float_right">
-              <lightning-badge label={item.badgeLabel} class={item.badgeClass}></lightning-badge>
-              <lightning-helptext content="Navegar al documento vinculado a este ramo" onclick={goToDoc}></lightning-helptext>
+          <div class="slds-grid">
+            <div class="slds-col slds-size_1-of-2">
+              <div class="slds-p-around_medium">
+                <a class="slds-card__header-link" title="Card Header" onclick={handleClick}>
+                  <span id={item.id}>{item.label}</span>
+                </a>
+              </div>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+              <div class= "slds-float_right slds-grid">
+                <div class="slds-col slds-size_4-of-9 slds-p-top_medium">
+                  <lightning-badge label={item.badgeLabel} class={item.badgeClass}></lightning-badge>
+                </div>
+                <div class="slds-col slds-size_5-of-9 slds-p-around_small">
+                  <lightning-button-group>
+                    <lightning-button-icon 
+                    class="slds-p-left_small" icon-name="utility:info" onclick={goToDoc} if:true={item.productLink} tooltip="Documentación acerca del ramo" value={item.productLink}>
+                                  </lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:company" onclick={goToDoc} if:true={item.dyoLink} tooltip="Documentación acerca de DyO" value={item.dyoLink}></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:bug" onclick={goToDoc} if:true={item.ciberLink} tooltip="Documentación acerca de ciber-riesgos" value={item.ciberLink}></lightning-button-icon>
+                  </lightning-button-group>
+                </div>
+              </div>
             </div>
           </div>
         </article>

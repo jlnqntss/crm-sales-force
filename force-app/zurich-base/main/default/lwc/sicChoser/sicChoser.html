@@ -7,7 +7,7 @@
 -->
 <template>
   <div class="slds-form-element__control">
-      <input id="input" name="input" list="valueList" class="slds-input" type="text" value={value} onchange={handleChange}/>
+      <input id="input" name="input" list="valueList" class="slds-input" type="text" value={value} onchange={handleChange} placeholder="Introduzca un valor:"/>
       <datalist id="valueList">
           <template for:each={options} for:item='item'>
               <option key={item.label} value={item.value}>{item.value}</option>

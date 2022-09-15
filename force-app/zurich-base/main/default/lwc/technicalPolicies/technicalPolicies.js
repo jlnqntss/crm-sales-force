@@ -4,7 +4,7 @@
  * @author jjuaristi
  */
 
-import { api, LightningElement, wire } from 'lwc';
+import { api, LightningElement, wire, track } from 'lwc';
 import { FlowNavigationNextEvent, FlowAttributeChangeEvent } from "lightning/flowSupport";
 import getTechPoliciesForActivities from "@salesforce/apex/RiskAppetiteController.getTechPoliciesForActivities";
 import getFields from "@salesforce/apex/RiskAppetiteController.getFields";
@@ -46,7 +46,7 @@ export default class TechnicalPolicies extends LightningElement
     @api filtersVisible;
     idsInPolicies = [];
 
-    showCheckboxes;
+    @track showCheckboxes;
     @api showExplosives;
     @api showEspumosos;
     @api showAspiration;
@@ -193,7 +193,15 @@ export default class TechnicalPolicies extends LightningElement
         });
     }
 
+    renderedCallback(){
+        if(this.productCode == 516 && this.size >1){
+            this.showCheckboxes = true;
+        }else{
+            this.showCheckboxes = false;
+        }
+    }
     checkProductCode(){
+        // Para que se muestren los botones de navegación y los filtros, tiene que tener el ramo 516 y un tamaño >1
         if(this.productCode == 516){
             this.showCheckboxes = true;
         }else{

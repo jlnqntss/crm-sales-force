@@ -21,6 +21,8 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
             // Solo filtramos por código, el nombre iría en Subfamilia__c pero solo lo queremos para pintarlo en el breadcrumb
             this.baseQuery.addConditionEq(MaestroApetito__c.SIC__c, SICcode);
 
+            this.baseQuery.orderBy('NombreProducto__c', 'DESC');
+
             return (List<MaestroApetito__c>) this.baseQuery.run();
         }
         else
