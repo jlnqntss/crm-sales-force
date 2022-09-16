@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <help></help>
-    <label>Franquicia Almacén Materiales Peligrosos</label>
+    <label>Almacenamiento de mercancías peligrosas</label>
     <name>FranquiciaAlmacenMercanciasPeligrosas__c</name>
 </CustomFieldTranslation>

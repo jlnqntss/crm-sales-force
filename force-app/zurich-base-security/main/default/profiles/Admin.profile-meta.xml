@@ -7492,6 +7492,11 @@
     </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
+        <field>MaestroApetito__c.CompetitivenessLevel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
         <field>MaestroApetito__c.ConAspiracionAutomatica__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7547,6 +7552,16 @@
     </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
+        <field>MaestroApetito__c.DeductiblesTop1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>MaestroApetito__c.DeductiblesTop2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
         <field>MaestroApetito__c.DescripcionActividad845__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7568,6 +7583,16 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DescuentoRespVertical__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>MaestroApetito__c.DeviationGuaranteeTop1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>MaestroApetito__c.DeviationGuaranteeTop2__c</field>
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
@@ -7847,7 +7872,27 @@
     </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
+        <field>MaestroApetito__c.SharepointLink__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>MaestroApetito__c.SharepointLinkCyber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>MaestroApetito__c.SharepointLinkDO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
         <field>MaestroApetito__c.SIC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>MaestroApetito__c.SICDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
