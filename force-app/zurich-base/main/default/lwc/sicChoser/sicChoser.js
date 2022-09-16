@@ -1,4 +1,4 @@
-import { api, LightningElement, wire, track } from 'lwc';
+import { api, LightningElement, wire } from 'lwc';
 import { FlowNavigationNextEvent } from "lightning/flowSupport";
 import getAvailableSics from "@salesforce/apex/RiskAppetiteController.getAvailableSICs";
 
@@ -12,7 +12,6 @@ export default class SicChoser extends LightningElement
     @api label = "Escoge un SIC";
     initialized = false;
 
-    // @track optionsList;
     @wire (getAvailableSics) optionsList;
 
     get options() {

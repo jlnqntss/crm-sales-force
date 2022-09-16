@@ -201,7 +201,7 @@ export default class TechnicalPolicies extends LightningElement
         }
     }
     checkProductCode(){
-        // Para que se muestren los botones de navegación y los filtros, tiene que tener el ramo 516 y un tamaño >1
+        // Para que se muestren los botones de navegación y los filtros, tiene que tener el ramo 516
         if(this.productCode == 516){
             this.showCheckboxes = true;
         }else{
@@ -214,10 +214,10 @@ export default class TechnicalPolicies extends LightningElement
 
         const half = size/2;
 
-        for(var i = 0 ; i < half ; i++){
+        for(let i = 0 ; i < half ; i++){
             this.firstColumnFields.push(this.fieldsToShow[i]);
         }
-        for(var j = half ; j < size ; j++){
+        for(let j = half ; j < size ; j++){
             this.secondColumnFields.push(this.fieldsToShow[j]);
         }
     }
@@ -231,7 +231,7 @@ export default class TechnicalPolicies extends LightningElement
             this.showAccordion=true;
             const half = size/2;
     
-            for(var i = 0 ; i < size ; i++){
+            for(let i = 0 ; i < size ; i++){
                 if(i<half){
                     this.firstColumnAccordionFields.push(this.fieldsInAccordion[i]);
                 }else{

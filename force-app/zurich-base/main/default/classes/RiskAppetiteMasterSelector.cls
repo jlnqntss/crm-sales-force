@@ -31,14 +31,14 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
         }
     }
 
-    public List<MaestroApetito__c> findCommercialActivitiesByProductCode (String sicCode, String ProductCode)
+    public List<MaestroApetito__c> findCommercialActivitiesByProductCode (String sicCode, String productCode)
     {
-        if(String.isNotBlank(ProductCode) && String.isNotBlank(sicCode))
+        if(String.isNotBlank(productCode) && String.isNotBlank(sicCode))
         {
             this.baseQuery.selectReadableFields();
 
             // Solo filtramos por código, el nombre iría en NombreProducto__c pero solo lo queremos para pintarlo en el breadcrumb
-            this.baseQuery.addConditionEq(MaestroApetito__c.CodigoProducto__c, ProductCode)
+            this.baseQuery.addConditionEq(MaestroApetito__c.CodigoProducto__c, productCode)
             .addConditionEq(MaestroApetito__c.SIC__c, sicCode);
 
             return (List<MaestroApetito__c>) this.baseQuery.run();
