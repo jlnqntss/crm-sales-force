@@ -24,7 +24,7 @@
     <columns>
         <field>Account$Parent.Id</field>
     </columns>
-    <description>Informe para mostrar la información de los responsables de negocio con sus respectivo mediadores.</description>
+    <description>Informe para mostrar la información de los responsables de negocio con sus respectivos mediadores para la creación de tareas.</description>
     <filter>
         <criteriaItems>
             <column>Account.AccountTeamMembers$TeamMemberRole</column>
@@ -36,7 +36,7 @@
         <language>en_US</language>
     </filter>
     <format>Tabular</format>
-    <name>RN con mediadores</name>
+    <name>Id de RN con Id de mediadores</name>
     <params>
         <name>co</name>
         <value>1</value>
