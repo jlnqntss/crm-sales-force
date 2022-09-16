@@ -264,6 +264,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         result.EndDate__c = Date.newInstance(pc.EndDate__c.year(), i, Integer.valueOf(calculoPCMap.get('NumberOfDays')));
         result.ParentPlan__c = pc.Id;
         result.SentNotifications__c = calculoPCMap.get('NotificationSent');
+        result.OwnerId = pc.OwnerId;
 
         return result;
     }
