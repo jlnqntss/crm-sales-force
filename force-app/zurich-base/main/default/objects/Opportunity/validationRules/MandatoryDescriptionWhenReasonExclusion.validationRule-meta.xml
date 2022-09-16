@@ -13,5 +13,6 @@ AND(
 )
  )
 )</errorConditionFormula>
+    <errorDisplayField>LossSubReasonDescription__c</errorDisplayField>
     <errorMessage>[VR Offer] Es necesario completar el Sub-motivo del rechazo y su descripción,  cuando el motivo de pérdida es &quot;Exclusión/Política Técnica&quot;.</errorMessage>
 </ValidationRule>
