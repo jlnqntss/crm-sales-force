@@ -29,9 +29,9 @@ public with sharing class ClientInteracionServiceTest {
         upsert policies[0];
 
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
-        testClient.nombreCompleto = 'Nombre Apellido';
-        testClient.dniNiePasaporte = accounts[0].NationalId__c;
-        testClient.codigoPoliza = policies[0].InfoPolicyNumber__c;
+        testClient.fullName = 'Nombre Apellido';
+        testClient.nationalID = accounts[0].NationalId__c;
+        testClient.policyNumber = policies[0].InfoPolicyNumber__c;
 
         // Test
         ClientIdentificationService.ClientIdentificationException expectedError;
@@ -52,13 +52,13 @@ public with sharing class ClientInteracionServiceTest {
         System.debug('++++ resultado: ' + resultado);
 
         System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
-        System.assertEquals(true, resultado.existeDni, 'Es un cliente del sistema');
-        System.assertEquals(true, resultado.existePoliza, 'La póliza existe y está asociada al cliente');
+        System.assertEquals(true, resultado.existsNationalID, 'Es un cliente del sistema');
+        System.assertEquals(true, resultado.existsPolicy, 'La póliza existe y está asociada al cliente');
         
-        System.assertEquals(true, resultado.polizaValida, 'La póliza existe y es válida');
-        System.assertNotEquals(null, resultado.fechaInicioPoliza, 'La póliza tiene una fecha de inicio');
-        System.assertNotEquals(null, resultado.fechaFinPoliza, 'La póliza tiene una fecha de fin');
-        System.assertNotEquals(null, resultado.versionPoliza, 'La póliza tiene una versión');
+        System.assertEquals(true, resultado.isValidPolicy, 'La póliza existe y es válida');
+        System.assertNotEquals(null, resultado.policyStartDate, 'La póliza tiene una fecha de inicio');
+        System.assertNotEquals(null, resultado.policyEndDate, 'La póliza tiene una fecha de fin');
+        System.assertNotEquals(null, resultado.policyVersion, 'La póliza tiene una versión');
     }
 
     /**
@@ -72,9 +72,9 @@ public with sharing class ClientInteracionServiceTest {
         String policyNoExiste = '00000000000000';
 
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
-        testClient.nombreCompleto = 'Nombre Apellido';
-        testClient.dniNiePasaporte = accounts[0].NationalId__c;
-        testClient.codigoPoliza = policyNoExiste;
+        testClient.fullName = 'Nombre Apellido';
+        testClient.nationalID = accounts[0].NationalId__c;
+        testClient.policyNumber = policyNoExiste;
 
         // Test
         ClientIdentificationService.ClientIdentificationException expectedError;
@@ -93,8 +93,8 @@ public with sharing class ClientInteracionServiceTest {
         Test.stopTest();
 
         System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
-        System.assertEquals(true, resultado.existeDni, 'Es un cliente del sistema');
-        System.assertEquals(false, resultado.existePoliza, 'La póliza indicada no existe en el sistema');
+        System.assertEquals(true, resultado.existsNationalID, 'Es un cliente del sistema');
+        System.assertEquals(false, resultado.existsPolicy, 'La póliza indicada no existe en el sistema');
     }
 
     /**
@@ -106,9 +106,9 @@ public with sharing class ClientInteracionServiceTest {
         String dniNoExiste = '00000000A';
 
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
-        testClient.nombreCompleto = 'Nombre Apellido';
-        testClient.dniNiePasaporte = dniNoExiste;
-        testClient.codigoPoliza = policies[0].InfoPolicyNumber__c;
+        testClient.fullName = 'Nombre Apellido';
+        testClient.nationalID = dniNoExiste;
+        testClient.policyNumber = policies[0].InfoPolicyNumber__c;
 
         // Test
         ClientIdentificationService.ClientIdentificationException expectedError;
@@ -127,8 +127,8 @@ public with sharing class ClientInteracionServiceTest {
         Test.stopTest();
 
         System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
-        System.assertEquals(false, resultado.existeDni, 'El cliente no está en el sistema');
-        System.assertEquals(true, resultado.existePoliza, 'La póliza existe y está asociada al cliente');
+        System.assertEquals(false, resultado.existsNationalID, 'El cliente no está en el sistema');
+        System.assertEquals(true, resultado.existsPolicy, 'La póliza existe y está asociada al cliente');
 
     }
 
@@ -144,9 +144,9 @@ public with sharing class ClientInteracionServiceTest {
         String policyNoExiste = '00000000000000';
         
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
-        testClient.nombreCompleto = 'Nombre Apellido';
-        testClient.dniNiePasaporte = dniNoExiste;
-        testClient.codigoPoliza = policyNoExiste;
+        testClient.fullName = 'Nombre Apellido';
+        testClient.nationalID = dniNoExiste;
+        testClient.policyNumber = policyNoExiste;
 
         // Test
         ClientIdentificationService.ClientIdentificationException expectedError;
@@ -165,8 +165,8 @@ public with sharing class ClientInteracionServiceTest {
         Test.stopTest();
 
         System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
-        System.assertEquals(false, resultado.existeDni, 'El cliente no está en el sistema');
-        System.assertEquals(false, resultado.existePoliza, 'No tiene policies asociadas');
+        System.assertEquals(false, resultado.existsNationalID, 'El cliente no está en el sistema');
+        System.assertEquals(false, resultado.existsPolicy, 'No tiene policies asociadas');
         
     }
 
@@ -178,8 +178,8 @@ public with sharing class ClientInteracionServiceTest {
 
         // When
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
-        testClient.nombreCompleto = 'Nombre Apellido';
-        testClient.codigoPoliza = '123456';
+        testClient.fullName = 'Nombre Apellido';
+        testClient.policyNumber = '123456';
 
         // Test
         ClientIdentificationService.ClientIdentificationException expectedError;
@@ -208,9 +208,9 @@ public with sharing class ClientInteracionServiceTest {
         // When
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
 
-        testClient.nombreCompleto = 'Nombre Apellido';
-        testClient.dniNiePasaporte = '';
-        testClient.codigoPoliza = '123456';
+        testClient.fullName = 'Nombre Apellido';
+        testClient.nationalID = '';
+        testClient.policyNumber = '123456';
 
         // Test
         ClientIdentificationService.ClientIdentificationException expectedError;
@@ -237,9 +237,9 @@ public with sharing class ClientInteracionServiceTest {
     static void processData_blankPolicyException(){
         // When
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
-        testClient.nombreCompleto = 'Nombre Apellido';
-        testClient.dniNiePasaporte = '12345678A';
-        testClient.codigoPoliza = '';
+        testClient.fullName = 'Nombre Apellido';
+        testClient.nationalID = '12345678A';
+        testClient.policyNumber = '';
 
         // Test
         ClientIdentificationService.ClientIdentificationException expectedError;
