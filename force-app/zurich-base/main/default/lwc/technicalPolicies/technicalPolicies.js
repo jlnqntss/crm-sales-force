@@ -237,7 +237,8 @@ export default class TechnicalPolicies extends LightningElement {
   gridFields() {
     const size = this.countObjects(this.fieldsToShow);
 
-    const half = size / 2;
+    let half = size / 2;
+    half = half - (half % 1);
 
     for (let i = 0; i < half; i++) {
       this.firstColumnFields.push(this.fieldsToShow[i]);
@@ -254,7 +255,8 @@ export default class TechnicalPolicies extends LightningElement {
       this.showAccordion = false;
     } else {
       this.showAccordion = true;
-      const half = size / 2;
+      let half = size / 2;
+      half = half - (half % 1);
 
       for (let i = 0; i < size; i++) {
         if (i < half) {
