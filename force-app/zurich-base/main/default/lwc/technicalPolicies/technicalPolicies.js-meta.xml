@@ -8,7 +8,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="nextPage" type="Integer"/>
+            <property name="nextPage" type="Integer" role="outputOnly"/>
             <property name="bunchLabel" type="String" role="inputOnly"/>
             <property name="sicLabel" type="String" role="inputOnly"/>
             <property name="activityLabel" type="String" role="inputOnly"/>
