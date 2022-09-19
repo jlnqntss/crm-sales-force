@@ -312,7 +312,6 @@ export default class TechnicalPolicies extends LightningElement {
       this.policies.forEach((ele) => {
         if (ele[field]) {
           show = true;
-          return show;
         }
       });
     }
