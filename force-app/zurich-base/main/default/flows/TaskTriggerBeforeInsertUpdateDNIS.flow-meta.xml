@@ -5,8 +5,8 @@
         <description>poner en DNIS Phone el valor de DNIS</description>
         <name>SetDNISPhone</name>
         <label>Asignar DNIS Phone</label>
-        <locationX>536</locationX>
-        <locationY>386</locationY>
+        <locationX>859</locationX>
+        <locationY>308</locationY>
         <assignmentItems>
             <assignToReference>$Record.DNISPhone__c</assignToReference>
             <operator>Assign</operator>
@@ -15,16 +15,45 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <description>Fija el DNIS Phone a un teléfono a mano</description>
+        <name>SetFixedDNISPhone</name>
+        <label>Asignar DNIS Phone fijo</label>
+        <locationX>859</locationX>
+        <locationY>91</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.DNIS__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ZurichWhatsappPhone</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.DNISPhone__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ZurichWhatsappPhone</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <constants>
+        <description>Teléfono de Whatsapp de Zurich</description>
+        <name>ZurichWhatsappPhone</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>+34932715353</stringValue>
+        </value>
+    </constants>
     <decisions>
         <description>el campo dnis ha cambiado y no es un correo electrónico</description>
         <name>DNISisPhone</name>
         <label>¿Ha cambiado DNIS a un teléfono?</label>
-        <locationX>326</locationX>
-        <locationY>379</locationY>
+        <locationX>609</locationX>
+        <locationY>314</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si</name>
-            <conditionLogic>1 AND (NOT 2)</conditionLogic>
+            <conditionLogic>1 AND 3 AND (NOT 2)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record__Prior.DNIS__c</leftValueReference>
                 <operator>NotEqualTo</operator>
@@ -39,10 +68,42 @@
                     <stringValue>@</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.DNIS__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>SetDNISPhone</targetReference>
             </connector>
             <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DNISisWHATSAPP</name>
+        <label>¿Tarea es de Whatsapp?</label>
+        <locationX>608</locationX>
+        <locationY>95</locationY>
+        <defaultConnector>
+            <targetReference>DNISisPhone</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>SiWhatsapp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>WhatsApp</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetFixedDNISPhone</targetReference>
+            </connector>
+            <label>Si Whatsapp</label>
         </rules>
     </decisions>
     <description>Rellena DNIS Phone con lo que tenga DNIS si no es un correo electrónico</description>
@@ -69,23 +130,16 @@
     <processType>AutoLaunchedFlow</processType>
     <start>
         <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationY>6</locationY>
         <connector>
-            <targetReference>DNISisPhone</targetReference>
+            <targetReference>DNISisWHATSAPP</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>DNIS__c</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
-        <filters>
             <field>Type</field>
-            <operator>EqualTo</operator>
+            <operator>NotEqualTo</operator>
             <value>
-                <stringValue>Call</stringValue>
+                <stringValue>Email</stringValue>
             </value>
         </filters>
         <object>Task</object>
