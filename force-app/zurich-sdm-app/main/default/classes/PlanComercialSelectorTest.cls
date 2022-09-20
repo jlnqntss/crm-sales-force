@@ -271,4 +271,41 @@ private class PlanComercialSelectorTest
 
         System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
     }
+
+
+    /**
+     * Test query planes mensuales a borrar dada una fecha
+     *
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     */
+    @isTest
+    static void findMensualPlanToDeleteByMaxDate() {
+
+        Date d = Date.today();
+
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        Test.startTest();
+        List<PlanComercial__c> result = planSel.findMensualPlanToDeleteByMaxDate(d);
+        Test.stopTest();
+
+        System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
+    }
+
+    /**
+     * Test NULL query planes mensuales a borrar dada una fecha
+     *
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     */
+    @isTest
+    static void findMensualPlanToDeleteByMaxDate_Null() {
+
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        Test.startTest();
+        List<PlanComercial__c> result = planSel.findMensualPlanToDeleteByMaxDate(null);
+        Test.stopTest();
+
+        System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
+    }
 }

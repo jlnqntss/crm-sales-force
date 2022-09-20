@@ -339,4 +339,21 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         System.debug('selector planes getMetadataEmails ' + result);
         return result;
     }
+
+    /**Recuperar los planes mensuales para borrar a partir de una fecha dada
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     * 
+     * @param {List<String} planComercialList
+     * @return {Map<Id, PlanComercial__c>} mapa con el par id, email
+     */
+    public List<PlanComercial__c> findMensualPlanToDeleteByMaxDate(Date maxDate) {
+        List<PlanComercial__c> result = new List<PlanComercial__c>();
+
+        if (maxDate != null) {
+            result = new List<PlanComercial__c>([SELECT Id FROM PlanComercial__c where RecordTypeId =: rtPlanMensualId AND EndDate__c < :maxDate]);
+        }
+
+        return result;
+    }
 }
