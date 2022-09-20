@@ -5,10 +5,6 @@
         <name>Klinc</name>
     </customApplications>
     <customApplications>
-        <label><!-- Knowledge Manager --></label>
-        <name>Knowledge_Manager</name>
-    </customApplications>
-    <customApplications>
         <label><!-- Lead Generation --></label>
         <name>Lead_Generation</name>
     </customApplications>
@@ -17,16 +13,12 @@
         <name>Lightning_Buddy</name>
     </customApplications>
     <customApplications>
-        <label><!-- One Customer Service --></label>
+        <label><!-- OCS --></label>
         <name>OCS</name>
     </customApplications>
     <customApplications>
         <label><!-- Relationship Management --></label>
         <name>Relationship_Management</name>
-    </customApplications>
-    <customApplications>
-        <label><!-- SDM --></label>
-        <name>SDM</name>
     </customApplications>
     <customApplications>
         <label><!-- Sales Leadership --></label>
@@ -39,14 +31,6 @@
     <customApplications>
         <label><!-- System Administrator --></label>
         <name>System_Administrator</name>
-    </customApplications>
-    <customApplications>
-        <label><!-- USP - OCS --></label>
-        <name>USP</name>
-    </customApplications>
-    <customApplications>
-        <label><!-- Zurich Empresas --></label>
-        <name>Zurich_Empresas</name>
     </customApplications>
     <customLabels>
         <label><!-- ArchivoNoValido --></label>
@@ -71,18 +55,6 @@
     <customLabels>
         <label><!-- BooleanoNoValido --></label>
         <name>BooleanoNoValido</name>
-    </customLabels>
-    <customLabels>
-        <label>Autorizar</label>
-        <name>CTIExtraButtonsAuthButton</name>
-    </customLabels>
-    <customLabels>
-        <label>Acciones</label>
-        <name>CTIExtraButtonsTitle</name>
-    </customLabels>
-    <customLabels>
-        <label>No estas autorizado para usar las acciones adicionales sobre la llamada. Haz clic en el botón Autorizar.</label>
-        <name>CTIExtraButtonsWarning</name>
     </customLabels>
     <customLabels>
         <label><!-- CampaignCheckbox --></label>
@@ -137,16 +109,8 @@
         <name>EmailOptOutCheckbox</name>
     </customLabels>
     <customLabels>
-        <label><!-- EmailOptOutCheckboxOCS --></label>
-        <name>EmailOptOutCheckboxOCS</name>
-    </customLabels>
-    <customLabels>
         <label><!-- EmailOptOutText --></label>
         <name>EmailOptOutText</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- EmailOptOutTextOCS --></label>
-        <name>EmailOptOutTextOCS</name>
     </customLabels>
     <customLabels>
         <label><!-- EmptyJsonObject --></label>
@@ -225,22 +189,6 @@
         <name>IdNoValido</name>
     </customLabels>
     <customLabels>
-        <label><!-- Insured Person --></label>
-        <name>InsuredPerson</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- IntegratorUser --></label>
-        <name>IntegratorUser</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- Interaction --></label>
-        <name>Interaction</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- Interested --></label>
-        <name>Interested</name>
-    </customLabels>
-    <customLabels>
         <label><!-- JsonIncorrecto --></label>
         <name>JsonIncorrecto</name>
     </customLabels>
@@ -281,10 +229,6 @@
         <name>Master</name>
     </customLabels>
     <customLabels>
-        <label><!-- No bundle --></label>
-        <name>NoBundle</name>
-    </customLabels>
-    <customLabels>
         <label><!-- NombreAtributoVacio --></label>
         <name>NombreAtributoVacio</name>
     </customLabels>
@@ -295,10 +239,6 @@
     <customLabels>
         <label><!-- ObjetoVacio --></label>
         <name>ObjetoVacio</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- OfferStageNameErrorMsg --></label>
-        <name>OfferStageValidationMessage</name>
     </customLabels>
     <customLabels>
         <label><!-- Order_Sync --></label>
@@ -353,10 +293,6 @@
         <name>PrecisionNumeroNoValida</name>
     </customLabels>
     <customLabels>
-        <label><!-- PreferenceCentreRedirect --></label>
-        <name>PreferenceCentreRedirect</name>
-    </customLabels>
-    <customLabels>
         <label><!-- PreferenceCentreSave --></label>
         <name>PreferenceCentreSave</name>
     </customLabels>
@@ -371,14 +307,6 @@
     <customLabels>
         <label><!-- PriceBook --></label>
         <name>PriceBook</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- PrimaryContactPointEmailRequired --></label>
-        <name>PrimaryContactPointEmailRequired</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- PrimaryContactPointPhoneRequired --></label>
-        <name>PrimaryContactPointPhoneRequired</name>
     </customLabels>
     <customLabels>
         <label><!-- PruebaLabel --></label>
@@ -417,360 +345,8 @@
         <name>QuoteLife</name>
     </customLabels>
     <customLabels>
-        <label><!-- DML Record Error on REST API Transaction --></label>
-        <name>RESTApiErrorOnDMLRecordTransaction</name>
-    </customLabels>
-    <customLabels>
         <label><!-- RecordOwner --></label>
         <name>RecordOwner</name>
-    </customLabels>
-    <customLabels>
-        <label>Activo</label>
-        <name>SDM_Objetivos_Active</name>
-    </customLabels>
-    <customLabels>
-        <label>Abril</label>
-        <name>SDM_Objetivos_April</name>
-    </customLabels>
-    <customLabels>
-        <label>Agosto</label>
-        <name>SDM_Objetivos_August</name>
-    </customLabels>
-    <customLabels>
-        <label>Cancelar</label>
-        <name>SDM_Objetivos_ButtonCancel</name>
-    </customLabels>
-    <customLabels>
-        <label>Clonar</label>
-        <name>SDM_Objetivos_ButtonClone</name>
-    </customLabels>
-    <customLabels>
-        <label>Cerrar</label>
-        <name>SDM_Objetivos_ButtonClose</name>
-    </customLabels>
-    <customLabels>
-        <label>Editar</label>
-        <name>SDM_Objetivos_ButtonEdit</name>
-    </customLabels>
-    <customLabels>
-        <label>Nuevo</label>
-        <name>SDM_Objetivos_ButtonNew</name>
-    </customLabels>
-    <customLabels>
-        <label>Guardar</label>
-        <name>SDM_Objetivos_ButtonSave</name>
-    </customLabels>
-    <customLabels>
-        <label>Clonar Objetivo</label>
-        <name>SDM_Objetivos_Clone_Title</name>
-    </customLabels>
-    <customLabels>
-        <label>Nuevo Objetivo</label>
-        <name>SDM_Objetivos_Create_Title</name>
-    </customLabels>
-    <customLabels>
-        <label>Diciembre</label>
-        <name>SDM_Objetivos_December</name>
-    </customLabels>
-    <customLabels>
-        <label>Ha seleccionado algún registro ya existente para los objetivos del año próximo</label>
-        <name>SDM_Objetivos_DuplicateRecords</name>
-    </customLabels>
-    <customLabels>
-        <label>Registro duplicado, por favor desmárcalo</label>
-        <name>SDM_Objetivos_DuplicateRecordsRowError</name>
-    </customLabels>
-    <customLabels>
-        <label>Editar Objetivo</label>
-        <name>SDM_Objetivos_Edit_Title</name>
-    </customLabels>
-    <customLabels>
-        <label>Error</label>
-        <name>SDM_Objetivos_Error</name>
-    </customLabels>
-    <customLabels>
-        <label>La entrada es nula o vacía, por favor contacta con tu Administrador</label>
-        <name>SDM_Objetivos_ErrorInput</name>
-    </customLabels>
-    <customLabels>
-        <label>Febrero</label>
-        <name>SDM_Objetivos_February</name>
-    </customLabels>
-    <customLabels>
-        <label>Indicador</label>
-        <name>SDM_Objetivos_Indicator</name>
-    </customLabels>
-    <customLabels>
-        <label>Enero</label>
-        <name>SDM_Objetivos_January</name>
-    </customLabels>
-    <customLabels>
-        <label>Julio</label>
-        <name>SDM_Objetivos_July</name>
-    </customLabels>
-    <customLabels>
-        <label>Junio</label>
-        <name>SDM_Objetivos_June</name>
-    </customLabels>
-    <customLabels>
-        <label>Marzo</label>
-        <name>SDM_Objetivos_March</name>
-    </customLabels>
-    <customLabels>
-        <label>Mayo</label>
-        <name>SDM_Objetivos_May</name>
-    </customLabels>
-    <customLabels>
-        <label>Noviembre</label>
-        <name>SDM_Objetivos_November</name>
-    </customLabels>
-    <customLabels>
-        <label>Octubre</label>
-        <name>SDM_Objetivos_October</name>
-    </customLabels>
-    <customLabels>
-        <label>Producto</label>
-        <name>SDM_Objetivos_Product</name>
-    </customLabels>
-    <customLabels>
-        <label>Se han encontrado errores</label>
-        <name>SDM_Objetivos_RowErrorTitle</name>
-    </customLabels>
-    <customLabels>
-        <label>Segmento</label>
-        <name>SDM_Objetivos_Segment</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- SDM_Objetivos_September --></label>
-        <name>SDM_Objetivos_September</name>
-    </customLabels>
-    <customLabels>
-        <label>Éxito</label>
-        <name>SDM_Objetivos_Success</name>
-    </customLabels>
-    <customLabels>
-        <label>Objetivos</label>
-        <name>SDM_Objetivos_Title</name>
-    </customLabels>
-    <customLabels>
-        <label>Es necesario seleccionar al menos 1 registro a clonar</label>
-        <name>SDM_Objetivos_ToastCloneNotSelected</name>
-    </customLabels>
-    <customLabels>
-        <label>Registros clonados correctamente</label>
-        <name>SDM_Objetivos_ToastCloneRecord</name>
-    </customLabels>
-    <customLabels>
-        <label>Ya existe un objetivo para el año seleccionado</label>
-        <name>SDM_Objetivos_ToastDuplicateError</name>
-    </customLabels>
-    <customLabels>
-        <label>Registro editado correctamente</label>
-        <name>SDM_Objetivos_ToastEditRecord</name>
-    </customLabels>
-    <customLabels>
-        <label>Actualizados {0} objetivos correctamente</label>
-        <name>SDM_Objetivos_ToastMessage</name>
-    </customLabels>
-    <customLabels>
-        <label>Actualizados {0} objetivos correctamente, {1} errores</label>
-        <name>SDM_Objetivos_ToastMessageWithError</name>
-    </customLabels>
-    <customLabels>
-        <label>Registro guardado correctamente</label>
-        <name>SDM_Objetivos_ToastNewRecord</name>
-    </customLabels>
-    <customLabels>
-        <label>Atención</label>
-        <name>SDM_Objetivos_Warning</name>
-    </customLabels>
-    <customLabels>
-        <label>Año</label>
-        <name>SDM_Objetivos_Year</name>
-    </customLabels>
-    <customLabels>
-        <label>Cancelar</label>
-        <name>SDM_PlanAnual_ButtonCancel</name>
-    </customLabels>
-    <customLabels>
-        <label>Eliminar</label>
-        <name>SDM_PlanAnual_ButtonDelete</name>
-    </customLabels>
-    <customLabels>
-        <label>Editar</label>
-        <name>SDM_PlanAnual_ButtonEdit</name>
-    </customLabels>
-    <customLabels>
-        <label>Nuevo</label>
-        <name>SDM_PlanAnual_ButtonNew</name>
-    </customLabels>
-    <customLabels>
-        <label>Recargar planes</label>
-        <name>SDM_PlanAnual_ButtonRefresh</name>
-    </customLabels>
-    <customLabels>
-        <label>Guardar</label>
-        <name>SDM_PlanAnual_ButtonSave</name>
-    </customLabels>
-    <customLabels>
-        <label>Guardando...</label>
-        <name>SDM_PlanAnual_ButtonSaving</name>
-    </customLabels>
-    <customLabels>
-        <label>Deshacer</label>
-        <name>SDM_PlanAnual_ButtonUndo</name>
-    </customLabels>
-    <customLabels>
-        <label>Campo bloqueado</label>
-        <name>SDM_PlanAnual_FieldLock</name>
-    </customLabels>
-    <customLabels>
-        <label>Selecciona el indicador</label>
-        <name>SDM_PlanAnual_IndicatorPlaceholder</name>
-    </customLabels>
-    <customLabels>
-        <label>KPI actual. Ir al plan.</label>
-        <name>SDM_PlanAnual_KPICompare</name>
-    </customLabels>
-    <customLabels>
-        <label>Sin datos</label>
-        <name>SDM_PlanAnual_KPINoData</name>
-    </customLabels>
-    <customLabels>
-        <label>KPI real</label>
-        <name>SDM_PlanAnual_KPIReal</name>
-    </customLabels>
-    <customLabels>
-        <label>Leyenda</label>
-        <name>SDM_PlanAnual_Legend</name>
-    </customLabels>
-    <customLabels>
-        <label>Cargando</label>
-        <name>SDM_PlanAnual_Loading</name>
-    </customLabels>
-    <customLabels>
-        <label>Nuevo plan</label>
-        <name>SDM_PlanAnual_NewPlan</name>
-    </customLabels>
-    <customLabels>
-        <label>No hay planes anuales definidos.</label>
-        <name>SDM_PlanAnual_NoPlan</name>
-    </customLabels>
-    <customLabels>
-        <label>Se te han asignado nuevos planes comerciales con los siguientes asuntos:</label>
-        <name>SDM_PlanAnual_NotifBody</name>
-    </customLabels>
-    <customLabels>
-        <label>Asignación de planes comerciales anuales</label>
-        <name>SDM_PlanAnual_NotifTitle</name>
-    </customLabels>
-    <customLabels>
-        <label>Valor orginal:</label>
-        <name>SDM_PlanAnual_OriginalValue</name>
-    </customLabels>
-    <customLabels>
-        <label>Nombre del plan</label>
-        <name>SDM_PlanAnual_PlanName</name>
-    </customLabels>
-    <customLabels>
-        <label>Año de los planes</label>
-        <name>SDM_PlanAnual_PlanYears</name>
-    </customLabels>
-    <customLabels>
-        <label>Planes a eliminar al guardar</label>
-        <name>SDM_PlanAnual_PlansToDelete</name>
-    </customLabels>
-    <customLabels>
-        <label>Selecciona el producto</label>
-        <name>SDM_PlanAnual_ProductPlaceholder</name>
-    </customLabels>
-    <customLabels>
-        <label>Cancelar</label>
-        <name>SDM_PlanAnual_RecordPage_Cancel</name>
-    </customLabels>
-    <customLabels>
-        <label>Editar</label>
-        <name>SDM_PlanAnual_RecordPage_Edit</name>
-    </customLabels>
-    <customLabels>
-        <label>Información General</label>
-        <name>SDM_PlanAnual_RecordPage_GeneralInformation</name>
-    </customLabels>
-    <customLabels>
-        <label>KPI</label>
-        <name>SDM_PlanAnual_RecordPage_KPI</name>
-    </customLabels>
-    <customLabels>
-        <label>Guardar</label>
-        <name>SDM_PlanAnual_RecordPage_Save</name>
-    </customLabels>
-    <customLabels>
-        <label>Periodo Temporal</label>
-        <name>SDM_PlanAnual_RecordPage_TimePeriod</name>
-    </customLabels>
-    <customLabels>
-        <label>Indicador</label>
-        <name>SDM_PlanAnual_RowIndicator</name>
-    </customLabels>
-    <customLabels>
-        <label>Plan</label>
-        <name>SDM_PlanAnual_RowPlanDT</name>
-    </customLabels>
-    <customLabels>
-        <label>Producto</label>
-        <name>SDM_PlanAnual_RowProduct</name>
-    </customLabels>
-    <customLabels>
-        <label>Segmento</label>
-        <name>SDM_PlanAnual_RowSegment</name>
-    </customLabels>
-    <customLabels>
-        <label>Año</label>
-        <name>SDM_PlanAnual_RowYear</name>
-    </customLabels>
-    <customLabels>
-        <label>Error al guardar</label>
-        <name>SDM_PlanAnual_SavingError</name>
-    </customLabels>
-    <customLabels>
-        <label>Ha habido un error desconocido al guardar los cambios.</label>
-        <name>SDM_PlanAnual_SavingErrorMessage</name>
-    </customLabels>
-    <customLabels>
-        <label>Exito</label>
-        <name>SDM_PlanAnual_SavingSuccess</name>
-    </customLabels>
-    <customLabels>
-        <label>Cambios guardados correctamente.</label>
-        <name>SDM_PlanAnual_SavingSuccessMessage</name>
-    </customLabels>
-    <customLabels>
-        <label>Selecciona el segmento</label>
-        <name>SDM_PlanAnual_SegmentPlaceholder</name>
-    </customLabels>
-    <customLabels>
-        <label>Sumatorio (informativo)</label>
-        <name>SDM_PlanAnual_Summary</name>
-    </customLabels>
-    <customLabels>
-        <label>Generación de Planes Anuales</label>
-        <name>SDM_PlanAnual_Title</name>
-    </customLabels>
-    <customLabels>
-        <label>Hay campos sin informar</label>
-        <name>SDM_PlanAnual_ValidationMessage</name>
-    </customLabels>
-    <customLabels>
-        <label>Error de validación</label>
-        <name>SDM_PlanAnual_ValidationTitle</name>
-    </customLabels>
-    <customLabels>
-        <label>Los subplanes con valor Cero a nivel de RN/CV para DT/DV o Mediador para RN/CV no se crearán o si existían se eliminarán.</label>
-        <name>SDM_PlanAnual_WarningCero</name>
-    </customLabels>
-    <customLabels>
-        <label>Selecciona el año</label>
-        <name>SDM_PlanAnual_YearPlaceholder</name>
     </customLabels>
     <customLabels>
         <label><!-- TelefonoNoValido --></label>
@@ -781,40 +357,8 @@
         <name>URLNoValida</name>
     </customLabels>
     <customLabels>
-        <label><!-- Valid --></label>
-        <name>Valid</name>
-    </customLabels>
-    <customLabels>
         <label><!-- ValorListaNoValido --></label>
         <name>ValorListaNoValido</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- accesibilidadTitle --></label>
-        <name>accesibilidadTitle</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- accesibilidadValue --></label>
-        <name>accesibilidadValue</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- adjuntaDocumento --></label>
-        <name>adjuntaDocumento</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- avisoLegalTitle --></label>
-        <name>avisoLegalTitle</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- avisoLegalValue --></label>
-        <name>avisoLegalValue</name>
-    </customLabels>
-    <customLabels>
-        <label>Es necesario autorizarse en el sistema, será redirigido a la página de inicio de sesión con Genesys.</label>
-        <name>callRecordingButtonAuthError</name>
-    </customLabels>
-    <customLabels>
-        <label>Se ha producido un problema en la grabación, vuelva a intentarlo más tarde o póngase en contacto con su administrador de Salesfroce.</label>
-        <name>callRecordingButtonError</name>
     </customLabels>
     <customLabels>
         <label>Iniciar grabación</label>
@@ -823,30 +367,6 @@
     <customLabels>
         <label>Detener grabación</label>
         <name>callRecordingButtonStop</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- documentacionAdjuntadaCorrectamente --></label>
-        <name>documentacionAdjuntadaCorrectamente</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- documentaciónAñadida --></label>
-        <name>documentacionAnadida</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- errorCargandoCaso --></label>
-        <name>errorCargandoCaso</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- errorDocumentacionCasoCerrado --></label>
-        <name>errorDocumentacionCasoCerrado</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- errorSubiendoDocumentacion --></label>
-        <name>errorSubiendoDocumentacion</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- estadoActualCaso --></label>
-        <name>estadoActualCaso</name>
     </customLabels>
     <customLabels>
         <label><!-- AB Test From Name A Exception --></label>
@@ -1243,10 +763,6 @@
     <customLabels>
         <label><!-- MissingBusinessUnitsShowFirst --></label>
         <name>et4ae5__Missing_Business_Units_Show_First</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- NoBusinessUnitE2Point0 --></label>
-        <name>et4ae5__NoBusinessUnitE2Point0</name>
     </customLabels>
     <customLabels>
         <label><!-- NoUserTokenException --></label>
@@ -5973,10 +5489,6 @@
         <name>et4ae5__yes</name>
     </customLabels>
     <customLabels>
-        <label><!-- fechaCreacionCaso --></label>
-        <name>fechaCreacionCaso</name>
-    </customLabels>
-    <customLabels>
         <label><!-- Close --></label>
         <name>lightningbuddy__Close</name>
     </customLabels>
@@ -5985,60 +5497,372 @@
         <name>lightningbuddy__Dont_show_this_again</name>
     </customLabels>
     <customLabels>
-        <label><!-- protecciónDatosTitle --></label>
-        <name>proteccionDatosTitle</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- protecciónDatosValue --></label>
-        <name>proteccionDatosValue</name>
-    </customLabels>
-    <customLabels>
         <label>Lanzar encuesta</label>
         <name>sendSurveyButtonLabel</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- sendSurveyShowToastEventTitle --></label>
-        <name>sendSurveyShowToastEvent</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- sendSurveyShowToastEventMessage --></label>
-        <name>sendSurveyShowToastEventMessage</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- sendSurveyToastMessageError --></label>
-        <name>sendSurveyToastMessageError</name>
     </customLabels>
     <customLabels>
         <label>Encuesta enviada correctamente al cliente</label>
         <name>sendSurveyToastMessageSuccess</name>
     </customLabels>
     <customLabels>
-        <label><!-- sendSurveyToastTitleError --></label>
-        <name>sendSurveyToastTitleError</name>
-    </customLabels>
-    <customLabels>
         <label>Encuesta enviada</label>
         <name>sendSurveyToastTitleSuccess</name>
     </customLabels>
     <customLabels>
-        <label><!-- solicitudDocumentacionCaso --></label>
-        <name>solicitudDocumentacionCaso</name>
+        <label>Acciones</label>
+        <name>CTIExtraButtonsTitle</name>
     </customLabels>
     <customLabels>
-        <label><!-- solicitudDocumentaciónEmail --></label>
-        <name>solicitudDocumentacionEmail</name>
+        <label>Activo</label>
+        <name>SDM_Objetivos_Active</name>
     </customLabels>
     <customLabels>
-        <label><!-- solicitudDocumentaciónSms --></label>
-        <name>solicitudDocumentacionSms</name>
+        <label>Abril</label>
+        <name>SDM_Objetivos_April</name>
     </customLabels>
     <customLabels>
-        <label><!-- tamañoMaximoSubidaDocumentacion --></label>
-        <name>tamanoMaximoSubidaDocumentacion</name>
+        <label>Agosto</label>
+        <name>SDM_Objetivos_August</name>
     </customLabels>
     <customLabels>
-        <label><!-- zurichSegurosDerechosReservados --></label>
-        <name>zurichSegurosDerechosReservados</name>
+        <label>Cancelar</label>
+        <name>SDM_Objetivos_ButtonCancel</name>
+    </customLabels>
+    <customLabels>
+        <label>Clonar</label>
+        <name>SDM_Objetivos_ButtonClone</name>
+    </customLabels>
+    <customLabels>
+        <label>Cerrar</label>
+        <name>SDM_Objetivos_ButtonClose</name>
+    </customLabels>
+    <customLabels>
+        <label>Editar</label>
+        <name>SDM_Objetivos_ButtonEdit</name>
+    </customLabels>
+    <customLabels>
+        <label>Nuevo</label>
+        <name>SDM_Objetivos_ButtonNew</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardar</label>
+        <name>SDM_Objetivos_ButtonSave</name>
+    </customLabels>
+    <customLabels>
+        <label>Clonar Objetivo</label>
+        <name>SDM_Objetivos_Clone_Title</name>
+    </customLabels>
+    <customLabels>
+        <label>Nuevo Objetivo</label>
+        <name>SDM_Objetivos_Create_Title</name>
+    </customLabels>
+    <customLabels>
+        <label>Diciembre</label>
+        <name>SDM_Objetivos_December</name>
+    </customLabels>
+    <customLabels>
+        <label>Ha seleccionado algún registro ya existente para los objetivos del año próximo</label>
+        <name>SDM_Objetivos_DuplicateRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>Registro duplicado, por favor desmárcalo</label>
+        <name>SDM_Objetivos_DuplicateRecordsRowError</name>
+    </customLabels>
+    <customLabels>
+        <label>Editar Objetivo</label>
+        <name>SDM_Objetivos_Edit_Title</name>
+    </customLabels>
+    <customLabels>
+        <label>Error</label>
+        <name>SDM_Objetivos_Error</name>
+    </customLabels>
+    <customLabels>
+        <label>La entrada es nula o vacía, por favor contacta con tu Administrador</label>
+        <name>SDM_Objetivos_ErrorInput</name>
+    </customLabels>
+    <customLabels>
+        <label>Febrero</label>
+        <name>SDM_Objetivos_February</name>
+    </customLabels>
+    <customLabels>
+        <label>Indicador</label>
+        <name>SDM_Objetivos_Indicator</name>
+    </customLabels>
+    <customLabels>
+        <label>Enero</label>
+        <name>SDM_Objetivos_January</name>
+    </customLabels>
+    <customLabels>
+        <label>Julio</label>
+        <name>SDM_Objetivos_July</name>
+    </customLabels>
+    <customLabels>
+        <label>Junio</label>
+        <name>SDM_Objetivos_June</name>
+    </customLabels>
+    <customLabels>
+        <label>Marzo</label>
+        <name>SDM_Objetivos_March</name>
+    </customLabels>
+    <customLabels>
+        <label>Mayo</label>
+        <name>SDM_Objetivos_May</name>
+    </customLabels>
+    <customLabels>
+        <label>Noviembre</label>
+        <name>SDM_Objetivos_November</name>
+    </customLabels>
+    <customLabels>
+        <label>Octubre</label>
+        <name>SDM_Objetivos_October</name>
+    </customLabels>
+    <customLabels>
+        <label>Producto</label>
+        <name>SDM_Objetivos_Product</name>
+    </customLabels>
+    <customLabels>
+        <label>Se han encontrado errores</label>
+        <name>SDM_Objetivos_RowErrorTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Segmento</label>
+        <name>SDM_Objetivos_Segment</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- SDM_Objetivos_September --></label>
+        <name>SDM_Objetivos_September</name>
+    </customLabels>
+    <customLabels>
+        <label>Éxito</label>
+        <name>SDM_Objetivos_Success</name>
+    </customLabels>
+    <customLabels>
+        <label>Objetivos</label>
+        <name>SDM_Objetivos_Title</name>
+    </customLabels>
+    <customLabels>
+        <label>Es necesario seleccionar al menos 1 registro a clonar</label>
+        <name>SDM_Objetivos_ToastCloneNotSelected</name>
+    </customLabels>
+    <customLabels>
+        <label>Ya existe un objetivo para el año seleccionado</label>
+        <name>SDM_Objetivos_ToastDuplicateError</name>
+    </customLabels>
+    <customLabels>
+        <label>Registros clonados correctamente</label>
+        <name>SDM_Objetivos_ToastCloneRecord</name>
+    </customLabels>
+    <customLabels>
+        <label>Registro editado correctamente</label>
+        <name>SDM_Objetivos_ToastEditRecord</name>
+    </customLabels>
+    <customLabels>
+        <label>Actualizados {0} objetivos correctamente</label>
+        <name>SDM_Objetivos_ToastMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Actualizados {0} objetivos correctamente, {1} errores</label>
+        <name>SDM_Objetivos_ToastMessageWithError</name>
+    </customLabels>
+    <customLabels>
+        <label>Registro guardado correctamente</label>
+        <name>SDM_Objetivos_ToastNewRecord</name>
+    </customLabels>
+    <customLabels>
+        <label>Atención</label>
+        <name>SDM_Objetivos_Warning</name>
+    </customLabels>
+    <customLabels>
+        <label>Año</label>
+        <name>SDM_Objetivos_Year</name>
+    </customLabels>
+    <customLabels>
+        <label>Cancelar</label>
+        <name>SDM_PlanAnual_ButtonCancel</name>
+    </customLabels>
+    <customLabels>
+        <label>Eliminar</label>
+        <name>SDM_PlanAnual_ButtonDelete</name>
+    </customLabels>
+    <customLabels>
+        <label>Editar</label>
+        <name>SDM_PlanAnual_ButtonEdit</name>
+    </customLabels>
+    <customLabels>
+        <label>Nuevo</label>
+        <name>SDM_PlanAnual_ButtonNew</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardar</label>
+        <name>SDM_PlanAnual_ButtonSave</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardando...</label>
+        <name>SDM_PlanAnual_ButtonSaving</name>
+    </customLabels>
+    <customLabels>
+        <label>Deshacer</label>
+        <name>SDM_PlanAnual_ButtonUndo</name>
+    </customLabels>
+    <customLabels>
+        <label>Campo bloqueado</label>
+        <name>SDM_PlanAnual_FieldLock</name>
+    </customLabels>
+    <customLabels>
+        <label>Selecciona el indicador</label>
+        <name>SDM_PlanAnual_IndicatorPlaceholder</name>
+    </customLabels>
+    <customLabels>
+        <label>KPI actual. Ir al plan.</label>
+        <name>SDM_PlanAnual_KPICompare</name>
+    </customLabels>
+    <customLabels>
+        <label>Sin datos</label>
+        <name>SDM_PlanAnual_KPINoData</name>
+    </customLabels>
+    <customLabels>
+        <label>KPI real</label>
+        <name>SDM_PlanAnual_KPIReal</name>
+    </customLabels>
+    <customLabels>
+        <label>Cargando</label>
+        <name>SDM_PlanAnual_Loading</name>
+    </customLabels>
+    <customLabels>
+        <label>Nuevo plan</label>
+        <name>SDM_PlanAnual_NewPlan</name>
+    </customLabels>
+    <customLabels>
+        <label>No hay planes anuales definidos.</label>
+        <name>SDM_PlanAnual_NoPlan</name>
+    </customLabels>
+    <customLabels>
+        <label>Valor orginal:</label>
+        <name>SDM_PlanAnual_OriginalValue</name>
+    </customLabels>
+    <customLabels>
+        <label>Nombre del plan</label>
+        <name>SDM_PlanAnual_PlanName</name>
+    </customLabels>
+    <customLabels>
+        <label>Año de los planes</label>
+        <name>SDM_PlanAnual_PlanYears</name>
+    </customLabels>
+    <customLabels>
+        <label>Planes a eliminar al guardar</label>
+        <name>SDM_PlanAnual_PlansToDelete</name>
+    </customLabels>
+    <customLabels>
+        <label>Selecciona el producto</label>
+        <name>SDM_PlanAnual_ProductPlaceholder</name>
+    </customLabels>
+    <customLabels>
+        <label>Indicador</label>
+        <name>SDM_PlanAnual_RowIndicator</name>
+    </customLabels>
+    <customLabels>
+        <label>Plan</label>
+        <name>SDM_PlanAnual_RowPlanDT</name>
+    </customLabels>
+    <customLabels>
+        <label>Producto</label>
+        <name>SDM_PlanAnual_RowProduct</name>
+    </customLabels>
+    <customLabels>
+        <label>Segmento</label>
+        <name>SDM_PlanAnual_RowSegment</name>
+    </customLabels>
+    <customLabels>
+        <label>Año</label>
+        <name>SDM_PlanAnual_RowYear</name>
+    </customLabels>
+    <customLabels>
+        <label>Error al guardar</label>
+        <name>SDM_PlanAnual_SavingError</name>
+    </customLabels>
+    <customLabels>
+        <label>Ha habido un error desconocido al guardar los cambios.</label>
+        <name>SDM_PlanAnual_SavingErrorMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Exito</label>
+        <name>SDM_PlanAnual_SavingSuccess</name>
+    </customLabels>
+    <customLabels>
+        <label>Cambios guardados correctamente.</label>
+        <name>SDM_PlanAnual_SavingSuccessMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Selecciona el segmento</label>
+        <name>SDM_PlanAnual_SegmentPlaceholder</name>
+    </customLabels>
+    <customLabels>
+        <label>Sumatorio (informativo)</label>
+        <name>SDM_PlanAnual_Summary</name>
+    </customLabels>
+    <customLabels>
+        <label>Generación de Planes Anuales</label>
+        <name>SDM_PlanAnual_Title</name>
+    </customLabels>
+    <customLabels>
+        <label>Selecciona el año</label>
+        <name>SDM_PlanAnual_YearPlaceholder</name>
+    </customLabels>
+    <customLabels>
+        <label>Se te han asignado nuevos planes comerciales con los siguientes asuntos:</label>
+        <name>SDM_PlanAnual_NotifBody</name>
+    </customLabels>
+    <customLabels>
+        <label>Asignación de planes comerciales anuales</label>
+        <name>SDM_PlanAnual_NotifTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Cancelar</label>
+        <name>SDM_PlanAnual_RecordPage_Cancel</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardar</label>
+        <name>SDM_PlanAnual_RecordPage_Save</name>
+    </customLabels>
+    <customLabels>
+        <label>Editar</label>
+        <name>SDM_PlanAnual_RecordPage_Edit</name>
+    </customLabels>
+    <customLabels>
+        <label>Información General</label>
+        <name>SDM_PlanAnual_RecordPage_GeneralInformation</name>
+    </customLabels>
+    <customLabels>
+        <label>Periodo Temporal</label>
+        <name>SDM_PlanAnual_RecordPage_TimePeriod</name>
+    </customLabels>
+    <customLabels>
+        <label>KPI</label>
+        <name>SDM_PlanAnual_RecordPage_KPI</name>
+    </customLabels>
+    <customLabels>
+        <label>Error de validación</label>
+        <name>SDM_PlanAnual_ValidationTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Hay campos sin informar</label>
+        <name>SDM_PlanAnual_ValidationMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Recargar planes</label>
+        <name>SDM_PlanAnual_ButtonRefresh</name>
+    </customLabels>
+    <customLabels>
+        <label>Leyenda</label>
+        <name>SDM_PlanAnual_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>Los subplanes con valor Cero a nivel de RN/CV para DT/DV o Mediador para RN/CV no se crearán o si existían se eliminarán.</label>
+        <name>SDM_PlanAnual_WarningCero</name>
+    </customLabels>
+    <customLabels>
+        <label>Fuente DW sin contemplar normalización de Flotas ni códigos de Digital</label>
+        <name>SDM_PlanAnual_Message_Fleets</name>
     </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
@@ -6053,10 +5877,6 @@
         <name>ExactTargetPhoenix</name>
     </customTabs>
     <customTabs>
-        <label><!-- Generar Plan Anual --></label>
-        <name>GenerarPlan</name>
-    </customTabs>
-    <customTabs>
         <label><!-- Getting Started --></label>
         <name>Getting_Started</name>
     </customTabs>
@@ -6065,210 +5885,16 @@
         <name>INFOURLProtocolDebugger</name>
     </customTabs>
     <customTabs>
-        <label><!-- Objetivos --></label>
-        <name>Objetivos</name>
-    </customTabs>
-    <customTabs>
         <label><!-- Send Analytics --></label>
         <name>Send_Analytics</name>
     </customTabs>
-    <flowDefinitions>
-        <flows/>
-        <fullName>AccountTriggerBeforeInsert</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CCSSearchAndScreenPop</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CSMSearchAndScreenPop</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows>
-            <screens>
-                <fields>
-                    <name>Callback_Section1</name>
-                </fields>
-                <fields>
-                    <name>CallbacksProximosTitulo</name>
-                </fields>
-                <fields>
-                    <name>CallbacksVencidosTitulo</name>
-                </fields>
-                <fields>
-                    <name>ExistenProximos</name>
-                </fields>
-                <fields>
-                    <name>Intro</name>
-                </fields>
-                <fields>
-                    <name>NewCallback</name>
-                </fields>
-                <fields>
-                    <name>Nombre</name>
-                </fields>
-                <name>Callback</name>
-            </screens>
-        </flows>
-        <fullName>Callback</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CampaignMemberTriggerBeforeInsertUpdatePhone</fullName>
-    </flowDefinitions>
+    <customTabs>
+        <label><!-- Generar Plan Anual --></label>
+        <name>GenerarPlan</name>
+    </customTabs>
     <flowDefinitions>
         <flows/>
         <fullName>Campaign_Member_Status</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows>
-            <choices>
-                <name>Externo</name>
-            </choices>
-            <choices>
-                <name>Interno</name>
-            </choices>
-            <screens>
-                <fields>
-                    <name>TXTEstadoNuevoCerrado</name>
-                </fields>
-                <name>Aviso_Estado_Nuevo_o_Cerrado</name>
-            </screens>
-            <screens>
-                <fields>
-                    <name>TXTNoSupervisor</name>
-                </fields>
-                <name>Aviso_No_Supervisor</name>
-            </screens>
-            <screens>
-                <fields>
-                    <name>Tipo_de_escalado</name>
-                </fields>
-                <name>Escalado</name>
-            </screens>
-        </flows>
-        <fullName>CaseScaled</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows>
-            <choices>
-                <name>NoAsignacion</name>
-            </choices>
-            <choices>
-                <name>SiAsignacion</name>
-            </choices>
-            <screens>
-                <fields>
-                    <inputParameters>
-                        <name>accountIdsList</name>
-                        <value/>
-                    </inputParameters>
-                    <name>LWCAction</name>
-                </fields>
-                <name>Elige_una_de_estas_cuentas</name>
-            </screens>
-            <screens>
-                <fields>
-                    <name>TextNoAccounts</name>
-                </fields>
-                <name>ErrorNoAccounts</name>
-            </screens>
-            <screens>
-                <fields>
-                    <name>MostrarCuentaSeleccionada</name>
-                </fields>
-                <fields>
-                    <name>rb_ConfirmarCancelarAsignacion</name>
-                </fields>
-                <name>MostrarCuentaSeleccionadaMensaje</name>
-            </screens>
-        </flows>
-        <fullName>CaseSelectCustomer</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerAfterInsertGenesysInfoNotesRouter</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerAfterInsertNotificacionesAperturaCCS</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerAfterInsertSolicitudEncuesta</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerAfterInsertUpdate</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerAfterInsertUpdateNotificacionesPendientesCCS</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerAfterInsertUpdateNotificacionesPendientesCSM</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerAfterUpdateNotificacionesCierreCCS</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerBeforeInsertEntitlement</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerBeforeInsertUpdate</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerBeforeInsertUpdateSuppliedData</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerBeforeUpdateEntitlement</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerBeforeUpdateRobotTypificationFailed</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerBeforeUpdateStopped</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>CaseTriggerHegeoBeforeUpdate</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>Case_Trigger_After_Insert_Update_Check_WebEmail</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>Case_Trigger_After_Update_Desconexion_interacciones</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>Case_Trigger_Before_insert_Centro</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>ContactPointEmailTriggerBeforeInsertUpdateAccount</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>ContactPointPhoneTriggerBeforeInsertUpdateAccount</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>ContactTriggerBeforeInsertTitle</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>Contact_Trigger_Before_insert_Multientidad</fullName>
     </flowDefinitions>
     <flowDefinitions>
         <flows/>
@@ -6276,47 +5902,7 @@
     </flowDefinitions>
     <flowDefinitions>
         <flows/>
-        <fullName>EmailMessageTriggerAfterInsertCaseStatus</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>EmailMessageTriggerAfterInsertUpdateAcuseRecibo</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>EmailMessage_Busqueda_gestor_preferente</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>EmailMessage_Comprobar_Cola_Genesys_y_ParentID</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>EmailMessage_Trigger_After_insert_update_Route_to_Genesys</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>EmailMessage_Trigger_After_update_Route_to_Genesys</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>GenesysCloudCallbackRouter</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
         <fullName>GenesysPhone</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>GenesysQueueRouter</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>Integraci_n</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>JBSystemFlow_CampaignMember</fullName>
     </flowDefinitions>
     <flowDefinitions>
         <flows/>
@@ -6325,10 +5911,6 @@
     <flowDefinitions>
         <flows/>
         <fullName>JBSystemFlow_Order</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>JBSystem_CampaignMember_Process</fullName>
     </flowDefinitions>
     <flowDefinitions>
         <flows/>
@@ -6344,286 +5926,12 @@
     </flowDefinitions>
     <flowDefinitions>
         <flows/>
-        <fullName>OCS_Notificaciones_de_Caso</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>PolicyTriggerAfterInsertUpdate</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>PolicyTriggerAfterUpdateCancelPolicy</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>PolicyTriggerBeforeInsertUpdate</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
         <fullName>Quote_Step_4_5_6</fullName>
     </flowDefinitions>
-    <flowDefinitions>
-        <flows>
-            <choices>
-                <name>Email</name>
-            </choices>
-            <choices>
-                <name>SMS</name>
-            </choices>
-            <screens>
-                <fields>
-                    <name>ErrorMsg</name>
-                </fields>
-                <name>CaseClosedMsg</name>
-            </screens>
-            <screens>
-                <fields>
-                    <name>ErrorDefaultMsg</name>
-                </fields>
-                <name>DefaultMsg</name>
-            </screens>
-            <screens>
-                <fields>
-                    <inputParameters>
-                        <name>required</name>
-                        <value/>
-                    </inputParameters>
-                    <name>InsertEmail</name>
-                </fields>
-                <name>InsertEmailScreen</name>
-            </screens>
-            <screens>
-                <fields>
-                    <inputParameters>
-                        <name>label</name>
-                        <value/>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>required</name>
-                        <value/>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>value</name>
-                        <value/>
-                    </inputParameters>
-                    <name>InsertPhone</name>
-                </fields>
-                <name>InsertPhoneScreen</name>
-            </screens>
-            <screens>
-                <fields>
-                    <name>Options</name>
-                </fields>
-                <name>NotifyUser</name>
-            </screens>
-            <textTemplates>
-                <name>MessageBody</name>
-            </textTemplates>
-        </flows>
-        <fullName>RequestCaseDocumentation</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>SDM_DatesFromMonth</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>SDM_Event_Custom_Notification</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>SDM_Insert_Task</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows>
-            <textTemplates>
-                <name>BodyKPIChanged</name>
-            </textTemplates>
-            <textTemplates>
-                <name>BodyKPIReached</name>
-            </textTemplates>
-            <textTemplates>
-                <name>BodyPlanEnded</name>
-            </textTemplates>
-            <textTemplates>
-                <name>BodyWeekLeft</name>
-            </textTemplates>
-            <textTemplates>
-                <name>BodyWeekLeftMensual</name>
-            </textTemplates>
-            <textTemplates>
-                <name>TaskMessageMensualPlan</name>
-            </textTemplates>
-            <textTemplates>
-                <name>TaskSubjectMensualPlan</name>
-            </textTemplates>
-        </flows>
-        <fullName>SDM_Notifications</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>SDM_Objetivos_ExternalId</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>SDM_PC_Start_date</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>SDM_PC_Visibility</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>SDM_Task_Status</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>SDM_UncheckNotifications</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>ScheduleDeleteRecordsEventSurveys</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>ScopeTriggerAfterInsertTelemarketing</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>SetExternalRequestRecordType</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>Survey_Trigger_Before_Insert_Completado_de_datos</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>TaskTriggerAfterUpdateScaledCase</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>TaskTriggerAfterUpdateWhatsAppInteractionContact</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>TaskTriggerBeforeInsertUpdateANI</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>TaskTriggerBeforeInsertUpdateDNIS</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>TaskTrigger_AfterUpdate_BorrarTranscripcionesAntiguas</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>ZECallbackRoute</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows>
-            <choices>
-                <name>DefaultScope</name>
-            </choices>
-            <choices>
-                <name>EmptyCommercialActivity</name>
-            </choices>
-            <choices>
-                <name>ScopeZEChoice</name>
-            </choices>
-            <choices>
-                <name>ScopeZEOChoice</name>
-            </choices>
-            <screens>
-                <fields>
-                    <name>CommercialActivity</name>
-                </fields>
-                <fields>
-                    <inputParameters>
-                        <name>required</name>
-                        <value/>
-                    </inputParameters>
-                    <name>Email</name>
-                </fields>
-                <fields>
-                    <name>FirstName</name>
-                    <validationRule/>
-                </fields>
-                <fields>
-                    <name>LastName</name>
-                    <validationRule/>
-                </fields>
-                <fields>
-                    <name>NationalIdentifier</name>
-                    <validationRule/>
-                </fields>
-                <fields>
-                    <inputParameters>
-                        <name>label</name>
-                        <value/>
-                    </inputParameters>
-                    <name>Phone</name>
-                </fields>
-                <fields>
-                    <name>Scope</name>
-                </fields>
-                <name>AccountInformation</name>
-            </screens>
-        </flows>
-        <fullName>ZECreateLead</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>ZEEmailRoute</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>ZEGetCallback</fullName>
-    </flowDefinitions>
-    <flowDefinitions>
-        <flows/>
-        <fullName>ZESearchAndScreenPop</fullName>
-    </flowDefinitions>
     <prompts>
-        <name>EnablementSwitchToProgramsEnblAdmin</name>
+        <name>Events</name>
         <promptVersions>
-            <name>Cambiar entre medidas y programas fácilmente</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>CDPOnboardingInAppGuidance</name>
-        <promptVersions>
-            <name>Orientación en aplicación de incorporación de CDP</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>Dashboards</name>
-        <promptVersions>
-            <name>Dashboards</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>ServiceCloudCoreReportsTab</name>
-        <promptVersions>
-            <name>Ficha Informes principales de Service Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>EnablementExploreAnalyticsEnblAdmin</name>
-        <promptVersions>
-            <name>Explorar análisis</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>ServiceCloudTrialDashboardGuide</name>
-        <promptVersions>
-            <name>Guía de panel de prueba de Service Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudTrialKanbanVideo</name>
-        <promptVersions>
-            <name>Vídeo de kanban de prueba de Sales Cloud</name>
+            <name>Events</name>
         </promptVersions>
     </prompts>
     <prompts>
@@ -6633,243 +5941,9 @@
         </promptVersions>
     </prompts>
     <prompts>
-        <name>ReleaseReadiness</name>
-        <promptVersions>
-            <name>Preparación para versión</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>X2StepWalkthroughonReports</name>
-        <promptVersions>
-            <name>Presentación de 2 pasos en Paso 1 de Informes</name>
-            <stepNumber>1</stepNumber>
-        </promptVersions>
-        <promptVersions>
-            <name>Presentación de 2 pasos en Paso 2 de Informes</name>
-            <stepNumber>2</stepNumber>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>Chatter</name>
-        <promptVersions>
-            <name>Chatter</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudTrialChatterGuide</name>
-        <promptVersions>
-            <name>Guía de Chatter de prueba de Sales Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>ServiceCloudTrialChatterGuide</name>
-        <promptVersions>
-            <name>Guía de Chatter de prueba de Service Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SelfSupportDataImportWizard</name>
-        <promptVersions>
-            <name>Asistente de importación de datos con asistencia propia</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>ServiceCloudTrialHomepageGuide</name>
-        <promptVersions>
-            <name>Guía de página de inicio de prueba de Service Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>X4StepWalkthroughonContact</name>
-        <promptVersions>
-            <name>Presentación de 4 pasos en Paso 1 de contacto</name>
-            <stepNumber>1</stepNumber>
-        </promptVersions>
-        <promptVersions>
-            <name>Visita guiada de 4 pasos en Paso 2 de contacto</name>
-            <stepNumber>2</stepNumber>
-        </promptVersions>
-        <promptVersions>
-            <name>Visita guiada de 4 pasos en Paso 3 de contacto</name>
-            <stepNumber>3</stepNumber>
-        </promptVersions>
-        <promptVersions>
-            <name>Presentación de 4 pasos en Paso 4 de contacto</name>
-            <stepNumber>4</stepNumber>
-        </promptVersions>
-    </prompts>
-    <prompts>
         <name>Kanban</name>
         <promptVersions>
             <name>Kanban</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>LocalCommunity</name>
-        <promptVersions>
-            <name>Local Community</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudCoreOpportunitiesTab</name>
-        <promptVersions>
-            <name>Ficha Oportunidades principales de Sales Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>ReleaseReadinessServiceSandbox</name>
-        <promptVersions>
-            <name>Sandbox de servicio de Preparación para versión</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCoreQuoteAdminCpq</name>
-        <promptVersions>
-            <name>Admin de presupuestos principal de ventas a CPQ</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudTrialContactsListViewsVideo</name>
-        <promptVersions>
-            <name>Vídeo de vistas de listas de contactos de prueba de Sales Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>ReleaseReadinessSandboxSales</name>
-        <promptVersions>
-            <name>Ventas de Sandbox de preparación para versión</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>ServiceCloudCoreChatter</name>
-        <promptVersions>
-            <name>Chatter principal de Service Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>tabletFullWidthGA</name>
-        <promptVersions>
-            <name>TabletFullWidthGA</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudCoreChatterTab</name>
-        <promptVersions>
-            <name>Ficha Chatter principal de Sales Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>NPSPLicenseDay1</name>
-        <promptVersions>
-            <name>Licencia de NPSP día 1</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>EnablementExploreMeasuresEnblAdmin</name>
-        <promptVersions>
-            <name>Explorar las medidas</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudTrialHomePage</name>
-        <promptVersions>
-            <name>Página inicio de prueba de Sales Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>ServiceCloudCoreCases</name>
-        <promptVersions>
-            <name>Casos principales de Service Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>MFARequirementAwareness</name>
-        <promptVersions>
-            <name>Concienciación de requisito de MFA</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SetupUsers</name>
-        <promptVersions>
-            <name>Configurar usuarios</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudCoreReportsTab</name>
-        <promptVersions>
-            <name>Ficha Informes principales de Sales Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>EngagementAttributeTips</name>
-        <promptVersions>
-            <name>Sugerencias atributos de implicación</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SupportEmailToCase</name>
-        <promptVersions>
-            <name>Cobertura de Correo electrónico para registro de casos</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>EinsteinPredictionBuilderSetupPagePrompt</name>
-        <promptVersions>
-            <name>Solicitud de página de configuración de Einstein Prediction Builder</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>NPSPLicenseDay20</name>
-        <promptVersions>
-            <name>Licencia de NPSP día 20</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>EnablementExploreProgramsEnblAdmin</name>
-        <promptVersions>
-            <name>Explorar los programas</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>Home_Page</name>
-        <promptVersions>
-            <name>Home Page</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudCoreContactsTab</name>
-        <promptVersions>
-            <name>Ficha Contactos principal de Sales Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudTrailPreconfiguredDashboardsGuide</name>
-        <promptVersions>
-            <name>Guía de paneles preconfigurados de rutas de Sales Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>ReleaseReadinessSales</name>
-        <promptVersions>
-            <name>Preparación para versión de ventas</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>CommunityReminder</name>
-        <promptVersions>
-            <name>Community Reminder</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesHVSDialer</name>
-        <promptVersions>
-            <name>Sales HVS Dialer</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>NPSPLicenseDay25</name>
-        <promptVersions>
-            <name>Licencia de NPSP día 25</name>
         </promptVersions>
     </prompts>
     <prompts>
@@ -6879,58 +5953,38 @@
         </promptVersions>
     </prompts>
     <prompts>
-        <name>Events</name>
+        <name>CommunityReminder</name>
         <promptVersions>
-            <name>Events</name>
+            <name>Community Reminder</name>
         </promptVersions>
     </prompts>
     <prompts>
-        <name>ServiceCloudTrialCasesTab</name>
+        <name>LocalCommunity</name>
         <promptVersions>
-            <name>Ficha Casos de prueba de Service Cloud</name>
+            <name>Local Community</name>
         </promptVersions>
     </prompts>
     <prompts>
-        <name>GmailIntegrationandSync</name>
+        <name>Dashboards</name>
         <promptVersions>
-            <name>Integración y sincronización de Gmail</name>
+            <name>Dashboards</name>
         </promptVersions>
     </prompts>
     <prompts>
-        <name>IAGFeatureAdoption</name>
+        <name>Chatter</name>
         <promptVersions>
-            <name>Paso 1 de Adopción de funciones IAG</name>
-            <stepNumber>1</stepNumber>
-        </promptVersions>
-        <promptVersions>
-            <name>Paso 2 de Adopción de funciones IAG</name>
-            <stepNumber>2</stepNumber>
+            <name>Chatter</name>
         </promptVersions>
     </prompts>
     <prompts>
-        <name>ServiceCloudCoreHomepage</name>
+        <name>Home_Page</name>
         <promptVersions>
-            <name>Página de inicio principal de Service Cloud</name>
-        </promptVersions>
-    </prompts>
-    <prompts>
-        <name>SalesCloudCoreHomepage</name>
-        <promptVersions>
-            <name>Página de inicio principal de Sales Cloud</name>
+            <name>Home Page</name>
         </promptVersions>
     </prompts>
     <quickActions>
-        <label><!-- Acción comercial --></label>
-        <name>AccionComercial</name>
-    </quickActions>
-    <quickActions>
-        <aspect>Master</aspect>
         <label>Recordatorio</label>
         <name>CallReminder_Klinc</name>
-    </quickActions>
-    <quickActions>
-        <label><!-- Comunicación --></label>
-        <name>Comunicacion</name>
     </quickActions>
     <quickActions>
         <label><!-- Follow Up --></label>
@@ -6939,10 +5993,6 @@
     <quickActions>
         <label><!-- LogACall --></label>
         <name>LogACall</name>
-    </quickActions>
-    <quickActions>
-        <label><!-- Log a Call --></label>
-        <name>LogCall_Klinc</name>
     </quickActions>
     <quickActions>
         <label><!-- NewAccount --></label>
@@ -6969,132 +6019,17 @@
         <name>NewLead</name>
     </quickActions>
     <quickActions>
-        <label><!-- New Offer --></label>
-        <name>NewOfferZE</name>
-    </quickActions>
-    <quickActions>
         <label><!-- NewOpportunity --></label>
         <name>NewOpportunity</name>
-    </quickActions>
-    <quickActions>
-        <label><!-- New Event --></label>
-        <name>NewSDMEvent</name>
     </quickActions>
     <quickActions>
         <label><!-- NewTask --></label>
         <name>NewTask</name>
     </quickActions>
     <quickActions>
-        <label><!-- Nueva Interacción --></label>
-        <name>Nueva_Interacci_n</name>
-    </quickActions>
-    <quickActions>
-        <label><!-- Recordatorio --></label>
-        <name>Recordatorio</name>
-    </quickActions>
-    <quickActions>
-        <label><!-- Recordatorio --></label>
-        <name>Recordatorio_SDM</name>
-    </quickActions>
-    <quickActions>
-        <label><!-- Seguimiento oferta/póliza --></label>
-        <name>SeguimientoOfertaPoliza</name>
-    </quickActions>
-    <quickActions>
         <label><!-- SendEmail --></label>
         <name>SendEmail</name>
     </quickActions>
-    <reportTypes>
-        <description><!-- Accounts with Entitlements with Contacts --></description>
-        <label><!-- Accounts with Entitlements with Contacts --></label>
-        <name>Accounts_with_Entitlements_with_Contacts</name>
-        <sections>
-            <label><!-- Accounts --></label>
-            <name>Accounts</name>
-        </sections>
-        <sections>
-            <label><!-- Contacts --></label>
-            <name>Contacts</name>
-        </sections>
-        <sections>
-            <label><!-- Entitlements --></label>
-            <name>Entitlements</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Cases and Contacts --></description>
-        <label><!-- Cases and Contacts --></label>
-        <name>Cases_and_Contacts</name>
-        <sections>
-            <label><!-- Cases --></label>
-            <name>Cases</name>
-        </sections>
-        <sections>
-            <label><!-- Contacts --></label>
-            <name>Contacts</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Cases with Activities --></description>
-        <label><!-- Cases with Activities --></label>
-        <name>Cases_with_Activities</name>
-        <sections>
-            <label><!-- Activities --></label>
-            <name>Activities</name>
-        </sections>
-        <sections>
-            <label><!-- Cases --></label>
-            <name>Cases</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Casos y Póliza con Producto --></description>
-        <label><!-- Casos y Póliza con Producto --></label>
-        <name>Casos_con_P_liza_con_Producto</name>
-        <sections>
-            <label><!-- Cases --></label>
-            <name>Cases</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Casos con emails (ampliado) --></description>
-        <label><!-- Casos con emails (ampliado) --></label>
-        <name>Casos_con_emails_ampliado</name>
-        <sections>
-            <label><!-- Cases --></label>
-            <name>Cases</name>
-        </sections>
-        <sections>
-            <label><!-- Emails --></label>
-            <name>Emails</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Contact Requests --></description>
-        <label><!-- Contact Requests --></label>
-        <name>Contact_Requests</name>
-        <sections>
-            <label><!-- Contact Requests --></label>
-            <name>Contact Requests</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Contactos con order y casos --></description>
-        <label><!-- Contactos con order y casos --></label>
-        <name>Contactos_con_order_y_casos</name>
-        <sections>
-            <label><!-- Casos --></label>
-            <name>Casos</name>
-        </sections>
-        <sections>
-            <label><!-- Contacts --></label>
-            <name>Contacts</name>
-        </sections>
-        <sections>
-            <label><!-- Quotes y Pólizas --></label>
-            <name>Quotes y Pólizas</name>
-        </sections>
-    </reportTypes>
     <reportTypes>
         <description><!-- Contactos con pólizas --></description>
         <label><!-- Contactos con pólizas --></label>
@@ -7123,509 +6058,6 @@
         <sections>
             <label><!-- Quotes y Pólizas --></label>
             <name>Quotes y Pólizas</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Contactos con tareas --></description>
-        <label><!-- Contactos con tareas --></label>
-        <name>Contactos_con_tareas</name>
-        <sections>
-            <label><!-- Activities --></label>
-            <name>Activities</name>
-        </sections>
-        <sections>
-            <label><!-- Contacts --></label>
-            <name>Contacts</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Contacts and IndividualEmailResult and Triggered --></description>
-        <label><!-- Contacts and IndividualEmailResult and Triggered --></label>
-        <name>Contacts_and_IndividualEmailResult_and_Triggered</name>
-        <sections>
-            <label><!-- Contacto --></label>
-            <name>Contacto</name>
-        </sections>
-        <sections>
-            <label><!-- Individual Email Results --></label>
-            <name>Individual Email Results</name>
-        </sections>
-        <sections>
-            <label><!-- Triggered Sends --></label>
-            <name>Triggered Sends</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Contacts  and  Orders and ProcuctOrders --></description>
-        <label><!-- Contacts  and  Orders and ProcuctOrders --></label>
-        <name>Contacts_and_Orders_and_ProcuctOrders</name>
-        <sections>
-            <label><!-- Contacts --></label>
-            <name>Contacts</name>
-        </sections>
-        <sections>
-            <label><!-- Order Products --></label>
-            <name>Order Products</name>
-        </sections>
-        <sections>
-            <label><!-- Quotes y Pólizas --></label>
-            <name>Quotes y Pólizas</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Contacts and cases --></description>
-        <label><!-- Contacts and cases --></label>
-        <name>Contacts_and_cases</name>
-        <sections>
-            <label><!-- Cases --></label>
-            <name>Cases</name>
-        </sections>
-        <sections>
-            <label><!-- Contacts --></label>
-            <name>Contacts</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Contacts with quotes --></description>
-        <label><!-- Contacts with quotes --></label>
-        <name>Contacts_with_quotes</name>
-        <sections>
-            <label><!-- Contacts --></label>
-            <name>Contacts</name>
-        </sections>
-        <sections>
-            <label><!-- Quotes y Pólizas --></label>
-            <name>Quotes y Pólizas</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Cuenta principal con KPIs --></description>
-        <label><!-- Cuenta principal con KPIs --></label>
-        <name>Cuenta_principal_con_KPIs</name>
-        <sections>
-            <label><!-- Accounts --></label>
-            <name>Accounts</name>
-        </sections>
-        <sections>
-            <label><!-- Cuentas --></label>
-            <name>Cuentas</name>
-        </sections>
-        <sections>
-            <label><!-- KPIs --></label>
-            <name>KPIs</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Cuentas - Actividades - Planes comerciales --></description>
-        <label><!-- Cuentas - Actividades - Planes comerciales --></label>
-        <name>Cuentas_Actividades_Planes_comerciales</name>
-        <sections>
-            <label><!-- Activities --></label>
-            <name>Activities</name>
-        </sections>
-        <sections>
-            <label><!-- Assigned To --></label>
-            <name>Assigned To</name>
-        </sections>
-        <sections>
-            <label><!-- Cuentas --></label>
-            <name>Cuentas</name>
-        </sections>
-        <sections>
-            <label><!-- Planes Comerciales --></label>
-            <name>Planes Comerciales</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Cuentas con ámbitos --></description>
-        <label><!-- Cuentas con ámbitos --></label>
-        <name>Cuentas_con_ambitos</name>
-        <sections>
-            <label><!-- Accounts --></label>
-            <name>Accounts</name>
-        </sections>
-        <sections>
-            <label><!-- Scope --></label>
-            <name>Scope</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Cuentas con equipos de cuentas --></description>
-        <label><!-- Cuentas con equipos de cuentas --></label>
-        <name>Cuentas_con_equipos_de_cuentas</name>
-        <sections>
-            <label><!-- Account Team --></label>
-            <name>Account Team</name>
-        </sections>
-        <sections>
-            <label><!-- Accounts --></label>
-            <name>Accounts</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Custom Opportunities with Products --></description>
-        <label><!-- Custom Opportunities with Products --></label>
-        <name>Custom_Opportunities_with_Products</name>
-        <sections>
-            <columns>
-                <label><!-- Product Commercial Code --></label>
-                <name>Product Commercial Code</name>
-            </columns>
-            <columns>
-                <label><!-- Product Created Date --></label>
-                <name>Product Created Date</name>
-            </columns>
-            <columns>
-                <label><!-- Product Description --></label>
-                <name>Product Description</name>
-            </columns>
-            <columns>
-                <label><!-- Product Group Code --></label>
-                <name>Product Group Code</name>
-            </columns>
-            <columns>
-                <label><!-- Product Group Description --></label>
-                <name>Product Group Description</name>
-            </columns>
-            <columns>
-                <label><!-- Product Group Name --></label>
-                <name>Product Group Name</name>
-            </columns>
-            <columns>
-                <label><!-- Product INFO Product Number --></label>
-                <name>Product INFO Product Number</name>
-            </columns>
-            <columns>
-                <label><!-- Product INFO Status --></label>
-                <name>Product INFO Status</name>
-            </columns>
-            <columns>
-                <label><!-- Product Marca --></label>
-                <name>Product Marca</name>
-            </columns>
-            <columns>
-                <label><!-- Product Product Code --></label>
-                <name>Product Product Code</name>
-            </columns>
-            <columns>
-                <label><!-- Product Technical Code --></label>
-                <name>Product Technical Code</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Account Name --></label>
-                <name>Scope: Account Name</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Contactable --></label>
-                <name>Scope: Contactable</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Created By --></label>
-                <name>Scope: Created By</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Created Date --></label>
-                <name>Scope: Created Date</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Has Opted Out of Email --></label>
-                <name>Scope: Has Opted Out of Email</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: HashedId --></label>
-                <name>Scope: HashedId</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Last Activity Date --></label>
-                <name>Scope: Last Activity Date</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Last Contactable Modified Date --></label>
-                <name>Scope: Last Contactable Modified Date</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Last Modified By --></label>
-                <name>Scope: Last Modified By</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Last Modified Date --></label>
-                <name>Scope: Last Modified Date</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Legal Entity --></label>
-                <name>Scope: Legal Entity</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Primary Email --></label>
-                <name>Scope: Primary Email</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Primary Phone --></label>
-                <name>Scope: Primary Phone</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Scope --></label>
-                <name>Scope: Scope</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Scope Name --></label>
-                <name>Scope: Scope Name</name>
-            </columns>
-            <columns>
-                <label><!-- Scope: Ámbito ID --></label>
-                <name>Scope: Ámbito ID</name>
-            </columns>
-            <label><!-- Opportunities --></label>
-            <name>Opportunities</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Emails --></description>
-        <label><!-- Emails --></label>
-        <name>Emails</name>
-        <sections>
-            <label><!-- Email Messages --></label>
-            <name>Email Messages</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Encuestas Medallia --></description>
-        <label><!-- Encuestas Medallia --></label>
-        <name>Encuestas_Medallia</name>
-        <sections>
-            <columns>
-                <label><!-- Customer_Email --></label>
-                <name>Customer_Email</name>
-            </columns>
-            <columns>
-                <label><!-- Customer_Phone --></label>
-                <name>Customer_Phone</name>
-            </columns>
-            <columns>
-                <label><!-- DSMOTCTO --></label>
-                <name>DSMOTCTO</name>
-            </columns>
-            <columns>
-                <label><!-- DSTACON --></label>
-                <name>DSTACON</name>
-            </columns>
-            <columns>
-                <label><!-- DSTARES --></label>
-                <name>DSTARES</name>
-            </columns>
-            <label><!-- Caso --></label>
-            <name>Caso</name>
-        </sections>
-        <sections>
-            <columns>
-                <label><!-- CDFILIAC --></label>
-                <name>CDFILIAC</name>
-            </columns>
-            <columns>
-                <label><!-- CDIDFISI --></label>
-                <name>CDIDFISI</name>
-            </columns>
-            <columns>
-                <label><!-- Customer_First_Name --></label>
-                <name>Customer_First_Name</name>
-            </columns>
-            <columns>
-                <label><!-- Customer_Last_Name --></label>
-                <name>Customer_Last_Name</name>
-            </columns>
-            <columns>
-                <label><!-- FENACCON --></label>
-                <name>FENACCON</name>
-            </columns>
-            <label><!-- Cliente --></label>
-            <name>Cliente</name>
-        </sections>
-        <sections>
-            <columns>
-                <label><!-- CDAGRPCN --></label>
-                <name>CDAGRPCN</name>
-            </columns>
-            <columns>
-                <label><!-- CDPRODCO --></label>
-                <name>CDPRODCO</name>
-            </columns>
-            <columns>
-                <label><!-- CDPRODTE --></label>
-                <name>CDPRODTE</name>
-            </columns>
-            <label><!-- Producto --></label>
-            <name>Producto</name>
-        </sections>
-        <sections>
-            <columns>
-                <label><!-- CDENTNEG --></label>
-                <name>CDENTNEG</name>
-            </columns>
-            <columns>
-                <label><!-- CDESTAUT --></label>
-                <name>CDESTAUT</name>
-            </columns>
-            <columns>
-                <label><!-- CDIDFISC --></label>
-                <name>CDIDFISC</name>
-            </columns>
-            <columns>
-                <label><!-- CDNEGOCI --></label>
-                <name>CDNEGOCI</name>
-            </columns>
-            <columns>
-                <label><!-- CLINTEP1 --></label>
-                <name>CLINTEP1</name>
-            </columns>
-            <columns>
-                <label><!-- Customer_Join_Date --></label>
-                <name>Customer_Join_Date</name>
-            </columns>
-            <columns>
-                <label><!-- DNINTERM --></label>
-                <name>DNINTERM</name>
-            </columns>
-            <columns>
-                <label><!-- DNNEGOCI --></label>
-                <name>DNNEGOCI</name>
-            </columns>
-            <columns>
-                <label><!-- Premium_Amount --></label>
-                <name>Premium_Amount</name>
-            </columns>
-            <label><!-- Póliza --></label>
-            <name>Póliza</name>
-        </sections>
-        <sections>
-            <columns>
-                <label><!-- STQSRPS --></label>
-                <name>STQSRPS</name>
-            </columns>
-            <columns>
-                <label><!-- VERBATIM --></label>
-                <name>VERBATIM</name>
-            </columns>
-            <label><!-- Surveys --></label>
-            <name>Surveys</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Leads and Calls --></description>
-        <label><!-- Leads and Calls --></label>
-        <name>Leads_and_Calls</name>
-        <sections>
-            <label><!-- Accounts --></label>
-            <name>Accounts</name>
-        </sections>
-        <sections>
-            <label><!-- Activities --></label>
-            <name>Activities</name>
-        </sections>
-        <sections>
-            <label><!-- Activity --></label>
-            <name>Activity</name>
-        </sections>
-        <sections>
-            <label><!-- Scope --></label>
-            <name>Scope</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Opptys - Activities --></description>
-        <label><!-- Opptys - Activities --></label>
-        <name>Opptys_Activities</name>
-        <sections>
-            <label><!-- Activities --></label>
-            <name>Activities</name>
-        </sections>
-        <sections>
-            <label><!-- Offers --></label>
-            <name>Offers</name>
-        </sections>
-        <sections>
-            <label><!-- Opportunities --></label>
-            <name>Opportunities</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Order &amp; Order Products --></description>
-        <label><!-- Order &amp; Order Products --></label>
-        <name>Order_Order_Products</name>
-        <sections>
-            <label><!-- Order Products --></label>
-            <name>Order Products</name>
-        </sections>
-        <sections>
-            <label><!-- Orders --></label>
-            <name>Orders</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Policies, with Opportunity and Client --></description>
-        <label><!-- Policies, with Opportunity and Client --></label>
-        <name>Policies_with_Opportunity_and_Client</name>
-        <sections>
-            <label><!-- Advisor --></label>
-            <name>Advisor</name>
-        </sections>
-        <sections>
-            <label><!-- Client --></label>
-            <name>Client</name>
-        </sections>
-        <sections>
-            <label><!-- Opportunity --></label>
-            <name>Opportunity</name>
-        </sections>
-        <sections>
-            <label><!-- Policies --></label>
-            <name>Policies</name>
-        </sections>
-        <sections>
-            <label><!-- Product --></label>
-            <name>Product</name>
-        </sections>
-        <sections>
-            <label><!-- Scope --></label>
-            <name>Scope</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Service Contracts with Contract Line Items --></description>
-        <label><!-- Service Contracts with Contract Line Items --></label>
-        <name>Service_Contracts_with_Contract_Line_Items</name>
-        <sections>
-            <label><!-- Contract Line Items --></label>
-            <name>Contract Line Items</name>
-        </sections>
-        <sections>
-            <label><!-- Service Contracts --></label>
-            <name>Service Contracts</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Service Contracts with Entitlements --></description>
-        <label><!-- Service Contracts with Entitlements --></label>
-        <name>Service_Contracts_with_Entitlements</name>
-        <sections>
-            <label><!-- Entitlements --></label>
-            <name>Entitlements</name>
-        </sections>
-        <sections>
-            <label><!-- Service Contracts --></label>
-            <name>Service Contracts</name>
-        </sections>
-    </reportTypes>
-    <reportTypes>
-        <description><!-- Users with or without Email Sends --></description>
-        <label><!-- Users with or without Email Sends --></label>
-        <name>Users_with_or_without_Email_Sends</name>
-        <sections>
-            <label><!-- Email Sends (Owner) --></label>
-            <name>Email Sends (Owner)</name>
-        </sections>
-        <sections>
-            <label><!-- Users --></label>
-            <name>Users</name>
         </sections>
     </reportTypes>
     <reportTypes>
