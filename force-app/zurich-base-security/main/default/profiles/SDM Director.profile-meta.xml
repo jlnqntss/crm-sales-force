@@ -2051,6 +2051,11 @@
         <field>purecloud__PureCloud_Entity__c.purecloud__Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlanComercial__c.Intermediary_Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Account-SDM Intermediary</layout>
         <recordType>Account.Intermediary</recordType>
@@ -2613,5 +2618,9 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>OverrideForecasts</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewMyTeamsDashboards</name>
     </userPermissions>
 </Profile>

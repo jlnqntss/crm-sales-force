@@ -1,6 +1,19 @@
 <!-- sldsValidatorIgnore -->
 <template>
     <lightning-card title={labels.SDM_PlanAnual_Title} icon-name="action:goal">
+          <lightning-icon
+            icon-name="utility:warning"
+            size="xx-small"
+            alternative-text="warning"
+            title="warning"
+            variant="warning"
+            style="padding-left: 4rem"
+          ></lightning-icon>
+          <span class="slds-m-left_xx-small slds-m-top_x-small">
+            <mark style="background: rgb(243, 241, 241);">
+             "{labels.SDM_PlanAnual_Message_Fleets}"
+            </mark>
+          </span>
       <!-- SLOT: ACTION -->      
       <template if:true={canSave}>
         <span slot="actions" class="slds-m-right_small">

@@ -93,11 +93,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>GenesysPreferredOwner__c</field>
+                <field>GenesysFlowID__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>GenesysFlowID__c</field>
+                <field>Industry__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

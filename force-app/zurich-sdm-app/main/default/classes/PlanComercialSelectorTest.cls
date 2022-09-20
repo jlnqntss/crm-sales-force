@@ -123,4 +123,152 @@ private class PlanComercialSelectorTest
         // Comprobamos el resultado del test
         System.assertEquals(3, plans.size(), 'Deberia haber 3 planes anuales');
     }
+
+    /**
+     * Test del metodo que recupera los planes mensuales a partir de unos planes anuales
+     *
+     * @author nts (dmunoz)
+     * @date 29/07/2022
+     */
+    @isTest
+    static void findMensualPlans() {
+
+        List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+                                                        WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
+                                                        AND ParentPlan__c != NULL 
+                                                        AND Intermediary__c = NULL
+                                                        LIMIT 1]);
+
+        Test.startTest();
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        List<Plancomercial__c> plans = planSel.findMensualPlans(planesAnuales);
+        Test.stopTest();
+
+        // Comprobamos el resultado del test
+        System.assertEquals(0, plans.size(), 'Deberia haber 0 planes mensuales');
+    }
+
+
+    /**
+     * Test del metodo que recupera los planes anuales a partir de los indicadores del objetivo
+     *
+     * @author nts (dmunoz)
+     * @date 29/07/2022
+     */
+    @isTest
+    static void findAnualPlanByObjectiveIndicators() {
+
+        List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+                                                        WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
+                                                        AND ParentPlan__c != NULL 
+                                                        AND Intermediary__c = NULL
+                                                        LIMIT 1]);
+
+     
+
+        if (!planesAnuales.isEmpty()) {
+            PlanComercial__c pc = planesAnuales.get(0);
+
+            Set<String> indicatorSet = new Set<String>();
+            Set<String> segmentSet = new Set<String>();
+            Set<String> productSet = new Set<String>();
+            Set<Integer> year = new Set<Integer>();
+
+            indicatorSet.add(pc.Indicator__c);
+            segmentSet.add(pc.Segment__c);
+            productSet.add(pc.Product__c);
+            year.add(pc.StartDate__c.Year());
+
+            Test.startTest();
+            PlanComercialSelector planSel = new PlanComercialSelector();
+            List<Plancomercial__c> plans = planSel.findAnualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, year);
+
+            Test.stopTest();
+            
+            System.assertEquals(true, plans.isEmpty(), 'No debe haber un plan anual por el valor de metadata');
+        }
+    }
+
+
+    /**
+     * Test del metodo que recupera los planes mensuales a partir de unos planes anuales
+     *
+     * @author nts (dmunoz)
+     * @date 29/07/2022
+     */
+    @isTest
+    static void findMensualPlanByObjectiveIndicators() {
+
+        List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+                                                        WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
+                                                        AND ParentPlan__c != NULL 
+                                                        AND Intermediary__c = NULL
+                                                        LIMIT 1]);
+
+     
+
+        if (!planesAnuales.isEmpty()) {
+            PlanComercial__c pc = planesAnuales.get(0);
+
+            Test.startTest();
+            Objective__c objective = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+            insert objective;
+
+            Test.stopTest();
+
+            Set<String> indicatorSet = new Set<String>();
+            Set<String> segmentSet = new Set<String>();
+            Set<String> productSet = new Set<String>();
+            Set<Integer> year = new Set<Integer>();
+
+            indicatorSet.add(pc.Indicator__c);
+            segmentSet.add(pc.Segment__c);
+            productSet.add(pc.Product__c);
+            year.add(pc.StartDate__c.Year());
+
+            
+            PlanComercialSelector planSel = new PlanComercialSelector();
+            List<Plancomercial__c> plans = planSel.findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, year);            
+            
+            System.assertEquals(true, plans.isEmpty(), 'No debe haber plan mensual');
+        }
+    }
+
+    /**
+     * Test del metodo que recupera los email del usuario asignado a un plan
+     *
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     */
+    @isTest
+    static void findAssignedToEmailFromPC() {
+        List<PlanComercial__c> planesComerciales = new List<PlanComercial__c>([SELECT ID FROM PlanComercial__c LIMIT 1]);
+
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        Test.startTest();
+        Map<Id, PlanComercial__c> result = planSel.findAssignedToEmailFromPC(planesComerciales);
+        Test.stopTest();
+
+        System.assertEquals(false, result.isEmpty(), 'Debe haber resultados');
+
+
+    }
+
+    /**
+     * Test NULL del metodo que recupera los email del usuario asignado a un plan
+     *
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     */
+    @isTest
+    static void findAssignedToEmailFromPC_Null() {
+        List<PlanComercial__c> planesComerciales = new List<PlanComercial__c>([SELECT ID FROM PlanComercial__c LIMIT 1]);
+
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        Test.startTest();
+        Map<Id, PlanComercial__c> result = planSel.findAssignedToEmailFromPC(null);
+        Test.stopTest();
+
+        System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
+    }
 }

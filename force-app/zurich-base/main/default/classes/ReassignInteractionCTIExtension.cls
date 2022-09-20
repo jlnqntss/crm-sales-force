@@ -5,10 +5,10 @@
  */
 global without sharing class ReassignInteractionCTIExtension implements purecloud.CTIExtension.SaveLog
 {
-    private final static String TASK_SUBTYPE_CALL = 'Call';
-    private final static String TASK_SUBTYPE_EMAIL = 'Email';
-    private final static String TASK_STATUS_ASSIGNED = 'Asignada';
-    private final static String TASK_STATUS_CLOSED = 'Cerrada';
+    private final static String TASK_SUBTYPE_CALL       = 'Call';
+    private final static String TASK_SUBTYPE_EMAIL      = 'Email';
+    private final static String TASK_STATUS_ASSIGNED    = 'Asignada';
+    private final static String TASK_STATUS_CLOSED      = 'Cerrada';
     private final static String TASK_RECORDTYPE_ID_INTERACTION = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
 
     /**
@@ -29,86 +29,144 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
         try
         {
-            Map<String, Object> deserializedData = (Map<String, Object>) JSON.deserializeUntyped(data);
-            Map<String, Object> interaction = (Map<String, Object>) deserializedData.get('interaction');
-            Task interactionTask = createTaskFromCallLog( (Map<String, Object>) deserializedData.get('callLog') );
-            String eventName = (String) deserializedData.get('eventName');
-            String interactionId;
-            Id currentWhatId;
+            Map<String, Object> deserializedEventData = (Map<String, Object>) JSON.deserializeUntyped(data);
 
-            // 1 - Si la tarea de Genesys no cuenta con Id,se busca en el sistema a través del InteractionId
-            //     Este proceso solo se produce en la gestión inicial
-            if(eventName == 'interactionChanged' && String.isEmpty(interactionTask.Id) )
-            {
-                if ( interaction.containsKey('id') )
-                {
-                    interactionId = (String) interaction.get('id');
-                }
+            Task interactionTask = createTaskFromCallLog( (Map<String, Object>) deserializedEventData.get('callLog') );
 
-                List<Task> existingInteractionTasks = ActivitySelector.selectTasksByCallObjectIdentifier(interactionId);
+            manageInteractionEvents(interactionTask, deserializedEventData);
 
-                if(!existingInteractionTasks.isEmpty() )
-                {
-                    interactionTask.Id = existingInteractionTasks[0].Id;
-                    interactionTask.WhatId = existingInteractionTasks[0].WhatId;
-                    interactionTask.WhoId = existingInteractionTasks[0].WhoId;
-                }
-                else if(interactionTask.type == TASK_SUBTYPE_EMAIL)
-                {
-                    List<EmailMessage> relatedEmailMessages = new EmailMessagesSelector(new Set<String> { 'Id', 'ParentId', 'Status', 'ToIds', 'ActivityId' }).selectByInteractionId(new Set<String> { interactionId });
-
-                    if(!relatedEmailMessages.isEmpty() && relatedEmailMessages[0].ActivityId != null)
-                    {
-                        interactionTask.Id = relatedEmailMessages[0].ActivityId;
-
-                        if(relatedEmailMessages[0].ParentId != null)
-                        {
-                            interactionTask.WhatId = relatedEmailMessages[0].ParentId;
-                        }
-                    }
-                    else
-                    {
-                        interactionTask.TaskSubtype = TASK_SUBTYPE_EMAIL;
-                    }
-                }
-                else if(interactionTask.type == TASK_SUBTYPE_CALL)
-                {
-                    interactionTask.TaskSubtype = TASK_SUBTYPE_CALL;
-                }
-
-                interactionTask.Status = TASK_STATUS_ASSIGNED;
-                interactionTask.CallObject = interactionId;
-                interactionTask.OwnerId = UserInfo.getUserId();
-            }
-            else if(eventName == 'interactionChanged' && !String.isEmpty(interactionTask.Id))
-            {
-                if ( interaction.containsKey('messageType') && (String) interaction.get('messageType') == 'whatsapp')
-                {
-                    interactionTask.Status = TASK_STATUS_ASSIGNED;
-                }
-            }
-            else if(eventName == 'interactionDisconnected')
-            {
-                interactionTask.Status = TASK_STATUS_CLOSED;
-            }
-
-            //Actualizar Owner del registro relacionado en cualquier situación que se tenga whatId
-            if(interactionTask.WhatId != null)
-            {
-                changeOwnerFromQueueToUser(interactionTask);
-            }
+            changeOwnerFromQueueToUser(interactionTask); // Se hace update del registro relacionado a la llamada
 
             upsert interactionTask;
 
             return interactionTask.Id;
         }
-        catch (Exception e)
+        catch (Exception interactionError)
         {
             Database.rollback(sp);
-            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_CRITICAL, e.getMessage(), 'ReassignInteractionCTIExtension', e.getStackTraceString() + ' Payload: ' + data);
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_CRITICAL, interactionError.getMessage(), 'ReassignInteractionCTIExtension', interactionError.getStackTraceString() + ' Payload: ' + data);
         }
 
         return null;
+    }
+
+    /**
+     * @author      jgallaga
+     * @date        05/08/2022
+     * @description A partir del tipo de evento, se gestiona la interacción de la forma adecuada
+     * @param       Task - La interacción relacionada con el evento
+     * @param       Map<String,Obejct> - Mapa con la información del evento
+     */
+    private static void manageInteractionEvents(Task interactionTask, Map<String, Object> eventData)
+    {
+        String eventName = (String) eventData.get('eventName');
+
+        if(String.isBlank(eventName))
+        {
+            return;
+        }
+
+        if(eventName == 'interactionChanged')
+        {
+            Map<String, Object> interaction = (Map<String, Object>) eventData.get('interaction');
+
+            if( String.isEmpty(interactionTask.Id))
+            {
+                eventOnInteractionChanged(interactionTask, interaction);
+            }
+            else // Interaccion Whatsapp
+            {
+                eventOnInteractionChangedWhatsApp(interactionTask, interaction);
+            }
+        }
+        else if(eventName == 'interactionDisconnected')
+        {
+            eventOnInteractionDisconnected(interactionTask);
+        }
+    }
+
+    /**
+     * @author      jgallaga
+     * @date        05/08/2022
+     * @description Se comprueba si la interacción existe ya en el sistema de una gestión anterior.
+     *              Dependiendo de si existe o no, se comprueba el tupo de interacción para relacionar la tarea con el registro
+     *              correspondiente.
+     *              Finalmente se asigna el estado y posesion de la tarea al usuario que ha provocado el evento.
+     * @param       Task - La interacción relacionada con el evento
+     * @param       Map<String,Obejct> - Mapa con la información del evento
+     */
+    private static void eventOnInteractionChanged(Task interactionTask, Map<String, Object> eventInteractionData)
+    {
+        String interactionId = eventInteractionData.containsKey('id') ? (String) eventInteractionData.get('id') : null;
+
+        List<Task> existingInteractionTasks = ActivitySelector.selectTasksByCallObjectIdentifier(interactionId);
+
+        if(!existingInteractionTasks.isEmpty() )
+        {
+            interactionTask.Id      = existingInteractionTasks[0].Id;
+            interactionTask.WhatId  = existingInteractionTasks[0].WhatId;
+            interactionTask.WhoId   = existingInteractionTasks[0].WhoId;
+        }
+        else if(interactionTask.type == TASK_SUBTYPE_EMAIL)
+        {
+            List<EmailMessage> relatedEmailMessages = new EmailMessagesSelector(new Set<String> { 'Id', 'ParentId', 'Status', 'ToIds', 'ActivityId' }).selectByInteractionId(new Set<String> { interactionId });
+
+            if(!relatedEmailMessages.isEmpty() && relatedEmailMessages[0].ActivityId != null)
+            {
+                interactionTask.Id = relatedEmailMessages[0].ActivityId;
+
+                if(relatedEmailMessages[0].ParentId != null)
+                {
+                    interactionTask.WhatId = relatedEmailMessages[0].ParentId;
+                }
+            }
+            else
+            {
+                interactionTask.TaskSubtype = TASK_SUBTYPE_EMAIL;
+            }
+        }
+        else if(interactionTask.type == TASK_SUBTYPE_CALL)
+        {
+            interactionTask.TaskSubtype = TASK_SUBTYPE_CALL;
+        }
+
+        interactionTask.Status      = TASK_STATUS_ASSIGNED;
+        interactionTask.CallObject  = interactionId;
+        interactionTask.OwnerId     = UserInfo.getUserId();
+    }
+
+        /**
+     * @author      jgallaga
+     * @date        05/08/2022
+     * @description En caso de que la interaccion sea por whatsapp, unicamente se cambia el estado de la tarea a asignada.
+     * @param       Task - La interacción relacionada con el evento
+     * @param       Map<String,Obejct> - Mapa con la información del evento
+     */
+    private static void eventOnInteractionChangedWhatsApp(Task interactionTask, Map<String, Object> eventInteractionData)
+    {
+        if(eventInteractionData.containsKey('messageType') && (String) eventInteractionData.get('messageType') == 'whatsapp')
+        {
+            interactionTask.Status = TASK_STATUS_ASSIGNED;
+        }
+    }
+
+        /**
+     * @author      jgallaga
+     * @date        05/08/2022
+     * @description Al finalizar una interacción, el estado de la tarea pasa a cerrada.
+     * @param       Task - La interacción relacionada con el evento
+     * ***
+     * Modificaciones
+     * ***
+     * @date    05/08/20222
+     * @author  jgallaga
+     * @description
+     *          Se añade que en el cierre de la interacción, se asigne como propietario de la tarea al usuario que esta ejecutando la acción
+     */
+    private static void eventOnInteractionDisconnected(Task interactionTask)
+    {
+        interactionTask.Status  = TASK_STATUS_CLOSED;
+        interactionTask.OwnerId = UserInfo.getUserId();
     }
 
     /**
@@ -134,12 +192,12 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             {
                 taskId = parseId(callLog.remove(key));
             }
-    
+
             if(field == wahtIdField)
             {
                 whatId = parseId(callLog.remove(key));
             }
-    
+
             if(field == whoIdField)
             {
                 whoId = parseId(callLog.remove(key));
@@ -223,16 +281,21 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     /**
      * Si la tarea está asociada a un caso y este caso pertenece a una cola, reasignar el caso al usuario actual.
      * @param interactionTask Task recibida
-     * @last modified on  : 31-01-2022
-     * @last modified by  : arcortazar
+     * @last modified on  : 10/08/2022
+     * @last modified by  : jgallaga
      */
     @TestVisible
     private static void changeOwnerFromQueueToUser(Task interactionTask)
     {
+        if(interactionTask == null || String.isBlank(interactionTask.WhatId))
+        {
+            return;
+        }
+
         try
         {
             //Comprobar si es un CASO
-            if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
+            if(interactionTask.WhatId.getsObjectType() == Case.sObjectType)
             {
                 Set<String> idsCasos = new Set<String>();
                 idsCasos.add(interactionTask.WhatId);
@@ -251,7 +314,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     }
                 }
             }//Comprobar si es un ContactRequest
-            else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
+            else if(interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
             {
                 List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
                 if(!contactrequests.isEmpty() )
@@ -261,16 +324,16 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     update contactrequests;
                 }
             }//Comprobar si es una Offer
-            else if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
+            else if(interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
             {
                 List<Opportunity> offers = new OpportunitiesSelector().findById(interactionTask.WhatId);
                 if(!offers.isEmpty() )
                 {
                     List<Opportunity> totalOffers = new List<Opportunity>();
-                    
+
                     // Sería aqui donde tendríamos que cambiar el Owner de la oferta para que siempre pasase:
                     totalOffers.addAll(offers);
-                    
+
                     //Si el cliente de la oferta tiene más ofertas que también están asignadas a Integrator, cambiarlas todas de owner
                     if(offers[0].AccountId != null && offers[0].ScopeId__c != null)
                     {

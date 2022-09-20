@@ -8,12 +8,14 @@
 private class EmailMessagesUtilTest
 {
     public static final Integer NUM_EMAILS = 5;
-    public static final String EMAIL_FORMAT_TO = 'toaddress{0}@zurich.com.invlid';
-    public static final String EMAIL_FORMAT_CC = 'ccaddress{0}@zurich.com.invlid';
+    public static final String EMAIL_FORMAT_TO = 'toaddress{0}@zurich.com.invalid';    
+    public static final String EMAIL_FORMAT_CC = 'ccaddress{0}@zurich.com.invalid';
     public static final String EMAIL_HEGEO = 'hegeo@zurich.com.invalid';
     public static final String EMAIL_QUEUE = 'toGenesysQueue@zurich.com.invalid';
     public static final String GENESYS_FLOW_ID = 'genesys flow id';
     public static final String GENESYS_QUEUE_ID = 'gnesys queue id';
+    public static final String EMAIL_INDUSTRY = 'empresas.dtmad@zurich.com';
+    public static final String INDUSTRY_VALUE = 'Prueba Industria';
 
     /**
      * Metodo comun para todas los metodos de test. Inicializa los datos de prueba
@@ -28,6 +30,7 @@ private class EmailMessagesUtilTest
         queues[0].SalesforceRecipientEmail__c = EMAIL_QUEUE;
         queues[0].GenesysFlowId__c = GENESYS_FLOW_ID;
         queues[0].purecloud__PureCloud_Queue_ID__c = GENESYS_QUEUE_ID;
+        queues[0].Industry__c = INDUSTRY_VALUE;
         insert queues;
     }
 
@@ -145,6 +148,100 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
+    static void assignGenesysRoutingIndustry_insert_ok()
+    {
+
+        Case relatedCase = new Case();
+        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        relatedCase.Industry__c = INDUSTRY_VALUE;
+        insert relatedCase;
+        system.debug('>>> RelatedcASE'+ relatedCase);
+        
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
+        system.debug('>>> emails'+ emails);
+        for(Integer i=0; i<emails.size();i++) 
+        {
+            List<String> addressList = new List<String>();
+            addressList.add(String.format(EMAIL_INDUSTRY, new List<String>{String.valueOf(i)}));
+            addressList.add(EMAIL_INDUSTRY);
+
+            emails[i].Status = '3'; // email was sent
+            emails[i].ParentId = relatedCase.Id; 
+            emails[i].FromName = 'Javi Garcia'; // from name
+            emails[i].Subject = 'Prueba Industria';
+            emails[i].Incoming = true;
+            emails[i].Industry__c = INDUSTRY_VALUE;
+
+            if( i == 0 ) {
+                emails[i].CcAddress = String.join(addressList, ';');
+                emails[i].ToAddress = String.format(EMAIL_INDUSTRY, new List<String>{String.valueOf(i)});
+            } else {
+                emails[i].ToAddress = String.join(addressList, ';');
+                emails[i].CcAddress = String.format(EMAIL_INDUSTRY, new List<String>{String.valueOf(i)});
+            }
+        
+        }
+
+        Test.startTest();
+        insert emails;  
+        Test.stopTest();
+        List<EmailMessage> emailsResult = [
+            SELECT Id FROM EmailMessage WHERE GenesysFlowID__c != null AND GenesysQueueName__c != null
+        ];
+        System.assertEquals(NUM_EMAILS, emailsResult.size(), 'There should be ' + NUM_EMAILS + ' EmailMessages');
+    }
+
+    @isTest
+    static void assignGenesysRoutingFieldsIndustry_update_ok() 
+    {
+        Case relatedCase = new Case();
+        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        relatedCase.Industry__c = INDUSTRY_VALUE;
+        insert relatedCase;
+        // The first time the emails dont have any valid genesys queue email receipts
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
+        
+        for(Integer i=0; i<emails.size();i++) {
+            emails[i].Incoming = true;
+            emails[i].Subject = 'Update Industria';
+            emails[i].ParentId = relatedCase.Id;
+            emails[i].Industry__c = INDUSTRY_VALUE;
+        }
+        
+        insert emails;
+
+        List<EmailMessage> emailsResult = [
+            SELECT Id FROM EmailMessage WHERE GenesysFlowID__c != null AND GenesysQueueName__c != null
+        ];
+        System.assertEquals(0, emailsResult.size(), 'There should not be EmailMessages');
+
+        // Then update the emails with the genesys queue email
+        for(Integer i=0; i<emails.size();i++) {
+            List<String> addressList = new List<String>();
+            addressList.add(String.format(EMAIL_INDUSTRY, new List<String>{String.valueOf(i)}));
+            addressList.add(EMAIL_INDUSTRY);
+
+            if( i == 0 ) {
+                emails[i].CcAddress = String.join(addressList, ';');
+                emails[i].ToAddress = String.format(EMAIL_INDUSTRY, new List<String>{String.valueOf(i)});
+            } else {
+                emails[i].ToAddress = String.join(addressList, ';');
+                emails[i].CcAddress = String.format(EMAIL_INDUSTRY, new List<String>{String.valueOf(i)});
+            }
+        }        
+
+        Test.startTest();
+        update emails;
+        Test.stopTest();
+
+        emailsResult = [
+            SELECT Id FROM EmailMessage WHERE GenesysFlowID__c != null AND GenesysQueueName__c != null
+        ];
+        System.assertEquals(NUM_EMAILS, emailsResult.size(), 'There should be ' + NUM_EMAILS + ' EmailMessages');
+    }
+    
+
+    @isTest
     static void assignGenesysRoutingFields_insert_ko() 
     {
         EmailMessagesUtil emUtil = new EmailMessagesUtil();
@@ -168,4 +265,5 @@ private class EmailMessagesUtilTest
         delete emails;
         Test.stopTest();
     }
+    
 }

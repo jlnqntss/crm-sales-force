@@ -18,9 +18,9 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Se asigna a Opportunity.StageName el valor Closed won</description>
+        <description>Se asigna a Opportunity.StageName el valor Closed won y se copia el Name (Policy number) de la póliza a Oppotuniy.ResultingPolicyNumber__c.</description>
         <name>UpdateOfferClosedWon</name>
-        <label>Cambiar Oferta a Closed Won</label>
+        <label>Actualizar oferta vinculada</label>
         <locationX>175</locationX>
         <locationY>553</locationY>
         <assignmentItems>
@@ -35,6 +35,13 @@
             <operator>Assign</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetRelatedOffer.ResultingPolicyNumber__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Name</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -132,7 +139,7 @@
         <description>Ofertas cuyo Opportunity.Id sea igual al Policy__c.OpportunityName__c y cuyo Opportunity.StageName NO sea Closed Won</description>
         <name>GetRelatedOffer</name>
         <label>Conseguir Oferta Relacionada</label>
-        <locationX>176</locationX>
+        <locationX>177</locationX>
         <locationY>339</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>

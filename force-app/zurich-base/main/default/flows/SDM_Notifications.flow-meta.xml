@@ -86,10 +86,11 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <name>NotifyWeekLeft</name>
-        <label>Notify Week Left</label>
-        <locationX>362</locationX>
-        <locationY>979</locationY>
+        <description>Avisa a la persona a la que ha sido asignado el plan anual que se ha modificado el Target KPI Nº</description>
+        <name>Notify_KPI_Changed</name>
+        <label>Notify KPI Changed</label>
+        <locationX>478</locationX>
+        <locationY>1335</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -105,7 +106,49 @@
         <inputParameters>
             <name>body</name>
             <value>
-                <elementReference>BodyWeekLeft</elementReference>
+                <elementReference>BodyKPIChanged</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Se ha modificado el Target KPI</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>RecipientId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>NotifyWeekLeft</name>
+        <label>Notify Week Left</label>
+        <locationX>592</locationX>
+        <locationY>911</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>Is_Mensual_Plan</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Notification_type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>BodyMessageWeekLeftFormula</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -145,6 +188,83 @@
             <targetReference>KPIRreached</targetReference>
         </connector>
     </assignments>
+    <constants>
+        <description>DeveloperName del RT del Objeto Plan Comercial para Planes Comerciales Anuales</description>
+        <name>AnualPlanRTDeveloperName</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>AnualPlan</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Valor RecordType Plan Comercial Mensual</description>
+        <name>MensualPlanRTDeveloperName</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>MensualPlan</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <description>Si un plan comercial anual hijo (RN) se ha modificado tu Target KPI Nº, se envía una nueva notificación al usuario asignado</description>
+        <name>Anual_Plan_Target_KPI_Changed</name>
+        <label>Anual Plan Target KPI Changed</label>
+        <locationX>118</locationX>
+        <locationY>1187</locationY>
+        <defaultConnector>
+            <targetReference>UpdateSentNotifications</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>KPI_Changed</name>
+            <conditionLogic>1 AND 2 AND 3 AND (4 OR 5 OR 6)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>AnualPlanRTDeveloperName</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentPlan__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Intermediary__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TargetKPINumber__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TargetKPICurrency__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TargetKPIPercent__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Notify_KPI_Changed</targetReference>
+            </connector>
+            <label>KPI Changed</label>
+        </rules>
+    </decisions>
     <decisions>
         <description>Valida se el plan comercial ha llegado a la fecha límite</description>
         <name>End_Date_Reached</name>
@@ -176,6 +296,115 @@
                 <targetReference>NofityKPIEnded</targetReference>
             </connector>
             <label>End date reached</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Es un plan mensual</description>
+        <name>Is_Mensual_Plan</name>
+        <label>Is Mensual Plan?</label>
+        <locationX>590</locationX>
+        <locationY>1045</locationY>
+        <defaultConnector>
+            <targetReference>Anual_Plan_Target_KPI_Changed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes_MensualPlan</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>MensualPlanRTDeveloperName</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Task</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Si es plan mensual y no se ha alcanzado el objetivo KPI del mes, enviamos notificación y tarea</description>
+        <name>Is_Mensual_Plan_KPI_Not_Reached_or_Not_Mensual_Plan</name>
+        <label>Is Mensual Plan KPI Not Reached or Not Mensual Plan?</label>
+        <locationX>360</locationX>
+        <locationY>925</locationY>
+        <defaultConnector>
+            <targetReference>Anual_Plan_Target_KPI_Changed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Mensual_Plan</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>MensualPlanRTDeveloperName</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NotifyWeekLeft</targetReference>
+            </connector>
+            <label>Not Mensual Plan</label>
+        </rules>
+        <rules>
+            <name>Mensual_Plan_KPI_Not_Reached</name>
+            <conditionLogic>1 AND ((2 AND 3) OR (4 AND 5) OR (6 AND 7))</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>MensualPlanRTDeveloperName</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TargetKPICurrency__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Actual_KPI__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>$Record.TargetKPICurrency__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TargetKPINumber__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Actual_KPI__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>$Record.TargetKPINumber__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TargetKPIPercent__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Actual_KPI__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>$Record.TargetKPIPercent__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NotifyWeekLeft</targetReference>
+            </connector>
+            <label>Mensual Plan KPI Not Reached</label>
         </rules>
     </decisions>
     <decisions>
@@ -220,7 +449,7 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
-            <conditionLogic>( (1 AND 2) OR (3 AND 4) OR (5 AND 6) ) AND 7</conditionLogic>
+            <conditionLogic>( (1 AND 2) OR (3 AND 4) OR (5 AND 6) OR (8 AND 9 AND 10 AND (11 OR 12 OR 13))) AND 7</conditionLogic>
             <conditions>
                 <leftValueReference>TargetKPIReached</leftValueReference>
                 <operator>EqualTo</operator>
@@ -270,6 +499,48 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>AnualPlanRTDeveloperName</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentPlan__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Intermediary__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TargetKPIPercent__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TargetKPINumber__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TargetKPICurrency__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Notification_type</targetReference>
             </connector>
@@ -283,7 +554,7 @@
         <locationX>123</locationX>
         <locationY>911</locationY>
         <defaultConnector>
-            <targetReference>UpdateSentNotifications</targetReference>
+            <targetReference>Anual_Plan_Target_KPI_Changed</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -304,12 +575,64 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>NotifyWeekLeft</targetReference>
+                <targetReference>Is_Mensual_Plan_KPI_Not_Reached_or_Not_Mensual_Plan</targetReference>
             </connector>
             <label>Week left</label>
         </rules>
     </decisions>
-    <description>SDM: gestiona la lógica de la gestión del envío de notificaciones se los planes comerciales</description>
+    <description>SDM: corregir mensaje notificación mensual week left si actual KPI está en blanco</description>
+    <formulas>
+        <description>Selecciona el mensaje a utilizar en la notificación Week Left según sea Plan Mensual o cualquier otro tipo</description>
+        <name>BodyMessageWeekLeftFormula</name>
+        <dataType>String</dataType>
+        <expression>IF({!$Record.RecordType.DeveloperName} == {!MensualPlanRTDeveloperName}, 
+     {!BodyWeekLeftMensual}, 
+     {!BodyWeekLeft}
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Si Actual KPI es nulo uso 0, si no el valor que tenga</description>
+        <name>KPIActualFormula</name>
+        <dataType>Number</dataType>
+        <expression>IF(ISNULL({!$Record.Actual_KPI__c}), 0, {!$Record.Actual_KPI__c})</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <description>Calculo del valor KPI restante para la notificación Week Left de planes mensuales</description>
+        <name>KPIToCoverFormula</name>
+        <dataType>String</dataType>
+        <expression>IF(ISNULL({!$Record.TargetKPINumber__c}), 
+    IF(ISNULL({!$Record.TargetKPICurrency__c}), 
+        IF(ISNULL({!$Record.TargetKPIPercent__c}), 
+            &apos;&apos;, 
+            TEXT(({!$Record.TargetKPIPercent__c} * 100) - {!KPIActualFormula})
+        ),
+        TEXT({!$Record.TargetKPICurrency__c} - {!KPIActualFormula})
+    ), 
+    TEXT({!$Record.TargetKPINumber__c} - {!KPIActualFormula})
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Mes Actual</description>
+        <name>Month</name>
+        <dataType>String</dataType>
+        <expression>CASE(
+  MONTH( TODAY() ),
+  1, &quot;Enero&quot;,
+  2, &quot;Febrero&quot;,
+  3, &quot;Marzo&quot;,
+  4, &quot;Abril&quot;,
+  5, &quot;Mayo&quot;,
+  6, &quot;Junio&quot;,
+  7, &quot;Julio&quot;,
+  8, &quot;Agosto&quot;,
+  9, &quot;Septiembre&quot;,
+  10, &quot;Octubre&quot;,
+  11, &quot;Noviembre&quot;,
+  12, &quot;Diciembre&quot;,
+  &quot;Error&quot;
+)</expression>
+    </formulas>
     <formulas>
         <description>Calcula la fecha de hacer 7 días</description>
         <name>NextWeek</name>
@@ -427,6 +750,12 @@ IF
 )</expression>
     </formulas>
     <formulas>
+        <description>Sumo un mes a la fecha fin del plan de entrada</description>
+        <name>TaskDateMensualPlan</name>
+        <dataType>Date</dataType>
+        <expression>ADDMONTHS ({!$Record.EndDate__c}, 1)</expression>
+    </formulas>
+    <formulas>
         <description>Guarda la fecha de hoy</description>
         <name>Today</name>
         <dataType>Date</dataType>
@@ -477,8 +806,8 @@ IF
     <recordUpdates>
         <name>UpdateSentNotifications</name>
         <label>Update Sent Notifications</label>
-        <locationX>235</locationX>
-        <locationY>1179</locationY>
+        <locationX>216</locationX>
+        <locationY>1516</locationY>
         <inputAssignments>
             <field>SentNotifications__c</field>
             <value>
@@ -498,6 +827,53 @@ IF
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <description>Crear tarea</description>
+        <name>Create_Task</name>
+        <label>Create Task</label>
+        <locationX>600</locationX>
+        <locationY>1190</locationY>
+        <connector>
+            <targetReference>Anual_Plan_Target_KPI_Changed</targetReference>
+        </connector>
+        <flowName>SDM_Insert_Task</flowName>
+        <inputAssignments>
+            <name>AssignedTo</name>
+            <value>
+                <elementReference>$Record.AssignedTo__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Date</name>
+            <value>
+                <elementReference>TaskDateMensualPlan</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Message</name>
+            <value>
+                <elementReference>TaskMessageMensualPlan</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RecordType</name>
+            <value>
+                <stringValue>CommercialAction</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Subject</name>
+            <value>
+                <elementReference>TaskSubjectMensualPlan</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <textTemplates>
+        <description>Mensaje a mostrar en la notificación de KPI Changed para los planes anuales hijos</description>
+        <name>BodyKPIChanged</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Se ha modificado tu plan {!$Record.Name} del segmento {!$Record.Segment__c} y {!$Record.Product__c} si tienes cualquier duda, puedes consultarlo con tu Director de Zona</text>
+    </textTemplates>
     <textTemplates>
         <name>BodyKPIReached</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
@@ -512,6 +888,25 @@ IF
         <name>BodyWeekLeft</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
         <text>El plan de acción con asunto “{!$Record.Name}” finalizará en una semana. Recuerda que puedes modificar la fecha de vencimiento o modificar el objetivo establecido antes de su vencimiento</text>
+    </textTemplates>
+    <textTemplates>
+        <description>Mensaje a mostrar para las notificaciones week left de los planes mensuales</description>
+        <name>BodyWeekLeftMensual</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>A falta de 7 días de finalizar {!Month}, necesitas {!KPIToCoverFormula} para cumplir tu objetivo acumulado mensual en el plan {!$Record.Name}
+ del segmento {!$Record.Segment__c}</text>
+    </textTemplates>
+    <textTemplates>
+        <description>Message para la tarea a crear para los planes mensuales en WeekLeft</description>
+        <name>TaskMessageMensualPlan</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Plan de acción a corto plazo para mejorar: Seguimiento {!$Record.Indicator__c}</text>
+    </textTemplates>
+    <textTemplates>
+        <description>Subject para la tarea a crear para los planes mensuales en WeekLeft</description>
+        <name>TaskSubjectMensualPlan</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Seguimiento {!$Record.Indicator__c} para segmento {!$Record.Segment__c}</text>
     </textTemplates>
     <variables>
         <name>RecipientId</name>

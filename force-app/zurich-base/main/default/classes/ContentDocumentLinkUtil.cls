@@ -25,7 +25,7 @@ public without sharing class ContentDocumentLinkUtil
     {
         if( robotHegeoSettings == null ) {
 
-            robotHegeoSettings = Robot_Hegeo_Setting__mdt.getAll().values();
+            robotHegeoSettings = [SELECT Id, DeveloperName, CaseFields__c, CaseFieldsIndex__c, Separator__c, FromAddressIndex__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, CaseTypeFieldsMetadata__c, RoutingAddresses__c, CCAddressIndex__c, BCCAddressIndex__c FROM Robot_Hegeo_Setting__mdt];
         }
 
         if( !robotHegeoSettings.isEmpty() )
@@ -143,7 +143,7 @@ public without sharing class ContentDocumentLinkUtil
 
                     Map<Id, EmailMessage> relatedEmailMessages = new Map<Id, EmailMessage>(
                         [
-                            SELECT Id, Subject, ToAddress, CreatedDate, ParentId, Parent.RecordTypeId
+                            SELECT Id, Subject, ToAddress, CreatedDate, ParentId, Parent.RecordTypeId, Parent.Industry__c
                             FROM EmailMessage WHERE Id IN: linkedEntityToDocumentMap.keySet()
                             AND Parent.RecordTypeId IN: caseRecordTypeIds AND ToAddress IN: robotHegeoSettingsMap.keySet()
                         ]
@@ -263,6 +263,7 @@ public without sharing class ContentDocumentLinkUtil
                             Integer toAddressCSVIndex = Integer.valueOf(relatedEmailSettings.ToAddressIndex__c);
                             Integer ccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.CCAddressIndex__c);
                             Integer bccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.BCCAddressIndex__c);
+                            String caseFields = relatedEmailSettings.CaseFields__c;
 
                             List<String> caseTypeFieldsMetadataList = new List<String>();
                             if(relatedEmailSettings.CaseTypeFieldsMetadata__c != null)
@@ -271,9 +272,9 @@ public without sharing class ContentDocumentLinkUtil
                             }
 
                             List<String> caseFieldsList = new List<String>();
-                            if(relatedEmailSettings.CaseFields__c != null)
+                            if(caseFields != null)
                             {
-                                caseFieldsList = relatedEmailSettings.CaseFields__c.split(',');
+                                caseFieldsList = caseFields.split(',');
                             }
 
                             //Recuperamos los datos del csv y dividimos por cada línea que contiene el documento
@@ -399,8 +400,6 @@ public without sharing class ContentDocumentLinkUtil
                                     }
                                 }
 
-                                emailMessagesToUpdate.add(relatedEmail);
-
                                 //Actualizamos los campos correspondientes al caso
                                 if(relatedEmail.ParentId != null)
                                 {
@@ -415,6 +414,7 @@ public without sharing class ContentDocumentLinkUtil
 
                                         //Extraemos la combinación de los tipos de casos (2 primeras posiciones del listado de valores)
                                         String typeAndSubtypeCombination = types.get(0) + types.get(1);
+                                       
                                         if( caseTypesMapping.containsKey(typeAndSubtypeCombination) )
                                         {
                                             caseFieldsMap.putAll( caseTypesMapping.get(typeAndSubtypeCombination) );
@@ -437,9 +437,14 @@ public without sharing class ContentDocumentLinkUtil
                                             if( i < types.size() && String.isNotBlank( types.get(i) ) && !caseFieldsMap.containsKey( caseFieldsList.get(i) ) )
                                             {
                                                 caseFieldsMap.put( caseFieldsList.get(i), types.get(i) );
+
+                                                if(caseFieldsList.get(i) == 'Industry__c')
+                                                {
+                                                    relatedEmail.Industry__c = types.get(i);
+                                                }
                                             }
                                         }
-
+                                       
                                         casesToUpdate.add(
                                             (Case) JSON.deserialize(
                                                 JSON.serialize(caseFieldsMap), Case.class
@@ -463,6 +468,9 @@ public without sharing class ContentDocumentLinkUtil
                                         'ContentDocumentLinkUtil'
                                         );
                                 }
+
+                                emailMessagesToUpdate.add(relatedEmail);
+
                             }
                             else
                             {

@@ -72,6 +72,7 @@ force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.ZEGenesysC
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.ZEOGenesysCloudFlowId.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.UploadCaseDocumentationUrl.md-meta.xml
 force-app/zurich-base/main/default/customMetadata/ErrorManagementSetting.Klinc_errores.md-meta.xml
+force-app/zurich-base/main/default/customMetadata/AdminSetupParameter.WrapupValid.md-meta.xml
 #force-app/zurich-base/main/default/customMetadata/Scope_Setting.*
 #force-app/zurich-base/main/default/flows/ZEEmailRoute.flow-meta.xml
 force-app/zurich-base/main/default/customMetadata/INFO_Link.INFO.md-meta.xml
