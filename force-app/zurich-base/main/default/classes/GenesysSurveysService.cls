@@ -126,6 +126,9 @@ public without sharing class GenesysSurveysService {
         survey.VehicleLicensePlate__c = request.licensePlate;
         survey.CustomerNif__c = request.customerNif;
 
+        // arcortazar - 13/09/2022: OCS-3782, incluimos un campo nuevo para cargar desde genesys el TIPENT
+        survey.TIPENT__c = request.interactionType;
+
         //Solo si la task estaba relacionada con un caso
         if(interactionTask.WhatId != null && interactionTask.WhatId.getsObjectType() == Case.sObjectType)
         {
@@ -226,6 +229,9 @@ public without sharing class GenesysSurveysService {
         public String claimNumber { get; set; }
         public String licensePlate { get; set; }
         public String customerNif { get; set; }
+
+        // arcortazar - 13/09/2022: OCS-3782, incluimos un campo nuevo para cargar desde genesys el TIPENT
+        public String interactionType { get; set; }
 
         public override String toString()
         {
