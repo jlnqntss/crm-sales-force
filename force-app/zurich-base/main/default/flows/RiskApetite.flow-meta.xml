@@ -373,7 +373,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>GetCaseAction.AccountId</elementReference>
+                <elementReference>GetCaseAction.MediatedCustomer__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
