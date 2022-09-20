@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>DescriptionReasonOnlyExlusion</fullName>
-    <active>true</active>
+    <active>false</active>
     <description>No es posible rellenar la descripción de submotivo a menos que el motivo sea Exclusión/Política Técnica</description>
     <errorConditionFormula>/*Si la Descripción esta rellena y no es Exclusión/Política Técnica*/
 AND(
