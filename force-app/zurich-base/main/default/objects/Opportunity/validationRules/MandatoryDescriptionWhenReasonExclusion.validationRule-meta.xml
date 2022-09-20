@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MandatoryDescriptionWhenReasonExclusion</fullName>
+    <active>true</active>
+    <description>El Sub-motivo y la descripción del Sub-motivo son obligatorias cuando el motivo de pérdida es Exclusión/Política Técnica.</description>
+    <errorConditionFormula>/*Si el motivo es “exclusión/política técnica” que sea obligatorio cumplimentar sub-motivo y descripción de sub-motivo*/
+AND(
+    ISPICKVAL( Loss_Reason__c , &apos;Exclusión/Política Técnica&apos;) ,
+ AND(
+    OR(
+    ISBLANK( TEXT(LossSubReason__c) ),
+    ISBLANK( LossSubReasonDescription__c )
+)
+ )
+)</errorConditionFormula>
+    <errorDisplayField>LossSubReasonDescription__c</errorDisplayField>
+    <errorMessage>[VR Offer] Es necesario completar el Sub-motivo del rechazo y su descripción,  cuando el motivo de pérdida es &quot;Exclusión/Política Técnica&quot;.</errorMessage>
+</ValidationRule>
