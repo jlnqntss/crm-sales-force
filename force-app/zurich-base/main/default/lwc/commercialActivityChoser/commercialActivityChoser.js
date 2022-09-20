@@ -54,7 +54,7 @@ export default class CommercialActivityChoser extends LightningElement {
       });
       return options;
     }
-    return "";
+    return options;
   }
 
   handleChange(variableName, value) {

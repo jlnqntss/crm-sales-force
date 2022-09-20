@@ -47,7 +47,7 @@ export default class BunchChoser extends LightningElement {
       });
       return options;
     }
-    return "";
+    return options;
   }
 
   // Function that makes the flow move to the next step

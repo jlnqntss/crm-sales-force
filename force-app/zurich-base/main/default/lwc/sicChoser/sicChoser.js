@@ -36,7 +36,7 @@ export default class SicChoser extends LightningElement {
       });
       return options;
     }
-    return "";
+    return options;
   }
 
   renderedCallback() {
