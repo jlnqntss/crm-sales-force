@@ -5,8 +5,8 @@
         <description>poner en ANI Phone el valor de ANI</description>
         <name>SetANIPhone</name>
         <label>Asignar ANI Phone</label>
-        <locationX>536</locationX>
-        <locationY>386</locationY>
+        <locationX>828</locationX>
+        <locationY>370</locationY>
         <assignmentItems>
             <assignToReference>$Record.ANIPhone__c</assignToReference>
             <operator>Assign</operator>
@@ -15,12 +15,37 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <description>Asignar ANI añadiéndole el + ya que Genesys no lo manda</description>
+        <name>SetWhatsappANI</name>
+        <label>Asignar ANI</label>
+        <locationX>1034</locationX>
+        <locationY>370</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ANI__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>+{!$Record.ANI__c}</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>SetANIPhone</targetReference>
+        </connector>
+    </assignments>
+    <constants>
+        <description>Caracter &apos;+&apos; para añadirle al ANI en las subtareas de Whatsapp</description>
+        <name>plus</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>+</stringValue>
+        </value>
+    </constants>
     <decisions>
         <description>el campo ani ha cambiado y no es un correo electrónico</description>
         <name>ANIisPhone</name>
         <label>¿Ha cambiado ANI a un teléfono?</label>
-        <locationX>326</locationX>
-        <locationY>379</locationY>
+        <locationX>581</locationX>
+        <locationY>370</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si</name>
@@ -37,6 +62,56 @@
                 <operator>Contains</operator>
                 <rightValue>
                     <stringValue>@</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetANIPhone</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ANIisWHATSAPP</name>
+        <label>Tarea es de Whatsapp</label>
+        <locationX>580</locationX>
+        <locationY>139</locationY>
+        <defaultConnector>
+            <targetReference>ANIisPhone</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>SiWhatsapp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>WhatsApp</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ANIStartsWithPLUS</targetReference>
+            </connector>
+            <label>Si Whatsapp</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ANIStartsWithPLUS</name>
+        <label>ANI comienza por +</label>
+        <locationX>821</locationX>
+        <locationY>142</locationY>
+        <defaultConnector>
+            <targetReference>SetWhatsappANI</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>StartsWithPlus</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ANI__c</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>plus</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -71,7 +146,7 @@
         <locationX>50</locationX>
         <locationY>50</locationY>
         <connector>
-            <targetReference>ANIisPhone</targetReference>
+            <targetReference>ANIisWHATSAPP</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -83,9 +158,9 @@
         </filters>
         <filters>
             <field>Type</field>
-            <operator>EqualTo</operator>
+            <operator>NotEqualTo</operator>
             <value>
-                <stringValue>Call</stringValue>
+                <stringValue>Email</stringValue>
             </value>
         </filters>
         <object>Task</object>
