@@ -36,6 +36,11 @@ import SDM_Objetivos_Error from "@salesforce/label/c.SDM_Objetivos_Error";
 import SDM_Objetivos_ToastCloneNotSelected from "@salesforce/label/c.SDM_Objetivos_ToastCloneNotSelected";
 import SDM_Objetivos_RowErrorTitle from "@salesforce/label/c.SDM_Objetivos_RowErrorTitle";
 import SDM_Objetivos_DuplicateRecordsRowError from "@salesforce/label/c.SDM_Objetivos_DuplicateRecordsRowError";
+import SDM_Objetivos_Edit_Title from "@salesforce/label/c.SDM_Objetivos_Edit_Title";
+import SDM_Objetivos_Clone_Title from "@salesforce/label/c.SDM_Objetivos_Clone_Title";
+import SDM_Objetivos_ButtonSave from "@salesforce/label/c.SDM_Objetivos_ButtonSave";
+import SDM_Objetivos_ButtonCancel from "@salesforce/label/c.SDM_Objetivos_ButtonCancel";
+import SDM_Objetivos_ToastDuplicateError from "@salesforce/label/c.SDM_Objetivos_ToastDuplicateError";
 
 // campos SF
 import OBJECTIVE_YEAR_FIELD from "@salesforce/schema/Objective__c.Year__c";
@@ -99,7 +104,12 @@ export default class ObjectivesView extends LightningElement {
     SDM_Objetivos_Error,
     SDM_Objetivos_ToastCloneNotSelected,
     SDM_Objetivos_RowErrorTitle,
-    SDM_Objetivos_DuplicateRecordsRowError
+    SDM_Objetivos_DuplicateRecordsRowError,
+    SDM_Objetivos_Edit_Title,
+    SDM_Objetivos_Clone_Title,
+    SDM_Objetivos_ButtonSave,
+    SDM_Objetivos_ButtonCancel,
+    SDM_Objetivos_ToastDuplicateError
   };
 
   columns = [
@@ -268,7 +278,9 @@ export default class ObjectivesView extends LightningElement {
   cloneValues = [];
   recordIdSelected = ""; // edit button action
   recordSelected; // clone button action
+  editFormModal = false;
   cloneFormModal = false;
+  newEditFormModal = false; // dado que new y edit comparten formulario, creo esta variable para la visibilidad del modal, editFormModal y newFormModal sirven para el título del modal y los campos si son read only o no
 
   // variables selector
   currentYear = new Date().getFullYear();
@@ -277,6 +289,7 @@ export default class ObjectivesView extends LightningElement {
 
   // variables new button
   isShowModal = false;
+  newFormModal = false;
   fields = [
     OBJECTIVE_YEAR_FIELD,
     OBJECTIVE_INDICATOR_FIELD,
@@ -376,7 +389,11 @@ export default class ObjectivesView extends LightningElement {
       case "edit":
         console.log(JSON.stringify(row.Id));
         this.recordIdSelected = row.Id;
+        this.recordSelected = row;
         this.isShowModal = true;
+        this.newFormModal = false;
+        this.editFormModal = true;
+        this.newEditFormModal = true;
         this.cloneFormModal = false;
         break;
       case "clone":
@@ -384,6 +401,9 @@ export default class ObjectivesView extends LightningElement {
         array = [...array, copyRow];
         this.recordSelected = this.setMonthPercentValues(array)[0];
         this.cloneFormModal = true;
+        this.newFormModal = false;
+        this.editFormModal = false;
+        this.newEditFormModal = false;
         this.isShowModal = true;
 
         break;
@@ -457,12 +477,18 @@ export default class ObjectivesView extends LightningElement {
   handleNew() {
     this.recordIdSelected = "";
     this.isShowModal = true;
+    this.newFormModal = true;
+    this.newEditFormModal = true;
+    this.editFormModal = false;
     this.cloneFormModal = false;
   }
 
   hideModalBox() {
     this.recordIdSelected = "";
+    this.newFormModal = false;
+    this.editFormModal = false;
     this.cloneFormModal = false;
+    this.newEditFormModal = false;
     this.isShowModal = false;
   }
 
@@ -563,5 +589,27 @@ export default class ObjectivesView extends LightningElement {
     console.log("entro en refreshSelectedValue");
     this.selectedYear = year;
     console.log("async selected year: " + year);
+  }
+
+  /************************** Handle on Error New y Clone Form ***********************************************************/
+  handleErrorForm(event) {
+    console.log("entro en handleErrorClone");
+    console.log("event " + JSON.stringify(event));
+
+    let errorEvent = event.detail.output.errors[0];
+    let toastMessage;
+
+    if (errorEvent.errorCode === "DUPLICATE_VALUE") {
+      toastMessage = this.labels.SDM_Objetivos_ToastDuplicateError;
+    } else {
+      toastMessage = errorEvent.message;
+    }
+
+    const evt = new ShowToastEvent({
+      title: this.labels.SDM_Objetivos_Error,
+      message: toastMessage,
+      variant: "error"
+    });
+    this.dispatchEvent(evt);
   }
 }

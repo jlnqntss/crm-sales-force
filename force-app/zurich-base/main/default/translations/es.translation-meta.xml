@@ -5525,6 +5525,10 @@
         <name>SDM_Objetivos_August</name>
     </customLabels>
     <customLabels>
+        <label>Cancelar</label>
+        <name>SDM_Objetivos_ButtonCancel</name>
+    </customLabels>
+    <customLabels>
         <label>Clonar</label>
         <name>SDM_Objetivos_ButtonClone</name>
     </customLabels>
@@ -5541,6 +5545,14 @@
         <name>SDM_Objetivos_ButtonNew</name>
     </customLabels>
     <customLabels>
+        <label>Guardar</label>
+        <name>SDM_Objetivos_ButtonSave</name>
+    </customLabels>
+    <customLabels>
+        <label>Clonar Objetivo</label>
+        <name>SDM_Objetivos_Clone_Title</name>
+    </customLabels>
+    <customLabels>
         <label>Nuevo Objetivo</label>
         <name>SDM_Objetivos_Create_Title</name>
     </customLabels>
@@ -5555,6 +5567,10 @@
     <customLabels>
         <label>Registro duplicado, por favor desmárcalo</label>
         <name>SDM_Objetivos_DuplicateRecordsRowError</name>
+    </customLabels>
+    <customLabels>
+        <label>Editar Objetivo</label>
+        <name>SDM_Objetivos_Edit_Title</name>
     </customLabels>
     <customLabels>
         <label>Error</label>
@@ -5627,6 +5643,10 @@
     <customLabels>
         <label>Es necesario seleccionar al menos 1 registro a clonar</label>
         <name>SDM_Objetivos_ToastCloneNotSelected</name>
+    </customLabels>
+    <customLabels>
+        <label>Ya existe un objetivo para el año seleccionado</label>
+        <name>SDM_Objetivos_ToastDuplicateError</name>
     </customLabels>
     <customLabels>
         <label>Registros clonados correctamente</label>
