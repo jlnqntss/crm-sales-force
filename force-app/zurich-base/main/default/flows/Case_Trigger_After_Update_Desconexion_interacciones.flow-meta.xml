@@ -213,14 +213,14 @@
         </rules>
     </decisions>
     <decisions>
-        <name>OCSRegisterTypeDecision</name>
-        <label>¿Tipo de registro OCS?</label>
+        <name>OCSOrUSPRegisterTypeDecision</name>
+        <label>¿Tipo de registro OCS o USP?</label>
         <locationX>1128</locationX>
         <locationY>288</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>EsOCSOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -228,14 +228,23 @@
                     <stringValue>OCSInquiry</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>IsNoteINFODecision</targetReference>
             </connector>
-            <label>Es OCS</label>
+            <label>Es OCS o USP</label>
         </rules>
     </decisions>
-    <interviewLabel>Case Trigger - After Update - Desconexión interaccions CSM {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger - After Update - Desconexión interacciones CSM</label>
+    <description>Flujo encargado de, cuando se cierra un caso, desconectar todas aquellas interacciones que estén pendientes de ser distribuidas por Genesys. 
+Se establece un orden de ejecución tardío al ser una llamada a un sistema externo.</description>
+    <interviewLabel>Case Trigger - After Update - Desconexión interacciones {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Trigger - After Update - Desconexión interacciones</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -527,7 +536,7 @@
     <start>
         <locationX>331</locationX>
         <locationY>0</locationY>
-        <filterLogic>1 AND 4 AND (2 OR 3 OR 5)</filterLogic>
+        <filterLogic>1 AND 4 AND (2 OR 3 OR 5 OR 6)</filterLogic>
         <filters>
             <field>Status</field>
             <operator>EqualTo</operator>
@@ -563,17 +572,25 @@
                 <stringValue>CC Service</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
         <object>Case</object>
         <recordTriggerType>Update</recordTriggerType>
         <scheduledPaths>
             <connector>
-                <targetReference>OCSRegisterTypeDecision</targetReference>
+                <targetReference>OCSOrUSPRegisterTypeDecision</targetReference>
             </connector>
             <pathType>AsyncAfterCommit</pathType>
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>1500</triggerOrder>
     <variables>
         <name>ListaCombinadaTaskYMails</name>
         <dataType>String</dataType>
