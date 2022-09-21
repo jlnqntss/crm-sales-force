@@ -228,6 +228,90 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>createQuickActionName</name>
+                    <value>NewAccount</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>lookupFieldName</name>
+                    <value>Case.AccountId</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>titleFieldName</name>
+                    <value>Mediador</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>updateQuickActionName</name>
+                    <value>Account.UpdateIntermediary</value>
+                </componentInstanceProperties>
+                <componentName>console:relatedRecord</componentName>
+                <identifier>console_relatedRecord6</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-4aadbd79-0f12-4bcd-a7fa-64616ae6f435</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>Case.AccountId</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>AccountTeamMembers</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListComponentOverride</name>
+                    <value>NONE</value>
+                </componentInstanceProperties>
+                <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer5</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-a4bdf143-c05a-4d9a-be73-3ac458a9ea8b</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>active</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-4aadbd79-0f12-4bcd-a7fa-64616ae6f435</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Datos Mediador</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-a4bdf143-c05a-4d9a-be73-3ac458a9ea8b</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Equipo Mediador</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-437f77da-5aa4-4afb-a9a0-fe9e85bc6e43</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>hideMarkCompleteButton</name>
                     <value>true</value>
                 </componentInstanceProperties>
@@ -369,23 +453,11 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>createQuickActionName</name>
-                    <value>NewAccount</value>
+                    <name>tabs</name>
+                    <value>Facet-437f77da-5aa4-4afb-a9a0-fe9e85bc6e43</value>
                 </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>lookupFieldName</name>
-                    <value>Case.AccountId</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>titleFieldName</name>
-                    <value>Mediador</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>updateQuickActionName</name>
-                    <value>Account.UpdateIntermediary</value>
-                </componentInstanceProperties>
-                <componentName>console:relatedRecord</componentName>
-                <identifier>console_relatedRecord3</identifier>
+                <componentName>flexipage:tabset</componentName>
+                <identifier>flexipage_tabset2</identifier>
                 <visibilityRule>
                     <criteria>
                         <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
