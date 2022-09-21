@@ -18,6 +18,9 @@
                 <behavior>Edit</behavior>
                 <field>WhoId</field>
             </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -30,6 +33,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>WhatId</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Related_Case_Status__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
