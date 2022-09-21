@@ -86,7 +86,7 @@
             <name>YesProduct</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>GetCaseAction.Ramo__c</leftValueReference>
+                <leftValueReference>GetCaseAction.HegeoProductGroupCode__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
