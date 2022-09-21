@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
     <assignments>
         <name>Update_Related_Case_Status_Field</name>
         <label>Update Related Case Status Field</label>
@@ -37,7 +38,7 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
-            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditionLogic>1 AND 2</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WhatId</leftValueReference>
                 <operator>StartsWith</operator>
@@ -52,13 +53,6 @@
                     <elementReference>$Record__Prior.WhatId</elementReference>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.Related_Case_Status__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <elementReference>$Record__Prior.Related_Case_Status__c</elementReference>
-                </rightValue>
-            </conditions>
             <connector>
                 <targetReference>Get_Related_Case</targetReference>
             </connector>
@@ -66,7 +60,7 @@
         </rules>
     </decisions>
     <interviewLabel>Task Trigger - Before insert/update Email Interaction Case Related {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Task Trigger - Before insert/update Email Interaction Case Related</label>
+    <label>Task Trigger - Before insert/update Status Case Related</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -95,6 +89,7 @@
         <connector>
             <targetReference>Update_Related_Case_Status_Field</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -114,20 +109,7 @@
         <connector>
             <targetReference>Is_the_task_related_to_a_case</targetReference>
         </connector>
-        <filters>
-            <field>RecordTypeDeveloperName__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Interaction</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Type</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Email</stringValue>
-            </value>
-        </filters>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Related_Case_Status__c</field>
             <operator>IsChanged</operator>
