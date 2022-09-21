@@ -2,22 +2,6 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
-        <name>Asignamos_la_poliza</name>
-        <label>Asignamos la poliza</label>
-        <locationX>941</locationX>
-        <locationY>1751</locationY>
-        <assignmentItems>
-            <assignToReference>$Record.PolicyId__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Obtenemos_la_primera_poliza.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Obtenemos_la_primera_poliza</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>AssignAccountDataAssignment</name>
         <label>Asignar datos cuenta</label>
         <locationX>50</locationX>
@@ -140,30 +124,6 @@
             <targetReference>AssignedAgentAssignment</targetReference>
         </connector>
     </assignments>
-    <collectionProcessors>
-        <description>Ordenamos las pólizas en base a su estado y a su número de póliza</description>
-        <name>Ordenamos_las_p_lizas</name>
-        <elementSubtype>SortCollectionProcessor</elementSubtype>
-        <label>Ordenamos las pólizas</label>
-        <locationX>853</locationX>
-        <locationY>1511</locationY>
-        <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
-        <collectionReference>Obtenemos_poliza_valida</collectionReference>
-        <connector>
-            <targetReference>Obtenemos_la_primera_poliza</targetReference>
-        </connector>
-        <limit>1</limit>
-        <sortOptions>
-            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
-            <sortField>PolicyStatus__c</sortField>
-            <sortOrder>Desc</sortOrder>
-        </sortOptions>
-        <sortOptions>
-            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
-            <sortField>Name</sortField>
-            <sortOrder>Desc</sortOrder>
-        </sortOptions>
-    </collectionProcessors>
     <decisions>
         <name>AssignedAgentAssignment</name>
         <label>¿Es Gestor asignado?</label>
@@ -398,31 +358,6 @@
             <label>No</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>tipo_cola</name>
-        <label>¿Qué tipo de cola es?</label>
-        <locationX>985</locationX>
-        <locationY>1271</locationY>
-        <defaultConnector>
-            <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Motor_Express</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>CallCenter</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Motor Express</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Obtenemos_poliza_valida</targetReference>
-            </connector>
-            <label>Motor Express</label>
-        </rules>
-    </decisions>
     <formulas>
         <name>codigoProvincia</name>
         <dataType>String</dataType>
@@ -435,20 +370,6 @@
     </formulas>
     <interviewLabel>Survey Trigger - Before Insert - Completado de datos {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Survey Trigger - Before Insert - Completado de datos</label>
-    <loops>
-        <name>Obtenemos_la_primera_poliza</name>
-        <label>Obtenemos la primera poliza</label>
-        <locationX>853</locationX>
-        <locationY>1631</locationY>
-        <collectionReference>Obtenemos_poliza_valida</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Asignamos_la_poliza</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -686,10 +607,6 @@
         </filters>
         <object>purecloud__PureCloud_Queue__c</object>
         <outputAssignments>
-            <assignToReference>CallCenter</assignToReference>
-            <field>CallCenter__c</field>
-        </outputAssignments>
-        <outputAssignments>
             <assignToReference>$Record.GenesysCloudQueue__c</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -869,48 +786,6 @@
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordLookups>
-        <name>Obtenemos_poliza_valida</name>
-        <label>Obtenemos poliza válida</label>
-        <locationX>853</locationX>
-        <locationY>1391</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Ordenamos_las_p_lizas</targetReference>
-        </connector>
-        <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
-        <filters>
-            <field>PolicyHolder__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.NumeroIdCliente__c</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>PolicyType__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>AUTOS</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>PolicyStatus__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>V</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>PolicyStatus__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>A</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Policy__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <start>
         <locationX>804</locationX>
         <locationY>0</locationY>
@@ -922,14 +797,6 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
-    <variables>
-        <description>Call Center de la cola desde la que nos llega la interacción</description>
-        <name>CallCenter</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
     <variables>
         <name>CDUSUARI</name>
         <dataType>String</dataType>
