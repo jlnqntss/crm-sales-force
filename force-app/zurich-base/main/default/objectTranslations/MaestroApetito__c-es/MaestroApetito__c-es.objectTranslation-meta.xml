@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Maestro de Apetito</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Maestro de Apetitos</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>Ramo00215</name>
+    </fieldSets>
+    <fieldSets>
+        <label></label>
+        <name>Ramo00516</name>
+    </fieldSets>
+    <fieldSets>
+        <label></label>
+        <name>Ramo00526</name>
+    </fieldSets>
+    <fieldSets>
+        <label></label>
+        <name>Ramo00846</name>
+    </fieldSets>
+    <fieldSets>
+        <label></label>
+        <name>Ramo00847</name>
+    </fieldSets>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Risk Appetite Master Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Cálculos</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Descuentos</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Franquicias</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información producto y actividad</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Opciones</section>
+        </sections>
+    </layouts>
+</CustomObjectTranslation>

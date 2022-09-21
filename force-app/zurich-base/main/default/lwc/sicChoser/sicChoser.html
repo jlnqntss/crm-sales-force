@@ -1,0 +1,20 @@
+<!--
+  @description       : 
+  @author            : jjuaristi
+  @group             : 
+  @last modified on  : 16-08-2022
+  @last modified by  : jjuaristi
+-->
+<template>
+  <div class="slds-form-element__control">
+      <input id="input" name="input" list="valueList" class="slds-input" type="text" value={value} onchange={handleChange} placeholder="Introduzca un valor:"/>
+      <datalist id="valueList">
+          <template for:each={options} for:item='item'>
+              <option key={item.label} value={item.value}>{item.value}</option>
+          </template>
+      </datalist>
+  </div>
+  <div>
+    <lightning-button label="Confirmar" class="slds-button" onclick={handleNext} variant="brand"></lightning-button>
+  </div>
+</template>
