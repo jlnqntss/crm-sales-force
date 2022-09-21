@@ -580,7 +580,7 @@
             <label>Week left</label>
         </rules>
     </decisions>
-    <description>SDM: gestiona la lógica de la gestión del envío de notificaciones se los planes comerciales</description>
+    <description>SDM: corregir mensaje notificación mensual week left si actual KPI está en blanco</description>
     <formulas>
         <description>Selecciona el mensaje a utilizar en la notificación Week Left según sea Plan Mensual o cualquier otro tipo</description>
         <name>BodyMessageWeekLeftFormula</name>
@@ -591,6 +591,13 @@
 )</expression>
     </formulas>
     <formulas>
+        <description>Si Actual KPI es nulo uso 0, si no el valor que tenga</description>
+        <name>KPIActualFormula</name>
+        <dataType>Number</dataType>
+        <expression>IF(ISNULL({!$Record.Actual_KPI__c}), 0, {!$Record.Actual_KPI__c})</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
         <description>Calculo del valor KPI restante para la notificación Week Left de planes mensuales</description>
         <name>KPIToCoverFormula</name>
         <dataType>String</dataType>
@@ -598,11 +605,11 @@
     IF(ISNULL({!$Record.TargetKPICurrency__c}), 
         IF(ISNULL({!$Record.TargetKPIPercent__c}), 
             &apos;&apos;, 
-            TEXT(({!$Record.TargetKPIPercent__c} * 100) - {!$Record.Actual_KPI__c})
+            TEXT(({!$Record.TargetKPIPercent__c} * 100) - {!KPIActualFormula})
         ),
-        TEXT({!$Record.TargetKPICurrency__c} - {!$Record.Actual_KPI__c})
+        TEXT({!$Record.TargetKPICurrency__c} - {!KPIActualFormula})
     ), 
-    TEXT({!$Record.TargetKPINumber__c} - {!$Record.Actual_KPI__c})
+    TEXT({!$Record.TargetKPINumber__c} - {!KPIActualFormula})
 )</expression>
     </formulas>
     <formulas>
@@ -865,7 +872,7 @@ IF
         <description>Mensaje a mostrar en la notificación de KPI Changed para los planes anuales hijos</description>
         <name>BodyKPIChanged</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>Se ha modificado tu plan de {!$Record.Indicator__c} si tienes cualquier duda, puedes consultarlo con tu Director de Zona</text>
+        <text>Se ha modificado tu plan {!$Record.Name} del segmento {!$Record.Segment__c} y {!$Record.Product__c} si tienes cualquier duda, puedes consultarlo con tu Director de Zona</text>
     </textTemplates>
     <textTemplates>
         <name>BodyKPIReached</name>

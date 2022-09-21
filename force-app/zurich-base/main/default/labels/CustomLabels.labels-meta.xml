@@ -1662,4 +1662,44 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_PlanAnual_Message_Fleets</shortDescription>
         <value>DW source without contemplating normalization of Fleets or Digital codes</value>
     </labels>
+    <labels>
+        <fullName>SDM_Objetivos_Edit_Title</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_Edit_Title</shortDescription>
+        <value>Edit Objective</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_Clone_Title</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_Clone_Title</shortDescription>
+        <value>Clone Objective</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ButtonSave</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ButtonSave</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ButtonCancel</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ButtonCancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ToastDuplicateError</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ToastDuplicateError</shortDescription>
+        <value>The objective you are trying to create already exists for the selected year</value>
+    </labels>
 </CustomLabels>

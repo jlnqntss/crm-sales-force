@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Preferente__c</fullName>
+    <externalId>false</externalId>
+    <label>Priority</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Excluido</fullName>
+                <default>false</default>
+                <label>Excluido</label>
+            </value>
+            <value>
+                <fullName>No Preferente</fullName>
+                <default>false</default>
+                <label>No Preferente</label>
+            </value>
+            <value>
+                <fullName>Preferente</fullName>
+                <default>false</default>
+                <label>Preferente</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

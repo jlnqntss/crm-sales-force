@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>Permission_Type__c</field>
-        <value xsi:type="xsd:string">PublicGroup</value>
+        <value xsi:type="xsd:string">Profile</value>
     </values>
     <values>
         <field>Permission__c</field>

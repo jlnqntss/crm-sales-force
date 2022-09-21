@@ -1,0 +1,59 @@
+<template>
+  <div class="slds-float_right">
+    <lightning-button label="Ver ramos" class="slds-button" onclick={handleBunch}></lightning-button>
+    <lightning-button label="Buscar nuevo SIC" class="slds-button" onclick={handleSIC} variant="brand"></lightning-button>
+  </div>
+  <lightning-breadcrumbs>
+    <lightning-breadcrumb
+        label={sicLabel}
+        onclick={handleSIC}
+        >
+    </lightning-breadcrumb>
+    <lightning-breadcrumb
+        label={bunchLabel}
+        onclick={handleBunch}
+        >
+    </lightning-breadcrumb>
+  </lightning-breadcrumbs>
+  <div class="slds-p-top_medium">
+    <template for:each={options} for:item="item" >
+      <div key={item.label} class="slds-p-top_small">
+        <article class="slds-card slds-card_boundary">
+          <div class="slds-p-around_medium">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+              <div class="slds-media__body">
+                <h2 class="slds-card__header-title">
+                  <a class="slds-card__header-link" title="Card Header" onclick={handleClick}>
+                    <span id={item.id}>{item.label}</span>
+                  </a>
+                </h2>
+              </div>
+            </header>
+            <div class="slds-grid slds-p-top_small">
+              <div class="slds-col slds-size_1-of-3">
+                <span>Apetito de riesgo</span>
+              </div>
+              <div class="slds-col slds-size_1-of-3">
+                <span>Apetito DyO</span>
+              </div>
+              <div class="slds-col slds-size_1-of-3">
+                <span>Apetito CIBER</span>
+              </div>
+            </div>
+            <div class="slds-grid slds-p-top_small">
+              <div class="slds-col slds-size_1-of-3">
+                <lightning-badge label={item.riskAppetite} class={item.riskAppetiteBadge}></lightning-badge>
+              </div>
+              <div class="slds-col slds-size_1-of-3">
+                <lightning-badge label={item.dyo} class={item.dyoBadge}></lightning-badge>
+              </div>
+              <div class="slds-col slds-size_1-of-3">
+                <lightning-badge label={item.ciber} class={item.ciberBadge}></lightning-badge>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </template>
+  </div>
+</template>

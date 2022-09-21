@@ -2,10 +2,26 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
+        <name>Asignamos_la_poliza</name>
+        <label>Asignamos la poliza</label>
+        <locationX>941</locationX>
+        <locationY>1751</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.PolicyId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Obtenemos_la_primera_poliza.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Obtenemos_la_primera_poliza</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>AssignAccountDataAssignment</name>
         <label>Asignar datos cuenta</label>
         <locationX>50</locationX>
-        <locationY>2735</locationY>
+        <locationY>3527</locationY>
         <assignmentItems>
             <assignToReference>$Record.NUTELF1__c</assignToReference>
             <operator>Assign</operator>
@@ -55,8 +71,8 @@
     <assignments>
         <name>AssignInteractionAgent0Assignment</name>
         <label>Asignar gestor interaccion</label>
-        <locationX>930</locationX>
-        <locationY>3287</locationY>
+        <locationX>534</locationX>
+        <locationY>3959</locationY>
         <assignmentItems>
             <assignToReference>$Record.CDUSUARI__c</assignToReference>
             <operator>Assign</operator>
@@ -68,8 +84,8 @@
     <assignments>
         <name>AssignInteractionAgentAssignment</name>
         <label>Asignar gestor interaccion</label>
-        <locationX>666</locationX>
-        <locationY>3407</locationY>
+        <locationX>270</locationX>
+        <locationY>4079</locationY>
         <assignmentItems>
             <assignToReference>$Record.CDUSUARI__c</assignToReference>
             <operator>Assign</operator>
@@ -81,8 +97,8 @@
     <assignments>
         <name>AssignPolicyHolderDecision</name>
         <label>Asignar datos Tomador</label>
-        <locationX>952</locationX>
-        <locationY>1607</locationY>
+        <locationX>611</locationX>
+        <locationY>2399</locationY>
         <assignmentItems>
             <assignToReference>$Record.NumeroIdCliente__c</assignToReference>
             <operator>Assign</operator>
@@ -97,8 +113,8 @@
     <assignments>
         <name>AssignSurveyAccountDataAssignment</name>
         <label>Asignar datos cuenta</label>
-        <locationX>1018</locationX>
-        <locationY>2735</locationY>
+        <locationX>490</locationX>
+        <locationY>3527</locationY>
         <assignmentItems>
             <assignToReference>$Record.NUTELF1__c</assignToReference>
             <operator>Assign</operator>
@@ -124,11 +140,35 @@
             <targetReference>AssignedAgentAssignment</targetReference>
         </connector>
     </assignments>
+    <collectionProcessors>
+        <description>Ordenamos las pólizas en base a su estado y a su número de póliza</description>
+        <name>Ordenamos_las_p_lizas</name>
+        <elementSubtype>SortCollectionProcessor</elementSubtype>
+        <label>Ordenamos las pólizas</label>
+        <locationX>853</locationX>
+        <locationY>1511</locationY>
+        <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
+        <collectionReference>Obtenemos_poliza_valida</collectionReference>
+        <connector>
+            <targetReference>Obtenemos_la_primera_poliza</targetReference>
+        </connector>
+        <limit>1</limit>
+        <sortOptions>
+            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
+            <sortField>PolicyStatus__c</sortField>
+            <sortOrder>Desc</sortOrder>
+        </sortOptions>
+        <sortOptions>
+            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
+            <sortField>Name</sortField>
+            <sortOrder>Desc</sortOrder>
+        </sortOptions>
+    </collectionProcessors>
     <decisions>
         <name>AssignedAgentAssignment</name>
         <label>¿Es Gestor asignado?</label>
-        <locationX>930</locationX>
-        <locationY>3167</locationY>
+        <locationX>534</locationX>
+        <locationY>3839</locationY>
         <defaultConnectorLabel>Sin gestor</defaultConnectorLabel>
         <rules>
             <name>InInteractionOutcome</name>
@@ -171,8 +211,8 @@
     <decisions>
         <name>AssociatedAccountDecision</name>
         <label>¿Es Cuenta asociada?</label>
-        <locationX>446</locationX>
-        <locationY>2375</locationY>
+        <locationX>182</locationX>
+        <locationY>3167</locationY>
         <defaultConnector>
             <targetReference>AssignedAgentAssignment</targetReference>
         </defaultConnector>
@@ -196,8 +236,8 @@
     <decisions>
         <name>AssociatedCaseDecision</name>
         <label>¿Es Caso asociado?</label>
-        <locationX>930</locationX>
-        <locationY>2255</locationY>
+        <locationX>534</locationX>
+        <locationY>3047</locationY>
         <defaultConnector>
             <targetReference>AssociatedSurveyAccountDecision</targetReference>
         </defaultConnector>
@@ -221,8 +261,8 @@
     <decisions>
         <name>AssociatedSurveyAccountDecision</name>
         <label>¿Es Cuenta de Survey asociada?</label>
-        <locationX>1414</locationX>
-        <locationY>2375</locationY>
+        <locationX>886</locationX>
+        <locationY>3167</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>AssignedAgentAssignment</targetReference>
@@ -247,10 +287,10 @@
     <decisions>
         <name>IsClaimEmptyDecision</name>
         <label>¿Es Siniestro vacío?</label>
-        <locationX>1084</locationX>
-        <locationY>1031</locationY>
+        <locationX>743</locationX>
+        <locationY>1151</locationY>
         <defaultConnector>
-            <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
+            <targetReference>tipo_cola</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -272,8 +312,8 @@
     <decisions>
         <name>IsClientDataEmptyDecision</name>
         <label>¿Es Datos Cliente vacío?</label>
-        <locationX>1084</locationX>
-        <locationY>1823</locationY>
+        <locationX>743</locationX>
+        <locationY>2615</locationY>
         <defaultConnector>
             <targetReference>AssociatedCaseDecision</targetReference>
         </defaultConnector>
@@ -304,7 +344,7 @@
     <decisions>
         <name>IsRequestDecision</name>
         <label>¿Es solicitud?</label>
-        <locationX>930</locationX>
+        <locationX>534</locationX>
         <locationY>311</locationY>
         <defaultConnector>
             <targetReference>GetMotorRecordTypeAction</targetReference>
@@ -329,8 +369,8 @@
     <decisions>
         <name>IsVehicleLicensePlateEmptyDecision</name>
         <label>¿Es Datos Matrícula vacío?</label>
-        <locationX>1084</locationX>
-        <locationY>1367</locationY>
+        <locationX>743</locationX>
+        <locationY>2159</locationY>
         <defaultConnector>
             <targetReference>IsClientDataEmptyDecision</targetReference>
         </defaultConnector>
@@ -358,6 +398,31 @@
             <label>No</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>tipo_cola</name>
+        <label>¿Qué tipo de cola es?</label>
+        <locationX>985</locationX>
+        <locationY>1271</locationY>
+        <defaultConnector>
+            <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Motor_Express</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CallCenter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Motor Express</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Obtenemos_poliza_valida</targetReference>
+            </connector>
+            <label>Motor Express</label>
+        </rules>
+    </decisions>
     <formulas>
         <name>codigoProvincia</name>
         <dataType>String</dataType>
@@ -370,6 +435,20 @@
     </formulas>
     <interviewLabel>Survey Trigger - Before Insert - Completado de datos {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Survey Trigger - Before Insert - Completado de datos</label>
+    <loops>
+        <name>Obtenemos_la_primera_poliza</name>
+        <label>Obtenemos la primera poliza</label>
+        <locationX>853</locationX>
+        <locationY>1631</locationY>
+        <collectionReference>Obtenemos_poliza_valida</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Asignamos_la_poliza</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -392,8 +471,8 @@
     <recordLookups>
         <name>GetAgentEmailAction</name>
         <label>Obtener email gestor</label>
-        <locationX>666</locationX>
-        <locationY>3287</locationY>
+        <locationX>270</locationX>
+        <locationY>3959</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssignInteractionAgentAssignment</targetReference>
@@ -413,7 +492,7 @@
     <recordLookups>
         <name>GetBusinessCustomerRecordType</name>
         <label>Obtener Business Customer Record Type</label>
-        <locationX>1084</locationX>
+        <locationX>743</locationX>
         <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -434,8 +513,8 @@
     <recordLookups>
         <name>GetClaimDataAction</name>
         <label>Obtener datos siniestro</label>
-        <locationX>952</locationX>
-        <locationY>1151</locationY>
+        <locationX>501</locationX>
+        <locationY>1271</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
@@ -469,8 +548,8 @@
     <recordLookups>
         <name>GetClientDataAction</name>
         <label>Obtener datos cliente</label>
-        <locationX>952</locationX>
-        <locationY>1943</locationY>
+        <locationX>611</locationX>
+        <locationY>2735</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssociatedCaseDecision</targetReference>
@@ -506,7 +585,7 @@
     <recordLookups>
         <name>GetCustomerRecordTypeAction</name>
         <label>Obtener Customer Record Type</label>
-        <locationX>1084</locationX>
+        <locationX>743</locationX>
         <locationY>551</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -528,7 +607,7 @@
         <name>GetGeneralScopeAction</name>
         <label>Obtener Scope General</label>
         <locationX>50</locationX>
-        <locationY>2495</locationY>
+        <locationY>3287</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetZipCodeAction</targetReference>
@@ -557,8 +636,8 @@
     <recordLookups>
         <name>GetGeneralScopeSurveyAction</name>
         <label>Obtener Scope General</label>
-        <locationX>1018</locationX>
-        <locationY>2495</locationY>
+        <locationX>490</locationX>
+        <locationY>3287</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetZipCodeSurveyAction</targetReference>
@@ -591,7 +670,7 @@
     <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Obtener cola Genesys</label>
-        <locationX>1084</locationX>
+        <locationX>743</locationX>
         <locationY>791</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -606,6 +685,10 @@
             </value>
         </filters>
         <object>purecloud__PureCloud_Queue__c</object>
+        <outputAssignments>
+            <assignToReference>CallCenter</assignToReference>
+            <field>CallCenter__c</field>
+        </outputAssignments>
         <outputAssignments>
             <assignToReference>$Record.GenesysCloudQueue__c</assignToReference>
             <field>Id</field>
@@ -636,10 +719,6 @@
             </value>
         </filters>
         <object>Task</object>
-        <outputAssignments>
-            <assignToReference>$Record.TIPENT__c</assignToReference>
-            <field>CallType</field>
-        </outputAssignments>
         <outputAssignments>
             <assignToReference>$Record.NUTELCON__c</assignToReference>
             <field>DNISPhone__c</field>
@@ -790,8 +869,50 @@
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Obtenemos_poliza_valida</name>
+        <label>Obtenemos poliza válida</label>
+        <locationX>853</locationX>
+        <locationY>1391</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Ordenamos_las_p_lizas</targetReference>
+        </connector>
+        <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
+        <filters>
+            <field>PolicyHolder__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.NumeroIdCliente__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>PolicyType__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>AUTOS</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PolicyStatus__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>V</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PolicyStatus__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>A</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Policy__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>804</locationX>
+        <locationX>408</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsRequestDecision</targetReference>
@@ -801,6 +922,14 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <description>Call Center de la cola desde la que nos llega la interacción</description>
+        <name>CallCenter</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>CDUSUARI</name>
         <dataType>String</dataType>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>MandatoryDescriptionWhenSubreasonSveral</fullName>
-    <active>true</active>
+    <active>false</active>
     <description>La Descripción del Sub-motivo es obligatoria cuando Sub-motivo es Varios.</description>
     <errorConditionFormula>/*Si el motivo es Varios y no tiene la Descripción rellena*/
 AND(

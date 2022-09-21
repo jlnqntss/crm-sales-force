@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConExistenciaLiquidosInflamables__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Con Existencia de Productos Líquidos Inflamables</description>
+    <externalId>false</externalId>
+    <label>With Flammable Liquids Inventory</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
