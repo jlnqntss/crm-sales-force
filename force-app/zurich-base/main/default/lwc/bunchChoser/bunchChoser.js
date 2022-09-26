@@ -4,6 +4,25 @@ import {
   FlowAttributeChangeEvent
 } from "lightning/flowSupport";
 import getProductsForSIC from "@salesforce/apex/RiskAppetiteController.getProductsForSIC";
+import getOtherProducts from "@salesforce/apex/RiskAppetiteController.getOtherProducts";
+
+const columns = [
+  {
+    label : "Ramo",
+    type : "String",
+    fieldName : "MasterLabel"
+  },
+  {
+    label : "Código del ramo",
+    type : "String",
+    fieldName : "ProductCode__c"
+  },
+  {
+    label : "Enlace a sharepoint",
+    type : "url",
+    fieldName : "SharepointLink__c"
+  }
+]
 
 export default class BunchChoser extends LightningElement {
   // Variable to return the nextPage that should be opened
@@ -16,7 +35,12 @@ export default class BunchChoser extends LightningElement {
   chosenValueTrack;
   @api label;
 
+  showModal = false;
+  otherProductList;
+  columns = columns;
+
   @wire(getProductsForSIC, { sicCode: "$sicCode" }) optionsList;
+  @wire (getOtherProducts) otherProductList;
 
   get chosenValue() {
     return this.chosenValueTrack;
@@ -54,7 +78,6 @@ export default class BunchChoser extends LightningElement {
   handleNext() {
     this.nextPageTrack = 0;
     this.handleChange("nextPage", this.nextPage);
-    console.log(this.nextPage);
     this.moveForward();
   }
 
@@ -96,5 +119,25 @@ export default class BunchChoser extends LightningElement {
   goToDoc(event) {
     const URL = event.target.value;
     window.open(URL, "_blank").focus();
+  }
+
+  openModal() {
+    // getOtherProducts().then(result => {
+    //   console.log("****** result: ");
+    //   console.log(result);
+    //   this.otherProductList = result;
+    //   console.log(this.otherProductList);
+    // }).catch(error=>{
+    //   console.log("****** error: ");
+    //   console.log(error);
+    // })
+
+    console.log(columns);
+    // Setting boolean variable to true, this will show the Modal
+    this.showModal = true;
+  }
+  closeModal() {
+    // Setting boolean variable to false, this will hide the Modal
+    this.showModal = false;
   }
 }

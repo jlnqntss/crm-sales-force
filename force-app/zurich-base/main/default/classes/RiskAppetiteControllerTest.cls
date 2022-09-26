@@ -83,4 +83,16 @@ public with sharing class RiskAppetiteControllerTest {
 
         system.assertEquals(fieldList.size(), fields.size());
     }
+
+    @IsTest
+    static void test_getOtherProducts_OK()
+    {
+        List<OtherProduct__mdt> originalProducts = OtherProduct__mdt.getAll().values();
+
+        test.startTest();
+        List<OtherProduct__mdt> products = RiskAppetiteController.getOtherProducts();
+        test.stopTest();
+
+        system.assertEquals(originalProducts.size(), products.size());
+    }
 }

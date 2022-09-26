@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>STARK TRDM MM</label>
+    <protected>false</protected>
+    <values>
+        <field>ProductCode__c</field>
+        <value xsi:type="xsd:string">00585</value>
+    </values>
+    <values>
+        <field>SharepointLink__c</field>
+        <value xsi:type="xsd:string">https://zurichinsurance.sharepoint.com/sites/USCN/Shared%20Documents/Forms/AllItems.aspx?csf=1&amp;web=1&amp;e=euryLu&amp;cid=bfbe3a48%2De9d6%2D4d6e%2D8fd3%2Dcd4a8b6edbfe&amp;RootFolder=%2Fsites%2FUSCN%2FShared%20Documents%2FPRODUCTOS%2FSTARK&amp;FolderCTID=0x0120004F102AEF071E5E419073567055CB9005</value>
+    </values>
+</CustomMetadata>
