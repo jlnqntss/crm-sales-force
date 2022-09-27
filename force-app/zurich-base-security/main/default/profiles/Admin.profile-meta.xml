@@ -11530,6 +11530,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Tipificacion_NLU_Field_Mapping__mdt.Nombre_etiqueta_NLU__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Tipificacion_NLU_Field_Mapping__mdt.Subtype__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Tipificacion_NLU_Field_Mapping__mdt.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Tipificacion_NLU_Field_Mapping__mdt.TypeN3__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Transformer__mdt.OriginEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -14708,6 +14728,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Tipificacion_NLU_Field_Mapping__mdt-Tipificacion NLU Field Mapping Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Transformer__mdt-Transformer Layout</layout>
