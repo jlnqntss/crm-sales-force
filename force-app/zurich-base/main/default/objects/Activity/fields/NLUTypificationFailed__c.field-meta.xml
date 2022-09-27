@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NLUTypificationFailed__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>OCS - Aparece en el Informe de Tasa de acierto de la NLU. Con un Flow-Trigger se activa el check en las ocasiones en las que el agente tipificó el caso de manera diferente que la NLU</description>
+    <externalId>false</externalId>
+    <label>NLU Typification Failed</label>
+    <type>Checkbox</type>
+</CustomField>
