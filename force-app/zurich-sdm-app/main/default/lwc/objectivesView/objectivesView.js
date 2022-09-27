@@ -431,7 +431,7 @@ export default class ObjectivesView extends LightningElement {
         ) {
           console.log(key);
           let monthValue = objetivo[key];
-          objetivo[key] = monthValue * 100;
+          objetivo[key] = (monthValue * 100).toFixed(2);
         }
       }
     }
