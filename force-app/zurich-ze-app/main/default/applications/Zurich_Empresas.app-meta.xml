@@ -77,6 +77,38 @@
     <navType>Console</navType>
     <profileActionOverrides>
         <actionName>View</actionName>
+        <content>Policy_Record_Page_Advisor</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Policy__c</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>ZE User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Policy_Record_Page_Advisor</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Policy__c</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>ZE User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Policy_Record_Page_Advisor</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Policy__c</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Policy_Record_Page_Advisor</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Policy__c</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
         <content>ZE_Campaign_Telemarketing</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Campaign</pageOrSobjectType>
