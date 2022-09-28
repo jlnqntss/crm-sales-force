@@ -5,7 +5,7 @@
         <name>Asignamos_la_poliza</name>
         <label>Asignamos la poliza</label>
         <locationX>941</locationX>
-        <locationY>1751</locationY>
+        <locationY>2087</locationY>
         <assignmentItems>
             <assignToReference>$Record.PolicyId__c</assignToReference>
             <operator>Assign</operator>
@@ -98,7 +98,7 @@
         <name>AssignPolicyHolderDecision</name>
         <label>Asignar datos Tomador</label>
         <locationX>611</locationX>
-        <locationY>2399</locationY>
+        <locationY>2735</locationY>
         <assignmentItems>
             <assignToReference>$Record.NumeroIdCliente__c</assignToReference>
             <operator>Assign</operator>
@@ -107,7 +107,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>IsClientDataEmptyDecision</targetReference>
+            <targetReference>AssociatedCaseDecision</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -146,7 +146,7 @@
         <elementSubtype>SortCollectionProcessor</elementSubtype>
         <label>Ordenamos las pólizas</label>
         <locationX>853</locationX>
-        <locationY>1511</locationY>
+        <locationY>1847</locationY>
         <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
         <collectionReference>Obtenemos_poliza_valida</collectionReference>
         <connector>
@@ -288,7 +288,7 @@
         <name>IsClaimEmptyDecision</name>
         <label>¿Es Siniestro vacío?</label>
         <locationX>743</locationX>
-        <locationY>1151</locationY>
+        <locationY>1487</locationY>
         <defaultConnector>
             <targetReference>tipo_cola</targetReference>
         </defaultConnector>
@@ -310,12 +310,12 @@
         </rules>
     </decisions>
     <decisions>
-        <name>IsClientDataEmptyDecision</name>
+        <name>IsClientDataEmptyDecision_0</name>
         <label>¿Es Datos Cliente vacío?</label>
         <locationX>743</locationX>
-        <locationY>2615</locationY>
+        <locationY>1151</locationY>
         <defaultConnector>
-            <targetReference>AssociatedCaseDecision</targetReference>
+            <targetReference>IsClaimEmptyDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -370,9 +370,9 @@
         <name>IsVehicleLicensePlateEmptyDecision</name>
         <label>¿Es Datos Matrícula vacío?</label>
         <locationX>743</locationX>
-        <locationY>2159</locationY>
+        <locationY>2495</locationY>
         <defaultConnector>
-            <targetReference>IsClientDataEmptyDecision</targetReference>
+            <targetReference>AssociatedCaseDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -402,7 +402,7 @@
         <name>tipo_cola</name>
         <label>¿Qué tipo de cola es?</label>
         <locationX>985</locationX>
-        <locationY>1271</locationY>
+        <locationY>1607</locationY>
         <defaultConnector>
             <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
         </defaultConnector>
@@ -439,7 +439,7 @@
         <name>Obtenemos_la_primera_poliza</name>
         <label>Obtenemos la primera poliza</label>
         <locationX>853</locationX>
-        <locationY>1631</locationY>
+        <locationY>1967</locationY>
         <collectionReference>Obtenemos_poliza_valida</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -514,7 +514,7 @@
         <name>GetClaimDataAction</name>
         <label>Obtener datos siniestro</label>
         <locationX>501</locationX>
-        <locationY>1271</locationY>
+        <locationY>1607</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsVehicleLicensePlateEmptyDecision</targetReference>
@@ -549,10 +549,10 @@
         <name>GetClientDataAction</name>
         <label>Obtener datos cliente</label>
         <locationX>611</locationX>
-        <locationY>2735</locationY>
+        <locationY>1271</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>AssociatedCaseDecision</targetReference>
+            <targetReference>IsClaimEmptyDecision</targetReference>
         </connector>
         <filterLogic>1 AND (2 OR 3)</filterLogic>
         <filters>
@@ -697,11 +697,11 @@
     <recordLookups>
         <name>GetInteractionDataAction</name>
         <label>Obtener datos Interacción</label>
-        <locationX>1084</locationX>
-        <locationY>911</locationY>
+        <locationX>743</locationX>
+        <locationY>1031</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>IsClaimEmptyDecision</targetReference>
+            <targetReference>IsClientDataEmptyDecision_0</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -736,7 +736,7 @@
         <description>Obtenemos el ID correspondiente al grupo Missed Calls</description>
         <name>GetMissedCallsId</name>
         <label>Get missed calls group ID</label>
-        <locationX>688</locationX>
+        <locationX>743</locationX>
         <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -757,7 +757,7 @@
     <recordLookups>
         <name>GetMotorRecordTypeAction</name>
         <label>Obtener Motor Record Type</label>
-        <locationX>688</locationX>
+        <locationX>743</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -778,8 +778,8 @@
     <recordLookups>
         <name>GetVehicleLicensePlateAction</name>
         <label>Obtener datos matrícula</label>
-        <locationX>952</locationX>
-        <locationY>1487</locationY>
+        <locationX>611</locationX>
+        <locationY>2615</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssignPolicyHolderDecision</targetReference>
@@ -813,7 +813,7 @@
         <name>GetZipCodeAction</name>
         <label>Obtener Dirección postal</label>
         <locationX>50</locationX>
-        <locationY>2615</locationY>
+        <locationY>3407</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssignAccountDataAssignment</targetReference>
@@ -840,8 +840,8 @@
     <recordLookups>
         <name>GetZipCodeSurveyAction</name>
         <label>Obtener Dirección postal</label>
-        <locationX>1018</locationX>
-        <locationY>2615</locationY>
+        <locationX>490</locationX>
+        <locationY>3407</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssignSurveyAccountDataAssignment</targetReference>
@@ -873,7 +873,7 @@
         <name>Obtenemos_poliza_valida</name>
         <label>Obtenemos poliza válida</label>
         <locationX>853</locationX>
-        <locationY>1391</locationY>
+        <locationY>1727</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Ordenamos_las_p_lizas</targetReference>
