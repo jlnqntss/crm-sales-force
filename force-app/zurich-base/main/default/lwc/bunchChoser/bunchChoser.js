@@ -8,21 +8,22 @@ import getOtherProducts from "@salesforce/apex/RiskAppetiteController.getOtherPr
 
 const columns = [
   {
-    label : "Ramo",
-    type : "String",
-    fieldName : "MasterLabel"
+    label: "Ramo",
+    type: "String",
+    fieldName: "MasterLabel"
   },
   {
-    label : "Código del ramo",
-    type : "String",
-    fieldName : "ProductCode__c"
+    label: "Código del ramo",
+    type: "String",
+    fieldName: "ProductCode__c"
   },
   {
-    label : "Enlace a sharepoint",
-    type : "url",
-    fieldName : "SharepointLink__c"
+    label: "Enlace a sharepoint",
+    type: "url",
+    typeAttributes: { label: "Abrir Sharepoint" },
+    fieldName: "SharepointLink__c"
   }
-]
+];
 
 export default class BunchChoser extends LightningElement {
   // Variable to return the nextPage that should be opened
@@ -40,7 +41,7 @@ export default class BunchChoser extends LightningElement {
   columns = columns;
 
   @wire(getProductsForSIC, { sicCode: "$sicCode" }) optionsList;
-  @wire (getOtherProducts) otherProductList;
+  @wire(getOtherProducts) otherProductList;
 
   get chosenValue() {
     return this.chosenValueTrack;
