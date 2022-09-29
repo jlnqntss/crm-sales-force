@@ -2,9 +2,33 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>ActivityCodeAssignment</name>
+        <label>Assign Activity Code</label>
+        <locationX>490</locationX>
+        <locationY>1118</locationY>
+        <assignmentItems>
+            <assignToReference>activityCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetCaseAction.ActivityCode__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>activityChosen</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetCaseAction.ActivityCode__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>TechnicalPoliciesScreen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>CaseSICAssignment</name>
         <label>Assign Case SIC</label>
-        <locationX>622</locationX>
+        <locationX>820</locationX>
         <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>SicCode</assignToReference>
@@ -27,7 +51,7 @@
     <assignments>
         <name>ProductAssignment</name>
         <label>Assign Product</label>
-        <locationX>490</locationX>
+        <locationX>622</locationX>
         <locationY>878</locationY>
         <assignmentItems>
             <assignToReference>ProductCode</assignToReference>
@@ -44,8 +68,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>CommercialActivityScreen</targetReference>
+            <targetReference>MaestroFijadoDecision</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -75,7 +98,7 @@
     <decisions>
         <name>CaseHasProductCodeDecision</name>
         <label>Case Has Product Code</label>
-        <locationX>622</locationX>
+        <locationX>820</locationX>
         <locationY>758</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -101,7 +124,7 @@
     <decisions>
         <name>CaseHasSICCode</name>
         <label>Case Has SIC Code</label>
-        <locationX>820</locationX>
+        <locationX>1051</locationX>
         <locationY>518</locationY>
         <defaultConnector>
             <targetReference>SICScreen</targetReference>
@@ -126,8 +149,8 @@
     <decisions>
         <name>GoBackDecision</name>
         <label>Go Back?</label>
-        <locationX>501</locationX>
-        <locationY>1586</locationY>
+        <locationX>616</locationX>
+        <locationY>1922</locationY>
         <defaultConnector>
             <targetReference>CommercialActivityScreen</targetReference>
         </defaultConnector>
@@ -175,9 +198,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>MaestroFijadoDecision</name>
+        <label>Maestro Fijado?</label>
+        <locationX>622</locationX>
+        <locationY>998</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CommercialActivityScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>SiMaestroFijado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetCaseAction.Query__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActivityCodeAssignment</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>WhichDetailPageDecision</name>
         <label>Which Detail Page</label>
-        <locationX>501</locationX>
+        <locationX>616</locationX>
         <locationY>158</locationY>
         <defaultConnector>
             <targetReference>GetCaseAction</targetReference>
@@ -202,8 +251,8 @@
     <decisions>
         <name>WhichPageNextDecision</name>
         <label>Which Page Next</label>
-        <locationX>864</locationX>
-        <locationY>1826</locationY>
+        <locationX>979</locationX>
+        <locationY>2162</locationY>
         <defaultConnector>
             <targetReference>TechnicalPoliciesScreen</targetReference>
         </defaultConnector>
@@ -244,8 +293,8 @@
     <decisions>
         <name>WhichPageNextDecision_0</name>
         <label>Which Page Next</label>
-        <locationX>1326</locationX>
-        <locationY>2066</locationY>
+        <locationX>1441</locationX>
+        <locationY>2402</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>SIC_0</name>
@@ -320,7 +369,7 @@
     <recordLookups>
         <name>GetCaseAction</name>
         <label>Get case</label>
-        <locationX>820</locationX>
+        <locationX>1051</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -362,7 +411,7 @@
     <recordLookups>
         <name>GetClientCaseAction</name>
         <label>Get Client Case</label>
-        <locationX>820</locationX>
+        <locationX>1051</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -384,8 +433,8 @@
     <screens>
         <name>CommercialActivityScreen</name>
         <label>Commercial Activity</label>
-        <locationX>864</locationX>
-        <locationY>1706</locationY>
+        <locationX>979</locationX>
+        <locationY>2042</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -446,8 +495,8 @@
     <screens>
         <name>RamoScreen</name>
         <label>Ramo</label>
-        <locationX>501</locationX>
-        <locationY>1466</locationY>
+        <locationX>616</locationX>
+        <locationY>1802</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -502,8 +551,8 @@
     <screens>
         <name>SICScreen</name>
         <label>SIC</label>
-        <locationX>501</locationX>
-        <locationY>1346</locationY>
+        <locationX>616</locationX>
+        <locationY>1682</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -546,8 +595,8 @@
     <screens>
         <name>TechnicalPoliciesScreen</name>
         <label>TechnicalPolicies</label>
-        <locationX>1326</locationX>
-        <locationY>1946</locationY>
+        <locationX>1441</locationX>
+        <locationY>2282</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -599,11 +648,41 @@
                     <stringValue>SIC: {!SicCode}</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>recordId</elementReference>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>nextPage</assignToReference>
                 <name>nextPage</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>activityCode</assignToReference>
+                <name>activityCodeOutput</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>activityChosen</assignToReference>
+                <name>activityLabelOutput</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>ProductCode</assignToReference>
+                <name>bunchCodeOutput</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>ChosenProduct</assignToReference>
+                <name>bunchLabelOutput</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>SicCode</assignToReference>
+                <name>sicCodeOutput</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>chosenSIC</assignToReference>
+                <name>sicLabelOutput</name>
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
@@ -622,7 +701,7 @@
         <stageOrder>20</stageOrder>
     </stages>
     <start>
-        <locationX>375</locationX>
+        <locationX>490</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>WhichDetailPageDecision</targetReference>
