@@ -151,6 +151,12 @@
             <targetReference>Actualizar_Caso</targetReference>
         </connector>
         <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>Date</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>OwnerId</field>
             <value>
                 <elementReference>$User.ManagerId</elementReference>
@@ -203,6 +209,12 @@
         <connector>
             <targetReference>UpdateCaseExternalScaled</targetReference>
         </connector>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>Date</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>OwnerId</field>
             <value>
@@ -461,6 +473,17 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <description>Due date</description>
+        <name>Date</name>
+        <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Flow.CurrentDate</elementReference>
+        </value>
+    </variables>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
