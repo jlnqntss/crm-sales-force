@@ -24,6 +24,26 @@ public with sharing class RiskAppetiteControllerTest {
         maestro3.CodigoActividad__c = '0020';
         maestro3.ApetitoRiesgo__c = 'Fuera de apetito';
         insert maestro3;
+
+        MaestroApetito__c maestro4 = new MaestroApetito__c();
+        maestro4.SIC__c = SicCode;
+        maestro4.CodigoProducto__c = '0001';
+        maestro4.CodigoActividad__c = '0020';
+        maestro4.ApetitoRiesgo__c = 'Fuera de apetito';
+        maestro4.UsoExplosivos__c = true;
+        maestro4.ConExistenciaLiquidosInflamables__c = false;
+        maestro4.ConFoamizado__c = false;
+        maestro4.ConMateriasPlasticasEspumosas__c = false;
+        maestro4.ConNitratos__c = false;
+        maestro4.ConTapizados__c = false;
+        maestro4.ConSecaderoMadera__c = false;
+        maestro4.Espumosos__c = false;
+        maestro4.ConAspiracionAutomatica__c = false;
+        maestro4.ConRecubrimiento__c = false;
+        maestro4.ConPlanchasCombustibles__c = false;
+        maestro4.ConFabricacionDeEnvases__c = false;
+        maestro4.ConDestilacion__c = false;
+        insert maestro4;
     }
     
     @IsTest
@@ -94,5 +114,20 @@ public with sharing class RiskAppetiteControllerTest {
         test.stopTest();
 
         system.assertEquals(originalProducts.size(), products.size());
+    }
+
+    @IsTest
+    static void test_getSetTechPolicies_OK()
+    {
+        String Json = '{"attributes":{"type":"MaestroApetito__c"},"UsoExplosivos__c":true,"Espumosos__c":false,'
+        + '"ConAspiracionAutomatica__c":false,"ConRecubrimiento__c":false,"ConPlanchasCombustibles__c":false,'
+        + '"ConFabricacionDeEnvases__c":false,"ConDestilacion__c":false,"ConExistenciaLiquidosInflamables__c":false,'
+        + '"ConFoamizado__c":false,"ConMateriasPlasticasEspumosas__c":false,"ConNitratos__c":false,'
+        + '"ConTapizados__c":false,"ConSecaderoMadera__c":false,"SIC__c":"1100","CodigoProducto__c":"0001",'
+        +'"CodigoActividad__c":"0020"}';
+
+        MaestroApetito__c record = RiskAppetiteController.getSetTechPolicies(Json);
+
+        system.assertEquals('Fuera de apetito', record.ApetitoRiesgo__c);
     }
 }

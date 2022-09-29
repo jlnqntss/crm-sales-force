@@ -11,6 +11,10 @@ import {
 } from "lightning/flowSupport";
 import getTechPoliciesForActivities from "@salesforce/apex/RiskAppetiteController.getTechPoliciesForActivities";
 import getFields from "@salesforce/apex/RiskAppetiteController.getFields";
+import setTechPolicy from "@salesforce/apex/RiskAppetiteController.holdTechPolicy";
+import unsetTechPolicy from "@salesforce/apex/RiskAppetiteController.unsetTechPolicy";
+import getSetTechPolicies from "@salesforce/apex/RiskAppetiteController.getSetTechPolicies";
+import getCaseById from "@salesforce/apex/RiskAppetiteController.getCaseById";
 
 const fieldsToFilter = [
   "UsoExplosivos__c",
@@ -30,6 +34,11 @@ const fieldsToFilter = [
 
 export default class TechnicalPolicies extends LightningElement {
   // Variable to return the nextPage that should be opened
+  @api recordId;
+  caseRecord;
+  labelSetTechPolicyButton = "Fijar Política técnica";
+  caseQuery;
+  maestroFijado;
   @api nextPage = 0;
   nextPageTrack;
   @api value;
@@ -40,8 +49,12 @@ export default class TechnicalPolicies extends LightningElement {
   @api sicLabel;
   @api activityLabel;
   @api sicCode;
+  sicCodeTrack;
   @api productCode;
+  productCodeTrack;
   @api activityCode;
+  activityCodeTrack;
+
   @api size;
   sizeTrack;
   @api currentCounter;
@@ -51,6 +64,7 @@ export default class TechnicalPolicies extends LightningElement {
   policies;
   filtersVisible;
   idsInPolicies = [];
+  optionsList;
 
   @track showCheckboxes;
   showExplosives;
@@ -81,12 +95,62 @@ export default class TechnicalPolicies extends LightningElement {
   showModal = false;
   columns = [];
 
-  @wire(getTechPoliciesForActivities, {
-    sicCode: "$sicCode",
-    productCode: "$productCode",
-    activityCode: "$activityCode"
-  })
-  optionsList;
+  @api get sicCodeOutput() {
+    if (this.caseQuery && this.sicCodeTrack) {
+      return this.sicCodeTrack;
+    }
+    return this.sicCode;
+  }
+
+  @api get bunchCodeOutput() {
+    if (this.caseQuery && this.productCodeTrack) {
+      return this.productCodeTrack;
+    }
+    return this.bunchCode;
+  }
+
+  @api get activityCodeOutput() {
+    if (this.caseQuery && this.activityCodeTrack) {
+      return this.activityCodeTrack;
+    }
+    return this.activityCode;
+  }
+
+  @api get sicLabelOutput() {
+    return this.sicCodeTrack;
+  }
+
+  @api get bunchLabelOutput() {
+    return this.productCodeTrack;
+  }
+
+  @api get activityLabelOutput() {
+    return this.activityLabelTrack;
+  }
+
+  get sicLabelTrack() {
+    if (this.caseQuery && this.sicCodeTrack) {
+      return "SIC: " + this.sicCodeTrack;
+    }
+    return this.sicLabel;
+  }
+  get bunchLabelTrack() {
+    if (this.caseQuery && this.productCodeTrack) {
+      return "Ramo: " + this.productCodeTrack;
+    }
+    return this.bunchLabel;
+  }
+  get activityLabelTrack() {
+    if (this.caseQuery && this.maestroFijado) {
+      return (
+        "Act. Comercial: " +
+        this.activityCodeTrack +
+        " - " +
+        this.maestroFijado.ObservacionesActividad__c
+      );
+    }
+    return this.activityLabel;
+  }
 
   get chosenValue() {
     return this.chosenValueTrack;
@@ -111,18 +175,18 @@ export default class TechnicalPolicies extends LightningElement {
   get size() {
     if (this.policies) {
       return this.policies.length;
-    } else if (this.optionsList.data) {
-      return this.optionsList.data.length;
+    } else if (this.optionsList) {
+      return this.optionsList.length;
     }
     return this.sizeTrack;
   }
 
   get currentId() {
     let currentId;
-    if (this.optionsList.data) {
+    if (this.optionsList) {
       if (!this.policies) {
         // el array policies solo va a estar undefined al principio, así en las n ejecuciones de este getter no se vuelve a lanzar
-        this.policies = this.optionsList.data;
+        this.policies = this.optionsList;
         this.policies.forEach((ele) => {
           this.idsInPolicies.push(ele.Id);
         });
@@ -196,8 +260,38 @@ export default class TechnicalPolicies extends LightningElement {
     this.showModal = false;
   }
 
-  connectedCallback() {
-    getFields({ productCode: this.productCode }).then((result) => {
+  async connectedCallback() {
+    console.log("ConnectedCallback");
+    let currentCase;
+    if (this.recordId) {
+      currentCase = await getCaseById({ caseId: this.recordId });
+    }
+    if (currentCase) {
+      this.caseQuery = currentCase.Query__c;
+    }
+    if (this.caseQuery) {
+      this.maestroFijado = await getSetTechPolicies({
+        caseQuery: this.caseQuery
+      });
+      this.sicCodeTrack = this.maestroFijado.SIC__c;
+      this.productCodeTrack = this.maestroFijado.CodigoProducto__c;
+      this.activityCodeTrack = this.maestroFijado.CodigoActividad__c;
+      this.optionsList = await getTechPoliciesForActivities({
+        sicCode: this.sicCodeTrack,
+        productCode: this.productCodeTrack,
+        activityCode: this.activityCodeTrack
+      });
+    } else {
+      console.log("Entramos a cargar optionsList en el else");
+      this.optionsList = await getTechPoliciesForActivities({
+        sicCode: this.sicCode,
+        productCode: this.productCode,
+        activityCode: this.activityCode
+      });
+      console.log(this.optionsList);
+    }
+
+    await getFields({ productCode: this.productCode }).then((result) => {
       result.forEach((field) => {
         if (
           field.fieldName.includes("Franquicia") &&
@@ -216,21 +310,45 @@ export default class TechnicalPolicies extends LightningElement {
       this.checkProductCode();
       this.defineColumns(result);
     });
+    if (this.maestroFijado) {
+      this.filtersVisible = false;
+      this.policies = [];
+      this.policies.push(this.maestroFijado);
+      this.showCheckboxes = false;
+      this.currentCounterTrack = 1;
+    }
   }
 
   renderedCallback() {
+    this.checkPage();
     if (this.productCode === "00516" && this.sizeTrack > 1) {
       this.showCheckboxes = true;
     } else {
       this.showCheckboxes = false;
     }
   }
+
   checkProductCode() {
     // Para que se muestren los botones de navegación y los filtros, tiene que tener el ramo 516
     if (this.productCode === "00516") {
       this.showCheckboxes = true;
     } else {
       this.showCheckboxes = false;
+    }
+  }
+
+  checkPage() {
+    if (this.recordId) {
+      if (this.recordId.startsWith("500")) {
+        if (this.caseQuery) {
+          this.labelSetTechPolicyButton = "Desfijar Política Técnica";
+        } else {
+          this.labelSetTechPolicyButton = "Fijar Política Técnica";
+        }
+        this.caseRecord = true;
+      } else {
+        this.caseRecord = false;
+      }
     }
   }
 
@@ -284,7 +402,7 @@ export default class TechnicalPolicies extends LightningElement {
     let size = 0;
 
     object.forEach((field) => {
-      console.log(field);
+      //console.log(field);
       size++;
     });
 
@@ -363,19 +481,15 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   uncheckField(field) {
-    console.log(this.sizeTrack);
-    if (this.optionsList.data) {
-      this.optionsList.data.forEach((ele) => {
+    if (this.optionsList) {
+      this.optionsList.forEach((ele) => {
         if (!ele[field] && this.checkPreviousButtons(ele)) {
-          console.log(ele);
           if (!this.idsInPolicies.includes(ele.Id)) {
-            console.log("Elemento añadido");
             this.policies.push(ele);
             this.idsInPolicies.push(ele.Id);
           }
         }
       });
-      console.log(this.sizeTrack);
       this.showCheckboxes = true;
     }
   }
@@ -397,5 +511,40 @@ export default class TechnicalPolicies extends LightningElement {
       return this.currentRecordTrack.Id;
     }
     return "";
+  }
+
+  holdTechPolicy() {
+    if (this.caseQuery) {
+      unsetTechPolicy({
+        caseIdToUpdate: this.recordId
+      });
+      this.policies = this.optionsList;
+      this.sizeTrack = this.policies.length;
+      this.caseQuery = undefined;
+      this.showCheckboxes = true;
+    } else {
+      setTechPolicy({
+        caseIdToUpdate: this.recordId,
+        technicalPolicy: this.currentRecordTrack,
+        sicCode: this.sicCode,
+        productCode: this.productCode,
+        activityCode: this.activityCode,
+        fields: fieldsToFilter
+      });
+
+      this.filtersVisible = false;
+      const auxPolicies = this.policies;
+      this.policies = [];
+
+      auxPolicies.forEach((policy) => {
+        if (policy.Id == this.currentRecordTrack.Id) {
+          this.policies.push(policy);
+        }
+      });
+      this.showCheckboxes = false;
+      this.caseQuery = "set";
+      this.currentCounterTrack = 1;
+    }
+    this.checkPage();
   }
 }

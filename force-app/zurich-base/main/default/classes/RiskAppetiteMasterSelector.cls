@@ -68,4 +68,26 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
             return new List<MaestroApetito__c>();
         }
     }
+
+    public MaestroApetito__c getQueryFindTechnicalPolicy(MaestroApetito__c auxRecord, List<String> fields)
+    {
+        if(auxRecord != null && fields != null && !fields.isEmpty())
+        {
+            // We need to show as much information as we can, so we query all the readable fields.
+            this.baseQuery.selectReadableFields();
+            
+            for(String field : fields)
+            {
+                this.baseQuery.addConditionEq(field, auxRecord.get(field));
+            }
+            this.baseQuery.setLimit(1);
+
+            List<MaestroApetito__c> recordList = this.baseQuery.run();
+            return recordList[0];
+        }
+        else 
+        {
+            return new MaestroApetito__c();    
+        }
+    }
 }

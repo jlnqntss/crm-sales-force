@@ -15,8 +15,15 @@
             <property name="sicCode" type="String" role="inputOnly"/>
             <property name="productCode" type="String" role="inputOnly"/>
             <property name="activityCode" type="String" role="inputOnly"/>
-            <property name="chosenValue" type="String" role="outputOnly"/>
-            <property name="value" type="String" role="outputOnly"/>
+            <property name="chosenValue" type="String" role="outputOnly"/> <!-- Habría que eliminarlo, al ser la última página no tiene sentido -->
+            <property name="value" type="String" role="outputOnly"/><!-- Habría que eliminarlo, al ser la última página no tiene sentido -->
+            <property name="recordId" type="String" role="inputOnly"/>
+            <property name="sicCodeOutput" type="String" role="outputOnly"/>
+            <property name="bunchCodeOutput" type="String" role="outputOnly"/>
+            <property name="activityCodeOutput" type="String" role="outputOnly"/>
+            <property name="sicLabelOutput" type="String" role="outputOnly"/>
+            <property name="bunchLabelOutput" type="String" role="outputOnly"/>
+            <property name="activityLabelOutput" type="String" role="outputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -9,6 +9,19 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         maestro1.CodigoProducto__c = '0001';
         maestro1.CodigoActividad__c = '0010';
         maestro1.ApetitoRiesgo__c = 'Preferente';
+        maestro1.UsoExplosivos__c = true;
+        maestro1.ConExistenciaLiquidosInflamables__c = false;
+        maestro1.ConFoamizado__c = false;
+        maestro1.ConMateriasPlasticasEspumosas__c = false;
+        maestro1.ConNitratos__c = false;
+        maestro1.ConTapizados__c = false;
+        maestro1.ConSecaderoMadera__c = false;
+        maestro1.Espumosos__c = false;
+        maestro1.ConAspiracionAutomatica__c = false;
+        maestro1.ConRecubrimiento__c = false;
+        maestro1.ConPlanchasCombustibles__c = false;
+        maestro1.ConFabricacionDeEnvases__c = false;
+        maestro1.ConDestilacion__c = false;
         insert maestro1;
 
         MaestroApetito__c maestro2 = new MaestroApetito__c();
@@ -16,6 +29,19 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         maestro2.CodigoProducto__c = '0002';
         maestro2.CodigoActividad__c = '0020';
         maestro2.ApetitoRiesgo__c = 'No preferente';
+        maestro2.UsoExplosivos__c = true;
+        maestro2.ConExistenciaLiquidosInflamables__c = false;
+        maestro2.ConFoamizado__c = false;
+        maestro2.ConMateriasPlasticasEspumosas__c = false;
+        maestro2.ConNitratos__c = false;
+        maestro2.ConTapizados__c = false;
+        maestro2.ConSecaderoMadera__c = false;
+        maestro2.Espumosos__c = false;
+        maestro2.ConAspiracionAutomatica__c = false;
+        maestro2.ConRecubrimiento__c = false;
+        maestro2.ConPlanchasCombustibles__c = false;
+        maestro2.ConFabricacionDeEnvases__c = false;
+        maestro2.ConDestilacion__c = false;
         insert maestro2;
 
         MaestroApetito__c maestro3 = new MaestroApetito__c();
@@ -23,7 +49,40 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         maestro3.CodigoProducto__c = '0001';
         maestro3.CodigoActividad__c = '0020';
         maestro3.ApetitoRiesgo__c = 'Fuera de apetito';
+        maestro3.UsoExplosivos__c = true;
+        maestro3.ConExistenciaLiquidosInflamables__c = false;
+        maestro3.ConFoamizado__c = false;
+        maestro3.ConMateriasPlasticasEspumosas__c = false;
+        maestro3.ConNitratos__c = false;
+        maestro3.ConTapizados__c = false;
+        maestro3.ConSecaderoMadera__c = false;
+        maestro3.Espumosos__c = false;
+        maestro3.ConAspiracionAutomatica__c = false;
+        maestro3.ConRecubrimiento__c = false;
+        maestro3.ConPlanchasCombustibles__c = false;
+        maestro3.ConFabricacionDeEnvases__c = false;
+        maestro3.ConDestilacion__c = false;
         insert maestro3;
+
+        MaestroApetito__c maestro4 = new MaestroApetito__c();
+        maestro4.SIC__c = SicCode;
+        maestro4.CodigoProducto__c = '0001';
+        maestro4.CodigoActividad__c = '0020';
+        maestro4.ApetitoRiesgo__c = 'Fuera de apetito';
+        maestro4.UsoExplosivos__c = false;
+        maestro4.ConExistenciaLiquidosInflamables__c = false;
+        maestro4.ConFoamizado__c = false;
+        maestro4.ConMateriasPlasticasEspumosas__c = false;
+        maestro4.ConNitratos__c = false;
+        maestro4.ConTapizados__c = false;
+        maestro4.ConSecaderoMadera__c = false;
+        maestro4.Espumosos__c = false;
+        maestro4.ConAspiracionAutomatica__c = false;
+        maestro4.ConRecubrimiento__c = false;
+        maestro4.ConPlanchasCombustibles__c = false;
+        maestro4.ConFabricacionDeEnvases__c = false;
+        maestro4.ConDestilacion__c = false;
+        insert maestro4;
     }
 
     @IsTest
@@ -67,6 +126,34 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findTechPolicyByCommercialActivity('1100', '0001', '0020');
         test.stopTest();
 
-        system.assertEquals(1, records.size());
+        system.assertEquals(2, records.size());
+    }
+
+    @IsTest
+    static void test_getQueryFindTechnicalPolicy_OK()
+    {
+        List<String> trueChecks = new List<String>{ 
+            'UsoExplosivos__c'
+        };
+        List<String> falseChecks = new List<String>{ 
+            'ConExistenciaLiquidosInflamables__c',
+            'ConFoamizado__c',
+            'ConMateriasPlasticasEspumosas__c',
+            'ConNitratos__c',
+            'ConTapizados__c',
+            'ConSecaderoMadera__c',
+            'Espumosos__c',
+            'ConAspiracionAutomatica__c',
+            'ConRecubrimiento__c',
+            'ConPlanchasCombustibles__c',
+            'ConFabricacionDeEnvases__c',
+            'ConDestilacion__c'
+        };
+        test.startTest();
+        String query =  new RiskAppetiteMasterSelector().getQueryFindTechnicalPolicy('1100', '0001', '0020', trueChecks, falseChecks);
+        test.stopTest();
+
+        MaestroApetito__c record = Database.query(query);
+        system.assertNotEquals(null, record);
     }
 }

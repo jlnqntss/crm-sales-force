@@ -163,11 +163,7 @@ public with sharing class RiskAppetiteController {
     public static List<Field> getFields(String productCode)
     {
         String fieldSet = 'ramo' + productCode;
-        Map<String, Schema.SObjectType> globalDescribeMap = Schema.getGlobalDescribe(); 
-        Schema.SObjectType sObjectTypeObj = globalDescribeMap.get('MaestroApetito__c');
-        Schema.DescribeSObjectResult describeSObjectResultObj = sObjectTypeObj.getDescribe();
-        Schema.FieldSet fieldSetObj = describeSObjectResultObj.FieldSets.getMap().get(fieldSet);
-        List<Schema.FieldSetMember> fieldList = fieldSetObj.getFields(); 
+        List<Schema.FieldSetMember> fieldList = getFieldSetMembers(fieldSet);
 
         List<Field> fieldsToShow = new List<Field>();
 
@@ -180,6 +176,15 @@ public with sharing class RiskAppetiteController {
         return fieldsToShow;
     }
 
+    private static List<Schema.FieldSetMember> getFieldSetMembers(String fieldSet)
+    {
+        Map<String, Schema.SObjectType> globalDescribeMap = Schema.getGlobalDescribe(); 
+        Schema.SObjectType sObjectTypeObj = globalDescribeMap.get('MaestroApetito__c');
+        Schema.DescribeSObjectResult describeSObjectResultObj = sObjectTypeObj.getDescribe();
+        Schema.FieldSet fieldSetObj = describeSObjectResultObj.FieldSets.getMap().get(fieldSet);
+        return fieldSetObj.getFields(); 
+    }
+
     @AuraEnabled(cacheable=true)
     public static List<OtherProduct__mdt> getOtherProducts()
     {
@@ -189,6 +194,91 @@ public with sharing class RiskAppetiteController {
             List<OtherProduct__mdt> products = new List<OtherProduct__mdt>();
             products = [SELECT Id, MasterLabel, ProductCode__c,	SharepointLink__c FROM OtherProduct__mdt ORDER BY ProductCode__c];
             return products;
+        } 
+        catch (Exception e) 
+        {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Case getCaseById(String caseId)
+    {
+        return new CasesSelector().findById(new Set<String>{caseId})[0];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static MaestroApetito__c getSetTechPolicies(String caseQuery)
+    {
+        MaestroApetito__c record = (MaestroApetito__c) JSON.deserialize(caseQuery, MaestroApetito__c.Class);
+
+        String fieldSet = 'Checkboxes';
+        List<Schema.FieldSetMember> fieldList = getFieldSetMembers(fieldSet);
+
+        fieldSet = 'IdentifyingCodes';
+        fieldList.addAll(getFieldSetMembers(fieldSet));
+
+        List<String> fields = new List<String>();
+        for(Schema.FieldSetMember field : fieldList)
+        {
+            fields.add(field.getFieldPath());
+        }
+
+        MaestroApetito__c maestroFijado = new RiskAppetiteMasterSelector().getQueryFindTechnicalPolicy(record, fields);
+        return maestroFijado;
+    }
+
+    @AuraEnabled
+    public static void holdTechPolicy(String caseIdToUpdate, MaestroApetito__c technicalPolicy)
+    {
+        try
+        {
+            Case caseToUpdate = new Case(Id = caseIdToUpdate);
+
+            String fieldSet = 'Checkboxes';
+            List<Schema.FieldSetMember> fieldList = getFieldSetMembers(fieldSet);
+            
+            fieldSet = 'IdentifyingCodes';
+            fieldList.addAll(getFieldSetMembers(fieldSet));
+            
+            List<String> fields = new List<String>();
+            for(Schema.FieldSetMember field : fieldList)
+            {
+                fields.add(field.getFieldPath());
+            }
+            
+            // Generar json con los valores que van a ir al where
+            caseToUpdate.Query__c = generateQueryJson(technicalPolicy, fields);
+            caseToUpdate.ActivityCode__c = technicalPolicy.CodigoActividad__c;
+            update caseToUpdate;
+        } 
+        catch (Exception e) 
+        {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    private static String generateQueryJson(MaestroApetito__c record, List<String> fields)
+    {
+        MaestroApetito__c recordForJson = new MaestroApetito__c();
+
+        for(String field : fields)
+        {
+            recordForJson.put(field, record.get(field));
+        }
+
+        return JSON.serialize(recordForJson);
+    }
+
+    @AuraEnabled
+    public static void unsetTechPolicy(String caseIdToUpdate)
+    {
+        try
+        {
+            Case caseToUpdate = new Case(Id = caseIdToUpdate);
+            caseToUpdate.Query__c = '';
+
+            update caseToUpdate;
         } 
         catch (Exception e) 
         {
