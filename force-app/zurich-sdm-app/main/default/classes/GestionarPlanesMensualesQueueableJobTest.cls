@@ -15,7 +15,9 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
 
         System.debug('----------------------------Test testInsertPlanesMensuales-------------------------------------------------------------');
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId FROM PlanComercial__c 
+        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, 
+                                                                Indicator__c, Segment__c, Product__c, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Actual_KPI__c 
+                                                        FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
                                                         AND Intermediary__c = NULL

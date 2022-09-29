@@ -265,6 +265,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         result.ParentPlan__c = pc.Id;
         result.SentNotifications__c = calculoPCMap.get('NotificationSent');
         result.OwnerId = pc.OwnerId;
+        result.Actual_KPI__c = String.isEmpty(calculoPCMap.get('ActualKPI')) ? null : Decimal.valueOf(calculoPCMap.get('ActualKPI'));
 
         return result;
     }
@@ -543,77 +544,91 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
 
         String monthName;
         Decimal kpi;
+        String actualKPI;
         Integer numberOfDays;
         String notificationSent;
         String kpiField = getKPIFieldName(pc);
+        Integer actualMonth = Date.today().month();
         
         switch on i {
             when 1 {
                 monthName = 'Enero';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * obj.January__c) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth); 
             } when 2 {
                 monthName = 'Febrero';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 3 {
                 monthName = 'Marzo';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 4 {
                 monthName = 'Abril';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c + obj.April__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 5 {
                 monthName = 'Mayo';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 6 {
                 monthName = 'Junio';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 7 {
                 monthName = 'Julio';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 8 {
                 monthName = 'Agosto';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 9 {
                 monthName = 'Septiembre';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 10 {
                 monthName = 'Octubre';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c + obj.October__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 11 {
                 monthName = 'Noviembre';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c + obj.October__c + obj.November__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when 12 {
                 monthName = 'Diciembre';
                 kpi = (Decimal.valueOf(String.valueOf(pc.get(kpiField))) * (obj.January__c + obj.February__c + obj.March__c + obj.April__c + obj.May__c + obj.June__c + 
                         obj.July__c + obj.August__c + obj.September__c + obj.October__c + obj.November__c + obj.December__c)) / 100;
                 numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
-                notificationSent = calculateNotificationsSent(pc, i);
+                notificationSent = calculateNotificationsSent(pc, i, actualMonth);
+                actualKPI = calculateActualKPI(pc, i, actualMonth);
             } when else {
                 throw new HandledException('No se permite un valor superior a 12, por ser mes, recibido ' + i);
             }
@@ -624,6 +639,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         result.put('NumberOfDays', String.valueOf(numberOfDays));
         result.put('NotificationSent', notificationSent);
         result.put('KPIField', kpiField);
+        result.put('ActualKPI', actualKPI);
 
         return result;
     }
@@ -657,12 +673,29 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static String calculateNotificationsSent(PlanComercial__c pc, Integer monthToCalculate) {
+    private static String calculateNotificationsSent(PlanComercial__c pc, Integer monthToCalculate, Integer actualMonth) {
         String result = '';
-        Integer actualMonth = Date.today().month();
 
         if (monthToCalculate < actualMonth) {
             result = '01;02;03';
+        }
+        
+        return result;
+    }
+
+    /**
+     * En caso de que al generar los planes mensuales el anual tenga informado el actual kpi, solo informaremos ese campo para los planes del mes actual en adelante
+     * @param pc: plan comercial anual
+     * @param monthToCalculate: mes a generar
+     * @return Map con los calculos
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static String calculateActualKPI(PlanComercial__c pc, Integer monthToCalculate, Integer actualMonth) {
+        String result = String.valueOf(pc.Actual_KPI__c);        
+
+        if (monthToCalculate < actualMonth) {
+            result = null;
         }
         
         return result;
