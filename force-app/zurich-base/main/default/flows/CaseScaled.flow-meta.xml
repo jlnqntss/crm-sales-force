@@ -83,7 +83,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Record_Type_Activity_External</targetReference>
+                <targetReference>UpdateCaseExternalScaled</targetReference>
             </connector>
             <label>No</label>
         </rules>
@@ -145,17 +145,11 @@
         <description>Se crea una actividad asignada al supervisor y de tipo escalado</description>
         <name>Crear_Activity_Task</name>
         <label>Crear Activity Task</label>
-        <locationX>382</locationX>
+        <locationX>378</locationX>
         <locationY>759</locationY>
         <connector>
             <targetReference>Actualizar_Caso</targetReference>
         </connector>
-        <inputAssignments>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>Date</elementReference>
-            </value>
-        </inputAssignments>
         <inputAssignments>
             <field>OwnerId</field>
             <value>
@@ -178,71 +172,6 @@
             <field>Subject</field>
             <value>
                 <stringValue>Escalado Supervisor</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Subtype__c</field>
-            <value>
-                <stringValue>Scaled Supervisor</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>Scaled Case</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WhatId</field>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Crear_Activity_Task_External</name>
-        <label>Crear Activity Task</label>
-        <locationX>750</locationX>
-        <locationY>755</locationY>
-        <connector>
-            <targetReference>UpdateCaseExternalScaled</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>Date</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>OwnerId</field>
-            <value>
-                <elementReference>$User.ManagerId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>RecordTypeId</field>
-            <value>
-                <elementReference>Record_Type_Activity_External.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Cerrada</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Subject</field>
-            <value>
-                <stringValue>Escalado Otras Areas</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Subtype__c</field>
-            <value>
-                <stringValue>Scaled Other Areas</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -318,47 +247,12 @@
         <object>RecordType</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordLookups>
-        <name>Record_Type_Activity_External</name>
-        <label>Record Type Activity</label>
-        <locationX>750</locationX>
-        <locationY>626</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Crear_Activity_Task_External</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>SobjectType</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Task</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>IsActive</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Activity</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>RecordType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordUpdates>
         <description>se actualiza el caso desde el que se apretó la quick action</description>
         <name>Actualizar_Caso</name>
         <label>Actualizar Caso</label>
-        <locationX>382</locationX>
-        <locationY>882</locationY>
+        <locationX>375</locationX>
+        <locationY>878</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -384,8 +278,8 @@
     <recordUpdates>
         <name>UpdateCaseExternalScaled</name>
         <label>Actualizar Caso Escalado Externo</label>
-        <locationX>752</locationX>
-        <locationY>879</locationY>
+        <locationX>815</locationX>
+        <locationY>585</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -473,17 +367,6 @@
         </connector>
     </start>
     <status>Active</status>
-    <variables>
-        <description>Due date</description>
-        <name>Date</name>
-        <dataType>Date</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>$Flow.CurrentDate</elementReference>
-        </value>
-    </variables>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
