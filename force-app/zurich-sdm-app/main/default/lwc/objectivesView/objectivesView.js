@@ -64,7 +64,6 @@ import OBJECTIVE_ACTIVE_FIELD from "@salesforce/schema/Objective__c.Active__c";
 // controller
 import getObjetives from "@salesforce/apex/ObjectivesViewController.getObjetives";
 import getSelectorYearList from "@salesforce/apex/ObjectivesViewController.getSelectorYearList";
-import cloneRecords from "@salesforce/apex/ObjectivesViewController.cloneRecords";
 import updateObjectives from "@salesforce/apex/ObjectivesViewController.updateObjectives";
 
 const actions = [
@@ -431,7 +430,7 @@ export default class ObjectivesView extends LightningElement {
         ) {
           console.log(key);
           let monthValue = objetivo[key];
-          objetivo[key] = monthValue * 100;
+          objetivo[key] = (monthValue * 100).toFixed(2);
         }
       }
     }
@@ -493,7 +492,8 @@ export default class ObjectivesView extends LightningElement {
   }
 
   // se llama tanto para editar como para el new/clone
-  handleSuccess(event) {
+  async handleSuccess(event) {
+    console.log("asincronooooo");
     let messageToast;
     this.errors = [];
 
@@ -514,75 +514,9 @@ export default class ObjectivesView extends LightningElement {
     this.dispatchEvent(evt);
 
     // cerrar modal y actualizar variables para navegar y refrescar tabla
-    this.isShowModal = false;
-    let insertedYear = event.detail.fields.Year__c.value;
-    this.selectedYear = insertedYear; // actualizo la variable
-    this.recordIdSelected = "";
-
-    console.log("selected year save " + this.selectedYear);
-    refreshApex(this.objectivesData);
-  }
-
-  /************** Button Clone **************************************************************************************/
-  async handleCloneNewYear() {
-    const selectedRows = this.template
-      .querySelector("lightning-datatable")
-      .getSelectedRows();
-
-    console.log("selected rows " + JSON.stringify(selectedRows));
-
-    if (selectedRows.length > 0) {
-      try {
-        const result = await cloneRecords({
-          data: JSON.stringify(selectedRows),
-          year: this.selectedYear
-        });
-        console.log(
-          JSON.stringify("Apex clone ejecutado " + JSON.stringify(result))
-        );
-
-        // si el toast es de error monto el objeto errors para marcar los registros duplicados
-        if (result.variant === "error") {
-          const idsErrorArray = result.duplicateIds.split(",");
-          let errors = {};
-          errors.rows = {};
-          for (let rowId in idsErrorArray) {
-            errors.rows[idsErrorArray[rowId]] = {
-              title: this.labels.SDM_Objetivos_RowErrorTitle,
-              messages: this.labels.SDM_Objetivos_DuplicateRecordsRowError
-            };
-            // ... etc
-            this.errors = errors;
-            console.log("errors " + JSON.stringify(errors));
-          }
-        }
-
-        const evt = new ShowToastEvent({
-          title: result.title,
-          message: result.toastMessage,
-          variant: result.variant
-        });
-        this.dispatchEvent(evt);
-
-        await this.refreshSelectedValue(result.year);
-        await refreshApex(this.objectivesData);
-      } catch (error) {
-        const evt = new ShowToastEvent({
-          title: this.labels.SDM_Objetivos_Error,
-          message: error.body.message,
-          variant: "error"
-        });
-        this.dispatchEvent(evt);
-      }
-    } else {
-      console.log("Selected vacio");
-      const evt = new ShowToastEvent({
-        title: this.labels.SDM_Objetivos_Warning,
-        message: this.labels.SDM_Objetivos_ToastCloneNotSelected,
-        variant: "warning"
-      });
-      this.dispatchEvent(evt);
-    }
+    this.hideModalBox();
+    await this.refreshSelectedValue(event.detail.fields.Year__c.value);
+    await refreshApex(this.objectivesData);
   }
 
   async refreshSelectedValue(year) {
@@ -593,7 +527,7 @@ export default class ObjectivesView extends LightningElement {
 
   /************************** Handle on Error New y Clone Form ***********************************************************/
   handleErrorForm(event) {
-    console.log("entro en handleErrorClone");
+    console.log("entro en handleErrorForm");
     console.log("event " + JSON.stringify(event));
 
     let errorEvent = event.detail.output.errors[0];
