@@ -10055,6 +10055,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Policy__c.AccidentRate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Policy__c.Bonus__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10251,6 +10256,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.TotalPremium__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.Zrc__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
