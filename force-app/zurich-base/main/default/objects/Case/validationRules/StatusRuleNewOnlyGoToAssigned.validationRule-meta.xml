@@ -4,7 +4,7 @@
     <active>true</active>
     <description>[VR Caso] Caso en estado NUEVO sólo puede pasar a ASIGNADO</description>
     <errorConditionFormula>RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp; 
-ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Asignado&quot;))</errorConditionFormula>
+ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;) &amp;&amp; AND(NOT(ISPICKVAL(Status,&quot;Asignado&quot;)),NOT(ISPICKVAL(Status,&quot;Transferido&quot;)))</errorConditionFormula>
     <errorDisplayField>Status</errorDisplayField>
     <errorMessage>[VR Caso] Caso en estado NUEVO sólo puede pasar a ASIGNADO</errorMessage>
 </ValidationRule>
