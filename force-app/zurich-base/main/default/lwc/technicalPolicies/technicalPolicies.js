@@ -269,14 +269,11 @@ export default class TechnicalPolicies extends LightningElement {
 
   async connectedCallback() {
     let currentCase;
-    console.log(this.recordId);
     if (this.recordId) {
       currentCase = await getCaseById({ caseId: this.recordId });
-      console.log(currentCase);
     }
     if (currentCase) {
       this.caseQuery = currentCase.Query__c;
-      console.log(this.caseQuery);
     }
     if (this.caseQuery && this.desfijadoInput === false) {
       this.maestroFijado = await getSetTechPolicies({
