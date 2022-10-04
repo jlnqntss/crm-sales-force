@@ -24,6 +24,8 @@
             <property name="sicLabelOutput" type="String" role="outputOnly"/>
             <property name="bunchLabelOutput" type="String" role="outputOnly"/>
             <property name="activityLabelOutput" type="String" role="outputOnly"/>
+            <property name="desfijado" type="Boolean" />
+            <property name="desfijadoInput" type="Boolean" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

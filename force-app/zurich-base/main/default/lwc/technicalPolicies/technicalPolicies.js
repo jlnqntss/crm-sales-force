@@ -4,7 +4,7 @@
  * @author jjuaristi
  */
 
-import { api, LightningElement, wire, track } from "lwc";
+import { api, LightningElement, track } from "lwc";
 import {
   FlowNavigationNextEvent,
   FlowAttributeChangeEvent
@@ -38,6 +38,9 @@ export default class TechnicalPolicies extends LightningElement {
   caseRecord;
   labelSetTechPolicyButton = "Fijar Política técnica";
   caseQuery;
+  @api desfijadoInput;
+  desfijadoTrack;
+  booleanMaestroFijado = false;
   maestroFijado;
   @api nextPage = 0;
   nextPageTrack;
@@ -49,11 +52,11 @@ export default class TechnicalPolicies extends LightningElement {
   @api sicLabel;
   @api activityLabel;
   @api sicCode;
-  sicCodeTrack;
+  sicCodeTrack = undefined;
   @api productCode;
-  productCodeTrack;
+  productCodeTrack = undefined;
   @api activityCode;
-  activityCodeTrack;
+  activityCodeTrack = undefined;
 
   @api size;
   sizeTrack;
@@ -96,21 +99,21 @@ export default class TechnicalPolicies extends LightningElement {
   columns = [];
 
   @api get sicCodeOutput() {
-    if (this.caseQuery && this.sicCodeTrack) {
+    if (this.sicCodeTrack) {
       return this.sicCodeTrack;
     }
     return this.sicCode;
   }
 
   @api get bunchCodeOutput() {
-    if (this.caseQuery && this.productCodeTrack) {
+    if (this.productCodeTrack) {
       return this.productCodeTrack;
     }
     return this.bunchCode;
   }
 
   @api get activityCodeOutput() {
-    if (this.caseQuery && this.activityCodeTrack) {
+    if (this.activityCodeTrack) {
       return this.activityCodeTrack;
     }
     return this.activityCode;
@@ -129,19 +132,19 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   get sicLabelTrack() {
-    if (this.caseQuery && this.sicCodeTrack) {
+    if (this.sicCodeTrack) {
       return "SIC: " + this.sicCodeTrack;
     }
     return this.sicLabel;
   }
   get bunchLabelTrack() {
-    if (this.caseQuery && this.productCodeTrack) {
+    if (this.productCodeTrack) {
       return "Ramo: " + this.productCodeTrack;
     }
     return this.bunchLabel;
   }
   get activityLabelTrack() {
-    if (this.caseQuery && this.maestroFijado) {
+    if (this.maestroFijado) {
       return (
         "Act. Comercial: " +
         this.activityCodeTrack +
@@ -150,6 +153,10 @@ export default class TechnicalPolicies extends LightningElement {
       );
     }
     return this.activityLabel;
+  }
+
+  @api get desfijado() {
+    return this.desfijadoTrack;
   }
 
   get chosenValue() {
@@ -261,15 +268,17 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   async connectedCallback() {
-    console.log("ConnectedCallback");
     let currentCase;
+    console.log(this.recordId);
     if (this.recordId) {
       currentCase = await getCaseById({ caseId: this.recordId });
+      console.log(currentCase);
     }
     if (currentCase) {
       this.caseQuery = currentCase.Query__c;
+      console.log(this.caseQuery);
     }
-    if (this.caseQuery) {
+    if (this.caseQuery && this.desfijadoInput === false) {
       this.maestroFijado = await getSetTechPolicies({
         caseQuery: this.caseQuery
       });
@@ -282,13 +291,11 @@ export default class TechnicalPolicies extends LightningElement {
         activityCode: this.activityCodeTrack
       });
     } else {
-      console.log("Entramos a cargar optionsList en el else");
       this.optionsList = await getTechPoliciesForActivities({
         sicCode: this.sicCode,
         productCode: this.productCode,
         activityCode: this.activityCode
       });
-      console.log(this.optionsList);
     }
 
     await getFields({ productCode: this.productCode }).then((result) => {
@@ -311,6 +318,7 @@ export default class TechnicalPolicies extends LightningElement {
       this.defineColumns(result);
     });
     if (this.maestroFijado) {
+      this.booleanMaestroFijado = true;
       this.filtersVisible = false;
       this.policies = [];
       this.policies.push(this.maestroFijado);
@@ -340,7 +348,7 @@ export default class TechnicalPolicies extends LightningElement {
   checkPage() {
     if (this.recordId) {
       if (this.recordId.startsWith("500")) {
-        if (this.caseQuery) {
+        if (this.caseQuery && this.desfijadoInput === false) {
           this.labelSetTechPolicyButton = "Desfijar Política Técnica";
         } else {
           this.labelSetTechPolicyButton = "Fijar Política Técnica";
@@ -402,8 +410,9 @@ export default class TechnicalPolicies extends LightningElement {
     let size = 0;
 
     object.forEach((field) => {
-      //console.log(field);
-      size++;
+      if (field) {
+        size++;
+      }
     });
 
     return size;
@@ -514,7 +523,7 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   holdTechPolicy() {
-    if (this.caseQuery) {
+    if (this.caseQuery && this.desfijadoInput === false) {
       unsetTechPolicy({
         caseIdToUpdate: this.recordId
       });
@@ -522,6 +531,8 @@ export default class TechnicalPolicies extends LightningElement {
       this.sizeTrack = this.policies.length;
       this.caseQuery = undefined;
       this.showCheckboxes = true;
+      this.desfijadoTrack = true;
+      this.booleanMaestroFijado = false;
     } else {
       setTechPolicy({
         caseIdToUpdate: this.recordId,
@@ -537,13 +548,15 @@ export default class TechnicalPolicies extends LightningElement {
       this.policies = [];
 
       auxPolicies.forEach((policy) => {
-        if (policy.Id == this.currentRecordTrack.Id) {
+        if (policy.Id === this.currentRecordTrack.Id) {
           this.policies.push(policy);
         }
       });
+      this.booleanMaestroFijado = true;
       this.showCheckboxes = false;
       this.caseQuery = "set";
       this.currentCounterTrack = 1;
+      this.desfijadoTrack = false;
     }
     this.checkPage();
   }

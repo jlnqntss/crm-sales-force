@@ -93,7 +93,7 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findAllMasters();
         test.stopTest();
 
-        system.assertEquals(3, records.size());
+        system.assertEquals(4, records.size());
     }
 
     @IsTest
@@ -104,7 +104,7 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findProductsBySicCode('1100');
         test.stopTest();
 
-        system.assertEquals(3, records.size());
+        system.assertEquals(4, records.size());
     }
 
     @IsTest
@@ -115,7 +115,7 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findCommercialActivitiesByProductCode('1100', '0001');
         test.stopTest();
 
-        system.assertEquals(2, records.size());
+        system.assertEquals(3, records.size());
     }
 
     @IsTest
@@ -132,10 +132,8 @@ public with sharing class RiskAppetiteMasterSelectorTest {
     @IsTest
     static void test_getQueryFindTechnicalPolicy_OK()
     {
-        List<String> trueChecks = new List<String>{ 
-            'UsoExplosivos__c'
-        };
-        List<String> falseChecks = new List<String>{ 
+        List<String> fields = new List<String>{ 
+            'UsoExplosivos__c',
             'ConExistenciaLiquidosInflamables__c',
             'ConFoamizado__c',
             'ConMateriasPlasticasEspumosas__c',
@@ -149,11 +147,15 @@ public with sharing class RiskAppetiteMasterSelectorTest {
             'ConFabricacionDeEnvases__c',
             'ConDestilacion__c'
         };
+        List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findTechPolicyByCommercialActivity('1100', '0001', '0020');
+        MaestroApetito__c auxRecord = records[1];
         test.startTest();
-        String query =  new RiskAppetiteMasterSelector().getQueryFindTechnicalPolicy('1100', '0001', '0020', trueChecks, falseChecks);
+        MaestroApetito__c foundRecord =  new RiskAppetiteMasterSelector().getQueryFindTechnicalPolicy(auxRecord, fields);
         test.stopTest();
 
-        MaestroApetito__c record = Database.query(query);
-        system.assertNotEquals(null, record);
+        for(String field : fields)
+        {
+            system.assertEquals(auxRecord.get(field), foundRecord.get(field));
+        }
     }
 }

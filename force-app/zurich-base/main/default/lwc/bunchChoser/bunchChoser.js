@@ -5,6 +5,7 @@ import {
 } from "lightning/flowSupport";
 import getProductsForSIC from "@salesforce/apex/RiskAppetiteController.getProductsForSIC";
 import getOtherProducts from "@salesforce/apex/RiskAppetiteController.getOtherProducts";
+import stringTest from "@salesforce/apex/RiskAppetiteController.testScope";
 
 const columns = [
   {
@@ -56,6 +57,7 @@ export default class BunchChoser extends LightningElement {
   }
 
   get options() {
+    console.log(stringTest);
     let options = [];
     if (this.optionsList.data) {
       this.optionsList.data.forEach((ele) => {
@@ -75,6 +77,13 @@ export default class BunchChoser extends LightningElement {
     return options;
   }
 
+  connectedCallback() {
+    console.log(stringTest);
+  }
+
+  renderedCallback() {
+    console.log(stringTest);
+  }
   // Function that makes the flow move to the next step
   handleNext() {
     this.nextPageTrack = 0;
@@ -123,17 +132,6 @@ export default class BunchChoser extends LightningElement {
   }
 
   openModal() {
-    // getOtherProducts().then(result => {
-    //   console.log("****** result: ");
-    //   console.log(result);
-    //   this.otherProductList = result;
-    //   console.log(this.otherProductList);
-    // }).catch(error=>{
-    //   console.log("****** error: ");
-    //   console.log(error);
-    // })
-
-    console.log(columns);
     // Setting boolean variable to true, this will show the Modal
     this.showModal = true;
   }

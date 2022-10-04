@@ -5,10 +5,9 @@ public with sharing class RiskAppetiteController {
     private static final String EXCLUIDO_BADGE_CLASS = 'slds-theme_inverse';
     private static final String FUERA_DE_APETITO_BADGE_CLASS = 'slds-theme_error';
     private static final String VARIOS_BADGE_CLASS = 'slds-theme_lightest';
-     
+
     @AuraEnabled(cacheable=true)
     public static List<String> getAvailableSICs(){
-
         try
         {
             List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findAllMasters();
@@ -190,7 +189,6 @@ public with sharing class RiskAppetiteController {
     {
         try 
         {
-            // TODO: getInstance no coge el longTextArea al completo, solo 255 caracteres. Buscar work around que no sea lanzar la query, para que no cuente para los límites
             List<OtherProduct__mdt> products = new List<OtherProduct__mdt>();
             products = [SELECT Id, MasterLabel, ProductCode__c,	SharepointLink__c FROM OtherProduct__mdt ORDER BY ProductCode__c];
             return products;

@@ -83,7 +83,7 @@ public with sharing class RiskAppetiteControllerTest {
         List<MaestroApetito__c> masters = RiskAppetiteController.getTechPoliciesForActivities('1100', '0001', '0020');
         test.stopTest();
 
-        system.assertEquals(1, masters.size());
+        system.assertEquals(2, masters.size());
     }
 
     @IsTest

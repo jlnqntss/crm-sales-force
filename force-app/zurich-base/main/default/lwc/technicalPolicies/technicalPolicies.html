@@ -9,6 +9,7 @@
   <div>
     <div class="slds-float_right">
       <lightning-button
+        if:false={booleanMaestroFijado}
         label="Buscar nuevo SIC"
         class="slds-button"
         onclick={handleSIC}
@@ -16,6 +17,7 @@
       ></lightning-button>
       <p></p>
       <lightning-button
+        if:false={booleanMaestroFijado}
         label="Ver Actividades comerciales"
         class="slds-button"
         onclick={handleCommercial}

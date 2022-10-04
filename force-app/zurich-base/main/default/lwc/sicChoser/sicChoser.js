@@ -1,6 +1,7 @@
 import { api, LightningElement, wire } from "lwc";
 import { FlowNavigationNextEvent } from "lightning/flowSupport";
 import getAvailableSics from "@salesforce/apex/RiskAppetiteController.getAvailableSICs";
+import getString from "@salesforce/apex/RiskAppetiteController.getString";
 
 export default class SicChoser extends LightningElement {
   // Variable to return the nextPage that should be opened
@@ -40,6 +41,7 @@ export default class SicChoser extends LightningElement {
   }
 
   renderedCallback() {
+    getString();
     if (this.initialized) {
       return;
     }
