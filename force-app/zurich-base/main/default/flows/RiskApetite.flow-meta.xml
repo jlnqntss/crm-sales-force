@@ -654,6 +654,12 @@
                     <elementReference>recordId</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>desfijadoInput</name>
+                <value>
+                    <elementReference>desfijado</elementReference>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
@@ -683,6 +689,10 @@
             <outputParameters>
                 <assignToReference>chosenSIC</assignToReference>
                 <name>sicLabelOutput</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>desfijado</assignToReference>
+                <name>desfijado</name>
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
@@ -742,6 +752,16 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>desfijado</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>Location</name>
