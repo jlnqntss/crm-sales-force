@@ -218,21 +218,27 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   handleSIC() {
-    this.nextPageTrack = 1;
-    this.handleChange("nextPage", this.nextPage);
-    this.moveForward();
+    if (this.booleanMaestroFijado !== true) {
+      this.nextPageTrack = 1;
+      this.handleChange("nextPage", this.nextPage);
+      this.moveForward();
+    }
   }
 
   handleBunch() {
-    this.nextPageTrack = 2;
-    this.handleChange("nextPage", this.nextPage);
-    this.moveForward();
+    if (this.booleanMaestroFijado !== true) {
+      this.nextPageTrack = 2;
+      this.handleChange("nextPage", this.nextPage);
+      this.moveForward();
+    }
   }
 
   handleCommercial() {
-    this.nextPageTrack = 3;
-    this.handleChange("nextPage", this.nextPage);
-    this.moveForward();
+    if (this.booleanMaestroFijado !== true) {
+      this.nextPageTrack = 3;
+      this.handleChange("nextPage", this.nextPage);
+      this.moveForward();
+    }
   }
 
   moveRight() {
