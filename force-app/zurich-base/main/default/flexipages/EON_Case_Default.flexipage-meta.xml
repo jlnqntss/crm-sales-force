@@ -254,6 +254,9 @@
                             <value>Delete</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>Case.Generar_Seguimiento</value>
+                        </valueListItems>
+                        <valueListItems>
                             <value>Case.Transferir</value>
                         </valueListItems>
                         <valueListItems>
@@ -285,7 +288,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>numVisibleActions</name>
-                    <value>4</value>
+                    <value>5</value>
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>force_highlightsPanel</identifier>
