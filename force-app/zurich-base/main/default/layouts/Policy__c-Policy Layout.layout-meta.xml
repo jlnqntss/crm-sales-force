@@ -58,6 +58,10 @@
                 <field>ScopeId__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>InfoQuoteNumber__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>LinkINFO__c</field>
             </layoutItems>
