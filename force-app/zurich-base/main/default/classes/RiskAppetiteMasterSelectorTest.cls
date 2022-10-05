@@ -85,6 +85,11 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         insert maestro4;
     }
 
+    /**
+     * Método que testea el método que recupera todos los registros de MaestroApetito__c
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_findAllMasters_OK()
     {
@@ -96,6 +101,11 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         system.assertEquals(4, records.size());
     }
 
+    /**
+     * Método que testea el método que recupera todos los registros de MaestroApetito__c en base al SIC
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_findProductsBySicCode_OK()
     {
@@ -107,6 +117,11 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         system.assertEquals(4, records.size());
     }
 
+    /**
+     * Método que testea el método que recupera todos los registros de MaestroApetito__c en base a SIC y ramo
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_findCommercialActivitiesByProductCode_OK()
     {
@@ -118,6 +133,11 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         system.assertEquals(3, records.size());
     }
 
+    /**
+     * Método que testea el método que recupera todos los registros de MaestroApetito__c en base a SIC, ramo y actividad comercial
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_findTechPolicyByCommercialActivity_OK()
     {
@@ -129,6 +149,11 @@ public with sharing class RiskAppetiteMasterSelectorTest {
         system.assertEquals(2, records.size());
     }
 
+    /**
+     * Método que testea el método que recupera un registro en función a un json de entrada
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getQueryFindTechnicalPolicy_OK()
     {

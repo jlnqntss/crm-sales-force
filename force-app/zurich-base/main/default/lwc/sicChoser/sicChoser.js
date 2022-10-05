@@ -12,6 +12,7 @@ export default class SicChoser extends LightningElement {
   @api label = "Escoge un SIC";
   initialized = false;
 
+  // Wire para recuperar todos los registros
   @wire(getAvailableSics) optionsList;
 
   get chosenValue() {
@@ -48,17 +49,31 @@ export default class SicChoser extends LightningElement {
     this.template.querySelector("input").setAttribute("list", listId);
   }
 
-  // Function that makes the flow move to the next step
+  /**
+   * Function that makes the flow move to the next step
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   handleNext() {
     this.chosenValueTrack = this.parseSelection(this.valueTrack);
     const navigateNextEvent = new FlowNavigationNextEvent();
     this.dispatchEvent(navigateNextEvent);
   }
 
+  /**
+   * Función que parsea el elemento escogido
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   parseSelection(labelSelected) {
     return labelSelected.split(" - ")[0];
   }
 
+  /**
+   * Función que guarda el valor clickado
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   handleChange(evt) {
     this.valueTrack = evt.target.value;
   }

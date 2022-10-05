@@ -6,6 +6,7 @@ import {
 import getProductsForSIC from "@salesforce/apex/RiskAppetiteController.getProductsForSIC";
 import getOtherProducts from "@salesforce/apex/RiskAppetiteController.getOtherProducts";
 
+// Columnas a mostrar cuando se clicka en Otros ramos
 const columns = [
   {
     label: "Ramo",
@@ -40,6 +41,7 @@ export default class BunchChoser extends LightningElement {
   otherProductList;
   columns = columns;
 
+  // wire para recoger los registros necesarios de la base de datos
   @wire(getProductsForSIC, { sicCode: "$sicCode" }) optionsList;
   @wire(getOtherProducts) otherProductList;
 
@@ -75,13 +77,22 @@ export default class BunchChoser extends LightningElement {
     return options;
   }
 
-  // Function that makes the flow move to the next step
+  /**
+   * Function that makes the flow move to the next step
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   handleNext() {
     this.nextPageTrack = 0;
     this.handleChange("nextPage", this.nextPage);
     this.moveForward();
   }
 
+  /**
+   * Función que notifica al flow de que un elemento ha cambiado su valor
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   handleChange(variableName, value) {
     const attributeChangeEvent = new FlowAttributeChangeEvent(
       variableName,
@@ -90,6 +101,11 @@ export default class BunchChoser extends LightningElement {
     this.dispatchEvent(attributeChangeEvent);
   }
 
+  /**
+   * Función que lanza el evento para avanzar en el flow
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   moveForward() {
     const navigateNextEvent = new FlowNavigationNextEvent();
     this.dispatchEvent(navigateNextEvent);
@@ -105,6 +121,11 @@ export default class BunchChoser extends LightningElement {
     return labelSelected.split(" - ")[0];
   }
 
+  /**
+   * Función que comprueba qué elemento ha sido clickado para poder avanzar
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   handleClick(evt) {
     const position = evt.target.id.indexOf("-");
     this.chosenValueTrack = evt.target.id.substring(0, position);
@@ -117,6 +138,11 @@ export default class BunchChoser extends LightningElement {
     this.handleNext();
   }
 
+  /**
+   * Función que abre un enlace clickado en otra pestaña
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   goToDoc(event) {
     const URL = event.target.value;
     window.open(URL, "_blank").focus();

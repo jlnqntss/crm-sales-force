@@ -204,6 +204,11 @@ export default class TechnicalPolicies extends LightningElement {
     return "";
   }
 
+  /**
+   * Función que notifica al flow de que un elemento ha cambiado su valor
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   handleChange(variableName, value) {
     const attributeChangeEvent = new FlowAttributeChangeEvent(
       variableName,
@@ -212,12 +217,18 @@ export default class TechnicalPolicies extends LightningElement {
     this.dispatchEvent(attributeChangeEvent);
   }
 
+  /**
+   * Función que notifica al flow de que debe avanzar al siguiente elemento
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   moveForward() {
     const navigateNextEvent = new FlowNavigationNextEvent();
     this.dispatchEvent(navigateNextEvent);
   }
 
   handleSIC() {
+    // Si hay una política fijada, no podemos cambiar de página
     if (this.booleanMaestroFijado !== true) {
       this.nextPageTrack = 1;
       this.handleChange("nextPage", this.nextPage);
@@ -226,6 +237,7 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   handleBunch() {
+    // Si hay una política fijada, no podemos cambiar de página
     if (this.booleanMaestroFijado !== true) {
       this.nextPageTrack = 2;
       this.handleChange("nextPage", this.nextPage);
@@ -234,6 +246,7 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   handleCommercial() {
+    // Si hay una política fijada, no podemos cambiar de página
     if (this.booleanMaestroFijado !== true) {
       this.nextPageTrack = 3;
       this.handleChange("nextPage", this.nextPage);
@@ -241,20 +254,37 @@ export default class TechnicalPolicies extends LightningElement {
     }
   }
 
+  /**
+   * Función que muestra el siguiente elemento en la lista de políticas técnicas
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   moveRight() {
+    // Si hemos llegado al último no debe hacer nada
     if (this.currentCounterTrack !== this.sizeTrack) {
       this.currentCounterTrack++;
     }
     this.loadFields();
   }
 
+  /**
+   * Función que muestra el anterior elemento en la lista de políticas técnicas
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   moveLeft() {
+    // Si estamos en el primero no debe hacer nada
     if (this.currentCounterTrack !== 1) {
       this.currentCounterTrack--;
     }
     this.loadFields();
   }
 
+  /**
+   * Función que muestra los filtros
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   handleFilter() {
     if (!this.filtersVisible) {
       this.filtersVisible = true;
@@ -273,27 +303,38 @@ export default class TechnicalPolicies extends LightningElement {
     this.showModal = false;
   }
 
+  /**
+   * Función que se lanza al llegar al componente, solo una vez
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   async connectedCallback() {
     let currentCase;
     if (this.recordId) {
+      // Si tenemos un id recogemos el registro
       currentCase = await getCaseById({ caseId: this.recordId });
     }
     if (currentCase) {
+      // Si hemos recogido un caso, cogemos el campo query
       this.caseQuery = currentCase.Query__c;
     }
     if (this.caseQuery && this.desfijadoInput === false) {
+      // Si el campo está relleno, y además no se ha borrado en esta misma ejecución, mostramos solo esta política técnica
       this.maestroFijado = await getSetTechPolicies({
         caseQuery: this.caseQuery
       });
       this.sicCodeTrack = this.maestroFijado.SIC__c;
       this.productCodeTrack = this.maestroFijado.CodigoProducto__c;
       this.activityCodeTrack = this.maestroFijado.CodigoActividad__c;
+      // Solo mostramos una política, pero debemos recoger el resto de posibles opciones
+      // para el mismo sic, ramo y actividad comercial
       this.optionsList = await getTechPoliciesForActivities({
         sicCode: this.sicCodeTrack,
         productCode: this.productCodeTrack,
         activityCode: this.activityCodeTrack
       });
     } else {
+      // En cualquier otro caso, mostramos todas las políticas posibles
       this.optionsList = await getTechPoliciesForActivities({
         sicCode: this.sicCode,
         productCode: this.productCode,
@@ -301,9 +342,11 @@ export default class TechnicalPolicies extends LightningElement {
       });
     }
 
+    // Recogemos los campos a mostrar en función del ramo
     await getFields({ productCode: this.productCode }).then((result) => {
       result.forEach((field) => {
         if (
+          // Separamos los campos de franquicia en el acordeón en caso de existir
           field.fieldName.includes("Franquicia") &&
           !this.fieldsInAccordion.includes(field.fieldName)
         ) {
@@ -321,6 +364,7 @@ export default class TechnicalPolicies extends LightningElement {
       this.defineColumns(result);
     });
     if (this.maestroFijado) {
+      // Solo se muestra una política, no queremos mostrar filtros ni botones para cambiar de pantalla
       this.booleanMaestroFijado = true;
       this.filtersVisible = false;
       this.policies = [];
@@ -349,8 +393,10 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   checkPage() {
+    // Método que muestra o no el botón de fijar/desfijar política técnica
     if (this.recordId) {
       if (this.recordId.startsWith("500")) {
+        // Si el id empieza por 500 quiere decir que es un caso
         if (this.caseQuery && this.desfijadoInput === false) {
           this.labelSetTechPolicyButton = "Desfijar Política Técnica";
         } else {
@@ -363,6 +409,11 @@ export default class TechnicalPolicies extends LightningElement {
     }
   }
 
+  /**
+   * Función que separa los campos en dos columnas del mismo tamaño
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   gridFields() {
     const size = this.countObjects(this.fieldsToShow);
 
@@ -377,6 +428,11 @@ export default class TechnicalPolicies extends LightningElement {
     }
   }
 
+  /**
+   * Función que separa los campos de franquicia en dos columnas del mismo tamaño
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   gridFieldsFranquicia() {
     const size = this.countObjects(this.fieldsInAccordion);
 
@@ -397,6 +453,11 @@ export default class TechnicalPolicies extends LightningElement {
     }
   }
 
+  /**
+   * Función que define las columnas a mostrar en el modal
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   defineColumns(result) {
     result.forEach((field) => {
       this.columns.push({
@@ -409,6 +470,11 @@ export default class TechnicalPolicies extends LightningElement {
     });
   }
 
+  /**
+   * Función que cuenta los elementos de un array de objetos, javascript no permite hacerlo de manera estandar
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   countObjects(object) {
     let size = 0;
 
@@ -421,6 +487,11 @@ export default class TechnicalPolicies extends LightningElement {
     return size;
   }
 
+  /**
+   * Función que comprueba qué filtros hay que mostrar
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   loadFilters() {
     // TODO : La idea es pasar todo esto a un array de variables haciendo destructuring, de momento no he conseguido que funcione
     this.showExplosives = this.checkShowField(fieldsToFilter[0]);
@@ -438,6 +509,11 @@ export default class TechnicalPolicies extends LightningElement {
     this.showWood = this.checkShowField(fieldsToFilter[12]);
   }
 
+  /**
+   * Función que comprueba si se tiene que mostrar un filtro o no
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   checkShowField(field) {
     let show = false;
     if (this.policies) {
@@ -450,6 +526,11 @@ export default class TechnicalPolicies extends LightningElement {
     return show;
   }
 
+  /**
+   * Función que filtra el array de políticas técnicas en función de lo que ha clickado el usuario
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   filterPolicies(event) {
     const position = event.target.id.split("-")[1];
     this.currentCounterTrack = 1;
@@ -475,6 +556,11 @@ export default class TechnicalPolicies extends LightningElement {
     });
   }
 
+  /**
+   * Función que se lanza al clickar un filtro, filtra el array que el usuario ve
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   checkField(field) {
     if (this.policies) {
       const auxiliarArray = this.policies;
@@ -492,6 +578,11 @@ export default class TechnicalPolicies extends LightningElement {
     }
   }
 
+  /**
+   * Función que se lanza al desclickar un filtro, filtra el array que el usuario ve
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   uncheckField(field) {
     if (this.optionsList) {
       this.optionsList.forEach((ele) => {
@@ -506,6 +597,11 @@ export default class TechnicalPolicies extends LightningElement {
     }
   }
 
+  /**
+   * Función que comprueba si un botón ya había sido clickado (por posibles errores visuales)
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   checkPreviousButtons(element) {
     let correct = true;
     this.buttonsClicked.forEach((position) => {
@@ -516,6 +612,11 @@ export default class TechnicalPolicies extends LightningElement {
     return correct;
   }
 
+  /**
+   * Función que carga la política que se va a mostrar en pantalla
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   loadFields() {
     this.currentRecordTrack = this.policies[this.currentCounterTrack - 1];
     if (this.currentRecordTrack) {
@@ -525,8 +626,14 @@ export default class TechnicalPolicies extends LightningElement {
     return "";
   }
 
+  /**
+   * Función que se lanza al fijar/desfijar una política
+   * @author jjuaristi@seidor.es
+   * @date 05/10/2022
+   */
   holdTechPolicy() {
     if (this.caseQuery && this.desfijadoInput === false) {
+      // Desfijar
       unsetTechPolicy({
         caseIdToUpdate: this.recordId
       });
@@ -537,6 +644,7 @@ export default class TechnicalPolicies extends LightningElement {
       this.desfijadoTrack = true;
       this.booleanMaestroFijado = false;
     } else {
+      // Fijar
       setTechPolicy({
         caseIdToUpdate: this.recordId,
         technicalPolicy: this.currentRecordTrack,

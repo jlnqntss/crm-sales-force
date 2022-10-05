@@ -46,6 +46,11 @@ public with sharing class RiskAppetiteControllerTest {
         insert maestro4;
     }
     
+    /**
+     * Método que testea el método que recupera todos los sics
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getAvailableSICs_OK()
     {
@@ -56,6 +61,11 @@ public with sharing class RiskAppetiteControllerTest {
         system.assertEquals(1, labels.size());
     }
 
+    /**
+     * Método que testea el método que recupera todos los ramos en función del sic
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getProductsForSIC_OK()
     {
@@ -66,6 +76,11 @@ public with sharing class RiskAppetiteControllerTest {
         system.assertEquals(2, products.size());
     }
 
+    /**
+     * Método que testea el método que recupera todas las actividades comerciales en función del sic y del ramo
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getCommercialActivitiesForProducts_OK()
     {
@@ -76,6 +91,11 @@ public with sharing class RiskAppetiteControllerTest {
         system.assertEquals(2, activities.size());
     }
 
+    /**
+     * Método que testea el método que recupera todas las políticas técnicas en función de sic, ramo y actividad comercial
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getTechPoliciesForActivities_OK()
     {
@@ -86,6 +106,11 @@ public with sharing class RiskAppetiteControllerTest {
         system.assertEquals(2, masters.size());
     }
 
+    /**
+     * Método que testea el método que recupera el fieldset en función del ramo
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getFields_OK()
     {
@@ -104,6 +129,11 @@ public with sharing class RiskAppetiteControllerTest {
         system.assertEquals(fieldList.size(), fields.size());
     }
 
+    /**
+     * Método que testea el método que recupera los otros ramos
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getOtherProducts_OK()
     {
@@ -116,6 +146,11 @@ public with sharing class RiskAppetiteControllerTest {
         system.assertEquals(originalProducts.size(), products.size());
     }
 
+    /**
+     * Método que testea el método que recupera la política fijada
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getSetTechPolicies_OK()
     {
