@@ -57,7 +57,7 @@ public with sharing class ObjetivosUtil {
                 objetivosToUpdateActive.put(obj.ExternalId__c, obj);
             } else if (checkInactive(obj, oldMap)) { // si uno de los cambios del objetivo es inactivar, borraremos los planes mensuales
                 objetivosToUpdateInactive.put(obj.ExternalId__c, obj);
-            } else if (checkPesos(obj, oldMap)) { // actualizaremos los planes mensuales de los que se cambien pesos y el flag active sigue siendo true
+            } else if (checkPesos(obj, oldMap) && obj.Active__c == true) { // actualizaremos los planes mensuales de los que se cambien pesos y el flag active sigue siendo true
                 objetivosToUpdatePesos.put(obj.ExternalId__c, obj);
             }
         }
