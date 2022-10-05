@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OCS_Inquiry_Default</fullName>
+    <fields>Subject</fields>
+    <fields>Priority</fields>
+    <fields>Status</fields>
+    <fields>CaseNumber</fields>
+    <fields>Product_Name__c</fields>
+    <fields>Product_Code__c</fields>
+    <fields>Commercial_Code__c</fields>
+    <label>OCS Inquiry Default</label>
+</CompactLayout>
