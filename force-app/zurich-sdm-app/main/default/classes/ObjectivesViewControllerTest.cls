@@ -73,65 +73,6 @@ public with sharing class ObjectivesViewControllerTest {
     }
 
     /**
-     * Prueba clonar objetivos
-     * @author dmunoz
-     * @date 08/07/2022
-     */
-    /*
-    @isTest
-    static void test_clone() {
-
-        // String clone
-        String objectiveToClone = '[{"ExternalId__c":"2023-PN-PYMEs-Accidentes","Active__c":true,"December__c":0,"November__c":0,"October__c":0,"September__c":0,"August__c":0,"July__c":0,"June__c":0,"May__c":0,"April__c":0,"March__c":0,"February__c":0.5,"January__c":0.5,"Product__c":"Accidentes","Segment__c":"PYMEs","Indicator__c":"PN","Year__c":"2023","Id":"a1O5E000001gEZxUAM"}]';
-        
-        //String objectiveToClone = JSON.serialize(ObjectivesSelector.selectObjectivesByYear('2022'));
-
-        System.debug('clone input ' + objectiveToClone);
-
-        Test.startTest();
-        Map<String, String> mapCloneResult = ObjectivesViewController.cloneRecords(objectiveToClone, '2023');
-        Test.stopTest();
-
-        System.assertEquals('2024', mapCloneResult.get('year'), 'Se debería recibir el año siguiente a 2023');
-    }*/
-
-    /**
-     * Prueba clonar objetivos
-     * @author dmunoz
-     * @date 08/07/2022
-     */
-    @isTest
-    static void testKO_cloneDuplicatesError() {
-
-        // String clone
-        String objectiveToClone = '[{"ExternalId__c":"2022-PN-PYMEs-Accidentes","Active__c":true,"December__c":0,"November__c":0,"October__c":0,"September__c":0,"August__c":0,"July__c":0,"June__c":0,"May__c":0,"April__c":0,"March__c":0,"February__c":0.5,"January__c":0.5,"Product__c":"Accidentes","Segment__c":"PYMEs","Indicator__c":"PN","Year__c":"2022","Id":"a1O5E000001gEZxUAM"}]';
-        //String serializeQuery = JSON.serialize(objectiveToClone);
-
-        System.debug('clone input ' + objectiveToClone);
-
-        Test.startTest();
-        Map<String, String> mapCloneResult = ObjectivesViewController.cloneRecords(objectiveToClone, '2022');
-        Test.stopTest();
-
-        System.assertEquals('2022', mapCloneResult.get('year'), 'Se debería recibir el año de entrada');
-    }
-
-    /**
-     * Prueba KO clonar objetivos
-     * @author dmunoz
-     * @date 08/07/2022
-     */
-    @isTest
-    static void testKO_cloneInputNull() {
-
-        Test.startTest();
-        Map<String, String> mapCloneResult = ObjectivesViewController.cloneRecords(null, null);
-        Test.stopTest();
-
-        System.assertEquals('2022', mapCloneResult.get('year'), 'Se debería recibir el año de entrada');
-    }
-
-    /**
      * Prueba actualizar objetivos
      * @author dmunoz
      * @date 08/07/2022
