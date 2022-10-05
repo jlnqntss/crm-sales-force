@@ -7,33 +7,53 @@
         <label>Responsable de Negocio</label>
     </standardValue>
     <standardValue>
-        <fullName>Consultor de Vida</fullName>
-        <default>false</default>
-        <label>Consultor de Vida</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Consultor de Empresas</fullName>
-        <default>false</default>
-        <label>Consultor de Empresas</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Director de Zona</fullName>
-        <default>false</default>
-        <label>Director de Zona</label>
-    </standardValue>
-    <standardValue>
         <fullName>Director Territorial</fullName>
         <default>false</default>
         <label>Director Territorial</label>
     </standardValue>
     <standardValue>
-        <fullName>Director de Empresas</fullName>
+        <fullName>Director Vida</fullName>
         <default>false</default>
-        <label>Director de Empresas</label>
+        <label>Director Vida</label>
     </standardValue>
     <standardValue>
-        <fullName>Director de Vida</fullName>
+        <fullName>Consultor Vida</fullName>
         <default>false</default>
-        <label>Director de Vida</label>
+        <label>Consultor Vida</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Consultor Empresas</fullName>
+        <default>false</default>
+        <label>Consultor Empresas</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Director Empresas</fullName>
+        <default>false</default>
+        <label>Director Empresas</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Consultor Vida Colectivo</fullName>
+        <default>false</default>
+        <label>Consultor Vida Colectivo</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Director Zona</fullName>
+        <default>false</default>
+        <label>Director Zona</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Consultor PYME</fullName>
+        <default>false</default>
+        <label>Consultor PYME</label>
+    </standardValue>
+    <standardValue>
+        <fullName>PYME Manager</fullName>
+        <default>false</default>
+        <label>PYME Manager</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Formador</fullName>
+        <default>false</default>
+        <label>Formador</label>
     </standardValue>
 </StandardValueSet>
