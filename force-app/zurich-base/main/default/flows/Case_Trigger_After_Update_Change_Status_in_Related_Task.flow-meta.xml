@@ -33,6 +33,22 @@
             <targetReference>For_Each_Task</targetReference>
         </connector>
     </assignments>
+    <constants>
+        <description>Solicitud de documentación por SMS</description>
+        <name>Documentation_request_by_SMS</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Solicitud de documentación por SMS</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Documentación subida por cliente</description>
+        <name>Documentation_uploaded_by_client</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Documentación subida por cliente</stringValue>
+        </value>
+    </constants>
     <decisions>
         <name>Related_Task_Found</name>
         <label>Related Task Found?</label>
@@ -105,6 +121,20 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>Documentation_uploaded_by_client</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>Documentation_request_by_SMS</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
