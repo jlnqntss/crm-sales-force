@@ -5,7 +5,7 @@
         <name>ActivityCodeAssignment</name>
         <label>Assign Activity Code</label>
         <locationX>490</locationX>
-        <locationY>1118</locationY>
+        <locationY>1334</locationY>
         <assignmentItems>
             <assignToReference>activityCode</assignToReference>
             <operator>Assign</operator>
@@ -51,8 +51,8 @@
     <assignments>
         <name>ProductAssignment</name>
         <label>Assign Product</label>
-        <locationX>622</locationX>
-        <locationY>878</locationY>
+        <locationX>490</locationX>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>ProductCode</assignToReference>
             <operator>Assign</operator>
@@ -106,10 +106,49 @@
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
-            <name>YesProduct</name>
-            <conditionLogic>and</conditionLogic>
+            <name>YesProductOrQuery</name>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>GetCaseAction.HegeoProductGroupCode__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCaseAction.Query__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CaseHasProductCodeDecision_0</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CaseHasProductCodeDecision_0</name>
+        <label>Case Has Product Code</label>
+        <locationX>622</locationX>
+        <locationY>878</locationY>
+        <defaultConnector>
+            <targetReference>MaestroFijadoDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>YesProduct</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>GetCaseAction.HegeoProductGroupCode__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCaseAction.Query__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -150,7 +189,7 @@
         <name>GoBackDecision</name>
         <label>Go Back?</label>
         <locationX>616</locationX>
-        <locationY>1922</locationY>
+        <locationY>2138</locationY>
         <defaultConnector>
             <targetReference>CommercialActivityScreen</targetReference>
         </defaultConnector>
@@ -201,7 +240,7 @@
         <name>MaestroFijadoDecision</name>
         <label>Maestro Fijado?</label>
         <locationX>622</locationX>
-        <locationY>998</locationY>
+        <locationY>1214</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CommercialActivityScreen</targetReference>
@@ -252,7 +291,7 @@
         <name>WhichPageNextDecision</name>
         <label>Which Page Next</label>
         <locationX>979</locationX>
-        <locationY>2162</locationY>
+        <locationY>2378</locationY>
         <defaultConnector>
             <targetReference>TechnicalPoliciesScreen</targetReference>
         </defaultConnector>
@@ -294,7 +333,7 @@
         <name>WhichPageNextDecision_0</name>
         <label>Which Page Next</label>
         <locationX>1441</locationX>
-        <locationY>2402</locationY>
+        <locationY>2618</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>SIC_0</name>
@@ -434,7 +473,7 @@
         <name>CommercialActivityScreen</name>
         <label>Commercial Activity</label>
         <locationX>979</locationX>
-        <locationY>2042</locationY>
+        <locationY>2258</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -496,7 +535,7 @@
         <name>RamoScreen</name>
         <label>Ramo</label>
         <locationX>616</locationX>
-        <locationY>1802</locationY>
+        <locationY>2018</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -552,7 +591,7 @@
         <name>SICScreen</name>
         <label>SIC</label>
         <locationX>616</locationX>
-        <locationY>1682</locationY>
+        <locationY>1898</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -596,7 +635,7 @@
         <name>TechnicalPoliciesScreen</name>
         <label>TechnicalPolicies</label>
         <locationX>1441</locationX>
-        <locationY>2282</locationY>
+        <locationY>2498</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
