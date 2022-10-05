@@ -12,6 +12,6 @@
     </values>
     <values>
         <field>Value__c</field>
-        <value xsi:type="xsd:string">j.sampereled@zurich.com,juan.pascualdelarosa@zurich.com,roger.bruguera.avila@zurich.com,graciana.larocca.pintos@zurich.com</value>
+        <value xsi:type="xsd:string">j.sampereled@zurich.com,juan.pascualdelarosa@zurich.com,roger.bruguera.avila@zurich.com</value>
     </values>
 </CustomMetadata>
