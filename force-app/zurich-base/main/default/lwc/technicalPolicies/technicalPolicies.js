@@ -342,8 +342,11 @@ export default class TechnicalPolicies extends LightningElement {
       });
     }
 
+    if (!this.productCodeTrack) {
+      this.productCodeTrack = this.productCode;
+    }
     // Recogemos los campos a mostrar en función del ramo
-    await getFields({ productCode: this.productCode }).then((result) => {
+    await getFields({ productCode: this.productCodeTrack }).then((result) => {
       result.forEach((field) => {
         if (
           // Separamos los campos de franquicia en el acordeón en caso de existir
