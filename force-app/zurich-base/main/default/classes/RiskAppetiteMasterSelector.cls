@@ -1,3 +1,8 @@
+/**
+ * Clase Selector para el objeto MaestroApetito__c
+ * @author jjuaristi@seidor.es
+ * @date 05/10/2022
+ */
 public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
 {
     public RiskAppetiteMasterSelector() 
@@ -5,6 +10,11 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
         super(MaestroApetito__c.getSObjectType());
     }
 
+    /**
+     * Método que recupera todos los registros
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     public List<MaestroApetito__c> findAllMasters()
     {
         this.baseQuery.selectReadableFields();
@@ -13,6 +23,11 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
         return (List<MaestroApetito__c>) this.baseQuery.run();
     }
 
+    /**
+     * Método que recupera todos los registros filtrados por SIC
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     public List<MaestroApetito__c> findProductsBySicCode(String sicCode)
     {
         if(String.isNotBlank(sicCode))
@@ -31,6 +46,11 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
         }
     }
 
+    /**
+     * Método que recupera todos los registros filtrados por SIC y ramo
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     public List<MaestroApetito__c> findCommercialActivitiesByProductCode (String sicCode, String productCode)
     {
         if(String.isNotBlank(productCode) && String.isNotBlank(sicCode))
@@ -49,6 +69,11 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
         }
     }
 
+    /**
+     * Método que recupera todos los registros filtrados por SIC, ramo y actividad comercial
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     public List<MaestroApetito__c> findTechPolicyByCommercialActivity(String sicCode, String productCode, String commercialActivity)
     {
         if(String.isNotBlank(commercialActivity))
@@ -66,6 +91,33 @@ public with sharing class RiskAppetiteMasterSelector extends RecordsSelector
         else
         {
             return new List<MaestroApetito__c>();
+        }
+    }
+
+    /**
+     * Método que recupera la política técnica fijada
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
+    public MaestroApetito__c getQueryFindTechnicalPolicy(MaestroApetito__c auxRecord, List<String> fields)
+    {
+        if(auxRecord != null && fields != null && !fields.isEmpty())
+        {
+            // We need to show as much information as we can, so we query all the readable fields.
+            this.baseQuery.selectReadableFields();
+            
+            for(String field : fields)
+            {
+                this.baseQuery.addConditionEq(field, auxRecord.get(field));
+            }
+            this.baseQuery.setLimit(1);
+
+            List<MaestroApetito__c> recordList = this.baseQuery.run();
+            return recordList[0];
+        }
+        else 
+        {
+            return new MaestroApetito__c();    
         }
     }
 }

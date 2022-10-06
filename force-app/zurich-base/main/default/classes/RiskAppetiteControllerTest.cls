@@ -24,8 +24,33 @@ public with sharing class RiskAppetiteControllerTest {
         maestro3.CodigoActividad__c = '0020';
         maestro3.ApetitoRiesgo__c = 'Fuera de apetito';
         insert maestro3;
+
+        MaestroApetito__c maestro4 = new MaestroApetito__c();
+        maestro4.SIC__c = SicCode;
+        maestro4.CodigoProducto__c = '0001';
+        maestro4.CodigoActividad__c = '0020';
+        maestro4.ApetitoRiesgo__c = 'Fuera de apetito';
+        maestro4.UsoExplosivos__c = true;
+        maestro4.ConExistenciaLiquidosInflamables__c = false;
+        maestro4.ConFoamizado__c = false;
+        maestro4.ConMateriasPlasticasEspumosas__c = false;
+        maestro4.ConNitratos__c = false;
+        maestro4.ConTapizados__c = false;
+        maestro4.ConSecaderoMadera__c = false;
+        maestro4.Espumosos__c = false;
+        maestro4.ConAspiracionAutomatica__c = false;
+        maestro4.ConRecubrimiento__c = false;
+        maestro4.ConPlanchasCombustibles__c = false;
+        maestro4.ConFabricacionDeEnvases__c = false;
+        maestro4.ConDestilacion__c = false;
+        insert maestro4;
     }
     
+    /**
+     * Método que testea el método que recupera todos los sics
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getAvailableSICs_OK()
     {
@@ -36,6 +61,11 @@ public with sharing class RiskAppetiteControllerTest {
         system.assertEquals(1, labels.size());
     }
 
+    /**
+     * Método que testea el método que recupera todos los ramos en función del sic
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getProductsForSIC_OK()
     {
@@ -46,6 +76,11 @@ public with sharing class RiskAppetiteControllerTest {
         system.assertEquals(2, products.size());
     }
 
+    /**
+     * Método que testea el método que recupera todas las actividades comerciales en función del sic y del ramo
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getCommercialActivitiesForProducts_OK()
     {
@@ -56,6 +91,11 @@ public with sharing class RiskAppetiteControllerTest {
         system.assertEquals(2, activities.size());
     }
 
+    /**
+     * Método que testea el método que recupera todas las políticas técnicas en función de sic, ramo y actividad comercial
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getTechPoliciesForActivities_OK()
     {
@@ -63,9 +103,14 @@ public with sharing class RiskAppetiteControllerTest {
         List<MaestroApetito__c> masters = RiskAppetiteController.getTechPoliciesForActivities('1100', '0001', '0020');
         test.stopTest();
 
-        system.assertEquals(1, masters.size());
+        system.assertEquals(2, masters.size());
     }
 
+    /**
+     * Método que testea el método que recupera el fieldset en función del ramo
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
     @IsTest
     static void test_getFields_OK()
     {
@@ -82,5 +127,42 @@ public with sharing class RiskAppetiteControllerTest {
         test.stopTest();
 
         system.assertEquals(fieldList.size(), fields.size());
+    }
+
+    /**
+     * Método que testea el método que recupera los otros ramos
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
+    @IsTest
+    static void test_getOtherProducts_OK()
+    {
+        List<OtherProduct__mdt> originalProducts = OtherProduct__mdt.getAll().values();
+
+        test.startTest();
+        List<OtherProduct__mdt> products = RiskAppetiteController.getOtherProducts();
+        test.stopTest();
+
+        system.assertEquals(originalProducts.size(), products.size());
+    }
+
+    /**
+     * Método que testea el método que recupera la política fijada
+     * @author jjuaristi@seidor.es
+     * @date 05/10/2022
+     */
+    @IsTest
+    static void test_getSetTechPolicies_OK()
+    {
+        String Json = '{"attributes":{"type":"MaestroApetito__c"},"UsoExplosivos__c":true,"Espumosos__c":false,'
+        + '"ConAspiracionAutomatica__c":false,"ConRecubrimiento__c":false,"ConPlanchasCombustibles__c":false,'
+        + '"ConFabricacionDeEnvases__c":false,"ConDestilacion__c":false,"ConExistenciaLiquidosInflamables__c":false,'
+        + '"ConFoamizado__c":false,"ConMateriasPlasticasEspumosas__c":false,"ConNitratos__c":false,'
+        + '"ConTapizados__c":false,"ConSecaderoMadera__c":false,"SIC__c":"1100","CodigoProducto__c":"0001",'
+        +'"CodigoActividad__c":"0020"}';
+
+        MaestroApetito__c record = RiskAppetiteController.getSetTechPolicies(Json);
+
+        system.assertEquals('Fuera de apetito', record.ApetitoRiesgo__c);
     }
 }

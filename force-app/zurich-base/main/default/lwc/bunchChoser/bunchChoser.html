@@ -7,16 +7,17 @@
 -->
 <template>
   <div class="slds-float_right">
+    <lightning-button label="Otros ramos" class="slds-button" onclick={openModal}></lightning-button>
     <lightning-button label="Buscar nuevo SIC" class="slds-button" onclick={handleSIC} variant="brand"></lightning-button>
   </div>
-      <lightning-breadcrumbs>
-        <lightning-breadcrumb
-            label={label}
-            onclick={handleSIC}
-            >
-        </lightning-breadcrumb>
-    </lightning-breadcrumbs>
-    <div class="slds-p-top_medium">
+  <lightning-breadcrumbs>
+    <lightning-breadcrumb
+        label={label}
+        onclick={handleSIC}
+        >
+    </lightning-breadcrumb>
+  </lightning-breadcrumbs>
+  <div class="slds-p-top_medium">
     <template for:each={options} for:item="item" >
       <div key={item.label} class="slds-p-top_small">
         <article class="slds-card slds-card_boundary">
@@ -47,6 +48,44 @@
           </div>
         </article>
       </div>
+    </template>
+  </div>
+  <template if:true={showModal}>
+    <section
+      aria-modal="true"
+      class="slds-modal slds-modal_large slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <h2 class="slds-text-heading_small">Otros Ramos</h2>
+          <lightning-icon
+            class="slds-modal__close"
+            icon-name="utility:close"
+            size="small"
+            onclick={closeModal}
+          ></lightning-icon>
+        </header>
+        <div class="slds-modal__content">
+          <div class="slds-p-around_small">
+            <lightning-datatable
+              key-field="id"
+              data={otherProductList.data}
+              columns={columns}
+              hide-checkbox-column="true"
+            >
+            </lightning-datatable>
+          </div>
+        </div>
+        <footer class="slds-modal__footer">
+          <lightning-button
+            variant="brand"
+            label="Cerrar"
+            onclick={closeModal}
+            class="slds-p-around_x-small"
+          ></lightning-button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
   </template>
-</div>
 </template>
