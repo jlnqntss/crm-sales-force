@@ -15849,6 +15849,10 @@
         <recordType>Task.Activity</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Task-Activity</layout>
+        <recordType>Task.Activity_USP</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Task-Interaction</layout>
         <recordType>Task.Interaction</recordType>
     </layoutAssignments>
@@ -18086,7 +18090,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <recordType>Task.Activity</recordType>
+        <recordType>Task.Activity_USP</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
