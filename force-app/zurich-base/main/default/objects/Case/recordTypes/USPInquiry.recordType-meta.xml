@@ -1116,10 +1116,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Captación</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Gestión Económica</fullName>
             <default>false</default>
         </values>
@@ -1129,6 +1125,10 @@
         </values>
         <values>
             <fullName>Gestión Servicios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Venta</fullName>
             <default>false</default>
         </values>
     </picklistValues>
