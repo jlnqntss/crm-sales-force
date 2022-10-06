@@ -3,7 +3,7 @@
     <fullName>IsQuotation__c</fullName>
     <description>EON. Indica si el caso corresponde a una cotización o un caso de tipo consulta.</description>
     <externalId>false</externalId>
-    <formula>ISPICKVAL(Type,&quot;Captación&quot;)</formula>
+    <formula>ISPICKVAL(Type,&quot;Venta&quot;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>¿Es cotización?</label>
     <trackHistory>false</trackHistory>
