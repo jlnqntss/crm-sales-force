@@ -96,6 +96,8 @@ public class GenesysCloudRouteEmailAction
         public String queueIdAttribute;
         @InvocableVariable(label = 'Specialization Type' description='Tipo de especialización del caso')
         public String industrySpecializationType;
+        @InvocableVariable(label = 'SLA' description='SLA restante de la interacción')
+        public Integer caseSla;
 
 
         /**
@@ -119,6 +121,7 @@ public class GenesysCloudRouteEmailAction
             email.attributes.put('SF_EmailURL', URL.getOrgDomainUrl().toExternalForm() + '/' + this.emailMessageId);
             email.attributes.put('Genesys_QueueId', '' + this.queueIdAttribute);
             email.attributes.put('SF_IntermediaryType', '' + this.industrySpecializationType);
+            email.attributes.put('SF_Sla', '' + this.caseSla);
 
             return email;
         }

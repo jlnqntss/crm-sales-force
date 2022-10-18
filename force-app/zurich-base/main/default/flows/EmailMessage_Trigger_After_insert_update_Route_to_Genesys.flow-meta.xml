@@ -363,6 +363,7 @@
         </rules>
     </decisions>
     <description>Flujo encargado de enrutar a genesys los emails entrantes recibidos</description>
+    <environments>Default</environments>
     <formulas>
         <name>AsyncErrorMessage</name>
         <dataType>String</dataType>
@@ -752,6 +753,7 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
+    <triggerOrder>1500</triggerOrder>
     <variables>
         <name>CasoRelacionado</name>
         <dataType>SObject</dataType>
