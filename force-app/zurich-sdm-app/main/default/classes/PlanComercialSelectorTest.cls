@@ -158,7 +158,7 @@ private class PlanComercialSelectorTest
     @isTest
     static void findAnualPlanByObjectiveIndicators() {
 
-        List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+        List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
                                                         AND Intermediary__c = NULL
@@ -172,16 +172,18 @@ private class PlanComercialSelectorTest
             Set<String> indicatorSet = new Set<String>();
             Set<String> segmentSet = new Set<String>();
             Set<String> productSet = new Set<String>();
+            Set<String> zoneSet = new Set<String>();
             Set<Integer> year = new Set<Integer>();
 
             indicatorSet.add(pc.Indicator__c);
             segmentSet.add(pc.Segment__c);
             productSet.add(pc.Product__c);
+            zoneSet.add(pc.Zone__c);
             year.add(pc.StartDate__c.Year());
 
             Test.startTest();
             PlanComercialSelector planSel = new PlanComercialSelector();
-            List<Plancomercial__c> plans = planSel.findAnualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, year);
+            List<Plancomercial__c> plans = planSel.findAnualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, zoneSet, year);
 
             Test.stopTest();
             
@@ -199,7 +201,7 @@ private class PlanComercialSelectorTest
     @isTest
     static void findMensualPlanByObjectiveIndicators() {
 
-        List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+        List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
                                                         AND Intermediary__c = NULL
@@ -211,7 +213,7 @@ private class PlanComercialSelectorTest
             PlanComercial__c pc = planesAnuales.get(0);
 
             Test.startTest();
-            Objective__c objective = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+            Objective__c objective = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
             insert objective;
 
             Test.stopTest();
@@ -219,16 +221,18 @@ private class PlanComercialSelectorTest
             Set<String> indicatorSet = new Set<String>();
             Set<String> segmentSet = new Set<String>();
             Set<String> productSet = new Set<String>();
+            Set<String> zoneSet = new Set<String>();
             Set<Integer> year = new Set<Integer>();
 
             indicatorSet.add(pc.Indicator__c);
             segmentSet.add(pc.Segment__c);
             productSet.add(pc.Product__c);
+            zoneSet.add(pc.Zone__c);
             year.add(pc.StartDate__c.Year());
 
             
             PlanComercialSelector planSel = new PlanComercialSelector();
-            List<Plancomercial__c> plans = planSel.findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, year);            
+            List<Plancomercial__c> plans = planSel.findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, zoneSet, year);            
             
             System.assertEquals(true, plans.isEmpty(), 'No debe haber plan mensual');
         }

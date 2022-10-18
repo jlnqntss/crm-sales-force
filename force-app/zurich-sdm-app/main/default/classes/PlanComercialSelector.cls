@@ -16,6 +16,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
     public static final String ACCUMULATE_TYPE_YRD = 'YTD'; // Valor picklist PlanComercial__c.AccumulateType__c
     public static final String ACCUMULATE_TYPE_MONTH = 'Mensual'; // Valor picklist PlanComercial__c.AccumulateType__c
     public static final String INDICATOR_PN = 'PN';  // Valor picklist PlanComercial__c.Indicator__c
+    public static final String ZONE_11_BARCELONA = '11 BARCELONA';  // Valor picklist PlanComercial__c.Zone__c
     public static final String SEND_NOTIFICATION_ABOVE_THRESHOLD = '01';  // Valor picklist PlanComercial__c.SendNotifications__c
 
     // Id del tipo de registro de PlanAnual
@@ -134,10 +135,10 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         List<PlanComercial__c> parentPlans = [
             SELECT id, Name, Product__c, Segment__c, Indicator__c,
                    TargetKPICurrency__c, TargetKPINumber__c, TargetKPIPercent__c, Actual_KPI__c,
-                   AssignedTo__c, OwnerId,
+                   AssignedTo__c, OwnerId, Zone__c,
                    (SELECT Id, 
                            AssignedTo__c, AssignedTo__r.Name, Intermediary__c, Intermediary__r.Name,
-                           TargetKPICurrency__c, TargetKPINumber__c, TargetKPIPercent__c, Actual_KPI__c 
+                           TargetKPICurrency__c, TargetKPINumber__c, TargetKPIPercent__c, Actual_KPI__c, Zone__c
                    FROM ParentPlans__r)
             FROM PlanComercial__c
             WHERE RecordTypeId = :rtPlanAnualId
@@ -247,14 +248,14 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
      * @param year año del plan
      * @return {List<PlanComercial__c>} lista de planes anuales
      */
-    public List<PlanComercial__c> findAnualPlanByObjectiveIndicators(Set<String> indicatorSet, Set<String> segmentSet, Set<String> productSet, Set<Integer> year) {
+    public List<PlanComercial__c> findAnualPlanByObjectiveIndicators(Set<String> indicatorSet, Set<String> segmentSet, Set<String> productSet, Set<String> zoneSet, Set<Integer> year) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
 
         if( indicatorSet != null && !indicatorSet.isEmpty() && segmentSet != null && !segmentSet.isEmpty() && productSet != null && !productSet.isEmpty() && year != null) {
             result = [
                 SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
                 Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
-                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId
+                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Zone__c
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanAnualId
                 AND Intermediary__c = NULL
@@ -262,6 +263,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
                 AND Indicator__c IN :indicatorSet
                 AND Product__c IN :productSet
                 AND Segment__c IN :segmentSet
+                AND Zone__c IN :zoneSet
                 AND CALENDAR_YEAR(StartDate__c) IN :year
                 AND AssignedTo__r.Email IN :getMetadataEmails()        
             ];
@@ -280,21 +282,23 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
      * @param year año del plan
      * @return {List<PlanComercial__c>} lista de planes anuales
      */
-    public List<PlanComercial__c> findMensualPlanByObjectiveIndicators(Set<String> indicatorSet, Set<String> segmentSet, Set<String> productSet, Set<Integer> year) {
+    public List<PlanComercial__c> findMensualPlanByObjectiveIndicators(Set<String> indicatorSet, Set<String> segmentSet, Set<String> productSet, Set<String> zoneSet, Set<Integer> year) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
 
-        if( indicatorSet != null && !indicatorSet.isEmpty() && segmentSet != null && !segmentSet.isEmpty() && productSet != null && !productSet.isEmpty() && year != null) {
+        if( indicatorSet != null && !indicatorSet.isEmpty() && segmentSet != null && !segmentSet.isEmpty() && productSet != null && !productSet.isEmpty() && zoneSet != null &&
+         !zoneSet.isEmpty() && year != null && !year.isEmpty()) {
             result = [
                 SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
                 Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
                 Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.TargetKPIPercent__c, ParentPlan__r.TargetKPICurrency__c, 
-                ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c, ParentPlan__r.Actual_KPI__c
+                ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c, ParentPlan__r.Actual_KPI__c, ParentPlan__r.Zone__c, Zone__c
 
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanMensualId
                 AND Indicator__c IN :indicatorSet
                 AND Product__c IN :productSet
                 AND Segment__c IN :segmentSet
+                AND Zone__c IN :zoneSet
                 AND CALENDAR_YEAR(StartDate__c) IN :year                
             ];
         }

@@ -544,6 +544,7 @@ public class TestDataFactorySDM
                 Indicator__c= 'PN',
                 Product__c= 'Autos',
                 Segment__c= 'Particulares',
+                Zone__c = '11 BARCELONA',
                 TargetKPINumber__c = 5,
                 AccumulateType__c= PlanComercialSelector.ACCUMULATE_TYPE_MONTH
             );
