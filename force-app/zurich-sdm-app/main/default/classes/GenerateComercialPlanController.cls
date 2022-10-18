@@ -37,7 +37,7 @@ public with sharing class GenerateComercialPlanController
         SettingsSDM.SF_ROLE_DV_DEVNAME => SettingsSDM.ATM_ROL_LIFECONSULTANT
     };
 
-    public static final String ROW_LABEL_SEGMENT = Label.SDM_PlanAnual_RowSegment; // TODO: PENDIENTE LABEL ZONA
+    public static final String ROW_LABEL_SEGMENT = Label.SDM_PlanAnual_RowSegment;
     public static final String ROW_LABEL_PRODUCT = Label.SDM_PlanAnual_RowProduct;
     public static final String ROW_LABEL_INDICATOR = Label.SDM_PlanAnual_RowIndicator;
     public static final String ROW_LABEL_YEAR = Label.SDM_PlanAnual_RowYear;
@@ -47,7 +47,6 @@ public with sharing class GenerateComercialPlanController
     public static final String NEW_DEFAULT_SEGMENT = PlanComercialSelector.SEGMENT_ALL; 
     public static final String NEW_DEFAULT_PRODUCT = PlanComercialSelector.PRODUCT_ALL;
     public static final String NEW_DEFAULT_INDICATOR = PlanComercialSelector.INDICATOR_PN;
-    public static final String NEW_DEFAULT_ZONE = PlanComercialSelector.ZONE_11_BARCELONA;
 
     public static final String COMBOBOX_SEGMENT = 'segmento'; // uso interno
     public static final String COMBOBOX_SEGMENT_PLACEHOLDER = Label.SDM_PlanAnual_SegmentPlaceholder;
@@ -55,9 +54,6 @@ public with sharing class GenerateComercialPlanController
     public static final String COMBOBOX_PRODUCT_PLACEHOLDER = Label.SDM_PlanAnual_ProductPlaceholder;
     public static final String COMBOBOX_INDICATOR = 'indicador'; // uso interno
     public static final String COMBOBOX_INDICATOR_PLACEHOLDER = Label.SDM_PlanAnual_IndicatorPlaceholder;
-    public static final String COMBOBOX_ZONE = 'zone'; // uso interno
-    public static final String COMBOBOX_ZONE_PLACEHOLDER = 'Seleccionar una zona';//Label.SDM_PlanAnual_IndicatorPlaceholder;
-
 
     public static final String COL_TOTAL = 'Sumatorio';
 
@@ -69,7 +65,7 @@ public with sharing class GenerateComercialPlanController
     public static final String PLAN_SEND_NOTIF = PlanComercialSelector.SEND_NOTIFICATION_ABOVE_THRESHOLD;
 
     // Numero de fila de la tabla donde empiezan los RN / Mediadores
-    public static final Integer ROWS_FROM_RN_INTERMEDIARY = 6;
+    public static final Integer ROWS_FROM_RN_INTERMEDIARY = 5;
 
     @testvisible
     private static String testException;
@@ -519,7 +515,6 @@ public with sharing class GenerateComercialPlanController
         public String Segment;
         public String Product;
         public String Indicator;
-        public String Zone;
         public Integer Year;
         public Decimal Value;
         public Decimal ActualKpi;
@@ -541,7 +536,6 @@ public with sharing class GenerateComercialPlanController
         public Boolean isSegmentModified;
         public Boolean isProductModified;
         public Boolean isIndicatorModified;
-        public Boolean isZoneModified;
         public Boolean isValueModified;
         public Boolean isDirector;
         public Boolean isNewPlan;
@@ -551,14 +545,13 @@ public with sharing class GenerateComercialPlanController
         
 
         // Constructor
-        public Plandata(String id, String title, String segment, String product, String indicator, String zone, Integer year, Decimal value, Decimal actualKpi, String assignedToId, String ownerId)
+        public Plandata(String id, String title, String segment, String product, String indicator, Integer year, Decimal value, Decimal actualKpi, String assignedToId, String ownerId)
         {
             this.Id = id;
             this.Title = title;
             this.Segment = segment;
             this.Product = product;
             this.Indicator = indicator;
-            this.Zone = zone;
             this.Year = year;
             this.Value = value;
             this.ActualKpi = actualKpi;
@@ -569,7 +562,6 @@ public with sharing class GenerateComercialPlanController
             isSegmentModified = false;
             isProductModified = false;
             isIndicatorModified = false;
-            isZoneModified = false;
             isValueModified = false;
         }
 
@@ -816,20 +808,7 @@ public with sharing class GenerateComercialPlanController
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
-        // Zona => Fila 3 (category, html name, value, isEditable, isCurrency)
-        combo = tabledata.mapOptions.get(COMBOBOX_ZONE);
-        cell = new Celltype( 'zone', 'zone' + SEPARATOR + plan.Id, plan.Zone, true, combo);
-        cell.id = plan.Id;
-        cell.key = cell.Category + SEPARATOR + cell.id;
-        cell.isNew = isNewPlan;
-        if( !plan.isMyPlan ) cell.lock();
-        if( plan.ActualKpi != null ) {
-            cell.lock();
-        }
-        rows.get(rowNum).Cells.add(cell);
-        rowNum++;
-
-        // Año => Fila 4 (category, html name, value, isEditable, isCurrency)
+        // Año => Fila 3 (category, html name, value, isEditable, isCurrency)
         cell = new Celltype( 'anyo', 'anyo' + SEPARATOR + plan.Id, plan.Year, true, false);
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'anyo';
@@ -839,7 +818,7 @@ public with sharing class GenerateComercialPlanController
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
-        // Plan Definido Director => Fila 5 (category, html name, value, isEditable, isCurrency)
+        // Plan Definido Director => Fila 4 (category, html name, value, isEditable, isCurrency)
         Decimal planValue = (plan.Value != null ? plan.Value : 0);
         cell = new Celltype( 'dt_defined', 'dt_defined' + SEPARATOR + plan.Id, planValue, true, true);
         cell.id = plan.Id;
@@ -925,7 +904,7 @@ public with sharing class GenerateComercialPlanController
     {
         // Si ha cambiado alguno de los campos del plan
         if( myplan.isTitleModified || myplan.isSegmentModified || myplan.isProductModified
-            || myplan.isIndicatorModified || myplan.isZoneModified || myplan.isValueModified ) {
+            || myplan.isIndicatorModified || myplan.isValueModified ) {
             
             PlanComercial__c parentPlan = new PlanComercial__c( Id= myplan.Id );
 
@@ -935,7 +914,6 @@ public with sharing class GenerateComercialPlanController
             }
             if( myplan.isSegmentModified ) parentPlan.Segment__c = myplan.Segment;
             if( myplan.isProductModified ) parentPlan.Product__c = myplan.Product;
-            if( myplan.isZoneModified ) parentPlan.Zone__c = myplan.Zone;
             if( myplan.isIndicatorModified ) parentPlan.Indicator__c = myplan.Indicator;
             if( myplan.isIndicatorModified || myplan.isValueModified ) {
                 // En caso de cambio del tipo de indicador se debera "mover" el valor al campo correspondiente y
@@ -1004,7 +982,6 @@ public with sharing class GenerateComercialPlanController
             Segment__c= myplan.Segment,
             Product__c= myplan.Product,
             Indicator__c= myplan.Indicator,
-            Zone__c = myplan.Zone,
             StartDate__c= Date.newInstance(myplan.Year, 1, 1),
             EndDate__c= Date.newInstance(myplan.Year, 12, 31),
             ParentPlan__c= null,
@@ -1070,7 +1047,6 @@ public with sharing class GenerateComercialPlanController
                     Description__c= myplan.Title,
                     Segment__c= myplan.Segment,
                     Product__c= myplan.Product,
-                    Zone__c = myPlan.Zone,
                     Indicator__c= myplan.Indicator,
                     StartDate__c= Date.newInstance(myplan.Year, 1, 1),
                     EndDate__c= Date.newInstance(myplan.Year, 12, 31),
@@ -1132,8 +1108,6 @@ public with sharing class GenerateComercialPlanController
      */
     private static void tableToPlan(Tabletype tabledata, String userId, String roleType)
     {
-
-        System.debug('DMM tableToPlan ' + tabledata.toJSON());
         Boolean isDirector = Directors.contains(roleType);
 
         // Fila de cabecera
@@ -1207,14 +1181,13 @@ public with sharing class GenerateComercialPlanController
                 String segment = rowsdata.get(0).Cells.get(i).stringValue;
                 String product = rowsdata.get(1).Cells.get(i).stringValue;
                 String indicator = rowsdata.get(2).Cells.get(i).stringValue;
-                String zone = rowsdata.get(3).Cells.get(i).stringValue;
-                Integer anyo = Integer.valueOf(rowsdata.get(4).Cells.get(i).decimalValue);
-                Decimal definedDT = rowsdata.get(5).Cells.get(i).decimalValue;
+                Integer anyo = Integer.valueOf(rowsdata.get(3).Cells.get(i).decimalValue);
+                Decimal definedDT = rowsdata.get(4).Cells.get(i).decimalValue;
 
                 PlanComercialSelector.eIndicator indicatorType = PlanComercialSelector.getIndicatorType(indicator);
 
                 Plandata myplan = new Plandata(
-                    planId, planName, segment, product, indicator, zone, anyo, definedDT, null, userId, null
+                    planId, planName, segment, product, indicator, anyo, definedDT, null, userId, null
                 );
                 myplan.indicatorType = indicatorType;
                 myplan.isDirector = isDirector;
@@ -1231,15 +1204,12 @@ public with sharing class GenerateComercialPlanController
                 myplan.isProductModified = cell.isModified;
                 // Indicador => Fila 2
                 cell = rowsdata.get(2).Cells.get(i);
-                myplan.isIndicatorModified = cell.isModified; 
-                // Zona => Fila 3
+                myplan.isIndicatorModified = cell.isModified;
+                // Año => Fila 3
                 cell = rowsdata.get(3).Cells.get(i);
-                myplan.isZoneModified = cell.isModified;
-                // Año => Fila 4
-                cell = rowsdata.get(4).Cells.get(i);
                 // myplan.isYearModified = cell.isModified;
-                // Plan (Definido DT) => Fila 5
-                cell = rowsdata.get(5).Cells.get(i);
+                // Plan (Definido DT) => Fila 4
+                cell = rowsdata.get(4).Cells.get(i);
                 myplan.isValueModified = cell.isModified;
 
                 if( isNewPlan ) { //-------------------------------------- Nuevo Plan principal
@@ -1248,7 +1218,7 @@ public with sharing class GenerateComercialPlanController
                     addModifiedPlan(myplan, existingPlansToUpsert);
                 }
 
-                // Datos por RN / Mediador => Fila 6 en adelante
+                // Datos por RN / Mediador => Fila 5 en adelante
                 Integer pos = ROWS_FROM_RN_INTERMEDIARY;
                 for(Integer j=pos; j<maxRows; j++) {
                     // Fila de RN/Mediador
@@ -1300,7 +1270,6 @@ public with sharing class GenerateComercialPlanController
                     parentPlan.Segment__c,
                     parentPlan.Product__c,
                     parentPlan.Indicator__c,
-                    parentPlan.Zone__c,
                     actualYear,
                     value,
                     parentPlan.Actual_KPI__c,
@@ -1685,9 +1654,8 @@ public with sharing class GenerateComercialPlanController
             tabledata.addFixedRow(ROW_LABEL_SEGMENT);
             tabledata.addFixedRow(ROW_LABEL_PRODUCT);
             tabledata.addFixedRow(ROW_LABEL_INDICATOR);
-            tabledata.addFixedRow('Zone');
             tabledata.addFixedRow(ROW_LABEL_YEAR);
-            tabledata.addFixedRow(ROW_LABEL_PLAN);            
+            tabledata.addFixedRow(ROW_LABEL_PLAN);
 
             if( mapDetail != null ) {
                 // Etiquetas variables (rn/mediador) de las filas
@@ -1709,9 +1677,7 @@ public with sharing class GenerateComercialPlanController
             // Indicador
             Map<String, String> indicatorValues = getPicklistValues(PlanComercial__c.Indicator__c);        
             tabledata.addOptions(COMBOBOX_INDICATOR, COMBOBOX_INDICATOR_PLACEHOLDER, indicatorValues);
-
-            Map<String, String> zoneValues = getPicklistValues(PlanComercial__c.Zone__c);        
-            tabledata.addOptions(COMBOBOX_ZONE, COMBOBOX_ZONE_PLACEHOLDER, zoneValues);            
+            
             
             
             // 6.3 Añadimos un plan vacio para el boton de nuevos planes
@@ -1719,7 +1685,7 @@ public with sharing class GenerateComercialPlanController
             // row 0 = segmento, row 1 = producto, row 2 = indicador, row 3= año, row 4= sumatorio
             Plandata newPlandata = new Plandata(
                 null, NEW_DEFAULT_TEXT_PLAN, 
-                NEW_DEFAULT_SEGMENT, NEW_DEFAULT_PRODUCT, NEW_DEFAULT_INDICATOR, NEW_DEFAULT_ZONE, 
+                NEW_DEFAULT_SEGMENT, NEW_DEFAULT_PRODUCT, NEW_DEFAULT_INDICATOR, 
                 actualYear, 0, null, userId, userId
             );
             planToTable(tabledata, newPlandata, roleName, true);
@@ -1730,7 +1696,6 @@ public with sharing class GenerateComercialPlanController
             }
 
             // 7. Devolvemos el resultado en formato string
-            System.debug('DMM ' + tabledata.toJSON());
             return tabledata.toJSON();
         } catch(Exception ex) {
             ErrorLogUtil.commitError(ex, CLASS_NAME);
