@@ -4,8 +4,8 @@
     <assignments>
         <name>Asignar_CCS</name>
         <label>Asignar CCS</label>
-        <locationX>439</locationX>
-        <locationY>558</locationY>
+        <locationX>578</locationX>
+        <locationY>911</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -24,8 +24,8 @@
     <assignments>
         <name>Asignar_CSM</name>
         <label>Asignar CSM</label>
-        <locationX>1051</locationX>
-        <locationY>545</locationY>
+        <locationX>50</locationX>
+        <locationY>911</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -44,8 +44,8 @@
     <assignments>
         <name>Asignar_Default</name>
         <label>Asignar Default</label>
-        <locationX>1087</locationX>
-        <locationY>118</locationY>
+        <locationX>1370</locationX>
+        <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -64,8 +64,8 @@
     <assignments>
         <name>Asignar_Default_CCS</name>
         <label>Asignar Default CCS</label>
-        <locationX>223</locationX>
-        <locationY>561</locationY>
+        <locationX>842</locationX>
+        <locationY>1031</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -84,8 +84,8 @@
     <assignments>
         <name>Asignar_Default_CSM</name>
         <label>Asignar Default CSM</label>
-        <locationX>1270</locationX>
-        <locationY>529</locationY>
+        <locationX>314</locationX>
+        <locationY>1031</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -101,11 +101,24 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <name>CaseEntitlementAssignment</name>
+        <label>Asignar Entitlement Caso</label>
+        <locationX>2162</locationX>
+        <locationY>1031</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.EntitlementId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FoundUspEntitlement</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
     <decisions>
         <name>CCS_o_CSM</name>
         <label>¿CCS o CSM?</label>
-        <locationX>758</locationX>
-        <locationY>323</locationY>
+        <locationX>644</locationX>
+        <locationY>551</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>CSM</name>
@@ -153,10 +166,33 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Comprueba que el origen sea email, ya que de lo contrario, por el momento no se aplicaría ningún SLA</description>
+        <name>EmailOriginDecision</name>
+        <label>¿Origen email?</label>
+        <locationX>2657</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>No Email</defaultConnectorLabel>
+        <rules>
+            <name>EmailOriginOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RelatedIntermediaryDecision</targetReference>
+            </connector>
+            <label>Origen Email</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Encontrado_Entitlement_CCS</name>
         <label>¿Encontrado Entitlement CCS?</label>
-        <locationX>431</locationX>
-        <locationY>352</locationY>
+        <locationX>710</locationX>
+        <locationY>791</locationY>
         <defaultConnector>
             <targetReference>Default_CCS</targetReference>
         </defaultConnector>
@@ -180,8 +216,8 @@
     <decisions>
         <name>Encontrado_Entitlement_CSM</name>
         <label>¿Encontrado Entitlement CSM?</label>
-        <locationX>1041</locationX>
-        <locationY>337</locationY>
+        <locationX>182</locationX>
+        <locationY>791</locationY>
         <defaultConnector>
             <targetReference>Default_CSM</targetReference>
         </defaultConnector>
@@ -203,13 +239,83 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Es_RT_OCSInquiry</name>
-        <label>¿Es RT OCSInquiry?</label>
-        <locationX>531</locationX>
-        <locationY>112</locationY>
+        <name>GotEntitlementResultsDecision</name>
+        <label>Existen resultados USP</label>
+        <locationX>2030</locationX>
+        <locationY>791</locationY>
+        <defaultConnector>
+            <targetReference>GetDefaultUSPAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Predeterminado</defaultConnectorLabel>
+        <rules>
+            <name>USPResultsOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FoundUspEntitlement</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>CaseEntitlementAssignment</targetReference>
+            </connector>
+            <label>Resultados USP</label>
+        </rules>
+        <rules>
+            <name>NoResultsProductiveOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FoundUspEntitlement</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.SMEsSegment__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Productivo</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetDefaultUSPProductiveAction</targetReference>
+            </connector>
+            <label>Sin resultados - Productivo</label>
+        </rules>
+        <rules>
+            <name>NoResultsNotProductiveOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FoundUspEntitlement</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.SMEsSegment__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No productivo</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetDefaultUSPNotProductiveAction</targetReference>
+            </connector>
+            <label>Sin resultados - No productivo</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>RecordTypeDecision</name>
+        <label>¿Tipo de registro?</label>
+        <locationX>2112</locationX>
+        <locationY>311</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Si_OCSInquiry</name>
+            <name>OCSInquiryOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
@@ -221,14 +327,70 @@
             <connector>
                 <targetReference>Tiene_Cuenta_asociada</targetReference>
             </connector>
-            <label>Si OCSInquiry</label>
+            <label>OCS Inquiry</label>
+        </rules>
+        <rules>
+            <name>USPInquiryOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>EmailOriginDecision</targetReference>
+            </connector>
+            <label>USP Inquiry</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Comprueba si tiene un mediador asociado y este cuenta con los datos necesarios informados. De lo contrario asocia el SLA por defecto</description>
+        <name>RelatedIntermediaryDecision</name>
+        <label>¿Tiene mediador asociado?</label>
+        <locationX>2360</locationX>
+        <locationY>551</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>GetDefaultUSPAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No hay mediador</defaultConnectorLabel>
+        <rules>
+            <name>IntermediaryOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.SMEsSegment__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetUSPEntitlementAction</targetReference>
+            </connector>
+            <label>Hay mediador</label>
         </rules>
     </decisions>
     <decisions>
         <name>Tiene_Cuenta_asociada</name>
         <label>¿Tiene Cuenta asociada?</label>
-        <locationX>743</locationX>
-        <locationY>114</locationY>
+        <locationX>1007</locationX>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>Default</targetReference>
         </defaultConnector>
@@ -249,6 +411,8 @@
             <label>Si hay cuenta</label>
         </rules>
     </decisions>
+    <description>Flujo encargado de, en el momento de la creación del caso, evaluar si qué entitlement aplicar al mismo</description>
+    <environments>Default</environments>
     <formulas>
         <name>Channel</name>
         <dataType>String</dataType>
@@ -257,7 +421,7 @@
 &apos;Directo&apos;)</expression>
     </formulas>
     <interviewLabel>Case Trigger - Before insert Entitlement {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger - Before insert Entitlement</label>
+    <label>Case Trigger - Before insert - Entitlement</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -267,7 +431,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -280,8 +444,8 @@
     <recordLookups>
         <name>Default</name>
         <label>Default</label>
-        <locationX>969</locationX>
-        <locationY>122</locationY>
+        <locationX>1370</locationX>
+        <locationY>551</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_Default</targetReference>
@@ -301,8 +465,8 @@
     <recordLookups>
         <name>Default_CCS</name>
         <label>Default CCS</label>
-        <locationX>221</locationX>
-        <locationY>341</locationY>
+        <locationX>842</locationX>
+        <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_Default_CCS</targetReference>
@@ -322,8 +486,8 @@
     <recordLookups>
         <name>Default_CSM</name>
         <label>Default CSM</label>
-        <locationX>1257</locationX>
-        <locationY>338</locationY>
+        <locationX>314</locationX>
+        <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_Default_CSM</targetReference>
@@ -343,8 +507,8 @@
     <recordLookups>
         <name>Entitlement_CCS</name>
         <label>Entitlement CCS</label>
-        <locationX>565</locationX>
-        <locationY>346</locationY>
+        <locationX>710</locationX>
+        <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Encontrado_Entitlement_CCS</targetReference>
@@ -378,8 +542,8 @@
     <recordLookups>
         <name>Entitlement_CSM</name>
         <label>Entitlement CSM</label>
-        <locationX>908</locationX>
-        <locationY>335</locationY>
+        <locationX>182</locationX>
+        <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Encontrado_Entitlement_CSM</targetReference>
@@ -410,15 +574,182 @@
         <object>Entitlement</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <start>
-        <locationX>109</locationX>
-        <locationY>39</locationY>
+    <recordLookups>
+        <name>GetDefaultUSPAction</name>
+        <label>Recuperar Entitlement Default USP</label>
+        <locationX>2426</locationX>
+        <locationY>911</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Es_RT_OCSInquiry</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>CaseEntitlementAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Predeterminado USP</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>GetDefaultUSPNotProductiveAction</name>
+        <label>Recuperar Entitlement Default No Productivo USP</label>
+        <locationX>2162</locationX>
+        <locationY>911</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CaseEntitlementAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Predeterminado USP - No productivo</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>GetDefaultUSPProductiveAction</name>
+        <label>Recuperar Entitlement Default Productivo USP</label>
+        <locationX>1898</locationX>
+        <locationY>911</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CaseEntitlementAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Predeterminado USP - Productivo</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>GetUSPEntitlementAction</name>
+        <label>Recuperar Entitlement USP</label>
+        <locationX>2030</locationX>
+        <locationY>671</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GotEntitlementResultsDecision</targetReference>
+        </connector>
+        <filterLogic>1 AND 2 AND 3 AND 4 AND (5 OR 6) AND 7</filterLogic>
+        <filters>
+            <field>CaseTypeN2__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Subtype__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseTypeN3__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.TypeN3__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountSMESegment__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Account.SMEsSegment__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountSegment__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Account.Segment__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ProductGroupCode__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.HegeoProductGroupCode__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ProductGroupCode__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Default</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <sortField>ProductGroupCode__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </recordLookups>
+    <start>
+        <locationX>1986</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>RecordTypeDecision</targetReference>
         </connector>
         <object>Case</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>100</triggerOrder>
+    <variables>
+        <name>FoundUspEntitlement</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>
