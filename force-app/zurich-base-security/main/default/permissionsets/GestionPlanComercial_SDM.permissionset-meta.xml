@@ -1996,6 +1996,11 @@
         <field>PlanComercial__c.TargetKPIPercent__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.Zone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Gestion Plan Comercial SDM</label>
     <objectPermissions>

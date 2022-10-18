@@ -220,4 +220,55 @@
             <default>false</default>
         </values>
     </picklistValues>
+    <picklistValues>
+        <picklist>Zone__c</picklist>
+        <values>
+            <fullName>11 BARCELONA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12 CATALUNYA ANDORRA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21 LEVANTE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22 BALEARES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>23 CENTRO ARAGÓN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>31 MADRID</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>41 SUR ORIENTAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>42 CANARIAS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>43 SUR OCCIDENTAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>51 NORTE ORIENTAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>52 NORTE OCCIDENTAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>61 CENTRALIZADOS</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
 </RecordType>

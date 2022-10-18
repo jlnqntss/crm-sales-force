@@ -79,6 +79,11 @@
         <field>Objective__c.Total__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Objective__c.Zone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Gestion Objetivos SDM</label>
     <objectPermissions>
