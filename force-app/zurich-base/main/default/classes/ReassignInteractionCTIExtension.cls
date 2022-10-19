@@ -113,6 +113,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             if (interactionTask.Subtype__c == null){
                 interactionTask.Subtype__c = TASK_SUBTYPE_EMAIL;
             }
+            
             if(!relatedEmailMessages.isEmpty() && relatedEmailMessages[0].ActivityId != null)
             {
                 interactionTask.Id = relatedEmailMessages[0].ActivityId;
