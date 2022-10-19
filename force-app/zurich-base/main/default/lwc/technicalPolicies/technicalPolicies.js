@@ -382,11 +382,7 @@ export default class TechnicalPolicies extends LightningElement {
 
   renderedCallback() {
     this.checkPage();
-    if (
-      (this.productCodeTrack === "00516" ||
-        this.productCodeTrack === "00516") &&
-      this.sizeTrack > 1
-    ) {
+    if (this.productCodeTrack === "00516" && this.sizeTrack > 1) {
       this.showCheckboxes = true;
     } else {
       this.showCheckboxes = false;
