@@ -3,7 +3,7 @@
     <fullName>MandatoryCloseResultClosed</fullName>
     <active>true</active>
     <description>[VR Caso] El campo close result es obligatorio en el cierre del caso</description>
-    <errorConditionFormula>RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp;
+    <errorConditionFormula>(RecordType.DeveloperName == &quot;OCSInquiry&quot;  || RecordType.DeveloperName == &quot;USPInquiry&quot;  ) &amp;&amp;
 ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
