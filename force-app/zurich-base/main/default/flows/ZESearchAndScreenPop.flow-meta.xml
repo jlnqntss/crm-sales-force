@@ -4,7 +4,7 @@
         <description>Buscamos si existe algún cliente con ese número de teléfono</description>
         <name>FindCustomerByPhone</name>
         <label>Find Customer By Phone</label>
-        <locationX>1040</locationX>
+        <locationX>1238</locationX>
         <locationY>398</locationY>
         <actionName>FindCustomerByPhoneAction</actionName>
         <actionType>apex</actionType>
@@ -21,7 +21,7 @@
         <inputParameters>
             <name>scope</name>
             <value>
-                <elementReference>ScopeCodeZE</elementReference>
+                <elementReference>ScopeCode</elementReference>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -79,10 +79,13 @@
         <description>Utiliza un Aura para ir al contacto</description>
         <name>RedirectToRecordFound</name>
         <label>Ir a ficha del registro encontrado</label>
-        <locationX>842</locationX>
+        <locationX>974</locationX>
         <locationY>638</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
+        <connector>
+            <targetReference>GetScopeByPhone</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
@@ -132,7 +135,7 @@
         <description>Almacenamos el valor del WebName recuperado</description>
         <name>SaveWebName</name>
         <label>Guardar WebName</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>878</locationY>
         <assignmentItems>
             <assignToReference>WebName</assignToReference>
@@ -184,11 +187,11 @@
         </connector>
     </assignments>
     <constants>
-        <description>Código de Scope de Zurich Empresas</description>
-        <name>ScopeCodeZE</name>
+        <description>Código de Scope</description>
+        <name>ScopeCode</name>
         <dataType>String</dataType>
         <value>
-            <stringValue>ze</stringValue>
+            <stringValue>ALL</stringValue>
         </value>
     </constants>
     <decisions>
@@ -219,7 +222,7 @@
     <decisions>
         <name>ContactRequestFoundDecision</name>
         <label>¿Hemos encontrado ContactRequest?</label>
-        <locationX>1238</locationX>
+        <locationX>1502</locationX>
         <locationY>758</locationY>
         <defaultConnector>
             <targetReference>OpenCreateLeadFlow</targetReference>
@@ -245,7 +248,7 @@
         <description>Comprobamos si hemos encontrado algún cliente con el número de teléfono recibido</description>
         <name>CustomerFoundByPhoneDecision</name>
         <label>¿Hemos encontrado cliente?</label>
-        <locationX>1040</locationX>
+        <locationX>1238</locationX>
         <locationY>518</locationY>
         <defaultConnector>
             <targetReference>FindContactRequest</targetReference>
@@ -268,9 +271,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>existeScope</name>
+        <label>¿Existe un ámbito con ese número de teléfono?</label>
+        <locationX>974</locationX>
+        <locationY>878</locationY>
+        <defaultConnector>
+            <targetReference>createScope</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetScopeByPhone</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>HasEmailIdDecision</name>
         <label>¿Hay Email Id?</label>
-        <locationX>809</locationX>
+        <locationX>908</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>FindCustomerByPhone</targetReference>
@@ -295,7 +320,7 @@
     <decisions>
         <name>HasRecordIdDecision</name>
         <label>¿Hay Record Id?</label>
-        <locationX>495</locationX>
+        <locationX>545</locationX>
         <locationY>158</locationY>
         <defaultConnector>
             <targetReference>HasEmailIdDecision</targetReference>
@@ -317,6 +342,12 @@
             <label>Sí</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>Now</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
     <formulas>
         <description>Calcula la fecha de ayer</description>
         <name>Yesterday</name>
@@ -344,11 +375,84 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordCreates>
+        <name>createContactPointPhone</name>
+        <label>Crear Contact Point Phone</label>
+        <locationX>1106</locationX>
+        <locationY>1118</locationY>
+        <inputAssignments>
+            <field>ActiveFromDate</field>
+            <value>
+                <elementReference>Now</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IsPrimary</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ScopeId__c</field>
+            <value>
+                <elementReference>createScope</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Scope__c</field>
+            <value>
+                <stringValue>ZE</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TelephoneNumber</field>
+            <value>
+                <elementReference>phone</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ContactPointPhone</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>createScope</name>
+        <label>Crear ámbito</label>
+        <locationX>1106</locationX>
+        <locationY>998</locationY>
+        <connector>
+            <targetReference>createContactPointPhone</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>AccountId__c</field>
+            <value>
+                <elementReference>FindCustomerByPhone.customerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <stringValue>Zurich Empresas</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PrimaryPhone__c</field>
+            <value>
+                <elementReference>phone</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Scope__c</field>
+            <value>
+                <stringValue>ZE</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Scope__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <description>Busca el registro de ContactRequest que ha podido lanzar este Flow para recuperar el campo WebName__c</description>
         <name>FindContactRequest</name>
         <label>Buscar ContactRequest por Teléfono</label>
-        <locationX>1238</locationX>
+        <locationX>1502</locationX>
         <locationY>638</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -413,9 +517,30 @@
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>GetScopeByPhone</name>
+        <label>Obtener ámbito por teléfono</label>
+        <locationX>974</locationX>
+        <locationY>758</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>existeScope</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>PrimaryPhone__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>phone</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Scope__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>369</locationX>
+        <locationX>419</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>HasRecordIdDecision</targetReference>
@@ -426,7 +551,7 @@
         <description>Llamada al Flow de Creación de Leads para que muestre el formulario al agente</description>
         <name>OpenCreateLeadFlow</name>
         <label>Abrir Flow de Creación de Leads</label>
-        <locationX>1238</locationX>
+        <locationX>1502</locationX>
         <locationY>1094</locationY>
         <flowName>ZECreateLead</flowName>
         <inputAssignments>
