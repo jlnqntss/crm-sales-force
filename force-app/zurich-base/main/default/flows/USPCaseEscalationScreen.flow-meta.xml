@@ -214,7 +214,7 @@
     <decisions>
         <name>internalOrExternalDecision</name>
         <label>Internal or External</label>
-        <locationX>446</locationX>
+        <locationX>578</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>updateRecordAction_0</targetReference>
@@ -555,6 +555,9 @@
         <connector>
             <targetReference>getCustomNotificationAction</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -580,7 +583,7 @@
     <recordUpdates>
         <name>updateRecordAction_0</name>
         <label>Update Record</label>
-        <locationX>666</locationX>
+        <locationX>930</locationX>
         <locationY>398</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -654,6 +657,22 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>ErrorScreen</name>
+        <label>Screen Error</label>
+        <locationX>666</locationX>
+        <locationY>3182</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Error</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>queueTypeAction</name>
         <label>Queue Type</label>
         <locationX>226</locationX>
@@ -678,7 +697,7 @@
     <screens>
         <name>ScaledTypeScreen</name>
         <label>Tipo Escalado</label>
-        <locationX>446</locationX>
+        <locationX>578</locationX>
         <locationY>158</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -686,11 +705,6 @@
         <connector>
             <targetReference>internalOrExternalDecision</targetReference>
         </connector>
-        <fields>
-            <name>display</name>
-            <fieldText>&lt;p&gt;hello, recordID: {!recordId}  &lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
         <fields>
             <name>InternalExternalDecision</name>
             <choiceReferences>Interno</choiceReferences>
@@ -715,11 +729,6 @@
             <targetReference>idUserAssignment</targetReference>
         </connector>
         <fields>
-            <name>userText</name>
-            <fieldText>&lt;p&gt;{!idUserToChoose}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
             <name>usersToChooseInput</name>
             <choiceReferences>userNamesToChoose</choiceReferences>
             <dataType>String</dataType>
@@ -731,7 +740,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>320</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>ScaledTypeScreen</targetReference>
