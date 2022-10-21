@@ -4,15 +4,20 @@
     <active>true</active>
     <entryStartDateField>Case.CreatedDate</entryStartDateField>
     <exitCriteriaFilterItems>
-        <field>Case.Status</field>
+        <field>Case.IsClosed</field>
         <operation>equals</operation>
-        <value>Pendiente</value>
+        <value>true</value>
     </exitCriteriaFilterItems>
     <milestones>
         <milestoneCriteriaFilterItems>
             <field>Case.Status</field>
             <operation>equals</operation>
-            <value>Respondido, Nuevo</value>
+            <value>Respondido, Asignado, Nuevo, Pendiente</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.PendingBy__c</field>
+            <operation>notEqual</operation>
+            <value>Client, Intermediary</value>
         </milestoneCriteriaFilterItems>
         <milestoneName>Respuesta Interacción</milestoneName>
         <minutesToComplete>600</minutesToComplete>
