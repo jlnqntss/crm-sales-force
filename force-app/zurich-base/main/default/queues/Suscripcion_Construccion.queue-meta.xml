@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>Suscripción Construccion</name>
+    <queueMembers>
+        <users>
+            <user>a.ripollesmoras@zurich-es.com</user>
+            <user>agustin.zapata@zurich-es.com</user>
+            <user>aida.iglesiasalcala@zurich-es.com</user>
+            <user>a.gonzalezrodriguez@zurich-es.com</user>
+            <user>alberto.maroto@zurich-es.com</user>
+            <user>aleix.diazperpina@zurich-es.com</user>
+            <user>aleix.vazquezsanchez@zurich-es.com</user>
+            <user>a.alvarezfernandez1@zurich-es.com</user>
+            <user>a.marinovillar@zurich-es.com</user>
+            <user>a.toledoarruego@zurich-es.com</user>
+            <user>alfons.bulefaci@zurich-es.com</user>
+            <user>fernando.ruizandres@zurich-es.com</user>
+        </users>
+    </queueMembers>
+    <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+</Queue>
