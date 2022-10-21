@@ -3,12 +3,18 @@
     <fullName>MandatoryCloseResultClosed</fullName>
     <active>true</active>
     <description>[VR Caso] El campo close result es obligatorio en el cierre del caso</description>
-    <errorConditionFormula>(RecordType.DeveloperName == &quot;OCSInquiry&quot;  || RecordType.DeveloperName == &quot;USPInquiry&quot;  ) &amp;&amp;
-ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp;
+    <errorConditionFormula>OR(
+RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp;
+IsClosed &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos; &amp;&amp;
-ISBLANK(TEXT(CloseResult__c))</errorConditionFormula>
+ISBLANK(TEXT(CloseResult__c))
+,
+RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
+IsClosed &amp;&amp;
+ISBLANK(TEXT(CloseResult__c)) &amp;&amp;  $Permission.USPTriggerCaseValidationRules 
+)</errorConditionFormula>
     <errorDisplayField>CloseResult__c</errorDisplayField>
     <errorMessage>[VR Caso] Es obligatorio informar el Resultado de cierre antes de cerrar el caso</errorMessage>
 </ValidationRule>
