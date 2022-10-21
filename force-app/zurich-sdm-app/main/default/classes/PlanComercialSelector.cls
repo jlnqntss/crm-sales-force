@@ -227,7 +227,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         if( plans != null && !plans.isEmpty() ) {
             childPlans = [
                 SELECT Id, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, Indicator__c, Segment__c, Product__c, EndDate__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c,
-                            ParentPlan__r.TargetKPIPercent__c, ParentPlan__r.TargetKPICurrency__c, ParentPlan__r.Actual_KPI__c
+                            ParentPlan__r.TargetKPIPercent__c, ParentPlan__r.TargetKPICurrency__c, ParentPlan__r.Actual_KPI__c, Zone__c
                 FROM PlanComercial__c
                 WHERE ParentPlan__c IN :plans
                 AND RecordTypeId = :rtPlanMensualId

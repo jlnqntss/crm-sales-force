@@ -2050,7 +2050,8 @@ public class TestDataFactory
                             INFOIntermediaryCode__c = String.valueOf(phoneNumber).leftPad(10, '0'),
                             Phone = String.valueOf(phoneNumber),
                             NationalId__c = 'C',
-                            RecordTypeId = recordTypeId
+                            RecordTypeId = recordTypeId,
+                            Zone__c = PlanComercialSelector.ZONE_11_BARCELONA
                         )
                     );
                 }
@@ -2094,7 +2095,8 @@ public class TestDataFactory
                             Name = 'agrupationName' + i,
                             NationalIdType__c = 'C',
                             NationalId__c = 'C',
-                            RecordTypeId = recordTypeId
+                            RecordTypeId = recordTypeId,
+                            Zone__c = PlanComercialSelector.ZONE_11_BARCELONA
                         )
                     );
                 }
@@ -3309,7 +3311,7 @@ public class TestDataFactory
                     Indicator__c = 'PN',
                     Segment__c = 'PYMEs',
                     Product__c = 'Accidentes',
-                    Zone__c = '11 BARCELONA',
+                    Zone__c = PlanComercialSelector.ZONE_11_BARCELONA,
                     January__c = 100,
                     ExternalId__c = String.valueOf(i)
                 )
