@@ -4,8 +4,8 @@
     <assignments>
         <name>Activamos_el_flag</name>
         <label>Activamos el flag</label>
-        <locationX>182</locationX>
-        <locationY>791</locationY>
+        <locationX>204</locationX>
+        <locationY>1223</locationY>
         <assignmentItems>
             <assignToReference>$Record.NLUTypificationFailed__c</assignToReference>
             <operator>Assign</operator>
@@ -15,9 +15,56 @@
         </assignmentItems>
     </assignments>
     <decisions>
+        <description>Comprobamos si la tipificación que nos llega de la task tiene un registro en el metadato creado a tal efecto</description>
+        <name>Hay_datos_de_tipificacion</name>
+        <label>¿Hay datos de tipificacion?</label>
+        <locationX>204</locationX>
+        <locationY>551</locationY>
+        <defaultConnector>
+            <targetReference>Activamos_el_flag</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Hay_datos</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Typification_data.Type__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Typification_data.Subtype__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Typification_data.TypeN3__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Typification_data.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Related_Case</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_the_task_related_to_a_case</name>
         <label>Is the task related to a case?</label>
-        <locationX>248</locationX>
+        <locationX>369</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -55,7 +102,7 @@
         <name>La_tipificaci_n_es_correcta</name>
         <label>¿La tipificación es correcta?</label>
         <locationX>50</locationX>
-        <locationY>671</locationY>
+        <locationY>791</locationY>
         <defaultConnector>
             <targetReference>Activamos_el_flag</targetReference>
         </defaultConnector>
@@ -88,6 +135,7 @@
         </rules>
     </decisions>
     <description>Flujo que comprueba que la tipificación de la tarea ha sido correcta o no en función del caso asociado que haya creado el agente</description>
+    <environments>Default</environments>
     <interviewLabel>Task Trigger - Before insert/update - Check NLU Typification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - Before insert/update - Check NLU Typification</label>
     <processMetadataValues>
@@ -113,7 +161,7 @@
         <name>Get_Related_Case</name>
         <label>Get Related Case</label>
         <locationX>50</locationX>
-        <locationY>551</locationY>
+        <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>La_tipificaci_n_es_correcta</targetReference>
@@ -133,11 +181,11 @@
     <recordLookups>
         <name>Get_Typification_data</name>
         <label>Get Typification data</label>
-        <locationX>50</locationX>
+        <locationX>204</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Related_Case</targetReference>
+            <targetReference>Hay_datos_de_tipificacion</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -152,7 +200,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>122</locationX>
+        <locationX>243</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_the_task_related_to_a_case</targetReference>
