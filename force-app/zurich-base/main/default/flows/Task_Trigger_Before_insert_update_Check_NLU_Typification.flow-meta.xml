@@ -4,8 +4,8 @@
     <assignments>
         <name>Activamos_el_flag</name>
         <label>Activamos el flag</label>
-        <locationX>204</locationX>
-        <locationY>1223</locationY>
+        <locationX>336</locationX>
+        <locationY>1343</locationY>
         <assignmentItems>
             <assignToReference>$Record.NLUTypificationFailed__c</assignToReference>
             <operator>Assign</operator>
@@ -14,11 +14,24 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <name>Desactivamos_el_flag</name>
+        <label>Desactivamos el flag</label>
+        <locationX>50</locationX>
+        <locationY>911</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.NLUTypificationFailed__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
     <decisions>
         <description>Comprobamos si la tipificación que nos llega de la task tiene un registro en el metadato creado a tal efecto</description>
         <name>Hay_datos_de_tipificacion</name>
         <label>¿Hay datos de tipificacion?</label>
-        <locationX>204</locationX>
+        <locationX>336</locationX>
         <locationY>551</locationY>
         <defaultConnector>
             <targetReference>Activamos_el_flag</targetReference>
@@ -28,28 +41,7 @@
             <name>Hay_datos</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Typification_data.Type__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Get_Typification_data.Subtype__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Get_Typification_data.TypeN3__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Get_Typification_data.Id</leftValueReference>
+                <leftValueReference>NLUobtenido.Id</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -64,7 +56,7 @@
     <decisions>
         <name>Is_the_task_related_to_a_case</name>
         <label>Is the task related to a case?</label>
-        <locationX>369</locationX>
+        <locationX>501</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -101,7 +93,7 @@
         <description>Comprobamos si la tipificación de la NLU coincide con la establecida por el agente al crear el caso</description>
         <name>La_tipificaci_n_es_correcta</name>
         <label>¿La tipificación es correcta?</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>791</locationY>
         <defaultConnector>
             <targetReference>Activamos_el_flag</targetReference>
@@ -114,23 +106,26 @@
                 <leftValueReference>Get_Related_Case.Type</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Get_Typification_data.Type__c</elementReference>
+                    <elementReference>NLUobtenido.Type__c</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>Get_Related_Case.Subtype__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Get_Typification_data.Subtype__c</elementReference>
+                    <elementReference>NLUobtenido.Subtype__c</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>Get_Related_Case.TypeN3__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Get_Typification_data.TypeN3__c</elementReference>
+                    <elementReference>NLUobtenido.TypeN3__c</elementReference>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>Desactivamos_el_flag</targetReference>
+            </connector>
             <label>Si</label>
         </rules>
     </decisions>
@@ -160,7 +155,7 @@
     <recordLookups>
         <name>Get_Related_Case</name>
         <label>Get Related Case</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -181,7 +176,7 @@
     <recordLookups>
         <name>Get_Typification_data</name>
         <label>Get Typification data</label>
-        <locationX>204</locationX>
+        <locationX>336</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -189,18 +184,22 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Label</field>
+            <field>DeveloperName</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>$Record.Intent__c</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Tipificacion_NLU_Field_Mapping__mdt</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputReference>NLUobtenido</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>DeveloperName</queriedFields>
+        <queriedFields>Type__c</queriedFields>
+        <queriedFields>Subtype__c</queriedFields>
+        <queriedFields>TypeN3__c</queriedFields>
     </recordLookups>
     <start>
-        <locationX>243</locationX>
+        <locationX>375</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_the_task_related_to_a_case</targetReference>
@@ -219,4 +218,12 @@
     </start>
     <status>Active</status>
     <triggerOrder>1500</triggerOrder>
+    <variables>
+        <name>NLUobtenido</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Tipificacion_NLU_Field_Mapping__mdt</objectType>
+    </variables>
 </Flow>
