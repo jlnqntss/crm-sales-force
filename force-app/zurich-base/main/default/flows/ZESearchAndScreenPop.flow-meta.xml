@@ -187,7 +187,7 @@
         </connector>
     </assignments>
     <constants>
-        <description>Código de Scope</description>
+        <description>Código de Scope, usamos el valor All, ya que esta opción es la que considera todos los scopes</description>
         <name>ScopeCode</name>
         <dataType>String</dataType>
         <value>
