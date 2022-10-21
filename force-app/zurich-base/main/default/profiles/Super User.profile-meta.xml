@@ -3699,11 +3699,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.Product_Code__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Case.Product_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3845,6 +3840,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.SuppliedPhone</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.TechnicalCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
