@@ -2,13 +2,6 @@
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
     <doesSendEmailToMembers>false</doesSendEmailToMembers>
     <name>Suscripción Industria</name>
-    <queueMembers>
-        <users>
-            <user>anna.ortells@zurich-es.com</user>
-            <user>a.citera@zurich-es.com</user>
-            <user>antonia.ruiz@zurich-es.com</user>
-        </users>
-    </queueMembers>
     <queueSobject>
         <sobjectType>Case</sobjectType>
     </queueSobject>
