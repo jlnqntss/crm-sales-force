@@ -430,4 +430,70 @@ public class CaseUtil
             }
         }
     }
+
+    /**
+     * Método utilizado por RelateCasesToNewAccountsBatch para relacionar casos con cuentas
+     * @author jjuaristi@seidor.es
+     * @date 20/10/2022
+     * @param [List<Case> casesToRelate] casos que ha recuperado el batch, [String daysToRetrieve] días desde la creación
+     * @return List<Case> casos a actualizar
+     */
+    public static List<Case> relateCasesToNewAccounts (List<Case> casesToRelate, String daysToRetrieve)
+    {
+        // Lista para almacenar solo los registros que hay que actualizar
+        List<Case> casesToUpdate = new List<Case>();
+
+        // La lógica solo se recorre si la lista no es nula, para evitar excepciones
+        if(casesToRelate != null && !casesToRelate.isEmpty())
+        {
+            // Se obtiene la lista de cifs
+            List<String> cifs = generateCifList(casesToRelate);
+            
+            // Query a Account para recuperar los clientes creados en las últimas 24 horas
+            // y con cif contenido por los casos recogidos en el batch
+            List<Account> accountsToRelate = new AccountsSelector().findByCIFAndCreationDate(cifs, daysToRetrieve);
+
+            // Si no hay cuentas no recorremos la lista para evitar excepciones
+            if(accountsToRelate != null && !accountsToRelate.isEmpty())
+            {
+                //Mapa para identificar cada cuenta con su cif
+                Map<String, Account> mapAccountsToRelateByCIF = AccountUtil.generateMapByCif(accountsToRelate);
+
+                // Se recorre la lista de casos a relacionar
+                for(Case currentCase : casesToRelate)
+                {
+                    // Si alguna cuenta tiene el mismo cif que el caso, se tienen que relacionar
+                    if(mapAccountsToRelateByCIF.get(currentCase.RobotDocumentId__c)!=null)
+                    {
+                        // Se hace la relación
+                        currentCase.MediatedCustomer__c = mapAccountsToRelateByCIF.get(currentCase.RobotDocumentId__c).Id;
+                        // Se añade el caso a la lista de casos a actualizar
+                        casesToUpdate.add(currentCase);
+                    }
+                }
+            }
+        }
+        return casesToUpdate;
+    }
+
+    /**
+     * Método que devuelve una lista con los cifs de los casos que recibe por parámetro
+     * @author jjuaristi@seidor.es
+     * @date 20/10/2022
+     * @param Lista de casos
+     * @return Lista de cifs
+     */
+    private static List<String> generateCifList(List<Case> cases)
+    {
+        List<String> cifs = new List<String>();
+        if(cases != null && !cases.isEmpty())
+        {
+            // Se recorre la lista de casos para generar la lista de CIFs 
+            for(Case currentCase : cases)
+            {
+                cifs.add(currentCase.RobotDocumentId__c);
+            }
+        }
+        return cifs;
+    }
 }

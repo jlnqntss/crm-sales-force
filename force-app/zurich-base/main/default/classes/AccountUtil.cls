@@ -154,4 +154,27 @@ public class AccountUtil
             GenerateScopeUtil.generateScopeEvents('Id', 'LeadBusinessCode__c', accountsTelemarketingToGenerateScope);
         }
     }
+
+    /**
+     * Método que devuelve un mapa de cuentas por cif a partir de una lista de cuentas
+     * @author jjuaristi@seidor.es
+     * @date 20/10/2022
+     * @param Lista de cuentas
+     * @return Mapa de cuentas por CIF
+     */
+    public static Map<String, Account> generateMapByCif(List<Account> accounts)
+    {
+        Map<String, Account> mapAccountsToRelateByCIF = new Map<String,Account>();
+        if(accounts != null && !accounts.isEmpty())
+        {
+            //Mapa para identificar cada cuenta con su cif
+                    
+            // Se recorre la lista de cuentas para no tener que recorrerla una vez por cada caso
+            for(Account currentAccount : accounts)
+            {
+                mapAccountsToRelateByCIF.put(currentAccount.NationalId__c, currentAccount);
+            }
+        }
+        return mapAccountsToRelateByCIF;
+    }
 }
