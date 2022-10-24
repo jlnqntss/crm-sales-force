@@ -5,14 +5,14 @@
     <description>[VR Caso] El campo close result es obligatorio en el cierre del caso</description>
     <errorConditionFormula>OR(
 RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp;
-IsClosed &amp;&amp;
+ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos; &amp;&amp;
 ISBLANK(TEXT(CloseResult__c))
 ,
 RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
-IsClosed &amp;&amp;
+ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp;
 ISBLANK(TEXT(CloseResult__c)) &amp;&amp;  $Permission.USPTriggerCaseValidationRules 
 )</errorConditionFormula>
     <errorDisplayField>CloseResult__c</errorDisplayField>
