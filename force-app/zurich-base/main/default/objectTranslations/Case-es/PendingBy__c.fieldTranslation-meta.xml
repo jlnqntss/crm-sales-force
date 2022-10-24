@@ -3,12 +3,24 @@
     <label>Pendiente de</label>
     <name>PendingBy__c</name>
     <picklistValues>
+        <masterLabel>Champion</masterLabel>
+        <translation>Champion</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Client</masterLabel>
         <translation>Cliente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Competency Management</masterLabel>
         <translation>Gestión de Competencias</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Consultant</masterLabel>
+        <translation>Consultor</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Deferred</masterLabel>
+        <translation>Diferido</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Intermediary</masterLabel>
@@ -25,6 +37,10 @@
     <picklistValues>
         <masterLabel>Others</masterLabel>
         <translation>Otros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Subscription</masterLabel>
+        <translation>Suscripción</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Supervisor</masterLabel>

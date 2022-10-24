@@ -3,6 +3,7 @@
     <fullName>OCSInquiry</fullName>
     <active>true</active>
     <businessProcess>OCS</businessProcess>
+    <compactLayoutAssignment>OCS_Inquiry_Default</compactLayoutAssignment>
     <description>OCS</description>
     <label>OCS Inquiry</label>
     <picklistValues>

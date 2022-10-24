@@ -252,10 +252,10 @@ private class CaseUtilTest
     }
 
     /**
-     * IMPORTANTE2: este test depende de que existan EntitlementProcess en el sistema
-     * @author jjuaristi@seidor.es
-     * @date 24/10/2022
-     */
+    * IMPORTANTE2: este test depende de que existan EntitlementProcess en el sistema
+    * @author jjuaristi@seidor.es
+    * @date 24/10/2022
+    */
     @isTest
     static void test_completeUSPMilestonesWhenClosedOrPending_ok()
     {
@@ -308,6 +308,44 @@ private class CaseUtilTest
         for(CaseMilestone cmilestone: milestonesUpdated)
         {
             System.assertEquals(true, cmilestone.isCompleted, 'el milestone debería estar completado ya');
+        }
+    }
+
+    /*
+    * Test del método que relaciona los casos que no tienen cliente con su cliente cuando este se ha creado posteriormente
+    * @author jjuaristi@seidor.es
+    * @date 20/10/2022
+    */
+    @isTest
+    static void test_relateCasesToNewAccounts_OK()
+    {
+        // Se establece el recordtype para que el proceso relacione los casos con esta cuenta
+        Account customer = [SELECT Id, NationalId__c FROM Account LIMIT 1];
+        AccountsSelector accSel = new AccountsSelector(); 
+        customer.RecordTypeId = accSel.rtCustomerId;
+        update customer;
+
+        // Se establece recordType y CIF para que se relacionen
+        List<Case> cases = [SELECT Id, MediatedCustomer__c, RobotDocumentId__c FROM case];
+        CasesSelector caseSel = new CasesSelector(); 
+        for(Case currentCase : cases)
+        {
+            currentCase.RecordTypeId = caseSel.rtUSPId;
+            currentCase.RobotDocumentId__c = customer.NationalId__c;
+        }
+
+        // Se comprueba que la relación no existía previamente
+        for(Case currentCase : cases)
+        {
+            System.assertEquals(null, currentCase.MediatedCustomer__c, 'No deberia haber customer');
+        }
+
+        List<Case> casesToUpdate = CaseUtil.relateCasesToNewAccounts(cases, '5');
+
+        // Se comprueba que se ha hecho bien la relación
+        for(Case currentCase : casesToUpdate)
+        {
+            System.assertNotEquals(null, currentCase.MediatedCustomer__c, 'Deberia haber customer');
         }
     }
 }

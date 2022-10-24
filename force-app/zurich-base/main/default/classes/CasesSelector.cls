@@ -9,6 +9,15 @@ public with sharing class CasesSelector extends RecordsSelector
 
     //#endregion
 
+    public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+
+    // Recupera el Id del RecordType de casos USP
+    public ID rtUSPId {
+        get {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
+        }
+    }
+
     /**
      * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
      * @author adelgado
@@ -107,7 +116,35 @@ public with sharing class CasesSelector extends RecordsSelector
         {
             return new List<Case>();
         }
+    }
 
+    /**
+     * Método utilizado por el batch RelateCasesToNewAccountsBatch para definir el scope
+     * @author jjuaristi@seidor.es
+     * @date 19/10/2022
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
+    public String getQueryStringCasesToRelateToNewAccounts(String days)
+    {
+        if(days != null && !String.isBlank(days) )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.Id,
+                Case.RobotDocumentId__c,
+                Case.MediatedCustomer__c
+            })
+            .addConditionEq(Case.RecordTypeId, rtUSPId)
+            .addConditionNotNull(Case.RobotDocumentId__c)
+            .addConditionNull(Case.MediatedCustomer__c)
+            .addConditionString('Case.CreatedDate = LAST_N_DAYS:' + days);
+
+            return this.baseQuery.toQueryString();
+        }
+        else
+        {
+            return '';
+        }
     }
 
 }
