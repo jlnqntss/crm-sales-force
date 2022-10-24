@@ -430,4 +430,92 @@ public class CaseUtil
             }
         }
     }
+
+     /**
+     * Similar a markMilestonesCompletedWhenClose pero cuando los casos son usp. 
+     * Completa milestones al poner un caso a cerrado o pendiente
+     * @author jjuaristi@seidor.es
+     * @date 24/10/2022
+     * @param 
+     * @return 
+     */
+    public static void completeUSPMilestonesWhenClosedOrPending(List<Case> newList, Map<Id,Case> oldMap)
+    {
+        Case oldCase = new Case();
+        List<Case> updatedCases = new List<Case>();
+
+        // Generar lista solo de USP
+        List<Case> uspCases = generateUspCaseList(newList);
+
+        for(Case caso : uspCases)
+        {
+            oldCase =  oldMap.get(caso.Id);
+            //Solo se hace algo la actualización es a cerrado o pendiente de client/Intermediary
+            if(oldCase.Status != caso.Status &&
+                (
+                    caso.Status == 'Cerrado' || caso.Status == 'Merged' || caso.Status == 'Combinado'
+                    || 
+                    caso.Status == 'Pendiente' && 
+                    (
+                        caso.PendingBy__c == 'Client' || caso.PendingBy__c == 'Intermediary'
+                    ) 
+                )
+            )
+            {
+                updatedCases.add(caso);
+            }
+            completeCaseMilestones(updatedCases, 'Respuesta Interacción');
+        }
+    }
+
+    private static void completeCaseMilestones(List<Case> updatedCases, string milestoneName)
+    {
+        List<CaseMilestone> caseMilestoneList = new List<CaseMilestone>();
+        List<CaseMilestone> caseMilestoneListToUpdate = new List<CaseMilestone>();
+        // Lanzar query para recuperar los milestones
+        caseMilestoneList = [SELECT Id, CaseId, CompletionDate FROM CaseMilestone WHERE CaseId IN :updatedCases AND MilestoneType.Name =:milestoneName];
+        if( !caseMilestoneList.isEmpty() )
+        {
+            for(CaseMilestone cm : caseMilestoneList)
+            {
+                //Evitar actualizar un milestone ya completado
+                if (cm.CompletionDate == null)
+                {
+                    cm.CompletionDate = System.now(); //Marcarlo como completado
+                    caseMilestoneListToUpdate.add(cm);
+                }
+            }
+            //Updatear ANTES el milestone que el caso para evitar el error de salida del EntitlementProcess
+            if( !caseMilestoneListToUpdate.isEmpty() )
+            {
+                //Evitar ids duplicados en la lista a actualziar
+                Map<Id, CaseMilestone> caseMilestoneDuplicates = new Map<Id, CaseMilestone>();
+                caseMilestoneDuplicates.putAll(caseMilestoneListToUpdate);
+                update caseMilestoneDuplicates.values();
+            }
+        }
+
+    }
+
+    /**
+     * Método que a partir de una lista de casos devuelve la lista de casos con RecordType USPInquiry
+     * @author jjuaristi@seidor.es
+     * @date 24/10/2022
+     * @param Lista de casos
+     * @return Lista de casos USP
+     */
+    private static List<Case> generateUspCaseList(List<Case> cases)
+    {
+        Id rtUSPId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        List<Case> uspCases = new List<Case>();
+
+        for(Case currentCase : cases)
+        {
+            if(currentCase.RecordTypeId == rtUSPId)
+            {
+                uspCases.add(currentCase);
+            }
+        }
+        return uspCases;
+    }
 }
