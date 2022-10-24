@@ -401,8 +401,6 @@ public with sharing class PlanComercialSDM {
                 // Ahora si, por cada plan comercial, se realiza el calculo...
                 for(PlanComercial__c plan: plans) {
 
-                    System.debug('DMM PLAN I - assigned ' + plan.AssignedTo__r.name + ' - owner ' +  plan.owner.name + ' - all ' + plan);
-
                     // Obtenemos de nuevo el usuario relacionado con el plan
                     Id userId = getUserIdFromPlan(plan);
 
@@ -425,8 +423,6 @@ public with sharing class PlanComercialSDM {
                             intermediaries = new Set<Id>{plan.Intermediary__c};
                         }
                     }
-
-                    System.debug('DMM PLAN I Intermediaries ' + intermediaries);
 
                     // Si hay mediadores..
                     if( intermediaries != null && !intermediaries.isEmpty() ) {
