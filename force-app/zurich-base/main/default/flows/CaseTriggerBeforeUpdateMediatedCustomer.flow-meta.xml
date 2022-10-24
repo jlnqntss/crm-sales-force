@@ -5,7 +5,7 @@
         <name>customerOfferAssignment</name>
         <label>Customer Offer Assignment</label>
         <locationX>314</locationX>
-        <locationY>431</locationY>
+        <locationY>551</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -18,7 +18,7 @@
         <name>customerPolicyAssignment</name>
         <label>Customer policy Assignment</label>
         <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationY>551</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -31,7 +31,7 @@
         <name>offerPolicyDecision</name>
         <label>Offer policy null</label>
         <locationX>314</locationX>
-        <locationY>311</locationY>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>PolicyNameNotNullOutcome</name>
@@ -64,6 +64,47 @@
             <label>Offer Not Null</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>RecordTypeDecision</name>
+        <label>Record Type Decision</label>
+        <locationX>710</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>UspDefault</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>offerPolicyDecision</targetReference>
+            </connector>
+            <label>USP</label>
+        </rules>
+        <rules>
+            <name>OcsOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <label>OCS</label>
+        </rules>
+    </decisions>
     <interviewLabel>Case Trigger-Before Update-Mediated Customer Field {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger-Before Update-Mediated Customer</label>
     <processMetadataValues>
@@ -86,10 +127,10 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>188</locationX>
+        <locationX>584</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>offerPolicyDecision</targetReference>
+            <targetReference>RecordTypeDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -104,7 +145,6 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
-    <triggerOrder>21</triggerOrder>
     <variables>
         <name>IdAccount</name>
         <dataType>String</dataType>
