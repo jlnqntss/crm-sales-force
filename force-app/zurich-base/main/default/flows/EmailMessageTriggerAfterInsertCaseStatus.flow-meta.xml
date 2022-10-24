@@ -5,11 +5,11 @@
         <name>El_Caso_esta_Pending_y_es_de_OCS</name>
         <label>¿El Caso está Pending y es de OCS?</label>
         <locationX>266</locationX>
-        <locationY>391</locationY>
+        <locationY>390</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 OR 3) AND 2</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -24,13 +24,20 @@
                     <stringValue>Pendiente</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Actualizar_Caso_a_Respondido</targetReference>
             </connector>
             <label>Si</label>
         </rules>
     </decisions>
-    <description>si llega un email, actualiza a Respondido el caso (OCS)</description>
+    <description>si llega un email, actualiza a Respondido el caso (OCS y EON)</description>
     <interviewLabel>EmailMessage Trigger - After Insert Case Status {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After Insert Case Status</label>
     <processMetadataValues>
@@ -68,7 +75,7 @@
         <inputAssignments>
             <field>PendingBy__c</field>
             <value>
-                <stringValue/>
+                <stringValue></stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
