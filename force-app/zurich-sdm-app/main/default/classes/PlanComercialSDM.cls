@@ -22,7 +22,7 @@ public with sharing class PlanComercialSDM {
 
     // Lista de nombres de los campos de filtrado de los KPI__c
     private static final List<String> KPI_FILTER_FIELDS = new List<String> {
-        'CalcYear__c', 'CalcMonth__c', 'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c'
+        'CalcYear__c', 'CalcMonth__c', 'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c', 'Intermediary__r.Zone__c'
     };
     // Mapa de equivalencias entre campos del objeto PlanComercial__c y campos del objeto KPI__c
     private static final Map<String, String> mapPlanComercialToKpiFields = new Map<String, String> {
@@ -233,6 +233,11 @@ public with sharing class PlanComercialSDM {
 
             result = (kpiYear >= startYear && kpiYear <= endYear); // Ej: true
 
+            // comprobamos que la zona del plan coincida con la zona del kpi que estamos consultando
+            if (result) {
+                result = plan.Zone__c.equals(kpi.Intermediary__r.Zone__c);
+            }
+
             // Y si es mensual
             if( result && plan.AccumulateType__c == PLAN_COMERCIAL_ACCUMULATE_TYPE_MONTH ) {
                 // Revisamos el mes
@@ -395,6 +400,9 @@ public with sharing class PlanComercialSDM {
             if( mapKPIsByIntermediary != null && !mapKPIsByIntermediary.isEmpty() ) {
                 // Ahora si, por cada plan comercial, se realiza el calculo...
                 for(PlanComercial__c plan: plans) {
+
+                    System.debug('DMM PLAN I - assigned ' + plan.AssignedTo__r.name + ' - owner ' +  plan.owner.name + ' - all ' + plan);
+
                     // Obtenemos de nuevo el usuario relacionado con el plan
                     Id userId = getUserIdFromPlan(plan);
 
@@ -417,6 +425,8 @@ public with sharing class PlanComercialSDM {
                             intermediaries = new Set<Id>{plan.Intermediary__c};
                         }
                     }
+
+                    System.debug('DMM PLAN I Intermediaries ' + intermediaries);
 
                     // Si hay mediadores..
                     if( intermediaries != null && !intermediaries.isEmpty() ) {
