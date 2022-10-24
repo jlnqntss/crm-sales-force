@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <constants>
+        <description>Call</description>
+        <name>Call</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Call</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Callback</description>
+        <name>Callback</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Callback</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Contractual Recording</description>
+        <name>ContractualRecording</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Contractual recording</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Grabación Contractual</description>
+        <name>ContractualRecording_es</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Grabación Contractual</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <name>IsContractualRecording</name>
+        <label>Is contractual recording</label>
+        <locationX>314</locationX>
+        <locationY>335</locationY>
+        <defaultConnector>
+            <targetReference>Type_of_call_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CallDisposition</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ContractualRecording_es</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SubtypeIsContractualRecording</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Type_of_call_0</name>
+        <label>Type of call</label>
+        <locationX>578</locationX>
+        <locationY>455</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Callback_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Subject</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Callback</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SubtypeIsCallback_0</targetReference>
+            </connector>
+            <label>Callback</label>
+        </rules>
+        <rules>
+            <name>Call_0</name>
+            <conditionLogic>NOT 1</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Subject</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Callback</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SubtypeIsCall_0</targetReference>
+            </connector>
+            <label>Call</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Task Trigger - Before insert/update Type {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Task Trigger - Before insert/update Type</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>SubtypeIsCall_0</name>
+        <label>Subtype is call</label>
+        <locationX>578</locationX>
+        <locationY>575</locationY>
+        <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <elementReference>Call</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>SubtypeIsCallback_0</name>
+        <label>Subtype is Callback</label>
+        <locationX>314</locationX>
+        <locationY>575</locationY>
+        <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <elementReference>Callback</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>SubtypeIsContractualRecording</name>
+        <label>Subtype is contractual recording</label>
+        <locationX>50</locationX>
+        <locationY>455</locationY>
+        <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <elementReference>ContractualRecording</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>IsContractualRecording</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Call</stringValue>
+            </value>
+        </filters>
+        <object>Task</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

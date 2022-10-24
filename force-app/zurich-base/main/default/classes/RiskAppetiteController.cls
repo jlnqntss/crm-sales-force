@@ -120,7 +120,7 @@ public with sharing class RiskAppetiteController {
      * @param 
      * @return 
      */
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<MaestroApetito__c> getTechPoliciesForActivities(String sicCode, String productCode, String activityCode){
         try {
             // Buscamos todos los registros filtrados por SIC, ramo y actividad comercial
@@ -308,7 +308,7 @@ public with sharing class RiskAppetiteController {
      * @param Id del caso
      * @return Caso
      */
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Case getCaseById(String caseId)
     {
         return new CasesSelector().findById(new Set<String>{caseId})[0];
@@ -321,7 +321,7 @@ public with sharing class RiskAppetiteController {
      * @param Json con los elementos necesarios para encontrar la política técnica fijada
      * @return Política técnica
      */
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static MaestroApetito__c getSetTechPolicies(String caseQuery)
     {
         MaestroApetito__c record = (MaestroApetito__c) JSON.deserialize(caseQuery, MaestroApetito__c.Class);

@@ -334,6 +334,10 @@ export default class TechnicalPolicies extends LightningElement {
         activityCode: this.activityCodeTrack
       });
     } else {
+      // Si se ha desfijado en esta ejecución, se vacía el campo caseQuery
+      if (this.desfijadoInput === true) {
+        this.caseQuery = undefined;
+      }
       // En cualquier otro caso, mostramos todas las políticas posibles
       this.optionsList = await getTechPoliciesForActivities({
         sicCode: this.sicCode,
@@ -363,7 +367,6 @@ export default class TechnicalPolicies extends LightningElement {
       });
       this.gridFields();
       this.gridFieldsFranquicia();
-      this.checkProductCode();
       this.defineColumns(result);
     });
     if (this.maestroFijado) {
@@ -379,16 +382,7 @@ export default class TechnicalPolicies extends LightningElement {
 
   renderedCallback() {
     this.checkPage();
-    if (this.productCode === "00516" && this.sizeTrack > 1) {
-      this.showCheckboxes = true;
-    } else {
-      this.showCheckboxes = false;
-    }
-  }
-
-  checkProductCode() {
-    // Para que se muestren los botones de navegación y los filtros, tiene que tener el ramo 516
-    if (this.productCode === "00516") {
+    if (this.productCodeTrack === "00516" && this.sizeTrack > 1) {
       this.showCheckboxes = true;
     } else {
       this.showCheckboxes = false;
@@ -400,7 +394,7 @@ export default class TechnicalPolicies extends LightningElement {
     if (this.recordId) {
       if (this.recordId.startsWith("500")) {
         // Si el id empieza por 500 quiere decir que es un caso
-        if (this.caseQuery && this.desfijadoInput === false) {
+        if (this.caseQuery) {
           this.labelSetTechPolicyButton = "Desfijar Política Técnica";
         } else {
           this.labelSetTechPolicyButton = "Fijar Política Técnica";
@@ -634,18 +628,18 @@ export default class TechnicalPolicies extends LightningElement {
    * @author jjuaristi@seidor.es
    * @date 05/10/2022
    */
-  holdTechPolicy() {
-    if (this.caseQuery && this.desfijadoInput === false) {
+  async holdTechPolicy() {
+    if (this.caseQuery) {
       // Desfijar
       unsetTechPolicy({
         caseIdToUpdate: this.recordId
       });
-      this.policies = this.optionsList;
-      this.sizeTrack = this.policies.length;
       this.caseQuery = undefined;
       this.showCheckboxes = true;
-      this.desfijadoTrack = true;
       this.booleanMaestroFijado = false;
+      this.desfijadoTrack = true;
+      this.policies = this.optionsList;
+      this.sizeTrack = this.policies.length;
     } else {
       // Fijar
       setTechPolicy({

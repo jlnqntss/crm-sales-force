@@ -4,11 +4,11 @@
     <label>SDM Director</label>
     <permissionSets>ConsultaDatosSDM</permissionSets>
     <permissionSets>Consulta_de_KPI</permissionSets>
+    <permissionSets>Crear_vistaslista</permissionSets>
     <permissionSets>GestionCuentaContacto_SDM</permissionSets>
     <permissionSets>GestionPlanComercial_SDM</permissionSets>
-    <permissionSets>Gestionar_vistaslista</permissionSets>
+    <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>SDM_Chatter</permissionSets>
     <permissionSets>SDM_Plan_comercial</permissionSets>
-    <permissionSets>Gestion_Informes</permissionSets>    
     <status>Updated</status>
 </PermissionSetGroup>

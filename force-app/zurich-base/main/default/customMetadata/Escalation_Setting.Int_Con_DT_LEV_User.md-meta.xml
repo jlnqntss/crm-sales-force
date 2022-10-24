@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Int-Con-DT LEV-User</label>
+    <protected>false</protected>
+    <values>
+        <field>Area__c</field>
+        <value xsi:type="xsd:string">Consultor</value>
+    </values>
+    <values>
+        <field>Cola__c</field>
+        <value xsi:type="xsd:string">Consultor DT LEV</value>
+    </values>
+    <values>
+        <field>PendienteDe__c</field>
+        <value xsi:type="xsd:string">Consultant</value>
+    </values>
+    <values>
+        <field>TipoDeEscalado__c</field>
+        <value xsi:type="xsd:string">Usuario</value>
+    </values>
+    <values>
+        <field>TipoEscalado__c</field>
+        <value xsi:type="xsd:string">Interno</value>
+    </values>
+    <values>
+        <field>queueApiName__c</field>
+        <value xsi:type="xsd:string">Consultor_DT_LEV</value>
+    </values>
+</CustomMetadata>

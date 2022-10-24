@@ -6,7 +6,7 @@
     <fields>Status</fields>
     <fields>CaseNumber</fields>
     <fields>Product_Name__c</fields>
-    <fields>Product_Code__c</fields>
+    <fields>TechnicalCode__c</fields>
     <fields>Commercial_Code__c</fields>
     <label>OCS Inquiry Default</label>
 </CompactLayout>
