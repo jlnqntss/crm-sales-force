@@ -4,9 +4,12 @@
         <name>caseEscalationAction</name>
         <label>CaseEscalationAction</label>
         <locationX>226</locationX>
-        <locationY>3302</locationY>
+        <locationY>2630</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <faultConnector>
+            <targetReference>CreateRecordsSendNotificacionErrorAction</targetReference>
+        </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
@@ -35,7 +38,7 @@
         <inputParameters>
             <name>targetId</name>
             <value>
-                <elementReference>usersToChooseInput</elementReference>
+                <elementReference>taskId</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -74,10 +77,26 @@
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>idQueueAssignment</name>
+        <label>idQueueAssignment</label>
+        <locationX>50</locationX>
+        <locationY>1238</locationY>
+        <assignmentItems>
+            <assignToReference>IdsOwner</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>getIdQueueAction.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dataInputScreen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>idUserAssignment</name>
         <label>idUserAssignment</label>
         <locationX>402</locationX>
-        <locationY>2606</locationY>
+        <locationY>1934</locationY>
         <assignmentItems>
             <assignToReference>IdsOwner</assignToReference>
             <operator>Add</operator>
@@ -100,7 +119,7 @@
         <name>IdUserGroupAssignment</name>
         <label>Id User Assignment</label>
         <locationX>490</locationX>
-        <locationY>2150</locationY>
+        <locationY>1478</locationY>
         <assignmentItems>
             <assignToReference>idUserToChoose</assignToReference>
             <operator>Add</operator>
@@ -116,62 +135,32 @@
         <name>ownerQueueIdAssigment</name>
         <label>Owner Queue Owner</label>
         <locationX>50</locationX>
-        <locationY>1790</locationY>
+        <locationY>1118</locationY>
         <assignmentItems>
             <assignToReference>ownerId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>getIdQueueAction_0.Id</elementReference>
+                <elementReference>getIdQueueAction.Id</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>dataInputScreen</targetReference>
+            <targetReference>idQueueAssignment</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>ownerQueueIdAssigment_0</name>
-        <label>Owner Queue Owner</label>
+        <name>ownerQueueIdUserAssigment</name>
+        <label>Owner Queue Owner User</label>
         <locationX>402</locationX>
-        <locationY>1790</locationY>
+        <locationY>1118</locationY>
         <assignmentItems>
             <assignToReference>ownerId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>getIdQueueAction_0.Id</elementReference>
+                <elementReference>getIdQueueAction.Id</elementReference>
             </value>
         </assignmentItems>
         <connector>
             <targetReference>getUsersAction</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>queueUserAssigment</name>
-        <label>QueueUserAssigment</label>
-        <locationX>314</locationX>
-        <locationY>1238</locationY>
-        <assignmentItems>
-            <assignToReference>queueOrUser</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>userOrQueueLoop.TipoDeEscalado__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>queueName</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>userOrQueueLoop.queueApiName__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>pendingBy</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>userOrQueueLoop.PendienteDe__c</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>userOrQueueLoop</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -190,34 +179,13 @@
             <stringValue>Interno</stringValue>
         </value>
     </choices>
-    <collectionProcessors>
-        <name>queuefilter</name>
-        <elementSubtype>FilterCollectionProcessor</elementSubtype>
-        <label>Queue filter</label>
-        <locationX>226</locationX>
-        <locationY>758</locationY>
-        <assignNextValueToReference>currentItem_queuefilter_0</assignNextValueToReference>
-        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
-        <collectionReference>GetSccaledTypeAction</collectionReference>
-        <conditionLogic>and</conditionLogic>
-        <conditions>
-            <leftValueReference>currentItem_queuefilter_0.Area__c</leftValueReference>
-            <operator>EqualTo</operator>
-            <rightValue>
-                <elementReference>areasToChooseInput</elementReference>
-            </rightValue>
-        </conditions>
-        <connector>
-            <targetReference>queueTypeAction</targetReference>
-        </connector>
-    </collectionProcessors>
     <decisions>
         <name>internalOrExternalDecision</name>
         <label>Internal or External</label>
-        <locationX>578</locationX>
+        <locationX>974</locationX>
         <locationY>278</locationY>
         <defaultConnector>
-            <targetReference>updateRecordAction_0</targetReference>
+            <targetReference>updateRecordExternalAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>External</defaultConnectorLabel>
         <rules>
@@ -237,44 +205,19 @@
         </rules>
     </decisions>
     <decisions>
-        <name>queueOrUserDecision</name>
-        <label>Queue or User</label>
-        <locationX>446</locationX>
-        <locationY>1118</locationY>
-        <defaultConnector>
-            <targetReference>userOrQueueLoop</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Not Match</defaultConnectorLabel>
-        <rules>
-            <name>queueMatchOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>userOrQueueLoop.Cola__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>queuesToChooseFilter</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>queueUserAssigment</targetReference>
-            </connector>
-            <label>Queue match</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>queueOrUserValueDecision</name>
         <label>QueueOrUserValue</label>
         <locationX>226</locationX>
-        <locationY>1670</locationY>
+        <locationY>998</locationY>
         <defaultConnector>
-            <targetReference>ownerQueueIdAssigment_0</targetReference>
+            <targetReference>ownerQueueIdUserAssigment</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>User</defaultConnectorLabel>
         <rules>
             <name>QueueOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>queueOrUser</leftValueReference>
+                <leftValueReference>EscalationSettingRecord.TipoDeEscalado__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>queueValue</elementReference>
@@ -310,11 +253,42 @@
         <valueField>Area__c</valueField>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
-        <name>queuesToChooseFilter</name>
-        <collectionReference>queuefilter</collectionReference>
+        <name>RecordChoiceSetMetadata</name>
         <dataType>String</dataType>
         <displayField>Cola__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Area__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>areasToChooseInput</elementReference>
+            </value>
+        </filters>
         <object>Escalation_Setting__mdt</object>
+        <outputAssignments>
+            <assignToReference>EscalationSettingRecord.Cola__c</assignToReference>
+            <field>Cola__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>EscalationSettingRecord.DeveloperName</assignToReference>
+            <field>DeveloperName</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>EscalationSettingRecord.Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>EscalationSettingRecord.PendienteDe__c</assignToReference>
+            <field>PendienteDe__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>EscalationSettingRecord.TipoDeEscalado__c</assignToReference>
+            <field>TipoDeEscalado__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>EscalationSettingRecord.queueApiName__c</assignToReference>
+            <field>queueApiName__c</field>
+        </outputAssignments>
         <valueField>Cola__c</valueField>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
@@ -339,7 +313,7 @@
         <name>nameUserLoop</name>
         <label>Name User Loop</label>
         <locationX>402</locationX>
-        <locationY>2030</locationY>
+        <locationY>1358</locationY>
         <collectionReference>getUsersAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -347,20 +321,6 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>getUsersNamesActions</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>userOrQueueLoop</name>
-        <label>UserOrQueueLoop</label>
-        <locationX>226</locationX>
-        <locationY>998</locationY>
-        <collectionReference>queuefilter</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>queueOrUserDecision</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>getIdQueueAction_0</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -383,13 +343,122 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
+        <name>CreateRecordsGetNotificationErrorAction</name>
+        <label>Create Records Get Notification Error Action</label>
+        <locationX>930</locationX>
+        <locationY>2630</locationY>
+        <connector>
+            <targetReference>ScreenErrorGetNotification</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>USP Case Escalation Screen</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Recuperar Notificación</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateRecordsSendNotificacionErrorAction</name>
+        <label>Create Records Send Notificacion Error Action</label>
+        <locationX>666</locationX>
+        <locationY>2750</locationY>
+        <connector>
+            <targetReference>ScreenErrorNotficationAction</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>USP Case Escalation Screen</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Enviar Notificación</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateRecordsUpdateRecordErrorAction</name>
+        <label>Create Records Update Record Error Action</label>
+        <locationX>1194</locationX>
+        <locationY>2510</locationY>
+        <connector>
+            <targetReference>ErrorScreen</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>USP Case Escalation Screen</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Actualizar caso escalado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>createTaskAction</name>
         <label>Create Task</label>
         <locationX>226</locationX>
-        <locationY>2942</locationY>
+        <locationY>2270</locationY>
+        <assignRecordIdToReference>taskId</assignRecordIdToReference>
         <connector>
             <targetReference>updateRecordAction</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>CreateTaskErrorAction</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>ActivityDate</field>
             <value>
@@ -433,17 +502,54 @@
             </value>
         </inputAssignments>
         <object>Task</object>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateTaskErrorAction</name>
+        <label>Create Task Erro rAction</label>
+        <locationX>1458</locationX>
+        <locationY>2390</locationY>
+        <connector>
+            <targetReference>ScreenErrorTask</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>USP Case Escalation Screen</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Crear tarea para el caso escalado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
         <name>getCustomNotificationAction</name>
         <label>Get Custom Notification</label>
         <locationX>226</locationX>
-        <locationY>3182</locationY>
+        <locationY>2510</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>caseEscalationAction</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>CreateRecordsGetNotificationErrorAction</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>DeveloperName</field>
@@ -457,10 +563,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>getIdQueueAction_0</name>
+        <name>getIdQueueAction</name>
         <label>Get Id Queue</label>
         <locationX>226</locationX>
-        <locationY>1550</locationY>
+        <locationY>878</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>queueOrUserValueDecision</targetReference>
@@ -477,7 +583,7 @@
             <field>DeveloperName</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>queueName</elementReference>
+                <elementReference>EscalationSettingRecord.queueApiName__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -509,7 +615,7 @@
         <name>getUsersAction</name>
         <label>GetUsersAction</label>
         <locationX>402</locationX>
-        <locationY>1910</locationY>
+        <locationY>1238</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>nameUserLoop</targetReference>
@@ -530,7 +636,7 @@
         <name>getUsersNamesActions</name>
         <label>GetUsersNamesActions</label>
         <locationX>402</locationX>
-        <locationY>2366</locationY>
+        <locationY>1694</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>userScreen</targetReference>
@@ -551,12 +657,12 @@
         <name>updateRecordAction</name>
         <label>Update Record</label>
         <locationX>226</locationX>
-        <locationY>3062</locationY>
+        <locationY>2390</locationY>
         <connector>
             <targetReference>getCustomNotificationAction</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>ErrorScreen</targetReference>
+            <targetReference>CreateRecordsUpdateRecordErrorAction</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -569,7 +675,7 @@
         <inputAssignments>
             <field>PendingBy__c</field>
             <value>
-                <elementReference>pendingBy</elementReference>
+                <elementReference>EscalationSettingRecord.PendienteDe__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -581,9 +687,9 @@
         <object>Case</object>
     </recordUpdates>
     <recordUpdates>
-        <name>updateRecordAction_0</name>
-        <label>Update Record</label>
-        <locationX>930</locationX>
+        <name>updateRecordExternalAction</name>
+        <label>Update Record External</label>
+        <locationX>1722</locationX>
         <locationY>398</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -607,6 +713,7 @@
         </inputAssignments>
         <object>Case</object>
     </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>AreaTypeScreen</name>
         <label>AreaTypeScreen</label>
@@ -616,7 +723,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>queuefilter</targetReference>
+            <targetReference>queueTypeAction</targetReference>
         </connector>
         <fields>
             <name>areasToChooseInput</name>
@@ -633,7 +740,7 @@
         <name>dataInputScreen</name>
         <label>Data Input</label>
         <locationX>226</locationX>
-        <locationY>2822</locationY>
+        <locationY>2150</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -659,8 +766,8 @@
     <screens>
         <name>ErrorScreen</name>
         <label>Screen Error</label>
-        <locationX>666</locationX>
-        <locationY>3182</locationY>
+        <locationX>1194</locationX>
+        <locationY>2630</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -676,16 +783,16 @@
         <name>queueTypeAction</name>
         <label>Queue Type</label>
         <locationX>226</locationX>
-        <locationY>878</locationY>
+        <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>userOrQueueLoop</targetReference>
+            <targetReference>getIdQueueAction</targetReference>
         </connector>
         <fields>
             <name>queueButtons</name>
-            <choiceReferences>queuesToChooseFilter</choiceReferences>
+            <choiceReferences>RecordChoiceSetMetadata</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Colas</fieldText>
             <fieldType>RadioButtons</fieldType>
@@ -697,7 +804,7 @@
     <screens>
         <name>ScaledTypeScreen</name>
         <label>Tipo Escalado</label>
-        <locationX>578</locationX>
+        <locationX>974</locationX>
         <locationY>158</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -718,10 +825,58 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>ScreenErrorGetNotification</name>
+        <label>Screen Error Get Notification</label>
+        <locationX>930</locationX>
+        <locationY>2750</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Copy_2_of_Error</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>ScreenErrorNotficationAction</name>
+        <label>Screen Error Notfication Action</label>
+        <locationX>666</locationX>
+        <locationY>2870</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Copy_3_of_Error</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>ScreenErrorTask</name>
+        <label>Screen Error Task</label>
+        <locationX>1458</locationX>
+        <locationY>2510</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Copy_1_of_Error</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>userScreen</name>
         <label>User Screen</label>
         <locationX>402</locationX>
-        <locationY>2486</locationY>
+        <locationY>1814</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -740,7 +895,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>452</locationX>
+        <locationX>848</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>ScaledTypeScreen</targetReference>
@@ -795,7 +950,23 @@
         </value>
     </variables>
     <variables>
+        <name>currentItem_filtro_id_0</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Escalation_Setting__mdt</objectType>
+    </variables>
+    <variables>
         <name>currentItem_queuefilter_0</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Escalation_Setting__mdt</objectType>
+    </variables>
+    <variables>
+        <name>EscalationSettingRecord</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -891,6 +1062,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>taskId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
