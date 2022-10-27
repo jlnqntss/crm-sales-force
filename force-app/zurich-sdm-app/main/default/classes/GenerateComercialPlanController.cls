@@ -58,6 +58,7 @@ public with sharing class GenerateComercialPlanController
     public static final String COMBOBOX_INDICATOR_PLACEHOLDER = Label.SDM_PlanAnual_IndicatorPlaceholder;
     public static final String COMBOBOX_ZONE = 'zone'; // uso interno
     public static final String COMBOBOX_ZONE_PLACEHOLDER = Label.SDM_PlanAnual_ZonePlaceholder;
+    private static final String ZONE_ALL_VALUE = 'Todos'; 
 
 
     public static final String COL_TOTAL = 'Sumatorio';
@@ -653,7 +654,7 @@ public with sharing class GenerateComercialPlanController
      * @param {PlanComercial__c plan} el plan
      * @return {Decimal} el valor
      */
-    private static Decimal addCellsPerPlan(List<Rowtype> rows, Plandata plan, PlanComercialSelector.eIndicator indicatorType, Boolean isDirector, Map<String, String> mapZoneIntermediary)
+    private static Decimal addCellsPerPlan(List<Rowtype> rows, Plandata plan, PlanComercialSelector.eIndicator indicatorType, Boolean isDirector, Map<String, String> mapZone)
     {
         // Planes => Fila 5 en adelante
         Celltype cell;        
@@ -687,7 +688,7 @@ public with sharing class GenerateComercialPlanController
             cell.isCurrency = (indicatorType == PlanComercialSelector.eIndicator.type_currency);
             cell.isNumber = (indicatorType == PlanComercialSelector.eIndicator.type_number);
             
-            Boolean isLockedIntermediary = isLockedIntermediary(plan, detailId, isDirector, mapZoneIntermediary);
+            Boolean isLockedIntermediary = isLockedIntermediary(plan, detailId, isDirector, mapZone);
             
             // Id de la celda
             cell.id = sub.Id;
@@ -735,7 +736,7 @@ public with sharing class GenerateComercialPlanController
      * @param {String roleType} tipo de rol del usuario
      * @param {Boolean isEmpty} si es un plan vacio (true) o no (false)
      */
-    private static void planToTable(Tabletype tabledata, Plandata plan, String roleType, Boolean isEmpty, Map<String, String> mapZoneIntermediary) 
+    private static void planToTable(Tabletype tabledata, Plandata plan, String roleType, Boolean isEmpty, Map<String, String> mapZone) 
     {
         // Indica si el usuario es director o no en funcion del rol
         Boolean isDirector = Directors.contains(roleType);
@@ -757,7 +758,7 @@ public with sharing class GenerateComercialPlanController
         // Se calcula el tipo de indicador del plan para los campos de importe
         PlanComercialSelector.eIndicator indicatorType = PlanComercialSelector.getIndicatorType(plan.Indicator);
 
-        Decimal sumValue = addCellsPerPlan(rows, plan, indicatorType, isDirector, mapZoneIntermediary);        
+        Decimal sumValue = addCellsPerPlan(rows, plan, indicatorType, isDirector, mapZone);        
 
         // Titulo => Header (category, html name, value, isEditable, isCurrency)
         cell = new Celltype( 'titulo', 'titulo' + SEPARATOR + plan.Id, plan.Title, true);
@@ -787,7 +788,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'segmento';
         cell.isNew = isNewPlan;
-        if( !plan.isMyPlan ) cell.lock();
+        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) cell.lock();
         if( plan.ActualKpi != null ) {
             cell.lock();
         }
@@ -807,7 +808,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'producto';
         cell.isNew = isNewPlan;
-        if( !plan.isMyPlan ) cell.lock();
+        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) cell.lock();
         if( plan.ActualKpi != null ) {
             cell.lock();
         }
@@ -821,7 +822,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.Category + SEPARATOR + cell.id;
         cell.isNew = isNewPlan;
-        if( !plan.isMyPlan ) cell.lock();
+        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) cell.lock();
         if( plan.ActualKpi != null ) {
             cell.lock();
         }
@@ -829,12 +830,12 @@ public with sharing class GenerateComercialPlanController
         rowNum++;
 
         // Zona => Fila 3 (category, html name, value, isEditable, isCurrency)
-        combo = tabledata.mapOptions.get(COMBOBOX_ZONE);
+        combo = getDynamicZoneCombo(mapZone);        
         cell = new Celltype( 'zone', 'zone' + SEPARATOR + plan.Id, plan.Zone, true, combo);
         cell.id = plan.Id;
         cell.key = cell.Category + SEPARATOR + cell.id;
         cell.isNew = isNewPlan;
-        if( !plan.isMyPlan ) cell.lock();
+        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) cell.lock(); // si no es director y es el owner del plan bloqueo
         if( plan.ActualKpi != null ) {
             cell.lock();
         }
@@ -1144,8 +1145,6 @@ public with sharing class GenerateComercialPlanController
      */
     private static void tableToPlan(Tabletype tabledata, String userId, String roleType)
     {
-
-        System.debug('DMM tableToPlan ' + tabledata.toJSON());
         Boolean isDirector = Directors.contains(roleType);
 
         // Fila de cabecera
@@ -1567,9 +1566,11 @@ public with sharing class GenerateComercialPlanController
      * @param {String userEmail} email del usuario
      * @return {Map<String, String>} detalle de los usuarios
      */
-    private static Map<String, String> getDirectorDetail(String roleName, String userEmail)
+    private static Map<String, Map<String, String>> getDirectorDetail(String roleName, String userEmail)
     {
+        Map<String, Map<String, String>> result = new Map<String, Map<String, String>>();
         Map<String, String> mapDetail = new Map<String, String>();
+        Map<String, String> mapRNsZone = new Map<String, String>();
 
         // Recuperamos el campo del director en el mediador para el role de Salesforce del usuario
         String directorEmailField = mapEmailFieldsByUserRole.get(roleName);
@@ -1590,11 +1591,15 @@ public with sharing class GenerateComercialPlanController
                 // Los metemos en el mapa de detalle
                 for(AccountTeamMember atm: atms) {
                     mapDetail.put(atm.UserId, atm.User.Name);
+                    mapRNsZone.put(atm.Account.Zone__c, atm.Account.Zone__c); // mapa con las zonas como clave y valor para la picklist dinámica 
                 }
+                // añado los dos map calculados al map resultado
+                result.put('RNNameMap', mapDetail);
+                result.put('RNZoneMap', mapRNsZone);
             }
         }
 
-        return mapDetail;
+        return result;
     }
 
     
@@ -1645,22 +1650,54 @@ public with sharing class GenerateComercialPlanController
     /**
      * Compara la zona del intermediario con la zona del plan para activar o desactivar la posibilidad de que un RN pueda bajar a sus mediadores los planes si la zona no coincide
      * 
-     * @author nts (agonzalezisasi)
-     * @date 20/09/2021
+     * @author nts (dmunoz)
+     * @date 26/10/2022
+     * 
+     * @param {Integer plan} plan comercial
+     * @param {Integer intermediaryId} id mediador
+     * @param {Integer isDirector} año
+     * @param {Integer mapZone} mapa que relaciona cada intermediario con su zona
+     * @return {Boolean} resultado comparación
+     */
+    private static Boolean isLockedIntermediary(Plandata plan, Id intermediaryId, Boolean isDirector, Map<String, String> mapZone) { 
+        Boolean result = false;
+
+        if (!isDirector && !ZONE_ALL_VALUE.equals(plan.Zone)) {
+            result = !plan.Zone.equals(mapZone.get(intermediaryId));  // si no coincide se bloquea la celda
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Dado un map con las zonas obtenidas de los registros AccountTeamMember de los Directores o RNs obtengo sus zonas para generar de forma dinámica los valores posibles en el picklist zona de la vista
+     * 
+     * @author nts (dmunoz)
+     * @date 26/10/2022
      * 
      * @param {Integer year} año
      * @return {Boolean} resultado comparación
      */
-    private static Boolean isLockedIntermediary(Plandata plan, Id intermediaryId, Boolean isDirector, Map<String, String> mapZoneIntermediary) {
-        Boolean result = false;
+    private static Combotype getDynamicZoneCombo(Map<String, String> mapZones) {
 
-        if (!isDirector) {
-            System.debug('DMM plandata zone ' + plan.Zone);
-            System.debug('DMM intermediary zone id: ' + intermediaryId + ' - zone ' + mapZoneIntermediary.get(intermediaryId));
-            result = !plan.Zone.equals(mapZoneIntermediary.get(intermediaryId));  // si no coincide se bloquea la celda
+        Combotype combo;
+
+        List<String> listZone = mapZones.values();
+        listZone.sort(); // ordeno los valores
+        Set<String> setZone = new Set<String>();
+        setZone.addAll(listZone); // convierto a Set para eliminar duplicados
+        setZone.add(ZONE_ALL_VALUE); // añado el valor Todos a la picklist
+        Map<String, String> mapOpcionesZona = new Map<String, String>();
+        for (String zone: setZone) {
+            mapOpcionesZona.put(zone, zone);
         }
+        
+        // preparo el objeto combo para cargarlo en el json que se envía a la tabla
+        List<Optiontype> optionsZone = mapToOptions(mapOpcionesZona);
+        combo = new Combotype(COMBOBOX_ZONE_PLACEHOLDER, optionsZone);
 
-        return result;
+        return combo;
     }
 
     // ---------------------------------- AURA ENABLED ------------------------
@@ -1697,15 +1734,18 @@ public with sharing class GenerateComercialPlanController
 
             // 3. Obtenemos los RNs del director / los Mediadores del RN            
             Map<String, String> mapDetail;
-            Map<String, String> mapZoneIntermediary;
+            Map<String, String> mapZone;
             
             if( isDirector ) { //--------------------------------------------- RNs del director 
-                mapDetail = getDirectorDetail(roleName, userEmail);                
+                Map<String, Map<String, String>> mapDetailDirector;                
+                mapDetailDirector = getDirectorDetail(roleName, userEmail);   
+                mapDetail = mapDetailDirector.get('RNNameMap'); 
+                mapZone = mapDetailDirector.get('RNZoneMap');            
             } else { //------------------------------------------------------- Mediadores del RN
                 Map<String, Map<String, String>> mapDetailConsultant;
                 mapDetailConsultant = getConsultantDetail(roleName, userEmail);
                 mapDetail = mapDetailConsultant.get('IntermediaryNameMap');
-                mapZoneIntermediary = mapDetailConsultant.get('IntermediaryZoneMap');
+                mapZone = mapDetailConsultant.get('IntermediaryZoneMap');
             }
 
             // 4. Establecemos el año de ejecucion
@@ -1736,7 +1776,7 @@ public with sharing class GenerateComercialPlanController
             
             // añado la información de zonas de intermediario si no es director
             if (!isDirector) {
-                tabledata.mapIntermediaryZones = mapZoneIntermediary;
+                tabledata.mapIntermediaryZones = mapZone;
             }
             
 
@@ -1759,11 +1799,7 @@ public with sharing class GenerateComercialPlanController
             // tabledata.addOptions(COMBOBOX_PRODUCT, COMBOBOX_PRODUCT_PLACEHOLDER, productValues);
             // Indicador
             Map<String, String> indicatorValues = getPicklistValues(PlanComercial__c.Indicator__c);        
-            tabledata.addOptions(COMBOBOX_INDICATOR, COMBOBOX_INDICATOR_PLACEHOLDER, indicatorValues);
-
-            Map<String, String> zoneValues = getPicklistValues(PlanComercial__c.Zone__c);        
-            tabledata.addOptions(COMBOBOX_ZONE, COMBOBOX_ZONE_PLACEHOLDER, zoneValues);            
-            
+            tabledata.addOptions(COMBOBOX_INDICATOR, COMBOBOX_INDICATOR_PLACEHOLDER, indicatorValues);           
             
             // 6.3 Añadimos un plan vacio para el boton de nuevos planes
             // header = titulo
@@ -1773,15 +1809,15 @@ public with sharing class GenerateComercialPlanController
                 NEW_DEFAULT_SEGMENT, NEW_DEFAULT_PRODUCT, NEW_DEFAULT_INDICATOR, NEW_DEFAULT_ZONE, 
                 actualYear, 0, null, userId, userId
             );
-            planToTable(tabledata, newPlandata, roleName, true, mapZoneIntermediary);
+            planToTable(tabledata, newPlandata, roleName, true, mapZone);
         
             // 6.4 Añadimos los planes comerciales existentes
             for(Plandata planData: plansData) {
-                planToTable(tabledata, planData, roleName, false, mapZoneIntermediary);
+                planToTable(tabledata, planData, roleName, false, mapZone);
             }
 
             // 7. Devolvemos el resultado en formato string
-            System.debug('DMM ' + tabledata.toJSON());
+            System.debug('Result tableData ' + tabledata.toJSON());
             return tabledata.toJSON();
         } catch(Exception ex) {
             ErrorLogUtil.commitError(ex, CLASS_NAME);

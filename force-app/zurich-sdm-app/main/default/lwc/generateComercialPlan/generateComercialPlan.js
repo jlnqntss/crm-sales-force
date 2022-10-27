@@ -103,6 +103,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
   SEPARATOR = "#";
   CATEGORY_INDICATOR = "indicador";
   CATEGORY_ZONE = "zone";
+  ZONE_ALL_VALUE = "Todos";
   SLDS_CELL_EDITED_HTML_CLASS = "slds-is-edited";
   // Fila a partir de la cual hay valores que pueden ser numericos, decimal o moneda
   ROWS_FROM_VALUE = 5; // Plan DT, RN/Mediador
@@ -447,9 +448,8 @@ export default class GenerateComercialPlan extends NavigationMixin(
         }
 
         if (elementFound.Category === this.CATEGORY_ZONE) {
-          let oldZone = elementFound.stringValue;
           let newZone = newValue;
-          this.handleZoneChange(oldZone, newZone, colindex);
+          this.handleZoneChange(newZone, colindex);
         }
 
         // Aplicamos el nuevo valor
@@ -551,19 +551,20 @@ export default class GenerateComercialPlan extends NavigationMixin(
     }
   }
 
-  handleZoneChange(oldZone, newZone, colIndex) {
+  handleZoneChange(newZone, colIndex) {
     for (
       let rowNum = this.ROWS_FROM_SUM;
       rowNum < this.tabledata.rows.length;
       rowNum++
     ) {
-      if (this.tabledata.mapIntermediaryZones) {
+      let row = this.tabledata.rows[rowNum];
+      let cell = row.Cells[colIndex];
+
+      if (this.ZONE_ALL_VALUE === newZone) {
+        cell.isLocked = false;
+      } else if (this.tabledata.mapIntermediaryZones) {
         // solo ejecutamos esta lógica para los RNs
-        let row = this.tabledata.rows[rowNum];
-        let cell = row.Cells[colIndex];
-
         let lockCell = true;
-
         if (newZone === this.tabledata.mapIntermediaryZones[row.Id]) {
           lockCell = false;
         }
