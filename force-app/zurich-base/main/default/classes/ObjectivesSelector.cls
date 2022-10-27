@@ -12,7 +12,7 @@ public with sharing class ObjectivesSelector {
     }
 
     private static String getOrderBy(){
-        return ' Indicator__c, Segment__c, Product__c ASC ';
+        return ' Indicator__c, Segment__c, Product__c, Zone__c ASC ';
     }
 
     public ObjectivesSelector() {}
