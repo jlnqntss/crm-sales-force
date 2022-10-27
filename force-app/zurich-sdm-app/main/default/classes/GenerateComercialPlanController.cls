@@ -37,7 +37,7 @@ public with sharing class GenerateComercialPlanController
         SettingsSDM.SF_ROLE_DV_DEVNAME => SettingsSDM.ATM_ROL_LIFECONSULTANT
     };
 
-    public static final String ROW_LABEL_SEGMENT = Label.SDM_PlanAnual_RowSegment; // TODO: PENDIENTE LABEL ZONA
+    public static final String ROW_LABEL_SEGMENT = Label.SDM_PlanAnual_RowSegment;
     public static final String ROW_LABEL_PRODUCT = Label.SDM_PlanAnual_RowProduct;
     public static final String ROW_LABEL_INDICATOR = Label.SDM_PlanAnual_RowIndicator;
     public static final String ROW_LABEL_YEAR = Label.SDM_PlanAnual_RowYear;
@@ -48,7 +48,7 @@ public with sharing class GenerateComercialPlanController
     public static final String NEW_DEFAULT_SEGMENT = PlanComercialSelector.SEGMENT_ALL; 
     public static final String NEW_DEFAULT_PRODUCT = PlanComercialSelector.PRODUCT_ALL;
     public static final String NEW_DEFAULT_INDICATOR = PlanComercialSelector.INDICATOR_PN;
-    public static final String NEW_DEFAULT_ZONE = PlanComercialSelector.ZONE_11_BARCELONA;
+    public static final String NEW_DEFAULT_ZONE = PlanComercialSelector.ZONE_ALL;
 
     public static final String COMBOBOX_SEGMENT = 'segmento'; // uso interno
     public static final String COMBOBOX_SEGMENT_PLACEHOLDER = Label.SDM_PlanAnual_SegmentPlaceholder;
@@ -58,7 +58,7 @@ public with sharing class GenerateComercialPlanController
     public static final String COMBOBOX_INDICATOR_PLACEHOLDER = Label.SDM_PlanAnual_IndicatorPlaceholder;
     public static final String COMBOBOX_ZONE = 'zone'; // uso interno
     public static final String COMBOBOX_ZONE_PLACEHOLDER = Label.SDM_PlanAnual_ZonePlaceholder;
-    private static final String ZONE_ALL_VALUE = 'Todos'; 
+    private static final String ZONE_ALL_VALUE = PlanComercialSelector.ZONE_ALL; 
 
 
     public static final String COL_TOTAL = 'Sumatorio';
@@ -766,7 +766,7 @@ public with sharing class GenerateComercialPlanController
         cell.key = cell.id + SEPARATOR + 'titulo';
         cell.isNew = isNewPlan;
         cell.addExtraProperty(CELL_PROPERTY_IS_MY_PLAN, String.valueOf(plan.isMyPlan));
-        if( !plan.isMyPlan ) cell.lock();
+        cell = lockCellIsNotMyPlan(cell, plan);
         if( plan.ActualKpi != null ) cell.isNewEditable = false;
         headers.Cells.add(cell);
 
@@ -788,10 +788,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'segmento';
         cell.isNew = isNewPlan;
-        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) cell.lock();
-        if( plan.ActualKpi != null ) {
-            cell.lock();
-        }
+        cell = isIndicatorsCellBlocked(cell, plan, isDirector);        
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -808,10 +805,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'producto';
         cell.isNew = isNewPlan;
-        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) cell.lock();
-        if( plan.ActualKpi != null ) {
-            cell.lock();
-        }
+        cell = isIndicatorsCellBlocked(cell, plan, isDirector);
         cell.stringValueDefault = NEW_DEFAULT_PRODUCT;
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
@@ -822,10 +816,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.Category + SEPARATOR + cell.id;
         cell.isNew = isNewPlan;
-        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) cell.lock();
-        if( plan.ActualKpi != null ) {
-            cell.lock();
-        }
+        cell = isIndicatorsCellBlocked(cell, plan, isDirector);
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -835,10 +826,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.Category + SEPARATOR + cell.id;
         cell.isNew = isNewPlan;
-        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) cell.lock(); // si no es director y es el owner del plan bloqueo
-        if( plan.ActualKpi != null ) {
-            cell.lock();
-        }
+        cell = isIndicatorsCellBlocked(cell, plan, isDirector);
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -860,8 +848,8 @@ public with sharing class GenerateComercialPlanController
         cell.isPercent = (indicatorType == PlanComercialSelector.eIndicator.type_percent);
         cell.isCurrency = (indicatorType == PlanComercialSelector.eIndicator.type_currency);
         cell.isNumber = (indicatorType == PlanComercialSelector.eIndicator.type_number);
-        if( !plan.isMyPlan ) cell.lock();
-        if( !plan.isMyPlan ) cell.isNewEditable = false;
+        cell = lockCellIsNotMyPlan(cell, plan);
+        cell = isCellNewEditable(cell, plan);
         if( plan.Id != null ) {
             cell.setSecondaryValueEmpty();
             if( plan.ActualKpi != null ) {
@@ -870,6 +858,66 @@ public with sharing class GenerateComercialPlanController
             }
         }
         rows.get(rowNum).Cells.add(cell);
+    }
+
+    /**
+     * Para los ejes del plan comprobamos si se debe bloquear o no las celdas, en este caso picklist
+     * 
+     * @author nts (dmunoz)
+     * @date 27/10/2022
+     * 
+     * @param {Celltype cell} celda de uno de los 4 ejes que se se está calculando del plan
+     * @param {Plandata plan} datos del plan actual
+     * @param {Boolean isDirector} indica si se está ejecutando por un director o RN
+     * @param {CellType>} celda de entrada que se ha calculado si bloquea o no
+     */
+    private static Celltype isIndicatorsCellBlocked(Celltype cell, Plandata plan, Boolean isDirector) {
+
+        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) {
+            cell.lock();
+        } 
+        if( plan.ActualKpi != null ) {
+            cell.lock();
+        }
+        return cell;
+    }
+
+    /**
+     * Uso exclusivo para el título del plan y el input de la fila row en caso de que el plan no sea del usuario que está viendo los planes bloquea las celdas
+     * 
+     * @author nts (dmunoz)
+     * @date 27/10/2022
+     * 
+     * @param {Celltype cell} celda a comprobar
+     * @param {Plandata plan} datos del plan actual
+     * @param {CellType>} celda de entrada que se ha calculado si bloquea o no
+     */
+    private static Celltype lockCellIsNotMyPlan(Celltype cell, Plandata plan) {
+
+        if( !plan.isMyPlan){
+            cell.lock();
+        } 
+        
+        return cell;
+    }
+
+    /**
+     * Uso exclusivo para el título del plan y el input de la fila row en caso de que el plan no sea del usuario que está viendo los planes bloquea las celdas
+     * 
+     * @author nts (dmunoz)
+     * @date 27/10/2022
+     * 
+     * @param {Celltype cell} celda a comprobar
+     * @param {Plandata plan} datos del plan actual
+     * @param {CellType>} celda de entrada que se ha calculado si bloquea o no
+     */
+    private static Celltype isCellNewEditable(Celltype cell, Plandata plan) {
+
+        if( !plan.isMyPlan) {
+            cell.isNewEditable = false;
+        }
+        
+        return cell;
     }
 
     /**
