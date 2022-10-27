@@ -60,6 +60,11 @@
         <default>false</default>
         <label>61 CENTRALIZADOS</label>
     </customValue>
+    <customValue>
+        <fullName>TODAS</fullName>
+        <default>false</default>
+        <label>TODAS</label>
+    </customValue>
     <description>Valores de zona a usar como eje para planes comerciales</description>
     <masterLabel>Zonas Plan Comercial</masterLabel>
     <sorted>false</sorted>

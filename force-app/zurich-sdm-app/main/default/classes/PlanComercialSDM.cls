@@ -33,6 +33,7 @@ public with sharing class PlanComercialSDM {
     // Se corresponde con el API NAME del valor todos en los picklist Segment__c y Product__c del objeto PlanComercial__c
     @TestVisible
     private static final String ALL_VALUE = 'Todos';
+    private static final String ZONE_ALL_VALUE = 'TODAS';
     private static final String PLAN_COMERCIAL_ACCUMULATE_TYPE_MONTH = 'Mensual';
     // Se corresponden el campo picklist CalculationType__c del metadato SDMCommercialPlan__mdt 
     @TestVisible
@@ -220,7 +221,7 @@ public with sharing class PlanComercialSDM {
             String kpiFieldValue = String.valueOf(kpi.get(mapPlanComercialToKpiFields.get(key)));
 
             if( planFieldValue != ALL_VALUE && planFieldValue != kpiFieldValue ) {
-                result = false;
+                result = false; 
             }
         }
 
@@ -233,8 +234,8 @@ public with sharing class PlanComercialSDM {
 
             result = (kpiYear >= startYear && kpiYear <= endYear); // Ej: true
 
-            // comprobamos que la zona del plan coincida con la zona del kpi que estamos consultando
-            if (result) {
+            // comprobamos que la zona del plan coincida con la zona del kpi que estamos consultando en caso que la zona del plan no sea TODAS
+            if (result && !ZONE_ALL_VALUE.equals(plan.Zone__c)) {
                 result = plan.Zone__c.equals(kpi.Intermediary__r.Zone__c);
             }
 

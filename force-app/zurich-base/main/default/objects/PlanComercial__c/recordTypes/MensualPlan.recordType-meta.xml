@@ -270,5 +270,9 @@
             <fullName>61 CENTRALIZADOS</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>TODAS</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
 </RecordType>
