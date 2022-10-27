@@ -33,7 +33,7 @@ public with sharing class PlanComercialSDM {
     // Se corresponde con el API NAME del valor todos en los picklist Segment__c y Product__c del objeto PlanComercial__c
     @TestVisible
     private static final String ALL_VALUE = 'Todos';
-    private static final String ZONE_ALL_VALUE = 'TODAS';
+    private static final String ZONE_ALL_VALUE = 'Todos';
     private static final String PLAN_COMERCIAL_ACCUMULATE_TYPE_MONTH = 'Mensual';
     // Se corresponden el campo picklist CalculationType__c del metadato SDMCommercialPlan__mdt 
     @TestVisible
@@ -92,7 +92,7 @@ public with sharing class PlanComercialSDM {
      * 
      * @param {List<Id> intermediaries} lista de ids de mediadores
      * @param {Set<String> fields} lista de campos del objeto KPI__c
-     */
+     */ 
     private void findKPIsByIntermediaries(Set<Id> intermediaries, Set<String> fields, Boolean containsMonths, Boolean containsYTD)
     {
         if( intermediaries != null && !intermediaries.isEmpty() && fields != null && !fields.isEmpty() ) {
