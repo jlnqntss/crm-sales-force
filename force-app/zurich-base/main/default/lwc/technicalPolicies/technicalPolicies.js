@@ -309,8 +309,9 @@ export default class TechnicalPolicies extends LightningElement {
    * @date 05/10/2022
    */
   async connectedCallback() {
+    this.checkPage();
     let currentCase;
-    if (this.recordId) {
+    if (this.recordId && this.caseRecord === true) {
       // Si tenemos un id recogemos el registro
       currentCase = await getCaseById({ caseId: this.recordId });
     }
@@ -381,7 +382,6 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   renderedCallback() {
-    this.checkPage();
     if (this.productCodeTrack === "00516" && this.sizeTrack > 1) {
       this.showCheckboxes = true;
     } else {
@@ -403,6 +403,8 @@ export default class TechnicalPolicies extends LightningElement {
       } else {
         this.caseRecord = false;
       }
+    } else {
+      this.caseRecord = false;
     }
   }
 
