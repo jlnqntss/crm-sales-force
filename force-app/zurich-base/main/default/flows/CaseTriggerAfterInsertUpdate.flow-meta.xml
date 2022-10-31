@@ -194,23 +194,23 @@
         <filterLogic>or</filterLogic>
         <filters>
             <field>PolicyId__c</field>
-            <operator>IsChanged</operator>
+            <operator>IsNull</operator>
             <value>
-                <booleanValue>true</booleanValue>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <filters>
             <field>OfferId__c</field>
-            <operator>IsChanged</operator>
+            <operator>IsNull</operator>
             <value>
-                <booleanValue>true</booleanValue>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <filters>
             <field>ClaimId__c</field>
-            <operator>IsChanged</operator>
+            <operator>IsNull</operator>
             <value>
-                <booleanValue>true</booleanValue>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <object>Case</object>
