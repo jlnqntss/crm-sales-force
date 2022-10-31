@@ -24,12 +24,19 @@
       ></lightning-button>
       <p></p>
       <lightning-button
+        label="Ver Marcos de actuación"
+        class="slds-button"
+        onclick={goToDoc}
+        if:true={showFramework}
+      ></lightning-button>
+      <p></p>
+      <lightning-button
         label={labelSetTechPolicyButton}
         class="slds-button"
         onclick={holdTechPolicy}
         if:true={caseRecord}
       ></lightning-button>
-      <br /><br />
+      <br />
       <div class="slds-float_right" if:true={showCheckboxes}>
         <lightning-button-icon
           icon-name="utility:filterList"
@@ -63,7 +70,7 @@
       >
       </lightning-breadcrumb>
     </lightning-breadcrumbs>
-    <br /><br /><br /><br />
+    <br /><br /><br />
     <div>
       <div>
         <template if:true={filtersVisible}>
@@ -174,9 +181,9 @@
         </template>
       </div>
     </div>
+    <br /><br /><br /><br />
   </div>
-  <div class="slds-p-top_small">
-    <div if:true={showCheckboxes}><br /><br /><br /></div>
+  <div class="slds-p-top_medium">
     <lightning-record-view-form
       record-id={currentId}
       object-api-name="MaestroApetito__c"
