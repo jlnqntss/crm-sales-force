@@ -369,7 +369,12 @@ export default class TechnicalPolicies extends LightningElement {
       this.gridFields();
       this.gridFieldsFranquicia();
       this.defineColumns(result);
+      this.checkPage();
+      this.checkFijado();
     });
+  }
+
+  checkFijado() {
     if (this.maestroFijado) {
       // Solo se muestra una política, no queremos mostrar filtros ni botones para cambiar de pantalla
       this.booleanMaestroFijado = true;
