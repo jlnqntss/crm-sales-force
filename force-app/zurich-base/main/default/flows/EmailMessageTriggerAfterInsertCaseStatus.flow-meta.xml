@@ -67,16 +67,13 @@
         <label>Is pending and USP?</label>
         <locationX>710</locationX>
         <locationY>455</locationY>
-        <defaultConnector>
-            <targetReference>Actualizar_Caso_a_Pendiente</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <defaultConnectorLabel>Pending or not USP</defaultConnectorLabel>
         <rules>
             <name>YesPendingOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Parent.Status</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Pendiente</stringValue>
                 </rightValue>
@@ -88,7 +85,10 @@
                     <stringValue>USPInquiry</stringValue>
                 </rightValue>
             </conditions>
-            <label>Yes Pending</label>
+            <connector>
+                <targetReference>Actualizar_Caso_a_Pendiente</targetReference>
+            </connector>
+            <label>Not Pending</label>
         </rules>
     </decisions>
     <description>si llega un email, actualiza a Respondido el caso (OCS y EON)</description>
@@ -117,7 +117,7 @@
     <recordUpdates>
         <name>Actualizar_Caso_a_Pendiente</name>
         <label>Actualizar Caso a Pendiente</label>
-        <locationX>842</locationX>
+        <locationX>578</locationX>
         <locationY>575</locationY>
         <filterLogic>and</filterLogic>
         <filters>
