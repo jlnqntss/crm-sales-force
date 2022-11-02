@@ -3,7 +3,7 @@
  * @author nbizkarra
  * @date 23/04/2020
  */
-public class CaseUtil
+public with sharing class CaseUtil
 {
     /**
      * Método que inserta o actualiza un siniestro

@@ -1,4 +1,4 @@
-public class BusinessInsuranceCallbackService
+public with sharing class BusinessInsuranceCallbackService
 {
     public static final String REQUIRED_FIELD_MISSING = 'Required field is missing';
     public static final String REQUIRED_FIELD_MISSING_STATUSCODE = 'REQUIRED_FIELD_MISSING';

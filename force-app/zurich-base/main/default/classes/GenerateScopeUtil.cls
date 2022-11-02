@@ -1,4 +1,4 @@
-public class GenerateScopeUtil
+public with sharing class GenerateScopeUtil
 {
     private static final String HANDLE_TYPE_SCOPE_ACCOUNT = 'SCOPE_ACCOUNT';
     private static final String HANDLE_TYPE_SCOPE_OTHER = 'SCOPE_OTHER';

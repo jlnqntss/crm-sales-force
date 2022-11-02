@@ -3,7 +3,7 @@
 * @author nbizkarra
 * @date 16/11/2020
 */
-public class LeadUtil
+public with sharing class LeadUtil
 {
     private static final String RECORDTYPE_LEAD_GI = 'LeadGI';
     private static final String RECORDTYPE_LEAD_LIFE = 'LeadLife';

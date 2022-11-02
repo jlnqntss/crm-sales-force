@@ -1,4 +1,4 @@
-public class ScopeSettingsSelector
+public with sharing class ScopeSettingsSelector
 {
     public Boolean isSandbox;
 
