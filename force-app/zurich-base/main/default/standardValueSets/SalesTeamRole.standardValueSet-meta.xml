@@ -51,9 +51,4 @@
         <default>false</default>
         <label>PYME Manager</label>
     </standardValue>
-    <standardValue>
-        <fullName>Formador</fullName>
-        <default>false</default>
-        <label>Formador</label>
-    </standardValue>
 </StandardValueSet>
