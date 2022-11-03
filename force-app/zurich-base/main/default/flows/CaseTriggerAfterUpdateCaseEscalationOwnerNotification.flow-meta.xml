@@ -161,7 +161,7 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>Se ha asignado un nuevo caso</stringValue>
+            <stringValue>Se le ha asignado el caso {!$Record.CaseNumber}</stringValue>
         </value>
     </variables>
     <variables>
