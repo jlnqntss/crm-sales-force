@@ -188,6 +188,10 @@
     <picklistValues>
         <picklist>Subtype__c</picklist>
         <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Others</fullName>
             <default>false</default>
         </values>
@@ -206,6 +210,10 @@
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
         <values>
             <fullName>Other</fullName>
             <default>true</default>
