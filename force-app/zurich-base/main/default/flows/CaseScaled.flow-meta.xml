@@ -216,12 +216,6 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>OwnerId</field>
-            <value>
-                <elementReference>$User.ManagerId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>RecordTypeId</field>
             <value>
                 <elementReference>Record_Type_Activity_External.Id</elementReference>
