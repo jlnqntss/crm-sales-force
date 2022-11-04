@@ -66,7 +66,6 @@ public class ScopeUtilTest
         insert scopes;
         Test.stopTest();
 
-        if( showDebug ) 
         List<Scope__c> scopesResult = [SELECT Id, Contactable__c, HashedId__c FROM Scope__c WHERE Id IN :scopes];
         // Check Contactable
         System.assertEquals(4, scopesResult.size(), 'There should exist 4 new scopes');
@@ -125,7 +124,6 @@ public class ScopeUtilTest
         scopesAll.addAll(scopesAcc2);
         insert scopesAll;
 
-        if( showDebug ) 
         // Check scopes after insert
         List<Scope__c> scopesResult = [SELECT Id, Contactable__c FROM Scope__c WHERE Id IN :scopesAcc1];
         System.assertEquals(1, scopesResult.size(), 'There should exist 1 new scopes');
@@ -146,7 +144,6 @@ public class ScopeUtilTest
             update scopesAll;
         Test.stopTest();
 
-        if( showDebug ) 
 
         // Check scopes after update
         scopesResult = [SELECT Id, Contactable__c FROM Scope__c WHERE Id IN :scopesAcc1];
