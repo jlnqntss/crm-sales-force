@@ -12,23 +12,23 @@ public class TestDataFactory
 
           // Get random number between 0 and 10 Apex
           Integer randomNumber = Integer.valueof((Math.random() * 10));
-          System.debug('randomNumber  is'+randomNumber);
+          
 
           // Get random number between 0 and 100 Apex
           Integer randomNumber = Integer.valueof((Math.random() * 100));
-          System.debug('randomNumber is'+randomNumber);
+          
 
           // Get random Boolean value Apex
           Integer randomNumber = Integer.valueof((math.random() * 10));
           Boolean randomBoolean = Math.mod(randomNumber,2) == 0 ? true : false;
-          System.debug('randomBoolean is'+randomBoolean);
+          
 
           // Get random String from list of strings Apex
           List<String> availableValues = new List<String>{'Red','Green','Blue','White','Black'};
           Integer listSize = availableValues.size() - 1;
           Integer randomNumber = Integer.valueof((Math.random() * listSize));
           String randomString= availableValues[randomNumber];
-          System.debug('randomString is'+randomString);
+          
      */
 
     /**

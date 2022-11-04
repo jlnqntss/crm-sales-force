@@ -106,6 +106,6 @@ private class Test_Batch_DeleteErrorLogs
     //   Test.startTest();
     //   String jobID = system.schedule('Delete error logs', sch, m);
     //   Test.stopTest();
-    //   System.Debug('jobID: ' + jobID);
+    //   
     // }
 }
