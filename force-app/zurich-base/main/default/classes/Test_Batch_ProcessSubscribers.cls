@@ -47,7 +47,7 @@ public class Test_Batch_ProcessSubscribers
         Test.startTest();
         String jobID = system.schedule('Batch_ProcessSubscribers', sch, m);
         Test.stopTest();
-        System.Debug('jobID: ' + jobID);
+        
     }
 
 

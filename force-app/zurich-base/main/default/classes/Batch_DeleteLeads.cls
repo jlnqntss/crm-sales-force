@@ -98,9 +98,6 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
         }
         catch (Exception e)
         {
-            System.debug(
-                'Ha habido un error eliminando los laeads: ' + e.getMessage()
-                );
             ErrorLogUtil.commitError(e, 'Batch_DeleteLeads');
         }
     }

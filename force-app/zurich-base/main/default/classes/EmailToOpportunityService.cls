@@ -62,7 +62,7 @@ public without sharing class EmailToOpportunityService
             emailMessage.Headers = processEmailHeaders(inboundEmail.headers);
             emailMessage.Status = '0';
             emailMessage.Incoming = true;
-            emailMessage.ToAddress = String.join(inboundEmail.toAddresses, ',');
+            emailMessage.ToAddress = String.join(inboundEmail.toAddresses, ';'); // fix-OCS-5034 (arcortazar - 3/11/22): sustituimos por ; para igualar con OCS y EON
             emailMessage.HtmlBody = inboundEmail.htmlBody;
             emailMessage.TextBody = inboundEmail.plainTextBody;
             emailMessage.MessageIdentifier = inboundEmail.messageId;

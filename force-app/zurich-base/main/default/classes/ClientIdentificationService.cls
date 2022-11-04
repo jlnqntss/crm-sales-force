@@ -39,7 +39,7 @@ public with sharing class ClientIdentificationService
         if( !cuentasEncontradas.isEmpty() )
         {
             resultado.existsNationalID = true;
-            polizaEncontrada = policiesSelector.selectByHolderAndNumber(cuentasEncontradas[0].id, new Set<String> {receivedData.policyNumber});
+            polizaEncontrada = policiesSelector.selectByInfoPolicyNumberAndNationalId(new List<String> { receivedData.nationalID },new List<String> { receivedData.policyNumber });
         }
         else
         {

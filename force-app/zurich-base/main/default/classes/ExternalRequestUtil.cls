@@ -126,10 +126,8 @@ global without sharing class ExternalRequestUtil {
   // Main method
   public static void processExternalRequests(
     List<ExternalRequest__c> externalRequestList
-  ) {
-    System.debug(
-      '- - - - - ExternalRequestUtil.processExternalRequests - - - - -'
-    );
+  )
+  {
     if (externalRequestList != null && !externalRequestList.isEmpty()) {
       emptyStaticVariables();
       //-------------------
@@ -143,10 +141,8 @@ global without sharing class ExternalRequestUtil {
 
   //---------------------------------------------------------------------------
   // Empty static variables
-  public static void emptyStaticVariables() {
-    System.debug(
-      '- - - - - ExternalRequestUtil.emptyStaticVariables - - - - -'
-    );
+  public static void emptyStaticVariables()
+  {
     actualRequest = new ExternalRequest__c();
 
     recordsToProcess = new Map<String, Object>();
@@ -263,13 +259,13 @@ global without sharing class ExternalRequestUtil {
   private static void parseExternalRequests(
     List<ExternalRequest__c> externalRequestList
   ) {
-    System.debug( '- - - - - ExternalRequestUtil.parseExternalRequests - - - - -' );
-    System.debug('externalRequestList >>> ' + externalRequestList);
+    
+    
 
     // For each External Request
     for (ExternalRequest__c externalRequestItem : externalRequestList) {
         try {
-            System.debug('externalRequestItem >>> ' + externalRequestItem);
+            
             actualRequest = externalRequestItem;
 
             if (externalRequestItem.Entity__c != null) {
@@ -332,9 +328,9 @@ global without sharing class ExternalRequestUtil {
   }
 
   private static void parseQuoteEntry() {
-    System.debug('- - - - - ExternalRequestUtil.parseQuoteEntry - - - - -');
-    // System.debug('actualRequest >>> ' + actualRequest);
-    // System.debug('actualRequest.json__c >>> ' + actualRequest.json__c);
+    
+    
+    
     if (actualRequest != null && String.isNotBlank(actualRequest.json__c)) {
       String json = actualRequest.json__c;
       String first_text = '"quoteEntry":';
@@ -372,7 +368,7 @@ global without sharing class ExternalRequestUtil {
    * parseOrder
    */
   private static void parseOrder(String orderJson) {
-    System.debug('- - - - - ExternalRequestUtil.parseOrder - - - - -');
+    
 
     String entityType = actualRequest.entity__c;
 
@@ -384,12 +380,12 @@ global without sharing class ExternalRequestUtil {
     
 
     // Reorder
-    //System.Debug('****** order json: ' + orderJson);
+    
     orderJson = reorderOrderJson(orderJson);
-    //System.Debug('****** reorder json: ' + orderJson);
+    
 
     // Parse
-    //System.Debug('*** Parser Init');
+    
     Schema.SObjectType orderEntity = Schema.getGlobalDescribe().get('Order');
     WebServicesParser.WebParserResult parserResultQuote;
     if (entityType == 'Policy') {
@@ -411,11 +407,11 @@ global without sharing class ExternalRequestUtil {
     errorMessages = parserResultQuote.errorMessagesMap;
     secLvlRecordsMap = parserResultQuote.secLvlRecordsMap;
     thrLvlRecordsMap = parserResultQuote.thrLvlRecordsMap;
-    //System.Debug('*** Parser End');
+    
 
 
     if (Test.isRunningTest()) {
-        // System.Debug('*** Test mock init');
+        
         Mock_Parser.isIBA_MultiPart = isIBAMultiPartner;
         Mock_Parser.isIBA_EMEA = isEMEA;
         if (entityType == 'Policy') {
@@ -429,10 +425,10 @@ global without sharing class ExternalRequestUtil {
             thrLvlRecordsMap = Mock_Parser.MockParserThirdLevel('QuoteEntry');
         }
         errorMessages.clear();
-        // System.Debug('*** Test mock fin');
+        
     }
 
-    System.debug('Parsing errors: ' + errorMessages);
+    
     // Parsing errors?
     if (!errorMessages.isEmpty()) {
         throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
@@ -440,7 +436,7 @@ global without sharing class ExternalRequestUtil {
 
     // Quote or policy
     Order incomingOrder = (Order) recordsMap.values().get(0);
-    System.Debug('*** incomingOrder: ' + incomingOrder);
+    
 
     // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
     if( isIBAMultiPartner ) {IBA_Prefix = getMultiPartner(incomingOrder.Partner__c);}
@@ -547,7 +543,7 @@ global without sharing class ExternalRequestUtil {
               }
 
           }
-          System.Debug('**** OrderItem: ' + orderItem);
+          
         }
       // }
       orderItemsToProcess.put(actualRequest.Id, orderItemList);
@@ -653,7 +649,7 @@ global without sharing class ExternalRequestUtil {
    * parseCustomer
    */
   private static void parseCustomer(String customerJson) {
-    System.debug('- - - - - ExternalRequestUtil.parseCustomer - - - - -');
+    
 
     String entityType = actualRequest.entity__c;
 
@@ -678,7 +674,7 @@ global without sharing class ExternalRequestUtil {
     }
 
     // Parsing errors?
-    System.Debug('------------ Parser errors: ' + errorMessages);
+    
     if (!errorMessages.isEmpty()) {
       throw new IntegrationException(Label.ParseError + ': ' + errorMessages);
     }
@@ -752,7 +748,7 @@ global without sharing class ExternalRequestUtil {
    * parseClaim
    */
   private static void parseClaim() {
-    System.debug('- - - - - ExternalRequestUtil.parseClaim - - - - -');
+    
 
     Map<String, String> errorMessages = new Map<String, String>();
     Map<String, sObject> recordsMap = new Map<String, sObject>();
@@ -781,7 +777,7 @@ global without sharing class ExternalRequestUtil {
 
     if (recordsMap != null) {
       Case claim = (Case) recordsMap.values().get(0);
-      System.Debug('***** claim: ' + claim);
+      
 
       // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
       if( isIBAMultiPartner ) {IBA_Prefix = getMultiPartner(claim.Partner__c);}
@@ -892,7 +888,7 @@ global without sharing class ExternalRequestUtil {
   //---------------------------------------------------------------------------
   // Query data needed for processing
   private static void getDataForProcessing() {
-    System.debug( '- - - - - ExternalRequestUtil.getDataForProcessing - - - - -' );
+    
 
     mapContacts = SystemUtil.contactsSelector( contactsToSearch );
     // mapContactsEmailBirthDateLECountry = SystemUtil.contactsSelectorEmailBirthDateLECountry( contactEmails );
@@ -924,8 +920,8 @@ global without sharing class ExternalRequestUtil {
   // Process
   private static void processObjects( List<ExternalRequest__c> externalRequestList ) 
   {
-    System.debug('- - - - - ExternalRequestUtil.processObjects - - - - -');
-    System.debug('- - - - - ExternalRequestUtil.processObjects - - - - -: ' + externalRequestList );
+    
+    
     for (ExternalRequest__c externalRequestItem : externalRequestList) {
       // nts (agonzalezisasi) - 24/11/2020 - check if it didnt already fail in the parser
       if( externalRequestItem.processResult__c == null || externalRequestItem.processResult__c != 'KO' ) {
@@ -963,10 +959,10 @@ global without sharing class ExternalRequestUtil {
   }
 
   private static void processCustomer() {
-    System.debug('- - - - - ExternalRequestUtil.processCustomer - - - - -');
+    
     // Get the customer
     if (recordsToProcess.containsKey(actualRequest.id)) {
-      System.debug('LISTA >>> ' + recordsToProcess);
+      
       Contact incomingContact = (Contact) recordsToProcess.get( actualRequest.id );
 
       ContactUtil.upsertContact(incomingContact, null);
@@ -974,7 +970,7 @@ global without sharing class ExternalRequestUtil {
   }
 
   private static void processQuoteEntry() {
-    System.debug('- - - - - ExternalRequestUtil.processQuoteEntry - - - - -');
+    
     // Get the policy
     if ( recordsToProcess.containsKey(actualRequest.id) && quotesToProcess.containsKey(actualRequest.id) ) {
       /*List<OrderItem> orderItems = orderItemsToProcess.get(actualRequest.id);
@@ -1001,7 +997,7 @@ global without sharing class ExternalRequestUtil {
   }
 
   private static void processPolicy() {
-    System.debug('- - - - - ExternalRequestUtil.processPolicy - - - - -');
+    
     // Get the policy
     if (recordsToProcess.containsKey(actualRequest.id)) {
       /*List<OrderItem> orderItems = orderItemsToProcess.get(actualRequest.id);
@@ -1031,7 +1027,7 @@ global without sharing class ExternalRequestUtil {
   }
 
   private static void processClaim() {
-    System.debug('- - - - - ExternalRequestUtil.processClaim - - - - -');
+    
     // Get the claim
     if (recordsToProcess.containsKey(actualRequest.id)) {
       Case claim = (Case) recordsToProcess.get(actualRequest.id);
@@ -1067,9 +1063,9 @@ global without sharing class ExternalRequestUtil {
 
     if (contactsToUpdate != null && !contactsToUpdate.isEmpty()) {
       //upsert contactsToUpdate.values() Contact.Fields.CustomerNum__c;
-      System.debug('**** Contact');
+      
       for(Contact c: contactsToUpdate.values() ) {
-        System.debug(c);
+        
       }
       upsert contactsToUpdate.values();
     }
@@ -1089,9 +1085,9 @@ global without sharing class ExternalRequestUtil {
     if (ordersToUpdateList != null && !ordersToUpdateList.isEmpty()) {
       //Actualizar por id, para evitar error
       //upsert ordersToUpdateList.values() Order.Fields.PolicyNum__c;
-      System.DEbug('***** Orders To Update');
+      
       for( Order o : ordersToUpdateList.values() ) {
-        System.Debug(o);
+        
       }
       upsert ordersToUpdateList.values();
     }
@@ -1119,19 +1115,19 @@ global without sharing class ExternalRequestUtil {
       upsert pricebookEntryToInsert.values() PricebookEntry.Fields.ProductID__c;
     }
     if (orderItemsToInsert != null && !orderItemsToInsert.isEmpty()) {
-      System.Debug('***** Order Items:');
+      
       for(OrderItem oi: orderItemsToInsert.values() ) {
-        System.Debug(oi);
+        
         // if( oi.Order != null ) {
-        //  System.Debug(oi.Order);
+        //  
         // }
       }
       upsert orderItemsToInsert.values() OrderItem.Fields.ItemId__c;
     }
     if (discountsToInsert != null && !discountsToInsert.isEmpty()) {
-      System.Debug('**** Discounts: ' );
+      
       for(Discount__c d: discountsToInsert.values()) {
-          System.Debug(d);
+          
       }
       upsert discountsToInsert.values() Discount__c.Fields.DiscountId__c;
     }

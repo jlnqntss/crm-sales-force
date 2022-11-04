@@ -45,9 +45,6 @@ global class Batch_DeleteMasters implements Database.Batchable<sObject>, Databas
         }
         catch (Exception e)
         {
-            System.debug(
-                'Ha habido un error eliminando los masters: ' + e.getMessage()
-                );
             ErrorLogUtil.commitError(e, 'Batch_DeleteMasters');
         }
     }

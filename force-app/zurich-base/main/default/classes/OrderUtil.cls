@@ -11,7 +11,7 @@ global without sharing class OrderUtil
      **/
     public static void upsertQuote(Contact contact, Order quote)
     {
-        System.debug('- - - - - OrderUtil.upsertQuote - - - - -');
+        
         String legalEntityName = (quote.LegalEntity__c.equals(Label.GeneralInsurance) ? 'GI' : 'Life');
 
         quote.RecordTypeId = SystemUtil.getOrderRecordTypeIdByName( Label.Quote + legalEntityName );
@@ -20,10 +20,10 @@ global without sharing class OrderUtil
         Order quoteSF = ExternalRequestUtil.mapQuotes.get(quote.QuoteEntry__c);
         if( quoteSF != null )
         {
-            System.debug('The Quote exists >>> ' + quoteSF.Id);
+            
             quote.Id = quoteSF.Id;
-            System.debug('quoteSF.ContactId__r.Status__c >>> ' + quoteSF.ContactId__r.Status__c);
-            System.debug('contact.Status__c >>> ' + contact.Status__c);
+            
+            
             // nts (nbizkarra) - 13/ene/2021 - Copiar el consentimiento a nivel de quote
             //If the lead change to a customer, the quote must have the same consent of the original lead (consent is not updated)
             if( !(quoteSF.ContactId__r.Status__c == 'Lead' && contact.Status__c == 'Activo') )
@@ -46,15 +46,15 @@ global without sharing class OrderUtil
                 //en la web en el paso 3 comprobar si se ha logueado con otro Customer Num, en ese caso reasociar la quote al contacto correcto
                 // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
                 String customerNum = contact.CustomerNum__c; // ContactUtil.adaptCustomerNum( contact.CustomerNum__c, contact.LegalEntity__c );
-                // System.Debug('*** customerNum: ' + customerNum);
-                // System.Debug('*** existC.CustomerNum: ' + quoteSF.ContactId__r.CustomerNum__c);
+                
+                
                 // (
                 if ( quote.QbLastPage__c.equalsIgnoreCase(Label.Q_StepLogin_v1) ||
                      quote.QbLastPage__c.equalsIgnoreCase(Label.Q_StepLogin_v2) &&
                      quoteSF.ContactId__r.CustomerNum__c != customerNum
                      )
                 {
-                    //System.debug('Step3: Reasignar quote');
+                    
                     quote = ContactUtil.upsertContact(contact, quote);
                     quote.Id = quoteSF.Id;
                 }
@@ -62,7 +62,7 @@ global without sharing class OrderUtil
         }
         else
         {
-            System.debug('The quote does not exist');
+            
 
             // nts (nbizkarra) - 13/ene/2021 - Copiar el consentimiento a nivel de quote
             quote.receiveMarketing__c = contact.receiveMarketing__c;
@@ -165,7 +165,7 @@ global without sharing class OrderUtil
             ExternalRequestUtil.updateCover,
             ExternalRequestUtil.recordOwner
             );
-        System.debug( '***** Put quote with quote Entry: ' + quote.QuoteEntry__c + ' in the updating list.' );
+        
 
         ExternalRequestUtil.quotesToUpdateList.put(quote.QuoteEntry__c, quote);
     }
@@ -177,21 +177,21 @@ global without sharing class OrderUtil
      **/
     public static void upsertPolicy(Order policy)
     {
-        System.debug('- - - - - OrderUtil.upsertPolicy - - - - -');
+        
         Order policySF = ExternalRequestUtil.mapPolicies.get(policy.PolicyNum__c);
         String customerNumField = ExternalRequestUtil.AccountFieldCustomerNum;
 
-        //System.debug('policy.PolicyNum__c >>> ' + policy.PolicyNum__c);
+        
 
         if (policySF != null) //--------------------------------------------------------------  POLICY EXIST
         {
-            System.debug('The policy exists');
+            
             policy.Id = policySF.Id;
 
             //ver si ha cambiado la versión de póliza
             if ( !policy.PolicyContractSerial__c.equals(policySF.PolicyContractSerial__c) )
             {
-                //System.debug('>>> PolicyContractSerial__c ha cambiado: ANTES ' + policySF.PolicyContractSerial__c + ' DESPUES ' + policy.PolicyContractSerial__c);
+                
                 PolicyVersion__c pversion = new PolicyVersion__c(
                     Name = policy.PolicyContractSerial__c,
                     StartDate__c = policy.PolicyContractStartDate__c,
@@ -221,7 +221,7 @@ global without sharing class OrderUtil
                         policy.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_3.trim() )
                         )
                     {
-                        //System.debug('>>> Cambio de producto');
+                        
                         OrderItemUtil.deactivateOldProduct(
                             policySF, ExternalRequestUtil.listOrderItems, ExternalRequestUtil.orderItemsToInsert
                             );
@@ -258,7 +258,7 @@ global without sharing class OrderUtil
         }
         else //--------------------------------------------------------------  POLICY DOESNT EXIST
         {
-            System.debug('The Policy does not exist');
+            
             String legalEntityName;
             if ( policy.LegalEntity__c.equals(Label.GeneralInsurance) )
             {
@@ -275,11 +275,11 @@ global without sharing class OrderUtil
             //     policy.LegalEntity__c
             //   );
             // }
-            System.debug('policy.CustomerNum__c >>> ' + policy.CustomerNum__c);
+            
 
             Contact contactoPolicy = ExternalRequestUtil.mapContacts.get( policy.CustomerNum__c );
 
-            //System.debug('contactoPolicy: ' +contactoPolicy);
+            
             if ( contactoPolicy != null || ExternalRequestUtil.contactsToUpdate.containsKey(policy.CustomerNum__c) )
             {
                 //Contacto existe
@@ -325,7 +325,7 @@ global without sharing class OrderUtil
                 //Buscar si existe quote
                 if ( !String.isBlank(policy.QuoteEntry__c) )
                 {
-                    //System.debug('Quote existe');
+                    
                     Order quoteSF = ExternalRequestUtil.mapQuotes.get( policy.QuoteEntry__c );
 
                     if (quoteSF != null)
@@ -346,13 +346,13 @@ global without sharing class OrderUtil
                     if ( ExternalRequestUtil.quotesToUpdateList.containsKey( policy.QuoteEntry__c ) )
                     {
                         //Si quote existe en la lista de actualización, se saca de la lista
-                        //System.debug('Quote existe en la lista de actualización');
+                        
                         policy.QuoteStatus__c = Label.Converted;
                         ExternalRequestUtil.quotesToUpdateList.remove(policy.QuoteEntry__c);
 
                         if ( ExternalRequestUtil.ordersToUpdateWithPartner.containsKey( policy.QuoteEntry__c ) )
                         {
-                            //System.debug('Quote borrado de la lista de insercion');
+                            
                             ExternalRequestUtil.ordersToUpdateWithPartner.remove( policy.QuoteEntry__c );
                         }
 
@@ -547,7 +547,7 @@ global without sharing class OrderUtil
             }
             else
             {
-                //System.debug('Contacto no existe');
+                
                 throw new IntegrationException(
                           Label.PolicyError + '' + policy.PolicyNum__c + ', ' + Label.CustomerError + ' ' + policy.CustomerNum__c
                           );
@@ -562,7 +562,7 @@ global without sharing class OrderUtil
      **/
     public static void SummaryTotalPolicies(List<Order> newList)
     {
-        System.debug('- - - - - OrderUtil.SummaryTotalPolicies - - - - -');
+        
         Set<Id> idSet = new Set<Id>();
         Set<Id> idSetQuotes = new Set<Id>();
         Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
@@ -654,7 +654,7 @@ global without sharing class OrderUtil
      **/
     public static void updateLastQuoteOnContact(List<Order> newList)
     {
-        System.debug('- - - - - OrderUtil.updateLastQuoteOnContact - - - - -');
+        
         Map<Id, Order> MapQuotes = new Map<Id, Order>();
         List<Contact> contacts = new List<Contact>();
         Map<Id, Contact> contactsToUpdate = new Map<Id, Contact>();
