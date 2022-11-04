@@ -150,4 +150,28 @@ public with sharing class PoliciesSelector extends RecordsSelector
             return new List<Policy__c>();
         }
     }
+
+    /**
+     * Busca pólizas a partir de un listado de NationalIds y números de póliza
+     *
+     * @author jpereztirado
+     * @date 27/10/2022
+     * @param List<String> infoPolicyNumbers Números de pólizas a buscar
+     * @param List<String> nationalIds NationalIds a buscar
+     * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
+     */
+    public List<Policy__c> selectByInfoPolicyNumberAndNationalId(List<String>  nationalIds, List<String> infoPolicyNumbers) {       
+        if(nationalIds != null && infoPolicyNumbers != null)
+        {
+            this.baseQuery.selectReadableFields();
+            this.baseQuery.addConditionIn('Policy__c.PolicyHolder__r.NationalId__c', nationalIds).addConditionIn(Policy__c.InfoPolicyNumber__c, infoPolicyNumbers);
+
+            return (List<Policy__c>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<Policy__c>();
+        }
+    }
+    
 }
