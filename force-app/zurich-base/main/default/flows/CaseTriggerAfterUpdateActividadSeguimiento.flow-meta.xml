@@ -48,7 +48,7 @@
     </decisions>
     <environments>Default</environments>
     <interviewLabel>Case Trigger-After Update- {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger - After Update - Actividad - Seguimiento</label>
+    <label>Case Trigger - After Update - Adelantar Seguimiento</label>
     <loops>
         <name>updateDueDateLoop</name>
         <label>Update Due Date Loop</label>
