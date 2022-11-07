@@ -84,6 +84,8 @@ export default class TechnicalPolicies extends LightningElement {
   showUpholstered;
   showWood;
 
+  showFramework;
+
   buttonsClicked = [];
 
   fieldsToShow = [];
@@ -625,6 +627,11 @@ export default class TechnicalPolicies extends LightningElement {
     this.currentRecordTrack = this.policies[this.currentCounterTrack - 1];
     if (this.currentRecordTrack) {
       this.sizeTrack = this.policies.length;
+      if (this.currentRecordTrack.PolicyFramework__c) {
+        this.showFramework = true;
+      } else {
+        this.showFramework = false;
+      }
       return this.currentRecordTrack.Id;
     }
     return "";
@@ -674,5 +681,15 @@ export default class TechnicalPolicies extends LightningElement {
       this.desfijadoTrack = false;
     }
     this.checkPage();
+  }
+
+  /**
+   * Función que abre un enlace clickado en otra pestaña
+   * @author jjuaristi@seidor.es
+   * @date 27/10/2022
+   */
+  goToDoc() {
+    const URL = this.currentRecordTrack.PolicyFramework__c;
+    window.open(URL, "_blank").focus();
   }
 }
