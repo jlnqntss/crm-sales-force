@@ -28,7 +28,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         if( String.isNotBlank(role) && String.isNotBlank(email) ) {
             // Recuperamos los campos del usuario
             Set<String> queryFields = new Set<String>{
-                'UserId', 'User.Name'
+                'UserId', 'User.Name', 'Account.Zone__c'
             };
             this.baseQuery.selectFields(queryFields);
             // Rol del usuario en el equipo de cuentas

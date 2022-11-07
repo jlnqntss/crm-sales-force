@@ -5780,6 +5780,10 @@
         <label>Año</label>
         <name>SDM_PlanAnual_RowYear</name>
     </customLabels>
+	<customLabels>
+        <label>Zona</label>
+        <name>SDM_PlanAnual_RowZone</name>
+    </customLabels>
     <customLabels>
         <label>Error al guardar</label>
         <name>SDM_PlanAnual_SavingError</name>
@@ -5811,6 +5815,10 @@
     <customLabels>
         <label>Selecciona el año</label>
         <name>SDM_PlanAnual_YearPlaceholder</name>
+    </customLabels>
+	<customLabels>
+        <label>Seleccionar la zona</label>
+        <name>SDM_PlanAnual_ZonePlaceholder</name>
     </customLabels>
     <customLabels>
         <label>Se te han asignado nuevos planes comerciales con los siguientes asuntos:</label>

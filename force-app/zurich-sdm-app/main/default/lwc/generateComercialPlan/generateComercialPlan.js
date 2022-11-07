@@ -1,10 +1,10 @@
 import { LightningElement, track } from "lwc";
 
-import FORM_FACTOR from '@salesforce/client/formFactor';
+import FORM_FACTOR from "@salesforce/client/formFactor";
 
 import SDM_PlanAnual_KPICompare from "@salesforce/label/c.SDM_PlanAnual_KPICompare";
 import SDM_PlanAnual_Title from "@salesforce/label/c.SDM_PlanAnual_Title";
-import SDM_PlanAnual_Message_Fleets from "@salesforce/label/c.SDM_PlanAnual_Message_Fleets"
+import SDM_PlanAnual_Message_Fleets from "@salesforce/label/c.SDM_PlanAnual_Message_Fleets";
 import SDM_PlanAnual_ButtonCancel from "@salesforce/label/c.SDM_PlanAnual_ButtonCancel";
 import SDM_PlanAnual_ButtonDelete from "@salesforce/label/c.SDM_PlanAnual_ButtonDelete";
 import SDM_PlanAnual_ButtonEdit from "@salesforce/label/c.SDM_PlanAnual_ButtonEdit";
@@ -102,11 +102,13 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
   SEPARATOR = "#";
   CATEGORY_INDICATOR = "indicador";
+  CATEGORY_ZONE = "zone";
+  ZONE_ALL_VALUE = "Todos";
   SLDS_CELL_EDITED_HTML_CLASS = "slds-is-edited";
   // Fila a partir de la cual hay valores que pueden ser numericos, decimal o moneda
-  ROWS_FROM_VALUE = 4; // Plan DT, RN/Mediador
+  ROWS_FROM_VALUE = 5; // Plan DT, RN/Mediador
   // Fila a partir de la cual hay que considerar el sumatorio de valores
-  ROWS_FROM_SUM = 5; // Primer RN/Mediador
+  ROWS_FROM_SUM = 6; // Primer RN/Mediador
 
   @track isLoading;
 
@@ -445,6 +447,11 @@ export default class GenerateComercialPlan extends NavigationMixin(
           this.handleIndicatorChange(oldIndicator, newIndicator, colindex);
         }
 
+        if (elementFound.Category === this.CATEGORY_ZONE) {
+          let newZone = newValue;
+          this.handleZoneChange(newZone, colindex);
+        }
+
         // Aplicamos el nuevo valor
         if (elementFound.isString || elementFound.isCombobox)
           elementFound.stringValue = newValue;
@@ -544,6 +551,29 @@ export default class GenerateComercialPlan extends NavigationMixin(
     }
   }
 
+  handleZoneChange(newZone, colIndex) {
+    for (
+      let rowNum = this.ROWS_FROM_SUM;
+      rowNum < this.tabledata.rows.length;
+      rowNum++
+    ) {
+      let row = this.tabledata.rows[rowNum];
+      let cell = row.Cells[colIndex];
+
+      if (this.ZONE_ALL_VALUE === newZone) {
+        cell.isLocked = false;
+      } else if (this.tabledata.mapIntermediaryZones) {
+        // solo ejecutamos esta lógica para los RNs
+        let lockCell = true;
+        if (newZone === this.tabledata.mapIntermediaryZones[row.Id]) {
+          lockCell = false;
+        }
+
+        cell.isLocked = lockCell;
+      }
+    }
+  }
+
   // Gestiona el calculo del sumatorio si hay cambios en campos de valores
   handleSummary(rowindex, colindex) {
     // Si es una celda de una fila de planes, se informa el sumatorio
@@ -574,9 +604,8 @@ export default class GenerateComercialPlan extends NavigationMixin(
       this.tabledata.mapDependantCategories !== undefined
     ) {
       // Vemos si existe el campo dependiente del campo controlador
-      let dependantCategory = this.tabledata.mapDependantCategories[
-        elementCategory
-      ];
+      let dependantCategory =
+        this.tabledata.mapDependantCategories[elementCategory];
       // Vemos si existen valores dependientes para el controlador
       let mapDependantValues = this.tabledata.mapDependants[elementCategory];
       // Si tenemos ambos..
@@ -764,11 +793,11 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
   // Propiedad: indica si el formulario se esta ejecutando en una pantalla grande
   get isDesktop() {
-    return FORM_FACTOR === 'Large';
+    return FORM_FACTOR === "Large";
   }
 
   // Propiedad: indica si el formulario se esta ejecutando en una pantalla pequeña
   get isPhone() {
-      return FORM_FACTOR === 'Small';
+    return FORM_FACTOR === "Small";
   }
 }

@@ -1710,4 +1710,20 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_Objetivos_Zone</shortDescription>
         <value>Zone</value>
     </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_RowZone</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_RowZone</shortDescription>
+        <value>Zone</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ZonePlaceholder</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ZonePlaceholder</shortDescription>
+        <value>Select the zone</value>
+    </labels>
 </CustomLabels>
