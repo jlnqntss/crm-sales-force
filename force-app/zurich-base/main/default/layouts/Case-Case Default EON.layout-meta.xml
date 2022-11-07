@@ -194,6 +194,10 @@
                 <behavior>Edit</behavior>
                 <field>MilestoneStatus</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ViolatedSla__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

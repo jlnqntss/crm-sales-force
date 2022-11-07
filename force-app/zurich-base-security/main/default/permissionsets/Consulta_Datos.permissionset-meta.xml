@@ -1371,6 +1371,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.ViolatedSla__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Claim__c.AssistanceCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
