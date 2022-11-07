@@ -21,7 +21,7 @@ private class SurveySelectorTest
         List<Survey__c> surveys = Test.loadData(Survey__c.sObjectType, 'TestSurvey');
         System.assert(surveys.size() == 194);
         //Survey__c s = (Survey__c)surveys[193];
-        //System.debug(s.LastModifiedDate);
+        
 
         List<Survey__c> s = new List<Survey__c>();
 

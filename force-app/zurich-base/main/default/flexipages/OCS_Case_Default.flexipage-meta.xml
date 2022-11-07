@@ -347,6 +347,38 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>decorate</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;a href=&quot;https://zurichinsurance.sharepoint.com/:u:/r/sites/CCWEBProcesos/SitePages/Grabacion-Contractual.aspx?csf=1&amp;amp;web=1&amp;amp;e=DOuHkE&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;Abrir texto de grabación contractual&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:richText</componentName>
+                <identifier>flexipage_richText</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 AND (2 OR 3)</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.Type}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Gestión Servicios</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Subtype__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Modificación</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Subtype__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Rehabilitación</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>createQuickActionName</name>
                     <value>NewAccount</value>
                 </componentInstanceProperties>

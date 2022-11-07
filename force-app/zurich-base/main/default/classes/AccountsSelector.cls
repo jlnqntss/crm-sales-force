@@ -26,6 +26,8 @@ public with sharing class AccountsSelector extends RecordsSelector
     
     public static final String RT_NAME_AGRUPATION = 'AgrupacionMediador';
     public static final String RT_NAME_INTERMEDIARY = 'Intermediary';
+    public static final String RT_NAME_CUSTOMER = 'Customer';
+    public static final String RT_NAME_BUSINESSCUSTOMER = 'BusinessCustomer';
 
     // Recupera el Id del RecordType de cuentas de Agrupacion de Mediadores
     public ID rtAgrupationId {
@@ -37,6 +39,18 @@ public with sharing class AccountsSelector extends RecordsSelector
     public ID rtIntermediaryId {
         get {
             return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_INTERMEDIARY)?.getRecordTypeId();
+        }
+    }
+    // Recupera el Id del RecordType de clientes personales
+    public ID rtCustomerId {
+        get {
+            return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_CUSTOMER)?.getRecordTypeId();
+        }
+    }
+    // Recupera el Id del RecordType de clientes
+    public ID rtBusinessCustomerId {
+        get {
+            return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_BUSINESSCUSTOMER)?.getRecordTypeId();
         }
     }
 
@@ -513,5 +527,39 @@ public with sharing class AccountsSelector extends RecordsSelector
         }
 
         return result;
+    }
+
+    /**
+    * Método utilizado por el batch RelateCasesToNewAccountsBatch para definir el scope
+    * @author jjuaristi@seidor.es
+    * @date 19/10/2022
+    * @param String days para filtrar la query
+    * @return String query que se va a lanzar en el batch
+    */
+    public List<Account> findByCIFAndCreationDate(List<String> cifs, String daysToRetrieve)
+    {
+        if(daysToRetrieve != null && !String.isBlank(daysToRetrieve) && cifs != null && !cifs.isEmpty())
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Account.Id,
+                Account.NationalId__c
+            })
+            .addConditionIn(Account.NationalId__c, cifs);
+
+            // Añadimos la condición de que el RT sea Customer o BusinessCustomer
+            Query.Condition condition = Query.doOr
+            (
+                Query.conditionEq(Account.RecordTypeId, rtCustomerId),
+                Query.conditionEq(Account.RecordTypeId, rtBusinessCustomerId)
+            );
+
+            this.baseQuery.addCondition(condition);
+
+            return (List<Account>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<Account>();
+        }
     }
 }

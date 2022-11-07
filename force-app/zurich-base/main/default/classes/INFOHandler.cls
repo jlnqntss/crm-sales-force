@@ -186,7 +186,7 @@ public class INFOHandler implements ISystem
             }
             catch (Exception e)
             {
-                // System.debug('[INFOHandler] process() - ' + e.getMessage());
+                
                 setExternalRequest(externalRequest, true, 'KO', e.getMessage() + '\n' + e.getStackTraceString(), false);
                 //ErrorLogUtil.commitError(e, 'INFOHandler', 'process');
             }
@@ -221,7 +221,7 @@ public class INFOHandler implements ISystem
         }
         catch (Exception e)
         {
-            //System.debug('[INFOHandler] persists() - ' + e.getMessage() + e.getStackTraceString());
+            
             ErrorLogUtil.commitError(e, 'INFOHandler', 'persists');
         }
     }
@@ -277,7 +277,7 @@ public class INFOHandler implements ISystem
                     }
                     catch ( Exception e )
                     {
-                        // System.debug('[INFOHandler] manageResult() - ' + e.getMessage());
+                        
                         ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
                     }
                 }
@@ -291,7 +291,7 @@ public class INFOHandler implements ISystem
         }
         catch ( Exception e )
         {
-            // System.debug('[INFOHandler] manageResult() - ' + e.getMessage());
+            
             ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
         }
     }
@@ -437,12 +437,12 @@ public class INFOHandler implements ISystem
             // Objeto asegurado
             when 'INSURED_OBJECT'
             {
-                // System.debug('-------------- insued object');
+                
                 Asset insObjRecord = (Asset) tf.transform(INSURED_OBJECT, 'Asset', recordValuesMap);
-                // System.debug('objectType: ' + insObjRecord.ObjectType__c);
+                
                 // Recuperamos la etiqueta con el nombre a partir del codigo de tipo de objeto
                 if( mapInsuredObjectTypeToName == null ) {
-                    // System.debug('creating Name map...');
+                    
                     mapInsuredObjectTypeToName = new Map<String, String>();
 
                     Schema.DescribeFieldResult fieldResult = Asset.ObjectType__c.getDescribe();
@@ -457,7 +457,7 @@ public class INFOHandler implements ISystem
                 }
                 // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
                 String recordTypeDevName = getEquivalence(HANDLER_ORIGIN, 'INSURED_OBJECT', insObjRecord.ObjectType__c.trim());
-                // System.debug('RT name: ' + recordTypeDevName);
+                
                 if( String.isBlank(recordTypeDevName) ) {
                     throw new INFOHandlerException('RecordType equivalence not found for the following Object Type: ' + insObjRecord.ObjectType__c.trim());
                 }
@@ -608,7 +608,7 @@ public class INFOHandler implements ISystem
                                 }
                                 //Procesamiento incorrecto
                                 else
-                                {   //System.debug(String.join(resultList.get(i).getErrors(), '\n'));
+                                {   
                                     setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
                                 }
                             }
@@ -732,14 +732,14 @@ public class INFOHandler implements ISystem
      */
     private static String getEquivalence(String origin, String entity, String originKey)
     {
-        // System.debug('get equivalence ' + entity + ': ' + originKey);
+        
         String result = '';
         if( mapEquivalencesByEntity == null ) {
             mapEquivalencesByEntity = new Map<String, Map<String, String>>();
         }
 
         if( !mapEquivalencesByEntity.containsKey(entity) ) {
-            // System.debug('creating equivalence map...');
+            
             List<TransformerEquivalences__mdt> settigs = [
                 SELECT Id, OriginKey__c, Value__c
                 FROM TransformerEquivalences__mdt
@@ -764,7 +764,7 @@ public class INFOHandler implements ISystem
         if( mapEquivalencesByEntity.containsKey(entity) && mapEquivalencesByEntity.get(entity).containsKey(originKey) ) {
             result = mapEquivalencesByEntity.get(entity).get(originKey);
         }
-        // System.debug('result: ' + result);
+        
 
         return result;
     }

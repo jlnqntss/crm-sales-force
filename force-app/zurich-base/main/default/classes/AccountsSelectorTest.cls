@@ -477,7 +477,7 @@ private with sharing class AccountsSelectorTest
         List<Account> result = accountSel.findByIdsAndScope(ids, new List<String> {'ZE', 'ZEO'});
         Test.stopTest();
 
-        System.Debug('-------------- Results');
+        
         System.assertEquals(2, result.size(), 'There should be 2 accounts');
         System.assertEquals(3, result[0].Scope__r.size(), 'There should be 3 scopes for the first account');
         System.assertEquals(3, result[1].Scope__r.size(), 'There should be 3 scopes for the second account');
@@ -600,4 +600,24 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(1, checkAgrupations.size(), 'Deberia encontrar 1 agrupacion');
     }
 
+    /**
+     * Test del método que recupera los clientes en base al cif y la fecha de creación
+     * @author jjuaristi@seidor.es
+     * @date 20/10/2022
+     */
+    @IsTest
+    static void test_findByCIFAndCreationDate()
+    {
+        AccountsSelector accSel = new AccountsSelector();
+        String cif = '11223344';
+        Account customer = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = :accSel.rtCustomerId LIMIT 1];
+        customer.NationalId__c = cif;
+        update customer;
+
+        Test.startTest();
+        List<Account> accountsfound = new AccountsSelector().findByCIFAndCreationDate(new List<String>{cif}, '1');
+        Test.stopTest();
+
+        System.assertEquals(1, accountsfound.size(), 'Deberia encontrar 1 cliente');
+    }
 }

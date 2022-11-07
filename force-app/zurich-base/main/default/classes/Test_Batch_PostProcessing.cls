@@ -157,6 +157,6 @@ private class Test_Batch_PostProcessing
         Test.startTest();
         String jobID = system.schedule('Post Processing batch', sch, m);
         Test.stopTest();
-        System.Debug('jobID: ' + jobID);
+        
     }
 }

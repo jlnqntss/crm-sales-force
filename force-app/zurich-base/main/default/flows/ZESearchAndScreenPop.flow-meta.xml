@@ -272,7 +272,7 @@
     </decisions>
     <decisions>
         <name>existeScope</name>
-        <label>¿Existe un ámbito con ese número de teléfono?</label>
+        <label>¿Existe un ámbito ZE con ese número de teléfono?</label>
         <locationX>974</locationX>
         <locationY>878</locationY>
         <defaultConnector>
@@ -377,7 +377,7 @@
     <processType>Flow</processType>
     <recordCreates>
         <name>createContactPointPhone</name>
-        <label>Crear Contact Point Phone</label>
+        <label>Crear Contact Point Phone ZE</label>
         <locationX>1106</locationX>
         <locationY>1118</locationY>
         <inputAssignments>
@@ -415,7 +415,7 @@
     </recordCreates>
     <recordCreates>
         <name>createScope</name>
-        <label>Crear ámbito</label>
+        <label>Crear ámbito ZE</label>
         <locationX>1106</locationX>
         <locationY>998</locationY>
         <connector>
@@ -519,7 +519,7 @@
     </recordLookups>
     <recordLookups>
         <name>GetScopeByPhone</name>
-        <label>Obtener ámbito por teléfono</label>
+        <label>Obtener ámbito ZE por teléfono para esa cuenta</label>
         <locationX>974</locationX>
         <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -532,6 +532,20 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>phone</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>FindCustomerByPhone.customerId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Scope__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>ZE</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>

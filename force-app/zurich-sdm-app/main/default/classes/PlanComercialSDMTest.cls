@@ -31,7 +31,7 @@ private class PlanComercialSDMTest
         // Se recuperan las planes comerciales
         List<PlanComercial__c> plans = [
             SELECT Id, CreatedById, AssignedTo__c, StartDate__c, EndDate__c,
-                   Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c
+                   Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c, Zone__c
             FROM PlanComercial__c
         ];
         System.assertEquals(4, plans.size(), 'Deberia haber 4 planes antes del test');

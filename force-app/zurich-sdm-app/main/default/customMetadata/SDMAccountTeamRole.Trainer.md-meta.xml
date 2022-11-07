@@ -3,15 +3,15 @@
     <label>Trainer</label>
     <protected>false</protected>
     <values>
-        <field>Role__c</field>
-        <value xsi:type="xsd:string">Trainer</value>
-    </values>
-    <values>
         <field>IntermediaryField__c</field>
         <value xsi:type="xsd:string">TrainerEmail__c</value>
     </values>
     <values>
+        <field>Role__c</field>
+        <value xsi:type="xsd:string">Trainer</value>
+    </values>
+    <values>
         <field>Status__c</field>
-        <value xsi:type="xsd:string">Active</value>
+        <value xsi:type="xsd:string">Inactive</value>
     </values>
 </CustomMetadata>

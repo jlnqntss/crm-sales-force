@@ -3,7 +3,7 @@
     <fullName>N1N2N3DoNotChangeClosed</fullName>
     <active>true</active>
     <description>[VR Caso] N1 N2 N3 no pueden modificarse tras cerrar el caso</description>
-    <errorConditionFormula>RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp;
+    <errorConditionFormula>(RecordType.DeveloperName == &quot;OCSInquiry&quot;  || RecordType.DeveloperName == &quot;USPInquiry&quot;  ) &amp;&amp;
 ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;

@@ -4,7 +4,7 @@
         <name>GenesysFlowRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>1634</locationX>
-        <locationY>768</locationY>
+        <locationY>888</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -44,13 +44,19 @@
         <inputParameters>
             <name>ownerId</name>
             <value>
-                <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.GestorPreferenteAsignado</elementReference>
+                <elementReference>GetPreferredAgentSubflow.GestorPreferenteAsignado</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
                 <elementReference>ScreenPopURL</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>caseSla</name>
+            <value>
+                <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -76,7 +82,7 @@
         <name>GenesysQueueRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
         <locationX>2162</locationX>
-        <locationY>768</locationY>
+        <locationY>648</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -103,12 +109,6 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>ownerId</name>
-            <value>
-                <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.GestorPreferenteAsignado</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>queueId</name>
             <value>
                 <elementReference>$Record.GenesysQueueName__c</elementReference>
@@ -118,12 +118,6 @@
             <name>screenPopRecordId</name>
             <value>
                 <elementReference>ScreenPopURL</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>industrySpecializationType</name>
-            <value>
-                <elementReference>SpecializationType</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -212,7 +206,7 @@
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
         <locationX>1898</locationX>
-        <locationY>648</locationY>
+        <locationY>528</locationY>
         <defaultConnector>
             <targetReference>GenesysQueueRoutingInvocableAction</targetReference>
         </defaultConnector>
@@ -225,14 +219,14 @@
                 <operator>NotEqualTo</operator>
             </conditions>
             <connector>
-                <targetReference>GenesysFlowRoutingInvocableAction</targetReference>
+                <targetReference>GetPreferredAgentSubflow</targetReference>
             </connector>
             <label>Flow</label>
         </rules>
     </decisions>
     <decisions>
         <name>IsRelatedCaseDecision</name>
-        <label>¿Caso relacionado?</label>
+        <label>¿Caso relacionado abierto?</label>
         <locationX>710</locationX>
         <locationY>408</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
@@ -253,6 +247,13 @@
             <conditions>
                 <leftValueReference>GetGenesysQueueAction</leftValueReference>
                 <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.IsClosed</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
@@ -313,7 +314,7 @@
         <locationX>1634</locationX>
         <locationY>408</locationY>
         <defaultConnector>
-            <targetReference>GetGenesysQueueAndParentIdFromEmailSubflow</targetReference>
+            <targetReference>IsFlowOrQueueDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No ZE</defaultConnectorLabel>
         <rules>
@@ -336,7 +337,8 @@
             <label>ZE</label>
         </rules>
     </decisions>
-    <description>Flujo encargado de enrutar a genesys los emails entrantes recibidos</description>
+    <description>Flujo encargado de enrutar a genesys los emails entrantes recibidos. En el caso de After Update, aplica únicamente a los emails provenientes de CART OPS (robot tipificador)</description>
+    <environments>Default</environments>
     <formulas>
         <name>CSMAdministrationManager</name>
         <dataType>String</dataType>
@@ -358,6 +360,12 @@
 &quot;Subject: &quot; + {!$Record.Subject} + BR() +
 &quot;To Address: &quot; + {!$Record.ToAddress} + BR() +
 &quot;Parent Id: &quot; + {!$Record.ParentId}</expression>
+    </formulas>
+    <formulas>
+        <description>Se marca a true si el caso es distinto de New (respuesta) y la tipificación del mismo es de Venta</description>
+        <name>isQuoteResponse</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(NOT(ISPICKVAL({!$Record.Parent.Status}, &quot;Nuevo&quot;)), ISPICKVAL({!$Record.Parent.Type}, &quot;Venta&quot;))</expression>
     </formulas>
     <formulas>
         <description>Si es de ZE o ZEO, se buscan oportunidades, si no, casos</description>
@@ -454,7 +462,7 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
         <locationX>1898</locationX>
-        <locationY>888</locationY>
+        <locationY>1008</locationY>
         <inputAssignments>
             <field>Message__c</field>
         </inputAssignments>
@@ -654,12 +662,12 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
     </start>
     <status>Active</status>
     <subflows>
-        <name>GetGenesysQueueAndParentIdFromEmailSubflow</name>
-        <label>Comprobar Cola Genesys y ParentID del Email</label>
-        <locationX>1898</locationX>
-        <locationY>528</locationY>
+        <name>GetPreferredAgentSubflow</name>
+        <label>Recuperar Agente Preferente</label>
+        <locationX>1634</locationX>
+        <locationY>648</locationY>
         <connector>
-            <targetReference>IsFlowOrQueueDecision</targetReference>
+            <targetReference>PriorityCalculationSubflow</targetReference>
         </connector>
         <flowName>EmailMessage_Comprobar_Cola_Genesys_y_ParentID</flowName>
         <inputAssignments>
@@ -712,6 +720,36 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
+    <subflows>
+        <name>PriorityCalculationSubflow</name>
+        <label>Calcular Prioridad</label>
+        <locationX>1634</locationX>
+        <locationY>768</locationY>
+        <connector>
+            <targetReference>GenesysFlowRoutingInvocableAction</targetReference>
+        </connector>
+        <flowName>EmailMessagePriorityCalculation</flowName>
+        <inputAssignments>
+            <name>caseCallCenter</name>
+            <value>
+                <elementReference>$Record.Parent.CallCenter__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>caseId</name>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>isResponse</name>
+            <value>
+                <elementReference>isQuoteResponse</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <triggerOrder>1500</triggerOrder>
     <variables>
         <name>CasoRelacionado</name>
         <dataType>SObject</dataType>

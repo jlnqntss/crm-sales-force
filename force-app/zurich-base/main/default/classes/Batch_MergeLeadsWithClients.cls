@@ -46,7 +46,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
 
     global Batch_MergeLeadsWithClients()
     {
-        // System.Debug('----------------- Batch_MergeLeadsWithClients INIT');
+        
         // 0. Initialize
         // NormalAccounts = new List<string>();
         PersonalAccounts = new List<string>();
@@ -61,8 +61,8 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
         if( !settings.isEmpty() ) {
             LeadFieldsToKeep = settings[0].Value__c.split(',');
         }
-        // System.Debug('----------------- Lead fields keep');
-        // System.Debug(LeadFieldsToKeep);
+        
+        
 
         // 1. Get the list of account fields to merge for each type (person/normal)
         SObjectType accountType = Schema.getGlobalDescribe().get(ACCOUNT_NAME);
@@ -157,7 +157,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                 // Get the Lead account
                 List<Account> leadAccounts = (List<Account>) Database.query(leadQuery);
 
-                // System.debug('---------------------------- DML limit before: ' + Limits.getDmlStatements());
+                
                 Savepoint sp = Database.setSavepoint();
                 try {
                     // check if
@@ -188,7 +188,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                                 }
                             }
 
-                            // System.Debug('------------------ Fields to keep');
+                            
                             // keep the original fields of the lead
                             if( LeadFieldsToKeep != null && !LeadFieldsToKeep.isEmpty() ) {
                                 for(String fieldName: LeadFieldsToKeep) {
@@ -204,7 +204,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                                 // List<Contact> cs = [SELECT Id FROM Contact WHERE AccountId = :leadAccount.Id];
                                 // System.assertEquals(1, cs.size(),'deberia haber un contacto para el lead');
                                 
-                                // System.debug('Recordtype NOT PersonAccount');
+                                
                                 // Convert the lead account into a normal account
                                 Account leadConversion = new Account(
                                     Id= leadAccount.Id,
@@ -233,34 +233,34 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                                 if( contactPoints != null && !contactPoints.isEmpty() ) {
                                     for( SObject o: contactPoints ) {
                                         o.put(mapRelatedObjects.get(s), leadAccount.Id);
-                                        //System.debug(o);
+                                        
                                     }
                                     update contactPoints; //! 3 DML. One per ContactPoint (email, phone, address)
                                 }
                             }
             
                             // Do the merge
-                            // System.debug('Merging........');
+                            
                             merge leadAccount account; //! 1 DML 
                         }
                     }
 
                     // Finally update the offer to clear the field OldAccountId__c
-                    // System.debug('Updating offer........');
+                    
                     update new Opportunity(
                         Id= offers[0].Id,
                         OldAccountId__c= null
                     ); //! 1 DML 
 
-                    // System.debug('---------------------------- dml limit after merge: ' + Limits.getDmlStatements());
+                    
                 } catch( Exception ex ) {
                     Database.rollback(sp); 
-                    // System.Debug('----------------------- Exception');
-                    // System.Debug(ex);
+                    
+                    
                     ErrorLogUtil.commitError(ex, CLASS_NAME, offers[0].Id);
                 }
 
-                // System.debug('----------------------------  DML limit after: ' + Limits.getDmlStatements());
+                
             }
         } else {
             isErrorScopeToBig = true;

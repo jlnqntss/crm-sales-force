@@ -7,8 +7,8 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
     public HTTPResponse respond(HTTPRequest request)
     {
         String path = request.getEndpoint().substringAfter('/');
-        // System.debug(path);
-        // System.debug(scenario);
+        
+        
 
         if(this.scenario.containsKey(path) )
         {
@@ -185,7 +185,6 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
 
     public void addCallbackCancelMockResponse(String interactionId)
     {
-        // {"participants":[],"state":"disconnected"}
         addRawMockResponse(
             'api/v2/conversations/callbacks/' + interactionId, 
             new GenesysCloudConversationsAPIMock.APIResponse(
@@ -199,7 +198,6 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
 
     public void addCallbackCancelMockResponseError(String interactionId)
     {
-        // {"participants":[],"state":"disconnected"}
         addRawMockResponse(
             'api/v2/conversations/callbacks/' + interactionId, 
             new GenesysCloudConversationsAPIMock.APIResponse(
@@ -213,7 +211,6 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
 
     public void addInteractionDisconnectionMockResponse(String interactionId)
     {
-        // {"participants":[],"state":"disconnected"}
         addRawMockResponse(
             '/api/v2/conversations/'+interactionId +'/disconnect',
             new GenesysCloudConversationsAPIMock.APIResponse(
@@ -227,7 +224,6 @@ public class GenesysCloudConversationsAPIMock implements HttpCalloutMock
 
     public void addInteractionDisconnectionMockResponseError(String interactionId)
     {
-        // {"participants":[],"state":"disconnected"}
         addRawMockResponse(
             '/api/v2/conversations/'+interactionId +'/disconnect',
             new GenesysCloudConversationsAPIMock.APIResponse(

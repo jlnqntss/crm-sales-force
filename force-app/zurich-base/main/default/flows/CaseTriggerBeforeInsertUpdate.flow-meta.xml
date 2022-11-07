@@ -33,9 +33,9 @@
     </assignments>
     <decisions>
         <name>Close_result_informado</name>
-        <label>Close result informado?</label>
-        <locationX>169</locationX>
-        <locationY>313</locationY>
+        <label>Close result informado y de OCS?</label>
+        <locationX>163</locationX>
+        <locationY>297</locationY>
         <defaultConnector>
             <targetReference>ClosedBy</targetReference>
         </defaultConnector>
@@ -48,6 +48,13 @@
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSInquiry</stringValue>
                 </rightValue>
             </conditions>
             <connector>

@@ -85,7 +85,7 @@ public without sharing class PreferenceCentreProcessController
      * @date 16/12/2020
      */
     public static Scope__c getScopeData(String hashedId) {
-        System.debug('- - - - - PreferenceCentreProcessController.getScopeData - - - - - ');
+        
 
         Scope__c scope = null;
 
