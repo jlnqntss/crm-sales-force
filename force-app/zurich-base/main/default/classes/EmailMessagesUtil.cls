@@ -61,6 +61,62 @@ public with sharing class EmailMessagesUtil
         }
     }
 
+
+    public void checkNewCaseFromClosedCase(List<EmailMessage> emailList)
+    {
+        for(EmailMessage email : emailList)
+        {
+            Set<String> idsCasos = new Set<String>();
+            idsCasos.add(email.ParentId);
+			List<Case> cases = new CasesSelector().findAllDataById(idsCasos);
+			if(!cases.isEmpty())
+            {
+                system.debug('******* lista casos tiene algo: '+ cases);
+                Case caso = cases[0];
+				system.debug('******* estado del caso: ' + caso.Status);
+                //Solo se hace algo si se cerró el caso
+                if(caso.Status != '' && (caso.Status == 'Cerrado' || caso.Status == 'Merged' || caso.Status == 'Combinado'))
+                {
+                    Case nuevoCaso = new Case(
+                        Status='Asignado',
+                        ParentId=caso.Id,
+                        AccountId=caso.AccountId,
+                        Type=caso.Type,
+                        Subtype__c=caso.Subtype__c,
+                        TypeN3__c=caso.TypeN3__c,
+                        RecordTypeId=caso.RecordTypeId
+                    );
+       				insert nuevoCaso;
+                    System.debug('antes de ponerle id: ' + email.RelatedToId);
+                    email.RelatedToId = nuevoCaso.Id;
+
+                    String caseIdpadre = caso.Id;
+                    string Case_ThreadIDpadre = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseIdpadre.left(5)  + caseIdpadre.mid(10,5) +'';
+                    system.debug('CASE THREADID PADRE:::' + Case_ThreadIDpadre);
+                    system.debug('CASE THREADID EMAIL padre sin la formula:::' + email.ThreadIdentifier);
+
+                    String caseId = nuevoCaso.id;
+                    string Case_ThreadID = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseId.left(5)  + caseId.mid(10,5) +'';
+                    system.debug('CASE THREADID NUEVO:::' + Case_ThreadID);
+                    
+                    system.debug('BODY: ' + email.HtmlBody);
+                    email.HtmlBody = email.HtmlBody.replace('patata', 'tomate');
+                    email.TextBody = email.TextBody.replace('patata', 'tomate');
+
+                    email.HtmlBody = email.HtmlBody.replace(Case_ThreadIDpadre, Case_ThreadID);
+                    email.TextBody = email.TextBody.replace(Case_ThreadIDpadre, Case_ThreadID);
+                    system.debug('BODY DESPUÉS REPLACE' + EMAIL.HtmlBody);
+                    //email.ThreadIdentifier = Case_ThreadID;
+                    System.debug('despoues de ponerle id: ' + email.RelatedToId);
+                }
+                
+            }
+
+        }
+        System.debug('despoues delk forues ' + emailList[0].RelatedToId);
+
+    }
+
     /**
      * Check all the email message that will be processed to assign the Genesys Queue data.
      * On insert trigger we will check if the addresses (To,Cc) of the emails are in the hegeo email list configured 
