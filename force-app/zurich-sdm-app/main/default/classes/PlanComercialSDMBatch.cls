@@ -50,7 +50,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
             // los lotes sean solo de planes mensuales o anuales. Para minimizar el numero de KPIs recuperados
             return Database.getQueryLocator([
                 SELECT Id, CreatedById, AssignedTo__c, StartDate__c, EndDate__c,
-                       Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c
+                       Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c, Zone__c, AssignedTo__r.name, Owner.name
                 FROM PlanComercial__c
                 WHERE StartDate__c <= :todayValue AND EndDate__c >= :todayValue
                 ORDER BY AccumulateType__c

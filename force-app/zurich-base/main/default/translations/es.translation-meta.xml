@@ -5621,6 +5621,10 @@
         <name>SDM_Objetivos_Product</name>
     </customLabels>
     <customLabels>
+        <label>Zona</label>
+        <name>SDM_Objetivos_Zone</name>
+    </customLabels>
+    <customLabels>
         <label>Se han encontrado errores</label>
         <name>SDM_Objetivos_RowErrorTitle</name>
     </customLabels>

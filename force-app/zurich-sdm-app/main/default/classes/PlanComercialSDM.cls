@@ -22,7 +22,7 @@ public with sharing class PlanComercialSDM {
 
     // Lista de nombres de los campos de filtrado de los KPI__c
     private static final List<String> KPI_FILTER_FIELDS = new List<String> {
-        'CalcYear__c', 'CalcMonth__c', 'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c'
+        'CalcYear__c', 'CalcMonth__c', 'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c', 'Intermediary__r.Zone__c'
     };
     // Mapa de equivalencias entre campos del objeto PlanComercial__c y campos del objeto KPI__c
     private static final Map<String, String> mapPlanComercialToKpiFields = new Map<String, String> {
@@ -33,6 +33,7 @@ public with sharing class PlanComercialSDM {
     // Se corresponde con el API NAME del valor todos en los picklist Segment__c y Product__c del objeto PlanComercial__c
     @TestVisible
     private static final String ALL_VALUE = 'Todos';
+    private static final String ZONE_ALL_VALUE = 'Todos';
     private static final String PLAN_COMERCIAL_ACCUMULATE_TYPE_MONTH = 'Mensual';
     // Se corresponden el campo picklist CalculationType__c del metadato SDMCommercialPlan__mdt 
     @TestVisible
@@ -91,7 +92,7 @@ public with sharing class PlanComercialSDM {
      * 
      * @param {List<Id> intermediaries} lista de ids de mediadores
      * @param {Set<String> fields} lista de campos del objeto KPI__c
-     */
+     */ 
     private void findKPIsByIntermediaries(Set<Id> intermediaries, Set<String> fields, Boolean containsMonths, Boolean containsYTD)
     {
         if( intermediaries != null && !intermediaries.isEmpty() && fields != null && !fields.isEmpty() ) {
@@ -220,7 +221,7 @@ public with sharing class PlanComercialSDM {
             String kpiFieldValue = String.valueOf(kpi.get(mapPlanComercialToKpiFields.get(key)));
 
             if( planFieldValue != ALL_VALUE && planFieldValue != kpiFieldValue ) {
-                result = false;
+                result = false; 
             }
         }
 
@@ -232,6 +233,11 @@ public with sharing class PlanComercialSDM {
             Integer kpiYear = Integer.valueOf(kpi.CalcYear__c); // Ej: 2021
 
             result = (kpiYear >= startYear && kpiYear <= endYear); // Ej: true
+
+            // comprobamos que la zona del plan coincida con la zona del kpi que estamos consultando en caso que la zona del plan no sea TODAS
+            if (result && !ZONE_ALL_VALUE.equals(plan.Zone__c)) {
+                result = plan.Zone__c.equals(kpi.Intermediary__r.Zone__c);
+            }
 
             // Y si es mensual
             if( result && plan.AccumulateType__c == PLAN_COMERCIAL_ACCUMULATE_TYPE_MONTH ) {
@@ -395,6 +401,7 @@ public with sharing class PlanComercialSDM {
             if( mapKPIsByIntermediary != null && !mapKPIsByIntermediary.isEmpty() ) {
                 // Ahora si, por cada plan comercial, se realiza el calculo...
                 for(PlanComercial__c plan: plans) {
+
                     // Obtenemos de nuevo el usuario relacionado con el plan
                     Id userId = getUserIdFromPlan(plan);
 

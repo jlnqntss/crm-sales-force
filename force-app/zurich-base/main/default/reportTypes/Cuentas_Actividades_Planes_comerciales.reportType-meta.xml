@@ -181,6 +181,11 @@ Crear tipo de Informe Planes &gt; Actividades &gt; Assigned To e incluir por Loo
             <field>TargetKPINumber__c</field>
             <table>PlanComercial__c</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Zone__c</field>
+            <table>PlanComercial__c</table>
+        </columns>
         <masterLabel>Planes Comerciales</masterLabel>
     </sections>
     <sections>

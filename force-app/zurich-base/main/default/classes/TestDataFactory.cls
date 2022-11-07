@@ -2050,7 +2050,8 @@ public class TestDataFactory
                             INFOIntermediaryCode__c = String.valueOf(phoneNumber).leftPad(10, '0'),
                             Phone = String.valueOf(phoneNumber),
                             NationalId__c = 'C',
-                            RecordTypeId = recordTypeId
+                            RecordTypeId = recordTypeId,
+                            Zone__c = PlanComercialSelector.ZONE_11_BARCELONA
                         )
                     );
                 }
@@ -2094,7 +2095,8 @@ public class TestDataFactory
                             Name = 'agrupationName' + i,
                             NationalIdType__c = 'C',
                             NationalId__c = 'C',
-                            RecordTypeId = recordTypeId
+                            RecordTypeId = recordTypeId,
+                            Zone__c = PlanComercialSelector.ZONE_11_BARCELONA
                         )
                     );
                 }
@@ -3291,7 +3293,7 @@ public class TestDataFactory
     }
 
     /**
-     * Genera una lista de Objetivos para un año
+     * Genera una lista de Objetivos para un año, usar mejor el método generateObjective
      *
      * @author nts (dmunoz)
      * @date 11/07/2022
@@ -3309,6 +3311,7 @@ public class TestDataFactory
                     Indicator__c = 'PN',
                     Segment__c = 'PYMEs',
                     Product__c = 'Accidentes',
+                    Zone__c = PlanComercialSelector.ZONE_11_BARCELONA,
                     January__c = 100,
                     ExternalId__c = String.valueOf(i)
                 )
@@ -3328,7 +3331,7 @@ public class TestDataFactory
      * @param {Integer num} Numero a crear
      * @return {Objective__c} 
      */
-    public static Objective__c generateObjective(Integer year, String indicator, String segment, String product, Decimal january, Decimal february, Decimal march, Decimal april,
+    public static Objective__c generateObjective(Integer year, String indicator, String segment, String product, String zone, Decimal january, Decimal february, Decimal march, Decimal april,
                                                     Decimal may, Decimal june, Decimal july, Decimal august, Decimal september,
                                                     Decimal october, Decimal november, Decimal december) {
 
@@ -3337,6 +3340,7 @@ public class TestDataFactory
                     Indicator__c = indicator,
                     Segment__c = segment,
                     Product__c = product,
+                    Zone__c = zone,
                     January__c = january,
                     February__c = february,
                     March__c = march,

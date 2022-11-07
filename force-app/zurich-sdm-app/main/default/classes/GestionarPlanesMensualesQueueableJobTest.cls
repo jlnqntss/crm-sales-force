@@ -16,7 +16,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
         System.debug('----------------------------Test testInsertPlanesMensuales-------------------------------------------------------------');
 
         List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, 
-                                                                Indicator__c, Segment__c, Product__c, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Actual_KPI__c 
+                                                                Indicator__c, Segment__c, Product__c, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Actual_KPI__c, Zone__c
                                                         FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
@@ -26,7 +26,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
         if (!planesToJob.isEmpty()) {
             PlanComercial__c pc = planesToJob.get(0);
             System.debug('pc original KPI  ' + pc.TargetKPINumber__c);
-            Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+            Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
             insert obj;
 
@@ -121,7 +121,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
     static void testKOInsertPlanesMensuales() {
         System.debug('----------------------------Test testKOInsertPlanesMensuales-------------------------------------------------------------');
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
                                                         AND Intermediary__c = NULL
@@ -130,7 +130,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
         if (!planesToJob.isEmpty()) {
             PlanComercial__c pc = planesToJob.get(0);
 
-            Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+            Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
             insert obj;
 
@@ -153,7 +153,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
     @isTest
     static void testOK_DeletePlanAnualRN() {
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
                                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                                         AND ParentPlan__c != NULL 
                                                                         AND Intermediary__c = NULL
@@ -162,7 +162,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
         if (!planesToJob.isEmpty()) {
             PlanComercial__c pc = planesToJob.get(0);
 
-            Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+            Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
             insert obj;
 
@@ -185,7 +185,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
     @isTest
     static void testOK_UpdatePesosObjetivo() {
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
                                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                                         AND ParentPlan__c != NULL 
                                                                         AND Intermediary__c = NULL
@@ -194,7 +194,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
         if (!planesToJob.isEmpty()) {
             PlanComercial__c pc = planesToJob.get(0);
 
-            Objective__c objective = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+            Objective__c objective = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
             insert objective;
 
             List<Objective__c> objectivesList = new List<Objective__c>([SELECT Id, Product__c, Indicator__c, Segment__c, January__c, February__c, March__c, April__c, 
@@ -229,7 +229,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
     @isTest
     static void testOK_DeleteObjetivo() {
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
                                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                                         AND ParentPlan__c != NULL 
                                                                         AND Intermediary__c = NULL
@@ -238,7 +238,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
         if (!planesToJob.isEmpty()) {
             PlanComercial__c pc = planesToJob.get(0);
 
-            Objective__c objective = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+            Objective__c objective = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
             insert objective;
 
             List<Objective__c> objectivesList = new List<Objective__c>([SELECT Id, Product__c, Indicator__c, Segment__c, January__c, February__c, March__c, April__c, 
