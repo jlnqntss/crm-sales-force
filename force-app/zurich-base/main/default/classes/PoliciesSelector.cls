@@ -165,6 +165,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
         {
             this.baseQuery.selectReadableFields();
             this.baseQuery.addConditionIn('Policy__c.PolicyHolder__r.NationalId__c', nationalIds).addConditionIn(Policy__c.InfoPolicyNumber__c, infoPolicyNumbers);
+            this.baseQuery.orderBy('Policy__c.PolicyHolder__r.NationalId__c');
 
             return (List<Policy__c>) this.baseQuery.run();
         }

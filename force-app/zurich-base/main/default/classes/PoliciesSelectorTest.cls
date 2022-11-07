@@ -244,7 +244,7 @@ private with sharing class PoliciesSelectorTest
     @isTest
     static void test_selectByInfoPolicyNumberAndNationalId_matchedRecords()
     {
-        List<Policy__c> policies = [SELECT Id, PolicyHolder__r.NationalId__c, InfoPolicyNumber__c FROM Policy__c];
+        List<Policy__c> policies = [SELECT Id, PolicyHolder__r.NationalId__c, InfoPolicyNumber__c FROM Policy__c ORDER BY PolicyHolder__r.NationalId__c];
         System.assertEquals(false, policies.isEmpty(), 'List should NOT be empty');
 
         List<String> policyNumbers = new List<String>();
