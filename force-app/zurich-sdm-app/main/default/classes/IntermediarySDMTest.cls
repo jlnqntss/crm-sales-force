@@ -523,7 +523,47 @@ private class IntermediarySDMTest
         ];
         // Debido a que las relaciones directas no se pueden eliminar y por tanto no se puede comprobar esto
         // System.assertEquals(0, acrs.size(), 'Deberia haber 0 ACRs');
-    } 
+    }
+
+    /**
+     * Test del metodo que comprueba si un contacto cambia de rol, 
+     * la account contact relation de ese contacto cambia de rol correctamente
+     *
+     * @author aberuete
+     * @date 07/11/2022
+     */
+    @isTest
+    static void testAssignIntermediaryContactRelation_changeRole()
+    {
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        String soql = 'SELECT Id, Name,ClaimsEmail__c, ' + AccountsSelector.SDM_MAINEMAIL_FIELD + ' FROM Account WHERE RecordTypeId = :rtIntermediaryId limit 1 ';
+        List<Account> intermediaries = Database.query(soql);
+        intermediaries.get(0).ClaimsEmail__c = 'cto.siniestos@invalid.com';
+        intermediaries.get(0).SubscriptionEmail__c = 'cto.contratacion@invalid.com';
+        update intermediaries.get(0);
+        IntermediarySDM sdm = new IntermediarySDM();       
+        sdm.assignIntermediaryContactRelation(intermediaries);
+
+        AccountContactRelation accountContactRelationFromSinistrosBeforeBatch = [select id,contactId,Roles from AccountContactRelation where accountid =: intermediaries.get(0).id and Roles = 'Siniestros'];
+        Id contactIdFromSiniestrosBeforeBatch = accountContactRelationFromSinistrosBeforeBatch.contactId ; 
+        AccountContactRelation accountContactRelationFromContratacionBeforeBatch = [select id,contactId,Roles from AccountContactRelation where accountid =: intermediaries.get(0).id and Roles = 'Contratacion'];
+        Id contactIdFromContratacionBeforeBatch = accountContactRelationFromContratacionBeforeBatch.contactId ; 
+        intermediaries.get(0).ClaimsEmail__c = 'cto.contratacion@invalid.com';
+        intermediaries.get(0).SubscriptionEmail__c = 'cto.siniestos@invalid.com';
+        update intermediaries.get(0);
+
+        Test.startTest();       
+        sdm.assignIntermediaryContactRelation(intermediaries);
+        Test.stopTest();
+
+        AccountContactRelation accountContactRelationFromSinistrosAfterBatch = [select id,contactId,Roles from AccountContactRelation where accountid =: intermediaries.get(0).id and Roles = 'Siniestros'];
+        Id contactIdFromSiniestrosAfterBatch = accountContactRelationFromSinistrosAfterBatch.contactId ; 
+        AccountContactRelation accountContactRelationFromContratacionAfterBatch = [select id,contactId,Roles from AccountContactRelation where accountid =: intermediaries.get(0).id and Roles = 'Contratacion'];
+        Id contactIdFromContratacionAfterBatch = accountContactRelationFromContratacionAfterBatch.contactId ;
+
+        System.assertEquals(contactIdFromSiniestrosBeforeBatch, contactIdFromContratacionAfterBatch, 'El contacto con rol siniestros deberia tener ahora el rol de contratacion');
+        System.assertEquals(contactIdFromContratacionBeforeBatch, contactIdFromSiniestrosAfterBatch, 'El contacto con rol contratacion deberia tener ahora el rol de siniestros');
+    }
     
     /**
      * Test del metodo que envia las notificaciones a los usuarios del cambio de visibilidad del mediador
