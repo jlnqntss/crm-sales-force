@@ -8569,6 +8569,11 @@
     </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
+        <field>MaestroApetito__c.PolicyFramework__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>MaestroApetito__c.Preferente__c</field>
         <readable>true</readable>
     </fieldPermissions>
