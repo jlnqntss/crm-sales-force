@@ -40,7 +40,7 @@
                         <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
                         <operator>CONTAINS</operator>
                         <rightValue>Consultor</rightValue>
-                    </criteria>                    
+                    </criteria>
                     <criteria>
                         <leftValue>{!$User.UserRole.DeveloperName}</leftValue>
                         <operator>CONTAINS</operator>
@@ -95,7 +95,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>filterName</name>
-                    <value>Mis_mediadores_SDM</value>
+                    <value>Mediadores_de_mi_equipo</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>hideActionBar</name>
