@@ -25,13 +25,35 @@
         </connector>
     </assignments>
     <decisions>
-        <name>uspCaseDecision</name>
-        <label>USP Case</label>
-        <locationX>182</locationX>
-        <locationY>335</locationY>
-        <defaultConnectorLabel>Not USP</defaultConnectorLabel>
+        <name>noTaskDecision</name>
+        <label>No Task Decision</label>
+        <locationX>50</locationX>
+        <locationY>911</locationY>
+        <defaultConnector>
+            <targetReference>updateDueDateAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Null</defaultConnectorLabel>
         <rules>
-            <name>uspOutcome</name>
+            <name>nullOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getTaskCaseAction</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>uspLastStatusCaseDecision</name>
+        <label>USP Last Status Case</label>
+        <locationX>512</locationX>
+        <locationY>335</locationY>
+        <defaultConnectorLabel>Not USP or Last Status Pending</defaultConnectorLabel>
+        <rules>
+            <name>uspPendingOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
@@ -40,10 +62,24 @@
                     <stringValue>USPInquiry</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendiente</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.PendingBy__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>getTaskCaseAction</targetReference>
             </connector>
-            <label>USP</label>
+            <label>USP And Last Status Pending</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -60,7 +96,7 @@
             <targetReference>dueDateAssignment</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>updateDueDateAction</targetReference>
+            <targetReference>noTaskDecision</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -82,6 +118,70 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>createRecordGetTaskErrorAction</name>
+        <label>Create Record Get Task Error Action</label>
+        <locationX>710</locationX>
+        <locationY>575</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Case Trigger - After Update - Adelantar Seguimiento</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Recuperar Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>createRecordUpdateDueDateErrorAction</name>
+        <label>Create Record Update Due Date Error Action</label>
+        <locationX>446</locationX>
+        <locationY>1151</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Case Trigger - After Update - Adelantar Seguimiento</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Actualizar Registros Due Date</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>getTaskCaseAction</name>
         <label>Get Task Case</label>
@@ -91,6 +191,9 @@
         <connector>
             <targetReference>updateDueDateLoop</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>createRecordGetTaskErrorAction</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>WhatId</field>
@@ -106,6 +209,13 @@
                 <stringValue>Seguimiento</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>ActivityDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -113,15 +223,18 @@
     <recordUpdates>
         <name>updateDueDateAction</name>
         <label>Update Due Date Action</label>
-        <locationX>50</locationX>
-        <locationY>911</locationY>
+        <locationX>182</locationX>
+        <locationY>1031</locationY>
+        <faultConnector>
+            <targetReference>createRecordUpdateDueDateErrorAction</targetReference>
+        </faultConnector>
         <inputReference>caseRecords</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>386</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>uspCaseDecision</targetReference>
+            <targetReference>uspLastStatusCaseDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -135,21 +248,7 @@
             <field>Status</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Pendiente</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>PendingBy__c</field>
-            <operator>IsChanged</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>PendingBy__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Intermediary</stringValue>
+                <stringValue>Respondido</stringValue>
             </value>
         </filters>
         <object>Case</object>
