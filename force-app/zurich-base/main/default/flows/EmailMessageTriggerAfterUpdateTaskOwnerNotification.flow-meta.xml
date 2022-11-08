@@ -3,8 +3,8 @@
     <actionCalls>
         <name>sendNotificationTaskOwner</name>
         <label>Send Notification Task Owner</label>
-        <locationX>50</locationX>
-        <locationY>1247</locationY>
+        <locationX>182</locationX>
+        <locationY>1367</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <faultConnector>
@@ -85,9 +85,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>noTaskDecision</name>
+        <label>No Task Decision</label>
+        <locationX>50</locationX>
+        <locationY>1247</locationY>
+        <defaultConnector>
+            <targetReference>sendNotificationTaskOwner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Task</defaultConnectorLabel>
+        <rules>
+            <name>noTaskOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getTaskAssociated</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>No task</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>uspCaseDecision</name>
         <label>USP Case</label>
-        <locationX>578</locationX>
+        <locationX>644</locationX>
         <locationY>335</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
         <rules>
@@ -125,7 +147,7 @@
             <targetReference>duplicatedValueDecision</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>sendNotificationTaskOwner</targetReference>
+            <targetReference>noTaskDecision</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -150,7 +172,7 @@
     <recordCreates>
         <name>createRecordGetNotificationErrorAction</name>
         <label>Create Record Get Notification Error Action</label>
-        <locationX>842</locationX>
+        <locationX>974</locationX>
         <locationY>575</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -182,7 +204,7 @@
     <recordCreates>
         <name>createRecordGetTaskAssociatedErrorAction</name>
         <label>Create Record Get Task Associated Error Action</label>
-        <locationX>578</locationX>
+        <locationX>710</locationX>
         <locationY>695</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -214,8 +236,8 @@
     <recordCreates>
         <name>createRecordSendNotificationErrorAction</name>
         <label>Create Record Send Notification Error Action</label>
-        <locationX>314</locationX>
-        <locationY>1367</locationY>
+        <locationX>446</locationX>
+        <locationY>1487</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -299,7 +321,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>452</locationX>
+        <locationX>518</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>uspCaseDecision</targetReference>
