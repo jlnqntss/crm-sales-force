@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>No_Editar_Asunto_Tarea</name>
+    </customPermissions>
+    <description>Permission set que no permite que aquellos usuarios que lo tengan puedan editar el asunto de una tarea</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>No Editar Asunto Tarea</label>
+</PermissionSet>
