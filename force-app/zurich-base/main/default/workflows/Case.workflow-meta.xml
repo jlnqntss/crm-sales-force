@@ -119,6 +119,16 @@
         <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
+        <fullName>MarkSlaStatus</fullName>
+        <field>ViolatedSla__c</field>
+        <literalValue>1</literalValue>
+        <name>Mark SLA Status</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Status_closed</fullName>
         <field>Status</field>
         <literalValue>Cerrado</literalValue>
