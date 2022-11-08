@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <hasActivationRequired>false</hasActivationRequired>
     <label>ZE Director</label>
     <permissionSets>Acceso_App_ZE</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
@@ -7,5 +8,6 @@
     <permissionSets>Gestion_CS</permissionSets>
     <permissionSets>Gestion_Captacion</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
+    <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
