@@ -69,6 +69,13 @@
                     <stringValue>Pendiente</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.PendingBy__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>getTaskCaseAction</targetReference>
             </connector>
