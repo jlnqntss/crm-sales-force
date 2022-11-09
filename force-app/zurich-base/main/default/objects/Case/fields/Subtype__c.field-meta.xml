@@ -405,6 +405,7 @@
             <value>
                 <fullName>No definido</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>No definido</label>
             </value>
             <value>
