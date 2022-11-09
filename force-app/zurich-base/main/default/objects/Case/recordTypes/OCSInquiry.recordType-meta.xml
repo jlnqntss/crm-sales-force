@@ -983,10 +983,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>No definido</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Queja</fullName>
             <default>false</default>
         </values>
@@ -1027,7 +1023,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Seguimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Sugerencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tareas administrativas</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1105,11 +1109,23 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cambio de intermediario</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Campaña</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Capitales</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Cartera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Certificados</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1129,6 +1145,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cotización</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Datos Bancarios</fullName>
             <default>false</default>
         </values>
@@ -1137,7 +1157,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Devolución</fullName>
+            <fullName>Devolución de recibo liquidado mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1165,6 +1189,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Felicitación</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Firma digital</fullName>
             <default>false</default>
         </values>
@@ -1173,7 +1201,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Garantías %2F Capitales</fullName>
+            <fullName>Garantías</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1185,7 +1213,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Gestión competencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Inconsistencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Información</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1206,10 +1242,6 @@
         </values>
         <values>
             <fullName>Navegación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No definido</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1237,6 +1269,22 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Recobro indirecto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recobro proactivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recobro reactivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reemplazo</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Regularización</fullName>
             <default>false</default>
         </values>
@@ -1249,7 +1297,23 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Revocación saneamiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Saneamiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seguimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Sin Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sugerencia</fullName>
             <default>false</default>
         </values>
         <values>

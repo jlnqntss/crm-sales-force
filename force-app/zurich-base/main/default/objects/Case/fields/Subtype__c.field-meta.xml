@@ -568,6 +568,11 @@
                 <label>Saneamiento</label>
             </value>
             <value>
+                <fullName>Seguimiento</fullName>
+                <default>false</default>
+                <label>Seguimiento</label>
+            </value>
+            <value>
                 <fullName>Solicitud factura</fullName>
                 <default>false</default>
                 <label>Solicitud factura</label>
@@ -586,6 +591,11 @@
                 <fullName>SWAP - incidencias</fullName>
                 <default>false</default>
                 <label>SWAP - incidencias</label>
+            </value>
+            <value>
+                <fullName>Tareas administrativas</fullName>
+                <default>false</default>
+                <label>Tareas administrativas</label>
             </value>
             <value>
                 <fullName>Validacion</fullName>

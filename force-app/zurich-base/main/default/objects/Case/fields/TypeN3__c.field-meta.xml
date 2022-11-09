@@ -68,6 +68,11 @@
                 <label>Cambio de Actividad</label>
             </value>
             <value>
+                <fullName>Cambio de intermediario</fullName>
+                <default>false</default>
+                <label>Cambio de intermediario</label>
+            </value>
+            <value>
                 <fullName>Cambio de Riesgo</fullName>
                 <default>false</default>
                 <label>Cambio de Riesgo</label>
@@ -105,6 +110,11 @@
                 <label>Capital decrease</label>
             </value>
             <value>
+                <fullName>Capitales</fullName>
+                <default>false</default>
+                <label>Capitales</label>
+            </value>
+            <value>
                 <fullName>Capital expansion</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -120,6 +130,11 @@
                 <fullName>Cartera</fullName>
                 <default>false</default>
                 <label>Cartera</label>
+            </value>
+            <value>
+                <fullName>Certificados</fullName>
+                <default>false</default>
+                <label>Certificados</label>
             </value>
             <value>
                 <fullName>Certificate</fullName>
@@ -172,6 +187,11 @@
                 <label>Con Oferta</label>
             </value>
             <value>
+                <fullName>Cotización</fullName>
+                <default>false</default>
+                <label>Cotización</label>
+            </value>
+            <value>
                 <fullName>CTL surveys</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -206,8 +226,14 @@
                 <label>Decrease in guarantees</label>
             </value>
             <value>
+                <fullName>Devolución de recibo liquidado mediador</fullName>
+                <default>false</default>
+                <label>Devolución de recibo liquidado mediador</label>
+            </value>
+            <value>
                 <fullName>Devolución</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Devolución</label>
             </value>
             <value>
@@ -215,6 +241,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Digital signature</label>
+            </value>
+            <value>
+                <fullName>Documentación</fullName>
+                <default>false</default>
+                <label>Documentación</label>
             </value>
             <value>
                 <fullName>Emisión</fullName>
@@ -257,6 +288,11 @@
                 <label>Fechas</label>
             </value>
             <value>
+                <fullName>Felicitación</fullName>
+                <default>false</default>
+                <label>Felicitación</label>
+            </value>
+            <value>
                 <fullName>Fines</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -273,8 +309,14 @@
                 <label>Forma de Pago</label>
             </value>
             <value>
+                <fullName>Garantías</fullName>
+                <default>false</default>
+                <label>Garantías</label>
+            </value>
+            <value>
                 <fullName>Garantías / Capitales</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Garantías / Capitales</label>
             </value>
             <value>
@@ -294,8 +336,14 @@
                 <label>General information</label>
             </value>
             <value>
+                <fullName>Gestión competencias</fullName>
+                <default>false</default>
+                <label>Gestión competencias</label>
+            </value>
+            <value>
                 <fullName>Gestión competencias (Captación)</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Gestión competencias (Captación)</label>
             </value>
             <value>
@@ -320,6 +368,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Inconsistency</label>
+            </value>
+            <value>
+                <fullName>Información</fullName>
+                <default>false</default>
+                <label>Información</label>
             </value>
             <value>
                 <fullName>Infraseguro</fullName>
@@ -482,6 +535,21 @@
                 <label>Reclamación</label>
             </value>
             <value>
+                <fullName>Recobro indirecto</fullName>
+                <default>false</default>
+                <label>Recobro indirecto</label>
+            </value>
+            <value>
+                <fullName>Recobro proactivo</fullName>
+                <default>false</default>
+                <label>Recobro proactivo</label>
+            </value>
+            <value>
+                <fullName>Recobro reactivo</fullName>
+                <default>false</default>
+                <label>Recobro reactivo</label>
+            </value>
+            <value>
                 <fullName>Record failure identified</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -492,6 +560,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Record failure NOT identified</label>
+            </value>
+            <value>
+                <fullName>Reemplazo</fullName>
+                <default>false</default>
+                <label>Reemplazo</label>
             </value>
             <value>
                 <fullName>Regular</fullName>
@@ -533,6 +606,11 @@
                 <label>Return</label>
             </value>
             <value>
+                <fullName>Revocación saneamiento</fullName>
+                <default>false</default>
+                <label>Revocación saneamiento</label>
+            </value>
+            <value>
                 <fullName>Risk change</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -545,15 +623,30 @@
                 <label>Rule 57</label>
             </value>
             <value>
+                <fullName>Saneamiento</fullName>
+                <default>false</default>
+                <label>Saneamiento</label>
+            </value>
+            <value>
                 <fullName>Secure document</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Secure document</label>
             </value>
             <value>
+                <fullName>Seguimiento</fullName>
+                <default>false</default>
+                <label>Seguimiento</label>
+            </value>
+            <value>
                 <fullName>Sin Oferta</fullName>
                 <default>false</default>
                 <label>Sin Oferta</label>
+            </value>
+            <value>
+                <fullName>Sugerencia</fullName>
+                <default>false</default>
+                <label>Sugerencia</label>
             </value>
             <value>
                 <fullName>Suggestion</fullName>
