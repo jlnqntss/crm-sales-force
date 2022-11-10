@@ -1081,10 +1081,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>No definido</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Queja</fullName>
             <default>false</default>
         </values>

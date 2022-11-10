@@ -28,7 +28,7 @@
     </values>
     <values>
         <field>TypeN3__c</field>
-        <value xsi:type="xsd:string">No definido</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Type__c</field>

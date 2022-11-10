@@ -28,7 +28,7 @@
     </values>
     <values>
         <field>TypeN3__c</field>
-        <value xsi:type="xsd:string">Nueva Producción</value>
+        <value xsi:type="xsd:string">Gestión Competencias</value>
     </values>
     <values>
         <field>Type__c</field>
