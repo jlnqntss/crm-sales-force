@@ -2,10 +2,27 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
-        <name>Cerrar_caso</name>
-        <label>Cerrar caso</label>
-        <locationX>74</locationX>
-        <locationY>414</locationY>
+        <description>rellenar el campo closed by con el usuario que ejecutó el flow</description>
+        <name>cerradoPorAssignment</name>
+        <label>Cerrado por</label>
+        <locationX>380</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ClosedBy__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>uspTipoVentasDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>estadoCasoCerradoAssignment</name>
+        <label>Estado Caso Cerrado</label>
+        <locationX>248</locationX>
+        <locationY>431</locationY>
         <assignmentItems>
             <assignToReference>$Record.Status</assignToReference>
             <operator>Assign</operator>
@@ -14,30 +31,56 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>ClosedBy</targetReference>
+            <targetReference>cerradoPorAssignment</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <description>rellenar el campo closed by con el usuario que ejecutó el flow</description>
-        <name>ClosedBy</name>
-        <label>Cerrado por</label>
-        <locationX>170</locationX>
-        <locationY>586</locationY>
+        <name>etapaGanadaAssignment</name>
+        <label>Etapa Ganada</label>
+        <locationX>50</locationX>
+        <locationY>1007</locationY>
         <assignmentItems>
-            <assignToReference>$Record.ClosedBy__c</assignToReference>
+            <assignToReference>$Record.QuotationStage__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$User.Id</elementReference>
+                <stringValue>Won</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.Monitoring__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>etapaPerdidaAssignment</name>
+        <label>Etapa Perdida</label>
+        <locationX>314</locationX>
+        <locationY>1007</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.QuotationStage__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Lost</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.Monitoring__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </assignmentItems>
     </assignments>
     <decisions>
-        <name>Close_result_informado</name>
-        <label>Close result informado y de OCS?</label>
-        <locationX>163</locationX>
-        <locationY>297</locationY>
+        <name>closeResultInformadoDecision</name>
+        <label>Close Result Informado</label>
+        <locationX>380</locationX>
+        <locationY>311</locationY>
         <defaultConnector>
-            <targetReference>ClosedBy</targetReference>
+            <targetReference>cerradoPorAssignment</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -50,21 +93,76 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>OCSInquiry</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>Cerrar_caso</targetReference>
+                <targetReference>estadoCasoCerradoAssignment</targetReference>
             </connector>
             <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
             <label>Informado</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>ganadaPerdidaDecision</name>
+        <label>Ganada o Perdida</label>
+        <locationX>182</locationX>
+        <locationY>887</locationY>
+        <defaultConnector>
+            <targetReference>etapaPerdidaAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>ganadaOutcome</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CloseResult__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ganada</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CloseResult__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Realizado</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>etapaGanadaAssignment</targetReference>
+            </connector>
+            <label>Ganada</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>uspTipoVentasDecision</name>
+        <label>USP Y Tipo Ventas</label>
+        <locationX>380</locationX>
+        <locationY>767</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>uspVentasOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ganadaPerdidaDecision</targetReference>
+            </connector>
+            <label>USP Y Ventas</label>
+        </rules>
+    </decisions>
     <description>Cada vez que alguien cierra un caso, se rellena el campo closed by con su usuario</description>
+    <environments>Default</environments>
     <interviewLabel>Caso Trigger {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before insert/update - Cierre caso</label>
     <processMetadataValues>
@@ -76,7 +174,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -87,10 +185,10 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationX>254</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>Close_result_informado</targetReference>
+            <targetReference>closeResultInformadoDecision</targetReference>
         </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>or</filterLogic>
