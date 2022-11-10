@@ -565,7 +565,7 @@
     </recordCreates>
     <recordLookups>
         <name>caseRecordAction</name>
-        <label>caseRecord</label>
+        <label>Get case record</label>
         <locationX>974</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
