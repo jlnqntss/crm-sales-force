@@ -116,10 +116,10 @@
             <name>casoCerradoOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
+                <leftValueReference>Get_Case.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Nueva</stringValue>
+                    <stringValue>Cerrado</stringValue>
                 </rightValue>
             </conditions>
             <label>Caso Cerrado</label>
