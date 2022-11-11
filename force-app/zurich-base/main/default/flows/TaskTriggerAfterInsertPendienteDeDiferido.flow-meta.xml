@@ -5,7 +5,7 @@
         <name>IsUSPTaskDecision</name>
         <label>Is USP Task</label>
         <locationX>446</locationX>
-        <locationY>335</locationY>
+        <locationY>288</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
         <rules>
             <name>USPOutcome</name>
@@ -14,7 +14,7 @@
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Activity_USP</stringValue>
+                    <stringValue>USPInquiry</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -49,7 +49,71 @@
         <name>CaseUpdateCreate_Error_Log</name>
         <label>Create Error Log</label>
         <locationX>314</locationX>
-        <locationY>695</locationY>
+        <locationY>648</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Task Trigger - After Insert - Pendiente de diferido</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Update Related Case</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateErrorLogScheduledGetAction</name>
+        <label>Create Error Log</label>
+        <locationX>1634</locationX>
+        <locationY>408</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Task Trigger - After Insert - Pendiente de diferido</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Get Related Case</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateErrorLogScheduledUpdateAction</name>
+        <label>Create Error Log</label>
+        <locationX>1370</locationX>
+        <locationY>528</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -81,7 +145,7 @@
         <name>GetCreateErrorLogAction</name>
         <label>Create Error Log</label>
         <locationX>578</locationX>
-        <locationY>575</locationY>
+        <locationY>528</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -113,7 +177,7 @@
         <name>GetRelatedCaseAction</name>
         <label>Get Related Case</label>
         <locationX>50</locationX>
-        <locationY>455</locationY>
+        <locationY>408</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>UpdateRelatedCaseAction</targetReference>
@@ -133,11 +197,35 @@
         <object>Case</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>GetRelatedCaseScheduledAction</name>
+        <label>Get Related Case</label>
+        <locationX>1106</locationX>
+        <locationY>288</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>UpdateRelatedCaseScheduledAction</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>CreateErrorLogScheduledGetAction</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>UpdateRelatedCaseAction</name>
         <label>Update Related Case</label>
         <locationX>50</locationX>
-        <locationY>575</locationY>
+        <locationY>528</locationY>
         <faultConnector>
             <targetReference>CaseUpdateCreate_Error_Log</targetReference>
         </faultConnector>
@@ -169,8 +257,44 @@
         </inputAssignments>
         <object>Case</object>
     </recordUpdates>
+    <recordUpdates>
+        <name>UpdateRelatedCaseScheduledAction</name>
+        <label>Update Related Case</label>
+        <locationX>1106</locationX>
+        <locationY>408</locationY>
+        <faultConnector>
+            <targetReference>CreateErrorLogScheduledUpdateAction</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetRelatedCaseAction.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>IsStopped</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Asignado</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
     <start>
-        <locationX>320</locationX>
+        <locationX>650</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsUSPTaskDecision</targetReference>
@@ -185,6 +309,17 @@
         </filters>
         <object>Task</object>
         <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <name>AfterDueDateCompleted</name>
+            <connector>
+                <targetReference>GetRelatedCaseScheduledAction</targetReference>
+            </connector>
+            <label>After Due Date Completed</label>
+            <offsetNumber>1</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>ActivityDate</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
