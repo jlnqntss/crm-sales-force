@@ -3,6 +3,7 @@
  * @author nbizkarra
  * @date 23/04/2020
  */
+
 public with sharing class CaseUtil
 {
     /**
