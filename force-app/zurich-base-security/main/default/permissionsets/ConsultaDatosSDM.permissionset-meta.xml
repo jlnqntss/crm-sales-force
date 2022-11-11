@@ -54,7 +54,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>PlanComercial__c.SentNotifications__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -80,7 +80,12 @@
         <editable>true</editable>
         <field>PlanComercial__c.TargetKPIPercent__c</field>
         <readable>true</readable>
-    </fieldPermissions>  
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.Zone__c</field>
+        <readable>true</readable>
+    </fieldPermissions> 
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AMTecnicalIssues__c</field>
