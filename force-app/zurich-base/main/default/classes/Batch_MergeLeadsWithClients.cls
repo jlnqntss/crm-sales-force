@@ -218,7 +218,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                                     SELECT Id, RecordTypeId, LegalEntity__c FROM Contact
                                     WHERE AccountId = :leadAccount.Id AND RecordTypeId = null
                                 ];
-                                String rtId = Schema.SObjectType.Contact.getRecordTypeInfosByName().get(CONTACT_RECORDTYPE_DEVELOPERNAME).getRecordTypeId();
+                                String rtId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get(CONTACT_RECORDTYPE_DEVELOPERNAME).getRecordTypeId();
                                 if( !leadContacts.isEmpty() ) {                                    
                                     leadContacts[0].RecordTypeId = rtId;
                                     leadContacts[0].LegalEntity__c = account.LegalEntity__c;
