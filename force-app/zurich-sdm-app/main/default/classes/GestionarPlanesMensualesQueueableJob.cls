@@ -258,7 +258,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         PlanComercial__c result = pc.clone(false, false, false, false);
         Map<String, String> calculoPCMap = calculatePlanMensualFields(pc, obj, i);
 
-        result.Name = (pc.Name + ' ' + calculoPCMap.get('MonthName')).left(80); // recorto el tamaño a 80 que tiene el campo
+        result.Name = (pc.Name + ' ' + calculoPCMap.get('MonthName')).left(75) + ' ' + pc.EndDate__c.year(); // recorto el tamaño a 75 y añado 5 caracteres al final con el año haciendo un total de 80
         result.put(calculoPCMap.get('KPIField'), decimal.valueOf(calculoPCMap.get('KPI'))); // seteo uno de los 3 campos kpi segun el que esté informado en el plan mensual
         result.RecordTypeId = Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId();
         result.EndDate__c = Date.newInstance(pc.EndDate__c.year(), i, Integer.valueOf(calculoPCMap.get('NumberOfDays')));
