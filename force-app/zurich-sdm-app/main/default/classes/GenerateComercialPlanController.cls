@@ -788,7 +788,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'segmento';
         cell.isNew = isNewPlan;
-        cell = isIndicatorsCellBlocked(cell, plan, isDirector);        
+        cell.lock();      
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -805,7 +805,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'producto';
         cell.isNew = isNewPlan;
-        cell = isIndicatorsCellBlocked(cell, plan, isDirector);
+        cell.lock();
         cell.stringValueDefault = NEW_DEFAULT_PRODUCT;
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
@@ -816,7 +816,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.Category + SEPARATOR + cell.id;
         cell.isNew = isNewPlan;
-        cell = isIndicatorsCellBlocked(cell, plan, isDirector);
+        cell.lock();
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -826,7 +826,7 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.Category + SEPARATOR + cell.id;
         cell.isNew = isNewPlan;
-        cell = isIndicatorsCellBlocked(cell, plan, isDirector);
+        cell.lock();
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -858,28 +858,6 @@ public with sharing class GenerateComercialPlanController
             }
         }
         rows.get(rowNum).Cells.add(cell);
-    }
-
-    /**
-     * Para los ejes del plan comprobamos si se debe bloquear o no las celdas, en este caso picklist
-     * 
-     * @author nts (dmunoz)
-     * @date 27/10/2022
-     * 
-     * @param {Celltype cell} celda de uno de los 4 ejes que se se está calculando del plan
-     * @param {Plandata plan} datos del plan actual
-     * @param {Boolean isDirector} indica si se está ejecutando por un director o RN
-     * @param {CellType>} celda de entrada que se ha calculado si bloquea o no
-     */
-    private static Celltype isIndicatorsCellBlocked(Celltype cell, Plandata plan, Boolean isDirector) {
-
-        if( !plan.isMyPlan || (plan.isMyPlan && !isDirector)) {
-            cell.lock();
-        } 
-        if( plan.ActualKpi != null ) {
-            cell.lock();
-        }
-        return cell;
     }
 
     /**
@@ -1639,7 +1617,10 @@ public with sharing class GenerateComercialPlanController
                 // Los metemos en el mapa de detalle
                 for(AccountTeamMember atm: atms) {
                     mapDetail.put(atm.UserId, atm.User.Name);
-                    mapRNsZone.put(atm.Account.Zone__c, atm.Account.Zone__c); // mapa con las zonas como clave y valor para la picklist dinámica 
+                    if (String.isNotEmpty(atm.Account.Zone__c)) {
+                        mapRNsZone.put(atm.Account.Zone__c, atm.Account.Zone__c); // mapa con las zonas como clave y valor para la picklist dinámica 
+                    }
+                    
                 }
                 // añado los dos map calculados al map resultado
                 result.put('RNNameMap', mapDetail);
@@ -1682,7 +1663,9 @@ public with sharing class GenerateComercialPlanController
                 for(Account intermediary: intermediaries) {
                     String colName = String.isBlank(intermediary.IntermediaryDescription__c) ? intermediary.Name : intermediary.IntermediaryDescription__c;
                     mapDetail.put(intermediary.Id, colName);
-                    mapIntermediaryZone.put(intermediary.Id, intermediary.Zone__c);
+                    if (String.isNotEmpty(intermediary.Zone__c)) {
+                        mapIntermediaryZone.put(intermediary.Id, intermediary.Zone__c);
+                    }                    
                 }
 
                 // añado los dos map calculados al map resultado

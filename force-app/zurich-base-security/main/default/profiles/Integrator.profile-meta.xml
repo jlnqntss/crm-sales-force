@@ -5749,6 +5749,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.StatusLastModifiedDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Sub_status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5845,6 +5850,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.ClaimHandlingType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ViolatedSla__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8558,6 +8568,11 @@
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
+        <editable>true</editable>
+        <field>MaestroApetito__c.PolicyFramework__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.Preferente__c</field>
         <readable>true</readable>

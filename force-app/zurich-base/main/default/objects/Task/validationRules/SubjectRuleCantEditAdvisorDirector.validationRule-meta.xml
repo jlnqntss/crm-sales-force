@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SubjectRuleCantEditAdvisorDirector</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+
+ISCHANGED(  Subject ),
+$Permission.No_Editar_Asunto_Tarea 
+)</errorConditionFormula>
+    <errorDisplayField>Subject</errorDisplayField>
+    <errorMessage>[VR Tarea] No pueden modificar el asunto de las tareas los ZE Advisor ni los ZE Directores</errorMessage>
+</ValidationRule>
