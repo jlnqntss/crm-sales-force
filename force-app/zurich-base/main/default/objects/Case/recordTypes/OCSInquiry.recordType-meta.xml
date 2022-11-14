@@ -1062,6 +1062,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Tareas</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Venta</fullName>
             <default>false</default>
         </values>
@@ -1314,10 +1318,6 @@
         </values>
         <values>
             <fullName>Sugerencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Validación %2F emisión</fullName>
             <default>false</default>
         </values>
         <values>

@@ -604,6 +604,10 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
+            <controllingFieldValue>Tareas</controllingFieldValue>
+            <valueName>Tareas administrativas</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
             <valueName>Como renuevo mi seguro</valueName>
         </valueSettings>
@@ -760,7 +764,15 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
-            <valueName>Apoyo Captación</valueName>
+            <valueName>Ajuste oferta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <valueName>Cotización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <valueName>Emisión</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
@@ -1025,22 +1037,6 @@
         <valueSettings>
             <controllingFieldValue>Campañas</controllingFieldValue>
             <valueName>Campaña</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Captación</controllingFieldValue>
-            <valueName>Ajuste oferta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Captación</controllingFieldValue>
-            <valueName>Cotización</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Captación</controllingFieldValue>
-            <valueName>Emisión</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Captación</controllingFieldValue>
-            <valueName>Gestión competencias (Captación)</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

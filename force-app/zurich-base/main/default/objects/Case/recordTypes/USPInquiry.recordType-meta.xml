@@ -1152,6 +1152,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Tareas</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Venta</fullName>
             <default>false</default>
         </values>
