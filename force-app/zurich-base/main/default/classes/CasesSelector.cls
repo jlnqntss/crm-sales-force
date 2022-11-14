@@ -163,6 +163,7 @@ public with sharing class CasesSelector extends RecordsSelector
                 Case.CreatedOffer__c,
                 Case.OfferId__c
             })
+            .addConditionEq(Case.RecordTypeId, rtUSPId)
             .addConditionNotNull(Case.CreatedOffer__c)
             .addConditionNull(Case.OfferId__c)
             .addConditionString('Case.CreatedDate = LAST_N_DAYS:' + days);

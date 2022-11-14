@@ -348,4 +348,48 @@ private class CaseUtilTest
             System.assertNotEquals(null, currentCase.MediatedCustomer__c, 'Deberia haber customer');
         }
     }
+
+     /*
+    * Test del método que relaciona los casos que no tienen oferta con su oferta cuando esta se ha creado posteriormente
+    * @author lrodriguez6@seidor.es
+    * @date 14/11/2022
+    */
+    @isTest
+    static void test_relateCasesToNewOffers_OK()
+    {
+        Account cuenta = [SELECT Id, NationalId__c FROM Account LIMIT 1];
+        //oferta
+        Opportunity oferta= new Opportunity();
+        OpportunitiesSelector OppSel = new OpportunitiesSelector(); 
+        oferta.InfoQuoteNumber__c='11111';
+        oferta.Name='Test';
+        oferta.AccountId=cuenta.Id;
+        oferta.StageName='Quoted';
+        oferta.CloseDate=System.today()+1;
+
+        insert oferta;
+        // Se establece recordType y oferta creada para que se relacionen
+        List<Case> cases = [SELECT Id,OfferId__c,CreatedOffer__c FROM case];
+        CasesSelector caseSel = new CasesSelector(); 
+
+        for(Case currentCase : cases)
+        {
+            currentCase.RecordTypeId = caseSel.rtUSPId;
+            currentCase.CreatedOffer__c = oferta.InfoQuoteNumber__c;
+        }
+
+        // Se comprueba que la relación no existía previamente
+        for(Case currentCase : cases)
+        {
+            System.assertEquals(null, currentCase.OfferId__c, 'No deberia haber oferta');
+        }
+
+        List<Case> casesToUpdate = CaseUtil.relateCasesToNewAccounts(cases, '5');
+
+        // Se comprueba que se ha hecho bien la relación
+        for(Case currentCase : casesToUpdate)
+        {
+            System.assertNotEquals(null, currentCase.OfferId__c, 'Deberia haber oferta');
+        }
+    }
 }

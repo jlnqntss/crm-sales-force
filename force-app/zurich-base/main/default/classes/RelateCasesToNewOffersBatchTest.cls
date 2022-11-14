@@ -55,7 +55,7 @@ public with sharing class RelateCasesToNewOffersBatchTest {
         // Se comprueba que el batch los ha relacionado yla oferta ha sido informada
         for(Case currentCase : updatedCases)
         {
-            System.assertNotEquals(null, currentCase.OfferId__c, 'Deberia haber customer');
+            System.assertNotEquals(null, currentCase.OfferId__c, 'Deberia haber oferta relacionada');
         }
     }
 }
