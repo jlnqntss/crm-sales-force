@@ -6,6 +6,7 @@
  */
 public with sharing class Notification {
     private static final String CLASS_NAME = 'Notification';
+    private static final String DUMMY_ID = '000000000000000AAA';
     private static final Integer TITLE_MAX_LENGTH = 250;
     private static final Integer BODY_MAX_LENGTH = 750;
     
@@ -41,7 +42,7 @@ public with sharing class Notification {
     public void send(String subject, String content)
     {
         // Si no hay target se pone un id dummy
-        if( this.targetId == null ) this.targetId = '000000000000000AAA';
+        if( this.targetId == null ) this.targetId = DUMMY_ID;
         
         // Creamos una nueva notificacion
         Messaging.CustomNotification notification = new Messaging.CustomNotification();
