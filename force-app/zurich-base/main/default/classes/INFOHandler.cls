@@ -681,7 +681,7 @@ public class INFOHandler implements ISystem
                 externalRequest.Processed__c = processed;
             }
             if( externalRequest.Processed__c ) {
-                Id recordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByName().get('INFOProcessed').getRecordTypeId();
+                Id recordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFOProcessed').getRecordTypeId();
                 externalRequest.RecordTypeId = recordTypeId;
             }
 
