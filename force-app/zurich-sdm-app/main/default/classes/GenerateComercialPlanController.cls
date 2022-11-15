@@ -766,7 +766,7 @@ public with sharing class GenerateComercialPlanController
         cell.key = cell.id + SEPARATOR + 'titulo';
         cell.isNew = isNewPlan;
         cell.addExtraProperty(CELL_PROPERTY_IS_MY_PLAN, String.valueOf(plan.isMyPlan));
-        cell = lockCellIsNotMyPlan(cell, plan);
+        if (!isNewPlan) cell.lock();
         if( plan.ActualKpi != null ) cell.isNewEditable = false;
         headers.Cells.add(cell);
 
@@ -1171,6 +1171,7 @@ public with sharing class GenerateComercialPlanController
      */
     private static void tableToPlan(Tabletype tabledata, String userId, String roleType)
     {
+        System.debug('Table to plan ' + tableData.toJSON());
         Boolean isDirector = Directors.contains(roleType);
 
         // Fila de cabecera
@@ -1213,6 +1214,8 @@ public with sharing class GenerateComercialPlanController
         Set<String> newPlanNames = new Set<String>();
 
         Id rtPlanAnualId = (new PlanComercialSelector()).rtPlanAnualId;
+
+        List<String> ejesPlanesExistentes = new List<String>();
         
         // Por cada plan (columna de la tabla)...
         for(Integer i=0; i<numColumns; i++) {
@@ -1239,12 +1242,20 @@ public with sharing class GenerateComercialPlanController
 
             Boolean isHeaderModified = cellHeader.isModified;
 
+            String segment = rowsdata.get(0).Cells.get(i).stringValue;
+            String product = rowsdata.get(1).Cells.get(i).stringValue;
+            String indicator = rowsdata.get(2).Cells.get(i).stringValue;
+            String zone = rowsdata.get(3).Cells.get(i).stringValue;            
+
+            // planes existentes
+            if (!isNewPlan && !isDeleted) {
+                String planKeys = indicator + '-' + segment + '-' + product + '-' + zone;
+                ejesPlanesExistentes.add(planKeys);
+            }
+
             if( !isDeleted ) { //---------------------------------------------- Nuevo o Modificacion
                 // Datos FIJOS del plan
-                String segment = rowsdata.get(0).Cells.get(i).stringValue;
-                String product = rowsdata.get(1).Cells.get(i).stringValue;
-                String indicator = rowsdata.get(2).Cells.get(i).stringValue;
-                String zone = rowsdata.get(3).Cells.get(i).stringValue;
+                // coge tambien los ejes (indicador, segmento, ...) de arriba
                 Integer anyo = Integer.valueOf(rowsdata.get(4).Cells.get(i).decimalValue);
                 Decimal definedDT = rowsdata.get(5).Cells.get(i).decimalValue;
 
@@ -1298,11 +1309,39 @@ public with sharing class GenerateComercialPlanController
             }
         }
 
-        // Realizamos todas las modificaciones sobre los planes que corresponda
+        // validaciones planes nuevos
+        validateNewPlans(ejesPlanesExistentes, parentPlansToInsert);
+        // Realizamos todas las modificaciones sobre los planes que corresponda    
         dmlPlans(plansToDelete, existingPlansToUpsert, parentPlansToInsert, childPlansToInsert, mapChildToParent);        
 
         // Si se han relleando los destinatarios y los nombres del plan correctamente se envia las notificaciones
         sendNotification(rnsToNotify, newPlanNames);
+    }
+
+
+    /**
+     * compara los planes a insertar con los planes recibidos de la vista al pulsar guardar, excepto planes a borrar que no se tienen en cuenta para ver duplicados
+     * 
+     * @author nts (dmunoz)
+     * @date 14/11/2022
+     * 
+     * @param {List<String> ejesPlanesExistentes} año
+     * @param {List<PlanComercial__c> parentPlansToInsert} planes principales a insertar
+     * @return void
+     */
+    private static void validateNewPlans(List<String> ejesPlanesExistentes, List<PlanComercial__c> parentPlansToInsert) {
+
+        String planKey = '';
+        String result = '';
+        for (PlanComercial__c pc: parentPlansToInsert) {
+            planKey = pc.indicator__c + '-' + pc.Segment__c + '-' + pc.Product__c + '-' + pc.Zone__c;
+            if (ejesPlanesExistentes.contains(planKey)) {
+                result += ' ' + pc.Name;
+            }
+        }
+        if (String.isNotEmpty(result)) {
+            throw new HandledException('Los planes ' + result + ' no se pueden crear por ser iguales a alguno ya existente'); // uso esta excepcion generica para poder mostrar el mensaje, en el save se lanza aurahandledexception
+        }
     }
 
     /**
@@ -1713,11 +1752,15 @@ public with sharing class GenerateComercialPlanController
     private static Combotype getDynamicZoneCombo(Map<String, String> mapZones) {
 
         Combotype combo;
-
-        List<String> listZone = mapZones.values();
-        listZone.sort(); // ordeno los valores
         Set<String> setZone = new Set<String>();
-        setZone.addAll(listZone); // convierto a Set para eliminar duplicados
+
+        if (!mapZones.isEmpty()) { // si no esta vacio el map de zonas
+            List<String> listZone = mapZones.values();
+            listZone.sort(); // ordeno los valores
+            
+            setZone.addAll(listZone); // convierto a Set para eliminar duplicados
+        }
+        
         setZone.add(ZONE_ALL_VALUE); // añado el valor Todos a la picklist
         Map<String, String> mapOpcionesZona = new Map<String, String>();
         for (String zone: setZone) {
