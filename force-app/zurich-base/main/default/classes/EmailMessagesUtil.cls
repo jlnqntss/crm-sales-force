@@ -127,18 +127,17 @@ public with sharing class EmailMessagesUtil
 
             // Creamos las referencias de los casos padre e hiijo
             String caseIdpadre = casoPadre.Id;
-            string Case_ThreadIDpadre = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseIdpadre.left(5)  + caseIdpadre.mid(10,5) +'';
+            string caseThreadIDpadre = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseIdpadre.left(5)  + caseIdpadre.mid(10,5) +'';
             
-            if(email.HtmlBody.contains('ref:'+Case_ThreadIDpadre + ':ref'))
+            if(email.HtmlBody.contains('ref:'+caseThreadIDpadre + ':ref'))
             {
                 String caseId = casoHijo.id;
-                string Case_ThreadID = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseId.left(5)  + caseId.mid(10,5) +'';
+                string caseThreadID = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseId.left(5)  + caseId.mid(10,5) +'';
 
                 // Actualizamos las referencias en el email
-                email.HtmlBody = email.HtmlBody.replace(Case_ThreadIDpadre, Case_ThreadID);
-                email.TextBody = email.TextBody.replace(Case_ThreadIDpadre, Case_ThreadID);
+                email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadre, caseThreadID);
+                email.TextBody = email.TextBody.replace(caseThreadIDpadre, caseThreadID);
 
-                //email.Headers = '';
                 email.ThreadIdentifier = '';
             }
             
