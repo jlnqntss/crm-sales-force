@@ -45,6 +45,7 @@ public class EmailMessageHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
+        emailMessagesUtil.checkNewCaseFromClosedCase((List<EmailMessage>)newList);
         emailMessagesUtil.assignGenesysRoutingFields();
     }
 

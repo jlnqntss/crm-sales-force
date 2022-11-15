@@ -64,57 +64,87 @@ public with sharing class EmailMessagesUtil
 
     public void checkNewCaseFromClosedCase(List<EmailMessage> emailList)
     {
+        System.debug('++++ Entramos en checkNewCaseFromClosedCase');
+        // PASO1: Necesitamos toda la info de los casos de los emails -> Serán los casos padre
+        Set<String> idsCasosPadre = new Set<String>();
+        Map<Integer, Id> mapaPosiciones = new Map<Integer, Id>(); //Este mapa relaciona un caso con la posicion en la lista del email que entra
+        Map<Id, Case> mapaCasosPadre = new Map<Id, Case>();
+        Id uspRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+
         for(EmailMessage email : emailList)
         {
-            Set<String> idsCasos = new Set<String>();
-            idsCasos.add(email.ParentId);
-			List<Case> cases = new CasesSelector().findAllDataById(idsCasos);
-			if(!cases.isEmpty())
+            if(email.Incoming)
             {
-                system.debug('******* lista casos tiene algo: '+ cases);
-                Case caso = cases[0];
-				system.debug('******* estado del caso: ' + caso.Status);
-                //Solo se hace algo si se cerró el caso
-                if(caso.Status != '' && (caso.Status == 'Cerrado' || caso.Status == 'Merged' || caso.Status == 'Combinado'))
-                {
-                    Case nuevoCaso = new Case(
-                        Status='Asignado',
-                        ParentId=caso.Id,
-                        AccountId=caso.AccountId,
-                        Type=caso.Type,
-                        Subtype__c=caso.Subtype__c,
-                        TypeN3__c=caso.TypeN3__c,
-                        RecordTypeId=caso.RecordTypeId
-                    );
-       				insert nuevoCaso;
-                    System.debug('antes de ponerle id: ' + email.RelatedToId);
-                    email.RelatedToId = nuevoCaso.Id;
-
-                    String caseIdpadre = caso.Id;
-                    string Case_ThreadIDpadre = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseIdpadre.left(5)  + caseIdpadre.mid(10,5) +'';
-                    system.debug('CASE THREADID PADRE:::' + Case_ThreadIDpadre);
-                    system.debug('CASE THREADID EMAIL padre sin la formula:::' + email.ThreadIdentifier);
-
-                    String caseId = nuevoCaso.id;
-                    string Case_ThreadID = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseId.left(5)  + caseId.mid(10,5) +'';
-                    system.debug('CASE THREADID NUEVO:::' + Case_ThreadID);
-                    
-                    system.debug('BODY: ' + email.HtmlBody);
-                    email.HtmlBody = email.HtmlBody.replace('patata', 'tomate');
-                    email.TextBody = email.TextBody.replace('patata', 'tomate');
-
-                    email.HtmlBody = email.HtmlBody.replace(Case_ThreadIDpadre, Case_ThreadID);
-                    email.TextBody = email.TextBody.replace(Case_ThreadIDpadre, Case_ThreadID);
-                    system.debug('BODY DESPUÉS REPLACE' + EMAIL.HtmlBody);
-                    //email.ThreadIdentifier = Case_ThreadID;
-                    System.debug('despoues de ponerle id: ' + email.RelatedToId);
-                }
-                
+                System.debug('++++ Email: ' + email);
+                System.debug('++++ Posicion del email: ' + emailList.indexOf(email));
+                idsCasosPadre.add(email.ParentId); // en ambos casos vamos a tener el ParentID
+                mapaPosiciones.put(emailList.indexOf(email), email.ParentId);
             }
-
         }
-        System.debug('despoues delk forues ' + emailList[0].RelatedToId);
 
+        // Construimos un mapa con toda la info de los casos padre
+        List<Case> listaCasosPadre = new CasesSelector().findAllDataById(idsCasosPadre);
+        for(Case c : listaCasosPadre)
+        {
+            mapaCasosPadre.put(c.Id, c);
+        }
+
+        // PASO2: Generar los casos hijos cuando sea de precisar. Nos ha de devolver la posicion del email relacionado y el caso hijo asociado
+        Map<Integer, Case> mapaCasosHijos = new Map<Integer, Case>();
+        for (Integer posicion : mapaPosiciones.keyset())
+        {
+            Case padre = mapaCasosPadre.get(mapaPosiciones.get(posicion));
+            if(padre != null && padre.Status == 'Cerrado')
+            {
+                Case casoHijo = new Case(
+                                Status='Asignado',
+                                ParentId=padre.Id,
+                                AccountId=padre.AccountId,
+                                RecordTypeId=padre.RecordTypeId, 
+                                Subject = 'Hijo: ' + padre.Subject 
+                            );
+
+                if (padre.CallCenter__c.equals('CC Service') && padre.RecordTypeId != uspRecordTypeId)
+                {
+                    casoHijo.Type = padre.Type;
+                    casoHijo.Subtype__c = padre.Subtype__c;
+                    CasoHijo.TypeN3__c = padre.TypeN3__c;
+                }
+
+                mapaCasosHijos.put(posicion, casoHijo);
+            }
+        }
+        insert mapaCasosHijos.values();
+
+
+        // PASO3: Updatear los emails que hayan generado un caso hijo
+        for (Integer posicion : mapaCasosHijos.keySet())
+        {
+            EmailMessage email = emailList.get(posicion);
+            // Obtenemos el padre
+            Case casoHijo = mapaCasosHijos.get(posicion);
+            Case casoPadre = mapaCasosPadre.get(casoHijo.ParentId);
+
+            // Creamos las referencias de los casos padre e hiijo
+            String caseIdpadre = casoPadre.Id;
+            string Case_ThreadIDpadre = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseIdpadre.left(5)  + caseIdpadre.mid(10,5) +'';
+            
+            if(email.HtmlBody.contains('ref:'+Case_ThreadIDpadre + ':ref'))
+            {
+                String caseId = casoHijo.id;
+                string Case_ThreadID = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseId.left(5)  + caseId.mid(10,5) +'';
+
+                // Actualizamos las referencias en el email
+                email.HtmlBody = email.HtmlBody.replace(Case_ThreadIDpadre, Case_ThreadID);
+                email.TextBody = email.TextBody.replace(Case_ThreadIDpadre, Case_ThreadID);
+
+                //email.Headers = '';
+                email.ThreadIdentifier = '';
+            }
+            
+            email.ParentId = casoHijo.Id;
+            email.RelatedToId = casoHijo.Id;
+        }
     }
 
     /**

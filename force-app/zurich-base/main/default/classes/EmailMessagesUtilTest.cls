@@ -266,4 +266,41 @@ private class EmailMessagesUtilTest
         Test.stopTest();
     }
     
+    @isTest
+    static void generateChildCases_OK()
+    {
+        // Generamos los casos que necesitamos
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 2);
+        cases[0].Status = 'Asignado';
+        cases[1].Status = 'Cerrado';
+        insert cases;
+
+        List<Case> casosInciales = [SELECT id FROM Case];
+        System.assertEquals(2, casosInciales.size());
+
+        // al insertar los emailMessages debemos haber generado un 3er caso
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(2);
+        emails[0].Incoming = true;
+        emails[0].ParentId = casosInciales[0].Id;
+        emails[0].HtmlBody = '';
+        emails[1].Incoming = true;
+        emails[1].ParentId = casosInciales[1].Id;
+        emails[1].HtmlBody = '';
+
+        EmailMessagesUtil emUtil = new EmailMessagesUtil();
+
+        Test.startTest();
+        emUtil.checkNewCaseFromClosedCase(emails);
+        Test.stopTest();
+
+        // Comprobamos que se haya creado un 3er caso, y que el email se ha relacionado con el.
+        List<Case> casosFinales = [SELECT id FROM Case];
+        List<Case> casosHijos = [Select id, ParentId FROM Case Where ParentId != ''];
+        System.assertEquals(3, casosFinales.size(), 'Hemos de tener un caso más');
+        System.assertEquals(casosInciales[1].id, casosHijos[0].ParentId, 'El nuevo caso hijo ha de estar asociado al caso cerrado');
+        System.assertEquals(emails[1].ParentId, casosHijos[0].Id, 'El email ha de estar asociado al nuevo caso hijo');
+    }
 }
