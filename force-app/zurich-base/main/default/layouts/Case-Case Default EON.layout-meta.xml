@@ -194,6 +194,10 @@
                 <behavior>Edit</behavior>
                 <field>MilestoneStatus</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ViolatedSla__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -203,6 +207,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>StopStartDate</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>StatusLastModifiedDate__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -422,7 +430,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>true</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h5t000000RnHL</masterLabel>
+        <masterLabel>00h1x000003zSJF</masterLabel>
         <sizeX>3</sizeX>
         <sizeY>4</sizeY>
         <summaryLayoutItems>

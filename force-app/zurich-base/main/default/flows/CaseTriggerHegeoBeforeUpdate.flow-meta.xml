@@ -479,8 +479,9 @@
         </rules>
     </decisions>
     <description>Cuando se actualizan los campos relacionados con Hegeo de un Caso, buscamos y actualizamos los lookups correspondientes</description>
+    <environments>Default</environments>
     <interviewLabel>Case Trigger Hegeo - Before Update {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger Hegeo - Before Update</label>
+    <label>Case Trigger - Before insert/update - Cargar datos de Hegeo</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>

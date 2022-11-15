@@ -84,6 +84,8 @@ export default class TechnicalPolicies extends LightningElement {
   showUpholstered;
   showWood;
 
+  showFramework;
+
   buttonsClicked = [];
 
   fieldsToShow = [];
@@ -309,8 +311,9 @@ export default class TechnicalPolicies extends LightningElement {
    * @date 05/10/2022
    */
   async connectedCallback() {
+    this.checkPage();
     let currentCase;
-    if (this.recordId) {
+    if (this.recordId && this.caseRecord === true) {
       // Si tenemos un id recogemos el registro
       currentCase = await getCaseById({ caseId: this.recordId });
     }
@@ -368,7 +371,12 @@ export default class TechnicalPolicies extends LightningElement {
       this.gridFields();
       this.gridFieldsFranquicia();
       this.defineColumns(result);
+      this.checkPage();
+      this.checkFijado();
     });
+  }
+
+  checkFijado() {
     if (this.maestroFijado) {
       // Solo se muestra una política, no queremos mostrar filtros ni botones para cambiar de pantalla
       this.booleanMaestroFijado = true;
@@ -381,7 +389,6 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   renderedCallback() {
-    this.checkPage();
     if (this.productCodeTrack === "00516" && this.sizeTrack > 1) {
       this.showCheckboxes = true;
     } else {
@@ -403,6 +410,8 @@ export default class TechnicalPolicies extends LightningElement {
       } else {
         this.caseRecord = false;
       }
+    } else {
+      this.caseRecord = false;
     }
   }
 
@@ -618,6 +627,11 @@ export default class TechnicalPolicies extends LightningElement {
     this.currentRecordTrack = this.policies[this.currentCounterTrack - 1];
     if (this.currentRecordTrack) {
       this.sizeTrack = this.policies.length;
+      if (this.currentRecordTrack.PolicyFramework__c) {
+        this.showFramework = true;
+      } else {
+        this.showFramework = false;
+      }
       return this.currentRecordTrack.Id;
     }
     return "";
@@ -667,5 +681,15 @@ export default class TechnicalPolicies extends LightningElement {
       this.desfijadoTrack = false;
     }
     this.checkPage();
+  }
+
+  /**
+   * Función que abre un enlace clickado en otra pestaña
+   * @author jjuaristi@seidor.es
+   * @date 27/10/2022
+   */
+  goToDoc() {
+    const URL = this.currentRecordTrack.PolicyFramework__c;
+    window.open(URL, "_blank").focus();
   }
 }

@@ -6025,6 +6025,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.StatusLastModifiedDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.StopStartDate</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6151,6 +6156,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.ClaimHandlingType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ViolatedSla__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7966,6 +7976,11 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.PedirDireccionSituacionRiesgo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MaestroApetito__c.PolicyFramework__c</field>
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
@@ -14336,6 +14351,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>PlanComercial__c.Intermediary_Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.Zone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <flowAccesses>

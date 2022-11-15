@@ -35,7 +35,7 @@
         <inputParameters>
             <name>targetId</name>
             <value>
-                <elementReference>$Record.OwnerId</elementReference>
+                <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -100,6 +100,7 @@
             <label>Owner Change</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>Case Trigger - After Update - Case Escalation Owner Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Case Escalation Owner Notification</label>
     <processMetadataValues>
@@ -160,7 +161,7 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>Se ha asignado un nuevo caso</stringValue>
+            <stringValue>Se le ha asignado el caso {!$Record.CaseNumber}</stringValue>
         </value>
     </variables>
     <variables>

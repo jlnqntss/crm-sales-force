@@ -90,9 +90,9 @@ private class NoteInfoLookupBatchTest
 	static void execute() {
 		generateNoteRelatedData(1, false, false, true);
 		generateNoteRelatedData(2, true, true, true);
-		// System.debug([SELECT Id, HegeoPrePolicyId__c, HegeoIntermediaryId__c, HegeoPolicyId__c, HegeoClaimId__c FROM Case]);
-		// System.debug([SELECT Id, INFOIntermediaryCode__c FROM Account]);
-		// System.debug([SELECT Id, InfoQuoteNumber__c FROM Opportunity]);
+		
+		
+		
 
 		Test.startTest();
 		NoteInfoLookupBatch m = new NoteInfoLookupBatch();
@@ -136,6 +136,6 @@ private class NoteInfoLookupBatchTest
 		Test.startTest();
 		String jobID = system.schedule('Test Note Info Lookup batch', sch, m);
 		Test.stopTest();
-		//System.Debug('jobID: ' + jobID);
+		
 	}
 }

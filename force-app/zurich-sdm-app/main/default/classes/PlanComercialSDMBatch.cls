@@ -50,7 +50,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
             // los lotes sean solo de planes mensuales o anuales. Para minimizar el numero de KPIs recuperados
             return Database.getQueryLocator([
                 SELECT Id, CreatedById, AssignedTo__c, StartDate__c, EndDate__c,
-                       Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c
+                       Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c, Zone__c, AssignedTo__r.name, Owner.name
                 FROM PlanComercial__c
                 WHERE StartDate__c <= :todayValue AND EndDate__c >= :todayValue
                 ORDER BY AccumulateType__c
@@ -67,7 +67,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
     {
         if ( scope != null && !scope.isEmpty() ) {
             try {
-                // System.debug('------ BEFORE => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+                
 
                 if( Test.isRunningTest() && testUnknownError != null && testUnknownError ) 
                     throw new PlanComercialSDMBatchException('Unknown Error');                    
@@ -76,7 +76,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
 
                 sdm.calculateRealKPI(plans);
 
-                // System.debug('------ AFTER => Queries: ' + Limits.getQueries() + ' / DML: ' + Limits.getDmlStatements() );
+                
             } catch (Exception e) {
                 ErrorLogUtil.commitError(e, CLASS_NAME);
             }

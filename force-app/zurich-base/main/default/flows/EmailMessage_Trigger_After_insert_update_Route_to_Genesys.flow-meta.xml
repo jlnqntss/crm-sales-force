@@ -4,7 +4,7 @@
         <name>FlowGenesysRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>1370</locationX>
-        <locationY>648</locationY>
+        <locationY>768</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -50,7 +50,7 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>ScreenPopURL</elementReference>
+                <elementReference>GenerateScreenPopURLSubflow.screenPopURL</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -76,7 +76,7 @@
         <name>QueueGenesysRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
         <locationX>1898</locationX>
-        <locationY>648</locationY>
+        <locationY>768</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -117,7 +117,7 @@
         <inputParameters>
             <name>screenPopRecordId</name>
             <value>
-                <elementReference>ScreenPopURL</elementReference>
+                <elementReference>GenerateScreenPopURLSubflow.screenPopURL</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -235,7 +235,7 @@
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
         <locationX>1634</locationX>
-        <locationY>528</locationY>
+        <locationY>648</locationY>
         <defaultConnector>
             <targetReference>QueueGenesysRoutingInvocableAction</targetReference>
         </defaultConnector>
@@ -415,15 +415,6 @@
 &quot;all&quot;)</expression>
     </formulas>
     <formulas>
-        <description>URL de la ficha a abrir con el correo enrutado</description>
-        <name>ScreenPopURL</name>
-        <dataType>String</dataType>
-        <expression>IF( {!scopeValue} = &apos;ZE&apos; , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=ZESearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; +  {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Id} + &apos;&quot;},{&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
-IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CCS&apos;) , &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CCSSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress}  + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId} + &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId} + &apos;&quot;}]&apos;,
-IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.GenesysQueueName__c}, &apos;CSM&apos;) ,  &apos;/lightning/page/recordActionFlow?lightning__flowDevName=CSMSearchAndScreenPop&amp;lightning__flowArgs=[{&quot;name&quot;: &quot;phone&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.FromAddress} + &apos;&quot;},{&quot;name&quot;: &quot;relatedrecordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.ParentId}+ &apos;&quot;}, {&quot;name&quot;: &quot;recordid&quot;, &quot;type&quot;: &quot;String&quot;,&quot;value&quot;: &quot;&apos; + {!$Record.Parent.AccountId}+ &apos;&quot;}]&apos;,
- {!$Record.Id} )))</expression>
-    </formulas>
-    <formulas>
         <description>Fórmula que comprobará si el campo SpecializationType está informado</description>
         <name>SpecializationType</name>
         <dataType>String</dataType>
@@ -454,7 +445,7 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
         <locationX>1634</locationX>
-        <locationY>768</locationY>
+        <locationY>888</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -695,12 +686,41 @@ IF(  {!scopeValue} &lt;&gt; &apos;ZE&apos; &amp;&amp; CONTAINS( {!$Record.Genesy
     </start>
     <status>Active</status>
     <subflows>
+        <name>GenerateScreenPopURLSubflow</name>
+        <label>Generate Screen Pop URL</label>
+        <locationX>1634</locationX>
+        <locationY>528</locationY>
+        <connector>
+            <targetReference>IsFlowOrQueueDecision</targetReference>
+        </connector>
+        <flowName>GenerateScreenPopURL</flowName>
+        <inputAssignments>
+            <name>emailRecord</name>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>relatedToAccountId</name>
+            <value>
+                <elementReference>$Record.Parent.AccountId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>scopeValue</name>
+            <value>
+                <elementReference>scopeValue</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
         <name>GetGenesysQueueAndParentIdFromEmailSubflow</name>
         <label>Comprobar Cola Genesys y ParentID del Email</label>
         <locationX>1634</locationX>
         <locationY>408</locationY>
         <connector>
-            <targetReference>IsFlowOrQueueDecision</targetReference>
+            <targetReference>GenerateScreenPopURLSubflow</targetReference>
         </connector>
         <flowName>EmailMessage_Comprobar_Cola_Genesys_y_ParentID</flowName>
         <inputAssignments>

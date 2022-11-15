@@ -24,13 +24,25 @@
       ></lightning-button>
       <p></p>
       <lightning-button
+        label="Ver Marcos de actuación"
+        class="slds-button"
+        onclick={goToDoc}
+        if:true={showFramework}
+      ></lightning-button>
+      <p></p>
+      <lightning-button
         label={labelSetTechPolicyButton}
         class="slds-button"
         onclick={holdTechPolicy}
         if:true={caseRecord}
       ></lightning-button>
-      <br /><br />
-      <div class="slds-float_right" if:true={showCheckboxes}>
+      <br />
+      <div if:true={caseRecord}><br /><br /><br /><br /></div>
+      <div if:true={filtersVisible}><br /><br /></div>
+      <div if:false={caseRecord} if:true={filtersVisible}>
+        <br /><br /><br /><br />
+      </div>
+      <div class="slds-float_right slds-p-top_medium" if:true={showCheckboxes}>
         <lightning-button-icon
           icon-name="utility:filterList"
           onclick={handleFilter}
@@ -65,7 +77,7 @@
     </lightning-breadcrumbs>
     <br /><br /><br /><br />
     <div>
-      <div>
+      <div class="slds-p-top_large">
         <template if:true={filtersVisible}>
           <lightning-input
             if:true={showExplosives}
@@ -174,9 +186,15 @@
         </template>
       </div>
     </div>
+    <br />
+    <div if:false={filtersVisible}><br /><br /><br /><br /></div>
+    <div if:true={filtersVisible}><br /><br /></div>
+    <div if:false={caseRecord} if:true={filtersVisible}>
+      <br /><br /><br /><br />
+    </div>
   </div>
-  <div class="slds-p-top_small">
-    <div if:true={showCheckboxes}><br /><br /><br /></div>
+  <div if:true={caseRecord}><br /><br /><br /></div>
+  <div class="slds-p-top_medium">
     <lightning-record-view-form
       record-id={currentId}
       object-api-name="MaestroApetito__c"

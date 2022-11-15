@@ -420,19 +420,21 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         Set<String> indicatorSet = new Set<String>();
         Set<String> segmentSet = new Set<String>();
         Set<String> productSet = new Set<String>();
+        Set<String> zoneSet = new Set<String>();
         Set<Integer> yearSet = new Set<Integer>();
 
         for (Objective__c obj: objetivosInput.values()) {
             indicatorSet.add(obj.Indicator__c);
             segmentSet.add(obj.Segment__c);
             productSet.add(obj.Product__c);
+            zoneSet.add(obj.Zone__c);
             yearSet.add(Integer.valueOf(obj.Year__c));
         }
 
         if ('Anual'.equals(pcType)) {
-            result = (new PlanComercialSelector()).findAnualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, yearSet);
+            result = (new PlanComercialSelector()).findAnualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, zoneSet, yearSet);
         } else if ('Mensual'.equals(pcType)) {
-            result = (new PlanComercialSelector()).findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, yearSet);
+            result = (new PlanComercialSelector()).findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, zoneSet, yearSet);
         } else {
             throw new HandledException('Tipo no permitido en getPlanesComercialesAnualesMensualesByObjetivos');
         }        
@@ -527,7 +529,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
     private static String generateExternalIdValue(PlanComercial__c pc) {
         String result;
         Integer year = pc.EndDate__c.year();
-        result = String.valueOf(year) + '-' + pc.Indicator__c  + '-' + pc.Segment__c + '-' + pc.Product__c;
+        result = String.valueOf(year) + '-' + pc.Indicator__c  + '-' + pc.Segment__c + '-' + pc.Product__c + '-' + pc.Zone__c;
 
         return result;
     }

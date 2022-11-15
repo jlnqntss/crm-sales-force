@@ -3,7 +3,7 @@ public with sharing class ObjectivesSelectorTest {
     
     @TestSetup
     static void makeData(){
-        Objective__c objective = TestDataFactory.generateObjective(2022, 'PN', 'Particulares', 'Autos', 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        Objective__c objective = TestDataFactory.generateObjective(2022, 'PN', 'Particulares', 'Autos', '11 BARCELONA', 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
         insert objective;
     }

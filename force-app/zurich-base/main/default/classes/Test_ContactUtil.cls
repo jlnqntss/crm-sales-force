@@ -228,11 +228,6 @@ public class Test_ContactUtil
         ExternalRequestUtil.mapContactsEmailBirthDateLECountry = mapContactsMatchCodeCountry;
 
         ContactUtil.upsertContact(lead, null);
-
-        System.debug(
-            'ExternalRequestUtil.contactsToUpdate >>> ' +
-            ExternalRequestUtil.contactsToUpdate
-            );
         Contact updatedLead = ExternalRequestUtil.contactsToUpdate.get(
             ExistingLead.CustomerNum__c
             );
@@ -748,50 +743,4 @@ public class Test_ContactUtil
         System.assertEquals( contacto.sourceCountry__c + contacto.MobilePhone  , matchcode);
         
     }
-
-    /*
-       @isTest
-       static void test_ContactTrigger()
-       {
-
-          Contact contact = new Contact( DNI__c='443485723A',Email='edu@test.com',Birthdate=Date.valueOf('1990-01-01'),FirstName='Edu',MobilePhone='1111',
-          LastName='Sanchez', CustomerNum__c='3123',LegalEntity__c='GI',MasterPolicyNum__c='3344',MasterPolicyDesc__c='Nestle');
-
-          contact.CustomerNum__c=ContactUtil.adaptCustomerNum(contact.CustomerNum__c, contact.LegalEntity__c);
-
-          Account newMaster= new Account(Name=contact.FirstName+' '+contact.LastName,CustomerNum__c='3123',
-                                          RecordTypeId=SystemUtil.getAccountRecordTypeIdByName('Master'));
-
-          insert(newMaster);
-          contact.AccountId=newMaster.Id;
-          insert(contact);
-
-          Contact contact2 = new Contact( DNI__c='443485723A',Email='edu@test.com',Birthdate=Date.valueOf('1990-01-01'),FirstName='Edu',MobilePhone='1111',
-          LastName='Sanchez', CustomerNum__c='3123',LegalEntity__c='Life',MasterPolicyNum__c='3344',MasterPolicyDesc__c='Nestle');
-
-          contact2.CustomerNum__c=ContactUtil.adaptCustomerNum(contact2.CustomerNum__c, contact2.LegalEntity__c);
-          contact2.AccountId=newMaster.Id;
-          insert(contact2);
-
-          contact2.DNI__c='1111B';
-          contact2.Email='test@gmail.com';
-          contact2.Birthdate=Date.valueOf('1990-01-02');
-          contact2.FirstName='Bob';
-          contact2.LastName='Dylan';
-
-          upsert(contact2);
-
-          Test.startTest();
-          Contact updatedContact=[SELECT id, DNI__C, Email, MobilePhone, Birthdate, FirstName, LastName  FROM Contact where CustomerNum__c='GI-3123'];
-
-          System.assertEquals(contact2.DNI__c, updatedContact.DNI__c, 'TEST trigger: no se ha actualizado el DNI del contacto');
-          System.assertEquals(contact2.Email, updatedContact.Email, 'TEST trigger: no se ha actualizado el Email del contacto');
-          System.assertEquals(contact2.Birthdate, updatedContact.Birthdate, 'TEST trigger: no se ha actualizado el Birthdate del contacto');
-          System.assertEquals(contact2.FirstName, updatedContact.FirstName, 'TEST trigger: no se ha actualizado el FirstName del contacto');
-          System.assertEquals(contact2.LastName, updatedContact.LastName, 'TEST trigger: no se ha actualizado el LastName del contacto');
-
-          Test.stopTest();
-       }
-
-     */
 }

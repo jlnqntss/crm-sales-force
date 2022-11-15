@@ -535,55 +535,6 @@ public with sharing class BusinessInsuranceRaterServiceTest
     }
 
     /**
-     * Método que comprueba una ejecución incorrecta en el procesamiento de los datos cuando el campo WebEmail está vacío
-     **
-     * @author rlopez
-     * @date 11/12/2020
-     */
-    /*@isTest
-       static void test_processFormData_empty_webEmail_ko()
-       {
-        String emailFromJSON = 'newemail@fakeemail.com.invalid';
-        String phoneFromJSON = '123456789';
-
-        List<Account> existingAccounts = [SELECT Id, NationalId__c FROM Account];
-        System.assertEquals(false, existingAccounts.isEmpty(), 'List should NOT be empty');
-
-        List<Product2> existingProducts = [SELECT Id, CommercialCode__c, TechnicalCode__c FROM Product2];
-        System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
-
-        Set<Id> productIds = new Set<Id>();
-        for(Product2 product: existingProducts)
-        {
-            productIds.add(product.Id);
-        }
-
-        List<Scope_Setting__mdt> scopeSettingsList = [
-            SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
-            FROM Scope_Setting__mdt WHERE Scope__c = 'ZE'
-        ];
-        System.assertEquals(false, scopeSettingsList.isEmpty(), 'List should NOT be empty');
-
-        Map<String, Object> jsonInformation = TestDataFactory.generateBusinessInsuranceOffersWebJSON('CRM-01', existingAccounts.get(0).NationalId__c, emailFromJSON, phoneFromJSON, scopeSettingsList.get(0).BusinessCode__c, existingProducts);
-        jsonInformation.put('webEmail', '');
-
-        Test.startTest();
-        try
-        {
-            BusinessInsuranceRaterService.Request requestInformationObject = (BusinessInsuranceRaterService.Request) JSON.deserializeStrict(
-                JSON.serialize(jsonInformation),
-                BusinessInsuranceRaterService.Request.class
-                );
-            BusinessInsuranceRaterService.processFormData(requestInformationObject);
-        }
-        catch (Exception ex)
-        {
-            System.assertEquals(true, ex.getMessage().contains('WebEmail field is empty'), 'Error message should contain \'WebEmail field is empty\'');
-        }
-        Test.stopTest();
-       }*/
-
-    /**
      * Método que comprueba una ejecución correcta en el procesamiento de los datos en el paso CRM-02
      **
      * @author rlopez

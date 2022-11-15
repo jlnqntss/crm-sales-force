@@ -87,10 +87,10 @@ private class EmailMessagesUtilTest
             emails[i].Incoming = true;
 
             if( i == 0 ) {
-                emails[i].CcAddress = String.join(addressList, ',');
+                emails[i].CcAddress = String.join(addressList, ';');
                 emails[i].ToAddress = String.format(EMAIL_FORMAT_CC, new List<String>{String.valueOf(i)});
             } else {
-                emails[i].ToAddress = String.join(addressList, ',');
+                emails[i].ToAddress = String.join(addressList, ';');
                 emails[i].CcAddress = String.format(EMAIL_FORMAT_CC, new List<String>{String.valueOf(i)});
             }
         }        
@@ -129,10 +129,10 @@ private class EmailMessagesUtilTest
             addressList.add(EMAIL_QUEUE);
 
             if( i == 0 ) {
-                emails[i].CcAddress = String.join(addressList, ',');
+                emails[i].CcAddress = String.join(addressList, ';');
                 emails[i].ToAddress = String.format(EMAIL_FORMAT_CC, new List<String>{String.valueOf(i)});
             } else {
-                emails[i].ToAddress = String.join(addressList, ',');
+                emails[i].ToAddress = String.join(addressList, ';');
                 emails[i].CcAddress = String.format(EMAIL_FORMAT_CC, new List<String>{String.valueOf(i)});
             }
         }        

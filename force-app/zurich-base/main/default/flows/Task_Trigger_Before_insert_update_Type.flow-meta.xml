@@ -35,9 +35,9 @@
     </constants>
     <decisions>
         <name>IsContractualRecording</name>
-        <label>Is contractual recording</label>
+        <label>Is contractual recording?</label>
         <locationX>314</locationX>
-        <locationY>335</locationY>
+        <locationY>455</locationY>
         <defaultConnector>
             <targetReference>Type_of_call_0</targetReference>
         </defaultConnector>
@@ -59,10 +59,71 @@
         </rules>
     </decisions>
     <decisions>
+        <name>TaskSubtypeIsEmail</name>
+        <label>TaskSubtype is Email?</label>
+        <locationX>1238</locationX>
+        <locationY>455</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>TaskSubtypeIsEmailYes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.TaskSubtype</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Other</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>TypeAndSubtypeIsEmail</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>TaskTypeIsCall</name>
+        <label>Task Type is Call?</label>
+        <locationX>776</locationX>
+        <locationY>335</locationY>
+        <defaultConnector>
+            <targetReference>TaskSubtypeIsEmail</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>TaskIsCall</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Call</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IsContractualRecording</targetReference>
+            </connector>
+            <label>Task is Call</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Type_of_call_0</name>
         <label>Type of call</label>
         <locationX>578</locationX>
-        <locationY>455</locationY>
+        <locationY>575</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Callback_0</name>
@@ -95,6 +156,7 @@
             <label>Call</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>Task Trigger - Before insert/update Type {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - Before insert/update Type</label>
     <processMetadataValues>
@@ -120,7 +182,7 @@
         <name>SubtypeIsCall_0</name>
         <label>Subtype is call</label>
         <locationX>578</locationX>
-        <locationY>575</locationY>
+        <locationY>695</locationY>
         <inputAssignments>
             <field>Subtype__c</field>
             <value>
@@ -133,7 +195,7 @@
         <name>SubtypeIsCallback_0</name>
         <label>Subtype is Callback</label>
         <locationX>314</locationX>
-        <locationY>575</locationY>
+        <locationY>695</locationY>
         <inputAssignments>
             <field>Subtype__c</field>
             <value>
@@ -146,7 +208,7 @@
         <name>SubtypeIsContractualRecording</name>
         <label>Subtype is contractual recording</label>
         <locationX>50</locationX>
-        <locationY>455</locationY>
+        <locationY>575</locationY>
         <inputAssignments>
             <field>Subtype__c</field>
             <value>
@@ -155,20 +217,31 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>TypeAndSubtypeIsEmail</name>
+        <label>Type and Subtype is Email</label>
+        <locationX>1106</locationX>
+        <locationY>575</locationY>
+        <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <stringValue>Email</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Email</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>188</locationX>
+        <locationX>650</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>IsContractualRecording</targetReference>
+            <targetReference>TaskTypeIsCall</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Type</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Call</stringValue>
-            </value>
-        </filters>
         <object>Task</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>

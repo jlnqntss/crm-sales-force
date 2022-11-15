@@ -299,14 +299,6 @@ public without sharing class GenesysInteractionsService
             {
                 results = findIntermediariesBy(request);
             }
-            /*when 'prospects'
-            {
-                //TODO - Implementar en el futuro con la lógica correspondiente
-            }
-            when 'partners'
-            {
-                //TODO - Implementar en el futuro con la lógica correspondiente
-            }*/
             when else
             {
                 throw new GenesysPeopleServiceException(FILTER_NOT_DEFINED);
@@ -474,10 +466,6 @@ public without sharing class GenesysInteractionsService
                     accounts = AccountSearchService.findCustomersByQuoteNumber( new List<String>{request.value}, scope, legalEntity );
                 }
             }
-            /*when 'case_number'
-            {
-                //TODO - Implementar en el futuro con la lógica correspondiente
-            }*/
             when else
             {
                 throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);

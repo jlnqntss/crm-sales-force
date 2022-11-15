@@ -362,6 +362,11 @@ public with sharing class EmailMessagesUtil
      * @author mfernandezcarrera 
      * @date 27/09/2022 
      * @descripción Se modifica el comportamiento para que añada las direcciones de correo tanto del TO como del CC, cuando están separadas con comas.
+     * 
+     * * * modificaciones 
+     * @author arcortazar 
+     * @date 03/11/2022 
+     * @descripción Revertimos el cambio anterior, ya que se ha visto que el problema venia del EmailToOpportunityService, donde se concatenan las direcciones con comas
      */
     private purecloud__PureCloud_Queue__c findGenesysQueue(EmailMessage em)
     {
@@ -374,9 +379,9 @@ public with sharing class EmailMessagesUtil
                 // List of emails to check
                 List<String> emailsToCheck = new List<String>();
                 // Add the emails from the ToAddress field
-                if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(','));
+                if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
                 // Add the emails from the CcAddress field
-                if( String.isNotBlank(em.CcAddress) ) emailsToCheck.addAll(em.CcAddress.split(','));
+                if( String.isNotBlank(em.CcAddress) ) emailsToCheck.addAll(em.CcAddress.split(';'));
             
                 // if any...
                 if( !emailsToCheck.isEmpty() ) {
