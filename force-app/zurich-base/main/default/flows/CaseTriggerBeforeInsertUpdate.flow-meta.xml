@@ -119,13 +119,6 @@
                     <stringValue>Ganada</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.CloseResult__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Realizado</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
                 <targetReference>etapaGanadaAssignment</targetReference>
             </connector>
