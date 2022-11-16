@@ -70,10 +70,12 @@ public with sharing class EmailMessagesUtil
         Map<Integer, Id> mapaPosiciones = new Map<Integer, Id>(); //Este mapa relaciona un caso con la posicion en la lista del email que entra
         Map<Id, Case> mapaCasosPadre = new Map<Id, Case>();
         Id uspRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+
 
         for(EmailMessage email : emailList)
         {
-            if(email.Incoming)
+            if(email.Incoming && String.isNotBlank(email.ParentId))
             {
                 System.debug('++++ Email: ' + email);
                 System.debug('++++ Posicion del email: ' + emailList.indexOf(email));
@@ -94,7 +96,7 @@ public with sharing class EmailMessagesUtil
         for (Integer posicion : mapaPosiciones.keyset())
         {
             Case padre = mapaCasosPadre.get(mapaPosiciones.get(posicion));
-            if(padre != null && padre.Status == 'Cerrado')
+            if(padre != null && padre.Status == 'Cerrado' && (padre.RecordTypeId == ocsRecordTypeId || padre.RecordTypeId == uspRecordTypeId ))
             {
                 Case casoHijo = new Case(
                                 Status='Asignado',
