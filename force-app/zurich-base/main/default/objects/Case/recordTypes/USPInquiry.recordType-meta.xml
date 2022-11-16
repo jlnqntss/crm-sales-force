@@ -1132,11 +1132,19 @@
             <fullName>Tareas administrativas</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Validación %2F emisión</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
         <values>
             <fullName>Campañas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión Cliente</fullName>
             <default>false</default>
         </values>
         <values>

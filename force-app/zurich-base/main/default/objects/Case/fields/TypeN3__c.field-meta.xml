@@ -954,11 +954,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
-            <valueName>Nueva oferta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <valueName>Oferta financiada</valueName>
+            <valueName>Cotización</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Emisión</controllingFieldValue>
@@ -970,6 +966,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
             <valueName>Seguimiento</valueName>
         </valueSettings>
         <valueSettings>
