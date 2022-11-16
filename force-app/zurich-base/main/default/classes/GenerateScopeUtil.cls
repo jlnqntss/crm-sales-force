@@ -536,7 +536,7 @@ public class GenerateScopeUtil
         // 4. Por cada tipo de objeto de evento, actualizamos los objetos con el Scope
         List<SObject> listToUpdate = new List<SObject>();
         for( String key: mapSObjectsToUpdate.keySet() ) {
-            listToUpdate.add(mapSObjectsToUpdate.get(key));
+            listToUpdate.addAll(mapSObjectsToUpdate.get(key));
         }
         update listToUpdate;
         if( !generatedErrors.isEmpty() ) {
@@ -698,7 +698,7 @@ public class GenerateScopeUtil
         // 4. Por cada tipo de objeto de evento, actualizamos los objetos con el Scope
         List<SObject> listToUpdate = new List<SObject>();
         for( String key: mapSObjectsToUpdate.keySet() ) {
-            listToUpdate.add(mapSObjectsToUpdate.get(key));
+            listToUpdate.addAll(mapSObjectsToUpdate.get(key));
         }
         update listToUpdate;
 
