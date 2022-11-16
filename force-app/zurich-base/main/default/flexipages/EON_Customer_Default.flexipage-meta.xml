@@ -136,6 +136,9 @@
                         <valueListItems>
                             <value>MovementType__c|EQUALS|[&quot;3&quot;]</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>MovementReason__c|EQUALS|[&quot;A165&quot;]</value>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
