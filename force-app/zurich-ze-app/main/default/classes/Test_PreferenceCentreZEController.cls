@@ -31,7 +31,7 @@ public class Test_PreferenceCentreZEController
         PreferenceCentreZEController.processRequest(hashid, true);
         test.stopTest();
 
-        System.Debug('---------------- Results');
+        
         scopes = [SELECT Id, HasOptedOutOfEmail__c FROM Scope__c WHERE HashedId__c = :hashid];
         System.assertNotEquals(true, scopes.isEmpty(), 'There should be 1 scope');
         System.assertEquals(true, scopes[0].HasOptedOutOfEmail__c, 'The Opted Out of Email should be true');

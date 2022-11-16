@@ -13,7 +13,7 @@ global without sharing class ContactUtil
      **/
     public static String adaptCustomerNum( String CustomerNum, String LegalEntity )
     {
-        // System.debug('- - - - - ContactUtil.adaptCustomerNum - - - - -');
+        
         if ( LegalEntity.equals('GI') || LegalEntity.equals(Label.GeneralInsurance) )
         {
             CustomerNum = 'GI-' + CustomerNum;
@@ -79,7 +79,7 @@ global without sharing class ContactUtil
     // EMEA
     public static Order upsertContact(Contact incomingContact, Order quote)
     {
-        // System.debug('- - - - - ContactUtil.upsertContact - - - - -');
+        
         String[] customerNumberParts = incomingContact.CustomerNum__c.split('-');
         String legalEntity = '';
         String customerNumberOnly = '';
@@ -119,8 +119,8 @@ global without sharing class ContactUtil
 
         // String customerNum = ((Contact) ExternalRequestUtil.recordsToProcess.get(
         //   ExternalRequestUtil.actualRequest.id )).CustomerNum__c;
-        // System.debug('*** Request customerNum: ' + customerNum);
-        // System.debug('*** incomingContact: ' + incomingContact.CustomerNum__c);
+        
+        
         String customerNum = incomingContact.CustomerNum__c;
 
         Contact alreadyInSFContact = ExternalRequestUtil.mapContacts.get( customerNum );
@@ -128,7 +128,7 @@ global without sharing class ContactUtil
         // BY CUSTOMER NUM -------------------------------------------------------------------------------------------------
         if ( alreadyInSFContact != null )
         {
-            // System.debug('>>> Contact found by Customer Number');
+            
 
             // If there is a quote, and the contact is a lead, the relationship between the
             // quote and the contact is set and the contact is updated
@@ -180,16 +180,16 @@ global without sharing class ContactUtil
             matchcode = createMatchcode(  incomingContact );
             matchcode_LECountyPartner = matchcode + legalEntity + incomingContact.sourceCountry__c + incomingContact.Partner__c;
            
-            // System.debug( '>>> MATCHCODE: ' + matchcode );
-            // System.debug( '>>> ExternalRequestUtil.mapContacts ' + ExternalRequestUtil.mapContacts );
-            // System.debug( '>>> ExternalRequestUtil.recordsToProcess ' + ExternalRequestUtil.recordsToProcess );
-            // System.debug( '>>> ExternalRequestUtil.actualRequest ' + ExternalRequestUtil.actualRequest );
+            
+            
+            
+            
 
             // MATCHCODE - LEGALENTITY - COUNTRY + PARTNER : Contact found
             if ( ExternalRequestUtil.mapContactsEmailBirthDateLECountry.containsKey( matchcode_LECountyPartner ) )
             {
                 // If contact exists with a different customer number
-                // System.debug('>>> Contact found by Matchcode + LE + COUNTRY + PARTNER');
+                
                 alreadyInSFContact = ExternalRequestUtil.mapContactsEmailBirthDateLECountry.get( matchcode_LECountyPartner );
 
                 if ( incomingContact.status__c == 'Lead' )
@@ -267,87 +267,11 @@ global without sharing class ContactUtil
                 }
 
 
-            } // EMAIL - BIRTHDATE - LEGALENTITY
-          /*  else if ( ExternalRequestUtil.mapContactsEmailBirthDateLE.containsKey( emailBirthDateLECode ) )
-            {
-                // If the contact exists in another country
-                System.debug('>>> Contact found by MC2');
-
-                alreadyInSFContact = ExternalRequestUtil.mapContactsEmailBirthDateLE.get( emailBirthDateLECode );
-
-                incomingContact.AccountId = alreadyInSFContact.AccountId;
-
-                Account accountItem = new Account();
-                accountItem.Name = incomingContact.FirstName + ' ' + incomingContact.LastName;
-
-                // The master account doesn't have the EMEA customer number
-                // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
-                if( String.isBlank( (String) alreadyInSFContact.Account.get(customerNumField) ) )
-                {
-                    // The master account is updated
-                    // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
-                    accountItem.put(customerNumField, customerNumberOnly);
-                    accountItem.Id = alreadyInSFContact.AccountId;
-                    ExternalRequestUtil.mastersToUpdateById.put( (String) accountItem.get(customerNumField), accountItem );
-                }
-                else // The master account has an EMEA customer number
-                // The contact is a lead
-                {
-                    // if (incomingContact.Status__c == 'Lead')
-                    // {
-                    //     incomingContact.CustomerNum__c = alreadyInSFContact.CustomerNum__c;
-                    //     // todo: forced to be the same id if is the same CustomerNum and already exist
-                    //     incomingContact.Id = alreadyInSFContact.Id;
-                    //     // Notice that the master account IS NOT UPDATED (by not putting it in any map)
-                    // }
-                    // else // The contact is an ACTIVE customer
-                    // // The master account is updated
-                    // // Account.CustomerNum__c / CustomerNum_EMEA__c / CustomerNum_Partner__c
-                    // {
-                    accountItem.put(customerNumField, customerNumberOnly);
-                    // Populate the Id field only if the account has the same customer number
-                    if ( alreadyInSFContact.Account.get(customerNumField) == customerNumberOnly )
-                    {
-                        ExternalRequestUtil.AccountMastersToUpdate.put( (String) accountItem.get(customerNumField), accountItem );
-                    }
-                    else
-                    {
-                        accountItem.Id = alreadyInSFContact.AccountId;
-                        ExternalRequestUtil.mastersToUpdateById.put( (String) accountItem.get(customerNumField), accountItem );
-                    }
-                    // }
-                }
-
-                // todo: this cant happen because of the match condition
-                // if ( incomingContact.sourceCountry__c == alreadyInSFContact.sourceCountry__c ) {
-                //     incomingContact.Id = alreadyInSFContact.Id;
-                // } else {
-                if ( !String.isBlank(incomingContact.MasterPolicyNum__c) )
-                {
-                    //Asociar partner cuando el cliente es nuevo
-                    AccountUtil.associatePartner(
-                        incomingContact,
-                        ExternalRequestUtil.mapPartners,
-                        ExternalRequestUtil.contactsToUpdateWithPartner,
-                        ExternalRequestUtil.partnersToUpdateList,
-                        ExternalRequestUtil.recordOwner
-                        );
-                }
-                // }
-                incomingContact.OwnerId = ExternalRequestUtil.recordOwner.id;
-                ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
-
-                if (quote != null)
-                {
-                    quote.AccountId = alreadyInSFContact.AccountId;
-                    quote.CustomerNum__c = customerNumberOnly;
-                    quote.ContactId__r = new Contact( CustomerNum__c = incomingContact.CustomerNum__c );
-                }
-            } */ // ONLY MATCHCODE (DIFFERENT LEGAL ENTITY - COUNTRY OR PARTNER) : Associate contact to existing master
+            }// ONLY MATCHCODE (DIFFERENT LEGAL ENTITY - COUNTRY OR PARTNER) : Associate contact to existing master
             else if ( ExternalRequestUtil.mapContactsEmailBirthDate.containsKey( matchcode ) )
             {
                 
-                // System.debug('>>> Contact found by MATCHCODE (different LE, COUNTRY or PARTNER');
+                
                 alreadyInSFContact = ExternalRequestUtil.mapContactsEmailBirthDate.get( matchcode );
 
                 incomingContact.AccountId = alreadyInSFContact.AccountId;
@@ -414,7 +338,7 @@ global without sharing class ContactUtil
             } // SEARCH AMONG SUBSCRIBERS // nts (nbizkarra) - 17/11/2020
             else if ( ExternalRequestUtil.mapSubscribers.containsKey(incomingContact.Email) )
             {
-                // System.debug('>>> Contact found in Subscribers');
+                
                 List <Contact> listSubscribers = ExternalRequestUtil.mapSubscribers.get(incomingContact.Email);
                 Boolean subscriber_found = false;
 
@@ -428,7 +352,7 @@ global without sharing class ContactUtil
                         )
                     {
 
-                        // System.debug('>>> Subscriber found: ' + subscriber);
+                        
                         alreadyInSFContact = subscriber;
                         incomingContact.Id = alreadyInSFContact.Id;
                         ExternalRequestUtil.contactsToUpdate.put( incomingContact.CustomerNum__c, incomingContact );
@@ -440,7 +364,7 @@ global without sharing class ContactUtil
                 if(subscriber_found == false)
                 {
 
-                    // System.debug('>>> Subscribers master found');
+                    
 
                     alreadyInSFContact = listSubscribers.get(0);
                     incomingContact.AccountId = alreadyInSFContact.AccountId;
@@ -517,7 +441,7 @@ global without sharing class ContactUtil
     public static void createContactAndMaster( Contact incomingContact, String customerNumField, String customerNumberOnly, Order quote )
     {
         // The contact doesn't exist
-        // System.debug('>>> The contact does not exist');
+        
 
         // Master (account) creation
         Account accountItem = new Account();
@@ -566,175 +490,6 @@ global without sharing class ContactUtil
     }
 
     /**
-     * Método que actualiza la información común de un cliente de la entidad contraria a través de un trigger (after insert, after update)
-     * @author nbizkarra
-     * @date 01/04/2020
-     **//*
-    public static void updateCustomerInfo( List<Contact> newList, Map<Id, Contact> oldMap )
-    {
-        System.debug('- - - - - ContactUtil.updateCustomerInfo - - - - -');
-        List<Contact> updateContacts = new List<Contact>();
-        List<Account> updateMasters = new List<Account>();
-        AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
-
-        if (newList != null)
-        {
-            for (Contact cont : newList)
-            {
-                //Solo actualizar si es cliente
-                if (cont.Status__c == Label.Customer)
-                {
-                    if ( !checkRecursive.SetOfIDs.contains(cont.AccountId) )
-                    {
-                        if (oldMap != null)
-                        {
-                            //cuando es after update, actualizar cuando cambia algún valor común
-                            if (
-                                (!String.isBlank(cont.DNI__c) && cont.DNI__c != oldMap.get(cont.Id).DNI__c) ||
-                                (!String.isBlank(cont.Email) && cont.Email != oldMap.get(cont.Id).Email) ||
-                                //  (!String.isBlank(cont.MobilePhone) && cont.MobilePhone != oldMap.get(cont.Id).MobilePhone)  ||
-                                // (cont.Birthdate!= null && cont.Birthdate != oldMap.get(cont.Id).Birthdate)  ||
-                                (!String.isBlank(cont.FirstName) && cont.FirstName != oldMap.get(cont.Id).FirstName) ||
-                                (!String.isBlank(cont.LastName) && cont.LastName != oldMap.get(cont.Id).LastName) ||
-                                //  (!String.isBlank(cont.Nationality__c) && cont.Nationality__c !=oldMap.get(cont.Id).Nationality__c) ||
-                                //   (!String.isBlank(cont.Gender__c) && cont.Gender__c !=oldMap.get(cont.Id).Gender__c) ||
-                                (cont.MasterPolicy__c != null && cont.MasterPolicy__c != oldMap.get(cont.Id).MasterPolicy__c)
-                                )
-                            {
-                                //Solo los clientes
-                                List<Account> masters = new List<Account>();
-                                Account master;
-                                masters = [
-                                    SELECT Id, Name,
-                                    (SELECT Id FROM Contacts WHERE Id != :cont.Id AND Status__c = :Label.Customer)
-                                    FROM Account
-                                    WHERE Id = :cont.AccountId
-                                ];
-
-                                if (masters != null)
-                                {
-                                    master = masters.get(0);
-                                }
-
-                                if (master != null && master.Contacts != null)
-                                {
-                                    //Actualizar nombre en el master
-                                    if ( (!String.isBlank(cont.FirstName) && cont.FirstName != oldMap.get(cont.Id).FirstName) ||
-                                         (!String.isBlank(cont.LastName) && cont.LastName != oldMap.get(cont.Id).LastName) )
-                                    {
-                                        master.Name = cont.FirstName + ' ' + cont.LastName;
-                                        updateMasters.add(master);
-                                    }
-
-                                    for (Contact SFcontact : master.Contacts)
-                                    {
-                                        if ( !String.isBlank(cont.DNI__c) )
-                                        {
-                                            SFcontact.DNI__c = cont.DNI__c;
-                                        }
-                                        if ( !String.isBlank(cont.Email) )
-                                        {
-                                            SFcontact.Email = cont.Email;
-                                        }
-                                        //  if(!String.isBlank(cont.MobilePhone)){SFcontact.MobilePhone=cont.MobilePhone;}
-                                        //  if(cont.Birthdate!= null){SFcontact.Birthdate=cont.Birthdate;}
-                                        if ( !String.isBlank(cont.FirstName) )
-                                        {
-                                            SFcontact.FirstName = cont.FirstName;
-                                        }
-                                        if ( !String.isBlank(cont.LastName) )
-                                        {
-                                            SFcontact.LastName = cont.LastName;
-                                        }
-                                        //  if(!String.isBlank(cont.Nationality__c)){ SFcontact.Nationality__c=cont.Nationality__c;}
-                                        //  if(!String.isBlank(cont.Gender__c)){ SFcontact.Gender__c=cont.Gender__c;}
-
-                                        //update masterpolicy if it is set to true in custom metadatatype
-                                        if (adminSetup.SameMasterPolicy__c == true)
-                                        {
-                                            if (cont.MasterPolicy__c != null)
-                                            {
-                                                SFcontact.MasterPolicy__c = cont.MasterPolicy__c;
-                                            }
-                                        }
-                                        updateContacts.add(SFcontact);
-                                    }
-                                }
-                            }
-                        }
-                        else //cuando es after insert
-                        {
-                            List<Account> masters = new List<Account>();
-                            Account master;
-                            masters = [
-                                SELECT id, Name,
-                                (SELECT Id, DNI__c, Email, MobilePhone, Birthdate, FirstName,LastName, Nationality__c, Gender__c, MasterPolicy__c
-                                 FROM Contacts
-                                 WHERE Id != :cont.Id AND Status__c = :Label.Customer)
-                                FROM Account
-                                WHERE Id = :cont.AccountId
-                            ];
-
-                            if (masters != null && masters.size() > 0)
-                            {
-                                master = masters.get(0);
-                            }
-
-                            if (master != null && master.Contacts != null)
-                            {
-                                for (Contact SFcontact : master.Contacts)
-                                {
-                                    if ( !String.isBlank(cont.DNI__c) && !cont.DNI__c.equalsIgnoreCase(SFcontact.DNI__c) )
-                                    {
-                                        SFcontact.DNI__c = cont.DNI__c;
-                                    }
-                                    if ( !String.isBlank(cont.Email) && !cont.Email.equalsIgnoreCase(SFcontact.Email) )
-                                    {
-                                        SFcontact.Email = cont.Email;
-                                    }
-                                    // if(!String.isBlank(cont.MobilePhone)  && !cont.MobilePhone.equalsIgnoreCase(SFcontact.MobilePhone) ){SFcontact.MobilePhone=cont.MobilePhone;}
-                                    //  if(cont.Birthdate!= null && cont.Birthdate!=SFcontact.Birthdate){SFcontact.Birthdate=cont.Birthdate;}
-                                    if ( !String.isBlank(cont.FirstName) && !cont.FirstName.equalsIgnoreCase(SFcontact.FirstName) )
-                                    {
-                                        SFcontact.FirstName = cont.FirstName;
-                                    }
-                                    if ( !String.isBlank(cont.LastName) && !cont.LastName.equalsIgnoreCase(SFcontact.LastName) )
-                                    {
-                                        SFcontact.LastName = cont.LastName;
-                                    }
-                                    //  if(!String.isBlank(cont.Nationality__c) && !cont.Nationality__c.equalsIgnoreCase(SFcontact.Nationality__c) ){ SFcontact.Nationality__c=cont.Nationality__c;}
-                                    //  if(!String.isBlank(cont.Gender__c) && !cont.Gender__c.equalsIgnoreCase(SFcontact.Gender__c) ){ SFcontact.Gender__c=cont.Gender__c;}
-                                    //update masterpolicy if it is set to true in custom metadatatype
-
-                                    if (adminSetup.SameMasterPolicy__c == true)
-                                    {
-                                        if ( cont.MasterPolicy__c != null && cont.MasterPolicy__c != SFcontact.MasterPolicy__c )
-                                        {
-                                            SFcontact.MasterPolicy__c = cont.MasterPolicy__c;
-                                        }
-                                    }
-                                    updateContacts.add(SFcontact);
-                                }
-                            }
-                        }
-                        checkRecursive.SetOfIDs.add(cont.AccountId);
-                    }
-                }
-            }
-        }
-
-        if ( updateMasters != null && !updateMasters.isEmpty() )
-        {
-            upsert updateMasters;
-        }
-
-        if ( updateContacts != null && !updateContacts.isEmpty() )
-        {
-            upsert updateContacts;
-        }
-    }*/
-
-    /**
      * Método que setea en la cuenta el número total de contactos. Este campo se usa en un campo fórmula del contacto
      * para determinar si existe el contacto en la entidad legal contraria
      * @author nbizkarra
@@ -742,11 +497,11 @@ global without sharing class ContactUtil
      */
     public static void SummaryTotalContacts( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        // System.debug('- - - - - ContactUtil.SummaryTotalContacts - - - - -');
+        
         Set<Id> idSet = new Set<Id>();
         List<Contact> contactOldList = new List<Contact>();
-        // System.debug(oldMap);
-        // System.debug(oldMap != null);
+        
+        
 
         if (newList != null || oldMap != null)
         {
@@ -764,7 +519,7 @@ global without sharing class ContactUtil
             if (oldMap != null)
             {
                 contactOldList = oldMap.values();
-                // System.debug(contactOldList);
+                
                 for (Contact cont : contactOldList)
                 {
                     //list of IDs of the parent record
@@ -775,7 +530,7 @@ global without sharing class ContactUtil
                 }
             }
 
-            // System.debug(idSet);
+            
             if ( !idSet.isEmpty() )
             {
                 // Define the context for the RollupSummariesUtil.summarize() method
@@ -818,7 +573,7 @@ global without sharing class ContactUtil
      */
     public static void generateHashContactId( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        // System.debug('- - - - - ContactUtil.generateHashContactId - - - - -');
+        
         List<Contact> updateContacts = new List<Contact>();
 
         if (newList != null || oldMap != null)
@@ -851,7 +606,7 @@ global without sharing class ContactUtil
      */
     public static void updateQuoteStep4and5( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        // System.debug('- - - - - ContactUtil.updateQuoteStep4and5 - - - - -');
+        
         List<Contact> quotes = new List<Contact>();
         Map<ID, Order> quotesToUpdate = new Map<ID, Order>();
         Map<ID, Contact> mapContactos = new Map<ID, Contact>();

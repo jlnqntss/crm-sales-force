@@ -48,11 +48,11 @@
     <dashboardFilters>
         <dashboardFilterOptions>
             <operator>contains</operator>
-            <values>ARAGÓN-CATALUÑA OESTE</values>
+            <values>BARCELONA</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>contains</operator>
-            <values>BARCELONA-CATALUÑA ESTE</values>
+            <values>CATALUNYA ANDORRA</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>contains</operator>
@@ -64,11 +64,15 @@
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>contains</operator>
+            <values>CENTRO ARAGÓN</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>contains</operator>
             <values>MADRID</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>contains</operator>
-            <values>SUR</values>
+            <values>SUR ORIENTAL</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>contains</operator>
@@ -76,15 +80,15 @@
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>contains</operator>
-            <values>NORTE</values>
+            <values>SUR OCCIDENTAL</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>contains</operator>
-            <values>GALICIA</values>
+            <values>NORTE ORIENTAL</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>contains</operator>
-            <values>CENTRO</values>
+            <values>NORTE OCCIDENTAL</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
             <operator>contains</operator>

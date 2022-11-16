@@ -50,7 +50,7 @@ private with sharing class GenerateComercialPlanControllerTest
         System.assertEquals(1, tabledata.headers.Cells.size(), 'Deberia haber 1 columna en la fila de cabecera');
         System.assertNotEquals(null, tabledata.rows, 'Deberia haber resto de filas');
         // 6 = segmento, producto, indicador, año, plan dt, rn1
-        System.assertEquals(6, tabledata.rows.size(), 'Deberia haber 6 filas');
+        System.assertEquals(7, tabledata.rows.size(), 'Deberia haber 7 filas');
         // 1 = Plan 1
         System.assertEquals(1, tabledata.rows[0].Cells.size(), 'Deberia haber 1 columna en la primera fila');
         
@@ -67,11 +67,11 @@ private with sharing class GenerateComercialPlanControllerTest
         tabledata.rows[2].Cells[0].stringValue = 'Portfolio'; // Picklist PlanComercial__c.Indicator__c
         tabledata.rows[2].Cells[0].isModified = true;
         // Cambio Plan DT (saltamos año)
-        tabledata.rows[4].Cells[0].decimalValue = 10;
-        tabledata.rows[4].Cells[0].isModified = true;
-        // Cambio RN 1
         tabledata.rows[5].Cells[0].decimalValue = 10;
         tabledata.rows[5].Cells[0].isModified = true;
+        // Cambio RN 1
+        tabledata.rows[6].Cells[0].decimalValue = 10;
+        tabledata.rows[6].Cells[0].isModified = true;
 
         // Nuevo plan
         GenerateComercialPlanController.Celltype newPlanHeader = tabledata.headersNew.Cells[0];
@@ -79,11 +79,11 @@ private with sharing class GenerateComercialPlanControllerTest
         newPlanHeader.Id = null;
         newPlanHeader.IsNew = true;
         tabledata.headers.Cells.add(newPlanHeader);
-        for(Integer i=0; i<6; i++) {
+        for(Integer i=0; i<7; i++) {
             GenerateComercialPlanController.Celltype newPlanRow = tabledata.rowsNew[i].Cells[0];
             newPlanRow.Id = null;
             newPlanRow.IsNew = true;
-            if( i == 4 || i == 5 ) { // filas de plan DT y RN
+            if( i == 5 || i == 6 ) { // filas de plan DT y RN
                 newPlanRow.decimalValue = 8;
             }
             tabledata.rows[i].Cells.add(newPlanRow);
@@ -153,7 +153,7 @@ private with sharing class GenerateComercialPlanControllerTest
         System.assertEquals(1, tabledata.headers.Cells.size(), 'Deberia haber 1 columna en la fila de cabecera');
         System.assertNotEquals(null, tabledata.rows, 'Deberia haber resto de filas');
         // 8 = segmento, producto, indicador, año, plan dt, Mediador 1, Mediador 2, Mediador 3
-        System.assertEquals(8, tabledata.rows.size(), 'Deberia haber 8 filas');
+        System.assertEquals(9, tabledata.rows.size(), 'Deberia haber 9 filas');
         // 1 = Plan 1
         System.assertEquals(1, tabledata.rows[0].Cells.size(), 'Deberia haber 1 columna en la primera fila');
         
@@ -182,12 +182,12 @@ private with sharing class GenerateComercialPlanControllerTest
         List<PlanComercial__c> resultPlans = [
             SELECT Id, TargetKPINumber__c FROM PlanComercial__c WHERE Intermediary__c IN :intermediaryIds
         ];
-        System.assertEquals(3, resultPlans.size(), 'Deberia haber 3 planes del RN para los mediadores');
+        System.assertEquals(4, resultPlans.size(), 'Deberia haber 4 planes del RN para los mediadores');
         Decimal sumValue = 0;
         for(PlanComercial__c plan: resultPlans) {
             sumValue += plan.TargetKPINumber__c;
         }
-        System.assertEquals(9, sumValue, 'La suma de target KPI number deberia ser 9');
+        System.assertEquals(14, sumValue, 'La suma de target KPI number deberia ser 14');
     }
 
     @isTest

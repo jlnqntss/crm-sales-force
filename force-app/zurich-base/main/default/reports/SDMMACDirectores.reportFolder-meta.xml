@@ -10,5 +10,10 @@
         <sharedTo>SDM_Director</sharedTo>
         <sharedToType>Group</sharedToType>
     </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>SDM_Home_Office</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
     <name>SDM MAC Directores</name>
 </ReportFolder>

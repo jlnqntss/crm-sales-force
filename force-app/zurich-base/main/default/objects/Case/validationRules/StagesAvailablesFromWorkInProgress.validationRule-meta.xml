@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StagesAvailablesFromWorkInProgress</fullName>
+    <active>true</active>
+    <description>[VR Caso] Caso en estado NEGOCIACIÓN sólo puede pasar a GANADA O PERDIDA</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
+ISCHANGED(QuotationStage__c) &amp;&amp; ISPICKVAL(PRIORVALUE(QuotationStage__c),&quot;Work in Progress&quot;) &amp;&amp; NOT(ISPICKVAL(QuotationStage__c,&quot;Won&quot;)) &amp;&amp; NOT(ISPICKVAL(QuotationStage__c,&quot;Lost&quot;))</errorConditionFormula>
+    <errorDisplayField>QuotationStage__c</errorDisplayField>
+    <errorMessage>[VR Caso] Caso en estado NEGOCIACIÓN sólo puede pasar a GANADA O PERDIDA</errorMessage>
+</ValidationRule>

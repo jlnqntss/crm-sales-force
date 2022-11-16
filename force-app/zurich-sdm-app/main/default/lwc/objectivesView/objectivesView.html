@@ -94,6 +94,7 @@
           class="slds-modal__content slds-p-around_medium"
           id="modal-content-id-1"
         >
+          <!--Formulario para nuevo y edición se dibuja los indicadores read only o editables segun sea new o edit-->
           <template if:true={newEditFormModal}>
             <lightning-record-edit-form
               object-api-name="Objective__c"
@@ -129,6 +130,18 @@
                         </div>
                       </div>
                     </div>
+                    <div
+                      class="slds-form-element slds-form-element_readonly slds-p-left_xx-small"
+                    >
+                      <span class="slds-form-element__label"
+                        >{labels.SDM_Objetivos_Zone}</span
+                      >
+                      <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">
+                          {recordSelected.Zone__c}
+                        </div>
+                      </div>
+                    </div>
                   </template>
                   <template if:true={newFormModal}>
                     <lightning-input-field
@@ -137,27 +150,27 @@
                     <lightning-input-field
                       field-name="Segment__c"
                     ></lightning-input-field>
+                    <lightning-input-field
+                      field-name="Zone__c"
+                    ></lightning-input-field>
                   </template>
                   <lightning-input-field
-                    field-name="January__c"
+                    field-name="February__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="March__c"
+                    field-name="April__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="May__c"
+                    field-name="June__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="July__c"
+                    field-name="August__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="September__c"
+                    field-name="October__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="November__c"
-                  ></lightning-input-field>
-                  <lightning-input-field
-                    field-name="Active__c"
+                    field-name="December__c"
                   ></lightning-input-field>
                 </div>
                 <div class="slds-col slds-size_1-of-2">
@@ -196,24 +209,26 @@
                       field-name="Product__c"
                     ></lightning-input-field>
                   </template>
-
                   <lightning-input-field
-                    field-name="February__c"
+                    field-name="January__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="April__c"
+                    field-name="March__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="June__c"
+                    field-name="May__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="August__c"
+                    field-name="July__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="October__c"
+                    field-name="September__c"
                   ></lightning-input-field>
                   <lightning-input-field
-                    field-name="December__c"
+                    field-name="November__c"
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="Active__c"
                   ></lightning-input-field>
                 </div>
               </div>
@@ -255,6 +270,45 @@
                     value={recordSelected.Segment__c}
                   ></lightning-input-field>
                   <lightning-input-field
+                    field-name="Zone__c"
+                    value={recordSelected.Zone__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="February__c"
+                    value={recordSelected.February__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="April__c"
+                    value={recordSelected.April__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="June__c"
+                    value={recordSelected.June__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="August__c"
+                    value={recordSelected.August__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="October__c"
+                    value={recordSelected.October__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="December__c"
+                    value={recordSelected.December__c}
+                  ></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                  <!-- More lightning-input-field components here -->
+                  <lightning-input-field
+                    field-name="Indicator__c"
+                    value={recordSelected.Indicator__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
+                    field-name="Product__c"
+                    value={recordSelected.Product__c}
+                  ></lightning-input-field>
+                  <lightning-input-field
                     field-name="January__c"
                     value={recordSelected.January__c}
                   ></lightning-input-field>
@@ -281,41 +335,6 @@
                   <lightning-input-field
                     field-name="Active__c"
                     value={recordSelected.Active__c}
-                  ></lightning-input-field>
-                </div>
-                <div class="slds-col slds-size_1-of-2">
-                  <!-- More lightning-input-field components here -->
-                  <lightning-input-field
-                    field-name="Indicator__c"
-                    value={recordSelected.Indicator__c}
-                  ></lightning-input-field>
-                  <lightning-input-field
-                    field-name="Product__c"
-                    value={recordSelected.Product__c}
-                  ></lightning-input-field>
-                  <lightning-input-field
-                    field-name="February__c"
-                    value={recordSelected.February__c}
-                  ></lightning-input-field>
-                  <lightning-input-field
-                    field-name="April__c"
-                    value={recordSelected.April__c}
-                  ></lightning-input-field>
-                  <lightning-input-field
-                    field-name="June__c"
-                    value={recordSelected.June__c}
-                  ></lightning-input-field>
-                  <lightning-input-field
-                    field-name="August__c"
-                    value={recordSelected.August__c}
-                  ></lightning-input-field>
-                  <lightning-input-field
-                    field-name="October__c"
-                    value={recordSelected.October__c}
-                  ></lightning-input-field>
-                  <lightning-input-field
-                    field-name="December__c"
-                    value={recordSelected.December__c}
                   ></lightning-input-field>
                 </div>
               </div>

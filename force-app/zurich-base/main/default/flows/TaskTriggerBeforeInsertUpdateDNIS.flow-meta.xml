@@ -5,8 +5,8 @@
         <description>poner en DNIS Phone el valor de DNIS</description>
         <name>SetDNISPhone</name>
         <label>Asignar DNIS Phone</label>
-        <locationX>859</locationX>
-        <locationY>308</locationY>
+        <locationX>850</locationX>
+        <locationY>313</locationY>
         <assignmentItems>
             <assignToReference>$Record.DNISPhone__c</assignToReference>
             <operator>Assign</operator>
@@ -17,31 +17,26 @@
     </assignments>
     <assignments>
         <description>Fija el DNIS Phone a un teléfono a mano</description>
-        <name>SetFixedDNISPhone</name>
-        <label>Asignar DNIS Phone fijo</label>
-        <locationX>859</locationX>
-        <locationY>91</locationY>
+        <name>SetDNISPhoneWithPlus</name>
+        <label>Asignar DNIS Phone con +</label>
+        <locationX>1033</locationX>
+        <locationY>312</locationY>
         <assignmentItems>
             <assignToReference>$Record.DNIS__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>ZurichWhatsappPhone</elementReference>
+                <stringValue>+{!$Record.DNIS__c}</stringValue>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>$Record.DNISPhone__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>ZurichWhatsappPhone</elementReference>
-            </value>
-        </assignmentItems>
+        <connector>
+            <targetReference>SetDNISPhone</targetReference>
+        </connector>
     </assignments>
     <constants>
-        <description>Teléfono de Whatsapp de Zurich</description>
-        <name>ZurichWhatsappPhone</name>
+        <name>plus</name>
         <dataType>String</dataType>
         <value>
-            <stringValue>+34932715353</stringValue>
+            <stringValue>+</stringValue>
         </value>
     </constants>
     <decisions>
@@ -101,9 +96,34 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>SetFixedDNISPhone</targetReference>
+                <targetReference>DNIStartsWithPLUS</targetReference>
             </connector>
             <label>Si Whatsapp</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DNIStartsWithPLUS</name>
+        <label>DNIS comienza por +</label>
+        <locationX>842</locationX>
+        <locationY>97</locationY>
+        <defaultConnector>
+            <targetReference>SetDNISPhoneWithPlus</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>StartsWithPlus</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.DNIS__c</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>plus</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetDNISPhone</targetReference>
+            </connector>
+            <label>Si</label>
         </rules>
     </decisions>
     <description>Rellena DNIS Phone con lo que tenga DNIS si no es un correo electrónico</description>

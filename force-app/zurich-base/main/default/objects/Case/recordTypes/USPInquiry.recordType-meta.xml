@@ -801,11 +801,31 @@
     <picklistValues>
         <picklist>PendingBy__c</picklist>
         <values>
+            <fullName>Champion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consultant</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Deferred</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Intermediary</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Other areas Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Subscription</fullName>
             <default>false</default>
         </values>
         <values>

@@ -208,6 +208,13 @@
             <operator>equals</operator>
             <value>1</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Survey__c$CaseId__c.CallCenter__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>CC Service</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Tabular</format>

@@ -29,7 +29,7 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>ActivityDate</field>
-                <uiBehavior>Edit</uiBehavior>
+                <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>

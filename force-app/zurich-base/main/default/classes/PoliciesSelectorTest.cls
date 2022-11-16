@@ -238,4 +238,84 @@ private with sharing class PoliciesSelectorTest
         System.assertEquals(true, !policiesByNumber.isEmpty() && policiesByNumber.size() == 1, '[2] Policies should be just one');
 
     }
+
+
+
+    @isTest
+    static void test_selectByInfoPolicyNumberAndNationalId_matchedRecords()
+    {
+        List<Policy__c> policies = [SELECT Id, PolicyHolder__r.NationalId__c, InfoPolicyNumber__c FROM Policy__c ORDER BY PolicyHolder__r.NationalId__c];
+        System.assertEquals(false, policies.isEmpty(), 'List should NOT be empty');
+
+        List<String> policyNumbers = new List<String>();
+        List<String> nationalIds = new List<String>();
+        for(Policy__c policy: policies)
+        {
+            policyNumbers.add(policy.InfoPolicyNumber__c);
+            nationalIds.add(policy.PolicyHolder__r.NationalId__c);
+        }
+
+        Test.startTest();
+
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Policy__c.Id, 
+                Policy__c.PolicyHolder__c
+            }
+        );
+
+        List<Policy__c> matchedRecords = policiesSelector.selectByInfoPolicyNumberAndNationalId(nationalIds, policyNumbers);
+
+        Test.stopTest();
+
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
+        for (integer i = 0; i<matchedRecords.size();i++)
+        {
+            System.assertEquals(true, matchedRecords.get(i).PolicyHolder__c == policies.get(i).PolicyHolder__c, 'PolicyHolder should be the same');
+        }
+    }
+
+    @isTest
+    static void test_selectByInfoPolicyNumberAndNationalId_emptySet_matchedRecords()
+    {
+        List<Policy__c> policies = [SELECT Id, InfoPolicyNumber__c, PolicyHolder__c FROM Policy__c];
+        System.assertEquals(false, policies.isEmpty(), 'List should NOT be empty');
+
+        List<String> policyNumbers = new List<String>();
+        List<String> nationalIds = new List<String>();
+        for(Policy__c policy: policies)
+        {
+            policyNumbers.add(policy.InfoPolicyNumber__c);
+        }
+
+        Test.startTest();
+        List<Policy__c> matchedRecords = new PoliciesSelector().selectByInfoPolicyNumberAndNationalId(nationalIds, policyNumbers);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+        
+    }
+
+    @isTest
+    static void test_selectByInfoPolicyNumberAndNationalId_nullSet_matchedRecords()
+    {
+        List<Policy__c> policies = [SELECT Id, InfoPolicyNumber__c, PolicyHolder__c FROM Policy__c];
+        System.assertEquals(false, policies.isEmpty(), 'List should NOT be empty');
+        
+        List<String> policyNumbers = new List<String>();
+        for(Policy__c policy: policies)
+        {
+            policyNumbers.add(policy.InfoPolicyNumber__c);
+        }
+        Test.startTest();
+        List<Policy__c> matchedRecords = new PoliciesSelector().selectByInfoPolicyNumberAndNationalId(policyNumbers, null);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+        
+    }
+
 }

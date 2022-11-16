@@ -14,7 +14,7 @@ public with sharing class DeleteOldMensualPlanBatchTest {
         TestDataFactorySDM.anualPlanSetupData(year, AccountsSelector.SDM_DT_EMAIL_FIELD);
 
         // crear planes mensuales
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c  FROM PlanComercial__c 
+        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, Zone__c  FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
                                                         AND Intermediary__c = NULL
@@ -22,7 +22,7 @@ public with sharing class DeleteOldMensualPlanBatchTest {
 
         if (!planesToJob.isEmpty()) {
             PlanComercial__c pc = planesToJob.get(0);
-            Objective__c obj = TestDataFactory.generateObjective(year, pc.Indicator__c, pc.Segment__c, pc.Product__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+            Objective__c obj = TestDataFactory.generateObjective(year, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
             insert obj;
         }

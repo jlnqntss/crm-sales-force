@@ -677,22 +677,28 @@ public with sharing class IntermediarySDM {
      * segun los campos de email que tengan rellenados
      * 
      * @param {List<Account> intermediaries} lista de Mediadores
+     * change : aberuete 07/11/2022
+     * solucionar error duplicated id al aparecer el id para actualizar dos veces en la lista upsert cuando
+     * una relacion tiene un rol y cambia a otro rol
      */
     public void assignIntermediaryContactRelation(List<Account> intermediaries)
     {
-        if( intermediaries != null && !intermediaries.isEmpty() ) {
+        if( intermediaries != null && !intermediaries.isEmpty() ) 
+        {
             List<Account> intermediariesToProcess = intermediaries;
-            
             // Se buscan los emails para mirar si el contacto ya existe
             Set<String> emailsMediadores = new Set<String>();
             // Por cada mediador...
-            for( Account i: intermediariesToProcess ) {
+            for( Account i: intermediariesToProcess ) 
+            {
                 // Recuperamos los campos que hay en memoria del objeto Account
                 Map<String, Object> fieldsToValue = i.getPopulatedFieldsAsMap();
                 // Por cada relacion de rol contact - campo mediador, miramos si el Account tiene el campo informado
-                for( SDMAccountContactRelation__mdt rel: this.SettingsACR) {
+                for( SDMAccountContactRelation__mdt rel: this.SettingsACR) 
+                {
                     String fieldValue = (String)fieldsToValue?.get(rel.IntermediaryField__c);
-                    if( String.isNotBlank(fieldValue) ) {
+                    if( String.isNotBlank(fieldValue) ) 
+                    {
                         emailsMediadores.add(fieldValue);
                     }
                 }
@@ -719,25 +725,24 @@ public with sharing class IntermediarySDM {
             List<AccountContactRelation> acrsToDelete = new List<AccountContactRelation> ();
 
             // Por cada mediador...
-            for( Account i: intermediariesToProcess ) {
+            for( Account i: intermediariesToProcess ) 
+            {
                 // Recuperamos los campos que hay en memoria del objeto Account
                 Map<String, Object> fieldsToValue = i.getPopulatedFieldsAsMap();
+                // ACRs de Contactos para el Mediador
+                Map<ID, AccountContactRelation> mapACRsByContact = this.mapACRsByAccountContact?.get(i.Id);
                 // Por cada relacion de rol contact - campo mediador
-                for( SDMAccountContactRelation__mdt rel: this.SettingsACR) {
+                for( SDMAccountContactRelation__mdt rel: this.SettingsACR) 
+                {
                     // Buscamos la etiqueta del rol si la hay
                     String roleLabel = this.settings.getACRRoleLabel(rel.Role__c);
-
                     // ACRs de Contactos para el Mediador
-                    Map<ID, AccountContactRelation> mapACRsByContact = this.mapACRsByAccountContact?.get(i.Id);
                     // ACRs de Roles para el Mediador
                     Map<String, AccountContactRelation> mapACRsByRoles = this.mapACRsByAccountRole?.get(i.Id);
                     // ACR para el rol actual (puede no existir y ser nulo)
                     AccountContactRelation acrForRol = mapACRsByRoles?.get(roleLabel);
                     // Hara referencia al ACR que se debera borrar su relacion
                     AccountContactRelation acrToDelete = null;
-
-                    
-
                     // Se mira si tiene valor de email en el campo de mediador actual, sino se borra los ACRs que hubiera
                     String fieldValue = String.valueOf(fieldsToValue.get(rel.IntermediaryField__c));
                     if( String.isNotBlank(fieldValue) ) { //------------------------------------------------------------ Tiene valor de Email
@@ -763,7 +768,8 @@ public with sharing class IntermediarySDM {
                                 );
                                 // Si es el principal, se copia tambien el telefono
                                 // todo: poner esta parte en configuracion
-                                if( rel.IntermediaryField__c.equals(AccountsSelector.SDM_MAINEMAIL_FIELD) && fieldsToValue.containsKey(AccountsSelector.SDM_MAINMOBILEPHONE_FIELD) ) {
+                                if( rel.IntermediaryField__c.equals(AccountsSelector.SDM_MAINEMAIL_FIELD) && fieldsToValue.containsKey(AccountsSelector.SDM_MAINMOBILEPHONE_FIELD) ) 
+                                {
                                     newContact.MobilePhone = String.valueOf(fieldsToValue.get(AccountsSelector.SDM_MAINMOBILEPHONE_FIELD));
                                 }
                                 
@@ -780,7 +786,8 @@ public with sharing class IntermediarySDM {
 
                             // mapa de relaciones de roles por posicion del contacto
                             List<String> rols = mapRolesForContacts.get(contactPosition);
-                            if( rols == null ) {
+                            if( rols == null ) 
+                            {
                                 rols = new List<String>();
                                 mapRolesForContacts.put(contactPosition, rols);
                             }
@@ -794,12 +801,13 @@ public with sharing class IntermediarySDM {
                             List<String> roles = acr?.Roles?.split(';');
 
                             // Si no tiene ACR, o no con ese rol, ponemos a crear o modificar la relacion
-                            if( acr == null || roles == null || !roles.contains(roleLabel) ) {
+                            if( acr == null || roles == null || !roles.contains(roleLabel) ) 
+                            {
                                 Boolean isIncluded = false;
-
                                 // Vemos si el mismo usuario tiene otro nuevo rol para el mismo mediador
                                 AccountContactRelation acrNew = mapNewACRsByAccountAndContactIds?.get(i.Id)?.get(contact.Id);
-                                if( acrNew != null ) {
+                                if( acrNew != null ) 
+                                {
                                     isIncluded = true;
                                     acr = acrNew;
                                     roles = acr?.Roles?.split(';');
@@ -808,8 +816,21 @@ public with sharing class IntermediarySDM {
                                 // Preparamos la lista de roles
                                 if( roles == null ) roles = new List<String>();
                                 roles.add(roleLabel);
+                                
+                                if (acrsToUpsert != null &&!acrsToUpsert.isEmpty() && acr!= null)
+                                {
+                                    for (AccountContactRelation listaAcrsToUpdateWhenUpsert : acrsToUpsert)
+                                    {
+                                        if (listaAcrsToUpdateWhenUpsert.id != null && acr.id != null && listaAcrsToUpdateWhenUpsert.id == acr.id)
+                                        {
+                                            isIncluded = true;
+                                        }
+                                    }
+                                }
+                               
 
-                                if( !isIncluded ) { // Si es la primera vez para el contacto del mediador
+                                if( !isIncluded ) 
+                                { // Si es la primera vez para el contacto del mediador
                                     //Se pone un ACR para crear o actualizar
                                     acr = new AccountContactRelation(
                                         Id= acr?.Id,
@@ -817,10 +838,9 @@ public with sharing class IntermediarySDM {
                                         ContactId= contact.Id,
                                         IsActive= true
                                     );
-
                                     // Se añade el ACR a la lista para insertar
                                     acrsToUpsert.add(acr);
-
+                                    
                                     // Lo guardamos en el mapa por si el contacto esta en varios campos de email del mediador
                                     Map<Id, AccountContactRelation> mapACRsByContactId = mapNewACRsByAccountAndContactIds.get(i.Id);
                                     if( mapACRsByContactId == null ) {
@@ -839,28 +859,84 @@ public with sharing class IntermediarySDM {
                         acrToDelete = acrForRol;
                     }
 
+                    Boolean isIcludedInAcrstoUpsert = false;
                     // Si hay que borrar el ACR con el rol actual, por estar el campo de email vacio o por cambio de contacto para el rol
-                    if( acrToDelete != null ) { 
-                        // quitamos este rol del ACR
-                        List<String> roles = acrToDelete.Roles?.split(';');
-                        roles.remove(roles.indexOf(roleLabel));
-
+                    if( acrToDelete != null ) 
+                    {
+                         // quitamos este rol del ACR
+                         List<String> roles = acrToDelete.Roles?.split(';');
+                         roles.remove(roles.indexOf(roleLabel));
                         // Si es relacion directa o Si todavia tiene mas roles => se quita el rol y se pone a modificar
-                        if( acrToDelete.isDirect || !roles.isEmpty() ) {
-                            acrToDelete.Roles = String.join(roles, ';');
-                            if( !acrsToUpsert.contains(acrToDelete) ) acrsToUpsert.add(acrToDelete);
-                        } else { // Si no se pone a borrar
-                            // Comprobamos si ya se ha puesto a actualizar previamente al tener mas de un rol y quitarle uno previamente
-                            if( acrsToUpsert.contains(acrToDelete) ) acrsToUpsert.remove(acrsToUpsert.IndexOf(acrToDelete));
-                            // Y lo ponemos a borrar definitivamente
+                        if( acrToDelete.isDirect || !roles.isEmpty() ) 
+                        {
+                            // Se comprueba que el acrToDelete no este en la lista de acrsToUpsert
+                            if (acrsToUpsert != null && !acrsToUpsert.isEmpty() )
+                            {
+                                for (AccountContactRelation listaAcrsToUpdate : acrsToUpsert)
+                                {
+                                    if (listaAcrsToUpdate.id != null && acrToDelete.id != null && listaAcrsToUpdate.id == acrToDelete.id )
+                                    {
+                                        isIcludedInAcrstoUpsert = true;
+                                        List<String> rolesInListaAcrToUpdate = listaAcrsToUpdate.Roles?.split(';');
+                                        rolesInListaAcrToUpdate.remove(rolesInListaAcrToUpdate.indexOf(roleLabel));
+                                        listaAcrsToUpdate.Roles = String.join(rolesInListaAcrToUpdate, ';');
+                                    }
+                                }
+                            }
+                        
+                            if (!isIcludedInAcrstoUpsert)
+                            {
+                                acrToDelete.Roles = String.join(roles, ';');
+                                acrsToUpsert.add(acrToDelete);
+                            }
+                             
+                        } 
+                        else 
+                        { // Si no se pone a borrar
+                            // Si no esta en la lista de borrar definitivamente, lo añadimos
                             if( !acrsToDelete.contains(acrToDelete) ) acrsToDelete.add(acrToDelete);
+                            Boolean isACRtoDeleteInACRStoUpsertWithOneRole = false; 
+                            // Comprobamos si ya se ha puesto a actualizar previamente al tener mas de un rol y quitarle uno previamente
+                            if (acrsToUpsert != null && !acrsToUpsert.isEmpty() )
+                            {
+                                for (AccountContactRelation listaACRToUpsert :acrsToUpsert)
+                                {
+                                    if (listaACRToUpsert.id != null && listaACRToUpsert.id == acrToDelete.id )
+                                    {
+                                        List<String> rolesToUpsert = listaACRToUpsert.Roles?.split(';');
+                                        // Comprobamos cuantos roles tiene para actualizar
+                                        //Si tiene menos de dos, la relacion hay que borrarla
+                                        if (rolesToUpsert.size() < 2 )
+                                        {
+                                            isACRtoDeleteInACRStoUpsertWithOneRole = true;
+                                        }
+                                        //En el caso que tenga 2 roles o mas , la relacion no hay que borrarla si no actualizarla
+                                        else 
+                                        {
+                                            acrsToDelete.remove(acrsToDelete.indexOf(acrToDelete));
+                                            rolesToUpsert.remove(rolesToUpsert.indexOf(roleLabel));
+                                            listaACRToUpsert.Roles = String.join(rolesToUpsert, ';');
+                                        }
+                                    }
+                                }
+                            }
+
+                            //Si la relacion tiene menos de dos roles y esta para actualizar, la quitamos de la lista para actualizarla
+                            if (isACRtoDeleteInACRStoUpsertWithOneRole)
+                            {
+                                acrsToUpsert.remove(acrsToUpsert.IndexOf(acrToDelete));
+                            }
+
+                            // Si hemos puesto una relacion a borrar, quitamos a ese contacto del mapa ACR -Contactos
+                            mapACRsByContact.remove(acrToDelete.ContactId);
                         }
                     }
                 }
             }
 
             // Si hay contactos para insertar
-            if( !mapContactsToInsert.isEmpty() ) {
+            if( !mapContactsToInsert.isEmpty() ) 
+            {
                 // Insertamos los contactos
                 insert mapContactsToInsert.values();
 
@@ -889,12 +965,14 @@ public with sharing class IntermediarySDM {
             }
 
             // Si hay AccountContactRelation para borrar
-            if( !acrsToDelete.isEmpty() ) {
+            if( !acrsToDelete.isEmpty() ) 
+            {
                 delete acrsToDelete;
             }
-
+            
             // Si hay AccountContactRelation para insertar
-            if( !acrsToUpsert.isEmpty() ) {
+            if( !acrsToUpsert.isEmpty() ) 
+            {  
                 upsert acrsToUpsert;
             }
         }

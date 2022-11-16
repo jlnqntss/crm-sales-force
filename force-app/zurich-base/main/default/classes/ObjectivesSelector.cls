@@ -4,7 +4,7 @@
 public with sharing class ObjectivesSelector {
 
     private static String getFieldListString() {
-        return ' Id, Year__c, Indicator__c, Segment__c, Product__c, January__c, February__c, March__c, April__c, May__c, June__c, July__c, August__c, September__c, October__c, November__c, December__c, Active__c, ExternalId__c ';
+        return ' Id, Year__c, Indicator__c, Segment__c, Product__c, Zone__c, January__c, February__c, March__c, April__c, May__c, June__c, July__c, August__c, September__c, October__c, November__c, December__c, Active__c, ExternalId__c ';
     }
     
     private static String getSObjectName() {
@@ -12,7 +12,7 @@ public with sharing class ObjectivesSelector {
     }
 
     private static String getOrderBy(){
-        return ' Indicator__c, Segment__c, Product__c ASC ';
+        return ' Indicator__c, Segment__c, Product__c, Zone__c ASC ';
     }
 
     public ObjectivesSelector() {}

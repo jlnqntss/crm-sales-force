@@ -21,6 +21,10 @@ private class CaseUtilTest
         //Crear al menos el Entitlement Default usado en el flow CaseTriggerBeforeEntitlement encargado de su asignación
         Entitlement e = new Entitlement(AccountId = cuentaHolder.Id, Name = 'Default', SlaProcessId = slas[0].Id);
         insert e;
+
+        List<SlaProcess> slasUsp = [SELECT Name, ID FROM SlaProcess WHERE Name = 'generico cierre interaccion 30h'];
+        Entitlement entitlementUsp = new Entitlement(AccountId = cuentaHolder.Id, Name = 'DefaultUsp', SlaProcessId = slasUsp[0].Id, StartDate = System.today());
+        insert entitlementUsp;
     }
 
     /**
@@ -244,6 +248,104 @@ private class CaseUtilTest
         for(CaseMilestone cmilestone: milestonesUpdated)
         {
             System.assertEquals(false, cmilestone.isCompleted, 'el milestone no debería estar completado porque el caso aún no se cerró');
+        }
+    }
+
+    /**
+    * IMPORTANTE2: este test depende de que existan EntitlementProcess en el sistema
+    * @author jjuaristi@seidor.es
+    * @date 24/10/2022
+    */
+    @isTest
+    static void test_completeUSPMilestonesWhenClosedOrPending_ok()
+    {
+        Id rtUSPId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+
+        List<Entitlement> ents = [SELECT Id FROM Entitlement WHERE Name = 'DefaultUsp'];
+        System.assertEquals(false, ents.isEmpty(),'deberían existir entitlements, al menos el Default');
+
+        //Crear caso
+        List<Case> cases = new List<Case>();
+        for(Integer i = 0; i < 3; i++)
+        {   
+            Case caso = new Case(RecordTypeId = rtUSPId);
+            caso.EntitlementId = ents[0].Id;
+            cases.add(caso);
+        }
+        insert cases;
+
+        //Comprobar que los milestones no están completados
+        List<CaseMilestone> milestonesCreated = [SELECT IsCompleted, MilestoneType.Name FROM CaseMilestone WHERE CaseId IN :cases];
+        System.assertEquals(false, milestonesCreated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        for(CaseMilestone cm: milestonesCreated)
+        {
+            System.assertEquals(false, cm.isCompleted, 'el milestone no debería estar completado aún');
+        }
+
+        Test.startTest();
+        //Actualizar caso
+        for(Case c: cases)
+        {
+            //No se puede pasar a closed directamente
+            c.Status = 'Asignado';
+        }
+        update cases;
+        for(Case c: cases)
+        {
+            //No se puede pasar a closed directamente
+            c.Status = 'Respondido';
+        }
+        update cases;
+        for(Case c: cases)
+        {
+            c.Status = 'Cerrado';
+        }
+        update cases;
+        Test.stopTest();
+
+        List<CaseMilestone> milestonesUpdated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
+        System.assertEquals(false, milestonesUpdated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        for(CaseMilestone cmilestone: milestonesUpdated)
+        {
+            System.assertEquals(true, cmilestone.isCompleted, 'el milestone debería estar completado ya');
+        }
+    }
+
+    /*
+    * Test del método que relaciona los casos que no tienen cliente con su cliente cuando este se ha creado posteriormente
+    * @author jjuaristi@seidor.es
+    * @date 20/10/2022
+    */
+    @isTest
+    static void test_relateCasesToNewAccounts_OK()
+    {
+        // Se establece el recordtype para que el proceso relacione los casos con esta cuenta
+        Account customer = [SELECT Id, NationalId__c FROM Account LIMIT 1];
+        AccountsSelector accSel = new AccountsSelector(); 
+        customer.RecordTypeId = accSel.rtCustomerId;
+        update customer;
+
+        // Se establece recordType y CIF para que se relacionen
+        List<Case> cases = [SELECT Id, MediatedCustomer__c, RobotDocumentId__c FROM case];
+        CasesSelector caseSel = new CasesSelector(); 
+        for(Case currentCase : cases)
+        {
+            currentCase.RecordTypeId = caseSel.rtUSPId;
+            currentCase.RobotDocumentId__c = customer.NationalId__c;
+        }
+
+        // Se comprueba que la relación no existía previamente
+        for(Case currentCase : cases)
+        {
+            System.assertEquals(null, currentCase.MediatedCustomer__c, 'No deberia haber customer');
+        }
+
+        List<Case> casesToUpdate = CaseUtil.relateCasesToNewAccounts(cases, '5');
+
+        // Se comprueba que se ha hecho bien la relación
+        for(Case currentCase : casesToUpdate)
+        {
+            System.assertNotEquals(null, currentCase.MediatedCustomer__c, 'Deberia haber customer');
         }
     }
 }

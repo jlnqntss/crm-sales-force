@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>[USP - EON] Custom Permission que tendrán los perfiles a los que las VR de caso tendrán que dar error. No tener esta Custom Permission es un bypass para alguna de ellas.</description>
+    <isLicensed>false</isLicensed>
+    <label>USP Trigger Case Validation Rules</label>
+</CustomPermission>

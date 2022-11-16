@@ -84,6 +84,8 @@ export default class TechnicalPolicies extends LightningElement {
   showUpholstered;
   showWood;
 
+  showFramework;
+
   buttonsClicked = [];
 
   fieldsToShow = [];
@@ -309,8 +311,9 @@ export default class TechnicalPolicies extends LightningElement {
    * @date 05/10/2022
    */
   async connectedCallback() {
+    this.checkPage();
     let currentCase;
-    if (this.recordId) {
+    if (this.recordId && this.caseRecord === true) {
       // Si tenemos un id recogemos el registro
       currentCase = await getCaseById({ caseId: this.recordId });
     }
@@ -334,6 +337,10 @@ export default class TechnicalPolicies extends LightningElement {
         activityCode: this.activityCodeTrack
       });
     } else {
+      // Si se ha desfijado en esta ejecución, se vacía el campo caseQuery
+      if (this.desfijadoInput === true) {
+        this.caseQuery = undefined;
+      }
       // En cualquier otro caso, mostramos todas las políticas posibles
       this.optionsList = await getTechPoliciesForActivities({
         sicCode: this.sicCode,
@@ -363,9 +370,13 @@ export default class TechnicalPolicies extends LightningElement {
       });
       this.gridFields();
       this.gridFieldsFranquicia();
-      this.checkProductCode();
       this.defineColumns(result);
+      this.checkPage();
+      this.checkFijado();
     });
+  }
+
+  checkFijado() {
     if (this.maestroFijado) {
       // Solo se muestra una política, no queremos mostrar filtros ni botones para cambiar de pantalla
       this.booleanMaestroFijado = true;
@@ -378,17 +389,7 @@ export default class TechnicalPolicies extends LightningElement {
   }
 
   renderedCallback() {
-    this.checkPage();
-    if (this.productCode === "00516" && this.sizeTrack > 1) {
-      this.showCheckboxes = true;
-    } else {
-      this.showCheckboxes = false;
-    }
-  }
-
-  checkProductCode() {
-    // Para que se muestren los botones de navegación y los filtros, tiene que tener el ramo 516
-    if (this.productCode === "00516") {
+    if (this.productCodeTrack === "00516" && this.sizeTrack > 1) {
       this.showCheckboxes = true;
     } else {
       this.showCheckboxes = false;
@@ -400,7 +401,7 @@ export default class TechnicalPolicies extends LightningElement {
     if (this.recordId) {
       if (this.recordId.startsWith("500")) {
         // Si el id empieza por 500 quiere decir que es un caso
-        if (this.caseQuery && this.desfijadoInput === false) {
+        if (this.caseQuery) {
           this.labelSetTechPolicyButton = "Desfijar Política Técnica";
         } else {
           this.labelSetTechPolicyButton = "Fijar Política Técnica";
@@ -409,6 +410,8 @@ export default class TechnicalPolicies extends LightningElement {
       } else {
         this.caseRecord = false;
       }
+    } else {
+      this.caseRecord = false;
     }
   }
 
@@ -624,6 +627,11 @@ export default class TechnicalPolicies extends LightningElement {
     this.currentRecordTrack = this.policies[this.currentCounterTrack - 1];
     if (this.currentRecordTrack) {
       this.sizeTrack = this.policies.length;
+      if (this.currentRecordTrack.PolicyFramework__c) {
+        this.showFramework = true;
+      } else {
+        this.showFramework = false;
+      }
       return this.currentRecordTrack.Id;
     }
     return "";
@@ -634,18 +642,18 @@ export default class TechnicalPolicies extends LightningElement {
    * @author jjuaristi@seidor.es
    * @date 05/10/2022
    */
-  holdTechPolicy() {
-    if (this.caseQuery && this.desfijadoInput === false) {
+  async holdTechPolicy() {
+    if (this.caseQuery) {
       // Desfijar
       unsetTechPolicy({
         caseIdToUpdate: this.recordId
       });
-      this.policies = this.optionsList;
-      this.sizeTrack = this.policies.length;
       this.caseQuery = undefined;
       this.showCheckboxes = true;
-      this.desfijadoTrack = true;
       this.booleanMaestroFijado = false;
+      this.desfijadoTrack = true;
+      this.policies = this.optionsList;
+      this.sizeTrack = this.policies.length;
     } else {
       // Fijar
       setTechPolicy({
@@ -673,5 +681,15 @@ export default class TechnicalPolicies extends LightningElement {
       this.desfijadoTrack = false;
     }
     this.checkPage();
+  }
+
+  /**
+   * Función que abre un enlace clickado en otra pestaña
+   * @author jjuaristi@seidor.es
+   * @date 27/10/2022
+   */
+  goToDoc() {
+    const URL = this.currentRecordTrack.PolicyFramework__c;
+    window.open(URL, "_blank").focus();
   }
 }

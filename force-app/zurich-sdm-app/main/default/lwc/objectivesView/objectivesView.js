@@ -10,6 +10,7 @@ import SDM_Objetivos_Year from "@salesforce/label/c.SDM_Objetivos_Year";
 import SDM_Objetivos_Indicator from "@salesforce/label/c.SDM_Objetivos_Indicator";
 import SDM_Objetivos_Segment from "@salesforce/label/c.SDM_Objetivos_Segment";
 import SDM_Objetivos_Product from "@salesforce/label/c.SDM_Objetivos_Product";
+import SDM_Objetivos_Zone from "@salesforce/label/c.SDM_Objetivos_Zone";
 import SDM_Objetivos_January from "@salesforce/label/c.SDM_Objetivos_January";
 import SDM_Objetivos_February from "@salesforce/label/c.SDM_Objetivos_February";
 import SDM_Objetivos_March from "@salesforce/label/c.SDM_Objetivos_March";
@@ -47,6 +48,7 @@ import OBJECTIVE_YEAR_FIELD from "@salesforce/schema/Objective__c.Year__c";
 import OBJECTIVE_INDICATOR_FIELD from "@salesforce/schema/Objective__c.Indicator__c";
 import OBJECTIVE_SEGMENT_FIELD from "@salesforce/schema/Objective__c.Segment__c";
 import OBJECTIVE_PRODUCT_FIELD from "@salesforce/schema/Objective__c.Product__c";
+import OBJECTIVE_ZONE_FIELD from "@salesforce/schema/Objective__c.Zone__c";
 import OBJECTIVE_JANUARY_FIELD from "@salesforce/schema/Objective__c.January__c";
 import OBJECTIVE_FEBRUARY_FIELD from "@salesforce/schema/Objective__c.February__c";
 import OBJECTIVE_MARCH_FIELD from "@salesforce/schema/Objective__c.March__c";
@@ -78,6 +80,7 @@ export default class ObjectivesView extends LightningElement {
     SDM_Objetivos_Indicator,
     SDM_Objetivos_Segment,
     SDM_Objetivos_Product,
+    SDM_Objetivos_Zone,
     SDM_Objetivos_January,
     SDM_Objetivos_February,
     SDM_Objetivos_March,
@@ -123,6 +126,11 @@ export default class ObjectivesView extends LightningElement {
     {
       label: this.labels.SDM_Objetivos_Product,
       fieldName: OBJECTIVE_PRODUCT_FIELD.fieldApiName
+    },
+    {
+      label: this.labels.SDM_Objetivos_Zone,
+      fieldName: OBJECTIVE_ZONE_FIELD.fieldApiName,
+      wrapText: true
     },
     {
       label: this.labels.SDM_Objetivos_January,
@@ -294,6 +302,7 @@ export default class ObjectivesView extends LightningElement {
     OBJECTIVE_INDICATOR_FIELD,
     OBJECTIVE_SEGMENT_FIELD,
     OBJECTIVE_PRODUCT_FIELD,
+    OBJECTIVE_ZONE_FIELD,
     OBJECTIVE_JANUARY_FIELD,
     OBJECTIVE_FEBRUARY_FIELD,
     OBJECTIVE_MARCH_FIELD,
@@ -426,6 +435,7 @@ export default class ObjectivesView extends LightningElement {
           key !== "Indicator__c" &&
           key !== "Segment__c" &&
           key !== "Product__c" &&
+          key !== "Zone__c" &&
           key !== "ExternalId__c"
         ) {
           console.log(key);

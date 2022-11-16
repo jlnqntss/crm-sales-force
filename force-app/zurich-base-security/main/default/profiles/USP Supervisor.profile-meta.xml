@@ -15634,11 +15634,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>PersonAccount-Formato de cuenta personal</layout>
-        <recordType>PersonAccount.Customer</recordType>
+        <recordType>PersonAccount.PersonAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PersonAccount-Formato de cuenta personal</layout>
-        <recordType>PersonAccount.PersonAccount</recordType>
+        <layout>PersonAccount-USP Autonomo</layout>
+        <recordType>PersonAccount.Customer</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PersonAccount-ZE Lead</layout>

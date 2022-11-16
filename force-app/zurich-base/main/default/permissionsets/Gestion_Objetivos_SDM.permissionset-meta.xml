@@ -78,7 +78,7 @@
         <editable>false</editable>
         <field>Objective__c.Total__c</field>
         <readable>true</readable>
-    </fieldPermissions>
+    </fieldPermissions> 
     <hasActivationRequired>false</hasActivationRequired>
     <label>Gestion Objetivos SDM</label>
     <objectPermissions>

@@ -42,6 +42,8 @@ public without sharing class CaseHandler implements ITrigger
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         CaseUtil.markMilestonesCompletedWhenClose( (List<Case>) newList, (Map<Id,Case>) oldMap );
+        CaseUtil.completeUSPMilestonesWhenClosedOrPending( (List<Case>) newList, (Map<Id,Case>) oldMap );
+        
     }
 
     /**

@@ -12,7 +12,7 @@ public class CaseUtil
      **/
     public static void upsertClaim(Case claim)
     {
-        System.debug('- - - - - ExternalRequestUtil.upsertClaim - - - - -');
+        
         Case claimSF = ExternalRequestUtil.mapClaims.get(claim.ClaimNumber__c);
 
         if ( claimSF != null ) //claim exists
@@ -22,7 +22,7 @@ public class CaseUtil
         }
         else //claim doesn't exist
         {
-            System.Debug('***** PolicyNum: ' + claim.PolicyNum__c);
+            
             Order policySF = ExternalRequestUtil.mapPolicies.get(claim.PolicyNum__c);
             if ( policySF != null ) //policy exists
             {
@@ -54,7 +54,7 @@ public class CaseUtil
                     }
                 }
 
-                System.Debug('***** CustomerNum: ' + claim.CustomerNum__c);
+                
                 Contact contactSF = ExternalRequestUtil.mapContacts.get( claim.CustomerNum__c );
                 if ( contactSF != null ) //contact exists
                 {
@@ -63,7 +63,7 @@ public class CaseUtil
                 }
                 else
                 {
-                    System.debug('Error: Cliente no existe');
+                    
                     throw new IntegrationException(
                               Label.ClaimError + ' ' + claim.ClaimNumber__c + '. ' + Label.CustomerError + ' ' + claim.CustomerNum__c
                               );
@@ -71,7 +71,7 @@ public class CaseUtil
             }
             else // policy doesnt exist
             {
-                System.debug('Error: Póliza no existe');
+                
                 throw new IntegrationException(
                           Label.ClaimError + ' ' + claim.ClaimNumber__c + '. ' + Label.PolicyNotExisting + ' ' + claim.PolicyNum__c
                           );
@@ -289,10 +289,10 @@ public class CaseUtil
                 if ( !checkRecursive.SetOfIDs.contains(caso.ID) )
                 {
                     checkRecursive.SetOfIDs.add(caso.ID);
-                    //System.debug('>>>>>> TEST: ' + caso.Origin + caso.CustomerFoundBy__c +caso.SuppliedEmail+ caso.LegalEntity__c+caso.SourceCountry__c) ;
+                    
 
 
-                    //System.debug('>>>>>> TEST record type: ' +  caso.RecordTypeId );
+                    
 
                     if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Email') && String.isBlank(caso.CustomerFoundBy__c) &&
                          String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
@@ -429,5 +429,159 @@ public class CaseUtil
                 }
             }
         }
+    }
+
+     /**
+     * Similar a markMilestonesCompletedWhenClose pero cuando los casos son usp. 
+     * Completa milestones al poner un caso a cerrado o pendiente
+     * @author jjuaristi@seidor.es
+     * @date 24/10/2022
+     * @param 
+     * @return 
+     */
+    public static void completeUSPMilestonesWhenClosedOrPending(List<Case> newList, Map<Id,Case> oldMap)
+    {
+        Case oldCase = new Case();
+        List<Case> updatedCases = new List<Case>();
+
+        // Generar lista solo de USP
+        List<Case> uspCases = generateUspCaseList(newList);
+
+        for(Case caso : uspCases)
+        {
+            oldCase =  oldMap.get(caso.Id);
+            //Solo se hace algo la actualización es a cerrado o pendiente de client/Intermediary
+            if(oldCase.Status != caso.Status &&
+                (
+                    caso.Status == 'Cerrado' || caso.Status == 'Merged' || caso.Status == 'Combinado'
+                    || 
+                    caso.Status == 'Pendiente' && 
+                    (
+                        caso.PendingBy__c == 'Client' || caso.PendingBy__c == 'Intermediary'
+                    ) 
+                )
+            )
+            {
+                updatedCases.add(caso);
+            }
+            completeCaseMilestones(updatedCases, 'Respuesta Interacción');
+        }
+    }
+
+    private static void completeCaseMilestones(List<Case> updatedCases, string milestoneName)
+    {
+        List<CaseMilestone> caseMilestoneList = new List<CaseMilestone>();
+        List<CaseMilestone> caseMilestoneListToUpdate = new List<CaseMilestone>();
+        // Lanzar query para recuperar los milestones
+        caseMilestoneList = [SELECT Id, CaseId, CompletionDate FROM CaseMilestone WHERE CaseId IN :updatedCases AND MilestoneType.Name =:milestoneName];
+        if( !caseMilestoneList.isEmpty() )
+        {
+            for(CaseMilestone cm : caseMilestoneList)
+            {
+                //Evitar actualizar un milestone ya completado
+                if (cm.CompletionDate == null)
+                {
+                    cm.CompletionDate = System.now(); //Marcarlo como completado
+                    caseMilestoneListToUpdate.add(cm);
+                }
+            }
+            //Updatear ANTES el milestone que el caso para evitar el error de salida del EntitlementProcess
+            if( !caseMilestoneListToUpdate.isEmpty() )
+            {
+                //Evitar ids duplicados en la lista a actualziar
+                Map<Id, CaseMilestone> caseMilestoneDuplicates = new Map<Id, CaseMilestone>();
+                caseMilestoneDuplicates.putAll(caseMilestoneListToUpdate);
+                update caseMilestoneDuplicates.values();
+            }
+        }
+
+    }
+
+    /**
+     * Método que a partir de una lista de casos devuelve la lista de casos con RecordType USPInquiry
+     * @author jjuaristi@seidor.es
+     * @date 24/10/2022
+     * @param Lista de casos
+     * @return Lista de casos USP
+     */
+    private static List<Case> generateUspCaseList(List<Case> cases)
+    {
+        Id rtUSPId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        List<Case> uspCases = new List<Case>();
+
+        for(Case currentCase : cases)
+        {
+            if(currentCase.RecordTypeId == rtUSPId)
+            {
+                uspCases.add(currentCase);
+            }
+        }
+        return uspCases;
+    }
+    
+    /**
+     * Método utilizado por RelateCasesToNewAccountsBatch para relacionar casos con cuentas
+     * @author jjuaristi@seidor.es
+     * @date 20/10/2022
+     * @param [List<Case> casesToRelate] casos que ha recuperado el batch, [String daysToRetrieve] días desde la creación
+     * @return List<Case> casos a actualizar
+     */
+    public static List<Case> relateCasesToNewAccounts (List<Case> casesToRelate, String daysToRetrieve)
+    {
+        // Lista para almacenar solo los registros que hay que actualizar
+        List<Case> casesToUpdate = new List<Case>();
+
+        // La lógica solo se recorre si la lista no es nula, para evitar excepciones
+        if(casesToRelate != null && !casesToRelate.isEmpty())
+        {
+            // Se obtiene la lista de cifs
+            List<String> cifs = generateCifList(casesToRelate);
+            
+            // Query a Account para recuperar los clientes creados en las últimas 24 horas
+            // y con cif contenido por los casos recogidos en el batch
+            List<Account> accountsToRelate = new AccountsSelector().findByCIFAndCreationDate(cifs, daysToRetrieve);
+
+            // Si no hay cuentas no recorremos la lista para evitar excepciones
+            if(accountsToRelate != null && !accountsToRelate.isEmpty())
+            {
+                //Mapa para identificar cada cuenta con su cif
+                Map<String, Account> mapAccountsToRelateByCIF = AccountUtil.generateMapByCif(accountsToRelate);
+
+                // Se recorre la lista de casos a relacionar
+                for(Case currentCase : casesToRelate)
+                {
+                    // Si alguna cuenta tiene el mismo cif que el caso, se tienen que relacionar
+                    if(mapAccountsToRelateByCIF.get(currentCase.RobotDocumentId__c)!=null)
+                    {
+                        // Se hace la relación
+                        currentCase.MediatedCustomer__c = mapAccountsToRelateByCIF.get(currentCase.RobotDocumentId__c).Id;
+                        // Se añade el caso a la lista de casos a actualizar
+                        casesToUpdate.add(currentCase);
+                    }
+                }
+            }
+        }
+        return casesToUpdate;
+    }
+
+    /**
+     * Método que devuelve una lista con los cifs de los casos que recibe por parámetro
+     * @author jjuaristi@seidor.es
+     * @date 20/10/2022
+     * @param Lista de casos
+     * @return Lista de cifs
+     */
+    private static List<String> generateCifList(List<Case> cases)
+    {
+        List<String> cifs = new List<String>();
+        if(cases != null && !cases.isEmpty())
+        {
+            // Se recorre la lista de casos para generar la lista de CIFs 
+            for(Case currentCase : cases)
+            {
+                cifs.add(currentCase.RobotDocumentId__c);
+            }
+        }
+        return cifs;
     }
 }

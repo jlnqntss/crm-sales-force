@@ -93,5 +93,5 @@
         <members>*</members>
         <name>StaticResource</name>
     </types>
-    <version>49.0</version>
+    <version>56.0</version>
 </Package>
