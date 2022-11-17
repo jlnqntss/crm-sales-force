@@ -560,6 +560,60 @@
             <valueName>Envío mail</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <valueName>No autoservicio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <valueName>Caída sistema</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión competencias</controllingFieldValue>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Descuentos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión competencias</controllingFieldValue>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Usos / Actividad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión competencias</controllingFieldValue>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Bonificación (Sinco/Inbonus…)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión competencias</controllingFieldValue>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Matrícula (anteriormente asegurada/mal rendimiento)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión competencias</controllingFieldValue>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Vehículo (Valor/accesorios/antigüedad…)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión competencias</controllingFieldValue>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Cambio personas (Tomador/prop./conductor)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión competencias</controllingFieldValue>
+            <controllingFieldValue>Nueva Producción</controllingFieldValue>
+            <controllingFieldValue>Cartera</controllingFieldValue>
+            <valueName>Garantías/capitales (franquicias, robo en motos, RC Hogar…)</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Retención</controllingFieldValue>
             <valueName>Desaparición riesgo</valueName>
@@ -636,56 +690,17 @@
             <valueName>Fallecimiento</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Con Oferta</controllingFieldValue>
-            <controllingFieldValue>Generación Oferta</controllingFieldValue>
-            <controllingFieldValue>Validación / emisión</controllingFieldValue>
-            <valueName>No autoservicio</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Con Oferta</controllingFieldValue>
-            <controllingFieldValue>Generación Oferta</controllingFieldValue>
-            <controllingFieldValue>Validación / emisión</controllingFieldValue>
-            <valueName>Caída sistema</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Descuentos</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Usos / Actividad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Bonificación (Sinco/Inbonus…)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Matrícula (anteriormente asegurada/mal rendimiento)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Vehículo (Valor/accesorios/antigüedad…)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Cambio personas (Tomador/prop./conductor)</valueName>
-        </valueSettings>
-        <valueSettings>
             <controllingFieldValue>Nueva Producción</controllingFieldValue>
             <controllingFieldValue>Cartera</controllingFieldValue>
             <valueName>Retroactividad</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Garantías/capitales (franquicias, robo en motos, RC Hogar…)</valueName>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <valueName>Oferta no accesible</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <valueName>Falta de datos</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Queja</controllingFieldValue>
@@ -756,18 +771,6 @@
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <valueName>Denegación anulación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Validación / emisión</controllingFieldValue>
-            <valueName>Oferta no accesible</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Validación / emisión</controllingFieldValue>
-            <valueName>Falta de datos</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Validación / emisión</controllingFieldValue>
-            <valueName>Gestión Competencias</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Multas</controllingFieldValue>
