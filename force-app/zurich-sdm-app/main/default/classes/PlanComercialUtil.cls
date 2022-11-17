@@ -21,14 +21,16 @@ public with sharing class PlanComercialUtil {
     public static void altaJobGestionarPlanesMensuales(List<PlanComercial__c> planesComercialesList, Map<Id, SObject> oldMap, String action) {
 
         List<PlanComercial__c> planesComercialesJob;
+        Map<Id, PlanComercial__c> mapParentOwner = null;
         if ('Insert'.equals(action)) {
             planesComercialesJob = getPlanesValidos(planesComercialesList);
+            mapParentOwner = (new PlanComercialSelector()).getParentOwnerId(planesComercialesJob);
         } else if ('Update'.equals(action)) {
             planesComercialesJob = getPlanesValidosUpdate(planesComercialesList, oldMap);
         }        
 
         if (!planesComercialesJob.isEmpty()) {
-            System.enqueueJob(new GestionarPlanesMensualesQueueableJob(planesComercialesJob, action));
+            System.enqueueJob(new GestionarPlanesMensualesQueueableJob(planesComercialesJob, mapParentOwner, action));
         }        
     }
 
@@ -70,10 +72,11 @@ public with sharing class PlanComercialUtil {
     private static List<PlanComercial__c> getPlanesValidos(List<PlanComercial__c> planesComercialesAnualesList) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
         List<String> validEmailList = getMetadataEmails();
-        Map<Id, PlanComercial__c> pcEmailMap = (new PlanComercialSelector()).findAssignedToEmailFromPC(planesComercialesAnualesList); // obtengo la relacion entre los planes comerciales y sus email por query ya que al ser un lkp el trigger no tiene esta información
+        Map<Id, PlanComercial__c> pcAssignedToMap = (new PlanComercialSelector()).findAssignedToDataFromPC(planesComercialesAnualesList); // obtengo la relacion entre los planes comerciales y sus email por query ya que al ser un lkp el trigger no tiene esta información
+        
 
         for (PlanComercial__c pc: planesComercialesAnualesList) {
-            if (esPlanAnual(pc) && esPlanHijo(pc) && validAssignedTo(pc, validEmailList, pcEmailMap)) {
+            if (esPlanAnual(pc) && esPlanHijoNieto(pc, pcAssignedToMap) && validAssignedTo(pc, validEmailList, pcAssignedToMap)) {
                 result.add(pc);
             }
         }
@@ -88,10 +91,11 @@ public with sharing class PlanComercialUtil {
      * @date 21/07/2022
      */
     private static List<PlanComercial__c> getPlanesValidosUpdate(List<PlanComercial__c> planesComercialesList, Map<Id, SObject> oldMap) {
-        List<PlanComercial__c> result = new List<PlanComercial__c>();        
+        List<PlanComercial__c> result = new List<PlanComercial__c>();
+        Map<Id, PlanComercial__c> pcAssignedToMap = (new PlanComercialSelector()).findAssignedToDataFromPC(planesComercialesList);
 
         for (PlanComercial__c pc: planesComercialesList) {
-            if (esPlanAnual(pc) && esPlanHijo(pc) && targetKPIUpdated(pc, oldMap)) {
+            if (esPlanAnual(pc) && esPlanHijoNieto(pc, pcAssignedToMap) && targetKPIUpdated(pc, oldMap)) {
                 result.add(pc);
             }
         }
@@ -118,17 +122,21 @@ public with sharing class PlanComercialUtil {
     }
 
     /**
-     * Validamos los planes para enviar al encolable solo los planes hijos (RN)
+     * Validamos los planes para enviar al encolable solo los planes hijos (RN) o nieto (Mediadores)
      * @param planComercial: Elementos capturados en el trigger 
      * @return Boolean
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static Boolean esPlanHijo(PlanComercial__c planComercial) {
+    private static Boolean esPlanHijoNieto(PlanComercial__c planComercial, Map<Id, PlanComercial__c> pcAssignedToMap) {
         Boolean result = false;        
 
-        if (String.isNotEmpty(planComercial.ParentPlan__c) && String.isEmpty(planComercial.Intermediary__c)) { // si ParentPlan__c == null es abuelo y si tiene intermediario es nieto
-            result = true;
+        if (!pcAssignedToMap.isEmpty()) {
+            String planUserRole = pcAssignedToMap.get(planComercial.Id)?.AssignedTo__r.UserRole.DeveloperName;
+
+            if ('SDM_RN'.equals(planUserRole)) { // comprobamos si el rol del usuario asignado al plan de entrada es RN
+                result = true;
+            }            
         }
 
         return result;
@@ -168,11 +176,11 @@ public with sharing class PlanComercialUtil {
      * @author dmunoz
      * @date 22/08/2022
      */
-    private static Boolean validAssignedTo(PlanComercial__c planComercial, List<String> validEmailList, Map<Id, PlanComercial__c> pcEmailMap) {
+    private static Boolean validAssignedTo(PlanComercial__c planComercial, List<String> validEmailList, Map<Id, PlanComercial__c> pcAssignedToMap) {
         Boolean result = false; 
 
-        if (pcEmailMap != null && !pcEmailMap.isEmpty()) {
-            String pcEmail = pcEmailMap.get(planComercial.Id)?.AssignedTo__r.Email;
+        if (pcAssignedToMap != null && !pcAssignedToMap.isEmpty()) {
+            String pcEmail = pcAssignedToMap.get(planComercial.Id)?.AssignedTo__r.Email;
             if (validEmailList.contains(pcEmail)) {
                 result = true;
             }

@@ -21,7 +21,7 @@ public without sharing class GenerateComercialPlanHelper {
     {
         if( plans != null && !plans.isEmpty() ) {
             // Se recupera la lista de planes descendientes (hijos) de los planes dados
-            List<PlanComercial__c> childPlans = (new PlanComercialSelector()).findAnnualPlanDescendants(plans);
+            List<PlanComercial__c> childPlans = (new PlanComercialWithoutSharingSelector()).findAnnualPlanDescendants(plans);
 
             if( childPlans != null && !childPlans.isEmpty() ) {
                 delete childPlans;
