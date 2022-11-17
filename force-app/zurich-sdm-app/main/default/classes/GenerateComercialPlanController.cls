@@ -1340,7 +1340,8 @@ public with sharing class GenerateComercialPlanController
             }
         }
         if (String.isNotEmpty(result)) {
-            throw new HandledException('Los planes ' + result + ' no se pueden crear por ser iguales a alguno ya existente'); // uso esta excepcion generica para poder mostrar el mensaje, en el save se lanza aurahandledexception
+            String exceptionMessage = 'No se puede guardar' + result + ' porque ya existe algún plan con esa información.';
+            throw new HandledException(exceptionMessage); // uso esta excepcion generica para poder mostrar el mensaje, en el save se lanza aurahandledexception
         }
     }
 
