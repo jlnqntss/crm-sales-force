@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Cambio tomador</label>
+    <label>Gestión Servicios Infraseguro 0</label>
     <protected>false</protected>
     <values>
         <field>Level__c</field>
@@ -12,11 +12,11 @@
     </values>
     <values>
         <field>SourceSubtype__c</field>
-        <value xsi:type="xsd:string">49</value>
+        <value xsi:type="xsd:string">18</value>
     </values>
     <values>
         <field>SourceType__c</field>
-        <value xsi:type="xsd:string">1</value>
+        <value xsi:type="xsd:string">2</value>
     </values>
     <values>
         <field>SourceValue__c</field>
@@ -28,7 +28,7 @@
     </values>
     <values>
         <field>TypeN3__c</field>
-        <value xsi:type="xsd:string">Cambio Tomador</value>
+        <value xsi:type="xsd:string">Infraseguro</value>
     </values>
     <values>
         <field>Type__c</field>

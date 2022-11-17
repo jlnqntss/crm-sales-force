@@ -28,7 +28,7 @@
     </values>
     <values>
         <field>TypeN3__c</field>
-        <value xsi:type="xsd:string">Cambio tomador</value>
+        <value xsi:type="xsd:string">Cambio Tomador</value>
     </values>
     <values>
         <field>Type__c</field>

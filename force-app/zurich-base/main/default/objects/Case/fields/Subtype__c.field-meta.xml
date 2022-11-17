@@ -288,9 +288,14 @@
                 <label>Emisión</label>
             </value>
             <value>
-                <fullName>Envíos</fullName>
+                <fullName>Envíos (Cliente)</fullName>
                 <default>false</default>
-                <label>Envíos</label>
+                <label>Envíos (Cliente)</label>
+            </value>
+            <value>
+                <fullName>Envíos (Mediador)</fullName>
+                <default>false</default>
+                <label>Envíos (Mediador)</label>
             </value>
             <value>
                 <fullName>Escalable</fullName>
@@ -674,8 +679,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Envíos</valueName>
+            <valueName>Envíos (Mediador)</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
@@ -804,12 +808,12 @@
             <valueName>Saneamiento</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Validación / emisión</valueName>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Embargo Cliente</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Embargo Cliente</valueName>
+            <valueName>Envíos (Cliente)</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
@@ -1038,6 +1042,10 @@
         <valueSettings>
             <controllingFieldValue>Campañas</controllingFieldValue>
             <valueName>Campaña</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Campañas</controllingFieldValue>
+            <valueName>Seguimiento</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

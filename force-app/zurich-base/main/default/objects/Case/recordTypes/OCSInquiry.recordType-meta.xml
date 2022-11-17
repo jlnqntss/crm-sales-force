@@ -947,7 +947,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Envíos</fullName>
+            <fullName>Envíos %28Cliente%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Envíos %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1023,10 +1027,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Seguimiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Sugerencia</fullName>
             <default>false</default>
         </values>
@@ -1059,10 +1059,6 @@
         </values>
         <values>
             <fullName>Gestión Servicios</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Tareas</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1161,7 +1157,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Devolución de recibo liquidado mediador</fullName>
+            <fullName>Devolución</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1174,6 +1170,10 @@
         </values>
         <values>
             <fullName>Emisión de Factura Electrónica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Envíos %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1294,6 +1294,10 @@
         </values>
         <values>
             <fullName>Rehabilitación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovación póliza</fullName>
             <default>false</default>
         </values>
         <values>

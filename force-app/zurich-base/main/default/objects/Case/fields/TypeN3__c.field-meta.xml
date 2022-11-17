@@ -88,6 +88,11 @@
                 <label>Cambio Idioma en póliza</label>
             </value>
             <value>
+                <fullName>Cambios intermediarios</fullName>
+                <default>false</default>
+                <label>Cambios intermediarios</label>
+            </value>
+            <value>
                 <fullName>Cambio Tomador</fullName>
                 <default>false</default>
                 <label>Cambio Tomador</label>
@@ -226,14 +231,8 @@
                 <label>Decrease in guarantees</label>
             </value>
             <value>
-                <fullName>Devolución de recibo liquidado mediador</fullName>
-                <default>false</default>
-                <label>Devolución de recibo liquidado mediador</label>
-            </value>
-            <value>
                 <fullName>Devolución</fullName>
                 <default>false</default>
-                <isActive>false</isActive>
                 <label>Devolución</label>
             </value>
             <value>
@@ -266,6 +265,11 @@
                 <fullName>Emitir póliza</fullName>
                 <default>false</default>
                 <label>Emitir póliza</label>
+            </value>
+            <value>
+                <fullName>Envíos (Mediador)</fullName>
+                <default>false</default>
+                <label>Envíos (Mediador)</label>
             </value>
             <value>
                 <fullName>Fallo activación</fullName>
@@ -351,6 +355,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Green card</label>
+            </value>
+            <value>
+                <fullName>Incidencias cartera</fullName>
+                <default>false</default>
+                <label>Incidencias cartera</label>
             </value>
             <value>
                 <fullName>Incl./Modif driver (Main-2º)</fullName>
@@ -589,6 +598,16 @@
                 <label>Rehabilitación</label>
             </value>
             <value>
+                <fullName>Renovación</fullName>
+                <default>false</default>
+                <label>Renovación</label>
+            </value>
+            <value>
+                <fullName>Renovación póliza</fullName>
+                <default>false</default>
+                <label>Renovación póliza</label>
+            </value>
+            <value>
                 <fullName>Resend receipt</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -655,6 +674,11 @@
                 <label>Suggestion</label>
             </value>
             <value>
+                <fullName>Suscripción</fullName>
+                <default>false</default>
+                <label>Suscripción</label>
+            </value>
+            <value>
                 <fullName>Transfer payment</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -693,6 +717,7 @@
             <value>
                 <fullName>Validación / emisión</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Validación / emisión</label>
             </value>
             <value>
@@ -810,15 +835,13 @@
             <valueName>Gestión competencias</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>Nueva Producción</valueName>
-        </valueSettings>
-        <valueSettings>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
             <valueName>Reemplazo</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
             <valueName>Saneamiento</valueName>
         </valueSettings>
         <valueSettings>
@@ -908,12 +931,8 @@
             <valueName>Información</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Envíos</controllingFieldValue>
-            <valueName>Certificados</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Envíos</controllingFieldValue>
-            <valueName>Documentación</valueName>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
+            <valueName>Envíos (Mediador)</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Retención</controllingFieldValue>
@@ -934,7 +953,7 @@
         <valueSettings>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
-            <valueName>Devolución de recibo liquidado mediador</valueName>
+            <valueName>Devolución</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
@@ -943,10 +962,6 @@
         <valueSettings>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <valueName>Modificación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Validación / emisión</controllingFieldValue>
-            <valueName>Validación / emisión</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Ajuste oferta</controllingFieldValue>
@@ -958,25 +973,25 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Emisión</controllingFieldValue>
-            <valueName>Emitir financiada</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <valueName>Emitir póliza</valueName>
+            <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
+            <valueName>Emisión</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
-            <controllingFieldValue>Campaña</controllingFieldValue>
             <valueName>Seguimiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <valueName>Certificados</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <valueName>Documentación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Campaña</controllingFieldValue>
             <valueName>Campaña</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
-            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
-            <valueName>Emisión</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
@@ -1003,6 +1018,18 @@
         <valueSettings>
             <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <valueName>Recobro reactivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
+            <valueName>Cambios intermediarios</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
+            <valueName>Incidencias cartera</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
+            <valueName>Renovación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>

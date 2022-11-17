@@ -1029,10 +1029,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Embargo Cliente</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Embargo Mediador</fullName>
             <default>false</default>
         </values>
@@ -1041,11 +1037,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Envíos</fullName>
+            <fullName>Envíos %28Cliente%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Felicitación</fullName>
+            <fullName>Envíos %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1061,31 +1057,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencias %28Cliente%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Incidencias %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencias Mi Zurich</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Información</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Modificación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Queja</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Reclamación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1109,10 +1085,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Retención</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Revocación Saneamiento</fullName>
             <default>false</default>
         </values>
@@ -1122,10 +1094,6 @@
         </values>
         <values>
             <fullName>Seguimiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Sugerencia</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1145,10 +1113,6 @@
         </values>
         <values>
             <fullName>Gestión Cliente</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión Económica</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1219,6 +1183,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cambios intermediarios</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Campaña</fullName>
             <default>false</default>
         </values>
@@ -1263,7 +1231,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Devolución de recibo liquidado mediador</fullName>
+            <fullName>Devolución</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1284,6 +1252,10 @@
         </values>
         <values>
             <fullName>Emitir póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Envíos %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1328,6 +1300,10 @@
         </values>
         <values>
             <fullName>Gestión competencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencias cartera</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1419,6 +1395,14 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Renovación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovación póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Retención</fullName>
             <default>false</default>
         </values>
@@ -1440,6 +1424,10 @@
         </values>
         <values>
             <fullName>Sugerencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suscripción</fullName>
             <default>false</default>
         </values>
         <values>
