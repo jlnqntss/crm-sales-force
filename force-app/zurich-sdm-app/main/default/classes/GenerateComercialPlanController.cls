@@ -1171,7 +1171,6 @@ public with sharing class GenerateComercialPlanController
      */
     private static void tableToPlan(Tabletype tabledata, String userId, String roleType)
     {
-        System.debug('Table to plan ' + tableData.toJSON());
         Boolean isDirector = Directors.contains(roleType);
 
         // Fila de cabecera
