@@ -584,4 +584,42 @@ public class CaseUtil
         }
         return cifs;
     }
+
+    /**
+     * Método que crea un caso a partir de un caso padre ya existente y un email entrante
+     * @author arcortazar
+     * @date 18/11/2022
+     * @param {Case padre} caso que se va a copiar
+     * @param {EmailMessage email} email del que vamos a obtener el subject y la descripción
+     * @param {Boolean setTypification} indica si vamos a mantener la tipificación del caso padre (true) o no (false)
+     * @return Case 
+     */
+    public static Case createCaseFromParent(Case padre, EmailMessage email, Boolean setTypification)
+    {
+        Case casoHijo = new Case(
+                        
+                        Status='Asignado',
+                        Subject = email?.Subject,
+                        Description = email?.TextBody,
+                        CallCenter__c = padre?.CallCenter__c,
+                        Origin = padre?.Origin,
+                        SourceArea__c = padre?.SourceArea__c,
+                        ParentId=padre?.Id,
+                        AccountId=padre?.AccountId,
+                        RecordTypeId=padre?.RecordTypeId, 
+                        PolicyId__c = padre?.PolicyId__c,
+                        OfferId__c = padre?.OfferId__c,
+                        ClaimId__c = padre?.ClaimId__c,
+                        Object__c = padre?.Object__c,
+                        MediatedCustomer__c = padre?.MediatedCustomer__c
+                    );
+
+        if (setTypification)
+        {
+            casoHijo.Type = padre?.Type;
+            casoHijo.Subtype__c = padre?.Subtype__c;
+            CasoHijo.TypeN3__c = padre?.TypeN3__c;
+        }
+        return casoHijo;
+    }
 }
