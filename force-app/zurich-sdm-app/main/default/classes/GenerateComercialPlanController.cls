@@ -1161,6 +1161,22 @@ public with sharing class GenerateComercialPlanController
         }
     }
 
+
+    /**
+     * Sacar lógica de tableToPlan para cumplir con el sonar, informo la lista con los ejes en forma clave para comprobar en el metodo validateNewPlans
+     * si se puede insertar o no
+     * 
+     * @author nts (dmunoz)
+     * @date 18/11/2022
+     * 
+     * @param {Tabletype tabledata} la tabla
+     */
+    private static void getPlanesToCompareDuplicates(Boolean isNewPlan, Boolean isDeleted, String planKeys, List<String> ejesPlanesExistentes) {
+        if (!isNewPlan && !isDeleted) {            
+            ejesPlanesExistentes.add(planKeys);
+        }
+    }
+
     /**
      * Convierte la tabla que viene del LWC en modificaciones sobre el objeto PlanComercial__c
      * 
@@ -1247,10 +1263,8 @@ public with sharing class GenerateComercialPlanController
             String zone = rowsdata.get(3).Cells.get(i).stringValue;            
 
             // planes existentes
-            if (!isNewPlan && !isDeleted) {
-                String planKeys = indicator + '-' + segment + '-' + product + '-' + zone;
-                ejesPlanesExistentes.add(planKeys);
-            }
+            String planKeys = indicator + '-' + segment + '-' + product + '-' + zone;
+            getPlanesToCompareDuplicates(isNewPlan, isDeleted, planKeys, ejesPlanesExistentes);            
 
             if( !isDeleted ) { //---------------------------------------------- Nuevo o Modificacion
                 // Datos FIJOS del plan
