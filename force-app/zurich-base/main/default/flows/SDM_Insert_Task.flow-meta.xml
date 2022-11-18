@@ -27,7 +27,8 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Generar Registro Task según inputs</description>
+    <description>Añadir WhatId como flow input y como parámetro para las nuevas tareas</description>
+    <environments>Default</environments>
     <interviewLabel>SDM - Insert Task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SDM - Insert Task</label>
     <processMetadataValues>
@@ -79,6 +80,12 @@
                 <elementReference>Subject</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>WhatId</elementReference>
+            </value>
+        </inputAssignments>
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
@@ -116,6 +123,12 @@
             <field>Subject</field>
             <value>
                 <elementReference>Subject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>WhatId</elementReference>
             </value>
         </inputAssignments>
         <object>Task</object>
@@ -186,6 +199,14 @@
     </variables>
     <variables>
         <name>Subject</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Añadir relación con el campo WhatId de las Tareas</description>
+        <name>WhatId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

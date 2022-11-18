@@ -181,6 +181,13 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.SentNotifications__c</fieldItem>
                 <identifier>RecordSentNotifications__cField</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$User.Profile.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>System Administrator</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <name>Facet-n07io51jyy</name>
