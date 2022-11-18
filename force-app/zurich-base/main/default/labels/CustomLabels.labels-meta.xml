@@ -121,6 +121,14 @@
         <value>CustomerGI</value>
     </labels>
     <labels>
+        <fullName>DummyId</fullName>
+        <categories>Values</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DummyId</shortDescription>
+        <value>000000000000000AAA</value>
+    </labels>
+    <labels>
         <fullName>CustomerLife</fullName>
         <categories>Record Type</categories>
         <language>en_US</language>
