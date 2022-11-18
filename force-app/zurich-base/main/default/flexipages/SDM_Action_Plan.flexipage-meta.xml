@@ -584,10 +584,13 @@
                             <value>Indicator__c</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>Segment__c</value>
+                        </valueListItems>
+                        <valueListItems>
                             <value>Product__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Segment__c</value>
+                            <value>Zone__c</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
