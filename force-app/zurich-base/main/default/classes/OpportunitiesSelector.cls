@@ -183,4 +183,31 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             return setInfoQuoteNumbers;
         }
     }
+
+   /**
+    * Método utilizado por el batch RelateCasesToNewOffersBatch para definir el scope
+    * @author lrodriguez6@seidor.es
+    * @date 11/11/2022
+    * @param String days para filtrar la query
+    * @return String query que se va a lanzar en el batch
+    */
+    public List<Opportunity> findByCreatedOfferAndCreationDate(List<String> createdOffer, String daysToRetrieve)
+    {
+        if(daysToRetrieve != null && !String.isBlank(daysToRetrieve) && createdOffer != null && !createdOffer.isEmpty())
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Opportunity.Id,
+                Opportunity.InfoQuoteNumber__c
+            })
+            .addConditionIn(Opportunity.InfoQuoteNumber__c, createdOffer);
+
+           
+
+            return (List<Opportunity>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<Opportunity>();
+        }
+    }
 }

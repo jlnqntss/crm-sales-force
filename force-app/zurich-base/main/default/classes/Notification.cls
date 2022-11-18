@@ -41,7 +41,7 @@ public with sharing class Notification {
     public void send(String subject, String content)
     {
         // Si no hay target se pone un id dummy
-        if( this.targetId == null ) this.targetId = '000000000000000AAA';
+        if( this.targetId == null ) this.targetId = System.Label.DummyId;
         
         // Creamos una nueva notificacion
         Messaging.CustomNotification notification = new Messaging.CustomNotification();

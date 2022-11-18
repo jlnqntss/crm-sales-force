@@ -1414,12 +1414,7 @@
         <field>Account.ZZExclusiveManagement__c</field>
         <readable>false</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>AccountTeamMember.Recibir_Alertas_Plan_Comercial__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
+    <fieldPermissions> 
         <editable>false</editable>
         <field>Case.AccountId</field>
         <readable>true</readable>

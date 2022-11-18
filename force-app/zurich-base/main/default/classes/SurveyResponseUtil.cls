@@ -1,4 +1,4 @@
-public class SurveyResponseUtil
+public with sharing class SurveyResponseUtil
 {
 
     public static Map<Id, Map<Integer,SurveyResponse__c> > allResponsesMap = new Map<Id, Map<Integer,SurveyResponse__c> >();

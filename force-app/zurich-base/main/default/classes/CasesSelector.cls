@@ -147,4 +147,33 @@ public with sharing class CasesSelector extends RecordsSelector
         }
     }
 
+    /**
+     * Método utilizado por el batch RelateCasesToNewOffersBatch para definir el scope
+     * @author lrodriguez6@seidor.es
+     * @date 11/11/2022
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
+    public String getQueryStringCasesToRelateToNewOffers(String days)
+    {
+        if(days != null && !String.isBlank(days) )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.Id,
+                Case.CreatedOffer__c,
+                Case.OfferId__c
+            })
+            .addConditionEq(Case.RecordTypeId, rtUSPId)
+            .addConditionNotNull(Case.CreatedOffer__c)
+            .addConditionNull(Case.OfferId__c)
+            .addConditionString('Case.CreatedDate = LAST_N_DAYS:' + days);
+
+            return this.baseQuery.toQueryString();
+        }
+        else
+        {
+            return '';
+        }
+    }
+
 }

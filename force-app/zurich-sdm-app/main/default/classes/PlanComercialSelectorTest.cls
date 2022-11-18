@@ -250,7 +250,7 @@ private class PlanComercialSelectorTest
 
         PlanComercialSelector planSel = new PlanComercialSelector();
         Test.startTest();
-        Map<Id, PlanComercial__c> result = planSel.findAssignedToEmailFromPC(planesComerciales);
+        Map<Id, PlanComercial__c> result = planSel.findAssignedToDataFromPC(planesComerciales);
         Test.stopTest();
 
         System.assertEquals(false, result.isEmpty(), 'Debe haber resultados');
@@ -270,7 +270,7 @@ private class PlanComercialSelectorTest
 
         PlanComercialSelector planSel = new PlanComercialSelector();
         Test.startTest();
-        Map<Id, PlanComercial__c> result = planSel.findAssignedToEmailFromPC(null);
+        Map<Id, PlanComercial__c> result = planSel.findAssignedToDataFromPC(null);
         Test.stopTest();
 
         System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
@@ -308,6 +308,43 @@ private class PlanComercialSelectorTest
         PlanComercialSelector planSel = new PlanComercialSelector();
         Test.startTest();
         List<PlanComercial__c> result = planSel.findMensualPlanToDeleteByMaxDate(null);
+        Test.stopTest();
+
+        System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
+    }
+
+
+    /**
+     * Test query consultar el owner id del parent
+     *
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     */
+    @isTest
+    static void getParentOwnerId() {
+
+        List<PlanComercial__c> planesComercialesQuery = new List<PlanComercial__c>([SELECT Id FROM PlanComercial__c LIMIT 1]);
+
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        Test.startTest();
+        Map<Id,PlanComercial__c> result = planSel.getParentOwnerId(planesComercialesQuery);
+        Test.stopTest();
+
+        System.assertEquals(1, result.size(), 'Debe haber 1 resultado');
+    }
+
+    /**
+     * Test NULL query consultar el owner id del parent
+     *
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     */
+    @isTest
+    static void getParentOwnerId_Null() {
+
+        PlanComercialSelector planSel = new PlanComercialSelector();
+        Test.startTest();
+        Map<Id,PlanComercial__c> result = planSel.getParentOwnerId(null);
         Test.stopTest();
 
         System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
