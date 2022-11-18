@@ -618,7 +618,7 @@ public class CaseUtil
         {
             casoHijo.Type = padre?.Type;
             casoHijo.Subtype__c = padre?.Subtype__c;
-            CasoHijo.TypeN3__c = padre?.TypeN3__c;
+            casoHijo.TypeN3__c = padre?.TypeN3__c;
         }
         return casoHijo;
     }
