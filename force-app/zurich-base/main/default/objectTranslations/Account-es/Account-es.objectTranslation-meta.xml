@@ -266,6 +266,22 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>USP Autonomo</layout>
+        <layoutType>PersonAccount</layoutType>
+        <sections>
+            <label>Comportamiento siniestral</label>
+            <section>Accident Rate</section>
+        </sections>
+        <sections>
+            <label>Descripción</label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label>GDPR</label>
+            <section>GDPR Status</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>ZE Customer</layout>
         <layoutType>PersonAccount</layoutType>
         <sections>
