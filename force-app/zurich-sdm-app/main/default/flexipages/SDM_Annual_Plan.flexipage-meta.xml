@@ -146,6 +146,9 @@
                         <valueListItems>
                             <value>Product__c</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>Zone__c</value>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>

@@ -16,7 +16,8 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
         System.debug('----------------------------Test testInsertPlanesMensuales-------------------------------------------------------------');
 
         List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, 
-                                                                Indicator__c, Segment__c, Product__c, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Actual_KPI__c, Zone__c
+                                                                Indicator__c, Segment__c, Product__c, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Actual_KPI__c, Zone__c, 
+                                                                ParentPlan__r.OwnerId, Intermediary__c
                                                         FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
@@ -67,7 +68,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
     static void deletePlanesMensuales() {
         System.debug('----------------------------Test deletePlanesMensuales-------------------------------------------------------------');
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
                                                         AND Intermediary__c = NULL
@@ -113,7 +114,7 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
                                                                                 WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()]);
         System.debug('num mensuales testNullInputs ' + planesMensuales.size());
 
-        System.assertEquals(0, planesMensuales.size(), 'No se deben haber insertado planes mensuales');
+        System.assertEquals(0, planesMensuales.size(), 'No se deben haber insertado planes mensuales'); 
     }
 
     // elimino campos obligatorios de los planes y se captura excepcion
@@ -121,7 +122,9 @@ public with sharing class GestionarPlanesMensualesQueueableJobTest {
     static void testKOInsertPlanesMensuales() {
         System.debug('----------------------------Test testKOInsertPlanesMensuales-------------------------------------------------------------');
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
+        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, TargetKPIPercent__c, Zone__c, Actual_KPI__c,
+                                                        ParentPlan__r.OwnerId, Intermediary__c, OwnerId
+                                                        FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
                                                         AND Intermediary__c = NULL

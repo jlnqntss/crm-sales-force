@@ -196,4 +196,26 @@ public with sharing class OpportunityUtil
         }
         return retorno;
     }
+
+    /**
+     * Método que devuelve un mapa de Opportunity(Ofertas) por ofertas generadas a partir de una lista de Ofertas
+     * @author lrodriguez6@seidor.es
+     * @date 11/11/2022
+     * @param Lista de Opportunity
+     * @return Mapa de Opportunity por ofertas generadas
+     */
+    public static Map<String, Opportunity> generateMapByCreatedOffer(List<Opportunity> oportunities)
+    {
+        Map<String, Opportunity> mapOpportunitiesToRelateByCreatedOffer = new Map<String,Opportunity>();
+        if(oportunities != null && !oportunities.isEmpty())
+        {
+            //Mapa para identificar cada oportunidad con su oferta generada    
+            // Se recorre la lista de oportunidades para no tener que recorrerla una vez por cada caso
+            for(Opportunity currentOportunity : oportunities)
+            {
+                mapOpportunitiesToRelateByCreatedOffer.put(currentOportunity.InfoQuoteNumber__c, currentOportunity);
+            }
+        }
+        return mapOpportunitiesToRelateByCreatedOffer;
+    }
 }

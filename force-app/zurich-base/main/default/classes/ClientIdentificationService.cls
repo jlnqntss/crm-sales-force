@@ -33,7 +33,7 @@ public with sharing class ClientIdentificationService
 
         // Comprobamos si existe una poliza asignada al DNI que nos envían:
         // 1.- Obtenemos el ID del Account
-        List<Account> cuentasEncontradas = accountsSelector.findByNationalId(new List<String> { receivedData.nationalID }, 'N');
+        List<Account> cuentasEncontradas = accountsSelector.findByNationalId(new List<String> { receivedData.nationalID }, '');
         List<Policy__c> polizaEncontrada = new List<Policy__c>();
 
         if( !cuentasEncontradas.isEmpty() )

@@ -286,6 +286,16 @@
                             <value>Case.Transferir</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>Case.Diferido</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!Record.Status}</leftValue>
+                                    <operator>NE</operator>
+                                    <rightValue>Cerrado</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
                             <value>MergeCase</value>
                         </valueListItems>
                         <valueListItems>

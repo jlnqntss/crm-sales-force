@@ -580,14 +580,18 @@
             <label>Week left</label>
         </rules>
     </decisions>
-    <description>SDM: corregir mensaje notificación mensual week left si actual KPI está en blanco</description>
+    <description>SDM: añadir nuevo mensaje de notificación week left hacia los RN para los planes mensuales de los mediadores que no hayan cumplido el objetivo</description>
+    <environments>Default</environments>
     <formulas>
         <description>Selecciona el mensaje a utilizar en la notificación Week Left según sea Plan Mensual o cualquier otro tipo</description>
         <name>BodyMessageWeekLeftFormula</name>
         <dataType>String</dataType>
         <expression>IF({!$Record.RecordType.DeveloperName} == {!MensualPlanRTDeveloperName}, 
-     {!BodyWeekLeftMensual}, 
-     {!BodyWeekLeft}
+    IF(ISBLANK({!$Record.Intermediary__c}), 
+        {!BodyWeekLeftMensual}, 
+        {!BodyWeekLeftMensualIntermediary}
+    ),    
+    {!BodyWeekLeft}
 )</expression>
     </formulas>
     <formulas>
@@ -867,12 +871,18 @@ IF
                 <elementReference>TaskSubjectMensualPlan</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <name>WhatId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
     </subflows>
     <textTemplates>
         <description>Mensaje a mostrar en la notificación de KPI Changed para los planes anuales hijos</description>
         <name>BodyKPIChanged</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>Se ha modificado tu plan {!$Record.Name} del segmento {!$Record.Segment__c} y {!$Record.Product__c} si tienes cualquier duda, puedes consultarlo con tu Director de Zona</text>
+        <text>Se ha modificado tu plan {!$Record.Name} del segmento {!$Record.Segment__c} y producto {!$Record.Product__c} si tienes cualquier duda, puedes consultarlo con tu Director de Zona</text>
     </textTemplates>
     <textTemplates>
         <name>BodyKPIReached</name>
@@ -895,6 +905,12 @@ IF
         <isViewedAsPlainText>true</isViewedAsPlainText>
         <text>A falta de 7 días de finalizar {!Month}, necesitas {!KPIToCoverFormula} para cumplir tu objetivo acumulado mensual en el plan {!$Record.Name}
  del segmento {!$Record.Segment__c}</text>
+    </textTemplates>
+    <textTemplates>
+        <description>Mensaje a mostrar a los RN cuando un plan mensual de los mediadores no ha cumplido el objetivo</description>
+        <name>BodyWeekLeftMensualIntermediary</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>A falta de 7 días de finalizar {!Month},  el mediador {!$Record.Intermediary__r.INFOIntermediaryCode__c} {!$Record.Intermediary__r.IntermediaryDescription__c} necesita {!KPIToCoverFormula}  para cumplir su objetivo acumulado mensual en el plan {!$Record.Name} del segmento {!$Record.Segment__c}</text>
     </textTemplates>
     <textTemplates>
         <description>Message para la tarea a crear para los planes mensuales en WeekLeft</description>

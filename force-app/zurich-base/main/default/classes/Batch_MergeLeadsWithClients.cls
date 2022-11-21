@@ -218,7 +218,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                                     SELECT Id, RecordTypeId, LegalEntity__c FROM Contact
                                     WHERE AccountId = :leadAccount.Id AND RecordTypeId = null
                                 ];
-                                String rtId = Schema.SObjectType.Contact.getRecordTypeInfosByName().get(CONTACT_RECORDTYPE_DEVELOPERNAME).getRecordTypeId();
+                                String rtId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get(CONTACT_RECORDTYPE_DEVELOPERNAME).getRecordTypeId();
                                 if( !leadContacts.isEmpty() ) {                                    
                                     leadContacts[0].RecordTypeId = rtId;
                                     leadContacts[0].LegalEntity__c = account.LegalEntity__c;
@@ -228,16 +228,16 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                             }
 
                             // Fix: re-parent the contact points. For some reason the merge does not do it
+                            List<SObject> contactPoints = new List<SObject>();
                             for(String s: mapRelatedObjects.keySet()) {
-                                List<SObject> contactPoints = account.getSObjects(s);
+                                 contactPoints.addAll(account.getSObjects(s));
                                 if( contactPoints != null && !contactPoints.isEmpty() ) {
                                     for( SObject o: contactPoints ) {
-                                        o.put(mapRelatedObjects.get(s), leadAccount.Id);
-                                        
+                                        o.put(mapRelatedObjects.get(s), leadAccount.Id);                                        
                                     }
-                                    update contactPoints; //! 3 DML. One per ContactPoint (email, phone, address)
                                 }
                             }
+                            update contactPoints; //! 3 DML. One per ContactPoint (email, phone, address)
             
                             // Do the merge
                             

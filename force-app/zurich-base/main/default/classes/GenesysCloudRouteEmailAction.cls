@@ -1,4 +1,4 @@
-public class GenesysCloudRouteEmailAction
+public with sharing class GenesysCloudRouteEmailAction
 {
 
     /**
