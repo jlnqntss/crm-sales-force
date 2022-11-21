@@ -23,7 +23,7 @@ files.forEach((filepath) => {
       `uncrustify -l JAVA -c "config/apex-uncrustify.cfg" --replace --no-backup ${filepath}`,
       {
         encoding: "utf-8",
-        shell: true
+        shell: false
       }
     );
 
