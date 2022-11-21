@@ -22,7 +22,8 @@ files.forEach((filepath) => {
     execSync(
       `uncrustify -l JAVA -c "config/apex-uncrustify.cfg" --replace --no-backup ${filepath}`,
       {
-        encoding: "utf-8"
+        encoding: "utf-8",
+        shell: false
       }
     );
 
