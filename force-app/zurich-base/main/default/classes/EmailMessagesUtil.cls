@@ -36,6 +36,7 @@ public with sharing class EmailMessagesUtil
     Map<String,String> mapRouteTypeDestinatario = getEmailRouteTypeList();
 
     private static final Id uspRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+    @testvisible
     private static final Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
 
     /**
@@ -91,7 +92,7 @@ public with sharing class EmailMessagesUtil
         // Para cada email que ha llegado, comprobamos si el caso asociado está cerrado y si el RT es el adecuado (OCS o USP). En caso afirmativo, creamos el caso hijo
         for (Integer posicion : mapaPosiciones.keyset())
         {
-            Case padre = mapaCasosPadre.get(mapaPosiciones.get(posicion));
+            Case padre = mapaCasosPadre.get(mapaPosiciones.get(posicion));           
             if(padre?.IsClosed && (padre?.RecordTypeId == ocsRecordTypeId || padre?.RecordTypeId == uspRecordTypeId ))
             {
                 EmailMessage email = emailList.get(posicion);

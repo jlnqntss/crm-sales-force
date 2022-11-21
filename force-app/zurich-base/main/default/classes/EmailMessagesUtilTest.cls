@@ -275,7 +275,9 @@ private class EmailMessagesUtilTest
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 2);
         cases[0].Status = 'Asignado';
+        cases[0].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
         cases[1].Status = 'Cerrado';
+        cases[1].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
         insert cases;
 
         List<Case> casosInciales = [SELECT id FROM Case];
@@ -293,7 +295,9 @@ private class EmailMessagesUtilTest
         EmailMessagesUtil emUtil = new EmailMessagesUtil();
 
         Test.startTest();
+        System.debug('++++ Entramos en el checkblablabla');
         emUtil.checkNewCaseFromClosedCase(emails);
+        System.debug('++++ Salimos del checkblablabla');
         Test.stopTest();
 
         // Comprobamos que se haya creado un 3er caso, y que el email se ha relacionado con el.
