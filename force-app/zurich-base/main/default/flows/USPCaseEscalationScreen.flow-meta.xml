@@ -521,6 +521,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Scaled Case</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>WhatId</field>
             <value>
                 <elementReference>recordId</elementReference>

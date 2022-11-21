@@ -4,10 +4,11 @@
         <description>sirve para que le aparezca al agente que llevaba el caso un aviso en la campanita</description>
         <name>Notificar_Agente</name>
         <label>Notificar Agente</label>
-        <locationX>925</locationX>
-        <locationY>526</locationY>
+        <locationX>50</locationX>
+        <locationY>935</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -49,8 +50,8 @@
     <assignments>
         <name>AssignRecipients</name>
         <label>Assign Recipients</label>
-        <locationX>787</locationX>
-        <locationY>526</locationY>
+        <locationX>50</locationX>
+        <locationY>815</locationY>
         <assignmentItems>
             <assignToReference>NotificationRecipients</assignToReference>
             <operator>Add</operator>
@@ -65,8 +66,8 @@
     <decisions>
         <name>Se_ha_Cerrado_la_Activity</name>
         <label>¿Se ha Cerrado la Activity?</label>
-        <locationX>308</locationX>
-        <locationY>316</locationY>
+        <locationX>182</locationX>
+        <locationY>335</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si</name>
@@ -79,12 +80,13 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>UpdateCase</targetReference>
+                <targetReference>Caso</targetReference>
             </connector>
             <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
             <label>Si</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <formulas>
         <name>NotificationBody</name>
         <dataType>String</dataType>
@@ -94,6 +96,16 @@
         <name>NotificationTitle</name>
         <dataType>String</dataType>
         <expression>&apos;Escalado Interno finalizado en el Caso &apos; + {!Caso.CaseNumber}</expression>
+    </formulas>
+    <formulas>
+        <name>OCSInquiryRecordTypeId</name>
+        <dataType>String</dataType>
+        <expression>IF({!Caso.RecordType.DeveloperName} = &apos;OCSInquiry&apos;, {!Caso.RecordTypeId}, &apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>USPInquiryRecordTypeId</name>
+        <dataType>String</dataType>
+        <expression>IF({!Caso.RecordType.DeveloperName} = &apos;USPInquiry&apos;, {!Caso.RecordTypeId}, &apos;&apos;)</expression>
     </formulas>
     <interviewLabel>Task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After update Scaled Case</label>
@@ -106,7 +118,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -119,11 +131,11 @@
     <recordLookups>
         <name>Caso</name>
         <label>Caso</label>
-        <locationX>631</locationX>
-        <locationY>529</locationY>
+        <locationX>50</locationX>
+        <locationY>455</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>AssignRecipients</targetReference>
+            <targetReference>UpdateCase</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -140,11 +152,11 @@
     <recordLookups>
         <name>CustomNotification</name>
         <label>Custom Notification</label>
-        <locationX>501</locationX>
-        <locationY>496</locationY>
+        <locationX>50</locationX>
+        <locationY>695</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Caso</targetReference>
+            <targetReference>AssignRecipients</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -161,12 +173,12 @@
     <recordUpdates>
         <name>UpdateCase</name>
         <label>Actualizar Caso</label>
-        <locationX>529</locationX>
-        <locationY>314</locationY>
+        <locationX>50</locationX>
+        <locationY>575</locationY>
         <connector>
             <targetReference>CustomNotification</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND (2 OR (3 AND 4 AND (5 OR 6 OR 7 OR 8)))</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -174,10 +186,59 @@
                 <elementReference>$Record.WhatId</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>OCSInquiryRecordTypeId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>USPInquiryRecordTypeId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendiente</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PendingBy__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Supervisor</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PendingBy__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Consultant</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PendingBy__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Subscription</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PendingBy__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Champion</stringValue>
+            </value>
+        </filters>
         <inputAssignments>
             <field>PendingBy__c</field>
             <value>
-                <stringValue/>
+                <stringValue></stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -189,8 +250,8 @@
         <object>Case</object>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>Se_ha_Cerrado_la_Activity</targetReference>
         </connector>
