@@ -95,28 +95,45 @@ public with sharing class CasesSelector extends RecordsSelector
      * @param  caseIds ids de los casos
      * @return listado de casos
      */
-    public List<Case> findById(Set<String> caseIds)
+    public List<Case> findById(Set<String> caseIds, Boolean allData)
     {
         if(caseIds != null && !caseIds.isEmpty() )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
-                Case.Id,
-                Case.OwnerId, 
-                Case.Query__c
-            })
-            .selectFields('Owner.Type')
-            .selectFields('Owner.Profile.Name')
-            .addConditionString('Case.Id IN (\'' + String.join(new List<String>(caseIds), '\',\'') + '\')');
+            if (allData == false) //Si no hay que obtener todos los datos se especifican cuales
+            {
+                this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                    Case.Id,
+                    Case.OwnerId, 
+                    Case.Query__c
+                 })
+                .selectFields('Owner.Type')
+                .selectFields('Owner.Profile.Name');
+            }
+            else {
+                this.baseQuery.selectReadableFields();
+            }
+            this.baseQuery.addConditionString('Case.Id IN (\'' + String.join(new List<String>(caseIds), '\',\'') + '\')');
 
             this.baseQuery.debug();
 
-            return (List<Case>) this.baseQuery.run();
+            return (List<Case>) this.baseQuery.run(); 
         }
         else
         {
             return new List<Case>();
         }
     }
+
+    public List<Case> findById(Set<String> caseIds)
+    {
+        return this.findById(caseIds, false);
+    }
+
+    public List<Case> findAllDataById(Set<String> caseIds)
+    {
+        return this.findById(caseIds, true);
+    }
+
 
     /**
      * Método utilizado por el batch RelateCasesToNewAccountsBatch para definir el scope

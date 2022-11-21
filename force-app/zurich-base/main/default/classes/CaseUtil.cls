@@ -586,69 +586,41 @@ public with sharing class CaseUtil
         return cifs;
     }
 
-     /**
-     * Método utilizado por RelateCasesToNewOffersBatch para relacionar casos con ofertas
-     * @author lrodriguez6@seidor.es
-     * @date 11/11/2022
-     * @param [List<Case> [casesToRelate] casos que ha recuperado el batch, [String daysToRetrieve] días desde la creación
-     * @return List<Case> casos a actualizar
-     */
-    public static List<Case> relateCasesToNewOffers (List<Case> casesToRelate, String daysToRetrieve)
-    {
-        // Lista para almacenar solo los registros que hay que actualizar
-        List<Case> casesToUpdate = new List<Case>();
-
-        // La lógica solo se recorre si la lista no es nula, para evitar excepciones
-        if(casesToRelate != null && !casesToRelate.isEmpty())
-        {
-            // Se obtiene la lista de ofertas generadas
-            List<String> ofertasGeneradas = generateCreateOfferList(casesToRelate);
-            
-            // Query a Opportunity para recuperar las ofertas creados en las últimas 24 horas
-            // y con oferta generada contenido por los casos recogidos en el batch
-            List<Opportunity> offersToRelate = new OpportunitiesSelector().findByCreatedOfferAndCreationDate(ofertasGeneradas, daysToRetrieve);
-
-            // Si no hay ofertas no recorremos la lista para evitar excepciones
-            if(offersToRelate != null && !offersToRelate.isEmpty())
-            {
-                //Mapa para identificar cada oferta con su oferta generada
-                Map<String, Opportunity> mapOffersToRelateByCreatedOffer = OpportunityUtil.generateMapByCreatedOffer(offersToRelate);
-
-                // Se recorre la lista de casos a relacionar
-                for(Case currentCase : casesToRelate)
-                {
-                    // Si alguna oferta tiene la misma oferta generada que el caso, se tienen que relacionar
-                    if(mapOffersToRelateByCreatedOffer.get(currentCase.CreatedOffer__c)!=null)
-                    {
-                        // Se hace la relación  
-                        currentCase.OfferId__c = mapOffersToRelateByCreatedOffer.get(currentCase.CreatedOffer__c).Id;
-                        // Se añade el caso a la lista de casos a actualizar
-                        casesToUpdate.add(currentCase);
-                    }
-                }
-            }
-        }
-        return casesToUpdate;
-    }
-
     /**
-     * Método que devuelve una lista con el campo oferta generada de los casos que recibe por parámetro
-     * @author lrodriguez6@seidor.es
-     * @date 11/11/2022
-     * @param Lista de casos
-     * @return Lista de ofertas generadas
+     * Método que crea un caso a partir de un caso padre ya existente y un email entrante
+     * @author arcortazar
+     * @date 18/11/2022
+     * @param {Case padre} caso que se va a copiar
+     * @param {EmailMessage email} email del que vamos a obtener el subject y la descripción
+     * @param {Boolean setTypification} indica si vamos a mantener la tipificación del caso padre (true) o no (false)
+     * @return Case 
      */
-    private static List<String> generateCreateOfferList(List<Case> cases)
+    public static Case createCaseFromParent(Case padre, EmailMessage email, Boolean setTypification)
     {
-        List<String> createOffers = new List<String>();
-        if(cases != null && !cases.isEmpty())
+        Case casoHijo = new Case(
+                        
+                        Status='Asignado',
+                        Subject = email?.Subject,
+                        Description = email?.TextBody,
+                        CallCenter__c = padre?.CallCenter__c,
+                        Origin = padre?.Origin,
+                        SourceArea__c = padre?.SourceArea__c,
+                        ParentId=padre?.Id,
+                        AccountId=padre?.AccountId,
+                        RecordTypeId=padre?.RecordTypeId, 
+                        PolicyId__c = padre?.PolicyId__c,
+                        OfferId__c = padre?.OfferId__c,
+                        ClaimId__c = padre?.ClaimId__c,
+                        Object__c = padre?.Object__c,
+                        MediatedCustomer__c = padre?.MediatedCustomer__c
+                    );
+
+        if (setTypification)
         {
-            // Se recorre la lista de casos para generar la lista de ofertas generadas 
-            for(Case currentCase : cases)
-            {
-                createOffers.add(currentCase.CreatedOffer__c);
-            }
+            casoHijo.Type = padre?.Type;
+            casoHijo.Subtype__c = padre?.Subtype__c;
+            casoHijo.TypeN3__c = padre?.TypeN3__c;
         }
-        return createOffers;
+        return casoHijo;
     }
 }
