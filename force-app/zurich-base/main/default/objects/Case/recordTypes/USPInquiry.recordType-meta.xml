@@ -829,6 +829,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Supervisor</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Technical Direction</fullName>
             <default>false</default>
         </values>

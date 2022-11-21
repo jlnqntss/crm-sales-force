@@ -307,6 +307,7 @@
         <object>GroupMember</object>
         <valueField>UserOrGroupId</valueField>
     </dynamicChoiceSets>
+    <environments>Default</environments>
     <interviewLabel>USP Case Escalation Screen {!$Flow.CurrentDateTime}</interviewLabel>
     <label>USP Case Escalation Screen</label>
     <loops>
@@ -493,6 +494,12 @@
             <field>Subtype__c</field>
             <value>
                 <stringValue>Monitoring</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Scaled Case</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
