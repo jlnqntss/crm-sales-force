@@ -1069,6 +1069,10 @@
     <picklistValues>
         <picklist>TypeN3__c</picklist>
         <values>
+            <fullName>Ajuste oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Anotación Embargo</fullName>
             <default>false</default>
         </values>
