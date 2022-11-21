@@ -16,15 +16,16 @@ let files = execSync("git diff --cached --name-only --diff-filter=ACM", {
     return filepath.endsWith(".cls") || filepath.endsWith(".trigger");
   });
 
-  // 2 - Se lanza la ejecución de uncrustify
-  files.forEach((filepath) => {
-    try {
-      execSync(
-        `uncrustify -l JAVA -c "config/apex-uncrustify.cfg" --replace --no-backup ${filepath}`,
-        {
-          encoding: "utf-8"
-        }
-      );
+// 2 - Se lanza la ejecución de uncrustify
+files.forEach((filepath) => {
+  try {
+    execSync(
+      `uncrustify -l JAVA -c "config/apex-uncrustify.cfg" --replace --no-backup ${filepath}`,
+      {
+        encoding: "utf-8",
+        shell: true
+      }
+    );
 
     execSync(`git add ${filepath}`, {
       encoding: "utf-8"
