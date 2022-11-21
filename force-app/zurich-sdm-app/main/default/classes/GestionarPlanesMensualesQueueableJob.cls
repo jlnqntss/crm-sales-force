@@ -10,17 +10,27 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
     private List<PlanComercial__c> planesComerciales;
     private Map<String, Map<String, Objective__c>> mapObjetivos;
     private String action;
+    private Map<Id, PlanComercial__c> mapParentOwner;
 
-    private static final Integer numRecordsDML = 2000;
+    private static final Integer numRecordsDML = 1000;
 
     public GestionarPlanesMensualesQueueableJob(List<PlanComercial__c> planesComercialesAnualesList, String action) {
         this.planesComerciales = planesComercialesAnualesList;
+        this.mapParentOwner = null;
+        this.mapObjetivos = null;
+        this.action = action;
+    }
+
+    public GestionarPlanesMensualesQueueableJob(List<PlanComercial__c> planesComercialesAnualesList, Map<Id, PlanComercial__c> mapParentOwner, String action) {
+        this.planesComerciales = planesComercialesAnualesList;
+        this.mapParentOwner = mapParentOwner;
         this.mapObjetivos = null;
         this.action = action;
     }
 
     public GestionarPlanesMensualesQueueableJob(Map<String, Map<String, Objective__c>> mapObjetivos, String action) {
         this.planesComerciales = null;
+        this.mapParentOwner = null;
         this.mapObjetivos = mapObjetivos;
         this.action = action;
     }
@@ -29,9 +39,9 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         try {
             switch on action {
                 when 'Insert' {
-                    insertPlanesMensuales(planesComerciales, mapObjetivos);
+                    insertPlanesMensuales(planesComerciales, mapObjetivos, mapParentOwner);
                 } when 'Update' {
-                    updatePlanesMensuales(planesComerciales, mapObjetivos);
+                    updatePlanesMensuales(planesComerciales, mapObjetivos, mapParentOwner);
                 } when 'Delete' {
                     deletePlanesMensuales(planesComerciales, mapObjetivos);             
                 } when 'InsertMensualesJob' { // en caso de insertar mas de 10k registros volvemos a llamar al job para los restantes
@@ -58,12 +68,12 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static void insertPlanesMensuales(List<PlanComercial__c> planesComercialesAnualesList,  Map<String, Map<String, Objective__c>> mapObjetivos) {
+    private static void insertPlanesMensuales(List<PlanComercial__c> planesComercialesAnualesList,  Map<String, Map<String, Objective__c>> mapObjetivos, Map<Id, PlanComercial__c> mapParentOwner) {
 
         if (mapObjetivos == null) {
-            insertPlanesMensualesFromPC(planesComercialesAnualesList);
+            insertPlanesMensualesFromPC(planesComercialesAnualesList, mapParentOwner);
         } else {
-            insertPlanesMensualesFromObjective(mapObjetivos);
+            insertPlanesMensualesFromObjective(mapObjetivos, mapParentOwner);
         }
     }
 
@@ -75,12 +85,12 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static void updatePlanesMensuales(List<PlanComercial__c> planesComercialesAnualesList, Map<String, Map<String, Objective__c>> mapObjetivos) {
+    private static void updatePlanesMensuales(List<PlanComercial__c> planesComercialesAnualesList, Map<String, Map<String, Objective__c>> mapObjetivos, Map<Id, PlanComercial__c> mapParentOwner) {
         
         if (mapObjetivos == null) { // si no hay objetivos se ha invocado desde el trigger de plan comercial
             updatePlanesMensualesFromPC(planesComercialesAnualesList);
         } else { // se ha invocado desde trigger objetivos
-            updatePlanesMensualesFromObjective(mapObjetivos);
+            updatePlanesMensualesFromObjective(mapObjetivos, mapParentOwner);
         }
                         
     }
@@ -165,14 +175,14 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static void insertPlanesMensualesFromPC(List<PlanComercial__c> planesComercialesAnualesList) {
+    private static void insertPlanesMensualesFromPC(List<PlanComercial__c> planesComercialesAnualesList, Map<Id, PlanComercial__c> mapParentOwner) {
 
         if (planesComercialesAnualesList != null && !planesComercialesAnualesList.isEmpty()) {
             List<PlanComercial__c> listaPlanesMensualesInsert = new List<PlanComercial__c>();
 
             Map<String, Objective__c> objetivosMap = getObjetivosParametrica(planesComercialesAnualesList); // key externalId
             if (!objetivosMap.isEmpty()) {
-                listaPlanesMensualesInsert = generatePlanesHijosToInsert(planesComercialesAnualesList, objetivosMap);
+                listaPlanesMensualesInsert = generatePlanesHijosToInsert(planesComercialesAnualesList, objetivosMap, mapParentOwner);
             }  
             
             insertPlanesMensuales(listaPlanesMensualesInsert);
@@ -186,7 +196,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static void insertPlanesMensualesFromObjective(Map<String, Map<String, Objective__c>> mapObjetivos) {
+    private static void insertPlanesMensualesFromObjective(Map<String, Map<String, Objective__c>> mapObjetivos, Map<Id, PlanComercial__c> mapParentOwner) {
 
         Map<String, Objective__c> objetivosToInsert = mapObjetivos.get('ObjetivosInsert'); // map externalId, Objetivo
 
@@ -194,7 +204,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         List<PlanComercial__c> pcAnualesList = getPlanesComercialesAnualesMensualesByObjetivos(objetivosToInsert, 'Anual');
 
         // genero la lista de planes mensuales a insertar
-        List<PlanComercial__c> listaPlanesMensualesInsert = generatePlanesHijosToInsert(pcAnualesList, objetivosToInsert);
+        List<PlanComercial__c> listaPlanesMensualesInsert = generatePlanesHijosToInsert(pcAnualesList, objetivosToInsert, mapParentOwner);
 
         insertPlanesMensuales(listaPlanesMensualesInsert);
     }
@@ -207,7 +217,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static List<PlanComercial__c> generatePlanesHijosToInsert(List<PlanComercial__c> planesComercialesAnualesList, Map<String, Objective__c> objetivosMap) {
+    private static List<PlanComercial__c> generatePlanesHijosToInsert(List<PlanComercial__c> planesComercialesAnualesList, Map<String, Objective__c> objetivosMap, Map<Id, PlanComercial__c> mapParentOwner) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
         String pcExternalId; // calculo el valor externalId para obtener el objetivo con el cual generaremos los planes mensuales con los pesos indicados
         Objective__c obj; // objetivo para el plan comercial i
@@ -218,7 +228,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
             obj = objetivosMap.get(pcExternalId);
 
             if (obj != null) { // al hacer get si no lo encuentra devuelve null
-                planesMensuales = generatePlanesMensualesFromPlanAnual(pc, obj); // lista auxiliar con los 12 planes mensuales generados
+                planesMensuales = generatePlanesMensualesFromPlanAnual(pc, obj, mapParentOwner); // lista auxiliar con los 12 planes mensuales generados
                 result.addAll(planesMensuales);
                 planesMensuales.clear(); // reseteo la lista auxiliar
             }
@@ -235,11 +245,11 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static List<PlanComercial__c> generatePlanesMensualesFromPlanAnual(PlanComercial__c pc, Objective__c obj) {
+    private static List<PlanComercial__c> generatePlanesMensualesFromPlanAnual(PlanComercial__c pc, Objective__c obj, Map<Id, PlanComercial__c> mapParentOwner) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
 
         for (Integer i = 1; i <= 12; i++) { // bucle por cada mes del año
-            result.add(generatePlanMensual(pc, obj, i));
+            result.add(generatePlanMensual(pc, obj, i, mapParentOwner));
         }
 
         return result;
@@ -254,17 +264,17 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static PlanComercial__c generatePlanMensual(PlanComercial__c pc, Objective__c obj, Integer i) {        
+    private static PlanComercial__c generatePlanMensual(PlanComercial__c pc, Objective__c obj, Integer i, Map<Id, PlanComercial__c> mapParentOwner) {        
         PlanComercial__c result = pc.clone(false, false, false, false);
         Map<String, String> calculoPCMap = calculatePlanMensualFields(pc, obj, i);
 
-        result.Name = (pc.Name + ' ' + calculoPCMap.get('MonthName')).left(80); // recorto el tamaño a 80 que tiene el campo
+        result.Name = (pc.Name + ' ' + calculoPCMap.get('MonthName')).left(75) + ' ' + pc.EndDate__c.year(); // recorto el tamaño a 75 y añado 5 caracteres al final con el año haciendo un total de 80
         result.put(calculoPCMap.get('KPIField'), decimal.valueOf(calculoPCMap.get('KPI'))); // seteo uno de los 3 campos kpi segun el que esté informado en el plan mensual
         result.RecordTypeId = Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId();
         result.EndDate__c = Date.newInstance(pc.EndDate__c.year(), i, Integer.valueOf(calculoPCMap.get('NumberOfDays')));
         result.ParentPlan__c = pc.Id;
         result.SentNotifications__c = calculoPCMap.get('NotificationSent');
-        result.OwnerId = pc.OwnerId;
+        result.OwnerId = calculateOwnerMensualPlan(pc, mapParentOwner);
         result.Actual_KPI__c = String.isEmpty(calculoPCMap.get('ActualKPI')) ? null : Decimal.valueOf(calculoPCMap.get('ActualKPI'));
 
         return result;
@@ -369,7 +379,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static void updatePlanesMensualesFromObjective(Map<String, Map<String, Objective__c>> mapObjetivos) {
+    private static void updatePlanesMensualesFromObjective(Map<String, Map<String, Objective__c>> mapObjetivos, Map<Id, PlanComercial__c> mapParentOwner) {
         Map<String, Objective__c> objetivosToUpdatePesos = mapObjetivos.get('ObjetivosToUpdatePesos'); // map externalId, Objetivo
         Map<String, Objective__c> objetivosToUpdateActive = mapObjetivos.get('ObjetivosToUpdateActive'); // map externalId, Objetivo
         Map<String, Objective__c> objetivosToUpdateInactive = mapObjetivos.get('ObjetivosToUpdateInactive'); // map externalId, Objetivo
@@ -391,7 +401,7 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
 
         if (!pcToInsert.isEmpty()) {
             // insert planes
-            List<PlanComercial__c> listaPlanesInsert = generatePlanesHijosToInsert(pcToInsert, objetivosToUpdateActive);
+            List<PlanComercial__c> listaPlanesInsert = generatePlanesHijosToInsert(pcToInsert, objetivosToUpdateActive, mapParentOwner);
             insertPlanesMensuales(listaPlanesInsert);
 
         } if (!pcToUpdate.isEmpty()) {
@@ -701,5 +711,33 @@ public with sharing class GestionarPlanesMensualesQueueableJob implements Queuea
         }
         
         return result;
+    }
+
+    /**
+     * Calculamos el owner id de los planes mensuales según sea creados por bajada de director a rn o de rn a mediador. Se usa el director como owner para todos aquellos planes que tengan abuelo.
+     * @param pc: plan comercial anual
+     * @param monthToCalculate: mes a generar
+     * @return Map con los calculos
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static String calculateOwnerMensualPlan(PlanComercial__c pcAnual, Map<Id, PlanComercial__c> mapParentOwner) {
+
+        String result = pcAnual.OwnerId;
+        String loginUserId = UserInfo.getUserId();
+        String parentOwnerId;
+
+        if (mapParentOwner != null) { // si es nulo es porque se está calculando los planes desde insert/activación de objetivos
+            parentOwnerId = mapParentOwner.get(pcAnual.Id).ParentPlan__r.OwnerId;
+        } else {
+            parentOwnerId = pcAnual.ParentPlan__r.OwnerId;
+        }
+
+        if (pcAnual.Intermediary__c != null && !loginUserId.equals(parentOwnerId)) {
+            result = parentOwnerId;
+        }        
+
+        return result;
+
     }
 }

@@ -146,8 +146,6 @@ h6.communication-title {
   overflow-y: auto;
   bottom: 0;
   padding: 20px;
-  font-size: 14px;
-  color: #fff;
   background-color: rgba(0, 0, 0, 0.3);
   opacity: 0;
 }
@@ -358,7 +356,6 @@ h4 {
 button.slds-button {
   display: inline-block;
   min-width: 150px;
-  padding: 0 25px;
   border: none;
   border-radius: 50px;
   font-weight: 700;
@@ -374,13 +371,11 @@ button.slds-button {
     right center !important;
   background-size: 300% 100% !important;
   color: #fff !important;
-  overflow: hidden;
   -webkit-transition: all 600ms;
   transition: all 600ms;
   height: 52px;
   line-height: 52px;
   padding: 0 50px;
-  border-radius: 26px;
   font-size: 21px;
 }
 

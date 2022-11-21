@@ -35,6 +35,10 @@ public with sharing class EmailMessagesUtil
 
     Map<String,String> mapRouteTypeDestinatario = getEmailRouteTypeList();
 
+    private static final Id uspRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+    @testvisible
+    private static final Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+
     /**
      * Get from the metadata configuration the list of emails configured for the Hegeo robot
      * 
@@ -58,6 +62,68 @@ public with sharing class EmailMessagesUtil
                     
                 }
             }
+        }
+    }
+
+
+    public void checkNewCaseFromClosedCase(List<EmailMessage> emailList)
+    {
+        Set<String> idsCasosPadre = new Set<String>();
+        Map<Id, Case> mapaCasosPadre = new Map<Id, Case>();
+        Map<Integer, Id> mapaPosiciones = new Map<Integer, Id>(); //Relaciona un caso con la posicion en la lista del email que entra
+        Map<Integer, Case> mapaCasosHijos = new Map<Integer, Case>(); //Relaciona un caso hijo con la posicion en la lista del email que entra
+
+        // Obtenemos los casos asociados a los emails que están llegando
+        for(EmailMessage email : emailList)
+        {
+            if(email.Incoming && String.isNotBlank(email.ParentId))
+            {
+                idsCasosPadre.add(email.ParentId); 
+                mapaPosiciones.put(emailList.indexOf(email), email.ParentId);
+            }
+        }
+
+        List<Case> listaCasosPadre = new CasesSelector().findAllDataById(idsCasosPadre);
+        for(Case c : listaCasosPadre)
+        {
+            mapaCasosPadre.put(c.Id, c);
+        }
+
+        // Para cada email que ha llegado, comprobamos si el caso asociado está cerrado y si el RT es el adecuado (OCS o USP). En caso afirmativo, creamos el caso hijo
+        for (Integer posicion : mapaPosiciones.keyset())
+        {
+            Case padre = mapaCasosPadre.get(mapaPosiciones.get(posicion));           
+            if(padre?.IsClosed && (padre?.RecordTypeId == ocsRecordTypeId || padre?.RecordTypeId == uspRecordTypeId ))
+            {
+                EmailMessage email = emailList.get(posicion);
+                Case casoHijo = CaseUtil.createCaseFromParent(padre, email, true); // que siempre cargue la tipificación del padre, y si tiene csv lo machacará
+                mapaCasosHijos.put(posicion, casoHijo);
+            }
+        }
+        insert mapaCasosHijos.values();
+
+        // Mediante el orden de llegada del email (la posición en la lista), sustituímos las referencias a los casos en los emails
+        for (Integer posicion : mapaCasosHijos.keySet())
+        {
+            EmailMessage email = emailList.get(posicion);
+            Case casoHijo = mapaCasosHijos.get(posicion);
+            Case casoPadre = mapaCasosPadre.get(casoHijo.ParentId);
+
+            // Creamos las referencias de los casos padre e hiijo
+            String caseThreadIDpadre = getCaseReference(casoPadre.Id);            
+            if(email.HtmlBody.contains('ref:'+caseThreadIDpadre + ':ref'))
+            {
+                String caseThreadIDhijo = getCaseReference(casoHijo.id);
+
+                // Actualizamos las referencias en el email
+                email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadre, caseThreadIDhijo);
+                email.TextBody = email.TextBody.replace(caseThreadIDpadre, caseThreadIDhijo);
+
+                email.ThreadIdentifier = '';
+            }
+            
+            email.ParentId = casoHijo.Id;
+            email.RelatedToId = casoHijo.Id;
         }
     }
 
@@ -367,6 +433,24 @@ public with sharing class EmailMessagesUtil
         return genesysQueue;
     }
 
+    /**
+     * Crea el thread ID a partir del ID de un caso
+     * 
+     * @author nts (arcortazar)
+     * @date 18/11/2022
+     * @param String el ID del caso
+     * @return String 
+     */
+    private String getCaseReference(String caseId)
+    {
+        String threadID;
+        if(caseId != null)
+        {
+            threadID = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseId.left(5)  + caseId.mid(10,5) +'';
+        }
+        return threadID;
+
+    }
 
     private class EmailMessagesUtilException extends Exception {}
 }
