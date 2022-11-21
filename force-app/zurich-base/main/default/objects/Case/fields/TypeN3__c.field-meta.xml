@@ -715,12 +715,6 @@
                 <label>Validación/ emisión</label>
             </value>
             <value>
-                <fullName>Validación / emisión</fullName>
-                <default>false</default>
-                <isActive>false</isActive>
-                <label>Validación / emisión</label>
-            </value>
-            <value>
                 <fullName>Warranty extension</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
