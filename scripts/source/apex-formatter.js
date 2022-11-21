@@ -22,8 +22,7 @@ let files = execSync("git diff --cached --name-only --diff-filter=ACM", {
       execSync(
         `uncrustify -l JAVA -c "config/apex-uncrustify.cfg" --replace --no-backup ${filepath}`,
         {
-          encoding: "utf-8",
-          shell: true
+          encoding: "utf-8"
         }
       );
 
