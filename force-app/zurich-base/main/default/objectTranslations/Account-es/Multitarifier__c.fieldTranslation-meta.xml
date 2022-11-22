@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Multitarificador</label>
+    <name>Multitarifier__c</name>
+    <picklistValues>
+        <masterLabel>Avant2 - Codeoscopic</masterLabel>
+        <translation><!-- Avant2 - Codeoscopic --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Gecose</masterLabel>
+        <translation><!-- Gecose --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>MPM</masterLabel>
+        <translation><!-- MPM --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Merlín - Ebroker</masterLabel>
+        <translation><!-- Merlín - Ebroker --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Soft QS</masterLabel>
+        <translation><!-- Soft QS --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

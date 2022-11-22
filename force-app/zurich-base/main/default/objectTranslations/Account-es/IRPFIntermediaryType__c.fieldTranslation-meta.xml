@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tipo de intermediario IRPF</label>
+    <name>IRPFIntermediaryType__c</name>
+    <picklistValues>
+        <masterLabel>ANDORRA EN ANDORRA</masterLabel>
+        <translation><!-- ANDORRA EN ANDORRA --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ANDORRA EN ESPAÑA</masterLabel>
+        <translation><!-- ANDORRA EN ESPAÑA --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CEUTA Y MELILLA</masterLabel>
+        <translation><!-- CEUTA Y MELILLA --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>EXTRANJEROS</masterLabel>
+        <translation><!-- EXTRANJEROS --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>INTERMEDIARIOS 2 PRIMEROS AÑOS PROF</masterLabel>
+        <translation><!-- INTERMEDIARIOS 2 PRIMEROS AÑOS PROF --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>INTERMEDIARIOS CON SUBAGENTES/COLAB</masterLabel>
+        <translation><!-- INTERMEDIARIOS CON SUBAGENTES/COLAB --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>INTERMEDIARIOS RENDIMIENTOS REDUCID</masterLabel>
+        <translation><!-- INTERMEDIARIOS RENDIMIENTOS REDUCID --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>NORMAL</masterLabel>
+        <translation><!-- NORMAL --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SIN RETENCION</masterLabel>
+        <translation><!-- SIN RETENCION --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

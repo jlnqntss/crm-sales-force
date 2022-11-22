@@ -5,5 +5,21 @@
     <label>Linked / Exclusive</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
-    <type>TextArea</type>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Vinculado</fullName>
+                <default>false</default>
+                <label>Vinculado</label>
+            </value>
+            <value>
+                <fullName>Exclusivo</fullName>
+                <default>false</default>
+                <label>Exclusivo</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

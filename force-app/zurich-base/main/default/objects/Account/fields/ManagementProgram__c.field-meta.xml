@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>RuralUrban__c</fullName>
+    <fullName>ManagementProgram__c</fullName>
     <externalId>false</externalId>
-    <label>Rural / urban</label>
+    <label>Management Program</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
@@ -11,14 +11,24 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Rural</fullName>
+                <fullName>MPM</fullName>
                 <default>false</default>
-                <label>Rural</label>
+                <label>MPM</label>
             </value>
             <value>
-                <fullName>Urban</fullName>
+                <fullName>Ebroker</fullName>
                 <default>false</default>
-                <label>Urban</label>
+                <label>Ebroker</label>
+            </value>
+            <value>
+                <fullName>QS</fullName>
+                <default>false</default>
+                <label>QS</label>
+            </value>
+            <value>
+                <fullName>T-SIS</fullName>
+                <default>false</default>
+                <label>T-SIS</label>
             </value>
         </valueSetDefinition>
     </valueSet>

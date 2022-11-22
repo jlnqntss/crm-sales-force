@@ -1,64 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Association__c</fullName>
+    <fullName>IRPFIntermediaryType__c</fullName>
     <externalId>false</externalId>
-    <label>Association</label>
+    <label>IRPF Intermediary Type</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
+        <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>ACSV</fullName>
+                <fullName>ANDORRA EN ANDORRA</fullName>
                 <default>false</default>
-                <label>ACSV</label>
+                <label>ANDORRA EN ANDORRA</label>
             </value>
             <value>
-                <fullName>ADECOSE</fullName>
+                <fullName>ANDORRA EN ESPAÑA</fullName>
                 <default>false</default>
-                <label>ADECOSE</label>
+                <label>ANDORRA EN ESPAÑA</label>
             </value>
             <value>
-                <fullName>AMZ</fullName>
+                <fullName>CEUTA Y MELILLA</fullName>
                 <default>false</default>
-                <label>AMZ</label>
+                <label>CEUTA Y MELILLA</label>
             </value>
             <value>
-                <fullName>APROCOR</fullName>
+                <fullName>EXTRANJEROS</fullName>
                 <default>false</default>
-                <label>APROCOR</label>
+                <label>EXTRANJEROS</label>
             </value>
             <value>
-                <fullName>AUNNA</fullName>
+                <fullName>INTERMEDIARIOS 2 PRIMEROS AÑOS PROF</fullName>
                 <default>false</default>
-                <label>AUNNA</label>
+                <label>INTERMEDIARIOS 2 PRIMEROS AÑOS PROF</label>
             </value>
             <value>
-                <fullName>AUNNA Compromiso</fullName>
+                <fullName>INTERMEDIARIOS CON SUBAGENTES/COLAB</fullName>
                 <default>false</default>
-                <label>AUNNA Compromiso</label>
+                <label>INTERMEDIARIOS CON SUBAGENTES/COLAB</label>
             </value>
             <value>
-                <fullName>CENTERBROCK</fullName>
+                <fullName>INTERMEDIARIOS RENDIMIENTOS REDUCID</fullName>
                 <default>false</default>
-                <label>CENTERBROCK</label>
+                <label>INTERMEDIARIOS RENDIMIENTOS REDUCID</label>
             </value>
             <value>
-                <fullName>COJEBRO</fullName>
+                <fullName>NORMAL</fullName>
                 <default>false</default>
-                <label>COJEBRO</label>
+                <label>NORMAL</label>
             </value>
             <value>
-                <fullName>NEWCORRED</fullName>
+                <fullName>SIN RETENCION</fullName>
                 <default>false</default>
-                <label>NEWCORRED</label>
-            </value>
-            <value>
-                <fullName>WNETWORKS</fullName>
-                <default>false</default>
-                <label>WNETWORKS</label>
+                <label>SIN RETENCION</label>
             </value>
         </valueSetDefinition>
     </valueSet>

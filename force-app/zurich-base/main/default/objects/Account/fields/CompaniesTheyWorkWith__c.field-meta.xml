@@ -5,5 +5,71 @@
     <label>Companies they work with</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
-    <type>TextArea</type>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AXA</fullName>
+                <default>false</default>
+                <label>AXA</label>
+            </value>
+            <value>
+                <fullName>Allianz</fullName>
+                <default>false</default>
+                <label>Allianz</label>
+            </value>
+            <value>
+                <fullName>Reale</fullName>
+                <default>false</default>
+                <label>Reale</label>
+            </value>
+            <value>
+                <fullName>Generalli</fullName>
+                <default>false</default>
+                <label>Generalli</label>
+            </value>
+            <value>
+                <fullName>Fiatc</fullName>
+                <default>false</default>
+                <label>Fiatc</label>
+            </value>
+            <value>
+                <fullName>Segur Caixa</fullName>
+                <default>false</default>
+                <label>Segur Caixa</label>
+            </value>
+            <value>
+                <fullName>Mutua Madrileña</fullName>
+                <default>false</default>
+                <label>Mutua Madrileña</label>
+            </value>
+            <value>
+                <fullName>Mapfre</fullName>
+                <default>false</default>
+                <label>Mapfre</label>
+            </value>
+            <value>
+                <fullName>Lagun Aro</fullName>
+                <default>false</default>
+                <label>Lagun Aro</label>
+            </value>
+            <value>
+                <fullName>Mútua General</fullName>
+                <default>false</default>
+                <label>Mútua General</label>
+            </value>
+            <value>
+                <fullName>Liberty</fullName>
+                <default>false</default>
+                <label>Liberty</label>
+            </value>
+            <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <label>Otros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>
