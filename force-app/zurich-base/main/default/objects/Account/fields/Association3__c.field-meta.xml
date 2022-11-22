@@ -3,9 +3,63 @@
     <fullName>Association3__c</fullName>
     <externalId>false</externalId>
     <label>Association 3</label>
-    <length>80</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
-    <type>Text</type>
-    <unique>false</unique>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ACSV</fullName>
+                <default>false</default>
+                <label>ACSV</label>
+            </value>
+            <value>
+                <fullName>ADECOSE</fullName>
+                <default>false</default>
+                <label>ADECOSE</label>
+            </value>
+            <value>
+                <fullName>AMZ</fullName>
+                <default>false</default>
+                <label>AMZ</label>
+            </value>
+            <value>
+                <fullName>APROCOR</fullName>
+                <default>false</default>
+                <label>APROCOR</label>
+            </value>
+            <value>
+                <fullName>AUNNA</fullName>
+                <default>false</default>
+                <label>AUNNA</label>
+            </value>
+            <value>
+                <fullName>AUNNA Compromiso</fullName>
+                <default>false</default>
+                <label>AUNNA Compromiso</label>
+            </value>
+            <value>
+                <fullName>CENTERBROCK</fullName>
+                <default>false</default>
+                <label>CENTERBROCK</label>
+            </value>
+            <value>
+                <fullName>COJEBRO</fullName>
+                <default>false</default>
+                <label>COJEBRO</label>
+            </value>
+            <value>
+                <fullName>NEWCORRED</fullName>
+                <default>false</default>
+                <label>NEWCORRED</label>
+            </value>
+            <value>
+                <fullName>WNETWORKS</fullName>
+                <default>false</default>
+                <label>WNETWORKS</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>
