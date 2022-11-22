@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Agrupación corredurías</label>
+    <name>BrokeragesGrouping__c</name>
+    <picklistValues>
+        <masterLabel>Alkora</masterLabel>
+        <translation><!-- Alkora --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Cicor</masterLabel>
+        <translation><!-- Cicor --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Club Català de Corredors</masterLabel>
+        <translation><!-- Club Català de Corredors --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Coinbroker</masterLabel>
+        <translation><!-- Coinbroker --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Confide</masterLabel>
+        <translation><!-- Confide --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ERSM</masterLabel>
+        <translation><!-- ERSM --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Ferrer i Ojeda</masterLabel>
+        <translation><!-- Ferrer i Ojeda --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>G InsurTech</masterLabel>
+        <translation><!-- G InsurTech --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Grupo Aras</masterLabel>
+        <translation><!-- Grupo Aras --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Grupo Galilea</masterLabel>
+        <translation><!-- Grupo Galilea --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Grupo Pacc y P.Trebol</masterLabel>
+        <translation><!-- Grupo Pacc y P.Trebol --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Howden-Artai-Assiteca</masterLabel>
+        <translation><!-- Howden-Artai-Assiteca --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Jori Armengol</masterLabel>
+        <translation><!-- Jori Armengol --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Kalibo</masterLabel>
+        <translation><!-- Kalibo --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Materh</masterLabel>
+        <translation><!-- Materh --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Mediaria</masterLabel>
+        <translation><!-- Mediaria --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Medicorasse</masterLabel>
+        <translation><!-- Medicorasse --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Otros</masterLabel>
+        <translation><!-- Otros --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Ruíz - Re</masterLabel>
+        <translation><!-- Ruíz - Re --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Summa</masterLabel>
+        <translation><!-- Summa --></translation>
+    </picklistValues>
+</CustomFieldTranslation>
