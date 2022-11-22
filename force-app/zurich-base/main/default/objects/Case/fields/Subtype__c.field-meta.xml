@@ -23,11 +23,6 @@
                 <label>Anulación</label>
             </value>
             <value>
-                <fullName>Apoyo Captación</fullName>
-                <default>false</default>
-                <label>Apoyo Captación</label>
-            </value>
-            <value>
                 <fullName>App</fullName>
                 <default>false</default>
                 <label>App</label>
@@ -601,11 +596,6 @@
                 <fullName>Validacion</fullName>
                 <default>false</default>
                 <label>Validación</label>
-            </value>
-            <value>
-                <fullName>Validación / emisión</fullName>
-                <default>false</default>
-                <label>Validación / emisión</label>
             </value>
         </valueSetDefinition>
         <valueSettings>

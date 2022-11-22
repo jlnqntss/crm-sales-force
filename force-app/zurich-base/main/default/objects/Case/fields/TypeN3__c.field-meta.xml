@@ -134,6 +134,7 @@
             <value>
                 <fullName>Cartera</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Cartera</label>
             </value>
             <value>
@@ -189,6 +190,7 @@
             <value>
                 <fullName>Con Oferta</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Con Oferta</label>
             </value>
             <value>
@@ -259,11 +261,13 @@
             <value>
                 <fullName>Emitir financiada</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Emitir financiada</label>
             </value>
             <value>
                 <fullName>Emitir póliza</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Emitir póliza</label>
             </value>
             <value>
@@ -326,6 +330,7 @@
             <value>
                 <fullName>Generación Oferta</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Generación Oferta</label>
             </value>
             <value>
@@ -458,11 +463,13 @@
             <value>
                 <fullName>Nueva oferta</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Nueva oferta</label>
             </value>
             <value>
                 <fullName>Nueva Producción</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Nueva Producción</label>
             </value>
             <value>
@@ -473,6 +480,7 @@
             <value>
                 <fullName>Oferta financiada</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Oferta financiada</label>
             </value>
             <value>
@@ -660,6 +668,7 @@
             <value>
                 <fullName>Sin Oferta</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Sin Oferta</label>
             </value>
             <value>
@@ -813,18 +822,6 @@
             <valueName>No definido</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <valueName>Con Oferta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <valueName>Generación Oferta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <valueName>Sin Oferta</valueName>
-        </valueSettings>
-        <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <valueName>Gestión competencias</valueName>
         </valueSettings>
@@ -919,6 +916,10 @@
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>Regularización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Renovación póliza</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Información</controllingFieldValue>
@@ -1024,6 +1025,10 @@
         <valueSettings>
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
             <valueName>Renovación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
+            <valueName>Suscripción</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
