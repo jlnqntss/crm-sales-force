@@ -200,6 +200,11 @@
         <editable>false</editable>
         <field>Account.RuralUrban__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.ZurichMarketBonus__c</field>
+        <readable>false</readable>
     </fieldPermissions> 
     <fieldPermissions>
         <editable>false</editable>
