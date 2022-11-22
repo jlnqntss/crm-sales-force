@@ -918,6 +918,10 @@
             <valueName>Regularización</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Renovación póliza</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Información</controllingFieldValue>
             <valueName>Información</valueName>
         </valueSettings>

@@ -935,6 +935,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cotización</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Devolución de recibo liquidado mediador</fullName>
             <default>false</default>
         </values>
@@ -944,6 +948,10 @@
         </values>
         <values>
             <fullName>Embargo Mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Emisión</fullName>
             <default>false</default>
         </values>
         <values>
