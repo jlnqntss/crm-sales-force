@@ -306,6 +306,7 @@
     <tabs>standard-Event</tabs>
     <tabs>standard-Contact</tabs>
     <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
     <tabs>standard-Feed</tabs>
     <tabs>standard-ContentNote</tabs>
     <uiType>Lightning</uiType>
@@ -330,6 +331,9 @@
         </mappings>
         <mappings>
             <tab>standard-ContentNote</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Dashboard</tab>
         </mappings>
         <mappings>
             <fieldName>WhoId</fieldName>
