@@ -428,6 +428,30 @@
     <picklistValues>
         <picklist>CloseResult__c</picklist>
         <values>
+            <fullName>Anulación - Desaparición riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anulación - Impago</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anulación - Saneamiento mal rendimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anulación - Saneamiento otros motivos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anulación - Sin efecto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anulación - Solicitud cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Caducada</fullName>
             <default>false</default>
         </values>
@@ -444,35 +468,15 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Derivado - Norma 57%2FAJ</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Derivado - Otras Áreas</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Ganada</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No Realizado</fullName>
+            <fullName>No Realizado - Otros motivos</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No Realizado -Pol%2E Seguridad</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No Retenido</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Caída Sistema</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Cliente no interesa</fullName>
+            <fullName>No Realizado USP</fullName>
             <default>false</default>
         </values>
         <values>
@@ -504,11 +508,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Realizado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Con extorno</fullName>
+            <fullName>Realizado - Gestión Competencias</fullName>
             <default>false</default>
         </values>
         <values>
@@ -516,39 +516,23 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Realizado - Nueva Póliza</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Pago Tarjeta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Pago Transferencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Reenvío Recibo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Rehabilitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Retroactividad</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Sin extorno</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Realizado - Sin impacto en prima</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Retenido</fullName>
+            <fullName>Realizado USP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Redireccionado BOA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Redireccionado CI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retención por Alto valor</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1029,10 +1013,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Embargo Cliente</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Embargo Mediador</fullName>
             <default>false</default>
         </values>
@@ -1065,15 +1045,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencias %28Cliente%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Incidencias %28Mediador%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencias Mi Zurich</fullName>
             <default>false</default>
         </values>
         <values>
