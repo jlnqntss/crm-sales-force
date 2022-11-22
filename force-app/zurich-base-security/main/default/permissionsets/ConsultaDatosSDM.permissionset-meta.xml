@@ -113,7 +113,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.BrokerageGrouping__c</field>
+        <field>Account.BrokeragesGrouping__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
