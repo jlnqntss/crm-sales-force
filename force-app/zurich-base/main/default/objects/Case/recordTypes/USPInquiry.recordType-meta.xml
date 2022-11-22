@@ -1033,10 +1033,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Embargo Cliente</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Embargo Mediador</fullName>
             <default>false</default>
         </values>
@@ -1045,11 +1041,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Envíos</fullName>
+            <fullName>Envíos %28Cliente%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Felicitación</fullName>
+            <fullName>Envíos %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1065,35 +1061,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencias %28Cliente%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Incidencias %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencias Mi Zurich</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Información</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Modificación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No definido</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Queja</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Reclamación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1117,10 +1089,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Retención</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Revocación Saneamiento</fullName>
             <default>false</default>
         </values>
@@ -1129,7 +1097,15 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Sugerencia</fullName>
+            <fullName>Seguimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tareas administrativas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Validación %2F emisión</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1140,7 +1116,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Económica</fullName>
+            <fullName>Gestión Cliente</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1149,6 +1125,10 @@
         </values>
         <values>
             <fullName>Gestión Servicios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tareas</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1203,11 +1183,27 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cambio de intermediario</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cambios intermediarios</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Campaña</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Capitales</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Cartera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Certificados</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1227,6 +1223,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cotización</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Datos Bancarios</fullName>
             <default>false</default>
         </values>
@@ -1236,6 +1236,10 @@
         </values>
         <values>
             <fullName>Devolución</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1255,6 +1259,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Envíos %28Mediador%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Fallo activación</fullName>
             <default>false</default>
         </values>
@@ -1271,6 +1279,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Felicitación</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Firma digital</fullName>
             <default>false</default>
         </values>
@@ -1279,7 +1291,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Garantías %2F Capitales</fullName>
+            <fullName>Garantías</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1291,11 +1303,19 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión competencias %28Captación%29</fullName>
+            <fullName>Gestión competencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencias cartera</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Inconsistencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Información</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1355,6 +1375,22 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Recobro indirecto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recobro proactivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recobro reactivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reemplazo</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Regularización</fullName>
             <default>false</default>
         </values>
@@ -1363,11 +1399,39 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Renovación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovación póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Retención</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Revocación saneamiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Saneamiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seguimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Sin Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sugerencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suscripción</fullName>
             <default>false</default>
         </values>
         <values>
