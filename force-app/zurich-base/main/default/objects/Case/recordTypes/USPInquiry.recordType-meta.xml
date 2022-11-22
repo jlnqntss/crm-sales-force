@@ -1013,10 +1013,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Apoyo Captación</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Cambio de intermediario</fullName>
             <default>false</default>
         </values>
@@ -1030,6 +1026,10 @@
         </values>
         <values>
             <fullName>Devolución de recibo liquidado mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Embargo Cliente</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1049,6 +1049,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Felicitación</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Gestión Competencias</fullName>
             <default>false</default>
         </values>
@@ -1061,11 +1065,31 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Incidencias %28Cliente%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Incidencias %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Incidencias Mi Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Información</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Modificación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Queja</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reclamación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1101,11 +1125,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Tareas administrativas</fullName>
+            <fullName>Sugerencia</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Validación %2F emisión</fullName>
+            <fullName>Tareas administrativas</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1199,10 +1223,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Cartera</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Certificados</fullName>
             <default>false</default>
         </values>
@@ -1212,10 +1232,6 @@
         </values>
         <values>
             <fullName>Comisiones</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Con Oferta</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1248,14 +1264,6 @@
         </values>
         <values>
             <fullName>Emisión de Factura Electrónica</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Emitir financiada</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Emitir póliza</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1292,10 +1300,6 @@
         </values>
         <values>
             <fullName>Garantías</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generación Oferta</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1343,19 +1347,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Nueva Producción</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Nueva oferta</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Oferta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Oferta financiada</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1420,10 +1412,6 @@
         </values>
         <values>
             <fullName>Seguimiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Sin Oferta</fullName>
             <default>false</default>
         </values>
         <values>

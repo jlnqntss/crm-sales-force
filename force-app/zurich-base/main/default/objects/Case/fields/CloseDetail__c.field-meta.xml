@@ -573,44 +573,30 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión competencias</controllingFieldValue>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
             <valueName>Descuentos</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión competencias</controllingFieldValue>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
             <valueName>Usos / Actividad</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión competencias</controllingFieldValue>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
             <valueName>Bonificación (Sinco/Inbonus…)</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión competencias</controllingFieldValue>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
             <valueName>Matrícula (anteriormente asegurada/mal rendimiento)</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión competencias</controllingFieldValue>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
             <valueName>Vehículo (Valor/accesorios/antigüedad…)</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión competencias</controllingFieldValue>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
             <valueName>Cambio personas (Tomador/prop./conductor)</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión competencias</controllingFieldValue>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
             <valueName>Garantías/capitales (franquicias, robo en motos, RC Hogar…)</valueName>
         </valueSettings>
         <valueSettings>
@@ -688,11 +674,6 @@
         <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <valueName>Fallecimiento</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Nueva Producción</controllingFieldValue>
-            <controllingFieldValue>Cartera</controllingFieldValue>
-            <valueName>Retroactividad</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Emisión</controllingFieldValue>

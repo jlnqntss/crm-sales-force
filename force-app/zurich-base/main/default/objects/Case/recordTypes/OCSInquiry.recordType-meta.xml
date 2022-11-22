@@ -919,11 +919,11 @@
     <picklistValues>
         <picklist>Subtype__c</picklist>
         <values>
-            <fullName>Anulación</fullName>
+            <fullName>Ajuste oferta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Apoyo Captación</fullName>
+            <fullName>Anulación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1034,10 +1034,6 @@
             <fullName>Tareas administrativas</fullName>
             <default>false</default>
         </values>
-        <values>
-            <fullName>Validación %2F emisión</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
@@ -1125,10 +1121,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Cartera</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Certificados</fullName>
             <default>false</default>
         </values>
@@ -1138,10 +1130,6 @@
         </values>
         <values>
             <fullName>Comisiones</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Con Oferta</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1213,10 +1201,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Generación Oferta</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>General</fullName>
             <default>false</default>
         </values>
@@ -1250,10 +1234,6 @@
         </values>
         <values>
             <fullName>Navegación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Nueva Producción</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1318,10 +1298,6 @@
         </values>
         <values>
             <fullName>Seguimiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Sin Oferta</fullName>
             <default>false</default>
         </values>
         <values>
