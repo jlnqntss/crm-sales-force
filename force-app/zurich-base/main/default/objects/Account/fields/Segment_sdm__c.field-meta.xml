@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Segment_sdm__c</fullName>
+    <externalId>false</externalId>
+    <label>Segmento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Centralizados</fullName>
+                <default>false</default>
+                <label>Centralizados</label>
+            </value>
+            <value>
+                <fullName>Global Brokers</fullName>
+                <default>false</default>
+                <label>Global Brokers</label>
+            </value>
+            <value>
+                <fullName>Next</fullName>
+                <default>false</default>
+                <label>Next</label>
+            </value>
+            <value>
+                <fullName>Oro</fullName>
+                <default>false</default>
+                <label>Oro</label>
+            </value>
+            <value>
+                <fullName>Plata</fullName>
+                <default>false</default>
+                <label>Plata</label>
+            </value>
+            <value>
+                <fullName>Resto</fullName>
+                <default>false</default>
+                <label>Resto</label>
+            </value>
+            <value>
+                <fullName>Start</fullName>
+                <default>false</default>
+                <label>Start</label>
+            </value>
+            <value>
+                <fullName>Top</fullName>
+                <default>false</default>
+                <label>Top</label>
+            </value>
+            <value>
+                <fullName>Top Broker</fullName>
+                <default>false</default>
+                <label>Top Broker</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
