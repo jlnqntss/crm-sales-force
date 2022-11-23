@@ -299,6 +299,10 @@ public without sharing class GenesysInteractionsService
             {
                 results = findIntermediariesBy(request);
             }
+            when 'partners'
+            {
+                results = findPartnersBy(request);
+            }
             when else
             {
                 throw new GenesysPeopleServiceException(FILTER_NOT_DEFINED);
@@ -306,6 +310,66 @@ public without sharing class GenesysInteractionsService
         }
 
         // 3 - Devolver los resultados obtenidos
+        return results;
+    }
+
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     *
+     * @author jjuaristi
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {SearchResult} Resultados devueltos por la búsqueda
+     */
+    public static SearchResult findPartnersBy(SearchRequest request)
+    {
+        SearchResult results = new SearchResult();
+        List<Account> accounts = new List<Account>();
+
+        switch on request.searchType
+        {
+            when 'phone'
+            {
+                // Recuperamos el contacto con el ANI recibido
+                List<Contact> contacto = new ContactsSelector().findByANI(request.value);
+                // Debería devolver solo 1 aunque lo almacenemos en una lista
+                accounts = new AccountsSelector().selectById( ContactUtil.generateAccountIdSet(contacto) );
+            }
+            when else
+            {
+                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);
+            }
+        }
+
+        if(accounts.size() == 1)
+        {
+            Account partner = accounts.get(0);
+
+            results.screenPopRecordId = partner.Id;
+            results.territoryCode = partner.ZoneCode__c;
+            results.phone = String.isBlank(partner.MainMobilePhone__c)? partner.Phone : partner.MainMobilePhone__c;
+            results.email = partner.MainEmail__c;
+            results.nationalId = partner.NationalId__c;
+
+            // Construimos un intermediario falso (es el id del partner) para pasar al método el ID del partner y que el agente sea el owner de un caso abierto
+            Intermediary fakePartner = new Intermediary();
+            fakePartner.intermediaryId = partner.Id;
+            results.bestAgents = findBestAgents(fakePartner);
+        }
+
+        //20210804: Estadísticas/Informes
+        if(accounts.size() == 0)
+        {
+            results.noIdentified = true;
+        }
+        else if(accounts.size() == 1 && request.searchType == 'phone')
+        {
+            results.identifiedByANI = true;
+        }
+        else if(accounts.size() > 1 && request.searchType == 'phone')
+        {
+            results.multiIdentifiedByANI = true;
+        }
+
         return results;
     }
 

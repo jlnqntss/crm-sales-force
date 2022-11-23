@@ -242,4 +242,31 @@ public with sharing class ContactsSelector extends RecordsSelector
         return result;
     }
 
+    /**
+     * Método que busca contactos por ANI
+     * @author jjuaristi@seidor.es
+     * @date 16/11/2022
+     * @param String con el ANI
+     * @return Lista de contactos con ese ANI (debería ser solo 1)
+     */
+    public List<Contact> findByANI(String phone)
+    {
+        String partnerOcsRt = 'PartnerOCS';
+
+        List<Contact> result = null;
+
+        if( phone != null && phone != '' ) {
+            this.baseQuery.selectFields (
+                new Set<Schema.SObjectField> {
+                    Contact.Id, 
+                    Contact.Phone,
+                    Contact.AccountId
+                }
+            );
+            this.baseQuery.addConditionEq(Contact.Phone, phone)
+            .addConditionString('Account.RecordType.DeveloperName =\''+partnerOcsRt+'\'');
+            result = (List<Contact>) this.baseQuery.run();
+        }
+        return result;
+    }
 }
