@@ -4,7 +4,7 @@
     <active>true</active>
     <description>[VR Caso] Caso en estado PROSPECTO sólo puede pasar a INFORMACION, OFERTADA O PERDIDA</description>
     <errorConditionFormula>RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
-ISCHANGED(QuotationStage__c) &amp;&amp; ISPICKVAL(PRIORVALUE(QuotationStage__c),&quot;Prospect&quot;) &amp;&amp; NOT(ISPICKVAL(QuotationStage__c,&quot;Info request&quot;)) &amp;&amp; NOT(ISPICKVAL(QuotationStage__c,&quot;Quoted&quot;)) &amp;&amp; NOT(ISPICKVAL(QuotationStage__c,&quot;Lost&quot;))</errorConditionFormula>
+ISCHANGED(QuotationStage__c) &amp;&amp; ISPICKVAL(PRIORVALUE(QuotationStage__c),&quot;Prospect&quot;) &amp;&amp; NOT(ISPICKVAL(QuotationStage__c,&quot;Info request&quot;)) &amp;&amp; NOT(ISPICKVAL(QuotationStage__c,&quot;Quoted&quot;)) &amp;&amp; NOT(ISPICKVAL(QuotationStage__c,&quot;Lost&quot;))&amp;&amp; $Permission.USPTriggerCaseValidationRules</errorConditionFormula>
     <errorDisplayField>QuotationStage__c</errorDisplayField>
     <errorMessage>[VR Caso] Caso en estado PROSPECTO sólo puede pasar a INFORMACION, OFERTADA O PERDIDA</errorMessage>
 </ValidationRule>
