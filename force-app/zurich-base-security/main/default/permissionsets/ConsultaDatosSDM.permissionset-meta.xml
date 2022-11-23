@@ -205,7 +205,7 @@
         <editable>false</editable>
         <field>Account.ZurichMarketBonus__c</field>
         <readable>true</readable>
-    </fieldPermissions> 
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AMTecnicalIssues__c</field>
@@ -280,7 +280,7 @@
         <editable>false</editable>
         <field>Account.LifeConsultantEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>        
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.BusinessName__c</field>
@@ -539,7 +539,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.MainEmail__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -692,6 +692,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Segment_sdm__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.Seized__c</field>
         <readable>false</readable>
@@ -840,17 +845,17 @@
         <editable>true</editable>
         <field>Account.GroupLifeConsultantEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseConsultantName__c</field>
         <readable>true</readable>
-    </fieldPermissions>   
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseConsultantEmail__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>AccountTeamMember.Email__c</field>
@@ -860,7 +865,7 @@
         <editable>false</editable>
         <field>AccountTeamMember.Phone__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>AsignacionPlan__c.Agrupacion_mediador__c</field>
@@ -1089,8 +1094,8 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Ramo__c</field>
-        <readable>true</readable>  
-    </fieldPermissions>  
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
             <editable>true</editable>
             <field>Task.Additional_Information__c</field>
