@@ -239,13 +239,14 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         return childPlans;
     }
 
-    /**Recuperar todos los campos de plan comercial anual (RN) según indicadores y año de objetivo además de related email coincida con los de la metadata
+    /**Recuperar todos los campos de plan comercial anual (RN y Mediador) según indicadores y año de objetivo además de related email coincida con los de la metadata
      * @author nts (dmunoz)
      * @date 25/07/2022
      * 
      * @param {Set<String} indicadores
      * @param {Set<String} segmentos
      * @param {Set<String} productos
+     * @param {Set<String} zonas
      * @param year año del plan
      * @return {List<PlanComercial__c>} lista de planes anuales
      */
@@ -256,11 +257,10 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
             result = [
                 SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
                 Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
-                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Zone__c
+                Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Zone__c, ParentPlan__r.OwnerId
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanAnualId
-                AND Intermediary__c = NULL
-                AND ParentPlan__c != NULL
+                AND AssignedTo__r.UserRole.DeveloperName = 'SDM_RN'
                 AND Indicator__c IN :indicatorSet
                 AND Product__c IN :productSet
                 AND Segment__c IN :segmentSet
@@ -314,11 +314,11 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
      * @param {List<String} planComercialList
      * @return {Map<Id, PlanComercial__c>} mapa con el par id, email
      */
-     public Map<Id, PlanComercial__c> findAssignedToEmailFromPC(List<PlanComercial__c> planComercialList) {
+     public Map<Id, PlanComercial__c> findAssignedToDataFromPC(List<PlanComercial__c> planComercialList) {
         Map<Id, PlanComercial__c> result = new Map<Id, PlanComercial__c>();
 
         if (planComercialList != null && !planComercialList.isEmpty()) {
-            result = new Map<Id, PlanComercial__c>([SELECT Id, AssignedTo__r.Email FROM PlanComercial__c WHERE Id IN :planComercialList]);
+            result = new Map<Id, PlanComercial__c>([SELECT Id, AssignedTo__r.Email, AssignedTo__r.UserRole.DeveloperName FROM PlanComercial__c WHERE Id IN :planComercialList]);
         }
 
         return result;
@@ -357,6 +357,24 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
 
         if (maxDate != null) {
             result = new List<PlanComercial__c>([SELECT Id FROM PlanComercial__c where RecordTypeId =: rtPlanMensualId AND EndDate__c < :maxDate]);
+        }
+
+        return result;
+    }
+
+
+    /**Recuperar el owner id del parent de los planes dados
+     * @author nts (dmunoz)
+     * @date 23/08/2022
+     * 
+     * @param {List<String} planComercialList
+     * @return {Map<Id, PlanComercial__c>} mapa con el par id, email
+     */
+    public Map<Id, PlanComercial__c> getParentOwnerId(List<PlanComercial__c> planesComerciales) {
+        Map<Id, PlanComercial__c> result = new Map<Id, PlanComercial__c>();
+
+        if (planesComerciales != null && !planesComerciales.isEmpty()) {
+            result = new  Map<Id, PlanComercial__c>([SELECT Id, ParentPlan__r.OwnerId FROM PlanComercial__c where Id in :planesComerciales]);
         }
 
         return result;

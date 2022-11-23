@@ -8,7 +8,7 @@
  * @date 13/04/2020
  *
  **/
-public class WebServicesParser
+public with sharing class WebServicesParser
 {
     private static Map<String, List<WebServicesControl__mdt>> requiredMetadataMap = new Map<String, List<WebServicesControl__mdt> >();
     private static Map<String, WebServicesControl__mdt> metadataMap = new Map<String, WebServicesControl__mdt>();

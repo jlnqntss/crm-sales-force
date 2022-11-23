@@ -18,6 +18,6 @@
   manualDeUsuario: function () {
     var urlval =
       "https://zurich-es.lightning.force.com/lightning/r/ContentDocument/0695I000005JaluQAC/view";
-    window.open(urlval, "_blank");
+    window.open(urlval, "_blank","noopener");
   }
 });

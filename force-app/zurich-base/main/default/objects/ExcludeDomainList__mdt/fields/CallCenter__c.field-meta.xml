@@ -20,6 +20,11 @@
                 <default>false</default>
                 <label>CSM</label>
             </value>
+            <value>
+                <fullName>USP</fullName>
+                <default>false</default>
+                <label>USP</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

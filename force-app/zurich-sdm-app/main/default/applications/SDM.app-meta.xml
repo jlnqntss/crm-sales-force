@@ -261,6 +261,42 @@
         <type>Flexipage</type>
         <profile>SDM RN</profile>
     </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Mensual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Mensual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Mensual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Mensual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
     <tabs>standard-home</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Task</tabs>
@@ -270,6 +306,7 @@
     <tabs>standard-Event</tabs>
     <tabs>standard-Contact</tabs>
     <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
     <tabs>standard-Feed</tabs>
     <tabs>standard-ContentNote</tabs>
     <uiType>Lightning</uiType>
@@ -294,6 +331,9 @@
         </mappings>
         <mappings>
             <tab>standard-ContentNote</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Dashboard</tab>
         </mappings>
         <mappings>
             <fieldName>WhoId</fieldName>

@@ -34,6 +34,10 @@
                 <behavior>Edit</behavior>
                 <field>Association2__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>BrokeragesGrouping__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -55,11 +59,15 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>ManagementProgram__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>ConectivityWsProvider__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Conectivity__c</field>
+                <field>Multitarifier__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -70,6 +78,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>KlincAccess__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>NumberCompetingCompanies__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -98,7 +110,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Incomes2020__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>IncomeVar__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>IRPFIntermediaryType__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -112,7 +132,27 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>ManagedBonus__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PYMEManagedBonus__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LifeMangedBonus__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>IndividualManagedBonus__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>RevenuesPerEmployee__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ZurichMarketBonus__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>

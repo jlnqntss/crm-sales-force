@@ -24,11 +24,11 @@
     </values>
     <values>
         <field>Subtype__c</field>
-        <value xsi:type="xsd:string">Apoyo captación</value>
+        <value xsi:type="xsd:string">Cotización</value>
     </values>
     <values>
         <field>TypeN3__c</field>
-        <value xsi:type="xsd:string">Generación Oferta</value>
+        <value xsi:type="xsd:string">Cotización</value>
     </values>
     <values>
         <field>Type__c</field>

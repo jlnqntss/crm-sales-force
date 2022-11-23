@@ -23,11 +23,6 @@
                 <label>Anulación</label>
             </value>
             <value>
-                <fullName>Apoyo Captación</fullName>
-                <default>false</default>
-                <label>Apoyo Captación</label>
-            </value>
-            <value>
                 <fullName>App</fullName>
                 <default>false</default>
                 <label>App</label>
@@ -288,9 +283,14 @@
                 <label>Emisión</label>
             </value>
             <value>
-                <fullName>Envíos</fullName>
+                <fullName>Envíos (Cliente)</fullName>
                 <default>false</default>
-                <label>Envíos</label>
+                <label>Envíos (Cliente)</label>
+            </value>
+            <value>
+                <fullName>Envíos (Mediador)</fullName>
+                <default>false</default>
+                <label>Envíos (Mediador)</label>
             </value>
             <value>
                 <fullName>Escalable</fullName>
@@ -401,11 +401,6 @@
                 <fullName>Modificar modalidad del seguro</fullName>
                 <default>false</default>
                 <label>Modificar modalidad del seguro</label>
-            </value>
-            <value>
-                <fullName>No definido</fullName>
-                <default>false</default>
-                <label>No definido</label>
             </value>
             <value>
                 <fullName>Nuevo dispositivo</fullName>
@@ -568,6 +563,11 @@
                 <label>Saneamiento</label>
             </value>
             <value>
+                <fullName>Seguimiento</fullName>
+                <default>false</default>
+                <label>Seguimiento</label>
+            </value>
+            <value>
                 <fullName>Solicitud factura</fullName>
                 <default>false</default>
                 <label>Solicitud factura</label>
@@ -588,16 +588,20 @@
                 <label>SWAP - incidencias</label>
             </value>
             <value>
+                <fullName>Tareas administrativas</fullName>
+                <default>false</default>
+                <label>Tareas administrativas</label>
+            </value>
+            <value>
                 <fullName>Validacion</fullName>
                 <default>false</default>
                 <label>Validación</label>
             </value>
-            <value>
-                <fullName>Validación / emisión</fullName>
-                <default>false</default>
-                <label>Validación / emisión</label>
-            </value>
         </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Tareas</controllingFieldValue>
+            <valueName>Tareas administrativas</valueName>
+        </valueSettings>
         <valueSettings>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
             <valueName>Como renuevo mi seguro</valueName>
@@ -656,126 +660,45 @@
             <valueName>Datos personales</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Captación</controllingFieldValue>
-            <valueName>Ajuste oferta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Captación</controllingFieldValue>
-            <valueName>Cotización</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Captación</controllingFieldValue>
-            <valueName>Emisión</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Captación</controllingFieldValue>
-            <valueName>Gestión competencias (Captación)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Venta</controllingFieldValue>
-            <valueName>Apoyo Captación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Venta</controllingFieldValue>
-            <valueName>Gestión Competencias</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Anulación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Modificación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Reemplazo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Rehabilitación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Revocación Saneamiento</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Saneamiento</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Validación / emisión</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Embargo Cliente</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Envíos</valueName>
+            <valueName>Cambio de intermediario</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Embargo Mediador</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Envíos (Mediador)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Felicitación</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Incidencias (Cliente)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Incidencias Mi Zurich</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Incidencias (Mediador)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Información</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Queja</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Reclamación</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Retención</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Sugerencia</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Devolución de recibo liquidado mediador</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Gestión de recibos</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Recobro indirecto</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Recobro proactivo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Económica</controllingFieldValue>
-            <valueName>Recobro reactivo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Campañas</controllingFieldValue>
-            <valueName>Campaña</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
@@ -804,6 +727,95 @@
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
             <valueName>Partnership</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <valueName>Como renuevo mi seguro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <valueName>El precio de mi renovacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <valueName>Cuando me avisan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>App</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Pago</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Contratacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Validacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <valueName>Ajuste oferta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <valueName>Cotización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <valueName>Emisión</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Gestión Competencias</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Anulación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Modificación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Reemplazo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Rehabilitación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Revocación Saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Embargo Cliente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Envíos (Cliente)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Incidencias (Cliente)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Incidencias Mi Zurich</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Retención</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
@@ -998,32 +1010,32 @@
             <valueName>Solicitud factura</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Cambio de intermediario</valueName>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Devolución de recibo liquidado mediador</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Embargo Mediador</valueName>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Gestión de recibos</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Incidencias (Mediador)</valueName>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Recobro indirecto</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>App</valueName>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Recobro proactivo</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Pago</valueName>
+            <controllingFieldValue>Gestión Económica</controllingFieldValue>
+            <valueName>Recobro reactivo</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Contratacion</valueName>
+            <controllingFieldValue>Campañas</controllingFieldValue>
+            <valueName>Campaña</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Validacion</valueName>
+            <controllingFieldValue>Campañas</controllingFieldValue>
+            <valueName>Seguimiento</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

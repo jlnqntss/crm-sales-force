@@ -168,85 +168,314 @@
                 <default>false</default>
                 <label>Perdida - Precio</label>
             </value>
+            <value>
+                <fullName>Realizado USP</fullName>
+                <default>false</default>
+                <label>Realizado USP</label>
+            </value>
+            <value>
+                <fullName>No Realizado USP</fullName>
+                <default>false</default>
+                <label>No Realizado USP</label>
+            </value>
+            <value>
+                <fullName>Realizado - Gestión Competencias</fullName>
+                <default>false</default>
+                <label>Realizado - Gestión Competencias</label>
+            </value>
+            <value>
+                <fullName>Redireccionado BOA</fullName>
+                <default>false</default>
+                <label>Redireccionado BOA</label>
+            </value>
+            <value>
+                <fullName>Redireccionado CI</fullName>
+                <default>false</default>
+                <label>Redireccionado CI</label>
+            </value>
+            <value>
+                <fullName>Anulación - Sin efecto</fullName>
+                <default>false</default>
+                <label>Anulación - Sin efecto</label>
+            </value>
+            <value>
+                <fullName>Anulación - Desaparición riesgo</fullName>
+                <default>false</default>
+                <label>Anulación - Desaparición riesgo</label>
+            </value>
+            <value>
+                <fullName>Anulación - Impago</fullName>
+                <default>false</default>
+                <label>Anulación - Impago</label>
+            </value>
+            <value>
+                <fullName>Anulación - Solicitud cliente</fullName>
+                <default>false</default>
+                <label>Anulación - Solicitud cliente</label>
+            </value>
+            <value>
+                <fullName>Anulación - Saneamiento mal rendimiento</fullName>
+                <default>false</default>
+                <label>Anulación - Saneamiento mal rendimiento</label>
+            </value>
+            <value>
+                <fullName>Anulación - Saneamiento otros motivos</fullName>
+                <default>false</default>
+                <label>Anulación - Saneamiento otros motivos</label>
+            </value>
+            <value>
+                <fullName>Retención por Alto valor</fullName>
+                <default>false</default>
+                <label>Retención por Alto valor</label>
+            </value>
+            <value>
+                <fullName>No Realizado - Otros motivos</fullName>
+                <default>false</default>
+                <label>No Realizado - Otros motivos</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
+            <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
             <controllingFieldValue>Embargo Cliente</controllingFieldValue>
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
-            <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
-            <controllingFieldValue>Campaña</controllingFieldValue>
-            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
-            <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
-            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
-            <controllingFieldValue>Validación / emisión</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
-            <controllingFieldValue>Envíos</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
-            <controllingFieldValue>Queja</controllingFieldValue>
-            <valueName>Realizado</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Reclamación</controllingFieldValue>
-            <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
-            <controllingFieldValue>Embargo Cliente</controllingFieldValue>
-            <controllingFieldValue>Sugerencia</controllingFieldValue>
-            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
+            <valueName>Realizado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
+            <controllingFieldValue>Embargo Cliente</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
-            <controllingFieldValue>Validación / emisión</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
-            <controllingFieldValue>Envíos</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
-            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
-            <controllingFieldValue>Queja</controllingFieldValue>
-            <valueName>No Realizado</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Reclamación</controllingFieldValue>
-            <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
-            <controllingFieldValue>Embargo Cliente</controllingFieldValue>
-            <controllingFieldValue>Sugerencia</controllingFieldValue>
-            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
+            <valueName>No Realizado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
+            <controllingFieldValue>Embargo Cliente</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
-            <controllingFieldValue>Validación / emisión</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
-            <controllingFieldValue>Envíos</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
-            <controllingFieldValue>Queja</controllingFieldValue>
             <valueName>No Realizado -Pol. Seguridad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Rehabilitación</controllingFieldValue>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
+            <valueName>Realizado USP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Rehabilitación</controllingFieldValue>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
+            <valueName>No Realizado USP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Rehabilitación</controllingFieldValue>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
+            <valueName>Redireccionado BOA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <controllingFieldValue>Reclamación</controllingFieldValue>
+            <controllingFieldValue>Sugerencia</controllingFieldValue>
+            <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Reemplazo</controllingFieldValue>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
+            <controllingFieldValue>Rehabilitación</controllingFieldValue>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Embargo Mediador</controllingFieldValue>
+            <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Tareas administrativas</controllingFieldValue>
+            <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
+            <valueName>Redireccionado CI</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
+            <valueName>Ganada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
+            <valueName>Perdida - Garantías</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
+            <valueName>Perdida - Tiempo respuesta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
+            <valueName>Declinada - Actividad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
+            <valueName>Declinada - Precio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
+            <valueName>Declinada - Medidas protección</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
+            <valueName>Caducada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
+            <valueName>Perdida - Precio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <valueName>Realizado - Gestión Competencias</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
@@ -261,68 +490,44 @@
             <valueName>Realizado - Nueva Póliza</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Ganada</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Perdida - Garantías</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Perdida - Tiempo respuesta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Declinada - Actividad</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Declinada - Precio</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Declinada - Medidas protección</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Caducada</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Perdida - Precio</valueName>
-        </valueSettings>
-        <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <valueName>Realizado - Con extorno</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <valueName>Realizado - Sin extorno</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Anulación - Sin efecto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Anulación - Desaparición riesgo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Anulación - Impago</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Anulación - Solicitud cliente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Anulación - Saneamiento mal rendimiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Anulación - Saneamiento otros motivos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Retención por Alto valor</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>No Realizado - Otros motivos</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
@@ -366,32 +571,32 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <valueName>Realizado - Reenvío Recibo</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <valueName>Realizado - Pago Tarjeta</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <valueName>Realizado - Pago Transferencia</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <valueName>Derivado - Norma 57/AJ</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <valueName>Derivado - Otras Áreas</valueName>
         </valueSettings>
     </valueSet>

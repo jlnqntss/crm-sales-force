@@ -4,9 +4,9 @@
     <externalId>false</externalId>
     <label>Income variation 5 years</label>
     <precision>16</precision>
-    <scale>12</scale>
     <required>false</required>
+    <scale>12</scale>
     <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
     <type>Percent</type>
-    <unique>false</unique>
 </CustomField>

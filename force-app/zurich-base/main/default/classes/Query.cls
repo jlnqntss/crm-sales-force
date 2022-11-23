@@ -2121,13 +2121,9 @@ public class Query
         {
             parentName = parentName.removeEnd('__pr') + '__pc';
         }
-        else if (parentName.endsWithIgnoreCase('Id') )
-        {
-            parentName = parentName;
-        }
         else
         {
-            parentName = parentName + 'Id';
+            parentName = parentName.endsWithIgnoreCase('Id')? parentName:parentName + 'Id';
         }
 
         return parentName;
