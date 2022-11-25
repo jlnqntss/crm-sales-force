@@ -3,7 +3,7 @@
  * Para pruebas unitarias, ejecutar el método a través de un Execute Anoyimous serializando un Mapa de mapas a JSON.
  * '{ "interaction" : { "id": "test1"} } ' '{"eventName": "interactionChanged", "interaction" : { "id": "ucid1"},  "callLog": {"CallObject": "ucid1"}}'
  */
-global with sharing class ReassignInteractionCTIExtension implements purecloud.CTIExtension.SaveLog
+global without sharing class ReassignInteractionCTIExtension implements purecloud.CTIExtension.SaveLog
 {
     private final static String TASK_SUBTYPE_CALL       = 'Call';
     private final static String TASK_SUBTYPE_EMAIL      = 'Email';
