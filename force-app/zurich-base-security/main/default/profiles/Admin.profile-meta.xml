@@ -4510,7 +4510,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.PrimaryActivity__c</field>
+        <field>Account.SharepointPartners__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
