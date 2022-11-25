@@ -5,7 +5,7 @@
  * @date 02/04/2020
  * @testClass Test_SystemUtil
  */
-public without sharing class SystemUtil
+public with sharing class SystemUtil
 {
     private static final String ADMINSETUP_LABEL = 'AdminSetup';
     private static final String EMAIL_TO_RETURN = 'mng.dev';

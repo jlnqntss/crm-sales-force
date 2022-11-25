@@ -3,7 +3,7 @@
  * @author rlopez
  * @date 23/11/2020
  */
-public without sharing class ContactPointPhoneUtil
+public with sharing class ContactPointPhoneUtil
 {
     public static Map<Id, List<ContactPointPhone> > relatedContactPointPhonesMap;
     public static Map<Id, Scope__c> relatedScopesMap;
