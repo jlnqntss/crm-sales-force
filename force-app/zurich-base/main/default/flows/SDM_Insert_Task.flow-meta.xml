@@ -27,7 +27,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Añadir WhatId como flow input y como parámetro para las nuevas tareas</description>
+    <description>Añadir IsRelatedToComercialPlan como flow input y como parámetro para las nuevas tareas</description>
     <environments>Default</environments>
     <interviewLabel>SDM - Insert Task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SDM - Insert Task</label>
@@ -69,6 +69,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>IsRelatedToComercialPlan__c</field>
+            <value>
+                <elementReference>IsRelatedToComercialPlan</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>OwnerId</field>
             <value>
                 <elementReference>AssignedTo</elementReference>
@@ -105,6 +111,12 @@
             <field>Description</field>
             <value>
                 <elementReference>Message</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IsRelatedToComercialPlan__c</field>
+            <value>
+                <elementReference>IsRelatedToComercialPlan</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -180,6 +192,17 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Informar el campo Is Related To Comercial Plan del objeto Tarea</description>
+        <name>IsRelatedToComercialPlan</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <description>Mensaje de la tarea</description>
