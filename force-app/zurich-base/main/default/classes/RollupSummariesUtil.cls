@@ -141,7 +141,6 @@ public class RollupSummariesUtil
             );
 
         List<AggregateResult> results = Database.query(soql);
-        //Utils.Debug(LoggingLevel.FINE, 'results: ' + results);
 
         for (AggregateResult result : results)
         {
@@ -197,7 +196,6 @@ public class RollupSummariesUtil
                     summaryField.masterField.getName(),
                     summaryField.numberTypeMaster ? 0 : null
                     );
-                //Utils.Debug(LoggingLevel.FINE, 'masterRecordsMap: ', masterRecordsMap);
             }
         }
         return masterRecordsMap.values();

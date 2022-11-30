@@ -186,9 +186,7 @@ public class INFOHandler implements ISystem
             }
             catch (Exception e)
             {
-                
                 setExternalRequest(externalRequest, true, 'KO', e.getMessage() + '\n' + e.getStackTraceString(), false);
-                //ErrorLogUtil.commitError(e, 'INFOHandler', 'process');
             }
         }
     }

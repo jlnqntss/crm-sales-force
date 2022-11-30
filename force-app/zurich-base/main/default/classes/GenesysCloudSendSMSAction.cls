@@ -41,7 +41,6 @@ public class GenesysCloudSendSMSAction {
       }
     }
 
-    //return results;
   }
 
   /**
