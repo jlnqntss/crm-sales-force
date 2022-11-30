@@ -364,7 +364,7 @@
         <inputAssignments>
             <name>CallCenter</name>
             <value>
-                <elementReference>$Record.CallCenter__c</elementReference>
+                <stringValue>USP</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>

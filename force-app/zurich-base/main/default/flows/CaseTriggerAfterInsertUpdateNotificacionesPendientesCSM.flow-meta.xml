@@ -382,7 +382,7 @@
         <inputAssignments>
             <name>CallCenter</name>
             <value>
-                <elementReference>$Record.CallCenter__c</elementReference>
+                <stringValue>CSM</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>

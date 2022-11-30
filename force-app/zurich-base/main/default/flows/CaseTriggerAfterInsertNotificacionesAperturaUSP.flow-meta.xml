@@ -4,7 +4,7 @@
         <name>SendEmailAction</name>
         <label>Mandar Email</label>
         <locationX>50</locationX>
-        <locationY>815</locationY>
+        <locationY>695</locationY>
         <actionName>Case.Apertura_de_caso</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
@@ -20,32 +20,10 @@
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <decisions>
-        <name>CreatedByMailDecision</name>
-        <label>¿Creación por Email?</label>
-        <locationX>842</locationX>
-        <locationY>335</locationY>
-        <defaultConnectorLabel>Not Email</defaultConnectorLabel>
-        <rules>
-            <name>EmailOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Origin</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Email</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>FulfilPrerequisitesDecision</targetReference>
-            </connector>
-            <label>Email</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>ExcludedDomainDecision</name>
         <label>¿Dominio excluido?</label>
         <locationX>314</locationX>
-        <locationY>695</locationY>
+        <locationY>575</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>NonExcludedDomainOutcome</name>
@@ -67,7 +45,7 @@
         <name>FulfilPrerequisitesDecision</name>
         <label>¿Cumple los prerrequisitos?</label>
         <locationX>578</locationX>
-        <locationY>455</locationY>
+        <locationY>335</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>FulfilPrerequisitesOutcome</name>
@@ -118,7 +96,7 @@
         <name>CreateErrorLogCaseEmailSend</name>
         <label>Generar Error Log Envio Email</label>
         <locationX>314</locationX>
-        <locationY>935</locationY>
+        <locationY>815</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -147,24 +125,17 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <start>
-        <locationX>716</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>CreatedByMailDecision</targetReference>
+            <targetReference>FulfilPrerequisitesDecision</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3) AND 4 AND 5</filterLogic>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>USP</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Origin</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Phone</stringValue>
             </value>
         </filters>
         <filters>
@@ -197,7 +168,7 @@
         <name>ExcluirDominioSubflowAction</name>
         <label>Excluir Dominio Subflow</label>
         <locationX>314</locationX>
-        <locationY>575</locationY>
+        <locationY>455</locationY>
         <connector>
             <targetReference>ExcludedDomainDecision</targetReference>
         </connector>
@@ -205,7 +176,7 @@
         <inputAssignments>
             <name>CallCenter</name>
             <value>
-                <elementReference>$Record.CallCenter__c</elementReference>
+                <stringValue>USP</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>

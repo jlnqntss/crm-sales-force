@@ -191,7 +191,7 @@
         <inputAssignments>
             <name>CallCenter</name>
             <value>
-                <elementReference>$Record.CallCenter__c</elementReference>
+                <stringValue>CCS</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
