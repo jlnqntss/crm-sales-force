@@ -4,7 +4,7 @@
         <name>Mandar_email</name>
         <label>Mandar email</label>
         <locationX>50</locationX>
-        <locationY>1247</locationY>
+        <locationY>695</locationY>
         <actionName>Case.Cierre_de_caso</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
@@ -19,33 +19,17 @@
         </inputParameters>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
-    <assignments>
-        <name>DomainMatchAssignment</name>
-        <label>Coincide el dominio</label>
-        <locationX>402</locationX>
-        <locationY>815</locationY>
-        <assignmentItems>
-            <assignToReference>CoincideVAR</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>LoopExcludeListAction</targetReference>
-        </connector>
-    </assignments>
     <decisions>
         <name>ExcludedDomainDecision</name>
         <label>¿Dominio excluido?</label>
         <locationX>314</locationX>
-        <locationY>1127</locationY>
+        <locationY>575</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>NonExcludedDomainOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>CoincideVAR</leftValueReference>
+                <leftValueReference>ExcluirDominioSubflowAction.CoincideVAR</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -88,53 +72,15 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetExcludeDomainListAction</targetReference>
+                <targetReference>ExcluirDominioSubflowAction</targetReference>
             </connector>
             <label>Cumple prerrequisitos</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>MatchDomainDecision</name>
-        <label>¿Coincide el dominio?</label>
-        <locationX>534</locationX>
-        <locationY>695</locationY>
-        <defaultConnector>
-            <targetReference>LoopExcludeListAction</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>DomainMatchOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.SuppliedEmail</leftValueReference>
-                <operator>EndsWith</operator>
-                <rightValue>
-                    <elementReference>LoopExcludeListAction.EmailDomain__c</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>DomainMatchAssignment</targetReference>
-            </connector>
-            <label>Coincide Dominio</label>
-        </rules>
-    </decisions>
     <description>Orquesta el envío de notificaciones de apertura de caso para los casos con centro CCS</description>
+    <environments>Default</environments>
     <interviewLabel>Case Trigger - After Update - Notificaciones Cierre CCS {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Notificaciones Cierre CCS</label>
-    <loops>
-        <name>LoopExcludeListAction</name>
-        <label>Recorrer lista exclusiones</label>
-        <locationX>314</locationX>
-        <locationY>575</locationY>
-        <collectionReference>GetExcludeDomainListAction</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>MatchDomainDecision</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>ExcludedDomainDecision</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -158,7 +104,7 @@
         <name>CreateErrorLogCaseEmailSend</name>
         <label>Generar Error Log Envio Email</label>
         <locationX>314</locationX>
-        <locationY>1367</locationY>
+        <locationY>815</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -186,29 +132,6 @@
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordLookups>
-        <name>GetExcludeDomainListAction</name>
-        <label>Obtener listado de exclusiones</label>
-        <locationX>314</locationX>
-        <locationY>455</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>LoopExcludeListAction</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>CallCenter__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>CCS</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>ExcludeDomainList__mdt</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>EmailDomain__c</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <start>
         <locationX>452</locationX>
         <locationY>0</locationY>
@@ -276,15 +199,28 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
-    <variables>
-        <name>CoincideVAR</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
-    </variables>
+    <status>Active</status>
+    <subflows>
+        <name>ExcluirDominioSubflowAction</name>
+        <label>Excluir Dominio Subflow</label>
+        <locationX>314</locationX>
+        <locationY>455</locationY>
+        <connector>
+            <targetReference>ExcludedDomainDecision</targetReference>
+        </connector>
+        <flowName>ExcluirDominioSubflow</flowName>
+        <inputAssignments>
+            <name>CallCenter</name>
+            <value>
+                <elementReference>$Record.CallCenter__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordFlow</name>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
 </Flow>
