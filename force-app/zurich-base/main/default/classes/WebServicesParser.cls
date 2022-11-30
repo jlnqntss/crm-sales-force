@@ -538,7 +538,6 @@ public with sharing class WebServicesParser
         Double numericValue;
         Date dateValue;
         DateTime dateTimeValue;
-        String emailValue;
         Id idValue;
         Boolean booleanValue;
         Blob fileBody;
@@ -968,8 +967,6 @@ public with sharing class WebServicesParser
     {
         List<WebServicesControl__mdt> metadataListAux;
         List<String> sourceListAux = new List<String>();
-        Map<String, String> mapMethodsAux;
-        Map<String, String> mapEntitiesAux;
 
         if (controlAux.Source__c.contains(';') )
         {
@@ -1066,8 +1063,6 @@ public with sharing class WebServicesParser
         List<String> errorMessages
         )
     {
-        Object parentRecord;
-        Integer posAux;
         String relatedRecordFieldName;
         String fieldNameAux;
 
@@ -1690,7 +1685,6 @@ public with sharing class WebServicesParser
                         fieldDescribe.getType() == Schema.DisplayType.MultiPicklist
                         )
                     {
-                        Boolean valid = true;
                         Map<String, String> valuesMap = new Map<String, String>();
 
                         if (fieldDescribe.getType() == Schema.DisplayType.MultiPicklist)

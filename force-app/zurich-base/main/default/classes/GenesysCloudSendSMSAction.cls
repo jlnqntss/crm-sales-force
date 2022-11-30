@@ -11,7 +11,6 @@ public class GenesysCloudSendSMSAction {
     category='Other'
   )
   public static void sendSMS(List<SendSMSRequest> sendSMSActionRequests) {
-    List<SendSMSResponse> results = new List<SendSMSResponse>();
     if (sendSMSActionRequests != null && !sendSMSActionRequests.isEmpty()) {
       SendSMSRequest request = sendSMSActionRequests[0];
       if (
@@ -41,7 +40,6 @@ public class GenesysCloudSendSMSAction {
       }
     }
 
-    //return results;
   }
 
   /**

@@ -565,7 +565,6 @@ global without sharing class OrderUtil
         
         Set<Id> idSet = new Set<Id>();
         Set<Id> idSetQuotes = new Set<Id>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
 
         if (newList != null)
         {

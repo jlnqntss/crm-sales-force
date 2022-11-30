@@ -606,8 +606,6 @@ global without sharing class ContactUtil
      */
     public static void updateQuoteStep4and5( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        
-        List<Contact> quotes = new List<Contact>();
         Map<ID, Order> quotesToUpdate = new Map<ID, Order>();
         Map<ID, Contact> mapContactos = new Map<ID, Contact>();
 

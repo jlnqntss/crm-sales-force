@@ -649,9 +649,6 @@ global without sharing class ExternalRequestUtil {
    * parseCustomer
    */
   private static void parseCustomer(String customerJson) {
-    
-
-    String entityType = actualRequest.entity__c;
 
     Map<String, String> errorMessages = new Map<String, String>();
     Map<String, sObject> recordsMap = new Map<String, sObject>();
