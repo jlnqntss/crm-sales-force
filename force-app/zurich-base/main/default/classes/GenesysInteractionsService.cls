@@ -50,14 +50,19 @@ public without sharing class GenesysInteractionsService
         {
             findPeopleByScope(request, 'customers');
         }
-        // 4 - Resto de scopes
+        // 4 - Comprobar si se trata de un partner
+        else if( String.isNotblank(request.filterBy) && request.filterBy.equalsIgnoreCase('partners')  )
+        {
+            findPeopleByScope(request, 'partners');
+        }
+        // 5 - Resto de scopes
         else if( String.isEmpty(request.filterBy) )
         {
-            // 4.2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
+            // 5.2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
             findBestAgentFor(request);
         }
 
-        // 5 - Se una tarea como registro de la interacción en cola
+        // 6 - Se una tarea como registro de la interacción en cola
         createOnQueueInteraction(request);
 
         return request;
