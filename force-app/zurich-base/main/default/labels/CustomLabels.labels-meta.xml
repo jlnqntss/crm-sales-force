@@ -1734,4 +1734,76 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_PlanAnual_ZonePlaceholder</shortDescription>
         <value>Select the zone</value>
     </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_Loading</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_Title</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_Title</shortDescription>
+        <value>Alerts by Intermediary</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_Active</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_Active</shortDescription>
+        <value>Active</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_Inactive</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_Inactive</shortDescription>
+        <value>Inactives</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_MultipicklistTitle</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_MultipicklistTitle</shortDescription>
+        <value>Intermediaries with Alerts</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_Intermediary</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_Intermediary</shortDescription>
+        <value>Intermediary</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_IntermediaryPlaceholder</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_IntermediaryPlaceholder</shortDescription>
+        <value>Search Intermediaries</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_ButtonCancel</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_ButtonCancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_ButtonSave</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_ButtonSave</shortDescription>
+        <value>Save</value>
+    </labels>
 </CustomLabels>
