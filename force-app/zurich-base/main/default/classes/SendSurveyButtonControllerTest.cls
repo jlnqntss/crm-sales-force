@@ -6,6 +6,7 @@ public class SendSurveyButtonControllerTest
     {
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
         User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
+        String pollPhoneNumberResult;
         SendSurveyButtonController.testListPollPhoneNumber = 
             new AdminSetupParameter__mdt(
                 Label='TestMetadataPollNumber',
@@ -17,7 +18,7 @@ public class SendSurveyButtonControllerTest
         System.runAs(u)
         {
             Test.startTest();
-            String pollPhoneNumberResult = SendSurveyButtonController.getTransferPollPhoneNumber();
+            pollPhoneNumberResult = SendSurveyButtonController.getTransferPollPhoneNumber();
             Test.stopTest();            
         }
 
