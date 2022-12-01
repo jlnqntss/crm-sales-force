@@ -8,6 +8,10 @@
         <apexClass>RiskAppetiteMasterSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>AdminSetupParameter__mdt</name>
+    </customMetadataTypeAccesses>
     <description>Leer todos los datos del sistema relativos a OCS</description>
     <fieldPermissions>
         <editable>false</editable>
@@ -3292,6 +3296,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.MultiIdentifiedByNIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.NLUTypificationFailed__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
