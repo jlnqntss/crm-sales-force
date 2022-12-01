@@ -16,21 +16,20 @@ public class CallRecordingControllerTest
     @isTest
     static void test_getRecordingPhoneNumber_ok()
     {
-        CallRecordingController.testListRecordingPhoneNumber = new List<AdminSetupParameter__mdt> {
+        CallRecordingController.testListRecordingPhoneNumber = 
             new AdminSetupParameter__mdt(
                 Label='TestMetadataRecordingNumber',
                 DeveloperName='TestMetadataRecordingNumber',
                 KeyName__c='TestMetadataRecordingNumber',
                 Value__c='+34999999999',
                 Description__c='TestDescription'
-                )
-        };
+            );
 
         Test.startTest();
         String recordingPhoneNumberResult = CallRecordingController.getRecordingPhoneNumber();
         Test.stopTest();
 
-        System.assertEquals(CallRecordingController.testListRecordingPhoneNumber.get(0).Value__c, recordingPhoneNumberResult, 'The phone number should be the same');
+        System.assertEquals(CallRecordingController.testListRecordingPhoneNumber.Value__c, recordingPhoneNumberResult, 'The phone number should be the same');
     }
 
     /**
@@ -42,7 +41,7 @@ public class CallRecordingControllerTest
     @isTest
     static void test_getRecordingPhoneNumber_ko()
     {
-        CallRecordingController.testListRecordingPhoneNumber = new List<AdminSetupParameter__mdt>();
+        CallRecordingController.testListRecordingPhoneNumber = new AdminSetupParameter__mdt();
 
         Test.startTest();
         String recordingPhoneNumberResult = CallRecordingController.getRecordingPhoneNumber();
