@@ -17,7 +17,7 @@ public with sharing class CallRecordingController
         if( Test.isRunningTest() ) {
             settings = testListRecordingPhoneNumber;
         }
-        if( settings != null ) {
+        if( settings.Value__c != null ) {
             genesysRecordingNumber = settings.Value__c;
         } else {
             ErrorLogUtil.commitError('warning', 'No se ha podido recuperar el número de teléfono de grabación de llamadas', 'CallRecordingController');

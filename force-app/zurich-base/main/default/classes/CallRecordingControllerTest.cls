@@ -16,6 +16,9 @@ public class CallRecordingControllerTest
     @isTest
     static void test_getRecordingPhoneNumber_ok()
     {
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
+        String recordingPhoneNumberResult;
         CallRecordingController.testListRecordingPhoneNumber = 
             new AdminSetupParameter__mdt(
                 Label='TestMetadataRecordingNumber',
@@ -24,10 +27,12 @@ public class CallRecordingControllerTest
                 Value__c='+34999999999',
                 Description__c='TestDescription'
             );
-
-        Test.startTest();
-        String recordingPhoneNumberResult = CallRecordingController.getRecordingPhoneNumber();
-        Test.stopTest();
+        System.runAs(u)
+        {
+            Test.startTest();
+            recordingPhoneNumberResult = CallRecordingController.getRecordingPhoneNumber();
+            Test.stopTest();            
+        }
 
         System.assertEquals(CallRecordingController.testListRecordingPhoneNumber.Value__c, recordingPhoneNumberResult, 'The phone number should be the same');
     }
@@ -41,12 +46,17 @@ public class CallRecordingControllerTest
     @isTest
     static void test_getRecordingPhoneNumber_ko()
     {
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
+        String recordingPhoneNumberResult;
         CallRecordingController.testListRecordingPhoneNumber = new AdminSetupParameter__mdt();
 
-        Test.startTest();
-        String recordingPhoneNumberResult = CallRecordingController.getRecordingPhoneNumber();
-        Test.stopTest();
-
+        System.runAs(u)
+        {
+            Test.startTest();
+            recordingPhoneNumberResult = CallRecordingController.getRecordingPhoneNumber();
+            Test.stopTest();
+        }
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(1, errorLogs.size(), 'There should be 1 error log');
     }
