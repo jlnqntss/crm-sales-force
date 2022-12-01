@@ -8,6 +8,10 @@
         <apexClass>RiskAppetiteMasterSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>AdminSetupParameter__mdt</name>
+    </customMetadataTypeAccesses>
     <description>Leer todos los datos del sistema relativos a OCS</description>
     <fieldPermissions>
         <editable>false</editable>
