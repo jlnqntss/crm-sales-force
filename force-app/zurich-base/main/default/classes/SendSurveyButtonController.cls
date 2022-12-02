@@ -1,4 +1,4 @@
-public without sharing class SendSurveyButtonController
+public with sharing class SendSurveyButtonController
 {
     @testvisible
     public static AdminSetupParameter__mdt testListPollPhoneNumber;
