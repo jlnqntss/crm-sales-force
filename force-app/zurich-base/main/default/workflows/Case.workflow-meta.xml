@@ -108,6 +108,18 @@
         <senderType>OrgWideEmailAddress</senderType>
         <template>OneCustomerService/Caso_cerrado_sin_finalizar_1615309685093</template>
     </alerts>
+    <alerts>
+        <fullName>Notificacion_Apertura_USP</fullName>
+        <description>Notificación Apertura USP</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Notificaciones_Apertura_USP_1669973140243</template>
+    </alerts>
     <fieldUpdates>
         <fullName>Change_status_Assigned</fullName>
         <field>Status</field>
