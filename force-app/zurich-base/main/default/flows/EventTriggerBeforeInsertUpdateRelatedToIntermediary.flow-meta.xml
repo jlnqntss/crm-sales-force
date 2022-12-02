@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <decisions>
+        <description>Se comprueba tanto si la cuenta relacionada con el contacto como la cuenta relacionada, ambos casos relacionados con el evento, son de tipo Mediador o Agrupación Mediador.</description>
+        <name>AreAccountsIntermediaryOrIntermediaryGroupType</name>
+        <label>¿Las cuentas son de tipo Mediador o Agrupación Mediador?</label>
+        <locationX>182</locationX>
+        <locationY>551</locationY>
+        <defaultConnectorLabel>Resultado predeterminado</defaultConnectorLabel>
+        <rules>
+            <name>SomeAreIntermediaryOrIntermediaryGroupTypeOutcome</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>GetRelatedAccountAction.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedContactAction.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedAccountAction.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>AgrupacionMediador</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedContactAction.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>AgrupacionMediador</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateEventAction</targetReference>
+            </connector>
+            <label>Alguna es de tipo Mediador o Agrupación Mediador</label>
+        </rules>
+    </decisions>
+    <description>Flujo que se encarga de informar el campo &quot;¿Relacionado con un intermediario?&quot; del objeto Evento con el valor &quot;Sí&quot;, en el caso de que la cuenta relacionada con el contacto o la cuenta, ambos casos relacionados con el evento, sean de tipo &quot;Intermediario&quot;.</description>
+    <environments>Default</environments>
+    <interviewLabel>Event Trigger - Before insert/update RelatedToIntermediary {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Event Trigger - Before insert/update RelatedToIntermediary</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Se recupera la cuenta relacionada con el evento.</description>
+        <name>GetRelatedAccountAction</name>
+        <label>Obtener cuenta relacionada</label>
+        <locationX>182</locationX>
+        <locationY>311</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetRelatedContactAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Se recupera el contacto relacionado con el evento.</description>
+        <name>GetRelatedContactAction</name>
+        <label>Obtener contacto relacionado</label>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AreAccountsIntermediaryOrIntermediaryGroupType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhoId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Se actualiza el campo &quot;¿Relacionado con un Mediador?&quot; del evento que ha desencadenado el flujo.</description>
+        <name>UpdateEventAction</name>
+        <label>Actualizar evento</label>
+        <locationX>50</locationX>
+        <locationY>671</locationY>
+        <inputAssignments>
+            <field>RelatedToIntermediary__c</field>
+            <value>
+                <stringValue>Yes</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>GetRelatedAccountAction</targetReference>
+        </connector>
+        <filterFormula>OR({!$UserRole.DeveloperName} = &apos;SDMHomeOffice&apos;, {!$UserRole.DeveloperName} = &apos;SDM_Consultor&apos;, {!$UserRole.DeveloperName} = &apos;SDM_CV&apos;, {!$UserRole.DeveloperName} = &apos;SDM_DT&apos;, {!$UserRole.DeveloperName} = &apos;SDM_DV&apos;, {!$UserRole.DeveloperName} = &apos;SDM_RN&apos;)</filterFormula>
+        <object>Event</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
