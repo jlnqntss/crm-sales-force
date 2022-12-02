@@ -37,7 +37,7 @@
         <field>Account.Conectivity__c</field>
     </columns>
     <columns>
-        <field>Account.ConectivityWsProvider__c</field>
+        <field>Account.ManagementProgram__c</field>
     </columns>
     <columns>
         <field>Account.EIACStatus__c</field>
