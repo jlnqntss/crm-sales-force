@@ -63,6 +63,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Conectivity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Multitarifier__c</field>
             </layoutItems>
         </layoutColumns>
@@ -178,6 +182,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ActiveParticipationCampaigns__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ActiveParticipationInFocusGroups__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
