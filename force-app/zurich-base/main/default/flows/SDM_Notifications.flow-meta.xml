@@ -580,7 +580,7 @@
             <label>Week left</label>
         </rules>
     </decisions>
-    <description>SDM: añadir nuevo mensaje de notificación week left hacia los RN para los planes mensuales de los mediadores que no hayan cumplido el objetivo</description>
+    <description>SDM: añadir nuevo parámetro IsRelatedToComercialPlan del subflow de tarea con valor True en cualquier caso</description>
     <environments>Default</environments>
     <formulas>
         <description>Selecciona el mensaje a utilizar en la notificación Week Left según sea Plan Mensual o cualquier otro tipo</description>
@@ -851,6 +851,12 @@ IF
             <name>Date</name>
             <value>
                 <elementReference>TaskDateMensualPlan</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>IsRelatedToComercialPlan</name>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
