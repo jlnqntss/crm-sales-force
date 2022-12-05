@@ -7299,6 +7299,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.EventType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.IdentifiedByANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7345,6 +7350,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.QueueTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.RelatedToIntermediary__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11034,6 +11044,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.EventType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.IdentifiedByANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11070,6 +11085,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.QueueTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.RelatedToIntermediary__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
