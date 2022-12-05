@@ -33,8 +33,6 @@ public with sharing class WebServicesParser
      **/
     public class WebParserResult
     {
-        //public List<SObject> recordsList;
-
         public Map<String, SObject> recordsMap;
         public Map<String, String> errorMessagesMap;
         public Map<String, List<SObject> > secLvlRecordsMap;
@@ -262,7 +260,6 @@ public with sharing class WebServicesParser
                             Schema.SObjectType relRecObjType = Schema.getGlobalDescribe()
                                                                .get(fieldControl.RelatedObjectType__c);
                             parentObjectType = record.getSObjectType();
-                            //parenExtKey = extKey; // gpacho 2020-05-26
                             if (!fieldControl.Array__c)
                             {
                                 //Un solo elemento
@@ -274,7 +271,6 @@ public with sharing class WebServicesParser
                                 List<Object> nestedRecords = (List<Object>) element;
                                 manageObjectList(nestedRecords, errorMessages, relRecObjType);
                             }
-                            //extKey = parenExtKey; // gpacho 2020-05-26
                             relFieldName = actualFieldName;
                             parentObjectType = actualType;
                             nestedLevel--;
@@ -323,8 +319,6 @@ public with sharing class WebServicesParser
                         relFieldName.indexOf('.') + 1
                         );
                     
-                    
-                    //setParentRecord(record, fieldDescribe, parentObjectType, parentFieldName, parenExtKey); // gpacho 2020-05-26
                     setParentRecord(
                         record,
                         fieldDescribe,
@@ -359,7 +353,6 @@ public with sharing class WebServicesParser
                     String parentFieldName = relFieldName.substring(
                         relFieldName.indexOf('.') + 1
                         );
-                    //setParentRecord(record, fieldDescribe, parentObjectType, parentFieldName, parenExtKey); // gpacho 2020-05-26
                     setParentRecord(
                         record,
                         fieldDescribe,
