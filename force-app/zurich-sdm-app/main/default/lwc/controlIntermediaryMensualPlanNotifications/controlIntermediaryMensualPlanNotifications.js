@@ -82,8 +82,6 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
 
       this.resetOptions = [...this.options];
       this.isLoading = false;
-
-      console.log("options inicial " + JSON.stringify(this.options));
     } else if (error) {
       console.log("Error " + JSON.stringify(error));
     }
@@ -93,20 +91,15 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     try {
       this.hasChange = true;
       let eventValues = event.detail.value;
-      console.log("entro en handleOnChangeMultipicklist");
-      console.log("eventValue " + JSON.stringify(eventValues));
 
       // 3 escenarios
       // no hay filtro ni antes ni despues el caso mas sencillo, simplemente
       if (this.lastQueryTerm === "" && this.queryTerm === "") {
-        console.log("no hay filtro ni antes ni despues");
         this.valuesToActive = [...eventValues];
       }
 
       // de no filtro pasa a filtro
       if (this.lastQueryTerm === "" && this.queryTerm !== "") {
-        console.log("Paso de NO filtro a filtro");
-
         // borro de valuesToActive los elementos que cumplan el filtro activo
         let index = -1;
         for (const opt of this.options) {
@@ -124,11 +117,8 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
 
       // de filtro pasa a NO filtro
       if (this.lastQueryTerm !== "" && this.queryTerm === "") {
-        console.log("Paso de filtro a NO filtro");
         this.valuesToActive = [...eventValues];
       }
-
-      console.log("lista a activar " + this.valuesToActive);
     } catch (error) {
       console.log("error " + JSON.stringify(error));
     }
@@ -142,40 +132,28 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       this.lastQueryTerm = this.queryTerm;
 
       this.queryTerm = event.target.value;
-      console.log("entro en busqueda " + this.queryTerm);
 
       if (this.queryTerm !== "") {
         this.options = [];
         // recorrer options
         for (const opt of this.resetOptions) {
-          //console.log('option bucle ' + JSON.stringify(opt));
           if (opt.label.includes(this.queryTerm)) {
             this.options = [...this.options, opt];
           }
         }
-        console.log("lastQueryTerm " + this.lastQueryTerm);
-        console.log("queryTerm " + this.queryTerm);
-        console.log("lista a activar " + this.valuesToActive);
       } else {
         console.log("no hay valor filtro");
 
-        console.log("lista a activar " + this.valuesToActive);
         this.options = [];
         this.values = [];
         this.options = [...this.resetOptions];
         this.values = [...this.valuesToActive];
         this.queryTerm = "";
-
-        console.log("lastQueryTerm " + this.lastQueryTerm);
-        console.log("queryTerm " + this.queryTerm);
-        console.log("lista values " + this.values);
       }
     }
   }
 
   handleSave() {
-    console.log("click en guardar " + this.valuesToActive);
-
     updateIntermediaryNotificationFlag({
       notificationsToActiveList: this.valuesToActive
     })
@@ -208,7 +186,6 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
 
   // resetear picklist
   handleCancel() {
-    console.log("entro en handleCancel");
     this.options = [];
     this.values = [];
     this.options = [...this.resetOptions];

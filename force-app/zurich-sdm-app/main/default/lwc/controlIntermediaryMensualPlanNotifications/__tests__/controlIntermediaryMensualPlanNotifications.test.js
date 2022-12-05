@@ -21,8 +21,6 @@ describe("c-control-intermediary-mensual-plan-notifications", () => {
     // Act
     document.body.appendChild(element);
 
-    // Assert
-    // const div = element.shadowRoot.querySelector('div');
     expect(1).toBe(1);
   });
 });
