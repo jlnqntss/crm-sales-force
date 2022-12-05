@@ -4,7 +4,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 import userId from "@salesforce/user/Id";
 import { getRecord } from "lightning/uiRecordApi";
-import UserNameFld from "@salesforce/schema/User.Name";
+import UserFirstNameFld from "@salesforce/schema/User.FirstName";
 import UserLastNameFld from "@salesforce/schema/User.LastName";
 
 // Custom Labels
@@ -46,11 +46,14 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
   queryTerm = "";
   lastQueryTerm = "";
 
-  @wire(getRecord, { recordId: userId, fields: [UserNameFld, UserLastNameFld] })
+  @wire(getRecord, {
+    recordId: userId,
+    fields: [UserFirstNameFld, UserLastNameFld]
+  })
   userDetails({ error, data }) {
     if (data) {
       this.currentUserName =
-        data.fields.LastName.value + ", " + data.fields.Name.value;
+        data.fields.LastName.value + ", " + data.fields.FirstName.value;
     } else if (error) {
       this.error = error;
     }
