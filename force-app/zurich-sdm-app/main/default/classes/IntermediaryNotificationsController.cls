@@ -83,7 +83,12 @@ public with sharing class IntermediaryNotificationsController {
         }
     }
 
-
+    /**
+     * Invocamos al flujo que hará las modificaciones como system
+     * @param List<AccountTeamMember> atmsToUpdate: registros ya preparados para actualizar
+     * @author dmunoz
+     * @date 05/12/2022
+     */
     private static void runFlow(List<AccountTeamMember> atmsToUpdate) {
 
         Map<String, Object> inputs = new Map<String, Object>();
