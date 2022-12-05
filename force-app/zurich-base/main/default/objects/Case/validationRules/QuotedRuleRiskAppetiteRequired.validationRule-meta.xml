@@ -4,7 +4,7 @@
     <active>true</active>
     <description>[VR Caso] Es obligatorio informar el campo Risk Appetite si la etapa es Ofertada</description>
     <errorConditionFormula>RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
-ISPICKVAL(QuotationStage__c,&quot;Quoted&quot;) &amp;&amp; ISBLANK(TEXT(	RiskAppetite__c))</errorConditionFormula>
+ISPICKVAL(QuotationStage__c,&quot;Quoted&quot;) &amp;&amp; ISBLANK(TEXT(	RiskAppetite__c))&amp;&amp; $Permission.USPTriggerCaseValidationRules</errorConditionFormula>
     <errorDisplayField>RiskAppetite__c</errorDisplayField>
     <errorMessage>[VR Caso] Es obligatorio informar el campo Risk Appetite si la etapa es Ofertada</errorMessage>
 </ValidationRule>

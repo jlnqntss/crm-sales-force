@@ -3,8 +3,11 @@
     <fullName>StatusRuleNewOnlyGoToAssigned</fullName>
     <active>true</active>
     <description>[VR Caso] Caso en estado NUEVO sólo puede pasar a ASIGNADO</description>
-    <errorConditionFormula>(RecordType.DeveloperName == &quot;OCSInquiry&quot;  || RecordType.DeveloperName == &quot;USPInquiry&quot;  ) &amp;&amp; 
-ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Asignado&quot;))</errorConditionFormula>
+    <errorConditionFormula>OR (RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp; 
+ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Asignado&quot;))
+,
+RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp; 
+ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Asignado&quot;))&amp;&amp; $Permission.USPTriggerCaseValidationRules)</errorConditionFormula>
     <errorDisplayField>Status</errorDisplayField>
     <errorMessage>[VR Caso] Caso en estado NUEVO sólo puede pasar a ASIGNADO</errorMessage>
 </ValidationRule>

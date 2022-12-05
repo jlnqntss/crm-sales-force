@@ -3,8 +3,14 @@
     <fullName>StatusRuleCantGoFromClosed</fullName>
     <active>true</active>
     <description>[VR Caso] Caso en estado CERRADO no puede pasar a ningún otro estado</description>
-    <errorConditionFormula>(RecordType.DeveloperName == &quot;OCSInquiry&quot;  || RecordType.DeveloperName == &quot;USPInquiry&quot;  ) &amp;&amp; 
-ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Cerrado&quot;)</errorConditionFormula>
+    <errorConditionFormula>OR(
+RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp; 
+ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Cerrado&quot;)
+,
+RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp; 
+ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Cerrado&quot;)
+&amp;&amp; $Permission.USPTriggerCaseValidationRules
+)</errorConditionFormula>
     <errorDisplayField>Status</errorDisplayField>
     <errorMessage>[VR Caso] Caso en estado CERRADO no puede pasar a ningún otro estado</errorMessage>
 </ValidationRule>
