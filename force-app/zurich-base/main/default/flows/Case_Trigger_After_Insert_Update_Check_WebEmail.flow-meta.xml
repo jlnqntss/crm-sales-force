@@ -14,6 +14,20 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <description>Como no hemos encontrado el remitente entre los contact points, ponemos el flag a false</description>
+        <name>Desactivamos_el_flag</name>
+        <label>Desactivamos el flag</label>
+        <locationX>50</locationX>
+        <locationY>1343</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.IsRemitentInContact__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
     <decisions>
         <name>Es_el_mismo</name>
         <label>¿Es el mismo?</label>
@@ -84,6 +98,7 @@
         </rules>
     </decisions>
     <description>Fujo mediante el que comprobamos si la dirección de correo desde la que nos llega un caso se encuentra entre las direcciones de correo de la cuenta asociada.</description>
+    <environments>Default</environments>
     <interviewLabel>Case Trigger - After Insert/Update - {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - Comprobar remitente</label>
     <loops>
@@ -96,6 +111,9 @@
         <nextValueConnector>
             <targetReference>Es_el_mismo</targetReference>
         </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Desactivamos_el_flag</targetReference>
+        </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
         <name>BuilderType</name>
