@@ -1806,4 +1806,12 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_ControlIntermediaryNotifiaction_ButtonSave</shortDescription>
         <value>Save</value>
     </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_ErrorFlowUpdate</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_ErrorFlowUpdate</shortDescription>
+        <value>The records cannot be updated by a fail in the flow</value>
+    </labels>
 </CustomLabels>

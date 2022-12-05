@@ -5912,6 +5912,10 @@
         <label>Alertas por Mediador</label>
         <name>SDM_ControlIntermediaryNotifiaction_Title</name>
     </customLabels>
+    <customLabels>
+        <label>No se ha podido guardar debido a un error en el proceso de actualización.</label>
+        <name>SDM_ControlIntermediaryNotifiaction_ErrorFlowUpdate</name>
+    </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
         <name>Configure_Call_Center_Settings</name>
