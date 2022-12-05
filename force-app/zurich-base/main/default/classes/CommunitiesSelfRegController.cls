@@ -37,7 +37,6 @@ public class CommunitiesSelfRegController
         }
 
         String profileId = null; // To be filled in by customer.
-        String roleEnum = null; // To be filled in by customer.
         String accountId = ''; // To be filled in by customer.
 
         String userName = email;

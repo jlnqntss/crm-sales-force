@@ -630,7 +630,7 @@ public with sharing class GenesysCloud
          */
         public CallbackCancel cancel(CallbackCancel callback)
         {
-            HttpResponse response = new GenesysCloud.GenesysCloudNamedUserAPI().patch(
+            new GenesysCloud.GenesysCloudNamedUserAPI().patch(
                 '/api/v2/conversations/callbacks/' + callback.genesysId, callback.toJSON()
             );
             return callback;
@@ -1212,7 +1212,7 @@ public with sharing class GenesysCloud
          */
         public void consult(ConsultTransfer consult)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + consult.participantId + '/consult', consult.toJSON() );
+            new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + consult.participantId + '/consult', consult.toJSON() );
         }
 
         /**
@@ -1223,7 +1223,7 @@ public with sharing class GenesysCloud
          */
         public void setParticipantData(String conversationId, String participantId, Map<String, String> attributes)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
+            new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
             {
                 'attributes' => attributes
             }) );
@@ -1237,7 +1237,7 @@ public with sharing class GenesysCloud
          */
         public void setUUIData(String conversationId, String participantId, String communicationId, String uuiData)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
+            new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
             {
                 'uuiData' => uuiData
             }) );

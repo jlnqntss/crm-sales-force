@@ -246,7 +246,7 @@ public class INFOHandler implements ISystem
             if ( externalRequestResultList != null && !externalRequestResultList.isEmpty() )
             {
                 // 1 - Actualizar las external request con el resultado
-                Database.SaveResult[] resultList = Database.update(externalRequestResultList,false);
+                Database.update(externalRequestResultList,false);
 
                 // 2 - Publicar las external request que no se hayan procesado correctamente
                 for ( ExternalRequest__c externalRequest : externalRequestResultList )
@@ -285,7 +285,7 @@ public class INFOHandler implements ISystem
                 // 3 - Publicar external request erróneas
                 if ( !erErrorEventList.isEmpty() )
                 {
-                    List<Database.SaveResult> results = EventBus.publish(erErrorEventList);
+                    EventBus.publish(erErrorEventList);
                 }
             }
         }
