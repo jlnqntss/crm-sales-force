@@ -22,7 +22,7 @@
         <field>Account.NationalId__c</field>
     </columns>
     <columns>
-        <field>Account.Association__c</field>
+        <field>Account.SDMAssociation__c</field>
     </columns>
     <columns>
         <field>Account.Association2__c</field>

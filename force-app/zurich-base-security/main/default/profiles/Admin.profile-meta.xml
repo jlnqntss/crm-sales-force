@@ -4400,6 +4400,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.SDMAssociation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.BirthdateSDM__c</field>
         <readable>true</readable>
     </fieldPermissions>
