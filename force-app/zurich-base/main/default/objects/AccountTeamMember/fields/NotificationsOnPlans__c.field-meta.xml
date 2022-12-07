@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NotificationsOnPlans__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Dicta si se enviarán notificaciones para el par usuario y mediador</description>
+    <externalId>false</externalId>
+    <label>Recibir Alertas Plan Comercial</label>
+    <type>Checkbox</type>
+</CustomField>
