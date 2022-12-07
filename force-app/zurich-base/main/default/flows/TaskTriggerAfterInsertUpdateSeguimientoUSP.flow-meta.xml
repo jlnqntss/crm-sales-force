@@ -106,20 +106,32 @@
     <decisions>
         <name>Is_Task_New</name>
         <label>Is Task New</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>455</locationY>
         <defaultConnector>
             <targetReference>Ha_cambiado</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
+            <name>casoCerradoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Caso Cerrado</label>
+        </rules>
+        <rules>
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>$Record__Prior</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue>Nueva</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -160,6 +172,7 @@
             <label>Nueva o Asignada</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>Task Trigger - After Insert/Update - Seguimiento USP {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After Insert/Update - Seguimiento USP</label>
     <loops>
@@ -198,7 +211,7 @@
     <recordLookups>
         <name>Get_Case</name>
         <label>Get Case</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -247,12 +260,12 @@
     <recordUpdates>
         <name>Actualizar_Caso</name>
         <label>Actualizar Caso</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>1895</locationY>
         <inputReference>Get_Case</inputReference>
     </recordUpdates>
     <start>
-        <locationX>320</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Case</targetReference>

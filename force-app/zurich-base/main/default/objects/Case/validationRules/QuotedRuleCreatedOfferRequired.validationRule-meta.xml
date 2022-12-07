@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QuotedRuleCreatedOfferRequired</fullName>
+    <active>true</active>
+    <description>[VR Caso] Es obligatorio informar el campo Oferta Generada antes de pasar a la etapa Ofertada</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
+ISPICKVAL( QuotationStage__c ,&quot;Quoted&quot;) &amp;&amp;
+ISBLANK(CreatedOffer__c) &amp;&amp; $Permission.USPTriggerCaseValidationRules</errorConditionFormula>
+    <errorDisplayField>CreatedOffer__c</errorDisplayField>
+    <errorMessage>[VR Caso] Es obligatorio informar el campo Oferta Generada antes de pasar a la etapa Ofertada</errorMessage>
+</ValidationRule>

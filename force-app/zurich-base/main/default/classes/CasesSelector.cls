@@ -95,28 +95,45 @@ public with sharing class CasesSelector extends RecordsSelector
      * @param  caseIds ids de los casos
      * @return listado de casos
      */
-    public List<Case> findById(Set<String> caseIds)
+    public List<Case> findById(Set<String> caseIds, Boolean allData)
     {
         if(caseIds != null && !caseIds.isEmpty() )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
-                Case.Id,
-                Case.OwnerId, 
-                Case.Query__c
-            })
-            .selectFields('Owner.Type')
-            .selectFields('Owner.Profile.Name')
-            .addConditionString('Case.Id IN (\'' + String.join(new List<String>(caseIds), '\',\'') + '\')');
+            if (allData == false) //Si no hay que obtener todos los datos se especifican cuales
+            {
+                this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                    Case.Id,
+                    Case.OwnerId, 
+                    Case.Query__c
+                 })
+                .selectFields('Owner.Type')
+                .selectFields('Owner.Profile.Name');
+            }
+            else {
+                this.baseQuery.selectReadableFields();
+            }
+            this.baseQuery.addConditionString('Case.Id IN (\'' + String.join(new List<String>(caseIds), '\',\'') + '\')');
 
             this.baseQuery.debug();
 
-            return (List<Case>) this.baseQuery.run();
+            return (List<Case>) this.baseQuery.run(); 
         }
         else
         {
             return new List<Case>();
         }
     }
+
+    public List<Case> findById(Set<String> caseIds)
+    {
+        return this.findById(caseIds, false);
+    }
+
+    public List<Case> findAllDataById(Set<String> caseIds)
+    {
+        return this.findById(caseIds, true);
+    }
+
 
     /**
      * Método utilizado por el batch RelateCasesToNewAccountsBatch para definir el scope
@@ -137,6 +154,35 @@ public with sharing class CasesSelector extends RecordsSelector
             .addConditionEq(Case.RecordTypeId, rtUSPId)
             .addConditionNotNull(Case.RobotDocumentId__c)
             .addConditionNull(Case.MediatedCustomer__c)
+            .addConditionString('Case.CreatedDate = LAST_N_DAYS:' + days);
+
+            return this.baseQuery.toQueryString();
+        }
+        else
+        {
+            return '';
+        }
+    }
+
+    /**
+     * Método utilizado por el batch RelateCasesToNewOffersBatch para definir el scope
+     * @author lrodriguez6@seidor.es
+     * @date 11/11/2022
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
+    public String getQueryStringCasesToRelateToNewOffers(String days)
+    {
+        if(days != null && !String.isBlank(days) )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.Id,
+                Case.CreatedOffer__c,
+                Case.OfferId__c
+            })
+            .addConditionEq(Case.RecordTypeId, rtUSPId)
+            .addConditionNotNull(Case.CreatedOffer__c)
+            .addConditionNull(Case.OfferId__c)
             .addConditionString('Case.CreatedDate = LAST_N_DAYS:' + days);
 
             return this.baseQuery.toQueryString();

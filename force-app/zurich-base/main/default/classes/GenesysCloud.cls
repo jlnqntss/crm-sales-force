@@ -1,4 +1,4 @@
-public class GenesysCloud
+public with sharing class GenesysCloud
 {
     @TestVisible
     private static final String ERROR_IN_RESPONSE = 'response is null';
@@ -933,7 +933,7 @@ public class GenesysCloud
      *          inventado 'working' para el Agent.
      * @return Devuelve el resultado de la interacción como ok o nok
      */ 
-    public class PatchService
+    public with sharing class PatchService
     {
         public HttpCalloutMock mock = null;
 

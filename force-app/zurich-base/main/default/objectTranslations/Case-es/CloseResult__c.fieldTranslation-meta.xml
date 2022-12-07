@@ -39,6 +39,10 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>No Realizado USP</masterLabel>
+        <translation>No Realizado</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>No Retenido</masterLabel>
         <translation></translation>
     </picklistValues>
@@ -121,6 +125,10 @@
     <picklistValues>
         <masterLabel>Realizado - Sin impacto en prima</masterLabel>
         <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Realizado USP</masterLabel>
+        <translation>Realizado</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Retenido</masterLabel>

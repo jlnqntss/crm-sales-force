@@ -1,4 +1,4 @@
-public class GenesysCloudCreateCallbackAction
+public with sharing class GenesysCloudCreateCallbackAction
 {
     /**
      * Acción invocable que crea una tarea de tipo call-me-back, definido por CreateCallbackRequest, en Genesys Cloud.

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WonLostCloseResultRequired</fullName>
+    <active>true</active>
+    <description>[VR Caso] Es obligatorio informar el Resultado de cierre antes de pasar a la etapa Ganada o Perdida</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
+(ISPICKVAL(QuotationStage__c,&quot;Won&quot;) || ISPICKVAL(QuotationStage__c,&quot;Lost&quot;)) &amp;&amp; ISBLANK(TEXT(	CloseResult__c))</errorConditionFormula>
+    <errorDisplayField>CloseResult__c</errorDisplayField>
+    <errorMessage>[VR Caso] Es obligatorio informar el Resultado de cierre antes de pasar a la etapa Ganada o Perdida</errorMessage>
+</ValidationRule>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Multitarifier__c</fullName>
+    <externalId>false</externalId>
+    <label>Multitarifier</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>MPM</fullName>
+                <default>false</default>
+                <label>MPM</label>
+            </value>
+            <value>
+                <fullName>Merlín - Ebroker</fullName>
+                <default>false</default>
+                <label>Merlín - Ebroker</label>
+            </value>
+            <value>
+                <fullName>Soft QS</fullName>
+                <default>false</default>
+                <label>Soft QS</label>
+            </value>
+            <value>
+                <fullName>Gecose</fullName>
+                <default>false</default>
+                <label>Gecose</label>
+            </value>
+            <value>
+                <fullName>Avant2 - Codeoscopic</fullName>
+                <default>false</default>
+                <label>Avant2 - Codeoscopic</label>
+            </value>
+            <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <label>Otros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

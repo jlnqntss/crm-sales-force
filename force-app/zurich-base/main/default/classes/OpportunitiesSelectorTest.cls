@@ -257,4 +257,31 @@ private with sharing class OpportunitiesSelectorTest
 
     }
 
+    /**
+     * Test del método que recupera las ofertas en base al InfoQuoteNumber__c y la fecha de creación
+     * @author lrodriguez6@seidor.es
+     * @date 14/11/2022
+     */
+    @IsTest
+    static void test_findByCreatedOfferAndCreationDate()
+    {
+        Account cuenta = [SELECT Id, NationalId__c FROM Account LIMIT 1];
+        Opportunity oferta= new Opportunity();
+        OpportunitiesSelector OppSel = new OpportunitiesSelector(); 
+        oferta.InfoQuoteNumber__c='11111';
+        oferta.Name='Test';
+        oferta.AccountId=cuenta.Id;
+        oferta.StageName='Quoted';
+        oferta.CloseDate=System.today()+1;
+
+        insert oferta;
+        String ofertaGenerada=oferta.InfoQuoteNumber__c;
+
+        Test.startTest();
+        List<Opportunity> offersFound = new OpportunitiesSelector().findByCreatedOfferAndCreationDate(new List<String>{ofertaGenerada}, '1');
+        Test.stopTest();
+
+        System.assertEquals(1, offersFound.size(), 'Deberia encontrar 1 oferta');
+    }
+
 }

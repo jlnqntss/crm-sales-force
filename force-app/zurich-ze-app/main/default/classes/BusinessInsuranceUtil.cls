@@ -3,7 +3,7 @@
  * @author rlopez
  * @date 13/01/2021
  */
-public class BusinessInsuranceUtil
+public with sharing class BusinessInsuranceUtil
 {
     public static final String ZE_BUSINESS_HOURS = 'ZE Business Hours';
     /**

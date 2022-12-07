@@ -223,7 +223,11 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Envíos</masterLabel>
+        <masterLabel>Envíos (Cliente)</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Envíos (Mediador)</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IRPFIntermediaryType__c</fullName>
+    <externalId>false</externalId>
+    <label>IRPF Intermediary Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ANDORRA EN ANDORRA</fullName>
+                <default>false</default>
+                <label>ANDORRA EN ANDORRA</label>
+            </value>
+            <value>
+                <fullName>ANDORRA EN ESPAÑA</fullName>
+                <default>false</default>
+                <label>ANDORRA EN ESPAÑA</label>
+            </value>
+            <value>
+                <fullName>CEUTA Y MELILLA</fullName>
+                <default>false</default>
+                <label>CEUTA Y MELILLA</label>
+            </value>
+            <value>
+                <fullName>EXTRANJEROS</fullName>
+                <default>false</default>
+                <label>EXTRANJEROS</label>
+            </value>
+            <value>
+                <fullName>INTERMEDIARIOS 2 PRIMEROS AÑOS PROF</fullName>
+                <default>false</default>
+                <label>INTERMEDIARIOS 2 PRIMEROS AÑOS PROF</label>
+            </value>
+            <value>
+                <fullName>INTERMEDIARIOS CON SUBAGENTES/COLAB</fullName>
+                <default>false</default>
+                <label>INTERMEDIARIOS CON SUBAGENTES/COLAB</label>
+            </value>
+            <value>
+                <fullName>INTERMEDIARIOS RENDIMIENTOS REDUCID</fullName>
+                <default>false</default>
+                <label>INTERMEDIARIOS RENDIMIENTOS REDUCID</label>
+            </value>
+            <value>
+                <fullName>NORMAL</fullName>
+                <default>false</default>
+                <label>NORMAL</label>
+            </value>
+            <value>
+                <fullName>SIN RETENCION</fullName>
+                <default>false</default>
+                <label>SIN RETENCION</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

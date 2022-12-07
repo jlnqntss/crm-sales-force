@@ -919,11 +919,11 @@
     <picklistValues>
         <picklist>Subtype__c</picklist>
         <values>
-            <fullName>Anulación</fullName>
+            <fullName>Ajuste oferta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Apoyo Captación</fullName>
+            <fullName>Anulación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -932,6 +932,10 @@
         </values>
         <values>
             <fullName>Campaña</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cotización</fullName>
             <default>false</default>
         </values>
         <values>
@@ -947,7 +951,15 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Envíos</fullName>
+            <fullName>Emisión</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Envíos %28Cliente%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Envíos %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -980,10 +992,6 @@
         </values>
         <values>
             <fullName>Modificación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No definido</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1031,7 +1039,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Validación %2F emisión</fullName>
+            <fullName>Tareas administrativas</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1064,6 +1072,10 @@
     </picklistValues>
     <picklistValues>
         <picklist>TypeN3__c</picklist>
+        <values>
+            <fullName>Ajuste oferta</fullName>
+            <default>false</default>
+        </values>
         <values>
             <fullName>Anotación Embargo</fullName>
             <default>false</default>
@@ -1105,11 +1117,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cambio de intermediario</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Campaña</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cartera</fullName>
+            <fullName>Capitales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Certificados</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1121,11 +1141,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Con Oferta</fullName>
+            <fullName>Conductor</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Conductor</fullName>
+            <fullName>Cotización</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1141,11 +1161,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Documentación</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Emisión</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Emisión de Factura Electrónica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Envíos %28Mediador%29</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1165,6 +1193,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Felicitación</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Firma digital</fullName>
             <default>false</default>
         </values>
@@ -1173,11 +1205,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Garantías %2F Capitales</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generación Oferta</fullName>
+            <fullName>Garantías</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1185,7 +1213,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Gestión competencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Inconsistencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Información</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1209,14 +1245,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>No definido</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Nueva Producción</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Oferta</fullName>
             <default>false</default>
         </values>
@@ -1237,6 +1265,22 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Recobro indirecto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recobro proactivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recobro reactivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reemplazo</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Regularización</fullName>
             <default>false</default>
         </values>
@@ -1245,15 +1289,27 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Renovación póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Retención</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Sin Oferta</fullName>
+            <fullName>Revocación saneamiento</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Validación %2F emisión</fullName>
+            <fullName>Saneamiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seguimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sugerencia</fullName>
             <default>false</default>
         </values>
         <values>
