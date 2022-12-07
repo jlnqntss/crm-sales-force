@@ -244,15 +244,9 @@
             </value>
         </filters>
         <inputAssignments>
-            <field>CloseDetail__c</field>
-            <value>
-                <stringValue>Sin respuesta de cliente/mediador</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>CloseResult__c</field>
             <value>
-                <stringValue>No Realizado</stringValue>
+                <stringValue>Falta Respuesta Mediador</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
