@@ -266,6 +266,39 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Compruebo si el registro de tipo plan mensual está habilitado para enviar notificación</description>
+        <name>Check_mensual_plan_has_Intermediary</name>
+        <label>Check mensual plan has Intermediary</label>
+        <locationX>928</locationX>
+        <locationY>197</locationY>
+        <defaultConnector>
+            <targetReference>Notification_type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Mensual_Plan_has_Intermediary</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>MensualPlanRTDeveloperName</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Intermediary__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_AccountTeamMember</targetReference>
+            </connector>
+            <label>Mensual Plan has Intermediary</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Valida se el plan comercial ha llegado a la fecha límite</description>
         <name>End_Date_Reached</name>
         <label>End Date Reached</label>
@@ -348,6 +381,35 @@
                 <targetReference>NotifyWeekLeft</targetReference>
             </connector>
             <label>Not Mensual Plan</label>
+        </rules>
+        <rules>
+            <name>No_Active_Intermediary_Notification_Flag</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_AccountTeamMember.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>MensualPlanRTDeveloperName</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Intermediary__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Anual_Plan_Target_KPI_Changed</targetReference>
+            </connector>
+            <label>No Active Intermediary Notification Flag</label>
         </rules>
         <rules>
             <name>Mensual_Plan_KPI_Not_Reached</name>
@@ -542,7 +604,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Notification_type</targetReference>
+                <targetReference>Check_mensual_plan_has_Intermediary</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -580,7 +642,7 @@
             <label>Week left</label>
         </rules>
     </decisions>
-    <description>SDM: añadir nuevo parámetro IsRelatedToComercialPlan del subflow de tarea con valor True en cualquier caso</description>
+    <description>SDM: añadir Indicador APES a la lógica</description>
     <environments>Default</environments>
     <formulas>
         <description>Selecciona el mensaje a utilizar en la notificación Week Left según sea Plan Mensual o cualquier otro tipo</description>
@@ -728,6 +790,7 @@ IF
   &quot;Ratio_Claim&quot;,  {!$Record.TargetKPIPercent__c},
   &quot;Ratio_Retention&quot;,  {!$Record.TargetKPIPercent__c},
   &quot;Totaldiscount&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;APES&quot;,  {!$Record.TargetKPICurrency__c},
   0
 )</expression>
         <scale>2</scale>
@@ -786,6 +849,42 @@ IF
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Consulto el flag de envio notificaciones para el mediador</description>
+        <name>Get_AccountTeamMember</name>
+        <label>Get AccountTeamMember</label>
+        <locationX>933</locationX>
+        <locationY>417</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Notification_type</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>UserId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Recipient</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Intermediary__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>NotificationsOnPlans__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AccountTeamMember</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Notification_type</name>
         <label>Notification type</label>
