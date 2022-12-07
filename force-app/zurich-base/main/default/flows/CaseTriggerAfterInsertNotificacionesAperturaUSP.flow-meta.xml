@@ -49,26 +49,19 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>FulfilPrerequisitesOutcome</name>
-            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Customer</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>BusinessCustomer</stringValue>
-                </rightValue>
-            </conditions>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>OCSInquiry</stringValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -77,10 +70,9 @@
             <label>Cumple prerrequisitos</label>
         </rules>
     </decisions>
-    <description>Orquesta el envío de notificaciones de apertura de caso para los casos con centro CCS</description>
     <environments>Default</environments>
-    <interviewLabel>Case Trigger - After Insert/Update - Notificaciones Apertura CCS {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger - After Insert - Notificaciones Apertura CCS</label>
+    <interviewLabel>Case Trigger - After Insert - Notificaciones Apertura USP {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Trigger - After Insert - Notificaciones Apertura USP</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -108,7 +100,7 @@
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
-                <stringValue>Case Trigger - After Insert - Notificación apertura CCS</stringValue>
+                <stringValue>Case Trigger - After Insert - Notificación apertura USP</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -138,19 +130,12 @@
         <connector>
             <targetReference>FulfilPrerequisitesDecision</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3) AND 4 AND 5</filterLogic>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>CC Service</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Origin</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Phone</stringValue>
+                <stringValue>USP</stringValue>
             </value>
         </filters>
         <filters>
@@ -191,7 +176,7 @@
         <inputAssignments>
             <name>CallCenter</name>
             <value>
-                <stringValue>CCS</stringValue>
+                <stringValue>USP</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
