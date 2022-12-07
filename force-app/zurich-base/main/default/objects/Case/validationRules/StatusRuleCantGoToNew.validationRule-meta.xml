@@ -3,8 +3,12 @@
     <fullName>StatusRuleCantGoToNew</fullName>
     <active>true</active>
     <description>[VR Caso] Desde ningún otro estado de caso se podrá pasar a NUEVO</description>
-    <errorConditionFormula>(RecordType.DeveloperName == &quot;OCSInquiry&quot;  || RecordType.DeveloperName == &quot;USPInquiry&quot;  ) &amp;&amp; 
-ISCHANGED(Status) &amp;&amp; NOT(ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;)) &amp;&amp; ISPICKVAL(Status,&quot;Nuevo&quot;)</errorConditionFormula>
+    <errorConditionFormula>OR(RecordType.DeveloperName == &quot;OCSInquiry&quot;  &amp;&amp; 
+ISCHANGED(Status) &amp;&amp; NOT(ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;)) &amp;&amp; ISPICKVAL(Status,&quot;Nuevo&quot;)
+,
+RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp; 
+ISCHANGED(Status) &amp;&amp; NOT(ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;)) &amp;&amp; ISPICKVAL(Status,&quot;Nuevo&quot;)&amp;&amp; $Permission.USPTriggerCaseValidationRules
+)</errorConditionFormula>
     <errorDisplayField>Status</errorDisplayField>
     <errorMessage>[VR Caso] Desde ningún otro estado de caso se podrá pasar a NUEVO</errorMessage>
 </ValidationRule>

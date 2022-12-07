@@ -42,9 +42,6 @@ public with sharing class CaseUtil
                         claim.CustomerNum__c = ContactUtil.adaptCustomerNum(claim.CustomerNum__c, policySF.LegalEntity__c);
                     }
                 }
-                // if (claim.sourceCountry__c != 'Spain') {
-                //   claim.CustomerNum__c = 'EMEA-' + claim.CustomerNum__c;
-                // }
 
                 if (claim.InsuredObjectId__c != null)
                 {

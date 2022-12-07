@@ -33,9 +33,6 @@ global class Mock_Parser
             if( isIBA_MultiPart )
                 claim.Partner__c = 'Orange Seguros';
 
-            //Order policyRef=new Order(PolicyNum__c=claim.PolicyNum__c);
-            //claim.Policy__r=policyRef;
-
             recordsMap.put(claim.ClaimNumber__c, (SObject) claim);
         }
         else if ( Entity.equals('Customer') )
@@ -173,10 +170,6 @@ global class Mock_Parser
 
         if ( Entity.equals('Quote') )
         {
-            // Order quoteRef = new Order(QuoteEntry__c = '9090', SourceCountry__c = 'Spain');
-            // if( isIBA_EMEA ) quoteRef.SourceCountry__c = 'France';
-            // if( isIBA_MultiPart ) quoteRef.Partner__c = 'Orange Seguros';
-
             //Descuento
             disc.Policy__r = new Order(QuoteEntry__c = '9090');
             listaDescuentos.add( (SObject) disc );
@@ -191,10 +184,6 @@ global class Mock_Parser
         }
         else if ( Entity.equals('Policy') )
         {
-            // Order policyRef = new Order(PolicyNum__c = '1111');
-            // if( isIBA_EMEA ) policyRef.SourceCountry__c = 'France';
-            // if( isIBA_MultiPart ) policyRef.Partner__c = 'Orange Seguros';
-
             //Descuento
             disc.Policy__r = new Order(PolicyNum__c = '1111');
             listaDescuentos.add( (SObject) disc );
@@ -264,8 +253,6 @@ global class Mock_Parser
         if( isIBA_MultiPart )
             subcover2.Partner__c = 'Orange Seguros';
 
-        // OrderItem itemRef = new OrderItem(itemId__c = '7777');
-
         cover.PolicyProduct__r =  new OrderItem(itemId__c = '7777');
         subcover.PolicyProduct__r =  new OrderItem(itemId__c = '7777');
         cover2.PolicyProduct__r =  new OrderItem(itemId__c = '7777');
@@ -277,8 +264,6 @@ global class Mock_Parser
         listaObjetos.add( (SObject) subcover2 );
         //el key deberia ser el external id de item
         thrLvlRecordsMap.put('7777', listaObjetos);
-
-        // OrderItem itemRef2 = new OrderItem(itemId__c = '6666');
 
         Cover__c cover3 = new Cover__c(
             CoverId__c = '1',

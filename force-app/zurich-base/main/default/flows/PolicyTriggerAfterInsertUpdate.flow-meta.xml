@@ -2,66 +2,141 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
-        <name>Actualizar_cliente_oferta</name>
-        <label>Actualizar cliente oferta</label>
-        <locationX>725</locationX>
-        <locationY>559</locationY>
+        <name>policyAssignment</name>
+        <label>Policy Assignment</label>
+        <locationX>270</locationX>
+        <locationY>1511</locationY>
         <assignmentItems>
-            <assignToReference>GetRelatedOffer.AccountId</assignToReference>
+            <assignToReference>casesLoop.PolicyId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>uspSalesDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>statusStageAssignment</name>
+        <label>Status Stage Assignment</label>
+        <locationX>138</locationX>
+        <locationY>1751</locationY>
+        <assignmentItems>
+            <assignToReference>casesLoop.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Cerrado</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>casesLoop.CloseResult__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Ganada</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>casesLoop.QuotationStage__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Won</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>casesLoop.ClosedByMediator__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateCaseAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>updateCustomerOffer</name>
+        <label>Update Customer Offer</label>
+        <locationX>114</locationX>
+        <locationY>695</locationY>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.AccountId</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>$Record.PolicyHolder__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateOffer</targetReference>
+            <targetReference>updateOfferAction</targetReference>
         </connector>
     </assignments>
     <assignments>
         <description>Se asigna a Opportunity.StageName el valor Closed won y se copia el Name (Policy number) de la póliza a Oppotuniy.ResultingPolicyNumber__c.</description>
-        <name>UpdateOfferClosedWon</name>
-        <label>Actualizar oferta vinculada</label>
-        <locationX>175</locationX>
-        <locationY>553</locationY>
+        <name>updateOfferClosedWonAssignment</name>
+        <label>Update Offer Closed Won</label>
+        <locationX>246</locationX>
+        <locationY>455</locationY>
         <assignmentItems>
-            <assignToReference>GetRelatedOffer.StageName</assignToReference>
+            <assignToReference>getRelatedOfferAction.StageName</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>Closed Won</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>GetRelatedOffer.isUpdatedFromINFO__c</assignToReference>
+            <assignToReference>getRelatedOfferAction.isUpdatedFromINFO__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>GetRelatedOffer.ResultingPolicyNumber__c</assignToReference>
+            <assignToReference>getRelatedOfferAction.ResultingPolicyNumber__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>$Record.Name</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Actualizar_cliente</targetReference>
+            <targetReference>updateCustomerDecision</targetReference>
         </connector>
     </assignments>
     <decisions>
-        <name>Actualizar_cliente</name>
-        <label>Actualizar cliente?</label>
-        <locationX>428</locationX>
-        <locationY>555</locationY>
-        <defaultConnector>
-            <targetReference>UpdateOffer</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <name>nullCasesDecision</name>
+        <label>Null Cases</label>
+        <locationX>246</locationX>
+        <locationY>1271</locationY>
+        <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
-            <name>Si</name>
+            <name>notNullOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>GetRelatedOffer.Account.RecordType.DeveloperName</leftValueReference>
+                <leftValueReference>getUSPSalesCasesLast30DaysAction</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>casesLoop</targetReference>
+            </connector>
+            <label>Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>updateCustomerDecision</name>
+        <label>Update Customer</label>
+        <locationX>246</locationX>
+        <locationY>575</locationY>
+        <defaultConnector>
+            <targetReference>updateOfferAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Update</defaultConnectorLabel>
+        <rules>
+            <name>updateOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getRelatedOfferAction.Account.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Lead</stringValue>
@@ -75,14 +150,63 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Actualizar_cliente_oferta</targetReference>
+                <targetReference>updateCustomerOffer</targetReference>
             </connector>
-            <label>Sí</label>
+            <label>Update</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>uspSalesDecision</name>
+        <label>USP Sales</label>
+        <locationX>270</locationX>
+        <locationY>1631</locationY>
+        <defaultConnector>
+            <targetReference>updateCaseAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casesLoop.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>casesLoop.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>statusStageAssignment</targetReference>
+            </connector>
+            <label>Yes</label>
         </rules>
     </decisions>
     <description>Automatismo que cada vez que se inserta o actualiza una póliza se actualiza la etapa de la oferta relacionada</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>timeSearch</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()-VALUE({!getMetadataDaysAction.Value__c})</expression>
+    </formulas>
     <interviewLabel>Póliza Trigger - After insert/update {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Póliza Trigger - After insert/update</label>
+    <label>Policy Trigger - After insert/update - Complete Offer and Policy</label>
+    <loops>
+        <name>casesLoop</name>
+        <label>Cases Loop</label>
+        <locationX>50</locationX>
+        <locationY>1391</locationY>
+        <collectionReference>getUSPSalesCasesLast30DaysAction</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>policyAssignment</targetReference>
+        </nextValueConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -92,7 +216,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -103,11 +227,107 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>createRecordGetCasesErrorAction</name>
+        <label>Create Record Get Cases Error Action</label>
+        <locationX>706</locationX>
+        <locationY>1271</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Policy Trigger - After insert/update - Offer - Case</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Recuperar Casos</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>createRecordGetMetadataErrorAction</name>
+        <label>Create Record Get Metadata Error Action</label>
+        <locationX>970</locationX>
+        <locationY>1151</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Policy Trigger - After insert/update - Offer - Case</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Recuperar metadato</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>createRecordUpdateCasesErrorAction</name>
+        <label>Create Record Update Cases Error Action</label>
+        <locationX>578</locationX>
+        <locationY>2087</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Policy Trigger - After insert/update - Offer - Case</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Actualizar Casos</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <description>Deja un registro con el error producido</description>
-        <name>LogError</name>
-        <label>Registrar error</label>
-        <locationX>423</locationX>
-        <locationY>345</locationY>
+        <name>createRecordUpdateOfferErrorAction</name>
+        <label>Create Record Update Offer Error Action</label>
+        <locationX>1234</locationX>
+        <locationY>1031</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -129,24 +349,50 @@
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
-                <stringValue>PolicyTriggerAfterFlow</stringValue>
+                <stringValue>Policy Trigger - After insert/update - Offer - Case</stringValue>
             </value>
         </inputAssignments>
         <object>Error_Event__e</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <description>Ofertas cuyo Opportunity.Id sea igual al Policy__c.OpportunityName__c y cuyo Opportunity.StageName NO sea Closed Won</description>
-        <name>GetRelatedOffer</name>
-        <label>Conseguir Oferta Relacionada</label>
-        <locationX>177</locationX>
-        <locationY>339</locationY>
+        <description>Este metadato se usa para establecer los dias sobre los que se tienen en cuenta los casos</description>
+        <name>getMetadataDaysAction</name>
+        <label>Get Metadata Days</label>
+        <locationX>246</locationX>
+        <locationY>1031</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>UpdateOfferClosedWon</targetReference>
+            <targetReference>getUSPSalesCasesLast30DaysAction</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>LogError</targetReference>
+            <targetReference>createRecordGetMetadataErrorAction</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USPLinkPolicyCaseDaysRetrieval</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AdminSetupParameter__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Ofertas cuyo Opportunity.Id sea igual al Policy__c.OpportunityName__c y cuyo Opportunity.StageName NO sea Closed Won</description>
+        <name>getRelatedOfferAction</name>
+        <label>Get Related Offer</label>
+        <locationX>246</locationX>
+        <locationY>335</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>updateOfferClosedWonAssignment</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>createRecordUpdateOfferErrorAction</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -160,22 +406,76 @@
         <object>Opportunity</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>getUSPSalesCasesLast30DaysAction</name>
+        <label>Get USP Sales Cases Last 30 Days</label>
+        <locationX>246</locationX>
+        <locationY>1151</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>nullCasesDecision</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>createRecordGetCasesErrorAction</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cerrado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CreatedDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>timeSearch</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CreatedOffer__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.InfoQuoteNumber__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>updateCaseAction</name>
+        <label>Update Case</label>
+        <locationX>270</locationX>
+        <locationY>1967</locationY>
+        <connector>
+            <targetReference>casesLoop</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>createRecordUpdateCasesErrorAction</targetReference>
+        </faultConnector>
+        <inputReference>casesLoop</inputReference>
+    </recordUpdates>
     <recordUpdates>
         <description>Actualiza los registros de ofertas con su nuevo Stage</description>
-        <name>UpdateOffer</name>
-        <label>Actualizar Oferta</label>
-        <locationX>726</locationX>
-        <locationY>353</locationY>
+        <name>updateOfferAction</name>
+        <label>Update Offer</label>
+        <locationX>246</locationX>
+        <locationY>911</locationY>
+        <connector>
+            <targetReference>getMetadataDaysAction</targetReference>
+        </connector>
         <faultConnector>
-            <targetReference>LogError</targetReference>
+            <targetReference>createRecordUpdateOfferErrorAction</targetReference>
         </faultConnector>
-        <inputReference>GetRelatedOffer</inputReference>
+        <inputReference>getRelatedOfferAction</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
-        <locationY>49</locationY>
+        <locationX>120</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>GetRelatedOffer</targetReference>
+            <targetReference>getRelatedOfferAction</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>

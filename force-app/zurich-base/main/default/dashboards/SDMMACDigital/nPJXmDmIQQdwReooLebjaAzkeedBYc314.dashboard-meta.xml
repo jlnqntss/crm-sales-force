@@ -113,7 +113,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -147,7 +147,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -182,7 +182,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -216,7 +216,7 @@
                 <indicatorLowColor>#00716B</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -250,7 +250,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>YTD</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_Mac_Digital_YTD</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_Mac_Digital_YTD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -341,7 +341,7 @@
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Panel mediadores YTD</header>
-                <report>SDMMACDIGITAL/KPI_s_Mediadores_YTD</report>
+                <report>SDMMACRNConsultores/KPI_s_Mediadores_YTD</report>
             </dashboardComponent>
             <rowIndex>5</rowIndex>
             <rowSpan>16</rowSpan>
@@ -374,7 +374,7 @@
                 <indicatorLowColor>#C23934</indicatorLowColor>
                 <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -410,7 +410,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -446,7 +446,7 @@
                 <indicatorLowColor>#ABABAB</indicatorLowColor>
                 <indicatorMiddleColor>#ABABAB</indicatorMiddleColor>
                 <metricLabel>Mes cerrado pa</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -481,7 +481,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -516,7 +516,7 @@
                 <indicatorLowColor>#ABABAB</indicatorLowColor>
                 <indicatorMiddleColor>#ABABAB</indicatorMiddleColor>
                 <metricLabel>Mes cerrado pa</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -551,7 +551,7 @@
                 <indicatorLowColor>#16325C</indicatorLowColor>
                 <indicatorMiddleColor>#16325C</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>SDMMACDIGITAL/Seguimiento_diario_MacDigital_Mes_Actual</report>
+                <report>SDMMACRNConsultores/Seguimiento_diario_MacDigital_Mes_Actual</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>21</rowIndex>
@@ -727,6 +727,87 @@
             </dashboardComponent>
             <rowIndex>42</rowIndex>
             <rowSpan>15</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>12</colSpan>
+            <columnIndex>0</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <componentType>FlexTable</componentType>
+                <dashboardFilterColumns>
+                    <column>Account.Channel__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Account.SegmentDescription__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.EstructuraUnificada__c</column>
+                </dashboardFilterColumns>
+                <flexComponentProperties>
+                    <decimalPrecision>0</decimalPrecision>
+                    <flexTableColumn>
+                        <reportColumn>KPI__c.EstructuraUnificada__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>grouping</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>KPI__c.EstructuraDetalle__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>grouping</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA5</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA1</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA2</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.Portfolio__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.PN__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableSortInfo>
+                        <sortOrder>1</sortOrder>
+                    </flexTableSortInfo>
+                    <hideChatterPhotos>true</hideChatterPhotos>
+                </flexComponentProperties>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                    <groupingSorts>
+                        <groupingLevel>g2</groupingLevel>
+                        <sortColumn>s!KPI__c.Portfolio__c</sortColumn>
+                        <sortOrder>d</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>KPI&apos;s Mes Actual detalle producto</header>
+                <report>SDMMACDIGITAL/KPIs_Mes_detalle_producto_ioW</report>
+            </dashboardComponent>
+            <rowIndex>57</rowIndex>
+            <rowSpan>14</rowSpan>
         </dashboardGridComponents>
         <numberOfColumns>12</numberOfColumns>
         <rowHeight>36</rowHeight>

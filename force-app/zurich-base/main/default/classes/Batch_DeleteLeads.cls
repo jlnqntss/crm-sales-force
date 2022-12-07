@@ -30,7 +30,7 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
 
     global void execute(SchedulableContext SC)
     {
-        Id BatchInstanceId = database.executeBatch(new Batch_DeleteLeads(), 200);
+        database.executeBatch(new Batch_DeleteLeads(), 200);
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)
