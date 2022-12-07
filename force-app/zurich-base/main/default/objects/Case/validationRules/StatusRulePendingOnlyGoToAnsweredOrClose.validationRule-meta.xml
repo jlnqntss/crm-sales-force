@@ -3,8 +3,11 @@
     <fullName>StatusRulePendingOnlyGoToAnsweredOrClose</fullName>
     <active>true</active>
     <description>[VR Caso] Caso en estado PENDIENTE sólo puede pasar a RESPONDIDO o CERRADO o ASIGNADO</description>
-    <errorConditionFormula>(RecordType.DeveloperName == &quot;OCSInquiry&quot;  || RecordType.DeveloperName == &quot;USPInquiry&quot;  ) &amp;&amp; 
-ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Pendiente&quot;) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Respondido&quot;) || ISPICKVAL(Status,&quot;Cerrado&quot;) || ISPICKVAL(Status,&quot;Asignado&quot;))</errorConditionFormula>
+    <errorConditionFormula>OR(RecordType.DeveloperName == &quot;OCSInquiry&quot;  &amp;&amp; 
+ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Pendiente&quot;) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Respondido&quot;) || ISPICKVAL(Status,&quot;Cerrado&quot;) || ISPICKVAL(Status,&quot;Asignado&quot;))
+,
+RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp; 
+ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Pendiente&quot;) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Respondido&quot;) || ISPICKVAL(Status,&quot;Cerrado&quot;) || ISPICKVAL(Status,&quot;Asignado&quot;)) &amp;&amp; $Permission.USPTriggerCaseValidationRules)</errorConditionFormula>
     <errorDisplayField>Status</errorDisplayField>
     <errorMessage>[VR Caso] Caso en estado PENDIENTE sólo puede pasar a RESPONDIDO o CERRADO o ASIGNADO</errorMessage>
 </ValidationRule>

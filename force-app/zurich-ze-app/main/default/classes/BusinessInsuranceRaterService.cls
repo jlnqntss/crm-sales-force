@@ -318,7 +318,6 @@ public without sharing class BusinessInsuranceRaterService
      */
     private static Account createLead(Request formData)
     {
-        Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
         BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
         String lastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName);

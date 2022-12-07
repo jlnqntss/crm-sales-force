@@ -30,7 +30,7 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
 
     global void execute(SchedulableContext SC)
     {
-        Id BatchInstanceId = database.executeBatch(new Batch_DeleteQuotes(), 200);
+        database.executeBatch(new Batch_DeleteQuotes(), 200);
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)

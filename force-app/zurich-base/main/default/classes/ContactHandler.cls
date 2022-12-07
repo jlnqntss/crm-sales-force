@@ -58,7 +58,6 @@ public without sharing class ContactHandler implements ITrigger
     public void afterInsert(List<SObject> newList)
     {
         ContactUtil.SummaryTotalContacts( (List<Contact>) newList, null );
-        //ContactUtil.updateCustomerInfo( (List<Contact>) newList, null );
         ContactUtil.generateHashContactId( (List<Contact>) newList, null );
     }
 
@@ -74,10 +73,6 @@ public without sharing class ContactHandler implements ITrigger
             (List<Contact>) newList,
             (Map<Id, Contact>) oldMap
             );
-       // ContactUtil.updateCustomerInfo(
-       //     (List<Contact>) newList,
-       //     (Map<Id, Contact>) oldMap
-       //     );
     }
 
     /**

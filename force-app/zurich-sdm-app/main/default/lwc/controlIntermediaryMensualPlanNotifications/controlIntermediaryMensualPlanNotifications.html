@@ -1,0 +1,68 @@
+<template>
+  <lightning-card
+    title={labels.SDM_ControlIntermediaryNotifiaction_Title}
+    icon-name="custom:custom77"
+  >
+    <div class="slds-grid slds-gutters slds-p-horizontal_medium">
+      <div class="slds-col slds-size_2-of-3">
+        <div
+          class="slds-text-body_regular slds-p-around_medium slds-p-top_small"
+        >
+          <strong>RN: {currentUserName}</strong>
+        </div>
+        <!--nombre usuario logueado-->
+        <div class="slds-grid slds-gutters slds-p-top_small">
+          <!--input text filtrar en multipicklist-->
+          <div class="slds-col slds-size_1-of-2">
+            <div
+              class="slds-p-around_medium slds-p-right_small lgc-bg"
+              onkeyup={handleKeyUp}
+            >
+              <lightning-input
+                type="search"
+                label={labels.SDM_ControlIntermediaryNotifiaction_Intermediary}
+                placeholder={labels.SDM_ControlIntermediaryNotifiaction_IntermediaryPlaceholder}
+              >
+              </lightning-input>
+            </div>
+          </div>
+        </div>
+        <div class="slds-p-around_medium">
+          <!--multipicklist-->
+          <lightning-dual-listbox
+            name="notifications"
+            label={labels.SDM_ControlIntermediaryNotifiaction_MultipicklistTitle}
+            source-label={labels.SDM_ControlIntermediaryNotifiaction_Inactive}
+            selected-label={labels.SDM_ControlIntermediaryNotifiaction_Active}
+            disable-reordering="true"
+            show-activity-indicator={isLoading}
+            options={options}
+            value={values}
+            onchange={handleOnChangeMultipicklist}
+          >
+          </lightning-dual-listbox>
+        </div>
+        <template if:true={hasChange}>
+          <!--botones de guardado, se muestra solo si se ha hecho algún cambio en el multipicklist-->
+          <div class="slds-p-around_medium slds-align_absolute-center">
+            <!--botones de guardado-->
+            <lightning-button
+              variant="Neutral"
+              label={labels.SDM_ControlIntermediaryNotifiaction_ButtonCancel}
+              title="Primary action"
+              onclick={handleCancel}
+              class="slds-p-right_small"
+            ></lightning-button>
+            <lightning-button
+              variant="brand"
+              label={labels.SDM_ControlIntermediaryNotifiaction_ButtonSave}
+              title="Primary action"
+              onclick={handleSave}
+              class="slds-p-right_small"
+            ></lightning-button>
+          </div>
+        </template>
+      </div>
+    </div>
+  </lightning-card>
+</template>

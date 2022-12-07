@@ -8190,6 +8190,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.EventType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.IdentifiedByANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8255,6 +8260,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.RelatedToIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8311,6 +8321,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.Ramo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.ClosingObservation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>	
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Event.IsRelatedToComercialPlan__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11590,6 +11610,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.EventType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.IdentifiedByANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11650,6 +11675,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.RelatedToIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11671,6 +11701,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.SoyManager__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.ClosingObservation__c</field>
+        <readable>true</readable>
+	</fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.IsRelatedToComercialPlan__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

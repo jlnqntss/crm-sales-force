@@ -29,7 +29,7 @@ global class Batch_DeleteMasters implements Database.Batchable<sObject>, Databas
 
     global void execute(SchedulableContext SC)
     {
-        Id BatchInstanceId = database.executeBatch(new Batch_DeleteMasters(), 200);
+        database.executeBatch(new Batch_DeleteMasters(), 200);
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)

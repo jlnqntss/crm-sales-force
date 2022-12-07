@@ -966,6 +966,87 @@
             <rowIndex>88</rowIndex>
             <rowSpan>15</rowSpan>
         </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>12</colSpan>
+            <columnIndex>0</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <componentType>FlexTable</componentType>
+                <dashboardFilterColumns>
+                    <column>Account.Channel__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.EstructuraUnificada__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <flexComponentProperties>
+                    <decimalPrecision>0</decimalPrecision>
+                    <flexTableColumn>
+                        <reportColumn>KPI__c.EstructuraUnificada__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>grouping</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>KPI__c.EstructuraDetalle__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>grouping</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA5</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA1</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>FORMULA2</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.Portfolio__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>s!KPI__c.PN__c</reportColumn>
+                        <showSubTotal>true</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>aggregate</type>
+                    </flexTableColumn>
+                    <flexTableSortInfo>
+                        <sortOrder>1</sortOrder>
+                    </flexTableSortInfo>
+                    <hideChatterPhotos>true</hideChatterPhotos>
+                </flexComponentProperties>
+                <groupingSortProperties>
+                    <groupingSorts>
+                        <groupingLevel>g1</groupingLevel>
+                        <sortOrder>a</sortOrder>
+                    </groupingSorts>
+                    <groupingSorts>
+                        <groupingLevel>g2</groupingLevel>
+                        <sortColumn>s!KPI__c.Portfolio__c</sortColumn>
+                        <sortOrder>d</sortOrder>
+                    </groupingSorts>
+                </groupingSortProperties>
+                <header>KPI&apos;s Mes Actual detalle producto</header>
+                <report>SDMMACDIGITALHomeOffice/KPIs_Mes_detalle_producto_qNz</report>
+            </dashboardComponent>
+            <rowIndex>103</rowIndex>
+            <rowSpan>15</rowSpan>
+        </dashboardGridComponents>
         <numberOfColumns>12</numberOfColumns>
         <rowHeight>36</rowHeight>
     </dashboardGridLayout>

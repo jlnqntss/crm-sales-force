@@ -211,7 +211,6 @@ public without sharing class GenesysInteractionsService
      */
     public static List<Contact> findCustomers(String searchFor)
     {
-        Set<Id> matchedPersonIds = new Set<Id>();
 
         ContactsSelector contactsSelector = new ContactsSelector();
         contactsSelector.setScope(RecordsSelector.Scope.ALL);

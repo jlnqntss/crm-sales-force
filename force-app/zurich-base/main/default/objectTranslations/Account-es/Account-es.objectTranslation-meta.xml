@@ -92,6 +92,10 @@
         <layout>Formato de cuenta personal</layout>
         <layoutType>PersonAccount</layoutType>
         <sections>
+            <label>Dirección</label>
+            <section>Address</section>
+        </sections>
+        <sections>
             <label>Descripción</label>
             <section>Description</section>
         </sections>

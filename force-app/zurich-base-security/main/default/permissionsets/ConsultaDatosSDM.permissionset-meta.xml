@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>AdminSetupParameter__mdt</name>
+    </customMetadataTypeAccesses>
     <description>Permiso de visibilidad sobre objetos y campos de SDM</description>
     <fieldPermissions>
         <editable>false</editable>
@@ -863,6 +867,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>AccountTeamMember.NotificationsOnPlans__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>AsignacionPlan__c.Agrupacion_mediador__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -884,6 +893,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.CommunicationType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.EventType__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -913,12 +927,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.RelatedToIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Reference_number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.WhatId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.ClosingObservation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>	
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Event.IsRelatedToComercialPlan__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1073,6 +1102,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.EventType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.FollowUp__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1113,12 +1147,27 @@
         </fieldPermissions>
         <fieldPermissions>
             <editable>true</editable>
+            <field>Task.RelatedToIntermediary__c</field>
+            <readable>true</readable>
+        </fieldPermissions>
+        <fieldPermissions>
+            <editable>true</editable>
             <field>Task.Reference_number__c</field>
             <readable>true</readable>
         </fieldPermissions>
         <fieldPermissions>
             <editable>true</editable>
             <field>Task.WhatId</field>
+            <readable>true</readable>
+        </fieldPermissions>
+        <fieldPermissions>
+            <editable>true</editable>
+            <field>Task.ClosingObservation__c</field>
+            <readable>true</readable>
+        </fieldPermissions>
+        <fieldPermissions>
+            <editable>true</editable>
+            <field>Task.IsRelatedToComercialPlan__c</field>
             <readable>true</readable>
         </fieldPermissions>
     <fieldPermissions>
