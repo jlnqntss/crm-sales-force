@@ -180,14 +180,14 @@
         <label>Fecha Calculo</label>
         <scale>2</scale>
     </customDetailFormulas>
-    <description>Informe completo con los principales indicadores Mac Digital YTD</description>
+    <description>Informe completo con los principales indicadores Mac Digital Mes</description>
     <filter>
         <criteriaItems>
             <column>KPI__c.Temporalidad__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>YTD</value>
+            <value>Mensual</value>
         </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -210,7 +210,7 @@
             <operator>equals</operator>
             <value>THIS_MONTH</value>
         </criteriaItems>
-        <language>es</language>
+        <language>en_US</language>
     </filter>
     <format>Summary</format>
     <formattingRules>
@@ -245,13 +245,13 @@
         <field>KPI__c.ProductGroup__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>KPI&apos;s YTD detalle producto</name>
+    <name>KPI&apos;s Mes Actual detalle producto</name>
     <params>
         <name>co</name>
         <value>0</value>
     </params>
     <reportType>AccountCustomEntity$KPI__c</reportType>
-    <scope>ownaccountteam</scope>
+    <scope>organization</scope>
     <showDetails>false</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>false</showSubTotals>
