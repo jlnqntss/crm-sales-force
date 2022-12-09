@@ -33,6 +33,11 @@
                 <label>Cartera</label>
             </value>
             <value>
+                <fullName>APES</fullName>
+                <default>false</default>
+                <label>APES</label>
+            </value>
+            <value>
                 <fullName>Ratio_PNIncrease</fullName>
                 <default>false</default>
                 <label>% Crec PN vs pa</label>
@@ -66,11 +71,6 @@
                 <fullName>Totaldiscount</fullName>
                 <default>false</default>
                 <label>% Dto. Total</label>
-            </value>
-            <value>
-                <fullName>APES</fullName>
-                <default>false</default>
-                <label>APES</label>
             </value>
         </valueSetDefinition>
     </valueSet>
