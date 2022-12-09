@@ -598,10 +598,8 @@ public with sharing class CaseUtil
     public static Case createCaseFromParent(Case padre, EmailMessage email, Boolean setTypification)
     {
         Case casoHijo = new Case(
-                        
                         Status='Asignado',
                         Subject = email?.Subject,
-                        Description = email?.TextBody,
                         CallCenter__c = padre?.CallCenter__c,
                         Origin = padre?.Origin,
                         SourceArea__c = padre?.SourceArea__c,
@@ -611,9 +609,11 @@ public with sharing class CaseUtil
                         PolicyId__c = padre?.PolicyId__c,
                         OfferId__c = padre?.OfferId__c,
                         ClaimId__c = padre?.ClaimId__c,
-                        Object__c = padre?.Object__c,
                         MediatedCustomer__c = padre?.MediatedCustomer__c
                     );
+
+        // Comprobamos si el cuerpo del mensaje es demasiado largo para la descripción. Si es así, la cortamos.
+        casoHijo.Description = email?.TextBody.length() > 32000 ? email?.TextBody.substring(0, 29999) : email?.TextBody;
 
         if (setTypification)
         {

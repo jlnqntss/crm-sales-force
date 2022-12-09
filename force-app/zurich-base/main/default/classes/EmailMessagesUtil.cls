@@ -39,6 +39,8 @@ public with sharing class EmailMessagesUtil
     @testvisible
     private static final Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
 
+    private static final Id integratorUserId = [Select Id FROM User WHERE Profile.Name like :Label.IntegratorUser].get(0).Id;
+
     /**
      * Get from the metadata configuration the list of emails configured for the Hegeo robot
      * 
@@ -96,7 +98,9 @@ public with sharing class EmailMessagesUtil
             if(padre?.IsClosed && (padre?.RecordTypeId == ocsRecordTypeId || padre?.RecordTypeId == uspRecordTypeId ))
             {
                 EmailMessage email = emailList.get(posicion);
-                Case casoHijo = CaseUtil.createCaseFromParent(padre, email, true); // que siempre cargue la tipificación del padre, y si tiene csv lo machacará
+                Boolean heredamosTipificacion = (padre?.RecordTypeId == ocsRecordTypeId && padre?.CallCenter__c == 'CC Service'); // Corregimos para que solo herede la tipificación en los casos que corresponde
+                Case casoHijo = CaseUtil.createCaseFromParent(padre, email, heredamosTipificacion); 
+                casoHijo.OwnerId = integratorUserId; // Asignamos Integrator como el Owner del caso
                 mapaCasosHijos.put(posicion, casoHijo);
             }
         }
@@ -314,7 +318,6 @@ public with sharing class EmailMessagesUtil
                             // copy the following data to the EmailMessage
                             em.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
                             em.GenesysQueueName__c = genesysQueue.Name;
-                        
                         }
                     }
                 }
