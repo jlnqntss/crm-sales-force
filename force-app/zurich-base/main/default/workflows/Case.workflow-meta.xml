@@ -118,7 +118,7 @@
         </recipients>
         <senderAddress>no.responder@zurich.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
-        <template>OneCustomerService/Notificaciones_Apertura_USP_1669973140243</template>
+        <template>OneCustomerService/Notificaciones_Apertura_USP</template>
     </alerts>
     <fieldUpdates>
         <fullName>Change_status_Assigned</fullName>
