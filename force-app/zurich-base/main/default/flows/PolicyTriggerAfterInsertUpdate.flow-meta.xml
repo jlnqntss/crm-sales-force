@@ -4,7 +4,7 @@
     <assignments>
         <name>policyAssignment</name>
         <label>Policy Assignment</label>
-        <locationX>270</locationX>
+        <locationX>402</locationX>
         <locationY>1511</locationY>
         <assignmentItems>
             <assignToReference>casesLoop.PolicyId__c</assignToReference>
@@ -18,9 +18,25 @@
         </connector>
     </assignments>
     <assignments>
+        <name>stageWonAssignment</name>
+        <label>Stage Won</label>
+        <locationX>138</locationX>
+        <locationY>1751</locationY>
+        <assignmentItems>
+            <assignToReference>casesLoop.QuotationStage__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Won</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>updateCaseAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>statusStageAssignment</name>
         <label>Status Stage Assignment</label>
-        <locationX>138</locationX>
+        <locationX>402</locationX>
         <locationY>1751</locationY>
         <assignmentItems>
             <assignToReference>casesLoop.Status</assignToReference>
@@ -158,12 +174,34 @@
     <decisions>
         <name>uspSalesDecision</name>
         <label>USP Sales</label>
-        <locationX>270</locationX>
+        <locationX>402</locationX>
         <locationY>1631</locationY>
         <defaultConnector>
             <targetReference>updateCaseAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>statusClosedOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casesLoop.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>casesLoop.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>stageWonAssignment</targetReference>
+            </connector>
+            <label>Status Closed</label>
+        </rules>
         <rules>
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
@@ -293,7 +331,7 @@
     <recordCreates>
         <name>createRecordUpdateCasesErrorAction</name>
         <label>Create Record Update Cases Error Action</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>2087</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -420,13 +458,6 @@
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Cerrado</stringValue>
-            </value>
-        </filters>
-        <filters>
             <field>CreatedDate</field>
             <operator>GreaterThanOrEqualTo</operator>
             <value>
@@ -447,7 +478,7 @@
     <recordUpdates>
         <name>updateCaseAction</name>
         <label>Update Case</label>
-        <locationX>270</locationX>
+        <locationX>402</locationX>
         <locationY>1967</locationY>
         <connector>
             <targetReference>casesLoop</targetReference>
