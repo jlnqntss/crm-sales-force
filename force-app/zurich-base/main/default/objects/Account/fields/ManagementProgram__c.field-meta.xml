@@ -30,6 +30,46 @@
                 <default>false</default>
                 <label>T-SIS</label>
             </value>
+            <value>
+                <fullName>ActiveX (Winbrok)</fullName>
+                <default>false</default>
+                <label>ActiveX (Winbrok)</label>
+            </value>
+            <value>
+                <fullName>GECOSE</fullName>
+                <default>false</default>
+                <label>GECOSE</label>
+            </value>
+            <value>
+                <fullName>MERLIN</fullName>
+                <default>false</default>
+                <label>MERLIN</label>
+            </value>
+            <value>
+                <fullName>PERISCLOUD</fullName>
+                <default>false</default>
+                <label>PERISCLOUD</label>
+            </value>
+            <value>
+                <fullName>SEGURLIF</fullName>
+                <default>false</default>
+                <label>SEGURLIF</label>
+            </value>
+            <value>
+                <fullName>SEGUROS BROKER</fullName>
+                <default>false</default>
+                <label>SEGUROS BROKER</label>
+            </value>
+            <value>
+                <fullName>WILLPLATINE</fullName>
+                <default>false</default>
+                <label>WILLPLATINE</label>
+            </value>
+            <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <label>Otros</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

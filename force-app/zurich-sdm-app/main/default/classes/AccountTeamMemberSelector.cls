@@ -72,10 +72,11 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
             Id rtId = (new AccountsSelector()).rtIntermediaryId;
 
             result = [
-                SELECT id, AccountId, Account.ParentId, UserId
+                SELECT id, AccountId, Account.ParentId, UserId, NotificationsOnPlans__c, Account.IntermediaryDescription__c, Account.INFOIntermediaryCode__c
                 FROM AccountTeamMember
                 WHERE Account.RecordTypeId = :rtId
                 AND UserId IN :userIds
+                AND Account.StatusIntermediary__c = 'Active'
             ];
         }
 
@@ -155,6 +156,36 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
             ];
         }
         
+        return result;
+    }
+
+
+    /**
+     * Recupera los AccountTeamMember que no tienen el check de notificacion activo de un usuario dado     
+     * 
+     * @author nts (dmunoz)
+     * @date 02/12/2022
+     * 
+     * @param {Id userId} Id de usuario
+     * @param {List<String> idsNotificationActiveList} Lista ids activos que debemos filtrar
+     * @return {List<AccountTeamMember>} lista de ATMs
+     */
+    public List<AccountTeamMember> findIntermedariesWithInactiveNotifications(String userId, List<String> idsNotificationActiveList) {
+        List<AccountTeamMember> result = null;
+
+        if( userId != null ) {
+            Id rtId = (new AccountsSelector()).rtIntermediaryId;
+
+            result = [
+                SELECT Id, NotificationsOnPlans__c
+                FROM AccountTeamMember
+                WHERE Account.RecordTypeId = :rtId
+                AND UserId = :userId
+                AND id not in :idsNotificationActiveList
+                AND NotificationsOnPlans__c = true
+                AND Account.StatusIntermediary__c = 'Active'
+            ];
+        }        
         return result;
     }
 }

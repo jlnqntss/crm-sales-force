@@ -11,7 +11,6 @@ public with sharing class AccountSearchService
      */
     public static Account[] findCustomersByPhoneNumber(String[] phones, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
-        //String scopeToApply = scope.scope;
         Set<Id> accountIds = new Set<Id>();
 
         ContactsSelector contactsSelector = new ContactsSelector();
@@ -57,7 +56,6 @@ public with sharing class AccountSearchService
      */
     public static Account[] findCustomersByEmail(String[] emails, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
-        //String scopeToApply = scope.scope;
         Set<Id> accountIds = new Set<Id>();
 
         ContactsSelector contactsSelector = new ContactsSelector();
@@ -105,7 +103,6 @@ public with sharing class AccountSearchService
      */
     public static Account[] findCustomersByDocumentId(String[] documentIds, String documentType, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
-        //String scopeToApply = scope.scope;
         AccountsSelector accountsSelector = new AccountsSelector();
         accountsSelector.setScope(scope);
         accountsSelector.setLegalEntity(legalEntity);

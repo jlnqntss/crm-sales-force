@@ -3510,6 +3510,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <custom>true</custom>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>AdminSetupParameter__mdt</name>
+    </customMetadataTypeAccesses>
     <customSettingAccesses>
         <enabled>true</enabled>
         <name>purecloud__CallCenterCustomSettings__c</name>

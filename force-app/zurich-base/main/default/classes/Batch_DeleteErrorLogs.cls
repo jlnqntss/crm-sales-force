@@ -28,10 +28,10 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
 
     global void execute(SchedulableContext SC)
     {
-        Id BatchInstanceId = database.executeBatch(
+        database.executeBatch(
             new Batch_DeleteErrorLogs(),
             200
-            );
+        );
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)
