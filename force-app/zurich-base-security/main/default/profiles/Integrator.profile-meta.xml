@@ -4129,6 +4129,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.PrimaryActivity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Profitability__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4284,7 +4289,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.LeadBusinessCode__c</field>
+        <field>Account.SharepointPartners__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
