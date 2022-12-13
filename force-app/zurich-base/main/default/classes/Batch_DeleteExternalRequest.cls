@@ -113,7 +113,7 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
                );
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if ( String.isBlank(query) )
         {
@@ -122,12 +122,12 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         database.executeBatch( new Batch_DeleteExternalRequest(query), 2000 );
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         try
         {
@@ -139,7 +139,7 @@ global class Batch_DeleteExternalRequest implements Database.Batchable<sObject>,
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {
         Integer numReqToDeleteKO = new ExternalRequestsSelector().count(null, daysKO, PROCESSED_RESULT_KO);
         Integer numReqToDeleteOK = new ExternalRequestsSelector().count(null, daysOK, PROCESSED_RESULT_OK);
