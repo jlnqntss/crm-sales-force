@@ -37,7 +37,7 @@
             <assignToReference>$Record.ContactId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Recuperar_Contacto_Cuenta_Partner.Id</elementReference>
+                <elementReference>GetContactAccountPartnerAction.Id</elementReference>
             </value>
         </assignmentItems>
     </assignments>
@@ -105,7 +105,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Recuperar_Contacto_Cuenta_Partner</targetReference>
+                <targetReference>GetContactAccountPartnerAction</targetReference>
             </connector>
             <label>Cuenta Informada</label>
         </rules>
@@ -157,6 +157,36 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>GetContactAccountPartnerAction</name>
+        <label>Recuperar Contacto Cuenta Partner</label>
+        <locationX>50</locationX>
+        <locationY>911</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ContactAccountAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetPolicyAction.Partner__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetRecordTypePartnerContactAction.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <sortField>Title</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>GetContactsAction</name>
         <label>Recuperar Contactos</label>
@@ -225,36 +255,6 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>RecordType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Recuperar_Contacto_Cuenta_Partner</name>
-        <label>Recuperar Contacto Cuenta Partner</label>
-        <locationX>50</locationX>
-        <locationY>911</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>ContactAccountAssignment</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>AccountId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>GetPolicyAction.Partner__c</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>RecordTypeId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>GetRecordTypePartnerContactAction.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Contact</object>
-        <sortField>Title</sortField>
-        <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
