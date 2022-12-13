@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>SendEmailAction</name>
-        <label>Mandar Email</label>
+        <name>NotificacionAperturaUSP</name>
+        <label>Notificacion Apertura USP</label>
         <locationX>50</locationX>
         <locationY>695</locationY>
-        <actionName>Case.Apertura_de_caso</actionName>
+        <actionName>Case.Notificacion_Apertura_USP</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
             <targetReference>CreateErrorLogCaseEmailSend</targetReference>
@@ -36,7 +36,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>SendEmailAction</targetReference>
+                <targetReference>NotificacionAperturaUSP</targetReference>
             </connector>
             <label>Dominio no excluido</label>
         </rules>
