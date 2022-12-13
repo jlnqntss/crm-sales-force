@@ -1,5 +1,6 @@
 public without sharing class OrdersSelector extends RecordsSelector
 { //Se necesita without sharing para que se hagan querys con usuarios de OCS en Klinc
+    public static final String RECORDTYPE_DEVELOPER_NAME = 'RecordType.DeveloperName';
     public OrdersSelector()
     {
         super(Order.getSObjectType());
@@ -17,8 +18,8 @@ public without sharing class OrdersSelector extends RecordsSelector
         {
             Query.Condition condition = Query.doOr
             (
-                Query.conditionEq('RecordType.DeveloperName', Label.PolicyLife),
-                Query.conditionGe('RecordType.DeveloperName', Label.PolicyGI)
+                Query.conditionEq(RECORDTYPE_DEVELOPER_NAME, Label.PolicyLife),
+                Query.conditionGe(RECORDTYPE_DEVELOPER_NAME, Label.PolicyGI)
             );
 
             this.baseQuery.addConditionEq('ContactId__r.DNI__c', dni).addConditionEq(Order.PolicyStatus__c, Label.PolicyStatusActive).addCondition(condition);
@@ -43,8 +44,8 @@ public without sharing class OrdersSelector extends RecordsSelector
         {
             Query.Condition condition = Query.doOr
             (
-                Query.conditionEq('RecordType.DeveloperName', Label.PolicyLife),
-                Query.conditionGe('RecordType.DeveloperName', Label.PolicyGI)
+                Query.conditionEq(RECORDTYPE_DEVELOPER_NAME, Label.PolicyLife),
+                Query.conditionGe(RECORDTYPE_DEVELOPER_NAME, Label.PolicyGI)
             );
 
             this.baseQuery.addConditionEq('ContactId__r.Email', email).addConditionEq(Order.PolicyStatus__c, Label.PolicyStatusActive).addCondition(condition);
@@ -69,8 +70,8 @@ public without sharing class OrdersSelector extends RecordsSelector
         {
             Query.Condition condition = Query.doOr
             (
-                Query.conditionEq('RecordType.DeveloperName', Label.PolicyLife),
-                Query.conditionGe('RecordType.DeveloperName', Label.PolicyGI)
+                Query.conditionEq(RECORDTYPE_DEVELOPER_NAME, Label.PolicyLife),
+                Query.conditionGe(RECORDTYPE_DEVELOPER_NAME, Label.PolicyGI)
             );
 
             this.baseQuery.addConditionEq('ContactId__r.MobilePhone', mobilephone).addConditionEq(Order.PolicyStatus__c, Label.PolicyStatusActive).addCondition(condition);
