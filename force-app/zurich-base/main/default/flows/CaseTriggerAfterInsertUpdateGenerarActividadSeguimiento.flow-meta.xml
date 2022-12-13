@@ -2,9 +2,9 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>56.0</apiVersion>
     <assignments>
-        <name>AsignacionColeccionProducto</name>
+        <name>ColeccionProductoAssignment</name>
         <label>Asignación Colección Producto</label>
-        <locationX>818</locationX>
+        <locationX>620</locationX>
         <locationY>1967</locationY>
         <assignmentItems>
             <assignToReference>ColeccionFiltrada</assignToReference>
@@ -14,13 +14,13 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>FinalAssigment</targetReference>
+            <targetReference>SegmentoUSPInformado</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>AsignacionColeccionSegmento</name>
+        <name>ColeccionSegmentoAssignment</name>
         <label>Asignación Colección Segmento</label>
-        <locationX>686</locationX>
+        <locationX>620</locationX>
         <locationY>1511</locationY>
         <assignmentItems>
             <assignToReference>ColeccionFiltrada</assignToReference>
@@ -34,15 +34,15 @@
         </connector>
     </assignments>
     <assignments>
-        <name>AsignacionColeccionSegmentoYProducto</name>
-        <label>Asignación Colección Segmento Y Producto</label>
-        <locationX>554</locationX>
-        <locationY>1967</locationY>
+        <name>ColeccionSegmentoUSPAssignment</name>
+        <label>Asignación Colección Segmento USP</label>
+        <locationX>620</locationX>
+        <locationY>2423</locationY>
         <assignmentItems>
             <assignToReference>ColeccionFiltrada</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>ProductFilter</elementReference>
+                <elementReference>FiltroPorSegmentoUSPFilter</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -68,8 +68,8 @@
     <assignments>
         <name>OnlyAssignment</name>
         <label>Asignación</label>
-        <locationX>906</locationX>
-        <locationY>2303</locationY>
+        <locationX>840</locationX>
+        <locationY>2759</locationY>
         <assignmentItems>
             <assignToReference>MetadatoEncontrado</assignToReference>
             <operator>Assign</operator>
@@ -84,7 +84,7 @@
     <assignments>
         <name>RecordMetadataAssigment</name>
         <label>Asignación Registro De Metadato</label>
-        <locationX>906</locationX>
+        <locationX>840</locationX>
         <locationY>1055</locationY>
         <assignmentItems>
             <assignToReference>MetadatoEncontrado</assignToReference>
@@ -95,9 +95,9 @@
         </assignmentItems>
         <assignmentItems>
             <assignToReference>ColeccionFiltrada</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
-                <elementReference>GetMetadataAction</elementReference>
+                <elementReference>SearchRecordMetadataLoop</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -107,7 +107,7 @@
     <assignments>
         <name>UniqueRecordAssigment</name>
         <label>Único Registro Asignación</label>
-        <locationX>426</locationX>
+        <locationX>492</locationX>
         <locationY>1055</locationY>
         <assignmentItems>
             <assignToReference>MetadatoEncontrado</assignToReference>
@@ -124,63 +124,63 @@
         <name>FilterBySegmentFilter</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filtro Por Segmento</label>
-        <locationX>686</locationX>
+        <locationX>620</locationX>
         <locationY>1391</locationY>
-        <assignNextValueToReference>currentItem_FilterBySegmentFilter</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_FilterBySegmentFilter_0</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
-        <collectionReference>GetMetadataAction</collectionReference>
+        <collectionReference>ColeccionFiltrada</collectionReference>
         <conditionLogic>and</conditionLogic>
         <conditions>
-            <leftValueReference>currentItem_FilterBySegmentFilter.SegmentoMediacion__c</leftValueReference>
+            <leftValueReference>currentItem_FilterBySegmentFilter_0.SegmentoMediacion__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <elementReference>$Record.Account.Segment__c</elementReference>
             </rightValue>
         </conditions>
         <connector>
-            <targetReference>AsignacionColeccionSegmento</targetReference>
+            <targetReference>ColeccionSegmentoAssignment</targetReference>
         </connector>
     </collectionProcessors>
     <collectionProcessors>
-        <name>ProductFilter</name>
+        <name>FiltroPorSegmentoUSPFilter</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
-        <label>Filtro Por Producto</label>
-        <locationX>554</locationX>
-        <locationY>1847</locationY>
-        <assignNextValueToReference>currentItem_ProductNotSegmentFilter</assignNextValueToReference>
+        <label>Filtro Por Segmento USP</label>
+        <locationX>620</locationX>
+        <locationY>2303</locationY>
+        <assignNextValueToReference>currentItem_FiltroPorSegmentoUSPFilter</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
-        <collectionReference>FilterBySegmentFilter</collectionReference>
+        <collectionReference>ColeccionFiltrada</collectionReference>
         <conditionLogic>and</conditionLogic>
         <conditions>
-            <leftValueReference>currentItem_ProductNotSegmentFilter.ProductoConstruccion__c</leftValueReference>
+            <leftValueReference>currentItem_FiltroPorSegmentoUSPFilter.SegmentoMediacionUSP__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
-                <elementReference>$Record.Product.INFO_Product_Number__c</elementReference>
+                <elementReference>$Record.Account.SMEsSegment__c</elementReference>
             </rightValue>
         </conditions>
         <connector>
-            <targetReference>AsignacionColeccionSegmentoYProducto</targetReference>
+            <targetReference>ColeccionSegmentoUSPAssignment</targetReference>
         </connector>
     </collectionProcessors>
     <collectionProcessors>
         <name>ProductNotSegmentFilter</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filtro Por Producto Sin Segmento</label>
-        <locationX>818</locationX>
+        <locationX>620</locationX>
         <locationY>1847</locationY>
-        <assignNextValueToReference>currentItem_ProductNotSegmentFilter</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_FiltroPorSegmentoUSPFilter</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
-        <collectionReference>GetMetadataAction</collectionReference>
+        <collectionReference>ColeccionFiltrada</collectionReference>
         <conditionLogic>and</conditionLogic>
         <conditions>
-            <leftValueReference>currentItem_ProductNotSegmentFilter.ProductoConstruccion__c</leftValueReference>
+            <leftValueReference>currentItem_FiltroPorSegmentoUSPFilter.ProductoConstruccion__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <elementReference>$Record.Product.INFO_Product_Number__c</elementReference>
             </rightValue>
         </conditions>
         <connector>
-            <targetReference>AsignacionColeccionProducto</targetReference>
+            <targetReference>ColeccionProductoAssignment</targetReference>
         </connector>
     </collectionProcessors>
     <decisions>
@@ -216,7 +216,7 @@
         <name>ConditionsDecision</name>
         <label>¿Cumple Condiciones?</label>
         <locationX>578</locationX>
-        <locationY>2615</locationY>
+        <locationY>3071</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>MetadataNotNullOutcome</name>
@@ -301,61 +301,32 @@
     <decisions>
         <name>ProductNotNullDecision</name>
         <label>Producto Informado</label>
-        <locationX>818</locationX>
+        <locationX>752</locationX>
         <locationY>1727</locationY>
         <defaultConnector>
-            <targetReference>FinalAssigment</targetReference>
+            <targetReference>SegmentoUSPInformado</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Sin Producto o Segmento</defaultConnectorLabel>
+        <defaultConnectorLabel>Sin Producto</defaultConnectorLabel>
         <rules>
-            <name>ProductSegmentOutcome</name>
+            <name>ProductOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>MetadatoEncontrado.ProductoConstruccion__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>FilterBySegmentFilter</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>ProductFilter</targetReference>
-            </connector>
-            <label>Producto Y Segmento</label>
-        </rules>
-        <rules>
-            <name>ProductNotSegmentOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>MetadatoEncontrado.ProductoConstruccion__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>FilterBySegmentFilter</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>ProductNotSegmentFilter</targetReference>
             </connector>
-            <label>Producto Sin Segmento</label>
+            <label>Producto</label>
         </rules>
     </decisions>
     <decisions>
         <name>SegmentNotNullOutcome</name>
         <label>Segmento Informado</label>
-        <locationX>818</locationX>
+        <locationX>752</locationX>
         <locationY>1271</locationY>
         <defaultConnector>
             <targetReference>ProductNotNullDecision</targetReference>
@@ -375,6 +346,31 @@
                 <targetReference>FilterBySegmentFilter</targetReference>
             </connector>
             <label>Segmento</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>SegmentoUSPInformado</name>
+        <label>Segmento USP Informado</label>
+        <locationX>752</locationX>
+        <locationY>2183</locationY>
+        <defaultConnector>
+            <targetReference>FinalAssigment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Sin Segmento USP</defaultConnectorLabel>
+        <rules>
+            <name>SegmentoUSPOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MetadatoEncontrado.SegmentoMediacionUSP__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>FiltroPorSegmentoUSPFilter</targetReference>
+            </connector>
+            <label>Segmento USP</label>
         </rules>
     </decisions>
     <decisions>
@@ -418,7 +414,7 @@
     <loops>
         <name>AssignmentLoop</name>
         <label>Bucle Solo Asignación</label>
-        <locationX>338</locationX>
+        <locationX>404</locationX>
         <locationY>935</locationY>
         <collectionReference>GetMetadataAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -432,8 +428,8 @@
     <loops>
         <name>FinalAssigment</name>
         <label>Asignación Final</label>
-        <locationX>818</locationX>
-        <locationY>2183</locationY>
+        <locationX>752</locationX>
+        <locationY>2639</locationY>
         <collectionReference>ColeccionFiltrada</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -446,7 +442,7 @@
     <loops>
         <name>SearchRecordMetadataLoop</name>
         <label>Buscar RegistroMetadato</label>
-        <locationX>818</locationX>
+        <locationX>752</locationX>
         <locationY>935</locationY>
         <collectionReference>GetMetadataAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -512,7 +508,7 @@
         <name>CreateTaskAction</name>
         <label>Crear Tarea</label>
         <locationX>50</locationX>
-        <locationY>2855</locationY>
+        <locationY>3311</locationY>
         <connector>
             <targetReference>UpdateDueDateAction</targetReference>
         </connector>
@@ -568,7 +564,7 @@
         <name>CreateTaskRecordsErrorAction</name>
         <label>Create Task Records  Error Action</label>
         <locationX>578</locationX>
-        <locationY>2975</locationY>
+        <locationY>3431</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -600,7 +596,7 @@
         <name>GetRecordTypeTaskErrorAction</name>
         <label>Get RecordType Task Error Action</label>
         <locationX>842</locationX>
-        <locationY>2855</locationY>
+        <locationY>3311</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -632,7 +628,7 @@
         <name>UpdateRecordsCaseDueDateErrorAction</name>
         <label>Update Records Case Due Date Error Action</label>
         <locationX>314</locationX>
-        <locationY>3095</locationY>
+        <locationY>3551</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -695,7 +691,7 @@
         <name>GetRecordTypeIDTaskActivityUSP</name>
         <label>Recuperar RecordTypeID Tarea Actividad USP</label>
         <locationX>50</locationX>
-        <locationY>2735</locationY>
+        <locationY>3191</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CreateTaskAction</targetReference>
@@ -719,7 +715,7 @@
         <name>UpdateDueDateAction</name>
         <label>Actualizar Fecha Vencimiento Caso</label>
         <locationX>50</locationX>
-        <locationY>2975</locationY>
+        <locationY>3431</locationY>
         <faultConnector>
             <targetReference>UpdateRecordsCaseDueDateErrorAction</targetReference>
         </faultConnector>
@@ -780,7 +776,7 @@
         <objectType>GenerateMonitoringCriteria__mdt</objectType>
     </variables>
     <variables>
-        <name>currentItem_FilterBySegmentFilter</name>
+        <name>currentItem_FilterBySegmentFilter_0</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -788,7 +784,7 @@
         <objectType>GenerateMonitoringCriteria__mdt</objectType>
     </variables>
     <variables>
-        <name>currentItem_ProductNotSegmentFilter</name>
+        <name>currentItem_FiltroPorSegmentoUSPFilter</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
