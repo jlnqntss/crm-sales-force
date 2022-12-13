@@ -16893,6 +16893,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>Contact.ContactPartner</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Contact.CustomerGI</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
