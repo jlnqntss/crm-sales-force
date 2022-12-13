@@ -1187,7 +1187,7 @@ Crear tipo de Informe Planes &gt; Actividades &gt; Assigned To e incluir por Loo
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Intermediary__c.ConectivityWsProvider__c</field>
+            <field>Intermediary__c.ManagementProgram__c</field>
             <table>PlanComercial__c</table>
         </columns>
         <columns>
