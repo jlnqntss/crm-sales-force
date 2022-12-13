@@ -104,8 +104,8 @@
     <assignments>
         <name>CaseEntitlementAssignment</name>
         <label>Asignar Entitlement Caso</label>
-        <locationX>2162</locationX>
-        <locationY>1031</locationY>
+        <locationX>2580</locationX>
+        <locationY>1283</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -169,7 +169,7 @@
         <description>Comprueba que el origen sea email, ya que de lo contrario, por el momento no se aplicaría ningún SLA</description>
         <name>EmailOriginDecision</name>
         <label>¿Origen email?</label>
-        <locationX>2657</locationX>
+        <locationX>2987</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>No Email</defaultConnectorLabel>
         <rules>
@@ -183,7 +183,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>RelatedIntermediaryDecision</targetReference>
+                <targetReference>RelatedAccountDecision</targetReference>
             </connector>
             <label>Origen Email</label>
         </rules>
@@ -309,9 +309,34 @@
         </rules>
     </decisions>
     <decisions>
+        <name>GotUspPartnerEntitlementResultsDecision</name>
+        <label>Existen resultados USP Partner</label>
+        <locationX>2778</locationX>
+        <locationY>791</locationY>
+        <defaultConnector>
+            <targetReference>GetDefaultUspPartnerAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Predeterminado</defaultConnectorLabel>
+        <rules>
+            <name>UspPartnerEntitlementResultsDecision</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FoundUspEntitlement</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CaseEntitlementAssignment</targetReference>
+            </connector>
+            <label>Resultados USP Partner</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>RecordTypeDecision</name>
         <label>¿Tipo de registro?</label>
-        <locationX>2112</locationX>
+        <locationX>2332</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -346,10 +371,10 @@
         </rules>
     </decisions>
     <decisions>
-        <description>Comprueba si tiene un mediador asociado y este cuenta con los datos necesarios informados. De lo contrario asocia el SLA por defecto</description>
-        <name>RelatedIntermediaryDecision</name>
-        <label>¿Tiene mediador asociado?</label>
-        <locationX>2360</locationX>
+        <description>Comprueba si tiene un mediador asociado y este cuenta con los datos necesarios informados o si es un partner. De lo contrario asocia el SLA por defecto</description>
+        <name>RelatedAccountDecision</name>
+        <label>¿Cuenta asociada?</label>
+        <locationX>2580</locationX>
         <locationY>551</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -383,7 +408,29 @@
             <connector>
                 <targetReference>GetUSPEntitlementAction</targetReference>
             </connector>
-            <label>Hay mediador</label>
+            <label>Mediador</label>
+        </rules>
+        <rules>
+            <name>PartnerOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSPartner</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetUspPartnerEntitlementAction</targetReference>
+            </connector>
+            <label>Partner</label>
         </rules>
     </decisions>
     <decisions>
@@ -535,6 +582,13 @@
                 <elementReference>Channel</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>CC Service</stringValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Entitlement</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -548,7 +602,7 @@
         <connector>
             <targetReference>Encontrado_Entitlement_CSM</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND 2 AND 3 AND (4 OR 5)</filterLogic>
         <filters>
             <field>CaseTypeN2__c</field>
             <operator>EqualTo</operator>
@@ -568,6 +622,20 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>$Record.Account.SegmentDescription__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>CSM Administración</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>CSM Particulares</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -620,6 +688,36 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Predeterminado USP - No productivo</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>GetDefaultUspPartnerAction</name>
+        <label>Recuperar Entitlement Default USP Partner</label>
+        <locationX>2866</locationX>
+        <locationY>911</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CaseEntitlementAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Predeterminado USP Partner</stringValue>
             </value>
         </filters>
         <filters>
@@ -733,8 +831,61 @@
         <sortField>ProductGroupCode__c</sortField>
         <sortOrder>Desc</sortOrder>
     </recordLookups>
+    <recordLookups>
+        <name>GetUspPartnerEntitlementAction</name>
+        <label>Recuperar Entitlement USP Partner</label>
+        <locationX>2778</locationX>
+        <locationY>671</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GotUspPartnerEntitlementResultsDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CaseTypeN2__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Subtype__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseTypeN3__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.TypeN3__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountSMESegment__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Account.SMEsSegment__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseChannel__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Partner</stringValue>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <sortField>ProductGroupCode__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </recordLookups>
     <start>
-        <locationX>1986</locationX>
+        <locationX>2206</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
