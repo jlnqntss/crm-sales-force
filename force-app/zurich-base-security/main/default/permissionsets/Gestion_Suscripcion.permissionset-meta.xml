@@ -6,6 +6,11 @@
     </customPermissions>
     <description>Gestión de suscripciones</description>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.SharepointPartners__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.AccountId</field>
         <readable>true</readable>

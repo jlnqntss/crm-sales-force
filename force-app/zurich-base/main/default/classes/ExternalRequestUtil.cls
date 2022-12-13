@@ -328,21 +328,22 @@ global without sharing class ExternalRequestUtil {
 
   private static void parseQuoteEntry() {
     
-    
+    String quoteEntryText = '"quoteEntry":';
+    String customerText = '"customer":';
     
     if (actualRequest != null && String.isNotBlank(actualRequest.json__c)) {
       String json = actualRequest.json__c;
-      String first_text = '"quoteEntry":';
-      String second_text = '"customer":';
+      String first_text = quoteEntryText;
+      String second_text = customerText;
       Integer first = 0;
       Integer second = 1;
-      Integer posQuoteEntry = json.indexOf('"quoteEntry":');
-      Integer posConsumer = json.indexOf('"customer":');
+      Integer posQuoteEntry = json.indexOf(quoteEntryText);
+      Integer posConsumer = json.indexOf(customerText);
       if( posConsumer < posQuoteEntry ) {
           first = 1;
-          first_text = '"customer":';
+          first_text = customerText;
           second = 0;
-          second_text = '"quoteEntry":';
+          second_text = quoteEntryText;
       }
       // Quote entries contains both lead and quote data. Split in separated objects.
       List<String> splittedQuoteEntry = actualRequest.json__c.split(first_text);

@@ -9,6 +9,7 @@ global class Mock_Parser
 {
     public static Boolean isIBA_MultiPart = false;
     public static Boolean isIBA_EMEA = false;
+    public static final String GENERIC_PARTNER = 'Orange Seguros';
 
     /**
      * MockParser
@@ -31,7 +32,7 @@ global class Mock_Parser
             if( isIBA_EMEA )
                 claim.SourceCountry__c = 'France';
             if( isIBA_MultiPart )
-                claim.Partner__c = 'Orange Seguros';
+                claim.Partner__c = GENERIC_PARTNER;
 
             recordsMap.put(claim.ClaimNumber__c, (SObject) claim);
         }
@@ -55,7 +56,7 @@ global class Mock_Parser
                     lead.SourceCountry__c = 'France';
                 if( isIBA_MultiPart )
                 {
-                    lead.Partner__c = 'Orange Seguros';
+                    lead.Partner__c = GENERIC_PARTNER;
                     lead.Status__c = Label.Customer;
                     lead.MasterPolicyNum__c = '666';
                 }
@@ -79,7 +80,7 @@ global class Mock_Parser
                 if( isIBA_EMEA )
                     customer.SourceCountry__c = 'France';
                 if( isIBA_MultiPart )
-                    customer.Partner__c = 'Orange Seguros';
+                    customer.Partner__c = GENERIC_PARTNER;
 
                 customer.Status__c = Label.Customer;
                 recordsMap.put(customer.CustomerNum__c, (SObject) customer);
@@ -104,7 +105,7 @@ global class Mock_Parser
             if( isIBA_EMEA )
                 policy.SourceCountry__c = 'France';
             if( isIBA_MultiPart )
-                policy.Partner__c = 'Orange Seguros';
+                policy.Partner__c = GENERIC_PARTNER;
 
             recordsMap.put(policy.PolicyNum__c, (SObject) policy);
         }
@@ -122,7 +123,7 @@ global class Mock_Parser
             if( isIBA_EMEA )
                 quote.SourceCountry__c = 'France';
             if( isIBA_MultiPart )
-                quote.Partner__c = 'Orange Seguros';
+                quote.Partner__c = GENERIC_PARTNER;
 
             recordsMap.put(quote.QuoteEntry__c, (SObject) quote);
         }
@@ -146,7 +147,7 @@ global class Mock_Parser
             DiscountIdNumber__c = 1111
             );
         if( isIBA_MultiPart )
-            disc.Partner__c = 'Orange Seguros';
+            disc.Partner__c = GENERIC_PARTNER;
 
         OrderItem item = new OrderItem(
             itemId__c = '7777',
@@ -156,7 +157,7 @@ global class Mock_Parser
             itemModel__c = 'Samsung Galaxy'
             );
         if( isIBA_MultiPart )
-            item.Partner__c = 'Orange Seguros';
+            item.Partner__c = GENERIC_PARTNER;
 
         OrderItem item2 = new OrderItem(
             itemId__c = '6666',
@@ -166,7 +167,7 @@ global class Mock_Parser
             itemModel__c = 'IphoneX'
             );
         if( isIBA_MultiPart )
-            item2.Partner__c = 'Orange Seguros';
+            item2.Partner__c = GENERIC_PARTNER;
 
         if ( Entity.equals('Quote') )
         {
@@ -218,7 +219,7 @@ global class Mock_Parser
             SourceCountry__c = 'Spain'
             );
         if( isIBA_MultiPart )
-            cover.Partner__c = 'Orange Seguros';
+            cover.Partner__c = GENERIC_PARTNER;
 
         Cover__c subcover = new Cover__c(
             CoverId__c = '2',
@@ -229,7 +230,7 @@ global class Mock_Parser
             SourceCountry__c = 'Spain'
             );
         if( isIBA_MultiPart )
-            subcover.Partner__c = 'Orange Seguros';
+            subcover.Partner__c = GENERIC_PARTNER;
 
         Cover__c cover2 = new Cover__c(
             CoverId__c = '3',
@@ -240,7 +241,7 @@ global class Mock_Parser
             SourceCountry__c = 'Spain'
             );
         if( isIBA_MultiPart )
-            cover2.Partner__c = 'Orange Seguros';
+            cover2.Partner__c = GENERIC_PARTNER;
 
         Cover__c subcover2 = new Cover__c(
             CoverId__c = '4',
@@ -251,7 +252,7 @@ global class Mock_Parser
             SourceCountry__c = 'Spain'
             );
         if( isIBA_MultiPart )
-            subcover2.Partner__c = 'Orange Seguros';
+            subcover2.Partner__c = GENERIC_PARTNER;
 
         cover.PolicyProduct__r =  new OrderItem(itemId__c = '7777');
         subcover.PolicyProduct__r =  new OrderItem(itemId__c = '7777');
@@ -274,7 +275,7 @@ global class Mock_Parser
             SourceCountry__c = 'Spain'
             );
         if( isIBA_MultiPart )
-            cover3.Partner__c = 'Orange Seguros';
+            cover3.Partner__c = GENERIC_PARTNER;
 
         Cover__c subcover3 = new Cover__c(
             CoverId__c = '2',
@@ -285,7 +286,7 @@ global class Mock_Parser
             SourceCountry__c = 'Spain'
             );
         if( isIBA_MultiPart )
-            subcover3.Partner__c = 'Orange Seguros';
+            subcover3.Partner__c = GENERIC_PARTNER;
 
         cover3.PolicyProduct__r = new OrderItem(itemId__c = '6666');
         subcover3.PolicyProduct__r = new OrderItem(itemId__c = '6666');

@@ -288,9 +288,11 @@ private class EmailMessagesUtilTest
         emails[0].Incoming = true;
         emails[0].ParentId = casosInciales[0].Id;
         emails[0].HtmlBody = '';
+        emails[0].TextBody = '';
         emails[1].Incoming = true;
         emails[1].ParentId = casosInciales[1].Id;
         emails[1].HtmlBody = '';
+        emails[1].TextBody = '';
 
         EmailMessagesUtil emUtil = new EmailMessagesUtil();
 
