@@ -642,7 +642,7 @@
             <label>Week left</label>
         </rules>
     </decisions>
-    <description>SDM: añadir lógica para enviar notificaciones queda una semana a los planes mensuales de mediador que su RN tenga en la lista de activos</description>
+    <description>SDM: añadir Indicador APES a la lógica</description>
     <environments>Default</environments>
     <formulas>
         <description>Selecciona el mensaje a utilizar en la notificación Week Left según sea Plan Mensual o cualquier otro tipo</description>
@@ -790,6 +790,7 @@ IF
   &quot;Ratio_Claim&quot;,  {!$Record.TargetKPIPercent__c},
   &quot;Ratio_Retention&quot;,  {!$Record.TargetKPIPercent__c},
   &quot;Totaldiscount&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;APES&quot;,  {!$Record.TargetKPICurrency__c},
   0
 )</expression>
         <scale>2</scale>

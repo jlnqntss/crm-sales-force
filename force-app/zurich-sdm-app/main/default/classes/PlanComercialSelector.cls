@@ -61,7 +61,8 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         'Ratio_PortIncrease' => eIndicator.type_percent,
         'Ratio_Claim' => eIndicator.type_percent,
         'Ratio_Retention' => eIndicator.type_percent,
-        'Totaldiscount' => eIndicator.type_percent
+        'Totaldiscount' => eIndicator.type_percent,
+        'APES' => eIndicator.type_currency
     };
 
     /**
