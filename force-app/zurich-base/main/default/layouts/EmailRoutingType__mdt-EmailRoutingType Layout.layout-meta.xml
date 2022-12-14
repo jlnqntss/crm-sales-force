@@ -11,8 +11,8 @@
                 <field>MasterLabel</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>EmailAddress__c</field>
+                <behavior>Edit</behavior>
+                <field>Descripcion__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -31,6 +31,14 @@
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>NamespacePrefix</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>EmailAddress__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Activo__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
