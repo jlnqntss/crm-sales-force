@@ -459,7 +459,7 @@
                 <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>OCSPartner</stringValue>
+                    <stringValue>PartnerOCS</stringValue>
                 </rightValue>
             </conditions>
             <connector>
