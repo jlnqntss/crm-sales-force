@@ -13,11 +13,11 @@ global class Mock_Parser
     /**
      * MockParser
      */
-    static global Map<String, SObject> MockParser(String Entity)
+    static global Map<String, SObject> MockParser(String entity)
     {
         Map<String, SObject> recordsMap = new Map<String, SObject>();
 
-        if ( Entity.equals('Claim') )
+        if ( entity.equals('Claim') )
         {
             Case claim = new Case(
                 ClaimNumber__c = '797',
@@ -35,7 +35,7 @@ global class Mock_Parser
 
             recordsMap.put(claim.ClaimNumber__c, (SObject) claim);
         }
-        else if ( Entity.equals('Customer') )
+        else if ( entity.equals('Customer') )
         {
             
             if (ExternalRequestUtil.actualRequest.entity__c == 'QuoteEntry')
@@ -85,7 +85,7 @@ global class Mock_Parser
                 recordsMap.put(customer.CustomerNum__c, (SObject) customer);
             }
         }
-        else if ( Entity.equals('Policy') )
+        else if ( entity.equals('Policy') )
         {
             Order policy = new Order(
                 EffectiveDate = Date.valueOf('1990-01-02'),
@@ -108,7 +108,7 @@ global class Mock_Parser
 
             recordsMap.put(policy.PolicyNum__c, (SObject) policy);
         }
-        else if ( Entity.equals('QuoteEntry') )
+        else if ( entity.equals('QuoteEntry') )
         {
             //Quote from the web
             Order quote = new Order(
@@ -133,7 +133,7 @@ global class Mock_Parser
      * MockParserSecondLevel
      */
     static global Map<String, List<SObject> > MockParserSecondLevel(
-        String Entity
+        String entity
         )
     {
         Map<String, List<SObject> > secLvlRecordsMap = new Map<String, List<SObject> >();
@@ -168,7 +168,7 @@ global class Mock_Parser
         if( isIBA_MultiPart )
             item2.Partner__c = 'Orange Seguros';
 
-        if ( Entity.equals('Quote') )
+        if ( entity.equals('Quote') )
         {
             //Descuento
             disc.Policy__r = new Order(QuoteEntry__c = '9090');
@@ -182,7 +182,7 @@ global class Mock_Parser
             listaItems.add( (SObject) item2 );
             secLvlRecordsMap.put('OrderItem', listaItems);
         }
-        else if ( Entity.equals('Policy') )
+        else if ( entity.equals('Policy') )
         {
             //Descuento
             disc.Policy__r = new Order(PolicyNum__c = '1111');
@@ -203,7 +203,7 @@ global class Mock_Parser
     /**
      * MockParserThirdLevel
      */
-    static global Map<String, List<SObject> > MockParserThirdLevel(String Entity)
+    static global Map<String, List<SObject> > MockParserThirdLevel(String entity)
     {
         Map<String, List<SObject> > thrLvlRecordsMap = new Map<String, List<SObject> >();
         List<SObject> listaObjetos = new List<SObject>();

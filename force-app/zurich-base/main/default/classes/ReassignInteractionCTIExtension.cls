@@ -379,9 +379,9 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private static String sfdc15To18 (String original15) {
         // This method expects a 15-char valid Salesforce ID, and returns the 18-char equivalent
         Map<String,String> lookup5bin = new Map<String,String>();
-        String Piece1 = '';
-        String Piece2 = '';
-        String Piece3 = '';
+        String piece1 = '';
+        String piece2 = '';
+        String piece3 = '';
 
         original15 = original15.substring(0,15);
 
@@ -394,25 +394,25 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         lookup5bin.put('00110','G'); lookup5bin.put('01110','O'); lookup5bin.put('10110','W'); lookup5bin.put('11110','4');
         lookup5bin.put('00111','H'); lookup5bin.put('01111','P'); lookup5bin.put('10111','X'); lookup5bin.put('11111','5');
 
-        Piece1 = sfdc0Or1(original15.substring(4,5)) +
+        piece1 = sfdc0Or1(original15.substring(4,5)) +
         sfdc0Or1(original15.substring(3,4)) +
         sfdc0Or1(original15.substring(2,3)) +
         sfdc0Or1(original15.substring(1,2)) +
         sfdc0Or1(original15.substring(0,1));
 
-        Piece2 = sfdc0Or1(original15.substring(9,10)) +
+        piece2 = sfdc0Or1(original15.substring(9,10)) +
         sfdc0Or1(original15.substring(8,9)) +
         sfdc0Or1(original15.substring(7,8)) +
         sfdc0Or1(original15.substring(6,7)) +
         sfdc0Or1(original15.substring(5,6));
 
-        Piece3 = sfdc0Or1(original15.substring(14,15)) +
+        piece3 = sfdc0Or1(original15.substring(14,15)) +
         sfdc0Or1(original15.substring(13,14)) +
         sfdc0Or1(original15.substring(12,13)) +
         sfdc0Or1(original15.substring(11,12)) +
         sfdc0Or1(original15.substring(10,11));
 
-        return (original15 + lookup5bin.get(Piece1) + lookup5bin.get(Piece2) + lookup5bin.get(Piece3));
+        return (original15 + lookup5bin.get(piece1) + lookup5bin.get(piece2) + lookup5bin.get(piece3));
     }
 
     /**

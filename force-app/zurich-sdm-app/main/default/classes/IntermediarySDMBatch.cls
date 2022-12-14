@@ -49,7 +49,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
     /**
      * Start. Execute the query locator for the batch
      */
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if( String.isBlank(query) ) {
             // Listamos todos los campos de Mediador que vamos a necesitar
@@ -97,7 +97,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
     /**
      * Execute. The method for each batch
      */
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         if ( scope != null && !scope.isEmpty() ) {
             try {
@@ -127,7 +127,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
     /**
      * Finish. The postprocesing method
      */
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {
         try {
             
@@ -170,7 +170,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
     /**
      * Execute. The method for the scheduled batch
      */
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         Database.executeBatch(new IntermediarySDMBatch(query), 200);
     }

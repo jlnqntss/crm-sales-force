@@ -18,7 +18,7 @@ global class Batch_ProcessExternalRequest implements Database.Batchable<sObject>
         }
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if (query == null || query == '')
         {
@@ -28,14 +28,14 @@ global class Batch_ProcessExternalRequest implements Database.Batchable<sObject>
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         Database.executeBatch(new Batch_ProcessExternalRequest(query), 1);
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
-        Savepoint SP = Database.setSavepoint();
+        Savepoint sp = Database.setSavepoint();
 
         if ( scope != null && !scope.isEmpty() )
         {
@@ -50,7 +50,7 @@ global class Batch_ProcessExternalRequest implements Database.Batchable<sObject>
             catch (Exception e)
             {
                 //Se ha producido una excepción no controlada en ExternalRequestUtil y se debe hacer rollback de las operaciones parcialmente completas
-                Database.rollback(SP);
+                Database.rollback(sp);
 
                 for (ExternalRequest__c ExtReq : listExternalRequest)
                 {
@@ -72,6 +72,6 @@ global class Batch_ProcessExternalRequest implements Database.Batchable<sObject>
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 }

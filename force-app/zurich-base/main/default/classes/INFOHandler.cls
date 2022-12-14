@@ -127,10 +127,10 @@ public class INFOHandler implements ISystem
      * @throws
      * @where ExternalJobQueueBatch
      */
-    public static void prepare(Transformer INFOTransformer, List<ExternalRequest__c> externalRequestList)
+    public static void prepare(Transformer infoTransformer, List<ExternalRequest__c> externalRequestList)
     {
         // 1 - Obtener el tranformer a utilizar
-        tf = INFOTransformer;
+        tf = infoTransformer;
 
         // 2 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
         recordsToUpsertByEntity = tf.initRequestsMapBySettings();
