@@ -14,7 +14,7 @@
                             <value>Delete</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>CustomButton.Task.Clone</value>
+                            <value>Task.CloneUSPActivity</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
