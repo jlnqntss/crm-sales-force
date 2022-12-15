@@ -512,9 +512,17 @@ public class INFOHandler implements ISystem
                 caseRecord.Origin = NOTE_CASE_ORIGIN;
                 // Assign the Case Source Area to "Mediator"
                 caseRecord.SourceArea__c = NOTE_CASE_SOURCE_AREA;
-                // Assign the RecordType
-                caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+
+                // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
+                String recordTypeDevName = getEquivalence(HANDLER_ORIGIN,NOTE,caseRecord.HegeoProductGroupCode__c.trim());
+
+                if( String.isBlank(recordTypeDevName) ) {
+                    throw new INFOHandlerException('RecordType equivalence not found for the following Object Type: ' + caseRecord.HegeoProductGroupCode__c.trim());
+                }
+                caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeDevName).getRecordTypeId();
+
                 // Get the Type, Subytype and TypeN3 from the HEGEO fields metadata configuration
+
                 if( recordValuesMap.containsKey('NOTE_DESC_TIPO_ENVIO') &&
                     recordValuesMap.containsKey('NOTE_DESC_SUBTIPO') ) {
                         String infoType = (String)recordValuesMap.get('NOTE_DESC_TIPO_ENVIO');
