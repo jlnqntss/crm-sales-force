@@ -4,21 +4,25 @@ public class SendSurveyButtonControllerTest
     @isTest
     static void test_getTransferPollPhoneNumber_ok()
     {
-        SendSurveyButtonController.testListPollPhoneNumber = new List<AdminSetupParameter__mdt> {
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
+        String pollPhoneNumberResult;
+        SendSurveyButtonController.testListPollPhoneNumber = 
             new AdminSetupParameter__mdt(
                 Label='TestMetadataPollNumber',
                 DeveloperName='TestMetadataPollNumber',
                 KeyName__c='TestMetadataPollNumber',
                 Value__c='+34999999999',
                 Description__c='TestDescription'
-                )
-        };
+            );
+        System.runAs(u)
+        {
+            Test.startTest();
+            pollPhoneNumberResult = SendSurveyButtonController.getTransferPollPhoneNumber();
+            Test.stopTest();            
+        }
 
-        Test.startTest();
-        String pollPhoneNumberResult = SendSurveyButtonController.getTransferPollPhoneNumber();
-        Test.stopTest();
-
-        System.assertEquals(SendSurveyButtonController.testListPollPhoneNumber.get(0).Value__c, pollPhoneNumberResult, 'PhoneNumber is the same');
+        System.assertEquals(SendSurveyButtonController.testListPollPhoneNumber.Value__c, pollPhoneNumberResult, 'PhoneNumber is the same');
     }
     
     @TestSetup

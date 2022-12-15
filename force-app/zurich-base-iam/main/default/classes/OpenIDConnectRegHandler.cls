@@ -136,7 +136,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         u.profileId                   = profileId;
         u.alias                       = data.username.left(8);
         u.CommunityNickname           = data.username;
-        u.languagelocalekey           = LANGUAGE_SPANISH; //UserInfo.getLanguage();
+        u.languagelocalekey           = LANGUAGE_SPANISH;
         u.UserPermissionsSupportUser  = SERVICE_CLOUD_USER;
         u.localesidkey                = UserInfo.getLocale();
         u.emailEncodingKey            = EMAIL_ENCODING;
@@ -617,7 +617,6 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
 
         } catch (Exception e) {
             ErrorLogUtil.commitError(e, CLASS_NAME);
-            //throw new RegHandlerException('Error durante la asignación de grupos, contacte con su administrador.');
         }
     }
 

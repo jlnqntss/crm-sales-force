@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <assignments>
+        <description>Obtener el mensaje de error del flujo al actualizar Account Team Member</description>
+        <name>Fault_Error_Message</name>
+        <label>Fault Error Message</label>
+        <locationX>440</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>FaultMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <description>SDM: Ejecutar como usuario de sistema</description>
+    <environments>Default</environments>
+    <interviewLabel>SDM Update Notification Flag ATM {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SDM Update Notification Flag ATM</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Actualizar los registros Account Team Member con la información recibida en la entrada</description>
+        <name>Update_Notifications_Flag_Account_Team_Member</name>
+        <label>Update Notifications Flag Account Team Member</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <faultConnector>
+            <targetReference>Fault_Error_Message</targetReference>
+        </faultConnector>
+        <inputReference>AccountTeamsMemberstoUpdate</inputReference>
+    </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Notifications_Flag_Account_Team_Member</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Lista de registros account team member para actualizar</description>
+        <name>AccountTeamsMemberstoUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AccountTeamMember</objectType>
+    </variables>
+    <variables>
+        <description>Mensaje de error capturado por el DML</description>
+        <name>FaultMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+</Flow>

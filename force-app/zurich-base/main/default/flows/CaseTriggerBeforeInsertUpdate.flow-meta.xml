@@ -5,8 +5,8 @@
         <description>rellenar el campo closed by con el usuario que ejecutó el flow</description>
         <name>cerradoPorAssignment</name>
         <label>Cerrado por</label>
-        <locationX>380</locationX>
-        <locationY>647</locationY>
+        <locationX>468</locationX>
+        <locationY>767</locationY>
         <assignmentItems>
             <assignToReference>$Record.ClosedBy__c</assignToReference>
             <operator>Assign</operator>
@@ -31,14 +31,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>cerradoPorAssignment</targetReference>
+            <targetReference>ClosedBySystem</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>etapaGanadaAssignment</name>
         <label>Etapa Ganada</label>
         <locationX>50</locationX>
-        <locationY>1007</locationY>
+        <locationY>1223</locationY>
         <assignmentItems>
             <assignToReference>$Record.QuotationStage__c</assignToReference>
             <operator>Assign</operator>
@@ -58,7 +58,7 @@
         <name>etapaPerdidaAssignment</name>
         <label>Etapa Perdida</label>
         <locationX>314</locationX>
-        <locationY>1007</locationY>
+        <locationY>1223</locationY>
         <assignmentItems>
             <assignToReference>$Record.QuotationStage__c</assignToReference>
             <operator>Assign</operator>
@@ -75,12 +75,45 @@
         </assignmentItems>
     </assignments>
     <decisions>
+        <description>Comprobamos si el cierre ha sido realizado por el sistema, en cuyo caso, no lo modificaremos</description>
+        <name>ClosedBySystem</name>
+        <label>¿Cerrado por el sistema?</label>
+        <locationX>380</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>cerradoPorAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ClosedBy__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ClosedBy__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>0055I000000c4aOQAQ</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>uspTipoVentasDecision</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>closeResultInformadoDecision</name>
         <label>Close Result Informado</label>
         <locationX>380</locationX>
         <locationY>311</locationY>
         <defaultConnector>
-            <targetReference>cerradoPorAssignment</targetReference>
+            <targetReference>ClosedBySystem</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -104,7 +137,7 @@
         <name>ganadaPerdidaDecision</name>
         <label>Ganada o Perdida</label>
         <locationX>182</locationX>
-        <locationY>887</locationY>
+        <locationY>1103</locationY>
         <defaultConnector>
             <targetReference>etapaPerdidaAssignment</targetReference>
         </defaultConnector>
@@ -129,7 +162,7 @@
         <name>uspTipoVentasDecision</name>
         <label>USP Y Tipo Ventas</label>
         <locationX>380</locationX>
-        <locationY>767</locationY>
+        <locationY>983</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>uspVentasOutcome</name>

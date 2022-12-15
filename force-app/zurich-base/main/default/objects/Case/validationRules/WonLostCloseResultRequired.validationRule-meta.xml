@@ -4,7 +4,7 @@
     <active>true</active>
     <description>[VR Caso] Es obligatorio informar el Resultado de cierre antes de pasar a la etapa Ganada o Perdida</description>
     <errorConditionFormula>RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
-(ISPICKVAL(QuotationStage__c,&quot;Won&quot;) || ISPICKVAL(QuotationStage__c,&quot;Lost&quot;)) &amp;&amp; ISBLANK(TEXT(	CloseResult__c))</errorConditionFormula>
+(ISPICKVAL(QuotationStage__c,&quot;Won&quot;) || ISPICKVAL(QuotationStage__c,&quot;Lost&quot;)) &amp;&amp; ISBLANK(TEXT(	CloseResult__c))&amp;&amp; $Permission.USPTriggerCaseValidationRules</errorConditionFormula>
     <errorDisplayField>CloseResult__c</errorDisplayField>
     <errorMessage>[VR Caso] Es obligatorio informar el Resultado de cierre antes de pasar a la etapa Ganada o Perdida</errorMessage>
 </ValidationRule>

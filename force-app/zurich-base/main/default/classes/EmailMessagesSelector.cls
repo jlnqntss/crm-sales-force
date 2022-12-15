@@ -96,7 +96,6 @@ public without sharing class EmailMessagesSelector
         {
             return new List<EmailMessage>();
         }
-        //return [SELECT Id, RelatedToId FROM EmailMessage WHERE MessageIdentifier IN : messageIdentifiers ORDER BY SystemModstamp DESC];
     }
 
     /**

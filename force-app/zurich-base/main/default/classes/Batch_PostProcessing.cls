@@ -31,7 +31,7 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
 
     global void execute(SchedulableContext SC)
     {
-        Id BatchInstanceId = database.executeBatch(new Batch_PostProcessing(), 200);
+        database.executeBatch(new Batch_PostProcessing(), 200);
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope)

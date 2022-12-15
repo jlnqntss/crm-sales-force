@@ -416,7 +416,7 @@ public without sharing class ErrorLogUtil
 
         if ( !errors.isEmpty() )
         {
-            Database.SaveResult[] srResults = Database.insert(errors, false);
+            Database.insert(errors, false);
         }
     }
 
@@ -458,7 +458,7 @@ public without sharing class ErrorLogUtil
             dmo.AllowFieldTruncation = true;
             dmo.OptAllOrNone = false;
 
-            Database.SaveResult[] srResults = Database.insert(errors, dmo);
+            Database.insert(errors, dmo);
         }
     }
 

@@ -1,23 +1,23 @@
-public without sharing class SendSurveyButtonController
+public with sharing class SendSurveyButtonController
 {
     @testvisible
-    public static List<AdminSetupParameter__mdt> testListPollPhoneNumber;
+    public static AdminSetupParameter__mdt testListPollPhoneNumber;
 
     @AuraEnabled
     public static String getTransferPollPhoneNumber()
     {
         String genesysPollNumber = '';
-        List<AdminSetupParameter__mdt> settings = [SELECT Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = 'GenesysPollPhoneNumber'];
+        AdminSetupParameter__mdt settings = AdminSetupParameter__mdt.getInstance('GenesysPollPhoneNumber');
         if( Test.isRunningTest() )
         {
-            if( testListPollPhoneNumber != null )
+            if( testListPollPhoneNumber.Value__c != null )
             {
                 settings = testListPollPhoneNumber;
             }
         }
-        if( settings != null && !settings.isEmpty() )
+        if( settings.Value__c != null )
         {
-            genesysPollNumber = settings[0].Value__c;
+            genesysPollNumber = settings.Value__c;
         }
         else
         {

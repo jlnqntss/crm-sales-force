@@ -7,6 +7,7 @@ public with sharing class ExternalRequestsSelector
     public static final Id GENERIC_RECORD_TYPE_DEVELOPER_ID = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(GENERIC_RECORD_TYPE_DEVELOPER_NAME).getRecordTypeId();
     public static final Id INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(INFO_PROCESSED_RECORD_TYPE_DEVELOPER_NAME).getRecordTypeId();
     private static final String escape = '\'';
+    private static final String DEFAULT_STRING_FORMAT = '{0} {1} {2}';
     private static final String conditionRecordTypeIds = ' RecordTypeId IN (' + escape + GENERIC_RECORD_TYPE_DEVELOPER_ID + escape +', ' + escape + INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID + escape + ')';
 
     private Set<String> externalRequestFieldsToQuery
@@ -106,7 +107,7 @@ public with sharing class ExternalRequestsSelector
             return new List<ExternalRequest__c>();
         }
 
-        return Database.query( String.format('{0} {1} {2}', new List<String>
+        return Database.query( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
             'WHERE Origin__c IN :origins',
@@ -128,7 +129,7 @@ public with sharing class ExternalRequestsSelector
             return new List<ExternalRequest__c>();
         }
 
-        return Database.query( String.format('{0} {1} {2}', new List<String>
+        return Database.query( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
             'WHERE RecordTypeId = :recordTypeId AND Processed__c = false',
@@ -150,7 +151,7 @@ public with sharing class ExternalRequestsSelector
             return new List<ExternalRequest__c>();
         }
 
-        return Database.query( String.format('{0} {1} {2}', new List<String>
+        return Database.query( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
             'WHERE Id IN :recordIds',
@@ -172,7 +173,7 @@ public with sharing class ExternalRequestsSelector
             return new List<ExternalRequest__c>();
         }
 
-        return Database.query( String.format('{0} {1} {2}', new List<String>
+        return Database.query( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
             'WHERE Origin__c IN :origins AND ProcessResult__c != NULL',
@@ -194,7 +195,7 @@ public with sharing class ExternalRequestsSelector
             return null;
         }
 
-        return Database.getQueryLocator( String.format('{0} {1} {2}', new List<String>
+        return Database.getQueryLocator( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
             'WHERE RecordTypeId = :recordTypeId AND Processed__c = false ORDER BY CreatedDate, NumRetry__c',
@@ -218,7 +219,7 @@ public with sharing class ExternalRequestsSelector
             return new List<ExternalRequest__c>();
         }
 
-        return Database.query( String.format('{0} {1} {2}', new List<String>
+        return Database.query( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
             'WHERE RecordTypeId = :recordTypeId AND Processed__c = false ORDER BY Id ' + orderType,
@@ -243,7 +244,7 @@ public with sharing class ExternalRequestsSelector
         recordsLimit=LIMIT_BATCH_DELETE_EXTERNAL_REQUEST;
         try 
         {
-            return String.format('{0} {1} {2}', new List<String>
+            return String.format(DEFAULT_STRING_FORMAT, new List<String>
             {
                 baseQuery,
                 'WHERE Processed__c = true AND ProcessedDate__c < LAST_N_DAYS: ' + days + ' AND ProcessResult__c = ' + escape + processedResult + escape + 'AND ' + conditionRecordTypeIds,

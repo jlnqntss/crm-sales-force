@@ -21,6 +21,16 @@ async function main() {
         : /^\d*\.\d*\.\d*-UAT$/
     );
 
+    if (!lastTag) {
+      return await gitLabService.createTag({
+        tag_name:
+          process.env["CI_COMMIT_REF_NAME"] === "dev"
+            ? "1.0.0-rc"
+            : "1.0.0-UAT",
+        ref: process.env["CI_COMMIT_REF_NAME"]
+      });
+    }
+
     if (process.env["CI_COMMIT_REF_NAME"].includes(lastTag.name)) {
       console.log(`Already in version ${lastTag.name} commit. Exit`);
 
