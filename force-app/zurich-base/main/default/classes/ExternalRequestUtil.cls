@@ -318,7 +318,6 @@ global without sharing class ExternalRequestUtil {
                 }
             }
         } catch (Exception e) {
-            //ErrorLogUtil.commitError(e, 'ExternalRequestUtil', externalRequestItem.Id);
             externalRequestItem.processed__c = true;
             externalRequestItem.processedDate__c = Datetime.now();
             externalRequestItem.processResult__c = 'KO';
@@ -329,21 +328,22 @@ global without sharing class ExternalRequestUtil {
 
   private static void parseQuoteEntry() {
     
-    
+    String quoteEntryText = '"quoteEntry":';
+    String customerText = '"customer":';
     
     if (actualRequest != null && String.isNotBlank(actualRequest.json__c)) {
       String json = actualRequest.json__c;
-      String first_text = '"quoteEntry":';
-      String second_text = '"customer":';
+      String first_text = quoteEntryText;
+      String second_text = customerText;
       Integer first = 0;
       Integer second = 1;
-      Integer posQuoteEntry = json.indexOf('"quoteEntry":');
-      Integer posConsumer = json.indexOf('"customer":');
+      Integer posQuoteEntry = json.indexOf(quoteEntryText);
+      Integer posConsumer = json.indexOf(customerText);
       if( posConsumer < posQuoteEntry ) {
           first = 1;
-          first_text = '"customer":';
+          first_text = customerText;
           second = 0;
-          second_text = '"quoteEntry":';
+          second_text = quoteEntryText;
       }
       // Quote entries contains both lead and quote data. Split in separated objects.
       List<String> splittedQuoteEntry = actualRequest.json__c.split(first_text);
@@ -374,7 +374,6 @@ global without sharing class ExternalRequestUtil {
 
     Map<String, String> errorMessages = new Map<String, String>();
     Map<String, sObject> recordsMap = new Map<String, sObject>();
-    // Map<String, sObject> recordsMap2 = new Map<String, sObject>();
     Map<String, List<SObject>> secLvlRecordsMap = new Map<String, List<SObject>>();
     Map<String, List<SObject>> thrLvlRecordsMap = new Map<String, List<SObject>>();
     
@@ -420,7 +419,6 @@ global without sharing class ExternalRequestUtil {
             thrLvlRecordsMap = Mock_Parser.MockParserThirdLevel('Policy');
         } else if (entityType == 'QuoteEntry') {
             recordsMap = Mock_Parser.MockParser('QuoteEntry');
-            //recordsMap2.put('9090', recordsMap.values().get(1));
             secLvlRecordsMap = Mock_Parser.MockParserSecondLevel('QuoteEntry');
             thrLvlRecordsMap = Mock_Parser.MockParserThirdLevel('QuoteEntry');
         }
@@ -649,9 +647,6 @@ global without sharing class ExternalRequestUtil {
    * parseCustomer
    */
   private static void parseCustomer(String customerJson) {
-    
-
-    String entityType = actualRequest.entity__c;
 
     Map<String, String> errorMessages = new Map<String, String>();
     Map<String, sObject> recordsMap = new Map<String, sObject>();
@@ -891,9 +886,6 @@ global without sharing class ExternalRequestUtil {
     
 
     mapContacts = SystemUtil.contactsSelector( contactsToSearch );
-    // mapContactsEmailBirthDateLECountry = SystemUtil.contactsSelectorEmailBirthDateLECountry( contactEmails );
-    // mapContactsEmailBirthDateLE = SystemUtil.contactsSelectorEmailBirthDateLE( contactEmails );
-    // mapContactsEmailBirthDate = SystemUtil.contactsSelectorEmailBirthDate( contactEmails );
     SystemUtil.contactsSelectorMatchCode(
       contactEmails, 
       mobilePhones,
@@ -902,7 +894,6 @@ global without sharing class ExternalRequestUtil {
     );
 
     // nts (nbizkarra) - 17/11/2020 - Include search among subscribers
-    // mapSubscribers = SystemUtil.contactsSelectorSubscribers(contactEmails);
 
     // nts (nbizkarra) -  19/11/2020 - Include search quote with same product
     mapQuoteSameProd = SystemUtil.getQuoteSameProduct(contactSameProd, sameProd);
@@ -948,7 +939,6 @@ global without sharing class ExternalRequestUtil {
             externalRequestItem.error_Log__c = ' ';
           }
         } catch (Exception e) {
-          //ErrorLogUtil.commitError(e, 'ExternalRequestUtil', externalRequestItem.Id);
           externalRequestItem.processed__c = true;
           externalRequestItem.processedDate__c = Datetime.now();
           externalRequestItem.processResult__c = 'KO';
@@ -973,10 +963,6 @@ global without sharing class ExternalRequestUtil {
     
     // Get the policy
     if ( recordsToProcess.containsKey(actualRequest.id) && quotesToProcess.containsKey(actualRequest.id) ) {
-      /*List<OrderItem> orderItems = orderItemsToProcess.get(actualRequest.id);
-            List<Discount__c> discounts = discountsToProcess.get(actualRequest.id);
-            List<Cover__c> covers = coversToProcess.get(actualRequest.id);*/
-
       listOrderItems = orderItemsToProcess.get(actualRequest.id);
       listDiscounts = discountsToProcess.get(actualRequest.id);
       listCovers = coversToProcess.get(actualRequest.id);
@@ -985,14 +971,6 @@ global without sharing class ExternalRequestUtil {
       Order quote = (Order) quotesToProcess.get(actualRequest.id);
 
       OrderUtil.upsertQuote(contact, quote);
-
-      /*OrderUtil.upsertQuote(contact, quote, mapQuotes,quotesToUpdateList,mapContacts,contactsToUpdateList,
-                                  mapContactsEmailBirthDateLECountry, mapContactsEmailBirthDateLE, mastersToUpdate, 
-                                  mastersToUpdateEMEA, mapPartners, contactsToUpdateWithPartner,
-                                  ordersToUpdateWithPartner, partnersToUpdateList, discounts, discountsToInsert, 
-                                  mapOrderItem,orderItems,mapProducts, productsToInsert, pricebookEntryToInsert, 
-                                  Pricebook, orderItemsToInsert, covers,subCoversToInsertQuote,mapCovers,
-                                  updateCover,recordOwner);*/
     }
   }
 
@@ -1000,23 +978,12 @@ global without sharing class ExternalRequestUtil {
     
     // Get the policy
     if (recordsToProcess.containsKey(actualRequest.id)) {
-      /*List<OrderItem> orderItems = orderItemsToProcess.get(actualRequest.id);
-            List<Discount__c> discounts = discountsToProcess.get(actualRequest.id);
-            List<Cover__c> covers = coversToProcess.get(actualRequest.id);*/
 
       listOrderItems = orderItemsToProcess.get(actualRequest.id);
       listDiscounts = discountsToProcess.get(actualRequest.id);
       listCovers = coversToProcess.get(actualRequest.id);
 
       Order policy = (Order) recordsToProcess.get(actualRequest.id);
-
-      /*OrderUtil.upsertPolicy(policy,mapPolicies,policyVersionsToUpdateList,ordersToUpdateList,policiesToUpdateList,
-                                   mapContacts,contactsToUpdateList,mapPartners,policiesToUpdateWithPartner,
-                                   ordersToUpdateWithPartner,partnersToUpdateList,discounts, discountsToInsert,
-                                   discountsToDelete,mapOrderItem,orderItems,mapProducts,productsToInsert,
-                                   pricebookEntryToInsert, Pricebook, orderItemsToInsert, covers,subCoversToInsertQuote,
-                                   mapCovers,updateCover,adminSetup,mapQuotes,quotesToUpdateList,
-                                   contactPolicyDateUpdate,recordOwner);*/
 
       OrderUtil.upsertPolicy(policy);
       //if quote has been processed first, remove it
@@ -1031,9 +998,6 @@ global without sharing class ExternalRequestUtil {
     // Get the claim
     if (recordsToProcess.containsKey(actualRequest.id)) {
       Case claim = (Case) recordsToProcess.get(actualRequest.id);
-
-      /*CaseUtil.upsertClaim(claim, mapClaims, mapPolicies, mapContacts, mapOrderItem,
-       claimsToUpsert, recordOwner);*/
       CaseUtil.upsertClaim(claim);
     }
   }
@@ -1084,7 +1048,6 @@ global without sharing class ExternalRequestUtil {
 
     if (ordersToUpdateList != null && !ordersToUpdateList.isEmpty()) {
       //Actualizar por id, para evitar error
-      //upsert ordersToUpdateList.values() Order.Fields.PolicyNum__c;
       
       for( Order o : ordersToUpdateList.values() ) {
         

@@ -85,6 +85,21 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>EventType__c</picklist>
+        <values>
+            <fullName>Call</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Onsite visit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Teams</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Follow_up_type__c</picklist>
         <values>
             <fullName>Oferta</fullName>
@@ -149,6 +164,17 @@
         </values>
         <values>
             <fullName>Others</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RelatedToIntermediary__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
             <default>false</default>
         </values>
     </picklistValues>

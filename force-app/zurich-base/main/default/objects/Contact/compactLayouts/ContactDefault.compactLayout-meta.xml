@@ -2,6 +2,7 @@
 <CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ContactDefault</fullName>
     <fields>Name</fields>
+    <fields>Editable__c</fields>
     <fields>Title</fields>
     <fields>AccountId</fields>
     <fields>Phone</fields>

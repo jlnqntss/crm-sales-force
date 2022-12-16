@@ -228,7 +228,7 @@ global class NoteInfoLookupBatch implements Database.Batchable<sObject>, Databas
             ID noteIdValue = (ID)note?.get(this.noteParentIdFieldName);
 
             if( String.isNotBlank(noteHegeoValue) && noteIdValue == null && mapParentIds.containsKey(noteHegeoValue) ) {
-                ID parentId = this.mapParentIds.get(noteHegeoValue);
+                this.mapParentIds.get(noteHegeoValue);
                 if( noteToUpdate != null )
                     noteToUpdate.put(this.noteParentIdFieldName, this.mapParentIds.get(noteHegeoValue));
                 isParentFound = true;

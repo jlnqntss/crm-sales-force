@@ -116,10 +116,6 @@ global without sharing class ContactUtil
         incomingContact.RecordTypeId = incomingContact.Status__c != 'Lead'
                                        ? SystemUtil.getContactRecordTypeIdByName('Customer' + legalEntity)
                                        : SystemUtil.getContactRecordTypeIdByName('Lead' + legalEntity);
-
-        // String customerNum = ((Contact) ExternalRequestUtil.recordsToProcess.get(
-        //   ExternalRequestUtil.actualRequest.id )).CustomerNum__c;
-        
         
         String customerNum = incomingContact.CustomerNum__c;
 
@@ -606,8 +602,6 @@ global without sharing class ContactUtil
      */
     public static void updateQuoteStep4and5( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        
-        List<Contact> quotes = new List<Contact>();
         Map<ID, Order> quotesToUpdate = new Map<ID, Order>();
         Map<ID, Contact> mapContactos = new Map<ID, Contact>();
 

@@ -124,7 +124,6 @@ public with sharing class ContactsSelector extends RecordsSelector
 
         return (List<Contact>) this.baseQuery.run();
 
-        //return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND (RecordTypeId IN: this.recordTypeIds OR Account.RecordTypeId IN :this.recordTypeIds) ];
     }
 
     /**
@@ -156,8 +155,6 @@ public with sharing class ContactsSelector extends RecordsSelector
         ).addCondition(condition);
 
         return (List<Contact>) this.baseQuery.run();
-
-        //return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND (RecordTypeId IN: this.recordTypeIds OR Account.RecordTypeId IN :this.recordTypeIds)];
     }
 
     public static Set<Id> findInContactPointsByPhoneNumber(List<String> phones, RecordsSelector.Scope scope)

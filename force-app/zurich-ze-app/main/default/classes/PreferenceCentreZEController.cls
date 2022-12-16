@@ -19,6 +19,7 @@ public with sharing class PreferenceCentreZEController {
     private static final String UNSUBSCRIBED_SOURCE = 'Centro de preferencias';
     private static final String CONFIG_LOGO_KEY = 'PreferenceLogo';
     private static final String DEFAULT_LOGO_RESOURCE = 'zurich_ze_logo';
+    private static final String DEFAULT_NOT_FOUND_LABEL = 'label not found';
 
     /**
      * Get the logo url for the given scope
@@ -146,12 +147,12 @@ public with sharing class PreferenceCentreZEController {
 
         public AppLabels() 
         {
-            PreferenceCentreTitleLabel = 'label not found';
-            PreferenceCentreSubtitleLabel = 'label not found';
-            EmailOptOutCheckboxLabel = 'label not found';
-            EmailOptOutTextLabel = 'label not found';
-            EmailOptOutButtonLabel = 'label not found';
-            PreferenceCentreSaveLabel = 'label not found';
+            PreferenceCentreTitleLabel = DEFAULT_NOT_FOUND_LABEL;
+            PreferenceCentreSubtitleLabel = DEFAULT_NOT_FOUND_LABEL;
+            EmailOptOutCheckboxLabel = DEFAULT_NOT_FOUND_LABEL;
+            EmailOptOutTextLabel = DEFAULT_NOT_FOUND_LABEL;
+            EmailOptOutButtonLabel = DEFAULT_NOT_FOUND_LABEL;
+            PreferenceCentreSaveLabel = DEFAULT_NOT_FOUND_LABEL;
             PreferenceCentreRedirect = '';
         }
     }

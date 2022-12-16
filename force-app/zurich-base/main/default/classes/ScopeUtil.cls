@@ -70,12 +70,6 @@ global without sharing class ScopeUtil {
               }
               x++;
             }
-
-            // if( s_new.PrimaryEmail__c != s_old.PrimaryEmail__c ||
-            //     s_new.PrimaryPhone__c != s_old.PrimaryPhone__c ||
-            //     s_new.HasOptedOutOfEmail__c != s_old.HasOptedOutOfEmail__c ) {
-            //     addScope = true;
-            // }
           }
 
           if (addScope) {

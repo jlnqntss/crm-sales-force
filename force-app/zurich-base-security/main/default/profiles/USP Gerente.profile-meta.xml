@@ -4552,11 +4552,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.ConectivityWsProvider__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Conectivity__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -15497,6 +15492,10 @@
         <layout>Contact-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Contact-Contact Layout</layout>
+        <recordType>Contact.ContactPartner</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Contact-Copy of Customer Layout_prod</layout>
         <recordType>Contact.CustomerGI</recordType>
     </layoutAssignments>
@@ -17971,6 +17970,11 @@
         <default>false</default>
         <recordType>Contact.Contact</recordType>
         <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.ContactPartner</recordType>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>

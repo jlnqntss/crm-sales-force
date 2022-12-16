@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Editable__c</fullName>
+    <externalId>false</externalId>
+    <formula>If (CONTAINS($Profile.Name, &quot;SDM&quot;) &amp;&amp;  Owner.Id  &lt;&gt; $User.Id &amp;&amp;  $UserRole.Name &lt;&gt; &quot;SDM Home Office&quot; , IMAGE(&quot;/resource/CandadoRojo&quot;,&quot;No puedes editarlo&quot;,25,25), IMAGE(&quot;/resource/CandadoVerde&quot;,&quot;Puedes editarlo&quot;,25,25)  )</formula>
+    <inlineHelpText>El registro es editable si el candado es de color verde, en caso contrario no tiene los permisos necesarios para poder editar el registro</inlineHelpText>
+    <label>Editable</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
