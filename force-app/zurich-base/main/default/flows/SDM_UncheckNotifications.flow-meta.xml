@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>52.0</apiVersion>
-    <description>SDM: desmarca las notificaciones de los planes de acción en caso de que se modifique uno de los criterios establecidos para sus envíos.</description>
+    <description>SDM: añadir valor de indicador APES</description>
+    <environments>Default</environments>
     <formulas>
         <description>Calcula los valores de &quot;Sent notifications&quot; para desmarcar en caso de que se haya dejado de cumplir con la condición.</description>
         <name>SentNotificationPicklist</name>
@@ -31,6 +32,7 @@ IF( {!$Record.EndDate__c} &lt;= TODAY(),&quot;03;&quot; ,  &quot;&quot;)
   &quot;Ratio_Claim&quot;,  {!$Record.TargetKPIPercent__c},
   &quot;Ratio_Retention&quot;,  {!$Record.TargetKPIPercent__c},
   &quot;Totaldiscount&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;APES&quot;,  {!$Record.TargetKPICurrency__c},
   0
 )</expression>
         <scale>2</scale>

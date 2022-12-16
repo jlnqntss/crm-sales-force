@@ -21,6 +21,11 @@
                 <default>false</default>
                 <label>Portfolio</label>
             </value>
+            <value>
+                <fullName>APES</fullName>
+                <default>false</default>
+                <label>APES</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

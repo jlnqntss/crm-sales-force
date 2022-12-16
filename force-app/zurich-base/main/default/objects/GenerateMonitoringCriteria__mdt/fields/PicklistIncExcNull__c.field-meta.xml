@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PicklistIncExcNull__c</fullName>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Indica si el valor de Segmento Mediación tiene que estar incluido(debe coincidir con el segmento de la cuenta), excluido(lo contrario) o no se comprueba.</inlineHelpText>
+    <label>Picklist Inc Exc Null</label>
+    <required>true</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Incluido</fullName>
+                <default>true</default>
+                <label>Incluido</label>
+            </value>
+            <value>
+                <fullName>Excluido</fullName>
+                <default>false</default>
+                <label>Excluido</label>
+            </value>
+            <value>
+                <fullName>Ninguno</fullName>
+                <default>false</default>
+                <label>Ninguno</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

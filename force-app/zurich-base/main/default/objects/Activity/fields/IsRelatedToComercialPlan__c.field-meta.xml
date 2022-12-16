@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsRelatedToComercialPlan__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Campo que indica si la tarea se ha asociado con el objeto Plan Comercial</description>
+    <externalId>false</externalId>
+    <label>Is Related To Comercial Plan</label>
+    <type>Checkbox</type>
+</CustomField>
