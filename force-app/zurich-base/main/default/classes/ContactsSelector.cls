@@ -7,6 +7,7 @@ public with sharing class ContactsSelector extends RecordsSelector
     public String ACCOUNT_RT_BUSINESS_CUSTOMER = ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('BusinessCustomer').getRecordTypeId();
     public String ACCOUNT_RT_LEAD = ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('Lead').getRecordTypeId();
     public String ACCOUNT_RT_PARTNER_OCS = ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('PartnerOCS').getRecordTypeId();
+    public String ACCOUNT_RTID_FIELD = 'Account.RecordTypeId';
 
     //#region Contructores
 
@@ -40,23 +41,23 @@ public with sharing class ContactsSelector extends RecordsSelector
         {
             when ALL
             {
-                this.baseQuery.addConditionIn('Account.RecordTypeId', new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_BUSINESS_CUSTOMER, ACCOUNT_RT_LEAD});
+                this.baseQuery.addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_BUSINESS_CUSTOMER, ACCOUNT_RT_LEAD});
             }
             when Z 
             {
-                this.baseQuery.addConditionIn('Account.RecordTypeId', new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_BUSINESS_CUSTOMER});
+                this.baseQuery.addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_BUSINESS_CUSTOMER});
 
                 this.relatedRecordsScope = RecordsSelector.Scope.Z;
             }
             when ZE  
             {
-                this.baseQuery.addConditionIn('Account.RecordTypeId', new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_LEAD, ACCOUNT_RT_BUSINESS_CUSTOMER, ACCOUNT_RT_PARTNER_OCS});
+                this.baseQuery.addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_LEAD, ACCOUNT_RT_BUSINESS_CUSTOMER, ACCOUNT_RT_PARTNER_OCS});
 
                 this.relatedRecordsScope = RecordsSelector.Scope.ZE;
             }
             when ZEO
             {
-                this.baseQuery.addConditionIn('Account.RecordTypeId', new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_LEAD, ACCOUNT_RT_BUSINESS_CUSTOMER, ACCOUNT_RT_PARTNER_OCS});
+                this.baseQuery.addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_LEAD, ACCOUNT_RT_BUSINESS_CUSTOMER, ACCOUNT_RT_PARTNER_OCS});
                 
                 this.relatedRecordsScope = RecordsSelector.Scope.ZEO;
             }
@@ -262,7 +263,7 @@ public with sharing class ContactsSelector extends RecordsSelector
                 }
             );
             this.baseQuery.addConditionEq(Contact.Phone, phone)
-            .addConditionIn('Account.RecordTypeId', new Set<String>{ACCOUNT_RT_PARTNER_OCS});
+            .addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_PARTNER_OCS});
             result = (List<Contact>) this.baseQuery.run();
         }
         return result;
