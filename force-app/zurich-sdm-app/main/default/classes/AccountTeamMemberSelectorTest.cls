@@ -18,6 +18,7 @@ private with sharing class AccountTeamMemberSelectorTest
         );
         for(Account a: intermediaryAccounts) {
             a.NationalID__c = TestDataFactorySDM.AGRUPATION_CIF;
+            a.status__c = '001'; // añadido para cumplir el filtro de status intermediary
             a.put(AccountsSelector.SDM_DT_EMAIL_FIELD, DT_EMAIL);
         }
         insert intermediaryAccounts;
@@ -115,5 +116,31 @@ private with sharing class AccountTeamMemberSelectorTest
         // Comprobamos el resultado
         System.assertNotEquals(null, atms, 'Deberia haber algun equipo de cuenta devuelto POR ROL');
         System.assertEquals(NUM_INTERMEDIARIES, atms.size(), 'Deberia haber ' + NUM_INTERMEDIARIES + ' equipos de cuenta');
+    }
+
+
+    /**
+     * Test para consultar los demás registros de atm para un usuario y estos registros son los que se actualizan a inactivo en el componente de notificaciones por mediador
+     */
+    @isTest
+    static void findIntermedariesWithInactiveNotifications()
+    {
+
+        List<AccountTeamMember> atmsQuery = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember LIMIT 1]);
+        List<AccountTeamMember> atms = new List<AccountTeamMember>();
+
+        if (!atmsQuery.isEmpty()) {
+
+            List<String> idAtmQuery = new List<String>();
+            idAtmQuery.add(atmsQuery.get(0).Id);
+
+            Test.startTest();
+            atms = (new AccountTeamMemberSelector()).findIntermedariesWithInactiveNotifications(UserInfo.getUserId(), idAtmQuery);
+            Test.stopTest();
+        }
+        
+
+        // Comprobamos el resultado
+        System.assertEquals(4, atms.size(), 'Se esperan 4 resultados');
     }
 }

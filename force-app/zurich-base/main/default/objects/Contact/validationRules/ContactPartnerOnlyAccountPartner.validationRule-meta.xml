@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContactPartnerOnlyAccountPartner</fullName>
+    <active>true</active>
+    <description>[VR Contacto] Los Contactos Partner solo se pueden vincular con Cuentas Partner</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;ContactPartner&quot; &amp;&amp;  Account.RecordType.DeveloperName!=&quot;PartnerOCS&quot;</errorConditionFormula>
+    <errorDisplayField>AccountId</errorDisplayField>
+    <errorMessage>[VR Contacto] Los Contactos Partner solo se pueden vincular con Cuentas Partner</errorMessage>
+</ValidationRule>
