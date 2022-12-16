@@ -303,6 +303,7 @@
     <tabs>PlanComercial__c</tabs>
     <tabs>GenerarPlan</tabs>
     <tabs>Objetivos</tabs>
+    <tabs>Alertas_por_Mediador</tabs>
     <tabs>standard-Event</tabs>
     <tabs>standard-Contact</tabs>
     <tabs>standard-report</tabs>
@@ -312,6 +313,9 @@
     <uiType>Lightning</uiType>
     <utilityBar>SDM_UtilityBar</utilityBar>
     <workspaceConfig>
+        <mappings>
+            <tab>Alertas_por_Mediador</tab>
+        </mappings>
         <mappings>
             <tab>GenerarPlan</tab>
         </mappings>

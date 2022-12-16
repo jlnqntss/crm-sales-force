@@ -10,11 +10,6 @@ public without sharing class SystemUtil
     private static final String ADMINSETUP_LABEL = 'AdminSetup';
     private static final String EMAIL_TO_RETURN = 'mng.dev';
 
-    // Map<String, String> legalIdentityByShort = new Map<String, String> {
-    //     'GI' => Label.GeneralInsurance,
-    //     'Life' => Label.LifeInsurance
-    // };
-
     private static final Map<String, String> legalIdentityByLabel = new Map<String, String> {
         Label.GeneralInsurance => 'GI',
         Label.LifeInsurance => 'Life'

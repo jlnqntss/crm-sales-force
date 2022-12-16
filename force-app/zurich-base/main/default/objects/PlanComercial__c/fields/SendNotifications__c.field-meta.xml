@@ -27,6 +27,7 @@
         <valueSettings>
             <controllingFieldValue>Totaldiscount</controllingFieldValue>
             <controllingFieldValue>PN</controllingFieldValue>
+            <controllingFieldValue>APES</controllingFieldValue>
             <controllingFieldValue>PoliciesPN</controllingFieldValue>
             <controllingFieldValue>PoliciesInForce</controllingFieldValue>
             <controllingFieldValue>Portfolio</controllingFieldValue>

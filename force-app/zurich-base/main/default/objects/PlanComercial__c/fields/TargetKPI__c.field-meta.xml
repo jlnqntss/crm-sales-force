@@ -16,7 +16,8 @@
  &quot;Ratio_Claim&quot;,   TargetKPIPercent__c,
  &quot;Ratio_Retention&quot;,   TargetKPIPercent__c,
  &quot;Totaldiscount&quot;,   TargetKPIPercent__c,
- 0
+ &quot;APES&quot;, TargetKPICurrency__c,
+	0
 )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Target KPI</label>

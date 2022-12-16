@@ -506,7 +506,6 @@ public with sharing class PreferenceCentreController {
     Contact contact,
     List<CampaignStatus> campaigns
   ) {
-    Contact contactUpdate;
 
     if (campaigns != null & campaigns.size() > 0) {
       //Se comprueba qué relación tiene el contacto con esas campañas (miembro de la campaña o no) Id = Campagign Id
