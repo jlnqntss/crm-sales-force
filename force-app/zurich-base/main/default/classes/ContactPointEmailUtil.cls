@@ -8,8 +8,8 @@ public without sharing class ContactPointEmailUtil
     public static Map<Id, List<ContactPointEmail> > relatedContactPointEmailsMap;
     public static Map<Id, Scope__c> relatedScopesMap;
 
-    public static List<ContactPointEmail> contactPointEmailsToUpdate;
-    public static List<Scope__c> scopesToUpdate;
+    public static Map<Id, ContactPointEmail> contactPointEmailsToUpdate;
+    public static Map<Id, Scope__c> scopesToUpdate;
 
     /**
      * Método que, en caso de insert o update, recupera los ContactPointEmail marcados con IsPrimary = true
@@ -28,8 +28,8 @@ public without sharing class ContactPointEmailUtil
             relatedScopesMap = new Map<Id, Scope__c>();
 
             //Inicializamos listas de registros a actualizar al finalizar el trigger
-            contactPointEmailsToUpdate = new List<ContactPointEmail>();
-            scopesToUpdate = new List<Scope__c>();
+            contactPointEmailsToUpdate = new Map<Id, ContactPointEmail>();
+            scopesToUpdate = new Map<Id, Scope__c>();
 
             Set<Id> relatedScopes = new Set<Id>();
 
@@ -40,10 +40,9 @@ public without sharing class ContactPointEmailUtil
                     relatedScopes.add(newContactPointEmail.ScopeId__c);
                 }
             }
-
             List<ContactPointEmail> relatedContactPointEmails = new ContactPointEmailsSelector(
                 new Set<String> {'Id', 'ScopeId__c', 'IsPrimary'}
-                ).selectByScopeIdAndIsPrimary(relatedScopes, true, newList);
+                ).selectByScopeIdAndIsPrimary(relatedScopes, true, null);
 
             for(ContactPointEmail relatedContactPointEmail: relatedContactPointEmails)
             {
@@ -90,7 +89,8 @@ public without sharing class ContactPointEmailUtil
             {
                 Id key = newContactPointEmail.ScopeId__c;
                 if( (oldMap == null && newContactPointEmail.IsPrimary) ||
-                    oldMap != null && newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary
+                    oldMap != null && newContactPointEmail.IsPrimary && newContactPointEmail.IsPrimary != oldMap.get(newContactPointEmail.Id).IsPrimary ||
+                    oldMap != null && newContactPointEmail.IsPrimary && newContactPointEmail.ScopeId__c != oldMap.get(newContactPointEmail.Id).ScopeId__c 
                      )
                 {
                     //Ha pasado de false a true (es decir, lo han marcado como IsPrimary)
@@ -102,9 +102,15 @@ public without sharing class ContactPointEmailUtil
                         for(ContactPointEmail relatedContactPoint: relatedContactPointEmails)
                         {
                             relatedContactPoint.IsPrimary = false;
+                            contactPointEmailsToUpdate.put(relatedContactPoint.id, relatedContactPoint);
                         }
 
-                        contactPointEmailsToUpdate.addAll(relatedContactPointEmails);
+                        //contactPointEmailsToUpdate.addAll(relatedContactPointEmails);
+                    }
+
+                    if(contactPointEmailsToUpdate.containsKey(newContactPointEmail.Id))
+                    {
+                        contactPointEmailsToUpdate.remove(newContactPointEmail.Id);
                     }
 
                     //Actualizamos Scopes
@@ -114,7 +120,7 @@ public without sharing class ContactPointEmailUtil
                         if(relatedScope != null)
                         {
                             relatedScope.PrimaryEmail__c = newContactPointEmail.EmailAddress;
-                            scopesToUpdate.add(relatedScope);
+                            scopesToUpdate.put(relatedScope.Id, relatedScope);
                         }
                     }
                 }
@@ -143,13 +149,13 @@ public without sharing class ContactPointEmailUtil
                 }
                 else
                 {
-                    if( relatedScopesMap.containsKey(key) && String.isBlank(relatedScopesMap.get(key).PrimaryEmail__c) )
+                    if( relatedScopesMap.containsKey(key))
                     {
                         Scope__c relatedScope = relatedScopesMap.get(key);
                         if(relatedScope != null)
                         {
                             relatedScope.PrimaryEmail__c = newContactPointEmail.EmailAddress;
-                            scopesToUpdate.add(relatedScope);
+                            scopesToUpdate.put(relatedScope.Id, relatedScope);
                         }
                     }
                 }
@@ -191,14 +197,36 @@ public without sharing class ContactPointEmailUtil
      */
     public static void updateRelatedContactPoints()
     {
-        if( scopesToUpdate != null && !scopesToUpdate.isEmpty() )
+        if( scopesToUpdate.values() != null && !scopesToUpdate.values().isEmpty() )
         {
-            update scopesToUpdate;
+            update scopesToUpdate.values();
         }
 
-        if( contactPointEmailsToUpdate != null && !contactPointEmailsToUpdate.isEmpty() )
+        if( contactPointEmailsToUpdate.values() != null && !contactPointEmailsToUpdate.values().isEmpty() )
         {
-            update contactPointEmailsToUpdate;
+            update contactPointEmailsToUpdate.values();
+        }
+    }
+
+    public static void establishAsPrimary(List<ContactPointEmail> newList, Map<Id, ContactPointEmail> oldMap)
+    {
+        if (oldMap != null)
+        {
+            for(ContactPointEmail cNuevo : newList)
+            {
+                ContactPointEmail cViejo = oldMap.get(cNuevo.id); 
+                if(!cViejo.IsPrimary)
+                {
+                    cNuevo.IsPrimary = true;
+                }
+            }
+        }
+        else 
+        {
+            for(ContactPointEmail cNuevo : newList)
+            {
+                cNuevo.IsPrimary = true;
+            }
         }
     }
 }
