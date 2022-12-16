@@ -22,7 +22,7 @@
         <name>SendEmailCloseCase</name>
         <label>Mandar email cierre caso</label>
         <locationX>50</locationX>
-        <locationY>1127</locationY>
+        <locationY>1247</locationY>
         <actionName>Case.Cierre_de_caso_automatico</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
@@ -75,7 +75,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>UpdateCerrarCaso</targetReference>
+                <targetReference>GetSystemUser</targetReference>
             </connector>
             <label>Si se cierra</label>
         </rules>
@@ -179,7 +179,7 @@
         <name>CreateErrorLogCaseCloseAction</name>
         <label>Generar Error Log Cierre de caso</label>
         <locationX>578</locationX>
-        <locationY>1127</locationY>
+        <locationY>1247</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -239,11 +239,32 @@
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>GetSystemUser</name>
+        <label>Obtener usuario sistema</label>
+        <locationX>50</locationX>
+        <locationY>1007</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>UpdateCerrarCaso</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>0055I000000c4aOQAQ</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>UpdateCerrarCaso</name>
         <label>Actualizar Cerrar Caso</label>
         <locationX>50</locationX>
-        <locationY>1007</locationY>
+        <locationY>1127</locationY>
         <connector>
             <targetReference>SendEmailCloseCase</targetReference>
         </connector>
@@ -268,6 +289,18 @@
             <field>CloseResult__c</field>
             <value>
                 <stringValue>No Realizado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ClosedBy__c</field>
+            <value>
+                <elementReference>GetSystemUser.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <stringValue></stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
