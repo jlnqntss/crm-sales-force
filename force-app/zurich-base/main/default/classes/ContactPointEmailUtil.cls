@@ -197,12 +197,13 @@ public without sharing class ContactPointEmailUtil
      */
     public static void updateRelatedContactPoints()
     {
-        if( scopesToUpdate.values() != null && !scopesToUpdate.values().isEmpty() )
+           
+        if( scopesToUpdate != null && !scopesToUpdate.values().isEmpty() )
         {
             update scopesToUpdate.values();
         }
 
-        if( contactPointEmailsToUpdate.values() != null && !contactPointEmailsToUpdate.values().isEmpty() )
+        if( contactPointEmailsToUpdate != null && !contactPointEmailsToUpdate.values().isEmpty() )
         {
             update contactPointEmailsToUpdate.values();
         }
