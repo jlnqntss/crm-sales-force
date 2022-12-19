@@ -24,17 +24,17 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
         }
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         database.executeBatch(new Batch_PostProcessing(), 200);
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         List<Order> processedOrders = (List<Order>) scope;
         List<OrderItem> itemsToDelete = new List<OrderItem>();
@@ -99,6 +99,6 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 }

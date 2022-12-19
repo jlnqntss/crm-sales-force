@@ -19,7 +19,7 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
         }
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if (query == null || query == '')
         {
@@ -28,12 +28,12 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         database.executeBatch(new Batch_DeleteQuotes(), 200);
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         List<Order> quotesToDelete = (List<Order>) scope;
         List<Case> casesToDelete = new List<Case>();
@@ -106,6 +106,6 @@ global class Batch_DeleteQuotes implements Database.Batchable<sObject>, Database
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 }

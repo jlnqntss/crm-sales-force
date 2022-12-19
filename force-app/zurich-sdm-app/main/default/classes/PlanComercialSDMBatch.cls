@@ -39,7 +39,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
     /**
      * Start. Execute the query locator for the batch
      */
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if( String.isBlank(query) ) {
             Date todayValue = System.today();
@@ -63,7 +63,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
     /**
      * Execute. The method for each batch
      */
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         if ( scope != null && !scope.isEmpty() ) {
             try {
@@ -86,7 +86,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
     /**
      * Finish. The postprocesing method
      */
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 
     
@@ -105,7 +105,7 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
     /**
      * Execute. The method for the scheduled batch
      */
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         // SDM-729 - Se reduce el numero de planes a procesar cada vez para minimizar el numero de KPIs a considerar en cada
         // lote del batch

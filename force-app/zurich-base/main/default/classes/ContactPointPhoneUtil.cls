@@ -47,14 +47,14 @@ public without sharing class ContactPointPhoneUtil
 
             for(ContactPointPhone relatedContactPointPhone: relatedContactPointPhones)
             {
-                List<ContactPointPhone> ContactPointPhoneList = new List<ContactPointPhone>();
+                List<ContactPointPhone> contactPointPhoneList = new List<ContactPointPhone>();
                 if( relatedContactPointPhonesMap.containsKey(relatedContactPointPhone.ScopeId__c) )
                 {
-                    ContactPointPhoneList = relatedContactPointPhonesMap.get(relatedContactPointPhone.ScopeId__c);
+                    contactPointPhoneList = relatedContactPointPhonesMap.get(relatedContactPointPhone.ScopeId__c);
                 }
 
-                ContactPointPhoneList.add(relatedContactPointPhone);
-                relatedContactPointPhonesMap.put(relatedContactPointPhone.ScopeId__c, ContactPointPhoneList);
+                contactPointPhoneList.add(relatedContactPointPhone);
+                relatedContactPointPhonesMap.put(relatedContactPointPhone.ScopeId__c, contactPointPhoneList);
             }
 
             relatedScopesMap = new Map<Id, Scope__c>(

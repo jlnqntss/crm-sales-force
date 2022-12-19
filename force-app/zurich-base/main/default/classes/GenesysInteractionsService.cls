@@ -711,7 +711,7 @@ public without sharing class GenesysInteractionsService
      * @date 20/01/2021
      */
     @testVisible
-    private static OpenedClaims findOpenedClaims(Id customerId, RecordsSelector.Scope Scope, RecordsSelector.LegalEntity legalEntity)
+    private static OpenedClaims findOpenedClaims(Id customerId, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
         ClaimsSelector claimsSelector = new ClaimsSelector();
         claimsSelector.setFields

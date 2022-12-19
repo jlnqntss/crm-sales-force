@@ -610,7 +610,7 @@ global without sharing class OrderUtil
     public static void updateLastQuoteOnContact(List<Order> newList)
     {
         
-        Map<Id, Order> MapQuotes = new Map<Id, Order>();
+        Map<Id, Order> mapQuotes = new Map<Id, Order>();
         List<Contact> contacts = new List<Contact>();
         Map<Id, Contact> contactsToUpdate = new Map<Id, Contact>();
 
@@ -621,19 +621,19 @@ global without sharing class OrderUtil
                 //Actualiza solo quotes y excluye las quotes actualizadas en el postprocesamiento
                 if ( order.ContactId__c != null && order.PolicyNum__c == null && order.After_Processing_Check__c == true )
                 {
-                    MapQuotes.put(order.ContactId__c, order);
+                    mapQuotes.put(order.ContactId__c, order);
                 }
             }
 
-            if ( !MapQuotes.isEmpty() )
+            if ( !mapQuotes.isEmpty() )
             {
-                contacts = [ SELECT id, LastQuote__c FROM Contact WHERE id = :MapQuotes.keySet() ];
+                contacts = [ SELECT id, LastQuote__c FROM Contact WHERE id = :mapQuotes.keySet() ];
 
                 if (contacts != null)
                 {
                     for (Contact c : contacts)
                     {
-                        Order quote = MapQuotes.get(c.id);
+                        Order quote = mapQuotes.get(c.id);
 
                         if (quote != null)
                         {

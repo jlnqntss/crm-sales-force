@@ -15,7 +15,7 @@ public class CoverUtil
         Map<String, Cover__c> subCoversToInsertQuote,
         Map<String, Cover__c> mapCovers,
         Map<String, Cover__c> updateCover,
-        String LegalEntity,
+        String legalEntity,
         User recordOwner
         )
     {
@@ -66,7 +66,7 @@ public class CoverUtil
                         {
                             cover.PolicyProduct__r.ItemId__c = null;
                         }
-                        cover.LegalEntity__c = LegalEntity;
+                        cover.LegalEntity__c = legalEntity;
                         cover.ownerId = recordOwner.id;
 
                         if ( !subCoversToInsertQuote.containsKey(cover.CoverId__c) )
@@ -79,7 +79,7 @@ public class CoverUtil
                         //cover
                         // identificador:  itemid-CoverName
                         cover.CoverId__c = item.ItemId__c + '-' + cover.Name;
-                        cover.LegalEntity__c = LegalEntity;
+                        cover.LegalEntity__c = legalEntity;
                         cover.ownerId = recordOwner.id;
 
                         updateCover.put(cover.CoverId__c, cover);

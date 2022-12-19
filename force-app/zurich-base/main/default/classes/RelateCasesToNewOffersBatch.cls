@@ -42,7 +42,7 @@ global class RelateCasesToNewOffersBatch implements Database.Batchable<sObject>,
      * @author lrodriguez6@seidor.es
      * @date 11/11/2022
      */
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if (query == null || query == '')
         {
@@ -57,12 +57,12 @@ global class RelateCasesToNewOffersBatch implements Database.Batchable<sObject>,
      * @author lrodriguez6@seidor.es
      * @date 11/11/2022
      */
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         Database.executeBatch(new RelateCasesToNewOffersBatch(query), 200);
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         if ( scope != null && !scope.isEmpty() )
         {
@@ -87,6 +87,6 @@ global class RelateCasesToNewOffersBatch implements Database.Batchable<sObject>,
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 }

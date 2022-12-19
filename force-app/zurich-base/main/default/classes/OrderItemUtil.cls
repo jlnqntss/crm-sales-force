@@ -17,7 +17,7 @@ public class OrderItemUtil
         Map<String, PricebookEntry> mapProducts,
         Map<String, Product2> productsToInsert,
         Map<String, PricebookEntry> pricebookEntryToInsert,
-        Pricebook2 Pricebook,
+        Pricebook2 pricebook,
         Map<String, OrderItem> orederItemsToInsert,
         List<Cover__c> listCovers,
         Map<String, Cover__c> subCoversToInsertQuote,
@@ -97,7 +97,7 @@ public class OrderItemUtil
                     else
                     {
                         
-                        createProduct( item, productsToInsert, pricebookEntryToInsert, Pricebook );
+                        createProduct( item, productsToInsert, pricebookEntryToInsert, pricebook );
                         PricebookEntry pricebookRef;
 
                         if (item.itemModel__c != null)
@@ -155,7 +155,7 @@ public class OrderItemUtil
         OrderItem item,
         Map<String, Product2> productsToInsert,
         Map<String, PricebookEntry> pricebookEntryToInsert,
-        Pricebook2 Pricebook
+        Pricebook2 pricebook
         )
     {
         

@@ -72,24 +72,24 @@ public with sharing class ContactPointPhonesSelector
      * @date 23/11/2020
      * @param  scopeIds                     Listado de identificadores de Scope__c. Válido cualquier formato
      * @param  isPrimary                    Indica el valor de IsPrimary que queremos recuperar
-     * @param  ContactPointPhonesToExclude  Lista de ContactPointPhones que queremos excluir en la query.
+     * @param  contactPointPhonesToExclude  Lista de ContactPointPhones que queremos excluir en la query.
      *                                      (Enviar lista vacia si unicamente queremos buscar por ScopeId)
      *
      * @return                              Listado de scopes sobre los que se ha realizado match
      */
-    public List<ContactPointPhone> selectByScopeIdAndIsPrimary(Set<Id> scopeIds, Boolean isPrimary, List<ContactPointPhone> ContactPointPhonesToExclude)
+    public List<ContactPointPhone> selectByScopeIdAndIsPrimary(Set<Id> scopeIds, Boolean isPrimary, List<ContactPointPhone> contactPointPhonesToExclude)
     {
         if(scopeIds != null && isPrimary != null)
         {
-            if(ContactPointPhonesToExclude == null)
+            if(contactPointPhonesToExclude == null)
             {
-                ContactPointPhonesToExclude = new List<ContactPointPhone>();
+                contactPointPhonesToExclude = new List<ContactPointPhone>();
             }
 
             this.sObjectToQuery = 'ContactPointPhone';
             String query = String.format(
                 'SELECT {0} FROM ContactPointPhone ' +
-                'WHERE ScopeId__c IN : scopeIds AND IsPrimary =: isPrimary AND Id NOT IN: ContactPointPhonesToExclude',
+                'WHERE ScopeId__c IN : scopeIds AND IsPrimary =: isPrimary AND Id NOT IN: contactPointPhonesToExclude',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
             }

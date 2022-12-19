@@ -17,7 +17,7 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
         }
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if (query == null || query == '')
         {
@@ -26,7 +26,7 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         database.executeBatch(
             new Batch_DeleteErrorLogs(),
@@ -34,7 +34,7 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
         );
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         List<Error_Log__c> errorList = (List<Error_Log__c>) scope;
 
@@ -51,6 +51,6 @@ global class Batch_DeleteErrorLogs implements Database.Batchable<sObject>, Datab
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 }
