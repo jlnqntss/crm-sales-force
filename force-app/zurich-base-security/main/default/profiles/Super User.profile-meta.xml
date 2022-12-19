@@ -534,6 +534,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContentWorkspacesPicklist</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentWorkspacesPicklistTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CoverUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1415,6 +1423,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UploadCaseDocumentationControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UsefulLinksController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UsefulLinksControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
