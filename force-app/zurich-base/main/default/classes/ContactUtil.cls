@@ -666,4 +666,21 @@ global without sharing class ContactUtil
             }
         }
     }
+
+    /**
+     * Método que genera un set de los ids con los que una lista de contactos está relacionado
+     * @author jjuaristi@seidor.es
+     * @date 16/11/2022
+     * @param Lista de contactos
+     * @return Set de ids de las cuentas relacionadas
+     */
+    public static Set<ID> generateAccountIdSet (List<Contact> contacts)
+    {
+        Set<Id> accountIds = new Set<Id>();
+        for(Contact currentContact : contacts)
+        {
+            accountIds.add(currentContact.AccountId);
+        }
+        return accountIds;
+    }
 }
