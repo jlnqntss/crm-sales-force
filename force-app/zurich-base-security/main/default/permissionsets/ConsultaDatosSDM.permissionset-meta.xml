@@ -857,6 +857,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.RevenuesPerEmployees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>AccountTeamMember.Email__c</field>
         <readable>true</readable>
     </fieldPermissions>

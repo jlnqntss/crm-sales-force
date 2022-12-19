@@ -75,7 +75,7 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.RevenuesPerEmployee__c</field>
+        <field>Account.RevenuesPerEmployees__c</field>
     </columns>
     <columns>
         <field>Account.TypeOfRemunerationAgreement__c</field>
