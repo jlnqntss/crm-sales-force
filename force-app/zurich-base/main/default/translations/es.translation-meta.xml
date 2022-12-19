@@ -5881,6 +5881,10 @@
         <name>SDM_ControlIntermediaryNotifiaction_Active</name>
     </customLabels>
     <customLabels>
+        <label>Activar Todo</label>
+        <name>SDM_ControlIntermediaryNotifiaction_ActiveAll</name>
+    </customLabels>	
+    <customLabels>
         <label>Cancelar</label>
         <name>SDM_ControlIntermediaryNotifiaction_ButtonCancel</name>
     </customLabels>
@@ -5891,6 +5895,10 @@
     <customLabels>
         <label>Desactivados</label>
         <name>SDM_ControlIntermediaryNotifiaction_Inactive</name>
+    </customLabels>
+    <customLabels>
+        <label>Desactivar Todo</label>
+        <name>SDM_ControlIntermediaryNotifiaction_InactiveAll</name>
     </customLabels>
     <customLabels>
         <label>Mediador</label>

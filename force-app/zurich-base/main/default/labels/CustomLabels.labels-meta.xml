@@ -1814,4 +1814,20 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_ControlIntermediaryNotifiaction_ErrorFlowUpdate</shortDescription>
         <value>The records cannot be updated by a fail in the flow</value>
     </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_ActiveAll</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_ActiveAll</shortDescription>
+        <value>Active All</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_InactiveAll</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_InactiveAll</shortDescription>
+        <value>Inactive All</value>
+    </labels>
 </CustomLabels>
