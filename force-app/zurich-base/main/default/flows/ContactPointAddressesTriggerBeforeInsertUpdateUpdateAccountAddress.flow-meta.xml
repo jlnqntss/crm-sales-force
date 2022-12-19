@@ -10,7 +10,7 @@
             <assignToReference>getRecordTypeAccountAction.BillingStreet</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.Address</elementReference>
+                <elementReference>$Record.Street</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
