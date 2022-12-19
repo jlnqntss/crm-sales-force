@@ -184,8 +184,8 @@
         </connector>
     </collectionProcessors>
     <decisions>
-        <name>CaseProductUSPDecision</name>
-        <label>¿Caso y  Producto USP?</label>
+        <name>CaseUSPDecision</name>
+        <label>¿Caso USP?</label>
         <locationX>1436</locationX>
         <locationY>335</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
@@ -197,13 +197,6 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>USPInquiry</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Product.IsUspProduct__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -322,6 +315,13 @@
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Product.IsUspProduct__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -727,6 +727,12 @@
             <targetReference>UpdateRecordsCaseDueDateErrorAction</targetReference>
         </faultConnector>
         <inputAssignments>
+            <field>AutomaticTaskCreated__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>CloseDate__c</field>
             <value>
                 <elementReference>DueDateForTaskAdd1</elementReference>
@@ -738,7 +744,7 @@
         <locationX>1310</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>CaseProductUSPDecision</targetReference>
+            <targetReference>CaseUSPDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -774,6 +780,13 @@
             <operator>NotEqualTo</operator>
             <value>
                 <stringValue>Cerrado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AutomaticTaskCreated__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <object>Case</object>
