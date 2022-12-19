@@ -48,7 +48,7 @@
             </p>
           </div>
           <lightning-button-icon
-            if:true={isAdmin}
+            if:true={isAuthorOrAdmin}
             class="slds-float_right slds-icon-text-error"
             tooltip={label.deleteLinkButton}
             alternative-text={label.deleteLinkButton}

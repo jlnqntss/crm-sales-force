@@ -14,8 +14,6 @@ import CONTENTVERSION_ID from "@salesforce/schema/ContentVersion.Id";
 import CONTENTVERSION_CONTENTURL from "@salesforce/schema/ContentVersion.ContentUrl";
 import CONTENTVERSION_FIRSTPUBLISHLOCATIONID from "@salesforce/schema/ContentVersion.FirstPublishLocationId";
 import CONTENTVERSION_TITLE from "@salesforce/schema/ContentVersion.Title";
-import CONTENTDOCUMENT_ID from "@salesforce/schema/ContentDocument.Id";
-import CONTENTDOCUMENT_OWNER_ID from "@salesforce/schema/ContentDocument.OwnerId";
 
 import getLibraryId from "@salesforce/apex/UsefulLinksController.getLibraryId";
 import getLinks from "@salesforce/apex/UsefulLinksController.getLinks";
@@ -105,7 +103,6 @@ export default class UsefulLinks extends NavigationMixin(LightningElement) {
   errorLoadingData;
   isLoading = true;
   showModal;
-  saveButtonStatus;
   inputTitulo;
   inputUrl;
   inputTextValidated;
@@ -124,10 +121,6 @@ export default class UsefulLinks extends NavigationMixin(LightningElement) {
 
   get isViewer() {
     return this.userPermissionType === ContentWorkspacePerm.Viewer;
-  }
-
-  get isAdmin() {
-    return this.userPermissionType === ContentWorkspacePerm.Admin;
   }
 
   get isAuthorOrAdmin() {
@@ -242,35 +235,20 @@ export default class UsefulLinks extends NavigationMixin(LightningElement) {
     });
 
     if (confirmDeletion) {
-      let idOwner = this.linksById[linkId].ownerId;
-
-      /* Si el usuario que ejecuta la acción de eliminar el link no es propietario del mismo,
-       * se actualiza el link para que el usuario sea el propietario. Una vez que se actualiza,
-       * se elimina el enlace.
-       */
-      if (userId !== idOwner) {
-        const fields = {};
-
-        fields[CONTENTDOCUMENT_ID.fieldApiName] = linkToRemove;
-        fields[CONTENTDOCUMENT_OWNER_ID.fieldApiName] = idOwner;
-
-        const recordInput = {
-          fields
-        };
-
-        updateRecord(recordInput)
-          .then(() => {
-            this.deleteLink(linkToRemove);
-          })
-          .catch(() => {
-            this.showError(
-              this.label.toastErrorTitle,
-              this.label.toastErrorDeleteMessage
-            );
-          });
-      } else {
-        this.deleteLink(linkToRemove);
-      }
+      deleteRecord(linkToRemove)
+        .then(() => {
+          this.getData();
+          this.showSuccess(
+            this.label.toastSuccessTitle,
+            this.label.toastSuccessDeleteMessage
+          );
+        })
+        .catch(() => {
+          this.showError(
+            this.label.toastErrorTitle,
+            this.label.toastErrorDeleteMessage
+          );
+        });
     }
   }
 
@@ -293,8 +271,7 @@ export default class UsefulLinks extends NavigationMixin(LightningElement) {
             [link.Id]: {
               title: link.Title,
               url: link.ContentUrl,
-              contentDocumentId: link.ContentDocumentId,
-              ownerId: link.OwnerId
+              contentDocumentId: link.ContentDocumentId
             }
           };
           this.linksById = { ...this.linksById, ...linkById };
@@ -359,23 +336,6 @@ export default class UsefulLinks extends NavigationMixin(LightningElement) {
         this.showError(
           this.label.toastErrorTitle,
           this.label.toastErrorCreateMessage
-        );
-      });
-  }
-
-  deleteLink(linkToRemove) {
-    deleteRecord(linkToRemove)
-      .then(() => {
-        this.getData();
-        this.showSuccess(
-          this.label.toastSuccessTitle,
-          this.label.toastSuccessDeleteMessage
-        );
-      })
-      .catch(() => {
-        this.showError(
-          this.label.toastErrorTitle,
-          this.label.toastErrorDeleteMessage
         );
       });
   }

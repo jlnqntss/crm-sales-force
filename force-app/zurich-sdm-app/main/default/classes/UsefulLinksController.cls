@@ -65,7 +65,7 @@ public with sharing class UsefulLinksController
                 contentDocumentIds.add(cwDoc.ContentDocumentId);
             }
 
-            List<ContentVersion> contentVersion = [SELECT ContentUrl, Title, ContentDocumentId, OwnerId
+            List<ContentVersion> contentVersion = [SELECT ContentUrl, Title, ContentDocumentId
                                                    FROM ContentVersion
                                                    WHERE ContentDocumentId IN :contentDocumentIds
                                                    AND FileType =: FILE_TYPE AND IsLatest = true
