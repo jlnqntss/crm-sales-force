@@ -5916,6 +5916,130 @@
         <label>No se ha podido guardar debido a un error en el proceso de actualización.</label>
         <name>SDM_ControlIntermediaryNotifiaction_ErrorFlowUpdate</name>
     </customLabels>
+    <customLabels>
+        <label>Cancelar</label>
+        <name>SDM_LinksInteres_ButtonCancel</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardar cambios</label>
+        <name>SDM_LinksInteres_ButtonSave</name>
+    </customLabels>
+    <customLabels>
+        <label>Cancelar acción</label>
+        <name>SDM_LinksInteres_CancelButtonTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>¡Atención!</label>
+        <name>SDM_LinksInteres_ConfirmDeletionLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>¿Está seguro que desea eliminar el link seleccionado?</label>
+        <name>SDM_LinksInteres_ConfirmDeletionMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Eliminar enlace</label>
+        <name>SDM_LinksInteres_DeleteButton</name>
+    </customLabels>
+    <customLabels>
+        <label>Editar enlace</label>
+        <name>SDM_LinksInteres_EditLinkButton</name>
+    </customLabels>
+    <customLabels>
+        <label>Modificar enlace</label>
+        <name>SDM_LinksInteres_EditLinkModalHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>No se han podido cargar los enlaces. Si el problema persiste póngase en contacto con el Administrador.</label>
+        <name>SDM_LinksInteres_ErrorLoadingDataText</name>
+    </customLabels>
+    <customLabels>
+        <label>Título del enlace</label>
+        <name>SDM_LinksInteres_InputText</name>
+    </customLabels>
+    <customLabels>
+        <label>Introduzca un título para el enlace...</label>
+        <name>SDM_LinksInteres_InputTextPlaceholder</name>
+    </customLabels>
+    <customLabels>
+        <label>URL</label>
+        <name>SDM_LinksInteres_InputUrl</name>
+    </customLabels>
+    <customLabels>
+        <label>Introduzca una URL válida...</label>
+        <name>SDM_LinksInteres_InputUrlPlaceHolder</name>
+    </customLabels>
+    <customLabels>
+        <label>Indica que a continuación hay un enlace</label>
+        <name>SDM_LinksInteres_LightningIconLinkAlternativeText</name>
+    </customLabels>
+    <customLabels>
+        <label>Cargando</label>
+        <name>SDM_LinksInteres_Loading</name>
+    </customLabels>
+    <customLabels>
+        <label>Nuevo enlace</label>
+        <name>SDM_LinksInteres_NewLink</name>
+    </customLabels>
+    <customLabels>
+        <label>Crear un nuevo enlace</label>
+        <name>SDM_LinksInteres_NewLinkButtonTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Nuevo enlace</label>
+        <name>SDM_LinksInteres_NewLinkModalHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>No hay ningún enlace a mostrar.</label>
+        <name>SDM_LinksInteres_NoDataToDisplayText</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardar cambios</label>
+        <name>SDM_LinksInteres_SaveButtonTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Enlaces de interés</label>
+        <name>SDM_LinksInteres_TabLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>Enlaces</label>
+        <name>SDM_LinksInteres_Title</name>
+    </customLabels>
+    <customLabels>
+        <label>Ha habido un problema al guardar el enlace. Si el problema persiste pongase en contacto con el Administrador.</label>
+        <name>SDM_LinksInteres_ToastErrorCreateMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Ha habido un problema al eliminar el enlace. Si el problema persiste pongase en contacto con el Administrador.</label>
+        <name>SDM_LinksInteres_ToastErrorDeleteMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Error</label>
+        <name>SDM_LinksInteres_ToastErrorTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Ha habido un problema al guardar el enlace. Si el problema persiste pongase en contacto con el Administrador.</label>
+        <name>SDM_LinksInteres_ToastErrorUpdateMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>El enlace se ha creado con éxito.</label>
+        <name>SDM_LinksInteres_ToastSuccessCreateMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>El enlace se ha eliminado correctamente.</label>
+        <name>SDM_LinksInteres_ToastSuccessDeleteMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Éxito</label>
+        <name>SDM_LinksInteres_ToastSuccessTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>El enlace se ha actualizado correctamente.</label>
+        <name>SDM_LinksInteres_ToastSuccessUpdateMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Ver todo</label>
+        <name>SDM_LinksInteres_ViewAll</name>
+    </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
         <name>Configure_Call_Center_Settings</name>
