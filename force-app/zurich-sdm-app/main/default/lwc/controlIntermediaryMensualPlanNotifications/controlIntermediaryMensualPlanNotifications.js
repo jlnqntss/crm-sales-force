@@ -131,7 +131,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     }
   }
 
-  // metodo de busqueda para los dos inputs
+  // meall de busqueda para los dos inputs
   handleKeyUp(event) {
     const isEnterKey = event.keyCode === 13;
     if (isEnterKey) {
@@ -205,7 +205,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     this.lastQueryTerm = "";
   }
 
-  // control del botón Activar todo
+  // control del botón Activar all
   handleActiveAll() {
     for (const opt of this.options) {
       if (!this.valuesToActive.includes(opt.value)) {
@@ -217,7 +217,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     }
   }
 
-  // control del botón Activar todo
+  // control del botón Inactivar all
   handleInactiveAll() {
     if (this.queryTerm !== "") {
       let index;
