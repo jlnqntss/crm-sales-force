@@ -233,6 +233,11 @@
                 <default>false</default>
                 <label>No Realizado - Otros motivos</label>
             </value>
+            <value>
+                <fullName>Falta Respuesta Mediador</fullName>
+                <default>false</default>
+                <label>Falta Respuesta Mediador</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Queja</controllingFieldValue>
@@ -457,7 +462,6 @@
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
             <valueName>Caducada</valueName>
@@ -472,6 +476,9 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
             <valueName>Realizado - Gestión Competencias</valueName>
         </valueSettings>
         <valueSettings>
