@@ -82,6 +82,24 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>libraryName</name>
+                    <value>Enlaces de interés</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>linksLimitToShow</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentName>usefulLinks</componentName>
+                <identifier>c_usefulLinks</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-610d3474-5012-499e-932b-eb0f91676171</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>active</name>
                     <value>false</value>
                 </componentInstanceProperties>
@@ -113,6 +131,20 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>activityTab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-610d3474-5012-499e-932b-eb0f91676171</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>{!$Label.SDM_LinksInteres_TabLabel}</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-0c7224d2-24d0-4268-a165-896fbffa2763</name>
