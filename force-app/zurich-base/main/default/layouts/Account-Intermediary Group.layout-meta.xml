@@ -101,10 +101,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>IncomeLevel__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Income2014__c</field>
             </layoutItems>
             <layoutItems>
@@ -117,10 +113,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>IncomeVar__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>ZurichMarketBonus__c</field>
             </layoutItems>
             <layoutItems>
@@ -129,14 +121,6 @@
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ResultBeforeTax__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>SalesResult__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ManagedBonus__c</field>
@@ -154,8 +138,8 @@
                 <field>LifeMangedBonus__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>RevenuesPerEmployee__c</field>
+                <behavior>Readonly</behavior>
+                <field>RevenuesPerEmployees__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>

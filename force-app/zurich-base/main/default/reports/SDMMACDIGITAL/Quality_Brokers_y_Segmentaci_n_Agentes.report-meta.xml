@@ -37,9 +37,6 @@
         <field>Account.Conectivity__c</field>
     </columns>
     <columns>
-        <field>Account.ManagementProgram__c</field>
-    </columns>
-    <columns>
         <field>Account.EIACStatus__c</field>
     </columns>
     <columns>
@@ -206,7 +203,7 @@
             <operator>equals</operator>
             <value>Account.AgrupacionMediador</value>
         </criteriaItems>
-        <language>en_US</language>
+        <language>es</language>
     </filter>
     <format>Tabular</format>
     <name>Broker Quality y Segmentación Agentes</name>
