@@ -92,7 +92,6 @@ public with sharing class PlanComercialUtil {
      */
     private static List<PlanComercial__c> getPlanesValidosUpdate(List<PlanComercial__c> planesComercialesList, Map<Id, SObject> oldMap) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
-        //Map<Id, PlanComercial__c> pcAssignedToMap = (new PlanComercialSelector()).findAssignedToDataFromPC(planesComercialesList);
 
         for (PlanComercial__c pc: planesComercialesList) {
             if (esPlanAnual(pc) && targetKPIUpdated(pc, oldMap)) {
