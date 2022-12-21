@@ -1126,6 +1126,7 @@ public with sharing class IntermediarySDM {
      * Metodo que envia la siguiente notificacion a todos los usuarios que se les ha cambiado la visibilidad
      * del mediador
      * 
+     * @change amiranda 21/12/2022 Se modifica el developer name de la vista de lista que debe abrir el enlace de la notificación
      * @param {Set<Id> userIds} Lista de usuario receptores de la notificacion
      */
     public void sendNotification(Set<Id> userIds)
@@ -1135,8 +1136,8 @@ public with sharing class IntermediarySDM {
             String bodyContent = this.notificationBody;
 
             Notification notif = new Notification(Notification.notificationType.SDMAlert);
-            // Permite abrir la seccion de Cuentas, listview Mis Mediadores
-            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mis_mediadores_SDM');
+            // Permite abrir la seccion de Cuentas, listview Mediadores de mi equipo
+            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mediadores_de_mi_equipo');
             // Convertimos la lista de ids de usuario a string
             Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
             notif.send(stringSet, title, bodyContent);
