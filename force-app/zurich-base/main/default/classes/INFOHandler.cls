@@ -513,13 +513,30 @@ public class INFOHandler implements ISystem
                 // Assign the Case Source Area to "Mediator"
                 caseRecord.SourceArea__c = NOTE_CASE_SOURCE_AREA;
 
-                // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
-                String recordTypeDevName = getEquivalence(HANDLER_ORIGIN,NOTE,caseRecord.HegeoProductGroupCode__c.trim());
+                //Tipo de NOTA INFO
+                //Se utiliza el método getEquivalence para comprobar si el tipo de Nota INFO es RBCO/RBNW/SINO
+                //En este caso el RecordType del nuevo caso generado es automáticamente OCS
+                String valorNotaInfo = getEquivalence(HANDLER_ORIGIN,NOTE,(String)recordValuesMap.get('note_cod_agrupacion_TA'));
 
-                if( String.isBlank(recordTypeDevName) ) {
-                    throw new INFOHandlerException('RecordType equivalence not found for the following Object Type: ' + caseRecord.HegeoProductGroupCode__c.trim());
+                if(String.isNotBlank(valorNotaInfo))
+                {
+                    caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(valorNotaInfo).getRecordTypeId();
                 }
-                caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeDevName).getRecordTypeId();
+                else 
+                {
+                    // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
+                    String recordTypeDevName = getEquivalence(HANDLER_ORIGIN,NOTE,caseRecord.HegeoProductGroupCode__c.trim());
+
+                    if( String.isBlank(recordTypeDevName) ) 
+                    {
+                        //En caso de no encontrar equivalencia se establece el caso tendrá RecordType OCS
+                        caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+                    }
+                    else 
+                    {
+                        caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeDevName).getRecordTypeId();
+                    }
+                }
 
                 // Get the Type, Subytype and TypeN3 from the HEGEO fields metadata configuration
 
