@@ -437,10 +437,6 @@ public with sharing class WebServicesParser
                     }
                 }
             }
-            else
-            {
-                //TODO:Error al estar los campos en la metadata vacios
-            }
 
             for (String key : mapPick.keySet() )
             {
@@ -464,11 +460,6 @@ public with sharing class WebServicesParser
                     pickName = (String) mapPick.get(key);
                     valuesMap.put(pickName, pickId);
                 }
-                else
-                {
-                    //TODO: Añadir mensaje de error
-                }
-
                 
                 
                 String value = null;
