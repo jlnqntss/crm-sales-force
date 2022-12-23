@@ -13,10 +13,13 @@ public with sharing class CreateActaController {
             // query evento y sus attendees 
             Event event = getEventData(eventId);
 
+            // comprobar si el acta lo está creando el organizador (owner) lanza excepcion si no se cumple
+            checkIsOwner(event);
+
             // comprobar si existe ya un acta
             if (String.isNotEmpty(event.Acta__c)) {
                 throw new HandledException(System.Label.SDM_Acta_CheckExist);
-            }
+            }            
 
             // si no existe se crea el objeto acta y se actualiza el evento            
             Id actaId = insertActa(event);
@@ -45,6 +48,28 @@ public with sharing class CreateActaController {
         }
 
         return result;
+    }
+
+    /**
+     * Comprobar que el usuario logueado es el owner del acta
+     * @param event: evento obtenido de la base de datos     
+     * @author dmunoz
+     * @date 23/12/2022
+     */
+    private static void checkIsOwner(Event event) {
+        System.debug('DMM entro en checkIsOwner');
+        String logedUser = UserInfo.getUserId();
+        System.debug('DMM logedUser ' + logedUser);
+        System.debug('DMM event owner ' + OwnerId);
+
+        if (!logedUser.equals(event.OwnerId)) {
+            System.debug('DMM entro en if');
+            String message = System.Label.SDM_Acta_CheckOwner.replace('{0}', event.Owner.Name);
+
+            throw new HandledException(message);
+        } else {
+            System.debug('No entro en if');
+        }
     }
 
     /**
@@ -87,7 +112,7 @@ public with sharing class CreateActaController {
      * @date 22/12/2022
      */
     private static String getEventAttendees(Event event) {
-        String result = '';
+        String result = event.Owner.Name + '\r\n';
         for (EventRelation er: event.EventRelations) {
             result += er.Relation.Name + '\r\n';
         }

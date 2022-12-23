@@ -5517,6 +5517,10 @@
         <name>SDM_Acta_CheckExist</name>
     </customLabels>
     <customLabels>
+        <label>Solo el usuario {0} puede crear un acta</label>
+        <name>SDM_Acta_CheckOwner</name>
+    </customLabels>
+    <customLabels>
         <label>Activo</label>
         <name>SDM_Objetivos_Active</name>
     </customLabels>

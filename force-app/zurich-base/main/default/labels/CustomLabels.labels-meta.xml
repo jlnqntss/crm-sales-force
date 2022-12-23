@@ -2070,4 +2070,12 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_Acta_CheckExist</shortDescription>
         <value>This event already has a record</value>
     </labels>
+    <labels>
+        <fullName>SDM_Acta_CheckOwner</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_CheckOwner</shortDescription>
+        <value>Only the user {0} can create a record</value>
+    </labels>
 </CustomLabels>
