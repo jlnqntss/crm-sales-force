@@ -1480,6 +1480,11 @@
     <custom>true</custom>
     <fieldPermissions>
         <editable>true</editable>
+        <field>AccionesTratadasActa__c.Actions__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>AccionesTratadasActa__c.DueDate__c</field>
         <readable>true</readable>
     </fieldPermissions>

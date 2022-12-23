@@ -62,8 +62,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Parent__c</fieldItem>
-                <identifier>RecordParent_cField</identifier>
+                <fieldItem>Record.Actions__c</fieldItem>
+                <identifier>RecordActions_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -80,6 +80,16 @@
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Parent__c</fieldItem>
+                <identifier>RecordParent_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
