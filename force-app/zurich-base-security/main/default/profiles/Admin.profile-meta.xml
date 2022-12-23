@@ -17362,6 +17362,10 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <tabVisibilities>
+        <tab>Acta__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Claim__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>

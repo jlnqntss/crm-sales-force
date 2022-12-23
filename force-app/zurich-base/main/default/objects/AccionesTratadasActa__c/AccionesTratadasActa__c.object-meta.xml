@@ -164,7 +164,7 @@
     <label>Acciones Tratadas Acta</label>
     <nameField>
         <displayFormat>AT-{0000000}</displayFormat>
-        <label>Acciones Tratadas Acta Name</label>
+        <label>Acciones Tratadas Acta</label>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Acciones Tratadas Acta</pluralLabel>
