@@ -5513,7 +5513,7 @@
         <name>CTIExtraButtonsTitle</name>
     </customLabels>
     <customLabels>
-        <label>Este evento ya tiene un acta asociada</label>
+        <label>Este evento ya tiene un acta asociada, puede modificarla o eliminarla</label>
         <name>SDM_Acta_CheckExist</name>
     </customLabels>
     <customLabels>
