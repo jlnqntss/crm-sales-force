@@ -2062,4 +2062,12 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_LinksInteres_ViewAll</shortDescription>
         <value>View all</value>
     </labels>
+    <labels>
+        <fullName>SDM_Acta_CheckExist</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_CheckExist</shortDescription>
+        <value>This event already has a record</value>
+    </labels>
 </CustomLabels>

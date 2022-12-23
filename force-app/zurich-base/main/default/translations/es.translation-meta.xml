@@ -5513,6 +5513,10 @@
         <name>CTIExtraButtonsTitle</name>
     </customLabels>
     <customLabels>
+        <label>Este evento ya tiene un acta asociada</label>
+        <name>SDM_Acta_CheckExist</name>
+    </customLabels>
+    <customLabels>
         <label>Activo</label>
         <name>SDM_Objetivos_Active</name>
     </customLabels>
