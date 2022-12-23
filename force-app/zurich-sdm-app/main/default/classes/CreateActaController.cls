@@ -60,7 +60,7 @@ public with sharing class CreateActaController {
         System.debug('DMM entro en checkIsOwner');
         String logedUser = UserInfo.getUserId();
         System.debug('DMM logedUser ' + logedUser);
-        System.debug('DMM event owner ' + OwnerId);
+        System.debug('DMM event owner ' + event.Owner.Name);
 
         if (!logedUser.equals(event.OwnerId)) {
             System.debug('DMM entro en if');
