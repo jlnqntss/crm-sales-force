@@ -228,7 +228,7 @@ public with sharing class IntermediarySDM {
         // Mapa de usuarios por su Email
         if( mapUsersByEmail == null ) {
             mapUsersByEmail = new Map<String, User>();
-            for(User u: [SELECT Id, Email FROM User]) {
+            for(User u: [SELECT Id, Email, isActive FROM User]) {
                 mapUsersByEmail.put(u.Email, u);
             }
         }
@@ -606,10 +606,15 @@ public with sharing class IntermediarySDM {
                             // Y recuperamos el valor del campo, que deberia ser un email de usuario de Salesforce
                             String fieldValue = (String)i.get(s.IntermediaryField__c);
 
-                            // Si el valor del campo es vacio o con el valor VACANT, y si tiene ATMs, 
-                            // se ponen los ATMs para borrar
+                            // Se intenta recuperar el usuario en base al email
+                            User u = mapUsersByEmail?.get(fieldValue);
+
+                            // Si el valor del campo es vacio o con el valor VACANT o el usuario no existe
+                            // o el usuario no existe, y si tiene ATMs, se ponen los ATMs para borrar
                             if( String.isBlank(fieldValue) 
                                 || fieldValue.equalsIgnoreCase(INTERMEDIARY_VACANT)
+                                || u == null
+                                || !u.isActive
                             ) {
                                 if( mapAtmByUserId != null && !mapAtmByUserId.values().isEmpty() ) {
                                     atmsToDelete.addAll(mapAtmByUserId.values());
@@ -619,39 +624,35 @@ public with sharing class IntermediarySDM {
                                     // Añadimos los usuarios para notificarlos al final del batch
                                     this.addUsersToNotify(mapAtmByUserId.keySet());
                                 }
-                            } else {
-                                // Sino, se mira si se corresponde con el email de un Usuario
-                                User u = mapUsersByEmail?.get(fieldValue);
-                                // Si el usuario existe
-                                if( u != null ) {
-                                    // Se recoge el ATM para ese usuario (puede que no exista y sea nulo)
-                                    AccountTeamMember atmOld = mapAtmByUserId?.get(u.Id);
+                            } else if(u != null) { // Si el usuario existe
+                                
+                                // Se recoge el ATM para ese usuario (puede que no exista y sea nulo)
+                                AccountTeamMember atmOld = mapAtmByUserId?.get(u.Id);
 
-                                    // Si aun no existe...
-                                    if( atmOld == null ) {
-                                        // Como solo deberia haber un ATM por rol y no hay para ese usuario, 
-                                        // se mira si hay otros y si los hay se ponen a borrar. No deja modificar los actuales
-                                        if( mapAtmByUserId != null && !mapAtmByUserId.isEmpty() ) {
-                                            atmsToDelete.addAll(mapAtmByUserId.values());
-                                            // Añadimos los usuarios para notificarlos al final del batch
-                                            this.addUsersToNotify(mapAtmByUserId.keySet());
-                                        }
-
-                                        AccountTeamMember atm = new AccountTeamMember(
-                                            AccountId= i.Id,
-                                            userId= u.Id,
-                                            TeamMemberRole= roleLabel,
-                                            AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL,
-                                            ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
-                                        );
-
-                                        atmsToUpsert.add(atm);
-
-                                        // Añadimos el CIF para que se recalculen los ATMs del padre (agrupacion)
-                                        this.addNationalId(i.NationalId__c);
-                                        // Añadimos el usuario para notificarlo al final del batch
-                                        this.addUserToNotify(u.Id);
+                                // Si aun no existe...
+                                if( atmOld == null ) {
+                                    // Como solo deberia haber un ATM por rol y no hay para ese usuario, 
+                                    // se mira si hay otros y si los hay se ponen a borrar. No deja modificar los actuales
+                                    if( mapAtmByUserId != null && !mapAtmByUserId.isEmpty() ) {
+                                        atmsToDelete.addAll(mapAtmByUserId.values());
+                                        // Añadimos los usuarios para notificarlos al final del batch
+                                        this.addUsersToNotify(mapAtmByUserId.keySet());
                                     }
+
+                                    AccountTeamMember atm = new AccountTeamMember(
+                                        AccountId= i.Id,
+                                        userId= u.Id,
+                                        TeamMemberRole= roleLabel,
+                                        AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL,
+                                        ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
+                                    );
+
+                                    atmsToUpsert.add(atm);
+
+                                    // Añadimos el CIF para que se recalculen los ATMs del padre (agrupacion)
+                                    this.addNationalId(i.NationalId__c);
+                                    // Añadimos el usuario para notificarlo al final del batch
+                                    this.addUserToNotify(u.Id);
                                 }
                             }
                         }
