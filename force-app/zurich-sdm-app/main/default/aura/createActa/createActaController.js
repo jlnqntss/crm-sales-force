@@ -1,6 +1,6 @@
 ({
   doInit: function (component) {
-    var action;
+    let action;
 
     action = component.get("c.createActa");
     action.setParams({
@@ -8,16 +8,16 @@
     });
 
     action.setCallback(this, function (response) {
-      var state = response.getState();
+      let state = response.getState();
       console.log("State Contract: " + state);
       if (state === "SUCCESS") {
         component.set("v.isLoading", false); // terminar spinner
 
         $A.get("e.force:closeQuickAction").fire(); // cerrar quick action
-        var actaIdResult = response.getReturnValue();
+        let actaIdResult = response.getReturnValue();
 
         // redirigir al registro acta
-        var navEvt = $A.get("e.force:navigateToSObject");
+        let navEvt = $A.get("e.force:navigateToSObject");
         navEvt.setParams({
           recordId: actaIdResult,
           slideDevName: "related"
@@ -31,10 +31,10 @@
         $A.get("e.force:closeQuickAction").fire(); // cerrar quick action
 
         // leer error y mostrar toast
-        var errors = response.getError();
+        let errors = response.getError();
         if (errors) {
           if (errors[0] && errors[0].message) {
-            var toastEvent = $A.get("e.force:showToast");
+            let toastEvent = $A.get("e.force:showToast");
             toastEvent.setParams({
               title: "Error",
               message: errors[0].message,
