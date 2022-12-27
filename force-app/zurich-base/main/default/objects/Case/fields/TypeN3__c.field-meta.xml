@@ -21,11 +21,6 @@
                 <label>Activation failure</label>
             </value>
             <value>
-                <fullName>Ajuste oferta</fullName>
-                <default>false</default>
-                <label>Ajuste oferta</label>
-            </value>
-            <value>
                 <fullName>Annulment</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -422,6 +417,11 @@
                 <label>Modificación</label>
             </value>
             <value>
+                <fullName>Modificación oferta</fullName>
+                <default>false</default>
+                <label>Modificación oferta</label>
+            </value>
+            <value>
                 <fullName>Multas</fullName>
                 <default>false</default>
                 <label>Multas</label>
@@ -668,7 +668,6 @@
             <value>
                 <fullName>Sin Oferta</fullName>
                 <default>false</default>
-                <isActive>false</isActive>
                 <label>Sin Oferta</label>
             </value>
             <value>
@@ -822,6 +821,10 @@
             <valueName>No definido</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <valueName>Sin Oferta</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <valueName>Gestión competencias</valueName>
         </valueSettings>
@@ -959,8 +962,8 @@
             <valueName>Modificación</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <valueName>Ajuste oferta</valueName>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
+            <valueName>Modificación oferta</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
