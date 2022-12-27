@@ -491,7 +491,7 @@ global without sharing class ContactUtil
      * @author nbizkarra
      * @date 01/04/2020
      */
-    public static void SummaryTotalContacts( List<Contact> newList, Map<Id, Contact> oldMap )
+    public static void summaryTotalContacts( List<Contact> newList, Map<Id, Contact> oldMap )
     {
         
         Set<Id> idSet = new Set<Id>();
