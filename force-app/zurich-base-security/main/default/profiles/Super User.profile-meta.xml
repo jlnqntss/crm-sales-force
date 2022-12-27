@@ -5365,6 +5365,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ExcludedMailboxList__mdt.Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ErrorManagementSetting__mdt.Min_Log_Level__c</field>
         <readable>true</readable>
     </fieldPermissions>

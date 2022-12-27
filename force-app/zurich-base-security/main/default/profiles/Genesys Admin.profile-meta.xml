@@ -7473,6 +7473,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ExcludedMailboxList__mdt.Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ExternalIdField__mdt.ExternalId__c</field>
         <readable>true</readable>
     </fieldPermissions>

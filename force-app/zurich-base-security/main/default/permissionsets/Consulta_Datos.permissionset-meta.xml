@@ -2165,6 +2165,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ExcludedMailboxList__mdt.Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>MaestroApetito__c.ApetitoRiesgo__c</field>
         <readable>true</readable>
     </fieldPermissions>
