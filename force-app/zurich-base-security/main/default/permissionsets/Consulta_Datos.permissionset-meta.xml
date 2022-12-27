@@ -1160,6 +1160,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.IsCreatedOnExcludedMailbox__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.InsuredAmount__c</field>
         <readable>true</readable>
     </fieldPermissions>
