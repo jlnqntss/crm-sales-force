@@ -1042,6 +1042,10 @@
             <fullName>Tareas administrativas</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Transferencia</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
@@ -1246,6 +1250,10 @@
         </values>
         <values>
             <fullName>Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otras áreas</fullName>
             <default>false</default>
         </values>
         <values>

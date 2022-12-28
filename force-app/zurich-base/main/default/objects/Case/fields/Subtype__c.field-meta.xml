@@ -593,6 +593,11 @@
                 <label>Tareas administrativas</label>
             </value>
             <value>
+                <fullName>Transferencia</fullName>
+                <default>false</default>
+                <label>Transferencia</label>
+            </value>
+            <value>
                 <fullName>Validacion</fullName>
                 <default>false</default>
                 <label>Validación</label>
@@ -816,6 +821,10 @@
         <valueSettings>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Retención</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Transferencia</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>

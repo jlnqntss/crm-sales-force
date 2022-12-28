@@ -496,6 +496,11 @@
                 <label>Offer (Shipping)</label>
             </value>
             <value>
+                <fullName>Otras áreas</fullName>
+                <default>false</default>
+                <label>Otras áreas</label>
+            </value>
+            <value>
                 <fullName>Pagos</fullName>
                 <default>false</default>
                 <label>Pagos</label>
@@ -987,6 +992,10 @@
         <valueSettings>
             <controllingFieldValue>Campaña</controllingFieldValue>
             <valueName>Campaña</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
+            <valueName>Otras áreas</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
