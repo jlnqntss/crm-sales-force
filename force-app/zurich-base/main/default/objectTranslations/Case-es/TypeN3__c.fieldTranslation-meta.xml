@@ -3,7 +3,7 @@
     <label>Tipo N3</label>
     <name>TypeN3__c</name>
     <picklistValues>
-        <masterLabel>Ajuste oferta</masterLabel>
+        <masterLabel>Modificación oferta</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
