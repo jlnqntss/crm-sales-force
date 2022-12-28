@@ -229,7 +229,7 @@ public with sharing class OpportunityUtil
     public static void validateChangeOwner(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
     {
         List<PermissionSetAssignment> userList = [SELECT AssigneeId,Assignee.Profile.Name FROM PermissionSetAssignment WHERE (PermissionSet.Name = 'ZE_Advisor' OR Assignee.Profile.Name='Integrator') AND Assignee.isActive = True];
-		Id IntegratorId=null;
+		Id integratorId=null;
         for (Opportunity newOpty : newList)
         {
             Opportunity oldOpty = oldMap.get(newOpty.Id);
