@@ -254,7 +254,7 @@
             <column>Survey__c$CaseId__c.CloseDetail__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>contains</operator>
+            <operator>notContain</operator>
             <value>Sin respuesta de cliente/mediador</value>
         </criteriaItems>
         <language>en_US</language>
