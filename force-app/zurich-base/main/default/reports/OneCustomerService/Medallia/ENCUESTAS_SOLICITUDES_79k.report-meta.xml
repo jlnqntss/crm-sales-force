@@ -215,6 +215,48 @@
             <operator>equals</operator>
             <value>CC Service</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Survey__c$CaseId__c.IsCreatedOnExcludedMailbox__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Survey__c$CaseId__c.IsBussinessCodeExcluded__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Survey__c$CaseId__c.Type</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Gestión Cliente</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Survey__c$CaseId__c.Subtype__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Transferencia</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Survey__c$CaseId__c.TypeN3__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Otras áreas</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Survey__c$CaseId__c.CloseDetail__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>contains</operator>
+            <value>Sin respuesta de cliente/mediador</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Tabular</format>
