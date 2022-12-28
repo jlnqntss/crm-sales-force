@@ -13,14 +13,14 @@
         <valueSetDefinition>
             <sorted>true</sorted>
             <value>
-                <fullName>Ajuste oferta</fullName>
-                <default>false</default>
-                <label>Ajuste oferta</label>
-            </value>
-            <value>
                 <fullName>Anulación</fullName>
                 <default>false</default>
                 <label>Anulación</label>
+            </value>
+            <value>
+                <fullName>Apoyo Captación</fullName>
+                <default>false</default>
+                <label>Apoyo Captación</label>
             </value>
             <value>
                 <fullName>App</fullName>
@@ -376,6 +376,11 @@
                 <fullName>Modificación</fullName>
                 <default>false</default>
                 <label>Modificación</label>
+            </value>
+            <value>
+                <fullName>Modificación oferta</fullName>
+                <default>false</default>
+                <label>Modificación oferta</label>
             </value>
             <value>
                 <fullName>Modificar dispositivo asegurado</fullName>
@@ -758,7 +763,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
-            <valueName>Ajuste oferta</valueName>
+            <valueName>Apoyo Captación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
@@ -772,6 +777,10 @@
             <controllingFieldValue>Venta</controllingFieldValue>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>
             <valueName>Gestión Competencias</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <valueName>Modificación oferta</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>

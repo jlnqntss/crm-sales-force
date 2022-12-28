@@ -3,7 +3,7 @@
     <label>Type N2</label>
     <name>Subtype__c</name>
     <picklistValues>
-        <masterLabel>Ajuste oferta</masterLabel>
+        <masterLabel>Modificación oferta</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
