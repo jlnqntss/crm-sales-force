@@ -11435,10 +11435,6 @@
         <layout>Contact-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contact-Contact Layout</layout>
-        <recordType>Contact.ContactPartner</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Contact-Copy of Customer Layout_prod</layout>
         <recordType>Contact.CustomerGI</recordType>
     </layoutAssignments>
@@ -11461,6 +11457,10 @@
     <layoutAssignments>
         <layout>Contact-OCS Contact</layout>
         <recordType>Contact.Contact</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-OCS Contact</layout>
+        <recordType>Contact.ContactPartner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ContactPointAddress-Formato Dirección de punto de contacto</layout>

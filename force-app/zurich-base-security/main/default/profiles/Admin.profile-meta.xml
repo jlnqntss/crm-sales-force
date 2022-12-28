@@ -311,6 +311,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContentWorkspacesPicklist</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentWorkspacesPicklistTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CoverUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -776,6 +784,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TriggerFactory</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UsefulLinksController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UsefulLinksControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -4685,11 +4701,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.RevenuesPerEmployee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Account.InterestConc__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4776,6 +4787,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Segment_sdm__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.RevenuesPerEmployees__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14785,10 +14801,6 @@
         <layout>Contact-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contact-Contact Layout</layout>
-        <recordType>Contact.ContactPartner</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Contact-Copy of Customer Layout_prod</layout>
         <recordType>Contact.CustomerGI</recordType>
     </layoutAssignments>
@@ -14811,6 +14823,10 @@
     <layoutAssignments>
         <layout>Contact-OCS Contact</layout>
         <recordType>Contact.Contact</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-OCS Contact</layout>
+        <recordType>Contact.ContactPartner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ContactPointAddress-Formato Dirección de punto de contacto</layout>

@@ -277,6 +277,10 @@
             <section>Accident Rate</section>
         </sections>
         <sections>
+            <label>Dirección</label>
+            <section>Address</section>
+        </sections>
+        <sections>
             <label>Descripción</label>
             <section>Description</section>
         </sections>

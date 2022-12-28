@@ -1,0 +1,141 @@
+<template>
+  <article class="slds-card slds-card_boundary">
+    <lightning-card title={label.titleCard} icon-name="standard:link">
+      <div if:true={isAuthorOrAdmin} slot="actions">
+        <lightning-button
+          class="slds-theme_neutral"
+          variant="neutral"
+          label={label.newLinkButton}
+          title={label.newLinkButtonTitle}
+          aria-label={label.newLinkButton}
+          onclick={handleNew}
+        ></lightning-button>
+      </div>
+      <div if:true={isLoading} class="slds-card__body_inner slds-clearfix">
+        <lightning-spinner
+          alternative-text={label.loadingText}
+          size="medium"
+          title="spinning"
+          aria-label={label.loadingText}
+        ></lightning-spinner>
+      </div>
+      <!-- Texto mostrado cuando ha ocurrido algún error -->
+      <div
+        if:true={errorLoadingData}
+        class="slds-card__body slds-card__body_inner slds-text-color_error"
+      >
+        {label.errorLoadingDataText}
+      </div>
+      <!-- Texto mostrado cuando no hay enlaces en la biblioteca/usuario no tiene permisos -->
+      <div if:true={linksToShow} class="slds-card__body slds-card__body_inner">
+        {label.noDataToDisplayText}
+      </div>
+      <template for:each={links} for:item="link">
+        <div
+          key={link.Id}
+          data-id={link.Id}
+          class="slds-card__body_inner slds-clearfix"
+        >
+          <div style="font-size: 0.8125rem; float: left">
+            <p>
+              <lightning-icon
+                class="slds-m-right_xx-small"
+                icon-name="utility:link"
+                size="x-small"
+                alternative-text={label.lightningIconLinkAlternativeText}
+              ></lightning-icon>
+              <a target="_blank" rel="noopener" href={link.ContentUrl}
+                >{link.Title}</a
+              >
+            </p>
+          </div>
+          <lightning-button-icon
+            if:true={isAuthorOrAdmin}
+            class="slds-float_right slds-icon-text-error"
+            tooltip={label.deleteLinkButton}
+            alternative-text={label.deleteLinkButton}
+            aria-label={label.deleteLinkButton}
+            variant="bare"
+            type="button"
+            icon-name="action:remove"
+            size="medium"
+            onclick={handleDelete}
+          ></lightning-button-icon>
+          <lightning-button-icon
+            if:true={isAuthorOrAdmin}
+            class="slds-float_right"
+            tooltip={label.editLinkButton}
+            alternative-text={label.editLinkButton}
+            variant="bare"
+            type="button"
+            icon-name="action:edit"
+            size="medium"
+            onclick={handleEdit}
+          ></lightning-button-icon>
+        </div>
+      </template>
+      <div slot="footer">
+        <a class="slds-text-link" href={allViewUrl}>{label.viewAll}</a>
+      </div>
+    </lightning-card>
+  </article>
+  <!-- Modal Window -->
+  <template if:true={showModal}>
+    <section aria-modal="true" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <!-- Cabecera cuando se genera un nuevo enlace -->
+          <h2 if:true={isNew} class="slds-text-heading_small">
+            {label.newLinkModalHeader}
+          </h2>
+          <!-- Cabecera cuando se edita un enlace -->
+          <h2 if:true={isEdit} class="slds-text-heading_small">
+            {label.editLinkModalHeader}
+          </h2>
+        </header>
+        <div class="slds-modal__content">
+          <div class="slds-p-around_small">
+            <lightning-input
+              type="text"
+              data-field="titulo"
+              label={label.inputText}
+              placeholder={label.inputTextPlaceholder}
+              value={inputTitulo}
+              maxlength="34"
+              required
+              onchange={handleInputTextChange}
+            ></lightning-input>
+            <lightning-input
+              type="url"
+              data-field="url"
+              label={label.inputUrl}
+              placeholder={label.inputUrlPlaceholder}
+              value={inputUrl}
+              required
+              onchange={handleInputUrlChange}
+            ></lightning-input>
+          </div>
+        </div>
+        <footer class="slds-modal__footer">
+          <lightning-button
+            label={label.cancelButton}
+            title={label.cancelButtonTitle}
+            aria-label={label.cancelButtonTitle}
+            onclick={handleCancel}
+            variant="neutral"
+          ></lightning-button>
+          <lightning-button
+            class="slds-m-left_x-small"
+            label={label.saveButton}
+            title={label.saveButtonTitle}
+            aria-label={label.saveButtonTitle}
+            onclick={handleSalve}
+            variant="brand"
+            disabled={saveButtonDisabled}
+          ></lightning-button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+</template>

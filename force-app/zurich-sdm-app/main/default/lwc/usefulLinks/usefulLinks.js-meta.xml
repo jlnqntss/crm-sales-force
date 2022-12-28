@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <description>Muestra enlaces de interés que se encuentran en la biblioteca "Enlaces de interés".</description>
+    <masterLabel>Enlaces de interés</masterLabel>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__HomePage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__HomePage">
+            <property name="libraryName" type="String" placeholder="Seleccione una librería de la lista" required="true" datasource="apex://ContentWorkspacesPicklist" label="Librería"
+                description="Librería donde se encuentran los enlaces a mostrar en el componente. La librería ha de crearse previamente para poder utilizar el componente."></property>
+            <property name="linksLimitToShow" type="Integer" default="10" label="Links a mostrar" description="Se establece la cantidad de links a mostrar. La cantidad por defecto es 10."></property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

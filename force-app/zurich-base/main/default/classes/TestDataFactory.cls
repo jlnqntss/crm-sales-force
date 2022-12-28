@@ -1276,7 +1276,7 @@ public class TestDataFactory
                     'note_desc_tipo_envio' => tipo,
                     'note_desc_subtipo' => subtype,
                     'note_desc_nivel_division' => typeN3,
-                    'note_cod_agrupacion' => ''
+                    'note_cod_agrupacion' => '17'
             }
                 );
         }
