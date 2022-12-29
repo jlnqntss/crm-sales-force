@@ -262,6 +262,7 @@
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -294,6 +295,7 @@
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -324,6 +326,7 @@
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>

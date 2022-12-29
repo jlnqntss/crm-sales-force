@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <assignments>
+        <description>Establecemos la variable a true porque se ha encontrado el Bussiness Code de la póliza entre los indicados</description>
+        <name>Asignamos_la_variable</name>
+        <label>Asignamos la variable</label>
+        <locationX>264</locationX>
+        <locationY>671</locationY>
+        <assignmentItems>
+            <assignToReference>Excluimos</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>CheckBussinessCodes</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Comprobamos si el receptor del email está entre los buzones</description>
+        <name>IsCoincident</name>
+        <label>¿Coincide?</label>
+        <locationX>396</locationX>
+        <locationY>551</locationY>
+        <defaultConnector>
+            <targetReference>CheckBussinessCodes</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No coincide</defaultConnectorLabel>
+        <rules>
+            <name>Coincide</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PolicyId__r.BusinessCode__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>CheckBussinessCodes.Codigo_Negocio__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignamos_la_variable</targetReference>
+            </connector>
+            <label>Coincide</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Case trigger - Before Insert/Update {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case trigger - Before Insert/Update - Comprobamos Bussiness Code Poliza</label>
+    <loops>
+        <name>CheckBussinessCodes</name>
+        <label>Comprobamos el bussiness code</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <collectionReference>GetBussinessCodes</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>IsCoincident</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>UpdateField</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Obtenemos el listado de buzones que se excluyen</description>
+        <name>GetBussinessCodes</name>
+        <label>Obtener codigos de negocio</label>
+        <locationX>176</locationX>
+        <locationY>311</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CheckBussinessCodes</targetReference>
+        </connector>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Codigo_Negocio_BancSabadell__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Actualizamos el flag que nos indica si el bussiness code de la póliza se encuentra entre los indicados</description>
+        <name>UpdateField</name>
+        <label>Actualizamos el campo</label>
+        <locationX>176</locationX>
+        <locationY>983</locationY>
+        <inputAssignments>
+            <field>IsBussinessCodeExcluded__c</field>
+            <value>
+                <elementReference>Excluimos</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>GetBussinessCodes</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Origin</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Email</stringValue>
+            </value>
+        </filters>
+        <object>Case</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>Excluimos</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+</Flow>

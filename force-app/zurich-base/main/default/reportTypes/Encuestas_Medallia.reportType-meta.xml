@@ -236,6 +236,21 @@
             <field>DSRESULT__c</field>
             <table>Survey__c</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CaseId__c.CloseDetail__c</field>
+            <table>Survey__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CaseId__c.IsBussinessCodeExcluded__c</field>
+            <table>Survey__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CaseId__c.IsCreatedOnExcludedMailbox__c</field>
+            <table>Survey__c</table>
+        </columns>
         <masterLabel>Caso</masterLabel>
     </sections>
     <sections>
