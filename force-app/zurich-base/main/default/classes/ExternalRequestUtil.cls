@@ -1027,10 +1027,7 @@ global without sharing class ExternalRequestUtil {
 
     if (contactsToUpdate != null && !contactsToUpdate.isEmpty()) {
       //upsert contactsToUpdate.values() Contact.Fields.CustomerNum__c;
-      
-      for(Contact c: contactsToUpdate.values() ) {
-        
-      }
+
       upsert contactsToUpdate.values();
     }
 
@@ -1048,10 +1045,7 @@ global without sharing class ExternalRequestUtil {
 
     if (ordersToUpdateList != null && !ordersToUpdateList.isEmpty()) {
       //Actualizar por id, para evitar error
-      
-      for( Order o : ordersToUpdateList.values() ) {
-        
-      }
+
       upsert ordersToUpdateList.values();
     }
 
@@ -1088,10 +1082,7 @@ global without sharing class ExternalRequestUtil {
       upsert orderItemsToInsert.values() OrderItem.Fields.ItemId__c;
     }
     if (discountsToInsert != null && !discountsToInsert.isEmpty()) {
-      
-      for(Discount__c d: discountsToInsert.values()) {
-          
-      }
+
       upsert discountsToInsert.values() Discount__c.Fields.DiscountId__c;
     }
 

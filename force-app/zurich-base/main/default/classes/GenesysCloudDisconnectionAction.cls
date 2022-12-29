@@ -32,7 +32,7 @@ public class GenesysCloudDisconnectionAction {
                 }
                 catch(Exception e)
                 {
-                    
+                    //Catch code
                 }
             }
             retorno.add(listaInteraccionesSalida);
