@@ -14,7 +14,7 @@
         .isConsoleNavigation()
         .then(function (isConsole) {
           if (!isConsole) {
-            throw "Not in Console";
+            throw new Error("Not in Console");
           }
 
           return workspaceAPI.openTab({
