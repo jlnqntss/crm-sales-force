@@ -884,6 +884,10 @@ public with sharing class WebServicesParser
                         }
                     }
                 }
+                when else 
+                {
+                    // else code
+                }
                 //...Others if necessary
             }
         }

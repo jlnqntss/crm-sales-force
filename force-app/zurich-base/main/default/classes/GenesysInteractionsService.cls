@@ -202,6 +202,10 @@ public without sharing class GenesysInteractionsService
 
                 searchResults.relatedRecords = (List<SObject>) cases;
             }
+            when else 
+            {
+                // else code
+            }
         }
 
         return searchResults;
@@ -484,6 +488,10 @@ public without sharing class GenesysInteractionsService
             when 'car_registration'
             {
                 claims = claimsSelector.selectByPlate(request.searchTerm);
+            }
+            when else 
+            {
+                // else code
             }
         }
 
@@ -911,6 +919,10 @@ public without sharing class GenesysInteractionsService
             {
                 klincPolicies = DigitalCustomerSearchService.findPoliciesByCustomerEmail(request.value);
             }
+            when else 
+            {
+                // else code
+            }
         }
 
         // 3 - Si tiene al menos 1 póliza, es de Klinc
@@ -1074,6 +1086,10 @@ public without sharing class GenesysInteractionsService
                 }
                 when 'claim_number' {
                     result = result.deleteWhitespace().toUpperCase().leftPad(10, '0');
+                }
+                when else 
+                {
+                    // else code
                 }
             }
 
@@ -1522,6 +1538,10 @@ public without sharing class GenesysInteractionsService
             switch on type {
                 when 'document' {
                     result = result.deleteWhitespace().toUpperCase();
+                }
+                when else 
+                {
+                    // else code
                 }
             }
 

@@ -932,6 +932,10 @@ global without sharing class ExternalRequestUtil {
               when 'Claim' {
                 processClaim();
               }
+              when else 
+              {
+                  // else code
+              }
             }
             externalRequestItem.processed__c = true;
             externalRequestItem.processedDate__c = Datetime.now();
