@@ -74,28 +74,6 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Es_OCS</name>
-        <label>Es OCS</label>
-        <locationX>768</locationX>
-        <locationY>318</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>OCS</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>OCSInquiry</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Name_vacio</targetReference>
-            </connector>
-            <label>OCS</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Name_vacio</name>
         <label>Name vacío?</label>
         <locationX>767</locationX>
@@ -142,6 +120,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>OCSUSPDecision</name>
+        <label>Es OCS o USP?</label>
+        <locationX>768</locationX>
+        <locationY>318</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>OCSUSPOutcome</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Name_vacio</targetReference>
+            </connector>
+            <label>OCS or USP</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Tipo_de_cuenta</name>
         <label>Tipo de cuenta</label>
         <locationX>582</locationX>
@@ -173,6 +180,7 @@
             <label>Cliente</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>Case Trigger - Before insert/update Supplied Data {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before insert/update Supplied Data</label>
     <processMetadataValues>
@@ -225,7 +233,7 @@
         <locationX>650</locationX>
         <locationY>48</locationY>
         <connector>
-            <targetReference>Es_OCS</targetReference>
+            <targetReference>OCSUSPDecision</targetReference>
         </connector>
         <object>Case</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
