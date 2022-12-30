@@ -2,6 +2,48 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>Account_ID_Policy_Assignment</name>
+        <label>Account ID Policy Assignment</label>
+        <locationX>842</locationX>
+        <locationY>911</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.PolicyId__r.IntermediaryId__r.Id</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Account_ID_Policy_Assignment2</name>
+        <label>Account ID Policy Assignment</label>
+        <locationX>1106</locationX>
+        <locationY>911</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.PolicyId__r.Partner__c</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Copy_1_of_Customer_policy_Assignment</name>
+        <label>Mediated Costumer Policy Assignment</label>
+        <locationX>1106</locationX>
+        <locationY>671</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.MediatedCustomer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.PolicyId__r.PolicyHolder__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>CCS_Or_CSM</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>customerOfferAssignment</name>
         <label>Customer Offer Assignment</label>
         <locationX>314</locationX>
@@ -27,6 +69,96 @@
             </value>
         </assignmentItems>
     </assignments>
+    <decisions>
+        <description>Depende del call center asignaremos unos valores u otros</description>
+        <name>CCS_Or_CSM</name>
+        <label>Call Center</label>
+        <locationX>1106</locationX>
+        <locationY>791</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CSM</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CSM Administración</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CSM Particulares</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Account_ID_Policy_Assignment</targetReference>
+            </connector>
+            <label>CSM</label>
+        </rules>
+        <rules>
+            <name>CCS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CC Service</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Account_ID_Policy_Assignment2</targetReference>
+            </connector>
+            <label>CCS</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Offer_policy_null</name>
+        <label>Policy Not Null</label>
+        <locationX>1370</locationX>
+        <locationY>551</locationY>
+        <defaultConnectorLabel>Null</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Policy_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PolicyId__r.PolicyHolder__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Customer_policy_Assignment</targetReference>
+            </connector>
+            <label>Policy Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Si el caso corresponde a una inserción de tareas masivas, procesaremos la información.</description>
+        <name>Is_Massive_Task</name>
+        <label>Is Massive Task?</label>
+        <locationX>1634</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Case_Origin_Massive_Task</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>MassiveTasks</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Offer_policy_null</targetReference>
+            </connector>
+            <label>Case Origin Massive Task</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>offerPolicyDecision</name>
         <label>Offer policy null</label>
@@ -65,9 +197,11 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Con esta condición controlamos qué tipo de registro nos está entrando y en qué momento.
+El flujo en un principio era para la USP before update, y se ha modificado para que también se use en OCS before insert.</description>
         <name>RecordTypeDecision</name>
         <label>Record Type Decision</label>
-        <locationX>710</locationX>
+        <locationX>1238</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -87,6 +221,10 @@
                     <stringValue>Intermediary</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Id</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
             <connector>
                 <targetReference>offerPolicyDecision</targetReference>
             </connector>
@@ -102,11 +240,19 @@
                     <stringValue>OCSInquiry</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Id</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Is_Massive_Task</targetReference>
+            </connector>
             <label>OCS</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>Case Trigger-Before Update-Mediated Customer Field {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger-Before Update-Mediated Customer</label>
+    <label>Case Trigger - Before Insert/Update - Offer/Policy Related Fields</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -127,7 +273,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>584</locationX>
+        <locationX>1112</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
@@ -141,7 +287,7 @@
             </value>
         </filters>
         <object>Case</object>
-        <recordTriggerType>Update</recordTriggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
