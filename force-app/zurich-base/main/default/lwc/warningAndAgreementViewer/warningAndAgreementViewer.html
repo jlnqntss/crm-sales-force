@@ -1,0 +1,22 @@
+<template>
+  <lightning-card variant="Narrow" title={title} icon-name="standard:comments">
+    <div class="slds-grid slds-grid_vertical">
+      <div class="slds-col">
+        <lightning-button
+          label="Crear aviso"
+          class="slds-button slds-float_right"
+          onclick={click}
+        >
+        </lightning-button>
+      </div>
+      <div class="slds-col">
+        <lightning-datatable
+          key-field="Id"
+          data={recordsToShow}
+          columns={columns.data}
+        >
+        </lightning-datatable>
+      </div>
+    </div>
+  </lightning-card>
+</template>
