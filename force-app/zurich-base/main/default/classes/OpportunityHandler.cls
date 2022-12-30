@@ -49,8 +49,6 @@ public class OpportunityHandler implements ITrigger
 
         // arcortazar - 09/03/2022: Validamos si puede llevarse a cabo el cambio que se presenta
         OpportunityUtil.validateOfferStage((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
-        // jpereztirado - 23/12/2022: Validamos que el Old Owner y New Owner no sean ambos ZE Advisors
-        OpportunityUtil.validateChangeOwner((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
     }
 
     /**
