@@ -5,7 +5,7 @@
 * class to avoid recursive triggers
 */
 
-public class checkRecursive
+public class CheckRecursive
 {
     public static Set<Id> SetOfIDs = new Set<Id>();
 }

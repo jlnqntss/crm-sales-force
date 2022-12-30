@@ -1026,7 +1026,6 @@ global without sharing class ExternalRequestUtil {
     }
 
     if (contactsToUpdate != null && !contactsToUpdate.isEmpty()) {
-      //upsert contactsToUpdate.values() Contact.Fields.CustomerNum__c;
       
       for(Contact c: contactsToUpdate.values() ) {
         
@@ -1078,13 +1077,7 @@ global without sharing class ExternalRequestUtil {
       upsert pricebookEntryToInsert.values() PricebookEntry.Fields.ProductID__c;
     }
     if (orderItemsToInsert != null && !orderItemsToInsert.isEmpty()) {
-      
-      for(OrderItem oi: orderItemsToInsert.values() ) {
-        
-        // if( oi.Order != null ) {
-        //  
-        // }
-      }
+
       upsert orderItemsToInsert.values() OrderItem.Fields.ItemId__c;
     }
     if (discountsToInsert != null && !discountsToInsert.isEmpty()) {

@@ -23,7 +23,7 @@ const { convertSFDXProject } = require("./convertSFDXProject");
  *      2: solo desplegar verificacion a salesforce (CON checkonly).
  *      3: solo desplegar a Salesforce (Aviso: **SIN** checkonly).
  *      4: solo reconciliar perfiles
- *    - "C:/TEMP/": directorio destino donde hacer todo
+ *    - "C:/TEMP/": directorio destino donde se ejecuta el proceso
  *    - "nomdirdeploy": directorio destino del deploy
  *
  */
@@ -131,8 +131,6 @@ async function main() {
         "------------------------------------------------------------------ Lanzando DEPLOY => " +
           `${username}`
       );
-      //exec(`sfdx force:org:open -u ${username}`, { stdio: "inherit" });
-
       // DEPLOY
       // 4 - Valida contra el entorno --checkonly
       exec(
@@ -145,7 +143,7 @@ async function main() {
   } catch (error) {
     console.error(error);
   } finally {
-    //rmdirSync(`${deployDir}`, { recursive: true });
+    // Finally code
   }
 }
 

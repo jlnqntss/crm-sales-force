@@ -6,10 +6,6 @@
 const GitlabAPIService = require("./GitLabAPI").default;
 const { getLastSemanticTag, SemanticTag } = require("./SemanticTag");
 
-/*process.env["CI_GITLAB_TOKEN"] = 'n2s3oL4vgSHUAcqDE4_q';
-process.env["CI_API_V4_URL"] = 'https://gitlab.com/api/v4';
-process.env["CI_PROJECT_ID"] = '21140658';
-process.env["CI_COMMIT_REF_NAME"] = 'dev';*/
 
 async function main() {
   try {

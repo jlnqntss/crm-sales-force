@@ -1782,9 +1782,8 @@ public class Query
     }
 
     public List<AggregateResult> aggregate()
-    {
-        String queryString = formQueryString();
-        return Database.query(queryString);
+    {        
+        return toSObjectList();
     }
 
     public Integer countQuery()

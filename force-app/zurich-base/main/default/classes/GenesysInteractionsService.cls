@@ -977,7 +977,7 @@ public without sharing class GenesysInteractionsService
         public String screenPopRecordId { get; set; }
         public String customerId { get; set; }
         public String callLogId { get; set; }
-        public String bestAgentId { get; set; } //FIXME: Eliminar cuando se modifique el flow de ZE / ZE Orange
+        public String bestAgentId { get; set; }
         public SearchResult caller { get; set; }
 
         public override String toString()

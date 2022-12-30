@@ -45,10 +45,10 @@ public without sharing class UploadCaseDocumentationController
      * @throws AuraHandledException
      */
     @AuraEnabled
-    public static void deleteDocumentWithVersion (String Id)
+    public static void deleteDocumentWithVersion (String id)
     {
         try{
-            ContentVersion version = [SELECT ContentDocumentId from ContentVersion where Id = :Id LIMIT 1];
+            ContentVersion version = [SELECT ContentDocumentId from ContentVersion where Id = :id LIMIT 1];
             ContentDocument record = new ContentDocument();
             record.Id = version.ContentDocumentId;
             delete record;

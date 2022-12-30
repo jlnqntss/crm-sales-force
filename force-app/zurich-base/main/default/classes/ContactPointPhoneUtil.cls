@@ -106,7 +106,6 @@ public without sharing class ContactPointPhoneUtil
                             contactPointPhonesToUpdate.put(relatedContactPoint.Id, relatedContactPoint);
                         }
 
-                        //contactPointPhonesToUpdate.addAll(relatedContactPointPhones);
                         if(contactPointPhonesToUpdate.containsKey(newContactPointPhone.Id))
                         {
                             contactPointPhonesToUpdate.remove(newContactPointPhone.Id);
