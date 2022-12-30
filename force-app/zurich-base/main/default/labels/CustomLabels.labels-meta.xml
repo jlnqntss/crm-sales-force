@@ -2062,11 +2062,4 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_LinksInteres_ViewAll</shortDescription>
         <value>View all</value>
     </labels>
-    <labels>
-        <fullName>OfferChangeOwnerValidationMessage</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>OfferChangeOwnerValidationMsg</shortDescription>
-        <value>No tienes permisos para cambiar el propietario de la Oferta.</value>
-    </labels>
 </CustomLabels>
