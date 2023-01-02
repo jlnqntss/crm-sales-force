@@ -5881,6 +5881,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.IsBussinessCodeExcluded__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.IsCreatedOnExcludedMailbox__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IsEscalated</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6497,6 +6507,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.AssistanceCompany__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Codigo_Negocio_BancSabadell__mdt.Codigo_Negocio__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7677,6 +7692,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Entitlement.Type</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ExcludedMailboxList__mdt.Email__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
