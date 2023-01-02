@@ -120,6 +120,18 @@
         <senderType>OrgWideEmailAddress</senderType>
         <template>OneCustomerService/Notificaciones_Apertura_USP</template>
     </alerts>
+    <alerts>
+        <fullName>Notificacion_Cotizacion_Autoservicio</fullName>
+        <description>Notificación Cotización Autoservicio</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Cotizaci_n_Autoservicio_1671711548784</template>
+    </alerts>
     <fieldUpdates>
         <fullName>Change_status_Assigned</fullName>
         <field>Status</field>
