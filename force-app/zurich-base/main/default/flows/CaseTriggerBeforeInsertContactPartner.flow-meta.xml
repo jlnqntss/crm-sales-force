@@ -2,26 +2,10 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>56.0</apiVersion>
     <assignments>
-        <name>Error_log</name>
-        <label>Error log</label>
-        <locationX>380</locationX>
-        <locationY>431</locationY>
-        <assignmentItems>
-            <assignToReference>$Record.Description</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Debug</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>GetRecordTypePartnerContactAction</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>PolicyPartnerAssignment</name>
         <label>Asignación Partner Póliza</label>
         <locationX>182</locationX>
-        <locationY>791</locationY>
+        <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -50,7 +34,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Error_log</targetReference>
+                <targetReference>GetRecordTypePartnerContactAction</targetReference>
             </connector>
             <label>USP</label>
         </rules>
@@ -59,7 +43,7 @@
         <name>PolicyNotNullDecision</name>
         <label>Poliza Informada</label>
         <locationX>380</locationX>
-        <locationY>671</locationY>
+        <locationY>551</locationY>
         <defaultConnector>
             <targetReference>GetContactsAction</targetReference>
         </defaultConnector>
@@ -91,7 +75,7 @@
         <name>SuppliedEmailDecision</name>
         <label>¿Supplied Email informado?</label>
         <locationX>182</locationX>
-        <locationY>911</locationY>
+        <locationY>791</locationY>
         <defaultConnectorLabel>Supplied Email no informado</defaultConnectorLabel>
         <rules>
             <name>SuppliedEmailOutcome</name>
@@ -144,7 +128,7 @@
         <name>GetContactAccountPartnerAction</name>
         <label>Recuperar Contacto Cuenta Partner</label>
         <locationX>50</locationX>
-        <locationY>1031</locationY>
+        <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
@@ -180,7 +164,7 @@
         <name>GetContactsAction</name>
         <label>Recuperar Contactos</label>
         <locationX>578</locationX>
-        <locationY>791</locationY>
+        <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
@@ -211,7 +195,7 @@
         <name>GetRecordTypePartnerContactAction</name>
         <label>Recuperar RecordType Partner Contact</label>
         <locationX>380</locationX>
-        <locationY>551</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>PolicyNotNullDecision</targetReference>
