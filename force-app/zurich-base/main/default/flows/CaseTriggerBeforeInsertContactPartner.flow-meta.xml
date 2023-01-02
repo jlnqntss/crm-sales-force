@@ -2,10 +2,26 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>56.0</apiVersion>
     <assignments>
+        <name>Error_log</name>
+        <label>Error log</label>
+        <locationX>380</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Debug</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetRecordTypePartnerContactAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>PolicyPartnerAssignment</name>
         <label>Asignación Partner Póliza</label>
         <locationX>182</locationX>
-        <locationY>671</locationY>
+        <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -34,7 +50,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetRecordTypePartnerContactAction</targetReference>
+                <targetReference>Error_log</targetReference>
             </connector>
             <label>USP</label>
         </rules>
@@ -43,7 +59,7 @@
         <name>PolicyNotNullDecision</name>
         <label>Poliza Informada</label>
         <locationX>380</locationX>
-        <locationY>551</locationY>
+        <locationY>671</locationY>
         <defaultConnector>
             <targetReference>GetContactsAction</targetReference>
         </defaultConnector>
@@ -75,7 +91,7 @@
         <name>SuppliedEmailDecision</name>
         <label>¿Supplied Email informado?</label>
         <locationX>182</locationX>
-        <locationY>791</locationY>
+        <locationY>911</locationY>
         <defaultConnectorLabel>Supplied Email no informado</defaultConnectorLabel>
         <rules>
             <name>SuppliedEmailOutcome</name>
@@ -95,6 +111,14 @@
     </decisions>
     <description>Para los casos con Área de origen: Partner, busca la vinculación del caso con la cuenta de Partner, tanto a través de la póliza asociada como a través del remitente del email</description>
     <environments>Default</environments>
+    <formulas>
+        <name>Debug</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.PolicyId__c}&amp;BR()&amp;
+{!$Record.HegeoPolicyId__c}&amp;BR()&amp;
+{!$Record.AccountId}&amp;BR()&amp;
+{!$Record.ContactId}</expression>
+    </formulas>
     <interviewLabel>Case Trigger - Before Insert/update - Vinculacion Contacto Partner {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before Insert/Update - Vinculacion Contacto Partner</label>
     <processMetadataValues>
@@ -120,8 +144,8 @@
         <name>GetContactAccountPartnerAction</name>
         <label>Recuperar Contacto Cuenta Partner</label>
         <locationX>50</locationX>
-        <locationY>911</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <locationY>1031</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
             <field>AccountId</field>
@@ -156,8 +180,8 @@
         <name>GetContactsAction</name>
         <label>Recuperar Contactos</label>
         <locationX>578</locationX>
-        <locationY>671</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <locationY>791</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
             <field>RecordTypeId</field>
@@ -187,7 +211,7 @@
         <name>GetRecordTypePartnerContactAction</name>
         <label>Recuperar RecordType Partner Contact</label>
         <locationX>380</locationX>
-        <locationY>431</locationY>
+        <locationY>551</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>PolicyNotNullDecision</targetReference>
@@ -210,21 +234,10 @@
         <connector>
             <targetReference>CaseUspDecision</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>SourceArea__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Partner</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>AccountId</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
+        <filterFormula>AND(
+ISPICKVAL({!$Record.SourceArea__c},&quot;Partner&quot;),
+{!$User.Alias}=&quot;autocase&quot;
+)</filterFormula>
         <object>Case</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
