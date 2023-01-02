@@ -95,6 +95,10 @@
                 <behavior>Edit</behavior>
                 <field>SpecializationType__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>SelfServiceQuotation__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
