@@ -60,6 +60,50 @@ public class Batch_MergeLeadsWithClientsTest
     @isTest
     static void test_PersonAccount_ok()
     {
+        personAccount();
+    }
+
+    @isTest
+    static void test_PersonAccountNoEmails_ok()
+    {
+        //Se obtienen todos los ContactPointEmail y se borran
+        List<ContactPointEmail> contactPointEmailList = [SELECT Id FROM ContactPointEmail];
+        delete contactPointEmailList;
+
+        personAccount();
+    }
+
+    @isTest
+    static void test_PersonAccountNoEmailsNoPhones_ok()
+    {
+        //Se obtienen todos los ContactPointEmail y se borran
+        List<ContactPointEmail> contactPointEmailList = [SELECT Id FROM ContactPointEmail];
+        delete contactPointEmailList;
+        //Se obtienen todos los ContactPointPhone y se borran
+        List<ContactPointPhone> contactPointPhoneList = [SELECT Id FROM ContactPointPhone];
+        delete contactPointPhoneList;
+
+        personAccount();
+    }
+
+    @isTest
+    static void test_PersonAccountNoEmailsNoPhonesNoAddress_ok()
+    {
+        //Se obtienen todos los contactPointAdress y se borran
+        List<ContactPointAddress> contactPointAddressList = [SELECT Id FROM ContactPointAddress];
+        delete contactPointAddressList;
+        //Se obtienen todos los ContactPointEmail y se borran
+        List<ContactPointEmail> contactPointEmailList = [SELECT Id FROM ContactPointEmail];
+        delete contactPointEmailList;
+        //Se obtienen todos los ContactPointPhone y se borran
+        List<ContactPointPhone> contactPointPhoneList = [SELECT Id FROM ContactPointPhone];
+        delete contactPointPhoneList;
+
+        personAccount();
+    }
+
+    private static void personAccount()
+    {
         // Get the lead account
         List<Account> leadAccounts = [SELECT Id FROM Account WHERE RecordTypeId = :LeadRecordTypeId LIMIT 1];
         System.assertEquals(1, leadAccounts.size(), 'There should be 1 lead account');

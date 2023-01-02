@@ -230,7 +230,10 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                             // Fix: re-parent the contact points. For some reason the merge does not do it
                             List<SObject> contactPoints = new List<SObject>();
                             for(String s: mapRelatedObjects.keySet()) {
-                                 contactPoints.addAll(account.getSObjects(s));
+                                if (account.getSObjects(s) != null && !account.getSObjects(s).isEmpty())
+                                {
+                                    contactPoints.addAll(account.getSObjects(s));
+                                }
                                 if( contactPoints != null && !contactPoints.isEmpty() ) {
                                     for( SObject o: contactPoints ) {
                                         o.put(mapRelatedObjects.get(s), leadAccount.Id);                                        
