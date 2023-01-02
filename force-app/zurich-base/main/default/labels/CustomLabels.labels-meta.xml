@@ -1830,4 +1830,252 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_ControlIntermediaryNotifiaction_InactiveAll</shortDescription>
         <value>Inactive All</value>
     </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ButtonCancel</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ButtonCancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ButtonSave</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ButtonSave</shortDescription>
+        <value>Save changes</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_CancelButtonTitle</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_CancelButtonTitle</shortDescription>
+        <value>Cancel action</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ConfirmDeletionLabel</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ConfirmDeletionLabel</shortDescription>
+        <value>Warning!</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ConfirmDeletionMessage</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ConfirmDeletionMessage</shortDescription>
+        <value>Are you sure you want to remove the selected link?</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_DeleteButton</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_DeleteButton</shortDescription>
+        <value>Delete link</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_EditLinkButton</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_EditLinkButton</shortDescription>
+        <value>Edit link</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_EditLinkModalHeader</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_EditLinkModalHeader</shortDescription>
+        <value>Edit link</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ErrorLoadingDataText</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ErrorLoadingDataText</shortDescription>
+        <value>The links could not be loaded. If the problem persists please contact the Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_InputText</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_InputText</shortDescription>
+        <value>Link title</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_InputTextPlaceholder</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_InputTextPlaceholder</shortDescription>
+        <value>Enter a title for the link...</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_InputUrl</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_InputUrl</shortDescription>
+        <value>URL</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_InputUrlPlaceHolder</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_InputUrlPlaceHolder</shortDescription>
+        <value>Enter a valid URL...</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_LightningIconLinkAlternativeText</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_LightningIconLinkAlternativeText</shortDescription>
+        <value>Indicates a link below</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_Loading</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_NewLink</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_NewLink</shortDescription>
+        <value>New link</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_NewLinkButtonTitle</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_NewLinkButtonTitle</shortDescription>
+        <value>Create a new link</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_NewLinkModalHeader</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_NewLinkModalHeader</shortDescription>
+        <value>New link</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_NoDataToDisplayText</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_NoDataToDisplayText</shortDescription>
+        <value>There is no link to be displayed.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_SaveButtonTitle</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_SaveButtonTitle</shortDescription>
+        <value>Save changes</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_TabLabel</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_TabLabel</shortDescription>
+        <value>Useful links</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_Title</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_Title</shortDescription>
+        <value>Links</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ToastErrorCreateMessage</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ToastErrorCreateMessage</shortDescription>
+        <value>There has been a problem saving the link. If the problem persists please contact the Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ToastErrorDeleteMessage</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ToastErrorDeleteMessage</shortDescription>
+        <value>There was a problem deleting the link. If the problem persists, please contact the Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ToastErrorTitle</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ToastErrorTitle</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ToastErrorUpdateMessage</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ToastErrorUpdateMessage</shortDescription>
+        <value>There has been a problem saving the link. If the problem persists please contact the Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ToastSuccessCreateMessage</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ToastSuccessCreateMessage</shortDescription>
+        <value>The link has been successfully created.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ToastSuccessDeleteMessage</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ToastSuccessDeleteMessage</shortDescription>
+        <value>The link has been successfully deleted.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ToastSuccessTitle</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ToastSuccessTitle</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ToastSuccessUpdateMessage</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ToastSuccessUpdateMessage</shortDescription>
+        <value>The link has been successfully updated.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_LinksInteres_ViewAll</fullName>
+        <categories>SDM,LinksInteres</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_LinksInteres_ViewAll</shortDescription>
+        <value>View all</value>
+    </labels>
 </CustomLabels>

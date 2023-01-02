@@ -30,7 +30,9 @@ public without sharing class ContactPointPhoneHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
-    {}
+    {
+        ContactPointPhoneUtil.establishAsPrimary((List<ContactPointPhone>)newList, null);
+    }
 
     /**
      * beforeUpdate
@@ -39,7 +41,9 @@ public without sharing class ContactPointPhoneHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        ContactPointPhoneUtil.establishAsPrimary((List<ContactPointPhone>)newList, (Map<Id, ContactPointPhone>)oldMap);
+    }
 
     /**
      * beforeDelete

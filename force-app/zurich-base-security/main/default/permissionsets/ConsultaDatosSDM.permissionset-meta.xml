@@ -5,6 +5,10 @@
         <name>AdminSetupParameter__mdt</name>
     </customMetadataTypeAccesses>
     <description>Permiso de visibilidad sobre objetos y campos de SDM</description>
+    <classAccesses>
+        <apexClass>UsefulLinksController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <fieldPermissions>
         <editable>false</editable>
         <field>PlanComercial__c.Intermediary__c</field>
@@ -853,6 +857,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EnterpriseConsultantEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.StatusIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.RevenuesPerEmployees__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

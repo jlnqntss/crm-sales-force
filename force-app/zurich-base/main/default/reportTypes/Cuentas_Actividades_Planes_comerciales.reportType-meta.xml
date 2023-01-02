@@ -1742,7 +1742,7 @@ Crear tipo de Informe Planes &gt; Actividades &gt; Assigned To e incluir por Loo
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Intermediary__c.RevenuesPerEmployee__c</field>
+            <field>Intermediary__c.RevenuesPerEmployees__c</field>
             <table>PlanComercial__c</table>
         </columns>
         <columns>

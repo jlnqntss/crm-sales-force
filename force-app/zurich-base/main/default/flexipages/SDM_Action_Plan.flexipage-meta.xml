@@ -395,10 +395,16 @@
                 <fieldItem>Record.TargetKPICurrency__c</fieldItem>
                 <identifier>RecordTargetKPICurrency__cField</identifier>
                 <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>Portfolio</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Indicator__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>APES</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>

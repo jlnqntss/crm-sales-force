@@ -248,11 +248,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.RevenuesPerEmployee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Account.InterestConc__c</field>
         <readable>true</readable>
     </fieldPermissions>

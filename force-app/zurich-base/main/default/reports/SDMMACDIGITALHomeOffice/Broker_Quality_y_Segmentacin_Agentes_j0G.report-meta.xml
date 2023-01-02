@@ -51,9 +51,6 @@
         <field>Account.BrokerRanking__c</field>
     </columns>
     <columns>
-        <field>Account.IncomeLevel__c</field>
-    </columns>
-    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Account.Income2014__c</field>
     </columns>
@@ -63,19 +60,11 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.IncomeVar__c</field>
+        <field>Account.Incomes2020__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.ResultBeforeTax__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.SalesResult__c</field>
-    </columns>
-    <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.RevenuesPerEmployee__c</field>
+        <field>Account.RevenuesPerEmployees__c</field>
     </columns>
     <columns>
         <field>Account.TypeOfRemunerationAgreement__c</field>
