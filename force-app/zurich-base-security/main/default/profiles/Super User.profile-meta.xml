@@ -2295,11 +2295,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.SelfServiceQuotation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Account.SeniorityInTheCompany__c</field>
         <readable>true</readable>
     </fieldPermissions>
