@@ -13,13 +13,13 @@ public with sharing class CreateActaController {
             // query evento y sus attendees 
             Event event = getEventData(eventId);
 
-            // comprobar si el acta lo está creando el organizador (owner) lanza excepcion si no se cumple
-            checkIsOwner(event);
-
             // comprobar si existe ya un acta
             if (String.isNotEmpty(event.Acta__c)) {
-                throw new HandledException(System.Label.SDM_Acta_CheckExist);
-            }            
+                throw new HandledException(System.Label.SDM_Acta_CheckExist); 
+            } 
+
+            // comprobar si el acta lo está creando el organizador (owner) y el evento no es hijo lanza excepcion si no se cumple
+            checkCanCreate(event);                       
 
             // si no existe se crea el objeto acta y se actualiza el evento            
             Id actaId = insertActa(event);
@@ -51,25 +51,19 @@ public with sharing class CreateActaController {
     }
 
     /**
-     * Comprobar que el usuario logueado es el owner del acta
+     * Comprobar que el usuario logueado no esta intentando crear un acta sin ser el propietario del evento padre
      * @param event: evento obtenido de la base de datos     
      * @author dmunoz
      * @date 23/12/2022
      */
-    private static void checkIsOwner(Event event) {
-        System.debug('DMM entro en checkIsOwner');
-        String logedUser = UserInfo.getUserId();
-        System.debug('DMM logedUser ' + logedUser);
-        System.debug('DMM event owner ' + event.Owner.Name);
+    private static void checkCanCreate(Event event) {
 
-        if (!logedUser.equals(event.OwnerId)) {
-            System.debug('DMM entro en if');
-            String message = System.Label.SDM_Acta_CheckOwner.replace('{0}', event.Owner.Name);
+        if (event.IsChild) {
+            // consulta del usuario que si podría 
+            String message = System.Label.SDM_Acta_CheckOwner.replace('{0}', event.CreatedBy.Name);
 
             throw new HandledException(message);
-        } else {
-            System.debug('No entro en if');
-        }
+        } 
     }
 
     /**

@@ -12,7 +12,7 @@ public with sharing class EventSelector {
         List<Event> result = new List<Event>();
 
         if (eventId != null && String.isNotEmpty(eventId)) {
-            result = new List<Event>([SELECT Id, Subject, Location, OwnerId, Owner.Name, Acta__c, (select Relation.Name from EventRelations) FROM event where ID = :eventId]);
+            result = new List<Event>([SELECT Id, Subject, Location, Owner.Name, CreatedBy.Name, IsChild, Acta__c, (select Relation.Name from EventRelations) FROM event where ID = :eventId]);
         } 
 
         return result;
