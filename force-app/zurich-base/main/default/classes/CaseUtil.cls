@@ -351,8 +351,7 @@ public with sharing class CaseUtil
 
                         //Utilizar el scope del caso
                         //AccountSearchService.Scope scope = new AccountSearchService.Scope();
-                        //scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
-
+                        
                         //Utilizar el AccountSearchService
                         List<Account> matchedAccounts = new List<Account>();
                         matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
