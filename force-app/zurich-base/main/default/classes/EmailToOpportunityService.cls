@@ -294,6 +294,10 @@ public without sharing class EmailToOpportunityService
                     {
                         this.references.addAll(header.value.split(',') );
                     }
+                    when else 
+                    {
+                        // else code
+                    }
                 }
 
                 headers.add(header.name + ': ' + header.value);

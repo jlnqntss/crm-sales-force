@@ -32,6 +32,10 @@ public with sharing class ClaimsSelector extends RecordsSelector
             {
                 this.baseQuery.addConditionEq(Claim__c.Scope__c, 'ZEO');
             }
+            when else 
+            {
+                // else code
+            }
         }
 
         return this;
@@ -51,6 +55,10 @@ public with sharing class ClaimsSelector extends RecordsSelector
             when GI, LIFE
             {
                 this.baseQuery.addConditionEq(Claim__c.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity));
+            }
+            when else 
+            {
+                // else code
             }
         }
 

@@ -41,6 +41,10 @@ public with sharing class CasesSelector extends RecordsSelector
             {
                 this.baseQuery.addConditionEq(Case.Scope__c, 'ZEO');
             }
+            when else 
+            {
+                // else code
+            }
         }
 
         return this;
@@ -60,6 +64,10 @@ public with sharing class CasesSelector extends RecordsSelector
             when GI, LIFE
             {
                 this.baseQuery.addConditionEq(Case.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity));
+            }
+            when else 
+            {
+                // else code
             }
         }
 

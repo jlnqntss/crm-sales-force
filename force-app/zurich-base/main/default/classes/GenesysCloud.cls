@@ -335,6 +335,10 @@ public with sharing class GenesysCloud
                     throw new GenesysCloud.DisconnectionServiceException(response);
                 }
             }
+            when else 
+            {
+                // else code
+            }
         }
     }
 

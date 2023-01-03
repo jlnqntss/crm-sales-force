@@ -81,6 +81,10 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
                     response.responseBody = Blob.valueOf('{"status":"success", "sfId":"'+callMeBackId+'", "errors":[]}');
                     response.statusCode = 200;
                 }
+                when else 
+                {
+                    // else code
+                }
             }
         }
         catch (WS_BaseAPIService.ApiException apiError)
