@@ -33,8 +33,8 @@ export default class OpenCTIMock extends LightningElement {
    * @date 07/10/2020
    */
   handleCall(number) {
-    var chosenValue = Math.random() <= 0.5 ? true : false;
-    var thisInPromise = this;
+    let chosenValue = Math.random() <= 0.5 ? true : false;
+    let thisInPromise = this;
 
     if (chosenValue) {
       this.interactions.push({

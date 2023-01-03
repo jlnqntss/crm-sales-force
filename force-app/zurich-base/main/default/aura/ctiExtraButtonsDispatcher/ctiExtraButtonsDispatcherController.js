@@ -1,12 +1,12 @@
 ({
   handleNavigation: function (component, event, helper) {
     event.preventDefault();
-    var target = event.getParam("utilityBarIcon");
-    var utilityAPI = component.find("utilitybar");
+    let target = event.getParam("utilityBarIcon");
+    let utilityAPI = component.find("utilitybar");
     utilityAPI
       .getAllUtilityInfo()
       .then(function (response) {
-        var myUtilityInfo = response.find(
+        let myUtilityInfo = response.find(
           (utility) => utility.utilityIcon === target
         );
         utilityAPI.openUtility({
