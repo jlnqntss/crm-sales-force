@@ -499,7 +499,9 @@ public with sharing class WebServicesParser
             }
         }
         catch (Exception ex)
-        {}
+        {
+            //Catch code
+        }
     }
 
     /**
@@ -848,7 +850,9 @@ public with sharing class WebServicesParser
             }
         }
         catch (Exception ex)
-        {}
+        {
+            //Catch code
+        }
         return record;
     }
 
