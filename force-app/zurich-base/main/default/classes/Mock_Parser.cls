@@ -14,7 +14,7 @@ global class Mock_Parser
     /**
      * MockParser
      */
-    static global Map<String, SObject> MockParser(String entity)
+    static global Map<String, SObject> mockParser(String entity)
     {
         Map<String, SObject> recordsMap = new Map<String, SObject>();
 
@@ -133,7 +133,7 @@ global class Mock_Parser
     /**
      * MockParserSecondLevel
      */
-    static global Map<String, List<SObject> > MockParserSecondLevel(
+    static global Map<String, List<SObject> > mockParserSecondLevel(
         String entity
         )
     {
@@ -204,7 +204,7 @@ global class Mock_Parser
     /**
      * MockParserThirdLevel
      */
-    static global Map<String, List<SObject> > MockParserThirdLevel(String entity)
+    static global Map<String, List<SObject> > mockParserThirdLevel(String entity)
     {
         Map<String, List<SObject> > thrLvlRecordsMap = new Map<String, List<SObject> >();
         List<SObject> listaObjetos = new List<SObject>();

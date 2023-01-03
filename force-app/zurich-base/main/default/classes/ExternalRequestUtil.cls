@@ -932,6 +932,10 @@ global without sharing class ExternalRequestUtil {
               when 'Claim' {
                 processClaim();
               }
+              when else 
+              {
+                  // else code
+              }
             }
             externalRequestItem.processed__c = true;
             externalRequestItem.processedDate__c = Datetime.now();
@@ -1072,13 +1076,7 @@ global without sharing class ExternalRequestUtil {
       upsert pricebookEntryToInsert.values() PricebookEntry.Fields.ProductID__c;
     }
     if (orderItemsToInsert != null && !orderItemsToInsert.isEmpty()) {
-      
-      for(OrderItem oi: orderItemsToInsert.values() ) {
-        
-        // if( oi.Order != null ) {
-        //  
-        // }
-      }
+
       upsert orderItemsToInsert.values() OrderItem.Fields.ItemId__c;
     }
     if (discountsToInsert != null && !discountsToInsert.isEmpty()) {

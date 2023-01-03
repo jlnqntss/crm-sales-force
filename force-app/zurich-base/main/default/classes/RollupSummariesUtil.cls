@@ -10,7 +10,7 @@ public class RollupSummariesUtil
     public static String CURRENCYISOCODENAME = 'CurrencyIsoCode';
     //http://advancedapex.com/2013/07/07/optional-features/
     private static Boolean m_IsMultiCurrency = null;
-    public static Boolean IsMultiCurrencyOrg()
+    public static Boolean isMultiCurrencyOrg()
     {
         if (m_IsMultiCurrency != null)
         {

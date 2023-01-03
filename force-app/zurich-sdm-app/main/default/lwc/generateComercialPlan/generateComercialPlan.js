@@ -706,7 +706,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
     // Llamamos al controller
     getRecords({ year: year })
       .then((result) => {
-        // Si ha ido todo bien...
+        // Si ha se ejecuto correctamente
 
         // Convertimos la cadena de texto en un objeto
         this.tabledata = JSON.parse(result);
@@ -744,7 +744,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
   // Metodo: comprueba que todos los campos del plan se hayan rellenado
   checkValues() {
-    // Inicialmente consideramos que todo esta bien
+    // Inicialmente consideramos que esta bien
     let result = true;
 
     try {

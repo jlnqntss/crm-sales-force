@@ -61,6 +61,10 @@ public with sharing class ContactsSelector extends RecordsSelector
                 
                 this.relatedRecordsScope = RecordsSelector.Scope.ZEO;
             }
+            when else 
+            {
+                // else code
+            }
         }
 
         return this;
@@ -86,6 +90,10 @@ public with sharing class ContactsSelector extends RecordsSelector
                 );
 
                 this.baseQuery.addCondition(condition);
+            }
+            when else 
+            {
+                // else code
             }
         }
 
