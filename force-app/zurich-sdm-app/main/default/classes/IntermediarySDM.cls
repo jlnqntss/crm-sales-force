@@ -768,7 +768,6 @@ public with sharing class IntermediarySDM {
                                         Email= fieldValue
                                 );
                                 // Si es el principal, se copia tambien el telefono
-                                // todo: poner esta parte en configuracion
                                 if( rel.IntermediaryField__c.equals(AccountsSelector.SDM_MAINEMAIL_FIELD) && fieldsToValue.containsKey(AccountsSelector.SDM_MAINMOBILEPHONE_FIELD) ) 
                                 {
                                     newContact.MobilePhone = String.valueOf(fieldsToValue.get(AccountsSelector.SDM_MAINMOBILEPHONE_FIELD));

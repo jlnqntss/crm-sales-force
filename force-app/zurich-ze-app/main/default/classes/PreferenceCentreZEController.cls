@@ -89,9 +89,6 @@ public with sharing class PreferenceCentreZEController {
                     //Se rellenan los campos de contacto a actualizar
                     Scope__c scopeUpdate = new Scope__c(Id= scope.Id);
                     scopeUpdate.HasOptedOutOfEmail__c = true;
-                    // todo: this fields doesnt exist yet
-                    //scopeUpdate.UnsubscribedDate__c = DateTime.now();
-                    //scopeUpdate.UnsubscribedSource__c = UNSUBSCRIBED_SOURCE;
 
                     //Se actualza el contacto
                     ScopeUtil su = new ScopeUtil();

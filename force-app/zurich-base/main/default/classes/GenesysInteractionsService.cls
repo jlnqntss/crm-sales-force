@@ -831,7 +831,7 @@ public without sharing class GenesysInteractionsService
     @TestVisible
     private static Id searchQueueTaskId(String genesysQueueId)
     {
-        Id queueId = null; //Si todo va mal, se devolverá a null
+        Id queueId = null; //Si el proceso falla, se devolverá a null
         String queueName = null;
 
         //1º Construir mapa con las colas de Genesys Id <-> Nombre
