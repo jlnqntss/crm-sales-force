@@ -82,7 +82,7 @@ public with sharing class CaseUtil
      * @author nbizkarra
      * @date 23/04/2020
      **/
-    public static void SummaryTotalClaims(List<Case> newList)
+    public static void summaryTotalClaims(List<Case> newList)
     {
         Set<Id> idSet = new Set<Id>();
 
