@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-08-2022
- * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @last modified on  : 02-01-2023
+ * @last modified by  : amiranda
 **/
 @isTest(SeeAllData=false)
 public with sharing class ObjectivesViewControllerTest {
@@ -39,6 +39,33 @@ public with sharing class ObjectivesViewControllerTest {
         Test.stopTest();
 
         System.assertEquals(1, selectedObjectives.size(), 'Se debería recibir una lista con 1 objetivos encontrado por el campo Year__c');
+    }
+
+    /**
+    * @description Método que comprueba el correcto funcionamiento del método 
+    * 'getFrequencyNotification'.
+    * @author amiranda
+    * @date 02-01-2023 
+    **/
+    @isTest
+    static void test_getFrequencyNotification() 
+    {
+        Id freqNotificationRTId = Schema.SObjectType.Objective__c.getRecordTypeInfosByDeveloperName().get('FrequencyNotifications')?.getRecordTypeId();
+        Integer daysLeft = 12;
+
+        Objective__c freqNotificationToInsert = new Objective__c(
+            DaysLeft__c = daysLeft,
+            RecordTypeId = freqNotificationRTId
+        );
+
+        insert freqNotificationToInsert;
+
+        Test.startTest();
+        Objective__c freqNotification = ObjectivesViewController.getFrequencyNotification();
+        Test.stopTest();
+
+        Assert.isNotNull(freqNotification, 'No hay ningún objetivo de tipo \'Frequency of notification\'.');
+        Assert.areEqual(daysLeft, freqNotification.DaysLeft__c, 'El campo \'DaysLeft__c\' del registro recuperado no coincide.');
     }
 
     /**

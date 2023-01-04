@@ -12,8 +12,49 @@
           class="slds-p-left_small"
         ></lightning-combobox>
       </div>
-      <div class="slds-col slds-size_4-of-6"></div>
-      <div class="slds-col slds-size_1-of-6">
+      <div
+        class="slds-col slds-form-element slds-p-right_none slds-size_1-of-6"
+      >
+          <lightning-input
+            type="number"
+            label={labels.SDM_Objetivos_FrequencyNotificationsInputLabel}
+            value={daysLeftValue}
+            min="1"
+            max="31"
+            minlength="1"
+            maxlength="2"
+            message-when-range-overflow={labels.SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeOverflow}
+            message-when-range-underflow={labels.SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeUnderflow}
+            onchange={handleChangeNotificationsFrequencyInput}
+            onblur={hanldeBlurNotificationsFrequencyInput}
+            disabled
+          ></lightning-input>
+      </div>
+      <div
+        class="slds-col slds-p-top_large slds-p-left_small slds-size_1-of-6"
+      >
+        <lightning-button-icon
+          class="slds-m-right_xx-small"
+          tooltip={labels.SDM_Objetivos_EditFrequencyNotificationsButton}
+          alternative-text={labels.SDM_Objetivos_EditFrequencyNotificationsButton}
+          aria-label="aria-label"
+          variant="bare"
+          type="button"
+          icon-name="action:edit"
+          size="medium"
+          onclick={handleEditNotificationsFrequency}
+        ></lightning-button-icon>
+        <lightning-button
+          variant="brand"
+          label={labels.SDM_Objetivos_FrequencyNotificationsSaveButtonLabel}
+          title={labels.SDM_Objetivos_FrequencyNotificationsSaveButtonTitle}
+          aria-label={labels.SDM_Objetivos_FrequencyNotificationsSaveButtonTitle}
+          onmousedown={handleSaveNotificationsFrequency}
+          disabled={notifFreqSaveButtonDisabled}
+        ></lightning-button>
+      </div>
+      <div class="slds-col slds-size_2-of-6"></div>
+      <div class="slds-col slds-p-top_large slds-size_1-of-6">
         <div class="slds-float_right">
           <lightning-button
             variant="brand"
@@ -99,6 +140,7 @@
             <lightning-record-edit-form
               object-api-name="Objective__c"
               record-id={recordIdSelected}
+              record-type-id={objectivRecordTypeId}
               onsuccess={handleSuccess}
               onerror={handleErrorForm}
             >
@@ -255,6 +297,7 @@
           <template if:true={cloneFormModal}>
             <lightning-record-edit-form
               object-api-name="Objective__c"
+              record-type-id={objectivRecordTypeId}
               onsuccess={handleSuccess}
               onerror={handleErrorForm}
             >

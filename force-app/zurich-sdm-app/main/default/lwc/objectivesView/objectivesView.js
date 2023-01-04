@@ -1,8 +1,13 @@
 /* eslint-disable guard-for-in */
-import { LightningElement, wire } from "lwc";
+import { LightningElement, wire, track } from "lwc";
 import { refreshApex } from "@salesforce/apex";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import { getRecordNotifyChange } from "lightning/uiRecordApi";
+import {
+  createRecord,
+  getRecordNotifyChange,
+  updateRecord
+} from "lightning/uiRecordApi";
+import { getObjectInfo } from "lightning/uiObjectInfoApi";
 
 // Custom Labels
 import SDM_Objetivos_Title from "@salesforce/label/c.SDM_Objetivos_Title";
@@ -42,8 +47,25 @@ import SDM_Objetivos_Clone_Title from "@salesforce/label/c.SDM_Objetivos_Clone_T
 import SDM_Objetivos_ButtonSave from "@salesforce/label/c.SDM_Objetivos_ButtonSave";
 import SDM_Objetivos_ButtonCancel from "@salesforce/label/c.SDM_Objetivos_ButtonCancel";
 import SDM_Objetivos_ToastDuplicateError from "@salesforce/label/c.SDM_Objetivos_ToastDuplicateError";
+import SDM_Objetivos_ObjectivesRecordTypeName from "@salesforce/label/c.SDM_Objetivos_ObjectivesRecordTypeName";
+import SDM_Objetivos_NotificationsFrequencyRecordTypeName from "@salesforce/label/c.SDM_Objetivos_NotificationsFrequencyRecordTypeName";
+import SDM_Objetivos_ToastSuccessTitle from "@salesforce/label/c.SDM_Objetivos_ToastSuccessTitle";
+import SDM_Objetivos_ToastInfoTitle from "@salesforce/label/c.SDM_Objetivos_ToastInfoTitle";
+import SDM_Objetivos_ToastErrorTitle from "@salesforce/label/c.SDM_Objetivos_ToastErrorTitle";
+import SDM_Objetivos_ToastSuccessMessageFreqNotifications from "@salesforce/label/c.SDM_Objetivos_ToastSuccessMessageFreqNotifications";
+import SDM_Objetivos_ToastInfoMessageFreqNotifications from "@salesforce/label/c.SDM_Objetivos_ToastInfoMessageFreqNotifications";
+import SDM_Objetivos_ToastErrorMessageFreqNotifications from "@salesforce/label/c.SDM_Objetivos_ToastErrorMessageFreqNotifications";
+import SDM_Objetivos_FrequencyNotificationsInputLabel from "@salesforce/label/c.SDM_Objetivos_FrequencyNotificationsInputLabel";
+import SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeOverflow from "@salesforce/label/c.SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeOverflow";
+import SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeUnderflow from "@salesforce/label/c.SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeUnderflow";
+import SDM_Objetivos_EditFrequencyNotificationsButton from "@salesforce/label/c.SDM_Objetivos_EditFrequencyNotificationsButton";
+import SDM_Objetivos_FrequencyNotificationsSaveButtonLabel from "@salesforce/label/c.SDM_Objetivos_FrequencyNotificationsSaveButtonLabel";
+import SDM_Objetivos_FrequencyNotificationsSaveButtonTitle from "@salesforce/label/c.SDM_Objetivos_FrequencyNotificationsSaveButtonTitle";
 
-// campos SF
+// campos y objeto SF
+import OBJECTIVE_OBJECT from "@salesforce/schema/Objective__c";
+import OBJECTIVE_ID_FIELD from "@salesforce/schema/Objective__c.Id";
+import OBJECTIVE_RECORDTYPEID_FIELD from "@salesforce/schema/Objective__c.RecordTypeId";
 import OBJECTIVE_YEAR_FIELD from "@salesforce/schema/Objective__c.Year__c";
 import OBJECTIVE_INDICATOR_FIELD from "@salesforce/schema/Objective__c.Indicator__c";
 import OBJECTIVE_SEGMENT_FIELD from "@salesforce/schema/Objective__c.Segment__c";
@@ -62,11 +84,20 @@ import OBJECTIVE_OCTOBER_FIELD from "@salesforce/schema/Objective__c.October__c"
 import OBJECTIVE_NOVEMBER_FIELD from "@salesforce/schema/Objective__c.November__c";
 import OBJECTIVE_DECEMBER_FIELD from "@salesforce/schema/Objective__c.December__c";
 import OBJECTIVE_ACTIVE_FIELD from "@salesforce/schema/Objective__c.Active__c";
+import OBJECTIVE_DAYSLEFT_FIELD from "@salesforce/schema/Objective__c.DaysLeft__c";
 
 // controller
 import getObjetives from "@salesforce/apex/ObjectivesViewController.getObjetives";
 import getSelectorYearList from "@salesforce/apex/ObjectivesViewController.getSelectorYearList";
 import updateObjectives from "@salesforce/apex/ObjectivesViewController.updateObjectives";
+import getFrequencyNotification from "@salesforce/apex/ObjectivesViewController.getFrequencyNotification";
+
+const ERROR_VARIANT = "error";
+const SUCCESS_VARIANT = "success";
+const INFO_VARIANT = "info";
+const RT_NAME_OBJECTIVES = SDM_Objetivos_ObjectivesRecordTypeName;
+const RT_NAME_NOTIFICATIONS_FREQUENCY =
+  SDM_Objetivos_NotificationsFrequencyRecordTypeName;
 
 const actions = [
   { label: SDM_Objetivos_ButtonEdit, name: "edit" },
@@ -111,7 +142,19 @@ export default class ObjectivesView extends LightningElement {
     SDM_Objetivos_Clone_Title,
     SDM_Objetivos_ButtonSave,
     SDM_Objetivos_ButtonCancel,
-    SDM_Objetivos_ToastDuplicateError
+    SDM_Objetivos_ToastDuplicateError,
+    SDM_Objetivos_ToastSuccessTitle,
+    SDM_Objetivos_ToastInfoTitle,
+    SDM_Objetivos_ToastErrorTitle,
+    SDM_Objetivos_ToastSuccessMessageFreqNotifications,
+    SDM_Objetivos_ToastInfoMessageFreqNotifications,
+    SDM_Objetivos_ToastErrorMessageFreqNotifications,
+    SDM_Objetivos_FrequencyNotificationsInputLabel,
+    SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeOverflow,
+    SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeUnderflow,
+    SDM_Objetivos_EditFrequencyNotificationsButton,
+    SDM_Objetivos_FrequencyNotificationsSaveButtonLabel,
+    SDM_Objetivos_FrequencyNotificationsSaveButtonTitle
   };
 
   columns = [
@@ -318,6 +361,51 @@ export default class ObjectivesView extends LightningElement {
     OBJECTIVE_ACTIVE_FIELD
   ];
 
+  //#region Variables Frecuencia Notificaciones
+
+  notifFreqSaveButtonDisabled = true;
+  @track frequencyNotification = {};
+
+  get daysLeftValue() {
+    return this.frequencyNotification.DaysLeft__c;
+  }
+
+  //#endregion
+
+  //#region Objectives RecordType
+
+  @wire(getObjectInfo, { objectApiName: OBJECTIVE_OBJECT })
+  objectiveInfo;
+
+  get objectivRecordTypeId() {
+    return this.getRecordTypeId(RT_NAME_OBJECTIVES);
+  }
+
+  get notifFrequencyRecordTypeId() {
+    return this.getRecordTypeId(RT_NAME_NOTIFICATIONS_FREQUENCY);
+  }
+
+  getRecordTypeId(recordTypeName) {
+    const recordTypes = this.objectiveInfo.data.recordTypeInfos;
+
+    return Object.keys(recordTypes).find(
+      (recordType) => recordTypes[recordType].name === recordTypeName
+    );
+  }
+  // #endregion
+
+  //#region Lifecycle functions
+
+  connectedCallback() {
+    getFrequencyNotification().then((result) => {
+      if (result) {
+        this.frequencyNotification = { ...result };
+      }
+    });
+  }
+
+  //#endregion
+
   /******* lightning-datatable *******************************************************************************************************/
   @wire(getObjetives, { year: "$selectedYear" })
   objectivesData;
@@ -386,6 +474,104 @@ export default class ObjectivesView extends LightningElement {
       this.dispatchEvent(evt);
     }
   }
+
+  //#region Hanlde functions for Frequency Notifications
+  handleEditNotificationsFrequency() {
+    const lightningInput = this.template.querySelector("lightning-input");
+    lightningInput.disabled = false;
+    lightningInput.value = this.frequencyNotification.DaysLeft__c;
+
+    // Se habilita el botón 'Guardar' si hay un valor almacenado para DaysLeft.
+    if (lightningInput.value) this.notifFreqSaveButtonDisabled = false;
+
+    // Para poder hacer focus tras habilitar el 'lightning-input' es necesario lanzarlo de forma asíncrona
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    setTimeout(() => {
+      lightningInput.focus();
+    });
+  }
+
+  handleSaveNotificationsFrequency() {
+    const fields = {};
+    const lightningInput = this.template.querySelector("lightning-input");
+
+    fields[OBJECTIVE_DAYSLEFT_FIELD.fieldApiName] = lightningInput.value;
+    fields[OBJECTIVE_RECORDTYPEID_FIELD.fieldApiName] =
+      this.notifFrequencyRecordTypeId;
+
+    let recordInput = {
+      fields
+    };
+
+    // Si no hay Id no existe el registro, por lo tanto se debe crear
+    if (!this.frequencyNotification.Id) {
+      // Se marca como inactivo para que elTrigger del objeto Objective__c no lo tenga en cuenta
+      recordInput.fields[OBJECTIVE_ACTIVE_FIELD.fieldApiName] = false;
+      recordInput.apiName = OBJECTIVE_OBJECT.objectApiName;
+
+      createRecord(recordInput)
+        .then((record) => {
+          this.frequencyNotification.Id = record.id;
+          this.frequencyNotification.DaysLeft__c =
+            record.fields.DaysLeft__c.value;
+
+          this.showSuccess(
+            this.labels.SDM_Objetivos_ToastSuccessTitle,
+            this.labels.SDM_Objetivos_ToastSuccessMessageFreqNotifications
+          );
+        })
+        .catch(() =>
+          this.showError(
+            this.labels.SDM_Objetivos_ToastErrorTitle,
+            this.labels.SDM_Objetivos_ToastErrorMessageFreqNotifications
+          )
+        );
+    } else if (lightningInput.value != this.frequencyNotification.DaysLeft__c) {
+      // Existe el registro, por lo tanto se actualiza
+      fields[OBJECTIVE_ID_FIELD.fieldApiName] = this.frequencyNotification.Id;
+
+      updateRecord(recordInput)
+        .then((record) => {
+          this.frequencyNotification.DaysLeft__c =
+            record.fields.DaysLeft__c.value;
+
+          this.showSuccess(
+            this.labels.SDM_Objetivos_ToastSuccessTitle,
+            this.labels.SDM_Objetivos_ToastSuccessMessageFreqNotifications
+          );
+        })
+        .catch(() =>
+          this.showError(
+            this.labels.SDM_Objetivos_ToastErrorTitle,
+            this.labels.SDM_Objetivos_ToastErrorMessageFreqNotifications
+          )
+        );
+    } else {
+      // Si el valor no ha cambiado se muestra un mensaje informativo
+      this.showInfo(
+        this.labels.SDM_Objetivos_ToastInfoTitle,
+        this.labels.SDM_Objetivos_ToastInfoMessageFreqNotifications
+      );
+    }
+  }
+
+  handleChangeNotificationsFrequencyInput(evt) {
+    // Se habilita el botón de 'Guardar' cuando el input tiene algún valor numérico y se ha pasado la validación
+    this.notifFreqSaveButtonDisabled =
+      !evt.target.value || !evt.target.reportValidity();
+  }
+
+  hanldeBlurNotificationsFrequencyInput(evt) {
+    this.notifFreqSaveButtonDisabled = true;
+
+    const lightningInput = evt.target;
+    lightningInput.value = this.frequencyNotification.DaysLeft__c;
+    lightningInput.reportValidity();
+    lightningInput.disabled = true;
+    lightningInput.blur();
+  }
+
+  //#endregion
 
   // mostrar boton editar al final de la linea
   handleRowAction(event) {
@@ -556,4 +742,29 @@ export default class ObjectivesView extends LightningElement {
     });
     this.dispatchEvent(evt);
   }
+
+  //#region Utility functions
+
+  showError(title, message) {
+    this.showMessage(title, message, ERROR_VARIANT);
+  }
+
+  showInfo(title, message) {
+    this.showMessage(title, message, INFO_VARIANT);
+  }
+
+  showSuccess(title, message) {
+    this.showMessage(title, message, SUCCESS_VARIANT);
+  }
+
+  showMessage(title, text, variant) {
+    const event = new ShowToastEvent({
+      title: title,
+      message: text,
+      variant: variant
+    });
+    this.dispatchEvent(event);
+  }
+
+  //#endregion
 }
