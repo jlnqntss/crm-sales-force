@@ -2,7 +2,7 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Pesos_Suma_100</fullName>
     <active>true</active>
-    <description>Comprobar que la suma de los pesos suma 100</description>
-    <errorConditionFormula>Total__c &lt;&gt; 1</errorConditionFormula>
+    <description>Comprobar que la suma de los pesos suma 100 para los registros de tipo &apos;Objetivo&apos;.</description>
+    <errorConditionFormula>AND(RecordType.DeveloperName = &apos;Objectives&apos;, Total__c &lt;&gt; 1)</errorConditionFormula>
     <errorMessage>La suma de los pesos debe ser 100%</errorMessage>
 </ValidationRule>

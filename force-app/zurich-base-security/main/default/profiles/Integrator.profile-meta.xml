@@ -5639,6 +5639,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.IsBussinessCodeExcluded__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.IsCreatedOnExcludedMailbox__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IsEscalated</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6170,6 +6180,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.AssistanceCompany__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Codigo_Negocio_BancSabadell__mdt.Codigo_Negocio__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7350,6 +7365,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Entitlement.Type</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ExcludedMailboxList__mdt.Email__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8877,6 +8897,10 @@
         <field>Objective__c.August__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Objective__c.DaysLeft__c</field>
+	</fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Objective__c.December__c</field>
@@ -14359,6 +14383,17 @@
         <layout>Macro-Macro Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Objective__c-Frequency of notifications</layout>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+        <recordType>Objective__c.Objectives</recordType>
+	</layoutAssignments>
+    <layoutAssignments>
         <layout>Opportunity-Opportunity Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -16452,6 +16487,17 @@
     <recordTypeVisibilities>
         <default>true</default>
         <recordType>ExternalRequest__c.GENERIC</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
+        <recordType>Objective__c.Objectives</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

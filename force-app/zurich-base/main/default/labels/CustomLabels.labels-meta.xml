@@ -2062,4 +2062,116 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_LinksInteres_ViewAll</shortDescription>
         <value>View all</value>
     </labels>
+    <labels>
+        <fullName>SDM_Objetivos_EditFrequencyNotificationsButton</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_EditFrequencyNotificationsButton</shortDescription>
+        <value>Edit frequency</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_FrequencyNotificationsInputLabel</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_FrequencyNotificationsInputLabel</shortDescription>
+        <value>Number of days to notify</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeOverflow</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeOverflow</shortDescription>
+        <value>The selected day cannot be longer than the last day of the month.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeUnderflow</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeUnderflow</shortDescription>
+        <value>The selected day cannot be less than the first day of the month.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_FrequencyNotificationsSaveButtonLabel</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_FrequencyNotificationsSaveButtonLabel</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_FrequencyNotificationsSaveButtonTitle</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_FrequencyNotificationsSaveButtonTitle</shortDescription>
+        <value>Save frequency</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_NotificationsFrequencyRecordTypeName</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_NotificationsFrequencyRecordTypeName</shortDescription>
+        <value>Frequency of notifications</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ObjectivesRecordTypeName</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ObjectivesRecordTypeName</shortDescription>
+        <value>Objectives</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ToastErrorMessageFreqNotifications</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ToastErrorMessageFreqNotifications</shortDescription>
+        <value>There has been a problem trying to save the remaining days to notify the end of the monthly plan. If the problem persists contact with System Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ToastErrorTitle</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ToastErrorTitle</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ToastInfoMessageFreqNotifications</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ToastInfoMessageFreqNotifications</shortDescription>
+        <value>You have tried to save the same value that is in the database. If you want to update it, modify the value and click &apos;Save&apos;.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ToastInfoTitle</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ToastInfoTitle</shortDescription>
+        <value>Information</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ToastSuccessMessageFreqNotifications</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ToastSuccessMessageFreqNotifications</shortDescription>
+        <value>The remaining days to notify the end of the monthly plan have been saved successfully.</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Objetivos_ToastSuccessTitle</fullName>
+        <categories>SDM,Objetivos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Objetivos_ToastSuccessTitle</shortDescription>
+        <value>Success</value>
+    </labels>
 </CustomLabels>

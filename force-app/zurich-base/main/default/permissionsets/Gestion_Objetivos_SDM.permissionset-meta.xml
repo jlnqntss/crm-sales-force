@@ -21,6 +21,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Objective__c.DaysLeft__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Objective__c.December__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -90,6 +95,14 @@
         <object>Objective__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>Objective__c.Objectives</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
     <recordTypeVisibilities>
         <recordType>PlanComercial__c.MensualPlan</recordType>
         <visible>true</visible>
