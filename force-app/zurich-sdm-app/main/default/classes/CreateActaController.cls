@@ -14,9 +14,7 @@ public with sharing class CreateActaController {
             Event event = getEventData(eventId);
 
             // comprobar si existe ya un acta
-            if (String.isNotEmpty(event.Acta__c)) {
-                throw new HandledException(System.Label.SDM_Acta_CheckExist); 
-            } 
+            checkActaExists(event);
 
             // comprobar si el acta lo está creando el organizador (owner) y el evento no es hijo lanza excepcion si no se cumple
             checkCanCreate(event);                       
@@ -48,6 +46,20 @@ public with sharing class CreateActaController {
         }
 
         return result;
+    }
+
+
+    /**
+     * Comprobar que el evento no tiene ya un acta asociado
+     * @param event: evento obtenido de la base de datos     
+     * @author dmunoz
+     * @date 05/01/2023
+     */
+    private static void checkActaExists(Event event) {
+
+        if (String.isNotEmpty(event.Acta__c)) {
+            throw new HandledException(System.Label.SDM_Acta_CheckExist); 
+        }
     }
 
     /**
