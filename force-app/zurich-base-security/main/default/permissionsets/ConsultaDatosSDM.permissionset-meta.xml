@@ -49,6 +49,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Acta__c.IsViewedByCreator__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Acta__c.MeetingObjective__c</field>
         <readable>true</readable>
