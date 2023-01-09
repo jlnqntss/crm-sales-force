@@ -13,25 +13,25 @@
         ></lightning-combobox>
       </div>
       <div
-        class="slds-col slds-form-element slds-p-right_none slds-size_1-of-6"
+        class="slds-col slds-form-element slds-border_left slds-border_top slds-border_bottom slds-p-right_none slds-size_1-of-6"
       >
-          <lightning-input
-            type="number"
-            label={labels.SDM_Objetivos_FrequencyNotificationsInputLabel}
-            value={daysLeftValue}
-            min="1"
-            max="31"
-            minlength="1"
-            maxlength="2"
-            message-when-range-overflow={labels.SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeOverflow}
-            message-when-range-underflow={labels.SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeUnderflow}
-            onchange={handleChangeNotificationsFrequencyInput}
-            onblur={hanldeBlurNotificationsFrequencyInput}
-            disabled
-          ></lightning-input>
+        <lightning-input
+          type="number"
+          label={labels.SDM_Objetivos_FrequencyNotificationsInputLabel}
+          value={daysLeftValue}
+          min="1"
+          max="31"
+          minlength="1"
+          maxlength="2"
+          message-when-range-overflow={labels.SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeOverflow}
+          message-when-range-underflow={labels.SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeUnderflow}
+          onchange={handleChangeNotificationsFrequencyInput}
+          onblur={hanldeBlurNotificationsFrequencyInput}
+          disabled
+        ></lightning-input>
       </div>
       <div
-        class="slds-col slds-p-top_large slds-p-left_small slds-size_1-of-6"
+        class="slds-col slds-border_right slds-border_top slds-border_bottom slds-p-top_large slds-p-left_small slds-size_1-of-6"
       >
         <lightning-button-icon
           class="slds-m-right_xx-small"

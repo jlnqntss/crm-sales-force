@@ -526,7 +526,10 @@ export default class ObjectivesView extends LightningElement {
             this.labels.SDM_Objetivos_ToastErrorMessageFreqNotifications
           )
         );
-    } else if (lightningInput.value !== this.frequencyNotification.DaysLeft__c) {
+    } else if (
+      parseInt(lightningInput.value, 10) !==
+      this.frequencyNotification.DaysLeft__c
+    ) {
       // Existe el registro, por lo tanto se actualiza
       fields[OBJECTIVE_ID_FIELD.fieldApiName] = this.frequencyNotification.Id;
 
