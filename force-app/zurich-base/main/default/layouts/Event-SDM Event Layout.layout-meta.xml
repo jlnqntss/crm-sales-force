@@ -58,10 +58,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>MeetingMinutes__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Acta__c</field>
             </layoutItems>
         </layoutColumns>
