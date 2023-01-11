@@ -1458,72 +1458,72 @@ public class Query
     public static final DateLiteral NEXT_FISCAL_YEAR =
         new DateLiteral('NEXT_FISCAL_YEAR');
 
-    public static DateLiteral LAST_N_DAYS(Integer n)
+    public static DateLiteral last_n_days(Integer n)
     {
         return new DateLiteral('LAST_N_DAYS', n);
     }
 
-    public static DateLiteral NEXT_N_DAYS(Integer n)
+    public static DateLiteral next_n_days(Integer n)
     {
         return new DateLiteral('NEXT_N_DAYS', n);
     }
 
-    public static DateLiteral LAST_N_WEEKS(Integer n)
+    public static DateLiteral last_n_weeks(Integer n)
     {
         return new DateLiteral('LAST_N_WEEKS', n);
     }
 
-    public static DateLiteral NEXT_N_WEEKS(Integer n)
+    public static DateLiteral next_n_weeks(Integer n)
     {
         return new DateLiteral('NEXT_N_WEEKS', n);
     }
 
-    public static DateLiteral LAST_N_MONTHS(Integer n)
+    public static DateLiteral last_n_months(Integer n)
     {
         return new DateLiteral('LAST_N_MONTHS', n);
     }
 
-    public static DateLiteral NEXT_N_MONTHS(Integer n)
+    public static DateLiteral next_n_months(Integer n)
     {
         return new DateLiteral('NEXT_N_MONTHS', n);
     }
 
-    public static DateLiteral LAST_N_QUARTERS(Integer n)
+    public static DateLiteral last_n_quarters(Integer n)
     {
         return new DateLiteral('LAST_N_QUARTERS', n);
     }
 
-    public static DateLiteral NEXT_N_QUARTERS(Integer n)
+    public static DateLiteral next_n_quarters(Integer n)
     {
         return new DateLiteral('NEXT_N_QUARTERS', n);
     }
 
-    public static DateLiteral LAST_N_YEARS(Integer n)
+    public static DateLiteral last_n_years(Integer n)
     {
         return new DateLiteral('LAST_N_YEARS', n);
     }
 
-    public static DateLiteral NEXT_N_YEARS(Integer n)
+    public static DateLiteral next_n_years(Integer n)
     {
         return new DateLiteral('NEXT_N_YEARS', n);
     }
 
-    public static DateLiteral LAST_N_FISCAL_QUARTERS(Integer n)
+    public static DateLiteral last_n_fiscal_quarters(Integer n)
     {
         return new DateLiteral('LAST_N_FISCAL_QUARTERS', n);
     }
 
-    public static DateLiteral NEXT_N_FISCAL_QUARTERS(Integer n)
+    public static DateLiteral next_n_fiscal_quarters(Integer n)
     {
         return new DateLiteral('NEXT_N_FISCAL_QUARTERS', n);
     }
 
-    public static DateLiteral LAST_N_FISCAL_YEARS(Integer n)
+    public static DateLiteral last_n_fiscal_years(Integer n)
     {
         return new DateLiteral('LAST_N_FISCAL_YEARS', n);
     }
 
-    public static DateLiteral NEXT_N_FISCAL_YEARS(Integer n)
+    public static DateLiteral next_n_fiscal_years(Integer n)
     {
         return new DateLiteral('NEXT_N_FISCAL_YEARS', n);
     }
@@ -1782,9 +1782,8 @@ public class Query
     }
 
     public List<AggregateResult> aggregate()
-    {
-        String queryString = formQueryString();
-        return Database.query(queryString);
+    {        
+        return toSObjectList();
     }
 
     public Integer countQuery()

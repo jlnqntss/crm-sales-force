@@ -219,7 +219,7 @@ public with sharing class OpportunityUtil
         return mapOpportunitiesToRelateByCreatedOffer;
     }
 
-    /* 
+        /* 
     * Si el usuario conectado es un ZE_Advisor no dejar modificar el Owner a excepción de si el OldOwner es Integrator.
     * @author jpereztirado - nts
     * @created date 20/12/2022
@@ -228,7 +228,8 @@ public with sharing class OpportunityUtil
     */ 
     public static void validateChangeOwner(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
     {
-        List<PermissionSetAssignment> userList = [SELECT AssigneeId,Assignee.Profile.Name FROM PermissionSetAssignment WHERE (PermissionSet.Name = 'ZE_Advisor' OR Assignee.Profile.Name='Integrator') AND Assignee.isActive = True];
+        List<PermissionSetAssignment> userList = [SELECT AssigneeId,Assignee.Profile.Name FROM PermissionSetAssignment WHERE (PermissionSet.Name = 'ZE_Advisor' OR Assignee.Profile.Name='Integrator') 
+            AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
 		Id integratorId=null;
         for (Opportunity newOpty : newList)
         {

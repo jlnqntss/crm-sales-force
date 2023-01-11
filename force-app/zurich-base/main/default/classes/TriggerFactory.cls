@@ -152,8 +152,6 @@ public with sharing class TriggerFactory
             //  Return a new instance of the Handler
             handler = (ITrigger) Type.forName(className).newInstance();
         }
-        else
-        {}
         return handler;
     }
 

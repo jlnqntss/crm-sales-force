@@ -87,7 +87,6 @@ public without sharing class EmailToOpportunityService
             else
             {
                 // En caso contrario, se genera un Contact Request para dejar un registro mínimo asociado y que el Email Message deje reflejo
-                /// TODO: ¿Gestionar colas aquí?
                 ContactRequest request = new ContactRequest(
                     RequestDescription = (inboundEmail.Subject + '\n' + inboundEmail.plainTextBody).abbreviate(32000),
                     PreferredChannel = CHANNEL_EMAIL
@@ -294,6 +293,10 @@ public without sharing class EmailToOpportunityService
                     when('References')
                     {
                         this.references.addAll(header.value.split(',') );
+                    }
+                    when else 
+                    {
+                        // else code
                     }
                 }
 

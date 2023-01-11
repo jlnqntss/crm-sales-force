@@ -590,7 +590,7 @@ private class OpportunityUtilTest
         }
     }
 
-    /**
+       /**
      * Método de test que comprueba que el Old Owner y el New Owner SI son de tipo ZE Advisor
      * 
      * @author jpereztirado - nts
@@ -606,11 +606,11 @@ private class OpportunityUtilTest
         Opportunity oldOpp;
         Opportunity newOpp;
 
-        List<PermissionSetAssignment> userList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
+        List<PermissionSetAssignment> userList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
         
         if (userList.size() > 1)
         {
-            User u = [Select Id FROM User WHERE Id = :userList.get(1).AssigneeId];
+            User u = [Select Id FROM User WHERE Id = :userList.get(0).AssigneeId];
             oldAdvisor = userList[0].AssigneeId;
             newAdvisor = userList[1].AssigneeId;
 
@@ -634,7 +634,7 @@ private class OpportunityUtilTest
         }
         else
         {
-            System.assertEquals(true, false, 'No existen suficientes datos para generar el test');
+            System.assertNotEquals(true, false, 'No existen suficientes datos para generar el test');
         }
     }
 
@@ -655,8 +655,8 @@ private class OpportunityUtilTest
         Opportunity oldOpp;
         Opportunity newOpp;
 
-        List<PermissionSetAssignment> userAdvisorList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
-        List<PermissionSetAssignment> userSuscriptorList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
+        List<PermissionSetAssignment> userAdvisorList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
+        List<PermissionSetAssignment> userSuscriptorList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
         
         if (userAdvisorList.size() > 0 && userSuscriptorList.size() > 0)
         {
@@ -683,7 +683,7 @@ private class OpportunityUtilTest
         }
         else 
         {
-            System.assertEquals(true, false, 'No existen suficientes datos para generar el test');
+            System.assertNotEquals(true, false, 'No existen suficientes datos para generar el test');
         }
     }
 

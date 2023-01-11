@@ -516,7 +516,7 @@ global without sharing class OrderUtil
      * @author nbizkarra
      * @date 08/04/2020
      **/
-    public static void SummaryTotalPolicies(List<Order> newList)
+    public static void summaryTotalPolicies(List<Order> newList)
     {
         
         Set<Id> idSet = new Set<Id>();

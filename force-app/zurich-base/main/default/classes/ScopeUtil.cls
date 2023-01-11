@@ -217,6 +217,10 @@ global without sharing class ScopeUtil {
           doUpdate(this.scopesToUpdateAfter.values());
         }
       }
+      when else 
+      {
+        // else code
+      }
     }
   }
 

@@ -17,6 +17,8 @@ import SDM_ControlIntermediaryNotifiaction_Intermediary from "@salesforce/label/
 import SDM_ControlIntermediaryNotifiaction_IntermediaryPlaceholder from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_IntermediaryPlaceholder";
 import SDM_ControlIntermediaryNotifiaction_ButtonSave from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_ButtonSave";
 import SDM_ControlIntermediaryNotifiaction_ButtonCancel from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_ButtonCancel";
+import SDM_ControlIntermediaryNotifiaction_ActiveAll from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_ActiveAll";
+import SDM_ControlIntermediaryNotifiaction_InactiveAll from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_InactiveAll";
 
 // controller
 import getRecords from "@salesforce/apex/IntermediaryNotificationsController.getRecords";
@@ -32,7 +34,9 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     SDM_ControlIntermediaryNotifiaction_Intermediary,
     SDM_ControlIntermediaryNotifiaction_IntermediaryPlaceholder,
     SDM_ControlIntermediaryNotifiaction_ButtonSave,
-    SDM_ControlIntermediaryNotifiaction_ButtonCancel
+    SDM_ControlIntermediaryNotifiaction_ButtonCancel,
+    SDM_ControlIntermediaryNotifiaction_ActiveAll,
+    SDM_ControlIntermediaryNotifiaction_InactiveAll
   };
 
   isLoading = true;
@@ -96,7 +100,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       let eventValues = event.detail.value;
 
       // 3 escenarios
-      // no hay filtro ni antes ni despues el caso mas sencillo, simplemente
+      // no hay filtro ni antes ni despues el caso mas sencillo, simplemente los valores que se muestran son los que se activan
       if (this.lastQueryTerm === "" && this.queryTerm === "") {
         this.valuesToActive = [...eventValues];
       }
@@ -127,7 +131,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     }
   }
 
-  // metodo de busqueda para los dos inputs
+  // meall de busqueda para los dos inputs
   handleKeyUp(event) {
     const isEnterKey = event.keyCode === 13;
     if (isEnterKey) {
@@ -165,6 +169,8 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
         this.values = [...this.valuesToActive];
         this.queryTerm = ""; // resetear filtros
         this.lastQueryTerm = ""; // resetear filtros
+        // actualizar valores de reset
+        this.resetValues = [...this.valuesToActive];
 
         this.template.querySelector("lightning-input").value = null; // reseteo el valor en el input del buscador
 
@@ -197,5 +203,39 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     this.hasChange = false;
     this.queryTerm = "";
     this.lastQueryTerm = "";
+  }
+
+  // control del botón Activar all
+  handleActiveAll() {
+    for (const opt of this.options) {
+      if (!this.valuesToActive.includes(opt.value)) {
+        // incluyo en la lista de values los valores que no existen ya
+        this.hasChange = true;
+        this.valuesToActive = [...this.valuesToActive, opt.value];
+        this.values = [...this.values, opt.value];
+      }
+    }
+  }
+
+  // control del botón Inactivar all
+  handleInactiveAll() {
+    if (this.queryTerm !== "") {
+      let index;
+      for (const opt of this.options) {
+        index = this.valuesToActive.indexOf(opt.value); // busco si existe en la lista de valores a activar la opción a desactivar para borrar este elemento de la lista
+        if (index > -1) {
+          // only splice array when item is found
+          this.valuesToActive.splice(index, 1); // 2nd parameter means remove one item only
+          this.hasChange = true;
+        }
+      }
+      this.values = [...this.valuesToActive];
+    } else {
+      if (this.valuesToActive.length > 0) {
+        this.hasChange = true; // solo muestro el boton guardar si habia valores activos al pulsarlo
+      }
+      this.valuesToActive = [];
+      this.values = [];
+    }
   }
 }

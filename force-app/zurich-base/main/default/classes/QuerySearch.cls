@@ -184,11 +184,7 @@ public class QuerySearch
 
     public QuerySearch addConditionLike(String lhs, Object rhs)
     {
-        if (returningList.size() > 0)
-        {
-            returningList.get(returningList.size() - 1).addConditionNotEq(lhs, rhs);
-        }
-        return this;
+        return addConditionNotEq(lhs, rhs);
     }
 
     public QuerySearch addConditionLike(Schema.SObjectField lhs, Object rhs)

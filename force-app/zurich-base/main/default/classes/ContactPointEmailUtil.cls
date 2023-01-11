@@ -104,8 +104,6 @@ public without sharing class ContactPointEmailUtil
                             relatedContactPoint.IsPrimary = false;
                             contactPointEmailsToUpdate.put(relatedContactPoint.id, relatedContactPoint);
                         }
-
-                        //contactPointEmailsToUpdate.addAll(relatedContactPointEmails);
                     }
 
                     if(contactPointEmailsToUpdate.containsKey(newContactPointEmail.Id))

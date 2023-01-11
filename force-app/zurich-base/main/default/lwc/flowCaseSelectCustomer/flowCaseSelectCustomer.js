@@ -14,8 +14,8 @@ export default class FlowCaseSelectCustomer extends LightningElement {
         //Apex
         getAccountsInfo({ idsToFind: idsList })
             .then((result) => {
-                var account;
-                var option;
+                let account;
+                let option;
                 if(result !== undefined){ //1º comprobar que no es undefined
                     for(account of result){
                         option = {

@@ -32,7 +32,7 @@ public with sharing class GenesysCloudPatchInteractionAction
 
                 catch (Exception e)
                 {
-                    
+                   //Catch code 
                 }
             }
             responsePatch.add(listaResponsePatch);

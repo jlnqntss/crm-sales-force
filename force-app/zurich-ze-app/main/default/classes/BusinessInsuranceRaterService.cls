@@ -1044,11 +1044,6 @@ public without sharing class BusinessInsuranceRaterService
             currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String> {PROFILE_NAME}
         );
 
-        if(existingOffers.size() > 0)
-        {
-            
-        }
-
         if( existingOffers.isEmpty() )
         {
             currentAdvisorId = System.UserInfo.getUserId();

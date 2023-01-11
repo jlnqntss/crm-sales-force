@@ -82,7 +82,7 @@ public with sharing class CaseUtil
      * @author nbizkarra
      * @date 23/04/2020
      **/
-    public static void SummaryTotalClaims(List<Case> newList)
+    public static void summaryTotalClaims(List<Case> newList)
     {
         Set<Id> idSet = new Set<Id>();
 
@@ -351,8 +351,7 @@ public with sharing class CaseUtil
 
                         //Utilizar el scope del caso
                         //AccountSearchService.Scope scope = new AccountSearchService.Scope();
-                        //scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
-
+                        
                         //Utilizar el AccountSearchService
                         List<Account> matchedAccounts = new List<Account>();
                         matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
