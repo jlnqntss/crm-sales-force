@@ -2085,4 +2085,20 @@ Related fields: [{3}]</value>
         <shortDescription>OfferChangeOwnerValidationMsg</shortDescription>
         <value>No tienes permisos para cambiar el propietario de la Oferta.</value>
     </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_SuccessToastMessage</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_SuccessToastMessage</shortDescription>
+        <value>The notification preferences has been updated</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_SuccessToastTitle</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_SuccessToastTitle</shortDescription>
+        <value>Success</value>
+    </labels>
 </CustomLabels>

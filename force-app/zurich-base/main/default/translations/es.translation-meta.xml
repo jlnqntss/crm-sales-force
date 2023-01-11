@@ -5917,6 +5917,14 @@
         <name>SDM_ControlIntermediaryNotifiaction_MultipicklistTitle</name>
     </customLabels>
     <customLabels>
+        <label>Las preferencias de notificaciones para Mediador se han actualizado</label>
+        <name>SDM_ControlIntermediaryNotifiaction_SuccessToastMessage</name>
+    </customLabels>
+	<customLabels>
+        <label>Éxito</label>
+        <name>SDM_ControlIntermediaryNotifiaction_SuccessToastTitle</name>
+    </customLabels>
+    <customLabels>
         <label>Alertas por Mediador</label>
         <name>SDM_ControlIntermediaryNotifiaction_Title</name>
     </customLabels>
