@@ -32,6 +32,6 @@
     </values>
     <values>
         <field>SegmentoMediacion__c</field>
-        <value xsi:type="xsd:string">Centralizados</value>
+        <value xsi:type="xsd:string">CEN</value>
     </values>
 </CustomMetadata>
