@@ -181,9 +181,12 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
 
   handleSave() {
     // debido a que en caso de que las modificaciones de activacion y desactivacion resulte en lo mismo que habia cuando se cargó el componente no hacemos nada
+    let orderedValuesToActive = this.valuesToActive.sort();
+    let orderedResetValues = this.resetValues.sort();
+
     if (
-      JSON.stringify(this.valuesToActive.sort()) ===
-      JSON.stringify(this.resetValues.sort())
+      JSON.stringify(orderedValuesToActive) ===
+      JSON.stringify(orderedResetValues)
     ) {
       this.handleCancel();
       const event = new ShowToastEvent({
@@ -195,6 +198,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       });
       this.dispatchEvent(event);
     } else {
+      // si hay cambios actualizamos
       updateIntermediaryNotificationFlag({
         notificationsToActiveList: this.valuesToActive
       })
