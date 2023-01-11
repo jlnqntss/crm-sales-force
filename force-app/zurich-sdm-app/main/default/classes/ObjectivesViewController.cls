@@ -42,7 +42,7 @@ public with sharing class ObjectivesViewController {
     * @date 29-12-2022 
     * @return Objective__c Frecuencia de notificaciones
     **/
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Objective__c getFrequencyNotification()
     {
         Objective__c frequencyNotification;
