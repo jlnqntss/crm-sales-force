@@ -181,8 +181,8 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
 
   handleSave() {
     // debido a que en caso de que las modificaciones de activacion y desactivacion resulte en lo mismo que habia cuando se cargó el componente no hacemos nada
-    let orderedValuesToActive = this.valuesToActive.sort();
-    let orderedResetValues = this.resetValues.sort();
+    let orderedValuesToActive = [...this.valuesToActive].sort();
+    let orderedResetValues = [...this.resetValues].sort();
 
     if (
       JSON.stringify(orderedValuesToActive) ===
