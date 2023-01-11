@@ -497,38 +497,35 @@ public with sharing class GenerateScopeUtil
             String objectType = event.ObjectType__c;
             Id parentId = event.AccountId__c;
             SObject obj = null;
+{
+            if( mapReferenceObjectByObjectTypes.containsKey(objectType) &&
+                mapReferenceObjectByObjectTypes.get(objectType).containsKey(parentId) &&
+                mapRelatedFieldNameByObjectType.containsKey(objectType) &&
+                mapReferenceObjectFieldByObjectType.containsKey(objectType)) 
+            {
+                // Recupera el campo a actualizar
+                String relatedFieldName = mapRelatedFieldNameByObjectType.get(objectType); // Ej: Scope__c de Claim__c
+                // Recupera el campo del objeto referenciado
+                String refObjectFieldName = mapReferenceObjectFieldByObjectType.get(objectType);  // Ej: Scope__c de Policy__c
+                // Recupera el objeto referenciado. Ej: Policy__c para los Claims
+                SObject referenceObject = mapReferenceObjectByObjectTypes.get(objectType).get(parentId);
 
-            if( mapReferenceObjectByObjectTypes.containsKey(objectType) ) {
-                if( mapReferenceObjectByObjectTypes.get(objectType).containsKey(parentId) &&
-                    mapRelatedFieldNameByObjectType.containsKey(objectType) &&
-                    mapReferenceObjectFieldByObjectType.containsKey(objectType)) 
-                {
-                    // Recupera el campo a actualizar
-                    String relatedFieldName = mapRelatedFieldNameByObjectType.get(objectType); // Ej: Scope__c de Claim__c
-                    // Recupera el campo del objeto referenciado
-                    String refObjectFieldName = mapReferenceObjectFieldByObjectType.get(objectType);  // Ej: Scope__c de Policy__c
-                    // Recupera el objeto referenciado. Ej: Policy__c para los Claims
-                    SObject referenceObject = mapReferenceObjectByObjectTypes.get(objectType).get(parentId);
-
-                    // Inicializa un objeto a actualizar del tipo correspondiente. Ej: new Claim__c(Id=xxx,Scope__c=xxxx)
-                    obj = (SObject)Type.forName(objectType).newInstance();
-                    // establece el campo Id para el update
-                    obj.put('Id', event.relatedId__c);
-                    // y establece el campo del objeto referenciado al campo correspondiente. Ej: Claim__c.Scope__c = Policy__c.Scope__c
-                    obj.put(relatedFieldName, referenceObject.get(refObjectFieldName));
-                }
+                // Inicializa un objeto a actualizar del tipo correspondiente. Ej: new Claim__c(Id=xxx,Scope__c=xxxx)
+                obj = (SObject)Type.forName(objectType).newInstance();
+                // establece el campo Id para el update
+                obj.put('Id', event.relatedId__c);
+                // y establece el campo del objeto referenciado al campo correspondiente. Ej: Claim__c.Scope__c = Policy__c.Scope__c
+                obj.put(relatedFieldName, referenceObject.get(refObjectFieldName));
             }
 
-            if( obj != null ) {
+            if( obj != null && !listAddedObjects.contains(obj.Id) ) {
                 // fix: para evitar actualizar el mismo objeto
-                if( !listAddedObjects.contains(obj.Id) ) {
-                    if( mapSObjectsToUpdate.containsKey(objectType) ) {
-                        mapSObjectsToUpdate.get(objectType).add(obj);
-                    } else {
-                        mapSObjectsToUpdate.put(objectType, new List<SObject>{obj});
-                    }
-                    listAddedObjects.add(obj.Id);
+                if( mapSObjectsToUpdate.containsKey(objectType) ) {
+                    mapSObjectsToUpdate.get(objectType).add(obj);
+                } else {
+                    mapSObjectsToUpdate.put(objectType, new List<SObject>{obj});
                 }
+                listAddedObjects.add(obj.Id);
             }
 
         }
@@ -660,37 +657,34 @@ public with sharing class GenerateScopeUtil
             String code = event.BusinessCode__c;
             SObject obj = null;
 
-            if( mapReferenceObjectByObjectTypes.containsKey(objectType) ) {
-                if( mapReferenceObjectByObjectTypes.get(objectType).containsKey(code) &&
-                    mapRelatedFieldNameByObjectType.containsKey(objectType) &&
-                    mapReferenceObjectFieldByObjectType.containsKey(objectType)) 
-                {
-                    // Recupera el campo a actualizar
-                    String relatedFieldName = mapRelatedFieldNameByObjectType.get(objectType); // Ej: Scope__c de Claim__c
-                    // Recupera el campo del objeto referenciado
-                    String refObjectFieldName = mapReferenceObjectFieldByObjectType.get(objectType);  // Ej: Scope__c de Policy__c
-                    // Recupera el objeto referenciado. Ej: Policy__c para los Claims
-                    ID referenceObjectId = mapReferenceObjectByObjectTypes.get(objectType).get(code);
+            if( mapReferenceObjectByObjectTypes.containsKey(objectType) &&
+                mapReferenceObjectByObjectTypes.get(objectType).containsKey(code) &&
+                mapRelatedFieldNameByObjectType.containsKey(objectType) &&
+                mapReferenceObjectFieldByObjectType.containsKey(objectType)) 
+            {
+                // Recupera el campo a actualizar
+                String relatedFieldName = mapRelatedFieldNameByObjectType.get(objectType); // Ej: Scope__c de Claim__c
+                // Recupera el campo del objeto referenciado
+                String refObjectFieldName = mapReferenceObjectFieldByObjectType.get(objectType);  // Ej: Scope__c de Policy__c
+                // Recupera el objeto referenciado. Ej: Policy__c para los Claims
+                ID referenceObjectId = mapReferenceObjectByObjectTypes.get(objectType).get(code);
 
-                    // Inicializa un objeto a actualizar del tipo correspondiente. Ej: new Claim__c(Id=xxx,Scope__c=xxxx)
-                    obj = (SObject)Type.forName(objectType).newInstance();
-                    // establece el campo Id para el update
-                    obj.put('Id', event.relatedId__c);
-                    // y establece el campo del objeto referenciado al campo correspondiente. Ej: Claim__c.Scope__c = Policy__c.Scope__c
-                    obj.put(relatedFieldName, referenceObjectId);
-                }
+                // Inicializa un objeto a actualizar del tipo correspondiente. Ej: new Claim__c(Id=xxx,Scope__c=xxxx)
+                obj = (SObject)Type.forName(objectType).newInstance();
+                // establece el campo Id para el update
+                obj.put('Id', event.relatedId__c);
+                // y establece el campo del objeto referenciado al campo correspondiente. Ej: Claim__c.Scope__c = Policy__c.Scope__c
+                obj.put(relatedFieldName, referenceObjectId);
             }
 
-            if( obj != null ) {
-                // fix: para evitar actualizar el mismo objeto
-                if( !listAddedObjects.contains(obj.Id) ) {
-                    if( mapSObjectsToUpdate.containsKey(objectType) ) {
-                        mapSObjectsToUpdate.get(objectType).add(obj);
-                    } else {
-                        mapSObjectsToUpdate.put(objectType, new List<SObject>{obj});
-                    }
-                    listAddedObjects.add(obj.Id);
+            // fix: para evitar actualizar el mismo objeto
+            if( obj != null && !listAddedObjects.contains(obj.Id) ) {
+                if( mapSObjectsToUpdate.containsKey(objectType) ) {
+                    mapSObjectsToUpdate.get(objectType).add(obj);
+                } else {
+                    mapSObjectsToUpdate.put(objectType, new List<SObject>{obj});
                 }
+                listAddedObjects.add(obj.Id);
             }
 
         }

@@ -8,13 +8,12 @@ public with sharing class SendSurveyButtonController
     {
         String genesysPollNumber = '';
         AdminSetupParameter__mdt settings = AdminSetupParameter__mdt.getInstance('GenesysPollPhoneNumber');
-        if( Test.isRunningTest() )
+
+        if(  Test.isRunningTest() && testListPollPhoneNumber.Value__c != null )
         {
-            if( testListPollPhoneNumber.Value__c != null )
-            {
-                settings = testListPollPhoneNumber;
-            }
+            settings = testListPollPhoneNumber;
         }
+        
         if( settings.Value__c != null )
         {
             genesysPollNumber = settings.Value__c;
