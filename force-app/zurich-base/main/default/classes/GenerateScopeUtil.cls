@@ -497,7 +497,7 @@ public with sharing class GenerateScopeUtil
             String objectType = event.ObjectType__c;
             Id parentId = event.AccountId__c;
             SObject obj = null;
-{
+
             if( mapReferenceObjectByObjectTypes.containsKey(objectType) &&
                 mapReferenceObjectByObjectTypes.get(objectType).containsKey(parentId) &&
                 mapRelatedFieldNameByObjectType.containsKey(objectType) &&
