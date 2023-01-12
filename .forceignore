@@ -86,6 +86,16 @@ force-app/zurich-ze-base/main/default/customMetadata/AdminSetupParameter.Busines
 force-app/zurich-base/main/default/authproviders/GenesysCloud.authprovider-meta.xml
 force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredentials-meta.xml
 
+# Ignore flexipages
+force-app\zurich-base\main\default\flexipages\OCS_Tareas_Masivas.flexipage-meta.xml
+# Ignore tabs
+force-app\zurich-base\main\default\tabs\Tareas_Masivas.tab-meta.xml
+# Ignore App
+force-app\zurich-ocs-app
+# Ignore Permission Sets
+force-app\zurich-base\main\default\permissionsets\Tareas_Masivas.permissionset-meta.xml
+
+
 # Entitlement Process. Fallan al redesplegar
 **/entitlementProcesses/**
 
