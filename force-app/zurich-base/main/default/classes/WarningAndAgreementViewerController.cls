@@ -8,8 +8,11 @@ public with sharing class WarningAndAgreementViewerController
     //#region atributos
     private static final string WARNING_OBJECT = 'CustomerWarning__c';
     private static final string AGREEMENT_OBJECT = 'Special_Condition__c';
-    private static final string WARNING_FIELDSET = 'CompactLayout';
-    private static final string AGREEMENT_FIELDSET = 'CompactLayout';
+    private static final string WARNING_FIELDSET = 'RelatedListFields';
+    private static final string AGREEMENT_FIELDSET = 'RelatedListFields';
+
+    private static final string MANAGEMENT_CUSTOM_PERMISSION = 'USPManageAgreementsWarnings';
+    
     //#endregion
 
     //#region public classes
@@ -17,7 +20,7 @@ public with sharing class WarningAndAgreementViewerController
      * Método que a partir del objeto (CustomerWarning__c o Special_Condition__c) descarga el fieldset necesario y devuelve los campos
      * @author jjuaristi@seidor.es
      * @date 26/12/2022
-     * @param Código de ramo
+     * @param Objeto Salesforce
      * @return Lista de campos a mostrar
      */
     @AuraEnabled(cacheable=true)
@@ -53,13 +56,13 @@ public with sharing class WarningAndAgreementViewerController
     }
 
     /**
-     * Método que a partir del objeto (CustomerWarning__c o Special_Condition__c) descarga el fieldset necesario y devuelve los campos
+     * Método que devuelve los avisos
      * @author jjuaristi@seidor.es
-     * @date 26/12/2022
-     * @param Código de ramo
+     * @date 09/01/2023
+     * @param registro, objeto y tipo de registro
      * @return Lista de campos a mostrar
      */
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<CustomerWarning__c> getWarnings(Account record, String salesforceObject, String recordType)
     {
         String identifier;
@@ -92,6 +95,30 @@ public with sharing class WarningAndAgreementViewerController
         return warnings;
     }
 
+     /**
+     * Método que devuelve los acuerdos
+     * @author jjuaristi@seidor.es
+     * @date 09/01/2023
+     * @param registro, objeto y direccion Territorial
+     * @return Lista de campos a mostrar
+     */
+    @AuraEnabled
+    public static List<Special_Condition__c> getAgreements(Account record, String salesforceObject)
+    {
+        List<Special_Condition__c> agreements = new List<Special_Condition__c>();
+        if(record == null || salesforceObject == null || salesforceObject != AGREEMENT_OBJECT)
+        {
+            // Alguno de los parámetros no es correcto, no hay que devolver avisos
+            return new List<Special_Condition__c>();
+        }
+        else
+        {
+            agreements = new SpecialConditionsSelector().findAgreements(record.Id, record.TerritorialDirection__c);
+        }
+
+        return agreements;
+    }
+
     /**
      * Método que recupera una cuenta de la base de datos
      * @author jjuaristi@seidor.es
@@ -105,6 +132,79 @@ public with sharing class WarningAndAgreementViewerController
         List<Account> account = new AccountsSelector().selectById(new Set<Id>{accountId});
         return account[0];
     }
+
+    /**
+     * Método que cancela un acuerdo
+     * @author jjuaristi@seidor.es
+     * @date 10/01/2023
+     */
+    @AuraEnabled
+    public static void cancelAgreements(List<Special_Condition__c> agreements)
+    {
+        if(agreements != null && !agreements.isEmpty())
+        {
+            for(Special_Condition__c agreement : agreements)
+            {
+                agreement.IsActive__c = false;
+            }
+            update agreements;
+        }
+    }
+
+    /**
+     * Método que cancela un aviso
+     * @author jjuaristi@seidor.es
+     * @date 10/01/2023
+     */
+    @AuraEnabled
+    public static void cancelWarnings(List<CustomerWarning__c> warnings)
+    {
+        if(warnings != null && !warnings.isEmpty())
+        {
+            for(CustomerWarning__c warning : warnings)
+            {
+                warning.EndDate__c = System.today();
+            }
+            update warnings;
+        }
+    }
+
+    /**
+     * Método que comprueba si el running user tiene el permiso para crear y cancelar registros
+     * @author jjuaristi@seidor.es
+     * @date 12/01/2023
+     */
+    @AuraEnabled
+    public static Boolean checkPermission()
+    {
+        System.debug(FeatureManagement.checkPermission(MANAGEMENT_CUSTOM_PERMISSION));
+        return FeatureManagement.checkPermission(MANAGEMENT_CUSTOM_PERMISSION);
+    }
+
+    /**
+     * Método que crea la cuenta relacionada a partir del aviso manual
+     * @author jjuaristi@seidor.es
+     * @date 12/01/2023
+     */
+    @AuraEnabled
+    public static void createRelatedAccount(Account record, String warningNumber, String recordType)
+    {
+        RelatedAccount__c newRecord = new RelatedAccount__c();
+        CustomerWarning__c warning = new CustomerWarningsSelector().findWarningByNumber(warningNumber);
+        newRecord.Warning__c = warning.Id;
+        if( recordType == AccountsSelector.RT_NAME_INTERMEDIARY )
+        {
+            // Mediador
+            newRecord.Identifier__c = record.INFOIntermediaryCode__c;
+        }
+        else
+        {
+            // Cliente
+            newRecord.Identifier__c = record.NationalId__c;
+        }
+        insert newRecord;
+    }
+
     //#endregion
 
     //#region private classes

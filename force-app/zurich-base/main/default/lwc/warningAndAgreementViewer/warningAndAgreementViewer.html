@@ -1,21 +1,108 @@
 <template>
-  <lightning-card variant="Narrow" title={title} icon-name="standard:comments">
+  <lightning-card variant="Narrow" title={compTitle} icon-name={iconName}>
     <div class="slds-grid slds-grid_vertical">
-      <div class="slds-col">
+      <div class="slds-col slds-p-right_medium" if:false={hideManagement}>
         <lightning-button
-          label="Crear aviso"
+          label="Crear Aviso Particular"
           class="slds-button slds-float_right"
-          onclick={click}
+          onclick={createWarning}
+          if:true={warning}
+          variant="brand"
+        >
+        </lightning-button>
+        <lightning-button
+          label="Desactivar Avisos"
+          class="slds-button slds-float_right"
+          onclick={disableWarnings}
+          if:true={warning}
+        >
+        </lightning-button>
+        <lightning-button
+          label="Desactivar Acuerdos"
+          class="slds-button slds-float_right"
+          onclick={disableAgreements}
+          if:false={warning}
         >
         </lightning-button>
       </div>
-      <div class="slds-col">
+      <div class="slds-col slds-p-top_medium">
         <lightning-datatable
           key-field="Id"
           data={recordsToShow}
           columns={columns.data}
+          hide-checkbox-column={hideManagement}
+          if:false={hideTable}
         >
         </lightning-datatable>
+      </div>
+      <div class="slds-col slds-p-top_medium">
+        <lightning-button
+          variant="base"
+          label={showAllLabel}
+          onclick={showExpired}
+          class="slds-align_absolute-center"
+          if:false={hideShowAll}
+        >
+        </lightning-button>
+        <template if:true={showAll}>
+          <section aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+              <header class="slds-modal__header">
+                <h2 class="slds-text-heading_small">{title}</h2>
+                <lightning-icon
+                  class="slds-modal__close"
+                  icon-name="utility:close"
+                  size="small"
+                  onclick={closeModal}
+                ></lightning-icon>
+              </header>
+              <div class="slds-modal__content">
+                <lightning-datatable
+                  key-field="Id"
+                  data={allRecords}
+                  columns={columns.data}
+                  hide-checkbox-column="true"
+                >
+                </lightning-datatable>
+                <footer class="slds-modal__footer">
+                  <lightning-button
+                    variant="brand"
+                    label="Cancelar"
+                    onclick={closeModal}
+                    class="slds-p-around_x-small"
+                  ></lightning-button>
+                </footer>
+              </div>
+            </div>
+          </section>
+          <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+      </div>
+      <div>
+        <template if:true={warningCreation}>
+          <section aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+              <header class="slds-modal__header">
+                <h2 class="slds-text-heading_small">Nuevo Aviso</h2>
+                <lightning-icon
+                  class="slds-modal__close"
+                  icon-name="utility:close"
+                  size="small"
+                  onclick={closeModal}
+                ></lightning-icon>
+              </header>
+              <div class="slds-modal__content">
+                <lightning-record-form
+                  object-api-name="CustomerWarning__c"
+                  layout-type="Full"
+                  onsuccess={handleCreation}
+                >
+                </lightning-record-form>
+              </div>
+            </div>
+          </section>
+          <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
       </div>
     </div>
   </lightning-card>
