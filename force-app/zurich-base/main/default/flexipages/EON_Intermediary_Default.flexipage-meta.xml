@@ -467,6 +467,42 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
+                <componentInstanceProperties>
+                    <name>accountType</name>
+                    <value>Intermediary</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>salesforceObject</name>
+                    <value>CustomerWarning__c</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Avisos activos</value>
+                </componentInstanceProperties>
+                <componentName>warningAndAgreementViewer</componentName>
+                <identifier>c_warningAndAgreementViewer</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>accountType</name>
+                    <value>Intermediary</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>salesforceObject</name>
+                    <value>Special_Condition__c</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Acuerdos activos</value>
+                </componentInstanceProperties>
+                <componentName>warningAndAgreementViewer</componentName>
+                <identifier>c_warningAndAgreementViewer2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
                 <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>

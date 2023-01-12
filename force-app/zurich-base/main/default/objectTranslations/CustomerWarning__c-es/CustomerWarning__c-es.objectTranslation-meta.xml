@@ -8,5 +8,9 @@
         <plural>true</plural>
         <value>Avisos</value>
     </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>RelatedListFields</name>
+    </fieldSets>
     <gender>Feminine</gender>
 </CustomObjectTranslation>
