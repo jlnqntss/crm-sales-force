@@ -51,6 +51,11 @@
                 <default>false</default>
                 <label>Title</label>
             </value>
+            <value>
+                <fullName>UserPermission</fullName>
+                <default>false</default>
+                <label>UserPermission</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
