@@ -20,4 +20,8 @@
         <enabled>true</enabled>
         <name>ApexRestServices</name>
     </userPermissions>
+    <classAccesses>
+        <apexClass>pw_si.CuratedImportController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
 </PermissionSet>
