@@ -1,6 +1,7 @@
 import { LightningElement, wire } from "lwc";
 
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import { refreshApex } from "@salesforce/apex";
 
 import userId from "@salesforce/user/Id";
 import { getRecord } from "lightning/uiRecordApi";
@@ -19,6 +20,8 @@ import SDM_ControlIntermediaryNotifiaction_ButtonSave from "@salesforce/label/c.
 import SDM_ControlIntermediaryNotifiaction_ButtonCancel from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_ButtonCancel";
 import SDM_ControlIntermediaryNotifiaction_ActiveAll from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_ActiveAll";
 import SDM_ControlIntermediaryNotifiaction_InactiveAll from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_InactiveAll";
+import SDM_ControlIntermediaryNotifiaction_SuccessToastTitle from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_SuccessToastTitle";
+import SDM_ControlIntermediaryNotifiaction_SuccessToastMessage from "@salesforce/label/c.SDM_ControlIntermediaryNotifiaction_SuccessToastMessage";
 
 // controller
 import getRecords from "@salesforce/apex/IntermediaryNotificationsController.getRecords";
@@ -36,9 +39,12 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     SDM_ControlIntermediaryNotifiaction_ButtonSave,
     SDM_ControlIntermediaryNotifiaction_ButtonCancel,
     SDM_ControlIntermediaryNotifiaction_ActiveAll,
-    SDM_ControlIntermediaryNotifiaction_InactiveAll
+    SDM_ControlIntermediaryNotifiaction_InactiveAll,
+    SDM_ControlIntermediaryNotifiaction_SuccessToastTitle,
+    SDM_ControlIntermediaryNotifiaction_SuccessToastMessage
   };
 
+  copyData;
   isLoading = true;
   currentUserName = "";
   resetOptions = [];
@@ -64,8 +70,18 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
   }
 
   @wire(getRecords)
-  getIntermediaryRecords({ error, data }) {
+  getIntermediaryRecords(output) {
+    // Hold on to the provisioned value so we can refresh it later.
+    this.copyData = output;
+    // Destructure the provisioned value
+    const { data, error } = output;
     if (data) {
+      this.options = []; // reseteo el valor de options para cuando se refresque la vista no duplique valores.
+      this.values = []; // reseteo el valor de values para cuando se refresque la vista no duplique los valores a mostrar.
+      this.valuesToActive = []; // reseteo de la variable por refrescos
+      this.resetOptions = []; // reseteo de la variable por refrescos
+      this.resetValues = []; // reseteo de la variable por refrescos
+
       // añadir los elementos activados
       for (const [key, value] of Object.entries(data.ActiveIntermediary)) {
         const activeOption = {
@@ -119,7 +135,12 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
           index = -1; // reseteo la variable
         }
 
-        this.valuesToActive = this.valuesToActive.concat(eventValues);
+        // una vez eliminados los elementos de la lista activo que concuerdan con el filtro los vuelvo a añadir de event values pero es posible que haya duplicados hay que eliminarlos
+        let concatValues = this.valuesToActive.concat(eventValues);
+
+        this.valuesToActive = concatValues.filter((c, i) => {
+          return concatValues.indexOf(c) === i;
+        });
       }
 
       // de filtro pasa a NO filtro
@@ -149,8 +170,6 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
           }
         }
       } else {
-        console.log("no hay valor filtro");
-
         this.options = [];
         this.values = [];
         this.options = [...this.resetOptions];
@@ -161,36 +180,55 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
   }
 
   handleSave() {
-    updateIntermediaryNotificationFlag({
-      notificationsToActiveList: this.valuesToActive
-    })
-      .then(() => {
-        this.options = [...this.resetOptions];
-        this.values = [...this.valuesToActive];
-        this.queryTerm = ""; // resetear filtros
-        this.lastQueryTerm = ""; // resetear filtros
-        // actualizar valores de reset
-        this.resetValues = [...this.valuesToActive];
+    // debido a que en caso de que las modificaciones de activacion y desactivacion resulte en lo mismo que habia cuando se cargó el componente no hacemos nada
+    let orderedValuesToActive = [...this.valuesToActive].sort();
+    let orderedResetValues = [...this.resetValues].sort();
 
-        this.template.querySelector("lightning-input").value = null; // reseteo el valor en el input del buscador
-
-        const event = new ShowToastEvent({
-          title: "Éxito",
-          message:
-            "Las preferencias de notificaciones para Mediador se han actualizado",
-          variant: "success"
-        });
-        this.dispatchEvent(event);
-        this.hasChange = false;
-      })
-      .catch((error) => {
-        const event = new ShowToastEvent({
-          title: "Error",
-          message: error.body.message,
-          variant: "error"
-        });
-        this.dispatchEvent(event);
+    if (
+      JSON.stringify(orderedValuesToActive) ===
+      JSON.stringify(orderedResetValues)
+    ) {
+      this.handleCancel();
+      const event = new ShowToastEvent({
+        title:
+          this.labels.SDM_ControlIntermediaryNotifiaction_SuccessToastTitle,
+        message:
+          this.labels.SDM_ControlIntermediaryNotifiaction_SuccessToastMessage,
+        variant: "success"
       });
+      this.dispatchEvent(event);
+    } else {
+      // si hay cambios actualizamos
+      updateIntermediaryNotificationFlag({
+        notificationsToActiveList: this.valuesToActive
+      })
+        .then(() => {
+          this.queryTerm = ""; // resetear filtros
+          this.lastQueryTerm = ""; // resetear filtros
+          refreshApex(this.copyData); // refresco la variable donde hemos copiado el resultado del metodo getRecords para que así se vuelva a ejecutar el metodo get record
+
+          this.template.querySelector("lightning-input").value = null; // reseteo el valor en el input del buscador
+
+          const event = new ShowToastEvent({
+            title:
+              this.labels.SDM_ControlIntermediaryNotifiaction_SuccessToastTitle,
+            message:
+              this.labels
+                .SDM_ControlIntermediaryNotifiaction_SuccessToastMessage,
+            variant: "success"
+          });
+          this.dispatchEvent(event);
+          this.hasChange = false;
+        })
+        .catch((error) => {
+          const event = new ShowToastEvent({
+            title: "Error",
+            message: error.body.message,
+            variant: "error"
+          });
+          this.dispatchEvent(event);
+        });
+    }
   }
 
   // resetear picklist
@@ -203,9 +241,10 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     this.hasChange = false;
     this.queryTerm = "";
     this.lastQueryTerm = "";
+    this.template.querySelector("lightning-input").value = null; // reseteo el valor en el input del buscador
   }
 
-  // control del botón Activar all
+  // control del botón Activar all, no separamos logica si hay filtro ya que se activan todos los campos que haya en opciones ya sean todos o los del filtro
   handleActiveAll() {
     for (const opt of this.options) {
       if (!this.valuesToActive.includes(opt.value)) {
@@ -220,6 +259,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
   // control del botón Inactivar all
   handleInactiveAll() {
     if (this.queryTerm !== "") {
+      // si hay filtro
       let index;
       for (const opt of this.options) {
         index = this.valuesToActive.indexOf(opt.value); // busco si existe en la lista de valores a activar la opción a desactivar para borrar este elemento de la lista
@@ -229,8 +269,14 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
           this.hasChange = true;
         }
       }
-      this.values = [...this.valuesToActive];
+      this.values = [];
+
+      // eliminar duplicados de values to active, se puede dar en casos raros
+      this.valuesToActive = this.valuesToActive.filter((c, i) => {
+        return this.valuesToActive.indexOf(c) === i;
+      });
     } else {
+      // si no hay filtro
       if (this.valuesToActive.length > 0) {
         this.hasChange = true; // solo muestro el boton guardar si habia valores activos al pulsarlo
       }
