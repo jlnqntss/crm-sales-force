@@ -314,10 +314,6 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
   }
 
   handleInactiveActiveButtons() {
-    console.log("Entro en handleInactiveActiveButtons v3");
-    console.log("values " + this.values.length);
-    console.log("options " + this.options.length);
-
     this.disableInactiveAll = false; // reset desactivar botones
     this.disableActiveAll = false; // reset desactivar botones
     // recorrer values
