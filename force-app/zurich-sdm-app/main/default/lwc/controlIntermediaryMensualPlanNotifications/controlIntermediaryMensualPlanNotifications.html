@@ -35,6 +35,7 @@
             title="DesactivarTodo"
             onclick={handleInactiveAll}
             class="slds-m-left_x-small"
+            disabled={disableInactiveAll}
           ></lightning-button>
           <lightning-button
             variant="brand"
@@ -42,6 +43,7 @@
             title="ActivarTodo"
             onclick={handleActiveAll}
             class="slds-m-left_x-small"
+            disabled={disableActiveAll}
           ></lightning-button>
         </div>
         <div class="slds-p-around_medium">
@@ -77,6 +79,12 @@
               onclick={handleSave}
               class="slds-p-right_small"
             ></lightning-button>
+            <template if:true={showSaveSpinner}>
+              <lightning-spinner
+                alternative-text="Loading"
+                size="medium"
+              ></lightning-spinner>
+            </template>
           </div>
         </template>
       </div>

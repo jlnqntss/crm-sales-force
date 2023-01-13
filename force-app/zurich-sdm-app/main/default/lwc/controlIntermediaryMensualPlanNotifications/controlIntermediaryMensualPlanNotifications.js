@@ -55,6 +55,9 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
   hasChange = false;
   queryTerm = "";
   lastQueryTerm = "";
+  showSaveSpinner = false; // mostrar spinner al pulsar el boton guardar
+  disableInactiveAll = false; // inactivar el botón Desactivar All
+  disableActiveAll = false; // inactivar el botón Activar All
 
   @wire(getRecord, {
     recordId: userId,
@@ -103,6 +106,13 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
         this.options = [...this.options, nonActiveOption]; // añadir opciones a la lista
       }
 
+      // al cargar si no hay registros en values desactivo el boton desactivar todos
+      if (this.values.length === 0) {
+        this.disableInactiveAll = true;
+      } else if (this.values.length === this.options.length) {
+        this.disableActiveAll = true;
+      }
+
       this.resetOptions = [...this.options];
       this.isLoading = false;
     } else if (error) {
@@ -147,6 +157,10 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       if (this.lastQueryTerm !== "" && this.queryTerm === "") {
         this.valuesToActive = [...eventValues];
       }
+
+      // vuelvo a activar los botones en caso de hacer algun pase de algunos registros
+      this.disableInactiveAll = false; // inactivar el botón Desactivar All
+      this.disableActiveAll = false; // inactivar el botón Activar All
     } catch (error) {
       console.log("error " + JSON.stringify(error));
     }
@@ -198,13 +212,17 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       });
       this.dispatchEvent(event);
     } else {
+      this.showSaveSpinner = true;
       // si hay cambios actualizamos
       updateIntermediaryNotificationFlag({
         notificationsToActiveList: this.valuesToActive
       })
         .then(() => {
+          this.showSaveSpinner = false;
           this.queryTerm = ""; // resetear filtros
           this.lastQueryTerm = ""; // resetear filtros
+          this.disableInactiveAll = false; // reset desactivar botones
+          this.disableActiveAll = false; // reset desactivar botones
           refreshApex(this.copyData); // refresco la variable donde hemos copiado el resultado del metodo getRecords para que así se vuelva a ejecutar el metodo get record
 
           this.template.querySelector("lightning-input").value = null; // reseteo el valor en el input del buscador
@@ -221,6 +239,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
           this.hasChange = false;
         })
         .catch((error) => {
+          this.showSaveSpinner = false;
           const event = new ShowToastEvent({
             title: "Error",
             message: error.body.message,
@@ -241,23 +260,36 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     this.hasChange = false;
     this.queryTerm = "";
     this.lastQueryTerm = "";
+    this.disableInactiveAll = false; // reset desactivar botones
+    this.disableActiveAll = false; // reset desactivar botones
     this.template.querySelector("lightning-input").value = null; // reseteo el valor en el input del buscador
+
+    // al resetear si no hay registros en values desactivo el boton desactivar todos
+    if (this.values.length === 0) {
+      this.disableInactiveAll = true;
+    } else if (this.values.length === this.options.length) {
+      this.disableActiveAll = true;
+    }
   }
 
   // control del botón Activar all, no separamos logica si hay filtro ya que se activan todos los campos que haya en opciones ya sean todos o los del filtro
   handleActiveAll() {
+    this.disableActiveAll = true; // deshabilito el boton activar All
+    this.disableInactiveAll = false; // habilito el boton desactivar All
     for (const opt of this.options) {
       if (!this.valuesToActive.includes(opt.value)) {
         // incluyo en la lista de values los valores que no existen ya
         this.hasChange = true;
         this.valuesToActive = [...this.valuesToActive, opt.value];
-        this.values = [...this.values, opt.value];
       }
+      this.values = [...this.values, opt.value]; // añado siempre el valor a value
     }
   }
 
   // control del botón Inactivar all
   handleInactiveAll() {
+    this.disableInactiveAll = true; // deshabilito el boton desactivar All
+    this.disableActiveAll = false; // habilito el boton activar All
     if (this.queryTerm !== "") {
       // si hay filtro
       let index;
