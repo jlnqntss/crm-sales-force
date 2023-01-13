@@ -13795,6 +13795,14 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Tareas_Masivas</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>pw_si__SimpleImportVF</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>et4ae5__ExactTargetPhoenix</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>

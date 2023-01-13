@@ -562,13 +562,13 @@
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <valueName>No autoservicio</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <valueName>Caída sistema</valueName>
         </valueSettings>
         <valueSettings>

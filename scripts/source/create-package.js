@@ -9,7 +9,6 @@ const {
   const { exec, execSync } = require("child_process");
   const { argv } = require("process");
 const fs = require('fs');
-//const cleanString = require("text-cleaner");
 
 function main() {
     console.log('Parametros:')
@@ -64,9 +63,6 @@ function main() {
 
         crearPackage(gitCambios, packageDir, packageName);
 
-        // if( paqueteObtenido ) {
-        //     moveSync(`${packageDir}/unpackaged.zip`,`${packageDir}/${packageName}.zip`, {overwrite: true});
-        // }
     } else if( accion == 1 ) {
         console.log('------------------------------------------------------------------ Lanzando RECONCILE => ' + username);
         if (fs.existsSync(`${packageDir}/${packageName}.profiles`)) {
@@ -74,7 +70,6 @@ function main() {
             console.log(perfiles);
             sobreescribirPefiles(packageDir, packageName, perfiles, username);
         } else {
-            //console.log('El fichero de perfiles no existe');
             copySync(`${packageDir}/${packageName}.zip`,`${packageDir}/${packageName}.${username}.zip`, {overwrite: true});
         }
     } else if( accion == 2 ) {

@@ -1815,6 +1815,22 @@ Related fields: [{3}]</value>
         <value>The records cannot be updated by a fail in the flow</value>
     </labels>
     <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_ActiveAll</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_ActiveAll</shortDescription>
+        <value>Active All</value>
+    </labels>
+    <labels>
+        <fullName>SDM_ControlIntermediaryNotifiaction_InactiveAll</fullName>
+        <categories>SDM,Account</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_ControlIntermediaryNotifiaction_InactiveAll</shortDescription>
+        <value>Inactive All</value>
+    </labels>
+    <labels>
         <fullName>SDM_LinksInteres_ButtonCancel</fullName>
         <categories>SDM,LinksInteres</categories>
         <language>en_US</language>
@@ -2173,5 +2189,12 @@ Related fields: [{3}]</value>
         <protected>false</protected>
         <shortDescription>SDM_Objetivos_ToastSuccessTitle</shortDescription>
         <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>OfferChangeOwnerValidationMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OfferChangeOwnerValidationMsg</shortDescription>
+        <value>No tienes permisos para cambiar el propietario de la Oferta.</value>
     </labels>
 </CustomLabels>

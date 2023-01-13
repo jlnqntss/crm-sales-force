@@ -5,7 +5,7 @@
    * @param {Id} recordId Id. de registro de Salesforce
    */
   redirectTo: function (recordId, workspaceAPI, focus) {
-    var redirectEvent = $A.get("e.force:navigateToSObject");
+    let redirectEvent = $A.get("e.force:navigateToSObject");
 
     if (window.sforce && window.sforce.one) {
       sforce.one.navigateToSObject(recordId);
@@ -14,7 +14,7 @@
         .isConsoleNavigation()
         .then(function (isConsole) {
           if (!isConsole) {
-            throw "Not in Console";
+            throw new Error("Not in Console");
           }
 
           return workspaceAPI.openTab({
@@ -40,7 +40,7 @@
    * @param {Id} recordId Id. de registro de Salesforce
    */
   openAsSubtab: function (recordId, workspaceAPI, focus) {
-    var helper = this;
+    let helper = this;
 
     if (window.sforce && window.sforce.one) {
       sforce.one.navigateToSObject(recordId);
@@ -49,7 +49,7 @@
     return workspaceAPI
       .getFocusedTabInfo()
       .then(function (response) {
-        var focusedTabId = response.tabId;
+        let focusedTabId = response.tabId;
 
         return workspaceAPI.openSubtab({
           parentTabId: focusedTabId,

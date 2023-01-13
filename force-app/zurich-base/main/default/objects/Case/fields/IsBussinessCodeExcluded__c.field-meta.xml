@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsBussinessCodeExcluded__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Campo que nos indica si el código de negocio de la póliza se encuentra entre los excluidos para los partners de BancSabadell</description>
+    <externalId>false</externalId>
+    <label>Is Bussiness Code Excluded?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

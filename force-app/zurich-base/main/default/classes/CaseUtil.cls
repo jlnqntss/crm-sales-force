@@ -82,7 +82,7 @@ public with sharing class CaseUtil
      * @author nbizkarra
      * @date 23/04/2020
      **/
-    public static void SummaryTotalClaims(List<Case> newList)
+    public static void summaryTotalClaims(List<Case> newList)
     {
         Set<Id> idSet = new Set<Id>();
 
@@ -351,8 +351,7 @@ public with sharing class CaseUtil
 
                         //Utilizar el scope del caso
                         //AccountSearchService.Scope scope = new AccountSearchService.Scope();
-                        //scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
-
+                        
                         //Utilizar el AccountSearchService
                         List<Account> matchedAccounts = new List<Account>();
                         matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
@@ -596,7 +595,6 @@ public with sharing class CaseUtil
     {
         Case casoHijo = new Case(
                         Status='Asignado',
-                        Subject = email?.Subject,
                         CallCenter__c = padre?.CallCenter__c,
                         Origin = padre?.Origin,
                         SourceArea__c = padre?.SourceArea__c,
@@ -609,7 +607,8 @@ public with sharing class CaseUtil
                         MediatedCustomer__c = padre?.MediatedCustomer__c
                     );
 
-        // Comprobamos si el cuerpo del mensaje es demasiado largo para la descripción. Si es así, la cortamos.
+        // Comprobamos si el cuerpo y el asunto del mensaje son demasiado largos.. Si es así, los acortamos.
+        casoHijo.Subject = email?.Subject.length() > 255 ? email?.Subject.substring(0, 254) : email?.Subject;
         casoHijo.Description = email?.TextBody.length() > 32000 ? email?.TextBody.substring(0, 29999) : email?.TextBody;
 
         if (setTypification)

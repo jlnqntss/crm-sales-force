@@ -589,4 +589,102 @@ private class OpportunityUtilTest
             System.assertEquals('Quoted', opty.StageName, 'Se debería haber mantenido el cambio en el Stage, ya que no se está cambiando a null');
         }
     }
+
+       /**
+     * Método de test que comprueba que el Old Owner y el New Owner SI son de tipo ZE Advisor
+     * 
+     * @author jpereztirado - nts
+     * @date 20/12/2022
+     */
+    @isTest
+    static void test_validateChangeOwner_KO() 
+    {
+        Map<Id, Opportunity> oldOppsMap = new Map<Id, Opportunity>();
+        List<Opportunity> newOppsList = new List<Opportunity>();
+        Id oldAdvisor;
+        Id newAdvisor;
+        Opportunity oldOpp;
+        Opportunity newOpp;
+
+        List<PermissionSetAssignment> userList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
+        
+        if (userList.size() > 1)
+        {
+            User u = [Select Id FROM User WHERE Id = :userList.get(0).AssigneeId];
+            oldAdvisor = userList[0].AssigneeId;
+            newAdvisor = userList[1].AssigneeId;
+
+            List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+            oldOpp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
+            oldOpp.OwnerId = oldAdvisor;
+            oldOppsMap.put(oldOpp.Id, oldOpp);
+            insert oldOpp;
+    
+            newOpp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
+            newOpp.OwnerId = newAdvisor;
+            newOppsList.add(newOpp);
+    
+            System.runAs(u)
+            {
+                Test.startTest();
+                OpportunityUtil.validateChangeOwner(new List<Opportunity>{newOpp}, oldOppsMap);
+                Test.stopTest();
+                System.assertEquals(Label.OfferChangeOwnerValidationMessage, newOpp.getErrors().get(0).getMessage());
+            }
+        }
+        else
+        {
+            System.assertNotEquals(true, false, 'No existen suficientes datos para generar el test');
+        }
+    }
+
+
+   /**
+     * Método de test que comprueba que el Old Owner y el New Owner NO son de tipo ZE Advisor
+     * 
+     * @author jpereztirado - nts
+     * @date 20/12/2022
+     */
+    @isTest
+    static void test_validateChangeOwner_OK() 
+    {
+        Map<Id, Opportunity> oldOppsMap = new Map<Id, Opportunity>();
+        List<Opportunity> newOppsList = new List<Opportunity>();
+        Id oldAdvisor;
+        Id newSuscriptor;
+        Opportunity oldOpp;
+        Opportunity newOpp;
+
+        List<PermissionSetAssignment> userAdvisorList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
+        List<PermissionSetAssignment> userSuscriptorList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
+        
+        if (userAdvisorList.size() > 0 && userSuscriptorList.size() > 0)
+        {
+            User u = [Select Id FROM User WHERE Id = :userSuscriptorList.get(0).AssigneeId];
+            oldAdvisor = userAdvisorList[0].AssigneeId;
+            newSuscriptor = userSuscriptorList[0].AssigneeId;
+            List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+            oldOpp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
+            oldOpp.OwnerId = oldAdvisor;
+            oldOppsMap.put(oldOpp.Id, oldOpp);
+            insert oldOpp;
+    
+            newOpp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
+            newOpp.OwnerId = newSuscriptor;
+            newOppsList.add(newOpp);
+    
+            System.runAs(u)
+            {
+                Test.startTest();
+                OpportunityUtil.validateChangeOwner(new List<Opportunity>{newOpp}, oldOppsMap);
+                Test.stopTest();
+                System.assertEquals(0, newOpp.getErrors().size());
+            }
+        }
+        else 
+        {
+            System.assertNotEquals(true, false, 'No existen suficientes datos para generar el test');
+        }
+    }
+
 }

@@ -19,7 +19,7 @@ public with sharing class LeadUtil
      * @author nbizkarra
      * @date 16/11/2020
      **/
-    public static void NewSubscribers(List<Lead> subscribers)
+    public static void newSubscribers(List<Lead> subscribers)
     {
         
 

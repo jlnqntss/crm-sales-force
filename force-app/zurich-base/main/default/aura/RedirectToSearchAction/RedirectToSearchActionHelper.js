@@ -4,8 +4,8 @@
    * @author jmartinezpisson
    */
   searchFor: function (searchFor) {
-    var redirectEvent = $A.get("e.force:navigateToURL");
-    var searchUrlHash = btoa(
+    let redirectEvent = $A.get("e.force:navigateToURL");
+    let searchUrlHash = btoa(
       JSON.stringify({
         componentDef: "forceSearch:searchPageDesktop",
         attributes: {

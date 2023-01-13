@@ -231,7 +231,7 @@ export default {
    * @author jmartinezpisson
    */
   async authorize() {
-    var authorizeURL = await authorize();
+    let authorizeURL = await authorize();
 
     window.open(authorizeURL);
   },

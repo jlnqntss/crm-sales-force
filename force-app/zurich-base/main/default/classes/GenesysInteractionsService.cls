@@ -126,7 +126,8 @@ public without sharing class GenesysInteractionsService
         //20210804: Estadísticas/Informes
         if(interactionLog.caller != null)
         {
-            interactionTask.IdentifiedByNIF__c = interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false ? false : true;
+            // interactionTask.IdentifiedByNIF__c = interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false ? false : true;
+            interactionTask.IdentifiedByNIF__c = !(interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false);
             interactionTask.IdentifiedByANI__c = interactionLog.caller.identifiedByANI == null || interactionLog.caller.identifiedByANI == false ? false : true;
             interactionTask.NoIdentified__c = interactionLog.caller.noIdentified == null || interactionLog.caller.noIdentified == false ? false : true;
             interactionTask.MultiIdentifiedByNIF__c = interactionLog.caller.multiIdentifiedByNIF == null || interactionLog.caller.multiIdentifiedByNIF == false ? false : true;
@@ -201,6 +202,10 @@ public without sharing class GenesysInteractionsService
                 ];
 
                 searchResults.relatedRecords = (List<SObject>) cases;
+            }
+            when else 
+            {
+                // else code
             }
         }
 
@@ -484,6 +489,10 @@ public without sharing class GenesysInteractionsService
             when 'car_registration'
             {
                 claims = claimsSelector.selectByPlate(request.searchTerm);
+            }
+            when else 
+            {
+                // else code
             }
         }
 
@@ -831,7 +840,7 @@ public without sharing class GenesysInteractionsService
     @TestVisible
     private static Id searchQueueTaskId(String genesysQueueId)
     {
-        Id queueId = null; //Si todo va mal, se devolverá a null
+        Id queueId = null; //Si el proceso falla, se devolverá a null
         String queueName = null;
 
         //1º Construir mapa con las colas de Genesys Id <-> Nombre
@@ -911,6 +920,10 @@ public without sharing class GenesysInteractionsService
             {
                 klincPolicies = DigitalCustomerSearchService.findPoliciesByCustomerEmail(request.value);
             }
+            when else 
+            {
+                // else code
+            }
         }
 
         // 3 - Si tiene al menos 1 póliza, es de Klinc
@@ -977,7 +990,7 @@ public without sharing class GenesysInteractionsService
         public String screenPopRecordId { get; set; }
         public String customerId { get; set; }
         public String callLogId { get; set; }
-        public String bestAgentId { get; set; } //FIXME: Eliminar cuando se modifique el flow de ZE / ZE Orange
+        public String bestAgentId { get; set; }
         public SearchResult caller { get; set; }
 
         public override String toString()
@@ -1074,6 +1087,10 @@ public without sharing class GenesysInteractionsService
                 }
                 when 'claim_number' {
                     result = result.deleteWhitespace().toUpperCase().leftPad(10, '0');
+                }
+                when else 
+                {
+                    // else code
                 }
             }
 
@@ -1522,6 +1539,10 @@ public without sharing class GenesysInteractionsService
             switch on type {
                 when 'document' {
                     result = result.deleteWhitespace().toUpperCase();
+                }
+                when else 
+                {
+                    // else code
                 }
             }
 

@@ -564,7 +564,9 @@ public without sharing class ErrorLogUtil
                         
                     }
                     catch (EmailException ex)
-                    {}
+                    {
+                        // Catch code
+                    }
                 }
             }
         }

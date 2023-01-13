@@ -8,7 +8,7 @@
    * @return {Promise}
    */
   redirectTo: function (url, isRedirect) {
-    var redirectEvent = $A.get("e.force:navigateToURL");
+    let redirectEvent = $A.get("e.force:navigateToURL");
 
     if (url) {
       if (window.sforce && window.sforce.one) {
