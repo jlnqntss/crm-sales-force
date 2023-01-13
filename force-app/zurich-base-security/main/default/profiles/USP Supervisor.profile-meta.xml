@@ -15583,10 +15583,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Knowledge Layout</layout>
+        <recordType>Knowledge__kav.Knowledge</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Knowledge__kav-Knowledge Layout</layout>
-        <recordType>Knowledge__kav.Knowledge</recordType>
+        <layout>Knowledge__kav-Knowledge USP</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Label_Translations__mdt-Label Translation Layout</layout>
