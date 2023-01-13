@@ -31,6 +31,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     @testvisible
     private static final string PERMISSION_TYPE_ROLE = 'Role';
     @testvisible
+    private static final string PERMISSION_TYPE_USER_PERMISSION = 'UserPermission';
+    @testvisible
     private static final string PERMISSION_TYPE_DEPARTMENT = 'Department';
     @testvisible
     private static final string PERMISSION_TYPE_SIGNATURE = 'Signature';
@@ -95,6 +97,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_PERMISSION_SET_GROUP, null);
         mapAuthData.put(PERMISSION_TYPE_CALL_CENTER, null);
         mapAuthData.put(PERMISSION_TYPE_ROLE, null);
+        mapAuthData.put(PERMISSION_TYPE_USER_PERMISSION, null);
         mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
         mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
         mapAuthData.put(PERMISSION_TYPE_TITLE, null);
@@ -104,6 +107,11 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         Id profileId                  = getProfileIdFromRoles(mapAuthData.get(PERMISSION_TYPE_PROFILE), roleNameList);
         // Get ROLE ID
         Id roleId                     = getRoleIdFromRoles(mapAuthData.get(PERMISSION_TYPE_ROLE));
+
+        // Get User Permission List
+        List<String> UserPermissions   = mapAuthData.get(PERMISSION_TYPE_USER_PERMISSION);
+        
+
         // GET CALL CENTER ID
         Id callcenterId               = getCallCenterFromRoles(mapAuthData.get(PERMISSION_TYPE_CALL_CENTER));
         // GET Department
@@ -128,6 +136,13 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         u.timeZoneSidKey              = TIMEZONE; 
         if( roleId != null )
             u.UserRoleId              = roleId;
+        if( UserPermissions != null )
+        { 
+            for(String UserPermission: UserPermissions)
+           {
+            u.put(UserPermission,true);
+           }
+        }
         if( callcenterId != null )
             u.CallCenterId            = callcenterId;
         if( String.isNotBlank(department) )
@@ -191,6 +206,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_PERMISSION_SET_GROUP, null);
         mapAuthData.put(PERMISSION_TYPE_CALL_CENTER, null);
         mapAuthData.put(PERMISSION_TYPE_ROLE, null);
+        mapAuthData.put(PERMISSION_TYPE_USER_PERMISSION, null);
         mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
         mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
         mapAuthData.put(PERMISSION_TYPE_TITLE, null);
@@ -199,6 +215,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         Id profileId                  = getProfileIdFromRoles(mapAuthData.get(PERMISSION_TYPE_PROFILE), roleNameList);
         // Get ROLE ID
         Id roleId                     = getRoleIdFromRoles(mapAuthData.get(PERMISSION_TYPE_ROLE));
+        // Get User Permission List
+        List<String> UserPermissions   = mapAuthData.get(PERMISSION_TYPE_USER_PERMISSION);
+
         // GET CALL CENTER ID
         Id callcenterId               = getCallCenterFromRoles(mapAuthData.get(PERMISSION_TYPE_CALL_CENTER));
         // GET Department
@@ -233,7 +252,13 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             u.alias                          = data.username.left(8);
             u.CommunityNickname              = data.username;
             if( u.UserRoleId != roleId )
-                u.UserRoleId                 = roleId;
+            if( UserPermissions != null )
+            { 
+                for(String UserPermission: UserPermissions)
+                {
+                    u.put(UserPermission,true);
+                }
+            }
             if( u.CallCenterId != callcenterId )
                 u.CallCenterId               = callcenterId;
             if( u.Department != department )
