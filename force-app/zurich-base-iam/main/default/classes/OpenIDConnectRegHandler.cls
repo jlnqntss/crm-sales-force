@@ -111,7 +111,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         // GET Title
         String title                  = getTitleFromRoles(mapAuthData.get(PERMISSION_TYPE_TITLE));
         // GET Manager
-        Id ManagerId                  = getManagerIdFromNickname(data);
+        Id managerId                  = getManagerIdFromNickname(data);
         // NEW USER
         u                             = new User();
         u.firstName                   = data.firstName;
@@ -208,7 +208,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         // GET Title
         String title                  = getTitleFromRoles(mapAuthData.get(PERMISSION_TYPE_TITLE));
         // GET Manager
-        Id ManagerId                  = getManagerIdFromNickname(data);
+        Id managerId                  = getManagerIdFromNickname(data);
         // UPDATE USER
         User u = [
             SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title, ManagerId

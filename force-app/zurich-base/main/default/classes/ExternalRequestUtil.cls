@@ -1030,7 +1030,6 @@ global without sharing class ExternalRequestUtil {
     }
 
     if (contactsToUpdate != null && !contactsToUpdate.isEmpty()) {
-      //upsert contactsToUpdate.values() Contact.Fields.CustomerNum__c;
 
       upsert contactsToUpdate.values();
     }
