@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FrequencyNotifications</fullName>
+    <active>true</active>
+    <description>Record type in which the information regarding the remaining days to notify the end of the monthly plan is stored.</description>
+    <label>Frequency of notifications</label>
+    <picklistValues>
+        <picklist>Indicator__c</picklist>
+        <values>
+            <fullName>Portfolio</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Product__c</picklist>
+        <values>
+            <fullName>Todos</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Segment__c</picklist>
+        <values>
+            <fullName>Todos</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Year__c</picklist>
+        <values>
+            <fullName>2022</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Zone__c</picklist>
+        <values>
+            <fullName>Todos</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

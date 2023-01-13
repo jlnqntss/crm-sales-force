@@ -39,6 +39,32 @@ public with sharing class ObjectivesSelectorTest {
         System.assertEquals(0, selectedObjectives.size(), 'Se debería recibir una lista con 0 objetivos');
     }
 
+    
+    /**
+    * @description Método de test que comprueba el correcto funcionamiento del 
+    * método selector 'selectFrequencyNotification'
+    * @author amiranda
+    * @date 02-01-2023 
+    **/
+    @isTest
+    static void test_selectFrequencyNotification()
+    {
+        Id freqNotificationRTId = Schema.SObjectType.Objective__c.getRecordTypeInfosByDeveloperName().get('FrequencyNotifications')?.getRecordTypeId();
+
+        Objective__c freqNotification = new Objective__c(
+            RecordTypeId = freqNotificationRTId
+        );
+
+        insert freqNotification;
+
+        Test.startTest();
+        List<Objective__c> freqNotifications = ObjectivesSelector.selectFrequencyNotification();
+        Test.stopTest();
+
+        Assert.isFalse(freqNotifications.isEmpty(), 'La lista \'freqNotifications\' no debería estar vacía.');
+        Assert.areEqual(1, freqNotifications.size(), 'Solamente debería haber 1 elemento en la lista \'freqNotifications\'.');
+    }
+
 
     /**
      * Prueba ok query selectObjectivesByExternalId
