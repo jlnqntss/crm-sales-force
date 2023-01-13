@@ -3669,11 +3669,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AccionesTratadasActa__c.Parent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>AccionesTratadasActa__c.PersonInCharge__c</field>
         <readable>true</readable>
     </fieldPermissions>
