@@ -46,6 +46,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
 
   copyData;
   isLoading = true;
+  isLoadingSearch = false;
   currentUserName = "";
   resetOptions = [];
   resetValues = [];
@@ -107,11 +108,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       }
 
       // al cargar si no hay registros en values desactivo el boton desactivar todos
-      if (this.values.length === 0) {
-        this.disableInactiveAll = true;
-      } else if (this.values.length === this.options.length) {
-        this.disableActiveAll = true;
-      }
+      this.handleInactiveActiveButtons();
 
       this.resetOptions = [...this.options];
       this.isLoading = false;
@@ -125,14 +122,17 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       this.hasChange = true;
       let eventValues = event.detail.value;
 
-      // 3 escenarios
+      // 4 escenarios
       // no hay filtro ni antes ni despues el caso mas sencillo, simplemente los valores que se muestran son los que se activan
       if (this.lastQueryTerm === "" && this.queryTerm === "") {
         this.valuesToActive = [...eventValues];
       }
 
-      // de no filtro pasa a filtro
-      if (this.lastQueryTerm === "" && this.queryTerm !== "") {
+      // de no filtro pasa a filtro; // debido al nuevo evento onchange del input search debemos controlar el caso en que se actualiza el filtro añadiendo mas informacion
+      if (
+        (this.lastQueryTerm === "" && this.queryTerm !== "") ||
+        (this.lastQueryTerm !== "" && this.queryTerm !== "")
+      ) {
         // borro de valuesToActive los elementos que cumplan el filtro activo
         let index = -1;
         for (const opt of this.options) {
@@ -158,39 +158,43 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
         this.valuesToActive = [...eventValues];
       }
 
+      this.values = [...eventValues];
       // vuelvo a activar los botones en caso de hacer algun pase de algunos registros
-      this.disableInactiveAll = false; // inactivar el botón Desactivar All
-      this.disableActiveAll = false; // inactivar el botón Activar All
+      // al cargar si no hay registros en values desactivo el boton desactivar todos
+      this.handleInactiveActiveButtons();
     } catch (error) {
       console.log("error " + JSON.stringify(error));
     }
   }
 
   // meall de busqueda para los dos inputs
-  handleKeyUp(event) {
-    const isEnterKey = event.keyCode === 13;
-    if (isEnterKey) {
-      // actualizo lastQueryTerm
-      this.lastQueryTerm = this.queryTerm;
+  handleFilterOnChange(event) {
+    this.isLoadingSearch = true;
+    // actualizo lastQueryTerm
+    this.lastQueryTerm = this.queryTerm;
+    this.queryTerm = event.target.value;
 
-      this.queryTerm = event.target.value;
-
-      if (this.queryTerm !== "") {
-        this.options = [];
-        // recorrer options
-        for (const opt of this.resetOptions) {
-          if (opt.label.includes(this.queryTerm)) {
-            this.options = [...this.options, opt];
-          }
+    if (this.queryTerm !== "") {
+      this.options = [];
+      // recorrer options
+      for (const opt of this.resetOptions) {
+        if (opt.label.includes(this.queryTerm)) {
+          this.options = [...this.options, opt];
+          // aqui no actualizamos la variable values como en el resto de casuisticas cuando cambian los elementos de izq a derecha o viceversa
+          // porque con el filtro se ocultan los valores y si existen va a ser siempre mayor que el numero de opciones por lo que se calcula correctamente
         }
-      } else {
-        this.options = [];
-        this.values = [];
-        this.options = [...this.resetOptions];
-        this.values = [...this.valuesToActive];
-        this.queryTerm = "";
       }
+    } else {
+      console.log("entro en no hay filtro");
+      this.options = [];
+      this.values = [];
+      this.options = [...this.resetOptions];
+      this.values = [...this.valuesToActive];
+      this.queryTerm = "";
+      // al cargar si no hay registros en values desactivo el boton desactivar todos
     }
+    this.handleInactiveActiveButtons();
+    this.isLoadingSearch = false;
   }
 
   handleSave() {
@@ -221,9 +225,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
           this.showSaveSpinner = false;
           this.queryTerm = ""; // resetear filtros
           this.lastQueryTerm = ""; // resetear filtros
-          this.disableInactiveAll = false; // reset desactivar botones
-          this.disableActiveAll = false; // reset desactivar botones
-          refreshApex(this.copyData); // refresco la variable donde hemos copiado el resultado del metodo getRecords para que así se vuelva a ejecutar el metodo get record
+          refreshApex(this.copyData); // refresco la variable donde hemos copiado el resultado del metodo getRecords para que así se vuelva a ejecutar el metodo get record y se calcula la activacion/desactivacion de los botones
 
           this.template.querySelector("lightning-input").value = null; // reseteo el valor en el input del buscador
 
@@ -260,16 +262,10 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
     this.hasChange = false;
     this.queryTerm = "";
     this.lastQueryTerm = "";
-    this.disableInactiveAll = false; // reset desactivar botones
-    this.disableActiveAll = false; // reset desactivar botones
     this.template.querySelector("lightning-input").value = null; // reseteo el valor en el input del buscador
 
     // al resetear si no hay registros en values desactivo el boton desactivar todos
-    if (this.values.length === 0) {
-      this.disableInactiveAll = true;
-    } else if (this.values.length === this.options.length) {
-      this.disableActiveAll = true;
-    }
+    this.handleInactiveActiveButtons();
   }
 
   // control del botón Activar all, no separamos logica si hay filtro ya que se activan todos los campos que haya en opciones ya sean todos o los del filtro
@@ -314,6 +310,31 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       }
       this.valuesToActive = [];
       this.values = [];
+    }
+  }
+
+  handleInactiveActiveButtons() {
+    console.log("Entro en handleInactiveActiveButtons v3");
+    console.log("values " + this.values.length);
+    console.log("options " + this.options.length);
+
+    this.disableInactiveAll = false; // reset desactivar botones
+    this.disableActiveAll = false; // reset desactivar botones
+    // recorrer values
+    let numOptions = this.options.length;
+    let numValues = 0;
+    for (const optFiltered of this.options) {
+      if (this.values.indexOf(optFiltered.value) >= 0) {
+        numValues++;
+      }
+    }
+
+    // si el numero de elementos en la lista values es 0 inactivamos el boton desactivar todos
+    if (numValues === 0) {
+      this.disableInactiveAll = true;
+    } else if (numOptions === numValues) {
+      // si el numero de elementos en la lista values es igual al numero de opciones inactivamos el boton activar todos
+      this.disableActiveAll = true;
     }
   }
 }
