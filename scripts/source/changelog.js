@@ -99,7 +99,6 @@ class FileController {
 }
 
 class ChangelogGenerator {
-  constructor() {}
 
   generate(commits) {
     return new Promise((resolve, reject) => {
