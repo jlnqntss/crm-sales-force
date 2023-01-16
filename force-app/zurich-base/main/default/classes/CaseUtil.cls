@@ -42,9 +42,6 @@ public with sharing class CaseUtil
                         claim.CustomerNum__c = ContactUtil.adaptCustomerNum(claim.CustomerNum__c, policySF.LegalEntity__c);
                     }
                 }
-                // if (claim.sourceCountry__c != 'Spain') {
-                //   claim.CustomerNum__c = 'EMEA-' + claim.CustomerNum__c;
-                // }
 
                 if (claim.InsuredObjectId__c != null)
                 {
@@ -85,7 +82,7 @@ public with sharing class CaseUtil
      * @author nbizkarra
      * @date 23/04/2020
      **/
-    public static void SummaryTotalClaims(List<Case> newList)
+    public static void summaryTotalClaims(List<Case> newList)
     {
         Set<Id> idSet = new Set<Id>();
 
@@ -151,9 +148,9 @@ public with sharing class CaseUtil
             // Get the configuration
             AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
             // Get the Country that is not EMEA (Spain)
-            String IBA_EMEA_NON_COUNTRY = adminSetup.IBA_EMEA_Non_Country__c;
+            String iba_emea_non_country = adminSetup.IBA_EMEA_Non_Country__c;
             // Get the EMEA prefix
-            String IBA_EMEA = adminSetup.IBA_EMEA_Prefix__c;
+            String iba_emea = adminSetup.IBA_EMEA_Prefix__c;
             // Get the Multi-Partner prefixes if any
             Map<String, String> mapMultiPartner = new Map<String, String>();
             for( String pair: adminSetup.Multi_Partners__c.split(';') )
@@ -184,9 +181,9 @@ public with sharing class CaseUtil
                         }
                         else     // Is not multipartner
                         {   // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-                            if (caso.sourceCountry__c != IBA_EMEA_NON_COUNTRY)   // Is not Spain => EMEA (france, germany)
+                            if (caso.sourceCountry__c != iba_emea_non_country)   // Is not Spain => EMEA (france, germany)
                             {
-                                caso.PolicyNum__c = IBA_EMEA + '-' + caso.PolicyNum__c;
+                                caso.PolicyNum__c = iba_emea + '-' + caso.PolicyNum__c;
                             }
                         }
 
@@ -254,17 +251,17 @@ public with sharing class CaseUtil
                             String queryType = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Type + '\'';
                             String querySubtype = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Subtype__c + '\'';
 
-                            List<Label_Translations__mdt> TypeTranslaton = Database.query(queryType);
-                            List<Label_Translations__mdt> SubTypeTranslation = Database.query(querySubtype);
+                            List<Label_Translations__mdt> typeTranslaton = Database.query(queryType);
+                            List<Label_Translations__mdt> subTypeTranslation = Database.query(querySubtype);
 
-                            if ( TypeTranslaton != null && !TypeTranslaton.isEmpty() )
+                            if ( typeTranslaton != null && !typeTranslaton.isEmpty() )
                             {
-                                caso.Type_translation__c = (String) TypeTranslaton[0].get(fieldName);
+                                caso.Type_translation__c = (String) typeTranslaton[0].get(fieldName);
                             }
 
-                            if ( SubTypeTranslation != null && !SubTypeTranslation.isEmpty() )
+                            if ( subTypeTranslation != null && !subTypeTranslation.isEmpty() )
                             {
-                                caso.Subtype_translation__c = (String) SubTypeTranslation[0].get(fieldName);
+                                caso.Subtype_translation__c = (String) subTypeTranslation[0].get(fieldName);
                             }
                         }
                     }
@@ -354,8 +351,7 @@ public with sharing class CaseUtil
 
                         //Utilizar el scope del caso
                         //AccountSearchService.Scope scope = new AccountSearchService.Scope();
-                        //scope.scope = null; //FIXME: Cambiar esto por caso.Scope__c cuando se haya refactorizado AccountSearchService y la picklist de caso coincida en valores
-
+                        
                         //Utilizar el AccountSearchService
                         List<Account> matchedAccounts = new List<Account>();
                         matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
@@ -598,10 +594,7 @@ public with sharing class CaseUtil
     public static Case createCaseFromParent(Case padre, EmailMessage email, Boolean setTypification)
     {
         Case casoHijo = new Case(
-                        
                         Status='Asignado',
-                        Subject = email?.Subject,
-                        Description = email?.TextBody,
                         CallCenter__c = padre?.CallCenter__c,
                         Origin = padre?.Origin,
                         SourceArea__c = padre?.SourceArea__c,
@@ -611,9 +604,12 @@ public with sharing class CaseUtil
                         PolicyId__c = padre?.PolicyId__c,
                         OfferId__c = padre?.OfferId__c,
                         ClaimId__c = padre?.ClaimId__c,
-                        Object__c = padre?.Object__c,
                         MediatedCustomer__c = padre?.MediatedCustomer__c
                     );
+
+        // Comprobamos si el cuerpo y el asunto del mensaje son demasiado largos.. Si es así, los acortamos.
+        casoHijo.Subject = email?.Subject.length() > 255 ? email?.Subject.substring(0, 254) : email?.Subject;
+        casoHijo.Description = email?.TextBody.length() > 32000 ? email?.TextBody.substring(0, 29999) : email?.TextBody;
 
         if (setTypification)
         {

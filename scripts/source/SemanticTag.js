@@ -1,7 +1,7 @@
 class SemanticTag {
   constructor(tag) {
-    var tagTokens = tag.name.split("-");
-    var tagVersionTokens = tagTokens[0].split(".");
+    let tagTokens = tag.name.split("-");
+    let tagVersionTokens = tagTokens[0].split(".");
 
     this.suffix = tagTokens[1] || "";
     (this.major = parseInt(tagVersionTokens[0], 0)),
@@ -10,7 +10,7 @@ class SemanticTag {
   }
 
   toString() {
-    var version = `${this.major}.${this.minor}.${this.patch}`;
+    let version = `${this.major}.${this.minor}.${this.patch}`;
 
     if (this.suffix) {
       version += "-" + this.suffix;

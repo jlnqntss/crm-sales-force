@@ -92,6 +92,10 @@
         <layout>Formato de cuenta personal</layout>
         <layoutType>PersonAccount</layoutType>
         <sections>
+            <label>Dirección</label>
+            <section>Address</section>
+        </sections>
+        <sections>
             <label>Descripción</label>
             <section>Description</section>
         </sections>
@@ -158,7 +162,7 @@
             <section>Digitalisation</section>
         </sections>
         <sections>
-            <label></label>
+            <label>Información Financiera</label>
             <section>Financial Information</section>
         </sections>
         <sections>
@@ -271,6 +275,10 @@
         <sections>
             <label>Comportamiento siniestral</label>
             <section>Accident Rate</section>
+        </sections>
+        <sections>
+            <label>Dirección</label>
+            <section>Address</section>
         </sections>
         <sections>
             <label>Descripción</label>

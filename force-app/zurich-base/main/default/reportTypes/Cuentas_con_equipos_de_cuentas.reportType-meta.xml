@@ -292,7 +292,7 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>ConectivityWsProvider__c</field>
+            <field>ManagementProgram__c</field>
             <table>Account</table>
         </columns>
         <columns>
@@ -877,7 +877,7 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>RevenuesPerEmployee__c</field>
+            <field>RevenuesPerEmployees__c</field>
             <table>Account</table>
         </columns>
         <columns>

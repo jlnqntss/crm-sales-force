@@ -7,6 +7,7 @@
     <permissionSets>Crear_vistaslista</permissionSets>
     <permissionSets>GestionAsignacionMediador_SDM</permissionSets>
     <permissionSets>GestionCuentaContacto_SDM</permissionSets>
+    <permissionSets>GestionNotificacionesPlanComercialSDM</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>SDM_Chatter</permissionSets>
     <permissionSets>SDM_Plan_comercial</permissionSets>

@@ -50,14 +50,19 @@ public with sharing class GenesysInteractionsService
         {
             findPeopleByScope(request, 'customers');
         }
-        // 4 - Resto de scopes
+        // 4 - Comprobar si se trata de un partner
+        else if( String.isNotblank(request.filterBy) && request.filterBy.equalsIgnoreCase('partners')  )
+        {
+            findPeopleByScope(request, 'partners');
+        }
+        // 5 - Resto de scopes
         else if( String.isEmpty(request.filterBy) )
         {
-            // 4.2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
+            // 5.2 - Se identifica el mejor agente disponible - el método asigna en consencuencia el registro sobre el que realizar un screenPop
             findBestAgentFor(request);
         }
 
-        // 5 - Se una tarea como registro de la interacción en cola
+        // 6 - Se una tarea como registro de la interacción en cola
         createOnQueueInteraction(request);
 
         return request;
@@ -121,7 +126,8 @@ public with sharing class GenesysInteractionsService
         //20210804: Estadísticas/Informes
         if(interactionLog.caller != null)
         {
-            interactionTask.IdentifiedByNIF__c = interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false ? false : true;
+            // interactionTask.IdentifiedByNIF__c = interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false ? false : true;
+            interactionTask.IdentifiedByNIF__c = !(interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false);
             interactionTask.IdentifiedByANI__c = interactionLog.caller.identifiedByANI == null || interactionLog.caller.identifiedByANI == false ? false : true;
             interactionTask.NoIdentified__c = interactionLog.caller.noIdentified == null || interactionLog.caller.noIdentified == false ? false : true;
             interactionTask.MultiIdentifiedByNIF__c = interactionLog.caller.multiIdentifiedByNIF == null || interactionLog.caller.multiIdentifiedByNIF == false ? false : true;
@@ -197,6 +203,10 @@ public with sharing class GenesysInteractionsService
 
                 searchResults.relatedRecords = (List<SObject>) cases;
             }
+            when else 
+            {
+                // else code
+            }
         }
 
         return searchResults;
@@ -211,7 +221,6 @@ public with sharing class GenesysInteractionsService
      */
     public static List<Contact> findCustomers(String searchFor)
     {
-        Set<Id> matchedPersonIds = new Set<Id>();
 
         ContactsSelector contactsSelector = new ContactsSelector();
         contactsSelector.setScope(RecordsSelector.Scope.ALL);
@@ -299,6 +308,10 @@ public with sharing class GenesysInteractionsService
             {
                 results = findIntermediariesBy(request);
             }
+            when 'partners'
+            {
+                results = findPartnersBy(request);
+            }
             when else
             {
                 throw new GenesysPeopleServiceException(FILTER_NOT_DEFINED);
@@ -306,6 +319,66 @@ public with sharing class GenesysInteractionsService
         }
 
         // 3 - Devolver los resultados obtenidos
+        return results;
+    }
+
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     *
+     * @author jjuaristi
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {SearchResult} Resultados devueltos por la búsqueda
+     */
+    public static SearchResult findPartnersBy(SearchRequest request)
+    {
+        SearchResult results = new SearchResult();
+        List<Account> accounts = new List<Account>();
+
+        switch on request.searchType
+        {
+            when 'phone'
+            {
+                // Recuperamos el contacto con el ANI recibido
+                List<Contact> contacto = new ContactsSelector().findByANI(request.value);
+                // Debería devolver solo 1 aunque lo almacenemos en una lista
+                accounts = new AccountsSelector().selectById( ContactUtil.generateAccountIdSet(contacto) );
+            }
+            when else
+            {
+                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);
+            }
+        }
+
+        if(accounts.size() == 1)
+        {
+            Account partner = accounts.get(0);
+
+            results.screenPopRecordId = partner.Id;
+            results.territoryCode = partner.ZoneCode__c;
+            results.phone = String.isBlank(partner.MainMobilePhone__c)? partner.Phone : partner.MainMobilePhone__c;
+            results.email = partner.MainEmail__c;
+            results.nationalId = partner.NationalId__c;
+
+            // Construimos un intermediario falso (es el id del partner) para pasar al método el ID del partner y que el agente sea el owner de un caso abierto
+            Intermediary fakePartner = new Intermediary();
+            fakePartner.intermediaryId = partner.Id;
+            results.bestAgents = findBestAgents(fakePartner);
+        }
+
+        //20210804: Estadísticas/Informes
+        if(accounts.size() == 0)
+        {
+            results.noIdentified = true;
+        }
+        else if(accounts.size() == 1 && request.searchType == 'phone')
+        {
+            results.identifiedByANI = true;
+        }
+        else if(accounts.size() > 1 && request.searchType == 'phone')
+        {
+            results.multiIdentifiedByANI = true;
+        }
+
         return results;
     }
 
@@ -416,6 +489,10 @@ public with sharing class GenesysInteractionsService
             when 'car_registration'
             {
                 claims = claimsSelector.selectByPlate(request.searchTerm);
+            }
+            when else 
+            {
+                // else code
             }
         }
 
@@ -712,7 +789,7 @@ public with sharing class GenesysInteractionsService
      * @date 20/01/2021
      */
     @testVisible
-    private static OpenedClaims findOpenedClaims(Id customerId, RecordsSelector.Scope Scope, RecordsSelector.LegalEntity legalEntity)
+    private static OpenedClaims findOpenedClaims(Id customerId, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
         ClaimsSelector claimsSelector = new ClaimsSelector();
         claimsSelector.setFields
@@ -763,7 +840,7 @@ public with sharing class GenesysInteractionsService
     @TestVisible
     private static Id searchQueueTaskId(String genesysQueueId)
     {
-        Id queueId = null; //Si todo va mal, se devolverá a null
+        Id queueId = null; //Si el proceso falla, se devolverá a null
         String queueName = null;
 
         //1º Construir mapa con las colas de Genesys Id <-> Nombre
@@ -843,6 +920,10 @@ public with sharing class GenesysInteractionsService
             {
                 klincPolicies = DigitalCustomerSearchService.findPoliciesByCustomerEmail(request.value);
             }
+            when else 
+            {
+                // else code
+            }
         }
 
         // 3 - Si tiene al menos 1 póliza, es de Klinc
@@ -909,7 +990,7 @@ public with sharing class GenesysInteractionsService
         public String screenPopRecordId { get; set; }
         public String customerId { get; set; }
         public String callLogId { get; set; }
-        public String bestAgentId { get; set; } //FIXME: Eliminar cuando se modifique el flow de ZE / ZE Orange
+        public String bestAgentId { get; set; }
         public SearchResult caller { get; set; }
 
         public override String toString()
@@ -1006,6 +1087,10 @@ public with sharing class GenesysInteractionsService
                 }
                 when 'claim_number' {
                     result = result.deleteWhitespace().toUpperCase().leftPad(10, '0');
+                }
+                when else 
+                {
+                    // else code
                 }
             }
 
@@ -1454,6 +1539,10 @@ public with sharing class GenesysInteractionsService
             switch on type {
                 when 'document' {
                     result = result.deleteWhitespace().toUpperCase();
+                }
+                when else 
+                {
+                    // else code
                 }
             }
 

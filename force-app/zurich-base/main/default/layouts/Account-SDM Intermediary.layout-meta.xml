@@ -4,9 +4,6 @@
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>CreateCallList</excludeButtons>
     <excludeButtons>CreateSurveyInvitation</excludeButtons>
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
-    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -131,10 +128,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>AMTecnicalIssues__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>ClaimsPhoneNumber__c</field>
             </layoutItems>
             <layoutItems>
@@ -251,6 +244,11 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
+            <actionName>NewTask</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>LogCall_Klinc</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
@@ -284,11 +282,6 @@
             <actionName>Recordatorio_SDM</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>7</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>NewTask</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>Account.Comunicacion</actionName>

@@ -64,7 +64,7 @@ global class NoteInfoLookupBatch implements Database.Batchable<sObject>, Databas
     /**
      * Start. Execute the query locator for the batch
      */
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if( String.isBlank(query) ) {
             // Get the configured fields for the query
@@ -91,7 +91,7 @@ global class NoteInfoLookupBatch implements Database.Batchable<sObject>, Databas
     /**
      * Execute. The method for the scheduled batch
      */
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         Database.executeBatch(new NoteInfoLookupBatch(query), 200);
     }
@@ -99,7 +99,7 @@ global class NoteInfoLookupBatch implements Database.Batchable<sObject>, Databas
     /**
      * Execute. The method for each batch
      */
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         if ( scope != null && !scope.isEmpty() ) {
             try {
@@ -153,7 +153,7 @@ global class NoteInfoLookupBatch implements Database.Batchable<sObject>, Databas
     /**
      * Finish. The postprocesing method
      */
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 
     //-------------------------------------------------------------------------
@@ -228,7 +228,7 @@ global class NoteInfoLookupBatch implements Database.Batchable<sObject>, Databas
             ID noteIdValue = (ID)note?.get(this.noteParentIdFieldName);
 
             if( String.isNotBlank(noteHegeoValue) && noteIdValue == null && mapParentIds.containsKey(noteHegeoValue) ) {
-                ID parentId = this.mapParentIds.get(noteHegeoValue);
+                this.mapParentIds.get(noteHegeoValue);
                 if( noteToUpdate != null )
                     noteToUpdate.put(this.noteParentIdFieldName, this.mapParentIds.get(noteHegeoValue));
                 isParentFound = true;

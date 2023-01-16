@@ -1745,4 +1745,100 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(false, expectedTasks[0].MultiIdentifiedByNIF__c, 'Estadística: multiples coincidencias por NIF');
         System.assertEquals(true, expectedTasks[0].MultiIdentifiedByANI__c, 'Estadística: multiples coincidencias por ANI');
     }
+
+    @IsTest
+    static void test_findPartnersBy_MultiIdentifiedANI ()
+    {
+
+        List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PartnerOCS'];
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts
+        (
+            accounts, 
+            ContactsSelector.RT_NAME_CONTACT, 
+            1
+        );
+        
+        for(Contact currentContact : contacts)
+        {
+            currentContact.Phone = '111555777';
+        }
+
+        insert contacts;
+
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+
+        searchRequest.searchType = 'phone';
+        searchRequest.value = '111555777';
+        searchRequest.filterBy  = 'partners';
+        searchRequest.legalEntity  = 'all';
+
+        Test.startTest();
+        GenesysInteractionsService.SearchResult result = GenesysInteractionsService.findPartnersBy(searchRequest);
+        Test.stopTest();
+
+        System.assertEquals(true, result.multiIdentifiedByANI);
+    }
+
+    @IsTest
+    static void test_findPartnersBy_NoIdentified ()
+    {
+
+        List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PartnerOCS'];
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts
+        (
+            accounts, 
+            ContactsSelector.RT_NAME_CONTACT, 
+            1
+        );
+        
+        for(Contact currentContact : contacts)
+        {
+            currentContact.Phone = '111555767';
+        }
+
+        insert contacts;
+
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+
+        searchRequest.searchType = 'phone';
+        searchRequest.value = '111555777';
+        searchRequest.filterBy  = 'partners';
+        searchRequest.legalEntity  = 'all';
+
+        Test.startTest();
+        GenesysInteractionsService.SearchResult result = GenesysInteractionsService.findPartnersBy(searchRequest);
+        Test.stopTest();
+
+        System.assertEquals(true, result.noIdentified);
+    }
+
+    @IsTest
+    static void test_findPartnersBy_SingleResult ()
+    {
+
+        List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PartnerOCS'];
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts
+        (
+            accounts, 
+            ContactsSelector.RT_NAME_CONTACT, 
+            1
+        );
+
+        contacts[0].Phone = '111555777';
+
+        insert contacts;
+
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+
+        searchRequest.searchType = 'phone';
+        searchRequest.value = '111555777';
+        searchRequest.filterBy  = 'partners';
+        searchRequest.legalEntity  = 'all';
+
+        Test.startTest();
+        GenesysInteractionsService.SearchResult result = GenesysInteractionsService.findPartnersBy(searchRequest);
+        Test.stopTest();
+
+        System.assertEquals(true, result.identifiedByANI);
+    }
 }

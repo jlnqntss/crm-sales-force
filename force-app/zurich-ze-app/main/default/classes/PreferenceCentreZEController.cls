@@ -19,6 +19,7 @@ public with sharing class PreferenceCentreZEController {
     private static final String UNSUBSCRIBED_SOURCE = 'Centro de preferencias';
     private static final String CONFIG_LOGO_KEY = 'PreferenceLogo';
     private static final String DEFAULT_LOGO_RESOURCE = 'zurich_ze_logo';
+    private static final String DEFAULT_NOT_FOUND_LABEL = 'label not found';
 
     /**
      * Get the logo url for the given scope
@@ -88,9 +89,6 @@ public with sharing class PreferenceCentreZEController {
                     //Se rellenan los campos de contacto a actualizar
                     Scope__c scopeUpdate = new Scope__c(Id= scope.Id);
                     scopeUpdate.HasOptedOutOfEmail__c = true;
-                    // todo: this fields doesnt exist yet
-                    //scopeUpdate.UnsubscribedDate__c = DateTime.now();
-                    //scopeUpdate.UnsubscribedSource__c = UNSUBSCRIBED_SOURCE;
 
                     //Se actualza el contacto
                     ScopeUtil su = new ScopeUtil();
@@ -146,12 +144,12 @@ public with sharing class PreferenceCentreZEController {
 
         public AppLabels() 
         {
-            PreferenceCentreTitleLabel = 'label not found';
-            PreferenceCentreSubtitleLabel = 'label not found';
-            EmailOptOutCheckboxLabel = 'label not found';
-            EmailOptOutTextLabel = 'label not found';
-            EmailOptOutButtonLabel = 'label not found';
-            PreferenceCentreSaveLabel = 'label not found';
+            PreferenceCentreTitleLabel = DEFAULT_NOT_FOUND_LABEL;
+            PreferenceCentreSubtitleLabel = DEFAULT_NOT_FOUND_LABEL;
+            EmailOptOutCheckboxLabel = DEFAULT_NOT_FOUND_LABEL;
+            EmailOptOutTextLabel = DEFAULT_NOT_FOUND_LABEL;
+            EmailOptOutButtonLabel = DEFAULT_NOT_FOUND_LABEL;
+            PreferenceCentreSaveLabel = DEFAULT_NOT_FOUND_LABEL;
             PreferenceCentreRedirect = '';
         }
     }

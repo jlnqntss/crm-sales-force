@@ -19,7 +19,7 @@ public with sharing class LeadUtil
      * @author nbizkarra
      * @date 16/11/2020
      **/
-    public static void NewSubscribers(List<Lead> subscribers)
+    public static void newSubscribers(List<Lead> subscribers)
     {
         
 
@@ -78,8 +78,8 @@ public with sharing class LeadUtil
                 // If LeadSource is Klinc the partner field of the contact must be empty
                 String partner = (subscriber.LeadSource == LEAD_SOURCE_KLINC ? null : subscriber.LeadSource);
 
-                Boolean GI_found = false;
-                Boolean Life_found = false;
+                Boolean gi_found = false;
+                Boolean life_found = false;
 
                 // Loop through all the contacts to find contact with same LE, Country and Partner
                 for(Contact contact: contactlist)
@@ -104,7 +104,7 @@ public with sharing class LeadUtil
                             }
                             
                             contactsToUpdate.put(contact.CustomerNum__c, contact);
-                            GI_found = true;
+                            gi_found = true;
                         }
 
 
@@ -125,7 +125,7 @@ public with sharing class LeadUtil
                                 contact.LastName = subscriber.LastName;
                             }
                             contactsToUpdate.put(contact.CustomerNum__c, contact);
-                            Life_found = true;
+                            life_found = true;
                         }
                     }
                 }
@@ -133,7 +133,7 @@ public with sharing class LeadUtil
                 
                 
 
-                if( (subscriber.CheckGI__c == true && GI_found == false) || (subscriber.CheckLife__c == true && Life_found == false) )
+                if( (subscriber.CheckGI__c == true && gi_found == false) || (subscriber.CheckLife__c == true && life_found == false) )
                 {
 
                     Map<String,Contact> mapExistingMasters = new Map<String,Contact>();
@@ -186,7 +186,7 @@ public with sharing class LeadUtil
                     }
 
                     // GI: No contact with same LE, Country and Partner found
-                    if( subscriber.CheckGI__c == true && GI_found == false)
+                    if( subscriber.CheckGI__c == true && gi_found == false)
                     {
 
                         //Contact creation
@@ -202,7 +202,7 @@ public with sharing class LeadUtil
                     }
 
                     // LIFE: No contact with same LE, Country and Partner found
-                    if( subscriber.CheckLife__c == true && Life_found == false)
+                    if( subscriber.CheckLife__c == true && life_found == false)
                     {
 
                         //Contact creation
@@ -254,23 +254,23 @@ public with sharing class LeadUtil
      * @author nbizkarra
      * @date 17/11/2020
      **/
-    public static Contact createSubscriberRecord(String legalEntity, String recordTypeName, Lead Subscriber, User RecordOwner)
+    public static Contact createSubscriberRecord(String legalEntity, String recordTypeName, Lead subscriber, User recordOwner)
     {
 
         Contact contact = new Contact();
         contact.recordTypeId = SystemUtil.getContactRecordTypeIdByName(recordTypeName);
-        contact.FirstName = Subscriber.FirstName;
-        contact.LastName = Subscriber.LastName;
+        contact.FirstName = subscriber.FirstName;
+        contact.LastName = subscriber.LastName;
         contact.Status__c = CONTACT_STATUS_LEAD;
-        contact.SourceCountry__c = Subscriber.Country;
-        contact.Email = Subscriber.Email;
+        contact.SourceCountry__c = subscriber.Country;
+        contact.Email = subscriber.Email;
         contact.IsSubscriber__c = true;
-        contact.OwnerId = RecordOwner.id;
+        contact.OwnerId = recordOwner.id;
         contact.LegalEntity__c = legalEntity;
 
-        if (Subscriber.LeadSource != LEAD_SOURCE_KLINC)
+        if (subscriber.LeadSource != LEAD_SOURCE_KLINC)
         {
-            contact.Partner__c = Subscriber.LeadSource;
+            contact.Partner__c = subscriber.LeadSource;
         }
 
         return contact;

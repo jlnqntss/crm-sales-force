@@ -19,7 +19,7 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
         }
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if (query == null || query == '')
         {
@@ -28,12 +28,12 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
-        Id BatchInstanceId = database.executeBatch(new Batch_DeleteLeads(), 200);
+        database.executeBatch(new Batch_DeleteLeads(), 200);
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         List<Contact> leads = (List<Contact>) scope;
         List<Contact> deleteLeads = new List<Contact>();
@@ -102,6 +102,6 @@ global class Batch_DeleteLeads implements Database.Batchable<sObject>, Database.
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 }

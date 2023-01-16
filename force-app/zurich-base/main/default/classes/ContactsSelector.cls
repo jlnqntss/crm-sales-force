@@ -1,6 +1,13 @@
 public with sharing class ContactsSelector extends RecordsSelector
 {
     public RecordsSelector.Scope relatedRecordsScope;
+    public Map<String, Schema.RecordTypeInfo> ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName();
+
+    public String ACCOUNT_RT_CUSTOMER = ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('Customer').getRecordTypeId();
+    public String ACCOUNT_RT_BUSINESS_CUSTOMER = ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('BusinessCustomer').getRecordTypeId();
+    public String ACCOUNT_RT_LEAD = ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('Lead').getRecordTypeId();
+    public String ACCOUNT_RT_PARTNER_OCS = ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('PartnerOCS').getRecordTypeId();
+    public String ACCOUNT_RTID_FIELD = 'Account.RecordTypeId';
 
     //#region Contructores
 
@@ -29,36 +36,34 @@ public with sharing class ContactsSelector extends RecordsSelector
      */
     public ContactsSelector setScope(RecordsSelector.Scope scope)
     {
-        Map<String, Schema.RecordTypeInfo> accountRecordTypeInfosByDeveloperName = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName();
-
-        String customerRecordType = accountRecordTypeInfosByDeveloperName.get('Customer').getRecordTypeId();
-        String businessRecordType = accountRecordTypeInfosByDeveloperName.get('BusinessCustomer').getRecordTypeId();
-        String leadRecordType = accountRecordTypeInfosByDeveloperName.get('Lead').getRecordTypeId();
-        String partnerOCSRecordType = accountRecordTypeInfosByDeveloperName.get('PartnerOCS').getRecordTypeId();
 
         switch on scope 
         {
             when ALL
             {
-                this.baseQuery.addConditionIn('Account.RecordTypeId', new Set<String>{customerRecordType, businessRecordType, leadRecordType});
+                this.baseQuery.addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_BUSINESS_CUSTOMER, ACCOUNT_RT_LEAD});
             }
             when Z 
             {
-                this.baseQuery.addConditionIn('Account.RecordTypeId', new Set<String>{customerRecordType, businessRecordType});
+                this.baseQuery.addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_BUSINESS_CUSTOMER});
 
                 this.relatedRecordsScope = RecordsSelector.Scope.Z;
             }
             when ZE  
             {
-                this.baseQuery.addConditionIn('Account.RecordTypeId', new Set<String>{customerRecordType, leadRecordType, businessRecordType, partnerOCSRecordType});
+                this.baseQuery.addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_LEAD, ACCOUNT_RT_BUSINESS_CUSTOMER, ACCOUNT_RT_PARTNER_OCS});
 
                 this.relatedRecordsScope = RecordsSelector.Scope.ZE;
             }
             when ZEO
             {
-                this.baseQuery.addConditionIn('Account.RecordTypeId', new Set<String>{customerRecordType, leadRecordType, businessRecordType, partnerOCSRecordType});
+                this.baseQuery.addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_CUSTOMER, ACCOUNT_RT_LEAD, ACCOUNT_RT_BUSINESS_CUSTOMER, ACCOUNT_RT_PARTNER_OCS});
                 
                 this.relatedRecordsScope = RecordsSelector.Scope.ZEO;
+            }
+            when else 
+            {
+                // else code
             }
         }
 
@@ -85,6 +90,10 @@ public with sharing class ContactsSelector extends RecordsSelector
                 );
 
                 this.baseQuery.addCondition(condition);
+            }
+            when else 
+            {
+                // else code
             }
         }
 
@@ -123,7 +132,6 @@ public with sharing class ContactsSelector extends RecordsSelector
 
         return (List<Contact>) this.baseQuery.run();
 
-        //return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND (RecordTypeId IN: this.recordTypeIds OR Account.RecordTypeId IN :this.recordTypeIds) ];
     }
 
     /**
@@ -155,8 +163,6 @@ public with sharing class ContactsSelector extends RecordsSelector
         ).addCondition(condition);
 
         return (List<Contact>) this.baseQuery.run();
-
-        //return [SELECT Id, AccountId FROM Contact WHERE (Id IN : matchedRecordIds OR AccountId IN : matchedRecordIds) AND (RecordTypeId IN: this.recordTypeIds OR Account.RecordTypeId IN :this.recordTypeIds)];
     }
 
     public static Set<Id> findInContactPointsByPhoneNumber(List<String> phones, RecordsSelector.Scope scope)
@@ -242,4 +248,29 @@ public with sharing class ContactsSelector extends RecordsSelector
         return result;
     }
 
+    /**
+     * Método que busca contactos por ANI
+     * @author jjuaristi@seidor.es
+     * @date 16/11/2022
+     * @param String con el ANI
+     * @return Lista de contactos con ese ANI (debería ser solo 1)
+     */
+    public List<Contact> findByANI(String phone)
+    {
+        List<Contact> result = null;
+
+        if( phone != null && phone != '' ) {
+            this.baseQuery.selectFields (
+                new Set<Schema.SObjectField> {
+                    Contact.Id, 
+                    Contact.Phone,
+                    Contact.AccountId
+                }
+            );
+            this.baseQuery.addConditionEq(Contact.Phone, phone)
+            .addConditionIn(ACCOUNT_RTID_FIELD, new Set<String>{ACCOUNT_RT_PARTNER_OCS});
+            result = (List<Contact>) this.baseQuery.run();
+        }
+        return result;
+    }
 }

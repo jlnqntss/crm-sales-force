@@ -138,6 +138,10 @@
                 <behavior>Edit</behavior>
                 <field>CloseResult__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ClosedByMediator__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -397,15 +401,6 @@
     </relatedContent>
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>CASES.CASE_NUMBER</fields>
-        <fields>CASES.SUBJECT</fields>
-        <fields>CASES.PRIORITY</fields>
-        <fields>CASES.CREATED_DATE</fields>
-        <fields>CASES.STATUS</fields>
-        <fields>OWNER_NAME</fields>
-        <relatedList>RelatedChildCaseList</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>MergedRecord.CaseNumber</fields>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -28,7 +31,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Association__c</field>
+                <field>SDMAssociation__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -63,6 +66,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Conectivity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Multitarifier__c</field>
             </layoutItems>
         </layoutColumns>
@@ -94,10 +101,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>IncomeLevel__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Income2014__c</field>
             </layoutItems>
             <layoutItems>
@@ -110,10 +113,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>IncomeVar__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>ZurichMarketBonus__c</field>
             </layoutItems>
             <layoutItems>
@@ -122,14 +121,6 @@
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ResultBeforeTax__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>SalesResult__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ManagedBonus__c</field>
@@ -147,8 +138,8 @@
                 <field>LifeMangedBonus__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>RevenuesPerEmployee__c</field>
+                <behavior>Readonly</behavior>
+                <field>RevenuesPerEmployees__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -178,6 +169,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ActiveParticipationCampaigns__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ActiveParticipationInFocusGroups__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

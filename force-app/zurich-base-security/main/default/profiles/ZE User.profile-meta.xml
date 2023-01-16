@@ -11459,6 +11459,10 @@
         <recordType>Contact.Contact</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Contact-OCS Contact</layout>
+        <recordType>Contact.ContactPartner</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ContactPointAddress-Formato Dirección de punto de contacto</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -13654,6 +13658,14 @@
         <recordType>lightningbuddy__Actions__c.lightningbuddy__Welcome_Mat</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <tabVisibilities>
+        <tab>Tareas_Masivas</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>pw_si__SimpleImportVF</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
     <tabVisibilities>
         <tab>Claim__c</tab>
         <visibility>Hidden</visibility>

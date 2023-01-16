@@ -71,7 +71,7 @@ export default class CallRecordingButton extends LightningElement {
    * @author nts (rlopez)
    */
   async startRecording() {
-    var activeCalls = await genesysCloud.getActiveCalls();
+    let activeCalls = await genesysCloud.getActiveCalls();
 
     if (!activeCalls.length) {
       return Promise.resolve();

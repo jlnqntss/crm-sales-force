@@ -114,6 +114,13 @@
                     <stringValue>USPInquiry</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Actualizar_Caso_a_Pendiente</targetReference>
             </connector>

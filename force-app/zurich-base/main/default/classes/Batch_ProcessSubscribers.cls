@@ -18,7 +18,7 @@ global class Batch_ProcessSubscribers implements Database.Batchable<sObject>, Da
         }
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if (query == null || query == '')
         {
@@ -29,14 +29,14 @@ global class Batch_ProcessSubscribers implements Database.Batchable<sObject>, Da
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         Database.executeBatch(new Batch_ProcessSubscribers(query), 1);
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
-        Savepoint SP = Database.setSavepoint();
+        Savepoint sp = Database.setSavepoint();
 
         if ( scope != null && !scope.isEmpty() )
         {
@@ -51,13 +51,13 @@ global class Batch_ProcessSubscribers implements Database.Batchable<sObject>, Da
             catch (Exception e)
             {
                 //Se ha producido una excepción no controlada en LeadUtil y se debe hacer rollback de las operaciones parcialmente completas
-                Database.rollback(SP);
+                Database.rollback(sp);
 
                 ErrorLogUtil.commitError(e, 'Batch_ProcessSubscribers');
             }
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 }

@@ -11,23 +11,23 @@ global with sharing class ContactUtil
      * @return Número de cliente con el formato adaptado
      * @date 01/04/2020
      **/
-    public static String adaptCustomerNum( String CustomerNum, String LegalEntity )
+    public static String adaptCustomerNum( String customerNum, String legalEntity )
     {
         
-        if ( LegalEntity.equals('GI') || LegalEntity.equals(Label.GeneralInsurance) )
+        if ( legalEntity.equals('GI') || legalEntity.equals(Label.GeneralInsurance) )
         {
-            CustomerNum = 'GI-' + CustomerNum;
+            customerNum = 'GI-' + customerNum;
         }
-        else if ( LegalEntity.equals(Label.LifeInsurance) )
+        else if ( legalEntity.equals(Label.LifeInsurance) )
         {
-            CustomerNum = 'LIFE-' + CustomerNum;
+            customerNum = 'LIFE-' + customerNum;
         }
         else
         {
             throw new IntegrationException(Label.LegalEntityError);
         }
 
-        return CustomerNum;
+        return customerNum;
     }
 
     /**
@@ -116,10 +116,6 @@ global with sharing class ContactUtil
         incomingContact.RecordTypeId = incomingContact.Status__c != 'Lead'
                                        ? SystemUtil.getContactRecordTypeIdByName('Customer' + legalEntity)
                                        : SystemUtil.getContactRecordTypeIdByName('Lead' + legalEntity);
-
-        // String customerNum = ((Contact) ExternalRequestUtil.recordsToProcess.get(
-        //   ExternalRequestUtil.actualRequest.id )).CustomerNum__c;
-        
         
         String customerNum = incomingContact.CustomerNum__c;
 
@@ -495,7 +491,7 @@ global with sharing class ContactUtil
      * @author nbizkarra
      * @date 01/04/2020
      */
-    public static void SummaryTotalContacts( List<Contact> newList, Map<Id, Contact> oldMap )
+    public static void summaryTotalContacts( List<Contact> newList, Map<Id, Contact> oldMap )
     {
         
         Set<Id> idSet = new Set<Id>();
@@ -606,8 +602,6 @@ global with sharing class ContactUtil
      */
     public static void updateQuoteStep4and5( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        
-        List<Contact> quotes = new List<Contact>();
         Map<ID, Order> quotesToUpdate = new Map<ID, Order>();
         Map<ID, Contact> mapContactos = new Map<ID, Contact>();
 
@@ -629,15 +623,15 @@ global with sharing class ContactUtil
                 }
             }
 
-            Map<ID, Order> MapQuotes = new Map<ID, Order>(
+            Map<ID, Order> mapQuotes = new Map<ID, Order>(
                 [SELECT id, QbLastPage__c, Step__c FROM Order WHERE id = : idSet]
                 );
 
-            if (MapQuotes != null && mapContactos != null)
+            if (mapQuotes != null && mapContactos != null)
             {
                 for ( Contact cont : mapContactos.values() )
                 {
-                    Order quote = MapQuotes.get(cont.LastQuote__c);
+                    Order quote = mapQuotes.get(cont.LastQuote__c);
                     if (quote.QbLastPage__c != null)
                     {
                         //Si está en el step 4
@@ -671,5 +665,22 @@ global with sharing class ContactUtil
                 }
             }
         }
+    }
+
+    /**
+     * Método que genera un set de los ids con los que una lista de contactos está relacionado
+     * @author jjuaristi@seidor.es
+     * @date 16/11/2022
+     * @param Lista de contactos
+     * @return Set de ids de las cuentas relacionadas
+     */
+    public static Set<ID> generateAccountIdSet (List<Contact> contacts)
+    {
+        Set<Id> accountIds = new Set<Id>();
+        for(Contact currentContact : contacts)
+        {
+            accountIds.add(currentContact.AccountId);
+        }
+        return accountIds;
     }
 }

@@ -24,7 +24,7 @@ export default class TestGenesysCloudService extends LightningElement {
   }
 
   async startRecording() {
-    var activeCalls = await genesysCloud.getActiveCalls();
+    let activeCalls = await genesysCloud.getActiveCalls();
 
     if (activeCalls.length) {
       genesysCloud.conference(

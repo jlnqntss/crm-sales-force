@@ -318,7 +318,6 @@ public with sharing class BusinessInsuranceRaterService
      */
     private static Account createLead(Request formData)
     {
-        Scope_Setting__mdt currentScopeSettings = scopeSettings.get(formData.businessCode);
         Id leadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
         BusinessInsuranceRaterService.AccountInformation accountInformation = formData.accountInformation;
         String lastName = (String.isNotBlank(accountInformation.lastName) ? accountInformation.lastName : accountInformation.firstName);
@@ -1044,11 +1043,6 @@ public with sharing class BusinessInsuranceRaterService
         List<Opportunity> existingOffers = new OpportunitiesSelector().selectByAccountIdScopesAndOwnerProfile(
             currentCustomer.Id, new Set<Id> {currentScope.Id}, new Set<String> {PROFILE_NAME}
         );
-
-        if(existingOffers.size() > 0)
-        {
-            
-        }
 
         if( existingOffers.isEmpty() )
         {

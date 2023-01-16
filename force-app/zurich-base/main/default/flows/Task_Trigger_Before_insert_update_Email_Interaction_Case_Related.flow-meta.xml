@@ -38,19 +38,12 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
-            <conditionLogic>1 AND 2</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WhatId</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
                     <stringValue>500</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WhatId</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <elementReference>$Record__Prior.WhatId</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -59,6 +52,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>Task Trigger - Before insert/update Email Interaction Case Related {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - Before insert/update Status Case Related</label>
     <processMetadataValues>
@@ -109,14 +103,8 @@
         <connector>
             <targetReference>Is_the_task_related_to_a_case</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Related_Case_Status__c</field>
-            <operator>IsChanged</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
+        <filterFormula>OR(ISNEW(),
+AND(NOT(ISCHANGED({!$Record.Related_Case_Status__c})),ISCHANGED({!$Record.WhatId})))</filterFormula>
         <object>Task</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>

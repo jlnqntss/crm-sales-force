@@ -61,7 +61,8 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         'Ratio_PortIncrease' => eIndicator.type_percent,
         'Ratio_Claim' => eIndicator.type_percent,
         'Ratio_Retention' => eIndicator.type_percent,
-        'Totaldiscount' => eIndicator.type_percent
+        'Totaldiscount' => eIndicator.type_percent,
+        'APES' => eIndicator.type_currency
     };
 
     /**
@@ -260,7 +261,6 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
                 Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Zone__c, ParentPlan__r.OwnerId
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanAnualId
-                AND AssignedTo__r.UserRole.DeveloperName = 'SDM_RN'
                 AND Indicator__c IN :indicatorSet
                 AND Product__c IN :productSet
                 AND Segment__c IN :segmentSet

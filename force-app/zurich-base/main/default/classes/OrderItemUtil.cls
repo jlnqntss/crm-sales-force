@@ -4,6 +4,7 @@
  **/
 public class OrderItemUtil
 {
+    public static final String INSUED_PERSON = 'Insured Person';
     /**
      * Método que inserta o actualiza el producto asegurado y sus objetos relacionados.
      * @author nbizkarra
@@ -16,7 +17,7 @@ public class OrderItemUtil
         Map<String, PricebookEntry> mapProducts,
         Map<String, Product2> productsToInsert,
         Map<String, PricebookEntry> pricebookEntryToInsert,
-        Pricebook2 Pricebook,
+        Pricebook2 pricebook,
         Map<String, OrderItem> orederItemsToInsert,
         List<Cover__c> listCovers,
         Map<String, Cover__c> subCoversToInsertQuote,
@@ -96,7 +97,7 @@ public class OrderItemUtil
                     else
                     {
                         
-                        createProduct( item, productsToInsert, pricebookEntryToInsert, Pricebook );
+                        createProduct( item, productsToInsert, pricebookEntryToInsert, pricebook );
                         PricebookEntry pricebookRef;
 
                         if (item.itemModel__c != null)
@@ -119,8 +120,8 @@ public class OrderItemUtil
                         else
                         {
                             //if mandatory value empty in life
-                            pricebookRef = new PricebookEntry( ProductID__c = 'Insured Person' );
-                            item.itemModel__c = 'Insured Person';
+                            pricebookRef = new PricebookEntry( ProductID__c = INSUED_PERSON );
+                            item.itemModel__c = INSUED_PERSON;
                         }
                         item.PricebookEntry = pricebookRef;
                     }
@@ -154,7 +155,7 @@ public class OrderItemUtil
         OrderItem item,
         Map<String, Product2> productsToInsert,
         Map<String, PricebookEntry> pricebookEntryToInsert,
-        Pricebook2 Pricebook
+        Pricebook2 pricebook
         )
     {
         
@@ -175,7 +176,7 @@ public class OrderItemUtil
         }
         else
         {
-            productID = 'Insured Person';
+            productID = INSUED_PERSON;
         }
 
         PricebookEntry pricebookEntry = new PricebookEntry(

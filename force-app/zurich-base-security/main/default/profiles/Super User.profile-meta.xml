@@ -534,6 +534,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContentWorkspacesPicklist</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentWorkspacesPicklistTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CoverUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1418,6 +1426,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UsefulLinksController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UsefulLinksControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>WS_BaseAPIService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1549,6 +1565,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.SDMAssociation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.AutoVideo__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1655,11 +1676,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.CompaniesTheyWorkWith__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.ConectivityWsProvider__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2229,11 +2245,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.RevenuesPerEmployee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Account.RuralUrban__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2285,6 +2296,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.SeniorityInTheCompany__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SharepointPartners__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2509,6 +2525,76 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.ManagementProgram__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.BrokeragesGrouping__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Multitarifier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.NumberCompetingCompanies__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Incomes2020__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ZurichMarketBonus__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ManagedBonus__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PYMEManagedBonus__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IndividualManagedBonus__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LifeMangedBonus__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IRPFIntermediaryType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ActiveParticipationInFocusGroups__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Segment_sdm__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.RevenuesPerEmployees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Activity.Related_Case_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2530,6 +2616,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>AccountTeamMember.Phone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountTeamMember.NotificationsOnPlans__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3349,6 +3440,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.AutomaticTaskCreated__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.BusinessHoursId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3413,6 +3509,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ClosedByMediator__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.ClosedBy__c</field>
         <readable>true</readable>
@@ -3430,6 +3531,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.Commercial_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.CompanyBillingAddress__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3498,6 +3604,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.GoogleAddress__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.HegeoClaimId__c</field>
         <readable>true</readable>
@@ -3540,6 +3651,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.InsuredAmount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.IsBussinessCodeExcluded__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.IsCreatedOnExcludedMailbox__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3740,6 +3861,151 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.RobotTypificationFailed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotActivitySegCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotActivitySegDesc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotBusinessStructure__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotActivityCod__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotActividadDesc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyActivityCnaeCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyActivityCnaeDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyActivityIndex__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyAdditionalInformation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyDomicile__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyEstimatedBilling__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyEstimatedEmployees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyLatitude__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyLocality__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyLongitude__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyProvince__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyRiskScore__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyRoadName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyRoadNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyRoadType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanySicCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanySicDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotCompanyZipCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotDocumentId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotDocumentType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotNif__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RobotAappIndicator__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Robot30mmBilling__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3989,6 +4255,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Codigo_Negocio_BancSabadell__mdt.Codigo_Negocio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.Abandoned_Lead__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4085,6 +4356,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Email</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.Editable__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5104,6 +5380,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ExcludedMailboxList__mdt.Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ErrorManagementSetting__mdt.Min_Log_Level__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5309,6 +5590,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.EventType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.IdentifiedByANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5424,6 +5710,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.RelatedToIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5450,6 +5741,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.WhoId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.ClosingObservation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>	
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Event.IsRelatedToComercialPlan__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8714,6 +9015,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.EventType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.IdentifiedByNIF__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8814,6 +9120,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.RelatedToIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8840,6 +9151,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.WhoId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.ClosingObservation__c</field>
+        <readable>true</readable>
+	</fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.IsRelatedToComercialPlan__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9591,6 +9912,10 @@
     <layoutAssignments>
         <layout>Contact-OCS Contact</layout>
         <recordType>Contact.Contact</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-OCS Contact</layout>
+        <recordType>Contact.ContactPartner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ContactPointAddress-Formato Dirección de punto de contacto</layout>
@@ -10795,6 +11120,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>Contact.ContactPartner</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Contact.CustomerGI</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -10949,6 +11279,14 @@
         <recordType>Task.Reminder</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <tabVisibilities>
+        <tab>Tareas_Masivas</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>pw_si__SimpleImportVF</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
     <tabVisibilities>
         <tab>Claim__c</tab>
         <visibility>DefaultOn</visibility>

@@ -233,6 +233,11 @@
                 <default>false</default>
                 <label>No Realizado - Otros motivos</label>
             </value>
+            <value>
+                <fullName>Falta Respuesta Mediador</fullName>
+                <default>false</default>
+                <label>Falta Respuesta Mediador</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Queja</controllingFieldValue>
@@ -241,6 +246,7 @@
             <controllingFieldValue>Embargo Cliente</controllingFieldValue>
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
@@ -249,13 +255,14 @@
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -269,6 +276,7 @@
             <controllingFieldValue>Embargo Cliente</controllingFieldValue>
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
@@ -280,13 +288,14 @@
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -301,6 +310,7 @@
             <controllingFieldValue>Embargo Cliente</controllingFieldValue>
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
@@ -309,13 +319,14 @@
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -354,7 +365,7 @@
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
@@ -408,7 +419,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
@@ -416,7 +427,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
@@ -424,7 +435,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
@@ -432,7 +443,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
@@ -440,7 +451,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
@@ -448,7 +459,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
@@ -456,15 +467,14 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
             <valueName>Caducada</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
@@ -472,7 +482,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Ajuste oferta</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <valueName>Realizado - Gestión Competencias</valueName>

@@ -919,11 +919,11 @@
     <picklistValues>
         <picklist>Subtype__c</picklist>
         <values>
-            <fullName>Ajuste oferta</fullName>
+            <fullName>Anulación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Anulación</fullName>
+            <fullName>Apoyo Captación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -995,6 +995,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Modificación oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Queja</fullName>
             <default>false</default>
         </values>
@@ -1042,6 +1046,10 @@
             <fullName>Tareas administrativas</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Transferencia</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
@@ -1072,10 +1080,6 @@
     </picklistValues>
     <picklistValues>
         <picklist>TypeN3__c</picklist>
-        <values>
-            <fullName>Ajuste oferta</fullName>
-            <default>false</default>
-        </values>
         <values>
             <fullName>Anotación Embargo</fullName>
             <default>false</default>
@@ -1237,6 +1241,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Modificación oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Multas</fullName>
             <default>false</default>
         </values>
@@ -1246,6 +1254,10 @@
         </values>
         <values>
             <fullName>Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otras áreas</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1306,6 +1318,10 @@
         </values>
         <values>
             <fullName>Seguimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sin Oferta</fullName>
             <default>false</default>
         </values>
         <values>

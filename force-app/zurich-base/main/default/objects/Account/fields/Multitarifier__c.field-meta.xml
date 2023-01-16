@@ -36,6 +36,11 @@
                 <default>false</default>
                 <label>Avant2 - Codeoscopic</label>
             </value>
+            <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <label>Otros</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

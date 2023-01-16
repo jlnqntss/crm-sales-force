@@ -41,7 +41,6 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
 
             switch on resource {
                 when 'offers' {
-                    //TODO: Confirmar si sería mejor sacar el lastStep buscandolo directamente en el string y no haciendo un deserializeUntyped
                     Map<String, Object> requestInformationJSON = (Map<String, Object>) JSON.deserializeUntyped(
                         requestInformation
                     );
@@ -81,6 +80,10 @@ global without sharing class WS_BusinessInsuranceAPIService extends WS_BaseAPISe
                     }
                     response.responseBody = Blob.valueOf('{"status":"success", "sfId":"'+callMeBackId+'", "errors":[]}');
                     response.statusCode = 200;
+                }
+                when else 
+                {
+                    // else code
                 }
             }
         }

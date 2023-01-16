@@ -10,7 +10,7 @@ public class RollupSummariesUtil
     public static String CURRENCYISOCODENAME = 'CurrencyIsoCode';
     //http://advancedapex.com/2013/07/07/optional-features/
     private static Boolean m_IsMultiCurrency = null;
-    public static Boolean IsMultiCurrencyOrg()
+    public static Boolean isMultiCurrencyOrg()
     {
         if (m_IsMultiCurrency != null)
         {
@@ -141,7 +141,6 @@ public class RollupSummariesUtil
             );
 
         List<AggregateResult> results = Database.query(soql);
-        //Utils.Debug(LoggingLevel.FINE, 'results: ' + results);
 
         for (AggregateResult result : results)
         {
@@ -197,7 +196,6 @@ public class RollupSummariesUtil
                     summaryField.masterField.getName(),
                     summaryField.numberTypeMaster ? 0 : null
                     );
-                //Utils.Debug(LoggingLevel.FINE, 'masterRecordsMap: ', masterRecordsMap);
             }
         }
         return masterRecordsMap.values();

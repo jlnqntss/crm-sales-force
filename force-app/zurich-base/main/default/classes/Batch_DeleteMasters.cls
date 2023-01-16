@@ -22,17 +22,17 @@ global class Batch_DeleteMasters implements Database.Batchable<sObject>, Databas
         }
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
-        Id BatchInstanceId = database.executeBatch(new Batch_DeleteMasters(), 200);
+        database.executeBatch(new Batch_DeleteMasters(), 200);
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         List<Account> mastersToDelete = (List<Account>) scope;
 
@@ -49,6 +49,6 @@ global class Batch_DeleteMasters implements Database.Batchable<sObject>, Databas
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {}
 }

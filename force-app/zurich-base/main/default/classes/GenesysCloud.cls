@@ -14,7 +14,11 @@ public with sharing class GenesysCloud
     public static final String SERVICE_SMS = 'SMSService';
     public static final String SERVICE_DISCONNECTION = 'DisconnectionService';
     public static final String CONVERSATION_EMAIL_ENDPOINT = '/api/v2/conversations/emails/';
+    public static final String CONVERSATION_GENERAL = '/api/v2/conversations/';
+    public static final String CONVERSATION_GENERAL_CALLS = '/api/v2/conversations/calls/';
     public static final String CONVERSATION_EMAIL_PARTICIPANTS = '/participants/';
+    public static final String CONTENT_TYPE = 'Content-Type';
+    public static final String CONTENT_TYPE_JSON = 'application/json';
 
     public enum GenesysCloudServices { SERVICE_ROUTING, SERVICE_CALLBACKS, SERVICE_SMS, SERVICE_DISCONNECTION }
 
@@ -331,6 +335,10 @@ public with sharing class GenesysCloud
                     throw new GenesysCloud.DisconnectionServiceException(response);
                 }
             }
+            when else 
+            {
+                // else code
+            }
         }
     }
 
@@ -373,13 +381,13 @@ public with sharing class GenesysCloud
             {
                 HttpRequest req = new HttpRequest();
                 req.setMethod('POST');
-                req.setEndpoint('/api/v2/conversations/' + work.getEndpoint() );
+                req.setEndpoint(CONVERSATION_GENERAL + work.getEndpoint() );
                 req.setBody(work.toJSON() );
                 response = mock.respond(req);
             }
             else //POST
             {
-                response = purecloud.sdk.Rest.post('/api/v2/conversations/' + work.getEndpoint(), work.toJSON() );
+                response = purecloud.sdk.Rest.post(CONVERSATION_GENERAL + work.getEndpoint(), work.toJSON() );
             }
 
             validateResponse(response, GenesysCloudServices.SERVICE_ROUTING);
@@ -630,7 +638,7 @@ public with sharing class GenesysCloud
          */
         public CallbackCancel cancel(CallbackCancel callback)
         {
-            HttpResponse response = new GenesysCloud.GenesysCloudNamedUserAPI().patch(
+            new GenesysCloud.GenesysCloudNamedUserAPI().patch(
                 '/api/v2/conversations/callbacks/' + callback.genesysId, callback.toJSON()
             );
             return callback;
@@ -820,14 +828,14 @@ public with sharing class GenesysCloud
 
                 HttpRequest req = new HttpRequest();
                 req.setMethod('POST');
-                req.setEndpoint('/api/v2/conversations/'+interaction.conversationId +'/disconnect');
+                req.setEndpoint(CONVERSATION_GENERAL+interaction.conversationId +'/disconnect');
                 req.setBody(interaction.toJSON() );
                 response = mock.respond(req);
                 retorno = interaction.conversationId;
             }
             else //POST
             {
-                response = purecloud.sdk.Rest.post('/api/v2/conversations/'+interaction.conversationId +'/disconnect', interaction.toJSON());
+                response = purecloud.sdk.Rest.post(CONVERSATION_GENERAL +interaction.conversationId +'/disconnect', interaction.toJSON());
                 retorno = getFieldFromResponse(response, 'conversationId');
             }
 
@@ -1201,7 +1209,7 @@ public with sharing class GenesysCloud
          */
         public Call get(String interactionId)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().get('/api/v2/conversations/calls/' + interactionId);
+            HttpResponse response = new GenesysCloudNamedUserAPI().get(CONVERSATION_GENERAL_CALLS + interactionId);
 
             return (Call) JSON.deserialize(response.getBody(), Call.class);
         }
@@ -1212,7 +1220,7 @@ public with sharing class GenesysCloud
          */
         public void consult(ConsultTransfer consult)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + consult.participantId + '/consult', consult.toJSON() );
+            new GenesysCloudNamedUserAPI().post(CONVERSATION_GENERAL_CALLS + consult.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + consult.participantId + '/consult', consult.toJSON() );
         }
 
         /**
@@ -1223,7 +1231,7 @@ public with sharing class GenesysCloud
          */
         public void setParticipantData(String conversationId, String participantId, Map<String, String> attributes)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
+            new GenesysCloudNamedUserAPI().patch(CONVERSATION_GENERAL_CALLS + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
             {
                 'attributes' => attributes
             }) );
@@ -1237,7 +1245,7 @@ public with sharing class GenesysCloud
          */
         public void setUUIData(String conversationId, String participantId, String communicationId, String uuiData)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
+            new GenesysCloudNamedUserAPI().put(CONVERSATION_GENERAL_CALLS + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
             {
                 'uuiData' => uuiData
             }) );
@@ -1449,7 +1457,7 @@ public with sharing class GenesysCloud
         {
             return get(url, new Map<String, String>
             {
-                'Content-Type' => 'application/json'
+                CONTENT_TYPE => CONTENT_TYPE_JSON
             });
         }
 
@@ -1465,7 +1473,7 @@ public with sharing class GenesysCloud
         {
             return post(url, body, new Map<String, String>
             {
-                'Content-Type' => 'application/json'
+                CONTENT_TYPE => CONTENT_TYPE_JSON
             });
         }
 
@@ -1481,7 +1489,7 @@ public with sharing class GenesysCloud
         {
             return patch(url, body, new Map<String, String>
             {
-                'Content-Type' => 'application/json'
+                CONTENT_TYPE => CONTENT_TYPE_JSON
             });
         }
 
@@ -1497,7 +1505,7 @@ public with sharing class GenesysCloud
         {
             return put(url, body, new Map<String, String>
             {
-                'Content-Type' => 'application/json'
+                CONTENT_TYPE => CONTENT_TYPE_JSON
             });
         }
 

@@ -177,6 +177,29 @@
             </value>
         </assignmentItems>
         <connector>
+            <targetReference>IsSourceAreaReportedDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>SourceAreaReportedAssignment</name>
+        <label>Asignar informacion area origen</label>
+        <locationX>182</locationX>
+        <locationY>1440</locationY>
+        <assignmentItems>
+            <assignToReference>CasoRelacionado.SourceArea__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetGenesysQueueAction.SourceArea__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>CasoRelacionado.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
             <targetReference>IsUpdateNecessaryDecision</targetReference>
         </connector>
     </assignments>
@@ -270,7 +293,7 @@
         <locationX>314</locationX>
         <locationY>984</locationY>
         <defaultConnector>
-            <targetReference>IsUpdateNecessaryDecision</targetReference>
+            <targetReference>IsSourceAreaReportedDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Cola no informada</defaultConnectorLabel>
         <rules>
@@ -290,17 +313,52 @@
         </rules>
     </decisions>
     <decisions>
+        <name>IsSourceAreaReportedDecision</name>
+        <label>¿Area Origen informada?</label>
+        <locationX>314</locationX>
+        <locationY>1320</locationY>
+        <defaultConnector>
+            <targetReference>IsUpdateNecessaryDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Area Origen no informada</defaultConnectorLabel>
+        <rules>
+            <name>ReportedSourceArea</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetGenesysQueueAction.SourceArea__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.SourceArea__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SourceAreaReportedAssignment</targetReference>
+            </connector>
+            <label>Area Origen informada</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>IsUpdateNecessaryDecision</name>
         <label>¿Aplica actualizar?</label>
         <locationX>314</locationX>
-        <locationY>1320</locationY>
+        <locationY>1656</locationY>
         <defaultConnectorLabel>No aplica</defaultConnectorLabel>
         <rules>
             <name>IsNecessaryOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>CasoRelacionado.Id</leftValueReference>
-                <operator>NotEqualTo</operator>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
             </conditions>
             <connector>
                 <targetReference>UpdateCaseAction</targetReference>
@@ -415,7 +473,7 @@
         <name>CreateCaseUpdateErrorAction</name>
         <label>Generar error actualizar caso</label>
         <locationX>314</locationX>
-        <locationY>1560</locationY>
+        <locationY>1896</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -599,7 +657,7 @@
         <name>UpdateCaseAction</name>
         <label>Actualiza caso</label>
         <locationX>50</locationX>
-        <locationY>1440</locationY>
+        <locationY>1776</locationY>
         <faultConnector>
             <targetReference>CreateCaseUpdateErrorAction</targetReference>
         </faultConnector>

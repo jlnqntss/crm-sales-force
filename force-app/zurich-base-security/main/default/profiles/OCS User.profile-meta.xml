@@ -11525,6 +11525,10 @@
         <layout>Contact-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Contact-Contact Layout</layout>
+        <recordType>Contact.ContactPartner</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Contact-Copy of Customer Layout_prod</layout>
         <recordType>Contact.CustomerGI</recordType>
     </layoutAssignments>
@@ -13788,6 +13792,14 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>et4ae5__Configuration__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Tareas_Masivas</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>pw_si__SimpleImportVF</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>

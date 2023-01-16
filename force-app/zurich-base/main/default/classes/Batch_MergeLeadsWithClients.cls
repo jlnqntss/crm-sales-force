@@ -117,7 +117,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
         
     }
 
-    global Database.QueryLocator start(Database.BatchableContext BC)
+    global Database.QueryLocator start(Database.BatchableContext bc)
     {
         if ( String.isBlank(query) ) {
             query = 'SELECT Id, AccountId, OldAccountId__c, Account.RecordType.DeveloperName FROM Opportunity WHERE AccountId != null AND OldAccountId__c != null';
@@ -126,12 +126,12 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
         return Database.getQueryLocator(query);
     }
 
-    global void execute(SchedulableContext SC)
+    global void execute(SchedulableContext sc)
     {
         Database.executeBatch(new Batch_MergeLeadsWithClients(query), 1);
     }
 
-    global void execute(Database.BatchableContext BC, List<sObject> scope)
+    global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         if ( scope != null && scope.size() == 1 ) {
             List<Opportunity> offers = (List<Opportunity>) scope;
@@ -230,7 +230,10 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
                             // Fix: re-parent the contact points. For some reason the merge does not do it
                             List<SObject> contactPoints = new List<SObject>();
                             for(String s: mapRelatedObjects.keySet()) {
-                                 contactPoints.addAll(account.getSObjects(s));
+                                if (account.getSObjects(s) != null && !account.getSObjects(s).isEmpty())
+                                {
+                                    contactPoints.addAll(account.getSObjects(s));
+                                }
                                 if( contactPoints != null && !contactPoints.isEmpty() ) {
                                     for( SObject o: contactPoints ) {
                                         o.put(mapRelatedObjects.get(s), leadAccount.Id);                                        
@@ -267,7 +270,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
         }
     }
 
-    global void finish(Database.BatchableContext BC)
+    global void finish(Database.BatchableContext bc)
     {
         if( isErrorScopeToBig )
             ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, ERROR_SCOPE_TOO_BIG, CLASS_NAME);

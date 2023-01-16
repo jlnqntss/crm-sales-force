@@ -15,7 +15,6 @@ global with sharing class OrderUtil
         String legalEntityName = (quote.LegalEntity__c.equals(Label.GeneralInsurance) ? 'GI' : 'Life');
 
         quote.RecordTypeId = SystemUtil.getOrderRecordTypeIdByName( Label.Quote + legalEntityName );
-        //contact.CustomerNum__c=ContactUtil.adaptCustomerNum(contact.CustomerNum__c, contact.LegalEntity__c);
 
         Order quoteSF = ExternalRequestUtil.mapQuotes.get(quote.QuoteEntry__c);
         if( quoteSF != null )
@@ -127,24 +126,6 @@ global with sharing class OrderUtil
                 }
             }
         }
-
-        // for (OrderItem item : ExternalRequestUtil.listOrderItems) {
-        //   // If it is an EMEA record, add the prefix to its Orders ExternalId
-        //   // todo: agonzalezisasi - es necesario?
-        //   // if (quote.SourceCountry__c != 'Spain') {
-        //   //   item.Order.QuoteEntry__c = 'EMEA-' + item.Order.QuoteEntry__c;
-        //   // }
-        // }
-
-        // for (Cover__c cover : ExternalRequestUtil.listCovers) {
-        //   // If it is an EMEA record, add the prefix to its Items ExternalId
-        //   // todo: agonzalezisasi - es necesario?
-        //   // if (quote.SourceCountry__c != 'Spain') {
-        //   //   cover.PolicyProduct__r.ItemId__c =
-        //   //     'EMEA-' + cover.PolicyProduct__r.ItemId__c;
-        //   // }
-        // }
-
         if (quote.EffectiveDate == null)
         {
             quote.EffectiveDate = Date.today();
@@ -269,13 +250,6 @@ global with sharing class OrderUtil
                 legalEntityName = 'Life';
             }
             // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-            // if (policy.SourceCountry__c == 'Spain') {
-            //   policy.CustomerNum__c = ContactUtil.adaptCustomerNum(
-            //     policy.CustomerNum__c,
-            //     policy.LegalEntity__c
-            //   );
-            // }
-            
 
             Contact contactoPolicy = ExternalRequestUtil.mapContacts.get( policy.CustomerNum__c );
 
@@ -333,14 +307,6 @@ global with sharing class OrderUtil
                         //Quote existe en salesforce
                         policy.Id = quoteSF.id;
                         policy.QuoteStatus__c = Label.Converted;
-
-                        /*if(quoteSF.Descuentos__r!=null)
-                                    {
-                                        for(Discount__c dis: quoteSF.Descuentos__r)
-                                        {
-                                            ExternalRequestUtil.discountsToDelete.put(dis.DiscountId__c, dis);
-                                        }
-                                    } */
                     }
 
                     if ( ExternalRequestUtil.quotesToUpdateList.containsKey( policy.QuoteEntry__c ) )
@@ -404,7 +370,6 @@ global with sharing class OrderUtil
                         }
                     }
 
-                    // policy.QuoteEntry__c='';
                 }
 
                 // nts (nbizkarra) - 19/11/2020 - Include search quote with same product
@@ -435,26 +400,17 @@ global with sharing class OrderUtil
                 policy.OwnerId = ExternalRequestUtil.recordOwner.id;
                 policy.QuoteStatus__c = Label.Converted;
                 Contact contactRef = new Contact( CustomerNum__c = policy.CustomerNum__c );
-                //policy.ContactId__c=contactoPolicy.Id;
                 policy.ContactId__r = contactRef;
                 String[] adaptCustNum = policy.CustomerNum__c.split('-');
                 String customerNumberOnly;
                 Account masterRef;
 
                 // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-                // if( policy.SourceCountry__c != 'Spain') {
-                //   customerNumberOnly = adaptCustNum[2];
-                //   masterRef = new Account(CustomerNum_EMEA__c = customerNumberOnly);
-                // } else {
-                //   customerNumberOnly = adaptCustNum[1];
-                //   masterRef = new Account(CustomerNum__c = customerNumberOnly);
-                // }
                 customerNumberOnly = adaptCustNum[adaptCustNum.size() - 1]; // get the last part. example: EMEA-GI-3291 => 3291
 
                 masterRef = new Account();
                 masterRef.put(customerNumField, customerNumberOnly);
-
-                //policy.AccountId=contactoPolicy.AccountId;
+                
                 policy.Account = masterRef;
                 policy.Status = Label.Order_Sync;
                 policy.Pricebook2Id = ExternalRequestUtil.Pricebook.Id;
@@ -560,12 +516,11 @@ global with sharing class OrderUtil
      * @author nbizkarra
      * @date 08/04/2020
      **/
-    public static void SummaryTotalPolicies(List<Order> newList)
+    public static void summaryTotalPolicies(List<Order> newList)
     {
         
         Set<Id> idSet = new Set<Id>();
         Set<Id> idSetQuotes = new Set<Id>();
-        Map<String, Contact> contactsToUpdate = new Map<String, Contact>();
 
         if (newList != null)
         {
@@ -655,7 +610,7 @@ global with sharing class OrderUtil
     public static void updateLastQuoteOnContact(List<Order> newList)
     {
         
-        Map<Id, Order> MapQuotes = new Map<Id, Order>();
+        Map<Id, Order> mapQuotes = new Map<Id, Order>();
         List<Contact> contacts = new List<Contact>();
         Map<Id, Contact> contactsToUpdate = new Map<Id, Contact>();
 
@@ -666,19 +621,19 @@ global with sharing class OrderUtil
                 //Actualiza solo quotes y excluye las quotes actualizadas en el postprocesamiento
                 if ( order.ContactId__c != null && order.PolicyNum__c == null && order.After_Processing_Check__c == true )
                 {
-                    MapQuotes.put(order.ContactId__c, order);
+                    mapQuotes.put(order.ContactId__c, order);
                 }
             }
 
-            if ( !MapQuotes.isEmpty() )
+            if ( !mapQuotes.isEmpty() )
             {
-                contacts = [ SELECT id, LastQuote__c FROM Contact WHERE id = :MapQuotes.keySet() ];
+                contacts = [ SELECT id, LastQuote__c FROM Contact WHERE id = :mapQuotes.keySet() ];
 
                 if (contacts != null)
                 {
                     for (Contact c : contacts)
                     {
-                        Order quote = MapQuotes.get(c.id);
+                        Order quote = mapQuotes.get(c.id);
 
                         if (quote != null)
                         {

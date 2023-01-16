@@ -33,8 +33,6 @@ public with sharing class WebServicesParser
      **/
     public class WebParserResult
     {
-        //public List<SObject> recordsList;
-
         public Map<String, SObject> recordsMap;
         public Map<String, String> errorMessagesMap;
         public Map<String, List<SObject> > secLvlRecordsMap;
@@ -262,7 +260,6 @@ public with sharing class WebServicesParser
                             Schema.SObjectType relRecObjType = Schema.getGlobalDescribe()
                                                                .get(fieldControl.RelatedObjectType__c);
                             parentObjectType = record.getSObjectType();
-                            //parenExtKey = extKey; // gpacho 2020-05-26
                             if (!fieldControl.Array__c)
                             {
                                 //Un solo elemento
@@ -274,7 +271,6 @@ public with sharing class WebServicesParser
                                 List<Object> nestedRecords = (List<Object>) element;
                                 manageObjectList(nestedRecords, errorMessages, relRecObjType);
                             }
-                            //extKey = parenExtKey; // gpacho 2020-05-26
                             relFieldName = actualFieldName;
                             parentObjectType = actualType;
                             nestedLevel--;
@@ -323,8 +319,6 @@ public with sharing class WebServicesParser
                         relFieldName.indexOf('.') + 1
                         );
                     
-                    
-                    //setParentRecord(record, fieldDescribe, parentObjectType, parentFieldName, parenExtKey); // gpacho 2020-05-26
                     setParentRecord(
                         record,
                         fieldDescribe,
@@ -359,7 +353,6 @@ public with sharing class WebServicesParser
                     String parentFieldName = relFieldName.substring(
                         relFieldName.indexOf('.') + 1
                         );
-                    //setParentRecord(record, fieldDescribe, parentObjectType, parentFieldName, parenExtKey); // gpacho 2020-05-26
                     setParentRecord(
                         record,
                         fieldDescribe,
@@ -444,10 +437,6 @@ public with sharing class WebServicesParser
                     }
                 }
             }
-            else
-            {
-                //TODO:Error al estar los campos en la metadata vacios
-            }
 
             for (String key : mapPick.keySet() )
             {
@@ -471,11 +460,6 @@ public with sharing class WebServicesParser
                     pickName = (String) mapPick.get(key);
                     valuesMap.put(pickName, pickId);
                 }
-                else
-                {
-                    //TODO: Añadir mensaje de error
-                }
-
                 
                 
                 String value = null;
@@ -510,12 +494,14 @@ public with sharing class WebServicesParser
                 
                 if (!String.isBlank(value) )
                 {
-                    writeObjectField(record, fieldControl, value, result, errorMessages);
+                    writeObjectField(record, fieldControl, value);
                 }
             }
         }
         catch (Exception ex)
-        {}
+        {
+            //Catch code
+        }
     }
 
     /**
@@ -538,7 +524,6 @@ public with sharing class WebServicesParser
         Double numericValue;
         Date dateValue;
         DateTime dateTimeValue;
-        String emailValue;
         Id idValue;
         Boolean booleanValue;
         Blob fileBody;
@@ -552,7 +537,6 @@ public with sharing class WebServicesParser
                 when BOOLEAN {
                     booleanValue = checkBoolean(
                         String.valueOf(value),
-                        fieldDescribe,
                         fieldControl,
                         errorMessages
                         ); // gpacho 2020-06-01 (String) value -> String.valueOf(value)
@@ -562,9 +546,7 @@ public with sharing class WebServicesParser
                         writeObjectField(
                             record,
                             fieldControl,
-                            booleanValue,
-                            result,
-                            errorMessages
+                            booleanValue
                             );
                     }
                 }
@@ -576,9 +558,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                null,
-                                result,
-                                errorMessages
+                                null
                                 );
                         }
                         else
@@ -594,7 +574,6 @@ public with sharing class WebServicesParser
                     {
                         dateValue = checkDate(
                             value,
-                            fieldDescribe,
                             fieldControl,
                             errorMessages
                             );
@@ -603,9 +582,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                dateValue,
-                                result,
-                                errorMessages
+                                dateValue
                                 );
                         }
                     }
@@ -618,9 +595,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                null,
-                                result,
-                                errorMessages
+                                null
                                 );
                         }
                         else
@@ -636,7 +611,6 @@ public with sharing class WebServicesParser
                     {
                         dateTimeValue = checkDateTime(
                             value,
-                            fieldDescribe,
                             fieldControl,
                             errorMessages
                             );
@@ -645,9 +619,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                dateTimeValue,
-                                result,
-                                errorMessages
+                                dateTimeValue
                                 );
                         }
                     }
@@ -662,9 +634,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                null,
-                                result,
-                                errorMessages
+                                null
                                 );
                         }
                         else
@@ -689,9 +659,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                numericValue,
-                                result,
-                                errorMessages
+                                numericValue
                                 );
                         }
                     }
@@ -704,9 +672,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                null,
-                                result,
-                                errorMessages
+                                null
                                 );
                         }
                         else
@@ -722,7 +688,6 @@ public with sharing class WebServicesParser
                     {
                         idValue = checkId(
                             value,
-                            fieldDescribe,
                             fieldControl,
                             errorMessages
                             );
@@ -731,9 +696,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                idValue,
-                                result,
-                                errorMessages
+                                idValue
                                 );
                         }
                     }
@@ -748,9 +711,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                null,
-                                result,
-                                errorMessages
+                                null
                                 );
                         }
                         else
@@ -785,9 +746,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                integerValue,
-                                result,
-                                errorMessages
+                                integerValue
                                 );
                         }
                     }
@@ -800,9 +759,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                null,
-                                result,
-                                errorMessages
+                                null
                                 );
                         }
                         else
@@ -843,9 +800,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                textValue,
-                                result,
-                                errorMessages
+                                textValue
                                 );
                         }
                     }
@@ -858,9 +813,7 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                null,
-                                result,
-                                errorMessages
+                                null
                                 );
                         }
                         else
@@ -876,7 +829,6 @@ public with sharing class WebServicesParser
                     {
                         fileBody = checkBase64String(
                             value,
-                            fieldDescribe,
                             fieldControl,
                             errorMessages
                             );
@@ -885,18 +837,22 @@ public with sharing class WebServicesParser
                             writeObjectField(
                                 record,
                                 fieldControl,
-                                fileBody,
-                                result,
-                                errorMessages
+                                fileBody
                                 );
                         }
                     }
+                }
+                when else 
+                {
+                    // else code
                 }
                 //...Others if necessary
             }
         }
         catch (Exception ex)
-        {}
+        {
+            //Catch code
+        }
         return record;
     }
 
@@ -968,8 +924,6 @@ public with sharing class WebServicesParser
     {
         List<WebServicesControl__mdt> metadataListAux;
         List<String> sourceListAux = new List<String>();
-        Map<String, String> mapMethodsAux;
-        Map<String, String> mapEntitiesAux;
 
         if (controlAux.Source__c.contains(';') )
         {
@@ -1061,13 +1015,9 @@ public with sharing class WebServicesParser
     private static void writeObjectField(
         SObject record,
         WebServicesControl__mdt fieldControl,
-        Object value,
-        WebParserResult result,
-        List<String> errorMessages
+        Object value
         )
     {
-        Object parentRecord;
-        Integer posAux;
         String relatedRecordFieldName;
         String fieldNameAux;
 
@@ -1183,7 +1133,6 @@ public with sharing class WebServicesParser
      **/
     private static Blob checkBase64String(
         Object value,
-        Schema.DescribeFieldResult fieldDescribe,
         WebServicesControl__mdt fieldControl,
         List<String> errorMessages
         )
@@ -1228,7 +1177,6 @@ public with sharing class WebServicesParser
      **/
     private static Boolean checkBoolean(
         String value,
-        Schema.DescribeFieldResult fieldDescribe,
         WebServicesControl__mdt fieldControl,
         List<String> errorMessages
         )
@@ -1273,7 +1221,6 @@ public with sharing class WebServicesParser
      **/
     private static Date checkDate(
         Object value,
-        Schema.DescribeFieldResult fieldDescribe,
         WebServicesControl__mdt fieldControl,
         List<String> errorMessages
         )
@@ -1318,7 +1265,6 @@ public with sharing class WebServicesParser
      **/
     private static DateTime checkDateTime(
         Object value,
-        Schema.DescribeFieldResult fieldDescribe,
         WebServicesControl__mdt fieldControl,
         List<String> errorMessages
         )
@@ -1443,7 +1389,6 @@ public with sharing class WebServicesParser
      **/
     private static Id checkId(
         Object value,
-        Schema.DescribeFieldResult fieldDescribe,
         WebServicesControl__mdt fieldControl,
         List<String> errorMessages
         )
@@ -1690,7 +1635,6 @@ public with sharing class WebServicesParser
                         fieldDescribe.getType() == Schema.DisplayType.MultiPicklist
                         )
                     {
-                        Boolean valid = true;
                         Map<String, String> valuesMap = new Map<String, String>();
 
                         if (fieldDescribe.getType() == Schema.DisplayType.MultiPicklist)

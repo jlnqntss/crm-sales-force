@@ -743,4 +743,31 @@ public class Test_ContactUtil
         System.assertEquals( contacto.sourceCountry__c + contacto.MobilePhone  , matchcode);
         
     }
+
+    /**
+     * Método que testea el método generateAccountIdSet
+     * @author jjuaristi@seidor.es
+     * @date 16/11/2022
+     */
+    @IsTest
+    static void test_generateAccountIdSet_OK ()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'PartnerOCS', 10);
+        insert accounts;
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'AgentMediator', 1);
+        insert contacts;
+        
+        List<Contact> contactsToCheck = [SELECT Id, AccountId FROM Contact WHERE AccountId != '' LIMIT 5];
+
+        Test.startTest();
+        Set<Id> accountIds = ContactUtil.generateAccountIdSet(contactsToCheck);
+        Test.stopTest();
+
+        List<Id> idList = new List<Id>();
+        for(contact currentContact : contactsToCheck )
+        {
+            idList.add(currentContact.AccountId);
+        }
+        System.assertEquals( true  , accountIds.containsAll(idList));
+    }
 }

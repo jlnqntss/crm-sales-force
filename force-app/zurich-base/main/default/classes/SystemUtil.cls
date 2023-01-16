@@ -10,11 +10,6 @@ public with sharing class SystemUtil
     private static final String ADMINSETUP_LABEL = 'AdminSetup';
     private static final String EMAIL_TO_RETURN = 'mng.dev';
 
-    // Map<String, String> legalIdentityByShort = new Map<String, String> {
-    //     'GI' => Label.GeneralInsurance,
-    //     'Life' => Label.LifeInsurance
-    // };
-
     private static final Map<String, String> legalIdentityByLabel = new Map<String, String> {
         Label.GeneralInsurance => 'GI',
         Label.LifeInsurance => 'Life'
@@ -861,7 +856,7 @@ public with sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Order> PolicySelector(SET<String> keys)
+    public static Map<String, Order> policySelector(SET<String> keys)
     {
         Map<String, Order> mapaPolicy = new Map<String, Order>();
         // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
@@ -965,7 +960,7 @@ public with sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Order> QuoteSelector(SET<String> keys)
+    public static Map<String, Order> quoteSelector(SET<String> keys)
     {
         Map<String, Order> mapaQuote = new Map<String, Order>();
 
@@ -1009,7 +1004,7 @@ public with sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, OrderItem> OrderItemSelector(SET<String> keys)
+    public static Map<String, OrderItem> orderItemSelector(SET<String> keys)
     {
         Map<String, OrderItem> mapaOrderItem = new Map<String, OrderItem>();
 
@@ -1033,7 +1028,7 @@ public with sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, PricebookEntry> ProductsSelector(SET<String> keys)
+    public static Map<String, PricebookEntry> productsSelector(SET<String> keys)
     {
         Map<String, PricebookEntry> mapaProducto = new Map<String, PricebookEntry>();
         List<PricebookEntry> listaProductos = [
@@ -1073,7 +1068,7 @@ public with sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Cover__c> CoversSelector(SET<String> keys)
+    public static Map<String, Cover__c> coversSelector(SET<String> keys)
     {
         Map<String, Cover__c> mapaCovers = new Map<String, Cover__c>();
 
@@ -1097,7 +1092,7 @@ public with sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Case> ClaimsSelector(SET<String> keys)
+    public static Map<String, Case> claimsSelector(SET<String> keys)
     {
         Map<String, Case> mapaClaims = new Map<String, Case>();
         List<Case> listaClaims = [
@@ -1120,15 +1115,15 @@ public with sharing class SystemUtil
      * @date 04/05/2020
      **/
     public static String createJSON(
-        ID ID,
+        ID id,
         String errorCode,
         String errorDescription,
         Datetime timeStamp,
-        String Origin,
-        String Country,
-        String Entity,
-        Datetime TimestampJson,
-        String Json
+        String origin,
+        String country,
+        String entity,
+        Datetime timestampJson,
+        String json
         )
     {
         String response = '';
@@ -1141,18 +1136,18 @@ public with sharing class SystemUtil
         JSONGenerator jsGen = System.JSON.createGenerator(false);
         // start object ({)
         jsGen.writeStartObject();
-        jsGen.writeStringField('salesForceId', ID);
+        jsGen.writeStringField('salesForceId', id);
         jsGen.writeStringField('errorCode', errorCode);
         jsGen.writeStringField('errorDescription', errorDescription);
         jsGen.writeStringField( 'timeStamp', String.valueOf(timeStamp) );
 
         jsGen.writeFieldName('json');
         jsGen.writeStartObject();
-        jsGen.writeStringField('Origin', Origin);
-        jsGen.writeStringField('Country', Country);
-        jsGen.writeStringField('Entity', Entity);
-        jsGen.writeStringField( 'TimestampJson', String.valueOf(TimestampJson) );
-        jsGen.writeStringField('Json', Json);
+        jsGen.writeStringField('Origin', origin);
+        jsGen.writeStringField('Country', country);
+        jsGen.writeStringField('Entity', entity);
+        jsGen.writeStringField( 'TimestampJson', String.valueOf(timestampJson) );
+        jsGen.writeStringField('Json', json);
         jsGen.writeEndObject();
         // end object (})
         jsGen.writeEndObject();
