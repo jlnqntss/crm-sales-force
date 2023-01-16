@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>MarcoActuacion__c</field>
-        <value xsi:type="xsd:string">Construcción</value>
+        <value xsi:type="xsd:string">Construccion</value>
     </values>
     <values>
         <field>PicklistIncExcNull__c</field>
