@@ -45,7 +45,10 @@
         >
         </lightning-button>
         <template if:true={showAll}>
-          <section aria-modal="true" class="slds-modal slds-fade-in-open">
+          <section
+            aria-modal="true"
+            class="slds-modal slds-fade-in-open slds-modal--large"
+          >
             <div class="slds-modal__container">
               <header class="slds-modal__header">
                 <h2 class="slds-text-heading_small">{title}</h2>
@@ -62,17 +65,18 @@
                   data={allRecords}
                   columns={columns.data}
                   hide-checkbox-column="true"
+                  column-widths-mode="auto"
                 >
                 </lightning-datatable>
-                <footer class="slds-modal__footer">
-                  <lightning-button
-                    variant="brand"
-                    label="Cancelar"
-                    onclick={closeModal}
-                    class="slds-p-around_x-small"
-                  ></lightning-button>
-                </footer>
               </div>
+              <footer class="slds-modal__footer">
+                <lightning-button
+                  variant="brand"
+                  label="Cancelar"
+                  onclick={closeModal}
+                  class="slds-p-around_x-small"
+                ></lightning-button>
+              </footer>
             </div>
           </section>
           <div class="slds-backdrop slds-backdrop_open"></div>
@@ -96,6 +100,7 @@
                   object-api-name="CustomerWarning__c"
                   layout-type="Full"
                   onsuccess={handleCreation}
+                  oncancel={closeModal}
                 >
                 </lightning-record-form>
               </div>

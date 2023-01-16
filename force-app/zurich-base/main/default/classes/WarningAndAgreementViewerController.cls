@@ -177,7 +177,6 @@ public with sharing class WarningAndAgreementViewerController
     @AuraEnabled
     public static Boolean checkPermission()
     {
-        System.debug(FeatureManagement.checkPermission(MANAGEMENT_CUSTOM_PERMISSION));
         return FeatureManagement.checkPermission(MANAGEMENT_CUSTOM_PERMISSION);
     }
 

@@ -1,5 +1,7 @@
 import { LightningElement, api, wire } from "lwc";
 import { refreshApex } from "@salesforce/apex";
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import { getObjectInfo } from "lightning/uiObjectInfoApi";
 import getFields from "@salesforce/apex/WarningAndAgreementViewerController.getFields";
 import getWarnings from "@salesforce/apex/WarningAndAgreementViewerController.getWarnings";
 import getAgreements from "@salesforce/apex/WarningAndAgreementViewerController.getAgreements";
@@ -8,7 +10,6 @@ import cancelAgreements from "@salesforce/apex/WarningAndAgreementViewerControll
 import cancelWarnings from "@salesforce/apex/WarningAndAgreementViewerController.cancelWarnings";
 import checkPermission from "@salesforce/apex/WarningAndAgreementViewerController.checkPermission";
 import createRelatedAccount from "@salesforce/apex/WarningAndAgreementViewerController.createRelatedAccount";
-import { getObjectInfo } from "lightning/uiObjectInfoApi";
 import WARNING_OBJECT from "@salesforce/schema/CustomerWarning__c";
 import AGREEMENT_OBJECT from "@salesforce/schema/Special_Condition__c";
 
@@ -150,7 +151,8 @@ export default class WarningAndAgreementViewer extends LightningElement {
     result.forEach((field) => {
       this.columns.push({
         label: field.label,
-        fieldName: field.fieldName
+        fieldName: field.fieldName,
+        wrapText: true
       });
     });
   }
@@ -164,7 +166,20 @@ export default class WarningAndAgreementViewer extends LightningElement {
     var selectedRecords = this.template
       .querySelector("lightning-datatable")
       .getSelectedRows();
-    await cancelAgreements({ agreements: selectedRecords });
+    if (selectedRecords.length !== 0) {
+      await cancelAgreements({ agreements: selectedRecords });
+      this.showToast(
+        "Acuerdos Desactivados",
+        "Acuerdos desactivados con éxito",
+        "success"
+      );
+    } else {
+      this.showToast(
+        "Acuerdos No Desactivados",
+        "No hay elementos seleccionados",
+        "error"
+      );
+    }
     refreshApex(this.connectedCallback());
   }
 
@@ -177,7 +192,21 @@ export default class WarningAndAgreementViewer extends LightningElement {
     var selectedRecords = this.template
       .querySelector("lightning-datatable")
       .getSelectedRows();
-    await cancelWarnings({ warnings: selectedRecords });
+    if (selectedRecords.length !== 0) {
+      await cancelWarnings({ warnings: selectedRecords });
+      this.showToast(
+        "Avisos Desactivados",
+        "Avisos desactivados con éxito",
+        "success"
+      );
+    } else {
+      this.showToast(
+        "Avisos No Desactivados",
+        "No hay elementos seleccionados",
+        "error"
+      );
+    }
+
     refreshApex(this.connectedCallback());
   }
 
@@ -218,5 +247,15 @@ export default class WarningAndAgreementViewer extends LightningElement {
       this.showedSize = 0;
       this.hideTable = true;
     }
+  }
+
+  showToast(title, message, variant) {
+    // success / error
+    const event = new ShowToastEvent({
+      title: title,
+      message: message,
+      variant: variant
+    });
+    this.dispatchEvent(event);
   }
 }
