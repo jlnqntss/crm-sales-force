@@ -35,12 +35,9 @@ public with sharing class CaseUtil
                 // we get this from the policy too
                 claim.CustomerNum__c = policySF.CustomerNum__c;
                 // nts (agonzalezisasi) - 18/dic/2020 - fix: when claim is IBA Spain add LegalEntity to the search if needed
-                if( !ExternalRequestUtil.isIBAMultiPartner && !ExternalRequestUtil.isEMEA )
+                if( !ExternalRequestUtil.isIBAMultiPartner && !ExternalRequestUtil.isEMEA &&(!claim.CustomerNum__c.contains('GI') && !claim.CustomerNum__c.contains('LIFE')))
                 {
-                    if( !claim.CustomerNum__c.contains('GI') && !claim.CustomerNum__c.contains('LIFE') )
-                    {
-                        claim.CustomerNum__c = ContactUtil.adaptCustomerNum(claim.CustomerNum__c, policySF.LegalEntity__c);
-                    }
+                    claim.CustomerNum__c = ContactUtil.adaptCustomerNum(claim.CustomerNum__c, policySF.LegalEntity__c);                    
                 }
 
                 if (claim.InsuredObjectId__c != null)
@@ -243,26 +240,23 @@ public with sharing class CaseUtil
                     }
 
                     //Si el caso es de la web de francia, asignar traducción del tipo y subtipo para la respuesta automática
-                    if ( caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c) )
+                    if ( caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c) &&(mapCountryTranslationField.containsKey(caso.SourceCountry__c)) )
                     {
-                        if ( mapCountryTranslationField.containsKey(caso.SourceCountry__c) )
+                        String fieldName = mapCountryTranslationField.get(caso.SourceCountry__c);
+                        String queryType = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Type + '\'';
+                        String querySubtype = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Subtype__c + '\'';
+
+                        List<Label_Translations__mdt> typeTranslaton = Database.query(queryType);
+                        List<Label_Translations__mdt> subTypeTranslation = Database.query(querySubtype);
+
+                        if ( typeTranslaton != null && !typeTranslaton.isEmpty() )
                         {
-                            String fieldName = mapCountryTranslationField.get(caso.SourceCountry__c);
-                            String queryType = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Type + '\'';
-                            String querySubtype = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Subtype__c + '\'';
+                            caso.Type_translation__c = (String) typeTranslaton[0].get(fieldName);
+                        }
 
-                            List<Label_Translations__mdt> typeTranslaton = Database.query(queryType);
-                            List<Label_Translations__mdt> subTypeTranslation = Database.query(querySubtype);
-
-                            if ( typeTranslaton != null && !typeTranslaton.isEmpty() )
-                            {
-                                caso.Type_translation__c = (String) typeTranslaton[0].get(fieldName);
-                            }
-
-                            if ( subTypeTranslation != null && !subTypeTranslation.isEmpty() )
-                            {
-                                caso.Subtype_translation__c = (String) subTypeTranslation[0].get(fieldName);
-                            }
+                        if ( subTypeTranslation != null && !subTypeTranslation.isEmpty() )
+                        {
+                            caso.Subtype_translation__c = (String) subTypeTranslation[0].get(fieldName);
                         }
                     }
                 }
@@ -340,29 +334,26 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if( caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() )
+                if( caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() && !String.isBlank(caso.SuppliedEmail))
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
-                    if( !String.isBlank(caso.SuppliedEmail) )
+                    //Utilizar el email del SuppliedEmail
+                    List<String> emailsToSearch = new List<String>();
+                    emailsToSearch.add(caso.SuppliedEmail);
+
+                    //Utilizar el scope del caso
+                    //AccountSearchService.Scope scope = new AccountSearchService.Scope();
+                    
+                    //Utilizar el AccountSearchService
+                    List<Account> matchedAccounts = new List<Account>();
+                    matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
+
+                    //Solo se continua si se ha encontrado un único cliente; si hay más de uno no se sabría por cuál decidir
+                    if(matchedAccounts.size() == 1)
                     {
-                        //Utilizar el email del SuppliedEmail
-                        List<String> emailsToSearch = new List<String>();
-                        emailsToSearch.add(caso.SuppliedEmail);
-
-                        //Utilizar el scope del caso
-                        //AccountSearchService.Scope scope = new AccountSearchService.Scope();
-                        
-                        //Utilizar el AccountSearchService
-                        List<Account> matchedAccounts = new List<Account>();
-                        matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
-
-                        //Solo se continua si se ha encontrado un único cliente; si hay más de uno no se sabría por cuál decidir
-                        if(matchedAccounts.size() == 1)
-                        {
-                            //Se asigna al caso la cuenta y el contacto
-                            caso.AccountId = matchedAccounts[0].Id;
-                            caso.ContactId = matchedAccounts[0].PersonContactId;
-                        }
+                        //Se asigna al caso la cuenta y el contacto
+                        caso.AccountId = matchedAccounts[0].Id;
+                        caso.ContactId = matchedAccounts[0].PersonContactId;
                     }
                 }
             }

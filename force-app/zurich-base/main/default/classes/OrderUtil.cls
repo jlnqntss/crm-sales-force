@@ -100,28 +100,25 @@ global without sharing class OrderUtil
 
         //Si el campo de itemId está vacio (workaround para life, en IBA no se puede crear el ID desde el step 1)
         //Se rellena el itemId con el quoteEntry, assumption: siempre va a haber 1 orderItem, si hay más se lanzará error
-        if ( quote.LegalEntity__c.equals(Label.LifeInsurance) )
+        if ( quote.LegalEntity__c.equals(Label.LifeInsurance) && ExternalRequestUtil.listOrderItems != null)
         {
-            if (ExternalRequestUtil.listOrderItems != null)
+            if (ExternalRequestUtil.listOrderItems.size() > 1)
             {
-                if (ExternalRequestUtil.listOrderItems.size() > 1)
+                throw new IntegrationException( Label.LifeObjectIdNull + ' ' + quote.QuoteEntry__c );
+            }
+            for (OrderItem item : ExternalRequestUtil.listOrderItems)
+            {
+                if (item.ItemId__c == null)
                 {
-                    throw new IntegrationException( Label.LifeObjectIdNull + ' ' + quote.QuoteEntry__c );
+                    item.ItemId__c = quote.QuoteEntry__c;
                 }
-                for (OrderItem item : ExternalRequestUtil.listOrderItems)
-                {
-                    if (item.ItemId__c == null)
-                    {
-                        item.ItemId__c = quote.QuoteEntry__c;
-                    }
 
-                    //Setear la relacion de las covers con orderItem
-                    if (ExternalRequestUtil.listCovers != null)
+                //Setear la relacion de las covers con orderItem
+                if (ExternalRequestUtil.listCovers != null)
+                {
+                    for (Cover__c cover : ExternalRequestUtil.listCovers)
                     {
-                        for (Cover__c cover : ExternalRequestUtil.listCovers)
-                        {
-                            cover.PolicyProduct__r.ItemId__c = item.ItemId__c;
-                        }
+                        cover.PolicyProduct__r.ItemId__c = item.ItemId__c;
                     }
                 }
             }
@@ -194,19 +191,16 @@ global without sharing class OrderUtil
                 pversion.OrderId__c = policy.id;
                 ExternalRequestUtil.policyVersionsToUpdateList.put( pversion.Name, pversion );
 
-                if ( !String.isBlank(policy.adjustmentReason__c) )
+                if (
+                    policy?.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_1.trim() ) ||
+                    policy?.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_2.trim() ) ||
+                    policy?.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_3.trim() )
+                    )
                 {
-                    if (
-                        policy.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_1.trim() ) ||
-                        policy.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_2.trim() ) ||
-                        policy.adjustmentReason__c.trim().equalsIgnoreCase( Label.P_AdjustmentReason_3.trim() )
-                        )
-                    {
-                        
-                        OrderItemUtil.deactivateOldProduct(
-                            policySF, ExternalRequestUtil.listOrderItems, ExternalRequestUtil.orderItemsToInsert
-                            );
-                    }
+                    
+                    OrderItemUtil.deactivateOldProduct(
+                        policySF, ExternalRequestUtil.listOrderItems, ExternalRequestUtil.orderItemsToInsert
+                        );
                 }
             }
 

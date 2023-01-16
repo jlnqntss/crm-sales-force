@@ -253,15 +253,12 @@ public class RollupSummariesUtil
                 throw new BadRollUpSummaryStateException( 'It is necessary to define all the information of the summary operation' );
             }
 
-            if (operation != summaryOperation.Count)
+            if (operation != summaryOperation.Count &&
+                ((!dateHourTypeMaster && !numberTypeMaster) ||
+                (!dateHourTypeDetail && !numberTypeDetail))
+                )
             {
-                if (
-                    (!dateHourTypeMaster && !numberTypeMaster) ||
-                    (!dateHourTypeDetail && !numberTypeDetail)
-                    )
-                {
-                    throw new BadRollUpSummaryStateException( 'Only the Date / Date Time / Time / Number fields are allowed for Sum, Max, Min and Avg' );
-                }
+                throw new BadRollUpSummaryStateException( 'Only the Date / Date Time / Time / Number fields are allowed for Sum, Max, Min and Avg' );
             }
 
             if (
