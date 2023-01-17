@@ -252,6 +252,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             u.alias                          = data.username.left(8);
             u.CommunityNickname              = data.username;
             if( u.UserRoleId != roleId )
+                u.UserRoleId                 = roleId;
             if( UserPermissions != null )
             { 
                 for(String UserPermission: UserPermissions)
