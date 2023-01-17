@@ -431,7 +431,9 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.MainMobilePhone__c,
                 Account.Phone,
                 Account.MainEmail__c,
-                Account.NationalId__c
+                Account.NationalId__c,
+                Account.INFOIntermediaryCode__c,
+                Account.TerritorialDirection__c
             }
         );
         //Devolver lista vacía
