@@ -12,9 +12,9 @@ public with sharing class SpecialConditionsSelector extends RecordsSelector
      * @params identifier identificador de la cuenta (CIF o código de mediador), field Campo con el que comparar el identificador
      * @return acuerdos
      */
-    public List<Special_Condition__c> findAgreements ( String Id, String dirTerritorial)
+    public List<Special_Condition__c> findAgreements ( String id, String dirTerritorial)
     {
-        if( Id != null && Id != '')
+        if( id != null && id != '')
         {
             this.baseQuery.selectReadableFields();
             this.baseQuery.addConditionEq(Special_Condition__c.Type__c, 'Agreement');
@@ -25,7 +25,7 @@ public with sharing class SpecialConditionsSelector extends RecordsSelector
                 // nacional, se pone nacional en el campo
             Query.Condition condition = Query.doOr
             (
-                Query.conditionEq(Special_Condition__c.Business_Name__c, Id),
+                Query.conditionEq(Special_Condition__c.Business_Name__c, id),
                 Query.conditionEq(Special_Condition__c.Global__c, true),
                 Query.doAnd
                 (

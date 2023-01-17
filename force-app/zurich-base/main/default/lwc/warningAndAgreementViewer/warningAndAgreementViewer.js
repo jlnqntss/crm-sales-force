@@ -149,7 +149,7 @@ export default class WarningAndAgreementViewer extends LightningElement {
    * @date 10/01/2023
    */
   async disableAgreements() {
-    var selectedRecords = this.template
+    let selectedRecords = this.template
       .querySelector("c-custom-datatable")
       .getSelectedRows();
     if (selectedRecords.length !== 0) {
@@ -175,7 +175,7 @@ export default class WarningAndAgreementViewer extends LightningElement {
    * @date 10/01/2023
    */
   async disableWarnings() {
-    var selectedRecords = this.template
+    let selectedRecords = this.template
       .querySelector("lightning-datatable")
       .getSelectedRows();
     if (selectedRecords.length !== 0) {
