@@ -527,6 +527,32 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, agrupated.isEmpty(), 'Deberia haber cuentas de Agrupacion de Intermediarios');
     }
 
+    @isTest
+    static void test_findIntermediariesByParentId()
+    {
+        AccountsSelector accSel = new AccountsSelector();
+        
+        List<Account> agrupations = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtAgrupationId];
+        System.assertEquals(1, agrupations.size(), 'Deberia haber 1 agrupacion');
+
+        List<Account> accounts = [SELECT ParentId FROM Account WHERE RecordTypeId = :accSel.rtIntermediaryId LIMIT 4];
+        System.assert(!accounts.isEmpty(), 'Deberia haber cuentas');
+
+        for (Account account : accounts)
+        {
+            account.ParentId = agrupations.get(0).Id;
+        }
+
+        update accounts;
+
+        Test.startTest();
+        List<Account> intermediaries = accSel.findIntermediariesByParentId(new Set<Id>{agrupations.get(0).Id});
+        Test.stopTest();
+
+        System.assert(!intermediaries.isEmpty(), 'Debería haber intermediarios');
+        System.assertEquals(accounts.size(), intermediaries.size(), 'Debería haber ' + accounts.size() + ' intermediarios.');
+    }
+
     /**
      * Test del metodo que busca un email en los campos dados
      *
