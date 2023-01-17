@@ -298,6 +298,8 @@
         <profile>SDM RN</profile>
     </profileActionOverrides>
     <tabs>standard-home</tabs>
+    <tabs>Mobile_Home_SDM_RN</tabs>
+    <tabs>standard-MobileHome</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Task</tabs>
     <tabs>PlanComercial__c</tabs>
@@ -315,6 +317,9 @@
     <workspaceConfig>
         <mappings>
             <tab>Alertas_por_Mediador</tab>
+        </mappings>
+        <mappings>
+            <tab>Mobile_Home_SDM_RN</tab>
         </mappings>
         <mappings>
             <tab>GenerarPlan</tab>
@@ -345,6 +350,9 @@
         </mappings>
         <mappings>
             <tab>standard-Feed</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-MobileHome</tab>
         </mappings>
         <mappings>
             <fieldName>WhoId</fieldName>
