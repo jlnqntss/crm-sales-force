@@ -11528,6 +11528,17 @@
         <layout>Macro-Macro Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Objective__c-Frequency of notifications</layout>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+        <recordType>Objective__c.Objectives</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Opportunity-Opportunity Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
