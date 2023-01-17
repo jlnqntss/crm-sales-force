@@ -11,7 +11,7 @@
  * @update 26/oct/2020 - nts (agonzalezisasi) - Add Customer Multi-Partner logic
  * 
  **/
-global without sharing class ExternalRequestUtil {
+global with sharing class ExternalRequestUtil {
   // Declare variables
 
   // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
@@ -493,11 +493,9 @@ global without sharing class ExternalRequestUtil {
       // Throw error if it is a General insurance quote and any itemId is empty
       // if (incomingOrder.LegalEntity__c.equals(Label.GeneralInsurance)) {
         for (OrderItem orderItem : orderItemList) {
-          if (incomingOrder.LegalEntity__c.equals(Label.GeneralInsurance)) {
+          if (incomingOrder.LegalEntity__c.equals(Label.GeneralInsurance) && String.isBlank(orderItem.itemId__c)) {
               // Throw error if it is a General insurance quote and any itemId is empty
-              if (String.isBlank(orderItem.itemId__c)) {
-                throw new IntegrationException( Label.ParseError + ': Missing objectID' );
-              }
+              throw new IntegrationException( Label.ParseError + ': Missing objectID' );              
           }
           // nts (agonzalezisasi) - 27/nov/2020 - add prefix to all
           if( String.isNotBlank(orderItem.itemId__c) ) {
@@ -587,11 +585,8 @@ global without sharing class ExternalRequestUtil {
 
           }
 
-        } else if (entityType == 'QuoteEntry') {
-
-          if(quotesToProcess.containsKey(actualRequest.id))
+        } else if (entityType == 'QuoteEntry' && quotesToProcess.containsKey(actualRequest.id)) {
             quotesToProcess.get(actualRequest.id).InsuredObjectName__c = deviceName;
-
         }
       }  
     }
@@ -1030,7 +1025,6 @@ global without sharing class ExternalRequestUtil {
     }
 
     if (contactsToUpdate != null && !contactsToUpdate.isEmpty()) {
-      //upsert contactsToUpdate.values() Contact.Fields.CustomerNum__c;
 
       upsert contactsToUpdate.values();
     }

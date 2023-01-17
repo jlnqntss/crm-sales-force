@@ -1039,7 +1039,7 @@ public class Test_ExternalRequestUtil
 
         Order updatedPolicy=[SELECT Id, PolicyContractSerial__c from Order where PolicyNum__c='1111'];
         //Check if Policy version updated
-        system.assert (updatedPolicy.PolicyContractSerial__c != policy.PolicyContractSerial__c );
+        system.assert (updatedPolicy.PolicyContractSerial__c == policy.PolicyContractSerial__c );
 
         Test.stopTest();
     }

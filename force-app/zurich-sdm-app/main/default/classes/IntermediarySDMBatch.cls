@@ -57,6 +57,7 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
                 'Name',
                 'NationalId__c',
                 'ParentId',
+                'Status__c',
                 'StatusIntermediary__c',
                 'MainMobilePhone__c'
             };

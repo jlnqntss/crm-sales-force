@@ -5,7 +5,7 @@
  * @date 02/04/2020
  * @testClass Test_SystemUtil
  */
-public without sharing class SystemUtil
+public with sharing class SystemUtil
 {
     private static final String ADMINSETUP_LABEL = 'AdminSetup';
     private static final String EMAIL_TO_RETURN = 'mng.dev';
@@ -800,18 +800,15 @@ public without sharing class SystemUtil
 
             // nts (nbizkarra) - 17/11/2020 - get subscribed contacts by email
             // Subscribers from lead
-            if( mapSubscribers != null )
+            if( mapSubscribers != null && con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c )
             {
-                if( con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c )
+                if( mapSubscribers.containsKey(con.Email) )
                 {
-                    if( mapSubscribers.containsKey(con.Email) )
-                    {
-                        mapSubscribers.get(con.Email).add(con);
-                    }
-                    else
-                    {
-                        mapSubscribers.put(con.Email, new List<Contact> {con});
-                    }
+                    mapSubscribers.get(con.Email).add(con);
+                }
+                else
+                {
+                    mapSubscribers.put(con.Email, new List<Contact> {con});
                 }
             }
         }

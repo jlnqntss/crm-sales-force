@@ -2,7 +2,7 @@
  * @author nbizkarra
  * @date 01/04/2020
  **/
-global without sharing class ContactUtil
+global with sharing class ContactUtil
 {
     /**
      * Método que adapta el número de cliente para cada entidad legal
@@ -632,28 +632,25 @@ global without sharing class ContactUtil
                 for ( Contact cont : mapContactos.values() )
                 {
                     Order quote = mapQuotes.get(cont.LastQuote__c);
-                    if (quote.QbLastPage__c != null)
+                    //Si está en el step 4
+                    if ( quote?.QbLastPage__c.equalsIgnoreCase('elige tu protección') ||
+                            quote?.QbLastPage__c.equalsIgnoreCase('quote configuration') )
                     {
-                        //Si está en el step 4
-                        if ( quote.QbLastPage__c.equalsIgnoreCase('elige tu protección') ||
-                             quote.QbLastPage__c.equalsIgnoreCase('quote configuration') )
+                        //Si solo cambia dirección, ha pasado al step 5
+                        if (
+                            cont.MailingStreet != oldMap.get(cont.Id).MailingStreet &&
+                            cont.CreditCard__c == oldMap.get(cont.Id).CreditCard__c
+                            )
                         {
-                            //Si solo cambia dirección, ha pasado al step 5
-                            if (
-                                cont.MailingStreet != oldMap.get(cont.Id).MailingStreet &&
-                                cont.CreditCard__c == oldMap.get(cont.Id).CreditCard__c
-                                )
-                            {
-                                quote.Step__c = 'Step5';
-                                quotesToUpdate.put(quote.id, quote);
-                            }
-                            else if (
-                                cont.CreditCard__c != oldMap.get(cont.Id).CreditCard__c
-                                )
-                            {
-                                quote.Step__c = 'Step6';
-                                quotesToUpdate.put(quote.id, quote);
-                            }
+                            quote.Step__c = 'Step5';
+                            quotesToUpdate.put(quote.id, quote);
+                        }
+                        else if (
+                            cont.CreditCard__c != oldMap.get(cont.Id).CreditCard__c
+                            )
+                        {
+                            quote.Step__c = 'Step6';
+                            quotesToUpdate.put(quote.id, quote);
                         }
                     }
                 }

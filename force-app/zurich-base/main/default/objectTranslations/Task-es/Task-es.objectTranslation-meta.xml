@@ -43,6 +43,10 @@
             <label><!-- Fields --></label>
             <section>Fields</section>
         </sections>
+        <sections>
+            <label>Información del sistema</label>
+            <section>System Information</section>
+        </sections>
     </layouts>
     <layouts>
         <layout>Interaction</layout>

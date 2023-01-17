@@ -112,18 +112,16 @@ public with sharing class PlanComercialSDM {
                 if( kpisMonth != null && !kpisMonth.isEmpty() ) kpis.addAll(kpisMonth);
             }
 
-            if( containsYTD ) {
-                // Recuperamos los KPIs ANUALES de los mediadores. Hay una foto por cada mes pero es acumulada, por tanto
-                // debemos obtener los KPIs anuales de la ultima foto=mes disponible
-                if( this.lastMonthOfYear != null ) {
-                    List<KPI__c> kpisAnnual = new KPIsSelector().findByIntermediaryIds(
-                        new List<Id>(intermediaries), 
-                        new List<String>{KPIsSelector.TEMPORALIDAD_YTD},
-                        this.thisYear, this.lastMonthOfYear,
-                        fields
-                    );
-                    if( kpisAnnual != null && !kpisAnnual.isEmpty() ) kpis.addAll(kpisAnnual);
-                }
+            // Recuperamos los KPIs ANUALES de los mediadores. Hay una foto por cada mes pero es acumulada, por tanto
+            // debemos obtener los KPIs anuales de la ultima foto=mes disponible
+            if( containsYTD && this.lastMonthOfYear != null ) {
+                List<KPI__c> kpisAnnual = new KPIsSelector().findByIntermediaryIds(
+                    new List<Id>(intermediaries), 
+                    new List<String>{KPIsSelector.TEMPORALIDAD_YTD},
+                    this.thisYear, this.lastMonthOfYear,
+                    fields
+                );
+                if( kpisAnnual != null && !kpisAnnual.isEmpty() ) kpis.addAll(kpisAnnual);
             }
             
             // Si se ha encontrado algo...
@@ -189,8 +187,8 @@ public with sharing class PlanComercialSDM {
                 result = firstField;
             } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_RATIO) ) {
                 if( secondField != 0 ) result = (firstField / secondField);
-            } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_GROWTH) ) {
-                if( secondField != 0 ) result = (firstField / secondField) - 1;
+            } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_GROWTH) && secondField != 0) {
+                result = (firstField / secondField) - 1;
             }
         }
 

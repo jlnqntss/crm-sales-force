@@ -1,15 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>52.0</apiVersion>
-    <description>SDM: añadir valor de indicador APES</description>
+    <constants>
+        <description>DeveloperName del RT del Objeto Objective__c para la Frecuencia de Notificaciones.</description>
+        <name>FrequencyNotificationsRTDeveloperName</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>FrequencyNotifications</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>DeveloperName del RecordType del Plan Comercial Mensual</description>
+        <name>MensualPlanRTDeveloperName</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>MensualPlan</stringValue>
+        </value>
+    </constants>
+    <description>SDM: desmarca las notificaciones de los planes de acción en caso de que se modifique uno de los criterios establecidos para sus envíos.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>DaysLeft</name>
+        <dataType>Date</dataType>
+        <expression>IF(
+    MONTH({!LastDayOfTheMonth} - {!GetFrequencyNotificationsAction.DaysLeft__c}) &lt;&gt; MONTH({!LastDayOfTheMonth}) ,
+   TODAY() + DAY({!LastDayOfTheMonth}), 
+   TODAY() + {!GetFrequencyNotificationsAction.DaysLeft__c}
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Se calcula cuál es el último día del mes en curso.</description>
+        <name>LastDayOfTheMonth</name>
+        <dataType>Date</dataType>
+        <expression>IF(
+  MONTH( TODAY()) = 12,
+  DATE( YEAR( TODAY()), 12, 31 ),
+  DATE( YEAR( TODAY()), MONTH ( TODAY()) + 1, 1 ) - 1 
+)</expression>
+    </formulas>
     <formulas>
         <description>Calcula los valores de &quot;Sent notifications&quot; para desmarcar en caso de que se haya dejado de cumplir con la condición.</description>
         <name>SentNotificationPicklist</name>
         <dataType>String</dataType>
         <expression>IF ( {!TargetKPIReached}, &quot;01;&quot; ,  &quot;&quot;)
 &amp;
-IF({!$Record.EndDate__c} &lt;= TODAY()+7, &quot;02;&quot; , &quot;&quot;)
+IF
+(
+  AND({!$Record.RecordType.DeveloperName} != {!MensualPlanRTDeveloperName}, {!$Record.EndDate__c} &lt;= TODAY()+7),
+  &quot;02;&quot; , 
+  IF
+  ( 
+    AND({!$Record.RecordType.DeveloperName} = {!MensualPlanRTDeveloperName}, {!$Record.EndDate__c} &lt;= {!DaysLeft}),
+    &quot;02;&quot;,
+    &quot;&quot;
+  )
+)
 &amp;
 IF( {!$Record.EndDate__c} &lt;= TODAY(),&quot;03;&quot; ,  &quot;&quot;)
 &amp;
@@ -32,7 +77,6 @@ IF( {!$Record.EndDate__c} &lt;= TODAY(),&quot;03;&quot; ,  &quot;&quot;)
   &quot;Ratio_Claim&quot;,  {!$Record.TargetKPIPercent__c},
   &quot;Ratio_Retention&quot;,  {!$Record.TargetKPIPercent__c},
   &quot;Totaldiscount&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;APES&quot;,  {!$Record.TargetKPICurrency__c},
   0
 )</expression>
         <scale>2</scale>
@@ -69,7 +113,7 @@ IF( {!$Record.EndDate__c} &lt;= TODAY(),&quot;03;&quot; ,  &quot;&quot;)
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -79,11 +123,59 @@ IF( {!$Record.EndDate__c} &lt;= TODAY(),&quot;03;&quot; ,  &quot;&quot;)
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Se obtienen la frecuencia de notificación de los planes mensuales. Se encuentra almacenado en el tipo de registro &apos;Frequency of notifications&apos; del objeto Objective__c.</description>
+        <name>GetFrequencyNotificationsAction</name>
+        <label>Get Frequency Notifications</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Change_Sent_values</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>FrequencyNotificationsRecordTypeId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Objective__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>DaysLeft__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Se obtiene el Id del Record Type &apos;Frequency of Notifications&apos; del objeto Objective__c para las notificaciones del plan mensual.</description>
+        <name>GetFrequencyNotificationsRecordTypeAction</name>
+        <label>Get Frequency Notifications Record Type</label>
+        <locationX>176</locationX>
+        <locationY>311</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetFrequencyNotificationsAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>FrequencyNotificationsRTDeveloperName</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>FrequencyNotificationsRecordTypeId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
     <recordUpdates>
         <name>Change_Sent_values</name>
         <label>Change Sent values</label>
-        <locationX>109</locationX>
-        <locationY>345</locationY>
+        <locationX>176</locationX>
+        <locationY>551</locationY>
         <inputAssignments>
             <field>SentNotifications__c</field>
             <value>
@@ -93,10 +185,10 @@ IF( {!$Record.EndDate__c} &lt;= TODAY(),&quot;03;&quot; ,  &quot;&quot;)
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>49</locationX>
-        <locationY>23</locationY>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>Change_Sent_values</targetReference>
+            <targetReference>GetFrequencyNotificationsRecordTypeAction</targetReference>
         </connector>
         <filterLogic>1 OR 2 OR 3 OR 4</filterLogic>
         <filters>
@@ -132,4 +224,12 @@ IF( {!$Record.EndDate__c} &lt;= TODAY(),&quot;03;&quot; ,  &quot;&quot;)
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <description>Id del Record Type del objeto Objective__c para la Frecuencia de notificaciones.</description>
+        <name>FrequencyNotificationsRecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>

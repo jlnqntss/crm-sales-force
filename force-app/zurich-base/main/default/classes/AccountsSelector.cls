@@ -457,13 +457,42 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.selectFields (
             new List<Schema.SObjectField> {
                 Account.Id,
-                Account.NationalId__c
+                Account.NationalId__c,
+                Account.Status__c,
+                Account.StatusIntermediary__c
             }
         );
         this.baseQuery.addConditionEq(Account.RecordTypeId, rtAgrupationId);
         this.baseQuery.addConditionIn(Account.NationalId__c, natIdSet); //Meter parte del filtro del NationalId
 
         return (List<Account>) this.baseQuery.run();
+    }
+
+    public List<Account> findIntermediariesByParentId(Set<Id> parentIds)
+    {
+        List<Account> intermediaries = new List<Account>();
+
+        if (parentIds != null && !parentIds.isEmpty())
+        {
+            this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+                {
+                    Account.Id,
+                    Account.ParentId,
+                    Account.NationalId__c,
+                    Account.Status__c,
+                    Account.StatusIntermediary__c
+                }
+            );
+    
+            this.baseQuery.addConditionIn(Account.ParentId, parentIds);
+            this.baseQuery.addConditionEq(Account.RecordTypeId, rtIntermediaryId);
+    
+            intermediaries = (List<Account>) this.baseQuery.run();
+        }
+
+        return intermediaries;
     }
 
     /**

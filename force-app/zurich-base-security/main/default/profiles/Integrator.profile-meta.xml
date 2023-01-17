@@ -3654,6 +3654,51 @@
     </customSettingAccesses>
     <fieldPermissions>
         <editable>true</editable>
+        <field>AccionesTratadasActa__c.Actions__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccionesTratadasActa__c.DueDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>AccionesTratadasActa__c.Observations__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccionesTratadasActa__c.PersonInCharge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.Attendees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Acta__c.IsViewedByCreator__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.MeetingObjective__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.OtherInformation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.AccidentRate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4355,6 +4400,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.SubscriptionEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SelfServiceQuotation__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7499,6 +7549,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Acta__c</field>
+        <readable>true</readable>
+    </fieldPermissions>    
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.ANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8897,6 +8952,10 @@
         <field>Objective__c.August__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Objective__c.DaysLeft__c</field>
+	</fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Objective__c.December__c</field>
@@ -11050,6 +11109,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Special_Condition__c.StartDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Acta__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14139,6 +14203,12 @@
         <flow>ZESearchAndScreenPop</flow>
     </flowAccesses>
     <layoutAssignments>
+        <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
+    </layoutAssignments>	
+	<layoutAssignments>
+        <layout>Acta__c-Acta Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -14378,6 +14448,17 @@
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Frequency of notifications</layout>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+        <recordType>Objective__c.Objectives</recordType>
+	</layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Opportunity Layout</layout>
     </layoutAssignments>
@@ -14818,6 +14899,24 @@
         <endAddress>255.255.255.255</endAddress>
         <startAddress>0.0.0.0</startAddress>
     </loginIpRanges>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>AccionesTratadasActa__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>	
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Acta__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -16472,6 +16571,17 @@
     <recordTypeVisibilities>
         <default>true</default>
         <recordType>ExternalRequest__c.GENERIC</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
+        <recordType>Objective__c.Objectives</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

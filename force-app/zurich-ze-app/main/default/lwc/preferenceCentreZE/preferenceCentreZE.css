@@ -201,6 +201,7 @@ div.name {
   transform: translate3d(0, 0, 0);
   color: #ccc;
   font-size: 20px;
+  margin-left: 8px;
 }
 .cbx span svg {
   position: absolute;
@@ -229,9 +230,6 @@ div.name {
   border-radius: 50%;
   transition-delay: 0.2s;
 }
-.cbx span {
-  margin-left: 8px;
-}
 .cbx:hover span {
   border-color: #009ee0;
 }
@@ -240,6 +238,8 @@ div.name {
   border-color: #009ee0;
   background: #009ee0;
   animation: check 0.6s ease;
+  color: #000;
+  transition: all 0.3s ease;
 }
 .inp-cbx:checked + .cbx span svg {
   stroke-dashoffset: 0;
@@ -248,10 +248,6 @@ div.name {
   transform: scale(2.2);
   opacity: 0;
   transition: all 0.6s ease;
-}
-.inp-cbx:checked + .cbx span {
-  color: #000;
-  transition: all 0.3s ease;
 }
 .inp-cbx:checked + .cbx span:after {
   transform: scaleX(1);

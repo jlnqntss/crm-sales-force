@@ -6,7 +6,6 @@
 const GitlabAPIService = require("./GitLabAPI").default;
 const { getLastSemanticTag, SemanticTag } = require("./SemanticTag");
 
-
 async function main() {
   try {
     const gitLabService = new GitlabAPIService({
