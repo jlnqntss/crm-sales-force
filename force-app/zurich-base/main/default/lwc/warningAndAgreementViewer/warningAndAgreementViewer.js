@@ -212,9 +212,9 @@ export default class WarningAndAgreementViewer extends LightningElement {
 
   filterActiveRecords() {
     let filteredList = [];
-    for (let i = 0; i < this.allRecords.length; i++) {
-      if (this.allRecords[i].IsActive__c === true) {
-        filteredList.push(this.allRecords[i]);
+    for (let record of this.allRecords) {
+      if (record.IsActive__c === true) {
+        filteredList.push(record);
       }
     }
     if (filteredList.length !== 0) {
