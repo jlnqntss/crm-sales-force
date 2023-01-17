@@ -3300,8 +3300,11 @@ public class TestDataFactory
      * @param {String year} Año del objetivo
      * @param {Integer num} Numero a crear
      * @return {List<ContactRequest>} la lista creada
+     * @change amiranda 04/01/2023 Se añade el campo 'RecordTypeId' con el Id del tipo de registro 'Objectives'
      */
     public static List<Objective__c> generateObjectives(String year, Integer num) {
+
+        Id objectiveRTId = Schema.SObjectType.Objective__c.getRecordTypeInfosByDeveloperName().get('Objectives')?.getRecordTypeId();
 
         List<Objective__c> result = new List<Objective__c>();
         for (Integer i = 0; i < num; i++) {
@@ -3313,7 +3316,8 @@ public class TestDataFactory
                     Product__c = 'Accidentes',
                     Zone__c = PlanComercialSelector.ZONE_11_BARCELONA,
                     January__c = 100,
-                    ExternalId__c = String.valueOf(i)
+                    ExternalId__c = String.valueOf(i),
+                    RecordTypeId = objectiveRTId
                 )
             );
         }
@@ -3330,10 +3334,13 @@ public class TestDataFactory
      * @param {String year} Año del objetivo
      * @param {Integer num} Numero a crear
      * @return {Objective__c} 
+     * @change amiranda 04/01/2023 Se añade el campo 'RecordTypeId' con el Id del tipo de registro 'Objectives'
      */
     public static Objective__c generateObjective(Integer year, String indicator, String segment, String product, String zone, Decimal january, Decimal february, Decimal march, Decimal april,
                                                     Decimal may, Decimal june, Decimal july, Decimal august, Decimal september,
                                                     Decimal october, Decimal november, Decimal december) {
+
+        Id objectiveRTId = Schema.SObjectType.Objective__c.getRecordTypeInfosByDeveloperName().get('Objectives')?.getRecordTypeId();
 
         Objective__c obj = new Objective__c(
                     Year__c = String.valueOf(year),
@@ -3353,7 +3360,8 @@ public class TestDataFactory
                     October__c = october,
                     November__c = november,
                     December__c = december,
-                    Active__c = true
+                    Active__c = true,
+                    RecordTypeId = objectiveRTId
                 );
 
         return obj;

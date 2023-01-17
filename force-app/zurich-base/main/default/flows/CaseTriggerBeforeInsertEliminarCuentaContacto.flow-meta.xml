@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <assignments>
+        <name>DeleteAccountContactAssignment</name>
+        <label>Eliminar asignación de cuenta y contacto</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.AccountId</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.ContactId</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>RecordTypeDecision</name>
+        <label>¿Tipo de registro?</label>
+        <locationX>314</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>USPOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DeleteAccountContactAssignment</targetReference>
+            </connector>
+            <label>USP</label>
+        </rules>
+        <rules>
+            <name>OCSOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <label>OCS</label>
+        </rules>
+    </decisions>
+    <description>Para aquellos casos provenientes de Email-to-case se elimina la cuenta y contacto que el comportamiento por defecto de dicha funcionalidad informa. Esto es debido a que Salesforce busca en el conjunto de todos los contactos del sistema, sin importar su tipo o la visibilidad del usuario sobre dicho contacto. Si se desea informar estos campos, deberá hacerse un desarrollo para cada caso de uso en particular.
+https://help.salesforce.com/s/articleView?id=000385630&amp;type=1</description>
+    <environments>Default</environments>
+    <interviewLabel>Case Trigger - Before insert - Eliminar cuenta y contacto {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Trigger - Before insert - Eliminar cuenta y contacto</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>RecordTypeDecision</targetReference>
+        </connector>
+        <filterFormula>AND(ISPICKVAL({!$Record.Origin},&quot;Email&quot;),ISBLANK({!$Record.ParentId}),{!$User.Alias}=&quot;autocase&quot;)</filterFormula>
+        <object>Case</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+    <triggerOrder>15</triggerOrder>
+</Flow>

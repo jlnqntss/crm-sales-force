@@ -5,27 +5,45 @@
   >
     <div class="slds-grid slds-gutters slds-p-horizontal_medium">
       <div class="slds-col slds-size_2-of-3">
+        <!--nombre usuario logueado-->
         <div
           class="slds-text-body_regular slds-p-around_medium slds-p-top_small"
         >
           <strong>RN: {currentUserName}</strong>
         </div>
-        <!--nombre usuario logueado-->
         <div class="slds-grid slds-gutters slds-p-top_small">
           <!--input text filtrar en multipicklist-->
           <div class="slds-col slds-size_1-of-2">
-            <div
-              class="slds-p-around_medium slds-p-right_small lgc-bg"
-              onkeyup={handleKeyUp}
-            >
+            <div class="slds-p-around_medium slds-p-right_small lgc-bg">
               <lightning-input
                 type="search"
+                is-loading={isLoadingSearch}
                 label={labels.SDM_ControlIntermediaryNotifiaction_Intermediary}
                 placeholder={labels.SDM_ControlIntermediaryNotifiaction_IntermediaryPlaceholder}
+                onchange={handleFilterOnChange}
               >
               </lightning-input>
             </div>
           </div>
+        </div>
+        <!--Botones activar/desactivar all-->
+        <div class="slds-m-top_small slds-m-bottom_medium slds-m-left_x-small">
+          <lightning-button
+            variant="brand"
+            label={labels.SDM_ControlIntermediaryNotifiaction_InactiveAll}
+            title="DesactivarTodo"
+            onclick={handleInactiveAll}
+            class="slds-m-left_x-small"
+            disabled={disableInactiveAll}
+          ></lightning-button>
+          <lightning-button
+            variant="brand"
+            label={labels.SDM_ControlIntermediaryNotifiaction_ActiveAll}
+            title="ActivarTodo"
+            onclick={handleActiveAll}
+            class="slds-m-left_x-small"
+            disabled={disableActiveAll}
+          ></lightning-button>
         </div>
         <div class="slds-p-around_medium">
           <!--multipicklist-->
@@ -60,6 +78,12 @@
               onclick={handleSave}
               class="slds-p-right_small"
             ></lightning-button>
+            <template if:true={showSaveSpinner}>
+              <lightning-spinner
+                alternative-text="Loading"
+                size="medium"
+              ></lightning-spinner>
+            </template>
           </div>
         </template>
       </div>

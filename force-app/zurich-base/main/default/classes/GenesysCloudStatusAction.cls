@@ -60,7 +60,7 @@ public with sharing class GenesysCloudStatusAction
                 }
                 catch (Exception e)
                 {
-                    
+                  //Catch code  
                 }
             }
             listaRetorno.add(listaValores);

@@ -218,4 +218,42 @@ public with sharing class OpportunityUtil
         }
         return mapOpportunitiesToRelateByCreatedOffer;
     }
+
+        /* 
+    * Si el usuario conectado es un ZE_Advisor no dejar modificar el Owner a excepción de si el OldOwner es Integrator.
+    * @author jpereztirado - nts
+    * @created date 20/12/2022
+    * @param newList List<Opportunity> lista de oportunidades a updatear con los datos actualizados
+    * @param oldMap Map<Id, Opportunity> mapa de las oportunidades a actualizar, con los datos anteriores al update
+    */ 
+    public static void validateChangeOwner(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
+    {
+        List<PermissionSetAssignment> userList = [SELECT AssigneeId,Assignee.Profile.Name FROM PermissionSetAssignment WHERE (PermissionSet.Name = 'ZE_Advisor' OR Assignee.Profile.Name='Integrator') 
+            AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
+		Id integratorId=null;
+        for (Opportunity newOpty : newList)
+        {
+            Opportunity oldOpty = oldMap.get(newOpty.Id);
+            if (newOpty.OwnerId != oldOpty.OwnerId)
+            { 
+                Map<Id, PermissionSetAssignment> mapUsersZEAdvisors = new Map<Id, PermissionSetAssignment>();
+                for(PermissionSetAssignment user : userList)
+                {
+ 					if (user.Assignee.Profile.Name == 'Integrator')
+                    {
+                    	integratorId = user.AssigneeId;
+                    }
+                    else
+                    {
+                    	mapUsersZEAdvisors.put(user.AssigneeId, user);
+                    }
+                }
+                if (mapUsersZEAdvisors.get(UserInfo.getUserId()) != null && oldOpty.OwnerId != integratorId)
+                {
+                    //ERROR: Agregar el mensaje a nivel de campo 
+                    newOpty.addError('OwnerId', Label.OfferChangeOwnerValidationMessage);
+                }	
+            }
+        }   
+    }
 }

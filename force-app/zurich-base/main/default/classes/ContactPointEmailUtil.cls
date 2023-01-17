@@ -3,7 +3,7 @@
  * @author rlopez
  * @date 19/11/2020
  */
-public without sharing class ContactPointEmailUtil
+public with sharing class ContactPointEmailUtil
 {
     public static Map<Id, List<ContactPointEmail> > relatedContactPointEmailsMap;
     public static Map<Id, Scope__c> relatedScopesMap;
@@ -104,8 +104,6 @@ public without sharing class ContactPointEmailUtil
                             relatedContactPoint.IsPrimary = false;
                             contactPointEmailsToUpdate.put(relatedContactPoint.id, relatedContactPoint);
                         }
-
-                        //contactPointEmailsToUpdate.addAll(relatedContactPointEmails);
                     }
 
                     if(contactPointEmailsToUpdate.containsKey(newContactPointEmail.Id))

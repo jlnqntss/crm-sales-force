@@ -15,6 +15,7 @@ public with sharing class GenesysCloud
     public static final String SERVICE_DISCONNECTION = 'DisconnectionService';
     public static final String CONVERSATION_EMAIL_ENDPOINT = '/api/v2/conversations/emails/';
     public static final String CONVERSATION_GENERAL = '/api/v2/conversations/';
+    public static final String CONVERSATION_GENERAL_CALLS = '/api/v2/conversations/calls/';
     public static final String CONVERSATION_EMAIL_PARTICIPANTS = '/participants/';
     public static final String CONTENT_TYPE = 'Content-Type';
     public static final String CONTENT_TYPE_JSON = 'application/json';
@@ -333,6 +334,10 @@ public with sharing class GenesysCloud
                 {
                     throw new GenesysCloud.DisconnectionServiceException(response);
                 }
+            }
+            when else 
+            {
+                // else code
             }
         }
     }
@@ -1204,7 +1209,7 @@ public with sharing class GenesysCloud
          */
         public Call get(String interactionId)
         {
-            HttpResponse response = new GenesysCloudNamedUserAPI().get('/api/v2/conversations/calls/' + interactionId);
+            HttpResponse response = new GenesysCloudNamedUserAPI().get(CONVERSATION_GENERAL_CALLS + interactionId);
 
             return (Call) JSON.deserialize(response.getBody(), Call.class);
         }
@@ -1215,7 +1220,7 @@ public with sharing class GenesysCloud
          */
         public void consult(ConsultTransfer consult)
         {
-            new GenesysCloudNamedUserAPI().post('/api/v2/conversations/calls/' + consult.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + consult.participantId + '/consult', consult.toJSON() );
+            new GenesysCloudNamedUserAPI().post(CONVERSATION_GENERAL_CALLS + consult.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + consult.participantId + '/consult', consult.toJSON() );
         }
 
         /**
@@ -1226,7 +1231,7 @@ public with sharing class GenesysCloud
          */
         public void setParticipantData(String conversationId, String participantId, Map<String, String> attributes)
         {
-            new GenesysCloudNamedUserAPI().patch('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
+            new GenesysCloudNamedUserAPI().patch(CONVERSATION_GENERAL_CALLS + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/attributes', JSON.serialize(new Map<String, Map<String, String> >
             {
                 'attributes' => attributes
             }) );
@@ -1240,7 +1245,7 @@ public with sharing class GenesysCloud
          */
         public void setUUIData(String conversationId, String participantId, String communicationId, String uuiData)
         {
-            new GenesysCloudNamedUserAPI().put('/api/v2/conversations/calls/' + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
+            new GenesysCloudNamedUserAPI().put(CONVERSATION_GENERAL_CALLS + conversationId + CONVERSATION_EMAIL_PARTICIPANTS + participantId + '/communications/' + communicationId + '/uuidata', JSON.serialize(new Map<String, String>
             {
                 'uuiData' => uuiData
             }) );

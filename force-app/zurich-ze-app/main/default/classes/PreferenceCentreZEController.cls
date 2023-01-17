@@ -80,23 +80,16 @@ public with sharing class PreferenceCentreZEController {
         // Ahora se intenta actualizar las preferencias del cliente
         if( String.isNotBlank(hashedId) ) {
             Scope__c scope = PreferenceCentreProcessController.getScopeData(hashedId);
-    
-            
-    
-            if (scope != null) {
-                // Se comprueba si la suscripción a comunicaciones ha cambiado
-                if( hasOptedOutOfEmail && scope.HasOptedOutOfEmail__c == false ) {
-                    //Se rellenan los campos de contacto a actualizar
-                    Scope__c scopeUpdate = new Scope__c(Id= scope.Id);
-                    scopeUpdate.HasOptedOutOfEmail__c = true;
-                    // todo: this fields doesnt exist yet
-                    //scopeUpdate.UnsubscribedDate__c = DateTime.now();
-                    //scopeUpdate.UnsubscribedSource__c = UNSUBSCRIBED_SOURCE;
 
-                    //Se actualza el contacto
-                    ScopeUtil su = new ScopeUtil();
-                    su.doUpdate(new List<Scope__c>{scopeUpdate});
-                }
+            // Se comprueba si la suscripción a comunicaciones ha cambiado
+            if( hasOptedOutOfEmail && scope?.HasOptedOutOfEmail__c == false ) {
+                //Se rellenan los campos de contacto a actualizar
+                Scope__c scopeUpdate = new Scope__c(Id= scope.Id);
+                scopeUpdate.HasOptedOutOfEmail__c = true;
+
+                //Se actualza el contacto
+                ScopeUtil su = new ScopeUtil();
+                su.doUpdate(new List<Scope__c>{scopeUpdate});
             }
         } else {
             ErrorLogUtil.commitError( ErrorLogUtil.ERROR_LEVEL_ERROR, 'El hashedId es vacío', 'PreferenceCentreZEController' );

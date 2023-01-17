@@ -76,7 +76,7 @@ public with sharing class PlanComercialUtil {
         
 
         for (PlanComercial__c pc: planesComercialesAnualesList) {
-            if (esPlanAnual(pc) && esPlanHijoNieto(pc, pcAssignedToMap) && validAssignedTo(pc, validEmailList, pcAssignedToMap)) {
+            if (esPlanAnual(pc) && validAssignedTo(pc, validEmailList, pcAssignedToMap)) {
                 result.add(pc);
             }
         }
@@ -92,10 +92,9 @@ public with sharing class PlanComercialUtil {
      */
     private static List<PlanComercial__c> getPlanesValidosUpdate(List<PlanComercial__c> planesComercialesList, Map<Id, SObject> oldMap) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
-        Map<Id, PlanComercial__c> pcAssignedToMap = (new PlanComercialSelector()).findAssignedToDataFromPC(planesComercialesList);
 
         for (PlanComercial__c pc: planesComercialesList) {
-            if (esPlanAnual(pc) && esPlanHijoNieto(pc, pcAssignedToMap) && targetKPIUpdated(pc, oldMap)) {
+            if (esPlanAnual(pc) && targetKPIUpdated(pc, oldMap)) {
                 result.add(pc);
             }
         }
@@ -116,27 +115,6 @@ public with sharing class PlanComercialUtil {
 
         if (planComercial.RecordTypeId.equals(rtPlanAnualId)) {
             result = true;
-        }
-
-        return result;
-    }
-
-    /**
-     * Validamos los planes para enviar al encolable solo los planes hijos (RN) o nieto (Mediadores)
-     * @param planComercial: Elementos capturados en el trigger 
-     * @return Boolean
-     * @author dmunoz
-     * @date 21/07/2022
-     */
-    private static Boolean esPlanHijoNieto(PlanComercial__c planComercial, Map<Id, PlanComercial__c> pcAssignedToMap) {
-        Boolean result = false;        
-
-        if (!pcAssignedToMap.isEmpty()) {
-            String planUserRole = pcAssignedToMap.get(planComercial.Id)?.AssignedTo__r.UserRole.DeveloperName;
-
-            if ('SDM_RN'.equals(planUserRole)) { // comprobamos si el rol del usuario asignado al plan de entrada es RN
-                result = true;
-            }            
         }
 
         return result;
