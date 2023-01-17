@@ -167,7 +167,7 @@ export default class WarningAndAgreementViewer extends LightningElement {
    */
   async disableWarnings() {
     let selectedRecords = this.template
-      .querySelector("lightning-datatable")
+      .querySelector("c-custom-datatable")
       .getSelectedRows();
     if (selectedRecords.length !== 0) {
       await cancelWarnings({ warnings: selectedRecords });

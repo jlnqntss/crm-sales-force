@@ -5,7 +5,7 @@ import richTextColumnType from "./richTextColumnType.html";
  * Custom component that extends LightningDatatable
  * and adds a new column type
  */
-export default class customDatatable extends LightningDatatable {
+export default class CustomDatatable extends LightningDatatable {
   static customTypes = {
     // custom type definition
     richText: {
