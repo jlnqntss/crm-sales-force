@@ -109,7 +109,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         Id roleId                     = getRoleIdFromRoles(mapAuthData.get(PERMISSION_TYPE_ROLE));
 
         // Get User Permission List
-        List<String> UserPermissions   = mapAuthData.get(PERMISSION_TYPE_USER_PERMISSION);
+        List<String> userPermissions   = mapAuthData.get(PERMISSION_TYPE_USER_PERMISSION);
         
 
         // GET CALL CENTER ID
@@ -136,11 +136,11 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         u.timeZoneSidKey              = TIMEZONE; 
         if( roleId != null )
             u.UserRoleId              = roleId;
-        if( UserPermissions != null )
+        if( userPermissions != null )
         { 
-            for(String UserPermission: UserPermissions)
+            for(String userPermission: userPermissions)
            {
-            u.put(UserPermission,true);
+            u.put(userPermission,true);
            }
         }
         if( callcenterId != null )
@@ -216,7 +216,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         // Get ROLE ID
         Id roleId                     = getRoleIdFromRoles(mapAuthData.get(PERMISSION_TYPE_ROLE));
         // Get User Permission List
-        List<String> UserPermissions   = mapAuthData.get(PERMISSION_TYPE_USER_PERMISSION);
+        List<String> userPermissions   = mapAuthData.get(PERMISSION_TYPE_USER_PERMISSION);
 
         // GET CALL CENTER ID
         Id callcenterId               = getCallCenterFromRoles(mapAuthData.get(PERMISSION_TYPE_CALL_CENTER));
@@ -253,11 +253,11 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             u.CommunityNickname              = data.username;
             if( u.UserRoleId != roleId )
                 u.UserRoleId                 = roleId;
-            if( UserPermissions != null )
+            if( userPermissions != null )
             { 
-                for(String UserPermission: UserPermissions)
+                for(String userPermission: userPermissions)
                 {
-                    u.put(UserPermission,true);
+                    u.put(userPermission,true);
                 }
             }
             if( u.CallCenterId != callcenterId )
