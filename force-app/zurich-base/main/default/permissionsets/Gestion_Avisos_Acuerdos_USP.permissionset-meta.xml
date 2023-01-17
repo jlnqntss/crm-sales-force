@@ -43,6 +43,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Special_Condition__c.EndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Special_Condition__c.Global__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -59,6 +64,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Special_Condition__c.ProductGroup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Special_Condition__c.SharepointLinks__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Special_Condition__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
