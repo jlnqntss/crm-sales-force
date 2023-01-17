@@ -21,7 +21,7 @@ public with sharing class ObjetivosUtil {
         Map<String, Objective__c> objetivosToInsert = new Map<String, Objective__c>(); // map externalId, Objetivo
 
         for (Objective__c obj: newList) {
-            if (obj.Active__c == true) { // solo generamos planes de objetivos que se inserten activos
+            if (obj.Active__c == true && obj.RecordTypeId.equals(ObjectivesSelector.rtObjectives)) { // solo generamos planes de objetivos que se inserten activos
                 objetivosToInsert.put(obj.ExternalId__c, obj);      
             }                 
         }
@@ -53,7 +53,7 @@ public with sharing class ObjetivosUtil {
         Map<String, Objective__c> objetivosToUpdateInactive = new Map<String, Objective__c>(); // map externalId, Objetivo
 
         for (Objective__c obj: newList) {
-            if (checkActive(obj, oldMap)) { // valido primero el flag de activo, si se activa generaremos nuevos planes
+            if (checkActive(obj, oldMap) && obj.RecordTypeId.equals(ObjectivesSelector.rtObjectives)) { // valido primero el flag de activo, si se activa generaremos nuevos planes
                 objetivosToUpdateActive.put(obj.ExternalId__c, obj);
             } else if (checkInactive(obj, oldMap)) { // si uno de los cambios del objetivo es inactivar, borraremos los planes mensuales
                 objetivosToUpdateInactive.put(obj.ExternalId__c, obj);
@@ -86,7 +86,7 @@ public with sharing class ObjetivosUtil {
         Map<String, Objective__c> objectivesToDelete = new Map<String, Objective__c>();
 
         for (Objective__c obj: (List<Objective__c>) oldMap.values()) {
-            objectivesToDelete.put(obj.ExternalId__c, obj);
+            if (obj.RecordTypeId.equals(ObjectivesSelector.rtObjectives)) objectivesToDelete.put(obj.ExternalId__c, obj);
         }
 
         if (!objectivesToDelete.isEmpty()) {

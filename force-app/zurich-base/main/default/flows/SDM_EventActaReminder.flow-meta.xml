@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Enviar la notificación al usuario</description>
+        <name>Send_Notification_To_User</name>
+        <label>Send Notification To User</label>
+        <locationX>242</locationX>
+        <locationY>648</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Notification_Id.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>BodyNotification</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Notificación Evento</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>RecipientId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>56.0</apiVersion>
+    <assignments>
+        <description>Añadir usuario destinatario de la notificación</description>
+        <name>Set_Recipient</name>
+        <label>Set Recipient</label>
+        <locationX>242</locationX>
+        <locationY>408</locationY>
+        <assignmentItems>
+            <assignToReference>RecipientId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Recipient</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Notification_Id</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Compruebo si el registro tiene acta</description>
+        <name>Is_Acta_Set</name>
+        <label>Is Acta Set</label>
+        <locationX>374</locationX>
+        <locationY>288</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Acta_Not_Set</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Acta__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Recipient</targetReference>
+            </connector>
+            <label>No Existe Acta</label>
+        </rules>
+    </decisions>
+    <description>Enviar notificación recordatorio al usuario organizador del evento que no se ha añadido acta</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Usuario destino de la notificación</description>
+        <name>Recipient</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.CreatedById}</expression>
+    </formulas>
+    <interviewLabel>SDM_Event_Acta_Remainder {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SDM_EventActaReminder</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Notification_Id</name>
+        <label>Get Notification Id</label>
+        <locationX>242</locationX>
+        <locationY>528</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_Notification_To_User</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SDMTaskDueDateAlert</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RecordTypeDeveloperName__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SDM_Event</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsChild</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Event</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <name>Send_Notification</name>
+            <connector>
+                <targetReference>Is_Acta_Set</targetReference>
+            </connector>
+            <label>Send Notification</label>
+            <offsetNumber>4</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>EndDateTime</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <description>Mensaje a mostrar para la notificación de recordatorio acta</description>
+        <name>BodyNotification</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Hace 4 días tuvo lugar la reunión {!$Record.Subject} y no se ha adjuntado acta. Recuerda hacerlo si fuese necesario.</text>
+    </textTemplates>
+    <variables>
+        <description>Colección de usuarios a los que enviar la notificación, solo contendrá el usuario que ha creado el evento</description>
+        <name>RecipientId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

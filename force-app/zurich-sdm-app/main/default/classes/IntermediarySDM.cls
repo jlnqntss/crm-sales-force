@@ -27,7 +27,8 @@ public with sharing class IntermediarySDM {
     public static final String INTERMEDIARY_FIELD_NATIONALID = 'NationalId__c';
     public static final String INTERMEDIARY_FIELD_PARENTID = 'ParentId';
     public static final String INTERMEDIARY_FIELD_NAME = 'Name';
-    public static final String INTERMEDIARY_FIELD_STATUS = 'StatusIntermediary__c';
+    public static final String INTERMEDIARY_FIELD_STATUS = 'Status__c';
+    public static final String INTERMEDIARY_FIELD_STATUS_INTERMEDIARY = 'StatusIntermediary__c';
 
     // CONFIGURACION
     public SettingsSDM settings;
@@ -136,6 +137,8 @@ public with sharing class IntermediarySDM {
     // AGRUPACION MEDIADORES
     // Mapa de agrupaciones por CIF de agrupacion
     public Map<String, Account> mapAgrupationByCIF;
+    // Mapa de intermediarios por Id de sus Agrupaciones
+    public Map<Id, List<Account>> intermediariesByParentId;
 
     // USUARIOS
     // Mapa de usuarios por Email de usuario
@@ -228,7 +231,7 @@ public with sharing class IntermediarySDM {
         // Mapa de usuarios por su Email
         if( mapUsersByEmail == null ) {
             mapUsersByEmail = new Map<String, User>();
-            for(User u: [SELECT Id, Email FROM User]) {
+            for(User u: [SELECT Id, Email, isActive FROM User]) {
                 mapUsersByEmail.put(u.Email, u);
             }
         }
@@ -246,6 +249,34 @@ public with sharing class IntermediarySDM {
         this.mapAgrupationByCIF = new Map<String, Account>();
         for(Account a: agrupationIntermediary) {
             this.mapAgrupationByCIF.put(a.NationalID__c, a);
+        }
+    }
+
+    /**
+    * @description Recupera las cuentas de tipo intermediario y las agrupa por su ParentId
+    * @author amiranda 
+    * @date 16-01-2023 
+    * @param Set<Id> parentIds Ids de las agrupaciones sobre las que realizar la consulta
+    **/
+    private void findIntermediariesByParentId(Set<Id> parentIds)
+    {
+        // Se buscan todos los mediadores relacionados con la agrupación
+        List<Account> intermediaries = new AccountsSelector().findIntermediariesByParentId(parentIds);
+
+        this.intermediariesByParentId = new Map<Id, List<Account>>();
+
+        // Ordenar intermediarios por ParentId
+        for (Account intermediary : intermediaries)
+        {
+            List<Account> intmd = this.intermediariesByParentId.get(intermediary.ParentId);
+
+            if (intmd == null)
+            {
+                intmd = new List<Account>();
+                this.intermediariesByParentId.put(intermediary.ParentId, intmd);
+            }
+
+            intmd.add(intermediary);
         }
     }
 
@@ -410,6 +441,7 @@ public with sharing class IntermediarySDM {
 
     /**
      * Metodo que, para los Mediadores dados por parametro, calcula su correspondiente cuenta de Agrupacion de Mediador
+     * y setea el estado de la Agrupación en base al estado de los Mediadores.
      *
      * @param {List<Account> intermedires} lista de Mediadores
      */
@@ -422,8 +454,17 @@ public with sharing class IntermediarySDM {
             // Comprobamos en el PRIMER Mediador si tienen el campo CIF y su Agrupacion Actual, 
             // sino lo tiene se vuelven a recuperar
             Map<String, Object> fieldsToValue = intermediariesToProcess[0].getPopulatedFieldsAsMap();
-            if( !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID) || !fieldsToValue.containsKey(INTERMEDIARY_FIELD_PARENTID) || !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NAME) ) {
-                Set<String> fields = new Set<String>{INTERMEDIARY_FIELD_NATIONALID, INTERMEDIARY_FIELD_PARENTID, INTERMEDIARY_FIELD_NAME};
+            if( !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID) || 
+                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_PARENTID) || 
+                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NAME) ||
+                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS) || 
+                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS_INTERMEDIARY))
+            {
+                Set<String> fields = new Set<String>{INTERMEDIARY_FIELD_NATIONALID, 
+                                                     INTERMEDIARY_FIELD_PARENTID, 
+                                                     INTERMEDIARY_FIELD_NAME, 
+                                                     INTERMEDIARY_FIELD_STATUS, 
+                                                     INTERMEDIARY_FIELD_STATUS_INTERMEDIARY};
                 intermediariesToProcess = new AccountsSelector().findWithFields(intermediaries, fields);
             }
 
@@ -439,14 +480,16 @@ public with sharing class IntermediarySDM {
                 Map<String, Integer> mapAgrupationPosByCIF = new Map<String, Integer>();
                 Integer pos = 0;
                 List<Account> intermediariesToUpdate = new List<Account>();
+                Map<Id, Account> agrupationToUpdateById = new Map<Id, Account>();
+                Map<Id, Account> agrupationToCheckById = new Map<Id, Account>();
 
                 // Por cada mediador...
                 for(Account i: intermediariesToProcess ) {
                     // Si tienen campo CIF de agrupacion
                     if( String.isNotBlank(i.NationalId__c) ) {
                         // Recuperamos el Id de Agrupacion que corresponderia a ese CIF
-                        ID agrupationId = this.mapAgrupationByCIF?.get(i.NationalId__c)?.Id;
-                        if( agrupationId == null ) { //--------------------------------------------------- NO existe la agrupacion
+                        Account agrupation = this.mapAgrupationByCIF?.get(i.NationalId__c);
+                        if( agrupation?.Id == null ) { //--------------------------------------------------- NO existe la agrupacion
                             // Intentamos recuperar la posicion de la agrupacion si ya existe
                             Integer agrpPos = mapAgrupationPosByCIF.get(i.NationalId__c);
 
@@ -459,13 +502,32 @@ public with sharing class IntermediarySDM {
                                 if( this.rtAgrupationId == null ) this.rtAgrupationId = new AccountsSelector().rtAgrupationId;
 
                                 // Creamos a partir de los campos del mediador
-                                mapAgrupationByPos.put(agrpPos, new Account(
+                                Account newAgrupation =  new Account(
                                     NationalID__c= i.NationalID__c,
                                     Name= i.Name,
                                     RecordTypeId= this.rtAgrupationId
-                                ));
+                                );
+
+                                // Si el intermediario está activo se informa el campo Status__c de la agrupación
+                                if (i.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE)
+                                {
+                                    newAgrupation.Status__c = i.Status__c;
+                                }
+
+                                mapAgrupationByPos.put(agrpPos, newAgrupation);
+
                                 // Lo guardamos por si lo necesitan otros mediadores con el mismo CIF
                                 mapAgrupationPosByCIF.put(i.NationalID__c, agrpPos);
+                            } else { // Si la agrupación ya se ha creado (todavía no se ha insertado)
+                                Account agrupationByPos = mapAgrupationByPos?.get(agrpPos);
+
+                                // Si no se ha informado el campo 'Status__c' y el intermediario está activo
+                                if (agrupationByPos != null &&
+                                    String.isBlank(agrupationByPos.Status__c) && 
+                                    i.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE)
+                                {
+                                    agrupationByPos.Status__c = i.Status__c;
+                                }
                             }
 
                             // Creamos la referencia al mediador
@@ -486,25 +548,84 @@ public with sharing class IntermediarySDM {
                             // Añadimos el CIF a la lista de cifs de agrupacion para que se recalcule el ATM si es
                             // necesario
                             this.addNationalId(i.NationalID__c);
-                        } else if( i.ParentId == null || i.ParentId != agrupationId ) { //---------------- SI existe
+                        } else if( i.ParentId == null || i.ParentId != agrupation?.Id ) { //---------------- SI existe
                             // Si existe la agrupacion y el Mediador no tiene agrupacion o es diferente a la actual, actualizamos
                             // Poner para modificar
                             intermediariesToUpdate.add(new Account(
                                 Id= i.Id,
-                                ParentId= agrupationId
+                                ParentId= agrupation.Id
                             ));
 
                             // Añadimos el CIF a la lista de cifs de agrupacion para que se recalcule el ATM si es
                             // necesario
                             this.addNationalId(i.NationalID__c);
                         }
+
+                        // Si existe la agrupación en el sistema
+                        if (String.isNotBlank(agrupation?.Id)) 
+                        { 
+                            // Si el intermediario se activa y no estaba activado previamente
+                            if (String.isBlank(agrupation.Status__c) && i.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE)
+                            {
+                                // Se activa la agrupación y se añade al mapa para actualizar
+                                agrupation.Status__c = i.Status__c;
+                                agrupationToUpdateById.put(agrupation.Id, agrupation);
+
+                                // Si estuviese en el mapa de agrupaciones a desactivar, se elimina
+                                agrupationToCheckById.remove(agrupation.Id);
+                            }
+                            else if (!agrupationToUpdateById.containsKey(agrupation.Id) &&
+                                     !agrupationToCheckById.containsKey(agrupation.Id) &&
+                                     String.isNotBlank(agrupation.Status__c) &&
+                                     i.StatusIntermediary__c == INTERMEDIARY_STATUS_INACTIVE )
+                            {
+                                // Se marca la agrupación para checkear si hay que desactivarla
+                                agrupationToCheckById.put(agrupation.Id, agrupation);
+                            }
+                        }
                     }
                 }
 
-                // Si hay agrupaciones a crear
-                if( !mapAgrupationByPos.isEmpty() ) {
-                    // Insertamos las nuevas agrupaciones
-                    insert mapAgrupationByPos.values();
+                // Si hay agrupaciones para checkear
+                if (!agrupationToCheckById.isEmpty())
+                {
+                    this.findIntermediariesByParentId(agrupationToCheckById.keySet());
+                    
+                    // Por cada agrupación se comprueba si alguno de sus mediadores está activo.
+                    for (Id agrupationId : agrupationToCheckById.keySet())
+                    {
+                        List<Account> intermediariesToCheck = this.intermediariesByParentId.get(agrupationId);
+
+                        Boolean someIntermediaryIsActive = false;
+                        Integer intermediariesToCheckPos = 0;
+
+                        while (intermediariesToCheck != null && 
+                                !intermediariesToCheck.isEmpty() &&
+                                !someIntermediaryIsActive &&
+                                intermediariesToCheckPos < intermediariesToCheck.size())
+                        {
+                            someIntermediaryIsActive = (intermediariesToCheck.get(intermediariesToCheckPos).StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE);
+                            intermediariesToCheckPos++;
+                        }
+
+                        // Si no hay ningún intermediario activo, se desactiva la agrupación
+                        if (!someIntermediaryIsActive)
+                        {
+                            Account agrupationToCheck = agrupationToCheckById.get(agrupationId);
+                            agrupationToCheck.Status__c = '';
+
+                            agrupationToUpdateById.put(agrupationToCheck.Id, agrupationToCheck);
+                        }
+                    }
+                }
+
+                // Si hay agrupaciones a crear o a actualizar
+                if( !mapAgrupationByPos.isEmpty() ||  !agrupationToUpdateById.isEmpty()) {
+
+                    List<Account> agrupationToUpsert = new List<Account>();
+                    agrupationToUpsert.addAll(mapAgrupationByPos.values());
+                    agrupationToUpsert.addAll(agrupationToUpdateById.values());
+                    upsert agrupationToUpsert;
 
                     // Para cada agrupacion nueva...
                     for(Integer key: mapAgrupationByPos.keySet()) {
@@ -535,6 +656,7 @@ public with sharing class IntermediarySDM {
         }
     }
 
+
     /**
      * Metodo que, para los Mediadores dados por parametro, calcula los Equipos de Cuenta que les corresponde segun
      * los campos de email que tengan rellenados y referenciando a usuarios de Salesforce
@@ -549,9 +671,9 @@ public with sharing class IntermediarySDM {
 
             // Comprobamos si el primer Mediador tiene el campo Status
             Map<String, Object> fieldsToValue = intermediariesToProcess[0].getPopulatedFieldsAsMap();
-            if( !fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS) || !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID) ) {
+            if( !fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS_INTERMEDIARY) || !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID) ) {
                 Set<String> fields = this.SettingsATMFields;
-                fields.add(INTERMEDIARY_FIELD_STATUS);
+                fields.add(INTERMEDIARY_FIELD_STATUS_INTERMEDIARY);
                 fields.add(INTERMEDIARY_FIELD_NATIONALID);
                 if( this.rnFieldNoATM != null ) fields.add(this.rnFieldNoATM);
                 intermediariesToProcess = new AccountsSelector().findWithFields(intermediaries, fields);
@@ -606,10 +728,15 @@ public with sharing class IntermediarySDM {
                             // Y recuperamos el valor del campo, que deberia ser un email de usuario de Salesforce
                             String fieldValue = (String)i.get(s.IntermediaryField__c);
 
-                            // Si el valor del campo es vacio o con el valor VACANT, y si tiene ATMs, 
-                            // se ponen los ATMs para borrar
+                            // Se intenta recuperar el usuario en base al email
+                            User u = mapUsersByEmail?.get(fieldValue);
+
+                            // Si el valor del campo es vacio o con el valor VACANT o el usuario no existe
+                            // o el usuario no existe, y si tiene ATMs, se ponen los ATMs para borrar
                             if( String.isBlank(fieldValue) 
                                 || fieldValue.equalsIgnoreCase(INTERMEDIARY_VACANT)
+                                || u == null
+                                || !u.isActive
                             ) {
                                 if( mapAtmByUserId != null && !mapAtmByUserId.values().isEmpty() ) {
                                     atmsToDelete.addAll(mapAtmByUserId.values());
@@ -619,39 +746,35 @@ public with sharing class IntermediarySDM {
                                     // Añadimos los usuarios para notificarlos al final del batch
                                     this.addUsersToNotify(mapAtmByUserId.keySet());
                                 }
-                            } else {
-                                // Sino, se mira si se corresponde con el email de un Usuario
-                                User u = mapUsersByEmail?.get(fieldValue);
-                                // Si el usuario existe
-                                if( u != null ) {
-                                    // Se recoge el ATM para ese usuario (puede que no exista y sea nulo)
-                                    AccountTeamMember atmOld = mapAtmByUserId?.get(u.Id);
+                            } else if(u != null) { // Si el usuario existe
+                                
+                                // Se recoge el ATM para ese usuario (puede que no exista y sea nulo)
+                                AccountTeamMember atmOld = mapAtmByUserId?.get(u.Id);
 
-                                    // Si aun no existe...
-                                    if( atmOld == null ) {
-                                        // Como solo deberia haber un ATM por rol y no hay para ese usuario, 
-                                        // se mira si hay otros y si los hay se ponen a borrar. No deja modificar los actuales
-                                        if( mapAtmByUserId != null && !mapAtmByUserId.isEmpty() ) {
-                                            atmsToDelete.addAll(mapAtmByUserId.values());
-                                            // Añadimos los usuarios para notificarlos al final del batch
-                                            this.addUsersToNotify(mapAtmByUserId.keySet());
-                                        }
-
-                                        AccountTeamMember atm = new AccountTeamMember(
-                                            AccountId= i.Id,
-                                            userId= u.Id,
-                                            TeamMemberRole= roleLabel,
-                                            AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL,
-                                            ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
-                                        );
-
-                                        atmsToUpsert.add(atm);
-
-                                        // Añadimos el CIF para que se recalculen los ATMs del padre (agrupacion)
-                                        this.addNationalId(i.NationalId__c);
-                                        // Añadimos el usuario para notificarlo al final del batch
-                                        this.addUserToNotify(u.Id);
+                                // Si aun no existe...
+                                if( atmOld == null ) {
+                                    // Como solo deberia haber un ATM por rol y no hay para ese usuario, 
+                                    // se mira si hay otros y si los hay se ponen a borrar. No deja modificar los actuales
+                                    if( mapAtmByUserId != null && !mapAtmByUserId.isEmpty() ) {
+                                        atmsToDelete.addAll(mapAtmByUserId.values());
+                                        // Añadimos los usuarios para notificarlos al final del batch
+                                        this.addUsersToNotify(mapAtmByUserId.keySet());
                                     }
+
+                                    AccountTeamMember atm = new AccountTeamMember(
+                                        AccountId= i.Id,
+                                        userId= u.Id,
+                                        TeamMemberRole= roleLabel,
+                                        AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL,
+                                        ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
+                                    );
+
+                                    atmsToUpsert.add(atm);
+
+                                    // Añadimos el CIF para que se recalculen los ATMs del padre (agrupacion)
+                                    this.addNationalId(i.NationalId__c);
+                                    // Añadimos el usuario para notificarlo al final del batch
+                                    this.addUserToNotify(u.Id);
                                 }
                             }
                         }
@@ -767,7 +890,6 @@ public with sharing class IntermediarySDM {
                                         Email= fieldValue
                                 );
                                 // Si es el principal, se copia tambien el telefono
-                                // todo: poner esta parte en configuracion
                                 if( rel.IntermediaryField__c.equals(AccountsSelector.SDM_MAINEMAIL_FIELD) && fieldsToValue.containsKey(AccountsSelector.SDM_MAINMOBILEPHONE_FIELD) ) 
                                 {
                                     newContact.MobilePhone = String.valueOf(fieldsToValue.get(AccountsSelector.SDM_MAINMOBILEPHONE_FIELD));
@@ -1126,6 +1248,7 @@ public with sharing class IntermediarySDM {
      * Metodo que envia la siguiente notificacion a todos los usuarios que se les ha cambiado la visibilidad
      * del mediador
      * 
+     * @change amiranda 21/12/2022 Se modifica el developer name de la vista de lista que debe abrir el enlace de la notificación
      * @param {Set<Id> userIds} Lista de usuario receptores de la notificacion
      */
     public void sendNotification(Set<Id> userIds)
@@ -1135,8 +1258,8 @@ public with sharing class IntermediarySDM {
             String bodyContent = this.notificationBody;
 
             Notification notif = new Notification(Notification.notificationType.SDMAlert);
-            // Permite abrir la seccion de Cuentas, listview Mis Mediadores
-            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mis_mediadores_SDM');
+            // Permite abrir la seccion de Cuentas, listview Mediadores de mi equipo
+            notif.addPageReference('standard__objectPage', 'Account', 'list', 'Mediadores_de_mi_equipo');
             // Convertimos la lista de ids de usuario a string
             Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
             notif.send(stringSet, title, bodyContent);

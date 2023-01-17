@@ -89,10 +89,8 @@ public with sharing class PreferenceCentreController {
             keyToSearch = CONFIG_LOGO_KEY + contact.SourceCountry__c;
         }
 
-        if( keyToSearch != null ) {
-          if( mapLogos.containsKey(keyToSearch) ) {
-            other_logo = mapLogos.get(keyToSearch);
-          }
+        if( keyToSearch != null && mapLogos.containsKey(keyToSearch) ) {
+          other_logo = mapLogos.get(keyToSearch);
         }
     }
 
@@ -479,16 +477,14 @@ public with sharing class PreferenceCentreController {
     Contact contactUpdate;
 
     // Se comprueba si la suscripción a comunicaciones ha cambiado
-    if (hasOptedOutOfEmail) {
-      if (contact.HasOptedOutOfEmail == false) {
-        //Se rellenan los campos de contacto a actualizar
-        if (contactUpdate == null) {
-          contactUpdate = contact;
-        }
-        contactUpdate.HasOptedOutOfEmail = true;
-        contactUpdate.UnsubscribedDate__c = DateTime.now();
-        contactUpdate.UnsubscribedSource__c = 'Centro de preferencias';
+    if (hasOptedOutOfEmail && contact.HasOptedOutOfEmail == false) {
+      //Se rellenan los campos de contacto a actualizar
+      if (contactUpdate == null) {
+        contactUpdate = contact;
       }
+      contactUpdate.HasOptedOutOfEmail = true;
+      contactUpdate.UnsubscribedDate__c = DateTime.now();
+      contactUpdate.UnsubscribedSource__c = 'Centro de preferencias';
     }
 
     if (contactUpdate != null) {

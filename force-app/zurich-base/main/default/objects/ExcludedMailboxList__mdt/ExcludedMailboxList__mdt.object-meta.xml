@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Si un caso ha sido creado sobre alguno de estos buzones no será mostrado en el reporte de ENCUESTAS_SOLICITUDES</description>
+    <label>ExcludedMailboxList</label>
+    <pluralLabel>ExcludedMailboxLists</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

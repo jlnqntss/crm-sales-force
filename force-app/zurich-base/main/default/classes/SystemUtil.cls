@@ -5,7 +5,7 @@
  * @date 02/04/2020
  * @testClass Test_SystemUtil
  */
-public without sharing class SystemUtil
+public with sharing class SystemUtil
 {
     private static final String ADMINSETUP_LABEL = 'AdminSetup';
     private static final String EMAIL_TO_RETURN = 'mng.dev';
@@ -800,18 +800,15 @@ public without sharing class SystemUtil
 
             // nts (nbizkarra) - 17/11/2020 - get subscribed contacts by email
             // Subscribers from lead
-            if( mapSubscribers != null )
+            if( mapSubscribers != null && con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c )
             {
-                if( con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c )
+                if( mapSubscribers.containsKey(con.Email) )
                 {
-                    if( mapSubscribers.containsKey(con.Email) )
-                    {
-                        mapSubscribers.get(con.Email).add(con);
-                    }
-                    else
-                    {
-                        mapSubscribers.put(con.Email, new List<Contact> {con});
-                    }
+                    mapSubscribers.get(con.Email).add(con);
+                }
+                else
+                {
+                    mapSubscribers.put(con.Email, new List<Contact> {con});
                 }
             }
         }
@@ -856,7 +853,7 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Order> PolicySelector(SET<String> keys)
+    public static Map<String, Order> policySelector(SET<String> keys)
     {
         Map<String, Order> mapaPolicy = new Map<String, Order>();
         // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
@@ -960,7 +957,7 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Order> QuoteSelector(SET<String> keys)
+    public static Map<String, Order> quoteSelector(SET<String> keys)
     {
         Map<String, Order> mapaQuote = new Map<String, Order>();
 
@@ -1004,7 +1001,7 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, OrderItem> OrderItemSelector(SET<String> keys)
+    public static Map<String, OrderItem> orderItemSelector(SET<String> keys)
     {
         Map<String, OrderItem> mapaOrderItem = new Map<String, OrderItem>();
 
@@ -1028,7 +1025,7 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, PricebookEntry> ProductsSelector(SET<String> keys)
+    public static Map<String, PricebookEntry> productsSelector(SET<String> keys)
     {
         Map<String, PricebookEntry> mapaProducto = new Map<String, PricebookEntry>();
         List<PricebookEntry> listaProductos = [
@@ -1068,7 +1065,7 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Cover__c> CoversSelector(SET<String> keys)
+    public static Map<String, Cover__c> coversSelector(SET<String> keys)
     {
         Map<String, Cover__c> mapaCovers = new Map<String, Cover__c>();
 
@@ -1092,7 +1089,7 @@ public without sharing class SystemUtil
      * @author nbizkarra
      * @date 04/05/2020
      **/
-    public static Map<String, Case> ClaimsSelector(SET<String> keys)
+    public static Map<String, Case> claimsSelector(SET<String> keys)
     {
         Map<String, Case> mapaClaims = new Map<String, Case>();
         List<Case> listaClaims = [

@@ -93,6 +93,78 @@ private class IntermediarySDMTest
         System.assertEquals(10, result.size(), 'Deberia haber 10 mediadores con el ParentId de la agrupacion rellenado');
     }
 
+    @isTest
+    static void testAssignIntermediaryAgrupation_set_status_activated()
+    {
+        ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        List<Account> agrupations = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = :rtAgrupationId LIMIT 1];
+        System.assertEquals(1, agrupations.size(), 'Deberia haber 1 Agrupación de Mediadores.');
+
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        List<Account> mediadores = [SELECT Id, Status__c FROM Account WHERE RecordTypeId = :rtIntermediaryId AND NationalId__c = :agrupations.get(0).NationalId__c];
+        System.assert(!mediadores.isEmpty(), 'Deberian existir Mediadores.');
+
+        for (Account mediador : mediadores)
+        {
+            // Estado activo
+            mediador.Status__c = '001';
+        }
+
+        update mediadores;
+
+        Test.startTest();
+        // Se activa la agrupación
+        IntermediarySDM sdm = new IntermediarySDM();
+        sdm.assignIntermediaryAgrupation(mediadores);
+        Test.stopTest();
+
+        agrupations = [SELECT Id, StatusIntermediary__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND Id = : agrupations.get(0).Id];
+        System.assertEquals('Active', agrupations.get(0).StatusIntermediary__c, 'El estado de la Agrupación debería ser \'Active\'');
+    }
+
+    @isTest
+    static void testAssignIntermeidaryAgrupation_set_status_inactive()
+    {
+        ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        List<Account> agrupations = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = :rtAgrupationId LIMIT 1];
+        System.assertEquals(1, agrupations.size(), 'Deberia haber 1 Agrupación de Mediadores.');
+
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        List<Account> mediadores = [SELECT Id, Status__c FROM Account WHERE RecordTypeId = :rtIntermediaryId AND NationalId__c = :agrupations.get(0).NationalId__c];
+        System.assert(!mediadores.isEmpty(), 'Deberian existir Mediadores.');
+
+        for (Account mediador : mediadores)
+        {
+            // Estado activo
+            mediador.Status__c = '001';
+        }
+
+        update mediadores;
+
+        // Se activa la agrupación
+        IntermediarySDM sdm = new IntermediarySDM();
+        sdm.assignIntermediaryAgrupation(mediadores);
+
+        agrupations = [SELECT Id, StatusIntermediary__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND Id = : agrupations.get(0).Id];
+        System.assertEquals('Active', agrupations.get(0).StatusIntermediary__c, 'El estado de la Agrupación debería ser \'Active\'');
+
+        for (Account mediador : mediadores)
+        {
+            // Estado inactivo
+            mediador.Status__c = '003';
+        }
+
+        update mediadores;
+
+        Test.startTest();
+        // Se desactiva la agrupación
+        sdm.assignIntermediaryAgrupation(mediadores);
+        Test.stopTest();
+
+        agrupations = [SELECT Id, StatusIntermediary__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND Id = : agrupations.get(0).Id];
+        System.assertEquals('Inactive', agrupations.get(0).StatusIntermediary__c, 'El estado de la Agrupación debería ser \'Inactive\'');        
+    }
+
     /**
      * Test del metodo que calcula el Equipo de Cuenta (ATM) de la agrupacion de mediadores
      *
@@ -205,6 +277,168 @@ private class IntermediarySDMTest
         // Comprobamos las notificaciones a usuarios
         System.assertNotEquals(null, sdm.listUserIdsToNotify, 'Deberia haber usuarios a notificar');
         System.assertEquals(10, sdm.listUserIdsToNotify.size(), 'Deberia haber 10 usuarios a notificar');
+    }
+
+    /**
+     * @description Método que comprueba que cuando el nuevo RN es un usuario inactivo,
+     * no se crea un nuevo ATM para este usuario y se elimina el ATM que había en su rol
+     * @author amiranda
+     * @date 22-12-2022
+     **/
+    @isTest
+    static void testAssignAgrupationAccountTeam_InactiveUser()
+    {
+        // Se recupera el Id del RecordType de cuentas de tipo Mediador
+        Id rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+
+        // Se recuperan todos los mediadores
+        List<Account> intermediaries = [SELECT Id FROM Account WHERE RecordTypeId = :rtIntermediaryId];
+        Assert.isFalse(intermediaries.isEmpty(), 'Debería existir al menos un intermediario.');
+
+        // Se recupera el Id del perfil RN
+        Profile rnProfile = [SELECT Id FROM Profile WHERE Name = :TestDataFactorySDM.RN_PROFILE LIMIT 1];
+        Assert.isNotNull(rnProfile, 'El perfil SDM RN deberia existir.');
+
+        // Se crean dos usuarios para el perfil RN
+        List<User> users = TestDataFactory.generateUsersByProfile(rnProfile.Id, 2);
+        Assert.areEqual(2, users.size(), 'Deberían haberse creado dos usuarios.');
+        users[0].Username = 'username98@invalid.com';
+        users[0].LastName = 'User98';
+        users[0].Alias = 'user98';
+        users[0].Email = 'username98@invalid.com';
+        users[1].Username = 'username99@invalid.com';
+        users[1].LastName = 'User99';
+        users[1].Alias = 'user99';
+        users[1].Email = 'username99@invalid.com';
+
+        /* El segundo usuario se inactiva para que al modificar el mediador con el usuario inactivo,
+         * se eliminen los ATMs del rol del usuario inactivo.
+         */
+        users[1].IsActive = false;
+        insert users;
+
+        IntermediarySDM sdm = new IntermediarySDM();
+        String roleTerritoryLabel = sdm.settings.getATMRoleLabel(SettingsSDM.ATM_ROL_BUSINESS);
+        List<AccountTeamMember> atms = new List<AccountTeamMember>();
+
+        // Se añade el email del RN activo al mediador y se crean los ATMs.
+        for (Integer index = 0; index < intermediaries.size(); index++)
+        {
+            intermediaries.get(index).put( AccountsSelector.SDM_RN_EMAIL_FIELD, users.get(0).Email);
+
+            atms.add( new AccountTeamMember(
+                          AccountId = intermediaries.get(index).Id,
+                          UserId = users.get(0).Id,
+                          TeamMemberRole = roleTerritoryLabel
+                          ) );
+        }
+
+        update intermediaries;
+        insert atms;
+
+        atms = [SELECT Id FROM AccountTeamMember WHERE AccountId = :intermediaries];
+        Assert.areEqual(intermediaries.size(), atms.size(), 'Deberían haberse creado ' + intermediaries.size() + ' intermediarios.');
+
+        // Se modifica el email del RN, asignándole el del usuario inactivo.
+        for (Account intermediary : intermediaries)
+        {
+            intermediary.put(AccountsSelector.SDM_RN_EMAIL_FIELD, users.get(1).Email);
+        }
+
+        update intermediaries;
+
+        // Se prepara la configuracion para el campo que interesa.
+        sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
+            SettingsSDM.ATM_ROL_BUSINESS, AccountsSelector.SDM_RN_EMAIL_FIELD
+            );
+
+        Test.startTest();
+        sdm.assignIntermediaryAccountTeam(intermediaries);
+        Test.stopTest();
+
+        atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
+        Assert.isTrue(atms.isEmpty(), 'No deberían existir ATMs.');
+
+        // Se comprueba las notificaciones del usuario que ha sido eliminado de los ATMs.
+        Assert.isNotNull(sdm.listUserIdsToNotify, 'Deberia haber usuarios a notificar');
+        Assert.areEqual(1, sdm.listUserIdsToNotify.size(), 'Deberia haber 1 usuario a notificar.');
+    }
+
+    /**
+     * @description Método que comprueba que cuando el nuevo RN es un usuario que no existe,
+     * si hay un ATM para el rol de este usuario, se elimina.
+     * @author amiranda
+     * @date 22-12-2022
+     **/
+    @isTest
+    static void testAssignAgrupationAccountTeam_NonExistentUser()
+    {
+        // Se recupera el Id del RecordType de cuentas de tipo Mediador
+        Id rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+
+        // Se recuperan todos los mediadores
+        List<Account> intermediaries = [SELECT Id FROM Account WHERE RecordTypeId = :rtIntermediaryId];
+        Assert.isFalse(intermediaries.isEmpty(), 'Debería existir al menos un intermediario.');
+
+        // Se recupera el Id del perfil RN
+        Profile rnProfile = [SELECT Id FROM Profile WHERE Name = :TestDataFactorySDM.RN_PROFILE LIMIT 1];
+        Assert.isNotNull(rnProfile, 'El perfil SDM RN deberia existir.');
+
+        // Se crean dos usuarios para el perfil RN
+        List<User> users = TestDataFactory.generateUsersByProfile(rnProfile.Id, 1);
+        Assert.areEqual(1, users.size(), 'Deberían haberse creado dos usuarios.');
+        users[0].Username = 'username98@invalid.com';
+        users[0].LastName = 'User98';
+        users[0].Alias = 'user98';
+        users[0].Email = 'username98@invalid.com';
+
+        insert users;
+
+        IntermediarySDM sdm = new IntermediarySDM();
+        String roleTerritoryLabel = sdm.settings.getATMRoleLabel(SettingsSDM.ATM_ROL_BUSINESS);
+        List<AccountTeamMember> atms = new List<AccountTeamMember>();
+
+        // Se añade el email del RN activo al mediador y se crean los ATMs.
+        for (Integer index = 0; index < intermediaries.size(); index++)
+        {
+            intermediaries.get(index).put( AccountsSelector.SDM_RN_EMAIL_FIELD, users.get(0).Email);
+
+            atms.add( new AccountTeamMember(
+                          AccountId = intermediaries.get(index).Id,
+                          UserId = users.get(0).Id,
+                          TeamMemberRole = roleTerritoryLabel
+                          ) );
+        }
+
+        update intermediaries;
+        insert atms;
+
+        atms = [SELECT Id FROM AccountTeamMember WHERE AccountId = :intermediaries];
+        Assert.areEqual(intermediaries.size(), atms.size(), 'Deberían haberse creado ' + intermediaries.size() + ' intermediarios.');
+
+        // Se modifica el email del RN, asignándole el de un usuario que no existe.
+        for (Account intermediary : intermediaries)
+        {
+            intermediary.put(AccountsSelector.SDM_RN_EMAIL_FIELD, 'nonexistentuser@invalid.com');
+        }
+
+        update intermediaries;
+
+        // Se prepara la configuracion para el campo que interesa.
+        sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
+            SettingsSDM.ATM_ROL_BUSINESS, AccountsSelector.SDM_RN_EMAIL_FIELD
+            );
+
+        Test.startTest();
+        sdm.assignIntermediaryAccountTeam(intermediaries);
+        Test.stopTest();
+
+        atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
+        Assert.isTrue(atms.isEmpty(), 'No deberían existir ATMs.');
+
+        // Se comprueba las notificaciones del usuario que ha sido eliminado de los ATMs.
+        Assert.isNotNull(sdm.listUserIdsToNotify, 'Deberia haber usuarios a notificar');
+        Assert.areEqual(1, sdm.listUserIdsToNotify.size(), 'Deberia haber 1 usuario a notificar.');
     }
 
     /**

@@ -58,6 +58,10 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                         GenesysInteractionsService.findDigitalCustomer(new GenesysInteractionsService.DigitalCustomer(RestContext.request.params)).toString()
                     );
                 }
+                when else 
+                {
+                    // else code
+                }
             }
         }
         catch (WS_BaseAPIService.ApiException apiError)
@@ -164,6 +168,10 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                     GenesysSurveysService.version =  WS_BaseAPIService.version;
                     GenesysSurveysService.initSurvey((GenesysSurveysService.Survey) JSON.deserialize(request.requestBody.toString(), GenesysSurveysService.Survey.class));
                     response.statusCode = 200;
+                }
+                when else 
+                {
+                    // else code
                 }
             }
         }

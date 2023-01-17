@@ -17,7 +17,9 @@ class GitlabAPIService {
       }
     }).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.status}: ${response.statusText}`;
+        throw new Error(
+          `The server responded with ${response.status}: ${response.statusText}`
+        );
       }
 
       return response.json();
@@ -39,7 +41,9 @@ class GitlabAPIService {
       })
     }).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.status}: ${response.statusText}`;
+        throw new Error(
+          `The server responded with ${response.status}: ${response.statusText}`
+        );
       }
 
       return response.json();
@@ -60,7 +64,9 @@ class GitlabAPIService {
       })
     }).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.status}: ${response.statusText}`;
+        throw new Error(
+          `The server responded with ${response.status}: ${response.statusText}`
+        );
       }
 
       return response.json();
@@ -87,7 +93,7 @@ class GitlabAPIService {
       }
     ).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.statusText}`;
+        throw new Error(`The server responded with ${response.statusText}`);
       }
 
       return response.json();
@@ -109,7 +115,7 @@ class GitlabAPIService {
       }
     }).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.statusText}`;
+        throw new Error(`The server responded with ${response.statusText}`);
       }
 
       return response.json();
@@ -136,7 +142,7 @@ class GitlabAPIService {
       }
     ).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.statusText}`;
+        throw new Error(`The server responded with ${response.statusText}`);
       }
 
       return response.json();
@@ -163,7 +169,7 @@ class GitlabAPIService {
       body: JSON.stringify(tag)
     }).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.statusText}`;
+        throw new Error(`The server responded with ${response.statusText}`);
       }
 
       return response.json();
@@ -193,7 +199,7 @@ class GitlabAPIService {
       }
     ).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.statusText}`;
+        throw new Error(`The server responded with ${response.statusText}`);
       }
 
       return response.json();
@@ -222,7 +228,7 @@ class GitlabAPIService {
       }
     ).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.statusText}`;
+        throw new Error(`The server responded with ${response.statusText}`);
       }
 
       return response.json();
@@ -246,7 +252,7 @@ class GitlabAPIService {
       }
     ).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.statusText}`;
+        throw new Error(`The server responded with ${response.statusText}`);
       }
 
       return response.json();
@@ -274,7 +280,7 @@ class GitlabAPIService {
       body: JSON.stringify(mergeRequest)
     }).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.statusText}`;
+        throw new Error(`The server responded with ${response.statusText}`);
       }
 
       return response.json();
@@ -304,7 +310,7 @@ class GitlabAPIService {
       }
     ).then((response) => {
       if (!response.ok) {
-        throw `The server responded with ${response.statusText}`;
+        throw new Error(`The server responded with ${response.statusText}`);
       }
 
       return response.json();

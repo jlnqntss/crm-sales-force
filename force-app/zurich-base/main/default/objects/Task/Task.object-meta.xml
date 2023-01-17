@@ -113,7 +113,8 @@
         <type>Default</type>
     </actionOverrides>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
-    <enableFeeds>false</enableFeeds>
-    <searchLayouts/>
+    <enableFeeds>true</enableFeeds>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <searchLayouts></searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

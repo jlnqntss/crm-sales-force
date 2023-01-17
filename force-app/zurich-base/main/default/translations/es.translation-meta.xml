@@ -5513,6 +5513,14 @@
         <name>CTIExtraButtonsTitle</name>
     </customLabels>
     <customLabels>
+        <label>Este evento ya tiene un acta asociada, puede modificarla o eliminarla</label>
+        <name>SDM_Acta_CheckExist</name>
+    </customLabels>
+    <customLabels>
+        <label>Solo el usuario {0} puede crear un acta</label>
+        <name>SDM_Acta_CheckOwner</name>
+    </customLabels>
+    <customLabels>
         <label>Activo</label>
         <name>SDM_Objetivos_Active</name>
     </customLabels>
@@ -5569,6 +5577,10 @@
         <name>SDM_Objetivos_DuplicateRecordsRowError</name>
     </customLabels>
     <customLabels>
+        <label>Editar periodicidad</label>
+        <name>SDM_Objetivos_EditFrequencyNotificationsButton</name>
+    </customLabels>
+    <customLabels>
         <label>Editar Objetivo</label>
         <name>SDM_Objetivos_Edit_Title</name>
     </customLabels>
@@ -5583,6 +5595,26 @@
     <customLabels>
         <label>Febrero</label>
         <name>SDM_Objetivos_February</name>
+    </customLabels>
+    <customLabels>
+        <label>N.º de días para la notificación</label>
+        <name>SDM_Objetivos_FrequencyNotificationsInputLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>El día seleccionado no puede ser superior al último día del mes.</label>
+        <name>SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeOverflow</name>
+    </customLabels>
+    <customLabels>
+        <label>El día seleccionado no puede ser inferior al primer día del mes.</label>
+        <name>SDM_Objetivos_FrequencyNotificationsInputMessageWhenRangeUnderflow</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardar</label>
+        <name>SDM_Objetivos_FrequencyNotificationsSaveButtonLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>Guardar periodicidad</label>
+        <name>SDM_Objetivos_FrequencyNotificationsSaveButtonTitle</name>
     </customLabels>
     <customLabels>
         <label>Indicador</label>
@@ -5609,8 +5641,16 @@
         <name>SDM_Objetivos_May</name>
     </customLabels>
     <customLabels>
+        <label>Frecuencia de notificaciones</label>
+        <name>SDM_Objetivos_NotificationsFrequencyRecordTypeName</name>
+    </customLabels>
+    <customLabels>
         <label>Noviembre</label>
         <name>SDM_Objetivos_November</name>
+    </customLabels>
+    <customLabels>
+        <label>Objetivos</label>
+        <name>SDM_Objetivos_ObjectivesRecordTypeName</name>
     </customLabels>
     <customLabels>
         <label>Octubre</label>
@@ -5661,6 +5701,22 @@
         <name>SDM_Objetivos_ToastEditRecord</name>
     </customLabels>
     <customLabels>
+        <label>Ha habido un problema al intentar guardar los días restantes para notificar el fin del plan mensual. Si el problema persiste contacte con el Administrador del Sistema.</label>
+        <name>SDM_Objetivos_ToastErrorMessageFreqNotifications</name>
+    </customLabels>
+    <customLabels>
+        <label>Error</label>
+        <name>SDM_Objetivos_ToastErrorTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Ha intentado guardar el mismo valor que se encuentra en la base de datos. Si desea actualizarlo, modifique el valor y pulse &apos;Guardar&apos;.</label>
+        <name>SDM_Objetivos_ToastInfoMessageFreqNotifications</name>
+    </customLabels>
+    <customLabels>
+        <label>Información</label>
+        <name>SDM_Objetivos_ToastInfoTitle</name>
+    </customLabels>
+    <customLabels>
         <label>Actualizados {0} objetivos correctamente</label>
         <name>SDM_Objetivos_ToastMessage</name>
     </customLabels>
@@ -5671,6 +5727,14 @@
     <customLabels>
         <label>Registro guardado correctamente</label>
         <name>SDM_Objetivos_ToastNewRecord</name>
+    </customLabels>
+    <customLabels>
+        <label>Los días restantes para notificar el fin del plan mensual se han guardado correctamente.</label>
+        <name>SDM_Objetivos_ToastSuccessMessageFreqNotifications</name>
+    </customLabels>
+    <customLabels>
+        <label>Éxito</label>
+        <name>SDM_Objetivos_ToastSuccessTitle</name>
     </customLabels>
     <customLabels>
         <label>Atención</label>
@@ -5881,6 +5945,10 @@
         <name>SDM_ControlIntermediaryNotifiaction_Active</name>
     </customLabels>
     <customLabels>
+        <label>Activar Todo</label>
+        <name>SDM_ControlIntermediaryNotifiaction_ActiveAll</name>
+    </customLabels>	
+    <customLabels>
         <label>Cancelar</label>
         <name>SDM_ControlIntermediaryNotifiaction_ButtonCancel</name>
     </customLabels>
@@ -5891,6 +5959,10 @@
     <customLabels>
         <label>Desactivados</label>
         <name>SDM_ControlIntermediaryNotifiaction_Inactive</name>
+    </customLabels>
+    <customLabels>
+        <label>Desactivar Todo</label>
+        <name>SDM_ControlIntermediaryNotifiaction_InactiveAll</name>
     </customLabels>
     <customLabels>
         <label>Mediador</label>
@@ -5907,6 +5979,14 @@
     <customLabels>
         <label>Mediadores con Alertas</label>
         <name>SDM_ControlIntermediaryNotifiaction_MultipicklistTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Las preferencias de notificaciones para Mediador se han actualizado</label>
+        <name>SDM_ControlIntermediaryNotifiaction_SuccessToastMessage</name>
+    </customLabels>
+	<customLabels>
+        <label>Éxito</label>
+        <name>SDM_ControlIntermediaryNotifiaction_SuccessToastTitle</name>
     </customLabels>
     <customLabels>
         <label>Alertas por Mediador</label>

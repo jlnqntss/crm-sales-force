@@ -2,49 +2,25 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>56.0</apiVersion>
     <assignments>
-        <name>AccountPartnerAssignment</name>
-        <label>Asignación Cuenta Partner</label>
-        <locationX>204</locationX>
-        <locationY>1703</locationY>
+        <name>PolicyPartnerAssignment</name>
+        <label>Asignación Partner Póliza</label>
+        <locationX>182</locationX>
+        <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>GetContactsAction.AccountId</elementReference>
+                <elementReference>$Record.PolicyId__r.Partner__c</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>$Record.ContactId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>GetContactsAction.Id</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>ContactAccountAssignment</name>
-        <label>Asignación Contacto Cuenta</label>
-        <locationX>50</locationX>
-        <locationY>1031</locationY>
-        <assignmentItems>
-            <assignToReference>$Record.AccountId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>GetPolicyAction.Partner__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>$Record.ContactId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>GetContactAccountPartnerAction.Id</elementReference>
-            </value>
-        </assignmentItems>
+        <connector>
+            <targetReference>SuppliedEmailDecision</targetReference>
+        </connector>
     </assignments>
     <decisions>
         <name>CaseUspDecision</name>
         <label>Caso USP</label>
-        <locationX>534</locationX>
+        <locationX>611</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
         <rules>
@@ -64,56 +40,9 @@
         </rules>
     </decisions>
     <decisions>
-        <name>ContactsNotNullDecision</name>
-        <label>¿Hay Contactos Relacionados?</label>
-        <locationX>336</locationX>
-        <locationY>1583</locationY>
-        <defaultConnectorLabel>Contactos Nulos</defaultConnectorLabel>
-        <rules>
-            <name>ContactsOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>GetContactsAction</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AccountPartnerAssignment</targetReference>
-            </connector>
-            <label>Contactos Encontrados</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>PolicyAccountNotNullDecision</name>
-        <label>Poliza con Cuenta</label>
-        <locationX>182</locationX>
-        <locationY>791</locationY>
-        <defaultConnector>
-            <targetReference>GetContactsAction</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Cuenta No Informada</defaultConnectorLabel>
-        <rules>
-            <name>AccountOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>GetPolicyAction.Partner__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>GetContactAccountPartnerAction</targetReference>
-            </connector>
-            <label>Cuenta Informada</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>PolicyNotNullDecision</name>
         <label>Poliza Informada</label>
-        <locationX>336</locationX>
+        <locationX>380</locationX>
         <locationY>551</locationY>
         <defaultConnector>
             <targetReference>GetContactsAction</targetReference>
@@ -129,15 +58,53 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.PolicyId__r.Partner__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>GetPolicyAction</targetReference>
+                <targetReference>PolicyPartnerAssignment</targetReference>
             </connector>
-            <label>Poliza Informada</label>
+            <label>Poliza y Partner Informado</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>SuppliedEmailDecision</name>
+        <label>¿Supplied Email informado?</label>
+        <locationX>182</locationX>
+        <locationY>791</locationY>
+        <defaultConnectorLabel>Supplied Email no informado</defaultConnectorLabel>
+        <rules>
+            <name>SuppliedEmailOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.SuppliedEmail</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetContactAccountPartnerAction</targetReference>
+            </connector>
+            <label>Supplied Email Informado</label>
+        </rules>
+    </decisions>
+    <description>Para los casos con Área de origen: Partner, busca la vinculación del caso con la cuenta de Partner, tanto a través de la póliza asociada como a través del remitente del email</description>
     <environments>Default</environments>
-    <interviewLabel>Case Trigger - Before Insert - Vinculacion Contacto Partner {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger - Before Insert - Vinculacion Contacto Partner</label>
+    <formulas>
+        <name>Debug</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.PolicyId__c}&amp;BR()&amp;
+{!$Record.HegeoPolicyId__c}&amp;BR()&amp;
+{!$Record.AccountId}&amp;BR()&amp;
+{!$Record.ContactId}</expression>
+    </formulas>
+    <interviewLabel>Case Trigger - Before Insert/update - Vinculacion Contacto Partner {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Trigger - Before Insert/Update - Vinculacion Contacto Partner</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -162,16 +129,13 @@
         <label>Recuperar Contacto Cuenta Partner</label>
         <locationX>50</locationX>
         <locationY>911</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>ContactAccountAssignment</targetReference>
-        </connector>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
             <field>AccountId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>GetPolicyAction.Partner__c</elementReference>
+                <elementReference>$Record.PolicyId__r.Partner__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -181,21 +145,27 @@
                 <elementReference>GetRecordTypePartnerContactAction.Id</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <filters>
+            <field>Email</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.SuppliedEmail</elementReference>
+            </value>
+        </filters>
         <object>Contact</object>
+        <outputAssignments>
+            <assignToReference>$Record.ContactId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
         <sortField>Title</sortField>
         <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <name>GetContactsAction</name>
         <label>Recuperar Contactos</label>
-        <locationX>336</locationX>
-        <locationY>1463</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>ContactsNotNullDecision</targetReference>
-        </connector>
+        <locationX>578</locationX>
+        <locationY>671</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
             <field>RecordTypeId</field>
@@ -211,35 +181,20 @@
                 <elementReference>$Record.SuppliedEmail</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Contact</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>GetPolicyAction</name>
-        <label>Recuperar Póliza</label>
-        <locationX>182</locationX>
-        <locationY>671</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>PolicyAccountNotNullDecision</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
+        <outputAssignments>
+            <assignToReference>$Record.AccountId</assignToReference>
+            <field>AccountId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>$Record.ContactId</assignToReference>
             <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.PolicyId__c</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Policy__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>GetRecordTypePartnerContactAction</name>
         <label>Recuperar RecordType Partner Contact</label>
-        <locationX>336</locationX>
+        <locationX>380</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -258,21 +213,17 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>408</locationX>
+        <locationX>485</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CaseUspDecision</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>SourceArea__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Partner</stringValue>
-            </value>
-        </filters>
+        <filterFormula>AND(
+ISPICKVAL({!$Record.SourceArea__c},&quot;Partner&quot;),
+{!$User.Alias}=&quot;autocase&quot;
+)</filterFormula>
         <object>Case</object>
-        <recordTriggerType>Create</recordTriggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>

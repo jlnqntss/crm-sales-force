@@ -3,7 +3,7 @@
  * @author rlopez
  * @date 23/11/2020
  */
-public without sharing class ContactPointPhoneUtil
+public with sharing class ContactPointPhoneUtil
 {
     public static Map<Id, List<ContactPointPhone> > relatedContactPointPhonesMap;
     public static Map<Id, Scope__c> relatedScopesMap;
@@ -106,7 +106,6 @@ public without sharing class ContactPointPhoneUtil
                             contactPointPhonesToUpdate.put(relatedContactPoint.Id, relatedContactPoint);
                         }
 
-                        //contactPointPhonesToUpdate.addAll(relatedContactPointPhones);
                         if(contactPointPhonesToUpdate.containsKey(newContactPointPhone.Id))
                         {
                             contactPointPhonesToUpdate.remove(newContactPointPhone.Id);

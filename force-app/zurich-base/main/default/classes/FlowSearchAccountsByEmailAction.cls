@@ -15,7 +15,6 @@ public class FlowSearchAccountsByEmailAction {
 
             //Preparamos la información recibida para pasársela al AccountSearchService
             //AccountSearchService.Scope scope = new AccountSearchService.Scope();
-            //scope.scope = null; //FIXME: Cambiar esto por request.caseScope cuando se haya refactorizado AccountSearchService y la picklist de caso coincidan en valores
             List<String> emailsToSearch = new List<String>();
             emailsToSearch.add(request.caseEmail);
 
