@@ -72,13 +72,23 @@
     </businessHours>
     <holidays>
         <businessHours>CCS Default</businessHours>
-        <businessHours>CSM Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
-        <name>01/05 - Jornada Intensiva Víspera Reyes</name>
+        <name>01/05 - Jornada Intensiva Víspera Reyes CCS</name>
         <recurrenceDayOfMonth>5</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
         <recurrenceStartDate>2022-01-05</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <businessHours>CSM Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>01/05 - Jornada Intensiva Víspera Reyes CSM</name>
+        <recurrenceDayOfMonth>5</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-01-05</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
         <startTime>14:30:00.000Z</startTime>
     </holidays>
@@ -95,13 +105,34 @@
     </holidays>
     <holidays>
         <businessHours>CCS Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>04/05 - Jornada Intensiva Víspera Jueves Santo CCS</name>
+        <recurrenceDayOfMonth>5</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-04-05</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <businessHours>CCS Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>04/06 - Jornada Intensiva Víspera Viernes Santo CCS</name>
+        <recurrenceDayOfMonth>6</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-04-06</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>CSM Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
-        <name>04/14 - Jornada Intensiva Víspera Viernes Santo</name>
-        <recurrenceDayOfMonth>14</recurrenceDayOfMonth>
+        <name>04/06 - Jornada Intensiva Víspera Viernes Santo CSM</name>
+        <recurrenceDayOfMonth>6</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
-        <recurrenceStartDate>2022-04-14</recurrenceStartDate>
+        <recurrenceStartDate>2023-04-06</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
         <startTime>14:30:00.000Z</startTime>
     </holidays>
@@ -109,14 +140,24 @@
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
         <isRecurring>true</isRecurring>
-        <name>04/15 - Viernes Santo</name>
-        <recurrenceDayOfMonth>15</recurrenceDayOfMonth>
+        <name>04/07 - Viernes Santo</name>
+        <recurrenceDayOfMonth>7</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
-        <recurrenceStartDate>2022-04-15</recurrenceStartDate>
+        <recurrenceStartDate>2023-04-07</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
         <businessHours>CSM Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>04/10 - Jornada Intensiva Lunes de Pascua CSM</name>
+        <recurrenceDayOfMonth>10</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-04-10</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>14:30:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
         <name>04/18 - Jornada Intensiva Lunes de Pascua</name>
@@ -127,7 +168,6 @@
         <startTime>14:30:00.000Z</startTime>
     </holidays>
     <holidays>
-        <businessHours>CSM Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>04/25 - Jornada Intensiva</name>
         <recurrenceDayOfMonth>25</recurrenceDayOfMonth>
@@ -136,27 +176,27 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
-        <endTime>20:00:00.000Z</endTime>
+        <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Default</businessHours>
         <isRecurring>true</isRecurring>
-        <name>06/06 - Jornada Intensiva Lunes de Pascua Granada</name>
-        <recurrenceDayOfMonth>6</recurrenceDayOfMonth>
-        <recurrenceMonthOfYear>June</recurrenceMonthOfYear>
-        <recurrenceStartDate>2022-06-06</recurrenceStartDate>
+        <name>05/01 - Primero de mayo</name>
+        <recurrenceDayOfMonth>1</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>May</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-05-01</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
-        <startTime>14:30:00.000Z</startTime>
     </holidays>
     <holidays>
         <businessHours>CSM Default</businessHours>
         <isRecurring>true</isRecurring>
-        <name>06/16 - Jornada Intensiva Verano</name>
+        <name>06/16 - Jornada Intensiva Verano CSM</name>
         <recurrenceDayOfWeek>Monday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Tuesday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Wednesday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Thursday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Friday</recurrenceDayOfWeek>
-        <recurrenceEndDate>2022-09-15</recurrenceEndDate>
+        <recurrenceEndDate>2023-09-15</recurrenceEndDate>
         <recurrenceInterval>1</recurrenceInterval>
-        <recurrenceStartDate>2022-06-16</recurrenceStartDate>
+        <recurrenceStartDate>2023-06-16</recurrenceStartDate>
         <recurrenceType>RecursWeekly</recurrenceType>
     </holidays>
     <holidays>
@@ -164,15 +204,15 @@
         <businessHours>ZE Business Hours</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
-        <name>08 - Jornada Intensiva Agosto</name>
+        <name>08 - Jornada Intensiva Agosto CCS</name>
         <recurrenceDayOfWeek>Monday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Tuesday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Wednesday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Thursday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Friday</recurrenceDayOfWeek>
-        <recurrenceEndDate>2022-08-31</recurrenceEndDate>
+        <recurrenceEndDate>2023-08-01</recurrenceEndDate>
         <recurrenceInterval>1</recurrenceInterval>
-        <recurrenceStartDate>2022-08-01</recurrenceStartDate>
+        <recurrenceStartDate>2023-08-01</recurrenceStartDate>
         <recurrenceType>RecursWeekly</recurrenceType>
         <startTime>15:00:00.000Z</startTime>
     </holidays>
@@ -225,6 +265,17 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>CSM Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>12/07 - Jornada Intensiva Puente Constitucion CSM</name>
+        <recurrenceDayOfMonth>7</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-12-07</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>14:30:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
         <isRecurring>true</isRecurring>
@@ -232,6 +283,16 @@
         <recurrenceDayOfMonth>8</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
         <recurrenceStartDate>2022-12-08</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Default</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>12/25 - Navidad</name>
+        <recurrenceDayOfMonth>25</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-12-25</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>

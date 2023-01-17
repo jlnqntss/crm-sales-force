@@ -120,6 +120,24 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>libraryName</name>
+                    <value>Enlaces de interés</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>linksLimitToShow</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentName>usefulLinks</componentName>
+                <identifier>c_usefulLinks</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-ac23b515-c9fb-4659-af07-b32603a4db0f</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>context</name>
                     <value>GLOBAL</value>
                 </componentInstanceProperties>
@@ -171,6 +189,20 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>customTab2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-ac23b515-c9fb-4659-af07-b32603a4db0f</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>{!$Label.SDM_LinksInteres_TabLabel}</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>

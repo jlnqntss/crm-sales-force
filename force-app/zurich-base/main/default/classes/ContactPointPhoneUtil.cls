@@ -8,8 +8,8 @@ public without sharing class ContactPointPhoneUtil
     public static Map<Id, List<ContactPointPhone> > relatedContactPointPhonesMap;
     public static Map<Id, Scope__c> relatedScopesMap;
 
-    public static List<ContactPointPhone> contactPointPhonesToUpdate;
-    public static List<Scope__c> scopesToUpdate;
+    public static Map<Id, ContactPointPhone> contactPointPhonesToUpdate;
+    public static Map<Id, Scope__c> scopesToUpdate;
 
     /**
      * Método que, en caso de insert o update, recupera los ContactPointPhone marcados con IsPrimary = true
@@ -28,8 +28,8 @@ public without sharing class ContactPointPhoneUtil
             relatedScopesMap = new Map<Id, Scope__c>();
 
             //Inicializamos listas de registros a actualizar al finalizar el trigger
-            contactPointPhonesToUpdate = new List<ContactPointPhone>();
-            scopesToUpdate = new List<Scope__c>();
+            contactPointPhonesToUpdate = new Map<Id, ContactPointPhone>();
+            scopesToUpdate = new Map<Id, Scope__c>();
 
             Set<Id> relatedScopes = new Set<Id>();
 
@@ -43,18 +43,18 @@ public without sharing class ContactPointPhoneUtil
 
             List<ContactPointPhone> relatedContactPointPhones = new ContactPointPhonesSelector(
                 new Set<String> {'Id', 'ScopeId__c', 'IsPrimary'}
-                ).selectByScopeIdAndIsPrimary(relatedScopes, true, newList);
+                ).selectByScopeIdAndIsPrimary(relatedScopes, true, null);
 
             for(ContactPointPhone relatedContactPointPhone: relatedContactPointPhones)
             {
-                List<ContactPointPhone> ContactPointPhoneList = new List<ContactPointPhone>();
+                List<ContactPointPhone> contactPointPhoneList = new List<ContactPointPhone>();
                 if( relatedContactPointPhonesMap.containsKey(relatedContactPointPhone.ScopeId__c) )
                 {
-                    ContactPointPhoneList = relatedContactPointPhonesMap.get(relatedContactPointPhone.ScopeId__c);
+                    contactPointPhoneList = relatedContactPointPhonesMap.get(relatedContactPointPhone.ScopeId__c);
                 }
 
-                ContactPointPhoneList.add(relatedContactPointPhone);
-                relatedContactPointPhonesMap.put(relatedContactPointPhone.ScopeId__c, ContactPointPhoneList);
+                contactPointPhoneList.add(relatedContactPointPhone);
+                relatedContactPointPhonesMap.put(relatedContactPointPhone.ScopeId__c, contactPointPhoneList);
             }
 
             relatedScopesMap = new Map<Id, Scope__c>(
@@ -90,8 +90,9 @@ public without sharing class ContactPointPhoneUtil
             {
                 Id key = newContactPointPhone.ScopeId__c;
                 if( (oldMap == null && newContactPointPhone.IsPrimary) ||
-                    oldMap != null && newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary
-                     )
+                    oldMap != null && newContactPointPhone.IsPrimary && newContactPointPhone.IsPrimary != oldMap.get(newContactPointPhone.Id).IsPrimary ||
+                    oldMap != null && newContactPointPhone.IsPrimary && newContactPointPhone.ScopeId__c != oldMap.get(newContactPointPhone.Id).ScopeId__c 
+                    )
                 {
                     //Ha pasado de false a true (es decir, lo han marcado como IsPrimary)
                     //Hay que marcar los relacionados a false
@@ -102,9 +103,14 @@ public without sharing class ContactPointPhoneUtil
                         for(ContactPointPhone relatedContactPoint: relatedContactPointPhones)
                         {
                             relatedContactPoint.IsPrimary = false;
+                            contactPointPhonesToUpdate.put(relatedContactPoint.Id, relatedContactPoint);
                         }
 
-                        contactPointPhonesToUpdate.addAll(relatedContactPointPhones);
+                        //contactPointPhonesToUpdate.addAll(relatedContactPointPhones);
+                        if(contactPointPhonesToUpdate.containsKey(newContactPointPhone.Id))
+                        {
+                            contactPointPhonesToUpdate.remove(newContactPointPhone.Id);
+                        }
                     }
 
                     //Actualizamos Scopes
@@ -114,7 +120,7 @@ public without sharing class ContactPointPhoneUtil
                         if(relatedScope != null)
                         {
                             relatedScope.PrimaryPhone__c = formatPhoneNumber(newContactPointPhone.AreaCode, newContactPointPhone.TelephoneNumber);
-                            scopesToUpdate.add(relatedScope);
+                            scopesToUpdate.put(relatedScope.Id, relatedScope);
                         }
                     }
                 }
@@ -143,13 +149,13 @@ public without sharing class ContactPointPhoneUtil
                 }
                 else
                 {
-                    if( relatedScopesMap.containsKey(key) && String.isBlank(relatedScopesMap.get(key).PrimaryPhone__c) )
+                    if( relatedScopesMap.containsKey(key))
                     {
                         Scope__c relatedScope = relatedScopesMap.get(key);
                         if(relatedScope != null)
                         {
                             relatedScope.PrimaryPhone__c = formatPhoneNumber(newContactPointPhone.AreaCode, newContactPointPhone.TelephoneNumber);
-                            scopesToUpdate.add(relatedScope);
+                            scopesToUpdate.put(relatedScope.Id, relatedScope);
                         }
                     }
                 }
@@ -238,14 +244,36 @@ public without sharing class ContactPointPhoneUtil
      */
     public static void updateRelatedContactPoints()
     {
-        if( scopesToUpdate != null && !scopesToUpdate.isEmpty() )
+        if( scopesToUpdate != null && !scopesToUpdate.values().isEmpty() )
         {
-            update scopesToUpdate;
+            update scopesToUpdate.values();
         }
 
-        if( contactPointPhonesToUpdate != null && !contactPointPhonesToUpdate.isEmpty() )
+        if( contactPointPhonesToUpdate != null && !contactPointPhonesToUpdate.values().isEmpty() )
         {
-            update contactPointPhonesToUpdate;
+            update contactPointPhonesToUpdate.values();
+        }
+    }
+
+    public static void establishAsPrimary(List<ContactPointPhone> newList, Map<Id, ContactPointPhone> oldMap)
+    {
+        if (oldMap != null)
+        {
+            for(ContactPointPhone cNuevo : newList)
+            {
+                ContactPointPhone cViejo = oldMap.get(cNuevo.id); 
+                if(!cViejo.IsPrimary)
+                {
+                    cNuevo.IsPrimary = true;
+                }
+            }
+        }
+        else 
+        {
+            for(ContactPointPhone cNuevo : newList)
+            {
+                cNuevo.IsPrimary = true;
+            }
         }
     }
 }

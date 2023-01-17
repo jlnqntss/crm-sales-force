@@ -1276,7 +1276,7 @@ public class TestDataFactory
                     'note_desc_tipo_envio' => tipo,
                     'note_desc_subtipo' => subtype,
                     'note_desc_nivel_division' => typeN3,
-                    'note_cod_agrupacion' => ''
+                    'note_cod_agrupacion' => '17'
             }
                 );
         }
@@ -3357,5 +3357,22 @@ public class TestDataFactory
                 );
 
         return obj;
-    } 
+    }
+    
+    /**
+     * Genera un evento
+     *
+     * @author nts (dmunoz)
+     * @date 23/12/2022
+     * @return {Event} 
+     */
+    public static void generateEvent() {
+        Event e = new Event();
+        e.subject = 'EventTest';
+        e.EventType__c = 'Call';
+        e.RelatedToIntermediary__c = 'No';
+        e.DurationInMinutes = 60;
+        e.ActivityDateTime = DateTime.now();
+        insert e;
+    }
 }

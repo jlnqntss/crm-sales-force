@@ -170,4 +170,24 @@ private with sharing class ContactsSelectorTest
 
         System.assertEquals(10, contacts.size(), 'There should be 10 accounts found');
     }
+
+    @IsTest
+    static void test_findByANI_OK()
+    {
+        String ani = '123456';
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'PartnerOCS', 10);
+        insert accounts;
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, 'AgentMediator', 1);
+        for(Contact currentContact : contacts)
+        {
+            currentContact.Phone = ani;
+        }
+        insert contacts;
+
+        Test.startTest();
+        contacts = new ContactsSelector().findByANI(ani);
+        Test.stopTest();
+
+        System.assertEquals(10, contacts.size(), 'There should be 10 contacts found');
+    }
 }

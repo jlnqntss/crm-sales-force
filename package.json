@@ -26,7 +26,15 @@
     "release:changelog": "node scripts/source/changelog.js",
     "test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
     "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
-    "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck"
+    "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
+    "release:authenticate": "node scripts/source/authenticate.js",
+    "release:scan": "node scripts/source/scan",
+    "release:test:lwc": "node scripts/source/test-lwc.js",
+    "release:test:apex": "node scripts/source/test-apex.js",
+    "release:validate": "node scripts/source/deploy.js --check",
+    "release:deploy": "node scripts/source/deploy.js",
+    "release:tag:version": "node scripts/source/tag-version.js",
+    "release:start": "node scripts/source/create-release.js"
   },
   "husky": {
     "hooks": {
@@ -37,13 +45,14 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^11.0.0",
     "@salesforce/eslint-config-lwc": "^0.8.0",
-    "@salesforce/sfdx-lwc-jest": "1.1.0",
+    "@salesforce/sfdx-lwc-jest": "^1.1.2",
     "eslint": "^7.15.0",
     "fs-extra": "^9.0.1",
     "husky": "^4.3.6",
     "merge-dirs": "^0.2.1",
     "mustache": "^4.1.0",
     "node-fetch": "^2.6.1",
+    "node-find-folder": "^0.1.32",
     "node-merge": "^0.1.0",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0"

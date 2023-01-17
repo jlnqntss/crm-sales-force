@@ -1115,15 +1115,15 @@ public without sharing class SystemUtil
      * @date 04/05/2020
      **/
     public static String createJSON(
-        ID ID,
+        ID id,
         String errorCode,
         String errorDescription,
         Datetime timeStamp,
-        String Origin,
-        String Country,
-        String Entity,
-        Datetime TimestampJson,
-        String Json
+        String origin,
+        String country,
+        String entity,
+        Datetime timestampJson,
+        String json
         )
     {
         String response = '';
@@ -1136,18 +1136,18 @@ public without sharing class SystemUtil
         JSONGenerator jsGen = System.JSON.createGenerator(false);
         // start object ({)
         jsGen.writeStartObject();
-        jsGen.writeStringField('salesForceId', ID);
+        jsGen.writeStringField('salesForceId', id);
         jsGen.writeStringField('errorCode', errorCode);
         jsGen.writeStringField('errorDescription', errorDescription);
         jsGen.writeStringField( 'timeStamp', String.valueOf(timeStamp) );
 
         jsGen.writeFieldName('json');
         jsGen.writeStartObject();
-        jsGen.writeStringField('Origin', Origin);
-        jsGen.writeStringField('Country', Country);
-        jsGen.writeStringField('Entity', Entity);
-        jsGen.writeStringField( 'TimestampJson', String.valueOf(TimestampJson) );
-        jsGen.writeStringField('Json', Json);
+        jsGen.writeStringField('Origin', origin);
+        jsGen.writeStringField('Country', country);
+        jsGen.writeStringField('Entity', entity);
+        jsGen.writeStringField( 'TimestampJson', String.valueOf(timestampJson) );
+        jsGen.writeStringField('Json', json);
         jsGen.writeEndObject();
         // end object (})
         jsGen.writeEndObject();

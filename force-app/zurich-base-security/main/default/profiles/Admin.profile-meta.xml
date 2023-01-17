@@ -311,6 +311,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContentWorkspacesPicklist</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentWorkspacesPicklistTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CoverUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -776,6 +784,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TriggerFactory</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UsefulLinksController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UsefulLinksControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -3645,6 +3661,51 @@
     </customSettingAccesses>
     <fieldPermissions>
         <editable>true</editable>
+        <field>AccionesTratadasActa__c.Actions__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccionesTratadasActa__c.DueDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>AccionesTratadasActa__c.Observations__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccionesTratadasActa__c.PersonInCharge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.Attendees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Acta__c.IsViewedByCreator__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.MeetingObjective__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.OtherInformation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.AccidentRate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4685,11 +4746,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.RevenuesPerEmployee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Account.InterestConc__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4776,6 +4832,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Segment_sdm__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.RevenuesPerEmployees__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5666,6 +5727,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.AutomaticNotifications__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.AutomaticTaskCreated__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8291,6 +8357,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Subtype__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.Acta__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11446,6 +11517,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Special_Condition__c.StartDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Acta__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14655,6 +14731,12 @@
         <flow>ZESearchAndScreenPop</flow>
     </flowAccesses>
     <layoutAssignments>
+        <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
+    </layoutAssignments>	
+	<layoutAssignments>
+        <layout>Acta__c-Acta Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -14780,10 +14862,6 @@
         <layout>Contact-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contact-Contact Layout</layout>
-        <recordType>Contact.ContactPartner</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Contact-Copy of Customer Layout_prod</layout>
         <recordType>Contact.CustomerGI</recordType>
     </layoutAssignments>
@@ -14806,6 +14884,10 @@
     <layoutAssignments>
         <layout>Contact-OCS Contact</layout>
         <recordType>Contact.Contact</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-OCS Contact</layout>
+        <recordType>Contact.ContactPartner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ContactPointAddress-Formato Dirección de punto de contacto</layout>
@@ -15367,6 +15449,24 @@
         <endAddress>255.255.255.254</endAddress>
         <startAddress>1.1.1.1</startAddress>
     </loginIpRanges>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>AccionesTratadasActa__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>	
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Acta__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -17261,6 +17361,10 @@
         <recordType>PlanComercial__c.MensualPlan</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <tabVisibilities>
+        <tab>Acta__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
     <tabVisibilities>
         <tab>Claim__c</tab>
         <visibility>DefaultOn</visibility>

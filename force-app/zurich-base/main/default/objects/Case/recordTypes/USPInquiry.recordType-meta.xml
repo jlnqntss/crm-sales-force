@@ -468,6 +468,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Falta Respuesta Mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Ganada</fullName>
             <default>false</default>
         </values>

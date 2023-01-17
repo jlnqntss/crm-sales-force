@@ -127,10 +127,10 @@ public class INFOHandler implements ISystem
      * @throws
      * @where ExternalJobQueueBatch
      */
-    public static void prepare(Transformer INFOTransformer, List<ExternalRequest__c> externalRequestList)
+    public static void prepare(Transformer infoTransformer, List<ExternalRequest__c> externalRequestList)
     {
         // 1 - Obtener el tranformer a utilizar
-        tf = INFOTransformer;
+        tf = infoTransformer;
 
         // 2 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
         recordsToUpsertByEntity = tf.initRequestsMapBySettings();
@@ -512,9 +512,34 @@ public class INFOHandler implements ISystem
                 caseRecord.Origin = NOTE_CASE_ORIGIN;
                 // Assign the Case Source Area to "Mediator"
                 caseRecord.SourceArea__c = NOTE_CASE_SOURCE_AREA;
-                // Assign the RecordType
-                caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+
+                //Tipo de NOTA INFO
+                //Se utiliza el método getEquivalence para comprobar si el tipo de Nota INFO es RBCO/RBNW/SINO
+                //En este caso el RecordType del nuevo caso generado es automáticamente OCS
+                String valorNotaInfo = getEquivalence(HANDLER_ORIGIN,NOTE,(String)recordValuesMap.get('note_cod_agrupacion_TA'));
+
+                if(String.isNotBlank(valorNotaInfo))
+                {
+                    caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(valorNotaInfo).getRecordTypeId();
+                }
+                else 
+                {
+                    // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
+                    String recordTypeDevName = getEquivalence(HANDLER_ORIGIN,NOTE,caseRecord.HegeoProductGroupCode__c.trim());
+
+                    if( String.isBlank(recordTypeDevName) ) 
+                    {
+                        //En caso de no encontrar equivalencia se establece el caso tendrá RecordType OCS
+                        caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+                    }
+                    else 
+                    {
+                        caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeDevName).getRecordTypeId();
+                    }
+                }
+
                 // Get the Type, Subytype and TypeN3 from the HEGEO fields metadata configuration
+
                 if( recordValuesMap.containsKey('NOTE_DESC_TIPO_ENVIO') &&
                     recordValuesMap.containsKey('NOTE_DESC_SUBTIPO') ) {
                         String infoType = (String)recordValuesMap.get('NOTE_DESC_TIPO_ENVIO');

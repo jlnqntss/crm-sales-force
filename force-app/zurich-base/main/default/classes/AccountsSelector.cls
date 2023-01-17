@@ -424,6 +424,16 @@ public with sharing class AccountsSelector extends RecordsSelector
      */
     public List<Account> selectById(Set<Id> accountIds)
     {
+        this.baseQuery.selectFields (
+            new List<Schema.SObjectField> {
+                Account.Id,
+                Account.ZoneCode__c,
+                Account.MainMobilePhone__c,
+                Account.Phone,
+                Account.MainEmail__c,
+                Account.NationalId__c
+            }
+        );
         //Devolver lista vacía
         if ( accountIds == null || accountIds.isEmpty() )
         {
