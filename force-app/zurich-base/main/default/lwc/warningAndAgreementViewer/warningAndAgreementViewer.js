@@ -23,8 +23,6 @@ export default class WarningAndAgreementViewer extends LightningElement {
   @api
   title;
 
-  // fields = [NAME_FIELD, ];
-
   recordsToShow = [];
   showedSize = 0;
   allRecords = [];
@@ -38,8 +36,6 @@ export default class WarningAndAgreementViewer extends LightningElement {
   showAll;
   warningCreation = false;
 
-  // @wire(getRecord, { recordId: '$recordId', fields: [NATIONAL_ID_FIELD, INTERMEDIARY_CODE_FIELD]})
-  // @wire(getWarnings, {record: '$account', salesforceObject: '$salesforceObject', recordType: '$recordId'})
   @wire(getFields, { salesforceObject: "$salesforceObject" })
   columns;
 
@@ -122,11 +118,6 @@ export default class WarningAndAgreementViewer extends LightningElement {
       this.warning = false;
     }
   }
-
-  // renderedCallback() {
-  //   console.log("Rendered callback");
-  //   this.loadRecords();
-  // }
 
   /**
    * Método que comprueba el icono. Se hace desde el renderedCallback porque
