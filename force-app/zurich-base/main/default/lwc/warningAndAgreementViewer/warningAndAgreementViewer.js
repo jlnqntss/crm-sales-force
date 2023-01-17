@@ -42,6 +42,7 @@ export default class WarningAndAgreementViewer extends LightningElement {
   // @wire(getWarnings, {record: '$account', salesforceObject: '$salesforceObject', recordType: '$recordId'})
   @wire(getFields, { salesforceObject: "$salesforceObject" })
   columns;
+
   @wire(getObjectInfo, { objectApiName: WARNING_OBJECT })
   warningInfo;
   @wire(getObjectInfo, { objectApiName: AGREEMENT_OBJECT })
@@ -143,28 +144,13 @@ export default class WarningAndAgreementViewer extends LightningElement {
   }
 
   /**
-   * Función que define las columnas a mostrar en el modal
-   * @author jjuaristi@seidor.es
-   * @date 26/12/2022
-   */
-  defineColumns(result) {
-    result.forEach((field) => {
-      this.columns.push({
-        label: field.label,
-        fieldName: field.fieldName,
-        wrapText: true
-      });
-    });
-  }
-
-  /**
    * Método que cancela acuerdos
    * @author jjuaristi@seidor.es
    * @date 10/01/2023
    */
   async disableAgreements() {
     var selectedRecords = this.template
-      .querySelector("lightning-datatable")
+      .querySelector("c-custom-datatable")
       .getSelectedRows();
     if (selectedRecords.length !== 0) {
       await cancelAgreements({ agreements: selectedRecords });

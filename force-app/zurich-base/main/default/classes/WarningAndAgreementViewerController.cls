@@ -49,8 +49,21 @@ public with sharing class WarningAndAgreementViewerController
         // To return the field api name
         for(FieldSetMember field : fieldList)
         {
-            fieldsToShow.add(new Field(field.getLabel(), field.getFieldPath(), field.getType()));
+            if(
+                String.valueOf(field.getType()).toLowerCase() == 'textarea' 
+                &&
+                salesforceObject == AGREEMENT_OBJECT
+            )
+            {
+                fieldsToShow.add(new Field(field.getLabel(), field.getFieldPath(), 'richText'));
+            }
+            else
+            {
+                fieldsToShow.add(new Field(field.getLabel(), field.getFieldPath(), field.getType()));
+            }
         }
+
+        System.debug(fieldsToShow);
 
         return fieldsToShow;
     }
@@ -145,6 +158,7 @@ public with sharing class WarningAndAgreementViewerController
         {
             for(Special_Condition__c agreement : agreements)
             {
+                agreement.EndDate__c = System.today();
                 agreement.IsActive__c = false;
             }
             update agreements;
@@ -249,6 +263,18 @@ public with sharing class WarningAndAgreementViewerController
             this.label     = label;
             this.fieldName = fieldName;
             this.type = String.valueOf(type).toLowerCase();
+        }
+
+        /**
+         * Contructor de la clase Field con string
+         * @author jjuaristi@seidor.es
+         * @date 26/12/2022
+         */
+        public Field(String label, String fieldName, String type)
+        {
+            this.label     = label;
+            this.fieldName = fieldName;
+            this.type = type;
         }
     }
     //#endregion

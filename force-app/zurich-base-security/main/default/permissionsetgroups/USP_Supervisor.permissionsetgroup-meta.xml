@@ -3,6 +3,7 @@
     <hasActivationRequired>false</hasActivationRequired>
     <label>USP_Supervisor</label>
     <permissionSets>Consulta_Datos</permissionSets>
+    <permissionSets>Gestion_Avisos_Acuerdos_USP</permissionSets>
     <permissionSets>Gestion_Suscripcion</permissionSets>
     <permissionSets>Informes_solo_lectura</permissionSets>
     <status>Updated</status>

@@ -1,114 +1,121 @@
 <template>
-  <lightning-card variant="Narrow" title={compTitle} icon-name={iconName}>
-    <div class="slds-grid slds-grid_vertical">
-      <div class="slds-col slds-p-right_medium" if:false={hideManagement}>
-        <lightning-button
-          label="Crear Aviso Particular"
-          class="slds-button slds-float_right"
-          onclick={createWarning}
-          if:true={warning}
-          variant="brand"
-        >
-        </lightning-button>
-        <lightning-button
-          label="Desactivar Avisos"
-          class="slds-button slds-float_right"
-          onclick={disableWarnings}
-          if:true={warning}
-        >
-        </lightning-button>
-        <lightning-button
-          label="Desactivar Acuerdos"
-          class="slds-button slds-float_right"
-          onclick={disableAgreements}
-          if:false={warning}
-        >
-        </lightning-button>
-      </div>
-      <div class="slds-col slds-p-top_medium">
-        <lightning-datatable
-          key-field="Id"
-          data={recordsToShow}
-          columns={columns.data}
-          hide-checkbox-column={hideManagement}
-          if:false={hideTable}
-        >
-        </lightning-datatable>
-      </div>
-      <div class="slds-col slds-p-top_medium">
-        <lightning-button
-          variant="base"
-          label={showAllLabel}
-          onclick={showExpired}
-          class="slds-align_absolute-center"
-          if:false={hideShowAll}
-        >
-        </lightning-button>
-        <template if:true={showAll}>
-          <section
-            aria-modal="true"
-            class="slds-modal slds-fade-in-open slds-modal--large"
+  <div class="slds-card slds-card_boundary">
+    <lightning-card
+      variant="Narrow"
+      title={compTitle}
+      icon-name={iconName}
+      class="slds-border_top"
+    >
+      <div class="slds-grid slds-grid_vertical">
+        <div class="slds-col slds-p-right_medium" if:false={hideManagement}>
+          <lightning-button
+            label="Crear Aviso Particular"
+            class="slds-button slds-float_right"
+            onclick={createWarning}
+            if:true={warning}
+            variant="brand"
           >
-            <div class="slds-modal__container">
-              <header class="slds-modal__header">
-                <h2 class="slds-text-heading_small">{title}</h2>
-                <lightning-icon
-                  class="slds-modal__close"
-                  icon-name="utility:close"
-                  size="small"
-                  onclick={closeModal}
-                ></lightning-icon>
-              </header>
-              <div class="slds-modal__content">
-                <lightning-datatable
-                  key-field="Id"
-                  data={allRecords}
-                  columns={columns.data}
-                  hide-checkbox-column="true"
-                  column-widths-mode="auto"
-                >
-                </lightning-datatable>
+          </lightning-button>
+          <lightning-button
+            label="Desactivar Avisos"
+            class="slds-button slds-float_right"
+            onclick={disableWarnings}
+            if:true={warning}
+          >
+          </lightning-button>
+          <lightning-button
+            label="Desactivar Acuerdos"
+            class="slds-button slds-float_right"
+            onclick={disableAgreements}
+            if:false={warning}
+          >
+          </lightning-button>
+        </div>
+        <div class="slds-col slds-p-top_medium">
+          <c-custom-datatable
+            key-field="Id"
+            data={recordsToShow}
+            columns={columns.data}
+            hide-checkbox-column={hideManagement}
+            if:false={hideTable}
+          >
+          </c-custom-datatable>
+        </div>
+        <div class="slds-col slds-p-top_medium">
+          <lightning-button
+            variant="base"
+            label={showAllLabel}
+            onclick={showExpired}
+            class="slds-align_absolute-center"
+            if:false={hideShowAll}
+          >
+          </lightning-button>
+          <template if:true={showAll}>
+            <section
+              aria-modal="true"
+              class="slds-modal slds-fade-in-open slds-modal--large"
+            >
+              <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                  <h2 class="slds-text-heading_small">{title}</h2>
+                  <lightning-icon
+                    class="slds-modal__close"
+                    icon-name="utility:close"
+                    size="small"
+                    onclick={closeModal}
+                  ></lightning-icon>
+                </header>
+                <div class="slds-modal__content">
+                  <c-custom-datatable
+                    key-field="Id"
+                    data={allRecords}
+                    columns={columns.data}
+                    hide-checkbox-column="true"
+                    column-widths-mode="auto"
+                  >
+                  </c-custom-datatable>
+                </div>
+                <footer class="slds-modal__footer">
+                  <lightning-button
+                    variant="brand"
+                    label="Cancelar"
+                    onclick={closeModal}
+                    class="slds-p-around_x-small"
+                  ></lightning-button>
+                </footer>
               </div>
-              <footer class="slds-modal__footer">
-                <lightning-button
-                  variant="brand"
-                  label="Cancelar"
-                  onclick={closeModal}
-                  class="slds-p-around_x-small"
-                ></lightning-button>
-              </footer>
-            </div>
-          </section>
-          <div class="slds-backdrop slds-backdrop_open"></div>
-        </template>
-      </div>
-      <div>
-        <template if:true={warningCreation}>
-          <section aria-modal="true" class="slds-modal slds-fade-in-open">
-            <div class="slds-modal__container">
-              <header class="slds-modal__header">
-                <h2 class="slds-text-heading_small">Nuevo Aviso</h2>
-                <lightning-icon
-                  class="slds-modal__close"
-                  icon-name="utility:close"
-                  size="small"
-                  onclick={closeModal}
-                ></lightning-icon>
-              </header>
-              <div class="slds-modal__content">
-                <lightning-record-form
-                  object-api-name="CustomerWarning__c"
-                  layout-type="Full"
-                  onsuccess={handleCreation}
-                  oncancel={closeModal}
-                >
-                </lightning-record-form>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+          </template>
+        </div>
+        <div>
+          <template if:true={warningCreation}>
+            <section aria-modal="true" class="slds-modal slds-fade-in-open">
+              <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                  <h2 class="slds-text-heading_small">Nuevo Aviso</h2>
+                  <lightning-icon
+                    class="slds-modal__close"
+                    icon-name="utility:close"
+                    size="small"
+                    onclick={closeModal}
+                  ></lightning-icon>
+                </header>
+                <div class="slds-modal__content">
+                  <lightning-record-form
+                    object-api-name="CustomerWarning__c"
+                    layout-type="Full"
+                    onsuccess={handleCreation}
+                    oncancel={closeModal}
+                  >
+                  </lightning-record-form>
+                </div>
               </div>
-            </div>
-          </section>
-          <div class="slds-backdrop slds-backdrop_open"></div>
-        </template>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+          </template>
+        </div>
       </div>
-    </div>
-  </lightning-card>
+    </lightning-card>
+  </div>
 </template>
