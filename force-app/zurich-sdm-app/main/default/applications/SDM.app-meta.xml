@@ -298,7 +298,7 @@
         <profile>SDM RN</profile>
     </profileActionOverrides>
     <tabs>standard-home</tabs>
-    <tabs>Mobile_Home_SDM_RN</tabs>
+    <tabs>Mobile_Home_SDM</tabs>
     <tabs>standard-MobileHome</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Task</tabs>
@@ -319,9 +319,6 @@
             <tab>Alertas_por_Mediador</tab>
         </mappings>
         <mappings>
-            <tab>Mobile_Home_SDM_RN</tab>
-        </mappings>
-        <mappings>
             <tab>GenerarPlan</tab>
         </mappings>
         <mappings>
@@ -329,6 +326,9 @@
         </mappings>
         <mappings>
             <tab>Objetivos</tab>
+        </mappings>
+        <mappings>
+            <tab>Mobile_Home_SDM</tab>
         </mappings>
         <mappings>
             <fieldName>ParentId</fieldName>
