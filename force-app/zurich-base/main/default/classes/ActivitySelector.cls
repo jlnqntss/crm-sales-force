@@ -4,7 +4,7 @@
  * Todas las consultas por defecto recuperarán Id, Status y OwnerId como campos por defecto
  * Salvo referencia explícita, los resultados de la consulta deben ordenarse por SystemModstamp de forma descendente.
  */
-public without sharing class ActivitySelector
+public with sharing class ActivitySelector
 {
     private static String getFieldListString()
     {
