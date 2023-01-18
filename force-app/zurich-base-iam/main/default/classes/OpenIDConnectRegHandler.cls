@@ -138,10 +138,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             u.UserRoleId              = roleId;
         if( userPermissions != null )
         { 
-            for(String userPermission: userPermissions)
-           {
-            u.put(userPermission,true);
-           }
+            ActivateUserPermission(userPermissions,u);
         }
         if( callcenterId != null )
             u.CallCenterId            = callcenterId;
@@ -254,12 +251,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             if( u.UserRoleId != roleId )
                 u.UserRoleId                 = roleId;
             if( userPermissions != null )
-            { 
-                for(String userPermission: userPermissions)
-                {
-                    u.put(userPermission,true);
+                { 
+                    ActivateUserPermission(userPermissions,u);
                 }
-            }
             if( u.CallCenterId != callcenterId )
                 u.CallCenterId               = callcenterId;
             if( u.Department != department )
@@ -802,4 +796,22 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     @testvisible
     class RegHandlerException extends Exception
     {}
+
+    /**
+     * @Description Activar los permisos de usuario
+     * @date 18/01/2023
+     * @author lrodriguez
+     */
+    private void ActivateUserPermission(List<String> UserPer,User usuario)
+    {
+        
+            for(String userPermission: UserPer)
+           {
+            usuario.put(userPermission,true);
+           }
+        }
+    
+
+    
+
 }
